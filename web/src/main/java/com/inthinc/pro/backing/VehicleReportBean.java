@@ -61,19 +61,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         vehiclesData = 
             scoreDAO.getVehicleReportData(
             		getEffectiveGroupId(),
-                    Duration.TWELVE);
-        
-        for(VehicleReportItem v: vehiclesData)
-        {
-            //Driver, none assigned
-            if ( v.getDriver() == null || v.getDriver().getPerson() == null ) {
-                Driver d = new Driver();
-                Person p = new Person();
-                p.setFirst(MessageUtil.getMessageString("reports_none_assigned"));
-                d.setPerson(p);
-                v.setDriver(d);
-            }
-        }         
+                    Duration.TWELVE);      
     }
 
     @Override
