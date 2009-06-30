@@ -217,13 +217,11 @@
                                 				<rich:column>
                                   					<f:facet name="header">
                                   						<h:outputText value="" />
-                                  					</f:facet>    
-                                  					<a4j:htmlCommandLink action="go_driverTrips" value="#{messages.reports_trips}">
-                                  						<f:setPropertyActionListener 
-                                  							value="#{item.driver}" 
-                                  							target="#{navigationBean.driver}">
-                                  						</f:setPropertyActionListener>
-                                  					</a4j:htmlCommandLink>  					      					
+                                  					</f:facet>    		
+                                                   <pretty:link mappingId="driverTrips">
+                                                      <h:outputText value="#{messages.reports_trips}"/>
+                                                      <f:param value="#{item.driver.driverID}"/>
+                                                   </pretty:link>		      					
                                 				</rich:column>
                                 			</rich:dataTable>    	
                             	</div>	
