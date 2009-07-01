@@ -7,8 +7,10 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.exception.ReportRuntimeException;
 
 
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 
@@ -17,7 +19,7 @@ public class ReportUtils
     private static final Logger logger = Logger.getLogger(ReportUtils.class);
     private static final String PACKAGE_PATH = "com/inthinc/pro/reports/jasper/";
 
-    public static JasperReport loadReport(ReportType reportType,FormatType formatType)
+    public static JasperReport loadReport(ReportType reportType,FormatType formatType) throws IOException
     {
         InputStream in = null;
         try
@@ -27,33 +29,27 @@ public class ReportUtils
             else
                 in = loadFile(reportType.getPrettyTemplate());
             
-            
             JasperReport jasperReport = JasperCompileManager.compileReport(in);
 
             return jasperReport;
         }
-        catch (Exception ex)
-        {
-            logger.error(ex.getMessage());
+        catch (JRException e) {
+            throw new ReportRuntimeException(e);
         }
         finally
         {
-            try
-            {
+            if(in != null)
                 in.close();
-            }
-            catch (IOException e)
-            {
-                logger.error(e.getMessage());
-            }
         }
-        return null;
     }
 
-    public static InputStream loadFile(String fileName)
+    public static InputStream loadFile(String fileName) throws IOException
     {
         String path = PACKAGE_PATH + fileName;
         InputStream inputStream = ReportUtils.class.getClassLoader().getResourceAsStream(path);
+        if(inputStream == null){
+            throw new IOException("Could not find jasper report template file");
+        }
         return inputStream;
     }
 

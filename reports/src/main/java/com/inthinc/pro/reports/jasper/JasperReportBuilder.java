@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.jasper;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,12 +18,15 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.exception.ReportPagingException;
+import com.inthinc.pro.reports.exception.ReportRuntimeException;
 import com.inthinc.pro.reports.model.ChartData;
 import com.inthinc.pro.reports.util.MessageUtil;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JRPrintPage;
+import net.sf.jasperreports.engine.JRRuntimeException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -72,7 +76,7 @@ public class JasperReportBuilder
         }
     }
 
-    private void populateReport(ReportCriteria reportCriteria,FormatType formatType)
+    private void populateReport(ReportCriteria reportCriteria,FormatType formatType) throws ReportRuntimeException
     {
         JasperPrint jp = null;
         try
@@ -108,9 +112,13 @@ public class JasperReportBuilder
             }
 
         }
+        catch (IOException e)
+        {
+            throw new ReportRuntimeException(e);
+        }
         catch (JRException e)
         {
-            logger.error(e);
+            throw new ReportRuntimeException(e);
         }
     }
 
@@ -119,7 +127,7 @@ public class JasperReportBuilder
      * breaks up the report into pages according to the reportCriteria.getRecordsPerReport property
      * 
      */
-    private void breakUpReport(ReportCriteria reportCriteria,FormatType formatType)
+    private void breakUpReport(ReportCriteria reportCriteria,FormatType formatType) throws ReportPagingException
     {
         List mainDataSet = new ArrayList();
         for (int i = 0; i < reportCriteria.getMainDataset().size(); i++)
@@ -196,7 +204,7 @@ public class JasperReportBuilder
         return newParamMap;
     }
     
-    private String getPropertyValue(String idField,Object obj)
+    private String getPropertyValue(String idField,Object obj) throws IllegalArgumentException
     {
         Method[] methods = obj.getClass().getDeclaredMethods();
         Object idFieldValue = null;
@@ -225,12 +233,11 @@ public class JasperReportBuilder
                 }
                 catch (IllegalArgumentException e)
                 {
-                    logger.error("idField " + idField + " cannot be found in the main data set");
-                    logger.error(e);
+                    throw new ReportPagingException("field " + idField + " cannot be found in " + obj.getClass().getName(),e);
                 }
                 catch (IllegalAccessException e)
                 {
-                    logger.error(e);
+                    throw new ReportPagingException("field " + idField + " cannot be found in " + obj.getClass().getName(),e);
                 }
                 catch (InvocationTargetException e)
                 {
