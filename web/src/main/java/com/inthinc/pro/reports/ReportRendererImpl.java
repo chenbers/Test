@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ReportRendererBean;
+import com.inthinc.pro.backing.DashboardReportBean;
 
 public class ReportRendererImpl implements ReportRenderer
 {
-    private static final Logger logger = Logger.getLogger(ReportRendererBean.class);
+    private static final Logger logger = Logger.getLogger(DashboardReportBean.class);
     private static final String FILE_NAME = "tiwiPRO_Report";
     
     @SuppressWarnings("unchecked")
