@@ -15,10 +15,10 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class ReportRendererBean extends BaseBean
+public class DashboardReportBean extends BaseBean
 {
-    private static final Logger logger = Logger.getLogger(ReportRendererBean.class);
-
+    private static final Logger logger = Logger.getLogger(DashboardReportBean.class);
+    
     // Report Beans
     private MpgBean mpgBean;
     private OverallScoreBean overallScoreBean;
@@ -34,7 +34,7 @@ public class ReportRendererBean extends BaseBean
     private String emailAddress;
     private Duration duration;
     
-    public ReportRendererBean()
+    public DashboardReportBean()
     {
         
     }

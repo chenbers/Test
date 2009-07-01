@@ -83,7 +83,7 @@
                                         <rich:menuItem iconDisabled="/images/ico_pdf.gif" disabled="#{report eq null?'true':'false'}" icon="/images/ico_pdf.gif"
                                             value="#{messages.contextMenu_export_to_pdf}" action="#{reportRendererBean.exportReportToPDF}" id="export">
                                             <a4j:actionparam assignTo="#{reportRendererBean.report}" value="#{report}" />
-                                            <a4j:actionparam assignTo="#{duration}" converter="SimpleBeanConverter" value="#{duration}" />
+                                            <a4j:actionparam assignTo="#{reportRendererBean.duration}" converter="SimpleBeanConverter" value="#{duration}" />
                                         </rich:menuItem>
                                     </rich:contextMenu>
                                 </a4j:region>

@@ -16,7 +16,7 @@ public class ReportRendererBeanTest extends BaseBeanTest
     @Test
     @Ignore
     public void testExportOverallScoreToPDF(){
-        ReportRendererBean rrb = (ReportRendererBean)applicationContext.getBean("reportRenderer");
+        DashboardReportBean rrb = (DashboardReportBean)applicationContext.getBean("reportRenderer");
         NavigationBean navBean = (NavigationBean)applicationContext.getBean("navigationBean");
         navBean.setGroup(new Group(1,1,"Test",0));
         
