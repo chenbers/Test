@@ -47,7 +47,7 @@
       <div class="popupsubtitle"><h:outputText value="#{explanation}" /></div>
 	  <h:inputHidden value="#{reportBean.user.person.priEmail}" id="#{id}_suggestedEmail" />
 	  
-      <a4j:form id="#{id}_form">
+      <h:form id="#{id}_form">
 		<h:panelGroup style="padding:5px;width:100%">
 			<table>
 				<tr><td align="left" style="padding-left:5px"><h:outputText value="#{messages.emailReport_address_label}"/></td></tr>
@@ -74,7 +74,7 @@
           </a4j:commandButton>
         </div>
 
-      </a4j:form>
+      </h:form>
 
     </rich:modalPanel>
 
