@@ -252,10 +252,11 @@ var firstLoad = new Boolean(true);
                             
 						</td>
 					    <td id="TWENTYONE" valign="top" class="tiny_chart">
+                        <ui:param name="SPEEDING_21_30_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_21_30" />
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
-						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')" 
+						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="TWENTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
                                     <h:outputText value="SCORE_SPEEDING_21_30" converter="MeasurementTextConverter"/>
@@ -286,10 +287,11 @@ var firstLoad = new Boolean(true);
 							</table>
 						</td>
 					    <td id="THIRTYONE" valign="top" class="tiny_chart">
+                        <ui:param name="SPEEDING_31_40_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_31_40" />
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
-						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')" 
+						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="THIRTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
                                     <h:outputText value="SCORE_SPEEDING_31_40" converter="MeasurementTextConverter"/>
@@ -322,10 +324,11 @@ var firstLoad = new Boolean(true);
 				      </tr>
 					  <tr>
 						<td id="FOURTYONE" valign="top" class="tiny_chart">
+                        <ui:param name="SPEEDING_41_54_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_41_54" />
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"     
-						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')" 
+						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FOURTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
                                     <h:outputText value="SCORE_SPEEDING_41_54" converter="MeasurementTextConverter"/>
@@ -356,10 +359,11 @@ var firstLoad = new Boolean(true);
 							</table>
 						</td>
 						<td id="FIFTYFIVE" valign="top" class="tiny_chart">
+                        <ui:param name="SPEEDING_55_64_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_55_64" />
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
-						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')" 
+						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FIFTYFIVE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
                                     <h:outputText value="SCORE_SPEEDING_55_64" converter="MeasurementTextConverter"/>
@@ -390,10 +394,11 @@ var firstLoad = new Boolean(true);
 							</table>
 						</td>
 					    <td id="SIXTYFIVE" valign="top" class="tiny_chart">
+                        <ui:param name="SPEEDING_65_80_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_65_80" />
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
-						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')" 
+						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
                                     <h:outputText value="SCORE_SPEEDING_65_80" converter="MeasurementTextConverter"/>
