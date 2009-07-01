@@ -224,7 +224,7 @@
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_distance}" />
 								</f:facet>
-								<h:outputText value="#{item.event.distance}" converter="DistanceConverter" />
+								<h:outputText value="#{item.event.distance}" converter="DistanceConverter" />#{' '}<h:outputText value="mi" converter="MeasurementTextConverter" />
 							</rich:column>
 							
 							<rich:column>
