@@ -14,4 +14,16 @@
 		<property name="tigerDAO" ref="tigerDao"/>
     </bean>
     
+    <bean class="com.inthinc.pro.service.DeviceService">
+    	<property name="deviceDAO" ref="deviceDAO"/>
+    	<property name="userDAO" ref="userDAO"/>
+    	<property name="groupDAO" ref="groupDAO"/>
+    </bean>
+    
+    <bean class="com.inthinc.pro.service.NoteService">
+    	<property name="mcmService" ref="mcmServiceBean"/>
+    </bean>
+    
+    
+    
 </beans>

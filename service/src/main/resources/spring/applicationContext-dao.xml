@@ -9,4 +9,8 @@
         <constructor-arg value="${proxy.siloDataAccessHost}" />
         <constructor-arg value="${proxy.siloDataAccessPort}" />
     </bean>
+    <bean id="mcmServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.MCMServiceCreator">
+        <constructor-arg value="${proxy.mcmDataAccessHost}" />
+        <constructor-arg value="${proxy.mcmDataAccessPort}" />
+    </bean>
 </beans>
