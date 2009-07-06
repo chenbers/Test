@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;

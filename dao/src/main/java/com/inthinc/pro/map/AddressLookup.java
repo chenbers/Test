@@ -37,12 +37,14 @@ public class AddressLookup
         logger.debug("AddressLookup - setMapServerURLString [" + mapServerURLString + "]");
         this.mapServerURLString = mapServerURLString;
     }
-
-    public String getAddress(double lat, double lng)
-    {
-        return getAddress(new LatLng(lat, lng));
-    }
-    public String getAddress(LatLng latLng)
+    
+    /**
+     * 
+     * @param latLng latitude and longitude to search
+     * @param returnLatLng determines if the result should contain the Lat and Long if no address was found or the text "No address found at location.
+     * @return
+     */
+    public String getAddress(LatLng latLng,boolean returnLatLng)
     {
         //The caching is broken until David Story or Dave Harry update their hessian library to handle many references to one object. After this is done, the equals() an hashcode() methods in the LatLng class need to be uncommented.
         if (addressMap.containsKey(latLng))
@@ -64,7 +66,12 @@ public class AddressLookup
             }
             else
             {
-                address = "No address found at location.";
+                if(returnLatLng){
+                    address = latLng.getLat() + ", " + latLng.getLng();
+                }else{
+                    address = "No address found at location.";
+                }
+                
             }
             return address;
         }
@@ -73,6 +80,16 @@ public class AddressLookup
             logger.debug(e);
             return "";
         }
+    }
+
+    public String getAddress(double lat, double lng)
+    {
+        return getAddress(new LatLng(lat, lng));
+    }
+    
+    public String getAddress(LatLng latLng)
+    {
+        return getAddress(latLng, false);
     }
 
     protected String sendRequest(URL mapServerURL)

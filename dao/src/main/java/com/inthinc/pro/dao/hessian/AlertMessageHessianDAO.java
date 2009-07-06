@@ -24,6 +24,7 @@ import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.SeatBeltEvent;
@@ -202,9 +203,9 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         case ALERT_TYPE_SPEEDING:
             parameterList.add(String.valueOf(((SpeedingEvent)event).getTopSpeed()));
             parameterList.add(String.valueOf(((SpeedingEvent)event).getSpeedLimit()));
-            parameterList.add(addressLookup.getAddress(event.getLatitude(),event.getLongitude()));
+            parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(),event.getLongitude()),true));
         default:
-            parameterList.add(addressLookup.getAddress(event.getLatitude(),event.getLongitude()));
+            parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(),event.getLongitude()),true));
         }
         
         alertMessageBuilder.setParamterList(parameterList);
