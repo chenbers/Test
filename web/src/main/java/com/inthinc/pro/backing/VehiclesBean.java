@@ -333,6 +333,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 updateField.put(key, tempUpdateField.get(key));
             }
         }
+        
+        updateField.put("device.speedSettings", false);
+        updateField.put("device.deviceID", false);
+        updateField.put("device.accountID", false);
+        updateField.put("device.vehicleID", false);
+        updateField.put("device.status", false);
+        updateField.put("device.name", false);
+        updateField.put("device.imei", false);
+        updateField.put("device.sim", false);
 
         // if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
         // getItem().getDevice().invertSensitivities();
