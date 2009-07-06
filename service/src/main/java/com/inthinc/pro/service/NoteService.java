@@ -32,7 +32,7 @@ public class NoteService {
 		
 		Attribute speedLimitAttribute = new Attribute(AttributeType.ATTR_TYPE_SPEED_LIMIT,speedLimit);
 		Attribute averageSpeedAttribute = new Attribute(AttributeType.ATTR_TYPE_AVG_SPEED,45);
-		Attribute topSpeedAttribute = new Attribute(AttributeType.ATTR_TYPE_TOP_SPEED,60);
+		Attribute topSpeedAttribute = new Attribute(AttributeType.ATTR_TYPE_TOP_SPEED,speed);
 		Attribute distanceAttribute = new Attribute(AttributeType.ATTR_TYPE_DISTANCE,0);
 		Note note = new Note(NoteType.SPEEDING,new Date(),latitude,longitude,speed,0,
 				speedLimitAttribute,averageSpeedAttribute,topSpeedAttribute,distanceAttribute);
