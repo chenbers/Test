@@ -264,7 +264,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         else if (column.equals("timeZone"))
         {
             if (person.getTimeZone() != null)
-                return person.getTimeZone().getDisplayName();
+                return person.getTimeZone().getID();
             return null;
         }
         else if (column.equals("info"))
