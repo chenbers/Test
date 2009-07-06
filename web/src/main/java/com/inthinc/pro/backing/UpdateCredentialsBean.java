@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -28,7 +30,7 @@ public class UpdateCredentialsBean extends BaseBean
     private static final Logger logger = Logger.getLogger(UpdateCredentialsBean.class);
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddDDDFFWww");
 
-    private String username;
+    private String username = null;
     private String newPassword;
     private String confirmPassword;
     private String encryptPassword;
@@ -44,51 +46,54 @@ public class UpdateCredentialsBean extends BaseBean
         super();
     }
 
-    private String getPassKey()
+    public void setPassKey(String passkey)
     {
-        BasicTextEncryptor textEncryptor;
-        Calendar cal = Calendar.getInstance();
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String passkey = request.getParameter("passkey");
-        String username = null;
-
-        for (int i = 0; i > daysValid * -1; i--)
-        {
-            cal.add(Calendar.DATE, i);
-            textEncryptor = new BasicTextEncryptor();
-            String dateString = formatter.format(cal.getTime());
-            textEncryptor.setPassword(encryptPassword + dateString);
-            try
-            {
-                logger.debug("Encrypted passkey: " + passkey);
-                username = textEncryptor.decrypt(passkey);
-                logger.debug("Decrypted passkey: " + username);
-                break;
-            }
-            catch (EncryptionOperationNotPossibleException e)
-            {
-                logger.debug("Exception occured during attempt to decrypt a passkey: ", e);
-            }
-        }
         if (username == null)
         {
-            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-            try
+            BasicTextEncryptor textEncryptor;
+            Calendar cal = Calendar.getInstance();
+
+            for (int i = 0; i > daysValid * -1; i--)
             {
-                externalContext.redirect(externalContext.getRequestContextPath());
+                cal.add(Calendar.DATE, i);
+                textEncryptor = new BasicTextEncryptor();
+                String dateString = formatter.format(cal.getTime());
+                textEncryptor.setPassword(encryptPassword + dateString);
+                try
+                {
+                    passkey = URLDecoder.decode(passkey, "UTF-8") + "==";
+
+                    logger.debug("Encrypted passkey: " + passkey);
+                    username = textEncryptor.decrypt(passkey);
+                    logger.debug("Decrypted passkey: " + username);
+                    break;
+                }
+                catch (EncryptionOperationNotPossibleException e)
+                {
+                    logger.debug("Exception occured during attempt to decrypt a passkey: ", e);
+                }
+                catch (UnsupportedEncodingException e)
+                {
+                    logger.debug("Exception occured during attempt to decode a passkey: ", e);
+                }
             }
-            catch (IOException ie)
+            if (username == null)
             {
-                throw new FacesException(ie);
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                try
+                {
+                    externalContext.redirect(externalContext.getRequestContextPath());
+                }
+                catch (IOException ie)
+                {
+                    throw new FacesException(ie);
+                }
             }
         }
-        return username;
     }
 
     public String getUsername()
     {
-        if (username == null)
-            username = getPassKey();
         return username;
     }
 
@@ -146,17 +151,17 @@ public class UpdateCredentialsBean extends BaseBean
     {
         this.confirmPassword = confirmPassword;
     }
-    
+
     public MessageSource getMessageSource()
     {
         return messageSource;
     }
-    
+
     public void setMessageSource(MessageSource value)
     {
         this.messageSource = value;
     }
-    
+
     public UserDAO getUserDAO()
     {
         return userDAO;
@@ -166,7 +171,7 @@ public class UpdateCredentialsBean extends BaseBean
     {
         this.userDAO = userDAO;
     }
-    
+
     public void validateNewPassword(FacesContext context, UIComponent component, Object value)
     {
         // if both input components are valid at this point, meaning that they

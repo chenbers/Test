@@ -7,6 +7,11 @@
 		<pattern>/login</pattern>
 		<view-id>/login.faces</view-id>
 	</url-mapping>
+    
+    <url-mapping id="updatepass">
+        <pattern>/reset/#{updateCredentialsBean.passKey}</pattern>
+        <view-id>/updateCredentials.faces</view-id>
+    </url-mapping>
 	
 	<url-mapping id="myAccount">
 		<pattern>/app/account</pattern>

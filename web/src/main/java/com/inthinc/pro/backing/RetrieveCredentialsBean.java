@@ -152,12 +152,6 @@ public class RetrieveCredentialsBean extends BaseBean
         {
             success = true;
             JavaMailSender javaMailSender = (JavaMailSender) mailSender;
-
-            //Couldn't see the purpose of this - Mike
-//            if (false)
-//            {
-//                return "go_retrieveCredentialsComplete";
-//            }
             
             javaMailSender.send(
 
@@ -176,6 +170,7 @@ public class RetrieveCredentialsBean extends BaseBean
                         textEncryptor.setPassword(encryptPassword + dateString);
                     }
                     String eUsername = textEncryptor.encrypt(validUser.getUsername());
+                    eUsername = eUsername.substring(0, eUsername.length() - 2);
                     try
                     {
                         eUsername = URLEncoder.encode(eUsername, "UTF-8");
@@ -187,7 +182,7 @@ public class RetrieveCredentialsBean extends BaseBean
 
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/") + 1);
-                    url = url + "updateCredentials.faces?passkey=" + eUsername;
+                    url = url + "reset/" + eUsername;
                     String htmlUrl = "<html><a href=\"" + url + "\">" + url + "</a></html>";
                     String subject = messageSource.getMessage("credentials_mail_subject", null, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
                     String text = messageSource.getMessage("credentials_mail_text", new Object[] { htmlUrl }, FacesContext.getCurrentInstance().getExternalContext()
