@@ -171,8 +171,8 @@
                                   <rich:message for="weight" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.weight}" id="weight" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="9"
                                     converterMessage="#{messages.editVehicle_weightFormat}" validatorMessage="#{messages.editVehicle_weightFormat}">
+                                    <f:validateLongRange minimum="1"  />
                                     <f:converter converterId="LbsToKgConverter"/>
-                                    <f:validateLongRange minimum="1" />
                                   </h:inputText>
                                 </td>
                               </tr>
