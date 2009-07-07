@@ -92,7 +92,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardAcceleration()
     {
         if (hardAcceleration == null)
-            return Device.DEFAULT_LEVEL;
+            return SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting();
         return hardAcceleration;
     }
 
@@ -104,7 +104,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardBrake()
     {
         if (hardBrake == null)
-            return Device.DEFAULT_LEVEL;
+            return SensitivityType.HARD_BRAKE_SETTING.getDefaultSetting();
         return hardBrake;
     }
 
@@ -116,7 +116,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardTurn()
     {
         if (hardTurn == null)
-            return Device.DEFAULT_LEVEL;
+            return SensitivityType.HARD_TURN_SETTING.getDefaultSetting();
         return hardTurn;
     }
 
@@ -128,7 +128,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardVertical()
     {
         if (hardVertical == null)
-            return Device.DEFAULT_BUMP_LEVEL;
+            return SensitivityType.HARD_VERT_SETTING.getDefaultSetting();
         return hardVertical;
     }
 

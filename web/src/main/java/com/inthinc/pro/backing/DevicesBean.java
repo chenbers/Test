@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -159,10 +158,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final Device device = new Device();
         device.setStatus(DeviceStatus.NEW);
-        device.setHardAcceleration(SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting());
-        device.setHardBrake(SensitivityType.HARD_BRAKE_SETTING.getDefaultSetting());
-        device.setHardTurn(SensitivityType.HARD_TURN_SETTING.getDefaultSetting());
-        device.setHardVertical(SensitivityType.HARD_VERT_SETTING.getDefaultSetting());
         // device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         return createDeviceView(device);
     }

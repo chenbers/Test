@@ -173,7 +173,24 @@
                         </h:panelGroup>
 
                         <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'drivingStyle'}">
-
+                          <script type="text/javascript">
+                               function getCurrentValueLabel(currentValue , defaultValue)
+                               {
+                                   if(currentValue > defaultValue)
+                                   {
+                                       var positive = currentValue - defaultValue;
+                                       return "#{messages.editDevice_more} (+" + positive + ")";
+                                   }
+                                   if(currentValue == defaultValue)
+                                   {
+                                      return "#{messages.editDevice_average}";
+                                   }
+   
+                                   var negative = defaultValue - currentValue;
+                                   return "#{messages.editDevice_less} (-" + negative + ")";
+                                  
+                               }
+                            </script>
                           <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr class="datagrid">
                               <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
@@ -181,7 +198,7 @@
                               <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
                             </tr>
                             <c:set var="row" value="#{0}" />
-                            <c:forEach begin="1" var="index" end="4">
+                            <a4j:repeat value="#{devicesBean.sensitivityTypes}" var="sensitivityType" rowKeyVar="index">
                               <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
                               <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
                               <c:if test="#{redFlagAlertsBean.item[sensitivitySelected]}">
@@ -191,11 +208,22 @@
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="true" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" />
+                                    <rich:inputNumberSlider id="#{sensitivityItem}" 
+                                             disabled="true" 
+                                             value="#{redFlagAlertsBean.item[sensitivityItem]}" 
+                                             showToolTip="false" showBoundaryValues="false" 
+                                             handleSelectedClass="handleSelected"
+                                             showInput="false" minValue="1" maxValue="#{sensitivityType.settingsCount}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{sensitivityType.settingsCount}.png')"/>
+          
                                   </td>
                                   <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivityLevel" value="editDevice_sensitivity#{redFlagAlertsBean.item[sensitivityItem]}" />
-                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
+                                    <span id="#{sensitivityItem}Level" style="font-weight:bold">
+                                    </span>
+                                    <script type="text/javascript">
+                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{redFlagAlertsBean.item[sensitivityItem]},#{sensitivityType.defaultSetting});
+                                    </script>
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
@@ -204,7 +232,7 @@
                                 </tr>
                                 <c:set var="row" value="#{row + 1}" />
                               </c:if>
-                            </c:forEach>
+                            </a4j:repeat>
                           </table>
 
                         </h:panelGroup>

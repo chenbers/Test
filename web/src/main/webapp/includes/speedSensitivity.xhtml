@@ -101,12 +101,6 @@
                           <td width="390" valign="top">
 
                             <script type="text/javascript">
-                              var sensitivities = new Array();
-                              <c:forEach begin="1" var="sensitivity" end="5">
-                                <c:set var="sLevel" value="editDevice_sensitivity#{sensitivity}" />
-                                sensitivities[#{sensitivity}] = '<h:outputText value="#{messages[sLevel]}" />';
-                              </c:forEach>
-
                               function getCurrentValueLabel(currentValue , defaultValue)
                               {
                                   if(currentValue > defaultValue)

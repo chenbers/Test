@@ -7,12 +7,8 @@ import com.inthinc.pro.dao.annotations.ID;
 
 public class Device extends BaseEntity
 {
-    
     @Column(updateable = false)
-    public static final Integer DEFAULT_LEVEL = 2;
-    
-    @Column(updateable = false)
-    public static final Integer DEFAULT_BUMP_LEVEL = 3;
+    private static final long serialVersionUID = 2865030663439253720L;
 
     @Column(updateable = false)
     public static final int NUM_SPEEDS = 15;
@@ -23,9 +19,6 @@ public class Device extends BaseEntity
     @Column(updateable = false)
     public static final String DEFAULT_SPEED_SET = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
-
-    @Column(updateable = false)
-    private static final long serialVersionUID = 2865030663439253720L;
 
     // yep, a high number means a low sensitivity; a low number means a high sensitivity
 //    @Column(updateable = false)
@@ -193,7 +186,7 @@ public class Device extends BaseEntity
     public Integer getHardAcceleration()
     {
         if (hardAcceleration == null)
-            return DEFAULT_LEVEL;
+            return SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting();
         return hardAcceleration;
     }
 
@@ -205,7 +198,7 @@ public class Device extends BaseEntity
     public Integer getHardBrake()
     {
         if (hardBrake == null)
-            return DEFAULT_LEVEL;
+            return SensitivityType.HARD_BRAKE_SETTING.getDefaultSetting();
         return hardBrake;
     }
 
@@ -217,7 +210,7 @@ public class Device extends BaseEntity
     public Integer getHardTurn()
     {
         if (hardTurn == null)
-            return DEFAULT_LEVEL;
+            return SensitivityType.HARD_TURN_SETTING.getDefaultSetting();
         return hardTurn;
     }
 
@@ -229,7 +222,7 @@ public class Device extends BaseEntity
     public Integer getHardVertical()
     {
         if (hardVertical == null)
-            return DEFAULT_BUMP_LEVEL;
+            return SensitivityType.HARD_VERT_SETTING.getDefaultSetting();
         return hardVertical;
     }
 

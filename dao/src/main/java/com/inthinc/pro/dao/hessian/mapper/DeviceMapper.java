@@ -5,6 +5,7 @@ import java.util.Map;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.SensitivityType;
 import com.inthinc.pro.model.TablePreference;
 
 public class DeviceMapper extends AbstractMapper
@@ -18,7 +19,7 @@ public class DeviceMapper extends AbstractMapper
         
         if (value == null)
         {
-            device.setHardAcceleration(Device.DEFAULT_LEVEL);
+            device.setHardAcceleration(SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting());
         }
             
         if (value instanceof String)
@@ -35,7 +36,7 @@ public class DeviceMapper extends AbstractMapper
         
         if (value == null)
         {
-            device.setHardBrake(Device.DEFAULT_LEVEL);
+            device.setHardBrake(SensitivityType.HARD_BRAKE_SETTING.getDefaultSetting());
         }
 
         if (value instanceof String)
@@ -52,7 +53,7 @@ public class DeviceMapper extends AbstractMapper
         
         if (value == null)
         {
-            device.setHardTurn(Device.DEFAULT_LEVEL);
+            device.setHardTurn(SensitivityType.HARD_TURN_SETTING.getDefaultSetting());
         }
 
         if (value instanceof String)
@@ -69,7 +70,7 @@ public class DeviceMapper extends AbstractMapper
         
         if (value == null)
         {
-            device.setHardVertical(Device.DEFAULT_BUMP_LEVEL);
+            device.setHardVertical(SensitivityType.HARD_VERT_SETTING.getDefaultSetting());
         }
 
         if (value instanceof String)
@@ -91,12 +92,12 @@ public class DeviceMapper extends AbstractMapper
             }
             catch (NumberFormatException ex)
             {
-                level = Device.DEFAULT_LEVEL;
+                level = SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting();
             }
         }
         else
         {
-            level = Device.DEFAULT_LEVEL;
+            level = SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting();
         }
         return level;
     }
