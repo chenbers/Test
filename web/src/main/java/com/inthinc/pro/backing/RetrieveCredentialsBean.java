@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
@@ -162,23 +163,25 @@ public class RetrieveCredentialsBean extends BaseBean
                 {
                     MimeMessageHelper msgH = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-                    BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+                    StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
                     Calendar cal = Calendar.getInstance();
                     synchronized (cal)
                     {
                         String dateString = formatter.format(cal.getTime());
                         textEncryptor.setPassword(encryptPassword + dateString);
+                        textEncryptor.setStringOutputType("hexadecimal");
+                        textEncryptor.initialize();
                     }
                     String eUsername = textEncryptor.encrypt(validUser.getUsername());
-                    eUsername = eUsername.substring(0, eUsername.length() - 2);
-                    try
-                    {
-                        eUsername = URLEncoder.encode(eUsername, "UTF-8");
-                    }
-                    catch (UnsupportedEncodingException e)
-                    {
-                        logger.error("Failed encoding the encrypted username: " + eUsername, e);
-                    }
+//                    eUsername = eUsername.substring(0, eUsername.length() - 2);
+//                    try
+//                    {
+//                        eUsername = URLEncoder.encode(eUsername, "UTF-8");
+//                    }
+//                    catch (UnsupportedEncodingException e)
+//                    {
+//                        logger.error("Failed encoding the encrypted username: " + eUsername, e);
+//                    }
 
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/") + 1);
@@ -203,7 +206,7 @@ public class RetrieveCredentialsBean extends BaseBean
 
         }// if
         
-        return "go_retrieveCredentialsComplete";
+        return "pretty:sentResetEmail";
 
     }
 

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -50,18 +51,20 @@ public class UpdateCredentialsBean extends BaseBean
     {
         if (username == null)
         {
-            BasicTextEncryptor textEncryptor;
+            StandardPBEStringEncryptor textEncryptor;
             Calendar cal = Calendar.getInstance();
 
             for (int i = 0; i > daysValid * -1; i--)
             {
                 cal.add(Calendar.DATE, i);
-                textEncryptor = new BasicTextEncryptor();
+                textEncryptor = new StandardPBEStringEncryptor();
                 String dateString = formatter.format(cal.getTime());
                 textEncryptor.setPassword(encryptPassword + dateString);
+                textEncryptor.setStringOutputType("hexadecimal");
+                textEncryptor.initialize();
                 try
                 {
-                    passkey = URLDecoder.decode(passkey, "UTF-8") + "==";
+//                    passkey = URLDecoder.decode(passkey, "UTF-8") + "==";
 
                     logger.debug("Encrypted passkey: " + passkey);
                     username = textEncryptor.decrypt(passkey);
@@ -71,10 +74,6 @@ public class UpdateCredentialsBean extends BaseBean
                 catch (EncryptionOperationNotPossibleException e)
                 {
                     logger.debug("Exception occured during attempt to decrypt a passkey: ", e);
-                }
-                catch (UnsupportedEncodingException e)
-                {
-                    logger.debug("Exception occured during attempt to decode a passkey: ", e);
                 }
             }
             if (username == null)

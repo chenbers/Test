@@ -64,6 +64,13 @@
     	<artifactId>spring-core</artifactId>
     	<version>2.5.6</version>
     </dependency>
+    <dependency>
+    	<groupId>org.jasypt</groupId>
+    	<artifactId>jasypt</artifactId>
+    	<version>1.5</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
   </dependencies>
 
 </project>
