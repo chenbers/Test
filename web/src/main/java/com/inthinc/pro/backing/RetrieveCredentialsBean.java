@@ -173,15 +173,6 @@ public class RetrieveCredentialsBean extends BaseBean
                         textEncryptor.initialize();
                     }
                     String eUsername = textEncryptor.encrypt(validUser.getUsername());
-//                    eUsername = eUsername.substring(0, eUsername.length() - 2);
-//                    try
-//                    {
-//                        eUsername = URLEncoder.encode(eUsername, "UTF-8");
-//                    }
-//                    catch (UnsupportedEncodingException e)
-//                    {
-//                        logger.error("Failed encoding the encrypted username: " + eUsername, e);
-//                    }
 
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/") + 1);

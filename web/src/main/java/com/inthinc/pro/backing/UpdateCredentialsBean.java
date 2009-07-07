@@ -64,8 +64,6 @@ public class UpdateCredentialsBean extends BaseBean
                 textEncryptor.initialize();
                 try
                 {
-//                    passkey = URLDecoder.decode(passkey, "UTF-8") + "==";
-
                     logger.debug("Encrypted passkey: " + passkey);
                     username = textEncryptor.decrypt(passkey);
                     logger.debug("Decrypted passkey: " + username);
