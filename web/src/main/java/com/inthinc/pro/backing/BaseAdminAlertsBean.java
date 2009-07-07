@@ -90,9 +90,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
         else if ("vehicleTypes".equals(assignType))
         {
-            pickFrom.add(new SelectItem(VehicleType.LIGHT.toString(), MessageUtil.getMessageString("editAlerts_lightVehicles")));
-            pickFrom.add(new SelectItem(VehicleType.MEDIUM.toString(), MessageUtil.getMessageString("editAlerts_mediumVehicles")));
-            pickFrom.add(new SelectItem(VehicleType.HEAVY.toString(), MessageUtil.getMessageString("editAlerts_heavyVehicles")));
+            pickFrom.add(new SelectItem(VehicleType.LIGHT.name(), MessageUtil.getMessageString("editAlerts_lightVehicles")));
+            pickFrom.add(new SelectItem(VehicleType.MEDIUM.name(), MessageUtil.getMessageString("editAlerts_mediumVehicles")));
+            pickFrom.add(new SelectItem(VehicleType.HEAVY.name(), MessageUtil.getMessageString("editAlerts_heavyVehicles")));
         }
         else if ("vehicles".equals(assignType))
         {
