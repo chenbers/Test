@@ -73,6 +73,16 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         return items;
     }
+    
+    @Override
+    public String fieldValue(ZoneAlertView item, String column)
+    {
+        if("zone".equals(column)){
+            if(item.getZone() != null)
+                return item.getZone().getName();
+        }
+        return super.fieldValue(item, column);
+    }
 
     /**
      * Creates a ZoneAlertView object from the given ZoneAlert object.
