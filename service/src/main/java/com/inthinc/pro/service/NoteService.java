@@ -22,9 +22,8 @@ public class NoteService {
 	private MCMService mcmService;
 	
 	@GET
-	@Path("/createSpeedEvent/{imei}/{vehicleID}/{lat}/{lng}/{currentSpeed}/{speedLimit}")
+	@Path("/createSpeedEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}")
 	public String createSpeedEvent(@PathParam("imei")String imei,
-			@PathParam("vehicleID")Integer vehicleID,
 			@PathParam("lat")Double latitude,
 			@PathParam("lng")Double longitude,
 			@PathParam("currentSpeed")Integer speed,
@@ -59,10 +58,19 @@ public class NoteService {
 	}
 	
 	@PUT
-	@Path("/createCurrentLocationEvent/{lat}/{lng}")
-	public String createCurrentLocationEvent(){
+	@Path("/createCurrentLocationEvent/{imei}/{lat}/{lng}/{spped}/{speedLimit}")
+	public String createCurrentLocationEvent(@PathParam("imei")String imei,
+			@PathParam("lat")Double latitude,
+			@PathParam("lng")Double longitude,
+			@PathParam("currentSpeed")Integer speed,
+			@PathParam("speedLimit")Integer speedLimit){
 		
-		return null;
+		Attribute speedLimitAttribute = new Attribute(AttributeType.ATTR_TYPE_SPEED_LIMIT,speedLimit);
+		Note note = new Note(NoteType.SPEEDING,new Date(),latitude,longitude,speed,0,speedLimitAttribute);
+		List<byte[]> byteList = new ArrayList<byte[]>();
+		byteList.add(note.getBytes());
+		List<Map> mapList = mcmService.note(imei, byteList);
+		return "0";
 	}
 
 	public void setMcmService(MCMService mcmService) {
