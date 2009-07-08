@@ -57,8 +57,8 @@ public class NoteService {
 		return null;
 	}
 	
-	@PUT
-	@Path("/createCurrentLocationEvent/{imei}/{lat}/{lng}/{spped}/{speedLimit}")
+	@GET
+	@Path("/createCurrentLocationEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}")
 	public String createCurrentLocationEvent(@PathParam("imei")String imei,
 			@PathParam("lat")Double latitude,
 			@PathParam("lng")Double longitude,
