@@ -288,6 +288,13 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
                 return zone;
         return null;
     }
+    
+    @Override
+    public void resetList()
+    {
+        zonesBean.clearZones();
+        super.resetList();
+    }
 
     public static class ZoneAlertView extends ZoneAlert implements BaseAdminAlertsBean.BaseAlertView
     {

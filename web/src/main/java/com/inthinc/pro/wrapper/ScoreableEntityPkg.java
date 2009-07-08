@@ -1,9 +1,18 @@
 package com.inthinc.pro.wrapper;
 
+import java.io.Serializable;
+
 import com.inthinc.pro.model.ScoreableEntity;
 
-public class ScoreableEntityPkg {
-	private ScoreableEntity se;
+public class ScoreableEntityPkg implements Serializable{
+    
+    
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7147474007659185096L;
+
+    private ScoreableEntity se;
 	
 	private String style;
 	private String colorKey;

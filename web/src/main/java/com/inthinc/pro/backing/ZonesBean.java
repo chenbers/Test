@@ -22,7 +22,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class ZonesBean extends BaseBean
 {
     private List<Zone>           zones;
-    private List<SelectItem> zoneIDs;
+    private List<SelectItem>     zoneIDs;
     private Zone                 item;
     private boolean              editing;
     private ZoneDAO              zoneDAO;
@@ -303,6 +303,11 @@ public class ZonesBean extends BaseBean
             }
         }
         return true;
+    }
+    
+    public void clearZones(){
+        zoneIDs = null;
+        zones = null;
     }
     
     

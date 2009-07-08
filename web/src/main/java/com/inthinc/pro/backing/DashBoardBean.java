@@ -1,9 +1,16 @@
 package com.inthinc.pro.backing;
 
+import java.io.Serializable;
+
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
-public class DashBoardBean extends BaseBean
+public class DashBoardBean extends BaseBean implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -9102890511072356183L;
+    
     private NavigationBean navigationBean;
     private MpgBean mpgBean;
     private OverallScoreBean overallScoreBean;
