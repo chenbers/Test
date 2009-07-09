@@ -15,7 +15,8 @@
          reRender="bottomScroller,items,header" oncomplete="initializeTable();" 
          page="#{page}" styleClass="datascroller"/>
     <div class="datagrid_panel" style="width:925px; overflow: auto">
-        <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
+        <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" 
+        				rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
             <!-- Data -->
             <rich:column id="mapColumn">
@@ -67,7 +68,7 @@
                 </f:facet>
                 <h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['date'].visible}" sortBy="#{item.redFlag.event.time}" width="15%">
+            <rich:column id="time" rendered="#{tableColumns['date'].visible}" sortBy="#{item.redFlag.event.time}" sortOrder="DESCENDING" width="15%">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_date}" />
                 </f:facet>
