@@ -110,6 +110,11 @@
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>
+    <url-mapping id="driversReportWithGroup">
+        <pattern>/app/reports/driversReport/group/#{searchCoordinationBean.groupID}</pattern>
+        <view-id>/secured/reports/drivers.faces</view-id>
+        <action>#{driverReportBean.search}</action>
+    </url-mapping>
     <url-mapping id="driversReportWithCriteria">
         <pattern>/app/reports/driversReport</pattern>
         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 

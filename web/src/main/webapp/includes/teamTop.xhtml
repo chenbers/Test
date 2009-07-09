@@ -13,9 +13,9 @@
 			<div class="panel_title">
 				<span class="top5">#{messages.teamTop_top}</span>
 				<span class="panel_links">
-                   <pretty:link mappingId="driversReportWithGroupID">
+                   <pretty:link mappingId="driversReportWithGroup">
                         <h:outputText value="#{messages.teamTop_showAll}"/>
-                       <f:param name="groupID" value="#{navigationBean.groupID}"/>
+                       <f:param value="#{navigationBean.groupID}"/>
                    </pretty:link>
 				</span>	
 			</div>
@@ -70,9 +70,9 @@
 			<div class="panel_title">
 				<span class="thumbsdown">#{messages.teamTop_bottom}</span>
 				<span class="panel_links">
-				   <pretty:link mappingId="driversReportWithGroupID">
+				   <pretty:link mappingId="driversReportWithGroup">
                         <h:outputText value="#{messages.teamTop_showAll}"/>
-                       <f:param name="groupID" value="#{navigationBean.groupID}"/>
+                       <f:param  value="#{navigationBean.groupID}"/>
                    </pretty:link>
 				</span>
 			</div>
