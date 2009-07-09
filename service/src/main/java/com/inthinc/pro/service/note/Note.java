@@ -12,11 +12,13 @@ public class Note {
 	private Double lng;
 	private Integer speed;
 	private Integer odometer;
+	private Integer sats;
+	private Integer heading;
 
 	private List<Attribute> attributeList;
 	
 	public Note(NoteType noteType, Date date, Double lat, Double lng,
-			Integer speed, Integer odometer, Attribute... attributes) {
+			Integer speed, Integer odometer, Integer sats,Integer heading, Attribute... attributes) {
 		super();
 		this.noteType = noteType;
 		this.date = date;
@@ -24,17 +26,24 @@ public class Note {
 		this.lng = lng;
 		this.speed = speed;
 		this.odometer = odometer;
+		this.heading = heading;
+		this.sats = sats;
 		if (attributes != null)
 			this.setAttributeList(Arrays.asList(attributes));
 	}
 	
 	public byte[] getBytes(){
 		
+        String headingString = Integer.toBinaryString(heading);
+        String satsString = Integer.toBinaryString(sats);
+        String flagsString = headingString + satsString;
+        Integer flags = Integer.parseInt(flagsString, 2);
+	    
 		byte[] noteBytes = new byte[200];
 		int idx = 0;
 		noteBytes[idx++] = (byte) (noteType.getCode() & 0x000000FF);
         idx = puti4(noteBytes, idx, (int)(date.getTime()/1000l));
-        noteBytes[idx++] = (byte) 1; // ?? flags
+        noteBytes[idx++] = (byte) (flags & 0x000000FF); 
         noteBytes[idx++] = (byte) 1; // maprev
         idx = putlat(noteBytes, idx, lat);
         idx = putlng(noteBytes, idx, lng);
@@ -43,8 +52,9 @@ public class Note {
         
         for(Attribute attribute:attributeList){
         	byte[] attributeBytes = attribute.getBytes();
-        	noteBytes[idx++] = attributeBytes[0];
-        	noteBytes[idx++] = attributeBytes[1];
+        	for(int i = 0;i < attributeBytes.length;i++){
+        	    noteBytes[idx++] = attributeBytes[i];
+        	}
         }
         
         return noteBytes;

@@ -11,7 +11,9 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 
 @Path("/deviceService")
@@ -37,17 +39,19 @@ public class DeviceService {
 		
 		StringBuilder sb = new StringBuilder();
 		for(Device device:deviceList){
-			sb.append(device.getName());
-			sb.append(",");
-			sb.append(device.getImei());
-			sb.append(",");
-			sb.append(device.getSim());
-			if(device.getVehicleID() != null){
-				sb.append(",");
-				sb.append(device.getVehicleID());
-			}
-			if(deviceList.indexOf(device) < deviceList.size() -1)
-				sb.append(";");
+		    if(device.getStatus().equals(DeviceStatus.ACTIVE) && device.getVehicleID() != null){
+    			sb.append(device.getName());
+    			sb.append(",");
+    			sb.append(device.getImei());
+    			sb.append(",");
+    			sb.append(device.getSim());
+    			if(device.getVehicleID() != null){
+    				sb.append(",");
+    				sb.append(device.getVehicleID());
+    			}
+    			if(deviceList.indexOf(device) < deviceList.size() -1)
+    				sb.append(";");
+		    }
 		}
 		return sb.toString();
 	}
