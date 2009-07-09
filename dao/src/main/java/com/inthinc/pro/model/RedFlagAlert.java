@@ -9,6 +9,12 @@ public class RedFlagAlert extends BaseAlert
 {
     @Column(updateable = false)
     private static final long serialVersionUID = -1621262257747114161L;
+    
+    @Column(updateable = false)
+    public static final Integer DEFAULT_LEVEL = 2;
+    
+    @Column(updateable = false)
+    public static final Integer DEFAULT_BUMP_LEVEL = 3;
 
     @ID
     @Column(name="alertID")
@@ -92,7 +98,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardAcceleration()
     {
         if (hardAcceleration == null)
-            return SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting();
+            return DEFAULT_LEVEL;
         return hardAcceleration;
     }
 
@@ -104,7 +110,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardBrake()
     {
         if (hardBrake == null)
-            return SensitivityType.HARD_BRAKE_SETTING.getDefaultSetting();
+            return DEFAULT_LEVEL;
         return hardBrake;
     }
 
@@ -116,7 +122,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardTurn()
     {
         if (hardTurn == null)
-            return SensitivityType.HARD_TURN_SETTING.getDefaultSetting();
+            return DEFAULT_LEVEL;
         return hardTurn;
     }
 
@@ -128,7 +134,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardVertical()
     {
         if (hardVertical == null)
-            return SensitivityType.HARD_VERT_SETTING.getDefaultSetting();
+            return DEFAULT_BUMP_LEVEL;
         return hardVertical;
     }
 
