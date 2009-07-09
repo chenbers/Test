@@ -10,6 +10,7 @@ import com.inthinc.pro.model.Group;
 public class SearchCoordinationBean {
 
 	private String searchFor = "";
+	
 	private Group group;
 	private int navigation;
 	private Integer groupID;
@@ -88,7 +89,7 @@ public class SearchCoordinationBean {
 	}
 	public void setGroup(Group group) {
 		
-		if (group != null && this.group != group){
+		if (group != null /* && this.group != group*/){
 			searchFor = group.getName();
 		}
 		else
