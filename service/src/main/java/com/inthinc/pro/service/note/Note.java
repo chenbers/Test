@@ -44,7 +44,7 @@ public class Note {
 		noteBytes[idx++] = (byte) (noteType.getCode() & 0x000000FF);
         idx = puti4(noteBytes, idx, (int)(date.getTime()/1000l));
         noteBytes[idx++] = (byte) (flags & 0x000000FF); 
-        noteBytes[idx++] = (byte) 1; // maprev
+        noteBytes[idx++] = (byte) 8; // maprev
         idx = putlat(noteBytes, idx, lat);
         idx = putlng(noteBytes, idx, lng);
         noteBytes[idx++] = (byte) (speed & 0x000000FF);
@@ -57,7 +57,12 @@ public class Note {
         	}
         }
         
-        return noteBytes;
+        byte[] compressedBytes = new byte[idx];
+        for(int i = 0;i < idx;i++){
+            compressedBytes[i] = noteBytes[i];
+        }
+        
+        return compressedBytes;
 	}
 
 	private int putlat(byte[] eventBytes, int idx, Double latitude) {

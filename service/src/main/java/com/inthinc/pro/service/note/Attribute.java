@@ -11,15 +11,23 @@ public class Attribute {
 	}
 	
 	public byte[] getBytes(){
-		byte[] attributeBytes = new byte[2];
-		if(attributeType.equals(AttributeType.ATTR_TYPE_MPG) || attributeType.equals(AttributeType.ATTR_TYPE_BOUNDRY)){
-		    attributeBytes = new byte[3];
-		}
+		
+		AttributeLength attributeLength = AttributeLength.valueOf(attributeType.getCode());
+		int byteCount = attributeLength.getByteCount() + 1;
+		
+		byte[] attributeBytes = new byte[byteCount];
+		
 		attributeBytes[0] = (byte) (attributeType.getCode() & 0x000000FF);
-		if(attributeType.equals(AttributeType.ATTR_TYPE_MPG) || attributeType.equals(AttributeType.ATTR_TYPE_BOUNDRY)){
-		    puti2(attributeBytes,0,value);
-		}else{
+		switch(attributeLength){
+		case ONE_BYTE:
 		    attributeBytes[1] = (byte) (value & 0x000000FF);
+		    break;
+		case TWO_BYTES:
+		    puti2(attributeBytes,1,value);
+		    break;
+		case FOUR_BYTES:
+		    puti4(attributeBytes,1, value);
+		    break;
 		}
 		return attributeBytes;
 	}
@@ -35,8 +43,8 @@ public class Attribute {
 
     private static int puti2(byte[] eventBytes, int idx, Integer i)
     {
-        eventBytes[++idx] = (byte) ((i >> 8) & 0x000000FF);
-        eventBytes[++idx] = (byte) (i & 0x000000FF); 
+        eventBytes[idx++] = (byte) ((i >> 8) & 0x000000FF);
+        eventBytes[idx++] = (byte) (i & 0x000000FF); 
         return idx;
     }
 

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
@@ -33,15 +32,18 @@ public class NoteService {
 		Attribute speedLimitAttribute = new Attribute(AttributeType.ATTR_TYPE_SPEED_LIMIT,speedLimit);
 		Attribute averageSpeedAttribute = new Attribute(AttributeType.ATTR_TYPE_AVG_SPEED,45);
 		Attribute topSpeedAttribute = new Attribute(AttributeType.ATTR_TYPE_TOP_SPEED,speed);
-		Attribute distanceAttribute = new Attribute(AttributeType.ATTR_TYPE_DISTANCE,0);
-		Note note = new Note(NoteType.SPEEDING,new Date(),latitude,longitude,speed,0,9,1,
+		Attribute distanceAttribute = new Attribute(AttributeType.ATTR_TYPE_DISTANCE,10);
+		Note note = new Note(NoteType.SPEEDING,new Date(),latitude,longitude,speed,10,9,1,
 				speedLimitAttribute,averageSpeedAttribute,topSpeedAttribute,distanceAttribute);
 		
 		List<byte[]> byteList = new ArrayList<byte[]>();
 		byteList.add(note.getBytes());
 		List<Map> mapList = mcmService.note(imei, byteList);
+		if(mapList.size() > 0){
+            return mapList.get(0).get("data").toString();
+        }
 		
-		return "0";
+		return "1";
 	}
 	
 	@GET
@@ -52,11 +54,15 @@ public class NoteService {
             @PathParam("lng")Double longitude,
             @PathParam("currentSpeed")Integer speed){
 		
-        Note note = new Note(NoteType.IGNITION_ON,new Date(),latitude,longitude,speed,0,9,1);
+	    Attribute boundryAttribute = new Attribute(AttributeType.ATTR_TYPE_BOUNDRY,146);
+        Note note = new Note(NoteType.IGNITION_ON,new Date(),latitude,longitude,speed,10,9,1,boundryAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
         List<Map> mapList = mcmService.note(imei, byteList);
-        return "0";
+        if(mapList.size() > 0){
+            return mapList.get(0).get("data").toString();
+        }
+        return "1";
 	}
 	
 	@GET
@@ -67,11 +73,15 @@ public class NoteService {
             @PathParam("currentSpeed")Integer speed){
 		
 	    Attribute mpgAttribute = new Attribute(AttributeType.ATTR_TYPE_MPG,25);
-        Note note = new Note(NoteType.IGNITION_OFF,new Date(),latitude,longitude,speed,0,9,1,mpgAttribute);
+	    Attribute boundryAttribute = new Attribute(AttributeType.ATTR_TYPE_BOUNDRY,146);
+        Note note = new Note(NoteType.IGNITION_OFF,new Date(),latitude,longitude,speed,10,9,1,boundryAttribute,mpgAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
         List<Map> mapList = mcmService.note(imei, byteList);
-		return "0";
+        if(mapList.size() > 0){
+            return mapList.get(0).get("data").toString();
+        }
+		return "1";
 	}
 	
 	@GET
@@ -86,15 +96,15 @@ public class NoteService {
 	    Integer heading = Heading.valueOf(bearing).getCode();
 		Attribute speedLimitAttribute = new Attribute(AttributeType.ATTR_TYPE_SPEED_LIMIT,speedLimit);
 		Attribute boundryAttribute = new Attribute(AttributeType.ATTR_TYPE_BOUNDRY,146);
-		Note note = new Note(NoteType.LOCATION,new Date(),latitude,longitude,speed,0,9,heading,speedLimitAttribute,boundryAttribute);
+		Note note = new Note(NoteType.LOCATION,new Date(),latitude,longitude,speed,10,9,heading,speedLimitAttribute,boundryAttribute);
 		List<byte[]> byteList = new ArrayList<byte[]>();
 		byteList.add(note.getBytes());
 		List<Map> mapList = mcmService.note(imei, byteList);
 		
 		if(mapList.size() > 0){
-		    return mapList.get(0).toString();
+		    return mapList.get(0).get("data").toString();
 		}
-		return "0";
+		return "1";
 	}
 
 	public void setMcmService(MCMService mcmService) {

@@ -1,10 +1,6 @@
 package com.inthinc.pro.service.note;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.inthinc.pro.model.GroupType;
 
 public enum Heading{
     NORTH(0,0,30),
