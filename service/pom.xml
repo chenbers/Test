@@ -8,7 +8,7 @@
   <groupId>com.inthinc.pro.service</groupId>
   <artifactId>service</artifactId>
   <packaging>war</packaging>
-  <name>tiwiPRO - Services</name>
+  <name>Pro Portal - Services</name>
   <version>1.0.11-SNAPSHOT</version>
   <profiles>
         <profile>
