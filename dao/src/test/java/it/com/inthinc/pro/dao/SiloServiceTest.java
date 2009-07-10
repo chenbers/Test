@@ -1008,10 +1008,10 @@ public class SiloServiceTest
         // forward commands queuing
         for (Device device : deviceList)
         {
-            device.setHardAcceleration(5);
-            device.setHardBrake(5);
-            device.setHardTurn(5);
-            device.setHardVertical(5);
+            device.setHardAcceleration(10);
+            device.setHardBrake(10);
+            device.setHardTurn(10);
+            device.setHardVertical(15);
             device.setSpeedSettings(new Integer[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10});
             device.setEphone("5555559999");
             Integer changedCount = deviceDAO.update(device);
