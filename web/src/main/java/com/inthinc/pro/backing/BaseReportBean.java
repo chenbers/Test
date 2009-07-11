@@ -51,7 +51,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     public void initBean()
     {
         setTablePref(new TablePref<T>(this));
-        searchCoordinationBean.addSearchChangeListener(this);
+//        searchCoordinationBean.addSearchChangeListener(this);
 
     }
 

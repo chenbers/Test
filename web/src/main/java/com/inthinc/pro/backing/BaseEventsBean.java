@@ -73,7 +73,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     {
         super.initBean();
         tablePref = new TablePref<EventReportItem>(this);
-        searchCoordinationBean.addSearchChangeListener(this);
+//        searchCoordinationBean.addSearchChangeListener(this);
    }
     
     /*

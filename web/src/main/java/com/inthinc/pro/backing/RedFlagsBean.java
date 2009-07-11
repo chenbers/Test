@@ -36,7 +36,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     // TODO: what should this number be (settable by user?)
     private static final Integer    RED_FLAG_COUNT = 500;
 
-    private static final Integer                 numRowsPerPg = 25;
+    private static final Integer    numRowsPerPg = 25;
     private Integer                 start;
     private Integer                 end;
     private Integer                 maxCount;
@@ -79,7 +79,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         super.initBean();
         tablePref = new TablePref<RedFlagReportItem>(this);
-        searchCoordinationBean.addSearchChangeListener(this);
+//        searchCoordinationBean.addSearchChangeListener(this);
 
     }
     

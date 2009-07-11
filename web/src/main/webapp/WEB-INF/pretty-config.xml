@@ -164,6 +164,12 @@
         <pattern>/app/notifications/redflags</pattern>
         <view-id>/secured/notifications/redflags.faces</view-id>
     </url-mapping>
+    <url-mapping id="redFlagsWithCriteria">
+        <pattern>/app/notifications/redflags/search</pattern>
+<!--         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> -->
+        <view-id>/secured/notifications/redflags.faces</view-id>
+        <action>#{redFlagsBean.searchAction}</action>
+    </url-mapping>
     <url-mapping id="safety">
         <pattern>/app/notifications/safety</pattern>
         <view-id>/secured/notifications/safety.faces</view-id>
