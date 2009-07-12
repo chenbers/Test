@@ -3346,3 +3346,38 @@ Slider (Device Sensitivity)
 {
     background-image:url(../images/selectedSliderHandle.gif);
 }
+
+/*
+Slider (Red Flag Driver Style Severity)
+*/
+.severitySliderHandle
+{
+	height:28px;
+    background-image: url(../images/sev_bar_marker.png);
+}
+
+.severity-slider-handle
+{
+	height:28px;
+	width:9px;
+    background-image: url(../images/sev_bar_marker.png);
+}
+
+.severity-slider-bar
+{
+	 padding:0px;
+	 margin-left:-10px;
+	 margin-right:-10px;
+	 height:28px;
+	 background-image:url(../images/sev_bar_no_marker.png);
+}
+
+.severity-table-odd {
+	background-color: #ffffff;
+	border: #ffffff solid 1px;
+}
+
+.severity-table-even {
+	background-color: #EBFFCA;
+	border: #EBFFCA solid 1px;
+}

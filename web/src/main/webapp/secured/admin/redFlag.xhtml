@@ -176,9 +176,9 @@
 
                           <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr class="datagrid">
-                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_sensitivity}" /></th>
-                              <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                              <th width="100"><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              <th width="200" colspan="2"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                              <th><h:outputText value="#{messages.editRedFlag_notifications}" /></th>
                             </tr>
                             <c:set var="row" value="#{0}" />
                             <c:forEach begin="1" var="index" end="4">
@@ -186,14 +186,31 @@
                               <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
                               <c:if test="#{redFlagAlertsBean.item[sensitivitySelected]}">
                                 <tr class="#{((row % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="100">
                                     <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="true" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" />
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="120" align="center">
+                                    <style>
+                                       .dr-insldr-track-decor-1{
+                                          border: none;
+                                       }
+                                       
+                                       .dr-insldr-track-decor-2{
+                                          border: none;
+                                       }
+
+                                    </style>
+                                    <rich:inputNumberSlider 
+                                       id="#{sensitivityItem}" 
+                                       disabled="true" 
+                                       handleClass="severity-slider-handle"
+                                       value="#{redFlagAlertsBean.item[sensitivityItem]}" 
+                                       showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" 
+                                       width="105px"
+                                       barClass="#{((row % 2) == 0) ? 'severity-table-odd' : 'severity-table-even'} severity-slider-bar "/>
                                   </td>
-                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:80px">
                                     <c:set var="sensitivityLevel" value="editDevice_sensitivity#{redFlagAlertsBean.item[sensitivityItem]}" />
                                     <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
                                   </td>
