@@ -137,7 +137,7 @@
  		<rich:panel id="map-data">
      <a4j:form id="speedLimitChangeRequestTable">
           <ul id="grid_nav" style="margin: 0;">
-            <li class="l"><a4j:commandButton action="#{speedLimitChangeRequests.delete}" reRender="map-data" styleClass="left" onclick=""><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
+            <li class="l"><a4j:commandButton action="#{speedLimitChangeRequests.delete}" reRender="map-data, script" styleClass="left" onclick=""><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
             <li class="l"><a4j:commandButton styleClass="left" action="#{speedLimitChangeRequests.deleteAll}" reRender="map-data" onclick=""><span class="delete"><h:outputText value="Clear All" /></span></a4j:commandButton></li>
             <li class="l">
               <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
