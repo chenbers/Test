@@ -241,4 +241,18 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     {
         return "pretty:driversReportWithCriteria";
     }
+
+    public List<DriverReportItem> getDriversData()
+    {
+        return driversData;
+    }
+
+    public void setDriversData(List<DriverReportItem> driversData)
+    {
+        this.driversData = driversData;
+    }
+    
+    
+    
+    
 }
