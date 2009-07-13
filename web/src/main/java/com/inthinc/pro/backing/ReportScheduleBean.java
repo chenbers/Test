@@ -399,7 +399,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         else if ("lastEmail".equals(column))
             returnString = item.getLastDate() != null ? sdf.format(item.getLastDate()) : "";
         else if ("report".equals(column))
-            returnString = item.getReport() != null ? item.getReport().getLabel() : "";
+            returnString = item.getReport() != null ? MessageUtil.getMessageString(item.getReport().toString(),getUser().getLocale()) : "";
         else if ("status".equals(column))
             returnString = item.getStatus() != null ? item.getStatus().toString() : "";
 
