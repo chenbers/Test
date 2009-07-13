@@ -209,7 +209,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.idling.low.idle}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.idling.high.idle}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
