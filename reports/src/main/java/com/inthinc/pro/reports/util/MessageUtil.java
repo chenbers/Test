@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.util;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -16,6 +17,14 @@ public class MessageUtil
     {
         ResourceBundle bundle = getBundle(locale);
         return getBundleString(bundle, key);
+    }
+    
+    public static String formatMessageString(String key, Locale locale,Object... values)
+    {
+        final String message = getMessageString(key,locale);
+        if (message != null)
+            return MessageFormat.format(message, values);
+        return null;
     }
     
 

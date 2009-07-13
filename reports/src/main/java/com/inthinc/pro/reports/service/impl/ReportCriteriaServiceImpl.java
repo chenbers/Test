@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.util.PhoneNumberUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
@@ -24,6 +25,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.PhoneNumber;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
@@ -267,8 +269,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                 DeviceReportItem deviceReportItem = new DeviceReportItem();
 
                 deviceReportItem.setDevice(dev);
-                deviceReportItem.getDevice().setEphone(formatPhone(deviceReportItem.getDevice().getEphone()));
-                deviceReportItem.getDevice().setPhone(formatPhone(deviceReportItem.getDevice().getPhone()));
+                deviceReportItem.getDevice().setEphone(PhoneNumberUtil.formatPhone(deviceReportItem.getDevice().getEphone(), "({0}) {1}-{2}"));
+                deviceReportItem.getDevice().setPhone(PhoneNumberUtil.formatPhone(deviceReportItem.getDevice().getPhone(), "({0}) {1}-{2}"));
                 deviceReportItem.setVehicle(v);
 
                 deviceReportItems.add(deviceReportItem);
@@ -282,18 +284,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             reportCriteria.setLocale(locale);
         }
         return reportCriteria;
-    }
-
-    private String formatPhone(String incoming)
-    {
-        String result = "";
-
-        if (incoming != null)
-        {
-            result = "(" + incoming.substring(0, 3) + ") " + incoming.substring(3, 6) + "-" + incoming.substring(6, 10);
-        }
-
-        return result;
     }
 
     @Override
