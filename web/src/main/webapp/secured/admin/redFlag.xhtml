@@ -211,7 +211,7 @@
                                        barClass="#{((row % 2) == 0) ? 'severity-table-odd' : 'severity-table-even'} severity-slider-bar "/>
                                   </td>
                                   <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37; width:80px">
-                                    <c:set var="sensitivityLevel" value="editDevice_sensitivity#{redFlagAlertsBean.item[sensitivityItem]}" />
+                                    <c:set var="sensitivityLevel" value="editRedFlag_severity#{redFlagAlertsBean.item[sensitivityItem]}" />
                                     <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
