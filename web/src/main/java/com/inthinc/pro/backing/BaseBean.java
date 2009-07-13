@@ -61,7 +61,7 @@ public class BaseBean
     {
         return isProUserLoggedIn();
     }
-    
+
     public Person getPerson()
     {
         return getProUser().getUser().getPerson();
@@ -74,18 +74,22 @@ public class BaseBean
 
     public GroupHierarchy getGroupHierarchy()
     {
+
         return getProUser().getGroupHierarchy();
     }
 
     public Integer getAccountID()
     {
+
         return getProUser().getGroupHierarchy().getTopGroup().getAccountID();
 
     }
 
     public ProUser getProUser()
     {
+
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
     }
 
     public boolean isProUserLoggedIn()

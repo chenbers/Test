@@ -5,6 +5,7 @@
   			xmlns:f="http://java.sun.com/jsf/core"
 			xmlns:rich="http://richfaces.org/rich"
 		    xmlns:a4j="http://richfaces.org/a4j"
+            xmlns:c="http://java.sun.com/jstl/core"
   			xmlns:security="http://www.springframework.org/security/tags">
 
 	<ui:define name="scripts">
@@ -20,6 +21,33 @@
 	<div class="panel_nw">
 		<div class="panel_title"><span class="login">#{messages.login_title}</span></div>
 	</div>
+      
+    <c:if test="#{personBean.proUserLoggedIn}">
+       <rich:modalPanel id="logoutDialogPanel" headerClass="popupHeader" controlsClass="popupControls" 
+            height="50" autosized="true" resizeable="false" zindex="2000" width="300">
+          <f:facet name="header">
+            <h:outputText value="#{messages.login_open_session}"/>
+          </f:facet>
+         <f:facet name="controls">
+            <h:outputLink style="padding:5px" value="#{facesContext.externalContext.requestContextPath}/logout">#{messages.login_logout}</h:outputLink>
+         </f:facet>
+          <p>
+            <h:outputFormat value="#{messages.login_currently_logged_in}" escapse="false">
+               <f:param value="#{personBean.person.fullName}"/>
+            </h:outputFormat>
+          </p>
+          
+          <p>
+            <h:outputText value="#{messages.login_otherwise} "/>
+            <h:outputLink styleClass="tb-logout" value="#{facesContext.externalContext.requestContextPath}/app/dashboard/">#{messages.login_return_home}.</h:outputLink>
+          </p>
+         
+      </rich:modalPanel> 
+      <script type="text/javascript">
+               Richfaces.showModalPanel('logoutDialogPanel');
+      </script>
+   </c:if>
+   
 	<div class="panel_w">
 	  <div class="panel_content">
 		<form action="security_filter" method="post">
@@ -52,6 +80,7 @@
               }
             </script>
 		</h:form>
+      
 	  </div>
 	</div>
 	<div class="panel_sw">
@@ -103,5 +132,12 @@
 	      </a4j:form>
 		</rich:modalPanel> 
 	</ui:define>  
+   
+   
+   
+
+   
+   
+   
 
 </ui:composition>

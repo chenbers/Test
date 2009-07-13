@@ -402,6 +402,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         return SelectItemUtil.toList(DeviceStatus.class, false, DeviceStatus.DELETED);
     }
+    
+    @Override
+    public void resetList()
+    {
+        super.resetList();
+        vehiclesBean.resetList();
+    }
 
     public static class DeviceView extends Device implements EditItem
     {
