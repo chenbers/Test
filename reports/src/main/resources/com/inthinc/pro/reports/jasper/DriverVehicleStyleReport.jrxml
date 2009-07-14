@@ -101,7 +101,7 @@
 							</datasetRun>
 						</dataset>
 						<categorySeries>
-							<seriesExpression><![CDATA[str($F{seriesID})]]></seriesExpression>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
 							<valueExpression><![CDATA[$F{value}]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>

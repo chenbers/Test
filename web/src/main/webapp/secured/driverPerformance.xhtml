@@ -135,8 +135,7 @@
 	<ui:param name="helpFile" value="Overall_Score_Driver.htm" />
 	
 	<ui:define name="content">
-    <t:saveState value="#{driverPerformanceBean.driver}"></t:saveState>
-    <t:saveState value="#{driverPerformanceBean.groupTreeNodeImpl}"></t:saveState>
+    <t:saveState value="#{driverPerformanceBean}"/>
 <!-- BEGIN GOOGLE BUBBLES -->
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />

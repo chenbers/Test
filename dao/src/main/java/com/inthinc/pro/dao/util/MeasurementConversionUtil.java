@@ -62,18 +62,17 @@ public class MeasurementConversionUtil
         return Long.valueOf(Math.round(milesPerHour)).intValue();
     }
 
-    public static Long fromMPGtoKPL(Long milesPerGallon)
+    public static Number fromMPGtoKPL(Number milesPerGallon)
     {
-        Double milesPerLiter = milesPerGallon * 0.42514;
-        return Math.round(milesPerLiter);
+         return milesPerGallon.doubleValue() * 0.42514;
     }
 
-    public static Long convertMileage(Integer mileage, MeasurementType convertToMeasurmentType)
+    public static Number convertMpgToKpl(Number mileage, MeasurementType convertToMeasurmentType)
     {
-        if (convertToMeasurmentType == MeasurementType.METRIC)
-            return fromMPGtoKPL(mileage.longValue());
+        if (mileage != null && convertToMeasurmentType == MeasurementType.METRIC)
+            return fromMPGtoKPL(mileage);
         else
-            return fromMPGtoKPL(mileage.longValue());
+            return mileage;
     }
 
     public static Integer convertSpeed(Integer speed,  MeasurementType convertToMeasurmentType)

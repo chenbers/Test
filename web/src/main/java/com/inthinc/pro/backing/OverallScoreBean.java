@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
@@ -23,6 +22,11 @@ public class OverallScoreBean extends BaseBean
 {
 
     private static final Logger logger = Logger.getLogger(OverallScoreBean.class);
+    
+    public OverallScoreBean()
+    {
+        super();
+    }
 
     public final static List<String> entityColorKey = new ArrayList<String>()
     {

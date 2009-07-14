@@ -70,17 +70,17 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_light_column}" />
                                     </f:facet>
-                                    <h:outputText value="#{item.lightValue}" />
+                                    <h:outputText value="#{item.lightValue}" converter="MpgToKplConverter"/>
                                 </rich:column>
                                 <rich:column sortBy="#{item.entity.mediumValue}">
                                     <f:facet name="header">
-                                        <h:outputText value="#{messages.mpg_medium_column}" />
+                                        <h:outputText value="#{messages.mpg_medium_column}" converter="MpgToKplConverter"/>
                                     </f:facet>
                                     <h:outputText value="#{item.mediumValue}" />
                                 </rich:column>
                                 <rich:column sortBy="#{item.entity.heavyValue}">
                                     <f:facet name="header">
-                                        <h:outputText value="#{messages.mpg_heavy_column}" />
+                                        <h:outputText value="#{messages.mpg_heavy_column}" converter="MpgToKplConverter"/>
                                     </f:facet>
                                     <h:outputText value="#{item.heavyValue}" />
                                 </rich:column>

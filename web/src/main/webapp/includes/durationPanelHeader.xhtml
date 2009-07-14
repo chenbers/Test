@@ -81,9 +81,9 @@
                                         </rich:menuItem>
                         
                                         <rich:menuItem iconDisabled="/images/ico_pdf.gif" disabled="#{report eq null?'true':'false'}" icon="/images/ico_pdf.gif"
-                                            value="#{messages.contextMenu_export_to_pdf}" action="#{reportRendererBean.exportReportToPDF}" id="export">
-                                            <a4j:actionparam assignTo="#{reportRendererBean.report}" value="#{report}" />
-                                            <a4j:actionparam assignTo="#{reportRendererBean.duration}" converter="SimpleBeanConverter" value="#{duration}" />
+                                            value="#{messages.contextMenu_export_to_pdf}" action="#{dashBoardReportBean.exportReportToPDF}" id="export">
+                                            <a4j:actionparam assignTo="#{dashBoardReportBean.report}" value="#{report}" />
+                                            <a4j:actionparam assignTo="#{dashBoardReportBean.duration}" converter="SimpleBeanConverter" value="#{duration}" />
                                         </rich:menuItem>
                                     </rich:contextMenu>
                                 </a4j:region>
@@ -94,7 +94,7 @@
                                     <ui:param name="report" value="#{report}" />
                                     <ui:param name="duration" value="#{duration}" />
                                     <ui:param name="id" value="#{id}_singleEmail" />
-                                    <ui:param name="reportBean" value="#{reportRendererBean}" />
+                                    <ui:param name="reportBean" value="#{dashBoardReportBean}" />
                                 </ui:include>
                             </h:outputText>
                         </td>

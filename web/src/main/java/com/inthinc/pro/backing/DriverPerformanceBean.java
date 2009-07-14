@@ -253,9 +253,9 @@ public class DriverPerformanceBean extends BasePerformanceBean
         sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getLightValue(), getPerson().getMeasurementType());
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getMediumValue(), getPerson().getMeasurementType());
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getHeavyValue(), getPerson().getMeasurementType());
+            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getLightValue(), getPerson().getMeasurementType()).longValue();
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getMediumValue(), getPerson().getMeasurementType()).longValue();
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getHeavyValue(), getPerson().getMeasurementType()).longValue();
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
 
@@ -281,9 +281,9 @@ public class DriverPerformanceBean extends BasePerformanceBean
         int count = 0;
         for (MpgEntity me : mpgEntities)
         {
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_light"), monthList.get(count).toString(), MeasurementConversionUtil.convertMileage(me.getLightValue(), getPerson().getMeasurementType()), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_medium"), monthList.get(count).toString(), MeasurementConversionUtil.convertMileage(me.getMediumValue(), getPerson().getMeasurementType()), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_heavy"), monthList.get(count).toString(), MeasurementConversionUtil.convertMileage(me.getHeavyValue(), getPerson().getMeasurementType()), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_light"), monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_medium"), monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_heavy"), monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
 
             count++;
         }
@@ -296,6 +296,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
         Integer driverID = getDriver().getDriverID();
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
@@ -310,12 +312,12 @@ public class DriverPerformanceBean extends BasePerformanceBean
         reportCriteria.addChartDataSet(createSingleJasperDef(driverID, ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(driverID, ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(driverID, ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
-        reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         tempCriteria.add(reportCriteria);
 
         // Page 2
         reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);

@@ -22,7 +22,8 @@ public class DashBoardBean extends BaseBean implements Serializable
         if(groupID == null)
             groupID = getUser().getGroupID();
         //TODO: try to pull the group from the group hierarchy before looking it up
-        Group group = groupDAO.findByID(groupID);
+//        Group group = groupDAO.findByID(groupID);
+        Group group = getGroupHierarchy().getGroup(groupID);
 
         navigationBean.setGroupID(groupID);
         mpgBean.setGroupID(groupID);

@@ -43,7 +43,7 @@
     	<property name="reportCreator" ref="reportCreator"/>
    	</bean>
  
-    <bean id="reportRendererBean" class="com.inthinc.pro.backing.DashboardReportBean" scope="request" parent="baseBean">
+    <bean id="dashBoardReportBean" class="com.inthinc.pro.backing.DashboardReportBean" scope="request" parent="baseBean">
     	 <property name="trendBean" ref="trendBean"></property>
     	 <property name="overallScoreBean" ref="overallScoreBean"></property>
     	 <property name="mpgBean" ref="mpgBean"></property>

@@ -32,6 +32,7 @@ public class DashboardReportBean extends BaseBean
     // For complex reports
     private List<ReportType> reports = new ArrayList<ReportType>(0);
     private String emailAddress;
+    private Integer groupID;
     private Duration duration;
     
     public DashboardReportBean()
@@ -208,6 +209,16 @@ public class DashboardReportBean extends BaseBean
             emailAddress = getProUser().getUser().getPerson().getPriEmail();
         }
         return emailAddress;
+    }
+
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
 
     public void setDuration(Duration duration)

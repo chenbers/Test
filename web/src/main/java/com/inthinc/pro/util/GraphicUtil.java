@@ -434,21 +434,21 @@ public class GraphicUtil {
         sb.append("<dataset seriesName=\'").append(lightString).append("\'>");
         for (Integer value : light)
         {
-            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMileage(value, measurementType).toString() : "0") + "\'/>");
+            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMpgToKpl(value, measurementType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
 
         sb.append("<dataset seriesName=\'").append(mediumString).append("\'>");
         for (Integer value : medium)
         {
-            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMileage(value, measurementType).toString() : "0") + "\'/>");
+            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMpgToKpl(value, measurementType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
 
         sb.append("<dataset seriesName=\'").append(heavyString).append("\'>");
         for (Integer value : heavy)
         {
-            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMileage(value, measurementType).toString() : "0") + "\'/>");
+            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMpgToKpl(value, measurementType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
         return sb.toString();

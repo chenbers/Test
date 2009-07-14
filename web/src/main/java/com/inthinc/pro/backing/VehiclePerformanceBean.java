@@ -308,9 +308,9 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getLightValue(), getPerson().getMeasurementType());
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getMediumValue(), getPerson().getMeasurementType());
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getHeavyValue(), getPerson().getMeasurementType());
+            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getLightValue(), getPerson().getMeasurementType()).longValue();
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getMediumValue(), getPerson().getMeasurementType()).longValue();
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getHeavyValue(), getPerson().getMeasurementType()).longValue();
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
         }
@@ -420,6 +420,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());
@@ -433,13 +435,13 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
-        reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         tempCriteria.add(reportCriteria);
 
         // Page 2
         reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());

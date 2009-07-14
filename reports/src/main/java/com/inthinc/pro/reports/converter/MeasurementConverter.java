@@ -16,11 +16,11 @@ public class MeasurementConverter
             return speed;
     }
     
-    public static Integer convertMileage(Integer mileage,Boolean convertToMetric)
+    public static Number convertMileage(Number mileage,Boolean convertToMetric)
     {
         logger.debug("Mileage: " + mileage + " Convert To Metric: " + convertToMetric);
         if(convertToMetric != null && convertToMetric)
-            return MeasurementConversionUtil.convertMileage(mileage, MeasurementType.METRIC).intValue();
+            return MeasurementConversionUtil.convertMpgToKpl(mileage, MeasurementType.METRIC);
         else
             return mileage;
         

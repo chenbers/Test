@@ -1,73 +1,74 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:security="http://pro.tiwi.com/jsf/security"
-	xmlns:profunc="http://pro.tiwi.com/jsffunctions">
+<ui:composition 
+        xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:rich="http://richfaces.org/rich"
+        xmlns:a4j="http://richfaces.org/a4j"
+        xmlns:iwi="http://pro.tiwi.com/jsf"
+        xmlns:c="http://java.sun.com/jstl/core"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:t="http://myfaces.apache.org/tomahawk"
+        xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
-	
-	
-	<a4j:region id="overview_header_region">
-	<a4j:form id="overview_header_form">
-		<ul id="grid_nav">
-				<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
-				<li class="l grid_title">#{messages.overview}</li>
-				<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
-				<li class="l">
-					<ui:include src="/includes/breadcrumb.xhtml">
-						<ui:param name="groupTreeNode"
-							value="#{navigationBean.groupTreeNode}" />
-					</ui:include>
-				</li>
-				
-				<li class="r grid_icon">
-				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/help/#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">
-					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
-				</h:outputLink></li>
-				<h:outputText rendered="#{showContextMenu eq 'true'}">
-				<li class="r grid_icon">
-					<h:panelGroup id="overview_tools_icon">
-						<h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" title="#{messages.tool_menu}"/>
-					</h:panelGroup>
-				</li>
-				</h:outputText>
-				<li class="r grid_icon">
-					<a4j:status	id="overview_ajax_status" for="overview_header_region">
-						<f:facet name="start">
-							<h:outputText>
-											<img
-												 src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
-												align="top" />&#160;</h:outputText>
-						</f:facet>
-					</a4j:status>
-				</li>
-				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
-			</ul>
-		
-		<rich:contextMenu attachTo="overview_tools_icon" disableDefaultMenu="false" attached="true" id="over_header_menu" submitMode="server" event="onclick">
-			<rich:menuItem ajaxSingle="true" rendered="true"
-					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif" 
-					onclick="Richfaces.showModalPanel('overview_emailPopup');return false;" 
-					value="#{messages.contextMenu_email_this_report}" id="#{ajaxForm}_email" submitMode="none">
-			</rich:menuItem>
-	
-	
-			<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
-				icon="/images/ico_pdf.gif" value="#{messages.contextMenu_export_to_pdf}"
-				action="#{reportRendererBean.exportReportToPDF}" id="export_menu_item">
-				<a4j:actionparam assignTo="#{reportRendererBean.reports}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportList}"/>
-			</rich:menuItem>
-		</rich:contextMenu>
-	</a4j:form>
-		<ui:include src="/includes/emailReportPopup.xhtml">	
-		<ui:param  name="reportList" value="#{reportRendererBean.reportList}"/>
+    <h:form id="overview_header_form">
+    	<a4j:region id="overview_header_region">
+    		<ul id="grid_nav">
+    				<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
+    				<li class="l grid_title">#{messages.overview}</li>
+    				<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
+    				<li class="l">
+    					<ui:include src="/includes/breadcrumb.xhtml">
+    						<ui:param name="groupTreeNode"
+    							value="#{navigationBean.groupTreeNode}" />
+    					</ui:include>
+    				</li>
+    				
+    				<li class="r grid_icon">
+    				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/help/#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">
+    					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
+    				</h:outputLink></li>
+    				<h:outputText rendered="#{showContextMenu eq 'true'}">
+    				<li class="r grid_icon">
+    					<h:panelGroup id="overview_tools_icon">
+    						<h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" title="#{messages.tool_menu}"/>
+    					</h:panelGroup>
+    				</li>
+    				</h:outputText>
+    				<li class="r grid_icon">
+    					<a4j:status	id="overview_ajax_status" for="overview_header_region">
+    						<f:facet name="start">
+    							<h:outputText>
+    											<img
+    												 src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
+    												align="top" />&#160;</h:outputText>
+    						</f:facet>
+    					</a4j:status>
+    				</li>
+    				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
+    			</ul>
+    		
+    		<rich:contextMenu attachTo="overview_tools_icon" disableDefaultMenu="false" attached="true" id="over_header_menu" submitMode="server" event="onclick">
+    			<rich:menuItem ajaxSingle="true" rendered="true"
+    					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif" 
+    					onclick="Richfaces.showModalPanel('overview_emailPopup');return false;" 
+    					value="#{messages.contextMenu_email_this_report}" id="#{ajaxForm}_email" submitMode="none">
+    			</rich:menuItem>
+    	
+    	
+    			<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
+    				icon="/images/ico_pdf.gif" value="#{messages.contextMenu_export_to_pdf}"
+    				action="#{dashBoardReportBean.exportReportToPDF}" id="export_menu_item">
+    				<a4j:actionparam assignTo="#{dashBoardReportBean.reports}" converter="SimpleBeanConverter" value="#{dashBoardReportBean.reportList}"/>
+    			</rich:menuItem>
+    		</rich:contextMenu>
+        </a4j:region>
+	</h:form>
+    
+    <ui:include src="/includes/emailReportPopup.xhtml">	
+		<ui:param  name="reportList" value="#{dashBoardReportBean.reportList}"/>
 		<ui:param name="id" value="overview_emailPopup" />
-		<ui:param name="reportBean" value="#{reportRendererBean}" />
+		<ui:param name="reportBean" value="#{dashBoardReportBean}" />
     </ui:include>
-	</a4j:region>
 	
 	
 </ui:composition>

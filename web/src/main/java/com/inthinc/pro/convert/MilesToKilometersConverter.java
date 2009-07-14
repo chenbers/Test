@@ -21,13 +21,9 @@ public class MilesToKilometersConverter extends BaseConverter
     {
         if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
         {
-            if (Long.class.isInstance(value))
+            if(Number.class.isInstance(value))
             {
-                    return MeasurementConversionUtil.fromMilesToKilometers(Long.class.cast(value).doubleValue()).toString();
-            }
-            if(Double.class.isInstance(value))
-            {
-                    return MeasurementConversionUtil.fromMilesToKilometers(((Double)value)).toString();
+                return MeasurementConversionUtil.fromMilesToKilometers(Number.class.cast(value).doubleValue()).toString();
             }
         }
         

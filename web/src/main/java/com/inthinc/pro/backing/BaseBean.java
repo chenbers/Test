@@ -29,7 +29,7 @@ public class BaseBean
 
     public BaseBean()
     {
-
+        super();
     }
 
     public ErrorBean getErrorBean()

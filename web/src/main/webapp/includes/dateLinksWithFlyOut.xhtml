@@ -79,8 +79,8 @@
                 </rich:menuItem>
 
                 <rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif" disabled="#{report eq null?'true':'false'}" icon="/images/ico_pdf.gif"
-                    value="#{messages.contextMenu_export_to_pdf}" action="#{reportRendererBean.exportReportToPDF}" id="export">
-                    <a4j:actionparam assignTo="#{reportRendererBean.report}" value="#{report}" />
+                    value="#{messages.contextMenu_export_to_pdf}" action="#{dashBoardReportBean.exportReportToPDF}" id="export">
+                    <a4j:actionparam assignTo="#{dashBoardReportBean.report}" value="#{report}" />
                     <a4j:actionparam assignTo="#{duration}" converter="SimpleBeanConverter" value="#{duration}" />
                 </rich:menuItem>
             </rich:contextMenu>
@@ -91,7 +91,7 @@
                 <ui:param name="report" value="#{report}" />
                 <ui:param name="duration" value="#{duration}" />
                 <ui:param name="id" value="#{ajaxForm}_singleEmail" />
-                <ui:param name="reportBean" value="#{reportRendererBean}" />
+                <ui:param name="reportBean" value="#{dashBoardReportBean}" />
             </ui:include>
         </h:outputText>
     </a4j:region>
