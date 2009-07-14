@@ -136,7 +136,7 @@ public class EmailReportJob extends QuartzJobBean
         }
         
         Report report = reportCreator.getReport(reportCriteriaList);
-        String subject = LocalizedMessage.getString("reportSchedule.emailSubject") + reportSchedule.getName();
+        String subject = LocalizedMessage.getString("reportSchedule.emailSubject",user.getLocale()) + reportSchedule.getName();
         report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF, null, subject);
     }
 

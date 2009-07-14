@@ -22,7 +22,7 @@ public class EmailAlertJob extends BaseAlertJob
         for (AlertMessageBuilder message : messageList)
         {
             logger.debug("MessageID: " + message.getAlertMessageID() + " Emailed to: " + message.getAddress());
-            String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
+            String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
             getMailDispatcher().send(message.getAddress(), getSubject(message), text);
             
         }
