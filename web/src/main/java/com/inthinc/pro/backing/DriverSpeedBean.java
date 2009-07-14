@@ -334,7 +334,7 @@ public class DriverSpeedBean extends BasePerformanceBean
             if(event.getSpeedLimit() == null)
                 continue;
             
-            if (event.getSpeedLimit() > 20 && event.getSpeedLimit() < 31)
+            if (event.getSpeedLimit() >= 0 && event.getSpeedLimit() < 31)
             {
                 speed20.add(eri);
             }
