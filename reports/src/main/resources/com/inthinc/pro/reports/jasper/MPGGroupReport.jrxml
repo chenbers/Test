@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="MPG Report"
+		 name="MPGGroupReport"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -77,7 +77,7 @@
 						<categorySeries>
 							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage(Integer.valueOf($F{value}.intValue()),$P{USE_METRIC})]]></valueExpression>
+							<valueExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{value},$P{USE_METRIC})]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>
 				<itemHyperlink >
 				</itemHyperlink>
@@ -277,7 +277,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entityName}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="253"
 						y="2"
@@ -291,7 +291,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{lightValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="335"
 						y="2"
@@ -305,7 +305,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{mediumValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="420"
 						y="2"
