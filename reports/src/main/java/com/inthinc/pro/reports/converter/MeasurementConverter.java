@@ -26,10 +26,10 @@ public class MeasurementConverter
         
     }
     
-    public static Float convertDistance(Float distance,Boolean convertToMetric){
+    public static Float convertDistance(Number distance,Boolean convertToMetric){
         logger.debug("Distance: " + distance + " Convert To Metric: " + convertToMetric);
         if(convertToMetric)
-            return MeasurementConversionUtil.convertDistance(distance, MeasurementType.METRIC);
+            return MeasurementConversionUtil.convertDistance(distance.floatValue(), MeasurementType.METRIC);
         else
             return distance.floatValue();
     }
