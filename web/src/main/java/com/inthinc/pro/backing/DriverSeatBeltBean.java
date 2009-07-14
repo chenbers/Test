@@ -7,13 +7,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;

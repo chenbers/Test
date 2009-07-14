@@ -1,13 +1,13 @@
 package com.inthinc.pro.backing;
 
 import org.apache.log4j.Logger;
+
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreableEntity;
 
 public class FleetOverviewBean extends BaseBean
 {

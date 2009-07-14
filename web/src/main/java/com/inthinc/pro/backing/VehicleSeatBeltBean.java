@@ -1,13 +1,11 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;

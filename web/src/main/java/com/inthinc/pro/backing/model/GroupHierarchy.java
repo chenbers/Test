@@ -2,7 +2,6 @@ package com.inthinc.pro.backing.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.inthinc.pro.model.Group;

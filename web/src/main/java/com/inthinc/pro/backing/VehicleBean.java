@@ -1,7 +1,5 @@
 package com.inthinc.pro.backing;
 
-import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Vehicle;
 

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -24,8 +23,6 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.model.CategorySeriesData;
-import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleSpeedBean extends BasePerformanceBean

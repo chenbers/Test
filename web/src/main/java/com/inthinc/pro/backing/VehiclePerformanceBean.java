@@ -7,16 +7,15 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.charts.FusionMultiLineChart;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;

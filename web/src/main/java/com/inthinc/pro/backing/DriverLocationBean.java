@@ -21,7 +21,6 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.util.WebUtil;
 
 public class DriverLocationBean extends BaseBean {
 
