@@ -43,9 +43,9 @@
 	<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="entityName" class="java.lang.String"/>
-	<field name="lightValue" class="java.lang.Integer"/>
-	<field name="mediumValue" class="java.lang.Integer"/>
-	<field name="heavyValue" class="java.lang.Integer"/>
+	<field name="lightValue" class="java.lang.Number"/>
+	<field name="mediumValue" class="java.lang.Number"/>
+	<field name="heavyValue" class="java.lang.Number"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -289,7 +289,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{lightValue},$P{USE_METRIC})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{lightValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -303,7 +303,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{mediumValue},$P{USE_METRIC})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{mediumValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -317,7 +317,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{heavyValue},$P{USE_METRIC})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{heavyValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
