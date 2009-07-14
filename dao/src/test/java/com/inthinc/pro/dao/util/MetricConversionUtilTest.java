@@ -51,8 +51,8 @@ public class MetricConversionUtilTest
     {
         Long expecedcKPL = 10L;
         Long actualMPG = 23L;
-        Long kilometersPerLiter = MeasurementConversionUtil.fromMPGtoKPL(actualMPG).longValue();
-        Assert.assertEquals(expecedcKPL, kilometersPerLiter);
+        Double kilometersPerLiter = (Double)MeasurementConversionUtil.fromMPGtoKPL(actualMPG);
+        Assert.assertEquals(expecedcKPL, Long.valueOf(Math.round(kilometersPerLiter)));
     }
     
     @Test
