@@ -134,9 +134,8 @@
 	<ui:param name="helpFile" value="Vehicle_Performance.htm" />
 	
 	<ui:define name="content">
-	<t:saveState value="#{vehiclePerformanceBean.vehicle}"/>
-    <t:saveState value="#{vehiclePerformanceBean.groupTreeNodeImpl}"/>
    
+    <t:saveState value="#{vehiclePerformanceBean}"/>
 <!-- BEGIN GOOGLE BUBBLES -->
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
