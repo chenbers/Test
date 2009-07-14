@@ -350,6 +350,13 @@ img {
     padding:0 3px;
 }
 
+/*This is a temporary style... DO NOT USE ANYMORE!!!! All using this should conver to using .panel_links .selected_duration*/
+.on {
+    color: #6B9D1B !important;
+    font-weight: bold !important;
+    text-decoration: none !important;
+}
+
 .panel_links_ico {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	position: absolute;
