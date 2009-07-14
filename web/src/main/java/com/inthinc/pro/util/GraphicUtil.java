@@ -17,7 +17,6 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.wrapper.MpgEntityPkg;
 
 public class GraphicUtil {
 	private static List <String> monthLbls = new ArrayList<String>() {
@@ -54,7 +53,6 @@ public class GraphicUtil {
 	}
 	
 	public static String createMonthsString(Duration duration) {
-		String lbl = new String();
 		StringBuffer sb = new StringBuffer();
 		
 		List<String> monthList = createMonthList(duration);
@@ -64,28 +62,6 @@ public class GraphicUtil {
 		    sb.append(month);
             sb.append("\'/>");
 		}
-		
-//        if ( duration == Duration.DAYS ) {
-//            for ( int i = 1; i < 31; i++ ) {
-//                sb.append("<category label=\'");
-//                sb.append(String.valueOf(i));
-//                sb.append("\'/>");
-//            }       
-//        } else {
-//            int num = convertToMonths(duration);
-//                        
-//            //What month is it? Remember, implemented with jan as 0. Also,
-//            //add 12 so the short date ranges work...
-//            GregorianCalendar calendar = new GregorianCalendar();       
-//            int currentMonth = calendar.get(GregorianCalendar.MONTH)+1;
-//            
-//            //Start there
-//            for ( int i = currentMonth + 12 - num; i < currentMonth + 12 ; i++ ) {
-//                sb.append("<category label=\'");
-//                sb.append(monthLbls.get(i));
-//                sb.append("\'/>");
-//            }           
-//        }
 		
 		return sb.toString();
 	}

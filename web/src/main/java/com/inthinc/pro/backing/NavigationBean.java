@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -13,8 +14,15 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Vehicle;
 
-public class NavigationBean extends BaseBean
+public class NavigationBean extends BaseBean implements Serializable
 {
+    
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5482494970488726972L;
+
     private static final Logger logger = Logger.getLogger(NavigationBean.class);
 
     // Spring managed beans

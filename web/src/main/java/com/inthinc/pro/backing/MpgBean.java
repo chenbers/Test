@@ -1,14 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.richfaces.model.Ordering;
 
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.MpgDAO;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
@@ -16,8 +15,13 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
-public class MpgBean extends BaseBean
+public class MpgBean extends BaseBean implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final Logger logger = Logger.getLogger(MpgBean.class);
     private MpgDAO mpgDAO;
     private DurationBean durationBean;

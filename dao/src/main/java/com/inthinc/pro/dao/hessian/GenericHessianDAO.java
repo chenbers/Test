@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.hessian;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,8 +26,13 @@ import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
-public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
+public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final Logger logger = Logger.getLogger(GenericHessianDAO.class);
     private SiloService siloService;
     private Class<T> modelClass;
