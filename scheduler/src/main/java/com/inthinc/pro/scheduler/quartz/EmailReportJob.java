@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
@@ -133,6 +134,7 @@ public class EmailReportJob extends QuartzJobBean
         {
             reportCriteria.setReportDate(new Date(), user.getPerson().getTimeZone());
             reportCriteria.setLocale(user.getLocale());
+            reportCriteria.setUseMetric((user.getPerson().getMeasurementType() != null && user.getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
         }
         
         Report report = reportCreator.getReport(reportCriteriaList);
