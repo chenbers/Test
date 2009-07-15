@@ -49,7 +49,7 @@
       		#{reportScheduleBean.utcTimeZone}" type="date" />
       </h:outputText>
     </rich:column>
-    <rich:column rendered="#{reportScheduleBean.tableColumns['report'].visible}" sortBy="#{item.report}">
+    <rich:column rendered="#{reportScheduleBean.tableColumns['report'].visible}" sortBy="#{messages[item.report]}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_report}" /></f:facet>
       <h:outputText value="#{item.report.label}">
       </h:outputText>
