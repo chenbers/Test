@@ -217,7 +217,7 @@
                               <tr class="datagrid">
                                 <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                               </tr>
                               <c:forEach begin="0" var="index" end="14">
                                 <c:set var="id" value="speed#{index}" />
@@ -294,7 +294,7 @@
                               <tr class="datagrid">
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notifications}" /></th>
+                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                               </tr>
                               <c:forEach begin="1" var="index" end="4">
                                 <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
@@ -350,7 +350,7 @@
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                               </tr>
                               <tr class="tableEven">
                                 <td>
@@ -375,7 +375,7 @@
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                               </tr>
                               <tr class="tableEven">
                                 <td>
