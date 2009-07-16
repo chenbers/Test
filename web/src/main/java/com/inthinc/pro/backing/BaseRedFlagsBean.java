@@ -183,6 +183,7 @@ public abstract class BaseRedFlagsBean extends BaseBean
         filterTableData();
 
     }
+    protected abstract void filterTableDataWithoutSearch();
 
     protected abstract void filterTableData();
 

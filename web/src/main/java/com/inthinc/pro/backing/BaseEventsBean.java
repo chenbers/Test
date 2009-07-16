@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.listener.SearchChangeListener;
+//import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
@@ -21,7 +21,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener, SearchChangeListener
+public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -218,6 +218,61 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         setPage(1);
     }
 
+    @Override
+    protected void filterTableDataWithoutSearch()
+    {
+        setFilteredTableData(tableData); 
+        if (getCategoryFilter() != null)
+        {    
+            List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
+            if (validEventTypes != null)
+            {
+                filteredTableData = new ArrayList<EventReportItem>();
+        
+                for (EventReportItem item : tableData)
+                {
+                    if (validEventTypes.contains(item.getEvent().getType()))
+                    {
+                        filteredTableData.add(item);
+                    }
+                }
+            }
+        }
+        
+        //Filter if search is based on single event
+        if (getEventFilter() != null)
+        {    
+            filteredTableData = new ArrayList<EventReportItem>();
+    
+            for (EventReportItem item : tableData)
+            {
+                if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
+                {
+                    filteredTableData.add(item);
+                    break;
+                }
+            }
+        }
+        
+        //Filter if search is based on group.
+        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+        {
+            filteredTableData = new ArrayList<EventReportItem>();
+            
+            for (EventReportItem item : tableData)
+            {
+                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
+                {
+                    filteredTableData.add(item);
+                }
+            }
+        }
+        
+        setMaxCount(filteredTableData.size());
+        setStart(filteredTableData.size() > 0 ? 1 : 0);
+        setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
+        setPage(1);
+    }
     private void initTableData()
     {
         setFilteredTableData(null);
@@ -365,7 +420,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         setCategoryFilter(null);
         setEventFilter(null);
         
-        filterTableData();
+        filterTableDataWithoutSearch();
     }
 
 
@@ -454,11 +509,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         return emailAddress;
     }
     
-    @Override
-	public void searchChanged() {
-    	
-    	reinit();
-	}
 
     public void setEventFilterID(Long eventFilterID)
     {

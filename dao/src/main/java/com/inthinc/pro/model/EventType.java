@@ -38,7 +38,8 @@ public enum EventType implements BaseEnum
         }
     }
 
-    public Integer getCode()
+   @Override
+   public Integer getCode()
     {
         return this.code;
     }

@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
-public class RedFlagsCountBean extends RedFlagsBean {
+import com.inthinc.pro.backing.listener.SearchChangeListener;
+
+public class RedFlagsCountBean extends RedFlagsBean implements SearchChangeListener{
 
     @Override
     public void initBean()
@@ -8,5 +10,15 @@ public class RedFlagsCountBean extends RedFlagsBean {
         super.initBean();
         searchCoordinationBean.addSearchChangeListener(this);
     }
+	@Override
+	public synchronized void searchChanged() {
+
+        if (!searchCoordinationBean.isGoodSearch())
+        {
+            setCategoryFilter(null);
+            setEventFilter(null);
+        }
+		filterTableData();
+	}
 
 }

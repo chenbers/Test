@@ -102,73 +102,74 @@
     <url-mapping id="reports">
         <pattern>/app/reports/</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
-        <action>#{driverReportBean.search}</action>
+        <action onPostback="false">#{driverReportBean.loadAll}</action>
     </url-mapping>
     <url-mapping id="driversReport">
         <pattern>/app/reports/driversReport</pattern>
         <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param> 
         <view-id>/secured/reports/drivers.faces</view-id>
-        <action>#{driverReportBean.search}</action>
+        <action onPostback="false">#{driverReportBean.loadAll}</action>
     </url-mapping>
     <url-mapping id="driversReportWithGroup">
         <pattern>/app/reports/driversReport/group/#{searchCoordinationBean.groupID}</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
-        <action>#{driverReportBean.search}</action>
+        <action onPostback="false">#{driverReportBean.loadAll}</action>
     </url-mapping>
     <url-mapping id="driversReportWithCriteria">
-        <pattern>/app/reports/driversReport</pattern>
+        <pattern>/app/reports/driversReport/</pattern>
         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/drivers.faces</view-id>
-        <action>#{driverReportBean.search}</action>
+        <action  onPostback="false">#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="vehiclesReport">
         <pattern>/app/reports/vehiclesReport</pattern>
         <view-id>/secured/reports/vehicles.faces</view-id>
-        <action>#{vehicleReportBean.search}</action>
+        <action  onPostback="false">#{vehicleReportBean.loadAll}</action>
     </url-mapping>
     <url-mapping id="vehiclesReportWithCriteria">
-        <pattern>/app/reports/vehiclesReport</pattern>
+        <pattern>/app/reports/vehiclesReport/</pattern>
          <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/vehicles.faces</view-id>
-        <action>#{vehicleReportBean.search}</action>
+        <action  onPostback="false">#{vehicleReportBean.search}</action>
     </url-mapping>
     <url-mapping id="idlingReport">
         <pattern>/app/reports/idlingReport</pattern>
         <view-id>/secured/reports/idling.faces</view-id>
-        <action>#{idlingReportBean.search}</action>
+        <action onPostback="false">#{idlingReportBean.loadAll}</action>
     </url-mapping>
     <url-mapping id="idlingReportWithCriteria">
-        <pattern>/app/reports/idlingReport</pattern>
+        <pattern>/app/reports/idlingReport/</pattern>
         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/idling.faces</view-id>
-        <action>#{idlingReportBean.search}</action>
+        <action  onPostback="false">#{idlingReportBean.search}</action>
     </url-mapping>
     <url-mapping id="devicesReport">
         <pattern>/app/reports/devicesReport</pattern>
         <view-id>/secured/reports/devices.faces</view-id>
-        <action>#{deviceReportBean.search}</action>
+        <action onPostback="false">#{deviceReportBean.loadAll}</action>
     </url-mapping>
     <url-mapping id="devicesReportWithCriteria">
-        <pattern>/app/reports/devicesReport</pattern>
+        <pattern>/app/reports/devicesReport/</pattern>
          <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/devices.faces</view-id>
-        <action>#{deviceReportBean.search}</action>
+        <action onPostback="false">#{deviceReportBean.search}</action>
     </url-mapping>
     
     <!-- Notifications Section -->
     <url-mapping id="notifications">
         <pattern>/app/notifications/</pattern>
         <view-id>/secured/notifications/redflags.faces</view-id>
+          <action onPostback="false">#{redFlagsBean.showAllAction}</action>
     </url-mapping>
     <url-mapping id="redFlags">
         <pattern>/app/notifications/redflags</pattern>
         <view-id>/secured/notifications/redflags.faces</view-id>
+         <action onPostback="false">#{redFlagsBean.showAllAction}</action>
     </url-mapping>
     <url-mapping id="redFlagsWithCriteria">
-        <pattern>/app/notifications/redflags/search</pattern>
-<!--         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> -->
+        <pattern>/app/notifications/redflags/search/</pattern>
         <view-id>/secured/notifications/redflags.faces</view-id>
-        <action>#{redFlagsBean.searchAction}</action>
+        <action onPostback="false">#{redFlagsBean.searchAction}</action>
     </url-mapping>
     <url-mapping id="safety">
         <pattern>/app/notifications/safety</pattern>

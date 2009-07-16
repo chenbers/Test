@@ -117,4 +117,10 @@ public class SearchCoordinationBean {
     {
         return groupDAO;
     }
+    
+    public void clearSearchFor(){
+ 
+	    setSearchFor("");
+	    notifySearchChangeListeners();
+    }
 }

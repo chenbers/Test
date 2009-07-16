@@ -26,7 +26,7 @@ import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 
-public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener, SearchChangeListener
+public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
@@ -78,7 +78,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         super.initBean();
         tablePref = new TablePref<RedFlagReportItem>(this);
-//        searchCoordinationBean.addSearchChangeListener(this);
 
     }
     
@@ -196,6 +195,62 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
         setPage(1);
     }
+    @Override
+    protected void filterTableDataWithoutSearch()
+    {
+    	searchCoordinationBean.clearSearchFor();
+        setFilteredTableData(tableData); 
+        if (getCategoryFilter() != null)
+        {    
+            List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
+            if (validEventTypes != null)
+            {
+                filteredTableData = new ArrayList<RedFlagReportItem>();
+        
+                for (RedFlagReportItem item : tableData)
+                {
+                    if (validEventTypes.contains(item.getRedFlag().getEvent().getType()))
+                    {
+                        filteredTableData.add(item);
+                    }
+                }
+            }
+        }
+        
+        if (getEventFilter() != null)
+        {    
+            filteredTableData = new ArrayList<RedFlagReportItem>();
+    
+            for (RedFlagReportItem item : tableData)
+            {
+                if (item.getRedFlag().getEvent().getNoteID().equals(eventFilter.getNoteID()))
+                {
+                    filteredTableData.add(item);
+                    break;
+                }
+            }
+        }
+        
+        //Filter if search is based on group.
+        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+        {
+            filteredTableData = new ArrayList<RedFlagReportItem>();
+            
+            for (RedFlagReportItem item : tableData)
+            {
+
+                if (item.getRedFlag().getEvent().getGroupID().equals(getEffectiveGroupId()))
+                {
+                    filteredTableData.add(item);
+                }
+            }
+        }
+        
+        setMaxCount(filteredTableData.size());
+        setStart(filteredTableData.size() > 0 ? 1 : 0);
+        setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
+        setPage(1);
+    }
 
     /**
      * Returns the value of the property of the given item described by the given column name. The default implementation calls TablePref.fieldValue.
@@ -231,7 +286,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         setFilteredTableData(null);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 30);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {
@@ -393,7 +448,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         setCategoryFilter(null);
         setEventFilter(null);
         
-        filterTableData();
+        filterTableDataWithoutSearch();
     }
 
     public TablePref<RedFlagReportItem> getTablePref()
@@ -500,15 +555,5 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         return reportCriteria;
     }
 
-	@Override
-	public synchronized void searchChanged() {
-
-        if (!searchCoordinationBean.isGoodSearch())
-        {
-            setCategoryFilter(null);
-            setEventFilter(null);
-        }
-		filterTableData();
-	}
 
 }

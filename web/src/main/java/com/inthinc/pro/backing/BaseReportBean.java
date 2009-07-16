@@ -8,13 +8,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.listener.SearchChangeListener;
+//import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions<T>, SearchChangeListener
+public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions<T>
 {
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(BaseReportBean.class);
@@ -51,7 +51,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     public void initBean()
     {
         setTablePref(new TablePref<T>(this));
-//        searchCoordinationBean.addSearchChangeListener(this);
 
     }
 
@@ -126,34 +125,43 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
             return getUser().getGroupID();
         }
     }
+    public void loadAll(){
+    	
+        final List<T> matchedItems = new ArrayList<T>();
+        
+      	searchCoordinationBean.clearSearchFor();
+      
+        loadDBData();
+        
+        matchedItems.addAll(getDBData());
 
+        filterResults(matchedItems);
+        loadResults(matchedItems);
+        maxCount = getDisplayData().size();
+        resetCounts();
+  	
+    }
     public void search()
     {
+    	
         loadDBData();
-        if (searchCoordinationBean.isGoodSearch())
-        {
+ 
+        final List<T> matchedItems = new ArrayList<T>();
+        matchedItems.addAll(getDBData());
 
-            final List<T> matchedItems = new ArrayList<T>();
-            matchedItems.addAll(getDBData());
+        filterResults(matchedItems);
 
-            filterResults(matchedItems);
-
-            tablePref.filter(matchedItems, searchCoordinationBean.getSearchFor(), matchAllFilterWords());
-
-            loadResults(matchedItems);
-            this.maxCount = matchedItems.size();
-        }
-        else
-        {
-            final List<T> matchedItems = new ArrayList<T>();
-            matchedItems.addAll(getDBData());
-
-            filterResults(matchedItems);
-            loadResults(matchedItems);
-            maxCount = getDisplayData().size();
+        if (searchCoordinationBean.isGoodSearch()){
+        	
+        	tablePref.filter(matchedItems, searchCoordinationBean.getSearchFor(), matchAllFilterWords());
         }
 
+        loadResults(matchedItems);
+        this.maxCount = matchedItems.size();
+ //     maxCount = getDisplayData().size();
+ 
         resetCounts();
+        
     }
     
     public abstract String getMappingId();
@@ -308,20 +316,13 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         this.searchCoordinationBean = searchCoordinationBean;
     }
 
-    private void reinit()
-    {
-        setDisplayData(null);
-        setStart(null);
-        setEnd(null);
-        setMaxCount(null);
-    }
-
-    @Override
-    public void searchChanged()
-    {
-
-        reinit();
-    }
+//    private void reinit()
+//    {
+//        setDisplayData(null);
+//        setStart(null);
+//        setEnd(null);
+//        setMaxCount(null);
+//    }
 
     public void setPage(Integer page)
     {
