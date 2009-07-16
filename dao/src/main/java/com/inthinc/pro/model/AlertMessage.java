@@ -34,7 +34,7 @@ public class AlertMessage
     
     private Integer personID;
     
-    private Integer alertID;
+    private Integer alertID; //Alert that caused this message to occurr.
     
     private Integer zoneID;
     

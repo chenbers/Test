@@ -150,7 +150,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         case ALERT_TYPE_UNKNOWN:
             break;
         case ALERT_TYPE_CRASH:
-            // event = eventDAO.getEventByType(alertMessage.getNoteID(), .class);
+            event = eventDAO.getEventByType(alertMessage.getNoteID(), Event.class);
             break;
         case ALERT_TYPE_HARD_ACCELL:
         case ALERT_TYPE_HARD_BRAKE:
