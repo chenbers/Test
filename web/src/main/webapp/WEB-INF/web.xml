@@ -124,7 +124,7 @@
     </welcome-file-list>
     <!-- length of session before logging off -->
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>60</session-timeout>
     </session-config>
     
     <!-- Error Pages -->
