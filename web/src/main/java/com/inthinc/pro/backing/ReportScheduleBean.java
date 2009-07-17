@@ -320,7 +320,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         Integer acctID = item.getAccountID();
 
-        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID) && item.getId() != null)
         {
             return Boolean.TRUE;
         }

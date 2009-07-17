@@ -208,9 +208,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected Boolean authorizeAccess(VehicleView item)
     {
-        Integer acctID = getGroupHierarchy().getGroup(item.getGroupID()).getAccountID();
+        Group group = getGroupHierarchy().getGroup(item.getGroupID());
 
-        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        if (group != null)
         {
             return Boolean.TRUE;
         }

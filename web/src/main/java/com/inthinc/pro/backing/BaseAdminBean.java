@@ -11,7 +11,6 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.security.AccessDeniedException;
-import org.springframework.security.AuthorizationServiceException;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
@@ -316,6 +315,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     }
     
     public void view(){
+        displayed = true;
         if(itemID != null)
             selectItem(itemID);
     }
@@ -626,8 +626,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             } 
         }
         
-        if(item != null && authorizeAccess(item) == Boolean.FALSE){
-
+        if(item != null && displayed && authorizeAccess(item) == Boolean.FALSE){
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied"));
         }
         
