@@ -26,6 +26,9 @@ import com.inthinc.pro.util.MessageUtil;
 public abstract class BasePerformanceBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(VehicleSpeedBean.class);
+    
+    protected static final Integer EMPTY_SCORE_VALUE = -1;
+    
     protected DurationBean durationBean;
     protected TableStatsBean tableStatsBean;
     protected AddressLookup addressLookup;
@@ -39,6 +42,8 @@ public abstract class BasePerformanceBean extends BaseBean
     protected Map<String, Integer> scoreMap;
     protected Map<String, String> styleMap;
     protected Map<String, String> trendMap;
+    
+    
 
     protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
 

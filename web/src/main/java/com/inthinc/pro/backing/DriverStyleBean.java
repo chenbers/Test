@@ -48,6 +48,8 @@ public class DriverStyleBean extends BasePerformanceBean
         return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
     }
     
+    //TODO This needs to be cleaned up. The style should be pushed to the .xhtml page and a null ScoreableEntity needs to be handled better.
+    //Fixed for a  quick release
     private void initScores()
     {
         Map<ScoreType, ScoreableEntity> tempMap = scoreDAO
@@ -57,24 +59,42 @@ public class DriverStyleBean extends BasePerformanceBean
         styleMap = new HashMap<String, String>();
 
         ScoreableEntity se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE);
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        if(se != null)
+        {
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+    
+            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+    
+            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+    
+            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+    
+            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        } else {
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+        }
     }
 
     private void initTrends()

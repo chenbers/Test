@@ -26,61 +26,85 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class DriverSpeedBean extends BasePerformanceBean
 {
-    private static final Logger                logger         = Logger.getLogger(DriverSpeedBean.class);
+    private static final Logger logger = Logger.getLogger(DriverSpeedBean.class);
 
-    private ScoreDAO                           scoreDAO;
-    private EventDAO                           eventDAO;
-    private EventReportItem                    clearItem;
-    private String                             emailAddress;
-    private String                             selectedSpeed  = "OVERALL";
-    private List<EventReportItem>              filteredSpeedingEvents;
-    private List<EventReportItem>              speedingEvents;
+    private ScoreDAO scoreDAO;
+    private EventDAO eventDAO;
+    private EventReportItem clearItem;
+    private String emailAddress;
+    private String selectedSpeed = "OVERALL";
+    private List<EventReportItem> filteredSpeedingEvents;
+    private List<EventReportItem> speedingEvents;
     private Map<String, List<EventReportItem>> speedingListsMap;
-    private final Integer                      ROWCOUNT = 10;
-
+    private final Integer ROWCOUNT = 10;
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
         return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
     }
-    
+
     @Override
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
         return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
     }
-    
+
     private void initScores()
     {
         Map<ScoreType, ScoreableEntity> tempMap = scoreDAO.getDriverScoreBreakdownByType(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
-        
+
+        // TODO This needs to be cleaned up. The style should be pushed to the .xhtml page and a null ScoreableEntity needs to be handled better.
+        // Fixed for quick realease.
         ScoreableEntity se = tempMap.get(ScoreType.SCORE_SPEEDING);
-        scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        if (se != null)
+        {
+            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        }
+        else
+        {
+            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+        }
     }
 
     private void initTrends()
@@ -107,7 +131,7 @@ public class DriverSpeedBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            speedingEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
+            speedingEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(), getMeasurementType()));
         }
         sortSpeedingEvents();
     }
@@ -115,10 +139,10 @@ public class DriverSpeedBean extends BasePerformanceBean
     public List<EventReportItem> getFilteredSpeedingEvents()
     {
         if (filteredSpeedingEvents == null)
-            {
-                initEvents();
-                tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
-            }
+        {
+            initEvents();
+            tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
+        }
 
         return filteredSpeedingEvents;
     }
@@ -138,7 +162,7 @@ public class DriverSpeedBean extends BasePerformanceBean
         this.selectedSpeed = selectedSpeed;
         setFilteredSpeedingEvents(getSpeedingListsMap().get(selectedSpeed));
     }
-    
+
     public void selectBreakdownChanged()
     {
         tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
@@ -166,9 +190,9 @@ public class DriverSpeedBean extends BasePerformanceBean
 
     public Map<String, List<EventReportItem>> getSpeedingListsMap()
     {
-        if(speedingListsMap == null)
+        if (speedingListsMap == null)
             initEvents();
-        
+
         return speedingListsMap;
     }
 
@@ -205,11 +229,11 @@ public class DriverSpeedBean extends BasePerformanceBean
     public void clearEventAction()
     {
         Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-        if(result >= 1)
-            {
-                initEvents();
-                tableStatsBean.updateSize(getSpeedingListsMap().get(selectedSpeed).size());
-            }
+        if (result >= 1)
+        {
+            initEvents();
+            tableStatsBean.updateSize(getSpeedingListsMap().get(selectedSpeed).size());
+        }
     }
 
     public EventReportItem getClearItem()
@@ -239,13 +263,13 @@ public class DriverSpeedBean extends BasePerformanceBean
 
         return styleMap;
     }
-    
+
     @Override
     public Map<String, String> getTrendMap()
     {
-        if(trendMap == null)
+        if (trendMap == null)
             initTrends();
-        
+
         return trendMap;
     }
 
@@ -281,10 +305,11 @@ public class DriverSpeedBean extends BasePerformanceBean
 
     public String getEmailAddress()
     {
-        if(emailAddress == null){
+        if (emailAddress == null)
+        {
             emailAddress = getProUser().getUser().getPerson().getPriEmail();
         }
-        
+
         return emailAddress;
     }
 
@@ -329,11 +354,11 @@ public class DriverSpeedBean extends BasePerformanceBean
         SpeedingEvent event;
         for (EventReportItem eri : speedingEvents)
         {
-            event = (SpeedingEvent)eri.getEvent();
-            
-            if(event.getSpeedLimit() == null)
+            event = (SpeedingEvent) eri.getEvent();
+
+            if (event.getSpeedLimit() == null)
                 continue;
-            
+
             if (event.getSpeedLimit() >= 0 && event.getSpeedLimit() < 31)
             {
                 speed20.add(eri);
