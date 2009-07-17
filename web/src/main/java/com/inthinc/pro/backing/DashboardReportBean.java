@@ -111,6 +111,7 @@ public class DashboardReportBean extends BaseBean
 
     public void setReport(ReportType report)
     {
+        reports.clear();
         reports.add(report);
         logger.debug("Report added: " + report.toString());
         this.report = report;
