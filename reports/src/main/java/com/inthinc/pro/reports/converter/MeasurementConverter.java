@@ -1,5 +1,7 @@
 package com.inthinc.pro.reports.converter;
 
+import java.math.BigDecimal;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
@@ -32,5 +34,18 @@ public class MeasurementConverter
             return MeasurementConversionUtil.convertDistance(distance.floatValue(), MeasurementType.METRIC);
         else
             return distance.floatValue();
+    }
+    
+    /**
+     * 
+     * @param distance
+     * @param convertToMetric
+     * @param n how many decimal places to move the point to the left.
+     * @return
+     */
+    public static Number convertDistanceAndMovePoint(Number distance,Boolean convertToMetric, Integer n){
+        BigDecimal bd = BigDecimal.valueOf(distance.doubleValue());
+        bd = bd.movePointLeft(2);
+        return convertDistance(Double.valueOf(bd.floatValue()),convertToMetric);
     }
 }
