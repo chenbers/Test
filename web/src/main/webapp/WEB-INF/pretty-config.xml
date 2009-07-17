@@ -314,4 +314,5 @@
 		<pattern>/app/admin/sbs</pattern>
 		<view-id>/secured/admin/speedByStreetChangeRequest.faces</view-id>
 	</url-mapping>
+
 </pretty-config>

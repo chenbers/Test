@@ -2,8 +2,13 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 
+import org.springframework.security.AccessDeniedException;
+import org.springframework.security.AuthorizationServiceException;
+
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.security.AuthErrorBean;
+import com.inthinc.pro.util.MessageUtil;
 public class DashBoardBean extends BaseBean implements Serializable
 {
     /**
@@ -24,6 +29,9 @@ public class DashBoardBean extends BaseBean implements Serializable
         //TODO: try to pull the group from the group hierarchy before looking it up
 //        Group group = groupDAO.findByID(groupID);
         Group group = getGroupHierarchy().getGroup(groupID);
+        
+        if(group == null)
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
 
         navigationBean.setGroupID(groupID);
         mpgBean.setGroupID(groupID);

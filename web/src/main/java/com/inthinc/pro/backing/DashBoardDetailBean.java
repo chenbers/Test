@@ -1,8 +1,11 @@
 package com.inthinc.pro.backing;
 
+import org.springframework.security.AccessDeniedException;
+
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.util.MessageUtil;
 public class DashBoardDetailBean extends BaseBean
 {
     public enum TabType
@@ -31,6 +34,8 @@ public class DashBoardDetailBean extends BaseBean
     {
         this.groupID = groupID;
         group = getGroupHierarchy().getGroup(groupID);
+        if(group == null)
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
     }
 
     public Group getGroup()

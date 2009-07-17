@@ -133,7 +133,11 @@
 	     <location>/error/500.faces</location>
 	</error-page>
 	 <error-page>
-	     <error-code>404</error-code>
-	     <location>/error/404.faces</location>
+	     <error-code>403</error-code>
+	     <location>/error/403.faces</location>
 	</error-page>
+     <error-page>
+         <error-code>404</error-code>
+         <location>/error/404.faces</location>
+    </error-page>
 </web-app>

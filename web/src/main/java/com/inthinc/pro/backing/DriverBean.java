@@ -1,7 +1,10 @@
 package com.inthinc.pro.backing;
 
+import org.springframework.security.AccessDeniedException;
+
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverBean extends BaseBean
 {
@@ -18,6 +21,8 @@ public class DriverBean extends BaseBean
     public void setDriverID(Integer driverID)
     {
         driver = driverDAO.findByID(driverID);
+        if (driver == null || getGroupHierarchy().getGroup(driver.getGroupID()) == null)
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
         this.driverID = driverID;
     }
 
