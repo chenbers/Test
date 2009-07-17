@@ -7,7 +7,6 @@ import java.util.TimeZone;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.util.MessageUtil;
@@ -17,7 +16,7 @@ public class TripDisplay implements Comparable<TripDisplay>
     String dateShort;       // Jul 01
     String timeStartShort;  // 1:32 PM
     String timeEndShort;    // 1:55 PM
-    String distance;        // 3.2mi
+    Number distance;        // 3.2mi
     String startAddress;    // 123 Street
     String endAddress;      // 188 S 11th St
     String duration;        // 1:32
@@ -49,8 +48,7 @@ public class TripDisplay implements Comparable<TripDisplay>
         durationMiliSeconds = trip.getEndTime().getTime() - trip.getStartTime().getTime();
         setDuration(DateUtil.getDurationFromMilliseconds(durationMiliSeconds));
         
-        Double mileageDouble = (double)trip.getMileage() / 100;
-        setDistance(mileageDouble.toString());
+        setDistance(trip.getMileage() / 100);
         
         AddressLookup lookup = new AddressLookup();
         lookup.setMapServerURLString(mapServerUrl);
@@ -110,16 +108,14 @@ public class TripDisplay implements Comparable<TripDisplay>
         this.timeEndShort = timeEndShort;
     }
 
-    public String getDistance()
+    public Number getDistance()
     {
         return distance;
     }
-
-    public void setDistance(String distance)
+    public void setDistance(Number distance)
     {
         this.distance = distance;
     }
-
     public String getStartAddress()
     {
         return startAddress;
