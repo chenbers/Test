@@ -39,24 +39,29 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:a4j="http://richfaces.org/a4j"
-				xmlns:f="http://java.sun.com/jsf/core">
+				xmlns:f="http://java.sun.com/jsf/core"
+    			xmlns:pretty="http://ocpsoft.com/prettyfaces">
 				
 
 	<div id="#{hiddenDivID}" style="display:none">
 		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 			<f:facet name="header">
-				<h:commandLink value="#{driver.person.fullName}" action="go_driver">
-					<f:setPropertyActionListener value="#{driver}" target="#{navigationBean.driver}" />
-				</h:commandLink>
+			    <pretty:link mappingId="driverPerformance">
+                     <h:outputText value="#{driver.person.fullName}"/>
+                     <f:param value="#{driver.driverID}"/>
+                </pretty:link>
+			
 			</f:facet>
 			<h:outputText value="#{messagePriPhone}:"/>
 			<h:outputText value="#{driver.person.priPhone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageSecPhone}:"/>
 			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
-			<h:outputText value="#{messageVehicle}:"/>					
-			<h:commandLink value="#{vehicle.name}" action="go_vehicle">
-					<f:setPropertyActionListener value="#{vehicle}" target="#{navigationBean.vehicle}" />
-			</h:commandLink>
+			<h:outputText value="#{messageVehicle}:"/>	
+				<pretty:link mappingId="vehiclePerformance">
+                     <h:outputText value="#{vehicle.name}"/>
+                     <f:param value="#{vehicle.vehicleID}"/>
+                </pretty:link>
+							
 			<h:outputText value="#{messageVehicleType}:"/>
 			<h:outputText value="#{messages[vehicle.vtype]}" />
 			<h:outputText value="#{messageLastUpdated}:" />
