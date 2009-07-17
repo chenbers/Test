@@ -274,6 +274,19 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     {
         return "pretty:adminZoneAlerts";
     }
+    
+    @Override
+    protected Boolean authorizeAccess(ZoneAlertView item)
+    {
+        Integer acctID = item.getAccountID();
+
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
 
     public List<SelectItem> getZones()
     {

@@ -49,6 +49,7 @@ import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
+
 /**
  * @author David Gileadi
  */
@@ -149,8 +150,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
-       
-        
+
     }
     private PersonDAO personDAO;
     private UserDAO userDAO;
@@ -298,14 +298,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         else if (column.equals("locale"))
         {
-            if(person.getUser() != null && person.getUser().getLocale() != null)
+            if (person.getUser() != null && person.getUser().getLocale() != null)
                 return person.getUser().getLocale().getDisplayName();
             else
                 return null;
         }
         else if (column.equals("measurementType"))
         {
-            return MessageUtil.getMessageString(person.getMeasurementType().toString(),getProUser().getUser().getLocale());
+            return MessageUtil.getMessageString(person.getMeasurementType().toString(), getProUser().getUser().getLocale());
         }
         else
             return super.fieldValue(person, column);
@@ -351,14 +351,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setAddress(new Address());
         person.getUser().setRole(Role.valueOf(2)); // normal user
         person.getUser().setPerson(person);
-        
+
         Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
-        
-        if(LocaleBean.supportedLocale(locale))
+
+        if (LocaleBean.supportedLocale(locale))
             person.getUser().setLocale(locale);
         else
             person.getUser().setLocale(Locale.US);
-        
+
         person.setDriver(new Driver());
         person.setUserSelected(true);
         person.setDriverSelected(true);
@@ -395,7 +395,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         return redirect;
     }
-    
+
     @Override
     public void view()
     {
@@ -583,15 +583,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_status", message);
             }
-            
+
             // required locale
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.locale"))))
             {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_locale", message);
-            }            
-            
+            }
+
             // required measurementType
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.person.measurementType"))))
             {
@@ -599,7 +599,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_person_measurementType", message);
             }
-            
+
             if (!isBatchEdit())
             {
                 final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
@@ -635,6 +635,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             valid = false;
         }
         return valid;
+    }
+
+    @Override
+    protected Boolean authorizeAccess(PersonView item)
+    {
+        Integer acctID = item.getAcctID();
+
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
     }
 
     @Override
@@ -860,26 +873,26 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         @Override
         public Date getDob()
         {
-            if(super.getDob() == null || DateUtil.convertDateToSeconds(super.getDob()) == 0)
+            if (super.getDob() == null || DateUtil.convertDateToSeconds(super.getDob()) == 0)
                 return null;
             else
                 return super.getDob();
         }
-        
+
         public Date getDriverExp()
         {
-            if(getDriver() == null || super.getDriver().getExpiration() == null || DateUtil.convertDateToSeconds(super.getDriver().getExpiration()) == 0)
+            if (getDriver() == null || super.getDriver().getExpiration() == null || DateUtil.convertDateToSeconds(super.getDriver().getExpiration()) == 0)
                 return null;
             else
                 return super.getDriver().getExpiration();
         }
-        
+
         public void setDriverExp(Date driverExp)
         {
-            if(getDriver() != null)
+            if (getDriver() != null)
                 super.getDriver().setExpiration(driverExp);
         }
-        
+
         public Group getGroup()
         {
             if ((getUser() != null) && ((group == null) || (group.getGroupID() == null) || !group.getGroupID().equals(getUser().getGroupID())))

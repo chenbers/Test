@@ -252,6 +252,19 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         return createRedFlagAlertView(redFlagAlertDAO.findByID(editItem.getRedFlagAlertID()));
     }
     
+    @Override
+    protected Boolean authorizeAccess(RedFlagAlertView item)
+    {
+        Integer acctID = item.getAccountID();
+
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
+    
     protected boolean validateSaveItem(RedFlagAlertView saveItem)
     {
         boolean valid = super.validateSaveItem(saveItem);

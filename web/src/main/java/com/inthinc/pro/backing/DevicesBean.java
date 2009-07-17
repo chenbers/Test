@@ -206,6 +206,19 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
             assignVehicle(getItem());
     }
+    
+    @Override
+    protected Boolean authorizeAccess(DeviceView item)
+    {
+        Integer acctID = item.getAccountID();
+
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
 
     @Override
     protected boolean validateSaveItem(DeviceView deviceView)

@@ -10,6 +10,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.security.AccessDeniedException;
+import org.springframework.security.AuthorizationServiceException;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
@@ -623,6 +625,12 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                     BeanUtil.compareAndInit(item, t);
             } 
         }
+        
+        if(item != null && authorizeAccess(item) == Boolean.FALSE){
+
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied"));
+        }
+        
         return item;
     }
 
@@ -768,6 +776,12 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      * @return A redirect to navigate to when a user has finished or canceled editing.
      */
     protected abstract String getFinishedRedirect();
+    
+    /**
+     * 
+     * @return Authenticates if the user can access the loaded item.
+     */
+    protected abstract Boolean authorizeAccess(T item);
     
     /**
      * @return before redericting clears the list so that the next time the list is loaded, it's a new one.

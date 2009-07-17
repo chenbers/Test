@@ -204,6 +204,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         return "vehiclesHeader_";
     }
+   
+    @Override
+    protected Boolean authorizeAccess(VehicleView item)
+    {
+        Integer acctID = getGroupHierarchy().getGroup(item.getGroupID()).getAccountID();
+
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
 
     @Override
     public TableType getTableType()

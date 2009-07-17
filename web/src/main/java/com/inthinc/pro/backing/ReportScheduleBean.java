@@ -314,6 +314,20 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return reportScheduleView;
     }
     
+    
+    @Override
+    protected Boolean authorizeAccess(ReportScheduleView item)
+    {
+        Integer acctID = item.getAccountID();
+
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID))
+        {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
+    
     @Override
     public String batchEdit()
     {

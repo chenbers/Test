@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
@@ -19,8 +20,12 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
-public class BaseBean
+public class BaseBean implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(BaseBean.class);
     private ErrorBean errorBean;
     private AccountDAO accountDAO;
