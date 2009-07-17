@@ -109,7 +109,7 @@ public abstract class BasePerformanceBean extends BaseBean
         {
             // Get mileage for day.
             if (dailyList.get(i).getIdentifierNum() != null)
-                odometerValues[i] = MeasurementConversionUtil.convertDistance(dailyList.get(i).getIdentifierNum().floatValue(), getPerson().getMeasurementType()).intValue()  / 100D;
+                odometerValues[i] = MeasurementConversionUtil.convertMilesToKilometers((dailyList.get(i).getIdentifierNum()  / 100D), getPerson().getMeasurementType()).doubleValue();
 
             // Set Score to NULL on non driving days.
             if (odometerValues[i] == null || odometerValues[i] == 0)

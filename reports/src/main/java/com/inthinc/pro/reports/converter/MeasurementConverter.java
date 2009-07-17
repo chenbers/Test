@@ -28,12 +28,12 @@ public class MeasurementConverter
         
     }
     
-    public static Float convertDistance(Number distance,Boolean convertToMetric){
+    public static Number convertDistance(Number distance,Boolean convertToMetric){
         logger.debug("Distance: " + distance + " Convert To Metric: " + convertToMetric);
         if(convertToMetric)
-            return MeasurementConversionUtil.convertDistance(distance.floatValue(), MeasurementType.METRIC);
+            return MeasurementConversionUtil.convertMilesToKilometers(distance, MeasurementType.METRIC);
         else
-            return distance.floatValue();
+            return distance;
     }
     
     /**
