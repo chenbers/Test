@@ -5,7 +5,8 @@ public enum NoteType {
 	IGNITION_ON(19),
 	IGNITION_OFF(20),
 	SPEEDING(93),
-	POWER_ON(150);
+	POWER_ON(150),
+	CRASH(1);
 	
 	int code;
 	
