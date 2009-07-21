@@ -76,13 +76,13 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_medium_column}" converter="MpgToKplConverter"/>
                                     </f:facet>
-                                    <h:outputText value="#{item.mediumValue}" />
+                                    <h:outputText value="#{item.mediumValue}" converter="MpgToKplConverter" />
                                 </rich:column>
                                 <rich:column sortBy="#{item.entity.heavyValue}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_heavy_column}" converter="MpgToKplConverter"/>
                                     </f:facet>
-                                    <h:outputText value="#{item.heavyValue}" />
+                                    <h:outputText value="#{item.heavyValue}" converter="MpgToKplConverter" />
                                 </rich:column>
                             </rich:dataTable>
                         </a4j:form>        
