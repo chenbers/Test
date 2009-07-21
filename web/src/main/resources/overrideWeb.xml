@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <!-- Spring -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+        	classpath:spring/applicationContext-appBeans.xml;
+        	classpath:spring/applicationContext-beans.xml;
+        	classpath:spring/applicationContext-dao.xml;
+        	classpath:spring/applicationContext-daoBeans.xml;
+        	classpath:spring/applicationContext-reports.xml;
+        	classpath:spring/applicationContext-sbs.xml;
+        	classpath:spring/applicationContext-security.xml;
+        	classpath:spring/applicationContext-serverPropertiesLocal.xml
+        </param-value>
+    </context-param>
+
+    <!-- FACELET DEBUG PARAMETERS Special Debug Output for Development (not sure if needed)-->
+    <context-param>
+        <param-name>facelets.DEVELOPMENT</param-name>
+        <param-value>true</param-value>
+    </context-param>
+</web-app>
