@@ -15,8 +15,7 @@ public class RedFlagHessianMapper extends AbstractMapper
         if (value != null && value instanceof Map)
         {
             EventHessianMapper eventMapper = new EventHessianMapper();
-            redFlag.setEvent(eventMapper.convertToModelObject((Map)value, Event.class));
-
+            redFlag.setEvent(eventMapper.convertToModelObject((Map<String, Object>)value, Event.class));
         }
     }
 }
