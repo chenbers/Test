@@ -47,16 +47,16 @@ public class MeasurementConversionUtil
             return distance;
     }
 
-    public static Integer fromMPHtoKPH(Integer milesPerHour)
+    public static Number fromMPHtoKPH(Number milesPerHour)
     {
-        Double kilometersPerHour = milesPerHour * 1.609344;
+        Double kilometersPerHour = milesPerHour.doubleValue() * 1.609344;
         
         return Long.valueOf(Math.round(kilometersPerHour)).intValue();
     }
 
-    public static Integer fromKPHtoMPH(Integer kilometersPerHour)
+    public static Number fromKPHtoMPH(Number kilometersPerHour)
     {
-        Double milesPerHour = kilometersPerHour * 0.62137;
+        Double milesPerHour = kilometersPerHour.doubleValue() * 0.62137;
         return Long.valueOf(Math.round(milesPerHour)).intValue();
     }
 
@@ -73,7 +73,7 @@ public class MeasurementConversionUtil
             return mileage;
     }
 
-    public static Integer convertSpeed(Integer speed,  MeasurementType convertToMeasurmentType)
+    public static Number convertSpeed(Number speed,  MeasurementType convertToMeasurmentType)
     {
         if (convertToMeasurmentType == MeasurementType.METRIC)
             return fromMPHtoKPH(speed);

@@ -106,8 +106,8 @@ public class SpeedingEvent extends Event
         
         if(measurementType.equals(MeasurementType.METRIC))
         {
-            topSpeed = MeasurementConversionUtil.fromMPHtoKPH(topSpeed);
-            speedLimit = MeasurementConversionUtil.fromMPHtoKPH(speedLimit);
+            topSpeed = MeasurementConversionUtil.fromMPHtoKPH(topSpeed).intValue();
+            speedLimit = MeasurementConversionUtil.fromMPHtoKPH(speedLimit).intValue();
         }
         
         return MessageFormat.format(formatStr, topSpeed, speedLimit , mphString, mphString);

@@ -29,19 +29,12 @@ public class MphToKphConverter extends BaseConverter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        if (Long.class.isInstance(value))
+        if (Number.class.isInstance(value))
         {
             if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value).intValue()).toString();
+                return MeasurementConversionUtil.fromMPHtoKPH(Number.class.cast(value)).toString();
         }
-        
-        if (Integer.class.isInstance(value))
-        {
-            if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.fromMPHtoKPH(Integer.class.cast(value)).toString();
-        }
-        
-     
+      
         if(value != null)
             return value.toString();
         else

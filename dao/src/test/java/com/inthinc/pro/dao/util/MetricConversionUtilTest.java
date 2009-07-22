@@ -19,7 +19,7 @@ public class MetricConversionUtilTest
     {
         Integer expectedkph = 89;
         Integer actualmph = 55;
-        Integer kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
+        Number kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
         logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(expectedkph, kilometersperhour);
         
@@ -41,7 +41,7 @@ public class MetricConversionUtilTest
     {
         Integer expectedmph = 43;
         Integer actualkph = 70;
-        Integer milesperhour = MeasurementConversionUtil.fromKPHtoMPH(actualkph);
+        Number milesperhour = MeasurementConversionUtil.fromKPHtoMPH(actualkph);
         logger.debug(actualkph + " kph = " +  milesperhour.toString() + " mph");
         Assert.assertEquals(expectedmph, milesperhour);
     }
