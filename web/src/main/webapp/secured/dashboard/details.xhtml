@@ -19,6 +19,12 @@
             <li class="l grid_title">#{messages.detail_overview}</li>
             <li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
             <li class="l"></li>
+ 				<li class="l">
+ 					<ui:include src="/includes/breadcrumb.xhtml">
+ 						<ui:param name="groupTreeNode"
+ 							value="#{navigationBean.groupTreeNode}" />
+ 					</ui:include>
+ 				</li>
             <!-- 
                 <li class="r grid_icon"><h:graphicImage value="/images/ico_help.png" /></li> 
                 <li class="r divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li> 
@@ -199,10 +205,11 @@
                                                             <f:facet name="header">
                                                                 <h:outputText value="#{messages.trendReport_header_divisionTeam}"/>
                                                             </f:facet>
-                                                            <h:outputLink value="#{item.goTo}">
-                                                                <h:outputText value="#{item.se.identifier}" />
-                                                            </h:outputLink>                         
-                            
+                                                            <pretty:link mappingId="dashboard">
+                                     							<f:param value="#{item.se.entityID}"/>
+                                                				<h:outputText value="#{item.se.identifier}" />
+                                            				</pretty:link>
+                                                                                        
                                                         </rich:column>
                                                             
                                                         <rich:column width="73" sortBy="#{item.se.score}">
