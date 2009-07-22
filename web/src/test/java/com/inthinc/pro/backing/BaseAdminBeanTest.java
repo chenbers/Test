@@ -307,6 +307,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         final Map<String, String> params = new HashMap<String, String>();
         params.put("displayID", adminBean.getItems().get(0).getId().toString());
         externalContext.setRequestParameterMap(params);
+        
+        adminBean.setItemID(adminBean.getItems().get(0).getId());
         adminBean.display();
 
         // delete, test redirect to the finished page

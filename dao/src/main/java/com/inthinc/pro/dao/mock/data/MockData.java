@@ -407,9 +407,11 @@ public class MockData
         user.setGroupID(groupID);
         user.setUsername(username);
         user.setPassword(password);
+       
         user.setRole(role);
         user.setStatus(Status.ACTIVE);
         user.setPerson(new Person());
+        user.getPerson().setAcctID(accountID);
         user.getPerson().setPersonID(id);
         user.getPerson().setEmpid(String.valueOf(id));
         user.getPerson().setPriPhone(priPhone);
