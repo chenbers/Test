@@ -104,10 +104,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
     // OVERALL SCORE properties
     public Integer getOverallScore()
     {
-        if (overallScore == null)
-        {
-            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
-        }
+        setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
+
         return overallScore;
     }
 

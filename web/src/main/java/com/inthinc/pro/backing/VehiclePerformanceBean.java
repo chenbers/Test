@@ -111,10 +111,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public Integer getOverallScore()
     {
-        if (overallScore == null)
-        {
-            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
-        }
+        setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         return overallScore;
     }
 
