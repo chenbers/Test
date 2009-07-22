@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.map.AddressLookup;
@@ -31,6 +32,7 @@ import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
 
@@ -39,11 +41,12 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     private static final Logger logger = Logger.getLogger(AlertMessageHessianDAO.class);
     private Integer MAX_SILO_ID = 1;
 
-    private EventDAO eventDAO;
-    private DriverDAO driverDAO;
+    private EventDAO   eventDAO;
+    private DriverDAO  driverDAO;
     private VehicleDAO vehicleDAO;
-    private GroupDAO groupDAO;
-    private PersonDAO personDAO;
+    private GroupDAO   groupDAO;
+    private PersonDAO  personDAO;
+    private ZoneDAO    zoneDAO;
     
     private AddressLookup addressLookup;
 
@@ -197,8 +200,8 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         {
         case ALERT_TYPE_ENTER_ZONE:
         case ALERT_TYPE_EXIT_ZONE:
-            Group group = groupDAO.findByID(alertMessage.getZoneID());
-            parameterList.add(group.getName());
+            Zone zone = zoneDAO.findByID(alertMessage.getZoneID());
+            parameterList.add(zone.getName());
             break;
         case ALERT_TYPE_SPEEDING:
             parameterList.add(String.valueOf(((SpeedingEvent)event).getTopSpeed()));
@@ -273,5 +276,17 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     {
         return addressLookup;
     }
+
+    public ZoneDAO getZoneDAO()
+    {
+        return zoneDAO;
+    }
+
+    public void setZoneDAO(ZoneDAO zoneDAO)
+    {
+        this.zoneDAO = zoneDAO;
+    }
+    
+    
 
 }

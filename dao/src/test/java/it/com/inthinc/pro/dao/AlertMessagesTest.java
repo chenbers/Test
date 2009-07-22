@@ -825,6 +825,7 @@ public class AlertMessagesTest
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         PersonHessianDAO personDAO = new PersonHessianDAO();
         VehicleHessianDAO vehicleDAO =new VehicleHessianDAO();
+        ZoneHessianDAO zoneHessianDAO = new ZoneHessianDAO();
         AddressLookup addressLookup= new AddressLookup();
         addressLookup.setMapServerURLString(mapServerURL);
         driverDAO.setSiloService(siloService);
@@ -832,11 +833,13 @@ public class AlertMessagesTest
         eventDAO.setSiloService(siloService);
         personDAO.setSiloService(siloService);
         vehicleDAO.setSiloService(siloService);
+        zoneHessianDAO.setSiloService(siloService);
         alertMessageDAO.setDriverDAO(driverDAO);
         alertMessageDAO.setVehicleDAO(vehicleDAO);
         alertMessageDAO.setEventDAO(eventDAO);
         alertMessageDAO.setGroupDAO(groupDAO);
         alertMessageDAO.setPersonDAO(personDAO);
+        alertMessageDAO.setZoneDAO(zoneHessianDAO);
         alertMessageDAO.setAddressLookup(addressLookup);
        
         
