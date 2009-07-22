@@ -84,9 +84,9 @@ public class EventReportItem implements Comparable<EventReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
         
-        String mphString = MessageUtil.getMessageString("english_mph");
+        String mphString = MessageUtil.getMessageString("MeasurementType.ENGLISH_mph");
         if(measurementType.equals(MeasurementType.METRIC))
-            mphString = MessageUtil.getMessageString("metric_mph");
+            mphString = MessageUtil.getMessageString("MeasurementType.METRIC_mph");
         
         setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()),measurementType,mphString));
     }
