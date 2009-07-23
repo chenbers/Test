@@ -385,9 +385,22 @@ public class DriverPerformanceBean extends BasePerformanceBean
         return mpgDurationBean;
     }
 
+    public Duration getMpgDuration(){
+    	
+    	return mpgDurationBean.getDuration();
+    }
+    public void setMpgDuration(Duration mpgDuration)
+    {
+        this.mpgDurationBean.setDuration(mpgDuration);
+        mpgHistory = null;
+
+    }
+    
     public void setMpgDurationBean(DurationBean mpgDurationBean)
     {
         this.mpgDurationBean = mpgDurationBean;
+        mpgHistory = null;
+
     }
 
     public Boolean getHasLastTrip()
@@ -458,5 +471,11 @@ public class DriverPerformanceBean extends BasePerformanceBean
     {
         return driverSeatBeltBean;
     }
+
+	@Override
+	public void setDuration(Duration duration) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

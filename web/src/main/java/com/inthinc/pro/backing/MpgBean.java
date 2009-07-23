@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.dao.MpgDAO;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
@@ -159,5 +160,10 @@ public class MpgBean extends BaseBean implements Serializable
     public ReportCriteriaService getReportCriteriaService()
     {
         return reportCriteriaService;
+    }
+    public void setDuration(Duration duration)
+    {
+        durationBean.setDuration(duration);
+        mpgEntities = null;
     }
 }

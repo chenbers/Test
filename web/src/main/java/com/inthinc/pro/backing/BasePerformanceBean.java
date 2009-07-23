@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
@@ -23,7 +24,7 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
-public abstract class BasePerformanceBean extends BaseBean
+public abstract class BasePerformanceBean extends BaseBean 
 {
     private static final Logger logger = Logger.getLogger(VehicleSpeedBean.class);
     
@@ -49,7 +50,7 @@ public abstract class BasePerformanceBean extends BaseBean
 
     protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
 
-    /*
+	/*
      * Create Fusion Charts Multi Line chart.
      */
     public String createFusionLineDef(Integer id, Duration duration, ScoreType scoreType)
@@ -365,5 +366,7 @@ public abstract class BasePerformanceBean extends BaseBean
     {
         this.driverBean = driverBean;
     }
+    
+    public abstract void setDuration(Duration duration);
 
 }

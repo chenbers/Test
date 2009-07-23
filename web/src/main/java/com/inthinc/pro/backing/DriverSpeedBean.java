@@ -201,6 +201,7 @@ public class DriverSpeedBean extends BasePerformanceBean
         this.speedingListsMap = speedingListsMap;
     }
 
+    @Override
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);

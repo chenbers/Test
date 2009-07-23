@@ -125,6 +125,7 @@ public class VehicleStyleBean extends BasePerformanceBean
         this.eventDAO = eventDAO;
     }
 
+    @Override
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);

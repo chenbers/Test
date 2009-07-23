@@ -157,7 +157,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     {
         this.seatBeltEvents = seatBeltEvents;
     }
-
+    @Override
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);

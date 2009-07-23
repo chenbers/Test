@@ -278,7 +278,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     public String getMpgHistory()
     {
         if (mpgHistory == null)
-            mpgHistory = this.createMultiLineDef();
+
+        	mpgHistory = this.createMultiLineDef();
 
         return mpgHistory;
     }
@@ -340,8 +341,17 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     {
         this.mpgDurationBean = mpgDurationBean;
     }
+    public Duration getMpgDuration(){
+    	
+    	return mpgDurationBean.getDuration();
+    }
+    public void setMpgDuration(Duration mpgDuration)
+    {
+        this.mpgDurationBean.setDuration(mpgDuration);
+        mpgHistory = null;
 
-    public DurationBean getSpeedDurationBean()
+    }
+   public DurationBean getSpeedDurationBean()
     {
         return speedDurationBean;
     }
@@ -514,5 +524,12 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     {
         return vehicleSeatBeltBean;
     }
+
+	@Override
+	public void setDuration(Duration duration) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
