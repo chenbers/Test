@@ -95,6 +95,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     {
         final ZoneAlertView alertView = new ZoneAlertView();
         alertView.setAnytime(true);
+     
         BeanUtils.copyProperties(alert, alertView);
         if(alertView.getStartTOD() == null)
             alertView.setStartTOD(BaseAlert.MIN_TOD);
@@ -150,6 +151,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             if ((zones != null) && (zones.size() > 0))
                 alert.setZoneID((Integer)zones.get(0).getValue());
         }
+        alert.setAccountID(getAccountID());
         return createZoneAlertView(alert);
     }
 

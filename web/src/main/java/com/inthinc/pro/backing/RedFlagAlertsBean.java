@@ -65,6 +65,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     private RedFlagAlertView createRedFlagAlertView(RedFlagAlert flag)
     {
         final RedFlagAlertView flagView = new RedFlagAlertView();
+        
         flagView.setAnytime(true);
         BeanUtils.copyProperties(flag, flagView);
         if(flagView.getStartTOD() == null)
@@ -72,6 +73,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         if(flagView.getStopTOD() == null)
             flagView.setStopTOD(BaseAlert.MIN_TOD);
         flagView.setAnytime(isAnytime(flagView));
+        
         flagView.setSelected(false);
         return flagView;
     }
@@ -108,7 +110,9 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     protected RedFlagAlertView createAddItem()
     {
         final RedFlagAlert flag = new RedFlagAlert();
-        return createRedFlagAlertView(flag);
+        RedFlagAlertView redFlagAlertView = createRedFlagAlertView(flag);
+        redFlagAlertView.setAccountID(getAccountID());
+        return redFlagAlertView;
     }
 
     @Override

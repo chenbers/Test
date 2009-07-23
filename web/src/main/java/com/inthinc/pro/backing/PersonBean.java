@@ -220,7 +220,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     {
         final PersonView personView = new PersonView();
         personView.bean = this;
+        
         BeanUtils.copyProperties(person, personView);
+        
         if (personView.getAddress() == null)
             personView.setAddress(new Address());
         personView.setUserSelected(person.getUser() != null);
@@ -362,6 +364,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setDriver(new Driver());
         person.setUserSelected(true);
         person.setDriverSelected(true);
+        person.setAcctID(getAccountID());
         return person;
     }
 
