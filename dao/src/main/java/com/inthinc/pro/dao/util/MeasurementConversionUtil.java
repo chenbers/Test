@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.util;
 import java.math.BigDecimal;
 
 import com.inthinc.pro.model.MeasurementType;
+import java.lang.Math;
 
 /**
  * Utility for converty units of measurment from metric to english and eglish to metric MPH = Miles Per Hour KPH = Kilometers Per Hour MPS = Meters Per Second MPG = Miles Per
@@ -107,6 +108,7 @@ public class MeasurementConversionUtil
         return fromInchesToCentimeters(inches);
         
     }
+    
     
     public static Long fromInchesToCentimeters(Integer inches)
     {

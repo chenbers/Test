@@ -1,5 +1,7 @@
 package com.inthinc.pro.dao.util;
 
+import java.lang.Math;
+
 public class NumberUtil 
 {
 	
