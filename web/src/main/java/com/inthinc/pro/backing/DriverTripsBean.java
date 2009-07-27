@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -24,6 +25,7 @@ import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverTripsBean extends BaseBean
 {
@@ -485,6 +487,8 @@ public class DriverTripsBean extends BaseBean
     public void setDriverID(Integer driverID)
     {
         driver = driverDAO.findByID(driverID);
+        if (driver == null || getGroupHierarchy().getGroup(driver.getGroupID()) == null)
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
         setGroupTreeNodeImpl(new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy()));
         this.driverID = driverID;
     }

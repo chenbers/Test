@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
@@ -23,6 +24,7 @@ import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -553,6 +555,8 @@ public class VehicleTripsBean extends BaseBean
     public void setVehicleID(Integer vehicleID)
     {
         this.vehicle = vehicleDAO.findByID(vehicleID);
+        if (vehicle == null || getGroupHierarchy().getGroup(vehicle.getGroupID()) == null)
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
         groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(vehicle.getGroupID()),getGroupHierarchy());
         this.vehicleID = vehicleID;
     }
