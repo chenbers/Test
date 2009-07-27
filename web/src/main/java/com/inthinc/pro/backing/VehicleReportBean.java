@@ -12,6 +12,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TableType;
@@ -57,8 +58,14 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         vehiclesData = 
             scoreDAO.getVehicleReportData(
             		getEffectiveGroupId(),
-                    Duration.TWELVE);      
-    }
+                    Duration.TWELVE);  
+        
+        // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
+        for (VehicleReportItem vri : this.vehiclesData)
+        {
+            vri.setGroup(this.getGroupHierarchy().getGroup(vri.getGroupID()).getName());
+        }
+   }
 
     @Override
     public void personListChanged()

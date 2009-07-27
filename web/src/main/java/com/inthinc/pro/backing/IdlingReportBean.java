@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
 public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implements PersonChangeListener
 {
@@ -77,6 +78,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     {
         checkDates();
         this.idlingsData = scoreDAO.getIdlingReportData(getEffectiveGroupId(), this.internalStartDate, this.internalEndDate);
+
+        // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
+        for (IdlingReportItem iri : this.idlingsData)
+        {
+            iri.setGroup(this.getGroupHierarchy().getGroup(iri.getGroupID()).getName());
+        }
     }
 
     @Override
