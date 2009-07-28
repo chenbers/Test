@@ -176,6 +176,12 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
         return peoplePicker;
     }
+    
+    @Override
+    public void resetList() {
+    	peoplePicker = null; //Reset the list of people to be assigned to an alert. 
+    	super.resetList();
+    }
 
     private ArrayList<SelectItem> getNotifyPicked()
     {

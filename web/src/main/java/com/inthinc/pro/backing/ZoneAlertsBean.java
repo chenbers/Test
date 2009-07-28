@@ -310,7 +310,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         zonesBean.clearZones();
         super.resetList();
     }
-
+   
     public static class ZoneAlertView extends ZoneAlert implements BaseAdminAlertsBean.BaseAlertView
     {
         @Column(updateable = false)
