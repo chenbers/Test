@@ -180,6 +180,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     @Override
     public void resetList() {
     	peoplePicker = null; //Reset the list of people to be assigned to an alert. 
+    	allVehicles = null;
+    	allDrivers = null;
     	super.resetList();
     }
 
