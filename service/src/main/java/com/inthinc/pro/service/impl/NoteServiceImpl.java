@@ -184,5 +184,24 @@ public class NoteServiceImpl implements NoteService{
 	public MCMService getMcmService() {
 		return mcmService;
 	}
+	
+	@Override
+	public String createZoneArrivalEvent(String imei, Double latitude,
+			Double longitude, Integer speed, Integer speedLimit,
+			Integer bearing, Integer zoneID) {
+		Integer heading = Heading.valueOf(bearing).getCode();
+        Attribute speedLimitAttribute = new Attribute(AttributeType.ATTR_TYPE_SPEED_LIMIT,speedLimit);
+        Attribute boundryAttribute = new Attribute(AttributeType.ATTR_TYPE_BOUNDRY,BOUNDRY); ///146 = Utah
+        Attribute zoneIdAttribute = new Attribute(AttributeType.ATTR_TYPE_ZONE_ID,zoneID);
+        Note note = new Note(NoteType.ZONES_ARRIVAL,new Date(),latitude,longitude,speed,10,9,heading,speedLimitAttribute,boundryAttribute,zoneIdAttribute);
+        List<byte[]> byteList = new ArrayList<byte[]>();
+        byteList.add(note.getBytes());
+        List<Map> mapList = mcmService.note(imei, byteList);
+        
+        if(mapList.size() > 0){
+            return mapList.get(0).get("data").toString();
+        }
+        return "1";
+	}
 
 }

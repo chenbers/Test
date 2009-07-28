@@ -80,4 +80,14 @@ public interface NoteService {
             @PathParam("deltaX")Integer deltaX,
             @PathParam("deltaY")Integer deltaY,
             @PathParam("deltaZ")Integer deltaZ);
+	
+	@GET
+    @Path("/createZoneArrivalEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{zoneID}")
+    public String createZoneArrivalEvent(@PathParam("imei")String imei,
+            @PathParam("lat")Double latitude,
+            @PathParam("lng")Double longitude,
+            @PathParam("currentSpeed")Integer speed,
+            @PathParam("speedLimit")Integer speedLimit,
+            @PathParam("bearing")Integer bearing,
+            @PathParam("zoneID")Integer zoneID);
 }
