@@ -59,28 +59,74 @@ public class VehicleSpeedBean extends BasePerformanceBean
         styleMap = new HashMap<String, String>();
         
         ScoreableEntity se = tempMap.get(ScoreType.SCORE_SPEEDING);
-        scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+//        scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
+//        styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+//
+//        se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
+//        scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
+//        styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+//
+//        se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
+//        scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
+//        styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+//
+//        se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
+//        scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
+//        styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+//
+//        se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
+//        scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
+//        styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+//
+//        se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
+//        scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
+//        styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        
+        if (se != null)
+        {
+            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
 
-        se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
-        scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
-        styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+            se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
+            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
+            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        }
+        else
+        {
+            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+
+            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), EMPTY_SCORE_VALUE);
+            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+        }
     }
 
     private void initTrends()
