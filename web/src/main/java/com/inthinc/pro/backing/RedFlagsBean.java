@@ -37,7 +37,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     private static final Integer    numRowsPerPg = 25;
     private Integer                 start;
     private Integer                 end;
-    private Integer                 maxCount;
     private List<RedFlagReportItem> tableData;
     private List<RedFlagReportItem> filteredTableData;
 
@@ -45,7 +44,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     private RedFlagDAO              redFlagDAO;
     private ZoneDAO                 zoneDAO;
     private TablePreferenceDAO tablePreferenceDAO;
-    
+    private Integer					maxCount;
     private RedFlagReportItem   clearItem;
     
     private EventCategory categoryFilter;
@@ -114,12 +113,12 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     
     
 
-    private void init()
+    protected void init()
     {
-        if (tableData == null)
-        {
-            initTableData();
-        }
+//        if (tableData == null)
+//        {
+//            initTableData();
+//        }
         if (filteredTableData == null)
         {
             filterTableData();
@@ -135,6 +134,11 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     @Override
     protected void filterTableData()
     {
+        if (tableData == null)
+        {
+            initTableData();
+        }
+
         setFilteredTableData(tableData); 
         if (getCategoryFilter() != null)
         {    
@@ -198,6 +202,10 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     protected void filterTableDataWithoutSearch()
     {
     	searchCoordinationBean.clearSearchFor();
+        if (tableData == null)
+        {
+            initTableData();
+        }
         setFilteredTableData(tableData); 
         if (getCategoryFilter() != null)
         {    
@@ -281,7 +289,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         return TablePref.fieldValue(item, column);
     }
 
-    private void initTableData()
+    protected void initTableData()
     {
         setFilteredTableData(null);
         
@@ -361,21 +369,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         this.end = end;
     }
-
-    public Integer getMaxCount()
-    {
-        if (maxCount == null) 
-        {
-            init();
-        }
-        return maxCount;
-    }
-
-    public void setMaxCount(Integer maxCount)
-    {
-        this.maxCount = maxCount;
-    }
-
 
     public RedFlagReportItem getClearItem()
     {
@@ -553,6 +546,16 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
     }
+	public Integer getMaxCount() {
+	    if (maxCount == null) 
+	    {
+	        init();
+	    }
+	    return maxCount;
+	}
+	public void setMaxCount(Integer maxCount) {
+	    this.maxCount = maxCount;
+	}
 
 
 }
