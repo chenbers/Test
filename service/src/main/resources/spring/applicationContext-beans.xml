@@ -7,23 +7,21 @@
     </bean>
     
     <!-- RestEasy Config -->
-    <bean class="com.inthinc.pro.service.SpeedByStreetService">
+    <bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl">
     	<property name="sbsUserId" value="${teenproxy.sbsUserId}"/>
 		<property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
 		<property name="teenServerDAO" ref="sbsDataAccessBean"/>
 		<property name="tigerDAO" ref="tigerDao"/>
     </bean>
     
-    <bean class="com.inthinc.pro.service.DeviceService">
+    <bean class="com.inthinc.pro.service.impl.DeviceServiceImpl">
     	<property name="deviceDAO" ref="deviceDAO"/>
     	<property name="userDAO" ref="userDAO"/>
     	<property name="groupDAO" ref="groupDAO"/>
     </bean>
     
-    <bean class="com.inthinc.pro.service.NoteService">
+    <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">
     	<property name="mcmService" ref="mcmServiceBean"/>
     </bean>
-    
-    
-    
+
 </beans>
