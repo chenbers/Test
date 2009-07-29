@@ -33,6 +33,10 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_sim}" /></f:facet>
       <h:outputText value="#{item.sim}" />
     </rich:column>
+    <rich:column rendered="#{devicesBean.tableColumns['serialNum'].visible}" sortBy="#{item.serialNum}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_serialNum}" /></f:facet>
+      <h:outputText value="#{item.serialNum}" />
+    </rich:column>
     <rich:column rendered="#{devicesBean.tableColumns['phone'].visible}" sortBy="#{item.phone}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_phone}" /></f:facet>
       <h:outputText value="#{item.phone}" />

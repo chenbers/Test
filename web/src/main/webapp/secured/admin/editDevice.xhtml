@@ -115,6 +115,12 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
+                                  <h:outputText value="#{messages.editDevice_serialNum}" />
+                                </td>
+                                <td><h:outputText value="#{devicesBean.item.serialNum}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_phone" value="#{devicesBean.updateField['phone']}" />
                                   <h:outputText value="#{messages.editDevice_phone}" />
                                   <span class="required">*</span>

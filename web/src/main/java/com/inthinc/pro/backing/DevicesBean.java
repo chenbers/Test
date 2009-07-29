@@ -32,7 +32,7 @@ import com.inthinc.pro.util.SelectItemUtil;
 public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 6 };
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 7 };
     static
     {
         // available columns
@@ -41,6 +41,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("vehicleID");
         AVAILABLE_COLUMNS.add("imei");
         AVAILABLE_COLUMNS.add("sim");
+        AVAILABLE_COLUMNS.add("serialNum");
         AVAILABLE_COLUMNS.add("phone");
         AVAILABLE_COLUMNS.add("ephone");
         AVAILABLE_COLUMNS.add("status");
