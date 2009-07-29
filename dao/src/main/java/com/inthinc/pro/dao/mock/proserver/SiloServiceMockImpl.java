@@ -651,13 +651,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-	public Map<String, Object> getDeviceBySerialNum(String serialNum)
-			throws ProDAOException {
-		// TODO Auto-generated method stub
-        return doMockLookup(Device.class, "serialNum", serialNum, "No device for serialNum: " + serialNum, "getDeviceBySerialNum");
-	}
-
-    @Override
     public Map<String, Object> updateDevice(Integer deviceID, Map<String, Object> deviceMap) throws ProDAOException
     {
         return createReturnValue("count", 1);
