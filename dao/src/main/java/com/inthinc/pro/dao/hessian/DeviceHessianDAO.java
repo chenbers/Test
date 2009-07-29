@@ -24,6 +24,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
 {
     private static final Logger logger = Logger.getLogger(DeviceHessianDAO.class);
     private static final String CENTRAL_ID_KEY = "mcmid";
+    private static final String SERIAL_NUM_KEY = "serialNum";
 
     private DeviceMapper deviceMapper;
     private VehicleDAO vehicleDAO;
@@ -98,13 +99,11 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
     public Device findBySerialNum(String serialNum)
     {
         
-        // TODO: it can take up to 5 minutes from when a user record is added until
-        // it can be accessed via getID().   Should this method account for that?
         try
         {
-            Map<String, Object> returnMap = getSiloService().getID(CENTRAL_ID_KEY, serialNum);
+            Map<String, Object> returnMap = getSiloService().getID(SERIAL_NUM_KEY, serialNum);
             Integer deviceId = getCentralId(returnMap);
-            return findByID(deviceId);            
+            return findByID(deviceId);
         }
         catch (EmptyResultSetException e)
         {
