@@ -426,7 +426,7 @@ public class AlertMessagesTest
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         
-        device = new Device(0, acctID, DeviceStatus.ACTIVE, "Device", genNumericID(acctID, 15), genNumericID(acctID, 19), "5555551234", "5555559876");
+        device = new Device(0, acctID, DeviceStatus.ACTIVE, "Device", genNumericID(acctID, 15), genNumericID(acctID, 19), genNumericID(account.getAcctID(), 10), "5555551234", "5555559876");
         device.setAccel("1100 50 4");
         Integer deviceID = deviceDAO.create(acctID, device);
         device.setDeviceID(deviceID);

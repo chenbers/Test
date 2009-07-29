@@ -942,10 +942,9 @@ public class SiloServiceTest
         // create all as new
         for (int i = 0; i < DEVICE_COUNT; i++)
         {
-            Device device = new Device(0, acctID, DeviceStatus.NEW, "Device " + i, "IMEI " + acctID + i, "SIM " + i, 
+            Device device = new Device(0, acctID, DeviceStatus.NEW, "Device " + i, "IMEI " + acctID + i, "SIM " + i, Integer.valueOf(Util.randomInt(40, 99999)).toString(),
                     "555555123" + i,    // phone 
                     "555555987" + i);     // ephone
-            device.setSerialNum("SN"+i);
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);
@@ -956,7 +955,7 @@ public class SiloServiceTest
         boolean exceptionThrown = false;
         try
         {
-            Device dupDevice = new Device(0, acctID, DeviceStatus.NEW, "Device " + 0, "IMEI " + acctID + 0, "SIM " + 0, "PHONE " + 0, "EPHONE " + 0);
+            Device dupDevice = new Device(0, acctID, DeviceStatus.NEW, "Device " + 0, "IMEI " + acctID + 0, "SIM " + 0, "SERIALNUM" + 0, "PHONE " + 0, "EPHONE " + 0);
             deviceDAO.create(acctID, dupDevice);
         }
         catch (DuplicateIMEIException e)

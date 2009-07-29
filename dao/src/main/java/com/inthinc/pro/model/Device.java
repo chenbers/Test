@@ -66,7 +66,7 @@ public class Device extends BaseEntity
     {
         super();
     }
-    public Device(Integer deviceID, Integer accountID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone)
+    public Device(Integer deviceID, Integer accountID, DeviceStatus status, String name, String imei, String sim, String serialNum, String phone, String ephone)
     {
         super();
         this.deviceID = deviceID;
@@ -75,6 +75,7 @@ public class Device extends BaseEntity
         this.name = name;
         this.imei = imei;
         this.sim = sim;
+        this.serialNum = serialNum;
         this.phone = phone;
         this.ephone = ephone;
     }
