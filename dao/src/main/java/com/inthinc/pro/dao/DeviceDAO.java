@@ -15,6 +15,8 @@ public interface DeviceDAO extends GenericDAO<Device, Integer>
     
     Device findByIMEI(String imei);
     
+    Device findBySerialNum(String serialNum);
+    
     List<ForwardCommand> getForwardCommands(Integer deviceID, ForwardCommandStatus status);
     
     Integer queueForwardCommand(Integer deviceID, ForwardCommand forwardCommand);

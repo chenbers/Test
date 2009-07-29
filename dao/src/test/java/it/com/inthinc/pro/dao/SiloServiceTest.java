@@ -945,6 +945,7 @@ public class SiloServiceTest
             Device device = new Device(0, acctID, DeviceStatus.NEW, "Device " + i, "IMEI " + acctID + i, "SIM " + i, 
                     "555555123" + i,    // phone 
                     "555555987" + i);     // ephone
+            device.setSerialNum("SN"+i);
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);

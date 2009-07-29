@@ -37,6 +37,7 @@ public class Device extends BaseEntity
     @Column(name = "mcmid")
     private String            imei;
     private String            sim;
+    private String			  serialNum;
     private String            phone;
     private String            ephone;
     private Date              activated;
@@ -287,6 +288,14 @@ public class Device extends BaseEntity
     public void setImei(String imei)
     {
         this.imei = imei;
+    }
+    public String getSerialNum()
+    {
+        return serialNum;
+    }
+    public void setSerialNum(String serialNum)
+    {
+        this.serialNum = serialNum;
     }
     public Integer getBaseID()
     {
