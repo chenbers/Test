@@ -48,6 +48,7 @@ public class DAOUtilBean {
 
 	private Map<Integer, String> accountMap;
 	private String imei;
+	private String serialNum;
 	private Integer selectedAccountID;
 
 	private String errorMsg;
@@ -115,56 +116,56 @@ public class DAOUtilBean {
 
 		Integer vehicleID = device.getVehicleID();
 		if (vehicleID == null) {
-			setErrorMsg("Warning - Device Not Associated with Vehicle: " + imei);
-			return false;
+			messageList.add("Warning - Device Not Associated with Vehicle: " + imei);
 		}
-		String warning = "";
-		boolean success=true;
-		LastLocation loc = vehicleDAO.getLastLocation(vehicleID);
-		Calendar calendar = Calendar.getInstance();
-		Date endDate = new Date();
-		calendar.setTime(endDate);
-		calendar.add(Calendar.YEAR, -1);
-		Date startDate = calendar.getTime();
-		List<Integer> eventTypes = new LinkedList<Integer>();
-		eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
-		List<Event> events = eventDAO.getEventsForVehicle(vehicleID, startDate,
-				endDate, eventTypes);
+		if (vehicleID != null)
+		{
+			LastLocation loc = vehicleDAO.getLastLocation(vehicleID);
+			Calendar calendar = Calendar.getInstance();
+			Date endDate = new Date();
+			calendar.setTime(endDate);
+			calendar.add(Calendar.YEAR, -1);
+			Date startDate = calendar.getTime();
+			List<Integer> eventTypes = new LinkedList<Integer>();
+			eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
+			List<Event> events = eventDAO.getEventsForVehicle(vehicleID, startDate,
+					endDate, eventTypes);
 
 
-		if (loc != null)
-		{
-			messageList.add("GPS OK - Last fix " + loc.getTime() + " " + loc.getLoc().getLat() + " "
-					+ loc.getLoc().getLng());
+			if (loc != null)
+			{
+				messageList.add("GPS OK - Last fix " + loc.getTime() + " " + loc.getLoc().getLat() + " "
+						+ loc.getLoc().getLng());
+			}
+			else
+			{
+				messageList.add("Warning - Device never achieved GPS fix. ");
+			}
+			if (!events.isEmpty())
+			{
+				Event event = events.get(0);
+				messageList.add("OTA OK - First Event " + EventMapper.getEventType(event.getType()) + " "
+						+ event.getTime());
+				event = events.get(events.size()-1);
+				messageList.add("OTA OK - Last Event " + EventMapper.getEventType(event.getType()) + " "
+						+ event.getTime());
+			}
+			else
+			{
+				messageList.add("Warning - No power up events for device. Device never connected OTA. ");
+			}
+			
 		}
-		else
-		{
-			warning += "Warning - Device never achieved GPS fix. ";
-			success = false;
-		}
-		if (!events.isEmpty())
-		{
-			Event event = events.get(0);
-			messageList.add("OTA OK - First Event " + EventMapper.getEventType(event.getType()) + " "
-					+ event.getTime());
-			event = events.get(events.size()-1);
-			messageList.add("OTA OK - Last Event " + EventMapper.getEventType(event.getType()) + " "
-					+ event.getTime());
-		}
-		else
-		{
-			warning += "Warning - No power up events for device. Device never connected OTA. ";
-			success = false;
-		}
-		setErrorMsg(warning);
-		return success;
+		return true;
 	}
 
 	private void loadDevice()
 	{
-		device = deviceDAO.findByIMEI(imei);	
+		device = deviceDAO.findBySerialNum(serialNum);	
 		if (device==null)
-			setErrorMsg("Error - Device not found: " + imei);
+			device = deviceDAO.findByIMEI(serialNum);	
+		if (device==null)
+			setErrorMsg("Error - Device not found: " + serialNum);
 	}
 	public void rmaDeviceAction()
 	{
@@ -375,6 +376,16 @@ public class DAOUtilBean {
 		if (imei!=null)
 			imei=imei.trim();
 		this.imei = imei;
+	}
+
+	public String getSerialNum() {
+		return serialNum;
+	}
+
+	public void setSerialNum(String serialNum) {
+		if (serialNum!=null)
+			serialNum=serialNum.trim();
+		this.serialNum = serialNum;
 	}
 
 	public String getErrorMsg() {

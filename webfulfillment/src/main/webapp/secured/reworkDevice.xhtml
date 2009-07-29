@@ -16,15 +16,15 @@
 				
 				<h:outputText style="font-size:35px;color: red;" value=""
 						escape="false" />
-				<h:form id="mainform" focus="imei">
+				<h:form id="mainform" focus="serialNum">
 					<div id="page_top_left"> <br />
 					<br />
-					Scan the IMEI barcode or type manually:<br/>
-					<h:inputText id="imei" value="#{daoUtilBean.imei}" size="30"
+					Scan the Serial Number barcode or type manually:<br/>
+					<h:inputText id="serialNum" value="#{daoUtilBean.serialNum}" size="30"
 						required="false" requiredMessage="required" /> <rich:message
-						for="imei" /> <br />
+						for="serialNum" /> <br />
 					<script>
-    						document.getElementById('mainform:imei').focus();
+    						document.getElementById('mainform:serialNum').focus();
   </script> <br />
 					<h:commandButton value="Move to Inventory"
 						action="#{daoUtilBean.reworkDeviceAction}" /> <br />
