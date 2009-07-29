@@ -147,12 +147,13 @@ public class RedFlagsBeanTest extends BaseBeanTest
         assertNotNull(redFlagsBean.getRedFlagDAO());
         assertNotNull(redFlagsBean.getTablePreferenceDAO());
         
+        redFlagsBean.initTableData();
         List<RedFlagReportItem> tableData = redFlagsBean.getTableData();
         assertNotNull(tableData);
         int totalRows = tableData.size();
         
         redFlagsBean.getSearchCoordinationBean().setSearchFor("info");
-        redFlagsBean.searchAction();
+         redFlagsBean.searchAction();
         tableData = redFlagsBean.getTableData();
         int infoRows = tableData.size();
         assertTrue("found some info rows", infoRows > 0);
