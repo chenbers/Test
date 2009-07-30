@@ -358,7 +358,7 @@
                       <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">     
                       <ui:fragment rendered="#{not personBean.batchEdit}">  
                         <tr>
-                          <td width="100" valign="top">
+                          <td width="150" valign="top">
                             <h:outputText value="#{messages.editPerson_empid}" />
                           </td>
                           <td>
@@ -369,7 +369,7 @@
                         </tr>   
                         </ui:fragment>
                         <tr>
-                          <td width="100" valign="top">
+                          <td width="150" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_reportsTo" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['reportsTo']}" />
                             <h:outputText value="#{messages.editPerson_reportsTo}" />
                           </td>
@@ -381,7 +381,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top">
+                          <td width="150" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_title" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['title']}" />
                             <h:outputText value="#{messages.editPerson_title}" />
                           </td>
@@ -390,7 +390,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top">
+                          <td width="150" valign="top">
                           	<ui:include src="../../includes/inputLabel.xhtml">
 								<ui:param name="required" value="TRUE"/>
 								<ui:param name="for" value="timeZone"/>
@@ -415,7 +415,7 @@
                           
                         </tr>
                         <tr>
-                             <td width="100">
+                             <td width="150">
                                  <ui:include src="../../includes/inputLabel.xhtml">
                                     <ui:param name="required" value="TRUE"/>
                                     <ui:param name="fieldName" value="measurementType"/>
@@ -428,6 +428,23 @@
                                  <rich:message for="user_person_measurementType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                  <h:selectOneMenu id="user_person_measurementType" value="#{personBean.item.measurementType}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
                                         <f:selectItems value="#{measurementBean.measurementTypeItems}"/>
+                                 </h:selectOneMenu>
+                             </td>
+                        </tr>
+                        <tr>
+                             <td width="150">
+                                 <ui:include src="../../includes/inputLabel.xhtml">
+                                    <ui:param name="required" value="TRUE"/>
+                                    <ui:param name="fieldName" value="fuelEfficiencyType"/>
+                                    <ui:param name="for" value="user_person_fuelEfficiencyType"/>
+                                    <ui:param name="editBean" value="#{personBean}"/>
+                                    <ui:param name="label" value="#{messages.editPerson_user_fuelEfficiencyType}"/>
+                                 </ui:include>
+                             </td>
+                             <td>
+                                 <rich:message for="user_person_fuelEfficiencyType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                 <h:selectOneMenu id="user_person_fuelEfficiencyType" value="#{personBean.item.fuelEfficiencyType}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+                                        <f:selectItems value="#{fuelEfficiencyBean.fuelEfficiencyTypeItems}"/>
                                  </h:selectOneMenu>
                              </td>
                         </tr>
