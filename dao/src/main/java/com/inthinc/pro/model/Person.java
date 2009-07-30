@@ -51,6 +51,7 @@ public class Person extends BaseEntity implements Comparable<Person>
     private Status status;
     private Integer acctID;
     private MeasurementType measurementType;
+    private FuelEfficiencyType fuelEfficiencyType;
 
     public Person()
     {
@@ -450,6 +451,14 @@ public class Person extends BaseEntity implements Comparable<Person>
     public void setMeasurementType(MeasurementType measurementType)
     {
         this.measurementType = measurementType;
+    }
+
+    public FuelEfficiencyType getFuelEfficiencyType() {
+        return fuelEfficiencyType;
+    }
+
+    public void setFuelEfficiencyType(FuelEfficiencyType fuelEfficiencyType) {
+        this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
     @Override
