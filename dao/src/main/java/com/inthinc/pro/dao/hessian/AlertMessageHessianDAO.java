@@ -24,7 +24,6 @@ import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.Person;
@@ -170,11 +169,16 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
 
     private AlertMessageBuilder createAlertMessageBuilder(AlertMessage alertMessage,Event event)
     {
-        if(alertMessage.getPersonID() == null || alertMessage.getPersonID() == 0)
+        if(alertMessage.getPersonID() == null || alertMessage.getPersonID() == 0 || event == null){
+            logger.debug("Person ID or Event is Null");
             return null;
+        }
+            
         
         
         Person person = personDAO.findByID(alertMessage.getPersonID());
+        logger.debug("Preparing message for: " + person.getFullName());
+        
         Driver driver = driverDAO.findByID(event.getDriverID());
         Vehicle vehicle = vehicleDAO.findByID(event.getVehicleID());
         Locale locale = Locale.ENGLISH;
