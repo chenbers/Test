@@ -116,7 +116,7 @@ public class DAOUtilBean {
 
 		Integer vehicleID = device.getVehicleID();
 		if (vehicleID == null) {
-			messageList.add("Warning - Device Not Associated with Vehicle: " + imei);
+			messageList.add("Warning - Device Not Associated with Vehicle: " + serialNum);
 		}
 		if (vehicleID != null)
 		{
@@ -179,7 +179,7 @@ public class DAOUtilBean {
 		{
 			if (!device.getAccountID().equals(selectedAccountID)) {
 				Account assignedAccount = accountDAO.findByID(device.getAccountID());
-				setErrorMsg("Error - Device "+ imei + " assigned to account " + assignedAccount.getAcctName());
+				setErrorMsg("Error - Device "+ serialNum + " assigned to account " + assignedAccount.getAcctName());
 			} else 
 			{
 				deviceDAO.deleteByID(device.getDeviceID());
@@ -187,10 +187,10 @@ public class DAOUtilBean {
 				// TODO should we set ephone to tech support??
 				device.setEphone(null);
 				deviceDAO.create(rmaAccountID, device);
-				setSuccessMsg("Device " + imei + " successfully moved to account: " + rmaAccount.getAcctName());
+				setSuccessMsg("Device " + serialNum + " successfully moved to account: " + rmaAccount.getAcctName());
 			}
 		}
-		setImei(null);
+		setSerialNum(null);
 	}
 	public void reworkDeviceAction()
 	{
@@ -200,7 +200,7 @@ public class DAOUtilBean {
 		{
 			if (!device.getAccountID().equals(rmaAccount.getAcctID())) {
 				Account assignedAccount = accountDAO.findByID(device.getAccountID());
-				setErrorMsg("Error - Device "+ imei + " assigned to account " + assignedAccount.getAcctName());
+				setErrorMsg("Error - Device "+ serialNum + " assigned to account " + assignedAccount.getAcctName());
 			} else 
 			{
 				deviceDAO.deleteByID(device.getDeviceID());
@@ -208,10 +208,10 @@ public class DAOUtilBean {
 				// TODO should we set ephone to tech support??
 				device.setEphone(null);
 				deviceDAO.create(shipAccountID, device);
-				setSuccessMsg("Device " + imei + " successfully moved to account: " + shipAccount.getAcctName());
+				setSuccessMsg("Device " + serialNum + " successfully moved to account: " + shipAccount.getAcctName());
 			}
 		}
-		setImei(null);
+		setSerialNum(null);
 	}
 	public void moveDeviceAction() {
 		reInitAction();
@@ -224,7 +224,7 @@ public class DAOUtilBean {
 		{
 			if (!device.getAccountID().equals(shipAccountID)) {
 				Account assignedAccount = accountDAO.findByID(device.getAccountID());
-				setErrorMsg("Error - Device "+ imei + " already assigned to account " + assignedAccount.getAcctName());
+				setErrorMsg("Error - Device "+ serialNum + " already assigned to account " + assignedAccount.getAcctName());
 			} else if (checkDevice())
 			{
 				deviceDAO.deleteByID(device.getDeviceID());
@@ -232,10 +232,10 @@ public class DAOUtilBean {
 				// TODO should we set ephone to tech support??
 				device.setEphone(null);
 				deviceDAO.create(selectedAccountID, device);
-				setSuccessMsg("Device " + imei + " successfully assigned to account: " + getSelectedAccountName());
+				setSuccessMsg("Device " + serialNum + " successfully assigned to account: " + getSelectedAccountName());
 			}
 		}
-		setImei(null);
+		setSerialNum(null);
 	}
 
 	public List<SelectItem> getAccountSelectList() {
@@ -275,7 +275,7 @@ public class DAOUtilBean {
     public void clearErrorAction()
     {
     	reInitAction();
-        setImei(null);
+        setSerialNum(null);
     }
 
     public void reInitAction()
