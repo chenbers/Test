@@ -2,8 +2,8 @@ package com.inthinc.pro.dao.util;
 
 import java.math.BigDecimal;
 
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
-import java.lang.Math;
 
 /**
  * Utility for converty units of measurment from metric to english and eglish to metric MPH = Miles Per Hour KPH = Kilometers Per Hour MPS = Meters Per Second MPG = Miles Per
@@ -66,6 +66,16 @@ public class MeasurementConversionUtil
          return milesPerGallon.doubleValue() * 0.42514;
     }
 
+    public static Number fromMPGtoLP100KM(Number milesPerGallon)
+    {
+        return new Double(100)/fromMPGtoKPL(milesPerGallon).doubleValue();
+    }
+    
+    public static Number fromMPGtoMPGUK(Number milesPerGallon)
+    {
+        return new Double(1.2)*milesPerGallon.doubleValue();
+    }
+    
     public static Number convertMpgToKpl(Number mileage, MeasurementType convertToMeasurmentType)
     {
         if (mileage != null && convertToMeasurmentType == MeasurementType.METRIC)
@@ -74,7 +84,49 @@ public class MeasurementConversionUtil
             return mileage;
     }
 
-    public static Number convertSpeed(Number speed,  MeasurementType convertToMeasurmentType)
+    public static Number convertMpgToFuelEfficiencyType(Number mileage, MeasurementType convertToMeasurmentType, FuelEfficiencyType convertToFuelEficiencyType)
+    {
+        if (mileage == null) return mileage;
+        
+        switch(convertToMeasurmentType) {
+            
+            case METRIC:
+                
+                switch(convertToFuelEficiencyType){
+                    
+                    case KMPL:
+                        
+                        return fromMPGtoKPL(mileage);
+                        
+                    case LP100KM:
+                        
+                        return fromMPGtoLP100KM(mileage);
+                        
+                    default:
+                         
+                        return mileage;
+                }
+                
+            case ENGLISH:
+                
+                switch(convertToFuelEficiencyType){
+                    
+                    case MPG_US:
+                        
+                        return mileage;
+                        
+                    case MPG_UK:
+                        
+                        return fromMPGtoMPGUK(mileage);
+                        
+                    default:
+                        
+                        return mileage;
+                }
+        }
+        return mileage;
+    }
+   public static Number convertSpeed(Number speed,  MeasurementType convertToMeasurmentType)
     {
         if (convertToMeasurmentType == MeasurementType.METRIC)
             return fromMPHtoKPH(speed);

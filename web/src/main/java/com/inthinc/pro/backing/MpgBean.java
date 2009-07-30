@@ -73,7 +73,7 @@ public class MpgBean extends BaseBean implements Serializable
         // Control parameters
         sb.append(GraphicUtil.getBarControlParameters());
         logger.debug("getting scores for groupID: " + groupID);
-        sb.append(GraphicUtil.createMpgXML(getMpgEntities(), getPerson().getMeasurementType()));
+        sb.append(GraphicUtil.createMpgXML(getMpgEntities(), getPerson().getMeasurementType(), getPerson().getFuelEfficiencyType()));
         sb.append("</chart>");
         return sb.toString();
         // Bar parameters

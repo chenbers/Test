@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 
 
@@ -87,6 +87,32 @@ public class MetricConversionUtilTest
         
         actualCm = MeasurementConversionUtil.fromFeetInchToCentimeters(5, 7);
         Assert.assertEquals(centimeters,actualCm);
+    }
+    /**
+     * Test method for {@link com.inthinc.pro.dao.util.MeasurementConversionUtil#convertMpgToFuelEfficiencyType(java.lang.Number, com.inthinc.pro.model.MeasurementType, com.inthinc.pro.model.FuelEfficiencyType)}.
+     */
+    @Test
+    public void testConvertMpgToFuelEfficiencyTpe() 
+    {
+        Number result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_UK);
+        Assert.assertEquals(result,24.0); 
+        
+        result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
+        Assert.assertEquals(result,20); 
+        result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.KMPL);
+        Assert.assertEquals(result,20); 
+        result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.LP100KM);
+        Assert.assertEquals(result,20); 
+        result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.MPG_UK);
+        Assert.assertEquals(result,20); 
+        result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.MPG_US);
+        Assert.assertEquals(result,20); 
+        result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.KMPL);
+        Assert.assertEquals(result,20.0* 0.42514); 
+        result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.LP100KM);
+        Number expected = 100/(20.0* 0.42514);
+        Assert.assertEquals(result,expected); 
+      
     }
 
 }

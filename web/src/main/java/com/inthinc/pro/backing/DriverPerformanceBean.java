@@ -251,9 +251,9 @@ public class DriverPerformanceBean extends BasePerformanceBean
         sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getLightValue(), getPerson().getMeasurementType()).longValue();
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getMediumValue(), getPerson().getMeasurementType()).longValue();
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToKpl(entity.getHeavyValue(), getPerson().getMeasurementType()).longValue();
+            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(), getPerson().getMeasurementType(),getPerson().getFuelEfficiencyType()).longValue();
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getPerson().getMeasurementType(),getPerson().getFuelEfficiencyType()).longValue();
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(), getPerson().getMeasurementType(),getPerson().getFuelEfficiencyType()).longValue();
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
 

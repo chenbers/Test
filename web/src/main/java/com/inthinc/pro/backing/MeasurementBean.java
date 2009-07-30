@@ -22,4 +22,6 @@ public class MeasurementBean extends BaseBean
     {
         return measurementTypeItems;
     }
+    
+    
 }
