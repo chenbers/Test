@@ -46,7 +46,7 @@
                   <table width="930" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td width="460">
+                        <td width="460" style="vertical-align: top">
                           <div class="add_section_title"><h:outputText value="#{messages.myAccount_accountInformation}" /></div>
                             <table width="100%" border="0" cellpadding="4" cellspacing="0">
                               <tbody>
@@ -68,16 +68,16 @@
 
                         <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>
                         
-                        <td valign="top" width="460">
+                        <td valign="top" width="460" style="vertical-align: top">
                           <div class="add_section_title"><h:outputText value="#{messages.myAccount_loginInformation}" /></div>
                           <table width="100%" border="0" cellpadding="4" cellspacing="0">
                             <tbody>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.myAccount_userName}" /></td>
+                                <td width="150"><h:outputText value="#{messages.myAccount_userName}" /></td>
                                 <td><h:outputText value="#{myAccountBean.user.username}"/></td>
                               </tr>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.myAccount_locale}:" /></td>
+                                <td width="150"><h:outputText value="#{messages.myAccount_locale}:" /></td>
                                 <td>
                                     <h:selectOneMenu value="#{localeBean.user.locale}" converter="SimpleBeanConverter">
                                         <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
@@ -85,10 +85,18 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.myAccount_measurement}:" /></td>
+                                <td width="150"><h:outputText value="#{messages.myAccount_measurement}:" /></td>
                                 <td>
                                     <h:selectOneMenu value="#{measurementBean.person.measurementType}" converter="SimpleBeanConverter">
                                         <f:selectItems value="#{measurementBean.measurementTypeItems}"/>
+                                    </h:selectOneMenu>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="150"><h:outputText value="#{messages.myAccount_fuel_efficiency}:" /></td>
+                                <td>
+                                    <h:selectOneMenu value="#{fuelEfficiencyBean.person.fuelEfficiencyType}" converter="SimpleBeanConverter">
+                                        <f:selectItems value="#{fuelEfficiencyBean.fuelEfficiencyTypeItems}"/>
                                     </h:selectOneMenu>
                                 </td>
                               </tr>

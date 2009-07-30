@@ -411,6 +411,7 @@
     
     <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"/>
     <bean id="measurementBean" class="com.inthinc.pro.backing.MeasurementBean" scope="request" init-method="init"/>
+    <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request" init-method="init"/>
     
     <!-- Duration Beans -->
     <bean id="overallScoreDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
