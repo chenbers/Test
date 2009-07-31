@@ -19,7 +19,7 @@ public class LbsToKgConverter extends BaseConverter
         {
             if (value != null && !value.equals(""))
             {
-                if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
+                if (getMeasurementType().equals(MeasurementType.METRIC))
                 {
                     Long weight = Long.valueOf(value);
                     return MeasurementConversionUtil.fromKgToPounds(weight).intValue();
@@ -48,7 +48,7 @@ public class LbsToKgConverter extends BaseConverter
     {
         if (Integer.class.isInstance(value))
         {
-            if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
+            if (getMeasurementType().equals(MeasurementType.METRIC))
                 return MeasurementConversionUtil.fromPoundsToKg(((Integer) value).longValue()).toString();
             else
                 return value.toString();

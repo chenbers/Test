@@ -279,10 +279,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 return null;
         }
         else if (column.equals("measurementType")) {
-            return MessageUtil.getMessageString(person.getMeasurementType().toString(), getProUser().getUser().getLocale());
+            return MessageUtil.getMessageString(getMeasurementType().toString(), getProUser().getUser().getLocale());
         }
         else if (column.equals("fuelEfficiencyType")) {
-            return MessageUtil.getMessageString(person.getFuelEfficiencyType().toString(), getProUser().getUser().getLocale());
+            return MessageUtil.getMessageString(getFuelEfficiencyType().toString(), getProUser().getUser().getLocale());
         }
         else
             return super.fieldValue(person, column);

@@ -15,6 +15,7 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
@@ -149,7 +150,27 @@ public class BaseBean implements Serializable
         else
             return MeasurementType.ENGLISH;
     }
-
+    
+     public FuelEfficiencyType getFuelEfficiencyType(){
+         
+         if (getUser().getPerson().getFuelEfficiencyType() != null) {
+             
+             return getUser().getPerson().getFuelEfficiencyType();
+         }
+         if (getUser().getPerson().getMeasurementType() != null) {
+            
+             if (getUser().getPerson().getMeasurementType() == MeasurementType.ENGLISH)
+                 
+                 return FuelEfficiencyType.MPG_US;
+             
+             else
+                 
+                 return FuelEfficiencyType.KMPL;
+         }
+         else
+             
+             return FuelEfficiencyType.MPG_US;
+     }
     public String getAccountName()
     {
         Account account = getAccountDAO().findByID(getAccountID());

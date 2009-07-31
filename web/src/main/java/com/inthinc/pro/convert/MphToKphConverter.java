@@ -13,7 +13,7 @@ public class MphToKphConverter extends BaseConverter
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
     {
         if(value != null){
-            if(getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
+            if(getMeasurementType().equals(MeasurementType.METRIC))
             {
                 Integer speed = Integer.valueOf(value);
                 return MeasurementConversionUtil.fromKPHtoMPH(speed).intValue(); 
@@ -31,7 +31,7 @@ public class MphToKphConverter extends BaseConverter
     {
         if (Number.class.isInstance(value))
         {
-            if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
+            if (getMeasurementType().equals(MeasurementType.METRIC))
                 return MeasurementConversionUtil.fromMPHtoKPH(Number.class.cast(value)).toString();
         }
       

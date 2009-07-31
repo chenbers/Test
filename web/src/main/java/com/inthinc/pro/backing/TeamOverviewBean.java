@@ -110,7 +110,7 @@ public class TeamOverviewBean extends BaseBean
                 if (subType.equals(ScoreType.SCORE_SPEEDING))
                     categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getUser().getLocale()));
                 else
-                    categoryLabelList.add(MessageUtil.getMessageString(getPerson().getMeasurementType() + "_" + subType.toString(), getUser().getLocale()));
+                    categoryLabelList.add(MessageUtil.getMessageString(getMeasurementType() + "_" + subType.toString(), getUser().getLocale()));
             }
         }
         else

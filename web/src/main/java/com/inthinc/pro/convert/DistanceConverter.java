@@ -40,7 +40,7 @@ public class DistanceConverter extends BaseConverter
         NumberFormat format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(2);
 
-        if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
+        if (getMeasurementType().equals(MeasurementType.METRIC))
         {
             return MeasurementConversionUtil.fromMilesToKilometers(miles).toString();
             

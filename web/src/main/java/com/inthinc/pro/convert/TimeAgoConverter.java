@@ -32,7 +32,7 @@ public class TimeAgoConverter extends BaseConverter
         Integer seconds = 0;
         
         //Get logged in user's time zone.
-        TimeZone tz = super.getUser().getUser().getPerson().getTimeZone();
+        TimeZone tz = getTimeZone();
 
         if( value instanceof Date)
         {

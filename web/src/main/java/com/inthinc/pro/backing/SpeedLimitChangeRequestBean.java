@@ -343,11 +343,13 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 
 			logger.debug("sendEmailToUser email address is "+email[0]);
 			
-			String mphText = MessageUtil.getMessageString(MeasurementType.ENGLISH.toString() + "_mph");
+	        String mphText = MessageUtil.getMessageString(getMeasurementType().toString()+"_mph");
+
+//			String mphText = MessageUtil.getMessageString(MeasurementType.ENGLISH.toString() + "_mph");
 			Integer newSpeed = speedLimitBean.getNewSpeedLimit();
 			if(getMeasurementType().equals(MeasurementType.METRIC))
 			{
-			    mphText = MessageUtil.getMessageString(MeasurementType.METRIC.toString() + "_mph");
+//			    mphText = MessageUtil.getMessageString(MeasurementType.METRIC.toString() + "_mph");
 			    newSpeed = MeasurementConversionUtil.fromMPHtoKPH(newSpeed).intValue();
 			}
 			String text = MessageUtil.formatMessageString("sbs_emailText",newSpeed,speedLimitBean.getAddress(),mphText);

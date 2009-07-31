@@ -24,21 +24,8 @@ public class MpgToKplConverter extends BaseConverter
         if (Number.class.isInstance(value))
         {
             return decimalFormat.format(MeasurementConversionUtil.convertMpgToFuelEfficiencyType((Number.class.cast(value)).doubleValue(),
-                                                                                                getUser().getUser().getPerson().getMeasurementType(), 
-                                                                                                getUser().getUser().getPerson().getFuelEfficiencyType()));
-//            if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC)){
-//                
-//                if (getUser().getUser().getPerson().getFuelEfficiencyType().equals(FuelEfficiencyType.KMPL)){
-//                    
-//                    return decimalFormat.format(MeasurementConversionUtil.fromMPGtoKPL(Number.class.cast(value)).doubleValue());
-//                }
-//                else if (getUser().getUser().getPerson().getFuelEfficiencyType().equals(FuelEfficiencyType.LP100KM)){
-//                    
-//                    return decimalFormat.format(MeasurementConversionUtil.fromMPGtoLP100KM(Number.class.cast(value)).doubleValue());
-//                }
-//            }
-//                
-//                return decimalFormat.format(MeasurementConversionUtil.fromMPGtoKPL(Number.class.cast(value)).doubleValue());
+                                                                                                getMeasurementType(), 
+                                                                                                getFuelEfficiencyType()));
         }
         return value.toString();
     }

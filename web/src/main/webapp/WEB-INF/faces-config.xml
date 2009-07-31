@@ -66,6 +66,10 @@
         <converter-class>com.inthinc.pro.convert.MeasurementTextConverter</converter-class>
     </converter>
     <converter>
+        <converter-id>FuelEfficiencyTextConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.FuelEfficiencyTextConverter</converter-class>
+    </converter>
+    <converter>
         <converter-id>MilesToKilometersConverter</converter-id>
         <converter-class>com.inthinc.pro.convert.MilesToKilometersConverter</converter-class>
     </converter>

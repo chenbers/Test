@@ -24,26 +24,14 @@ public class MeasurementTextConverter extends BaseConverter
         
         if(String.class.isInstance(value))
         {
-            MeasurementType measurementType = getUser().getUser().getPerson().getMeasurementType();
+            MeasurementType measurementType = getMeasurementType();
             if (measurementType==null){
                 measurementType = MeasurementType.ENGLISH;
             }
             String text = String.class.cast(value);
-            
-            FuelEfficiencyType fuelEfficiencyType = getUser().getUser().getPerson().getFuelEfficiencyType();
-            
-            if (fuelEfficiencyType == null) {
-                
-                return MessageUtil.getMessageString(measurementType + "_" + "DEFAULT"+"_"+text, getUser().getUser().getLocale());
-            }
-            else {
-            
-                return MessageUtil.getMessageString(measurementType + "_" + fuelEfficiencyType.name()+"_"+text, getUser().getUser().getLocale());
-            }
-            
-//                return MessageUtil.getMessageString(MeasurementType.ENGLISH + "_" + text, getUser().getUser().getLocale());
-//            if(measurementType.equals(MeasurementType.METRIC))
-//                return MessageUtil.getMessageString(MeasurementType.METRIC + "_" + text, getUser().getUser().getLocale());
+               
+            return MessageUtil.getMessageString(measurementType + "_" + text, getLocale());
+           
         }
         return null;
     }

@@ -19,7 +19,7 @@ public class MilesToKilometersConverter extends BaseConverter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
+        if (getMeasurementType().equals(MeasurementType.METRIC))
         {
             if(Number.class.isInstance(value))
             {

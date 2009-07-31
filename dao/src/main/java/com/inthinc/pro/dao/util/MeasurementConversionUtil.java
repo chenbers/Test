@@ -84,49 +84,20 @@ public class MeasurementConversionUtil
             return mileage;
     }
 
-    public static Number convertMpgToFuelEfficiencyType(Number mileage, MeasurementType convertToMeasurmentType, FuelEfficiencyType convertToFuelEficiencyType)
+    public static Number convertMpgToFuelEfficiencyType(Number mileage, MeasurementType convertToMeasurementType, FuelEfficiencyType convertToFuelEficiencyType)
     {
-        if (mileage == null) return mileage;
+        if (mileage == null ) return mileage;
         
-        switch(convertToMeasurmentType) {
+        if (convertToFuelEficiencyType == null) {
             
-            case METRIC:
-                
-                switch(convertToFuelEficiencyType){
-                    
-                    case KMPL:
-                        
-                        return fromMPGtoKPL(mileage);
-                        
-                    case LP100KM:
-                        
-                        return fromMPGtoLP100KM(mileage);
-                        
-                    default:
-                         
-                        return mileage;
-                }
-                
-            case ENGLISH:
-                
-                switch(convertToFuelEficiencyType){
-                    
-                    case MPG_US:
-                        
-                        return mileage;
-                        
-                    case MPG_UK:
-                        
-                        return fromMPGtoMPGUK(mileage);
-                        
-                    default:
-                        
-                        return mileage;
-                }
+            if (convertToMeasurementType == null || convertToMeasurementType == MeasurementType.ENGLISH) return mileage;
+            
+            if (convertToMeasurementType == MeasurementType.METRIC) return FuelEfficiencyType.KMPL.convertFromMPG(mileage);
         }
-        return mileage;
+        return convertToFuelEficiencyType.convertFromMPG(mileage);
     }
-   public static Number convertSpeed(Number speed,  MeasurementType convertToMeasurmentType)
+    
+    public static Number convertSpeed(Number speed,  MeasurementType convertToMeasurmentType)
     {
         if (convertToMeasurmentType == MeasurementType.METRIC)
             return fromMPHtoKPH(speed);
