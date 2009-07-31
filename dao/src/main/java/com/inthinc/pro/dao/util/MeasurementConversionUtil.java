@@ -173,6 +173,16 @@ public class MeasurementConversionUtil
         return Math.round(cm / 2.54);
     }
     
+    public static Number roundToNearestFive(Number value){
+    	Integer remainder = value.intValue() % 5;
+    	Integer roundedValue = value.intValue() - remainder;
+    	if(remainder < 3){
+    		return roundedValue;
+    	}else{
+    		return roundedValue + 5;
+    	}
+    }
+    
     
 
 }

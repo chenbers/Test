@@ -62,7 +62,7 @@ public class EventHessianMapper extends AbstractMapper
 
 
     @Override
-    public <E> E convertToModelObject(Map<String, Object> map, Class<E> type)
+    public <E> E  convertToModelObject(Map<String, Object> map, Class<E> type)
     {
         if (type == Event.class)
         {

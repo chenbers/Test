@@ -132,7 +132,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         case ALERT_TYPE_SPEEDING:
             event = eventDAO.getEventByType(alertMessage.getNoteID(), SpeedingEvent.class);
             break;
-        case ALERT_TYPE_AGGRESSIVE_DRIVING:
+        case ALERT_TYPE_AGGRESSIVE_DRIVING: //Not using anymore @deprecated
             break;
         case ALERT_TYPE_ENTER_ZONE:
             event = eventDAO.getEventByType(alertMessage.getNoteID(), ZoneArrivalEvent.class);
