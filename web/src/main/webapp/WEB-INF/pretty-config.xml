@@ -74,7 +74,7 @@
 		<view-id>/secured/reports/driverSeatBelt.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverTrips">
-		<pattern>/app/driver/trips/#{driverTripsBean.driverID}</pattern>
+		<pattern>/app/driver/trips/#{driverTripsBean.identifiableEntityBean.id}</pattern>
 		<view-id>/secured/driverTrips.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehiclePerformance">

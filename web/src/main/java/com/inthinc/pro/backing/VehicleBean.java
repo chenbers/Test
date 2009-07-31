@@ -3,11 +3,18 @@ package com.inthinc.pro.backing;
 import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
-public class VehicleBean extends BaseBean
+
+
+public class VehicleBean extends BaseBean implements IdentifiableEntityBean
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private Integer vehicleID;
     private Vehicle vehicle;
     private VehicleDAO vehicleDAO;
@@ -43,6 +50,43 @@ public class VehicleBean extends BaseBean
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
         this.vehicleDAO = vehicleDAO;
+    }
+    
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.ENTITY_VEHICLE;
+    }
+    
+    @Override
+    public Integer getId() {
+        return getVehicleID();
+    }
+    
+    @Override
+    public String getName() {
+        if(vehicle != null){
+            return vehicle.getFullName();
+        }else{
+            return null;
+        }
+    }
+    
+    @Override
+    public void setId(Integer id) {
+        setVehicleID(id);
+    }
+    
+    @Override
+    public Object getEntity() {
+        return vehicle;
+    }
+    
+    @Override
+    public String getLongName() {
+        if(vehicle != null){
+            return vehicle.getFullName();
+        }
+        return null;
     }
 
 

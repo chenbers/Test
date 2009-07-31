@@ -4,11 +4,16 @@ import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class DriverBean extends BaseBean
+public class DriverBean extends BaseBean implements IdentifiableEntityBean
 {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private Integer driverID;
     private Driver driver;
     private DriverDAO driverDAO;
@@ -44,5 +49,42 @@ public class DriverBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+    
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.ENTITY_DRIVER;
+    }
+    
+    @Override
+    public Integer getId() {
+        return getDriverID();
+    }
+    
+    @Override
+    public String getName() {
+        if(driver != null){
+            return driver.getPerson().getFullName();
+        }else
+            return null;
+    }
+    
+    @Override
+    public void setId(Integer id) {
+        setDriverID(id);
+    }
+    
+    @Override
+    public Object getEntity() {
+        return driver;
+    }
+    
+    @Override
+    public String getLongName() {
+        if(driver != null){
+            return driver.getPerson().getFullNameWithId();
+        }else{
+            return null;
+        }
     }
 }
