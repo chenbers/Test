@@ -22,7 +22,12 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView>
 {
-    private static final List<String> AVAILABLE_COLUMNS;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2066762539439571492L;
+	
+	private static final List<String> AVAILABLE_COLUMNS;
     private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
 
     static

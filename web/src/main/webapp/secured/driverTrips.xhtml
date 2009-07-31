@@ -15,8 +15,9 @@
         <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
         <script type="text/javascript">
 		var map;
-		var showWarnings = new Boolean(true);
-		var showIdleMarkers = new Boolean(true);
+		var showWarnings = true;
+		var showIdleMarkers = true;
+		var showTamperMarkers = true;
 		var baseIcon = new GIcon();
 			baseIcon.iconSize = new GSize(21, 20);
 			baseIcon.iconAnchor = new GPoint(6, 20);
@@ -105,6 +106,21 @@
 	    	else
 	    	{
 	    		showIdleMarkers = false;
+	    		drawSelectedTrips();
+	    	}
+		}
+
+	 	// Show Idle Markers Checkbox changed
+	    function showTamperingChanged(tamperingCheckBox)
+	    {
+	      	if(tamperingCheckBox.checked == true)
+	    	{
+	      		showTamperMarkers = true;
+	      		drawSelectedTrips();
+	    	}
+	    	else
+	    	{
+	    		showTamperMarkers = false;
 	    		drawSelectedTrips();
 	    	}
 		}
@@ -215,6 +231,15 @@
 					<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
 						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
 						map.addOverlay(createMarker(idle, "#{idle.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+					</ui:repeat>
+				}	
+
+				if(showTamperMarkers == true)
+				{
+					var idle;
+					<ui:repeat value="#{driverTripsBean.tamperEvents}" var="tamperEvent">
+						idle = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
+						map.addOverlay(createMarker(idle, "#{tamperEvent.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png"));
 					</ui:repeat>
 				}	
 			}
@@ -450,7 +475,8 @@
                             <!-- Data -->
                             <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
                                 <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" title="#{messages[item.eventType]}" />
-                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" title="#{messages[item.eventType]}" />
+                                <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 202}" title="#{messages[item.eventType]}" />
+                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208 and item.type ne 202}" title="#{messages[item.eventType]}" />
                             </rich:column>
 
                             <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
@@ -521,6 +547,11 @@
                                 <td></td>
                                 <td><h:selectBooleanCheckbox id="showWarningsCheckBox" value="#{driverTripsBean.showWarnings}" onclick="showWarningsChanged();" /></td>
                             </tr>
+                            <tr>
+                                <td>#{messages.drivertrip_show_tampering}</td>
+                                <td></td>
+                                <td><h:selectBooleanCheckbox id="showTamperingCheckBox" value="#{driverTripsBean.showTampering}" onclick="showTamperingChanged(this);" /></td>
+                            </tr>
                         </tbody>
                     </table>
                 </a4j:region></div>
@@ -554,7 +585,11 @@
                         <tr>
                             <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_violation.png" width="20" height="20" /></td>
                             <td>#{messages.drivertrip_legend_violation}</td>
-                            <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
+                            <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png" width="21" height="20" /></td>
+                            <td>#{messages.drivertrip_tampering}</td>
+                        </tr>
+                        <tr>
+                        	<td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
                             <td>#{messages.drivertrip_legend_end}</td>
                         </tr>
                     </tbody>

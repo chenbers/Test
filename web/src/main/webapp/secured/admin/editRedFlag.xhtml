@@ -225,14 +225,14 @@
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagAlertsBean.item.speedSelected[index]}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphConverter"/>
+                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
                                     <h:outputText value=" " />
                                     <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
                                     <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" 
                                           width="250" onfocus="this.select();" showToolTip="false" 
-                                          showBoundaryValues="false" minValue="${tiwiprofn:fromMphToKph(minimum)}" maxValue="${tiwiprofn:fromMphToKph(25)}" step="1" 
+                                          showBoundaryValues="false" minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
                                           converter="MphToKphConverter"
                                           convertonchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
                                   </td>

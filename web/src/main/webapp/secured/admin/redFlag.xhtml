@@ -145,7 +145,7 @@
                                 <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((row % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphConverter"/>
+                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
                                     <h:outputText value=" " />
                                     <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
                                   </td>
@@ -154,7 +154,7 @@
                                           value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" 
                                           converter="MphToKphConverter"
                                           showBoundaryValues="false" showInput="false" 
-                                          minValue="${tiwiprofn:fromMphToKph(minimum)}" maxValue="${tiwiprofn:fromMphToKph(25)}" step="1" />
+                                          minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText id="#{id}MPH" value="#{redFlagAlertsBean.item.speedSettings[index]}" converter="MphToKphConverter"/>

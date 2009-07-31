@@ -27,59 +27,52 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
-public class DriverTripsBean extends BaseBean
-{
-    private static final Logger logger            = Logger.getLogger(DriverTripsBean.class);
+public class DriverTripsBean extends BaseBean {
 
-    private DriverDAO           driverDAO;
-    private VehicleDAO          vehicleDAO;
-    private GroupDAO            groupDAO;
-    private EventDAO            eventDAO;
-    private AddressLookup       addressLookup;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4538374113766386370L;
+    private static final Logger logger = Logger.getLogger(DriverTripsBean.class);
+    private DriverDAO driverDAO;
+    private VehicleDAO vehicleDAO;
+    private GroupDAO groupDAO;
+    private EventDAO eventDAO;
+    private AddressLookup addressLookup;
+    private Date startDate;
+    private Date endDate;
+    private Integer milesDriven = 0;
+    private Integer idleSeconds = 0;
+    private Integer numTrips = 0;
+    private Integer totalDriveSeconds = 0;
+    private Integer eventsPage = 0;
+    private boolean showLastTenTrips = false;
+    private boolean showIdleMarkers = true;
+    private boolean showWarnings = true;
+    private boolean showTampering = true;
+    private List<TripDisplay> trips = new ArrayList<TripDisplay>();
+    private List<TripDisplay> selectedTrips = new ArrayList<TripDisplay>();
+    private TripDisplay selectedTrip;
+    private Vehicle selectedVehicle;
+    private List<Event> violationEvents = new ArrayList<Event>();
+    private List<Event> idleEvents = new ArrayList<Event>();
+    private List<Event> allEvents = new ArrayList<Event>();
+    private List<Event> tamperEvents = new ArrayList<Event>();
+    private Driver driver;
+    private Integer driverID;
+    private GroupTreeNodeImpl groupTreeNodeImpl;
 
-    private Date                startDate;
-    private Date                endDate;
-    private Integer             milesDriven       = 0;
-    private Integer             idleSeconds       = 0;
-    private Integer             numTrips          = 0;
-    private Integer             totalDriveSeconds = 0;
-    private Integer             eventsPage        = 0;
-
-    private boolean             showLastTenTrips  = false;
-    private boolean             showIdleMarkers   = true;
-    private boolean             showWarnings      = true;
-
-    private List<TripDisplay>   trips             = new ArrayList<TripDisplay>();
-    private List<TripDisplay>   selectedTrips     = new ArrayList<TripDisplay>();
-    private TripDisplay         selectedTrip;
-    private Vehicle             selectedVehicle;
-    private List<Event>         violationEvents   = new ArrayList<Event>();
-    private List<Event>         idleEvents        = new ArrayList<Event>();
-    private List<Event>         allEvents         = new ArrayList<Event>();
-    
-    private Driver              driver;
-    private Integer             driverID;
-    
-    private GroupTreeNodeImpl   groupTreeNodeImpl;
-
-    public void initTrips()
-    {
-        if(trips.isEmpty())
-        {
+    public void initTrips() {
+        if (trips.isEmpty()) {
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = driverDAO.getTrips(getDriver().getDriverID(), getStartDate(), getEndDate());
-            
-            for (Trip trip : tempTrips)
-            {
-                
+            for (Trip trip : tempTrips) {
                 trips.add(new TripDisplay(trip, getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString()));
             }
             Collections.sort(trips);
             Collections.reverse(trips);
-    
             numTrips = trips.size();
-            if (numTrips > 0)
-            {
+            if (numTrips > 0) {
                 // Set selected trip and get associated events.
                 // Generate Stats on selected
                 setSelectedTrip(trips.get(0));
@@ -88,40 +81,41 @@ public class DriverTripsBean extends BaseBean
         }
     }
 
-    public void initViolations(Date start, Date end)
-    {
-        if (violationEvents.isEmpty())
-        {
-            List<Integer> vioTypes = new ArrayList<Integer>();
-            vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
-            vioTypes.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-            vioTypes.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-
+    public void initViolations(Date start, Date end) {
+        if (violationEvents.isEmpty()) {
+            List<Integer> violationEventTypeList = new ArrayList<Integer>();
+            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+            
             List<Integer> idleTypes = new ArrayList<Integer>();
             idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-
-            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, vioTypes);
+            
+            List<Integer> tamperEventTypeList = new ArrayList<Integer>();
+            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
+            
+            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, violationEventTypeList);
             idleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, idleTypes);
-
+            tamperEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, tamperEventTypeList);
+            
             // Lookup Addresses for events
             populateAddresses(violationEvents);
             populateAddresses(idleEvents);
-
+            populateAddresses(tamperEvents);
+            
             allEvents.clear();
             allEvents.addAll(violationEvents);
             allEvents.addAll(idleEvents);
+            allEvents.addAll(tamperEvents);
             Collections.sort(allEvents);
             Collections.reverse(allEvents);
         }
     }
 
-    private void populateAddresses(List<Event> eventList)
-    {
+    private void populateAddresses(List<Event> eventList) {
         LatLng lastValidLatLng = selectedTrip.getBeginningPoint();
-        for (Event event : eventList)
-        {
-            if((event.getLatitude() < 0.005 && event.getLatitude() > -0.005) || (event.getLongitude() < 0.005 && event.getLongitude() > -0.005))
-            {                
+        for (Event event : eventList) {
+            if ((event.getLatitude() < 0.005 && event.getLatitude() > -0.005) || (event.getLongitude() < 0.005 && event.getLongitude() > -0.005)) {
                 event.setLatitude(lastValidLatLng.getLat() + 0.00001);
                 event.setLongitude(lastValidLatLng.getLng());
             }
@@ -129,43 +123,33 @@ public class DriverTripsBean extends BaseBean
             lastValidLatLng = event.getLatLng();
         }
     }
-    
-    public void generateStats()
-    {
+
+    public void generateStats() {
         milesDriven = 0;
         totalDriveSeconds = 0;
         idleSeconds = 0;
-        
-        for (TripDisplay trip : trips)
-        {
+        for (TripDisplay trip : trips) {
             milesDriven += trip.getTrip().getMileage();
-       
             Long tempLong = (trip.getDurationMiliSeconds() / 1000L);
             totalDriveSeconds += tempLong.intValue();
         }
-        
         // Get events over date picker date range
         List<Integer> idleTypes = new ArrayList<Integer>();
-                      idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-                      
+        idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
         List<Event> tmpIdleEvents = new ArrayList<Event>();
-        tmpIdleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), getStartDate(), getEndDate(), idleTypes);        
-      
-        for (Event event : tmpIdleEvents)
-        {
+        tmpIdleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), getStartDate(), getEndDate(), idleTypes);
+        for (Event event : tmpIdleEvents) {
             idleSeconds += ((IdleEvent) event).getHighIdle();
             idleSeconds += ((IdleEvent) event).getLowIdle();
         }
     }
 
     // DATE PROPERTIES
-    public Date getStartDate()
-    {
-        if(startDate == null)
-        {
+    public Date getStartDate() {
+        if (startDate == null) {
             // Set start date to 7 days ago, apply driver's time zone..
             Calendar calendar = Calendar.getInstance();
-            //calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
+            // calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
             calendar.add(Calendar.DAY_OF_MONTH, -7);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
@@ -175,347 +159,302 @@ public class DriverTripsBean extends BaseBean
         return startDate;
     }
 
-    public void setStartDate(Date startDate)
-    {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate()
-    {
-        if(endDate == null)
-        {
+    public Date getEndDate() {
+        if (endDate == null) {
             // Set end date to now using driver's time zone.
             endDate = SetTimeToEndOfDay(new Date(), getDriver().getPerson().getTimeZone());
         }
         return endDate;
     }
 
-    public void setEndDate(Date endDate)
-    {
-        //Set Time to 11:59:99 PM Always
+    public void setEndDate(Date endDate) {
+        // Set Time to 11:59:99 PM Always
         endDate = SetTimeToEndOfDay(endDate, getDriver().getPerson().getTimeZone());
         this.endDate = endDate;
     }
 
-    public Date SetTimeToEndOfDay(Date date, TimeZone tz)
-    {
+    public Date SetTimeToEndOfDay(Date date, TimeZone tz) {
         // Adjust time using TimeZome and set to 11:59:59
         Calendar calendar = Calendar.getInstance();
-        //calendar.setTimeZone(tz);
+        // calendar.setTimeZone(tz);
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND,59);
-        
+        calendar.set(Calendar.SECOND, 59);
         return calendar.getTime();
     }
+
     // TRIP DAO PROPERTIES
-    public DriverDAO getDriverDAO()
-    {
+    public DriverDAO getDriverDAO() {
         return driverDAO;
     }
 
-    public void setDriverDAO(DriverDAO driverDAO)
-    {
+    public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }
 
     // MILES PROPERTIES
-    public Integer getMilesDriven()
-    {
+    public Integer getMilesDriven() {
         return milesDriven;
     }
 
-    public void setMilesDriven(Integer milesDriven)
-    {
+    public void setMilesDriven(Integer milesDriven) {
         this.milesDriven = milesDriven;
     }
 
     // IDLE SECONDS PROPERTIES
-    public Integer getIdleSeconds()
-    {
+    public Integer getIdleSeconds() {
         return idleSeconds;
     }
 
-    public void setIdleSeconds(Integer IdleSeconds)
-    {
+    public void setIdleSeconds(Integer IdleSeconds) {
         this.idleSeconds = IdleSeconds;
     }
 
-    public String getIdleTime()
-    {
+    public String getIdleTime() {
         return DateUtil.getDurationFromSeconds(this.getIdleSeconds());
     }
 
     // NUMBER OF TRIPS PROPERTIES
-    public Integer getNumTrips()
-    {
+    public Integer getNumTrips() {
         initTrips();
         return numTrips;
     }
 
-    public void setNumTrips(Integer numTrips)
-    {
+    public void setNumTrips(Integer numTrips) {
         this.numTrips = numTrips;
     }
 
     // TOTAL DRIVE Seconds PROPERTIES
-    public Integer getTotalDriveSeconds()
-    {
+    public Integer getTotalDriveSeconds() {
         return totalDriveSeconds;
     }
 
-    public void setTotalDriveSeconds(Integer totalDriveSeconds)
-    {
+    public void setTotalDriveSeconds(Integer totalDriveSeconds) {
         this.totalDriveSeconds = totalDriveSeconds;
     }
 
-    public String getTotalDriveTime()
-    {
+    public String getTotalDriveTime() {
         return DateUtil.getDurationFromSeconds(this.getTotalDriveSeconds());
     }
 
     // SHOW ALL TRIPS SETTING PROPERTIES
-    public boolean isShowLastTenTrips()
-    {
+    public boolean isShowLastTenTrips() {
         return showLastTenTrips;
     }
 
-    public void setShowLastTenTrips(boolean showLastTenTrips)
-    {
+    public void setShowLastTenTrips(boolean showLastTenTrips) {
         this.showLastTenTrips = showLastTenTrips;
         selectedTrips.clear();
-
         // Check box is checked
-        if (showLastTenTrips == true)
-        {
+        if (showLastTenTrips == true) {
             int count = 0;
-            for (TripDisplay trip : trips)
-            {
+            for (TripDisplay trip : trips) {
                 // Add 10 trips to list then stop.
                 if (count == 10)
                     break;
-
                 selectedTrips.add(trip);
                 count++;
             }
-            //Reverse list, oldest is first
+            // Reverse list, oldest is first
             Collections.reverse(selectedTrips);
-            
             // Load events for given list.
             this.violationEvents.clear();
             initViolations(selectedTrips.get(selectedTrips.size() - 1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());
         }
-        else
-        {
-            if (selectedTrip == null)
-            {
+        else {
+            if (selectedTrip == null) {
                 setSelectedTrip(trips.get(0));
             }
-            else
-            {
+            else {
                 setSelectedTrip(selectedTrip);
             }
         }
     }
 
     // SHOW IDLE MARKERS SETTING PROPERTIES
-    public boolean isShowIdleMarkers()
-    {
+    public boolean isShowIdleMarkers() {
         return showIdleMarkers;
     }
 
-    public void setShowIdleMarkers(boolean showIdleMarkers)
-    {
+    public void setShowIdleMarkers(boolean showIdleMarkers) {
         this.showIdleMarkers = showIdleMarkers;
     }
 
     // SHOW WARNINGS SETTING PROPERTIES
-    public boolean isShowWarnings()
-    {
+    public boolean isShowWarnings() {
         return showWarnings;
     }
 
-    public void setShowWarnings(boolean showWarnings)
-    {
+    public void setShowWarnings(boolean showWarnings) {
         this.showWarnings = showWarnings;
     }
 
     // TRIP PROPERTIES
-    public List<TripDisplay> getTrips()
-    {
+    public List<TripDisplay> getTrips() {
         return trips;
     }
 
-    public void setTrips(List<TripDisplay> trips)
-    {
+    public void setTrips(List<TripDisplay> trips) {
         this.trips = trips;
     }
 
     // SELECTD TRIP PROPERTIES
-    public TripDisplay getSelectedTrip()
-    {
+    public TripDisplay getSelectedTrip() {
         return selectedTrip;
     }
 
-    public void setSelectedTrip(TripDisplay selectedTrip)
-    {
+    public void setSelectedTrip(TripDisplay selectedTrip) {
         this.selectedTrip = selectedTrip;
-        //Add this trip to the list of selected trips.
+        // Add this trip to the list of selected trips.
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
         this.showLastTenTrips = false;
         setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
-        
-        //Get Violations for this Trip
+        // Get Violations for this Trip
         violationEvents.clear();
         idleEvents.clear();
         initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
     }
 
-
     // VIOLATIONS PROPERTIES
-    public List<Event> getViolationEvents()
-    {
+    public List<Event> getViolationEvents() {
         return violationEvents;
     }
 
-    public void setViolationEvents(List<Event> violationEvents)
-    {
+    public void setViolationEvents(List<Event> violationEvents) {
         this.violationEvents = violationEvents;
     }
 
-    public List<Event> getIdleEvents()
-    {
+    public List<Event> getIdleEvents() {
         return idleEvents;
     }
 
-    public void setIdleEvents(List<Event> idleEvents)
-    {
+    public void setIdleEvents(List<Event> idleEvents) {
         this.idleEvents = idleEvents;
     }
 
-    public List<Event> getAllEvents()
-    {
+    public List<Event> getAllEvents() {
         return allEvents;
     }
 
-    public void setAllEvents(List<Event> allEvents)
-    {
+    public void setAllEvents(List<Event> allEvents) {
         this.allEvents = allEvents;
     }
 
     // EVENT DAO PROPERTIES
-    public EventDAO getEventDAO()
-    {
+    public EventDAO getEventDAO() {
         return eventDAO;
     }
 
-    public void setEventDAO(EventDAO eventDAO)
-    {
+    public void setEventDAO(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
     }
 
-    public VehicleDAO getVehicleDAO()
-    {
+    public VehicleDAO getVehicleDAO() {
         return vehicleDAO;
     }
 
-    public void setVehicleDAO(VehicleDAO vehicleDAO)
-    {
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
     }
 
-    public AddressLookup getAddressLookup()
-    {
+    public AddressLookup getAddressLookup() {
         return addressLookup;
     }
 
-    public void setAddressLookup(AddressLookup addressLookup)
-    {
+    public void setAddressLookup(AddressLookup addressLookup) {
         this.addressLookup = addressLookup;
     }
 
     // SELECTED TRIPS PROPERTIES
-    public List<TripDisplay> getSelectedTrips()
-    {
+    public List<TripDisplay> getSelectedTrips() {
         initTrips();
         return selectedTrips;
     }
 
-    public void setSelectedTrips(List<TripDisplay> selectedTrips)
-    {
+    public void setSelectedTrips(List<TripDisplay> selectedTrips) {
         this.selectedTrips = selectedTrips;
     }
-    
-    public void DateChangedAction()
-    {
+
+    public void DateChangedAction() {
         trips.clear();
         initTrips();
     }
-    
-    public Integer getEventsPage()
-    {
+
+    public Integer getEventsPage() {
         return eventsPage;
     }
 
-    public void setEventsPage(Integer eventsPage)
-    {
+    public void setEventsPage(Integer eventsPage) {
         this.eventsPage = eventsPage;
     }
 
-    public Vehicle getSelectedVehicle()
-    {
+    public Vehicle getSelectedVehicle() {
         return selectedVehicle;
     }
 
-    public void setSelectedVehicle(Vehicle selectedVehicle)
-    {
+    public void setSelectedVehicle(Vehicle selectedVehicle) {
         this.selectedVehicle = selectedVehicle;
     }
 
-    public void setDriver(Driver driver)
-    {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 
-    public Driver getDriver()
-    {
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriverID(Integer driverID)
-    {
+    public void setDriverID(Integer driverID) {
         driver = driverDAO.findByID(driverID);
         if (driver == null || getGroupHierarchy().getGroup(driver.getGroupID()) == null)
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
-        setGroupTreeNodeImpl(new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy()));
+        setGroupTreeNodeImpl(new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()), getGroupHierarchy()));
         this.driverID = driverID;
     }
 
-    public Integer getDriverID()
-    {
+    public Integer getDriverID() {
         return driverID;
     }
 
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
+    public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
 
-    public GroupDAO getGroupDAO()
-    {
+    public GroupDAO getGroupDAO() {
         return groupDAO;
     }
 
-    public void setGroupTreeNodeImpl(GroupTreeNodeImpl groupTreeNodeImpl)
-    {
+    public void setGroupTreeNodeImpl(GroupTreeNodeImpl groupTreeNodeImpl) {
         this.groupTreeNodeImpl = groupTreeNodeImpl;
     }
 
-    public GroupTreeNodeImpl getGroupTreeNodeImpl()
-    {
+    public GroupTreeNodeImpl getGroupTreeNodeImpl() {
         return groupTreeNodeImpl;
     }
+
+    
+    public List<Event> getTamperEvents() {
+        return tamperEvents;
+    }
+
+    
+    public void setTamperEvents(List<Event> tamperEvents) {
+        this.tamperEvents = tamperEvents;
+    }
+
+    public void setShowTampering(boolean showTampering) {
+        this.showTampering = showTampering;
+    }
+
+    public boolean isShowTampering() {
+        return showTampering;
+    }
+    
     
 }

@@ -1,4 +1,4 @@
-<html xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:rich="http://richfaces.org/rich"
@@ -7,7 +7,7 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
-<!-- 
+  <!-- 
   Required Parameters:
   ======================
           device: The device to show the settings for.
@@ -26,8 +26,8 @@
     <ui:param name="disabled" value="true" />
   </ui:include>
 
- -->
-  <ui:composition>
+  -->
+  
 
     <c:if test="empty device">
       <c:set var="disabled" value="true" />
@@ -55,14 +55,14 @@
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{id}" value="#{updateField[id]}" />
-                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphConverter"/>
+                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
                                           id="#{id}" value="#{device.speedSettings[index]}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
-                                          minValue="${tiwiprofn:fromMphToKph(minimum)}" maxValue="${tiwiprofn:fromMphToKph(25)}" step="1" 
+                                          minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
                                           onchange="if (checkMultiple) checkMultiple(this.mainTable.id)" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
@@ -174,5 +174,4 @@
                         </tr>
                       </table>
 
-  </ui:composition>
-</html>
+</ui:composition>
