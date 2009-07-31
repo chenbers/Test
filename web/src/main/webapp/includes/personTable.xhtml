@@ -151,6 +151,10 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_measurementType}" /></f:facet>
       <h:outputText value="#{messages[item.measurementType]}" />
     </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['fuelEfficiencyType'].visible}" sortBy="#{messages[item.fuelEfficiencyType]}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_fuelEfficiencyType}" /></f:facet>
+      <h:outputText value="#{messages[item.fuelEfficiencyType]}" />
+    </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_status'].visible}" sortBy="#{item.driver.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
       <c:set var="status" value="status#{item.driver.status.code}" /><h:outputText value="#{messages[status]}" />
