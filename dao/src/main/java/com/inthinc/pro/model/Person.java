@@ -51,6 +51,7 @@ public class Person extends BaseEntity implements Comparable<Person>
     private Status status;
     private Integer acctID;
     private MeasurementType measurementType;
+    @Column(name = "fuelEffType")
     private FuelEfficiencyType fuelEfficiencyType;
 
     public Person()
@@ -60,7 +61,7 @@ public class Person extends BaseEntity implements Comparable<Person>
 
     public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
             String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first, String middle,
-            String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType)
+            String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType, FuelEfficiencyType fuelEfficiencyType)
     {
         super();
         this.acctID = acctID;
@@ -91,6 +92,7 @@ public class Person extends BaseEntity implements Comparable<Person>
         this.dob = dob;
         this.status = status;
         this.measurementType = measurementType;
+        this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
     public Integer getPersonID()

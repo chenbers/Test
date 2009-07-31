@@ -57,6 +57,7 @@ import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
@@ -411,7 +412,7 @@ public class AlertMessagesTest
         Date dob = Util.genDate(1959, 8, 30);
         person = new Person(0, acctID, TimeZone.getTimeZone("MST"), null, address.getAddrID(), "email"+groupID+"@email.com", "secEmail@test.com", "8015551111", "8015552222", "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, "emp"+groupID, 
                 null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, dob, 
-                Status.ACTIVE, MeasurementType.ENGLISH);
+                Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
         person.setUser(user);
         person.setDriver(driver);
         person.setAddress(address);

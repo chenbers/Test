@@ -57,6 +57,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandStatus;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
@@ -1176,7 +1177,7 @@ public class SiloServiceTest
             Date dob = Util.genDate(1959, 8, 30);
             String email =  "email_"+groupID+"_"+i+"@yahoo.com";
             Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), email, null, "555555555" + i, "555555555" + i, null, null, null, null, null, "emp"+i,
-                            null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH);
+                            null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
             User user = new User(0, 0, randomRole(), Status.ACTIVE, "user"+groupID+"_"+i, PASSWORD, groupID, Locale.getDefault());
             person.setUser(user);
             
@@ -1592,7 +1593,7 @@ public class SiloServiceTest
         Date dob = Util.genDate(1959, 8, 30);
         Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111", "8015552222", "8015554444@texter.com", "8015555555@texter.com", 1, 2, 3, "emp"+groupID,
                 null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, dob, 
-                Status.ACTIVE, MeasurementType.ENGLISH);
+                Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
         person.setUser(user);
         person.setDriver(driver);
         person.setAddress(address);

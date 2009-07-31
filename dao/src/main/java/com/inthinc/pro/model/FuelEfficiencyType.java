@@ -18,7 +18,7 @@ public enum FuelEfficiencyType implements BaseEnum {
         }
     }
 
-    private static FuelEfficiencyType valueOf(Integer code) {
+    public static FuelEfficiencyType valueOf(Integer code) {
         return lookup.get(code);
     }
 
