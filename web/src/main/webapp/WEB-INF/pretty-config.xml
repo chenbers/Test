@@ -94,7 +94,7 @@
 		<view-id>/secured/reports/vehicleSeatBelt.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehicleTrips">
-		<pattern>/app/vehicle/trips/#{vehicleTripsBean.vehicleID}</pattern>
+		<pattern>/app/vehicle/trips/#{vehicleTripsBean.identifiableEntityBean.id}</pattern>
 		<view-id>/secured/vehicleTrips.faces</view-id>
 	</url-mapping>
 	

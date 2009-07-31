@@ -55,6 +55,7 @@ public class TripsBean extends BaseBean {
     private List<TripDisplay> selectedTrips = new ArrayList<TripDisplay>();
     private TripDisplay selectedTrip;
     private Vehicle selectedVehicle;
+    private Driver  selectedDriver;
     private List<Event> violationEvents = new ArrayList<Event>();
     private List<Event> idleEvents = new ArrayList<Event>();
     private List<Event> allEvents = new ArrayList<Event>();
@@ -66,7 +67,12 @@ public class TripsBean extends BaseBean {
     public void initTrips() {
         if (trips.isEmpty()) {
             List<Trip> tempTrips = new ArrayList<Trip>();
-            tempTrips = driverDAO.getTrips(identifiableEntityBean.getId(), getStartDate(), getEndDate());
+            if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
+                tempTrips = driverDAO.getTrips(identifiableEntityBean.getId(), getStartDate(), getEndDate());
+            }else{
+                tempTrips = vehicleDAO.getTrips(identifiableEntityBean.getId(), getStartDate(), getEndDate());
+            }
+            
             for (Trip trip : tempTrips) {
                 trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup.getMapServerURLString()));
             }
@@ -365,7 +371,12 @@ public class TripsBean extends BaseBean {
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
         this.showLastTenTrips = false;
-        setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
+        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
+            setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
+        }else{
+         // Get Driver for this Trip
+            setSelectedDriver(driverDAO.findByID(selectedTrip.getTrip().getDriverID()));
+        }
         // Get Violations for this Trip
         violationEvents.clear();
         idleEvents.clear();
@@ -491,5 +502,13 @@ public class TripsBean extends BaseBean {
 
     public IdentifiableEntityBean getIdentifiableEntityBean() {
         return identifiableEntityBean;
+    }
+
+    public void setSelectedDriver(Driver selectedDriver) {
+        this.selectedDriver = selectedDriver;
+    }
+
+    public Driver getSelectedDriver() {
+        return selectedDriver;
     }
 }

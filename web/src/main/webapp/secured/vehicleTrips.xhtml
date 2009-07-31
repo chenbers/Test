@@ -22,6 +22,7 @@
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 		var bounds = new GLatLngBounds();
 		var mapNeedsInit = true;
+		var showTamperMarkers = true;
 		
 		function initMap(lat,lng,zoom)
 		{
@@ -106,6 +107,21 @@
 	    	else
 	    	{
 	    		showIdleMarkers = false;
+	    		drawSelectedTrips();
+	    	}
+		}
+
+	 	// Show Tampering Markers Checkbox changed
+	    function showTamperingChanged(tamperingCheckBox)
+	    {
+	      	if(tamperingCheckBox.checked == true)
+	    	{
+	      		showTamperMarkers = true;
+	      		drawSelectedTrips();
+	    	}
+	    	else
+	    	{
+	    		showTamperMarkers = false;
 	    		drawSelectedTrips();
 	    	}
 		}
@@ -204,8 +220,8 @@
 				{
 	  				var violation;
 					<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="vio">
-						violation = new GLatLng(#{vio.event.latitude}, #{vio.event.longitude});
-						map.addOverlay(createMarker(violation, "#{vio.event.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+						violation = new GLatLng(#{vio.latitude}, #{vio.longitude});
+						map.addOverlay(createMarker(violation, "#{vio.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 					</ui:repeat>
 				}
 
@@ -214,8 +230,17 @@
 				{
 					var idle;
 					<ui:repeat value="#{vehicleTripsBean.idleEvents}" var="idle">
-						idle = new GLatLng(#{idle.event.latitude}, #{idle.event.longitude});
-						map.addOverlay(createMarker(idle, "#{idle.event.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
+						map.addOverlay(createMarker(idle, "#{idle.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+					</ui:repeat>
+				}	
+
+				if(showTamperMarkers == true)
+				{
+					var tamper;
+					<ui:repeat value="#{vehicleTripsBean.tamperEvents}" var="tamperEvent">
+						tamper = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
+						map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png"));
 					</ui:repeat>
 				}	
 			}
@@ -235,7 +260,7 @@
         <t:saveState value="#{vehicleTripsBean.idleEvents}" />
         <t:saveState value="#{vehicleTripsBean.violationEvents}" />
         <t:saveState value="#{vehicleTripsBean.allEvents}" />
-        <t:saveState value="#{vehicleTripsBean.vehicle}" />
+        <t:saveState value="#{vehicleTripsBean.identifiableEntityBean}" />
         <t:saveState value="#{vehicleTripsBean.groupTreeNodeImpl}" />
 
         <rich:panel id="bubbles">
@@ -258,20 +283,20 @@
             </ui:repeat>
             <ui:repeat value="#{vehicleTripsBean.allEvents}" var="evt">
                 <ui:include src="/includes/eventBubble.xhtml">
-                    <ui:param name="hiddenDivID" value="#{evt.event.noteID}" />
-                    <ui:param name="eventType" value="#{evt.event.eventType}" />
-                    <ui:param name="eventDateTime" value="#{evt.date}" />
-                    <ui:param name="eventLocation" value="#{evt.event.addressStr}" />
-                    <ui:param name="timeZoneObject" value="#{evt.timeZone}" />
+                    <ui:param name="hiddenDivID" value="#{violation.noteID}" />
+                    <ui:param name="eventType" value="#{violation.eventType}" />
+                    <ui:param name="eventDateTime" value="#{violation.time}" />
+                    <ui:param name="eventLocation" value="#{violation.addressStr}" />
+                    <ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
-                    <ui:param name="eventSpeedLimit" value="#{evt.event.speedLimit}" />
-                    <ui:param name="eventAvgSpeed" value="#{evt.event.avgSpeed}" />
-                    <ui:param name="eventTopSpeed" value="#{evt.event.topSpeed}" />
-                    <ui:param name="eventDistance" value="#{evt.event.distance}" />
-                    <ui:param name="eventSpeed" value="#{evt.event.speed}" />
-                    <ui:param name="eventSeverity" value="#{evt.event.severity}" />
-                    <ui:param name="eventLowIdle" value="#{evt.event.lowIdleDuration}" />
-                    <ui:param name="eventHighIdle" value="#{evt.event.highIdleDuration}" />
+                    <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
+                    <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
+                    <ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
+                    <ui:param name="eventDistance" value="#{violation.distance}" />
+                    <ui:param name="eventSpeed" value="#{violation.speed}" />
+                    <ui:param name="eventSeverity" value="#{violation.severity}" />
+                    <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
+                    <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
                 </ui:include>
             </ui:repeat>
         </rich:panel>
@@ -283,8 +308,8 @@
                 <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
                 <li class="l grid_title">#{messages.vehicletrip_title}:
                      <pretty:link mappingId="vehiclePerformance">
-                        <h:outputText value="#{vehicleTripsBean.vehicle.name}"/>
-                        <f:param value="#{vehicleTripsBean.vehicle.vehicleID}"/>
+                        <h:outputText value="#{vehicleTripsBean.identifiableEntityBean.name}"/>
+                        <f:param value="#{vehicleTripsBean.identifiableEntityBean.id}"/>
                      </pretty:link>
                 </li>
                 <li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
@@ -299,8 +324,8 @@
                   <ul id="breadcrumb">
                         <li>
                            <pretty:link mappingId="vehiclePerformance">
-                              <h:outputText value="#{vehicleTripsBean.vehicle.name}"/>
-                              <f:param value="#{vehicleTripsBean.vehicle.vehicleID}"/>
+                              <h:outputText value="#{vehicleTripsBean.identifiableEntityBean.name}"/>
+                              <f:param value="#{vehicleTripsBean.identifiableEntityBean.id}"/>
                            </pretty:link>
                         </li>
                         <li class="last"><h:outputText value="#{messages.vehicletrip_trips}" /></li>
@@ -417,7 +442,7 @@
                             <tr>
                                 <td valign="top">#{messages.vehicletrip_driver_timezone}:</td>
                                 <td></td>
-                                <td><h:outputText>#{vehicleTripsBean.displayTimeZone}</h:outputText></td>
+                                <td><h:outputText>#{vehicleTripsBean.timeZoneDisplay}</h:outputText></td>
                             </tr>
                         </tbody>
                     </table>
@@ -440,28 +465,29 @@
                 <div class="panel_content"><!-- Start Trip table --> <rich:panel id="selectedTrip">
                     <a4j:form>
                         <rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datatable" rowClasses="tableOdd,tableEven"
-                            cellspacing="1" rows="5" width="100%" onRowClick="showInfoWindow('#{item.event.noteID}', new GLatLng(#{item.event.latitude}, #{item.event.longitude}));">
+                            cellspacing="1" rows="5" width="100%" onRowClick="showInfoWindow('#{item.noteID}', new GLatLng(#{item.latitude}, #{item.longitude}));">
 
                             <!-- Data -->
-                            <rich:column sortBy="#{item.event.addressStr}" style="cursor: pointer;">
-                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.event.type eq 208}" title="#{messages[item.event.eventType]}" />
-                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.event.type ne 208}" title="#{messages[item.event.eventType]}" />
+                            <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
+                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" title="#{messages[item.eventType]}" />
+                                <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 202}" title="#{messages[item.eventType]}" />
+                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208 and item.type ne 202}" title="#{messages[item.eventType]}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.event.addressStr}" style="cursor: pointer;">
+                            <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="#{messages.vehicletrip_event_address}" />
                                 </f:facet>
-                                <h:outputText value="#{item.event.addressStr}" />
+                                <h:outputText value="#{item.addressStr}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.event.time}" style="cursor: pointer;">
+                            <rich:column sortBy="#{item.time}" style="cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="#{messages.vehicletrip_event_datetime}" />
                                 </f:facet>
 
-                                <h:outputText value="#{item.date}">
-                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.timeZone}" />
+                                <h:outputText value="#{item.time}">
+                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
                                 </h:outputText>
 
                             </rich:column>
@@ -515,6 +541,12 @@
                                 <td></td>
                                 <td><h:selectBooleanCheckbox id="showWarningsCheckBox" value="#{vehicleTripsBean.showWarnings}" onclick="showWarningsChanged();" /></td>
                             </tr>
+                            
+                            <tr>
+                                <td>#{messages.vehicletrip_show_tampering}</td>
+                                <td></td>
+                                <td><h:selectBooleanCheckbox id="showTamperingCheckBox" value="#{vehicleTripsBean.showTampering}" onclick="showTamperingChanged(this);" /></td>
+                            </tr>
                         </tbody>
                     </table>
                 </a4j:region></div>
@@ -548,6 +580,10 @@
                         <tr>
                             <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_violation.png" width="20" height="20" /></td>
                             <td>#{messages.vehicletrip_legend_violation}</td>
+                            <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png" width="21" height="20" /></td>
+                            <td>#{messages.vehicletrip_tampering}</td>
+                        </tr>
+                        <tr>
                             <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
                             <td>#{messages.vehicletrip_legend_end}</td>
                         </tr>
@@ -571,7 +607,7 @@
                 
                     <div class="panel_nw">
                         <div class="panel_title">
-                            <h:outputText value="#{messages.drivertrip_trips_by} #{navigationBean.vehicle.fullName}" styleClass="vehicle" /> 
+                            <h:outputText value="#{messages.drivertrip_trips_by} #{vehicleTripsBean.identifiableEntityBean.name}" styleClass="vehicle" /> 
                             <span class="panel_links">
                                 <a4j:status onstop="onReRenderWithSelection();">
                                     <f:facet name="start">

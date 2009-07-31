@@ -65,7 +65,7 @@ public class VehicleBean extends BaseBean implements IdentifiableEntityBean
     @Override
     public String getName() {
         if(vehicle != null){
-            return vehicle.getFullName();
+            return vehicle.getName();
         }else{
             return null;
         }
