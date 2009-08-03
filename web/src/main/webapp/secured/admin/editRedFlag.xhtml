@@ -200,11 +200,12 @@
                       <td width="130" valign="top">
                         <h:selectOneRadio id="type" value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="left_tab_table" enabledClass="radioitem"
                            onchange="checkMultiple('type')">
-                          <a4j:support event="onclick" reRender="speed,drivingStyle,safety,crash" limitToList="true" />
+                          <a4j:support event="onclick" reRender="speed,drivingStyle,safety,crash,tampering" limitToList="true" />
                           <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
                           <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
                           <f:selectItem itemValue="seatBelt" itemLabel="#{messages.redFlag_seatBelt}" />
                           <f:selectItem itemValue="crash" itemLabel="#{messages.redFlag_crash}" />
+                          <f:selectItem itemValue="tampering" itemLabel="#{messages.redFlag_tampering}" />
                         </h:selectOneRadio>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
@@ -227,7 +228,7 @@
                                     <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagAlertsBean.item.speedSelected[index]}" onchange="checkMultiple('type')" />
                                     <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
                                     <h:outputText value=" " />
-                                    <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter"/>
+                                    <h:outputText value="mph" converter="MeasurementTextConverter"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
                                     <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" 
@@ -238,7 +239,7 @@
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                      <h:outputText value=" " />
-                                     <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter"/>
+                                     <h:outputText value="mph" converter="MeasurementTextConverter"/>
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectOneMenu id="#{id}Severity" value="#{redFlagAlertsBean.item.speedLevels[index]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple('type'); document.getElementById(id + 'Selected').checked = true;">
@@ -383,6 +384,31 @@
                                 </td>
                                 <td>
                                   <h:selectOneMenu id="crashLevelSeverity" value="#{redFlagAlertsBean.item.crashLevel}" onchange="checkMultiple('type')">
+                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
+                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
+                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
+                                  </h:selectOneMenu>
+                                </td>
+                              </tr>
+                            </table>
+
+                          </h:panelGroup>
+                        </a4j:outputPanel>
+                        
+                        <a4j:outputPanel id="tampering">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'tampering'}">
+
+                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                              <tr>
+                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
+                              </tr>
+                              <tr class="tableEven">
+                                <td>
+                                  <h:outputText value="#{messages.editRedFlag_tampering}" />
+                                </td>
+                                <td>
+                                  <h:selectOneMenu id="tamperingLevelSeverity" value="#{redFlagAlertsBean.item.tamperingLevel}" onchange="checkMultiple('type')">
                                     <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
                                     <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
                                     <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
