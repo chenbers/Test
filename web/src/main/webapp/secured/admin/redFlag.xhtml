@@ -235,7 +235,7 @@
                             </tr>
                             <tr class="tableEven">
                               <td><h:outputText value="#{messages.editRedFlag_seatBelt}" /></td>
-                              <td><h:outputText value="#{redFlagAlertsBean.item.seatBeltLevel.description}" /></td>
+                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.seatBeltLevel]}" /></td>
                             </tr>
                           </table>
 
@@ -250,7 +250,22 @@
                             </tr>
                             <tr class="tableEven">
                               <td><h:outputText value="#{messages.editRedFlag_crash}" /></td>
-                              <td><h:outputText value="#{redFlagAlertsBean.item.crashLevel.description}" /></td>
+                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.crashLevel]}" /></td>
+                            </tr>
+                          </table>
+
+                        </h:panelGroup>
+                        
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'tampering'}">
+
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                            <tr>
+                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
+                            </tr>
+                            <tr class="tableEven">
+                              <td><h:outputText value="#{messages.editRedFlag_tampering}" /></td>
+                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.tamperingLevel]}" /></td>
                             </tr>
                           </table>
 
