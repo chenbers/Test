@@ -8,7 +8,8 @@ public enum NoteType {
 	POWER_ON(150),
 	CRASH(1),
 	ZONES_ARRIVAL(117),
-	NOTE(2);
+	NOTE(2),
+	UNPLUGGED(202);
 	
 	int code;
 	

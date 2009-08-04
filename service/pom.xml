@@ -301,6 +301,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.5</version>
+        </dependency>
+        <dependency>
             <groupId>com.inthinc.pro.dao</groupId>
             <artifactId>dao</artifactId>
             <scope>compile</scope>

@@ -6,12 +6,9 @@ import javax.ws.rs.PathParam;
 
 @Path("/deviceService")
 public interface DeviceService {
-	
-
 
 	@GET
 	@Path("/devices/{userName}")
 	public String getDevices(@PathParam("userName")String userName);
-
 
 }

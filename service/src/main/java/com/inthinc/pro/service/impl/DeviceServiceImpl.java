@@ -10,8 +10,9 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.service.DeviceService;
 
-public class DeviceServiceImpl {
+public class DeviceServiceImpl implements DeviceService{
 	
 	private DeviceDAO deviceDAO;
 	private UserDAO userDAO;

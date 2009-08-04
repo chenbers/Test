@@ -13,11 +13,6 @@
         <param-value>/api</param-value>
     </context-param>
     
-    <context-param>
-        <param-name>resteasy.role.based.security</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    
 	<filter>
         <display-name>RichFaces Filter</display-name>
         <filter-name>richfaces</filter-name>
@@ -73,9 +68,12 @@
     </servlet>
     <!-- extension mapping -->
     <servlet-mapping>
+    	
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
+    
+   
     
     <!-- Welcome files -->
     <welcome-file-list>

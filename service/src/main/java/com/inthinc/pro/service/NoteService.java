@@ -1,10 +1,10 @@
 package com.inthinc.pro.service;
 
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+
+import org.springframework.security.annotation.Secured;
 
 @Path("/eventService")
 public interface NoteService {
@@ -71,7 +71,9 @@ public interface NoteService {
 	
 	@GET
     @Path("/createCrashEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{deltaX}/{deltaY}/{deltaZ}")
-    public String createCrashEvent(@PathParam("imei")String imei,
+    @Secured("ROLE_SUPERUSER")
+    public String createCrashEvent(
+    		@PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude,
             @PathParam("currentSpeed")Integer speed,
@@ -90,4 +92,14 @@ public interface NoteService {
             @PathParam("speedLimit")Integer speedLimit,
             @PathParam("bearing")Integer bearing,
             @PathParam("zoneID")Integer zoneID);
+	
+	@GET
+    @Path("/createTamperingEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{backupBatteryValue}")
+    public String createTamperingEvent(@PathParam("imei")String imei,
+            @PathParam("lat")Double latitude,
+            @PathParam("lng")Double longitude,
+            @PathParam("currentSpeed")Integer speed,
+            @PathParam("speedLimit")Integer speedLimit,
+            @PathParam("bearing")Integer bearing,
+            @PathParam("backupBatteryValue")Integer backupBatteryValue);
 }
