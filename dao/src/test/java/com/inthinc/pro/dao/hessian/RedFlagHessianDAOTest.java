@@ -50,11 +50,7 @@ public class RedFlagHessianDAOTest
         List<RedFlag>  redFlagList = redFlagHessianDAO.getRedFlags(UnitTestStats.UNIT_TEST_GROUP_ID, 500);
         
         assertNotNull(redFlagList);
-        assertEquals(MockData.unitTestStats.totalRedFlags, redFlagList.size());
-        
-        RedFlagLevel level = redFlagList.get(0).getLevel();
-        assertEquals(level.toString(), level.getDescription());
-        
+        assertEquals(MockData.unitTestStats.totalRedFlags, redFlagList.size());     
     }
 
 }
