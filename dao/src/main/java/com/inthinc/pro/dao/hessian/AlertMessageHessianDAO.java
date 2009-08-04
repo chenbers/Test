@@ -212,6 +212,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
             parameterList.add(String.valueOf(((SpeedingEvent)event).getSpeedLimit()));
             parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(),event.getLongitude()),true));
         case ALERT_TYPE_TAMPERING:
+        case ALERT_TYPE_LOW_BATTERY:
             break;
         default:
             parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(),event.getLongitude()),true));
