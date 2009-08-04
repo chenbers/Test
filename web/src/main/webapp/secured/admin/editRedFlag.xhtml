@@ -200,12 +200,13 @@
                       <td width="130" valign="top">
                         <h:selectOneRadio id="type" value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="left_tab_table" enabledClass="radioitem"
                            onchange="checkMultiple('type')">
-                          <a4j:support event="onclick" reRender="speed,drivingStyle,safety,crash,tampering" limitToList="true" />
+                          <a4j:support event="onclick" reRender="speed,drivingStyle,safety,crash,tampering,lowBattery" limitToList="true" />
                           <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
                           <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
                           <f:selectItem itemValue="seatBelt" itemLabel="#{messages.redFlag_seatBelt}" />
                           <f:selectItem itemValue="crash" itemLabel="#{messages.redFlag_crash}" />
                           <f:selectItem itemValue="tampering" itemLabel="#{messages.redFlag_tampering}" />
+                          <f:selectItem itemValue="lowBattery" itemLabel="#{messages.redFlag_lowBattery}" />
                         </h:selectOneRadio>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
@@ -409,6 +410,31 @@
                                 </td>
                                 <td>
                                   <h:selectOneMenu id="tamperingLevelSeverity" value="#{redFlagAlertsBean.item.tamperingLevel}" onchange="checkMultiple('type')">
+                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
+                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
+                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
+                                  </h:selectOneMenu>
+                                </td>
+                              </tr>
+                            </table>
+
+                          </h:panelGroup>
+                        </a4j:outputPanel>
+                        
+                        <a4j:outputPanel id="lowBattery">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'lowBattery'}">
+
+                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                              <tr>
+                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
+                              </tr>
+                              <tr class="tableEven">
+                                <td>
+                                  <h:outputText value="#{messages.editRedFlag_lowBattery}" />
+                                </td>
+                                <td>
+                                  <h:selectOneMenu id="lowBatteryLevelSeverity" value="#{redFlagAlertsBean.item.lowBatteryLevel}" onchange="checkMultiple('type')">
                                     <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
                                     <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
                                     <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />

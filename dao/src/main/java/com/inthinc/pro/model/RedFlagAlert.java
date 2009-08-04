@@ -34,6 +34,7 @@ public class RedFlagAlert extends BaseAlert {
     private RedFlagLevel seatBeltLevel;
     private RedFlagLevel crashLevel;
     private RedFlagLevel tamperingLevel;
+    private RedFlagLevel lowBatteryLevel;
 
     public RedFlagAlert() {
     }
@@ -185,5 +186,13 @@ public class RedFlagAlert extends BaseAlert {
                 + hardBrake + ", hardBrakeLevel=" + hardBrakeLevel + ", hardTurn=" + hardTurn + ", hardTurnLevel=" + hardTurnLevel + ", hardVertical=" + hardVertical
                 + ", hardVerticalLevel=" + hardVerticalLevel + ", redFlagAlertID=" + redFlagAlertID + ", seatBeltLevel=" + seatBeltLevel + ", speedLevels="
                 + Arrays.toString(speedLevels) + ", speedSettings=" + Arrays.toString(speedSettings) + ", tamperingLevel=" + tamperingLevel + "]";
+    }
+
+    public void setLowBatteryLevel(RedFlagLevel lowBatteryLevel) {
+        this.lowBatteryLevel = lowBatteryLevel;
+    }
+
+    public RedFlagLevel getLowBatteryLevel() {
+        return lowBatteryLevel;
     }
 }
