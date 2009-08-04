@@ -296,6 +296,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getPerson().getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
@@ -316,6 +318,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
         reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getPerson().getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);

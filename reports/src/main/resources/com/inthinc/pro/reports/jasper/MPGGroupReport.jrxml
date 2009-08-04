@@ -1,358 +1,193 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="MPGGroupReport"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="AllSectionsNoDetail"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<subDataset name="CategorySeriesSubDataset" >
-
-		<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MPGGroupReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="CategorySeriesSubDataset">
+		<parameter name="MEASUREMENT_TYPE" class="com.inthinc.pro.model.MeasurementType" isForPrompting="false"/>
+		<parameter name="FUEL_EFFICIENCY_TYPE" class="com.inthinc.pro.model.FuelEfficiencyType" isForPrompting="false"/>
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
 		<field name="value" class="java.lang.Number"/>
 		<field name="label" class="java.lang.String"/>
-
 	</subDataset>
-
-	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
-	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
-	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
-
+	<parameter name="ACCOUNT_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ENTITY_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUB_DATASET_1" class="java.util.List" isForPrompting="false"/>
+	<parameter name="DURATION" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
+	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="MEASUREMENT_TYPE" class="com.inthinc.pro.model.MeasurementType" isForPrompting="false"/>
+	<parameter name="FUEL_EFFICIENCY_TYPE" class="com.inthinc.pro.model.FuelEfficiencyType" isForPrompting="false"/>
 	<field name="entityName" class="java.lang.String"/>
 	<field name="lightValue" class="java.lang.Number"/>
 	<field name="mediumValue" class="java.lang.Number"/>
 	<field name="heavyValue" class="java.lang.Number"/>
-
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="422"  isSplitAllowed="true" >
-				<barChart>
-					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgCustomizer" >
-					<reportElement
-						x="0"
-						y="80"
-						width="535"
-						height="325"
-						key="element-1"/>
-					<box></box>
-						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
-					</chartLegend>
-					</chart>
-					<categoryDataset>
-						<dataset >
-							<datasetRun subDataset="CategorySeriesSubDataset">
-								<datasetParameter  name="USE_METRIC">
-									<datasetParameterExpression><![CDATA[$P{USE_METRIC}]]></datasetParameterExpression>
-								</datasetParameter>
-					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
-							</datasetRun>
-						</dataset>
-						<categorySeries>
-							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
-							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{value},$P{USE_METRIC})]]></valueExpression>
-							<labelExpression><![CDATA[$F{label}]]></labelExpression>
-				<itemHyperlink >
-				</itemHyperlink>
-						</categorySeries>
-					</categoryDataset>
-					<barPlot >
-						<plot labelRotation="-30.0" >
-							<seriesColor seriesOrder="0" color="#AFD8F8"/>
-							<seriesColor seriesOrder="1" color="#F6BD0F"/>
-							<seriesColor seriesOrder="2" color="#8BBA00"/>
-</plot>
-						<categoryAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</categoryAxisFormat>
-						<valueAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</valueAxisFormat>
-					</barPlot>
-				</barChart>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="382"
-						y="0"
-						width="153"
-						height="14"
-						key="textField-7"/>
-					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="382"
-						y="16"
-						width="153"
-						height="14"
-						key="textField-8"/>
-					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION})]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="54"
-						y="17"
-						width="318"
-						height="26"
-						key="textField-9"/>
-					<box></box>
-					<textElement>
-						<font size="16"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mpg.header",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="54"
-						y="4"
-						width="122"
-						height="16"
-						key="textField-10"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
-				</textField>
-				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="1"
-						width="51"
-						height="47"
-						key="image-1"/>
-					<box></box>
-					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
-				</image>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="61"
-						width="535"
-						height="0"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="651"
-						y="258"
-						width="4"
-						height="0"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="30"  isSplitAllowed="true" >
-				<rectangle radius="1" >
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="5"
-						width="535"
-						height="22"
-						forecolor="#999999"
-						backcolor="#E7E6E6"
-						key="rectangle-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="13"
-						y="7"
-						width="235"
-						height="18"
-						forecolor="#666666"
-						key="textField-4"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.mpg.division.team}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="253"
-						y="7"
-						width="82"
-						height="18"
-						forecolor="#666666"
-						key="textField-5"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.mpg.light}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="335"
-						y="7"
-						width="82"
-						height="18"
-						forecolor="#666666"
-						key="textField-6"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.mpg.medium}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="420"
-						y="7"
-						width="82"
-						height="18"
-						forecolor="#666666"
-						key="textField-7"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.mpg.heavy}]]></textFieldExpression>
-				</textField>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="24"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="13"
-						y="2"
-						width="235"
-						height="19"
-						forecolor="#666666"
-						key="textField-3"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entityName}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="253"
-						y="2"
-						width="80"
-						height="19"
-						forecolor="#666666"
-						key="textField-4"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{lightValue},$P{USE_METRIC})]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="335"
-						y="2"
-						width="80"
-						height="19"
-						forecolor="#666666"
-						key="textField-5"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{mediumValue},$P{USE_METRIC})]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="420"
-						y="2"
-						width="80"
-						height="19"
-						forecolor="#666666"
-						key="textField-6"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Number"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{heavyValue},$P{USE_METRIC})]]></textFieldExpression>
-				</textField>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="26"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="5"
-						width="535"
-						height="0"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="12"
-						width="198"
-						height="14"
-						key="textField-9"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
-				</textField>
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</summary>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="422">
+			<barChart>
+				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgCustomizer">
+					<reportElement key="element-1" x="0" y="80" width="535" height="325"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="CategorySeriesSubDataset">
+							<datasetParameter name="MEASUREMENT_TYPE">
+								<datasetParameterExpression><![CDATA[$P{MEASUREMENT_TYPE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="FUEL_EFFICIENCY_TYPE">
+								<datasetParameterExpression><![CDATA[$P{FUEL_EFFICIENCY_TYPE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+						<valueExpression><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMpgToFuelEfficiencyType($F{value},$P{MEASUREMENT_TYPE}, $P{FUEL_EFFICIENCY_TYPE})]]></valueExpression>
+						<labelExpression><![CDATA[$F{label}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot labelRotation="-30.0">
+						<seriesColor seriesOrder="0" color="#AFD8F8"/>
+						<seriesColor seriesOrder="1" color="#F6BD0F"/>
+						<seriesColor seriesOrder="2" color="#8BBA00"/>
+					</plot>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="382" y="0" width="153" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-8" x="382" y="16" width="153" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField-9" x="54" y="17" width="318" height="26"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.mpg.header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-10" x="54" y="4" width="122" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" vAlign="Top">
+				<reportElement key="image-1" x="0" y="1" width="51" height="47"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement key="line-4" x="0" y="61" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-5" x="651" y="258" width="4" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30">
+			<rectangle radius="1">
+				<reportElement key="rectangle-2" mode="Opaque" x="0" y="5" width="535" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="13" y="7" width="235" height="18" forecolor="#666666"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.mpg.division.team}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-5" mode="Transparent" x="253" y="7" width="82" height="18" forecolor="#666666"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.mpg.light}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" mode="Transparent" x="335" y="7" width="82" height="18" forecolor="#666666"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.mpg.medium}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" mode="Transparent" x="420" y="7" width="82" height="18" forecolor="#666666"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.mpg.heavy}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="13" y="2" width="235" height="19" forecolor="#666666"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{entityName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="253" y="2" width="80" height="19" forecolor="#666666"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMpgToFuelEfficiencyType($F{lightValue},$P{MEASUREMENT_TYPE},$P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="335" y="2" width="80" height="19" forecolor="#666666"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMpgToFuelEfficiencyType($F{mediumValue},$P{MEASUREMENT_TYPE},$P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField-6" x="420" y="2" width="80" height="19" forecolor="#666666"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMpgToFuelEfficiencyType($F{heavyValue},$P{MEASUREMENT_TYPE},$P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26">
+			<line>
+				<reportElement key="line-3" x="0" y="5" width="535" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-9" x="0" y="12" width="198" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
 </jasperReport>

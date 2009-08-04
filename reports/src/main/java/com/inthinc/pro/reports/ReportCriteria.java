@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.model.ChartData;
 
 public class ReportCriteria
@@ -22,6 +24,8 @@ public class ReportCriteria
     private String chartDataSetIdField;
     private Locale locale;
     private Boolean useMetric;
+    private MeasurementType measurementType;
+    private FuelEfficiencyType fuelEfficiencyType;
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -179,6 +183,24 @@ public class ReportCriteria
     public Locale getLocale()
     {
         return locale;
+    }
+
+    public MeasurementType getMeasurementType() {
+        return measurementType;
+    }
+
+    public void setMeasurementType(MeasurementType measurementType) {
+        paramMap.put("MEASUREMENT_TYPE", measurementType);
+        this.measurementType = measurementType;
+    }
+
+    public FuelEfficiencyType getFuelEfficiencyType() {
+        return fuelEfficiencyType;
+    }
+
+    public void setFuelEfficiencyType(FuelEfficiencyType fuelEfficiencyType) {
+        paramMap.put("FUEL_EFFICIENCY_TYPE", fuelEfficiencyType);
+        this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
 

@@ -92,6 +92,9 @@ public abstract class AbstractMapper implements Mapper
 
     private <E> E convertToModelObject(Map<String, Object> map, E modelObject)
     {
+        if(logger.isTraceEnabled()) {
+            logger.trace("Returned Map being converted into Model Object: " + map);
+        }
         List<Field> fieldList = getAllFields(modelObject.getClass());
         for (Map.Entry<String, Object> entry : map.entrySet())
         {
@@ -399,6 +402,9 @@ public abstract class AbstractMapper implements Mapper
                 }
             }
             clazz = clazz.getSuperclass();
+        }
+        if(logger.isTraceEnabled()) {
+            logger.trace("Conversion of " + modelObject + " to a Map produced: " + map);
         }
         return map;
     }

@@ -136,9 +136,10 @@ public class MpgBean extends BaseBean implements Serializable
     public ReportCriteria buildReportCriteria()
     {
         ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration());
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getPerson().getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
         return reportCriteria;
     }
 

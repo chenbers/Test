@@ -428,6 +428,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getPerson().getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());
@@ -448,6 +450,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getPerson().getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());

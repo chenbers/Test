@@ -2,7 +2,6 @@ package com.inthinc.pro.convert;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.ConverterException;
 
 import org.apache.commons.lang.NotImplementedException;
 
