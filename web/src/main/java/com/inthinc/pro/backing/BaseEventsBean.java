@@ -34,8 +34,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     private Integer                 maxCount;
     private List<EventReportItem>   tableData;
     private List<EventReportItem>   filteredTableData;
-    private String emailAddress;
-
     private EventDAO                eventDAO;
     private TablePreferenceDAO tablePreferenceDAO;
     
@@ -353,14 +351,23 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     
     public void clearItemAction()
     {
-        eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID());
-        tableData.remove(clearItem);
-        filteredTableData.remove(clearItem);
-        maxCount--;
-        if (end > maxCount)
-            end = maxCount;
+        if (eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID()) >= 1){
+    		initTableData();
+        }
+//        tableData.remove(clearItem);
+//        filteredTableData.remove(clearItem);
+//        maxCount--;
+//        if (end > maxCount)
+//            end = maxCount;
     }
-
+    
+    public void includeEventAction(){
+    	
+    	if (eventDAO.unforgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID())>= 1){
+    		initTableData();
+        }
+    	
+    }
     public EventCategory getCategoryFilter()
     {
         return categoryFilter;
@@ -498,17 +505,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     {
         return reportCriteriaService;
     }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getEmailAddress()
-    {
-        return emailAddress;
-    }
-    
 
     public void setEventFilterID(Long eventFilterID)
     {

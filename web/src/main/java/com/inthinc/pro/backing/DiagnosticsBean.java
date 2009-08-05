@@ -16,7 +16,7 @@ public class DiagnosticsBean extends BaseEventsBean
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-        return getEventDAO().getWarningEventsForGroup(groupID, 7);
+        return getEventDAO().getWarningEventsForGroup(groupID, 7,showExcludedEvents);
     }
 
     // TablePrefOptions interface

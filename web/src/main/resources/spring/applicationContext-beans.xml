@@ -213,21 +213,15 @@
         <property name="vehicleSeatBeltBean" ref="vehicleSeatBeltBean"/>
     </bean>
     
-    <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="basePerformanceBean">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="eventDAO" ref="eventDAO"></property>
-        <property name="durationBean" ref="vehicleSpeedDurationBean"/>
+    <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="basePerformanceEventsBean">
+         <property name="durationBean" ref="vehicleSpeedDurationBean"/>
     </bean>
     
-    <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" parent="basePerformanceBean">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="eventDAO" ref="eventDAO"></property>    
+    <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" parent="basePerformanceEventsBean">
         <property name="durationBean" ref="vehicleStyleDurationBean"/>
     </bean>
         
-    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request" parent="basePerformanceBean">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="eventDAO" ref="eventDAO"></property>
+    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request" parent="basePerformanceEventsBean">
         <property name="durationBean" ref="vehicleSeatBeltDurationBean"/>
     </bean>
     
@@ -259,21 +253,15 @@
         <property name="driverSeatBeltBean" ref="driverSeatBeltBean"/>
     </bean>
 
-    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="basePerformanceBean">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="eventDAO" ref="eventDAO"></property>
+    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="basePerformanceEventsBean">
         <property name="durationBean" ref="driverSpeedDurationBean"/>
     </bean>
 
-    <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request" parent="basePerformanceBean">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="eventDAO" ref="eventDAO"></property>
-        <property name="durationBean" ref="driverStyleDurationBean"></property>
+    <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request" parent="basePerformanceEventsBean">
+         <property name="durationBean" ref="driverStyleDurationBean"></property>
     </bean>
 
-    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" parent="basePerformanceBean">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="eventDAO" ref="eventDAO"></property>
+    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" parent="basePerformanceEventsBean">
         <property name="durationBean" ref="driverSeatBeltDurationBean"/>
     </bean>
 
@@ -411,6 +399,10 @@
         <property name="vehicleBean" ref="vehicleBean"/>
     </bean>
     
+    <bean id="basePerformanceEventsBean" class="com.inthinc.pro.backing.BasePerformanceEventBean" scope="request" parent="basePerformanceBean">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
+    </bean>
     <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"/>
     <bean id="measurementBean" class="com.inthinc.pro.backing.MeasurementBean" scope="request" init-method="init"/>
     <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request" init-method="init"/>

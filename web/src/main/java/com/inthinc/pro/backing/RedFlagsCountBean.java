@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
+import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.model.RedFlag;
 
 public class RedFlagsCountBean extends RedFlagsBean implements SearchChangeListener{
@@ -36,7 +37,7 @@ public class RedFlagsCountBean extends RedFlagsBean implements SearchChangeListe
     {
         setFilteredTableData(null);
         
-        List<RedFlag> redFlagList = getRedFlagDAO().getRedFlags(getEffectiveGroupId(), 7);
+        List<RedFlag> redFlagList = getRedFlagDAO().getRedFlags(getEffectiveGroupId(), 7, RedFlagDAO.EXCLUDE_FORGIVEN);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {

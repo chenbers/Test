@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.listener.DurationChangeListener;
+//import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
@@ -26,7 +26,7 @@ import com.inthinc.pro.util.MessageUtil;
 
 public abstract class BasePerformanceBean extends BaseBean 
 {
-    private static final Logger logger = Logger.getLogger(VehicleSpeedBean.class);
+    private static final Logger logger = Logger.getLogger(BasePerformanceBean.class);
     
     protected static final Integer EMPTY_SCORE_VALUE = -1;
     

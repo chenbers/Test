@@ -21,7 +21,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     private TablePreferenceDAO tablePreferenceDAO;
     private TablePref<T> tablePref;
-    private String emailAddress;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     private Integer numRowsPerPg = 25;
@@ -274,16 +273,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         }
 
         return result;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getEmailAddress()
-    {
-        return emailAddress;
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer)

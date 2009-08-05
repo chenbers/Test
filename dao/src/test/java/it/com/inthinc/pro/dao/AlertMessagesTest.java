@@ -891,7 +891,7 @@ public class AlertMessagesTest
         RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
         redFlagDAO.setSiloService(siloService);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(team1Group.getGroupID(), 1);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(team1Group.getGroupID(), 1,0);
         
         assertNotNull(redFlagList);
         

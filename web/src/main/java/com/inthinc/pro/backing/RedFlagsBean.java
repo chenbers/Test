@@ -293,7 +293,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         setFilteredTableData(null);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7, RedFlagDAO.INCLUDE_FORGIVEN);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {
@@ -380,18 +380,19 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         this.clearItem = clearItem;
     }
     
-    public void clearItemAction()
+    public void excludeEventAction()
     {
-        eventDAO.forgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID());
-        
-        tableData.remove(clearItem);
-        filteredTableData.remove(clearItem);
-        maxCount--;
-        if (end > maxCount)
-            end = maxCount;
+        if (eventDAO.forgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1){
+        	initTableData();
+        }
         
     }
-
+    public void includeEventAction()
+    {
+        if (eventDAO.unforgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1){
+        	initTableData();
+        }
+    }
     public EventCategory getCategoryFilter()
     {
         return categoryFilter;

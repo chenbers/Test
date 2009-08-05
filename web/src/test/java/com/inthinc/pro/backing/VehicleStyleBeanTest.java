@@ -25,6 +25,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.model.Vehicle;
 
 public class VehicleStyleBeanTest extends BaseBeanTest
 {
@@ -64,6 +65,13 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         d.setPerson(p);
         vehicleStyleBean.setDriver(d);
         
+        Vehicle v = new Vehicle();
+        v.setDriverID(101);
+        v.setVehicleID(1111);
+        v.setGroupID(0);
+        
+        vehicleStyleBean.setVehicle(v);
+        
         // Test Scores and Styles
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
@@ -94,11 +102,11 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         EventReportItem eri = new EventReportItem(e, p.getTimeZone(),MeasurementType.ENGLISH);
         styleEvents.add(eri);
 
-        vehicleStyleBean.setSelectedEventType("HARD_VERT");
-        vehicleStyleBean.setStyleEvents(styleEvents);
-        vehicleStyleBean.filterEventsAction();
+        vehicleStyleBean.setSelectedBreakdown("HARD_VERT");
+        vehicleStyleBean.setEvents(styleEvents);
+        vehicleStyleBean.sortEvents();
         
-        assertTrue( vehicleStyleBean.getFilteredStyleEvents().get(0).getEvent().getEventType() == EventType.HARD_VERT );
+        assertTrue( vehicleStyleBean.getFilteredEvents().get(0).getEvent().getEventType() == EventType.HARD_VERT );
         
 
     }

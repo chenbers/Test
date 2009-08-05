@@ -56,7 +56,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="searchButton" action="#{driverReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,items,topScroller,bottomScroller,headerDrivers" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerDrivers" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -113,12 +113,12 @@
 									</rich:menuItem>
 								</rich:contextMenu>
                                 <div class="spacer"></div>
-                                <rich:datascroller id="topScroller" for="items"  styleClass="datascroller"
-                                      immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" 
-                                      reRender="bottomScroller,items,headerDrivers"
-                                      requestDelay="200" eventsQueue="pagerQueue"
-                                      page="#{driverReportBean.page}">
-                                 </rich:datascroller> 
+<!--                                <rich:datascroller id="topScroller" for="items"  styleClass="datascroller"-->
+<!--                                      immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" -->
+<!--                                      reRender="bottomScroller,items,headerDrivers"-->
+<!--                                      requestDelay="200" eventsQueue="pagerQueue"-->
+<!--                                      page="#{driverReportBean.page}">-->
+<!--                                 </rich:datascroller> -->
                              
                                 <div class="datagrid_panel" style="width: 925px;">
 
@@ -224,9 +224,9 @@
                                 <rich:datascroller id="bottomScroller" 
                                           for="items" immediate="true" 
                                           scrollerListener="#{driverReportBean.scrollerListener}" 
-                                          eRender="topScroller,items,headerDrivers"
+                                          reRender="items,headerDrivers"
                                           requestDelay="200" eventsQueue="pagerQueue" 
-                                          page="#{driverReportBean.page}"
+                                          page="#{driverReportBean.page}" renderIfSinglePage="false"
                                           styleClass="datascroller">
                                     </rich:datascroller>
                                 

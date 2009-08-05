@@ -173,8 +173,8 @@
 			<rich:panel id="notificationsTable" bodyClass="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTableForm">
-					<rich:datascroller align="center" for="notificationsTable" id="scrollerTop" page="#{vehicleSeatBeltBean.tableStatsBean.page}"
-					reRender="notificationsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"/>
+<!--					<rich:datascroller align="center" for="notificationsTable" id="scrollerTop" page="#{vehicleSeatBeltBean.tableStatsBean.page}"-->
+<!--					reRender="notificationsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"/>-->
 						<rich:dataTable 
 							value="#{vehicleSeatBeltBean.seatBeltEvents}" 
 							id="notificationsTable" var="item" styleClass="datagrid"
@@ -231,15 +231,24 @@
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
-								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
-									<h:outputText value="#{messages.redflags_clear}" />
+								<a4j:commandLink rendered="#{item.event.forgiven == 0}" title="#{messages.vehicleReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+									<h:outputText value="#{messages.vehicleReports_exclude}" />
 									<f:setPropertyActionListener target="#{vehicleSeatBeltBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
-    						</rich:column>
+ 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleSeatBeltBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" >
+									<h:outputText value="#{messages.vehicleReports_include}" />
+									<f:setPropertyActionListener target="#{vehicleSeatBeltBean.clearItem}" value="#{item}" />
+								</a4j:commandLink>
+<!--					<!--								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >-->
+<!--									<h:outputText value="#{messages.redflags_clear}" />-->
+<!--									<f:setPropertyActionListener target="#{vehicleSeatBeltBean.clearItem}" value="#{item}" />-->
+<!--								</a4j:commandLink>-->
+   						</rich:column>
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="notificationsTable" id="scrollerBottom" page="#{vehicleSeatBeltBean.tableStatsBean.page}"
-						reRender="notificationsTable,scrollerTop,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"/>
+						reRender="notificationsTable,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"
+						renderIfSinglePage="false"/>
 					</h:form> 
 				<!-- End Event table -->
 				</rich:panel>
@@ -279,7 +288,7 @@
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{vehicleSeatBeltBean.ClearEventAction}"         				
+          <a4j:commandLink action="#{vehicleSeatBeltBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">

@@ -214,8 +214,8 @@ var firstLoad = new Boolean(true);
 						  <div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
-						  	  				   action="#{driverStyleBean.filterEventsAction}" reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="eventType" value="" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -247,9 +247,9 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink  onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
-						  	  					action="#{driverStyleBean.filterEventsAction}"
-						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -281,9 +281,9 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink  onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
-						  	  					action="#{driverStyleBean.filterEventsAction}"
-						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -317,9 +317,9 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink  onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
-						  	  					action="#{driverStyleBean.filterEventsAction}"
-						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_TURN}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -353,9 +353,9 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink  onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
-						  	  					action="#{driverStyleBean.filterEventsAction}"
-						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -439,9 +439,9 @@ var firstLoad = new Boolean(true);
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
-					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"
-							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />
-						<rich:dataTable value="#{driverStyleBean.filteredStyleEvents}" 
+<!--					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"-->
+<!--							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />-->
+						<rich:dataTable value="#{driverStyleBean.filteredEvents}" 
 						id="notificationsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
 						rows="#{driverStyleBean.tableStatsBean.tableRowCount}" width="100%">
@@ -497,8 +497,12 @@ var firstLoad = new Boolean(true);
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
-								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
-									<h:outputText value="#{messages.redflags_clear}" />
+								<a4j:commandLink rendered="#{item.event.forgiven == 0}" title="#{messages.driverReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+									<h:outputText value="#{messages.driverReports_exclude}" />
+									<f:setPropertyActionListener target="#{driverStyleBean.clearItem}" value="#{item}" />
+								</a4j:commandLink>
+ 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{driverStyleBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" >
+									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{driverStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
     						</rich:column>
@@ -506,7 +510,8 @@ var firstLoad = new Boolean(true);
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="notificationsTable" immediate="true" id="scrollerBottom" page="#{driverStyleBean.tableStatsBean.page}"
-						reRender="notificationsTable,scrollerTop,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"/>
+						reRender="notificationsTable,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" 
+						renderIfSinglePage="false"/>
 					</h:form> 
 				<!-- End Event table -->
 				</div>
@@ -547,8 +552,8 @@ var firstLoad = new Boolean(true);
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{driverStyleBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+          <a4j:commandLink action="#{driverStyleBean.excludeEventAction}"         				
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />

@@ -547,7 +547,8 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="gas"><h:outputText value="Miles_Per_Gallon" converter="FuelEfficiencyTextConverter"/></span>
+						<span class="gas">#{messages.driver_mpg}</span>
+<!--						<span class="gas"><h:outputText value="Miles_Per_Gallon" converter="FuelEfficiencyTextConverter"/></span>-->
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="mpgForm"/>
 							<ui:param name="reRenderList" value="mpg_script,mpgForm"/>			
@@ -573,8 +574,8 @@
 							<script type="text/javascript">
 								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
 								var targetElement5 = document.getElementById("hiddenField5");
-								chart.setDataXML(targetElement5.value);
-								chart.setTransparent(true);
+				     			chart.setDataXML(targetElement5.value);
+					    		chart.setTransparent(true);
 								chart.render("mpg_chart");
 							</script>
 							</rich:panel>

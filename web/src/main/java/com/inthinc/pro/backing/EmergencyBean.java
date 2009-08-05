@@ -16,7 +16,7 @@ public class EmergencyBean extends BaseEventsBean
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-        return getEventDAO().getEmergencyEventsForGroup(groupID, 7);
+        return getEventDAO().getEmergencyEventsForGroup(groupID, 7,showExcludedEvents);
     }
 
     // TablePrefOptions interface

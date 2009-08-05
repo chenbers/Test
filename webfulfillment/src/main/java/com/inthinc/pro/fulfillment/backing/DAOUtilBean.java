@@ -129,7 +129,7 @@ public class DAOUtilBean {
 			List<Integer> eventTypes = new LinkedList<Integer>();
 			eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
 			List<Event> events = eventDAO.getEventsForVehicle(vehicleID, startDate,
-					endDate, eventTypes);
+					endDate, eventTypes, null);
 
 
 			if (loc != null)

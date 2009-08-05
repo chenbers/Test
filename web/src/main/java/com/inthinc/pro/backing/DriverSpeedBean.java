@@ -11,8 +11,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -24,35 +22,27 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class DriverSpeedBean extends BasePerformanceBean
+public class DriverSpeedBean extends BasePerformanceEventsBean
 {
-    private static final Logger logger = Logger.getLogger(DriverSpeedBean.class);
+    private static final Logger                logger         = Logger.getLogger(DriverSpeedBean.class);
 
-    private ScoreDAO scoreDAO;
-    private EventDAO eventDAO;
-    private EventReportItem clearItem;
-    private String emailAddress;
-    private String selectedSpeed = "OVERALL";
-    private List<EventReportItem> filteredSpeedingEvents;
-    private List<EventReportItem> speedingEvents;
-    private Map<String, List<EventReportItem>> speedingListsMap;
-    private final Integer ROWCOUNT = 10;
-
-    @Override
-    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
-    {
-        return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
-    }
+    
+    public DriverSpeedBean() {
+		super();
+		
+		selectedBreakdown="OVERALL";
+	}
 
     @Override
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
         return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
     }
-
-    private void initScores()
+    
+    @Override
+    protected void initScores()
     {
-        Map<ScoreType, ScoreableEntity> tempMap = scoreDAO.getDriverScoreBreakdownByType(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
+        Map<ScoreType, ScoreableEntity> tempMap = scoreDAO.getDriverScoreBreakdownByType(getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
@@ -107,7 +97,14 @@ public class DriverSpeedBean extends BasePerformanceBean
         }
     }
 
-    private void initTrends()
+    @Override
+	protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
+	{
+	    return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
+	}
+
+	@Override
+    protected void initTrends()
     {
         Integer id = getDriver().getDriverID();
         trendMap = new HashMap<String, String>();
@@ -119,159 +116,22 @@ public class DriverSpeedBean extends BasePerformanceBean
         trendMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_65_80));
     }
 
-    public void initEvents()
+    @Override
+    protected void initEvents()
     {
         List<Event> tempEvents = new ArrayList<Event>();
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
 
-        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
-        speedingEvents = new ArrayList<EventReportItem>();
+        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types, showExcludedEvents);
+        events = new ArrayList<EventReportItem>();
 
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            speedingEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(), getMeasurementType()));
+            events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
         }
-        sortSpeedingEvents();
-    }
-
-    public List<EventReportItem> getFilteredSpeedingEvents()
-    {
-        if (filteredSpeedingEvents == null)
-        {
-            initEvents();
-            tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
-        }
-
-        return filteredSpeedingEvents;
-    }
-
-    public void setFilteredSpeedingEvents(List<EventReportItem> filteredSpeedingEvents)
-    {
-        this.filteredSpeedingEvents = filteredSpeedingEvents;
-    }
-
-    public String getSelectedSpeed()
-    {
-        return selectedSpeed;
-    }
-
-    public void setSelectedSpeed(String selectedSpeed)
-    {
-        this.selectedSpeed = selectedSpeed;
-        setFilteredSpeedingEvents(getSpeedingListsMap().get(selectedSpeed));
-    }
-
-    public void selectBreakdownChanged()
-    {
-        tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
-    }
-
-    public ScoreDAO getScoreDAO()
-    {
-        return scoreDAO;
-    }
-
-    public void setScoreDAO(ScoreDAO scoreDAO)
-    {
-        this.scoreDAO = scoreDAO;
-    }
-
-    public EventDAO getEventDAO()
-    {
-        return eventDAO;
-    }
-
-    public void setEventDAO(EventDAO eventDAO)
-    {
-        this.eventDAO = eventDAO;
-    }
-
-    public Map<String, List<EventReportItem>> getSpeedingListsMap()
-    {
-        if (speedingListsMap == null)
-            initEvents();
-
-        return speedingListsMap;
-    }
-
-    public void setSpeedingListsMap(Map<String, List<EventReportItem>> speedingListsMap)
-    {
-        this.speedingListsMap = speedingListsMap;
-    }
-
-    @Override
-    public void setDuration(Duration duration)
-    {
-        durationBean.setDuration(duration);
-        initScores();
-        initTrends();
-        initEvents();
-        tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
-    }
-
-    public Duration getDuration()
-    {
-        return durationBean.getDuration();
-    }
-
-    public List<EventReportItem> getSpeedingEvents()
-    {
-        return speedingEvents;
-    }
-
-    public void setSpeedingEvents(List<EventReportItem> speedingEvents)
-    {
-        this.speedingEvents = speedingEvents;
-        this.sortSpeedingEvents();
-    }
-
-    public void clearEventAction()
-    {
-        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-        if (result >= 1)
-        {
-            initEvents();
-            tableStatsBean.updateSize(getSpeedingListsMap().get(selectedSpeed).size());
-        }
-    }
-
-    public EventReportItem getClearItem()
-    {
-        return clearItem;
-    }
-
-    public void setClearItem(EventReportItem clearItem)
-    {
-        this.clearItem = clearItem;
-    }
-
-    @Override
-    public Map<String, Integer> getScoreMap()
-    {
-        if (scoreMap == null)
-            initScores();
-
-        return scoreMap;
-    }
-
-    @Override
-    public Map<String, String> getStyleMap()
-    {
-        if (styleMap == null)
-            initScores();
-
-        return styleMap;
-    }
-
-    @Override
-    public Map<String, String> getTrendMap()
-    {
-        if (trendMap == null)
-            initTrends();
-
-        return trendMap;
+        sortEvents();
     }
 
     public ReportCriteria buildReport(ReportType reportType)
@@ -280,7 +140,7 @@ public class DriverSpeedBean extends BasePerformanceBean
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.addParameter("ENTITY_NAME", this.getDriver().getPerson().getFullName());
-        reportCriteria.addParameter("RECORD_COUNT", speedingListsMap.size());
+        reportCriteria.addParameter("RECORD_COUNT", eventsListsMap.size());
         reportCriteria.addParameter("OVERALL_SCORE", getScoreMap().get(ScoreType.SCORE_SPEEDING.toString()) / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
         reportCriteria.addParameter("SCORE_TWENTYONE", getScoreMap().get(ScoreType.SCORE_SPEEDING_21_30.toString()) / 10.0D);
@@ -299,24 +159,9 @@ public class DriverSpeedBean extends BasePerformanceBean
         scoreTypes.add(ScoreType.SCORE_SPEEDING_55_64);
         scoreTypes.add(ScoreType.SCORE_SPEEDING_65_80);
         reportCriteria.addChartDataSet(this.createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
-        reportCriteria.setMainDataset(this.speedingEvents);
+        reportCriteria.setMainDataset(this.events);
 
         return reportCriteria;
-    }
-
-    public String getEmailAddress()
-    {
-        if (emailAddress == null)
-        {
-            emailAddress = getProUser().getUser().getPerson().getPriEmail();
-        }
-
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
     }
 
     public void exportReportToPdf()
@@ -334,32 +179,33 @@ public class DriverSpeedBean extends BasePerformanceBean
         getReportRenderer().exportReportToExcel(buildReport(ReportType.DRIVER_SPEED), getFacesContext());
     }
 
-    private void sortSpeedingEvents()
+    @Override
+    public void sortEvents()
     {
-        speedingListsMap = new HashMap<String, List<EventReportItem>>();
+    	eventsListsMap = new HashMap<String, List<EventReportItem>>();
         List<EventReportItem> speedAll = new ArrayList<EventReportItem>();
-        speedingListsMap.put("OVERALL", speedAll);
+        eventsListsMap.put("OVERALL", speedAll);
         List<EventReportItem> speed20 = new ArrayList<EventReportItem>();
-        speedingListsMap.put("TWENTYONE", speed20);
+        eventsListsMap.put("TWENTYONE", speed20);
         List<EventReportItem> speed30 = new ArrayList<EventReportItem>();
-        speedingListsMap.put("THIRTYONE", speed30);
+        eventsListsMap.put("THIRTYONE", speed30);
         List<EventReportItem> speed40 = new ArrayList<EventReportItem>();
-        speedingListsMap.put("FOURTYONE", speed40);
+        eventsListsMap.put("FOURTYONE", speed40);
         List<EventReportItem> speed50 = new ArrayList<EventReportItem>();
-        speedingListsMap.put("FIFTYFIVE", speed50);
+        eventsListsMap.put("FIFTYFIVE", speed50);
         List<EventReportItem> speed60 = new ArrayList<EventReportItem>();
-        speedingListsMap.put("SIXTYFIVE", speed60);
+        eventsListsMap.put("SIXTYFIVE", speed60);
 
-        speedAll.addAll(speedingEvents);
+        speedAll.addAll(events);
 
         SpeedingEvent event;
-        for (EventReportItem eri : speedingEvents)
+        for (EventReportItem eri : events)
         {
-            event = (SpeedingEvent) eri.getEvent();
-
-            if (event.getSpeedLimit() == null)
+            event = (SpeedingEvent)eri.getEvent();
+            
+            if(event.getSpeedLimit() == null)
                 continue;
-
+            
             if (event.getSpeedLimit() >= 0 && event.getSpeedLimit() < 31)
             {
                 speed20.add(eri);
@@ -381,6 +227,30 @@ public class DriverSpeedBean extends BasePerformanceBean
                 speed60.add(eri);
             }
         }
-        filteredSpeedingEvents = speedingListsMap.get(selectedSpeed);
+        filteredEvents = eventsListsMap.get(selectedBreakdown);
     }
+    
+   
+//    @Override
+//	public void excludeEventAction() {
+//		
+//	    Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+//	    if(result >= 1)
+//	        {
+//	            initEvents();
+//	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
+//	        }
+//	}
+
+//    @Override
+//	public void includeEventAction() {
+//		
+//	    Integer result = eventDAO.unforgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+//	    if(result >= 1)
+//	        {
+//	            initEvents();
+//	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
+//	        }
+//	}
+
 }

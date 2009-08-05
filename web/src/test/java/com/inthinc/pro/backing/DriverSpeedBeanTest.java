@@ -105,9 +105,9 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         EventReportItem eri = new EventReportItem(se, p.getTimeZone(),MeasurementType.ENGLISH);
         speedingEvents.add(eri);
         
-        driverSpeedBean.setSpeedingEvents(speedingEvents);
-        driverSpeedBean.setSelectedSpeed("FOURTYONE");
-        assertTrue(driverSpeedBean.getFilteredSpeedingEvents().size() > 0);
+        driverSpeedBean.setEvents(speedingEvents);
+        driverSpeedBean.setSelectedBreakdown("FOURTYONE");
+        assertTrue(driverSpeedBean.getFilteredEvents().size() > 0);
         
 
     }

@@ -98,7 +98,7 @@ public class MetricConversionUtilTest
         Assert.assertEquals(result,24.0); 
         
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
-        Assert.assertEquals(result,20.0); 
+        Assert.assertEquals(result,20); 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.KMPL);
         Assert.assertEquals(result,20.0* 0.42514); 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.LP100KM);
@@ -106,7 +106,7 @@ public class MetricConversionUtilTest
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.MPG_UK);
         Assert.assertEquals(result,24.0); 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.MPG_US);
-        Assert.assertEquals(result,20.0); 
+        Assert.assertEquals(result,20); 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.KMPL);
         Assert.assertEquals(result,20.0* 0.42514); 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.LP100KM);

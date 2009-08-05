@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,7 +48,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
     private double 					maplat;
     private double 					maplng;
     private int 					mapzoom;
-    private String 					emailAddress;
     private String 					caption;
     private String 					message;
     private boolean					requestSent;
@@ -87,7 +87,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		lat =outOfRangeLatLngDummyValue;
 		lng = outOfRangeLatLngDummyValue;
 		caption = MessageUtil.getMessageString("sbs_caption_select");
-		emailAddress = getUser().getPerson().getPriEmail();
 		message = MessageUtil.getMessageString("sbs_emailIntro");
 		requestSent = false;
 		success = false;
@@ -299,11 +298,12 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		SpeedLimitChangeRequest changeRequest = speedLimitBean.getChangeRequest();
 		changeRequest.setUserID(sbsUserId);
 		logger.debug(changeRequest.getLinkId());
-		String emailAddresses =getEmailAddress();
-		if ((emailAddress != null) && !emailAddress.isEmpty()){
+		
+        String[] emails = getEmailAddress().split(",");
+        List<String> emailList = Arrays.asList(emails);
+		if (emailList.size() > 0){
 			
-			String email[] = emailAddresses.split(";");
-			changeRequest.setEmail(email[0]);
+			changeRequest.setEmail(emailList.get(0));
 		}
 		//Check for valid mandatory fields
 		if (speedLimitBean.isGood()){
@@ -312,10 +312,8 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 			if (user != null){
 				
 				teenServerDAO.saveSpeedLimitChangeRequest(user, changeRequest);
-				if ((emailAddress != null) && !emailAddress.isEmpty()){
 					
-					sendEmailToUser(speedLimitBean);
-				}
+				sendEmailToUser(speedLimitBean);
 			}
 			else {
 				logger.debug("saveRequest: User not found.");
@@ -336,32 +334,32 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 			// use the true flag to indicate you need a multipart message
 			MimeMessageHelper helper = new MimeMessageHelper(emailText, true);
 			//String emailAddresses = "jacquie_howard@hotmail.com";
-			String emailAddresses =getEmailAddress();
-			if (emailAddresses == null) return;
-			String email[] = emailAddresses.split(";");
-			helper.setTo(email[0]);
 
-			logger.debug("sendEmailToUser email address is "+email[0]);
-			
-	        String mphText = MessageUtil.getMessageString(getMeasurementType().toString()+"_mph");
-
-//			String mphText = MessageUtil.getMessageString(MeasurementType.ENGLISH.toString() + "_mph");
-			Integer newSpeed = speedLimitBean.getNewSpeedLimit();
-			if(getMeasurementType().equals(MeasurementType.METRIC))
-			{
-//			    mphText = MessageUtil.getMessageString(MeasurementType.METRIC.toString() + "_mph");
-			    newSpeed = MeasurementConversionUtil.fromMPHtoKPH(newSpeed).intValue();
+	        String[] emails = getEmailAddress().split(",");
+	        List<String> emailList = Arrays.asList(emails);
+			if (emailList.size() > 0){
+				helper.setTo(emailList.get(0));
+	
+				logger.debug("sendEmailToUser email address is "+emailList.get(0));
+				
+				String mphText = MessageUtil.getMessageString(MeasurementType.ENGLISH.toString() + "_mph");
+				Integer newSpeed = speedLimitBean.getNewSpeedLimit();
+				if(getMeasurementType().equals(MeasurementType.METRIC))
+				{
+				    mphText = MessageUtil.getMessageString(MeasurementType.METRIC.toString() + "_mph");
+				    newSpeed = MeasurementConversionUtil.fromMPHtoKPH(newSpeed).intValue();
+				}
+				String text = MessageUtil.formatMessageString("sbs_emailText",newSpeed,speedLimitBean.getAddress(),mphText);
+				
+				helper.setText(text,true);
+				helper.setFrom(MessageUtil.getMessageString("sbs_email_from"));
+				helper.setSubject(MessageUtil.getMessageString("sbs_email_subject"));
+				speedLimitBean.setEmail(emailList.get(0));
+				
+				mailSender.send(emailText);
+				message =MessageUtil.getMessageString("sbs_caption_queued");
 			}
-			String text = MessageUtil.formatMessageString("sbs_emailText",newSpeed,speedLimitBean.getAddress(),mphText);
-			
-			helper.setText(text,true);
-			helper.setFrom(MessageUtil.getMessageString("sbs_email_from"));
-			helper.setSubject(MessageUtil.getMessageString("sbs_email_subject"));
-			speedLimitBean.setEmail(email[0]);
-			
-			mailSender.send(emailText);
-			message =MessageUtil.getMessageString("sbs_caption_queued");
-			
+				
 		} catch (MessagingException e) {
 			// 
 			logger.debug("sendEmailToUser email could not be sent "+e.getMessage());
@@ -384,15 +382,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 
 	public void setSbsUserId(int sbsUserId) {
 		this.sbsUserId = sbsUserId;
-	}
-
-	public String getEmailAddress() {
-//		return "jacquie_howard@hotmail.com";
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
 	}
 
 	public String getSbsUserName() {

@@ -34,7 +34,7 @@ public class TripsBean extends BaseBean {
      * 
      */
     private static final long serialVersionUID = 2409167667876030280L;
-    private static final Logger logger = Logger.getLogger(DriverTripsBean.class);
+    private static final Logger logger = Logger.getLogger(TripsBean.class);
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
@@ -117,14 +117,14 @@ public class TripsBean extends BaseBean {
             List<Integer> tamperEventTypeList = new ArrayList<Integer>();
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
-                violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList);
-                idleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, idleTypes);
-                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, tamperEventTypeList);
+                violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, showExcludedEvents);
+                idleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, idleTypes, showExcludedEvents);
+                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, tamperEventTypeList, showExcludedEvents);
             }
             else {
-                violationEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, violationEventTypeList);
-                idleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, idleTypes);
-                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, tamperEventTypeList);
+                violationEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, violationEventTypeList, showExcludedEvents);
+                idleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, idleTypes, showExcludedEvents);
+                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, tamperEventTypeList, showExcludedEvents);
             }
             // Lookup Addresses for events
             populateAddresses(violationEvents);
@@ -165,10 +165,10 @@ public class TripsBean extends BaseBean {
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
         List<Event> tmpIdleEvents = new ArrayList<Event>();
         if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
-            tmpIdleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes);
+            tmpIdleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes, showExcludedEvents);
         }
         else {
-            tmpIdleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes);
+            tmpIdleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes, showExcludedEvents);
         }
         for (Event event : tmpIdleEvents) {
             idleSeconds += ((IdleEvent) event).getHighIdle();

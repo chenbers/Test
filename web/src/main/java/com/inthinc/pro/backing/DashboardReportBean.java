@@ -31,7 +31,6 @@ public class DashboardReportBean extends BaseBean
 
     // For complex reports
     private List<ReportType> reports = new ArrayList<ReportType>(0);
-    private String emailAddress;
     private Integer groupID;
     private Duration duration;
     
@@ -95,7 +94,7 @@ public class DashboardReportBean extends BaseBean
         
         
         if(reportCriteriaList.size() > 0){
-            reportRenderer.exportReportToEmail(reportCriteriaList, emailAddress);
+            reportRenderer.exportReportToEmail(reportCriteriaList, getEmailAddress());
         }
         
         
@@ -199,19 +198,7 @@ public class DashboardReportBean extends BaseBean
         return selectList;
     }
 
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getEmailAddress()
-    {
-        if(emailAddress == null){
-            emailAddress = getProUser().getUser().getPerson().getPriEmail();
-        }
-        return emailAddress;
-    }
-
+ 
     public Integer getGroupID()
     {
         return groupID;

@@ -94,9 +94,9 @@ public class DriverTripsBean extends BaseBean {
             List<Integer> tamperEventTypeList = new ArrayList<Integer>();
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             
-            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, violationEventTypeList);
-            idleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, idleTypes);
-            tamperEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, tamperEventTypeList);
+            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, violationEventTypeList, showExcludedEvents);
+            idleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, idleTypes, showExcludedEvents);
+            tamperEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, tamperEventTypeList, showExcludedEvents);
             
             // Lookup Addresses for events
             populateAddresses(violationEvents);
@@ -137,7 +137,7 @@ public class DriverTripsBean extends BaseBean {
         List<Integer> idleTypes = new ArrayList<Integer>();
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
         List<Event> tmpIdleEvents = new ArrayList<Event>();
-        tmpIdleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), getStartDate(), getEndDate(), idleTypes);
+        tmpIdleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), getStartDate(), getEndDate(), idleTypes, showExcludedEvents);
         for (Event event : tmpIdleEvents) {
             idleSeconds += ((IdleEvent) event).getHighIdle();
             idleSeconds += ((IdleEvent) event).getLowIdle();

@@ -494,7 +494,8 @@
                         </rich:dataTable>
                         
                         <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" styleClass="dataScrollerSmall" maxPages="5" 
-                        				   reRender="script,selectedTripTable" page="#{vehicleTripsBean.eventsPage}" />
+                        				   reRender="script,selectedTripTable" page="#{vehicleTripsBean.eventsPage}" 
+                        				   renderIfSinglePage="false"/>
                     </a4j:form>
                 </rich:panel> <!-- End Trip table --></div>
                 </div>
@@ -668,7 +669,7 @@
                         </rich:dataTable>
 						<rich:spacer height="5" />
                         <rich:datascroller align="center" for="tripsTable" id="scroller" styleClass="dataScrollerSmall"
-                        oncomplete="onReRender();" reRender="tripsTable" />
+                        oncomplete="onReRender();" reRender="tripsTable" renderIfSinglePage="false"/>
 
                         <rich:jQuery selector="document" query="ready(function(){onReRender()})" />
                         <!-- End Trip table -->

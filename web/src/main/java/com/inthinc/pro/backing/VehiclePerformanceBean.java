@@ -58,9 +58,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private String              coachingHistory;
     private Boolean             hasLastTrip;
     private TimeZone            timeZone;
-    private String              emailAddress;
-    
-    private VehicleSpeedBean    vehicleSpeedBean;
+    private BaseBean    vehicleSpeedBean;
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
     
@@ -98,7 +96,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
-            violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types);
+            violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types,showExcludedEvents);
 
             // Lookup Addresses for events
 
@@ -298,6 +296,9 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
         sb.append(multiLineChart.getControlParameters());
 
+        int yAxisName = sb.indexOf("yAxisName");
+        sb.replace(yAxisName+10, yAxisName+11, "'"+MessageUtil.getMessageString(getFuelEfficiencyType()+"_Miles_Per_Gallon"));
+
         Long lightValues[] = new Long[mpgEntities.size()];
         Long medValues[] = new Long[mpgEntities.size()];
         Long heavyValues[] = new Long[mpgEntities.size()];
@@ -475,20 +476,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         return tempCriteria;
     }
 
-    public String getEmailAddress()
-    {
-        if(emailAddress == null){
-            emailAddress = getProUser().getUser().getPerson().getPriEmail();
-        }
-        
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
-    }
-
     public void exportReportToPdf()
     {
         getReportRenderer().exportReportToPDF(buildReport(), getFacesContext());
@@ -499,12 +486,12 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 
-    public void setVehicleSpeedBean(VehicleSpeedBean vehicleSpeedBean)
+    public void setVehicleSpeedBean(BaseBean vehicleSpeedBean)
     {
         this.vehicleSpeedBean = vehicleSpeedBean;
     }
 
-    public VehicleSpeedBean getVehicleSpeedBean()
+    public BaseBean getVehicleSpeedBean()
     {
         return vehicleSpeedBean;
     }

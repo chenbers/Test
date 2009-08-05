@@ -286,10 +286,11 @@ public interface SiloService extends HessianService
      * @param groupID
      * @param startDate
      * @param endDate
+     * @param includeForgiven
      * @return
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate) throws ProDAOException;
+    List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate, Integer includeForgiven) throws ProDAOException;
 
     
 

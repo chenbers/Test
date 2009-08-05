@@ -669,7 +669,8 @@
                                     <h:outputText value="#{item.duration}" />
                                 </rich:column>
                             </rich:dataTable>
-                          <rich:datascroller align="center" for="tripsTable" oncomplete="onReRender();" id="scroller" styleClass="dataScrollerSmall"/>
+                          <rich:datascroller align="center" for="tripsTable" oncomplete="onReRender();" id="scroller" styleClass="dataScrollerSmall"
+                          renderIfSinglePage="false"/>
                         
                         <rich:jQuery selector="document" query="ready(function(){onReRender()})" />
                         <!-- End Trip table -->

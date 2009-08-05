@@ -57,7 +57,7 @@
             							</li>
             							<li class="l">
             								<a4j:commandButton id="searchButton" action="#{deviceReportBean.doSearch}" 
-            									reRender="navigation:redirectSearch,headerRedCount,items,topScroller,bottomScroller,headerDevices" styleClass="left">
+            									reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerDevices" styleClass="left">
             										<span class="search">
             											<h:outputText value="#{messages.button_search}" />
             										</span>
@@ -116,12 +116,12 @@
                                     <div class="spacer"></div>                                        
                                     
                                        
-                                    <rich:datascroller id="topScroller" for="items" immediate="true"
-                                       scrollerListener="#{deviceReportBean.scrollerListener}"
-                                       reRender="bottomScroller,items,headerDevices"
-                                       requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}" 
-                                       styleClass="datascroller">
-                                    </rich:datascroller>																															
+<!--                                    <rich:datascroller id="topScroller" for="items" immediate="true"-->
+<!--                                       scrollerListener="#{deviceReportBean.scrollerListener}"-->
+<!--                                       reRender="bottomScroller,items,headerDevices"-->
+<!--                                       requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}" -->
+<!--                                       styleClass="datascroller">-->
+<!--                                    </rich:datascroller>																															-->
 									
                                 	<div class="datagrid_panel" style="width: 925px;">		        						
                                 				<rich:dataTable value="#{deviceReportBean.deviceData}" id="items"
@@ -179,7 +179,7 @@
                                 			</div>
                                        <rich:datascroller id="bottomScroller" for="items" immediate="true"
                                           scrollerListener="#{deviceReportBean.scrollerListener}"
-                                          reRender="topScroller,items,headerDevices"
+                                          reRender="items,headerDevices" renderIfSinglePage="false"
                                           requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}" styleClass="datascroller">                 
                                        </rich:datascroller>
     							</a4j:form>

@@ -56,9 +56,6 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private String              mpgHistory;
     private String              coachingHistory;
     private Boolean             hasLastTrip;
-    private String              emailAddress;
-    
-
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
@@ -91,7 +88,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
-            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types);
+            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, showExcludedEvents );
 
             // Lookup Addresses for events
             for (Event event : violationEvents)
@@ -243,7 +240,9 @@ public class DriverPerformanceBean extends BasePerformanceBean
         StringBuffer sb = new StringBuffer();
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
         sb.append(multiLineChart.getControlParameters());
-
+        //Set up y axis
+        int yAxisName = sb.indexOf("yAxisName");
+        sb.replace(yAxisName+10, yAxisName+11, "'"+MessageUtil.getMessageString(getFuelEfficiencyType()+"_Miles_Per_Gallon"));
         Long lightValues[] = new Long[mpgEntities.size()];
         Long medValues[] = new Long[mpgEntities.size()];
         Long heavyValues[] = new Long[mpgEntities.size()];
@@ -418,21 +417,6 @@ public class DriverPerformanceBean extends BasePerformanceBean
     public void setHasLastTrip(Boolean hasLastTrip)
     {
         this.hasLastTrip = hasLastTrip;
-    }
-
-    public String getEmailAddress()
-    {
-        if(emailAddress == null){
-            emailAddress = getProUser().getUser().getPerson().getPriEmail();
-        }
-        
-        return emailAddress;
-    }
-    
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
     }
 
     public void exportReportToPdf()

@@ -73,14 +73,23 @@ public class RedFlagsBeanTest extends BaseBeanTest
         checkScrolling(lastPage, redFlagsBean);
         assertEquals(Integer.valueOf(25), redFlagsBean.getNumRowsPerPg());
         
-        // clear
+        // forgive
         int size = tableData.size();
         redFlagsBean.setClearItem(redFlagsBean.getTableData().get(0));
-        redFlagsBean.clearItemAction();
+        redFlagsBean.excludeEventAction();
         tableData = redFlagsBean.getTableData();
-        assertEquals(size-1, tableData.size());
+        assertEquals(redFlagsBean.getTableData().get(0).getRedFlag().getEvent().getForgiven().intValue(),1);
+//        assertEquals(size-1, tableData.size());
         
-        // table Preferences
+        // unforgive
+        size = tableData.size();
+        redFlagsBean.setClearItem(redFlagsBean.getTableData().get(0));
+        redFlagsBean.includeEventAction();
+        tableData = redFlagsBean.getTableData();
+        assertEquals(redFlagsBean.getTableData().get(0).getRedFlag().getEvent().getForgiven().intValue(),0);
+//        assertEquals(size-1, tableData.size());
+        
+       // table Preferences
         TablePreference tablePref = redFlagsBean.getTablePref().getTablePreference();
         assertEquals(TableType.RED_FLAG, tablePref.getTableType());
         int cnt = 0;

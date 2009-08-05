@@ -16,6 +16,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 public class MpgBean extends BaseBean implements Serializable
 {
     /**
@@ -72,7 +73,9 @@ public class MpgBean extends BaseBean implements Serializable
         StringBuffer sb = new StringBuffer();
         // Control parameters
         sb.append(GraphicUtil.getBarControlParameters());
-        logger.debug("getting scores for groupID: " + groupID);
+        int yAxisName = sb.indexOf("yAxisName");
+        sb.replace(yAxisName+10, yAxisName+11, "'"+MessageUtil.getMessageString(getFuelEfficiencyType()+"_Miles_Per_Gallon"));
+         logger.debug("getting scores for groupID: " + groupID);
         sb.append(GraphicUtil.createMpgXML(getMpgEntities(), getMeasurementType(), getFuelEfficiencyType()));
         sb.append("</chart>");
         return sb.toString();
@@ -138,8 +141,8 @@ public class MpgBean extends BaseBean implements Serializable
         ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setMeasurementType(getPerson().getMeasurementType());
-        reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
+        reportCriteria.setMeasurementType(getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
         return reportCriteria;
     }
 

@@ -55,7 +55,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="searchButton" action="#{vehicleReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,items,topScroller,bottomScroller,headerVehicles" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerVehicles" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -113,13 +113,13 @@
                         
                                 <div class="spacer"></div> 
                                 
-                                <rich:datascroller id="topScroller" for="items" immediate="true"
-                                    scrollerListener="#{vehicleReportBean.scrollerListener}"
-                                    reRender="bottomScroller,items,headerVehicles"
-                                    requestDelay="200" eventsQueue="pagerQueue" 
-                                    page="#{vehicleReportBean.page}"
-                                    styleClass="datascroller">
-                                </rich:datascroller>
+<!--                                <rich:datascroller id="topScroller" for="items" immediate="true"-->
+<!--                                    scrollerListener="#{vehicleReportBean.scrollerListener}"-->
+<!--                                    reRender="bottomScroller,items,headerVehicles"-->
+<!--                                    requestDelay="200" eventsQueue="pagerQueue" -->
+<!--                                    page="#{vehicleReportBean.page}"-->
+<!--                                    styleClass="datascroller">-->
+<!--                                </rich:datascroller>-->
 								
 								<div class="datagrid_panel" style="width: 925px;">               
                                     <rich:dataTable value="#{vehicleReportBean.vehicleData}" id="items"
@@ -219,10 +219,10 @@
                                 
                                 <rich:datascroller id="bottomScroller" for="items" immediate="true"
                                     scrollerListener="#{vehicleReportBean.scrollerListener}"
-                                    reRender="topScroller,items,headerVehicles"
+                                    reRender="items,headerVehicles"
                                     requestDelay="200" eventsQueue="pagerQueue" 
                                     page="#{vehicleReportBean.page}"             
-                                    styleClass="datascroller">
+                                    styleClass="datascroller" renderIfSinglePage="false">
                                 </rich:datascroller>   
                                 
     							</a4j:form> 										

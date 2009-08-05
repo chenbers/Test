@@ -108,8 +108,8 @@ public class VehicleTripsBean extends BaseBean
             List<Event> tempViolations;
             List<Event> tempIdle;
 
-            tempViolations = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, vioTypes);
-            tempIdle = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, idleTypes);
+            tempViolations = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, vioTypes,showExcludedEvents);
+            tempIdle = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, idleTypes,showExcludedEvents);
 
             // Lookup Addresses for events
             violationEvents = populateAddresses(tempViolations);
@@ -160,7 +160,7 @@ public class VehicleTripsBean extends BaseBean
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
         List<Event> tmpIdleEvents = new ArrayList<Event>();
-        tmpIdleEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), startDate, endDate, idleTypes);
+        tmpIdleEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), startDate, endDate, idleTypes,showExcludedEvents);
 
         for (Event event : tmpIdleEvents)
         {

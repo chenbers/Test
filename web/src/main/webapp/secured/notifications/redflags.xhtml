@@ -43,7 +43,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="searchButton" action="#{redFlagsBean.searchAction}" 
-		            					reRender="navigation:redirectSearch,header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller,redFlagsTableForm:topScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -57,7 +57,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton styleClass="left"
-									reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller,redFlagsTableForm:topScroller" 
+									reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller" 
 									action="#{redFlagsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />

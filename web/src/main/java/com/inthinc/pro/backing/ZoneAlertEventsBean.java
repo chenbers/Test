@@ -17,7 +17,7 @@ public class ZoneAlertEventsBean extends BaseEventsBean
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-        return getEventDAO().getZoneAlertsForGroup(groupID, 7);
+        return getEventDAO().getZoneAlertsForGroup(groupID, 7,showExcludedEvents);
     }
 
     // TablePrefOptions interface

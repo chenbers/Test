@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
@@ -13,6 +15,7 @@ import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -23,13 +26,11 @@ import com.inthinc.pro.security.userdetails.ProUser;
 
 public class BaseBean implements Serializable
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(BaseBean.class);
     private ErrorBean errorBean;
     private AccountDAO accountDAO;
+	private String emailAddress;
+	protected Integer showExcludedEvents = EventDAO.INCLUDE_FORGIVEN;
 
     private static final MapType mapType = MapType.GOOGLE;
 
@@ -183,4 +184,30 @@ public class BaseBean implements Serializable
         return mapType;
     }
 
+	public String getEmailAddress() {
+	    if(emailAddress == null){
+	        emailAddress = getProUser().getUser().getPerson().getPriEmail();
+	    }
+	    
+	    return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+	    this.emailAddress = emailAddress;
+	}
+
+	public List<String> getEmailAddressList() {
+		
+        String[] emails = getEmailAddress().split(",");
+        return Arrays.asList(emails);
+
+	}
+
+	public boolean isShowExcludedEvents() {
+		return showExcludedEvents==EventDAO.INCLUDE_FORGIVEN;
+	}
+
+	public void setShowExcludedEvents(boolean showExcludedEvents) {
+		this.showExcludedEvents = showExcludedEvents?EventDAO.INCLUDE_FORGIVEN:EventDAO.EXCLUDE_FORGIVEN;
+	}
 }

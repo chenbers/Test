@@ -95,11 +95,11 @@ public class DriverStyleBeanTest extends BaseBeanTest
         EventReportItem eri = new EventReportItem(e, p.getTimeZone(),MeasurementType.ENGLISH);
         styleEvents.add(eri);
 
-        driverStyleBean.setSelectedEventType("HARD_VERT");
-        driverStyleBean.setStyleEvents(styleEvents);
-        driverStyleBean.filterEventsAction();
+        driverStyleBean.setSelectedBreakdown("HARD_VERT");
+        driverStyleBean.setEvents(styleEvents);
+        driverStyleBean.sortEvents();
         
-        assertTrue( driverStyleBean.getFilteredStyleEvents().get(0).getEvent().getEventType() == EventType.HARD_VERT );
+        assertTrue( driverStyleBean.getFilteredEvents().get(0).getEvent().getEventType() == EventType.HARD_VERT );
         
 
     }

@@ -8,6 +8,8 @@ import com.inthinc.pro.model.SpeedingEvent;
 
 public interface EventDAO extends GenericDAO<Event, Integer>
 {
+    public static final Integer EXCLUDE_FORGIVEN = 0;
+    public static final Integer INCLUDE_FORGIVEN = 1;
 
     /**
      * getMostRecentEvents -- get a list of the most recent events for a group
@@ -23,23 +25,23 @@ public interface EventDAO extends GenericDAO<Event, Integer>
      * getMostRecentWarnings -- get a list of the most recent warnings for a group
      * 
      * @param groupID
-     * @param eventCnt
+     * @param eventCount
      *            -- max events to retrieve
      * @return
      */
-    List<Event> getMostRecentWarnings(Integer groupID, Integer eventCnt);
+    List<Event> getMostRecentWarnings(Integer groupID, Integer eventCount);
     
-    List<Event> getMostRecentEmergencies(Integer groupID, Integer eventCnt);
+    List<Event> getMostRecentEmergencies(Integer groupID, Integer eventCount);
 
-    List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate);
+    List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven);
 
-    List<Event> getWarningEventsForDriver(Integer driverID, Date startDate, Date endDate);
+    List<Event> getWarningEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven);
 
     List<Event> getEventsForDriverByMiles(Integer driverID, Integer milesBack, List<Integer> eventTypes);
 
-    List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes);
+    List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes, Integer includeForgiven);
 
-    List<Event> getEventsForVehicle(Integer vehicleID, Date startDate, Date endDate, List<Integer> eventTypes);
+    List<Event> getEventsForVehicle(Integer vehicleID, Date startDate, Date endDate, List<Integer> eventTypes, Integer includeForgiven);
 
     List<Event> getEventsForVehicleByMiles(Integer vehicleID, Integer milesBack, List<Integer> eventTypes);
 
@@ -47,19 +49,19 @@ public interface EventDAO extends GenericDAO<Event, Integer>
 
     Integer unforgive(Integer driverID, Long noteID);
 
-    List<Event> getViolationEventsForGroup(Integer groupID, Integer daysBack);
+    List<Event> getViolationEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
 
-    List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack);
+    List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
 
-    List<Event> getEmergencyEventsForGroup(Integer groupID, Integer daysBack);
+    List<Event> getEmergencyEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
 
-    List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate);
+    List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven);
     
-    List<Event> getZoneAlertsForGroup(Integer groupID, Integer daysBack);
+    List<Event> getZoneAlertsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
 
-    List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate);
+    List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven);
 
-    List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate); 
+    List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven); 
     
     <T> T getEventByType(Long noteID, Class<T> clazz);
 

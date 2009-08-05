@@ -11,12 +11,12 @@
     
     <h:form id="#{formId}">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
-    <rich:datascroller id="topScroller" 
-               for="items" immediate="true" 
-               scrollerListener="#{bean.scrollerListener}" 
-               reRender="bottomScroller,items,header" 
-               oncomplete="initializeTable();" page="#{bean.page}"
-               styleClass="datascroller"/>
+<!--    <rich:datascroller id="topScroller" -->
+<!--               for="items" immediate="true" -->
+<!--               scrollerListener="#{bean.scrollerListener}" -->
+<!--               reRender="bottomScroller,items,header" -->
+<!--               oncomplete="initializeTable();" page="#{bean.page}"-->
+<!--               styleClass="datascroller"/>-->
         
         
     <div class="datagrid_panel" style="width:925px; overflow: auto">
@@ -84,18 +84,26 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-                <a4j:commandLink title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem">
-                    <h:outputText value="#{messages.notes_clear}" />
-                    <f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
-                </a4j:commandLink>
+<!--                <a4j:commandLink title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem">-->
+<!--                    <h:outputText value="#{messages.notes_clear}" />-->
+<!--                    <f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />-->
+<!--                </a4j:commandLink>-->
+ 								<a4j:commandLink rendered="#{item.event.forgiven == 0}" title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+									<h:outputText value="#{messages.notes_clear}" />
+									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
+								</a4j:commandLink>
+ 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{bean.includeEventAction}" reRender="#{clearRerender}" >
+									<h:outputText value="#{messages.driverReports_include}" />
+									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
+								</a4j:commandLink>
             </rich:column>
         </rich:dataTable>
     </div>
     
     <rich:datascroller id="bottomScroller" for="items" 
             immediate="true" scrollerListener="#{bean.scrollerListener}" 
-            reRender="topScroller,items,header" oncomplete="initializeTable();" 
-            page="#{bean.page}" styleClass="dataScroller"/>
+            reRender="items,header" oncomplete="initializeTable();" 
+            page="#{bean.page}" styleClass="dataScroller" renderIfSinglePage="false"/>
             
     </h:form>
 

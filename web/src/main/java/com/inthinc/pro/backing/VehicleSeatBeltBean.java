@@ -9,8 +9,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -20,22 +18,14 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class VehicleSeatBeltBean extends BasePerformanceBean
+public class VehicleSeatBeltBean extends BasePerformanceEventsBean
 {
     private static final Logger   logger         = Logger.getLogger(VehicleSeatBeltBean.class);
-
-    private ScoreDAO              scoreDAO;
-    private EventDAO              eventDAO;
 
     private Integer               seatBeltScore;
     private String                seatBeltScoreHistoryOverall;
     private String                seatBeltScoreStyle;
-    private EventReportItem       clearItem;
-    private String                emailAddress;
     private static final Integer  NO_SCORE       = -1;
-    private final Integer         ROWCOUNT       = 10;
-
-    private List<EventReportItem> seatBeltEvents ;
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -49,7 +39,8 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
     }
     
-    private void initScores()
+    @Override
+    protected void initScores()
     {
         ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         
@@ -61,24 +52,26 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         setSeatBeltScoreStyle(ScoreBox.GetStyleFromScore(getSeatBeltScore(), ScoreBoxSizes.MEDIUM));
     }
 
-    public void initEvents()
+    @Override
+    protected void initEvents()
     {
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
 
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+        tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types, showExcludedEvents);
 
-        seatBeltEvents = new ArrayList<EventReportItem>();
+        events = new ArrayList<EventReportItem>();
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            seatBeltEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
+            events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
         }
-        tableStatsBean.reset(ROWCOUNT, seatBeltEvents.size());
+        tableStatsBean.reset(ROWCOUNT, events.size());
     }
 
-    public void initTrends()
+    @Override
+    protected void initTrends()
     {
         seatBeltScoreHistoryOverall = createFusionMultiLineDef(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
     }
@@ -122,37 +115,17 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         this.seatBeltScoreStyle = seatBeltScoreStyle;
     }
 
-    public ScoreDAO getScoreDAO()
-    {
-        return scoreDAO;
-    }
-
-    public void setScoreDAO(ScoreDAO scoreDAO)
-    {
-        this.scoreDAO = scoreDAO;
-    }
-
-    public EventDAO getEventDAO()
-    {
-        return eventDAO;
-    }
-
-    public void setEventDAO(EventDAO eventDAO)
-    {
-        this.eventDAO = eventDAO;
-    }
-
     public List<EventReportItem> getSeatBeltEvents()
     {
-        if(seatBeltEvents == null)
+        if(events == null)
             initEvents();
         
-        return seatBeltEvents;
+        return events;
     }
 
     public void setSeatBeltEvents(List<EventReportItem> seatBeltEvents)
     {
-        this.seatBeltEvents = seatBeltEvents;
+        this.events = seatBeltEvents;
     }
 
     public void setDuration(Duration duration)
@@ -166,16 +139,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
     {
         return durationBean.getDuration();
     }
-
-    public void ClearEventAction()
-    {
-        Integer result = eventDAO.forgive(getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
-        if(result >= 1)
-            {
-                seatBeltEvents.remove(clearItem);
-                tableStatsBean.updateSize(seatBeltEvents.size());
-            }
-    }
+    
 
     public EventReportItem getClearItem()
     {
@@ -202,23 +166,9 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
         reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
-        reportCriteria.setMainDataset(seatBeltEvents);
+        reportCriteria.setMainDataset(events);
 
         return reportCriteria;
-    }
-
-    public String getEmailAddress()
-    {
-        if(emailAddress == null){
-            emailAddress = getProUser().getUser().getPerson().getPriEmail();
-        }
-        
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
     }
 
     public void exportReportToPdf()
@@ -235,4 +185,10 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
+
+	@Override
+	public void sortEvents() {
+		// TODO Auto-generated method stub
+		
+	}
 }

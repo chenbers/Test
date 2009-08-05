@@ -98,9 +98,9 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         EventReportItem eri = new EventReportItem(se, TimeZone.getTimeZone("MST"),MeasurementType.ENGLISH);
         speedingEvents.add(eri);
         
-        vehicleSpeedBean.setSpeedingEvents(speedingEvents);
-        vehicleSpeedBean.setSelectedSpeed("FOURTYONE");
-        assertTrue(vehicleSpeedBean.getFilteredSpeedingEvents().size() > 0);
+        vehicleSpeedBean.setEvents(speedingEvents);
+        vehicleSpeedBean.setSelectedBreakdown("FOURTYONE");
+        assertTrue(vehicleSpeedBean.getFilteredEvents().size() > 0);
 
     }
 }

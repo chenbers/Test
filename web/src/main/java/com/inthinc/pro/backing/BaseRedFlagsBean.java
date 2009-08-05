@@ -31,7 +31,6 @@ public abstract class BaseRedFlagsBean extends BaseBean
 
     private ReportRenderer           reportRenderer;
     private ReportCriteriaService    reportCriteriaService;
-    private String                   emailAddress;
     private RedFlagReportItem        selectedRedFlag;
 
     private Integer                  page;
@@ -155,16 +154,6 @@ public abstract class BaseRedFlagsBean extends BaseBean
     public ReportCriteriaService getReportCriteriaService()
     {
         return reportCriteriaService;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getEmailAddress()
-    {
-        return emailAddress;
     }
 
     public SearchCoordinationBean getSearchCoordinationBean()

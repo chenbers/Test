@@ -19,7 +19,7 @@ public class EventsBean extends BaseEventsBean
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-        return getEventDAO().getViolationEventsForGroup(groupID, 7);
+        return getEventDAO().getViolationEventsForGroup(groupID, 7,showExcludedEvents);
     }
 
     // TablePrefOptions interface

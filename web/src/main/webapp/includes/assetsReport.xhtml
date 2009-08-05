@@ -13,10 +13,10 @@
 			
 		
 			
-        	<rich:datascroller id="topScroller" for="items" immediate="true"
-        		scrollerListener="#{assetReportBean.scrollerListener}"
-        		reRender="bottomScroller,items,headerAssets">
-        	</rich:datascroller>
+<!--        	<rich:datascroller id="topScroller" for="items" immediate="true"-->
+<!--        		scrollerListener="#{assetReportBean.scrollerListener}"-->
+<!--        		reRender="bottomScroller,items,headerAssets">-->
+<!--        	</rich:datascroller>-->
 			      		        						
 				<rich:dataTable value="#{assetData}" id="items"
 					var="item" styleClass="datagrid" 
@@ -63,7 +63,7 @@
     			
     			<rich:datascroller id="bottomScroller" for="items" immediate="true"
     				scrollerListener="#{assetReportBean.scrollerListener}"
-        			reRender="topScroller,items,headerDrivers">        			
+        			reRender="items,headerDrivers" renderIfSinglePage="false">        			
         		</rich:datascroller>
         		
         	

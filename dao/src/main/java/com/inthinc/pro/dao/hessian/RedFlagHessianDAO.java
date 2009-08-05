@@ -20,14 +20,14 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
 
 
     @Override
-    public List<RedFlag> getRedFlags(Integer groupID, Integer daysBack)
+    public List<RedFlag> getRedFlags(Integer groupID, Integer daysBack, Integer includeForgiven)
     {
         try
         {
             Date endDate = new Date();
             Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
 
-            List<RedFlag> redFlagList = getMapper().convertToModelObject(getSiloService().getRedFlags(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), RedFlag.class);
+            List<RedFlag> redFlagList = getMapper().convertToModelObject(getSiloService().getRedFlags(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven), RedFlag.class);
             return redFlagList;
         }
         catch (EmptyResultSetException e)

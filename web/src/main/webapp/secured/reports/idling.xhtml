@@ -54,7 +54,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="searchButton" action="#{idlingReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,items,topScroller,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -135,13 +135,13 @@
                                     </tr>
                                  </table>             
                                     
-                                 <rich:datascroller id="topScroller" for="items" immediate="true" 
-                                    scrollerListener="#{idlingReportBean.scrollerListener}"
-                                    reRender="bottomScroller,items,headerIdlings"
-                                    requestDelay="200" eventsQueue="pagerQueue" 
-                                    page="#{idlingReportBean.page}"
-                                    styleClass="datascroller">
-                                 </rich:datascroller>																																
+<!--                                 <rich:datascroller id="topScroller" for="items" immediate="true" -->
+<!--                                    scrollerListener="#{idlingReportBean.scrollerListener}"-->
+<!--                                    reRender="bottomScroller,items,headerIdlings"-->
+<!--                                    requestDelay="200" eventsQueue="pagerQueue" -->
+<!--                                    page="#{idlingReportBean.page}"-->
+<!--                                    styleClass="datascroller">-->
+<!--                                 </rich:datascroller>																																-->
                             	 <div class="datagrid_panel" style="width: 925px;">		        						
                             				<rich:dataTable value="#{idlingReportBean.idlingData}" id="items"
                             					var="item" styleClass="datagrid" 
@@ -228,9 +228,9 @@
                                 <div class="spacer"/>
                                 <rich:datascroller id="bottomScroller" for="items" immediate="true" 
                                           scrollerListener="#{idlingReportBean.scrollerListener}"
-                                             reRender="topScroller,items,headerIdlings"
+                                             reRender="items,headerIdlings"
                                              requestDelay="200" eventsQueue="pagerQueue" page="#{idlingReportBean.page}"
-                                             styleClass="datascroller">                 
+                                             styleClass="datascroller" renderIfSinglePage="false">                 
                                           </rich:datascroller>
     							</a4j:form>
 								<ui:include src="/includes/editColumnsPopup.xhtml">

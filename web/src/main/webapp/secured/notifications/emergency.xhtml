@@ -33,7 +33,7 @@
                                         </table>
                                         </li>
                                         <li class="l"><a4j:commandButton id="searchButton" action="#{emergencyBean.searchAction}"
-                                            reRender="navigation:redirectSearch,header,emergency_table_form:items,emergency_table_form:bottomScroller,emergency_table_form:topScroller"
+                                            reRender="navigation:redirectSearch,header,emergency_table_form:items,emergency_table_form:bottomScroller"
                                             styleClass="left">
                                             <span class="search"> <h:outputText value="#{messages.button_search}" /> </span>
                                         </a4j:commandButton></li>
@@ -42,7 +42,7 @@
                             #{messages.button_editColumns}
                         </a4j:commandLink></li>
                                         <li class="l"><a4j:commandButton styleClass="left"
-                                            reRender="header,emergency_table_form:items,emergency_table_form:bottomScroller,emergency_table_form:topScroller"
+                                            reRender="header,emergency_table_form:items,emergency_table_form:bottomScroller"
                                             action="#{emergencyBean.refreshAction}">
                                             <span class="refresh"> <h:outputText value="#{messages.refresh}" /> </span>
                                         </a4j:commandButton></li>

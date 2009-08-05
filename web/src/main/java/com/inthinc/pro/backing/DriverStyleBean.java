@@ -11,31 +11,25 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class DriverStyleBean extends BasePerformanceBean
+public class DriverStyleBean extends BasePerformanceEventsBean
 {
     private static final Logger   logger            = Logger.getLogger(DriverStyleBean.class);
 
-    private ScoreDAO              scoreDAO;
-    private EventDAO              eventDAO;
-    private EventReportItem       clearItem;
-    private String                emailAddress;
-    private List<EventReportItem> styleEvents;
-    private List<EventReportItem> filteredStyleEvents;
-    private String                selectedEventType = "";
-    private final Integer         ROWCOUNT          = 10;
-
+//    private List<EventReportItem> styleEvents;
+//    private List<EventReportItem> filteredStyleEvents;
+//    private String                selectedEventType = "";
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
@@ -48,9 +42,8 @@ public class DriverStyleBean extends BasePerformanceBean
         return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
     }
     
-    //TODO This needs to be cleaned up. The style should be pushed to the .xhtml page and a null ScoreableEntity needs to be handled better.
-    //Fixed for a  quick release
-    private void initScores()
+    @Override
+    protected void initScores()
     {
         Map<ScoreType, ScoreableEntity> tempMap = scoreDAO
                 .getDriverScoreBreakdownByType(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
@@ -97,7 +90,14 @@ public class DriverStyleBean extends BasePerformanceBean
         }
     }
 
-    private void initTrends()
+    public DriverStyleBean() {
+		super();
+
+		selectedBreakdown="OVERALL";
+	}
+
+	@Override
+    protected void initTrends()
     {
         Integer id = getDriver().getDriverID();
         trendMap = new HashMap<String, String>();
@@ -108,117 +108,62 @@ public class DriverStyleBean extends BasePerformanceBean
         trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_TURN));
     }
 
-    public void initEvents()
+    @Override
+    protected void initEvents()
     {
         List<Event> tempEvents = new ArrayList<Event>();
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
-        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
-        styleEvents = new ArrayList<EventReportItem>();
+        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types, showExcludedEvents);
+        events = new ArrayList<EventReportItem>();
 
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            styleEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
+            events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
         }
-        filterEventsAction();
+        sortEvents();
     }
 
-    public ScoreDAO getScoreDAO()
-    {
-        return scoreDAO;
-    }
+//    public void setDuration(Duration duration)
+//    {
+//        durationBean.setDuration(duration);
+//        initScores();
+//        initTrends();
+//        initEvents();
+//        tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
+//    }
+//
+//    public Duration getDuration()
+//    {
+//        return durationBean.getDuration();
+//    }
+//
+//    public List<EventReportItem> getStyleEvents()
+//    {
+//        if(events == null)
+//            initEvents();
+//            
+//        return events;
+//    }
+//
+//    public void setStyleEvents(List<EventReportItem> styleEvents)
+//    {
+//        this.events = styleEvents;
+//        filterEventsAction();
+//    }
 
-    public void setScoreDAO(ScoreDAO scoreDAO)
-    {
-        this.scoreDAO = scoreDAO;
-    }
 
-    public EventDAO getEventDAO()
-    {
-        return eventDAO;
-    }
-
-    public void setEventDAO(EventDAO eventDAO)
-    {
-        this.eventDAO = eventDAO;
-    }
-    @Override
-    public void setDuration(Duration duration)
-    {
-        durationBean.setDuration(duration);
-        initScores();
-        initTrends();
-        initEvents();
-        tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
-    }
-
-    public Duration getDuration()
-    {
-        return durationBean.getDuration();
-    }
-
-    public List<EventReportItem> getStyleEvents()
-    {
-        if(styleEvents == null)
-            initEvents();
-            
-        return styleEvents;
-    }
-
-    public void setStyleEvents(List<EventReportItem> styleEvents)
-    {
-        this.styleEvents = styleEvents;
-        filterEventsAction();
-    }
-
-    public void ClearEventAction()
-    {
-        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-        if(result >= 1)
-            {
-                filteredStyleEvents.remove(clearItem);
-                tableStatsBean.updateSize(filteredStyleEvents.size());
-            }
-    }
-
-    public EventReportItem getClearItem()
-    {
-        return clearItem;
-    }
-
-    public void setClearItem(EventReportItem clearItem)
-    {
-        this.clearItem = clearItem;
-    }
-
-    @Override
-    public Map<String, Integer> getScoreMap()
-    {
-        if (scoreMap == null)
-            initScores();
-
-        return scoreMap;
-    }
-
-    @Override
-    public Map<String, String> getStyleMap()
-    {
-        if (styleMap == null)
-            initScores();
-
-        return styleMap;
-    }
-
-    @Override
-    public Map<String, String> getTrendMap()
-    {
-        if (trendMap == null)
-            initTrends();
-
-        return trendMap;
-    }
+//    public EventReportItem getClearItem()
+//    {
+//        return clearItem;
+//    }
+//
+//    public void setClearItem(EventReportItem clearItem)
+//    {
+//        this.clearItem = clearItem;
+//    }
 
     public ReportCriteria buildReport()
     {
@@ -228,7 +173,7 @@ public class DriverStyleBean extends BasePerformanceBean
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.addParameter("ENTITY_NAME", getDriver().getPerson().getFullName());
-        reportCriteria.addParameter("RECORD_COUNT", getStyleEvents().size());
+        reportCriteria.addParameter("RECORD_COUNT", getEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE.toString()) / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_style"));
         reportCriteria.addParameter("SCORE_HARDBRAKE", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString()) / 10.0D);
@@ -245,23 +190,9 @@ public class DriverStyleBean extends BasePerformanceBean
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
-        reportCriteria.setMainDataset(getStyleEvents());
+        reportCriteria.setMainDataset(getEvents());
 
         return reportCriteria;
-    }
-
-    public String getEmailAddress()
-    {
-        if(emailAddress == null){
-            emailAddress = getProUser().getUser().getPerson().getPriEmail();
-        }
-        
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress)
-    {
-        this.emailAddress = emailAddress;
     }
 
     public void exportReportToPdf()
@@ -279,55 +210,61 @@ public class DriverStyleBean extends BasePerformanceBean
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 
-    public List<EventReportItem> getFilteredStyleEvents()
-    {
-        if(filteredStyleEvents == null)
-        {
-            initEvents();
-            filterEventsAction();
-            tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
-        }
-            
-        return filteredStyleEvents;
-    }
+//    public List<EventReportItem> getFilteredStyleEvents()
+//    {
+//        if(filteredEvents == null)
+//        {
+//            initEvents();
+//
+//            tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
+//        }
+//            
+//        return filteredEvents;
+//    }
 
-    public void setFilteredStyleEvents(List<EventReportItem> filteredStyleEvents)
-    {
-        this.filteredStyleEvents = filteredStyleEvents;
-    }
+//    public void setFilteredStyleEvents(List<EventReportItem> filteredStyleEvents)
+//    {
+//        this.filteredEvents = filteredStyleEvents;
+//    }
+//
+//    public String getSelectedEventType()
+//    {
+//        return selectedEventType;
+//    }
+//
+//    public void setSelectedEventType(String selectedEventType)
+//    {
+//        this.selectedEventType = selectedEventType;
+//        
+//    }
 
-    public String getSelectedEventType()
-    {
-        return selectedEventType;
-    }
-
-    public void setSelectedEventType(String selectedEventType)
-    {
-        this.selectedEventType = selectedEventType;
-        
-    }
-
-    public String filterEventsAction()
+	@Override
+    public void sortEvents()
     { 
-        filteredStyleEvents = new ArrayList<EventReportItem>();
+    	eventsListsMap = new HashMap<String, List<EventReportItem>>();
+    	
+        List<EventReportItem> sortedEvents = new ArrayList<EventReportItem>();
+        eventsListsMap.put("OVERALL", sortedEvents);
+        sortedEvents.addAll(getEvents());
+        filteredEvents = sortedEvents;
+       
+        sortedEvents = new ArrayList<EventReportItem>();
+        eventsListsMap.put(EventType.HARD_BRAKE.name(), sortedEvents);
+        sortedEvents = new ArrayList<EventReportItem>();
+        eventsListsMap.put(EventType.HARD_ACCEL.name(), sortedEvents);
+        sortedEvents = new ArrayList<EventReportItem>();
+        eventsListsMap.put(EventType.HARD_TURN.name(), sortedEvents);
+        sortedEvents = new ArrayList<EventReportItem>();
+        eventsListsMap.put(EventType.HARD_VERT.name(), sortedEvents);
+        sortedEvents = new ArrayList<EventReportItem>();
+        eventsListsMap.put(EventType.UNKNOWN.name(), sortedEvents);
 
-        if (selectedEventType.isEmpty())
+        for (EventReportItem eri : getEvents())
         {
-            filteredStyleEvents.addAll(getStyleEvents());
+        	 eventsListsMap.get(eri.getEvent().getEventType().name()).add(eri);
         }
-        else
-        {
-            for (EventReportItem eri : getStyleEvents())
-            {
-                if (eri.getEvent().getEventType().name().equals(selectedEventType))
-                {
-                    filteredStyleEvents.add(eri);
-                }
-            }
-        }
-        
-        tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
-        return "";
+         
+        tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
     }
 
 }

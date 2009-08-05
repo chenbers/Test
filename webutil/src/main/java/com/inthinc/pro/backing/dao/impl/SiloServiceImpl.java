@@ -328,7 +328,8 @@ public class SiloServiceImpl implements SiloService
     @MethodDescription(description="Fetches notes from this group(deep) that have been 'flagged', within the specified timeframe (start, stop). Returns a list of redFlagMap, or an Integer error.")
     public List<Map<String, Object>> getRedFlags(@DaoParam(name="groupID")Integer groupID, 
             @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate)
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate,
+            @DaoParam(name="includeForgiven", inputDesc="1 - include forgiven, 0 - exclude forgiven")Integer includeForgiven)
             throws ProDAOException
     {
         return null;

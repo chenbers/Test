@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
@@ -118,7 +119,7 @@ public class EventHessianDAOTest
     {
         Date startTime = new Date(MockData.timeNow);
         Date endTime = new  Date();
-        List<Event> eventList = eventHessianDAO.getViolationEventsForDriver(UnitTestStats.UNIT_TEST_DRIVER_ID, startTime, endTime);
+        List<Event> eventList = eventHessianDAO.getViolationEventsForDriver(UnitTestStats.UNIT_TEST_DRIVER_ID, startTime, endTime, EventDAO.INCLUDE_FORGIVEN);
         
         assertNotNull(eventList);
         
