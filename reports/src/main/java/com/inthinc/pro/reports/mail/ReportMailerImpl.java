@@ -16,7 +16,7 @@ public class ReportMailerImpl implements ReportMailer
     
     //TODO get these constants tied to a resource bundle
     private static final String DEFAULT_SUBJECT = "tiwiPRO Report";
-    private static final String DEFAULT_MESSAGE = "View the attatchment(s) to see the report";
+    private static final String DEFAULT_MESSAGE = "View the attachment(s) to see the report";
     private String from;
     
     @Override
