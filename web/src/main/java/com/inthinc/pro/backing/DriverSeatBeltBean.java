@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -70,6 +71,7 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
             events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
         }
         tableStatsBean.reset(ROWCOUNT, events.size());
+        sortEvents();
     }
 
     @Override
@@ -189,10 +191,17 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
     }
 
 	
-	@Override
-	public void sortEvents() {
-		// TODO Auto-generated method stub
+    @Override
+    public void sortEvents()
+    {
+    	eventsListsMap = new HashMap<String, List<EventReportItem>>();
+        eventsListsMap.put("OVERALL", events);
 		
+	}
+
+	public DriverSeatBeltBean() {
+		super();
+		selectedBreakdown="OVERALL";
 	}
 
     

@@ -282,7 +282,8 @@
 	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
 			<h:outputText value="#{vehicleSeatBeltBean.clearItem.detail}"/><br/>
       		<h:outputText value="#{vehicleSeatBeltBean.clearItem.event.time}">
-      			<f:convertDateTime pattern="#{messages.dateTimeFormat}"/>
+<!--      			<f:convertDateTime pattern="#{messages.dateTimeFormat}"/>-->
+      			<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleSeatBeltBean.driver.person.timeZone}" />
 			</h:outputText>
       	</h:panelGroup>
 	

@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -27,7 +29,12 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean
     private String                seatBeltScoreStyle;
     private static final Integer  NO_SCORE       = -1;
 
-    @Override
+	public VehicleSeatBeltBean() {
+		super();
+		selectedBreakdown="OVERALL";
+	}
+	
+   @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
         return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
@@ -68,6 +75,7 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean
             events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
         }
         tableStatsBean.reset(ROWCOUNT, events.size());
+        sortEvents();
     }
 
     @Override
@@ -154,7 +162,7 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean
     public ReportCriteria buildReport()
     {
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SEATBELT, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("ENTITY_NAME", getVehicle().getFullName());
@@ -162,6 +170,7 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean
         reportCriteria.addParameter("OVERALL_SCORE", getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
         reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
@@ -186,9 +195,11 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 
-	@Override
-	public void sortEvents() {
-		// TODO Auto-generated method stub
+    @Override
+    public void sortEvents()
+    {
+    	eventsListsMap = new HashMap<String, List<EventReportItem>>();
+        eventsListsMap.put("OVERALL", events);
 		
 	}
 }
