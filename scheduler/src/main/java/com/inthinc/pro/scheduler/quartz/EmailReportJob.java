@@ -144,6 +144,8 @@ public class EmailReportJob extends QuartzJobBean
             reportCriteria.setReportDate(new Date(), user.getPerson().getTimeZone());
             reportCriteria.setLocale(user.getLocale());
             reportCriteria.setUseMetric((user.getPerson().getMeasurementType() != null && user.getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
+            reportCriteria.setMeasurementType(user.getPerson().getMeasurementType());
+            reportCriteria.setFuelEfficiencyType(user.getPerson().getFuelEfficiencyType());
         }
         
         Report report = reportCreator.getReport(reportCriteriaList);
