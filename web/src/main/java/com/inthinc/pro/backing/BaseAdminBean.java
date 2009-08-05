@@ -610,6 +610,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                     if (selected > 1)
                         break;
                 }
+            
+            if(logger.isTraceEnabled())
+                logger.trace("BEGIN getItem: " + selection);
             if (selected == 0)
                 item = createAddItem();
             else if (selected == 1)
@@ -624,6 +627,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                 for (T t : getSelectedItems())
                     BeanUtil.compareAndInit(item, t);
             } 
+            
+            if(logger.isTraceEnabled())
+                logger.trace("END getItem: " + item);
         }
         
         if(item != null && displayed && authorizeAccess(item) == Boolean.FALSE){

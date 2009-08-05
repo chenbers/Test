@@ -189,10 +189,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((person.getDriver() == null) && (getGroupHierarchy().getGroup(person.getUser().getGroupID()) == null))
                 i.remove();
         }
+        
         // convert the people to PersonViews
         final LinkedList<PersonView> items = new LinkedList<PersonView>();
-        for (final Person person : plainPeople)
+        for (final Person person : plainPeople){
+            if(logger.isDebugEnabled())
+                logger.debug("Person Loaded: " + person);
             items.add(createPersonView(person));
+        }
+        
+        
         return items;
     }
 
@@ -205,6 +211,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
      */
     private PersonView createPersonView(Person person) {
         final PersonView personView = new PersonView();
+        if(logger.isTraceEnabled())
+            logger.trace("createPersonView: BEGIN " + person);
         personView.bean = this;
         BeanUtils.copyProperties(person, personView);
         if (personView.getAddress() == null)
@@ -216,6 +224,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             personView.getUser().setPerson(personView);
         if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 0))
             person.getDriver().setRFID(null);
+        if(logger.isTraceEnabled())
+            logger.trace("createPersonView: END " + personView);
         return personView;
     }
 
@@ -348,6 +358,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
             item.getDriver().setRFID(null);
+        
+        
         return item;
     }
 
@@ -579,7 +591,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     @Override
     protected PersonView revertItem(PersonView editItem) {
+        if(logger.isTraceEnabled())
+            logger.trace("revertItem" + editItem);
         return createPersonView(personDAO.findByID(editItem.getPersonID()));
+
     }
 
     @Override

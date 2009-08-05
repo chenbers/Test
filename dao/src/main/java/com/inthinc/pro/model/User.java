@@ -4,8 +4,13 @@ import java.util.Locale;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-public class User extends BaseEntity
-{    
+
+public class User extends BaseEntity {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     @ID
     private Integer userID;
     private Integer personID;
@@ -19,8 +24,7 @@ public class User extends BaseEntity
     private Integer groupID;
     private Locale locale;
 
-    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID, Locale locale)
-    {
+    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID, Locale locale) {
         super();
         this.userID = userID;
         this.personID = personID;
@@ -32,102 +36,88 @@ public class User extends BaseEntity
         this.locale = locale;
     }
 
-    public User()
-    {
+    public User() {
         super();
     }
 
-    public Integer getUserID()
-    {
+    public Integer getUserID() {
         return userID;
     }
 
-    public void setUserID(Integer userID)
-    {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 
-    public Person getPerson()
-    {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(Person person)
-    {
+    public void setPerson(Person person) {
         this.person = person;
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public Role getRole()
-    {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Role role)
-    {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status)
-    {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Integer getPersonID()
-    {
-        if (personID == null && person != null)
-        {
+    public Integer getPersonID() {
+        if (personID == null && person != null) {
             setPersonID(person.getPersonID());
         }
         return personID;
     }
 
-    public void setPersonID(Integer personID)
-    {
+    public void setPersonID(Integer personID) {
         this.personID = personID;
     }
 
-    public Integer getGroupID()
-    {
+    public Integer getGroupID() {
         return groupID;
     }
 
-    public void setGroupID(Integer groupID)
-    {
+    public void setGroupID(Integer groupID) {
         this.groupID = groupID;
     }
 
-    public Locale getLocale()
-    {
+    public Locale getLocale() {
         return locale;
     }
 
-    public void setLocale(Locale locale)
-    {
+    public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    @Override
+    public String toString() {
+        return "User [groupID=" + groupID + ", locale=" + locale + ", password=" + password + ", personID=" + personID + ", role=" + role + ", status=" + status + ", userID="
+                + userID + ", username=" + username + "]";
     }
 }

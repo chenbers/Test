@@ -6,8 +6,9 @@ import java.util.TimeZone;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-public class Person extends BaseEntity implements Comparable<Person>
-{
+
+public class Person extends BaseEntity implements Comparable<Person> {
+
     @Column(updateable = false)
     private static final long serialVersionUID = -7162580776394490873L;
     @ID
@@ -54,15 +55,14 @@ public class Person extends BaseEntity implements Comparable<Person>
     @Column(name = "fuelEffType")
     private FuelEfficiencyType fuelEfficiencyType;
 
-    public Person()
-    {
+    public Person() {
         super();
     }
 
     public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
             String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first, String middle,
-            String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType, FuelEfficiencyType fuelEfficiencyType)
-    {
+            String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType,
+            FuelEfficiencyType fuelEfficiencyType) {
         super();
         this.acctID = acctID;
         this.personID = personID;
@@ -95,203 +95,164 @@ public class Person extends BaseEntity implements Comparable<Person>
         this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
-    public Integer getPersonID()
-    {
+    public Integer getPersonID() {
         return personID;
     }
 
-    public void setPersonID(Integer personID)
-    {
+    public void setPersonID(Integer personID) {
         this.personID = personID;
     }
 
-    public TimeZone getTimeZone()
-    {
+    public TimeZone getTimeZone() {
         return timeZone;
     }
 
-    public String getDisplayTimeZone()
-    {
+    public String getDisplayTimeZone() {
         if (timeZone != null)
             return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
         else
             return null;
     }
 
-    public void setTimeZone(TimeZone timeZone)
-    {
+    public void setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
     }
 
-    public Integer getCostPerHour()
-    {
+    public Integer getCostPerHour() {
         return costPerHour;
     }
 
-    public void setCostPerHour(Integer costPerHour)
-    {
+    public void setCostPerHour(Integer costPerHour) {
         this.costPerHour = costPerHour;
     }
 
-    public Address getAddress()
-    {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(Address address)
-    {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
-    public String getPriEmail()
-    {
+    public String getPriEmail() {
         return priEmail;
     }
 
-    public void setPriEmail(String priEmail)
-    {
+    public void setPriEmail(String priEmail) {
         this.priEmail = priEmail;
     }
 
-    public String getSecEmail()
-    {
+    public String getSecEmail() {
         return secEmail;
     }
 
-    public void setSecEmail(String secEmail)
-    {
+    public void setSecEmail(String secEmail) {
         this.secEmail = secEmail;
     }
 
-    public String getPriPhone()
-    {
+    public String getPriPhone() {
         return priPhone;
     }
 
-    public void setPriPhone(String priPhone)
-    {
+    public void setPriPhone(String priPhone) {
         this.priPhone = priPhone;
     }
 
-    public String getSecPhone()
-    {
+    public String getSecPhone() {
         return secPhone;
     }
 
-    public void setSecPhone(String secPhone)
-    {
+    public void setSecPhone(String secPhone) {
         this.secPhone = secPhone;
     }
 
-    public String getPriText()
-    {
+    public String getPriText() {
         return priText;
     }
 
-    public void setPriText(String priText)
-    {
+    public void setPriText(String priText) {
         this.priText = priText;
     }
 
-    public String getSecText()
-    {
+    public String getSecText() {
         return secText;
     }
 
-    public void setSecText(String secText)
-    {
+    public void setSecText(String secText) {
         this.secText = secText;
     }
 
-    public Integer getInfo()
-    {
+    public Integer getInfo() {
         return info;
     }
 
-    public void setInfo(Integer info)
-    {
+    public void setInfo(Integer info) {
         this.info = info;
     }
 
-    public Integer getWarn()
-    {
+    public Integer getWarn() {
         return warn;
     }
 
-    public void setWarn(Integer warn)
-    {
+    public void setWarn(Integer warn) {
         this.warn = warn;
     }
 
-    public Integer getCrit()
-    {
+    public Integer getCrit() {
         return crit;
     }
 
-    public void setCrit(Integer crit)
-    {
+    public void setCrit(Integer crit) {
         this.crit = crit;
     }
 
-    public String getEmpid()
-    {
+    public String getEmpid() {
         return empid;
     }
 
-    public void setEmpid(String empid)
-    {
+    public void setEmpid(String empid) {
         this.empid = empid;
     }
 
-    public String getReportsTo()
-    {
+    public String getReportsTo() {
         return reportsTo;
     }
 
-    public void setReportsTo(String reportsTo)
-    {
+    public void setReportsTo(String reportsTo) {
         this.reportsTo = reportsTo;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getDept()
-    {
+    public String getDept() {
         return dept;
     }
 
-    public void setDept(String dept)
-    {
+    public void setDept(String dept) {
         this.dept = dept;
     }
 
-    public String getFullName()
-    {
+    public String getFullName() {
         StringBuilder result = new StringBuilder();
         if (first != null)
             result.append(first);
-        if (middle != null)
-        {
+        if (middle != null) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(middle);
         }
-        if (last != null)
-        {
+        if (last != null) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(last);
         }
-        if (suffix != null)
-        {
+        if (suffix != null) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(suffix);
@@ -299,159 +260,128 @@ public class Person extends BaseEntity implements Comparable<Person>
         return result.toString();
     }
 
-    public String getFullNameWithId()
-    {
+    public String getFullNameWithId() {
         StringBuilder result = new StringBuilder();
-        if (empid != null && !empid.isEmpty())
-        {
+        if (empid != null && !empid.isEmpty()) {
             result.append(getFullName());
             result.append(' ');
             result.append("(" + empid + ")");
         }
-        else
-        {
+        else {
             result.append(getFullName());
         }
         return result.toString();
     }
 
-    public String getFirst()
-    {
+    public String getFirst() {
         return first;
     }
 
-    public void setFirst(String first)
-    {
+    public void setFirst(String first) {
         this.first = first;
     }
 
-    public String getMiddle()
-    {
+    public String getMiddle() {
         return middle;
     }
 
-    public void setMiddle(String middle)
-    {
+    public void setMiddle(String middle) {
         this.middle = middle;
     }
 
-    public String getLast()
-    {
+    public String getLast() {
         return last;
     }
 
-    public void setLast(String last)
-    {
+    public void setLast(String last) {
         this.last = last;
     }
 
-    public String getSuffix()
-    {
+    public String getSuffix() {
         return suffix;
     }
 
-    public void setSuffix(String suffix)
-    {
+    public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
 
-    public Gender getGender()
-    {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender)
-    {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public Integer getHeight()
-    {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(Integer height)
-    {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
-    public Integer getWeight()
-    {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight)
-    {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
-    public Date getDob()
-    {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(Date dob)
-    {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
-    public User getUser()
-    {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(User user)
-    {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Driver getDriver()
-    {
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriver(Driver driver)
-    {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 
-    public Integer getAddressID()
-    {
+    public Integer getAddressID() {
         return addressID;
     }
 
-    public void setAddressID(Integer addressID)
-    {
+    public void setAddressID(Integer addressID) {
         this.addressID = addressID;
     }
 
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status)
-    {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Integer getAcctID()
-    {
+    public Integer getAcctID() {
         return acctID;
     }
 
-    public void setAcctID(Integer acctID)
-    {
+    public void setAcctID(Integer acctID) {
         this.acctID = acctID;
     }
 
-    public MeasurementType getMeasurementType()
-    {
+    public MeasurementType getMeasurementType() {
         return measurementType;
     }
 
-    public void setMeasurementType(MeasurementType measurementType)
-    {
+    public void setMeasurementType(MeasurementType measurementType) {
         this.measurementType = measurementType;
     }
 
@@ -464,8 +394,7 @@ public class Person extends BaseEntity implements Comparable<Person>
     }
 
     @Override
-    public int compareTo(Person o)
-    {
+    public int compareTo(Person o) {
         // for now, use the name fields to determine the natural order of person objects
         int result = (this.last.toUpperCase()).compareTo(o.getLast().toUpperCase());
         if (result == 0)
@@ -473,5 +402,14 @@ public class Person extends BaseEntity implements Comparable<Person>
         if (result == 0)
             result = (this.middle.toUpperCase()).compareTo(o.getMiddle().toUpperCase());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Person [acctID=" + acctID + ", address=" + address + ", addressID=" + addressID + ", costPerHour=" + costPerHour + ", crit=" + crit + ", dept=" + dept + ", dob="
+                + dob + ", driver=" + driver + ", empid=" + empid + ", first=" + first + ", fuelEfficiencyType=" + fuelEfficiencyType + ", gender=" + gender + ", height=" + height
+                + ", info=" + info + ", last=" + last + ", measurementType=" + measurementType + ", middle=" + middle + ", personID=" + personID + ", priEmail=" + priEmail
+                + ", priPhone=" + priPhone + ", priText=" + priText + ", reportsTo=" + reportsTo + ", secEmail=" + secEmail + ", secPhone=" + secPhone + ", secText=" + secText
+                + ", status=" + status + ", suffix=" + suffix + ", timeZone=" + timeZone + ", title=" + title + ", user=" + user + ", warn=" + warn + ", weight=" + weight + "]";
     }
 }
