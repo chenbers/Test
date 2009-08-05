@@ -72,14 +72,16 @@ public class EmailReportJob extends QuartzJobBean
             if (emailReport(reportSchedule))
             {
                 User user = userDAO.findByID(reportSchedule.getUserID());
-                Calendar todaysDate = Calendar.getInstance(user.getPerson().getTimeZone());
-                logger.debug("EmailReportJob: BEGIN PROCESSING REPORT ");
-                logger.debug(reportSchedule.toString());
-                processReportSchedule(reportSchedule);
-                reportSchedule.setLastDate(todaysDate.getTime());
-                Integer modified = reportScheduleDAO.update(reportSchedule);
-                logger.debug("EmailReportJob: UPDATE RESULT " + modified);
-                logger.debug("EmailReportJob: END REPORT");
+                if(user.getStatus().equals(Status.ACTIVE)){ //If the users status is not active, then the reports will no longer go out for that user.
+                    Calendar todaysDate = Calendar.getInstance(user.getPerson().getTimeZone());
+                    logger.debug("EmailReportJob: BEGIN PROCESSING REPORT ");
+                    logger.debug(reportSchedule.toString());
+                    processReportSchedule(reportSchedule);
+                    reportSchedule.setLastDate(todaysDate.getTime());
+                    Integer modified = reportScheduleDAO.update(reportSchedule);
+                    logger.debug("EmailReportJob: UPDATE RESULT " + modified);
+                    logger.debug("EmailReportJob: END REPORT");
+                }
             }
         }
 
@@ -139,7 +141,8 @@ public class EmailReportJob extends QuartzJobBean
         
         Report report = reportCreator.getReport(reportCriteriaList);
         String subject = LocalizedMessage.getString("reportSchedule.emailSubject",user.getLocale()) + reportSchedule.getName();
-        report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF, null, subject);
+        String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", user.getLocale(), user.getPerson().getFullName(),user.getPerson().getPriEmail());
+        report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF, message, subject);
     }
 
     /*
