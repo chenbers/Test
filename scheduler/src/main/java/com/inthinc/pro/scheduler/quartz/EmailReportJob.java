@@ -28,6 +28,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
+
 /**
  * 
  * @author mstrong
@@ -63,7 +64,13 @@ public class EmailReportJob extends QuartzJobBean
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         for (Account account : accounts)
         {
-            reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
+            Account a = accountDAO.findByID(account.getAcctID());
+            if(!a.getStatus().equals(Status.DELETED))
+                reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
+            else
+                if(logger.isDebugEnabled()){
+                    logger.debug("Account ID Deleted: " + account.getAcctID());
+                }
         }
 
         for (ReportSchedule reportSchedule : reportSchedules)
