@@ -42,7 +42,8 @@ public class RedFlagAlert extends BaseAlert {
     public RedFlagAlert(Integer accountID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo, Integer[] speedSettings,
             RedFlagLevel[] speedLevels, Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel hardAccelerationLevel,
-            RedFlagLevel hardBrakeLevel, RedFlagLevel hardTurnLevel, RedFlagLevel hardVerticalLevel, RedFlagLevel seatBeltLevel, RedFlagLevel crashLevel) {
+            RedFlagLevel hardBrakeLevel, RedFlagLevel hardTurnLevel, RedFlagLevel hardVerticalLevel, RedFlagLevel seatBeltLevel, RedFlagLevel crashLevel,RedFlagLevel tamperingLevel,
+            RedFlagLevel lowBatteryLevel) {
         super(accountID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo);
         this.speedSettings = speedSettings;
         this.speedLevels = speedLevels;
@@ -56,6 +57,8 @@ public class RedFlagAlert extends BaseAlert {
         this.hardVerticalLevel = hardVerticalLevel;
         this.seatBeltLevel = seatBeltLevel;
         this.crashLevel = crashLevel;
+        this.lowBatteryLevel = lowBatteryLevel;
+        this.tamperingLevel = tamperingLevel;
     }
 
     public Integer getRedFlagAlertID() {
