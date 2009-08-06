@@ -94,7 +94,7 @@
 				</property>
 			</activation>
 			<properties>
-				<facelets.development>true</facelets.development>
+				<facelets.development>false</facelets.development>
 				<tomcatManagerURL>http://qa-pro.inthinc.com:8082/manager</tomcatManagerURL>
 				<tomcatServerID>qa-pro-tomcat</tomcatServerID>
 			</properties>
