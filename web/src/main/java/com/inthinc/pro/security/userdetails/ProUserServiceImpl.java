@@ -15,6 +15,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 
 
@@ -32,7 +33,7 @@ public class ProUserServiceImpl implements UserDetailsService
         try
         {
             User user = lookup(username);
-            if (user == null)
+            if (user == null || !user.getStatus().equals(Status.ACTIVE))
             {
                 throw new UsernameNotFoundException("Username could not be found");
             }    
