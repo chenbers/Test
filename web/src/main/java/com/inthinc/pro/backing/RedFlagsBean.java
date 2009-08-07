@@ -16,11 +16,14 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.ZoneDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -295,21 +298,28 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         
         List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7, RedFlagDAO.INCLUDE_FORGIVEN);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
+        
+        addDrivers(redFlagList);
+        addVehicles(redFlagList);
+        
+        Map<Integer,Zone> zoneMap = getZones();
         for (RedFlag redFlag : redFlagList)
         {
-            fillInDriver(redFlag.getEvent());
-            fillInVehicle(redFlag.getEvent());
+//            fillInDriver(redFlag.getEvent());
+//            fillInVehicle(redFlag.getEvent());
             
             RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy(),getMeasurementType());
             
             if(redFlag.getEvent() instanceof ZoneDepartureEvent)
             {
-                item.setZone(zoneDAO.findByID(((ZoneDepartureEvent)redFlag.getEvent()).getZoneID()));
+                item.setZone(zoneMap.get(((ZoneDepartureEvent)redFlag.getEvent()).getZoneID()));
+ //               item.setZone(zoneDAO.findByID(((ZoneDepartureEvent)redFlag.getEvent()).getZoneID()));
             }
             if(redFlag.getEvent() instanceof ZoneArrivalEvent)
             {
-                item.setZone(zoneDAO.findByID(((ZoneArrivalEvent)redFlag.getEvent()).getZoneID()));
-            }
+                item.setZone(zoneMap.get(((ZoneArrivalEvent)redFlag.getEvent()).getZoneID()));
+//               item.setZone(zoneDAO.findByID(((ZoneArrivalEvent)redFlag.getEvent()).getZoneID()));
+                            }
             
             redFlagReportItemList.add(item);
         }
@@ -558,5 +568,51 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
 	    this.maxCount = maxCount;
 	}
 
+	protected void addDrivers(List<RedFlag>redFlagList) {
+		
+	    // Get the set of possible drivers
+	    List<Driver> drivers = getDriverDAO().getAllDrivers(getEffectiveGroupId());
+	    Map<Integer,Driver> driverMap = new HashMap<Integer,Driver>();
+	    
+	    for (Driver driver:drivers){
+	    	
+	    	driverMap.put(driver.getDriverID(), driver);
+	    }
+	  	
+	 	for (RedFlag redFlag : redFlagList){
+		   
+		   redFlag.getEvent().setDriver(driverMap.get(redFlag.getEvent().getDriverID()));
+	 	}
+	}
+
+	protected void addVehicles(List<RedFlag> redFlagList) {
+	    
+	    // Get the set of possible vehicles
+	    List<Vehicle> vehicles = getVehicleDAO().getVehiclesInGroupHierarchy(getEffectiveGroupId());
+	    Map<Integer,Vehicle> vehicleMap = new HashMap<Integer,Vehicle>();
+	    
+	    for (Vehicle vehicle:vehicles){
+	    	
+	    	vehicleMap.put(vehicle.getVehicleID(), vehicle);
+	    }
+	
+	    for (RedFlag redFlag : redFlagList){
+	 	   
+	 	   redFlag.getEvent().setVehicle(vehicleMap.get(redFlag.getEvent().getVehicleID()));
+	  	}
+	
+	}
+	
+	private Map<Integer,Zone> getZones() {
+		
+		List<Zone> zones = zoneDAO.getZones(this.getUser().getPerson().getAcctID());
+	    Map<Integer,Zone> zoneMap = new HashMap<Integer,Zone>();
+	    
+	    for (Zone zone:zones){
+	    	
+	    	zoneMap.put(zone.getZoneID(), zone);
+	    }
+	    return zoneMap;
+	}
 
 }
