@@ -16,6 +16,18 @@
         <pattern>/sent</pattern>
         <view-id>/retrieveCredentialsComplete.faces</view-id>
     </url-mapping>
+    
+    <url-mapping id="unsubscribeToReport">
+    	<pattern>/unsubscribe/report/#{unsubscribeBean.emailAddress}/#{unsubscribeBean.reportScheduleID}</pattern>
+    	<view-id>/unsubscribe.faces</view-id>
+    	<action onPostback="false">#{unsubscribeBean.unsubscribeToReportSchedule}</action>
+    </url-mapping>
+    
+    <url-mapping id="unsubscribeToReportSimple">
+    	<pattern>/unsubscribe/report/</pattern>
+    	<view-id>/unsubscribe.faces</view-id>
+    </url-mapping>
+    
 	
 	<url-mapping id="myAccount">
 		<pattern>/app/account</pattern>

@@ -39,6 +39,8 @@
 				<entry key="reportScheduleDAO" value-ref="reportScheduleDAO"/>
 				<entry key="userDAO" value-ref="userDAO"/>
 				<entry key="accountDAO" value-ref="accountDAO"/>
+				<entry key="webContextPath" value="${contextPath.web}"/>
+				<entry key="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
 			</map>
 		</property>
 	</bean>
@@ -53,7 +55,7 @@
 	
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="emailReportJob"/>
-	  <property name="cronExpression" value="0 1/15 * * * ?"/>
+	  <property name="cronExpression" value="30 * * * * ?"/>
 	</bean>
 
 	<bean id="emailMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">

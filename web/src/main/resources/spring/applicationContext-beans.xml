@@ -17,6 +17,11 @@
     <bean id="groupLevelBean" class="com.inthinc.pro.backing.GroupLevelBean" scope="request" parent="baseBean" init-method="initGroupID">
         <property name="navigationBean" ref="navigationBean"></property>
     </bean>
+    
+    <bean id="unsubscribeBean" class="com.inthinc.pro.backing.UnsubscribeBean" scope="request">
+        <property name="reportScheduleDAO" ref="reportScheduleDAO"></property>
+        <property name="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
+    </bean>
 
     <!-- Navigation bean -->
     <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
