@@ -79,7 +79,7 @@
                               <tr>
                                 <td width="150"><h:outputText value="#{messages.myAccount_locale}:" /></td>
                                 <td>
-                                    <h:selectOneMenu value="#{localeBean.user.locale}" converter="SimpleBeanConverter">
+                                    <h:selectOneMenu value="#{localeBean.locale}" converter="SimpleBeanConverter">
                                         <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
                                     </h:selectOneMenu>
                                 </td>

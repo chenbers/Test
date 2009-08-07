@@ -189,16 +189,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((person.getDriver() == null) && (getGroupHierarchy().getGroup(person.getUser().getGroupID()) == null))
                 i.remove();
         }
-        
         // convert the people to PersonViews
         final LinkedList<PersonView> items = new LinkedList<PersonView>();
-        for (final Person person : plainPeople){
-            if(logger.isDebugEnabled())
+        for (final Person person : plainPeople) {
+            if (logger.isDebugEnabled())
                 logger.debug("Person Loaded: " + person);
             items.add(createPersonView(person));
         }
-        
-        
         return items;
     }
 
@@ -211,7 +208,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
      */
     private PersonView createPersonView(Person person) {
         final PersonView personView = new PersonView();
-        if(logger.isTraceEnabled())
+        if (logger.isTraceEnabled())
             logger.trace("createPersonView: BEGIN " + person);
         personView.bean = this;
         BeanUtils.copyProperties(person, personView);
@@ -224,7 +221,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             personView.getUser().setPerson(personView);
         if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 0))
             person.getDriver().setRFID(null);
-        if(logger.isTraceEnabled())
+        if (logger.isTraceEnabled())
             logger.trace("createPersonView: END " + personView);
         return personView;
     }
@@ -283,16 +280,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             return Long.toHexString(value);
         }
         else if (column.equals("locale")) {
-            if (person.getUser() != null && person.getUser().getLocale() != null)
-                return person.getUser().getLocale().getDisplayName();
+            if (person.getUser() != null && person.getLocale() != null)
+                return person.getLocale().getDisplayName();
             else
                 return null;
         }
         else if (column.equals("measurementType")) {
-            return MessageUtil.getMessageString(getMeasurementType().toString(), getProUser().getUser().getLocale());
+            return MessageUtil.getMessageString(getMeasurementType().toString(), getLocale());
         }
         else if (column.equals("fuelEfficiencyType")) {
-            return MessageUtil.getMessageString(getFuelEfficiencyType().toString(), getProUser().getUser().getLocale());
+            return MessageUtil.getMessageString(getFuelEfficiencyType().toString(), getLocale());
         }
         else
             return super.fieldValue(person, column);
@@ -335,9 +332,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.getUser().setPerson(person);
         Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
         if (LocaleBean.supportedLocale(locale))
-            person.getUser().setLocale(locale);
+            person.setLocale(locale);
         else
-            person.getUser().setLocale(Locale.US);
+            person.setLocale(Locale.US);
         person.setDriver(new Driver());
         person.setUserSelected(true);
         person.setDriverSelected(true);
@@ -358,8 +355,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
             item.getDriver().setRFID(null);
-        
-        
         return item;
     }
 
@@ -531,7 +526,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 context.addMessage("edit-form:user_status", message);
             }
             // required locale
-            if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.locale")))) {
+            if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.person.locale")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_locale", message);
@@ -591,10 +586,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     @Override
     protected PersonView revertItem(PersonView editItem) {
-        if(logger.isTraceEnabled())
+        if (logger.isTraceEnabled())
             logger.trace("revertItem" + editItem);
         return createPersonView(personDAO.findByID(editItem.getPersonID()));
-
     }
 
     @Override

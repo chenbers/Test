@@ -20,147 +20,118 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class VehicleSeatBeltBean extends BasePerformanceEventsBean
-{
-    private static final Logger   logger         = Logger.getLogger(VehicleSeatBeltBean.class);
+public class VehicleSeatBeltBean extends BasePerformanceEventsBean {
+    private static final Logger logger = Logger.getLogger(VehicleSeatBeltBean.class);
+    private Integer seatBeltScore;
+    private String seatBeltScoreHistoryOverall;
+    private String seatBeltScoreStyle;
+    private static final Integer NO_SCORE = -1;
 
-    private Integer               seatBeltScore;
-    private String                seatBeltScoreHistoryOverall;
-    private String                seatBeltScoreStyle;
-    private static final Integer  NO_SCORE       = -1;
+    public VehicleSeatBeltBean() {
+        super();
+        selectedBreakdown = "OVERALL";
+    }
 
-	public VehicleSeatBeltBean() {
-		super();
-		selectedBreakdown="OVERALL";
-	}
-	
-   @Override
-    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
-    {
+    @Override
+    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType) {
         return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
     }
-    
+
     @Override
-    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
-    {
+    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType) {
         return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
     }
-    
+
     @Override
-    protected void initScores()
-    {
+    protected void initScores() {
         ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
-        
-        if(se != null && se.getScore() != null)
+        if (se != null && se.getScore() != null)
             setSeatBeltScore(se.getScore());
         else
             setSeatBeltScore(NO_SCORE);
-        
         setSeatBeltScoreStyle(ScoreBox.GetStyleFromScore(getSeatBeltScore(), ScoreBoxSizes.MEDIUM));
     }
 
     @Override
-    protected void initEvents()
-    {
+    protected void initEvents() {
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-
         List<Event> tempEvents = new ArrayList<Event>();
         tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types, showExcludedEvents);
-
         events = new ArrayList<EventReportItem>();
-        for (Event event : tempEvents)
-        {
+        for (Event event : tempEvents) {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
+            events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(), getMeasurementType()));
         }
         tableStatsBean.reset(ROWCOUNT, events.size());
         sortEvents();
     }
 
     @Override
-    protected void initTrends()
-    {
+    protected void initTrends() {
         seatBeltScoreHistoryOverall = createFusionMultiLineDef(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
     }
 
-    public Integer getSeatBeltScore()
-    {
-        if(seatBeltScore == null) 
+    public Integer getSeatBeltScore() {
+        if (seatBeltScore == null)
             initScores();
-        
         return seatBeltScore;
     }
 
-    public void setSeatBeltScore(Integer seatBeltScore)
-    {
+    public void setSeatBeltScore(Integer seatBeltScore) {
         this.seatBeltScore = seatBeltScore;
     }
 
-    public String getSeatBeltScoreHistoryOverall()
-    {
-        if(seatBeltScoreHistoryOverall == null)
+    public String getSeatBeltScoreHistoryOverall() {
+        if (seatBeltScoreHistoryOverall == null)
             initTrends();
-        
         return seatBeltScoreHistoryOverall;
     }
 
-    public void setSeatBeltScoreHistoryOverall(String seatBeltScoreHistoryOverall)
-    {
+    public void setSeatBeltScoreHistoryOverall(String seatBeltScoreHistoryOverall) {
         this.seatBeltScoreHistoryOverall = seatBeltScoreHistoryOverall;
     }
 
-    public String getSeatBeltScoreStyle()
-    {
-        if(seatBeltScore == null) 
+    public String getSeatBeltScoreStyle() {
+        if (seatBeltScore == null)
             initScores();
-
         return seatBeltScoreStyle;
     }
 
-    public void setSeatBeltScoreStyle(String seatBeltScoreStyle)
-    {
+    public void setSeatBeltScoreStyle(String seatBeltScoreStyle) {
         this.seatBeltScoreStyle = seatBeltScoreStyle;
     }
 
-    public List<EventReportItem> getSeatBeltEvents()
-    {
-        if(events == null)
+    public List<EventReportItem> getSeatBeltEvents() {
+        if (events == null)
             initEvents();
-        
         return events;
     }
 
-    public void setSeatBeltEvents(List<EventReportItem> seatBeltEvents)
-    {
+    public void setSeatBeltEvents(List<EventReportItem> seatBeltEvents) {
         this.events = seatBeltEvents;
     }
 
-    public void setDuration(Duration duration)
-    {
+    public void setDuration(Duration duration) {
         durationBean.setDuration(duration);
         initScores();
         initTrends();
         initEvents();
     }
-    public Duration getDuration()
-    {
+
+    public Duration getDuration() {
         return durationBean.getDuration();
     }
-    
 
-    public EventReportItem getClearItem()
-    {
+    public EventReportItem getClearItem() {
         return clearItem;
     }
 
-    public void setClearItem(EventReportItem clearItem)
-    {
+    public void setClearItem(EventReportItem clearItem) {
         this.clearItem = clearItem;
     }
 
-    public ReportCriteria buildReport()
-    {
+    public ReportCriteria buildReport() {
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SEATBELT, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
@@ -169,37 +140,30 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean
         reportCriteria.addParameter("RECORD_COUNT", getSeatBeltEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
-
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
         reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
         reportCriteria.setMainDataset(events);
-
         return reportCriteria;
     }
 
-    public void exportReportToPdf()
-    {
+    public void exportReportToPdf() {
         getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
     }
 
-    public void emailReport()
-    {
+    public void emailReport() {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 
-    public void exportReportToExcel()
-    {
+    public void exportReportToExcel() {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 
     @Override
-    public void sortEvents()
-    {
-    	eventsListsMap = new HashMap<String, List<EventReportItem>>();
+    public void sortEvents() {
+        eventsListsMap = new HashMap<String, List<EventReportItem>>();
         eventsListsMap.put("OVERALL", events);
-		
-	}
+    }
 }

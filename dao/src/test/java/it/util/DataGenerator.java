@@ -207,7 +207,7 @@ public class DataGenerator
 
 
         String username = "user_"+person.getPersonID();
-        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID, Locale.getDefault());
+        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID);
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
         
@@ -244,7 +244,7 @@ public class DataGenerator
 
         // create a person
         Person person = new Person(0, acctID, TimeZone.getDefault(), 0, address.getAddrID(), first + "email"+groupID+"@email.com", null, "5555555555", "5555555555", null, null, null, null, null, "emp01", 
-                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
+                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
 
         Integer personID = personDAO.create(acctID, person);
         assertNotNull(personID);

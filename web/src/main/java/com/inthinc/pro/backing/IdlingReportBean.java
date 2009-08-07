@@ -15,8 +15,8 @@ import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
-public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implements PersonChangeListener
-{
+
+public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implements PersonChangeListener {
     private static final Logger logger = Logger.getLogger(IdlingReportBean.class);
     // idlingsData is the ONE read from the db, idlingData is what is displayed
     private List<IdlingReportItem> idlingsData = new ArrayList<IdlingReportItem>();
@@ -39,8 +39,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     // set to SEVEN days back in calendar time
     private final static long DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
     private DriverDAO driverDAO;
-    static
-    {
+    static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("group");
@@ -54,14 +53,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         AVAILABLE_COLUMNS.add("totalPercent");
     }
 
-    public IdlingReportBean()
-    {
+    public IdlingReportBean() {
         super();
     }
 
     @Override
-    public void initBean()
-    {
+    public void initBean() {
         super.initBean();
         // Set start and end date to last 7 days
         endDate = new Date();
@@ -74,27 +71,22 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     }
 
     @Override
-    protected void loadDBData()
-    {
+    protected void loadDBData() {
         checkDates();
         this.idlingsData = scoreDAO.getIdlingReportData(getEffectiveGroupId(), this.internalStartDate, this.internalEndDate);
-
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
-        for (IdlingReportItem iri : this.idlingsData)
-        {
+        for (IdlingReportItem iri : this.idlingsData) {
             iri.setGroup(this.getGroupHierarchy().getGroup(iri.getGroupID()).getName());
         }
     }
 
     @Override
-    protected void filterResults(List<IdlingReportItem> data)
-    {
+    protected void filterResults(List<IdlingReportItem> data) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void personListChanged()
-    {
+    public void personListChanged() {
         loadDBData();
     }
 
@@ -104,8 +96,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
      * @param date
      * @return
      */
-    private Date resetTime(Date date)
-    {
+    private Date resetTime(Date date) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         if (date != null) // Otherwise it will be the current date
             calendar.setTime(date);
@@ -115,57 +106,48 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         return calendar.getTime();
     }
 
-    public List<IdlingReportItem> getIdlingData()
-    {
+    public List<IdlingReportItem> getIdlingData() {
         return idlingData;
     }
 
-    public void setIdlingData(List<IdlingReportItem> idlingData)
-    {
+    public void setIdlingData(List<IdlingReportItem> idlingData) {
         this.idlingData = idlingData;
     }
 
     @Override
-    protected List<IdlingReportItem> getDBData()
-    {
+    protected List<IdlingReportItem> getDBData() {
         return idlingsData;
     }
 
     @Override
-    protected List<IdlingReportItem> getDisplayData()
-    {
+    protected List<IdlingReportItem> getDisplayData() {
         return idlingData;
     }
 
-    private void checkDates()
-    {
+    private void checkDates() {
         StringBuffer sb = new StringBuffer();
         sb.append("Search Dates: ");
         boolean good = true;
         // null checks
-        if (this.startDate == null)
-        {
+        if (this.startDate == null) {
             this.startDate = this.defaultStartDate;
             sb.append(NO_START_DATE);
             good = false;
         }
-        if (this.endDate == null)
-        {
+        if (this.endDate == null) {
             this.endDate = this.defaultEndDate;
             sb.append(NO_END_DATE);
             good = false;
         }
         // start after end?
-        if (this.startDate.getTime() > this.endDate.getTime())
-        {
+        if (this.startDate.getTime() > this.endDate.getTime()) {
             this.startDate = this.defaultStartDate;
             this.endDate = this.defaultEndDate;
             sb.append(START_BEFORE_END);
             good = false;
         }
         // all good?
-        if (good)
-        {
+        if (good) {
             sb.append("Okay");
         }
         sb.append(".");
@@ -176,11 +158,9 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     }
 
     @Override
-    protected void loadResults(List<IdlingReportItem> idlsData)
-    {
+    protected void loadResults(List<IdlingReportItem> idlsData) {
         idlingData = new ArrayList<IdlingReportItem>();
-        for (IdlingReportItem i : idlsData)
-        {
+        for (IdlingReportItem i : idlsData) {
             // Group name
             i.setGroup(this.getGroupHierarchy().getGroup(i.getGroupID()).getName());
             idlingData.add(i);
@@ -189,28 +169,23 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         resetCounts();
     }
 
-    public Date getStartDate()
-    {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate)
-    {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate()
-    {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate)
-    {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public int convertToSeconds(String trip)
-    {
+    public int convertToSeconds(String trip) {
         StringTokenizer st = new StringTokenizer(trip, ":");
         int total = 0;
         // hh
@@ -222,97 +197,80 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         return total;
     }
 
-    public DriverDAO getDriverDAO()
-    {
+    public DriverDAO getDriverDAO() {
         return driverDAO;
     }
 
-    public void setDriverDAO(DriverDAO driverDAO)
-    {
+    public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }
 
-    public String getBadDates()
-    {
+    public String getBadDates() {
         return badDates;
     }
 
-    public void setBadDates(String badDates)
-    {
+    public void setBadDates(String badDates) {
         this.badDates = badDates;
     }
 
-    public ScoreDAO getScoreDAO()
-    {
+    public ScoreDAO getScoreDAO() {
         return scoreDAO;
     }
 
-    public void setScoreDAO(ScoreDAO scoreDAO)
-    {
+    public void setScoreDAO(ScoreDAO scoreDAO) {
         this.scoreDAO = scoreDAO;
     }
 
     @Override
-    public List<String> getAvailableColumns()
-    {
+    public List<String> getAvailableColumns() {
         return AVAILABLE_COLUMNS;
     }
 
     @Override
-    public String getColumnLabelPrefix()
-    {
+    public String getColumnLabelPrefix() {
         return COLUMN_LABEL_PREFIX;
     }
 
     @Override
-    public TableType getTableType()
-    {
+    public TableType getTableType() {
         return TableType.IDLING_REPORT;
     }
 
-    public void exportReportToPdf()
-    {
+    public void exportReportToPdf() {
         ReportCriteria reportCriteria = loadReportCriteria();
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
 
-    public void emailReport()
-    {
+    public void emailReport() {
         ReportCriteria reportCriteria = loadReportCriteria();
         getReportRenderer().exportReportToEmail(reportCriteria, getEmailAddress());
     }
 
-    public void exportReportToExcel()
-    {
+    public void exportReportToExcel() {
         ReportCriteria reportCriteria = loadReportCriteria();
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
 
-    private ReportCriteria loadReportCriteria()
-    {
+    private ReportCriteria loadReportCriteria() {
         ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), internalStartDate, internalEndDate);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
         return reportCriteria;
     }
 
     @Override
-    protected void setDisplayData(List<IdlingReportItem> displayData)
-    {
+    protected void setDisplayData(List<IdlingReportItem> displayData) {
         idlingData = displayData;
     }
 
     @Override
-    public String getMappingId()
-    {
+    public String getMappingId() {
         return "pretty:idlingReport";
     }
 
     @Override
-    public String getMappingIdWithCriteria()
-    {
+    public String getMappingIdWithCriteria() {
         return "pretty:idlingReportWithCriteria";
     }
-
 }

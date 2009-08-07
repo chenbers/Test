@@ -143,9 +143,9 @@
       <h:outputText value="#{item.address.zip}" />
     </rich:column>
     -->
-    <rich:column rendered="#{personBean.tableColumns['locale'].visible}" sortBy="#{item.user.locale.displayName}">
+    <rich:column rendered="#{personBean.tableColumns['locale'].visible}" sortBy="#{item.locale.displayName}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_locale}" /></f:facet>
-      <h:outputText value="#{item.user.locale.displayName}" />
+      <h:outputText value="#{item.locale.displayName}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['measurementType'].visible}" sortBy="#{messages[item.measurementType]}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_measurementType}" /></f:facet>

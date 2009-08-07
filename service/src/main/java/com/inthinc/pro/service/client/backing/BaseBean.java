@@ -18,8 +18,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
-public class BaseBean implements Serializable
-{
+public class BaseBean implements Serializable {
     /**
      * 
      */
@@ -28,118 +27,92 @@ public class BaseBean implements Serializable
     private ErrorBean errorBean;
     private AccountDAO accountDAO;
 
-
-    public BaseBean()
-    {
+    public BaseBean() {
         super();
     }
 
-    public ErrorBean getErrorBean()
-    {
+    public ErrorBean getErrorBean() {
         return errorBean;
     }
 
-    public void setErrorBean(final ErrorBean errorBean)
-    {
+    public void setErrorBean(final ErrorBean errorBean) {
         this.errorBean = errorBean;
     }
 
-    public Object getParameter(final String name)
-    {
+    public Object getParameter(final String name) {
         return getExternalContext().getRequestParameterMap().get(name);
     }
 
-    public FacesContext getFacesContext()
-    {
+    public FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
 
-    public ExternalContext getExternalContext()
-    {
+    public ExternalContext getExternalContext() {
         return getFacesContext().getExternalContext();
     }
 
-    public boolean isLoggedIn()
-    {
+    public boolean isLoggedIn() {
         return isProUserLoggedIn();
     }
 
-    public Person getPerson()
-    {
+    public Person getPerson() {
         return getProUser().getUser().getPerson();
     }
 
-    public User getUser()
-    {
+    public User getUser() {
         return getProUser().getUser();
     }
-    
-    public <T> T getRESTClient(Class<T> clazz){
-    	return ProxyFactory.create(clazz, getExternalContext().getRequestContextPath());
+
+    public <T> T getRESTClient(Class<T> clazz) {
+        return ProxyFactory.create(clazz, getExternalContext().getRequestContextPath());
     }
 
-
-    public ProUser getProUser()
-    {
-
+    public ProUser getProUser() {
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
     }
 
-    public boolean isProUserLoggedIn()
-    {
+    public boolean isProUserLoggedIn() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof ProUser;
     }
 
-    public void addInfoMessage(final String summary)
-    {
+    public void addInfoMessage(final String summary) {
         final FacesContext context = FacesContext.getCurrentInstance();
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         context.addMessage(null, message);
     }
 
-    public void addErrorMessage(final String summary)
-    {
+    public void addErrorMessage(final String summary) {
         final FacesContext context = FacesContext.getCurrentInstance();
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR - " + summary, null);
         context.addMessage(null, message);
     }
 
-    public void addWarnMessage(final String summary)
-    {
+    public void addWarnMessage(final String summary) {
         final FacesContext context = FacesContext.getCurrentInstance();
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "WARNING - " + summary, null);
         context.addMessage(null, message);
     }
 
-    public void setAccountDAO(AccountDAO accountDAO)
-    {
+    public void setAccountDAO(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
 
-    public AccountDAO getAccountDAO()
-    {
+    public AccountDAO getAccountDAO() {
         return accountDAO;
     }
 
-    public Locale getLocale()
-    {
-        if (getUser().getLocale() != null)
-            return getUser().getLocale();
+    public Locale getLocale() {
+        if (getPerson().getLocale() != null)
+            return getPerson().getLocale();
         else
             return Locale.ENGLISH;
     }
 
-    public MeasurementType getMeasurementType()
-    {
+    public MeasurementType getMeasurementType() {
         if (getUser().getPerson().getMeasurementType() != null)
             return getUser().getPerson().getMeasurementType();
         else
             return MeasurementType.ENGLISH;
     }
-
-
-
-
 }

@@ -28,7 +28,6 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
 public class DriverTripsBean extends BaseBean {
-
     /**
      * 
      */
@@ -87,22 +86,17 @@ public class DriverTripsBean extends BaseBean {
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-            
             List<Integer> idleTypes = new ArrayList<Integer>();
             idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-            
             List<Integer> tamperEventTypeList = new ArrayList<Integer>();
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
-            
             violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, violationEventTypeList, showExcludedEvents);
             idleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, idleTypes, showExcludedEvents);
             tamperEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, tamperEventTypeList, showExcludedEvents);
-            
             // Lookup Addresses for events
             populateAddresses(violationEvents);
             populateAddresses(idleEvents);
             populateAddresses(tamperEvents);
-            
             allEvents.clear();
             allEvents.addAll(violationEvents);
             allEvents.addAll(idleEvents);
@@ -413,7 +407,7 @@ public class DriverTripsBean extends BaseBean {
     public void setDriverID(Integer driverID) {
         driver = driverDAO.findByID(driverID);
         if (driver == null || getGroupHierarchy().getGroup(driver.getGroupID()) == null)
-            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
         setGroupTreeNodeImpl(new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()), getGroupHierarchy()));
         this.driverID = driverID;
     }
@@ -438,12 +432,10 @@ public class DriverTripsBean extends BaseBean {
         return groupTreeNodeImpl;
     }
 
-    
     public List<Event> getTamperEvents() {
         return tamperEvents;
     }
 
-    
     public void setTamperEvents(List<Event> tamperEvents) {
         this.tamperEvents = tamperEvents;
     }
@@ -455,6 +447,4 @@ public class DriverTripsBean extends BaseBean {
     public boolean isShowTampering() {
         return showTampering;
     }
-    
-    
 }

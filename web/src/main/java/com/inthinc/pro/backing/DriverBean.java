@@ -7,9 +7,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class DriverBean extends BaseBean implements IdentifiableEntityBean
-{
-
+public class DriverBean extends BaseBean implements IdentifiableEntityBean {
     /**
      * 
      */
@@ -18,72 +16,68 @@ public class DriverBean extends BaseBean implements IdentifiableEntityBean
     private Driver driver;
     private DriverDAO driverDAO;
 
-    public Integer getDriverID()
-    {
+    public Integer getDriverID() {
         return driverID;
     }
 
-    public void setDriverID(Integer driverID)
-    {
+    public void setDriverID(Integer driverID) {
         driver = driverDAO.findByID(driverID);
         if (driver == null || getGroupHierarchy().getGroup(driver.getGroupID()) == null)
-            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
         this.driverID = driverID;
     }
 
-    public Driver getDriver()
-    {
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriver(Driver driver)
-    {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 
-    public DriverDAO getDriverDAO()
-    {
+    public DriverDAO getDriverDAO() {
         return driverDAO;
     }
 
-    public void setDriverDAO(DriverDAO driverDAO)
-    {
+    public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }
-    
+
     @Override
     public EntityType getEntityType() {
         return EntityType.ENTITY_DRIVER;
     }
-    
+
     @Override
     public Integer getId() {
         return getDriverID();
     }
-    
+
     @Override
     public String getName() {
-        if(driver != null){
+        if (driver != null) {
             return driver.getPerson().getFullName();
-        }else
+        }
+        else
             return null;
     }
-    
+
     @Override
     public void setId(Integer id) {
         setDriverID(id);
     }
-    
+
     @Override
     public Object getEntity() {
         return driver;
     }
-    
+
     @Override
     public String getLongName() {
-        if(driver != null){
+        if (driver != null) {
             return driver.getPerson().getFullNameWithId();
-        }else{
+        }
+        else {
             return null;
         }
     }

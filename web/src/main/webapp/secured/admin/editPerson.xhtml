@@ -505,7 +505,7 @@
                              <td width="100">
                                  <ui:include src="../../includes/inputLabel.xhtml">
                                     <ui:param name="required" value="TRUE"/>
-                                    <ui:param name="fieldName" value="user.locale"/>
+                                    <ui:param name="fieldName" value="locale"/>
                                     <ui:param name="for" value="user_locale"/>
                                     <ui:param name="editBean" value="#{personBean}"/>
                                     <ui:param name="label" value="#{messages.editPerson_user_locale}"/>
@@ -513,7 +513,7 @@
                              </td>
                              <td>
                                  <rich:message for="user_locale" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                 <h:selectOneMenu id="user_locale" value="#{personBean.item.user.locale}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+                                 <h:selectOneMenu id="user_locale" value="#{personBean.item.locale}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
                                      <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
                                  </h:selectOneMenu>
                              </td>

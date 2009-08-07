@@ -26,96 +26,74 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.Roles;
 
-public class NewAccountBean
-{
-
+public class NewAccountBean {
     // gathered from UI
     private String accountName;
     private String email;
     private String username;
-
     private String errorMsg;
     private String successMsg;
-
     private AccountDAO accountDAO;
     private PersonDAO personDAO;
     private UserDAO userDAO;
     private GroupDAO groupDAO;
     private RoleDAO roleDAO;
-
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
-    public void init()
-    {
+    public void init() {
         Roles roles = new Roles();
         roles.setRoleDAO(roleDAO);
         roles.init();
-
     }
 
-    public void createAction()
-    {
-
+    public void createAction() {
         setErrorMsg(null);
-
         Account account = new Account(null, getAccountName(), null, null, Status.ACTIVE);
-
         // create an account
         Integer acctID = accountDAO.create(account);
-
         // create the account's top level group
         Group topGroup = new Group(0, acctID, "Top", 0, GroupType.FLEET, 0, "Initial top level group", 5, new LatLng(0.0, 0.0));
         Integer groupID = groupDAO.create(acctID, topGroup);
-
         // create the person record for the superuser
         Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, null, email, null, "5555555555", "5555555555", null, null, null, null, null, "0", null,
-                "title", "dept", "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
+                "title", "dept", "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale
+                        .getDefault());
         person.setAddress(new Address(null, "", null, "", null, ""));
         Integer personID = null;
-        try
-        {
+        try {
             personID = personDAO.create(acctID, person);
             person.setPersonID(personID);
         }
-        catch (DuplicateEmailException ex)
-        {
+        catch (DuplicateEmailException ex) {
             groupDAO.deleteByID(groupID);
             accountDAO.deleteByID(acctID);
             setErrorMsg("Duplicate email: [" + email + "]");
-
             return;
         }
-
         // create the superuser
-        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID, Locale.getDefault());
+        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID);
         Integer userID = null;
-        try
-        {
+        try {
             userID = userDAO.create(personID, user);
             user.setUserID(userID);
         }
-        catch (DuplicateUsernameException ex)
-        {
+        catch (DuplicateUsernameException ex) {
             // personDAO.deleteByID(personID);
             groupDAO.deleteByID(groupID);
             accountDAO.deleteByID(acctID);
             setErrorMsg("Duplicate username: [" + username + "]");
             return;
         }
-
-        setSuccessMsg("Successful Account Creation<br/><ul><li>AccountID [" + acctID + "]</li><li>Account Name [" + accountName + "]</li><li>GroupID [" + groupID + "]</li><li>PersonID [" + personID + "]</li><li>UserID ["
-                + userID + "]</li></ul>");
-
+        setSuccessMsg("Successful Account Creation<br/><ul><li>AccountID [" + acctID + "]</li><li>Account Name [" + accountName + "]</li><li>GroupID [" + groupID
+                + "]</li><li>PersonID [" + personID + "]</li><li>UserID [" + userID + "]</li></ul>");
     }
 
-    public void clearErrorAction()
-    {
+    public void clearErrorAction() {
         setErrorMsg(null);
         setSuccessMsg(null);
     }
 
-    public void reInitAction()
-    {
+    public void reInitAction() {
         setErrorMsg(null);
         setSuccessMsg(null);
         setAccountName(null);
@@ -123,115 +101,92 @@ public class NewAccountBean
         setEmail(null);
     }
 
-    private Role getSuperUserRole()
-    {
+    private Role getSuperUserRole() {
         Map<Integer, Role> roles = Roles.getRoleMap();
-        for (Role role : roles.values())
-        {
+        for (Role role : roles.values()) {
             if (role.getName().toUpperCase().startsWith("SUPERUSER"))
                 return role;
         }
         return null;
     }
 
-    public String getAccountName()
-    {
+    public String getAccountName() {
         return accountName;
     }
 
-    public void setAccountName(String accountName)
-    {
+    public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public AccountDAO getAccountDAO()
-    {
+    public AccountDAO getAccountDAO() {
         return accountDAO;
     }
 
-    public void setAccountDAO(AccountDAO accountDAO)
-    {
+    public void setAccountDAO(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
 
-    public PersonDAO getPersonDAO()
-    {
+    public PersonDAO getPersonDAO() {
         return personDAO;
     }
 
-    public void setPersonDAO(PersonDAO personDAO)
-    {
+    public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
 
-    public UserDAO getUserDAO()
-    {
+    public UserDAO getUserDAO() {
         return userDAO;
     }
 
-    public void setUserDAO(UserDAO userDAO)
-    {
+    public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public GroupDAO getGroupDAO()
-    {
+    public GroupDAO getGroupDAO() {
         return groupDAO;
     }
 
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
+    public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
 
-    public RoleDAO getRoleDAO()
-    {
+    public RoleDAO getRoleDAO() {
         return roleDAO;
     }
 
-    public void setRoleDAO(RoleDAO roleDAO)
-    {
+    public void setRoleDAO(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
     }
 
-    public String getErrorMsg()
-    {
+    public String getErrorMsg() {
         return errorMsg;
     }
 
-    public void setErrorMsg(String errorMsg)
-    {
+    public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
 
-    public String getSuccessMsg()
-    {
+    public String getSuccessMsg() {
         return successMsg;
     }
 
-    public void setSuccessMsg(String successMsg)
-    {
+    public void setSuccessMsg(String successMsg) {
         this.successMsg = successMsg;
     }
-
 }

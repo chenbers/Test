@@ -8,20 +8,16 @@ import javax.faces.model.SelectItem;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class MeasurementBean extends BaseBean
-{
+public class MeasurementBean extends BaseBean {
     private List<SelectItem> measurementTypeItems = new ArrayList<SelectItem>();
-    public void init()
-    {
-        for(MeasurementType type : MeasurementType.values())
-        {
-            measurementTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.toString(),getUser().getLocale())));
+
+    public void init() {
+        for (MeasurementType type : MeasurementType.values()) {
+            measurementTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.toString(), getLocale())));
         }
     }
-    public List<SelectItem> getMeasurementTypeItems()
-    {
+
+    public List<SelectItem> getMeasurementTypeItems() {
         return measurementTypeItems;
     }
-    
-    
 }

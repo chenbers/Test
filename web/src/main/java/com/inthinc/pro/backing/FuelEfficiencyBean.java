@@ -13,7 +13,7 @@ public class FuelEfficiencyBean extends BaseBean {
 
     public void init() {
         for (FuelEfficiencyType type : FuelEfficiencyType.values()) {
-            fuelEfficiencyTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.toString(), getUser().getLocale())));
+            fuelEfficiencyTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.toString(), getLocale())));
         }
     }
 

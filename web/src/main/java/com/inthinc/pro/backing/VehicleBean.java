@@ -7,10 +7,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
-
-
-public class VehicleBean extends BaseBean implements IdentifiableEntityBean
-{
+public class VehicleBean extends BaseBean implements IdentifiableEntityBean {
     /**
      * 
      */
@@ -19,75 +16,68 @@ public class VehicleBean extends BaseBean implements IdentifiableEntityBean
     private Vehicle vehicle;
     private VehicleDAO vehicleDAO;
 
-    public Integer getVehicleID()
-    {
+    public Integer getVehicleID() {
         return vehicleID;
     }
 
-    public void setVehicleID(Integer vehicleID)
-    {
+    public void setVehicleID(Integer vehicleID) {
         this.vehicle = vehicleDAO.findByID(vehicleID);
         if (vehicle == null || getGroupHierarchy().getGroup(vehicle.getGroupID()) == null)
-            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getUser().getLocale()));
+            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
         this.vehicleID = vehicleID;
     }
 
-    public Vehicle getVehicle()
-    {
+    public Vehicle getVehicle() {
         return vehicle;
     }
 
-    public void setVehicle(Vehicle vehicle)
-    {
+    public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
-    public VehicleDAO getVehicleDAO()
-    {
+    public VehicleDAO getVehicleDAO() {
         return vehicleDAO;
     }
 
-    public void setVehicleDAO(VehicleDAO vehicleDAO)
-    {
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
     }
-    
+
     @Override
     public EntityType getEntityType() {
         return EntityType.ENTITY_VEHICLE;
     }
-    
+
     @Override
     public Integer getId() {
         return getVehicleID();
     }
-    
+
     @Override
     public String getName() {
-        if(vehicle != null){
+        if (vehicle != null) {
             return vehicle.getName();
-        }else{
+        }
+        else {
             return null;
         }
     }
-    
+
     @Override
     public void setId(Integer id) {
         setVehicleID(id);
     }
-    
+
     @Override
     public Object getEntity() {
         return vehicle;
     }
-    
+
     @Override
     public String getLongName() {
-        if(vehicle != null){
+        if (vehicle != null) {
             return vehicle.getFullName();
         }
         return null;
     }
-
-
 }

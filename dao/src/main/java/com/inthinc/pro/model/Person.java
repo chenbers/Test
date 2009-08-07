@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -54,6 +55,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
     private MeasurementType measurementType;
     @Column(name = "fuelEffType")
     private FuelEfficiencyType fuelEfficiencyType;
+    private Locale locale;
 
     public Person() {
         super();
@@ -62,7 +64,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
     public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
             String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first, String middle,
             String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType,
-            FuelEfficiencyType fuelEfficiencyType) {
+            FuelEfficiencyType fuelEfficiencyType, Locale locale) {
         super();
         this.acctID = acctID;
         this.personID = personID;
@@ -93,6 +95,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.status = status;
         this.measurementType = measurementType;
         this.fuelEfficiencyType = fuelEfficiencyType;
+        this.locale = locale;
     }
 
     public Integer getPersonID() {
@@ -393,6 +396,14 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     @Override
     public int compareTo(Person o) {
         // for now, use the name fields to determine the natural order of person objects
@@ -408,8 +419,11 @@ public class Person extends BaseEntity implements Comparable<Person> {
     public String toString() {
         return "Person [acctID=" + acctID + ", address=" + address + ", addressID=" + addressID + ", costPerHour=" + costPerHour + ", crit=" + crit + ", dept=" + dept + ", dob="
                 + dob + ", driver=" + driver + ", empid=" + empid + ", first=" + first + ", fuelEfficiencyType=" + fuelEfficiencyType + ", gender=" + gender + ", height=" + height
-                + ", info=" + info + ", last=" + last + ", measurementType=" + measurementType + ", middle=" + middle + ", personID=" + personID + ", priEmail=" + priEmail
-                + ", priPhone=" + priPhone + ", priText=" + priText + ", reportsTo=" + reportsTo + ", secEmail=" + secEmail + ", secPhone=" + secPhone + ", secText=" + secText
-                + ", status=" + status + ", suffix=" + suffix + ", timeZone=" + timeZone + ", title=" + title + ", user=" + user + ", warn=" + warn + ", weight=" + weight + "]";
+                + ", info=" + info + ", last=" + last + ", locale=" + locale + ", measurementType=" + measurementType + ", middle=" + middle + ", personID=" + personID
+                + ", priEmail=" + priEmail + ", priPhone=" + priPhone + ", priText=" + priText + ", reportsTo=" + reportsTo + ", secEmail=" + secEmail + ", secPhone=" + secPhone
+                + ", secText=" + secText + ", status=" + status + ", suffix=" + suffix + ", timeZone=" + timeZone + ", title=" + title + ", user=" + user + ", warn=" + warn
+                + ", weight=" + weight + "]";
     }
+
+
 }
