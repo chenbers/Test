@@ -55,7 +55,7 @@
 	
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="emailReportJob"/>
-	  <property name="cronExpression" value="30 * * * * ?"/>
+	  <property name="cronExpression" value="0 1/15 * * * ?"/>
 	</bean>
 
 	<bean id="emailMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
