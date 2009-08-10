@@ -162,7 +162,7 @@
                                     <h:outputText value="mph" converter="MeasurementTextConverter" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value="#{redFlagAlertsBean.item.speedLevels[index]}" />
+                                    <h:outputText value="#{messages[redFlagAlertsBean.item.speedLevels[index]]}" />
                                   </td>
                                 </tr>
                                 <c:set var="row" value="#{row + 1}" />
@@ -215,8 +215,8 @@
                                     <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
-                                    <h:outputText value="#{redFlagAlertsBean.item[sensitivityLevel]}" />
+                                    <c:set var="notificationLevel" value="#{sensitivityItem}Level" />
+                                    <h:outputText value="#{messages[redFlagAlertsBean.item[notificationLevel]]}" />
                                   </td>
                                 </tr>
                                 <c:set var="row" value="#{row + 1}" />
