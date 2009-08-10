@@ -26,7 +26,6 @@ import com.inthinc.pro.reports.util.MessageUtil;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JRPrintPage;
-import net.sf.jasperreports.engine.JRRuntimeException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -46,6 +45,7 @@ public class JasperReportBuilder
      */
     public JasperPrint buildReport(ReportCriteria reportCriteria)
     {
+        jasperPrint = null;
         processReportCriteria(reportCriteria,null);
         return jasperPrint;
     }
@@ -57,6 +57,7 @@ public class JasperReportBuilder
      */
     public JasperPrint buildReport(List<ReportCriteria> reportCriteriaList,FormatType formatType)
     {
+        jasperPrint = null;
         for (ReportCriteria reportCriteria : reportCriteriaList)
         {
             processReportCriteria(reportCriteria,formatType);
