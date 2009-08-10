@@ -307,8 +307,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         for (MpgEntity entity : mpgEntities)
         {
             lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(),getMeasurementType(),getFuelEfficiencyType()).longValue();
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(), getMeasurementType(),getFuelEfficiencyType()).longValue();
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(),getMeasurementType(),getFuelEfficiencyType()).longValue();
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getMeasurementType(),getFuelEfficiencyType()).longValue();
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(),getMeasurementType(),getFuelEfficiencyType()).longValue();
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
         }
