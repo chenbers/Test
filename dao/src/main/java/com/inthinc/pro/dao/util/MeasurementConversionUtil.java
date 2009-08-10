@@ -102,7 +102,7 @@ public class MeasurementConversionUtil
         if (convertToMeasurmentType == MeasurementType.METRIC)
             return fromMPHtoKPH(speed);
         else
-            return fromKPHtoMPH(speed);
+            return speed;
     }
     
     //Convert Pounds

@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessage;
@@ -36,6 +37,13 @@ import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
 
 public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Integer> implements AlertMessageDAO {
+    
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final Logger logger = Logger.getLogger(AlertMessageHessianDAO.class);
     private Integer MAX_SILO_ID = 1;
     private EventDAO eventDAO;
@@ -165,6 +173,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         List<String> parameterList = new ArrayList<String>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
         simpleDateFormat.setTimeZone(driver.getPerson().getTimeZone());
+        
         // Construct the message parameter list
         parameterList.add(simpleDateFormat.format(event.getTime()));
         parameterList.add(driver.getPerson().getFullName());
@@ -176,8 +185,10 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
                 parameterList.add(zone.getName());
                 break;
             case ALERT_TYPE_SPEEDING:
-                parameterList.add(String.valueOf(((SpeedingEvent) event).getTopSpeed()));
-                parameterList.add(String.valueOf(((SpeedingEvent) event).getSpeedLimit()));
+                Number topSpeed = MeasurementConversionUtil.convertSpeed(((SpeedingEvent) event).getTopSpeed(), person.getMeasurementType());
+                Number speedLimit = MeasurementConversionUtil.convertSpeed(((SpeedingEvent) event).getSpeedLimit(), person.getMeasurementType());
+                parameterList.add(String.valueOf(topSpeed));
+                parameterList.add(String.valueOf(speedLimit));
                 parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
             case ALERT_TYPE_TAMPERING:
             case ALERT_TYPE_LOW_BATTERY:
