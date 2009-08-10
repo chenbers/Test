@@ -1,0 +1,40 @@
+<ui:composition template="/layout/errorLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<ui:param name="title" value="#{messages.unsubscribe_title}" />
+
+	<ui:define name="content">
+		<div style="margin: 50px auto; width: 400px;">
+			<div class="panel_nw">
+				<div class="panel_title">#{messages.unsubscribe_message_header}</div>
+			</div>
+			<div class="panel_w">
+				<div class="panel_content">
+					<p>
+						<h:outputFormat value="#{messages.unsubscribe_message_body}">
+							<f:param value="#{unsubscribeBean.messageType}"/>
+							<f:param value="#{unsubscribeBean.messageName}"/>
+						</h:outputFormat>
+					</p>
+					
+					<p>
+                     <pretty:link mappingId="login">#{messages.unsubscribe_login}</pretty:link>
+                 </p>
+				</div>
+			</div>
+			<div class="panel_sw">
+				<div class="panel_statusbar">
+				</div>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>
