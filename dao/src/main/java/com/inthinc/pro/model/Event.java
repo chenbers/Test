@@ -347,4 +347,13 @@ public class Event implements Comparable<Event>, Serializable
         this.created = created;
     }
 
+    @Override
+    public String toString() {
+        return "Event [driverID=" + driverID + ", latLng=" + latLng + ", latitude=" + latitude + ", noteID=" + noteID + ", type=" + type + ", vehicleID=" + vehicleID + "]";
+    }
+    
+    
+    
+    
+
 }
