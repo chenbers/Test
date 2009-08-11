@@ -1,5 +1,7 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.List;
+
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.PersonDAO;
@@ -36,6 +38,12 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     @Override
     public Integer update(CrashReport entity) {
         return super.update(entity);
+    }
+    
+    @Override
+    public List<CrashReport> getCrashReportsByGroupID(Integer groupID) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public void setPersonDAO(PersonDAO personDAO) {

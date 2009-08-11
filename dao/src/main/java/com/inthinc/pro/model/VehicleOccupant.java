@@ -23,6 +23,9 @@ public class VehicleOccupant extends BaseEntity {
     private String license;
     private InjuryType injuryType;
     private Integer personID;
+    private Integer crashReportID;
+    @Column(updateable=false)
+    private CrashReport crashReport;
 
     public Integer getOccupantID() {
         return occupantID;
@@ -88,11 +91,6 @@ public class VehicleOccupant extends BaseEntity {
         this.personID = personID;
     }
 
-    @Override
-    public String toString() {
-        return "VehicleOccupant [address=" + address + ", injuryType=" + injuryType + ", isDriver=" + isDriver + ", license=" + license + ", name=" + name + ", occupantID="
-                + occupantID + ", personID=" + personID + ", seatBelt=" + seatBelt + "]";
-    }
 
     public void setAddressID(Integer addressID) {
         this.addressID = addressID;
@@ -100,5 +98,60 @@ public class VehicleOccupant extends BaseEntity {
 
     public Integer getAddressID() {
         return addressID;
+    }
+
+    public void setCrashReportID(Integer crashReportID) {
+        this.crashReportID = crashReportID;
+    }
+
+    public Integer getCrashReportID() {
+        return crashReportID;
+    }
+
+    public void setCrashReport(CrashReport crashReport) {
+        this.crashReport = crashReport;
+    }
+
+    public CrashReport getCrashReport() {
+        return crashReport;
+    }
+    
+    
+    
+    @Override
+    public String toString() {
+        return "VehicleOccupant [address=" + address + ", injuryType=" + injuryType + ", isDriver=" + isDriver + ", license=" + license + ", name=" + name + ", occupantID="
+                + occupantID + ", personID=" + personID + ", seatBelt=" + seatBelt + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((occupantID == null) ? 0 : occupantID.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof VehicleOccupant)) {
+            return false;
+        }
+        VehicleOccupant other = (VehicleOccupant) obj;
+        if (occupantID == null) {
+            if (other.occupantID != null) {
+                return false;
+            }
+        }
+        else if (!occupantID.equals(other.occupantID)) {
+            return false;
+        }
+        return true;
     }
 }
