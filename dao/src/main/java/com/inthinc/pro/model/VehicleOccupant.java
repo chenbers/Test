@@ -20,7 +20,7 @@ public class VehicleOccupant extends BaseEntity {
     private Address address;
     private String license;
     private InjuryType injuryType;
-    private Integer personID;
+    private Integer personID; //Not required
     private Integer crashReportID;
     @Column(updateable = false)
     private CrashReport crashReport;

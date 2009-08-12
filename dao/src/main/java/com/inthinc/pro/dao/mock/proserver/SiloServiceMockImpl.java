@@ -26,6 +26,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
@@ -1346,8 +1347,12 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     
     @Override
     public Map<String, Object> createCrashReport(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException {
-        // TODO Auto-generated method stub
-        return null;
+        AbstractMapper mapper = new SimpleMapper();
+        CrashReport crashReport = mapper.convertToModelObject(crashReportMap, CrashReport.class);
+        crashReport.setCrashReportID((int) (Math.random() * Integer.MAX_VALUE));
+        MockData.getInstance().storeObject(crashReport);
+        logger.debug("CrashReport Added: " + crashReport.getCrashReportID());
+        return createReturnValue("crashReportID", crashReport.getCrashReportID());
     }
     
     @Override
@@ -1358,14 +1363,15 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     
     @Override
     public Map<String, Object> getCrashReport(Integer crashReportID) throws ProDAOException {
-        // TODO Auto-generated method stub
-        return null;
+        return MockData.getInstance().lookup(CrashReport.class, "crashReportID", crashReportID);
     }
     
     @Override
-    public List<Map<String, Object>> getCrashReportsByAcctID(Integer acctID) throws ProDAOException {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Map<String, Object>> getCrashReportsByGroupID(Integer groupID) throws ProDAOException {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("groupID", groupID);
+        List<Map<String, Object>> returnList =  MockData.getInstance().lookupList(CrashReport.class,searchCriteria);
+        return returnList;
     }
     
     @Override
