@@ -527,6 +527,8 @@ public class MockData {
     }
     
     private void addCrashReports(Integer acctID, Person person, Group group, Vehicle vehicle) {
+        if(acctID == null || person == null)
+            return;
         Integer idOffset = acctID * MAX_CRASH_REPORTS + person.getPersonID() * MAX_CRASH_REPORTS;
         for (int i = 0; i < MAX_CRASH_REPORTS; i++) {
             String name = "Report Schedule " + Integer.valueOf(i);
