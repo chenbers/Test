@@ -1,12 +1,20 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.CrashReportDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.CrashReport;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.ReportSchedule;
+import com.inthinc.pro.model.Vehicle;
 
 
 public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Integer> implements CrashReportDAO {
@@ -19,6 +27,7 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     private PersonDAO personDAO;
     private VehicleDAO vehicleDAO;
     private AddressDAO addressDAO;
+    private GroupDAO groupDAO;
 
     @Override
     public Integer create(Integer id, CrashReport entity) {
@@ -42,8 +51,29 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     
     @Override
     public List<CrashReport> getCrashReportsByGroupID(Integer groupID) {
-        // TODO Auto-generated method stub
-        return null;
+        try
+        {
+            List<Map<String, Object>> crashReportList = getSiloService().getCrashReportsByGroupID(groupID);
+            List<CrashReport> crashReports = getMapper().convertToModelObject(crashReportList, CrashReport.class);
+            Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
+            Map<Integer, Group>   groupMap = new HashMap<Integer, Group>();
+            
+            for(CrashReport crashReport:crashReports){
+                
+                if(!vehicleMap.containsKey(crashReport.getVehicleID()))
+                    vehicleMap.put(crashReport.getVehicleID(), vehicleDAO.findByID(crashReport.getVehicleID()));
+                if(!groupMap.containsKey(crashReport.getGroupID()))
+                    groupMap.put(crashReport.getGroupID(), groupDAO.findByID(crashReport.getGroupID()));
+                
+                crashReport.setVehicle(vehicleMap.get(crashReport.getVehicleID()));
+                crashReport.setGroup(groupMap.get(crashReport.getGroupID()));
+            }
+            
+            return crashReports;
+        }catch(EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
     }
 
     public void setPersonDAO(PersonDAO personDAO) {
@@ -69,4 +99,16 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     public AddressDAO getAddressDAO() {
         return addressDAO;
     }
+
+    
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+    
+    
 }
