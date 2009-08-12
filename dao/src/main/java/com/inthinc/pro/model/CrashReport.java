@@ -34,6 +34,18 @@ public class CrashReport extends BaseEntity {
     @Column(updateable = false)
     private List<Event> events; //Detailed Crash Data
 
+    public CrashReport(Integer accountID, Status status, DamageType damageType, Vehicle vehicle, Group group, String weather) {
+        super();
+        this.accountID = accountID;
+        this.status = status;
+        this.damageType = damageType;
+        this.vehicleID = vehicle != null ? vehicle.getVehicleID():null;
+        this.vehicle = vehicle;
+        this.groupID = group != null? group.getGroupID():null;
+        this.group = group;
+        this.weather = weather;
+    }
+
     public Integer getCrashReportID() {
         return crashReportID;
     }
