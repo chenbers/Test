@@ -32,7 +32,11 @@ public class CrashReport extends BaseEntity {
     @Column(updateable = false)
     private List<VehicleOccupant> vehicleOccupants;
     @Column(updateable = false)
-    private List<Event> events; //Detailed Crash Data
+    private List<CrashDataPoint> crashDataPoints; //Detailed Crash Data
+    
+    public CrashReport(){
+        
+    }
 
     public CrashReport(Integer accountID, Status status, DamageType damageType, Vehicle vehicle, Group group, String weather) {
         super();
@@ -165,20 +169,22 @@ public class CrashReport extends BaseEntity {
     
 
     
-    public List<Event> getEvents() {
-        return events;
+    public List<CrashDataPoint> getCrashDataPoints() {
+        return crashDataPoints;
     }
 
     
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public void setCrashDataPoints(List<CrashDataPoint> crashDataPoints) {
+        this.crashDataPoints = crashDataPoints;
     }
+    
+    
 
     @Override
     public String toString() {
-        return "CrashReport [accountID=" + accountID + ", crashReportID=" + crashReportID + ", damageType=" + damageType + ", date=" + date + ", description=" + description
-                + ", events=" + events + ", group=" + group + ", groupID=" + groupID + ", latLng=" + latLng + ", location=" + location + ", status=" + status + ", vehicle="
-                + vehicle + ", vehicleID=" + vehicleID + ", vehicleOccupants=" + vehicleOccupants + ", weather=" + weather + "]";
+        return "CrashReport [accountID=" + accountID + ", crashDataPoints=" + crashDataPoints + ", crashReportID=" + crashReportID + ", damageType=" + damageType + ", date="
+                + date + ", description=" + description + ", group=" + group + ", groupID=" + groupID + ", latLng=" + latLng + ", location=" + location + ", status=" + status
+                + ", vehicle=" + vehicle + ", vehicleID=" + vehicleID + ", vehicleOccupants=" + vehicleOccupants + ", weather=" + weather + "]";
     }
 
     @Override

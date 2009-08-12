@@ -24,6 +24,10 @@ public class VehicleOccupant extends BaseEntity {
     private Integer crashReportID;
     @Column(updateable = false)
     private CrashReport crashReport;
+    
+    public VehicleOccupant(){
+        
+    }
 
     public VehicleOccupant(Integer occupantID, Boolean seatBelt, String name, Address address, String license, InjuryType injuryType,
             Integer personID, CrashReport crashReport,OccupantType occupantType) {
