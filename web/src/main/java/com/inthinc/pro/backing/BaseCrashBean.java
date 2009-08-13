@@ -58,6 +58,8 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
         AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("nbr_occupants");
         AVAILABLE_COLUMNS.add("status");
+        AVAILABLE_COLUMNS.add("detail");
+        AVAILABLE_COLUMNS.add("edit");
         AVAILABLE_COLUMNS.add("clear");
 
     }    
@@ -412,7 +414,9 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
             column = "driverName";
         else if ("vehicle".equals(column))
             column = "vehicleName";
-        else if ("clear".equals(column))
+        else if ("clear".equals(column) ||
+                 "detail".equals(column) ||
+                 "edit".equals(column) )
             return "";
         return TablePref.fieldValue(item, column);
     }

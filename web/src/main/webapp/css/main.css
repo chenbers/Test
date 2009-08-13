@@ -186,6 +186,11 @@ img {
     background: transparent url(../images/ico_critical.png) no-repeat center left;
 }
 
+.panel_title span.crashhistory_title {
+    padding: 0 0 0 20px;
+    background: transparent url(../images/ico_critical.png) no-repeat center left;
+}
+
 .panel_title span.gas {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_gas.png) no-repeat center left
@@ -1694,6 +1699,15 @@ a.ls_tab_add_trailer {
 }
 
 a.ls_tab_edit_columns {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_edit_columns.png) no-repeat
+		center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+}
+
+a.ls_tab_add_crash {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_edit_columns.png) no-repeat
 		center left;

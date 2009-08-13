@@ -41,8 +41,12 @@ public class TablePref<T>
                 if (cnt < visibleList.size())
                     visible = visibleList.get(cnt++);
                 TableColumn tableColumn = new TableColumn(visible, MessageUtil.getMessageString(tablePrefOptions.getColumnLabelPrefix() + column,LocaleBean.getCurrentLocale()));
-                if (column.equals("clear"))
+                if (column.equals("clear") ||
+                    column.equals("detail") ||
+                    column.equals("edit") )
+                {
                     tableColumn.setCanHide(false);
+                }
 
                 tableColumns.put(column, tableColumn);
             }

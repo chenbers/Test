@@ -17,7 +17,7 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div id="panel_title" class="panel_title"> <span class="crashHistory">#{messages.notes_crashhistory_title}</span>
+		          <div id="panel_title" class="panel_title"> <span class="crashhistory_title">#{messages.notes_crashhistory_title}</span>
 		          	<span class="panel_links">
                         #{messages.notes_crashhistory_description}
 		          	</span>
@@ -71,7 +71,12 @@
 							</f:facet>
 						</a4j:status>
 					  </li>
-					    <li class="r grid_icon">
+					  <li class="l text">
+						<a4j:commandLink styleClass="ls_tab_add_crash" title="Add a New Crash">
+							Add a New Crash
+						</a4j:commandLink>
+					  </li>  					  
+					  <li class="r grid_icon">
 						<h:panelGroup id="crashHistoryReportToolImageId">
 							<h:graphicImage value="/images/ico_tools.png"/>
 						</h:panelGroup>
