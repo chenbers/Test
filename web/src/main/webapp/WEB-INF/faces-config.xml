@@ -227,6 +227,13 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>go_crashHistory</from-outcome>
+            <to-view-id>/secured/notifications/crashHistory.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_liveFleet</from-outcome>

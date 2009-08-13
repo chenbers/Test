@@ -204,6 +204,10 @@
         <query-param name="eventID">#{diagnosticsBean.eventFilterID}</query-param>
         <view-id>/secured/notifications/diagnostics.faces</view-id>
     </url-mapping>
+    <url-mapping id="crashHistory">
+        <pattern>/app/notifications/crashHistory</pattern>
+        <view-id>/secured/notifications/crashHistory.faces</view-id>         
+    </url-mapping>    
     <url-mapping id="zoneAlerts">
         <pattern>/app/notifications/zoneAlerts</pattern>
         <view-id>/secured/notifications/zoneAlerts.faces</view-id>
