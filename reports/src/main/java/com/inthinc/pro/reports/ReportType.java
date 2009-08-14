@@ -28,7 +28,7 @@ public enum ReportType
     EMERGENCY_REPORT("Emergency Report", "EventReport.jrxml","EventReportRaw.jrxml"),
     ZONE_ALERT_REPORT("Zone Alert Report", "EventReport.jrxml","EventReportRaw.jrxml"),
     RED_FLAG_REPORT("Red Flag Report", "RedFlagReport.jrxml","RedFlagReportRaw.jrxml"),
-    CRASH_HISTORY_REPORT("Crash History Report", "CrashHistory.jrxml", "CrashHistoryReportRaw.jrxml");
+    CRASH_HISTORY_REPORT("Crash History Report", "CrashHistoryReport.jrxml", "CrashHistoryReportRaw.jrxml");
   
     private String prettyTemplate;
     private String rawTemplate;
