@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Driver;
@@ -671,4 +672,18 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
+	@Override
+	public CrashSummary getCrashSummaryData(Integer groupID) {
+		// TODO Auto-generated method stub
+        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getCode());
+        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+        CrashSummary crashSummary = new CrashSummary();
+        crashSummary.calculateAndSetCrashesPerMillionMiles(dqMap.getCrashEvents(), dqMap.getCrashOdometer());
+        crashSummary.calculateAndSetDaysSinceLastCrash(dqMap.getLastCrashDate());
+        crashSummary.calculateAndSetMilesSinceLastCrash(dqMap.getCrashOdometer());
+        
+        return crashSummary;
+	}
+
+    
 }

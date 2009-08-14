@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
@@ -229,5 +230,6 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<IdlingReportItem> getIdlingReportData(Integer groupID, Date start, Date end);    
 
+    CrashSummary getCrashSummaryData(Integer groupID);
 
 }

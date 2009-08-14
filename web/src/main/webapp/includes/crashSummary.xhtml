@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+        
+     <a4j:outputPanel id="crashSummaryOutputPanel">    
+        <div class="panel_nw">    
+            <div class="panel_title" style="z-index: #{zorder}">
+                <span class="crash">
+                #{messages.crash_summary_title}
+                </span>   
+            </div>
+        </div>
+        <div class="panel_w">
+            <div class="panel_content">
+               <div style="height:#{xyheight};width:#{xywidth}">
+                    <div id="crashSummaryDiv" align="center"></div>
+                     <rich:panel>
+                       <table><tbody><tr>
+                        <td class="crash-summary-title"> 
+                           <h:outputFormat value=" #{messages.crash_summary_overDistance} " >
+                                <a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
+                            </h:outputFormat>
+                        </td>
+                        <td class="crash-summary">
+                            <h:outputText value="#{crashSummaryBean.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td class="crash-summary-title">
+                        #{messages.crash_summary_daysSinceLastCrash}
+                        </td>
+                        <td class="crash-summary">
+ 						#{crashSummaryBean.daysSinceLastCrash}
+                        </td>
+                        </tr>
+                        <tr>
+                        <td class="crash-summary-title">
+                        #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} 
+                        </td>
+                        <td class="crash-summary">
+                             <h:outputText value="#{crashSummaryBean.milesSinceLastCrash}" converter="MilesToKilometersConverter"/>
+                             <h:outputText value=" "/>
+                             <h:outputText value="miles" converter="MeasurementTextConverter"/>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                   </rich:panel>
+            </div>
+        </div>
+        </div>
+        
+        <div class="panel_sw">
+            <div class="panel_statusbar"/>
+        </div>
+    </a4j:outputPanel>
+
+
+</ui:composition>

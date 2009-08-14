@@ -292,6 +292,9 @@ public class MockData {
         driveQMap.setSpeeding5(randomInt(0, 50));
         driveQMap.setSpeeding((driveQMap.getSpeeding1() + driveQMap.getSpeeding2() + driveQMap.getSpeeding3() + driveQMap.getSpeeding4() + driveQMap.getSpeeding5()) / 5);
         driveQMap.setOverall((driveQMap.getDrivingStyle() + driveQMap.getSeatbelt() + driveQMap.getSpeeding()) / 3);
+        driveQMap.setCrashEvents(randomInt(0,50));
+        driveQMap.setCrashOdometer(odometer*10);
+        driveQMap.setLastCrashDate(new Date());
         return driveQMap;
     }
 

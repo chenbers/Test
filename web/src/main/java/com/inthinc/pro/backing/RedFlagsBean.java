@@ -301,15 +301,21 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     }
 
     public void excludeEventAction() {
-        if (eventDAO.forgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1) {
-            initTableData();
-        }
+    	
+    	if(clearItem.getRedFlag().getEvent().getForgiven().intValue()==0){
+	        if (eventDAO.forgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1) {
+	            initTableData();
+	        }
+    	}
     }
 
     public void includeEventAction() {
-        if (eventDAO.unforgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1) {
-            initTableData();
-        }
+    	
+    	if(clearItem.getRedFlag().getEvent().getForgiven().intValue()==1){
+    		if (eventDAO.unforgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1) {
+	            initTableData();
+	        }
+    	}
     }
 
     public EventCategory getCategoryFilter() {

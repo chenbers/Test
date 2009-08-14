@@ -7,7 +7,11 @@
 	            xmlns:f="http://java.sun.com/jsf/core"
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
-    
+	            
+     <ui:define name="scripts">
+        <script type="text/javascript">
+ 		</script>
+		</ui:define>
     <h:form id="redFlagsTableForm">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
 <!--    <rich:datascroller id="topScroller" for="items" -->
@@ -118,13 +122,14 @@
 <!--                    <h:outputText value="#{messages.notes_redflags_clear}" />-->
 <!--                    <f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" />-->
 <!--                </a4j:commandLink>-->
- 								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 0}" title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem" >
+ 								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 0}" title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel');" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.notes_redflags_clear}" />
 									<f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
- 								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{redFlagsBean.includeEventAction}" reRender="#{clearRerender}" >
+ 								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{redFlagsBean.includeEventAction}" 
+ 												reRender="#{clearRerender}" eventsQueue="queue" ignoreDupResponses="true" id="excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
-									<f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" />
+									<f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" id="include"/>
 								</a4j:commandLink>
 			</rich:column>
         </rich:dataTable>
@@ -162,8 +167,9 @@
             <div class="popupactions">
             <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="no"><h:outputText
                 value="#{messages.button_no}" /></span></button>
-            <a4j:commandButton id="yesButton" action="#{redFlagsBean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')"
-                onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left">
+            <a4j:commandButton id="yesButton" action="#{redFlagsBean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel'); initializeTable()"
+                onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
+                eventsQueue="queue" ignoreDupResponses="true">
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
             </a4j:commandButton></div>
 

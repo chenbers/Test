@@ -17,6 +17,7 @@ import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.MeasurementType;
@@ -30,7 +31,7 @@ import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
-public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements DurationChangeListener
+public class TrendBean extends CustomSortBean<TrendBeanItem> implements DurationChangeListener
 {
 
     private static final Logger logger = Logger.getLogger(TrendBean.class);
@@ -40,10 +41,12 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
 
     private String lineDef = new String();
 
-    private List<ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
+    private List<TrendBeanItem> trendBeanItems = new ArrayList<TrendBeanItem>();
+//    private List<ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
     
     private Integer numRowsPerPg = 5;
-    private Integer maxCount = 0;
+
+	private Integer maxCount = 0;
     private Integer start = 1;
     private Integer end = numRowsPerPg;
     
@@ -52,7 +55,8 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     private Boolean animateChartData = Boolean.TRUE;
-
+    private String crashesTitle;
+    
     public TrendBean()
     {
         super();  
@@ -82,7 +86,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
     
     public void init()
     {
-        createScoreableEntities();
+        createTrendBeanItems();
         navigation.getDurationBean().addDurationChangeListener(this);
     }
 
@@ -98,41 +102,53 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
     }
     
     @Override
-    public Comparator<ScoreableEntityPkg> createComparator()
+    public Comparator<TrendBeanItem> createComparator()
     {
-        Comparator<ScoreableEntityPkg> comparator = null;
+        Comparator<TrendBeanItem> comparator = null;
         if(getSortColumn().equals("se.identifier"))
         {
-            comparator = new Comparator<ScoreableEntityPkg>()
+            comparator = new Comparator<TrendBeanItem>()
             {
             
                 @Override
-                public int compare(ScoreableEntityPkg se1, ScoreableEntityPkg se2)
+                public int compare(TrendBeanItem se1, TrendBeanItem se2)
                 {
                     return se1.getSe().getIdentifier().compareTo(se2.getSe().getIdentifier());
                 }
             };
         }
-        else
+        else if(getSortColumn().equals("se.score"))
         {
-            comparator = new Comparator<ScoreableEntityPkg>()
+            comparator = new Comparator<TrendBeanItem>()
             {
             
                 @Override
-                public int compare(ScoreableEntityPkg se1, ScoreableEntityPkg se2)
+                public int compare(TrendBeanItem se1, TrendBeanItem se2)
                 {
                     return se1.getSe().getScore().compareTo(se2.getSe().getScore());
                 }
             };
         }
-        
+        else if(getSortColumn().equals("se.crashes"))
+        {
+            comparator = new Comparator<TrendBeanItem>()
+            {
+            
+                @Override
+                public int compare(TrendBeanItem se1, TrendBeanItem se2)
+                {
+                    return se1.getCrashesPerMillionMiles().compareTo(se2.getCrashesPerMillionMiles());
+                }
+            };
+        }
+         
         return comparator;
     }
     
     @Override
-    public List<ScoreableEntityPkg> getItems()
+    public List<TrendBeanItem> getItems()
     {
-        return getScoreableEntities();
+        return getTrendBeanItems();
     }
 
     private String createLineDef()
@@ -145,7 +161,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
 
         // Fetch to get parents children, qualifier is groupId (parent),
         // date from, date to
-        List<ScoreableEntityPkg> s = getScoreableEntities();
+        List<TrendBeanItem> s = getTrendBeanItems();
         
         // Adjust the count values
         this.maxCount = s.size(); 
@@ -165,7 +181,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
             if (s.size() < i)
                 continue;
             
-            ScoreableEntityPkg se = s.get(i-1);
+            ScoreableEntityPkg se = s.get(i-1).getScoreableEntityPkg();
             // Fetch to get children's observations
             List<ScoreableEntity> ss = groupTrendMap.get(se.getSe().getEntityID());
 
@@ -212,22 +228,28 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
         return sb.toString();
     }
 
-    public List<ScoreableEntityPkg> getScoreableEntities()
-    {   
-        return scoreableEntities;
-    }
-    
-    public void setScoreableEntities(List<ScoreableEntityPkg> scoreableEntities)
-    {
-        this.scoreableEntities = scoreableEntities;
-    }    
+    public List<TrendBeanItem> getTrendBeanItems() {
+		return trendBeanItems;
+	}
 
-    public List<ScoreableEntityPkg> createScoreableEntities()
-    {
-        if (scoreableEntities != null && !scoreableEntities.isEmpty()) {
-            logger.debug("scoreableentities size " + scoreableEntities.size());
+	public void setTrendBeanItems(List<TrendBeanItem> trendBeanItems) {
+		this.trendBeanItems = trendBeanItems;
+	}
+//    public List<ScoreableEntityPkg> getScoreableEntities()
+//    {   
+//        return scoreableEntities;
+//    }
+//    
+//    public void setScoreableEntities(List<ScoreableEntityPkg> scoreableEntities)
+//    {
+//        this.scoreableEntities = scoreableEntities;
+//    }    
+
+	private List<TrendBeanItem> createTrendBeanItems(){
+        if (trendBeanItems != null && !trendBeanItems.isEmpty()) {
+            logger.debug("scoreableentities size " + trendBeanItems.size());
         }        
-        this.scoreableEntities = new ArrayList<ScoreableEntityPkg>();
+        this.trendBeanItems = new ArrayList<TrendBeanItem>();
         List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
         s = getScores();
         
@@ -250,6 +272,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
         ColorSelectorStandard cs = new ColorSelectorStandard();
         for (ScoreableEntity score : s)
         {
+        	TrendBeanItem trendBeanItem = new TrendBeanItem();
             ScoreableEntityPkg se = new ScoreableEntityPkg();
             se.setSe(score);
             se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
@@ -263,13 +286,67 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
                     url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
                 se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
             }
-            scoreableEntities.add(se);
+ //           CrashSummary crashSummary = scoreDAO.getCrashSummaryData(score.getEntityID());
+            CrashSummary crashSummary = new CrashSummary();
+            crashSummary.setCrashesPerMillionMiles(new Double(Math.random()*10).intValue());
+            trendBeanItem.setCrashSummary(crashSummary);
+            trendBeanItem.setScoreableEntityPkg(se);
+            trendBeanItems.add(trendBeanItem);
             score = null;
         }
         
-        this.maxCount = this.scoreableEntities.size();        
-        return this.scoreableEntities;
-    }
+        this.maxCount = this.trendBeanItems.size();        
+        return this.trendBeanItems;
+		
+	}
+//    public List<ScoreableEntityPkg> createScoreableEntities()
+//    {
+//        if (scoreableEntities != null && !scoreableEntities.isEmpty()) {
+//            logger.debug("scoreableentities size " + scoreableEntities.size());
+//        }        
+//        this.scoreableEntities = new ArrayList<ScoreableEntityPkg>();
+//        List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
+//        s = getScores();
+//        
+//       
+//        
+//        Collections.sort(s, new Comparator<ScoreableEntity>() {
+//            public int compare(ScoreableEntity se1, ScoreableEntity se2) {
+//                if(se1 != null && se2 != null)
+//                    return se1.getIdentifier().compareToIgnoreCase(se2.getIdentifier());
+//                else
+//                    return -1;
+//
+//               
+//            }            
+//        });  
+//
+//        // Populate the table
+//        String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+//        int cnt = 0;                
+//        ColorSelectorStandard cs = new ColorSelectorStandard();
+//        for (ScoreableEntity score : s)
+//        {
+//            ScoreableEntityPkg se = new ScoreableEntityPkg();
+//            se.setSe(score);
+//            se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
+//            se.setColorKey(cs.getEntityColorKey(cnt++));
+//            if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
+//            {
+//                // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null 
+//                // this should an error -- someone trying to access a group they shouldn't
+//                String url = "";
+//                if (getGroupHierarchy().getGroupLevel(score.getEntityID()) != null)
+//                    url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
+//                se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
+//            }
+//            scoreableEntities.add(se);
+//            score = null;
+//        }
+//        
+//        this.maxCount = this.scoreableEntities.size();        
+//        return this.scoreableEntities;
+//    }
     
     
     
@@ -297,8 +374,8 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
         this.end = (se.getPage())*this.numRowsPerPg;
         
         //Partial page
-        if ( this.end > this.scoreableEntities.size() ) {
-            this.end = this.scoreableEntities.size();
+        if ( this.end > this.trendBeanItems.size() ) {
+            this.end = this.trendBeanItems.size();
         }
 
         navigation.setStart(this.start);
@@ -472,7 +549,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
     @Override
     public void onDurationChange(Duration d)
     {
-        createScoreableEntities();
+        createTrendBeanItems();
     }
 
 }

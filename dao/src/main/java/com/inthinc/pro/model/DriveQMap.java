@@ -1,6 +1,8 @@
 package com.inthinc.pro.model;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,11 @@ public class DriveQMap extends BaseEntity
     private Integer idleLo;
     private Integer idleHi;
     private Integer driveTime;
-    private Date startingDate;
+    private Date lastCrashDate;
+    private Integer crashEvents;
+    private Integer crashOdometer;
+    
+	private Date startingDate;
     private Date endingDate;
     
     @Column(updateable = false)
@@ -322,4 +328,22 @@ public class DriveQMap extends BaseEntity
     {
         this.endingDate = endingDate;
     }
+    public Date getLastCrashDate() {
+		return lastCrashDate;
+	}
+	public void setLastCrashDate(Date lastCrashDate) {
+		this.lastCrashDate = lastCrashDate;
+	}
+	public Integer getCrashEvents() {
+		return crashEvents;
+	}
+	public void setCrashEvents(Integer crashEvents) {
+		this.crashEvents = crashEvents;
+	}
+	public Integer getCrashOdometer() {
+		return crashOdometer;
+	}
+	public void setCrashOdometer(Integer crashOdometer) {
+		this.crashOdometer = crashOdometer;
+	}
 }

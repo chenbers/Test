@@ -196,6 +196,11 @@ img {
 	background: transparent url(../images/ico_gas.png) no-repeat center left
 		;
 }
+.panel_title span.crash {
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_gas.png) no-repeat center left
+		;
+}
 
 .panel_title span.legend {
 	padding: 0 0 0 20px;
@@ -816,7 +821,7 @@ span.no {
 
 span.yes {
 	background: url(../images/btn_apply.png) left no-repeat;
-	padding: 0 5px 0 25px;
+	padding: 0 10px 0 25px;
 }
 
 span.ok {
@@ -3313,6 +3318,11 @@ ul.htabs li.active span.tab a {
 	color: #333333;
 }
 
+.d-row {
+	background-color: #cccccc;
+	color: #ffffff;
+}
+
 /*
 
 ok, so sometimes, do not show that top pagination navigation!!!
@@ -3401,4 +3411,20 @@ Slider (Red Flag Driver Style Severity)
 .severity-table-even {
 	background-color: #EBFFCA;
 	border: #EBFFCA solid 1px;
+}
+td.crash-summary-title {
+
+	margin: 0;
+	padding: 0 2px 0 0;
+	color: #333;
+	font-weight: bold;
+	font-size: 12px;
+}
+td.crash-summary {
+
+	margin: 0;
+	padding: 0 2px 0 0;	
+	color: #333;
+	font-size: 12px;
+	
 }
