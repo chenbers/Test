@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.ui.CrashHistoryReportItem;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
@@ -29,10 +30,9 @@ import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 
-public class CrashHistoryBean extends BaseCrashBean
+public class CrashHistoryBean extends BaseCrashBean 
 {
-    private static final Logger logger = Logger.getLogger(CrashHistoryBean.class);
-    
+    private static final Logger logger = Logger.getLogger(CrashHistoryBean.class);    
 
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
@@ -50,8 +50,8 @@ public class CrashHistoryBean extends BaseCrashBean
 
     public String showAllFromRecentAction()
     {
-        setCategoryFilter(null);
-        setEventFilter(null);
+//        setCategoryFilter(null);
+//        setEventFilter(null);
 
         refreshAction();
         return "go_crashHistory";

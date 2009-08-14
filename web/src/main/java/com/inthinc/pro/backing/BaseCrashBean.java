@@ -1,53 +1,61 @@
 package com.inthinc.pro.backing;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.ui.CrashHistoryReportItem;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.util.MessageUtil;
 
-public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener {
+public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePrefOptions<CrashHistoryReportItem>, PersonChangeListener {
 
-    private static final Logger     	logger                  = Logger.getLogger(BaseCrashBean.class);
+    private static final Logger                 logger = Logger.getLogger(BaseCrashBean.class);
     
-    private final static String 		COLUMN_LABEL_PREFIX = "notes_crashhistory_";
-    protected final static Integer 		DAYS_BACK = 7;
+    private final static String                 COLUMN_LABEL_PREFIX = "notes_crashhistory_";
 
-    private static final Integer    	numRowsPerPg = 25;
-    private Integer                 	start;
-    private Integer                 	end;
-    private Integer                 	maxCount;
-    private List<EventReportItem>   	tableData;
-    private List<EventReportItem>   	filteredTableData;
-    private EventDAO                	eventDAO;
-    private TablePreferenceDAO 			tablePreferenceDAO;
+    private static final Integer                numRowsPerPg = 25;
+    private Integer                             start;
+    private Integer                             end;
+    private Integer                             maxCount;
+    private List<CrashHistoryReportItem>   	    tableData;
+    private List<CrashHistoryReportItem>   	    filteredTableData;
+    private EventDAO                            eventDAO;
+    private TablePreferenceDAO                  tablePreferenceDAO;
     
-    private EventReportItem   			clearItem;
+    private CrashHistoryReportItem              clearItem;
+//    
+//    private EventCategory                       categoryFilter;
+//    private Event                               eventFilter;
+//    private Long                                eventFilterID;
     
-    private EventCategory 				categoryFilter;
-    private Event 						eventFilter;
-    private Long 						eventFilterID;
+    private ReportRenderer                      reportRenderer;
+    private ReportCriteriaService               reportCriteriaService;
     
-    private ReportRenderer      		reportRenderer;
-    private ReportCriteriaService 		reportCriteriaService;
+    private TablePref<CrashHistoryReportItem>   tablePref;    
     
-    private TablePref<EventReportItem>	tablePref;    
-    
-    static final List<String>       	AVAILABLE_COLUMNS;
+    static final List<String>                   AVAILABLE_COLUMNS;
     static
     {
         // available columns
@@ -62,16 +70,17 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
         AVAILABLE_COLUMNS.add("edit");
         AVAILABLE_COLUMNS.add("clear");
 
-    }    
+    }
+        
+    private static DateFormat dateFormatter = 
+        new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));        
     
-
     @Override
     public void initBean()
     {
         super.initBean();
-        tablePref = new TablePref<EventReportItem>(this);
-//        searchCoordinationBean.addSearchChangeListener(this);
-   }
+        tablePref = new TablePref<CrashHistoryReportItem>(this);
+    }    
     
     /*
      *When the search button is actually clicked, we want to make sure we use what's in
@@ -80,16 +89,16 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     @Override
     public void searchAction()
     {
-        setEventFilter(null);  
+//        setEventFilter(null);  
         super.searchAction();
     }
 
-    public TablePref<EventReportItem> getTablePref()
+    public TablePref<CrashHistoryReportItem> getTablePref()
     {
         return tablePref;
     }
 
-    public void setTablePref(TablePref<EventReportItem> tablePref)
+    public void setTablePref(TablePref<CrashHistoryReportItem> tablePref)
     {
         this.tablePref = tablePref;
     }
@@ -122,7 +131,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
         return numRowsPerPg;
     }
 
-    public List<EventReportItem> getTableData()
+    public List<CrashHistoryReportItem> getTableData()
     {
         init();
         return getFilteredTableData();
@@ -151,59 +160,16 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     protected void filterTableData()
     {
         setFilteredTableData(tableData); 
-        if (getCategoryFilter() != null)
-        {    
-            List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
-            if (validEventTypes != null)
-            {
-                filteredTableData = new ArrayList<EventReportItem>();
-        
-                for (EventReportItem item : tableData)
-                {
-                    if (validEventTypes.contains(item.getEvent().getType()))
-                    {
-                        filteredTableData.add(item);
-                    }
-                }
-            }
-        }
-        
-        //Filter if search is based on single event
-        if (getEventFilter() != null)
-        {    
-            filteredTableData = new ArrayList<EventReportItem>();
-    
-            for (EventReportItem item : tableData)
-            {
-                if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
-                {
-                    filteredTableData.add(item);
-                    break;
-                }
-            }
-        }
-        
-        //Filter if search is based on group.
-        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
-        {
-            filteredTableData = new ArrayList<EventReportItem>();
-            
-            for (EventReportItem item : tableData)
-            {
-                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
-                {
-                    filteredTableData.add(item);
-                }
-            }
-        }
-        
+
         if (searchCoordinationBean.isGoodSearch())
         {
-            final ArrayList<EventReportItem> searchTableDataResult = new ArrayList<EventReportItem>();
+            final ArrayList<CrashHistoryReportItem> searchTableDataResult = 
+                new ArrayList<CrashHistoryReportItem>();
             searchTableDataResult.addAll(filteredTableData);
             tablePref.filter(searchTableDataResult, searchCoordinationBean.getSearchFor(), true);
             setFilteredTableData(searchTableDataResult);
         }
+
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
@@ -213,80 +179,117 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     @Override
     protected void filterTableDataWithoutSearch()
     {
-        setFilteredTableData(tableData); 
-        if (getCategoryFilter() != null)
-        {    
-            List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
-            if (validEventTypes != null)
-            {
-                filteredTableData = new ArrayList<EventReportItem>();
-        
-                for (EventReportItem item : tableData)
-                {
-                    if (validEventTypes.contains(item.getEvent().getType()))
-                    {
-                        filteredTableData.add(item);
-                    }
-                }
-            }
-        }
-        
-        //Filter if search is based on single event
-        if (getEventFilter() != null)
-        {    
-            filteredTableData = new ArrayList<EventReportItem>();
-    
-            for (EventReportItem item : tableData)
-            {
-                if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
-                {
-                    filteredTableData.add(item);
-                    break;
-                }
-            }
-        }
-        
-        //Filter if search is based on group.
-        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
-        {
-            filteredTableData = new ArrayList<EventReportItem>();
-            
-            for (EventReportItem item : tableData)
-            {
-                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
-                {
-                    filteredTableData.add(item);
-                }
-            }
-        }
-        
-        setMaxCount(filteredTableData.size());
-        setStart(filteredTableData.size() > 0 ? 1 : 0);
-        setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
-        setPage(1);
+//        setFilteredTableData(tableData); 
+//        if (getCategoryFilter() != null)
+//        {    
+//            List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
+//            if (validEventTypes != null)
+//            {
+//                filteredTableData = new ArrayList<EventReportItem>();
+//        
+//                for (EventReportItem item : tableData)
+//                {
+//                    if (validEventTypes.contains(item.getEvent().getType()))
+//                    {
+//                        filteredTableData.add(item);
+//                    }
+//                }
+//            }
+//        }
+//        
+//        //Filter if search is based on single event
+//        if (getEventFilter() != null)
+//        {    
+//            filteredTableData = new ArrayList<EventReportItem>();
+//    
+//            for (EventReportItem item : tableData)
+//            {
+//                if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
+//                {
+//                    filteredTableData.add(item);
+//                    break;
+//                }
+//            }
+//        }
+//        
+//        //Filter if search is based on group.
+//        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+//        {
+//            filteredTableData = new ArrayList<EventReportItem>();
+//            
+//            for (EventReportItem item : tableData)
+//            {
+//                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
+//                {
+//                    filteredTableData.add(item);
+//                }
+//            }
+//        }
+//        
+//        setMaxCount(filteredTableData.size());
+//        setStart(filteredTableData.size() > 0 ? 1 : 0);
+//        setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
+//        setPage(1);
     }
     
     private void initTableData()
     {
         setFilteredTableData(null);
+        
+        List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
+        
+        // fake data based on logged-in user
+        Driver d = getDriverDAO().getDriverByPersonID(getProUser().getUser().getPersonID()); 
+        Person p = getProUser().getUser().getPerson();
+        Vehicle v = getVehicleDAO().findByDriverInGroup(d.getDriverID(), 
+                getGroupHierarchy().getTopGroup().getGroupID());
+                
+        // account for time zone
+        TimeZone tz = (d == null || p == null) ? 
+                TimeZone.getDefault() : p.getTimeZone();
+        dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);     
+        
+        CrashHistoryReportItem chri = new CrashHistoryReportItem();
+        chri.setDate(dateFormatter.format(d.getModified()));
+        chri.setTime(d.getModified().getTime());
+        chri.setDriver(d);
+        chri.setDriverName(p.getFullName());
+        chri.setGroup(getGroupHierarchy().getGroup(d.getGroupID()).getName());
+        chri.setNbrOccupants("3");
+        chri.setStatus("Dead");        
+        chri.setVehicle(v);
+        chri.setVehicleName(v.getFullName());
+        chri.setLatitude(40.745257d);
+        chri.setLongitude(-111.879272d);
+        chri.setForgiven(0);
+        
+        histList.add(chri);
+        
+        setTableData(histList);
+        
+        // count initialization
+        setMaxCount(histList.size());
+        setStart(histList.size() > 0 ? 1 : 0);
+        setEnd(histList.size() > getNumRowsPerPg() ? getNumRowsPerPg() : histList.size());
+        setPage(1);        
 
-        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
-        List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
-        for (Event event : eventList)
-        {
-            fillInDriver(event);
-            fillInVehicle(event);
-            eventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy(),getMeasurementType()));
-        }
-        Collections.sort(eventReportItemList);
-        Collections.reverse(eventReportItemList);
-        setTableData(eventReportItemList);
+//        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
+//        List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
+//        for (Event event : eventList)
+//        {
+//            fillInDriver(event);
+//            fillInVehicle(event);
+//            eventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy(),getMeasurementType()));
+//        }
+//        Collections.sort(eventReportItemList);
+//        Collections.reverse(eventReportItemList);
+//        setTableData(eventReportItemList);
 
     }
 
     protected abstract List<Event> getEventsForGroup(Integer groupID);
 
-    public void setTableData(List<EventReportItem> tableData)
+    public void setTableData(List<CrashHistoryReportItem> tableData)
     {
         this.tableData = tableData;
     }
@@ -334,21 +337,21 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     }
 
 
-    public EventReportItem getClearItem()
+    public CrashHistoryReportItem getClearItem()
     {
         return clearItem;
     }
 
-    public void setClearItem(EventReportItem clearItem)
+    public void setClearItem(CrashHistoryReportItem clearItem)
     {
         this.clearItem = clearItem;
     }
     
     public void clearItemAction()
     {
-        if (eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID()) >= 1){
-    		initTableData();
-        }
+//        if (eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID()) >= 1){
+//    		initTableData();
+//        }
 //        tableData.remove(clearItem);
 //        filteredTableData.remove(clearItem);
 //        maxCount--;
@@ -358,16 +361,16 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     
     public void includeEventAction(){
     	
-    	if (eventDAO.unforgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID())>= 1){
-    		initTableData();
-        }
+//    	if (eventDAO.unforgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID())>= 1){
+//    		initTableData();
+//        }
     	
     }
     
-    public EventCategory getCategoryFilter()
-    {
-        return categoryFilter;
-    }
+//    public EventCategory getCategoryFilter()
+//    {
+//        return categoryFilter;
+//    }
 
     private void reinit()
     {
@@ -379,36 +382,36 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     
     public void setCategoryFilter(EventCategory categoryFilter)
     {
-        reinit();
-        this.eventFilter = null;
-        this.categoryFilter = categoryFilter;
+//        reinit();
+//        this.eventFilter = null;
+//        this.categoryFilter = categoryFilter;
     }
 
-    public List<EventReportItem> getFilteredTableData()
+    public List<CrashHistoryReportItem> getFilteredTableData()
     {
         return filteredTableData;
     }
 
-    public void setFilteredTableData(List<EventReportItem> filteredTableData)
+    public void setFilteredTableData(List<CrashHistoryReportItem> filteredTableData)
     {
         this.filteredTableData = filteredTableData;
     }
 
-    public Event getEventFilter()
-    {
-        return eventFilter;
-    }
+//    public Event getEventFilter()
+//    {
+//        return eventFilter;
+//    }
 
-    public void setEventFilter(Event eventFilter)
-    {
-        // force table data to reinit
-        reinit();
-        this.categoryFilter = null;
-        this.eventFilter = eventFilter;
-    }
+//    public void setEventFilter(Event eventFilter)
+//    {
+//        // force table data to reinit
+//        reinit();
+//        this.categoryFilter = null;
+//        this.eventFilter = eventFilter;
+//    }
     
     @Override
-    public String fieldValue(EventReportItem item, String column)
+    public String fieldValue(CrashHistoryReportItem item, String column)
     {
         if ("driver".equals(column))
             column = "driverName";
@@ -423,10 +426,10 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
 
     public void showAllAction()
     {
-        setCategoryFilter(null);
-        setEventFilter(null);
+//        setCategoryFilter(null);
+//        setEventFilter(null);
         
-        filterTableDataWithoutSearch();
+//        filterTableDataWithoutSearch();
     }
 
 
@@ -505,26 +508,26 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
         return reportCriteriaService;
     }
 
-    public void setEventFilterID(Long eventFilterID)
-    {
-        if(eventFilterID != null && eventFilterID != 0)
-        {
-            Event event = eventDAO.findByID(eventFilterID);
-            event.setNoteID(eventFilterID);  //TODO Got to find out why noteID is not being set.
-            setEventFilter(event);
-            this.eventFilterID = eventFilterID;
-        }else
-        {
-            this.eventFilterID = null;
-            setEventFilter(null);
-        }
-        
-    }
+//    public void setEventFilterID(Long eventFilterID)
+//    {
+//        if(eventFilterID != null && eventFilterID != 0)
+//        {
+//            Event event = eventDAO.findByID(eventFilterID);
+//            event.setNoteID(eventFilterID);  //TODO Got to find out why noteID is not being set.
+//            setEventFilter(event);
+//            this.eventFilterID = eventFilterID;
+//        }else
+//        {
+//            this.eventFilterID = null;
+//            setEventFilter(null);
+//        }
+//        
+//    }
 
-    public Long getEventFilterID()
-    {
-        return eventFilterID;
-    }
+//    public Long getEventFilterID()
+//    {
+//        return eventFilterID;
+//    }
 
     @Override
     public void personListChanged()
