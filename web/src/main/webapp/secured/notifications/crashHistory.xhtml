@@ -72,8 +72,8 @@
 						</a4j:status>
 					  </li>
 					  <li class="l text">
-						<a4j:commandLink styleClass="ls_tab_add_crash" title="Add a New Crash">
-							Add a New Crash
+						<a4j:commandLink styleClass="ls_tab_add_crash" title="#{messages.notes_crashhistory_addnew}">
+							#{messages.notes_crashhistory_addnew}
 						</a4j:commandLink>
 					  </li>  					  
 					  <li class="r grid_icon">
@@ -109,8 +109,8 @@
 		             		<ui:param name="tableColumns" value="#{crashHistoryBean.tableColumns}"/>
 		             		<ui:param name="bean" value="#{crashHistoryBean}"/>
 		             		<ui:param name="formId" value="crashHistory_Table_Form"/>
-		             		<ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
-		             		<ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
+		             		<ui:param name="clearTitle" value="#{messages.notes_crashhistory_clearTitle}"/>
+		             		<ui:param name="clearInst" value="#{messages.notes_crashhistory_clearInst}"/>
 		             		<ui:param name="clearRerender" value="crashHistorySearch:header,crashHistory_Table_Form:items"/>
 		    			</ui:include>    							
 		            </h:panelGroup>					
