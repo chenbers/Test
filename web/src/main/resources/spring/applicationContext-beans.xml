@@ -119,6 +119,12 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
+    <bean id="crashReportBean" class="com.inthinc.pro.backing.CrashReportBean" scope="request" parent="baseBean">
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="crashReportDAO" ref="crashReportDAO"></property>
+    </bean>
+    
     <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session" init-method="initBean">
         <property name="personDAO" ref="personDAO"></property>
         <property name="userDAO" ref="userDAO"></property>

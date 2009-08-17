@@ -15,8 +15,17 @@ public class DriverBean extends BaseBean implements IdentifiableEntityBean {
     private Integer driverID;
     private Driver driver;
     private DriverDAO driverDAO;
+    
+    public DriverBean(){}
+    
+    public DriverBean(Driver driver){
+        this.driverID = driver.getDriverID();
+        this.driver = driver;
+    }
 
     public Integer getDriverID() {
+        if(driver != null && driver.getDriverID() != null)
+            return driver.getDriverID();
         return driverID;
     }
 

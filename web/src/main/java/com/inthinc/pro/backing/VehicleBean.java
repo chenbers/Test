@@ -16,6 +16,13 @@ public class VehicleBean extends BaseBean implements IdentifiableEntityBean {
     private Vehicle vehicle;
     private VehicleDAO vehicleDAO;
 
+    public VehicleBean(){}
+    
+    public VehicleBean(Vehicle vehicle){
+        this.vehicleID = vehicle.getVehicleID();
+        this.vehicle = vehicle;
+    }
+    
     public Integer getVehicleID() {
         return vehicleID;
     }
