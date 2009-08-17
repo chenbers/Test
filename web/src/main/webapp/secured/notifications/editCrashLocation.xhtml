@@ -1,0 +1,109 @@
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+    xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	  <ui:define name="content">
+	  	 <a4j:form id="edit-form">
+	  	 	
+	  	 	<rich:layout>
+	  	 		<rich:layoutPanel position="center" style="padding:10px">
+	  	 			
+	  	 			<div class="">
+						<div class="panel_nw">
+							<div class="panel_title">
+								<span class="email"><h:outputText value="Create New Crash Report"/></span>
+								<span class="panel_links"></span>
+							</div>
+						</div>
+			
+						<div class="panel_w"><!-- MAIN CONTENT -->
+							<div class="panel_content">
+								<!--  <h:commandLink value="Do Something" onclick="Richfaces.showModalPanel('selectCrashLocation'); return false;"/>
+								
+								<ui:include src="../includes/selectCrashLocationPopup.xhtml">
+										
+								</ui:include> -->
+								
+								<rich:layout>
+									<rich:layoutPanel position="left">
+										<h:panelGrid columns="2" width="300px">
+											<h:outputText value="Use Existing Trip:"></h:outputText>
+											<h:outputText value="spacer"/>
+											<h:outputText value="Vehicle/Driver Search:"></h:outputText>
+											<h:inputText value=""/>
+										</h:panelGrid>
+										
+										<h:panelGrid columns="1" width="300px" id="entityPanel">
+											
+											<rich:panel id="entityListPanel">
+												<a4j:region>
+													<rich:extendedDataTable
+														value="#{crashReportBean.entityList}" 
+														var="entity" width="250px" height="150px" 
+														selection="#{crashReportBean.entitySelection}"
+														orderControlsVisible="false"
+														selectionMode="multi"
+														fastOrderControlsVisible="false"
+														binding="#{crashReportBean.entityHtmlScrollableDataTable}">
+														<rich:column>
+															<f:facet name="header"><h:outputText value="Name"></h:outputText></f:facet>
+															<h:outputText value="#{entity.name}" />
+														</rich:column>
+														<rich:column>
+															<f:facet name="header"><h:outputText value="Record Type"></h:outputText></f:facet>
+															<h:outputText value="#{entity.entityType}"/>
+														</rich:column>
+														 <!--  <a4j:support action="#{crashReportBean.loadTrips}" event="onselectionchange" ignoreDupResponses="true" requestDelay="500"  reRender="tripsListPanel" ajaxSingle="true"/>-->
+													</rich:extendedDataTable>
+												</a4j:region>
+											</rich:panel>
+											<a4j:commandLink action="#{crashReportBean.loadTrips}" value="Load Trips" />
+											<a4j:commandButton action="#{crashReportBean.add}" value="Add" />
+										</h:panelGrid>
+						
+										<h:panelGrid columns="1" width="300px" id="tripsPanel">
+											<rich:panel id="tripsListPanel" rendered="#{crashReportBean.tripList ne null}">
+												<h:outputText value="Trips:"/>
+												<rich:scrollableDataTable value="#{crashReportBean.tripList}" var="trip" width="200px" height="400px">
+													<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="true">
+														<f:facet name="header"><h:outputText value="Start"></h:outputText></f:facet>
+														<h:outputText value="#{trip.startTime}">
+															<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
+														</h:outputText>
+													</rich:column>
+													<rich:column>
+														<f:facet name="header"><h:outputText value="End"></h:outputText></f:facet>
+														<h:outputText value="#{trip.endTime}">
+															<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
+														</h:outputText>
+													</rich:column>
+												</rich:scrollableDataTable>
+											</rich:panel>
+										</h:panelGrid>
+										
+										
+									</rich:layoutPanel>
+									<rich:layoutPanel position="right">
+									
+									</rich:layoutPanel>
+								</rich:layout>
+							</div>
+						</div>
+						
+						<div class="panel_sw">
+								<div class="panel_statusbar"></div>
+						</div>
+					</div>
+	  	 		</rich:layoutPanel>
+	  	 	</rich:layout>
+	  	 </a4j:form>
+	  </ui:define>
+
+</ui:composition>
