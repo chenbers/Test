@@ -19,6 +19,7 @@ import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.CrashReport;
+import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.DamageType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -69,6 +70,10 @@ public class CrashReportBean extends BaseBean{
     
     public List<SelectItem> getOccupantTypeAsSelectItems(){
         return SelectItemUtil.toList(OccupantType.class, true);
+    }
+    
+    public List<SelectItem> getCrashReportStatusAsSelectItems(){
+        return SelectItemUtil.toList(CrashReportStatus.class, true);
     }
     
     private IdentifiableEntityBean getSelectedEntityBean(){
@@ -195,6 +200,15 @@ public class CrashReportBean extends BaseBean{
         if(crashReport != null && crashReportID != null)
             this.crashReport = crashReportDAO.findByID(crashReportID);
         this.crashReportID = crashReportID;
+    }
+    
+    public CrashReport getCrashReport() {
+        return crashReport;
+    }
+
+    
+    public void setCrashReport(CrashReport crashReport) {
+        this.crashReport = crashReport;
     }
 
     public Integer getCrashReportID() {

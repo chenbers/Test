@@ -1,0 +1,189 @@
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+    xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+
+	<ui:param name="adminSelected" value="current" />
+    <ui:param name="title" value="#{reportScheduleBean.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : messages.adminHeader_editReportSchedule)}"/>
+	<ui:param name="helpFile" value="Add_Edit_a_Report.htm" />
+   
+    <ui:define name="scripts">
+      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+    </ui:define>
+    
+	<ui:define name="content">
+		
+		<table width="920" border="0" cellspacing="0"
+			cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+			<tr>
+				<td valign="top">
+				<a4j:form id="edit-form">
+				<div class="">
+					<div class="panel_nw">
+					<div class="panel_title">
+						<span class="email"><h:outputText value="#{messages.crashReport_add}" /></span>
+						<span class="panel_links"></span></div>
+					</div>
+
+					<div class="panel_w"><!-- MAIN CONTENT -->
+						<div class="panel_content">
+		                
+						<rich:messages globalOnly="true"
+							errorClass="error" fatalClass="error" warnClass="warning"
+							infoClass="info" styleClass="msg" />
+							
+						<ul id="grid_nav" style="margin: 0;">
+		                   	<li class="r">
+		                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+		                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+		                    </li>
+		                </ul>
+		                
+		                <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+		                  <dl id="display-form:j_id122" class="rich-messages msg" style="">
+		                     <dt class="error">
+		                        <h:outputFormat value="#{messages.error_validationMsg}">
+		                           <f:param value="${tiwiprofn:getMessageCount()}"/>
+		                        </h:outputFormat>
+		                     </dt>
+		                  </dl>
+		                </ui:fragment>
+					   
+						<table width="900" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td width="425" valign="top" align="left">
+			                        <div class="spacer"></div>
+									<div class="add_section_title"><h:outputText
+										value="#{messages.crashReport_crashDetails}" /></div>
+									
+									<table width="415" border="0" cellspacing="2" cellpadding="4" align="center">
+										<tr>
+											<td width="150" valign="top">
+												<h:outputText value="#{messages.crashReport_status}" />
+												<h:outputText styleClass="required" value=" *" />
+											</td>
+											<td>
+												<rich:message for="status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+												<h:selectOneMenu value="#{crashReportBean.crashReport.crashReportStatus}" converter="SimpleBeanConverter">
+													<f:selectItems value="#{crashReportBean.crashReportStatusAsSelectItems}"/>
+												</h:selectOneMenu>	
+											</td>
+										</tr>
+										<tr>
+											<td width="150" valign="top">
+												<h:outputText value="#{messages.crashReport_date}" />
+												<h:outputText styleClass="required" value=" *" />
+											</td>
+											<td>
+			      								<rich:message for="description" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+												<rich:calendar value="#{crashReportBean.crashReport.date}"/>
+											</td>
+										</tr>
+										<tr>
+											<td width="150" valign="top">
+												<h:outputText value="#{messages.crashReport_weather}" />
+											</td>
+											<td>
+			      								<rich:message for="weather" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+												<h:inputText id="weather" value="#{crashReportBean.crashReport.weather}" styleClass="text" size="30" maxlength="30"></h:inputText>	
+											</td>
+										</tr>
+										<tr>
+											<td width="150" valign="top">
+												<h:outputText value="#{messages.crashReport_vehicleDamage}" />
+											</td>
+											<td>
+			      								<rich:message for="damage" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+												<h:selectOneMenu value="#{crashReportBean.crashReport.damageType}" converter="SimpleBeanConverter">
+													<f:selectItems value="#{crashReportBean.damageTypeAsSelectItems}"/>
+												</h:selectOneMenu>	
+											</td>
+										</tr>
+										<tr>
+											<td width="150" valign="top">
+												<h:outputText value="#{messages.crashReport_description}" />
+											</td>
+											<td>
+												<h:inputTextarea cols ="30" rows="3" value="#{crashReportBean.crashReport.description}" />	
+											</td>
+										</tr>
+										<tr>
+											<td width="150" valign="top">
+			                                    <h:outputText value="#{messages.crashReport_vehicle}" />
+											</td>
+											<td>
+												<a4j:commandLink action="#{crashReportBean.add}" value="add a vehicle" />
+											</td>
+										</tr>
+										
+			                        </table>
+			                        
+			                        
+								
+								</td>
+								<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+								<td width="425" valign="top" align="left">
+									
+			                        <div class="spacer"></div>
+									<div class="add_section_title"><h:outputText
+											value="#{messages.crashReport_occupants}" /></div>
+									
+									<table width="415" border="0" cellspacing="2" cellpadding="4"
+										align="center">
+										<tr>
+											<td>
+												<div class="datagrid_panel" style="width: 390px">
+												<rich:dataTable id="dataTable" value="#{crashReportBean.crashReport.vehicleOccupants}" var="occupant" width="390" styleClass="datagrid">
+													<rich:column>
+														<f:facet name="header">
+															<h:outputText value="#{messages.editOccupant_name}"/>
+														</f:facet>
+													</rich:column>
+													<rich:column>
+														<f:facet name="header">
+															<h:outputText value="#{messages.editOccupant_injury}"/>
+														</f:facet>
+													</rich:column>
+													<rich:column>
+														<f:facet name="header">
+															<h:outputText value="#{messages.editOccupant_seatbelt}"/>
+														</f:facet>
+													</rich:column>
+												</rich:dataTable>
+												</div>
+											</td>
+										</tr>
+										
+									</table>
+								</td>
+							</tr>
+						</table>
+						
+						 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+						 
+						 <ul id="grid_nav" style="margin: 0;">
+		                   	<li class="r">
+		                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+		                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+		                    </li>
+		                 </ul>
+					</div>
+
+				</div>
+
+				<div class="panel_sw">
+				<div class="panel_statusbar"></div>
+				</div>
+				</div>
+					</a4j:form>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+
+</ui:composition>
