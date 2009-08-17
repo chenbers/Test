@@ -17,7 +17,7 @@ public class CrashReport extends BaseEntity {
     private Integer crashReportID;
     @Column(name = "acctID")
     private Integer accountID;
-    private Status status;
+    private CrashReportStatus crashReportStatus;
     private Date date;
     private LatLng latLng;
     private String location;
@@ -38,10 +38,10 @@ public class CrashReport extends BaseEntity {
         
     }
 
-    public CrashReport(Integer accountID, Status status, DamageType damageType, Vehicle vehicle, Group group, String weather) {
+    public CrashReport(Integer accountID, CrashReportStatus crashReportStatus, DamageType damageType, Vehicle vehicle, Group group, String weather) {
         super();
         this.accountID = accountID;
-        this.status = status;
+        this.setCrashReportStatus(crashReportStatus);
         this.damageType = damageType;
         this.vehicleID = vehicle != null ? vehicle.getVehicleID():null;
         this.vehicle = vehicle;
@@ -66,13 +66,7 @@ public class CrashReport extends BaseEntity {
         this.accountID = accountID;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    
 
     public Date getDate() {
         return date;
@@ -180,11 +174,15 @@ public class CrashReport extends BaseEntity {
     
     
 
+    
+    
+
+
     @Override
     public String toString() {
-        return "CrashReport [accountID=" + accountID + ", crashDataPoints=" + crashDataPoints + ", crashReportID=" + crashReportID + ", damageType=" + damageType + ", date="
-                + date + ", description=" + description + ", group=" + group + ", groupID=" + groupID + ", latLng=" + latLng + ", location=" + location + ", status=" + status
-                + ", vehicle=" + vehicle + ", vehicleID=" + vehicleID + ", vehicleOccupants=" + vehicleOccupants + ", weather=" + weather + "]";
+        return "CrashReport [accountID=" + accountID + ", crashDataPoints=" + crashDataPoints + ", crashReportID=" + crashReportID + ", crashReportStatus=" + crashReportStatus
+                + ", damageType=" + damageType + ", date=" + date + ", description=" + description + ", group=" + group + ", groupID=" + groupID + ", latLng=" + latLng
+                + ", location=" + location + ", vehicle=" + vehicle + ", vehicleID=" + vehicleID + ", vehicleOccupants=" + vehicleOccupants + ", weather=" + weather + "]";
     }
 
     @Override
@@ -217,6 +215,15 @@ public class CrashReport extends BaseEntity {
         }
         return true;
     }
-    
+
+    public void setCrashReportStatus(CrashReportStatus crashReportStatus) {
+        this.crashReportStatus = crashReportStatus;
+    }
+
+    public CrashReportStatus getCrashReportStatus() {
+        return crashReportStatus;
+    }
+
+
     
 }

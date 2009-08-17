@@ -27,6 +27,7 @@ import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.CrashReport;
+import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DamageType;
 import com.inthinc.pro.model.Device;
@@ -541,7 +542,7 @@ public class MockData {
     }
 
     private CrashReport createCrashReport(Integer crashReportID, Integer accountID, Group group, Person person, Date date, LatLng latLng, Vehicle vehicle) {
-        CrashReport crashReport = new CrashReport(accountID, Status.ACTIVE, DamageType.ROLLOVER, vehicle, group, "Sunny");
+        CrashReport crashReport = new CrashReport(accountID, CrashReportStatus.NEW, DamageType.ROLLOVER, vehicle, group, "Sunny");
         crashReport.setCrashReportID(crashReportID);
         crashReport.setDate(date);
         crashReport.setLatLng(latLng);
