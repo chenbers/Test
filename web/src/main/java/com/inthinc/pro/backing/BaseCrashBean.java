@@ -24,7 +24,8 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
 
-public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePrefOptions<CrashHistoryReportItem>, PersonChangeListener {
+public abstract class BaseCrashBean extends BaseRedFlagsBean 
+                                    implements TablePrefOptions<CrashHistoryReportItem>, PersonChangeListener {
 
     private static final Logger                 logger = Logger.getLogger(BaseCrashBean.class);
     
@@ -80,7 +81,6 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     @Override
     public void searchAction()
     {
-//        setEventFilter(null);  
         super.searchAction();
     }
 
@@ -105,7 +105,6 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
 
     public void scrollerListener(DataScrollerEvent event)
     {
-
         logger.debug("scroll event page: " + event.getPage() + " old " + event.getOldScrolVal() + " new " + event.getNewScrolVal());
 
         this.start = (event.getPage() - 1) * numRowsPerPg + 1;
@@ -168,60 +167,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     }
 
     @Override
-    protected void filterTableDataWithoutSearch()
-    {
-//        setFilteredTableData(tableData); 
-//        if (getCategoryFilter() != null)
-//        {    
-//            List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
-//            if (validEventTypes != null)
-//            {
-//                filteredTableData = new ArrayList<EventReportItem>();
-//        
-//                for (EventReportItem item : tableData)
-//                {
-//                    if (validEventTypes.contains(item.getEvent().getType()))
-//                    {
-//                        filteredTableData.add(item);
-//                    }
-//                }
-//            }
-//        }
-//        
-//        //Filter if search is based on single event
-//        if (getEventFilter() != null)
-//        {    
-//            filteredTableData = new ArrayList<EventReportItem>();
-//    
-//            for (EventReportItem item : tableData)
-//            {
-//                if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
-//                {
-//                    filteredTableData.add(item);
-//                    break;
-//                }
-//            }
-//        }
-//        
-//        //Filter if search is based on group.
-//        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
-//        {
-//            filteredTableData = new ArrayList<EventReportItem>();
-//            
-//            for (EventReportItem item : tableData)
-//            {
-//                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
-//                {
-//                    filteredTableData.add(item);
-//                }
-//            }
-//        }
-//        
-//        setMaxCount(filteredTableData.size());
-//        setStart(filteredTableData.size() > 0 ? 1 : 0);
-//        setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
-//        setPage(1);
-    }
+    protected void filterTableDataWithoutSearch(){}
     
     private void initTableData()
     {
@@ -376,11 +322,6 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
 //        }
     	
     }
-    
-//    public EventCategory getCategoryFilter()
-//    {
-//        return categoryFilter;
-//    }
 
     private void reinit()
     {
@@ -388,13 +329,6 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
         setStart(null);
         setEnd(null);
         setMaxCount(null);
-    }
-    
-    public void setCategoryFilter(EventCategory categoryFilter)
-    {
-//        reinit();
-//        this.eventFilter = null;
-//        this.categoryFilter = categoryFilter;
     }
 
     public List<CrashHistoryReportItem> getFilteredTableData()
@@ -406,42 +340,24 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     {
         this.filteredTableData = filteredTableData;
     }
-
-//    public Event getEventFilter()
-//    {
-//        return eventFilter;
-//    }
-
-//    public void setEventFilter(Event eventFilter)
-//    {
-//        // force table data to reinit
-//        reinit();
-//        this.categoryFilter = null;
-//        this.eventFilter = eventFilter;
-//    }
     
     @Override
     public String fieldValue(CrashHistoryReportItem item, String column)
     {
-        if ("driver".equals(column))
+        if (        "driver".equals(column)) {
             column = "driverName";
-        else if ("vehicle".equals(column))
+        }
+        else if (   "vehicle".equals(column)) {
             column = "vehicleName";
-        else if ("clear".equals(column) ||
-                 "detail".equals(column) ||
-                 "edit".equals(column) )
+        }
+        else if (   "clear".equals(column) ||
+                    "detail".equals(column) ||
+                    "edit".equals(column) ) {
             return "";
+        }
+        
         return TablePref.fieldValue(item, column);
     }
-
-    public void showAllAction()
-    {
-//        setCategoryFilter(null);
-//        setEventFilter(null);
-        
-//        filterTableDataWithoutSearch();
-    }
-
 
     // TablePrefOptions interface
     @Override
@@ -508,27 +424,6 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     {
         return reportCriteriaService;
     }
-
-//    public void setEventFilterID(Long eventFilterID)
-//    {
-//        if(eventFilterID != null && eventFilterID != 0)
-//        {
-//            Event event = eventDAO.findByID(eventFilterID);
-//            event.setNoteID(eventFilterID);  //TODO Got to find out why noteID is not being set.
-//            setEventFilter(event);
-//            this.eventFilterID = eventFilterID;
-//        }else
-//        {
-//            this.eventFilterID = null;
-//            setEventFilter(null);
-//        }
-//        
-//    }
-
-//    public Long getEventFilterID()
-//    {
-//        return eventFilterID;
-//    }
 
     public CrashReportDAO getCrashReportDAO() {
         return crashReportDAO;
