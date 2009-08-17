@@ -141,7 +141,6 @@ public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem
 
     @Override
     public int compareTo(CrashHistoryReportItem o) {
-        return 0;
-        // return this.getEvent().getTime().compareTo(o.getEvent().getTime());
+        return this.getTime().compareTo(o.getTime());
     }
 }

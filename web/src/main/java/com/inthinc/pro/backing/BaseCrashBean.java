@@ -3,7 +3,6 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,17 +12,13 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.CrashHistoryReportItem;
-import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
@@ -41,14 +36,10 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     private Integer                             maxCount;
     private List<CrashHistoryReportItem>   	    tableData;
     private List<CrashHistoryReportItem>   	    filteredTableData;
-    private EventDAO                            eventDAO;
     private TablePreferenceDAO                  tablePreferenceDAO;
+    private CrashReportDAO                      crashReportDAO;
     
     private CrashHistoryReportItem              clearItem;
-//    
-//    private EventCategory                       categoryFilter;
-//    private Event                               eventFilter;
-//    private Long                                eventFilterID;
     
     private ReportRenderer                      reportRenderer;
     private ReportCriteriaService               reportCriteriaService;
@@ -236,9 +227,43 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     {
         setFilteredTableData(null);
         
+        // the following will be how we access data when LIVE data is available
+//        List<CrashReport> crashList = crashReportDAO.getCrashReportsByGroupID(
+//            getProUser().getUser().getGroupID());
+//        List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();        
+//        for ( CrashReport cr: crashList) {
+//            CrashHistoryReportItem chri = new CrashHistoryReportItem();
+//            chri.setDate(dateFormatter.format(cr.getDate()));
+//            chri.setTime(cr.getDate().getTime());
+//            Driver d = this.getDriverDAO().findByID(cr.getVehicle().getDriverID());
+//            chri.setDriver(d);             
+//            chri.setDriverName(d.getPerson().getFullName());
+//            chri.setGroup(getGroupHierarchy().getGroup(d.getGroupID()).getName());
+//            chri.setNbrOccupants(String.valueOf(cr.getVehicleOccupants().size()));
+//            chri.setStatus(cr.getStatus().getDescription());        
+//            chri.setVehicle(cr.getVehicle());
+//            chri.setVehicleName(cr.getVehicle().getFullName());
+//            chri.setLatitude(cr.getLatLng().getLat());
+//            chri.setLongitude(cr.getLatLng().getLng());
+//----------->// what about this?
+//            chri.setForgiven(0);
+//            
+//            histList.add(chri);            
+//        }    
+//        Collections.sort(histList);
+//        Collections.reverse(histList);        
+//        setTableData(histList);
+//        
+//        // count initialization
+//        setMaxCount(histList.size());
+//        setStart(histList.size() > 0 ? 1 : 0);
+//        setEnd(histList.size() > getNumRowsPerPg() ? getNumRowsPerPg() : histList.size());
+//        setPage(1);                
+        
+        // the following is FAKE data to facilitate development, test, and development of the 
+        //  other parts of the page i.e. "details", "edit", and "exclude".
         List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
         
-        // fake data based on logged-in user
         Driver d = getDriverDAO().getDriverByPersonID(getProUser().getUser().getPersonID()); 
         Person p = getProUser().getUser().getPerson();
         Vehicle v = getVehicleDAO().findByDriverInGroup(d.getDriverID(), 
@@ -272,22 +297,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
         setStart(histList.size() > 0 ? 1 : 0);
         setEnd(histList.size() > getNumRowsPerPg() ? getNumRowsPerPg() : histList.size());
         setPage(1);        
-
-//        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
-//        List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
-//        for (Event event : eventList)
-//        {
-//            fillInDriver(event);
-//            fillInVehicle(event);
-//            eventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy(),getMeasurementType()));
-//        }
-//        Collections.sort(eventReportItemList);
-//        Collections.reverse(eventReportItemList);
-//        setTableData(eventReportItemList);
-
     }
-
-    protected abstract List<Event> getEventsForGroup(Integer groupID);
 
     public void setTableData(List<CrashHistoryReportItem> tableData)
     {
@@ -478,15 +488,6 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
     }
-    public EventDAO getEventDAO()
-    {
-        return eventDAO;
-    }
-
-    public void setEventDAO(EventDAO eventDAO)
-    {
-        this.eventDAO = eventDAO;
-    }
 
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
@@ -528,6 +529,14 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean implements TablePre
 //    {
 //        return eventFilterID;
 //    }
+
+    public CrashReportDAO getCrashReportDAO() {
+        return crashReportDAO;
+    }
+
+    public void setCrashReportDAO(CrashReportDAO crashReportDAO) {
+        this.crashReportDAO = crashReportDAO;
+    }
 
     @Override
     public void personListChanged()
