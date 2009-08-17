@@ -78,7 +78,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
-				<reportElement key="textField-4" x="635" y="3" width="136" height="17"/>
+				<reportElement key="textField-4" x="635" y="3" width="146" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
@@ -93,7 +93,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nbrOccupants}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="7" y="6" width="145" height="18"/>
+				<reportElement key="textField" x="7" y="3" width="145" height="18"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>

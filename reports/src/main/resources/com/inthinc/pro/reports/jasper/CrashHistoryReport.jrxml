@@ -123,7 +123,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nbrOccupants}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="7" y="6" width="145" height="18"/>
+				<reportElement key="textField" x="7" y="2" width="145" height="18"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
