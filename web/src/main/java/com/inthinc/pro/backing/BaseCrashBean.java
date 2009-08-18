@@ -169,7 +169,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
     @Override
     protected void filterTableDataWithoutSearch(){}
     
-    private void initTableData()
+    public void initTableData()
     {
         setFilteredTableData(null);
         
