@@ -547,7 +547,7 @@ public class MockData {
         crashReport.setCrashReportID(crashReportID);
         crashReport.setDate(date);
         crashReport.setLatLng(latLng);
-        VehicleOccupant vehicleOccupant = new VehicleOccupant(1, SeatBeltType.OFF, person.getFullName(), person.getAddress(), "1", InjuryType.SEVERE_LACERATION,
+        VehicleOccupant vehicleOccupant = new VehicleOccupant(1, SeatBeltType.OFF, person.getFullName(), "1", InjuryType.SEVERE_LACERATION,
                 person.getPersonID(), crashReport, OccupantType.DRIVER);
         List<VehicleOccupant> vehicleOccupants = new ArrayList<VehicleOccupant>();
         vehicleOccupants.add(vehicleOccupant);

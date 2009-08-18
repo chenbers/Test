@@ -15,9 +15,6 @@ public class VehicleOccupant extends BaseEntity {
     private OccupantType occupantType;
     private String name;
     @Column(name = "addrID")
-    private Integer addressID;
-    @Column(updateable = false)
-    private Address address;
     private String license;
     private InjuryType injuryType;
     private Integer personID; //Not required
@@ -29,14 +26,12 @@ public class VehicleOccupant extends BaseEntity {
         
     }
 
-    public VehicleOccupant(Integer occupantID, SeatBeltType seatBelt, String name, Address address, String license, InjuryType injuryType,
+    public VehicleOccupant(Integer occupantID, SeatBeltType seatBelt, String name, String license, InjuryType injuryType,
             Integer personID, CrashReport crashReport,OccupantType occupantType) {
         super();
         this.occupantID = occupantID;
         this.seatBeltType = seatBelt;
         this.name = name;
-        this.addressID = address != null?address.getAddrID():null;
-        this.address = address;
         this.license = license;
         this.injuryType = injuryType;
         this.personID = personID;
@@ -70,13 +65,6 @@ public class VehicleOccupant extends BaseEntity {
         this.name = name;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     public String getLicense() {
         return license;
@@ -102,13 +90,6 @@ public class VehicleOccupant extends BaseEntity {
         this.personID = personID;
     }
 
-    public void setAddressID(Integer addressID) {
-        this.addressID = addressID;
-    }
-
-    public Integer getAddressID() {
-        return addressID;
-    }
 
     public void setCrashReportID(Integer crashReportID) {
         this.crashReportID = crashReportID;
@@ -128,7 +109,7 @@ public class VehicleOccupant extends BaseEntity {
 
     @Override
     public String toString() {
-        return "VehicleOccupant [address=" + address + ", injuryType=" + injuryType  + ", license=" + license + ", name=" + name + ", occupantID="
+        return "VehicleOccupant [ injuryType=" + injuryType  + ", license=" + license + ", name=" + name + ", occupantID="
                 + occupantID + ", personID=" + personID + ", seatBelt=" + seatBeltType + "]";
     }
 
