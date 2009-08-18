@@ -10,22 +10,16 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.html.HtmlExtendedDataTable;
-import org.richfaces.component.html.HtmlOrderingList;
-import org.richfaces.component.html.HtmlScrollableDataTable;
-import org.richfaces.model.SelectionMode;
 import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
-import com.inthinc.pro.model.DamageType;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.InjuryType;
-import com.inthinc.pro.model.OccupantType;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -47,9 +41,11 @@ public class CrashReportBean extends BaseBean{
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private CrashReportDAO crashReportDAO;
+    private PersonDAO personDAO;
     List<Vehicle> vehicleList;
+    private List<Person> personList;
     List<Trip> tripList;
-    List<IdentifiableEntityBean> entityList;
+    List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
     
     private CrashReport crashReport;
     private Integer crashReportID; //Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
@@ -59,18 +55,7 @@ public class CrashReportBean extends BaseBean{
     private Selection tripSelection;
     private HtmlExtendedDataTable entityHtmlScrollableDataTable;
     private HtmlExtendedDataTable tripHtmlScrollableDataTable;
-     
-    public List<SelectItem> getDamageTypeAsSelectItems(){
-        return SelectItemUtil.toList(DamageType.class, true);
-    }
-    
-    public List<SelectItem> getInjuryTypeAsSelectItems(){
-        return SelectItemUtil.toList(InjuryType.class, false);
-    }
-    
-    public List<SelectItem> getOccupantTypeAsSelectItems(){
-        return SelectItemUtil.toList(OccupantType.class, true);
-    }
+       
     
     public List<SelectItem> getCrashReportStatusAsSelectItems(){
         return SelectItemUtil.toList(CrashReportStatus.class, true);
@@ -94,7 +79,6 @@ public class CrashReportBean extends BaseBean{
     
     private CrashReport createCrashReport(){
         crashReport = new CrashReport();
-        crashReport.setAccountID(getAccountID());
         return crashReport;
     }
     
@@ -137,9 +121,10 @@ public class CrashReportBean extends BaseBean{
     
     private void loadDrivers(){
         logger.debug("loading drivers");
-        List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
-        for(Driver driver:driverList){
-            entityList.add(new DriverBean(driver));
+        personList = personDAO.getPeopleInGroupHierarchy(getGroupHierarchy().getTopGroup().getGroupID());
+        for(Person person:personList){
+            if(person.getDriver() != null)
+                entityList.add(new DriverBean(person.getDriver()));
         }
     }
     
@@ -164,6 +149,15 @@ public class CrashReportBean extends BaseBean{
     }
     
     public List<SelectItem> getVehiclesAsSelectItems(){
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for(Vehicle vehicle:vehicleList){
+            selectItems.add(new SelectItem(vehicle.getVehicleID(),vehicle.getFullName()));
+        }
+        
+        return selectItems;
+    }
+    
+    public List<SelectItem> getPeopleAsSelectItems(){
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for(Vehicle vehicle:vehicleList){
             selectItems.add(new SelectItem(vehicle.getVehicleID(),vehicle.getFullName()));
@@ -277,7 +271,22 @@ public class CrashReportBean extends BaseBean{
     public HtmlExtendedDataTable getTripHtmlScrollableDataTable() {
         return tripHtmlScrollableDataTable;
     }
-    
-    
-    
+
+    public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
+
+    public PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
+    public void setPersonList(List<Person> personList) {
+        this.personList = personList;
+    }
+
+    public List<Person> getPersonList() {
+        return personList;
+    }
+
+
 }

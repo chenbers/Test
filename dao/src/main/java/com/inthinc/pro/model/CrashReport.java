@@ -20,8 +20,6 @@ public class CrashReport extends BaseEntity {
     private CrashReportStatus crashReportStatus;
     private Date date;
     private LatLng latLng;
-    private String address;
-    private String damage;
     private Integer vehicleID;
     private Integer driverID;
     @Column(updateable = false)
@@ -31,10 +29,9 @@ public class CrashReport extends BaseEntity {
     private String weather;
     private String description;
     private Long noteID;
+    private Integer occupantCount;
     @Column(updateable = false)
     private FullEvent fullEvent;
-    @Column(updateable = false)
-    private List<VehicleOccupant> vehicleOccupants;
     @Column(updateable = false)
     private List<CrashDataPoint> crashDataPoints; //Detailed Crash Data
     
@@ -42,16 +39,16 @@ public class CrashReport extends BaseEntity {
         
     }
 
-    public CrashReport(Integer accountID, CrashReportStatus crashReportStatus, String damage, Vehicle vehicle, Driver driver, String weather) {
+    public CrashReport(Integer accountID, CrashReportStatus crashReportStatus, Vehicle vehicle, Driver driver, String weather,Integer occupantCount) {
         super();
         this.accountID = accountID;
         this.setCrashReportStatus(crashReportStatus);
-        this.damage = damage;
         this.vehicleID = vehicle != null ? vehicle.getVehicleID():null;
         this.vehicle = vehicle;
         this.weather = weather;
         this.driverID = driver != null ? driver.getDriverID():null;
         this.driver = driver;
+        this.occupantCount = occupantCount;
     }
 
     
@@ -105,26 +102,6 @@ public class CrashReport extends BaseEntity {
     }
 
     
-    public String getAddress() {
-        return address;
-    }
-
-    
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    
-    public String getDamage() {
-        return damage;
-    }
-
-    
-    public void setDamage(String damage) {
-        this.damage = damage;
-    }
-
-    
     public Integer getVehicleID() {
         return vehicleID;
     }
@@ -135,6 +112,16 @@ public class CrashReport extends BaseEntity {
     }
 
     
+    public Integer getDriverID() {
+        return driverID;
+    }
+
+    
+    public void setDriverID(Integer driverID) {
+        this.driverID = driverID;
+    }
+
+    
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -142,6 +129,16 @@ public class CrashReport extends BaseEntity {
     
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    
+    public Driver getDriver() {
+        return driver;
+    }
+
+    
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 
     
@@ -185,16 +182,6 @@ public class CrashReport extends BaseEntity {
     }
 
     
-    public List<VehicleOccupant> getVehicleOccupants() {
-        return vehicleOccupants;
-    }
-
-    
-    public void setVehicleOccupants(List<VehicleOccupant> vehicleOccupants) {
-        this.vehicleOccupants = vehicleOccupants;
-    }
-
-    
     public List<CrashDataPoint> getCrashDataPoints() {
         return crashDataPoints;
     }
@@ -204,53 +191,15 @@ public class CrashReport extends BaseEntity {
         this.crashDataPoints = crashDataPoints;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((crashReportID == null) ? 0 : crashReportID.hashCode());
-        return result;
+    public void setOccupantCount(Integer occupantCount) {
+        this.occupantCount = occupantCount;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof CrashReport)) {
-            return false;
-        }
-        CrashReport other = (CrashReport) obj;
-        if (crashReportID == null) {
-            if (other.crashReportID != null) {
-                return false;
-            }
-        }
-        else if (!crashReportID.equals(other.crashReportID)) {
-            return false;
-        }
-        return true;
+    public Integer getOccupantCount() {
+        return occupantCount;
     }
 
-    public void setDriverID(Integer driverID) {
-        this.driverID = driverID;
-    }
-
-    public Integer getDriverID() {
-        return driverID;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
     
-    
+   
 }
     

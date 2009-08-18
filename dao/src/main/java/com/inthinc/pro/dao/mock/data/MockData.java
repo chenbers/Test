@@ -29,7 +29,6 @@ import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.DVQMap;
-import com.inthinc.pro.model.DamageType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.DeviceStatus;
@@ -44,12 +43,10 @@ import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.IdleEvent;
-import com.inthinc.pro.model.InjuryType;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.OccupantType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.QuintileMap;
@@ -61,7 +58,6 @@ import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
-import com.inthinc.pro.model.SeatBeltType;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -69,7 +65,6 @@ import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleOccupant;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
@@ -543,15 +538,10 @@ public class MockData {
     }
 
     private CrashReport createCrashReport(Integer crashReportID, Integer accountID, Group group, Person person, Date date, LatLng latLng, Vehicle vehicle) {
-        CrashReport crashReport = new CrashReport(accountID, CrashReportStatus.NEW, "Rollover", vehicle, person.getDriver(), "Sunny");
+        CrashReport crashReport = new CrashReport(accountID, CrashReportStatus.NEW, vehicle, person.getDriver(), "Sunny",4);
         crashReport.setCrashReportID(crashReportID);
         crashReport.setDate(date);
         crashReport.setLatLng(latLng);
-        VehicleOccupant vehicleOccupant = new VehicleOccupant(1, SeatBeltType.OFF, person.getFullName(), "1", InjuryType.SEVERE_LACERATION,
-                person.getPersonID(), crashReport, OccupantType.DRIVER);
-        List<VehicleOccupant> vehicleOccupants = new ArrayList<VehicleOccupant>();
-        vehicleOccupants.add(vehicleOccupant);
-        crashReport.setVehicleOccupants(vehicleOccupants);
         return crashReport;
     }
 
