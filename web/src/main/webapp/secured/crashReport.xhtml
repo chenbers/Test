@@ -1,0 +1,128 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+  				xmlns:h="http://java.sun.com/jsf/html" 
+  				xmlns:rich="http://richfaces.org/rich"
+  				xmlns:a4j="http://richfaces.org/a4j"
+  				xmlns:iwi="http://pro.tiwi.com/jsf"
+  				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	<ui:define name="content">
+		<t:saveState value="#{crashReportBean}"/>
+		<div style="width: 940px; margin:auto">
+			<div class="panel_nw">
+				<div class="panel_title">
+					#{messages.crashreport}
+				</div>
+			</div>
+			<div class="panel_w">
+				<div class="panel_content">
+
+					<table>
+					
+					<tr>
+						<td style="vertical-align: top">
+							<div style="width: 460px; margin:auto">
+								<div class="panel_nw">
+									<div class="panel_title">
+										#{messages.crashreport_summary}
+									</div>
+								</div>
+								<div class="panel_w">
+									<div class="panel_content">
+									
+										<h:panelGrid columns="2">
+											<h:outputText value="#{messages.crashreport_status}:" />
+											<h:outputText value="#{crashReportBean.crashReport.status}" />
+											<h:outputText value="#{messages.crashreport_date_time}:"/>
+											<h:outputText value="#{crashReportBean.crashReport.date}" />
+											<h:outputText value="#{messages.crashreport_weather}:"/>
+											<h:outputText value="#{crashReportBean.crashReport.weather}" />
+											<h:outputText value="#{messages.crashreport_damage}:"/>
+											<h:outputText value="#{crashReportBean.crashReport.damageType}" />
+											<h:outputText value="#{messages.crashreport_description}:"/>
+											<h:outputText value="#{crashReportBean.crashReport.description}" />
+											<h:panelGroup>
+	                     					<div style="font-weight: bold"><h:outputText value="Vehicle" /></div>
+	                       					<h:panelGrid columns="2" style="padding: 0 0 0 15px">
+												<h:outputText value="#{messages.crashreport_vehicleID}:"/>
+												<h:outputText value="#{crashReportBean.crashReport.vehicle.name}" />
+												<h:outputText value="#{messages.crashreport_type}:"/>
+												<h:outputText value="#{crashReportBean.crashReport.vehicle.vtype}" />
+												<h:outputText value="#{messages.crashreport_make}:"/>
+												<h:outputText value="#{crashReportBean.crashReport.vehicle.make}" />
+												<h:outputText value="#{messages.crashreport_model}:"/>
+												<h:outputText value="#{crashReportBean.crashReport.vehicle.model}" />
+											</h:panelGrid>
+											</h:panelGroup>
+										</h:panelGrid>					
+										
+									</div>
+								</div>
+								<div class="panel_sw">
+									<div class="panel_statusbar"></div>
+								</div>
+							</div>
+						</td>
+						<td style="vertical-align: top">
+							<div style="width: 460px; margin:auto">
+								<div class="panel_nw">
+									<div class="panel_title">
+										#{messages.crashreport_occupant}
+									</div>
+								</div>
+								<div class="panel_w">
+									<div class="panel_content">
+									
+										<rich:dataTable value="#{crashReportBean.crashReport.vehicleOccupants}" var="occupant" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
+											<h:column>
+												<f:facet name="header">
+													#{messages.crashreport_occupant_name}
+												</f:facet>
+												<h:outputText value="#{occupant.name}"/>
+											</h:column>
+											<h:column>
+												<f:facet name="header">
+													#{messages.crashreport_occupant_type}
+												</f:facet>
+											</h:column>
+											<h:column>
+												<f:facet name="header">
+													#{messages.crashreport_occupant_license}
+												</f:facet>
+											</h:column>
+											<h:column>
+												<f:facet name="header">
+													#{messages.crashreport_seatbelt}
+												</f:facet>
+											</h:column>
+											<h:column>
+												<f:facet name="header">
+													#{messages.crashreport_occupant_injury}
+												</f:facet>
+											</h:column>
+										</rich:dataTable>
+						
+									</div>
+								</div>
+								<div class="panel_sw">
+									<div class="panel_statusbar"></div>
+								</div>
+							</div>
+						</td>
+					</tr>
+					
+					
+					</table>
+
+
+				</div>
+			</div>
+			<div class="panel_sw">
+				<div class="panel_statusbar"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
