@@ -212,6 +212,16 @@
         <pattern>/app/notifications/crashReport/#{crashReportBean.crashReportID}</pattern>
         <view-id>/secured/crashReport.faces</view-id>         
     </url-mapping>    
+      <url-mapping id="addCrashReport">
+    	<pattern>/app/notifications/addCrashReport</pattern>
+    	<view-id>/secured/notifications/editCrashReport.faces</view-id>
+		<action onPostback="false">#{crashReportBean.add}</action>
+	</url-mapping>
+    <url-mapping id="editCrashReport">
+    	<pattern>/app/notifications/editCrashReport/#{crashReportBean.crashReportID}</pattern>
+    	<view-id>/secured/editCrashReport.faces</view-id>
+    	<action onPostback="false">#{crashReportBean.edit}</action>
+    </url-mapping>
     <url-mapping id="zoneAlerts">
         <pattern>/app/notifications/zoneAlerts</pattern>
         <view-id>/secured/notifications/zoneAlerts.faces</view-id>
@@ -222,16 +232,7 @@
         <view-id>/secured/liveFleet.faces</view-id>
     </url-mapping>
     
-    <url-mapping id="addCrashReport">
-    	<pattern>/app/addCrashReport</pattern>
-    	<view-id>/secured/notifications/editCrashReport.faces</view-id>
-		<action onPostback="false">#{crashReportBean.add}</action>
-	</url-mapping>
-    <url-mapping id="editCrashReport">
-    	<pattern>/app/notifications/editCrashReport/#{crashReportBean.crashReportID}</pattern>
-    	<view-id>/secured/editCrashReport.faces</view-id>
-    	<action onPostback="false">#{crashReportBean.edit}</action>
-    </url-mapping>
+  
     
     <!-- ADMIN MAPPING RULES -->
     

@@ -13,8 +13,10 @@
 	<ui:param name="helpFile" value="Add_Edit_a_Report.htm" />
    
     <ui:define name="scripts">
-      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
-    </ui:define>
+		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
+        <script src="#{facesContext.externalContext.request.contextPath}/js/mapstraction/mapstraction.js" type="text/javascript"></script>
+        <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6"></script>
+	</ui:define>
     
 	<ui:define name="content">
 		
@@ -86,6 +88,28 @@
 										</tr>
 										<tr>
 											<td width="150" valign="top">
+			                                    <h:outputText value="#{messages.crashReport_vehicle}" />
+			                                    <h:outputText styleClass="required" value=" *" />
+											</td>
+											<td>
+												<h:selectOneMenu value="#{crashReportBean.crashReport.vehicleID}">
+													<f:selectItems value="#{crashReportBean.vehiclesAsSelectItems}"/>
+												</h:selectOneMenu>
+											</td>
+										</tr>
+										<tr>
+											<td width="150" valign="top">
+			                                    <h:outputText value="#{messages.crashReport_driver}" />
+			                                    <h:outputText styleClass="required" value=" *" />
+											</td>
+											<td>
+												<h:selectOneMenu value="#{crashReportBean.crashReport.driverID}">
+													<f:selectItems value="#{crashReportBean.driversAsSelectItems}"/>
+												</h:selectOneMenu>
+											</td>
+										</tr>
+										<tr>
+											<td width="150" valign="top">
 												<h:outputText value="#{messages.crashReport_weather}" />
 											</td>
 											<td>
@@ -95,31 +119,13 @@
 										</tr>
 										<tr>
 											<td width="150" valign="top">
-												<h:outputText value="#{messages.crashReport_vehicleDamage}" />
+												<h:outputText value="#{messages.crashReport_occupantCount}" />
 											</td>
 											<td>
-			      								<rich:message for="damage" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-												<h:inputText value="#{crashReportBean.crashReport.damage}" />
+												<rich:inputNumberSpinner minValue="0" maxValue="50" value="#{crashReportBean.crashReport.occupantCount}"/>
 											</td>
 										</tr>
-										<tr>
-											<td width="150" valign="top">
-												<h:outputText value="#{messages.crashReport_description}" />
-											</td>
-											<td>
-												<h:inputTextarea cols ="30" rows="3" value="#{crashReportBean.crashReport.description}" />	
-											</td>
-										</tr>
-										<tr>
-											<td width="150" valign="top">
-			                                    <h:outputText value="#{messages.crashReport_vehicle}" />
-											</td>
-											<td>
-												<h:selectOneMenu value="#{crashReportBean.crashReport.vehicleID}">
-													<f:selectItems value="#{crashReportBean.vehiclesAsSelectItems}"/>
-												</h:selectOneMenu>
-											</td>
-										</tr>
+										
 										
 			                        </table>
 								</td>
@@ -128,53 +134,81 @@
 									
 			                        <div class="spacer"></div>
 									<div class="add_section_title"><h:outputText
-											value="#{messages.crashReport_occupants}" /></div>
+											value="#{messages.crashReport_description}" /></div>
 									
 									<table width="420" border="0" cellspacing="2" cellpadding="4"
 										align="center">
 										<tr>
 											<td>
-												<div class="datagrid_panel" style="width: 420px">
-												<rich:dataTable id="dataTable" value="#{crashReportBean.crashReport.vehicleOccupants}" var="occupant" width="420" styleClass="datagrid">
-													<rich:column>
-														<f:facet name="header">
-															<h:outputText value="#{messages.crashReport_occupantName}"/>
-														</f:facet>
-													</rich:column>
-													<rich:column>
-														<f:facet name="header">
-															<h:outputText value="#{messages.crashReport_occupantInjury}"/>
-														</f:facet>
-													</rich:column>
-													<rich:column>
-														<f:facet name="header">
-															<h:outputText value="#{messages.crashReport_occupantSeatBelt}"/>
-														</f:facet>
-													</rich:column>
-													<rich:column>
-														<f:facet name="header">
-															<h:outputText value="#{messages.crashReport_occupantType}"/>
-														</f:facet>
-													</rich:column>
-													<rich:column>
-														<f:facet name="header">
-															<h:outputText value="#{messages.crashReport_occupantLicense}"/>
-														</f:facet>
-													</rich:column>
-												</rich:dataTable>
-												</div>
+												<div class="instructions"><h:outputText value="#{messages.crashReport_descriptionExplanation}" /></div>
+												<h:inputTextarea cols ="50" rows="10" value="#{crashReportBean.crashReport.description}" />
 											</td>
 										</tr>
-										<tr>
-											<td align="right">
-												<h:outputLink onclick="alert('Add Occpant')">Add Occupant</h:outputLink>
-											</td>
-										</tr>
-										
 									</table>
 								</td>
 							</tr>
-						</table>
+						 </table>
+						 
+						 <div class="spacer"></div>
+						 <div class="add_section_title"><h:outputText value="#{messages.crashReport_crashLocation}" /></div>
+						 <table width="850" style="padding:10px">
+						 	<tr>
+						 		<td width="200">
+									<h:outputText value="#{messages.crashReport_existingTrip}"/>
+								</td>
+								<td align="left">
+									<h:selectOneRadio value="#{crashReportBean.useExistingTrip}" layout="lineDirection">
+										<f:selectItem itemValue="FALSE" itemLabel="No"/>
+										<f:selectItem itemValue="TRUE" itemLabel="Yes"/>
+									</h:selectOneRadio>
+								</td>
+						   </tr>
+						   <tr>
+						   		<td colspan="2">
+									<table width="850">
+										<tr>
+											<ui:fragment rendered="#{crashReportBean.crashReport.crashDataPoints ne null}">
+												<td width="400">
+												
+												</td>	
+											</ui:fragment>
+											<td>
+												<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
+												
+												<script type="text/javascript">
+													var mapstraction = null;
+													function initMap()
+						                            {
+						                                mapstraction = new Mapstraction('map-canvas',"google");
+						                                // create a lat/lon object
+						                                var myPoint = new LatLonPoint(40,-111);
+	
+						                                // display the map centered on a latitude and longitude (Google zoom levels)
+						                                mapstraction.setCenterAndZoom(myPoint, 12);
+	
+						                                mapstraction.addEventListener('moveend',function() {
+						                                   var center = mapstraction.getCenter();
+						                                   var zoom = mapstraction.getZoom();
+						                                   updateMapValues(center.lat,center.lon,zoom);
+						                                });
+											
+														
+						                                                                
+						                               mapstraction.dragging(false);
+						      						   mapstraction.addControls({
+					                                        pan: true, 
+					                                        zoom: 'large',
+					                                        map_type: true});                            
+						                            }
+
+													initMap();
+												</script>
+											</td>
+										</tr>
+									</table>
+						 		</td>
+						 	</tr>
+						 </table>
 						
 						 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 						 

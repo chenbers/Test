@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
@@ -41,11 +42,13 @@ public class CrashReportBean extends BaseBean{
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private CrashReportDAO crashReportDAO;
-    private PersonDAO personDAO;
-    List<Vehicle> vehicleList;
+    private List<Vehicle> vehicleList;
     private List<Person> personList;
-    List<Trip> tripList;
-    List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
+    private List<Driver> driverList;
+    private List<Trip> tripList;
+    private Boolean useExistingTrip;
+    private List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
+
     
     private CrashReport crashReport;
     private Integer crashReportID; //Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
@@ -79,12 +82,16 @@ public class CrashReportBean extends BaseBean{
     
     private CrashReport createCrashReport(){
         crashReport = new CrashReport();
+        crashReport.setCrashReportStatus(CrashReportStatus.NEW);
+        crashReport.setOccupantCount(1);
+        
         return crashReport;
     }
     
     public void add(){
         entityList = new ArrayList<IdentifiableEntityBean>();
         logger.debug("Crash Report Add Begin");
+        setUseExistingTrip(false);
         loadVehicles();
         loadDrivers();
         createCrashReport();
@@ -121,10 +128,10 @@ public class CrashReportBean extends BaseBean{
     
     private void loadDrivers(){
         logger.debug("loading drivers");
-        personList = personDAO.getPeopleInGroupHierarchy(getGroupHierarchy().getTopGroup().getGroupID());
-        for(Person person:personList){
-            if(person.getDriver() != null)
-                entityList.add(new DriverBean(person.getDriver()));
+        driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
+        for(Driver driver:driverList){
+            if(driver != null)
+                entityList.add(new DriverBean(driver));
         }
     }
     
@@ -153,16 +160,17 @@ public class CrashReportBean extends BaseBean{
         for(Vehicle vehicle:vehicleList){
             selectItems.add(new SelectItem(vehicle.getVehicleID(),vehicle.getFullName()));
         }
-        
+        selectItems.add(0, new SelectItem(null, ""));
         return selectItems;
     }
     
-    public List<SelectItem> getPeopleAsSelectItems(){
+    public List<SelectItem> getDriversAsSelectItems(){
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
-        for(Vehicle vehicle:vehicleList){
-            selectItems.add(new SelectItem(vehicle.getVehicleID(),vehicle.getFullName()));
+        for(Driver driver:driverList){
+            selectItems.add(new SelectItem(driver.getDriverID(),driver.getPerson().getFullName()));
         }
         
+        selectItems.add(0, new SelectItem(null, ""));
         return selectItems;
     }
 
@@ -272,20 +280,28 @@ public class CrashReportBean extends BaseBean{
         return tripHtmlScrollableDataTable;
     }
 
-    public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
-    }
-
-    public PersonDAO getPersonDAO() {
-        return personDAO;
-    }
-
     public void setPersonList(List<Person> personList) {
         this.personList = personList;
     }
 
     public List<Person> getPersonList() {
         return personList;
+    }
+
+    public void setUseExistingTrip(Boolean useExistingTrip) {
+        this.useExistingTrip = useExistingTrip;
+    }
+
+    public Boolean getUseExistingTrip() {
+        return useExistingTrip;
+    }
+
+    public void setDriverList(List<Driver> driverList) {
+        this.driverList = driverList;
+    }
+
+    public List<Driver> getDriverList() {
+        return driverList;
     }
 
 
