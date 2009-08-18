@@ -61,6 +61,7 @@ import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
+import com.inthinc.pro.model.SeatBeltType;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -546,7 +547,7 @@ public class MockData {
         crashReport.setCrashReportID(crashReportID);
         crashReport.setDate(date);
         crashReport.setLatLng(latLng);
-        VehicleOccupant vehicleOccupant = new VehicleOccupant(1, Boolean.TRUE, person.getFullName(), person.getAddress(), "1", InjuryType.SEVERE_LACERATION,
+        VehicleOccupant vehicleOccupant = new VehicleOccupant(1, SeatBeltType.OFF, person.getFullName(), person.getAddress(), "1", InjuryType.SEVERE_LACERATION,
                 person.getPersonID(), crashReport, OccupantType.DRIVER);
         List<VehicleOccupant> vehicleOccupants = new ArrayList<VehicleOccupant>();
         vehicleOccupants.add(vehicleOccupant);

@@ -11,7 +11,7 @@ public class VehicleOccupant extends BaseEntity {
     private static final long serialVersionUID = 7041387131328308915L;
     @ID
     private Integer occupantID;
-    private Boolean seatBelt;
+    private SeatBeltType seatBeltType;
     private OccupantType occupantType;
     private String name;
     @Column(name = "addrID")
@@ -29,11 +29,11 @@ public class VehicleOccupant extends BaseEntity {
         
     }
 
-    public VehicleOccupant(Integer occupantID, Boolean seatBelt, String name, Address address, String license, InjuryType injuryType,
+    public VehicleOccupant(Integer occupantID, SeatBeltType seatBelt, String name, Address address, String license, InjuryType injuryType,
             Integer personID, CrashReport crashReport,OccupantType occupantType) {
         super();
         this.occupantID = occupantID;
-        this.seatBelt = seatBelt;
+        this.seatBeltType = seatBelt;
         this.name = name;
         this.addressID = address != null?address.getAddrID():null;
         this.address = address;
@@ -53,12 +53,12 @@ public class VehicleOccupant extends BaseEntity {
         this.occupantID = occupantID;
     }
 
-    public Boolean getSeatBelt() {
-        return seatBelt;
+    public SeatBeltType getSeatBelt() {
+        return seatBeltType;
     }
 
-    public void setSeatBelt(Boolean seatBelt) {
-        this.seatBelt = seatBelt;
+    public void setSeatBelt(SeatBeltType seatBeltType) {
+        this.seatBeltType = seatBeltType;
     }
 
 
@@ -129,7 +129,7 @@ public class VehicleOccupant extends BaseEntity {
     @Override
     public String toString() {
         return "VehicleOccupant [address=" + address + ", injuryType=" + injuryType  + ", license=" + license + ", name=" + name + ", occupantID="
-                + occupantID + ", personID=" + personID + ", seatBelt=" + seatBelt + "]";
+                + occupantID + ", personID=" + personID + ", seatBelt=" + seatBeltType + "]";
     }
 
     @Override
