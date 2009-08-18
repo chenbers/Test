@@ -62,11 +62,8 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
                 
                 if(!vehicleMap.containsKey(crashReport.getVehicleID()))
                     vehicleMap.put(crashReport.getVehicleID(), vehicleDAO.findByID(crashReport.getVehicleID()));
-                if(!groupMap.containsKey(crashReport.getGroupID()))
-                    groupMap.put(crashReport.getGroupID(), groupDAO.findByID(crashReport.getGroupID()));
                 
                 crashReport.setVehicle(vehicleMap.get(crashReport.getVehicleID()));
-                crashReport.setGroup(groupMap.get(crashReport.getGroupID()));
             }
             
             return crashReports;

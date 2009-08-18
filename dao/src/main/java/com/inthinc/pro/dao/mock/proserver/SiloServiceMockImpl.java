@@ -1369,8 +1369,15 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public List<Map<String, Object>> getCrashReportsByGroupID(Integer groupID) throws ProDAOException {
         SearchCriteria searchCriteria = new SearchCriteria();
+        AbstractMapper mapper = new SimpleMapper();
         searchCriteria.addKeyValue("groupID", groupID);
-        List<Map<String, Object>> returnList =  MockData.getInstance().lookupList(CrashReport.class,searchCriteria);
+        List<Map<String,Object>> returnList = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> vehicleList =  MockData.getInstance().lookupList(Vehicle.class,searchCriteria);
+        List<Vehicle> vehicles = mapper.convertToModelObject(vehicleList, Vehicle.class);
+        for(Vehicle vehicle:vehicles){
+            returnList.add(MockData.getInstance().lookup(CrashReport.class, "vehicleID", vehicle.getVehicleID()));
+        }
+        
         return returnList;
     }
     

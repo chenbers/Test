@@ -542,7 +542,7 @@ public class MockData {
     }
 
     private CrashReport createCrashReport(Integer crashReportID, Integer accountID, Group group, Person person, Date date, LatLng latLng, Vehicle vehicle) {
-        CrashReport crashReport = new CrashReport(accountID, CrashReportStatus.NEW, DamageType.ROLLOVER, vehicle, group, "Sunny");
+        CrashReport crashReport = new CrashReport(accountID, CrashReportStatus.NEW, "Rollover", vehicle, person.getDriver(), "Sunny");
         crashReport.setCrashReportID(crashReportID);
         crashReport.setDate(date);
         crashReport.setLatLng(latLng);
