@@ -19,6 +19,7 @@
 	<field name="date" class="java.lang.String"/>
 	<field name="nbrOccupants" class="java.lang.String"/>
 	<field name="status" class="java.lang.String"/>
+	<field name="weather" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
@@ -28,20 +29,20 @@
 	<columnHeader>
 		<band height="35">
 			<rectangle radius="2">
-				<reportElement key="rectangle-3" mode="Opaque" x="0" y="10" width="781" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
+				<reportElement key="rectangle-3" mode="Opaque" x="7" y="6" width="781" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="152" y="12" width="118" height="16"/>
+				<reportElement key="textField-2" x="132" y="12" width="106" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.crashhistory.group}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="270" y="12" width="125" height="16"/>
+				<reportElement key="textField-3" x="238" y="12" width="106" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.crashhistory.driver}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="635" y="12" width="136" height="16"/>
+				<reportElement key="textField-4" x="553" y="12" width="136" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.crashhistory.status}]]></textFieldExpression>
 			</textField>
@@ -49,53 +50,63 @@
 				<reportElement key="rectangle-2" x="196" y="17" width="0" height="0"/>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-12" x="519" y="12" width="116" height="16"/>
+				<reportElement key="textField-12" x="448" y="12" width="105" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.crashhistory.nbr.occupants}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="395" y="12" width="124" height="16"/>
+				<reportElement key="textField-13" x="344" y="12" width="104" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.crashhistory.vehicle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" x="7" y="12" width="145" height="16"/>
+				<reportElement key="textField-14" x="7" y="12" width="125" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.crashhistory.date.time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-15" x="689" y="12" width="136" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.crashhistory.weather}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="24">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="152" y="3" width="118" height="17"/>
+				<reportElement key="textField-1" x="132" y="3" width="106" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{group}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" x="270" y="3" width="125" height="17"/>
+				<reportElement key="textField-2" x="238" y="3" width="106" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
-				<reportElement key="textField-4" x="635" y="3" width="146" height="17"/>
+				<reportElement key="textField-4" x="553" y="3" width="136" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-9" x="395" y="3" width="124" height="17"/>
+				<reportElement key="textField-9" x="344" y="3" width="104" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="true">
-				<reportElement key="textField-10" x="519" y="3" width="116" height="17"/>
+				<reportElement key="textField-10" x="448" y="3" width="105" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nbrOccupants}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="7" y="3" width="145" height="18"/>
+				<reportElement key="textField" x="7" y="3" width="125" height="18"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="689" y="3" width="77" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{weather}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
