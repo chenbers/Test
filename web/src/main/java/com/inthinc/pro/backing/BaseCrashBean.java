@@ -15,6 +15,7 @@ import com.inthinc.pro.backing.ui.CrashHistoryReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.Person;
@@ -59,6 +60,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("nbr_occupants");
         AVAILABLE_COLUMNS.add("status");
+        AVAILABLE_COLUMNS.add("weather");
         AVAILABLE_COLUMNS.add("detail");
         AVAILABLE_COLUMNS.add("edit");
         AVAILABLE_COLUMNS.add("clear");
@@ -187,6 +189,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
 //        List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();        
 //        for ( CrashReport cr: crashList) {
 //            CrashHistoryReportItem chri = new CrashHistoryReportItem();
+//            chri.setCrashReportID(cr.getCrashReportID());      
 //            chri.setDate(dateFormatter.format(cr.getDate()));
 //            chri.setTime(cr.getDate().getTime());
 //            Driver d = this.getDriverDAO().findByID(cr.getVehicle().getDriverID());
@@ -201,6 +204,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
 //            chri.setLongitude(cr.getLatLng().getLng());
 //----------->// what about this?
 //            chri.setForgiven(0);
+//            chri.setWeather(cr.getWeather());
 //            
 //            histList.add(chri);            
 //        }    
@@ -242,6 +246,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         chri.setLatitude(40.745257d);
         chri.setLongitude(-111.879272d);
         chri.setForgiven(0);
+        chri.setWeather("Nasty");
         setUserRole(u.getRole().getName());
         
         histList.add(chri);
