@@ -532,7 +532,7 @@ public class MockData {
         Integer idOffset = acctID * MAX_CRASH_REPORTS + person.getPersonID() * MAX_CRASH_REPORTS;
         for (int i = 0; i < MAX_CRASH_REPORTS; i++) {
             String name = "Report Schedule " + Integer.valueOf(i);
-            CrashReport crashReport = createCrashReport(idOffset, acctID, group, person, new Date(), new LatLng(), vehicle);
+            CrashReport crashReport = createCrashReport(idOffset, acctID, group, person, new Date(), new LatLng(37.0625d, -95.677068d), vehicle);
             storeObject(crashReport);
         }
     }
@@ -542,6 +542,7 @@ public class MockData {
         crashReport.setCrashReportID(crashReportID);
         crashReport.setDate(date);
         crashReport.setLatLng(latLng);
+        crashReport.setDescription("Description Place Holder: This is where a user would write any further description of the crash that is not captured by the data we collect");
         return crashReport;
     }
 

@@ -207,8 +207,7 @@ public class CrashReportBean extends BaseBean{
     }
 
     public void setCrashReportID(Integer crashReportID) {
-        if(crashReport != null && crashReportID != null)
-            this.crashReport = crashReportDAO.findByID(crashReportID);
+        this.crashReport = crashReportDAO.findByID(crashReportID);
         this.crashReportID = crashReportID;
     }
     
