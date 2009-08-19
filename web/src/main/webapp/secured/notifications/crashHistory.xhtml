@@ -4,7 +4,9 @@
   				xmlns:h="http://java.sun.com/jsf/html" 
               	xmlns:rich="http://richfaces.org/rich"
               	xmlns:a4j="http://richfaces.org/a4j"
-  				xmlns:f="http://java.sun.com/jsf/core">
+	  			xmlns:security="http://pro.tiwi.com/jsf/security"              	
+  				xmlns:f="http://java.sun.com/jsf/core"
+  				xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
 	<ui:param name="crashhistorySubSelected" value="current" />
 	<ui:param name="helpFile" value="Notifications.htm" />
@@ -71,11 +73,14 @@
 							</f:facet>
 						</a4j:status>
 					  </li>
+					  
+					  <security:authorize ifAnyGranted="ROLE_SUPERUSER">
 					  <li class="l text">
-						<a4j:commandLink styleClass="ls_tab_add_crash" title="#{messages.notes_crashhistory_addnew}">
+						<pretty:link mappingId="addCrashReport" styleClass="ls_tab_add_crash">
 							#{messages.notes_crashhistory_addnew}
-						</a4j:commandLink>
+						</pretty:link>
 					  </li>  					  
+					  </security:authorize>
 					  <li class="r grid_icon">
 						<h:panelGroup id="crashHistoryReportToolImageId">
 							<h:graphicImage value="/images/ico_tools.png"/>

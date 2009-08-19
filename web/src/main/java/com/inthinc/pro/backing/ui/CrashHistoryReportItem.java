@@ -10,8 +10,15 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
+/**
+ * @author pwehan
+ *
+ */
 public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem> {
     private static final Logger logger = Logger.getLogger(CrashHistoryReportItem.class);
+    
+    private Integer crashReportID;
+    
     private String group;
     private String driverName;
     private String vehicleName;
@@ -22,22 +29,6 @@ public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem
     private Long time;    
     private Integer forgiven;
     private String detail;
-    
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
 
     private Double latitude;
     private Double longitude;
@@ -45,6 +36,16 @@ public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem
     
     private Driver driver;    
     private Vehicle vehicle;
+    
+    private String weather;
+
+    public Integer getCrashReportID() {
+        return crashReportID;
+    }
+
+    public void setCrashReportID(Integer crashReportID) {
+        this.crashReportID = crashReportID;
+    }
 
     public String getGroup() {
         return group;
@@ -130,6 +131,22 @@ public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem
     public void setDetail(String detail) {
         this.detail = detail;
     }
+    
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }    
 
     public Integer getForgiven() {
         return forgiven;
@@ -137,6 +154,14 @@ public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem
 
     public void setForgiven(Integer forgiven) {
         this.forgiven = forgiven;
+    }
+
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
     }
 
     @Override
