@@ -14,7 +14,6 @@ import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
@@ -39,6 +38,13 @@ public class CrashReportBean extends BaseBean{
     
     private static final Logger logger = Logger.getLogger(CrashReportBean.class);
     
+    private enum EditState
+    {
+        VIEW, EDIT, ADD;
+    }
+    
+    private EditState editState;
+    
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private CrashReportDAO crashReportDAO;
@@ -48,6 +54,7 @@ public class CrashReportBean extends BaseBean{
     private List<Trip> tripList;
     private Boolean useExistingTrip;
     private List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
+    
 
     
     private CrashReport crashReport;
@@ -91,6 +98,7 @@ public class CrashReportBean extends BaseBean{
     public void add(){
         entityList = new ArrayList<IdentifiableEntityBean>();
         logger.debug("Crash Report Add Begin");
+        editState = EditState.ADD;
         setUseExistingTrip(false);
         loadVehicles();
         loadDrivers();
@@ -101,6 +109,7 @@ public class CrashReportBean extends BaseBean{
     public void edit(){
         entityList = new ArrayList<IdentifiableEntityBean>();
         logger.debug("Crash Report Edit Begin");
+        editState = EditState.EDIT;
         loadVehicles();
         loadDrivers();
         
@@ -302,6 +311,14 @@ public class CrashReportBean extends BaseBean{
 
     public List<Driver> getDriverList() {
         return driverList;
+    }
+
+    public void setEditState(EditState editState) {
+        this.editState = editState;
+    }
+
+    public EditState getEditState() {
+        return editState;
     }
 
 

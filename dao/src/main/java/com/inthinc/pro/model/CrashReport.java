@@ -19,7 +19,8 @@ public class CrashReport extends BaseEntity {
     private Integer accountID;
     private CrashReportStatus crashReportStatus;
     private Date date;
-    private LatLng latLng;
+    private Double lat;
+    private Double lng;
     private Integer vehicleID;
     private Integer driverID;
     @Column(updateable = false)
@@ -91,17 +92,6 @@ public class CrashReport extends BaseEntity {
         this.date = date;
     }
 
-    
-    public LatLng getLatLng() {
-        return latLng;
-    }
-
-    
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
-    }
-
-    
     public Integer getVehicleID() {
         return vehicleID;
     }
@@ -198,6 +188,42 @@ public class CrashReport extends BaseEntity {
     public Integer getOccupantCount() {
         return occupantCount;
     }
+
+    
+    public Double getLat() {
+        return lat;
+    }
+
+    
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    
+    public Double getLng() {
+        return lng;
+    }
+
+    
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+    
+    public LatLng getLatLng(){
+        if(lat != null && lng != null){
+            return new LatLng(lat,lng);
+        }
+        return null;
+    }
+    
+    public void setLatLng(LatLng latLng){
+        if(latLng != null){
+            lat = latLng.getLat();
+            lng = latLng.getLng();
+        }
+    }
+   
+    
 
     
    
