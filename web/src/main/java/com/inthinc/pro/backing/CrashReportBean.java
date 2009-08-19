@@ -52,40 +52,21 @@ public class CrashReportBean extends BaseBean{
     private List<Person> personList;
     private List<Driver> driverList;
     private List<Trip> tripList;
+    private Trip selectedTrip;
     private Boolean useExistingTrip;
     private List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
+    private Integer entityID;
     
 
     
     private CrashReport crashReport;
     private Integer crashReportID; //Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
     
-    
-    private Selection entitySelection;
-    private Selection tripSelection;
-    private HtmlExtendedDataTable entityHtmlScrollableDataTable;
-    private HtmlExtendedDataTable tripHtmlScrollableDataTable;
        
-    
     public List<SelectItem> getCrashReportStatusAsSelectItems(){
         return SelectItemUtil.toList(CrashReportStatus.class, true);
     }
-    
-    private IdentifiableEntityBean getSelectedEntityBean(){
-        Iterator<Object> iterator = entitySelection.getKeys();
-        while(iterator.hasNext())
-        {
-            Object key =  iterator.next();
-            entityHtmlScrollableDataTable.setRowKey(key);
-            if(entityHtmlScrollableDataTable.isRowAvailable())
-            {
-                IdentifiableEntityBean identifiableEntityBean = (IdentifiableEntityBean)entityHtmlScrollableDataTable.getRowData();
-                return identifiableEntityBean;
-            }
-        }
-        
-        return null;
-    }
+   
     
     private CrashReport createCrashReport(){
         crashReport = new CrashReport();
@@ -152,10 +133,7 @@ public class CrashReportBean extends BaseBean{
         logger.debug("loading trips");
 
         IdentifiableEntityBean identifiableEntityBean = getSelectedEntityBean();
-        if(identifiableEntityBean == null){
-            logger.debug("selection is null");
-            return;
-        }
+       
         if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
             tripList = driverDAO.getTrips(identifiableEntityBean.getId(), new Date(0), new Date());
         }else{
@@ -164,6 +142,17 @@ public class CrashReportBean extends BaseBean{
         
     }
     
+    private IdentifiableEntityBean getSelectedEntityBean() {
+        for(IdentifiableEntityBean entityBean:entityList){
+            if(entityBean.getId().equals(entityID)){
+                return entityBean;
+            }
+        }
+        
+        return null;
+    }
+
+
     public List<SelectItem> getVehiclesAsSelectItems(){
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for(Vehicle vehicle:vehicleList){
@@ -177,6 +166,16 @@ public class CrashReportBean extends BaseBean{
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for(Driver driver:driverList){
             selectItems.add(new SelectItem(driver.getDriverID(),driver.getPerson().getFullName()));
+        }
+        
+        selectItems.add(0, new SelectItem(null, ""));
+        return selectItems;
+    }
+    
+    public List<SelectItem> getEntitysAsSelectItems(){
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for(IdentifiableEntityBean entityBean:entityList){
+            selectItems.add(new SelectItem(entityBean.getId(),entityBean.getName() + " (" + entityBean.getEntityType() + ")"));
         }
         
         selectItems.add(0, new SelectItem(null, ""));
@@ -257,38 +256,6 @@ public class CrashReportBean extends BaseBean{
         this.entityList = entityList;
     }
 
-    public void setEntitySelection(Selection entitySelection) {
-        this.entitySelection = entitySelection;
-    }
-
-    public Selection getEntitySelection() {
-        return entitySelection;
-    }
-
-    public void setTripSelection(Selection tripSelection) {
-        this.tripSelection = tripSelection;
-    }
-
-    public Selection getTripSelection() {
-        return tripSelection;
-    }
-
-    public void setEntityHtmlScrollableDataTable(HtmlExtendedDataTable entityHtmlScrollableDataTable) {
-        this.entityHtmlScrollableDataTable = entityHtmlScrollableDataTable;
-    }
-
-    public HtmlExtendedDataTable getEntityHtmlScrollableDataTable() {
-        return entityHtmlScrollableDataTable;
-    }
-
-    public void setTripHtmlScrollableDataTable(HtmlExtendedDataTable tripHtmlScrollableDataTable) {
-        this.tripHtmlScrollableDataTable = tripHtmlScrollableDataTable;
-    }
-
-    public HtmlExtendedDataTable getTripHtmlScrollableDataTable() {
-        return tripHtmlScrollableDataTable;
-    }
-
     public void setPersonList(List<Person> personList) {
         this.personList = personList;
     }
@@ -322,4 +289,22 @@ public class CrashReportBean extends BaseBean{
     }
 
 
+    public void setEntityID(Integer entityID) {
+        this.entityID = entityID;
+    }
+
+
+    public Integer getEntityID() {
+        return entityID;
+    }
+
+
+    public void setSelectedTrip(Trip selectedTrip) {
+        this.selectedTrip = selectedTrip;
+    }
+
+
+    public Trip getSelectedTrip() {
+        return selectedTrip;
+    }
 }

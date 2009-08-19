@@ -226,12 +226,48 @@
 						   <tr>
 						   		<td colspan="2">
 						   			<rich:panel id="mapPanel">
-						   				<h:outputText value="#{crashReportBean.crashReport.lat}"/>
 										<table width="870">
 											<tr>
 												<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'true'}">
-													<td width="400">
-														
+													<td width="400" valign="top">
+														<h:panelGrid columns="2" width="400x">
+															<h:outputText value="Vehicle/Driver Search:"></h:outputText>
+															<a4j:region>
+																<h:selectOneMenu value="#{crashReportBean.entityID}">
+																	<f:selectItems value="#{crashReportBean.entitysAsSelectItems}"/>
+																	<a4j:support event="onchange" reRender="tripsListPanel" action="#{crashReportBean.loadTrips}"/>
+																</h:selectOneMenu>
+															</a4j:region>
+														</h:panelGrid>
+														<rich:spacer height="10px"/>
+														<rich:panel id="tripsListPanel">
+																<div class="datagrid_panel" style="width: 400px">
+																	<h:outputText value="Trips: "/>
+																	<rich:spacer height="5px"/>
+																	<rich:extendedDataTable value="#{crashReportBean.tripList}"
+																	        rowClasses="tableOdd,tableEven"
+																	        styleClass="datagrid"
+																	        selectionMode="single"
+																	        selectedClass="selected-row"
+																			var="trip" width="390px" height="450px">
+																		<a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm,selectVehicleForm" oncomplete="bodyLoad();">
+										                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
+										                                </a4j:support>
+																		<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false">
+																			<f:facet name="header"><h:outputText value="Start"></h:outputText></f:facet>
+																			<h:outputText value="#{trip.startTime}">
+																				<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
+																			</h:outputText>
+																		</rich:column>
+																		<rich:column>
+																			<f:facet name="header"><h:outputText value="End"></h:outputText></f:facet>
+																			<h:outputText value="#{trip.endTime}">
+																				<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
+																			</h:outputText>
+																		</rich:column>
+																	</rich:extendedDataTable> 
+																</div>
+														</rich:panel>
 													</td>	
 												</ui:fragment>
 												<td>
