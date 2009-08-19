@@ -19,6 +19,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
@@ -63,6 +64,8 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         AVAILABLE_COLUMNS.add("clear");
 
     }
+    
+    private String                              userRole;
         
     private static DateFormat dateFormatter = 
         new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));        
@@ -215,6 +218,10 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         Person p = getProUser().getUser().getPerson();
         Vehicle v = getVehicleDAO().findByDriverInGroup(d.getDriverID(), 
                 getGroupHierarchy().getTopGroup().getGroupID());
+        
+        // this access sets a table level parameter to conditionally render
+        //  certain columns
+        User u = getProUser().getUser();        
                 
         // account for time zone
         TimeZone tz = (d == null || p == null) ? 
@@ -222,6 +229,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);     
         
         CrashHistoryReportItem chri = new CrashHistoryReportItem();
+        chri.setCrashReportID(1);
         chri.setDate(dateFormatter.format(d.getModified()));
         chri.setTime(d.getModified().getTime());
         chri.setDriver(d);
@@ -234,6 +242,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         chri.setLatitude(40.745257d);
         chri.setLongitude(-111.879272d);
         chri.setForgiven(0);
+        setUserRole(u.getRole().getName());
         
         histList.add(chri);
         
@@ -432,6 +441,14 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
 
     public void setCrashReportDAO(CrashReportDAO crashReportDAO) {
         this.crashReportDAO = crashReportDAO;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     @Override
