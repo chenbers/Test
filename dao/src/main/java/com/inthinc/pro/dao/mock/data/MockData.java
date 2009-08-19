@@ -26,6 +26,7 @@ import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseAlert;
+import com.inthinc.pro.model.CrashDataPoint;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.DVQMap;
@@ -532,7 +533,7 @@ public class MockData {
         Integer idOffset = acctID * MAX_CRASH_REPORTS + person.getPersonID() * MAX_CRASH_REPORTS;
         for (int i = 0; i < MAX_CRASH_REPORTS; i++) {
             String name = "Report Schedule " + Integer.valueOf(i);
-            CrashReport crashReport = createCrashReport(idOffset, acctID, group, person, new Date(), new LatLng(37.0625d, -95.677068d), vehicle);
+            CrashReport crashReport = createCrashReport(idOffset, acctID, group, person, new Date(), new LatLng(40.7109991d,-111.9928979d), vehicle);
             storeObject(crashReport);
         }
     }
@@ -543,6 +544,20 @@ public class MockData {
         crashReport.setDate(date);
         crashReport.setLatLng(latLng);
         crashReport.setDescription("Description Place Holder: This is where a user would write any further description of the crash that is not captured by the data we collect");
+        
+        List<CrashDataPoint> crashDataPointList = new ArrayList<CrashDataPoint>();
+        for(int i = 10; i > 0; i--) {
+            CrashDataPoint point = new CrashDataPoint();
+            point.setDate(new Date());
+            point.setGpsSpeed(76);
+            point.setObdSpeed(70);
+            point.setSeatBelt(false);
+            point.setRpm(5800);
+            point.setLatLng(new LatLng((40.7109991d + (i * 0.75)),(-111.9928979d) + (i * 0.75)));
+            crashDataPointList.add(point);
+        }
+        crashReport.setCrashDataPoints(crashDataPointList);
+        
         return crashReport;
     }
 

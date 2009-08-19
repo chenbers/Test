@@ -12,10 +12,13 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.CrashDataPoint;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
@@ -200,6 +203,18 @@ public class CrashReportBean extends BaseBean{
 
     public void setCrashReportID(Integer crashReportID) {
         this.crashReport = crashReportDAO.findByID(crashReportID);
+        List<CrashDataPoint> crashDataPointList = new ArrayList<CrashDataPoint>();
+        for(int i = 10; i > 0; i--) {
+            CrashDataPoint point = new CrashDataPoint();
+            point.setDate(DateUtil.getDaysBackDate(new Date(), 4));
+            point.setGpsSpeed(76);
+            point.setObdSpeed(70);
+            point.setSeatBelt(false);
+            point.setRpm(5800);
+            point.setLatLng(new LatLng((40.7109991d + (i * 0.75)),(-111.9928979d) + (i * 0.75)));
+            crashDataPointList.add(point);
+        }
+        crashReport.setCrashDataPoints(crashDataPointList);
         this.crashReportID = crashReportID;
     }
     
