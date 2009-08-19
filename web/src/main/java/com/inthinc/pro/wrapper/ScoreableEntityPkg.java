@@ -16,7 +16,7 @@ public class ScoreableEntityPkg implements Serializable{
 	
 	private String style;
 	private String colorKey;
-	private String goTo;
+//	private String goTo;
 	private Integer position;
 	private Boolean show;
 	
@@ -24,7 +24,7 @@ public class ScoreableEntityPkg implements Serializable{
 		this.se = new ScoreableEntity();
 		this.style = "";
 		this.colorKey = "";
-		this.goTo = "";
+//		this.goTo = "";
 	}
 	
 	
@@ -47,15 +47,15 @@ public class ScoreableEntityPkg implements Serializable{
 	public void setColorKey(String colorKey) {
 		this.colorKey = colorKey;
 	}
-	public String getGoTo() {
-		return goTo;
-	}
-	public void setGoTo(String goTo) {
-		this.goTo = goTo;
-	}
-	public String goTo() {
-		return this.goTo;
-	}
+//	public String getGoTo() {
+//		return goTo;
+//	}
+//	public void setGoTo(String goTo) {
+//		this.goTo = goTo;
+//	}
+//	public String goTo() {
+//		return this.goTo;
+//	}
     public Integer getPosition()
     {
         return position;

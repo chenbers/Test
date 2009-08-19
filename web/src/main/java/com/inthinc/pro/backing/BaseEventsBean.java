@@ -139,15 +139,17 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     public void refreshAction()
     {
         setTableData(null);
-        init();
+        
+//        init();
     }
     private void init()
     {
         if (tableData == null)
         {
             initTableData();
+            filterTableData();
         }
-        if (filteredTableData == null)
+        else if (filteredTableData == null)
         {
             filterTableData();
         }
@@ -156,6 +158,11 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     @Override
     protected void filterTableData()
     {
+        if (tableData == null)
+        {
+            initTableData();
+        }
+
         setFilteredTableData(tableData); 
         if (getCategoryFilter() != null)
         {    

@@ -57,7 +57,6 @@
     
    <!-- Forgot username/password Beans -->
     <bean id="mailSenderBean" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-    	<property name="host" value="${mailserver}"  />
     </bean>
     <bean id="retrieveCredentialsBean" class="com.inthinc.pro.backing.RetrieveCredentialsBean" scope="request" parent="baseBean">
         <property name="from"><value><![CDATA[tiwiPRO Support <support@inthinc.com>]]></value></property>
@@ -100,8 +99,9 @@
         <property name="reportCriteriaService" ref="reportCriteriaService"/>
         <property name="durationBean" ref="mpgDurationBean"/>
     </bean>
-    <bean id="crashSummaryBean" class="com.inthinc.pro.backing.CrashSummaryBean" scope="request" parent="baseBean">
+    <bean id="crashSummaryBean" class="com.inthinc.pro.backing.CrashSummaryBean" scope="request" parent="baseBean" init-method="initBean">
     	<property name="scoreDAO" ref="scoreDAO"/>
+        <property name="navigation" ref="navigationBean"></property>
     </bean>
     <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
@@ -266,7 +266,7 @@
         <property name="driverSpeedBean" ref="driverSpeedBean"/>
         <property name="driverStyleBean" ref="driverStyleBean"/>
         <property name="driverSeatBeltBean" ref="driverSeatBeltBean"/>
-    </bean>
+     </bean>
 
     <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="basePerformanceEventsBean">
         <property name="durationBean" ref="driverSpeedDurationBean"/>

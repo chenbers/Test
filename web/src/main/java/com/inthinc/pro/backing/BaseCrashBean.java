@@ -130,16 +130,17 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
     public void refreshAction()
     {
         setTableData(null);
-        init();
+        
+//        init();
     }
-    
     private void init()
     {
         if (tableData == null)
         {
             initTableData();
+            filterTableData();
         }
-        if (filteredTableData == null)
+        else if (filteredTableData == null)
         {
             filterTableData();
         }

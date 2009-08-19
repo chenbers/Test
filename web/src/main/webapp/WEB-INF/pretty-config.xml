@@ -125,7 +125,7 @@
     <url-mapping id="driversReportWithGroup">
         <pattern>/app/reports/driversReport/group/#{searchCoordinationBean.groupID}</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
-        <action onPostback="false">#{driverReportBean.loadAll}</action>
+        <action onPostback="false">#{driverReportBean.loadGroup}</action>
     </url-mapping>
     <url-mapping id="driversReportWithCriteria">
         <pattern>/app/reports/driversReport/</pattern>

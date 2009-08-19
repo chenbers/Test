@@ -230,6 +230,8 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<IdlingReportItem> getIdlingReportData(Integer groupID, Date start, Date end);    
 
-    CrashSummary getCrashSummaryData(Integer groupID);
+    CrashSummary getGroupCrashSummaryData(Integer groupID);
+    CrashSummary getDriverCrashSummaryData(Integer driverID);
+    CrashSummary getVehicleCrashSummaryData(Integer vehicleID);
 
 }

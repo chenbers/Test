@@ -369,18 +369,22 @@ public class TripsBean extends BaseBean {
         this.selectedTrip = selectedTrip;
         // Add this trip to the list of selected trips.
         selectedTrips.clear();
-        selectedTrips.add(selectedTrip);
-        this.showLastTenTrips = false;
-        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
-            setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
-        }else{
-         // Get Driver for this Trip
-            setSelectedDriver(driverDAO.findByID(selectedTrip.getTrip().getDriverID()));
-        }
-        // Get Violations for this Trip
         violationEvents.clear();
         idleEvents.clear();
-        initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
+        
+        if (selectedTrip != null){
+        	
+	        selectedTrips.add(selectedTrip);
+	        this.showLastTenTrips = false;
+	        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
+	            setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
+	        }else{
+	         // Get Driver for this Trip
+	            setSelectedDriver(driverDAO.findByID(selectedTrip.getTrip().getDriverID()));
+	        }
+	        // Get Violations for this Trip
+	        initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
+        }
     }
 
     // VIOLATIONS PROPERTIES

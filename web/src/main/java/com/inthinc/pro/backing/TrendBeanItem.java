@@ -6,14 +6,12 @@ import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class TrendBeanItem {
 	
+	private ScoreableEntity scoreableEntity;
 	private ScoreableEntityPkg scoreableEntityPkg;
 	private CrashSummary crashSummary;
 	
 	public Integer getCrashesPerMillionMiles() {
 		return crashSummary.getCrashesPerMillionMiles();
-	}
-	public ScoreableEntity getSe() {
-		return scoreableEntityPkg.getSe();
 	}
 	public ScoreableEntityPkg getScoreableEntityPkg() {
 		return scoreableEntityPkg;
@@ -26,5 +24,21 @@ public class TrendBeanItem {
 	}
 	public void setCrashSummary(CrashSummary crashSummary) {
 		this.crashSummary = crashSummary;
+	}
+	public Integer getGroupID(){
+		
+		return scoreableEntity.getEntityID();
+	}
+	public String getGroupName(){
+		return scoreableEntity.getIdentifier();
+	}
+	public ScoreableEntity getScoreableEntity() {
+		return scoreableEntity;
+	}
+	public void setScoreableEntity(ScoreableEntity scoreableEntity) {
+		this.scoreableEntity = scoreableEntity;
+	}
+	public Integer getScore() {
+		return scoreableEntity.getScore();
 	}
 }

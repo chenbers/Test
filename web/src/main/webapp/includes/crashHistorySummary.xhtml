@@ -12,36 +12,30 @@
         <div class="panel_nw">    
             <div class="panel_title" style="z-index: #{zorder}">
                 <span class="crash">
-                #{messages.crash_summary_title}
+                #{messages.crash_summary_history_title}
                 </span>   
             </div>
         </div>
         <div class="panel_w">
             <div class="panel_content">
                <div style="height:#{xyheight};width:#{xywidth}">
-                     <div class="" id="">
-                        <table id="" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody><tr>
-                        <td width="25%"> 
+                    <div id="crashSummaryDiv" align="center"></div>
+                     <rich:panel>
+                       <table width="100%"><tbody><tr>
+                        <td class="crash-summary-title" width="50%"> 
                            <h:outputFormat value=" #{messages.crash_summary_overDistance} " >
                                 <a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
                             </h:outputFormat>
-                           <h:outputText value="#{crashSummaryBean.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+                            <h:outputText value="#{crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
                         </td>
-                        <td width="25%">
-                        #{messages.crash_summary_daysSinceLastCrash} #{crashSummaryBean.daysSinceLastCrash}
-                        </td>
-                         <td width="50%">
-                        #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} 
-                             <h:outputText value=" "/>
-                             <h:outputText value="#{crashSummaryBean.milesSinceLastCrash}" converter="MilesToKilometersConverter"/>
-                             <h:outputText value=" "/>
-                             <h:outputText value="miles" converter="MeasurementTextConverter"/>
+                        <td class="crash-summary-title" width="50%">
+                        #{messages.crash_summary_totalCrashes} #{crashSummary.totalCrashes}
                         </td>
                         </tr>
-                        </tbody>
+                         </tbody>
                         </table>
-                        </div>
-                        </div>
+                   </rich:panel>
+            </div>
         </div>
         </div>
         

@@ -192,14 +192,14 @@ public class TrendFlyoutBean extends BaseBean {
             if (this.navigation.getFlyout().get(key) != null) {
                 se.setShow((Boolean) this.navigation.getFlyout().get(key));
             }
-            if (score.getEntityType().equals(EntityType.ENTITY_GROUP)) {
-                // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null
-                // this should an error -- someone trying to access a group they shouldn't
-                String url = "";
-                if (getGroupHierarchy().getGroupLevel(score.getEntityID()) != null)
-                    url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
-                se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
-            }
+//            if (score.getEntityType().equals(EntityType.ENTITY_GROUP)) {
+//                // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null
+//                // this should an error -- someone trying to access a group they shouldn't
+//                String url = "";
+//                if (getGroupHierarchy().getGroupLevel(score.getEntityID()) != null)
+//                    url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
+//                se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
+//            }
             scoreableEntities.add(se);
             score = null;
         }

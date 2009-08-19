@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
@@ -61,7 +62,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private BaseBean    vehicleSpeedBean;
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
-    
+    private CrashSummary 		crashSummary;
+   
     
 
     @Override
@@ -521,6 +523,16 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 		// TODO Auto-generated method stub
 		
 	}
+	public CrashSummary getCrashSummary() {
+		
+		 //   	crashSummary = scoreDAO.getVehicleCrashSummaryData(getDriverID());
+				crashSummary = new CrashSummary(100,2345,new Date(),204);
+				return crashSummary;
+			}
+
+			public void setCrashSummary(CrashSummary crashSummary) {
+				this.crashSummary = crashSummary;
+			}
 
 
 }

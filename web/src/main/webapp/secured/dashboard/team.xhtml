@@ -32,6 +32,18 @@
 	</h:form>
 
 	<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+		<tr>
+			<td colspan="3" valign="top">
+			    					<!-- START CRASH SUMMARY PANEL -->
+				<ui:include src="/includes/crashSummary.xhtml">	
+                    <ui:param name="xyheight" value="100"/>
+                    <ui:param name="xywidth" value="920"/>  
+                    <ui:param name="zorder" value="6"/>	
+				</ui:include>
+			<!-- END CRASH SUMMARY -->
+			<div class="spacer"></div>
+			</td>
+		</tr>
 	  <tr>
     	<td colspan="3" valign="top">
     		<ui:include src="/includes/teamOverview.xhtml">	

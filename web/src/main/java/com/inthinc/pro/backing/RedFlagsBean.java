@@ -93,27 +93,33 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         refreshAction();
     }
 
-    protected void init() {
-        // if (tableData == null)
-        // {
-        // initTableData();
-        // }
-        if (filteredTableData == null) {
+    public void refreshAction()
+    {
+        setTableData(null);
+        
+//        init();
+    }
+    private void init()
+    {
+        if (tableData == null)
+        {
+            initTableData();
             filterTableData();
         }
-    }
+        else if (filteredTableData == null)
+        {
+            filterTableData();
+        }
 
-    public void refreshAction() {
-        setTableData(null);
-        init();
     }
 
     @Override
     protected void filterTableData() {
-        if (tableData == null) {
+        if (tableData == null)
+        {
             initTableData();
         }
-        setFilteredTableData(tableData);
+         setFilteredTableData(tableData);
         if (getCategoryFilter() != null) {
             List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
             if (validEventTypes != null) {

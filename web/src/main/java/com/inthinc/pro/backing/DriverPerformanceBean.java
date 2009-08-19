@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -47,8 +48,9 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private DriverSpeedBean     driverSpeedBean;
     private DriverStyleBean     driverStyleBean;
     private DriverSeatBeltBean  driverSeatBeltBean;
+    private CrashSummary 		crashSummary;
 
-    private TripDisplay         lastTrip;
+	private TripDisplay         lastTrip;
     private List<Event>         violationEvents = new ArrayList<Event>();
     private Integer             overallScore;
     private String              overallScoreHistory;
@@ -56,6 +58,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private String              mpgHistory;
     private String              coachingHistory;
     private Boolean             hasLastTrip;
+    
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
@@ -97,7 +100,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             }
         }
     }
-
+    
     // OVERALL SCORE properties
     public Integer getOverallScore()
     {
@@ -464,6 +467,16 @@ public class DriverPerformanceBean extends BasePerformanceBean
 	public void setDuration(Duration duration) {
 		// TODO Auto-generated method stub
 		
+	}
+	public CrashSummary getCrashSummary() {
+		
+ //   	crashSummary = scoreDAO.getDriverCrashSummaryData(getDriverID());
+		crashSummary = new CrashSummary(100,2345,new Date(),204);
+		return crashSummary;
+	}
+
+	public void setCrashSummary(CrashSummary crashSummary) {
+		this.crashSummary = crashSummary;
 	}
     
 }

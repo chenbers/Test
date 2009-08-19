@@ -43,7 +43,7 @@ public class DriveQMap extends BaseEntity
     private Date lastCrashDate;
     private Integer crashEvents;
     private Integer crashOdometer;
-    
+    private Integer totalCrashes;
 	private Date startingDate;
     private Date endingDate;
     
@@ -345,5 +345,11 @@ public class DriveQMap extends BaseEntity
 	}
 	public void setCrashOdometer(Integer crashOdometer) {
 		this.crashOdometer = crashOdometer;
+	}
+	public Integer getTotalCrashes() {
+		return totalCrashes;
+	}
+	public void setTotalCrashes(Integer totalCrashes) {
+		this.totalCrashes = totalCrashes;
 	}
 }

@@ -140,7 +140,21 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         resetCounts();
   	
     }
-    public void search()
+    public void loadGroup(){
+    	
+        final List<T> matchedItems = new ArrayList<T>();
+        
+        loadDBData();
+        
+        matchedItems.addAll(getDBData());
+
+        filterResults(matchedItems);
+        loadResults(matchedItems);
+        maxCount = getDisplayData().size();
+        resetCounts();
+  	
+    }
+   public void search()
     {
     	
         loadDBData();

@@ -19,7 +19,6 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -34,7 +33,12 @@ import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 public class TrendBean extends CustomSortBean<TrendBeanItem> implements DurationChangeListener
 {
 
-    private static final Logger logger = Logger.getLogger(TrendBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6423801673221354796L;
+
+	private static final Logger logger = Logger.getLogger(TrendBean.class);
 
     private ScoreDAO scoreDAO;
     private NavigationBean navigation;
@@ -55,7 +59,6 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     private Boolean animateChartData = Boolean.TRUE;
-    private String crashesTitle;
     
     public TrendBean()
     {
@@ -111,9 +114,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
             {
             
                 @Override
-                public int compare(TrendBeanItem se1, TrendBeanItem se2)
+                public int compare(TrendBeanItem tbi1, TrendBeanItem tbi2)
                 {
-                    return se1.getSe().getIdentifier().compareTo(se2.getSe().getIdentifier());
+                    return tbi1.getGroupName().compareTo(tbi2.getGroupName());
                 }
             };
         }
@@ -123,9 +126,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
             {
             
                 @Override
-                public int compare(TrendBeanItem se1, TrendBeanItem se2)
+                public int compare(TrendBeanItem tbi1, TrendBeanItem tbi2)
                 {
-                    return se1.getSe().getScore().compareTo(se2.getSe().getScore());
+                    return tbi1.getScoreableEntity().getScore().compareTo(tbi2.getScoreableEntity().getScore());
                 }
             };
         }
@@ -135,9 +138,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
             {
             
                 @Override
-                public int compare(TrendBeanItem se1, TrendBeanItem se2)
+                public int compare(TrendBeanItem tbi1, TrendBeanItem tbi2)
                 {
-                    return se1.getCrashesPerMillionMiles().compareTo(se2.getCrashesPerMillionMiles());
+                    return tbi1.getCrashesPerMillionMiles().compareTo(tbi2.getCrashesPerMillionMiles());
                 }
             };
         }
@@ -174,7 +177,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
                 this.navigation.getGroupID(), navigation.getDurationBean().getDuration());
-        ColorSelectorStandard cs = new ColorSelectorStandard();
+//        ColorSelectorStandard cs = new ColorSelectorStandard();
         
         for (int i = this.start; i <= this.end; i++)
         {
@@ -267,7 +270,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
         });  
 
         // Populate the table
-        String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+//        String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         int cnt = 0;                
         ColorSelectorStandard cs = new ColorSelectorStandard();
         for (ScoreableEntity score : s)
@@ -277,20 +280,22 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
             se.setSe(score);
             se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
             se.setColorKey(cs.getEntityColorKey(cnt++));
-            if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
-            {
-                // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null 
-                // this should an error -- someone trying to access a group they shouldn't
-                String url = "";
-                if (getGroupHierarchy().getGroupLevel(score.getEntityID()) != null)
-                    url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
-                se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
-            }
- //           CrashSummary crashSummary = scoreDAO.getCrashSummaryData(score.getEntityID());
-            CrashSummary crashSummary = new CrashSummary();
-            crashSummary.setCrashesPerMillionMiles(new Double(Math.random()*10).intValue());
+            
+//			Don't need navigation part           
+//            if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
+//            {
+//                //  if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null 
+//                // this should an error -- someone trying to access a group they shouldn't
+//                String url = "";
+//                if (getGroupHierarchy().getGroupLevel(score.getEntityID()) != null)
+//                    url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
+//                se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
+//            }
+ // TODO:           CrashSummary crashSummary = scoreDAO.getCrashSummaryData(score.getEntityID());
+            CrashSummary crashSummary = new CrashSummary(0, 0, null, new Double(Math.random()*10).intValue());
             trendBeanItem.setCrashSummary(crashSummary);
             trendBeanItem.setScoreableEntityPkg(se);
+            trendBeanItem.setScoreableEntity(score);
             trendBeanItems.add(trendBeanItem);
             score = null;
         }

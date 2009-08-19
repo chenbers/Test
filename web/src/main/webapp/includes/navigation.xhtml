@@ -45,7 +45,7 @@
 					  <h:inputText id="redirectSearch" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="15"/>
 					</td>
                     <td class="middle">
-                      <h:selectOneMenu id="redirectTo" value="#{searchCoordinationBean.navigation}" styleClass="text" style="width: 95px;margin-top:0">
+                      <h:selectOneMenu id="redirectTo" value="#{searchCoordinationBean.navigation}" styleClass="text" >
                         <f:selectItem itemLabel="#{messages.navigation_searchDrivers}" itemValue="1"/>                         
                                       <f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>  
                                       <f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>
