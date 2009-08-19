@@ -215,7 +215,7 @@ var firstLoad = new Boolean(true);
 						  <h:form>
 						  	  <a4j:commandLink onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
 						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="eventType" value="" assignTo="#{driverStyleBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="eventType" value="OVERALL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>

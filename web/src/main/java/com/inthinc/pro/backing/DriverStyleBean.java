@@ -18,18 +18,23 @@ import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class DriverStyleBean extends BasePerformanceEventsBean
 {
-    private static final Logger   logger            = Logger.getLogger(DriverStyleBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2981067321885761800L;
+	private static final Logger   logger            = Logger.getLogger(DriverStyleBean.class);
 
-//    private List<EventReportItem> styleEvents;
-//    private List<EventReportItem> filteredStyleEvents;
-//    private String                selectedEventType = "";
+    public DriverStyleBean() {
+		super();
+		
+		selectedBreakdown="OVERALL";
+	}
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
@@ -90,12 +95,6 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         }
     }
 
-    public DriverStyleBean() {
-		super();
-
-		selectedBreakdown="OVERALL";
-	}
-
 	@Override
     protected void initTrends()
     {
@@ -126,44 +125,6 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         sortEvents();
     }
 
-//    public void setDuration(Duration duration)
-//    {
-//        durationBean.setDuration(duration);
-//        initScores();
-//        initTrends();
-//        initEvents();
-//        tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
-//    }
-//
-//    public Duration getDuration()
-//    {
-//        return durationBean.getDuration();
-//    }
-//
-//    public List<EventReportItem> getStyleEvents()
-//    {
-//        if(events == null)
-//            initEvents();
-//            
-//        return events;
-//    }
-//
-//    public void setStyleEvents(List<EventReportItem> styleEvents)
-//    {
-//        this.events = styleEvents;
-//        filterEventsAction();
-//    }
-
-
-//    public EventReportItem getClearItem()
-//    {
-//        return clearItem;
-//    }
-//
-//    public void setClearItem(EventReportItem clearItem)
-//    {
-//        this.clearItem = clearItem;
-//    }
 
     public ReportCriteria buildReport()
     {
@@ -210,33 +171,6 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 
-//    public List<EventReportItem> getFilteredStyleEvents()
-//    {
-//        if(filteredEvents == null)
-//        {
-//            initEvents();
-//
-//            tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
-//        }
-//            
-//        return filteredEvents;
-//    }
-
-//    public void setFilteredStyleEvents(List<EventReportItem> filteredStyleEvents)
-//    {
-//        this.filteredEvents = filteredStyleEvents;
-//    }
-//
-//    public String getSelectedEventType()
-//    {
-//        return selectedEventType;
-//    }
-//
-//    public void setSelectedEventType(String selectedEventType)
-//    {
-//        this.selectedEventType = selectedEventType;
-//        
-//    }
 
 	@Override
     public void sortEvents()

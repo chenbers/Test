@@ -26,14 +26,10 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
 {
     private static final Logger   logger            = Logger.getLogger(VehicleStyleBean.class);
 
- //   private List<EventReportItem> styleEvents;
- //   private List<EventReportItem> filteredStyleEvents;
- //   private String                selectedEventType = "";
-    
     public VehicleStyleBean() {
 		super();
 
-		selectedBreakdown="";
+		selectedBreakdown="OVERALL";
 	}
 
 	@Override
@@ -58,24 +54,6 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         styleMap = new HashMap<String, String>();
 
         ScoreableEntity se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE);
-//        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
-//        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
-//        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
-//        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-//        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
         
         if(se != null)
         {
@@ -145,43 +123,6 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         sortEvents();
     }
 
-//    public void setDuration(Duration duration)
-//    {
-//        durationBean.setDuration(duration);
-//        initScores();
-//        initTrends();
-//        initEvents();
-//        tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
-//    }
-//
-//    public Duration getDuration()
-//    {
-//        return durationBean.getDuration();
-//    }
-//
-//    public List<EventReportItem> getStyleEvents()
-//    {
-//        if(events == null)
-//            initEvents();
-//            
-//        return events;
-//    }
-
-//    public void setStyleEvents(List<EventReportItem> styleEvents)
-//    {
-//        this.events = styleEvents;
-//        filterEventsAction();
-//    }
-
-//    public EventReportItem getClearItem()
-//    {
-//        return clearItem;
-//    }
-//
-//    public void setClearItem(EventReportItem clearItem)
-//    {
-//        this.clearItem = clearItem;
-//    }
 
     public ReportCriteria buildReport()
     {
@@ -228,32 +169,6 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 
-//    public List<EventReportItem> getFilteredStyleEvents()
-//    {
-//        if(filteredEvents == null)
-//        {
-//            initEvents();
-//            filterEventsAction();
-//            tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
-//        }
-//            
-//        return filteredEvents;
-//    }
-//
-//    public void setFilteredStyleEvents(List<EventReportItem> filteredStyleEvents)
-//    {
-//        this.filteredEvents = filteredStyleEvents;
-//    }
-//
-//    public String getSelectedEventType()
-//    {
-//        return selectedEventType;
-//    }
-//
-//    public void setSelectedEventType(String selectedEventType)
-//    {
-//        this.selectedEventType = selectedEventType;
-//    }
 
 	@Override
     public void sortEvents()
@@ -282,32 +197,5 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         }
          
         tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
-    }
-	
-
-
-//    @Override
-//    public void sortEvents()
-//    {
-//    	filteredEvents = new ArrayList<EventReportItem>();
-//
-//        if (selectedBreakdown.isEmpty())
-//        {
-//            
-//        	filteredEvents.addAll(getEvents());
-//        }
-//        else
-//        {
-//            for (EventReportItem eri : getEvents())
-//            {
-//                if (eri.getEvent().getEventType().name().equals(selectedBreakdown))
-//                {
-//                	filteredEvents.add(eri);
-//                }
-//            }
-//        }
-//        tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
-////        return "";
-//    }
-    
+    }    
 }
