@@ -176,6 +176,10 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
     public void initTableData()
     {
         setFilteredTableData(null);
+                
+        // this access sets a table level parameter to conditionally render
+        //  certain columns
+        User u = getProUser().getUser();            
         
         // the following will be how we access data when LIVE data is available
 //        List<CrashReport> crashList = crashReportDAO.getCrashReportsByGroupID(
@@ -217,11 +221,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         Driver d = getDriverDAO().getDriverByPersonID(getProUser().getUser().getPersonID()); 
         Person p = getProUser().getUser().getPerson();
         Vehicle v = getVehicleDAO().findByDriverInGroup(d.getDriverID(), 
-                getGroupHierarchy().getTopGroup().getGroupID());
-        
-        // this access sets a table level parameter to conditionally render
-        //  certain columns
-        User u = getProUser().getUser();        
+                getGroupHierarchy().getTopGroup().getGroupID());     
                 
         // account for time zone
         TimeZone tz = (d == null || p == null) ? 
