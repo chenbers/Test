@@ -188,7 +188,12 @@
                   										<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>		
         												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.crashes" />	
         												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn eq 'se.crashes'}" value="/images/#{trendBean.sortDirection eq 'DESC' ? 'sort_desc.gif' : 'sort_asc.gif'}" />
-        												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn ne 'se.crashes'}" value="/images/sort_available.gif" />															
+        												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn ne 'se.crashes'}" value="/images/sort_available.gif" />	
+        												<rich:toolTip>
+        					        						<h:outputFormat value=" #{messages.crash_summary_overDistanceTitle} " >
+                                								<a4j:actionparam value="MilesAlt" converter="MeasurementTextConverter"/>
+                            								</h:outputFormat>
+        												</rich:toolTip>														
         											</a4j:commandLink>
         										</f:facet>
                                                     <h:outputText value="#{item.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
