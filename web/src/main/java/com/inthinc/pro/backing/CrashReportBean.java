@@ -3,14 +3,11 @@ package com.inthinc.pro.backing;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlExtendedDataTable;
-import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -24,11 +21,6 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.SelectItemUtil;
 
-/**
- * 
- * @author mstrong
- *
- */
 public class CrashReportBean extends BaseBean{
     
     /**
@@ -215,7 +207,6 @@ public class CrashReportBean extends BaseBean{
         return crashReport;
     }
 
-    
     public void setCrashReport(CrashReport crashReport) {
         this.crashReport = crashReport;
     }
@@ -299,6 +290,7 @@ public class CrashReportBean extends BaseBean{
 
 
     public void setSelectedTrip(Trip selectedTrip) {
+        logger.debug("Setting selected trip: " + selectedTrip.getRoute());
         this.selectedTrip = selectedTrip;
     }
 

@@ -25,7 +25,8 @@
 		
 		<script type="text/javascript">
 			var map = null;
-
+			var tripPoints = null;
+			var bounds = new GLatLngBounds();
 			function placeMarker(lat,lng){
                 
                 var point = new GLatLng(lat,lng);
@@ -35,6 +36,7 @@
 					map.addOverlay(marker);
 			    }
             }
+            
 			function initMap()
              {
 				if (GBrowserIsCompatible()) {
@@ -46,6 +48,8 @@
 	                 map.addControl(new GMapTypeControl());
 					 map.setMapType(G_NORMAL_MAP);
 					 map.setCenter(new GLatLng(40,-111),12);
+					 map.addControl(new GLargeMapControl());
+						map.addControl(new GOverviewMapControl());
 	
 					 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'true'}">
 						 GEvent.addListener(map,"click", function(overlay, latlng) {     
@@ -67,14 +71,41 @@
 				}
                            
              }
-
-            
-
-			
 		</script>
 		
+		<rich:panel id="displayTrip">
+			<script type="text/javascript">
+				function displayTrip(){
+					var polyline;
+					var marker;
+					var startlatlng;
+					var endlatlng;
+					
+
+
+					map.clearOverlays();
+
+					var points = new Array();
+					var index = 0;
+   					<ui:repeat value="#{crashReportBean.selectedTrip.route}" var="latLng">
+   						points[index] = new GLatLng(#{latLng.lat}, #{latLng.lng}),
+   						index++;
+   					</ui:repeat>
+
+   					polyline = new GPolyline(points,"#0000ff", 6);
+   					map.addOverlay(polyline);
+
+   					var marker = new GMarker(points[index-1]);
+   					map.addOverlay(marker);
+
+   					bounds = new GLatLngBounds(points);
+   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
+				}
+			</script>
+		</rich:panel>
 		
-		<table width="920" border="0" cellspacing="0"
+		
+		<table width="940" border="0" cellspacing="0"
 			cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 			<tr>
 				<td valign="top">
@@ -240,34 +271,36 @@
 															</a4j:region>
 														</h:panelGrid>
 														<rich:spacer height="10px"/>
-														<rich:panel id="tripsListPanel">
-																<div class="datagrid_panel" style="width: 400px">
-																	<h:outputText value="Trips: "/>
-																	<rich:spacer height="5px"/>
-																	<rich:extendedDataTable value="#{crashReportBean.tripList}"
-																	        rowClasses="tableOdd,tableEven"
-																	        styleClass="datagrid"
-																	        selectionMode="single"
-																	        selectedClass="selected-row"
-																			var="trip" width="390px" height="450px">
-																		<a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm,selectVehicleForm" oncomplete="bodyLoad();">
-										                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
-										                                </a4j:support>
-																		<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false">
-																			<f:facet name="header"><h:outputText value="Start"></h:outputText></f:facet>
-																			<h:outputText value="#{trip.startTime}">
-																				<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
-																			</h:outputText>
-																		</rich:column>
-																		<rich:column>
-																			<f:facet name="header"><h:outputText value="End"></h:outputText></f:facet>
-																			<h:outputText value="#{trip.endTime}">
-																				<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
-																			</h:outputText>
-																		</rich:column>
-																	</rich:extendedDataTable> 
-																</div>
-														</rich:panel>
+														<a4j:region>
+															<rich:panel id="tripsListPanel">
+																	<div class="datagrid_panel" style="width: 400px">
+																		<h:outputText value="Trips: "/>
+																		<rich:spacer height="5px"/>
+																		<rich:extendedDataTable value="#{crashReportBean.tripList}"
+																		        rowClasses="tableOdd,tableEven"
+																		        styleClass="datagrid"
+																		        selectionMode="single"
+																		        selectedClass="selected-row"
+																				var="trip" width="390px" height="450px">
+																			<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip()">
+											                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
+											                                </a4j:support>
+																			<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false">
+																				<f:facet name="header"><h:outputText value="Start"></h:outputText></f:facet>
+																				<h:outputText value="#{trip.startTime}">
+																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
+																				</h:outputText>
+																			</rich:column>
+																			<rich:column>
+																				<f:facet name="header"><h:outputText value="End"></h:outputText></f:facet>
+																				<h:outputText value="#{trip.endTime}">
+																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
+																				</h:outputText>
+																			</rich:column>
+																		</rich:extendedDataTable> 
+																	</div>
+															</rich:panel>
+														</a4j:region>
 													</td>	
 												</ui:fragment>
 												<td>
