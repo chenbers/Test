@@ -240,12 +240,12 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         chri.setDriverName(p.getFullName());
         chri.setGroup(getGroupHierarchy().getGroup(d.getGroupID()).getName());
         chri.setNbrOccupants("3");
-        chri.setStatus("Dead");        
+        chri.setStatus("Confirmed");        
         chri.setVehicle(v);
         chri.setVehicleName(v.getFullName());
         chri.setLatitude(40.745257d);
         chri.setLongitude(-111.879272d);
-        chri.setForgiven(0);
+        chri.setForgiven(1);
         chri.setWeather("Nasty");
         setUserRole(u.getRole().getName());
         
