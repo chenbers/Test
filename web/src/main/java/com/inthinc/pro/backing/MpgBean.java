@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -121,6 +122,7 @@ public class MpgBean extends BaseBean implements Serializable
     {
         if(mpgEntities == null)
             mpgEntities = mpgDAO.getEntities(group, durationBean.getDuration());
+        	sortEntitiesByGroup();
         return mpgEntities;
     }
 
@@ -169,5 +171,10 @@ public class MpgBean extends BaseBean implements Serializable
     {
         durationBean.setDuration(duration);
         mpgEntities = null;
+    }
+    
+    private void sortEntitiesByGroup(){
+    	
+    	Collections.sort(mpgEntities);
     }
 }

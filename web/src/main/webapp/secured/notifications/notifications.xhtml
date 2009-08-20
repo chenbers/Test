@@ -48,8 +48,9 @@
                   var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
                   jQuery('#mapModalHeader').text("Event Location: " + address);
                 });
-              jQuery('tr:has(a[name*="excluded"])').addClass('excluded-row');
-          }
+              jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+              jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+            }
 
   		/* CreateMarker(GLatLng, divID, GIcon or null)
   		 *	

@@ -3304,6 +3304,10 @@ ul.htabs li.active span.tab a {
 	color: #333333;
 }
 
+.excluded-row-font {
+	color: #cccccc;
+}
+
 .d-row {
 	background-color: #cccccc;
 	color: #ffffff;
