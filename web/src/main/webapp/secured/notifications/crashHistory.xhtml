@@ -11,6 +11,20 @@
 	<ui:param name="crashhistorySubSelected" value="current" />
 	<ui:param name="helpFile" value="Notifications.htm" />
     <ui:param name="ajaxPanels" value="crashHistoryTable,crashHistorySearch"/>
+    
+    <ui:define name="scripts">
+        <script type="text/javascript">  
+          function initializeTable()
+          {
+              jQuery(".clickable-map-icon").click(function(){
+                  var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
+                  jQuery('#mapModalHeader').text("Event Location: " + address);
+                });
+              jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+              jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+            }
+		</script>
+    </ui:define>    
 
 	<ui:define name="content">
 		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
@@ -19,7 +33,7 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div id="panel_title" class="panel_title"> <span class="crashhistory_title">#{messages.notes_crashhistory_title}</span>
+		          <div id="panel_title" class="panel_title"> <span class="crashhistory">#{messages.notes_crashhistory_title}</span>
 		          	<span class="panel_links">
                         #{messages.notes_crashhistory_description}
 		          	</span>
