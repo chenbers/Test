@@ -99,7 +99,7 @@
                 </pretty:link>
             </rich:column>
              	             					
-            <rich:column rendered="#{bean.userRole == 'superUser'}">
+            <rich:column rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}">
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>                
@@ -109,7 +109,7 @@
 				</pretty:link>											
             </rich:column>           
             		
-            <rich:column rendered="#{bean.userRole == 'superUser'}" >
+            <rich:column rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}" >
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>                		
