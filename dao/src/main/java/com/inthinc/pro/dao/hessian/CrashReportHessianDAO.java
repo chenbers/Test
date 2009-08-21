@@ -80,6 +80,18 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
             return Collections.emptyList();
         }
     }
+    
+    @Override
+    public Integer forgiveCrash(Integer groupID)
+    {
+        return getChangedCount(getSiloService().forgiveCrash(groupID));
+    }
+
+    @Override
+    public Integer unforgiveCrash(Integer groupID)
+    {
+        return getChangedCount(getSiloService().unforgiveCrash(groupID));
+    }    
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
