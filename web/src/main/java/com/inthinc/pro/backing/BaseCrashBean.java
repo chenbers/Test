@@ -245,7 +245,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         chri.setVehicleName(v.getFullName());
         chri.setLatitude(40.745257d);
         chri.setLongitude(-111.879272d);
-        chri.setForgiven(1);
+        chri.setForgiven(0);
         chri.setWeather("Nasty");
         setUserRole(u.getRole().getName());
         
@@ -320,20 +320,15 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
     
     public void clearItemAction()
     {
-//        if (eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID()) >= 1){
-//    		initTableData();
-//        }
-//        tableData.remove(clearItem);
-//        filteredTableData.remove(clearItem);
-//        maxCount--;
-//        if (end > maxCount)
-//            end = maxCount;
+//          if ( crashReportDAO.excludeCrash(clearItem.getCrashReportID()) ) {
+//              initTableData();
+//          }
     }
     
     public void includeEventAction(){
     	
-//    	if (eventDAO.unforgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID())>= 1){
-//    		initTableData();
+//        if ( crashReportDAO.includeCrash(clearItem.getCrashReportID()) ) {
+//            initTableData();
 //        }
     	
     }
