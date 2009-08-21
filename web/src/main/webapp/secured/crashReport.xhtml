@@ -54,15 +54,22 @@
 			</div>
 			<div class="panel_w">
 				<div class="panel_content">
-				
-					<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
-						<div style="width:100%;text-align: right;padding-right: 10px">
-							<pretty:link mappingId="editCrashReport">
-								<h:outputText value="Edit"/>
-								<f:param value="#{crashReportBean.crashReport.crashReportID}"/>
-							</pretty:link>
-						</div>
-					</security:authorize>
+					<h:form>
+						<ul id="grid_nav" style="margin: 0;">
+							 <li class="l text"><a4j:htmlCommandLink action="pretty:crashHistory" value="#{messages.crashReport_backToCrashHistory}" /></li>
+		                   	 <security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
+			                   	 <li class="r">
+			                      <h:outputText value=" " />
+			                      <pretty:link mappingId="editCrashReport">
+			                      	 <button class="left">
+			                      	 	<span class="edit"><h:outputText value="#{messages.button_edit}" /></span>
+			                      	 </button>
+			                      	 <f:param value="#{crashReportBean.crashReport.crashReportID}"/>
+			                      </pretty:link>
+			                   	 </li>
+		                   	 </security:authorize>
+		                </ul>
+	                </h:form>
 
 					<h:panelGrid columns="2" columnClasses="section">
 						<h:panelGroup>

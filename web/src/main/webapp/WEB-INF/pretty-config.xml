@@ -219,8 +219,8 @@
 	</url-mapping>
     <url-mapping id="editCrashReport">
     	<pattern>/app/notifications/editCrashReport/#{crashReportBean.crashReportID}</pattern>
-    	<view-id>/secured/editCrashReport.faces</view-id>
-    	<action onPostback="false">#{crashReportBean.edit}</action>
+    	<view-id>/secured/notifications/editCrashReport.faces</view-id>
+    	<action>#{crashReportBean.edit}</action>
     </url-mapping>
     <url-mapping id="zoneAlerts">
         <pattern>/app/notifications/zoneAlerts</pattern>
