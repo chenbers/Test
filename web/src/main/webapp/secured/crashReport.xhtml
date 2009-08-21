@@ -8,7 +8,8 @@
   				xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:c="http://java.sun.com/jstl/core"
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:security="http://pro.tiwi.com/jsf/security">
                 
     <ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
@@ -53,6 +54,15 @@
 			</div>
 			<div class="panel_w">
 				<div class="panel_content">
+				
+					<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
+						<div style="width:100%;text-align: right;padding-right: 10px">
+							<pretty:link mappingId="editCrashReport">
+								<h:outputText value="Edit"/>
+								<f:param value="#{crashReportBean.crashReport.crashReportID}"/>
+							</pretty:link>
+						</div>
+					</security:authorize>
 
 					<h:panelGrid columns="2" columnClasses="section">
 						<h:panelGroup>

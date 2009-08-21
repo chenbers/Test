@@ -7,7 +7,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core">
 
 	<ui:param name="adminSelected" value="current" />
     <ui:param name="title" value="#{reportScheduleBean.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : messages.adminHeader_editReportSchedule)}"/>
@@ -20,87 +21,158 @@
 	</ui:define>
     
 	<ui:define name="content">
+		<style>
+			.section {
+				width: 460px;
+				vertical-align: top;
+				text-align: left;
+			}
+			
+			.section_fields{
+				width: 460px;
+				vertical-align: top;
+				text-align: left;
+				padding: 3px;
+				padding-left: 10px;
+			}
+			
+			.section_title {
+				font: bold 10px Verdana, Arial, Helvetica, sans-serif;
+				border-bottom: 1px solid #333;
+				padding: 10px 5px 5px;
+				margin-bottom:10px;
+				margin-top:10px;
+				text-align: left;
+			}
+		</style>
 		
 		<t:saveState value="#{crashReportBean}"></t:saveState>
 		
 		<script type="text/javascript">
-			var map = null;
-			var tripPoints = null;
-			var bounds = new GLatLngBounds();
-			function placeMarker(lat,lng){
-                
-                var point = new GLatLng(lat,lng);
-				var marker = new GMarker(point);
-				if(map){
-					map.clearOverlays();
-					map.addOverlay(marker);
-			    }
-            }
-            
-			function initMap()
-             {
-				if (GBrowserIsCompatible()) {
-					
-					 GUnload();
-					 map = new GMap2(document.getElementById("map-canvas"));
+				var map = null;
+				var tripPoints = null;
+				var crashMarker = null;
+				var eventListener = null;
+				
+				function placeCrashMarker(lat,lng){
+					if(map){
+						if(crashMarker)
+							map.removeOverlay(crashMarker);
+						var point = new GLatLng(lat,lng);
+			            crashMarker = createCrashMarker(point);
+						map.addOverlay(crashMarker);
+				    }
+	            }
+	
+	            function createCrashMarker(latLng){
+	                var baseIcon = new GIcon();
+	    			baseIcon.iconSize = new GSize(21, 20);
+	    			baseIcon.iconAnchor = new GPoint(6, 20);
+	    			baseIcon.infoWindowAnchor = new GPoint(5, 1);
+	            	var icon = new GIcon(baseIcon);
+	            	icon.image = "#{facesContext.externalContext.request.contextPath}/images/icon_crash.png";
+	            	var options = { icon:icon };
+		       	 	marker = new GMarker(latLng, options);
+	            	return marker;
+	            }
 
-	
-	                 map.addControl(new GMapTypeControl());
-					 map.setMapType(G_NORMAL_MAP);
-					 map.setCenter(new GLatLng(40,-111),12);
-					 map.addControl(new GLargeMapControl());
-						map.addControl(new GOverviewMapControl());
-	
-					 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'true'}">
-						 GEvent.addListener(map,"click", function(overlay, latlng) {     
-							  if (latlng) { 
-								 updateLocation(latLng.lat(),latLng.lng());
-							  }
-						 });
-					 </ui:fragment>
-	
-					 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'false'}">
-						 GEvent.addListener(map,"click", function(overlay, latLng) {     
-							  if (latLng) { 
-							    updateLocation(latLng.lat(),latLng.lng());
-							  }
-						 });
-					 </ui:fragment>
-					 
-					 placeMarker('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
-				}
-                           
-             }
+	            function createMarker(latLng,imageURL){
+	                var baseIcon = new GIcon();
+	    			baseIcon.iconSize = new GSize(21, 20);
+	    			baseIcon.iconAnchor = new GPoint(6, 20);
+	    			baseIcon.infoWindowAnchor = new GPoint(5, 1);
+	            	var icon = new GIcon(baseIcon);
+	            	icon.image = imageURL;
+	            	var options = { icon:icon };
+		       	 	var marker = new GMarker(latLng, options);
+	            	return marker;
+	            }
+
+	            /*<![CDATA[*/
+		            function getClosestPointFromList(latLng,latLngArray){
+		            	if(latLng){
+			                var closestLatLng = null;
+			                var difference = null;
+			                for (i = 0;i < latLngArray.length;i=i+1){
+								var latDifference = Math.abs(latLng.lat() - latLngArray[index].lat());
+								var lngDifference = Math.abs(latLng.lng() - latLngArray[index].lng());
+								var tempDifference = latDifference + lngDifference;
+								if(difference == null){
+										closestLatLng = latLngArray[0];
+								}
+			                }
+			
+			                if(closestLatLng)
+			                    return closestLatLng;
+		            	}
+		
+		                return latLngArray[latLngArray.length - 1];
+		            }
+	            /*]]>*/
+            
 		</script>
 		
+		<!-- initMap script - needs to be refreshed (use initMap panel to refresh script) -->
+		<rich:panel id="initMap">
+			<script type="text/javascript">
+				function initMap()
+	            {
+					if (GBrowserIsCompatible()) {
+						
+						 GUnload();
+						 map = new GMap2(document.getElementById("map-canvas"));
+	
+		
+		                 map.addControl(new GMapTypeControl());
+						 map.setMapType(G_NORMAL_MAP);
+						 map.setCenter(new GLatLng(40,-111),12);
+						 map.addControl(new GLargeMapControl());
+
+						 if(eventListener)
+						 	GEvent.removeListener(eventListener);
+
+						 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq false}">
+						 	 eventListener = GEvent.addListener(map,"click", function(overlay, latLng) {     
+								  if (latLng) { 
+								    updateLocation(latLng.lat(),latLng.lng());
+								  }
+							 });
+						 </ui:fragment>
+	
+						 placeMarker('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
+					}
+	                          
+	            } 
+			</script>
+		</rich:panel>
+		
+		<!-- displayTrip script - needs to be refreshed (use displayTrip panel to refresh script) -->
 		<rich:panel id="displayTrip">
 			<script type="text/javascript">
-				function displayTrip(){
-					var polyline;
-					var marker;
-					var startlatlng;
-					var endlatlng;
-					
-
-
-					map.clearOverlays();
-
-					var points = new Array();
-					var index = 0;
-   					<ui:repeat value="#{crashReportBean.selectedTrip.route}" var="latLng">
-   						points[index] = new GLatLng(#{latLng.lat}, #{latLng.lng}),
-   						index++;
-   					</ui:repeat>
-
-   					polyline = new GPolyline(points,"#0000ff", 6);
-   					map.addOverlay(polyline);
-
-   					var marker = new GMarker(points[index-1]);
-   					map.addOverlay(marker);
-
-   					bounds = new GLatLngBounds(points);
-   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
-				}
+					function displayTrip(){
+						var polyline;
+						var marker;
+				
+	
+						map.clearOverlays();
+						
+						var points = new Array();
+						var index = 0;
+	   					<ui:repeat value="#{crashReportBean.selectedTrip.route}" var="latLng">
+	   						points[index] = new GLatLng(#{latLng.lat}, #{latLng.lng}),
+	   						index++;
+	   					</ui:repeat>
+	   					polyline = new GPolyline(points,"#0000ff", 6);
+	   					map.addOverlay(polyline);
+						map.addOverlay(createMarker(points[0],"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
+	   					updateLocation(points[index-1].lat(),points[index-1].lng());
+	   					
+	
+	   					var bounds = polyline.getBounds();
+	   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
+	
+	   					tripPoints = points;
+					}
 			</script>
 		</rich:panel>
 		
@@ -126,8 +198,8 @@
 							
 						<ul id="grid_nav" style="margin: 0;">
 		                   	<li class="r">
-		                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-		                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+		                      <h:commandButton action="#{crashReportBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+		                      <h:outputText value=" " /><h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
 		                    </li>
 		                </ul>
 		                
@@ -137,108 +209,85 @@
 		                        <h:outputFormat value="#{messages.error_validationMsg}">
 		                           <f:param value="${tiwiprofn:getMessageCount()}"/>
 		                        </h:outputFormat>
+		                        
 		                     </dt>
 		                  </dl>
 		                </ui:fragment>
+		                
+		                <h:panelGrid columns="2" columnClasses="section">
+		                	<h:panelGroup>
+		                		<div class="section_title"><h:outputText value="#{messages.crashReport_crashSummary}" /></div>
+		                		<h:panelGrid columns="2" columnClasses="section_fields">
+		                			<h:panelGroup>
+		                				<h:outputText value="#{messages.crashReport_status}" />
+										<h:outputText styleClass="required" value=" *" />
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<rich:message for="statusSelectOne" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+		                				<h:selectOneMenu id="statusSelectOne" value="#{crashReportBean.crashReport.crashReportStatus}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
+											<f:selectItems value="#{crashReportBean.crashReportStatusAsSelectItems}"/>
+										</h:selectOneMenu>
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<h:outputText value="#{messages.crashReport_date}" />
+										<h:outputText styleClass="required" value=" *" />
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<rich:message for="dateCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<rich:calendar id="dateCalendar" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}"/>
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<h:outputText value="#{messages.crashReport_vehicle}" />
+	                                    <h:outputText styleClass="required" value=" *" />
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<rich:message for="vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:selectOneMenu id="vehicle" value="#{crashReportBean.crashReport.vehicleID}" required="true" requiredMessage="#{messages.required}">
+											<f:selectItems value="#{crashReportBean.vehiclesAsSelectItems}"/>
+										</h:selectOneMenu>
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<h:outputText value="#{messages.crashReport_driver}" />
+	                                    <h:outputText styleClass="required" value=" *" />
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:selectOneMenu id="driver" value="#{crashReportBean.crashReport.driverID}" required="true" requiredMessage="#{messages.required}">
+											<f:selectItems value="#{crashReportBean.driversAsSelectItems}"/>
+										</h:selectOneMenu>
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<h:outputText value="#{messages.crashReport_weather}" />
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<rich:message for="weather" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:inputText id="weather" value="#{crashReportBean.crashReport.weather}" styleClass="text" size="30" maxlength="30"></h:inputText>	
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<h:outputText value="#{messages.crashReport_occupantCount}" />
+		                			</h:panelGroup>
+		                			<h:panelGroup>
+		                				<rich:inputNumberSpinner minValue="0" maxValue="50" value="#{crashReportBean.crashReport.occupantCount}"/>
+		                			</h:panelGroup>
+		                		</h:panelGrid>
+		                	</h:panelGroup>
+		                	<h:panelGroup>
+		                		<div class="section_title"><h:outputText value="#{messages.crashReport_description}" /></div>
+		                		<h:panelGrid columns="1" columnClasses="section">
+		                			<div class="instructions"><h:outputText styleClass="instructions" value="#{messages.crashReport_descriptionExplanation}" /></div>
+									<h:inputTextarea cols ="50" rows="10" value="#{crashReportBean.crashReport.description}" />
+		                		</h:panelGrid>
+		                	</h:panelGroup>
+		                </h:panelGrid>
 					   
-						<table width="900" border="0" cellspacing="0" cellpadding="0">
-							<tr>
-								<td width="425" valign="top" align="left">
-			                        <div class="spacer"></div>
-									<div class="add_section_title"><h:outputText
-										value="#{messages.crashReport_crashSummary}" /></div>
-									
-									<table width="415" border="0" cellspacing="2" cellpadding="4" align="center">
-										<tr>
-											<td width="150" valign="top">
-												<h:outputText value="#{messages.crashReport_status}" />
-												<h:outputText styleClass="required" value=" *" />
-											</td>
-											<td>
-												<rich:message for="status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-												<h:selectOneMenu value="#{crashReportBean.crashReport.crashReportStatus}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
-													<f:selectItems value="#{crashReportBean.crashReportStatusAsSelectItems}"/>
-												</h:selectOneMenu>	
-											</td>
-										</tr>
-										<tr>
-											<td width="150" valign="top">
-												<h:outputText value="#{messages.crashReport_date}" />
-												<h:outputText styleClass="required" value=" *" />
-											</td>
-											<td>
-			      								<rich:message for="date" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-												<rich:calendar id="date" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}"/>
-											</td>
-										</tr>
-										<tr>
-											<td width="150" valign="top">
-			                                    <h:outputText value="#{messages.crashReport_vehicle}" />
-			                                    <h:outputText styleClass="required" value=" *" />
-											</td>
-											<td>
-												<rich:message for="vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-												<h:selectOneMenu id="vehicle" value="#{crashReportBean.crashReport.vehicleID}" required="true" requiredMessage="#{messages.required}">
-													<f:selectItems value="#{crashReportBean.vehiclesAsSelectItems}"/>
-												</h:selectOneMenu>
-											</td>
-										</tr>
-										<tr>
-											<td width="150" valign="top">
-			                                    <h:outputText value="#{messages.crashReport_driver}" />
-			                                    <h:outputText styleClass="required" value=" *" />
-											</td>
-											<td>
-												<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-												<h:selectOneMenu id="driver" value="#{crashReportBean.crashReport.driverID}" required="true" requiredMessage="#{messages.required}">
-													<f:selectItems value="#{crashReportBean.driversAsSelectItems}"/>
-												</h:selectOneMenu>
-											</td>
-										</tr>
-										<tr>
-											<td width="150" valign="top">
-												<h:outputText value="#{messages.crashReport_weather}" />
-											</td>
-											<td>
-			      								<rich:message for="weather" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-												<h:inputText id="weather" value="#{crashReportBean.crashReport.weather}" styleClass="text" size="30" maxlength="30"></h:inputText>	
-											</td>
-										</tr>
-										<tr>
-											<td width="150" valign="top">
-												<h:outputText value="#{messages.crashReport_occupantCount}" />
-											</td>
-											<td>
-												<rich:inputNumberSpinner minValue="0" maxValue="50" value="#{crashReportBean.crashReport.occupantCount}"/>
-											</td>
-										</tr>
-										
-										
-			                        </table>
-								</td>
-								<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-								<td width="425" valign="top" align="left">
-									
-			                        <div class="spacer"></div>
-									<div class="add_section_title"><h:outputText
-											value="#{messages.crashReport_description}" /></div>
-									
-									<table width="420" border="0" cellspacing="2" cellpadding="4"
-										align="center">
-										<tr>
-											<td>
-												<div class="instructions"><h:outputText value="#{messages.crashReport_descriptionExplanation}" /></div>
-												<h:inputTextarea cols ="50" rows="10" value="#{crashReportBean.crashReport.description}" />
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						 </table>
-						 
+						
 						 <div class="spacer"></div>
 						 <rich:message for="crashLocation" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 						 <div class="add_section_title"><h:outputText value="#{messages.crashReport_crashLocation}" /><h:outputText styleClass="required" value=" *" /></div>
+						 <rich:panel id="crashLocationHiddleInputPanel">
+						 	<h:inputHidden id="crashLocation" value="#{crashReportBean.crashReport.lat}" required="true" requiredMessage="#{messages.required}"/>
+						 </rich:panel>
+						 
 						 <table width="850" style="padding:10px">
 						 	<tr>
 						 		<td width="200">
@@ -249,7 +298,7 @@
 										<h:selectOneRadio value="#{crashReportBean.useExistingTrip}" layout="lineDirection">
 											<f:selectItem itemValue="FALSE" itemLabel="No"/>
 											<f:selectItem itemValue="TRUE" itemLabel="Yes"/>
-											<a4j:support event="onchange" reRender="mapPanel" limitToList="true"/>
+											<a4j:support event="onchange" reRender="mapPanel,initMap" oncomplete="initMap()" limitToList="true"/>
 										</h:selectOneRadio>
 									</a4j:region>
 								</td>
@@ -257,6 +306,7 @@
 						   <tr>
 						   		<td colspan="2">
 						   			<rich:panel id="mapPanel">
+						   				
 										<table width="870">
 											<tr>
 												<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'true'}">
@@ -307,12 +357,8 @@
 													
 													<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
 													
-													<script type="text/javascript">
-														initMap();
-													</script>
-													
 													<a4j:region>
-														<a4j:jsFunction data="#{crashReportBean.crashReport}" name="updateLocation" oncomplete="placeMarker(data.lat,data.lng)" requestDelay="100" limitToList="true">
+														<a4j:jsFunction data="#{crashReportBean.crashReport}" reRender="crashLocationHiddleInputPanel" name="updateLocation" oncomplete="placeCrashMarker(data.lat,data.lng)" requestDelay="100" limitToList="true">
 															<a4j:actionparam name="latitude" assignTo="#{crashReportBean.crashReport.lat}"/>
 															<a4j:actionparam name="longitude" assignTo="#{crashReportBean.crashReport.lng}"/>
 														</a4j:jsFunction>
@@ -347,6 +393,10 @@
 				</td>
 			</tr>
 		</table>
+		
+		<script type="text/javascript">
+			initMap();
+		</script>
 	</ui:define>
 
 </ui:composition>

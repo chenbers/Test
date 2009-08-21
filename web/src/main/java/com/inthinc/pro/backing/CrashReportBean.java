@@ -81,7 +81,7 @@ public class CrashReportBean extends BaseBean{
         createCrashReport();
         
     }
-    
+   
     public void edit(){
         entityList = new ArrayList<IdentifiableEntityBean>();
         logger.debug("Crash Report Edit Begin");
@@ -89,6 +89,18 @@ public class CrashReportBean extends BaseBean{
         loadVehicles();
         loadDrivers();
         
+    }
+    
+    public String save(){
+        crashReportID = crashReportDAO.create(getAccountID(), crashReport);
+        return "pretty:crashReport";
+    }
+    
+    public String cancelEdit(){
+        if(editState.equals(EditState.EDIT))
+            return "pretty:crashReport";
+        else
+            return "pretty:crashHistory";
     }
     
     public List<Vehicle> autocomplete(Object suggest){

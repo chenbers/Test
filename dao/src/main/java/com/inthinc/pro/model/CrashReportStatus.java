@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public enum CrashReportStatus {
+public enum CrashReportStatus implements BaseEnum{
     NEW(0),
     CONFIRMED(1);
 
