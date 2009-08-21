@@ -1388,4 +1388,18 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         // TODO Auto-generated method stub
         return null;
     }  
+    
+    @Override
+    public Map<String, Object> forgiveCrash(Integer groupID) throws ProDAOException
+    {
+        Integer temp = 1;
+        return TempConversionUtil.createMapFromObject(temp, true);
+    }
+
+    @Override
+    public Map<String, Object> unforgiveCrash(Integer groupID) throws ProDAOException
+    {
+        Integer temp = 1;
+        return TempConversionUtil.createMapFromObject(temp, true);
+    }        
 }
