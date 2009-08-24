@@ -73,7 +73,7 @@
 					<div class="panel_w">
 
 						<div class="panel_content">
-							<rich:panel style="height:300;width:445">
+							<rich:panel style="height:300;width:444">
 									
 	
 									<div id="chartdiv2" align="center"></div>
@@ -150,7 +150,18 @@
                                                     <h:outputText value="#{item.groupName}" />
                                                 </pretty:link>
         									</rich:column>
-        									<rich:column width="15%" styleClass="trendTableScore">
+       									<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}" id="crashes">
+        										<f:facet name="header" >
+           												<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
+        										</f:facet>
+          												<rich:toolTip for="trendTable:items:crashesheader">
+        					        						<h:outputFormat value="#{messages.crash_summary_overDistanceTitle}" >
+                                								<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
+                            								</h:outputFormat>
+        												</rich:toolTip>
+                                                    <h:outputText value="#{item.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+ 											</rich:column>
+         									<rich:column width="15%" styleClass="trendTableScore">
         										<f:facet name="header">
         											<a4j:commandLink value="#{messages.trendReport_header_score}" 
         															 reRender="xypanel,bottomScroller,items" action="#{trendBean.sort}" ajaxSingle="true">
@@ -165,24 +176,6 @@
                                                     <ui:param name="score" value="#{item.score}"/>                                    
                                                 </ui:include>
         									</rich:column>
-        									<rich:column width="10%" styleClass="trendTableScore">
-        										<f:facet name="header" id="crashes">
-        											<a4j:commandLink value="#{messages.crash_summary_overDistanceColumn}"  reRender="xypanel,bottomScroller,items" action="#{trendBean.sort}" ajaxSingle="true">
-        															 
-                   										<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>		
-        												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.crashes" />	
-        												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn eq 'se.crashes'}" value="/images/#{trendBean.sortDirection eq 'DESC' ? 'sort_desc.gif' : 'sort_asc.gif'}" />
-        												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn ne 'se.crashes'}" value="/images/sort_available.gif" />															
-        												<rich:toolTip>
-        					        						<h:outputFormat value=" #{messages.crash_summary_overDistanceTitle} " >
-                                								<a4j:actionparam value="MilesAlt" converter="MeasurementTextConverter"/>
-                            								</h:outputFormat>
-        												</rich:toolTip>														
-        											</a4j:commandLink>
-                         							
-        										</f:facet>
-                                                    <h:outputText value="#{item.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
- 											</rich:column>
         								</rich:dataTable>
 									
 									<rich:datascroller id="bottomScroller" for="items" immediate="true" align="center" styleClass="dataScrollerLarge"
@@ -192,8 +185,6 @@
         		
 								</h:form> 
 				<!-- End Trend table -->
-					
-              
 						</div>
 
 						<div class="panel_sw">

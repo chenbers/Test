@@ -186,6 +186,17 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
 							</h:outputLink>
 						</rich:column>
 
+       					<rich:column width="10%" styleClass="trendTableScore" sortBy="#{item.crashesPerMillionMiles}">
+        					<f:facet name="header">
+        						<h:outputText alue="#{messages.crash_summary_overDistanceColumn}"/>
+         							<rich:toolTip>
+        					        	<h:outputFormat value=" #{messages.crash_summary_overDistanceTitle} " >
+                                			<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
+                            			</h:outputFormat>
+        							</rich:toolTip>														
+        					</f:facet>
+                            <h:outputText value="#{item.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+ 						</rich:column>
 						<rich:column width="73" sortBy="#{item.se.score}">
 							<f:facet name="header">
 								<h:outputText value="Score" />

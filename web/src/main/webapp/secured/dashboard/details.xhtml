@@ -176,7 +176,7 @@
                                                     
                                                     <h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>                                               
                                             
-                                                    <rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items"
+                                                    <rich:dataTable value="#{trendFlyoutBean.trendBeanItems}" id="items"
                                                         var="item" styleClass="datagrid"
                                                         rowClasses="trendTableOdd,trendTableEven" 
                                                         cellspacing="1" width="100%">
@@ -186,7 +186,7 @@
                                                                 <h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}" >
                                                                     <a4j:support event="onclick" reRender="trendDateLinks,xypanel,countPanel,hiddenField12">
                                                                         <f:setPropertyActionListener target="#{trendFlyoutBean.animateChartData}" value="FALSE"/>       
-                                                                        <f:param name="selected" value="#{item.se.entityID}">
+                                                                        <f:param name="selected" value="#{item.groupID}">
                                                                         </f:param>
                                                                     </a4j:support>
                                                                 </h:selectBooleanCheckbox>
@@ -199,27 +199,38 @@
                                                                 <h:outputText value=" " />
                                                             </f:facet>
                                                             <rich:spacer width="17" height="17"
-                                                                style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
+                                                                style="background-color:#{item.scoreableEntityPkg.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
                                                         </rich:column>
-                                                        <rich:column sortBy="#{item.se.identifier}">
+                                                        <rich:column sortBy="#{item.groupName}">
                                                             <f:facet name="header">
                                                                 <h:outputText value="#{messages.trendReport_header_divisionTeam}"/>
                                                             </f:facet>
                                                             <pretty:link mappingId="dashboard">
-                                     							<f:param value="#{item.se.entityID}"/>
-                                                				<h:outputText value="#{item.se.identifier}" />
+                                     							<f:param value="#{item.groupID}"/>
+                                                				<h:outputText value="#{item.groupName}" />
                                             				</pretty:link>
                                                                                         
                                                         </rich:column>
                                                             
-                                                        <rich:column width="73" sortBy="#{item.se.score}">
+       										<rich:column width="10%" styleClass="trendTableScore" sortBy="#{item.crashesPerMillionMiles}" id="crashes">
+        										<f:facet name="header" >
+           												<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
+        										</f:facet>
+          												<rich:toolTip for="viewControl:items:crashesheader">
+        					        						<h:outputFormat value="#{messages.crash_summary_overDistanceTitle}" >
+                                								<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
+                            								</h:outputFormat>
+        												</rich:toolTip>
+                                                    <h:outputText value="#{item.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+ 											</rich:column>
+                                                        <rich:column width="73" sortBy="#{item.score}">
                                                             <f:facet name="header">
                                                                 <h:outputText value="#{messages.trendReport_header_score}"/>
                                                             </f:facet>
                                                             
                                                             <ui:include src="/includes/scoreBox.xhtml">  
-                                                                <ui:param name="scoreStyle" value="#{item.style}"/>                                  
-                                                                <ui:param name="score" value="#{item.se.score}"/>                                    
+                                                                <ui:param name="scoreStyle" value="#{item.scoreableEntityPkg.style}"/>                                  
+                                                                <ui:param name="score" value="#{item.score}"/>                                    
                                                             </ui:include> 
                                                                             
                                                         </rich:column>

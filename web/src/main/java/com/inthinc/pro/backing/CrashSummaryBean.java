@@ -1,6 +1,6 @@
 package com.inthinc.pro.backing;
 
-import java.util.Date;
+import java.text.DecimalFormat;
 
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.CrashSummary;
@@ -11,7 +11,6 @@ public class CrashSummaryBean extends BaseBean {
 	 * 
 	 */
 	private static final long serialVersionUID = -5274498413521235203L;
-	
 
 	private ScoreDAO scoreDAO;
 	private CrashSummary crashSummary;
@@ -56,10 +55,9 @@ public class CrashSummaryBean extends BaseBean {
 		this.crashSummary = crashSummary;
 	}
 	
-	public Integer getCrashesPerMillionMiles() {
-		return crashSummary.getCrashesPerMillionMiles();
+	public String getCrashesPerMillionMiles() {
+		return crashSummary.getCrashesPerMillionMilesString();
 	}
-
 	public Integer getDaysSinceLastCrash() {
 		return crashSummary.getDaysSinceLastCrash();
 	}

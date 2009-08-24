@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
@@ -32,6 +33,8 @@ public class TrendFlyoutBean extends BaseBean {
     private NavigationBean navigation;
     private String lineDef = new String();
     private List<ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
+    private List<TrendBeanItem> trendBeanItems = new ArrayList<TrendBeanItem>();
+
     private Integer maxCount = 0;
     private Integer start = 1;
     private Integer end = maxCount;
@@ -155,12 +158,70 @@ public class TrendFlyoutBean extends BaseBean {
         return sb.toString();
     }
 
+	private List<TrendBeanItem> createTrendBeanItems(){
+        if (trendBeanItems != null && !trendBeanItems.isEmpty()) {
+            logger.debug("scoreableentities size " + trendBeanItems.size());
+        }        
+        this.trendBeanItems = new ArrayList<TrendBeanItem>();
+        List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
+        s = getScores();
+        
+        // Apply any sorting
+        if (this.sortItFirst.equalsIgnoreCase("true")) {
+            s = sortOnIdentifier(s);
+        }
+        if (this.sortItSecond.equalsIgnoreCase("true")) {
+            s = sortOnScore(s);
+        }
+
+        // Populate the table
+//        String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        int cnt = 0;                
+        ColorSelectorStandard cs = new ColorSelectorStandard();
+        for (ScoreableEntity score : s)
+        {
+        	TrendBeanItem trendBeanItem = new TrendBeanItem();
+            ScoreableEntityPkg se = new ScoreableEntityPkg();
+            se.setSe(score);
+            se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
+            se.setColorKey(cs.getEntityColorKey(cnt++));
+            se.setShow(true);
+            
+ // TODO:           CrashSummary crashSummary = scoreDAO.getCrashSummaryData(score.getEntityID());
+            CrashSummary crashSummary = new CrashSummary(0, 0, null, new Double(Math.random()*10).intValue());
+            trendBeanItem.setCrashSummary(crashSummary);
+            trendBeanItem.setScoreableEntityPkg(se);
+            trendBeanItem.setScoreableEntity(score);
+            String key = String.valueOf(se.getSe().getEntityID().intValue());
+            if (this.navigation.getFlyout().get(key) != null) {
+                se.setShow((Boolean) this.navigation.getFlyout().get(key));
+            }
+
+            trendBeanItems.add(trendBeanItem);
+            score = null;
+        }
+        
+        this.maxCount = this.trendBeanItems.size();        
+        return this.trendBeanItems;
+		
+	}
+
     public List<ScoreableEntityPkg> getScoreableEntities() {
         createScoreableEntities();
         return scoreableEntities;
     }
 
-    public void setScoreableEntities(List<ScoreableEntityPkg> scoreableEntities) {
+    public List<TrendBeanItem> getTrendBeanItems() {
+        createTrendBeanItems();
+
+		return trendBeanItems;
+	}
+
+	public void setTrendBeanItems(List<TrendBeanItem> trendBeanItems) {
+		this.trendBeanItems = trendBeanItems;
+	}
+
+	public void setScoreableEntities(List<ScoreableEntityPkg> scoreableEntities) {
         this.scoreableEntities = scoreableEntities;
     }
 
@@ -192,14 +253,6 @@ public class TrendFlyoutBean extends BaseBean {
             if (this.navigation.getFlyout().get(key) != null) {
                 se.setShow((Boolean) this.navigation.getFlyout().get(key));
             }
-//            if (score.getEntityType().equals(EntityType.ENTITY_GROUP)) {
-//                // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null
-//                // this should an error -- someone trying to access a group they shouldn't
-//                String url = "";
-//                if (getGroupHierarchy().getGroupLevel(score.getEntityID()) != null)
-//                    url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
-//                se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
-//            }
             scoreableEntities.add(se);
             score = null;
         }
@@ -211,11 +264,11 @@ public class TrendFlyoutBean extends BaseBean {
 
     private List<ScoreableEntity> sortOnIdentifier(List<ScoreableEntity> sLocal) {
         List<ScoreableEntity> sTemp = sLocal;
-        Collections.sort(sTemp, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                ScoreableEntity s1 = (ScoreableEntity) o1;
-                ScoreableEntity s2 = (ScoreableEntity) o2;
-                return s2.getIdentifier().compareToIgnoreCase(s1.getIdentifier());
+        Collections.sort(sTemp, new Comparator<ScoreableEntity>() {
+            public int compare(ScoreableEntity s1, ScoreableEntity s2) {
+//                ScoreableEntity s1 = (ScoreableEntity) o1;
+//                ScoreableEntity s2 = (ScoreableEntity) o2;
+               return s2.getIdentifier().compareToIgnoreCase(s1.getIdentifier());
             }
         });
         if (this.navigation.getSortedFirst().equalsIgnoreCase("false")) {
@@ -226,12 +279,12 @@ public class TrendFlyoutBean extends BaseBean {
 
     private List<ScoreableEntity> sortOnScore(List<ScoreableEntity> sLocal) {
         List<ScoreableEntity> sTemp = sLocal;
-        Collections.sort(sTemp, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                ScoreableEntity s1 = (ScoreableEntity) o1;
-                ScoreableEntity s2 = (ScoreableEntity) o2;
-                return s2.getScore().compareTo(s1.getScore());
-            }
+        Collections.sort(sTemp,  new Comparator<ScoreableEntity>() {
+            public int compare(ScoreableEntity s1, ScoreableEntity s2) {
+//              ScoreableEntity s1 = (ScoreableEntity) o1;
+//              ScoreableEntity s2 = (ScoreableEntity) o2;
+             return s2.getIdentifier().compareToIgnoreCase(s1.getIdentifier());
+          }
         });
         if (this.navigation.getSortedSecond().equalsIgnoreCase("false")) {
             Collections.reverse(sTemp);

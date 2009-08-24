@@ -193,12 +193,6 @@ img {
 }
 .panel_title span.crash {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_gas.png) no-repeat center left
-		;
-}
-
-.panel_title span.crashhistory {
-	padding: 0 0 0 20px;
 	background: transparent url(../images/icon_crash.png) no-repeat center left
 		;
 }

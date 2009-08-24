@@ -23,6 +23,11 @@
 	          map.addOverlay(new GMarker(location)); 
 	        }
 	      }
+          function initializeTable()
+          {
+              jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+              jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+            }
     	</script>
 
 	</ui:define>
@@ -41,6 +46,7 @@
     <t:saveState value="#{vehicleSpeedBean.groupTreeNodeImpl}"/>
 <div id="wrapper">
 <h:form>
+    <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
@@ -563,14 +569,11 @@ var firstLoad = new Boolean(true);
 									<h:outputText value="#{messages.vehicleReports_exclude}" />
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
- 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleSpeedBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" >
+ 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleSpeedBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
+ 												eventsQueue="queue" ignoreDupResponses="true" id="excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.vehicleReports_include}" />
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
-<!--								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >-->
-<!--									<h:outputText value="#{messages.redflags_clear}" />-->
-<!--									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />-->
-<!--								</a4j:commandLink>-->
     						</rich:column>
 						</rich:dataTable>
 						<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{vehicleSpeedBean.tableStatsBean.page}"
@@ -617,11 +620,13 @@ var firstLoad = new Boolean(true);
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
+          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink action="#{vehicleSpeedBean.excludeEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,tableStats,scrollerBottom">
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
+                			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
+                			eventsQueue="queue" ignoreDupResponses="true" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
-	          					<span class="apply">
+	          					<span class="yes">
 	          						<h:outputText value="#{messages.button_yes}" />
 	          					</span>
 	          				</button>

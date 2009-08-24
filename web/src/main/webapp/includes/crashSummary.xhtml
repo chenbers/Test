@@ -23,7 +23,7 @@
                         <table id="" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody><tr>
                         <td width="25%"> 
                            <h:outputFormat value=" #{messages.crash_summary_overDistance} " >
-                                <a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
+                                <a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                             </h:outputFormat>
                            <h:outputText value="#{crashSummaryBean.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
                         </td>

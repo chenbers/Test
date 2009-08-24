@@ -24,7 +24,7 @@
                        <table width="100%"><tbody><tr>
                         <td class="crash-summary-title" width="50%"> 
                            <h:outputFormat value=" #{messages.crash_summary_overDistance} " >
-                                <a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
+                                <a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                             </h:outputFormat>
                             <h:outputText value="#{crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
                         </td>
