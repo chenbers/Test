@@ -61,7 +61,7 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         AVAILABLE_COLUMNS.add("nbr_occupants");
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("weather");
-        AVAILABLE_COLUMNS.add("detail");
+        AVAILABLE_COLUMNS.add("details");
         AVAILABLE_COLUMNS.add("edit");
         AVAILABLE_COLUMNS.add("clear");
 
