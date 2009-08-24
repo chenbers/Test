@@ -46,7 +46,8 @@ public class MeasurementConverter {
      */
     public static Number convertDistanceAndMovePoint(Number distance, Boolean convertToMetric, Integer n) {
         BigDecimal bd = BigDecimal.valueOf(distance.doubleValue());
-        bd = bd.movePointLeft(2);
+//        bd = bd.movePointLeft(2);
+        bd = bd.movePointLeft(n);        
         return convertDistance(Double.valueOf(bd.floatValue()), convertToMetric);
     }
 }
