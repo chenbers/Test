@@ -665,6 +665,19 @@ public class SiloServiceImpl implements SiloService
     }
     
     
+    @Override
+    @MethodDescription(description="Marks the specified crash as 'forgiven'. Returns a map[count], or an Integer error.")
+    public Map<String, Object> forgiveCrash(@DaoParam(name="crashReportID")Integer crashReportID) throws ProDAOException
+    {
+        return null;
+    }
+    
+    @Override
+    @MethodDescription(description="Removes a forgiven mark from the specified crash. Returns a map[count], or an Integer error.")
+    public Map<String, Object> unforgiveCrash(@DaoParam(name="crashReportID")Integer crashReportID) throws ProDAOException
+    {
+        return null;
+    }     
     
     
     
