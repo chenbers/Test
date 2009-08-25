@@ -214,8 +214,9 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
             histList.add(chri);            
         }    
         
-//        Collections.sort(histList);
-//        Collections.reverse(histList);        
+        // Sort by date of crash
+        Collections.sort(histList);
+        Collections.reverse(histList);        
         setTableData(histList);
 
         // count initialization
@@ -285,16 +286,16 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
     
     public void clearItemAction()
     {
-//          if ( crashReportDAO.excludeCrash(clearItem.getCrashReportID()) ) {
-//              initTableData();
-//          }
+          if ( crashReportDAO.forgiveCrash(clearItem.getCrashReportID()) >= 1 ) {
+              initTableData();
+          }
     }
     
     public void includeEventAction(){
     	
-//        if ( crashReportDAO.includeCrash(clearItem.getCrashReportID()) ) {
-//            initTableData();
-//        }
+        if ( crashReportDAO.unforgiveCrash(clearItem.getCrashReportID()) >= 1 ) {
+            initTableData();
+        }
     	
     }
 
