@@ -19,7 +19,9 @@ public class CrashReport extends BaseEntity {
     private Integer crashReportID;
     @Column(name = "acctID")
     private Integer accountID;
+    @Column(name = "status")
     private CrashReportStatus crashReportStatus;
+    @Column(name="time")
     private Date date;
     private Double lat;
     private Double lng;
@@ -30,12 +32,13 @@ public class CrashReport extends BaseEntity {
     @Column(updateable = false)
     private Driver driver;
     private String weather;
+    @Column(name="desc")
     private String description;
     private Long noteID;
     private Integer occupantCount;
     @Column(updateable = false)
     private FullEvent fullEvent;
-    @Column(updateable = false)
+    @Column(updateable = false,name="dataPts")
     private List<CrashDataPoint> crashDataPoints; //Detailed Crash Data
     
     public CrashReport(){
