@@ -400,12 +400,35 @@
 													<td width="400" valign="top">
 														<h:panelGrid columns="2" width="400x">
 															<h:outputText value="Vehicle/Driver Search:"></h:outputText>
+															<h:panelGroup>
+															<h:inputText id="searchVehicleDriverInput"/>
+												            <rich:suggestionbox style="border:0px solid white;" 
+																suggestionAction="#{crashReportBean.filterEntityList}" 
+																for="searchVehicleDriverInput" var="item"
+																eventsQueue="pickerQueue" ignoreDupResponses="false"
+																onobjectchange="updateEntityValue(suggestion)"
+																usingSuggestObjects="true" limitToList="true">
+																<h:column>
+																	<h:outputText value="#{item.label}"/>
+																</h:column>
+															</rich:suggestionbox>
+															
 															<a4j:region>
-																<h:selectOneMenu value="#{crashReportBean.entityID}">
-																	<f:selectItems value="#{crashReportBean.entitysAsSelectItems}"/>
-																	<a4j:support event="onchange" reRender="tripsListPanel" action="#{crashReportBean.loadTrips}"/>
-																</h:selectOneMenu>
+																<a4j:jsFunction name="setSelectedEntityID" reRender="tripsListPanel" action="#{crashReportBean.loadTrips}" limitToList="true">
+																	<a4j:actionparam name="entityID" assignTo="#{crashReportBean.entityID}"/>
+																</a4j:jsFunction>
 															</a4j:region>
+															<script>
+																function updateEntityValue(suggestion)
+														      	{
+															        var selected = suggestion.getSelectedItems();
+															        
+															        if (selected.length > 0){
+															        	setSelectedEntityID(selected[0].value);
+															        }
+														      	}
+															</script>
+															</h:panelGroup>
 														</h:panelGrid>
 														<rich:spacer height="10px"/>
 														<a4j:region>
@@ -422,13 +445,13 @@
 																			<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip()">
 											                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
 											                                </a4j:support>
-																			<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="50px">
+																			<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="150px">
 																				<f:facet name="header"><h:outputText value="Start Time"></h:outputText></f:facet>
 																				<h:outputText value="#{trip.startTime}">
 																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
 																				</h:outputText>
 																			</rich:column>
-																			<rich:column width="50px">
+																			<rich:column width="150px">
 																				<f:facet name="header"><h:outputText value="End Time"></h:outputText></f:facet>
 																				<h:outputText value="#{trip.endTime}">
 																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>

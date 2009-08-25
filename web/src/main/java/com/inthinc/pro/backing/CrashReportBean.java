@@ -22,6 +22,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
 public class CrashReportBean extends BaseBean{
@@ -128,6 +129,20 @@ public class CrashReportBean extends BaseBean{
             }
         }
         return filteredDriverList;
+    }
+    
+    public List<SelectItem> filterEntityList(Object suggest){
+        logger.debug("Filtering List For Autocompletion: " + suggest);
+        List<SelectItem> IdentifiableEntityBeanList = new ArrayList<SelectItem>();
+        for(IdentifiableEntityBean identifiableEntityBean:this.entityList){
+            if(identifiableEntityBean.getName().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0 ||
+                   identifiableEntityBean.getLongName().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0){
+                String label = identifiableEntityBean.getLongName() + " (" + 
+                        MessageUtil.getMessageString(identifiableEntityBean.getEntityType().toString(), getLocale()) + ")";
+                IdentifiableEntityBeanList.add(new SelectItem(identifiableEntityBean.getId(), label));
+            }
+        }
+        return IdentifiableEntityBeanList;
     }
     
     private void loadVehicles(){
