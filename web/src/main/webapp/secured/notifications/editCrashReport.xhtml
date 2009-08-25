@@ -8,7 +8,8 @@
 	xmlns:security="http://pro.tiwi.com/jsf/security"
     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
     xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:c="http://java.sun.com/jstl/core">
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:param name="adminSelected" value="current" />
     <ui:param name="title" value="#{reportScheduleBean.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : messages.adminHeader_editReportSchedule)}"/>
@@ -240,21 +241,107 @@
 		                				<h:outputText value="#{messages.crashReport_vehicle}" />
 	                                    <h:outputText styleClass="required" value=" *" />
 		                			</h:panelGroup>
-		                			<h:panelGroup>
-		                				<rich:message for="vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:selectOneMenu id="vehicle" value="#{crashReportBean.crashReport.vehicleID}" required="true" requiredMessage="#{messages.required}">
-											<f:selectItems value="#{crashReportBean.vehiclesAsSelectItems}"/>
-										</h:selectOneMenu>
+		                			<h:panelGroup id="vehicleEditPanelGroup">
+		                				<rich:message for="vehicleIDHidden" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:panelGroup id="vehicleAutoSuggestPanel">
+											<h:inputHidden id="vehicleIDHidden" value="#{crashReportBean.crashReport.vehicleID}" required="true" requiredMessage="#{messages.required}"/>
+											<h:inputText id="searchVehicleInputText" rendered="#{crashReportBean.crashReport.vehicleID eq null}"/>
+											<h:outputText rendered="#{crashReportBean.crashReport.vehicleID ne null}">
+											  <span class="pick-item">
+									              <h:outputText value="#{crashReportBean.crashReport.vehicle.fullName}"/>
+									              <a4j:region>
+										              <a4j:commandLink id="picker-delete" 
+										              		styleClass="delete-pick-item" 
+										              		action="#{crashReportBean.clearSelectedVehicle}" 
+										              		data="#{crashReportBean.crashReport.vehicleID}"
+										              		reRender="vehicleAutoSuggestPanel"
+										              		oncomplete="document.getElementById('edit-form:vehicleIDHidden').value = data"
+										              		limitToList="true">
+										                <h:graphicImage value="/images/x.gif" width="16" height="20" />
+										              </a4j:commandLink>
+									              </a4j:region>
+								              </span>
+								            </h:outputText>
+								            <rich:suggestionbox style="border:0px solid white;" 
+												suggestionAction="#{crashReportBean.filterVehicleList}" 
+												for="searchVehicleInputText" var="vehicle"
+												eventsQueue="pickerQueue" ignoreDupResponses="false"
+												onobjectchange="updateVehicleItemValue(suggestion)"
+												usingSuggestObjects="true" limitToList="true">
+												<h:column>
+													<h:outputText value="#{vehicle.fullName}"/>
+												</h:column>
+											</rich:suggestionbox>
+							            </h:panelGroup>
+										
+										<a4j:region>
+											<a4j:jsFunction name="setSelectedVehicleID" reRender="vehicleAutoSuggestPanel" limitToList="true">
+												<a4j:actionparam name="vehicleID" assignTo="#{crashReportBean.selectedVehicleID}"/>
+											</a4j:jsFunction>
+										</a4j:region>
+										<script>
+											function updateVehicleItemValue(suggestion)
+									      	{
+										        var selected = suggestion.getSelectedItems();
+										        
+										        if (selected.length > 0){
+										        	setSelectedVehicleID(selected[0].vehicleID);
+										        }
+									      	}
+										</script>
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<h:outputText value="#{messages.crashReport_driver}" />
 	                                    <h:outputText styleClass="required" value=" *" />
 		                			</h:panelGroup>
 		                			<h:panelGroup>
-		                				<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:selectOneMenu id="driver" value="#{crashReportBean.crashReport.driverID}" required="true" requiredMessage="#{messages.required}">
-											<f:selectItems value="#{crashReportBean.driversAsSelectItems}"/>
-										</h:selectOneMenu>
+										<rich:message for="driverIDHidden" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:panelGroup id="driverAutoSuggestPanel">
+											<h:inputHidden id="driverIDHidden" value="#{crashReportBean.crashReport.driverID}" required="true" requiredMessage="#{messages.required}"/>
+											<h:inputText id="searchDriverInputText" rendered="#{crashReportBean.crashReport.driverID eq null}"/>
+											<h:outputText rendered="#{crashReportBean.crashReport.driverID ne null}">
+											  <span class="pick-item">
+									              <h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>
+									              <a4j:region>
+										              <a4j:commandLink id="picker-driver-delete" 
+										              		styleClass="delete-pick-item" 
+										              		action="#{crashReportBean.clearSelectedDriver}" 
+										              		data="#{crashReportBean.crashReport.driverID}"
+										              		reRender="driverAutoSuggestPanel"
+										              		oncomplete="document.getElementById('edit-form:driverIDHidden').value = data"
+										              		limitToList="true">
+										                	<h:graphicImage value="/images/x.gif" width="16" height="20" />
+										              </a4j:commandLink>
+									              </a4j:region>
+								              </span>
+								            </h:outputText>
+								            <rich:suggestionbox style="border:0px solid white;" 
+												suggestionAction="#{crashReportBean.filterDriverList}" 
+												for="searchDriverInputText" var="driver"
+												eventsQueue="pickerQueue" ignoreDupResponses="false"
+												onobjectchange="updateDriverItemValue(suggestion)"
+												usingSuggestObjects="true" limitToList="true">
+												<h:column>
+													<h:outputText value="#{driver.label}"/>
+												</h:column>
+											</rich:suggestionbox>
+							            </h:panelGroup>
+										
+										<a4j:region>
+											<a4j:jsFunction name="setSelectedDriverID" reRender="driverAutoSuggestPanel" limitToList="true">
+												<a4j:actionparam name="driverID" assignTo="#{crashReportBean.selectedDriverID}"/>
+											</a4j:jsFunction>
+										</a4j:region>
+										<script>
+											function updateDriverItemValue(suggestion)
+									      	{
+										        var selected = suggestion.getSelectedItems();
+										        
+										        if (selected.length > 0){
+										        	setSelectedDriverID(selected[0].value);
+										        }
+									      	}
+										</script>
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<h:outputText value="#{messages.crashReport_weather}" />
@@ -335,14 +422,14 @@
 																			<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip()">
 											                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
 											                                </a4j:support>
-																			<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false">
-																				<f:facet name="header"><h:outputText value="Start"></h:outputText></f:facet>
+																			<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="50px">
+																				<f:facet name="header"><h:outputText value="Start Time"></h:outputText></f:facet>
 																				<h:outputText value="#{trip.startTime}">
 																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
 																				</h:outputText>
 																			</rich:column>
-																			<rich:column>
-																				<f:facet name="header"><h:outputText value="End"></h:outputText></f:facet>
+																			<rich:column width="50px">
+																				<f:facet name="header"><h:outputText value="End Time"></h:outputText></f:facet>
 																				<h:outputText value="#{trip.endTime}">
 																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
 																				</h:outputText>

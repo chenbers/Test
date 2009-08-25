@@ -47,6 +47,7 @@ import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.Person;
@@ -342,6 +343,7 @@ public class MockData {
         user.getPerson().setFirst(username.substring(0, username.length() / 2));
         user.getPerson().setLast(username.substring(username.length() / 2));
         user.getPerson().setTimeZone(TimeZone.getTimeZone("MST"));
+        user.getPerson().setMeasurementType(MeasurementType.ENGLISH);
         user.getPerson().setUser(user);
         return user;
     }

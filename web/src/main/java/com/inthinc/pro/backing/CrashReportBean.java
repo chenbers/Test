@@ -51,15 +51,13 @@ public class CrashReportBean extends BaseBean{
     private Boolean useExistingTrip;
     private List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
     private Integer entityID;
-    
 
-    
     private CrashReport crashReport;
     private Integer crashReportID; //Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
     
        
     public List<SelectItem> getCrashReportStatusAsSelectItems(){
-        return SelectItemUtil.toList(CrashReportStatus.class, true);
+        return SelectItemUtil.toList(CrashReportStatus.class, true,CrashReportStatus.FORGIVEN,CrashReportStatus.DELETED);
     }
    
     
@@ -92,7 +90,11 @@ public class CrashReportBean extends BaseBean{
     }
     
     public String save(){
-        crashReportID = crashReportDAO.create(getAccountID(), crashReport);
+        if(editState.equals(EditState.ADD)){
+            crashReportID = crashReportDAO.create(getAccountID(), crashReport);
+        }else if(editState.equals(EditState.EDIT)){
+            crashReportDAO.update(crashReport);
+        }
         return "pretty:crashReport";
     }
     
@@ -103,16 +105,29 @@ public class CrashReportBean extends BaseBean{
             return "pretty:crashHistory";
     }
     
-    public List<Vehicle> autocomplete(Object suggest){
+    public List<Vehicle> filterVehicleList(Object suggest){
         logger.debug("Filtering List For Autocompletion");
         List<Vehicle> filteredVehicleList = new ArrayList<Vehicle>();
         for(Vehicle vehicle:vehicleList){
-            if(vehicle.getFullName().equals(suggest)){
+            if(vehicle.getFullName().toLowerCase().indexOf(((String)suggest).toLowerCase()) > -1){
                 filteredVehicleList.add(vehicle);
             }
         }
         
         return filteredVehicleList;
+    }
+    
+    
+    public List<SelectItem> filterDriverList(Object suggest){
+        logger.debug("Filtering List For Autocompletion: " + suggest);
+        List<SelectItem> filteredDriverList = new ArrayList<SelectItem>();
+        for(Driver driver:driverList){
+            if(driver.getPerson().getFirst().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0 ||
+                    driver.getPerson().getLast().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0){
+                filteredDriverList.add(new SelectItem(driver.getDriverID(),driver.getPerson().getFullName()));
+            }
+        }
+        return filteredDriverList;
     }
     
     private void loadVehicles(){
@@ -158,6 +173,16 @@ public class CrashReportBean extends BaseBean{
         
         return null;
     }
+    
+    public void clearSelectedVehicle(){
+        crashReport.setVehicle(null);
+        crashReport.setVehicleID(null);
+    }
+    
+    public void clearSelectedDriver(){
+        crashReport.setDriver(null);
+        crashReport.setDriverID(null);
+    }
 
 
     public List<SelectItem> getVehiclesAsSelectItems(){
@@ -188,7 +213,7 @@ public class CrashReportBean extends BaseBean{
         selectItems.add(0, new SelectItem(null, ""));
         return selectItems;
     }
-
+    
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }
@@ -211,6 +236,29 @@ public class CrashReportBean extends BaseBean{
 
     public CrashReportDAO getCrashReportDAO() {
         return crashReportDAO;
+    }
+    
+    public void setSelectedVehicleID(Integer vehicleID){
+        logger.debug("VehicleID set: " + vehicleID);
+        if(crashReport != null){
+            crashReport.setVehicle(vehicleDAO.findByID(vehicleID));
+            crashReport.setVehicleID(vehicleID);
+        }
+    }
+    
+    public Integer getSelectedVehicleID(){
+        return null;
+    }
+    
+    public void setSelectedDriverID(Integer driverID){
+        if(crashReport != null){
+            crashReport.setDriver(driverDAO.findByID(driverID));
+            crashReport.setDriverID(driverID);
+        }
+    }
+    
+    public Integer getSelectedDriverID(){
+        return null;
     }
 
     public void setCrashReportID(Integer crashReportID) {
@@ -325,4 +373,7 @@ public class CrashReportBean extends BaseBean{
     public Trip getSelectedTrip() {
         return selectedTrip;
     }
+
+
+    
 }
