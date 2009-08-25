@@ -1,6 +1,8 @@
 package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -54,9 +57,51 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     
     @Override
     public List<CrashReport> getCrashReportsByGroupID(Integer groupID) {
+        
+        // Grab everything by setting the following parameters. 
+        GregorianCalendar gc    = new GregorianCalendar(1990,1,1);
+        Date startDT            = gc.getTime();
+        Date stopDT             = new Date();
+        Integer incForgiven     = CrashReportDAO.INCLUDE_FORGIVEN;
+        
         try
         {
-            List<Map<String, Object>> crashReportList = getSiloService().getCrashReportsByGroupID(groupID);
+            List<CrashReport> crashReports = getCrashes(groupID,startDT,stopDT,incForgiven);            
+            return crashReports;
+        }
+        catch(EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+        
+    @Override
+    public List<CrashReport> getCrashReportsByGroupIDAndForgiven(Integer groupID,Integer incForgiven) {
+        
+        GregorianCalendar gc    = new GregorianCalendar(1990,1,1);
+        Date startDT            = gc.getTime();
+        Date stopDT             = new Date();
+        
+        try
+        {
+            List<CrashReport> crashReports = getCrashes(groupID,startDT,stopDT,incForgiven);            
+            return crashReports;
+        }
+        catch(EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }    
+    
+    @Override
+    public List<CrashReport> getCrashes(Integer groupID, Date startDT, Date stopDT, Integer incForgiven) {
+        try
+        {
+            List<Map<String, Object>> crashReportList = getSiloService().getCrashes(
+                    groupID,
+                    DateUtil.convertDateToSeconds(startDT),
+                    DateUtil.convertDateToSeconds(stopDT),
+                    incForgiven);
             List<CrashReport> crashReports = getMapper().convertToModelObject(crashReportList, CrashReport.class);
             Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
             Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
@@ -78,7 +123,7 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
         }catch(EmptyResultSetException e)
         {
             return Collections.emptyList();
-        }
+        }        
     }
     
     @Override
