@@ -92,9 +92,8 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-                <!-- THIS NEEDS TO BE TO THE NEW PAGE!!!! -->
-                <pretty:link mappingId="vehiclePerformance" rendered="#{item.vehicleName != 'None Assigned'}">
-                    <f:param value="#{item.vehicle.vehicleID}"/>
+                <pretty:link mappingId="crashReport">
+                    <f:param value="#{item.crashReportID}"/>
                     #{messages.notes_crashhistory_details}
                 </pretty:link>
             </rich:column>
