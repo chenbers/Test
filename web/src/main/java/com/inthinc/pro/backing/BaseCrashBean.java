@@ -3,6 +3,8 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,78 +183,41 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
                 
         // this access sets a table level parameter to conditionally render
         //  certain columns
-        User u = getProUser().getUser();            
-        
-        // the following will be how we access data when LIVE data is available
-//        List<CrashReport> crashList = crashReportDAO.getCrashReportsByGroupID(
-//            getProUser().getUser().getGroupID());
-//        List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();        
-//        for ( CrashReport cr: crashList) {
-//            CrashHistoryReportItem chri = new CrashHistoryReportItem();
-//            chri.setCrashReportID(cr.getCrashReportID());      
-//            chri.setDate(dateFormatter.format(cr.getDate()));
-//            chri.setTime(cr.getDate().getTime());
-//            Driver d = this.getDriverDAO().findByID(cr.getVehicle().getDriverID());
-//            chri.setDriver(d);             
-//            chri.setDriverName(d.getPerson().getFullName());
-//            chri.setGroup(getGroupHierarchy().getGroup(d.getGroupID()).getName());
-//            chri.setNbrOccupants(String.valueOf(cr.getVehicleOccupants().size()));
-//            chri.setStatus(cr.getStatus().getDescription());        
-//            chri.setVehicle(cr.getVehicle());
-//            chri.setVehicleName(cr.getVehicle().getFullName());
-//            chri.setLatitude(cr.getLatLng().getLat());
-//            chri.setLongitude(cr.getLatLng().getLng());
-//----------->// what about this?
-//            chri.setForgiven(0);
-//            chri.setWeather(cr.getWeather());
-//            
-//            histList.add(chri);            
-//        }    
-//        Collections.sort(histList);
-//        Collections.reverse(histList);        
-//        setTableData(histList);
-//        
-//        // count initialization
-//        setMaxCount(histList.size());
-//        setStart(histList.size() > 0 ? 1 : 0);
-//        setEnd(histList.size() > getNumRowsPerPg() ? getNumRowsPerPg() : histList.size());
-//        setPage(1);                
-        
-        // the following is FAKE data to facilitate development, test, and development of the 
-        //  other parts of the page i.e. "details", "edit", and "exclude".
-        List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
-        
-        Driver d = getDriverDAO().getDriverByPersonID(getProUser().getUser().getPersonID()); 
-        Person p = getProUser().getUser().getPerson();
-        Vehicle v = getVehicleDAO().findByDriverInGroup(d.getDriverID(), 
-                getGroupHierarchy().getTopGroup().getGroupID());     
-                
-        // account for time zone
-        TimeZone tz = (d == null || p == null) ? 
-                TimeZone.getDefault() : p.getTimeZone();
-        dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);     
-        
-        CrashHistoryReportItem chri = new CrashHistoryReportItem();
-        chri.setCrashReportID(1);
-        chri.setDate(dateFormatter.format(d.getModified()));
-        chri.setTime(d.getModified().getTime());
-        chri.setDriver(d);
-        chri.setDriverName(p.getFullName());
-        chri.setGroup(getGroupHierarchy().getGroup(d.getGroupID()).getName());
-        chri.setNbrOccupants("3");
-        chri.setStatus("Confirmed");        
-        chri.setVehicle(v);
-        chri.setVehicleName(v.getFullName());
-        chri.setLatitude(40.745257d);
-        chri.setLongitude(-111.879272d);
-        chri.setForgiven(0);
-        chri.setWeather("Nasty");
+        User u = getProUser().getUser(); 
         setUserRole(u.getRole().getName());
         
-        histList.add(chri);
+        // the following will be how we access data when LIVE data is available
+        List<CrashReport> crashList = crashReportDAO.getCrashReportsByGroupID(
+            getProUser().getUser().getGroupID());
+        List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();   
         
+        for ( CrashReport cr: crashList) {
+            CrashHistoryReportItem chri = new CrashHistoryReportItem();
+            
+            chri.setCrashReportID(cr.getCrashReportID());          
+            chri.setDate(dateFormatter.format(cr.getDate()));
+            chri.setTime(cr.getDate().getTime());
+            Driver d = this.getDriverDAO().findByID(cr.getVehicle().getDriverID());
+            chri.setDriver(d);             
+            chri.setDriverName(d.getPerson().getFullName());
+            chri.setGroup(getGroupHierarchy().getGroup(d.getGroupID()).getName());
+            chri.setNbrOccupants(String.valueOf(cr.getOccupantCount().intValue()));
+            chri.setStatus(cr.getCrashReportStatus().name());                     
+            chri.setVehicle(cr.getVehicle());
+            chri.setVehicleName(cr.getVehicle().getFullName());
+            chri.setLatitude(cr.getLatLng().getLat());
+            chri.setLongitude(cr.getLatLng().getLng());
+
+            chri.setForgiven(cr.getCrashReportStatus().getCode());
+            chri.setWeather(cr.getWeather());
+            
+            histList.add(chri);            
+        }    
+        
+//        Collections.sort(histList);
+//        Collections.reverse(histList);        
         setTableData(histList);
-        
+
         // count initialization
         setMaxCount(histList.size());
         setStart(histList.size() > 0 ? 1 : 0);
