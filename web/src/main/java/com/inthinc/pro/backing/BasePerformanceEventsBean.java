@@ -164,20 +164,20 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 		initEvents();
         tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
    	}
-    public void excludeEventAction()
+    public synchronized void excludeEventAction()
     {
         Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-        if(result >= 1)
+        if(result.intValue() >= 1)
             {
         		initEvents();
 	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
             }
     }
    
-	public void includeEventAction() {
+	public synchronized void includeEventAction() {
 		
 	    Integer result = eventDAO.unforgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-	    if(result >= 1)
+	    if(result.intValue() >= 1)
 	        {
 	            initEvents();
 	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());

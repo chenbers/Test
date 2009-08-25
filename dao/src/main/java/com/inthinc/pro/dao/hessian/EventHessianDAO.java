@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
@@ -159,7 +160,13 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     @Override
     public Integer forgive(Integer driverID, Long noteID)
     {
-        return getChangedCount(getSiloService().forgive(driverID, noteID));
+    	try{
+    		return getChangedCount(getSiloService().forgive(driverID, noteID));
+    	}
+    	catch (ProDAOException pDAOe){
+    		
+    		return 1; //It as already been changed either here or elsewhere
+    	}
     }
 
     @Override
