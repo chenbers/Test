@@ -16,6 +16,7 @@ public class CrashReport extends BaseEntity {
     @Column(updateable = false)
     private static final long serialVersionUID = -2232308206099636851L;
     @ID
+    @Column(name="crashID")
     private Integer crashReportID;
     @Column(name = "acctID")
     private Integer accountID;
