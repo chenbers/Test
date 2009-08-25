@@ -635,31 +635,31 @@ public class SiloServiceImpl implements SiloService
     }
     
     @Override
-    public Map<String, Object> createCrashReport(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException {
+    public Map<String, Object> createCrash(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    public Map<String, Object> deleteCrashReport(Integer crashReportID) throws ProDAOException {
+    public Map<String, Object> deleteCrash(Integer crashReportID) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    public Map<String, Object> getCrashReport(Integer crashReportID) throws ProDAOException {
+    public Map<String, Object> getCrash(Integer crashReportID) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    public List<Map<String, Object>> getCrashReportsByGroupID(Integer acctID) throws ProDAOException {
+    public List<Map<String, Object>> getCrashes(Integer groupID,Long startDT,Long stopDT,Integer incForgiven) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    public Map<String, Object> updateCrashReport(Integer reportPrefID, Map<String, Object> crashReportMap) throws ProDAOException {
+    public Map<String, Object> updateCrash(Integer reportPrefID, Map<String, Object> crashReportMap) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }
