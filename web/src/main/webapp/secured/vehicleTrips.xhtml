@@ -282,7 +282,7 @@
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
                 </ui:include>
             </ui:repeat>
-            <ui:repeat value="#{vehicleTripsBean.allEvents}" var="evt">
+            <ui:repeat value="#{vehicleTripsBean.allEvents}" var="violation">
                 <ui:include src="/includes/eventBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{violation.noteID}" />
                     <ui:param name="eventType" value="#{violation.eventType}" />
