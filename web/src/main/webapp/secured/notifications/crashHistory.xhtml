@@ -13,16 +13,65 @@
     <ui:param name="ajaxPanels" value="crashHistoryTable,crashHistorySearch"/>
     
     <ui:define name="scripts">
+        <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
+    
         <script type="text/javascript">  
-          function initializeTable()
-          {
-              jQuery(".clickable-map-icon").click(function(){
-                  var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
-                  jQuery('#mapModalHeader').text("Event Location: " + address);
-                });
-              jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
-              jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-            }
+        var map;
+    	
+        function initializeCrashMap(lat, lng) 
+        {            
+          if (GBrowserIsCompatible()) {
+            map = new GMap2(document.getElementById("address-canvas"));
+            var location = new GLatLng(lat, lng)
+            map.setCenter(location, 15);
+            map.addOverlay(new GMarker(location)); 
+          }
+        }
+        
+        function initializeCrashTable()
+        {            
+            jQuery(".clickable-map-icon").click(function(){
+                var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
+                jQuery('#mapModalHeader').text("Event Location: " + address);
+              });
+            jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+            jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+          }
+
+		/* CreateMarker(GLatLng, divID, GIcon or null)
+		 *	
+		 * Creates a marker using specified GIcon or
+		 * default icon if null is passed for iconImage.
+		 * divID is the id of a DIV you want displayed in the info window. 
+		 */
+        function createMarker(point, divID, iconImage) 
+        {
+        	var markerIcon;
+        	var marker;
+
+			//Use passed in image.
+        	if(iconImage != null)
+        	{
+				markerIcon = new GIcon(baseIcon);
+	       	    markerIcon.image = iconImage;
+	       	 	markerOptions = { icon:markerIcon };
+	       	 	marker = new GMarker(point, markerOptions);
+        	}
+        	//Use default GoogleMap marker image.
+        	else
+        	{
+		      	markerIcon = new GIcon();
+				marker = new GMarker(point);
+        	}
+       
+       		GEvent.addListener(marker, "click", function() {
+					var node = document.getElementById(divID).cloneNode(true);
+          			node.style.display = 'block';
+		            marker.openInfoWindow(node);
+		 			});
+
+        	return marker;
+        }
 		</script>
     </ui:define>    
 
