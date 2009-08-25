@@ -674,35 +674,53 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 
 	@Override
 	public CrashSummary getGroupCrashSummaryData(Integer groupID) {
-
-        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getCode());
-        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
- //TODO       CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
-        CrashSummary crashSummary = new CrashSummary(100,2345,new Date(),204);
-               
-        return crashSummary;
+		try {
+			
+	        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getCode());
+	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+	 //TODO       CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
+	        CrashSummary crashSummary = new CrashSummary(100,2345,new Date(),204);
+	               
+	        return crashSummary;
+		}
+		catch (EmptyResultSetException e)
+        {
+            return new CrashSummary(0,0,new Date(),0);
+        }
 	}
 
 	@Override
 	public CrashSummary getDriverCrashSummaryData(Integer driverID) {
 
-        Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, Duration.TWELVE.getCode());
-        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-//TODO        CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
-        CrashSummary crashSummary = new CrashSummary(50,2345,new Date(),204);
-         
-        return crashSummary;
+		try {
+	        Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, Duration.TWELVE.getCode());
+	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+	//TODO        CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
+	        CrashSummary crashSummary = new CrashSummary(50,2345,new Date(),204);
+	         
+	        return crashSummary;
+		}
+		catch (EmptyResultSetException e)
+	    {
+	        return new CrashSummary(0,0,new Date(),0);
+	    }
 	}
 
 	@Override
 	public CrashSummary getVehicleCrashSummaryData(Integer vehicleID) {
 
-        Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, Duration.TWELVE.getCode());
-        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-//       CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
-        CrashSummary crashSummary = new CrashSummary(25,2345,new Date(),204);
-               
-        return crashSummary;
+		try {
+	        Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, Duration.TWELVE.getCode());
+	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+	//       CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
+	        CrashSummary crashSummary = new CrashSummary(25,2345,new Date(),204);
+	               
+	        return crashSummary;
+		}
+		catch (EmptyResultSetException e)
+	    {
+	        return new CrashSummary(0,0,new Date(),0);
+	    }
 	}
 
     
