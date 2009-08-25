@@ -344,7 +344,7 @@ public interface SiloService extends HessianService
     
     Map<String, Object> updateCrash(Integer crashID, Map<String, Object> crashReportMap) throws ProDAOException;
     
-    List<Map<String, Object>> getCrashReportsByGroupID(Integer acctID) throws ProDAOException;
+    List<Map<String, Object>> getCrashes(Integer groupID, Long startDT, Long stopDT, Integer incForgiven) throws ProDAOException;
 
     Map<String, Object> forgiveCrash(Integer groupID) throws ProDAOException;
     
