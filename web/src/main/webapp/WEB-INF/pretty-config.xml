@@ -210,7 +210,7 @@
     </url-mapping>    
     <url-mapping id="crashReport">
         <pattern>/app/notifications/crashReport/#{crashReportBean.crashReportID}</pattern>
-        <view-id>/secured/crashReport.faces</view-id>         
+        <view-id>/secured/notifications/crashReport.faces</view-id>         
     </url-mapping>    
       <url-mapping id="addCrashReport">
     	<pattern>/app/notifications/addCrashReport</pattern>
