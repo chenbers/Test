@@ -1367,7 +1367,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
     
     @Override
-    public List<Map<String, Object>> getCrashReportsByGroupID(Integer groupID) throws ProDAOException {
+    public List<Map<String, Object>> getCrashes(Integer groupID,Long startDt,Long stopDT,Integer incForgiven) throws ProDAOException {
         SearchCriteria searchCriteria = new SearchCriteria();
         AbstractMapper mapper = new SimpleMapper();
         searchCriteria.addKeyValue("groupID", groupID);
