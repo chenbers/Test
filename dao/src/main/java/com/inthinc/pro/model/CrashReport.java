@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.dao.annotations.SimpleName;
 
+@SimpleName(simpleName="Crash")
 public class CrashReport extends BaseEntity {
 
     /**

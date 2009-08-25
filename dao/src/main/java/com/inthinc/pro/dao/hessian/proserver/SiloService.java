@@ -336,13 +336,13 @@ public interface SiloService extends HessianService
     
     // Crash Reports
     
-    Map<String, Object> createCrashReport(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException;
+    Map<String, Object> createCrash(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException;
 
-    Map<String, Object> deleteCrashReport(Integer crashReportID) throws ProDAOException;
+    Map<String, Object> deleteCrash(Integer crashReportID) throws ProDAOException;
 
-    Map<String, Object> getCrashReport(Integer crashReportID) throws ProDAOException;
+    Map<String, Object> getCrash(Integer crashReportID) throws ProDAOException;
     
-    Map<String, Object> updateCrashReport(Integer reportPrefID, Map<String, Object> crashReportMap) throws ProDAOException;
+    Map<String, Object> updateCrash(Integer crashID, Map<String, Object> crashReportMap) throws ProDAOException;
     
     List<Map<String, Object>> getCrashReportsByGroupID(Integer acctID) throws ProDAOException;
 

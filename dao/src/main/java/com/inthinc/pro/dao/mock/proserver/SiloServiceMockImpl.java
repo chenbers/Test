@@ -1346,7 +1346,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }    
     
     @Override
-    public Map<String, Object> createCrashReport(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException {
+    public Map<String, Object> createCrash(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException {
         AbstractMapper mapper = new SimpleMapper();
         CrashReport crashReport = mapper.convertToModelObject(crashReportMap, CrashReport.class);
         crashReport.setCrashReportID((int) (Math.random() * Integer.MAX_VALUE));
@@ -1356,13 +1356,13 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
     
     @Override
-    public Map<String, Object> deleteCrashReport(Integer crashReportID) throws ProDAOException {
+    public Map<String, Object> deleteCrash(Integer crashReportID) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    public Map<String, Object> getCrashReport(Integer crashReportID) throws ProDAOException {
+    public Map<String, Object> getCrash(Integer crashReportID) throws ProDAOException {
         return MockData.getInstance().lookup(CrashReport.class, "crashReportID", crashReportID);
     }
     
@@ -1384,7 +1384,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
     
     @Override
-    public Map<String, Object> updateCrashReport(Integer reportPrefID, Map<String, Object> crashReportMap) throws ProDAOException {
+    public Map<String, Object> updateCrash(Integer reportPrefID, Map<String, Object> crashReportMap) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }  
