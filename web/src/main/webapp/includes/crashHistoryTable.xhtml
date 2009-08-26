@@ -92,7 +92,7 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-                <pretty:link mappingId="crashReport">
+                <pretty:link mappingId="crashReport" title="#{messages.notes_crashhistory_view_detail}">
                     <f:param value="#{item.crashReportID}"/>
                     #{messages.notes_crashhistory_details}
                 </pretty:link>
@@ -102,7 +102,7 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>                
-                <pretty:link mappingId="editCrashReport">
+                <pretty:link mappingId="editCrashReport" title="#{messages.notes_crashhistory_edit_crash}">
         			<f:param value="#{item.crashReportID}"/>
         			 #{messages.notes_crashhistory_edit}        			
 				</pretty:link>											
@@ -113,18 +113,26 @@
                     <h:outputText value="" />
                 </f:facet>                		
  				<a4j:commandLink rendered="#{item.forgiven == 0}" 
- 					title="#{messages.notes_clear}" 
+ 					title="#{messages.notes_crashhistory_change_status}" 
  					oncomplete="javascript:Richfaces.showModalPanel('clearCrashPanel')" 
- 					reRender="clearItemForm:clearItem" >
-					<h:outputText value="#{messages.notes_clear}" />
+ 					reRender="clearItemForm:clearItem,#{clearRerender}" >
+					<h:outputText value="#{messages.notes_crashhistory_lowercase_status}" />
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 				</a4j:commandLink>
  				<a4j:commandLink rendered="#{item.forgiven == 1}" 
- 					title="#{messages.driverReports_exclude}" id="excluded"
- 					action="#{bean.includeEventAction}" reRender="#{clearRerender}" >
-					<h:outputText value="#{messages.driverReports_include}" />
+ 					title="#{messages.notes_crashhistory_change_status}" id="excluded"
+ 					oncomplete="javascript:Richfaces.showModalPanel('clearCrashPanel')" 
+ 					reRender="clearItemForm:clearItem,#{clearRerender}" >
+					<h:outputText value="#{messages.notes_crashhistory_lowercase_status}" />
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
-				</a4j:commandLink>						
+				</a4j:commandLink>		
+ 				<a4j:commandLink rendered="#{item.forgiven == 2}" 
+ 					title="#{messages.notes_crashhistory_change_status}"
+ 					oncomplete="javascript:Richfaces.showModalPanel('clearCrashPanel')"   
+ 					reRender="clearItemForm:clearItem,#{clearRerender}" >
+					<h:outputText value="#{messages.notes_crashhistory_lowercase_status}" />
+					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
+				</a4j:commandLink>										
             </rich:column>              
                                   
         </rich:dataTable>
@@ -138,10 +146,11 @@
     </h:form>
 
     <rich:modalPanel id="clearCrashPanel" headerClass="popupHeader" 
-    	controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
-        onshow="document.getElementById('clearItemForm:yesButton').focus();">
+    	controlsClass="popupControls" width="500" height="50" 
+    	autosized="true" resizeable="false" zindex="2000"
+        onshow="document.getElementById('clearItemForm:newButton').focus();">
         <f:facet name="header">
-            <h:outputText value="#{clearTitle}" />
+            <h:outputText value="#{messages.notes_crashhistory_crash_status}" />
         </f:facet>
         <f:facet name="controls">
             <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
@@ -149,26 +158,50 @@
         </f:facet>
 
         <h:panelGroup layout="block" styleClass="popupsubtitle">
-            <h:outputText value="#{clearInst}" />
+            <h:outputText value="#{messages.notes_crashhistory_popup_instructions}" />
         </h:panelGroup>
 
         <a4j:form id="clearItemForm">
             <h:panelGroup layout="block" styleClass="popupcontent" id="clearItem">
-                <h:outputText value="#{bean.clearItem.detail}" />
+            	<h:outputText value="#{messages.notes_crashhistory_current_status} "/>
+                <h:outputText value="#{bean.clearItem.status}" />
                 <br />
+                <h:outputText value="#{messages.notes_crashhistory_crash_date} "/>
                 <h:outputText value="#{bean.clearItem.date}" />
             </h:panelGroup>
 
             <div class="popupactions">
-            <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearCrashPanel'); return false;">
-            	<span class="no"><h:outputText
-                	value="#{messages.button_no}" />
-                </span>
-            </button>
-            <a4j:commandButton id="yesButton" action="#{bean.clearItemAction}" oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
-                onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left">
-                <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
-            </a4j:commandButton></div>
+            	<button type="submit" class="left" 
+            		onclick="Richfaces.hideModalPanel('clearCrashPanel'); return false;">
+            		<span class="no">
+            			<h:outputText value="#{messages.button_cancel}" />
+                	</span>
+            	</button>
+            	<a4j:commandButton id="forgiveButton" action="#{bean.forgiveItemAction}" 
+            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
+                	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 
+                	reRender="#{clearRerender}" styleClass="left">
+                	<span class="yes"> 
+                		<h:outputText value="#{messages.button_forgive}" /> 
+                	</span>
+            	</a4j:commandButton>            	
+            	<a4j:commandButton id="confirmButton" action="#{bean.confirmItemAction}" 
+            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
+                	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 
+                	reRender="#{clearRerender}" styleClass="left">
+                	<span class="yes"> 
+                		<h:outputText value="#{messages.button_confirm}" /> 
+                	</span>
+            	</a4j:commandButton>
+            	<a4j:commandButton id="newButton" action="#{bean.newItemAction}" 
+            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
+                	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 
+                	reRender="#{clearRerender}" styleClass="left">
+                	<span class="yes"> 
+                		<h:outputText value="#{messages.button_new}" /> 
+                	</span>
+            	</a4j:commandButton>
+            </div>
 
         </a4j:form>
 
