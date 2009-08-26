@@ -45,7 +45,6 @@
                            
              }           
 		</script>
-		<t:saveState value="#{crashReportBean}"/>
 		<div style="width: 940px; margin:auto">
 			<div class="panel_nw">
 				<div class="panel_title">
@@ -76,7 +75,7 @@
 							<div class="section_title"><h:outputText value="#{messages.crashReport_crashDetails}" /></div>
 							<h:panelGrid columns="2">								
 								<h:outputText value="#{messages.crashReport_status}:" />
-								<h:outputText value="#{crashReportBean.crashReport.crashReportStatus}"/>								
+								<h:outputText value="#{messages[crashReportBean.crashReport.crashReportStatus]}"/>								
 								
 								<h:outputText value="#{messages.crashReport_date}:" />
 								<h:outputText value="#{crashReportBean.crashReport.date}">	
