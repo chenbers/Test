@@ -18,6 +18,7 @@ import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.CrashReport;
+import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.Person;
@@ -28,8 +29,10 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
 
-public abstract class BaseCrashBean extends BaseRedFlagsBean 
-                                    implements TablePrefOptions<CrashHistoryReportItem>, PersonChangeListener {
+public abstract class BaseCrashBean 
+        extends BaseRedFlagsBean 
+        implements TablePrefOptions<CrashHistoryReportItem>, 
+                    PersonChangeListener {
 
     private static final Logger                 logger = Logger.getLogger(BaseCrashBean.class);
     
@@ -284,11 +287,44 @@ public abstract class BaseCrashBean extends BaseRedFlagsBean
         this.clearItem = clearItem;
     }
     
+    public void newItemAction()
+    {
+        CrashReport cr = new CrashReport();
+        cr.setCrashReportID(clearItem.getCrashReportID());
+        cr.setCrashReportStatus(CrashReportStatus.NEW);
+        
+        if ( crashReportDAO.update(cr) >= 1 ) {
+            initTableData();
+        }
+    }
+    
+    public void confirmItemAction()
+    {
+        CrashReport cr = new CrashReport();
+        cr.setCrashReportID(clearItem.getCrashReportID());
+        cr.setCrashReportStatus(CrashReportStatus.CONFIRMED);
+        
+        if ( crashReportDAO.update(cr) >= 1 ) {
+            initTableData();
+        }
+    }
+    
+    public void forgiveItemAction()
+    {
+        CrashReport cr = new CrashReport();
+        cr.setCrashReportID(clearItem.getCrashReportID());
+        cr.setCrashReportStatus(CrashReportStatus.FORGIVEN);
+        
+        if ( crashReportDAO.update(cr) >= 1 ) {
+            initTableData();
+        }
+    }    
+    
     public void clearItemAction()
     {
-          if ( crashReportDAO.forgiveCrash(clearItem.getCrashReportID()) >= 1 ) {
-              initTableData();
-          }
+        if ( crashReportDAO.forgiveCrash(clearItem.getCrashReportID()) >= 1 ) {
+            initTableData();
+        }
     }
     
     public void includeEventAction(){

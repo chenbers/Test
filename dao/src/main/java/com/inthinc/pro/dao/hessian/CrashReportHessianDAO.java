@@ -59,10 +59,12 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     public List<CrashReport> getCrashReportsByGroupID(Integer groupID) {
         
         // Grab everything by setting the following parameters. 
-        GregorianCalendar gc    = new GregorianCalendar(1990,1,1);
-        Date startDT            = gc.getTime();
-        Date stopDT             = new Date();
-        Integer incForgiven     = CrashReportDAO.INCLUDE_FORGIVEN;
+        GregorianCalendar gcStart       = new GregorianCalendar(1990,1,1);
+        Date startDT                    = gcStart.getTime();
+        GregorianCalendar gcStop        = new GregorianCalendar(2090,1,1);
+        Date stopDT                     = gcStop.getTime();
+        
+        Integer incForgiven             = CrashReportDAO.INCLUDE_FORGIVEN;
         
         try
         {
@@ -78,9 +80,10 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     @Override
     public List<CrashReport> getCrashReportsByGroupIDAndForgiven(Integer groupID,Integer incForgiven) {
         
-        GregorianCalendar gc    = new GregorianCalendar(1990,1,1);
-        Date startDT            = gc.getTime();
-        Date stopDT             = new Date();
+        GregorianCalendar gcStart       = new GregorianCalendar(1990,1,1);
+        Date startDT                    = gcStart.getTime();
+        GregorianCalendar gcStop        = new GregorianCalendar(2090,1,1);
+        Date stopDT                     = gcStop.getTime();
         
         try
         {
