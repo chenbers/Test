@@ -2,6 +2,8 @@ package com.inthinc.pro.backing;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -12,14 +14,10 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.CrashDataPoint;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
@@ -44,16 +42,15 @@ public class CrashReportBean extends BaseBean{
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private CrashReportDAO crashReportDAO;
-    private List<Vehicle> vehicleList;
-    private List<Person> personList;
-    private List<Driver> driverList;
     private List<Trip> tripList;
     private Trip selectedTrip;
-    private Boolean useExistingTrip;
+    private Boolean useExistingTrip = Boolean.FALSE;
     private List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
     private Integer entityID;
+    private EntityType selectedEntityType = EntityType.ENTITY_DRIVER;
 
     private CrashReport crashReport;
+    private Integer crashTime;
     private Integer crashReportID; //Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
     
        
@@ -61,12 +58,19 @@ public class CrashReportBean extends BaseBean{
         return SelectItemUtil.toList(CrashReportStatus.class, true,CrashReportStatus.FORGIVEN,CrashReportStatus.DELETED);
     }
    
+    public List<SelectItem> getEntityTypeAsSelectItems(){
+        return SelectItemUtil.toList(EntityType.class, false, EntityType.ENTITY_GROUP);
+    }
     
     private CrashReport createCrashReport(){
         crashReport = new CrashReport();
         crashReport.setCrashReportStatus(CrashReportStatus.NEW);
         crashReport.setOccupantCount(1);
-        
+        Calendar now = Calendar.getInstance(getLocale());
+        now.set(Calendar.HOUR,0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        crashReport.setDate(now.getTime());
         return crashReport;
     }
     
@@ -78,7 +82,7 @@ public class CrashReportBean extends BaseBean{
         loadVehicles();
         loadDrivers();
         createCrashReport();
-        
+        Collections.sort(entityList);
     }
    
     public void edit(){
@@ -87,12 +91,13 @@ public class CrashReportBean extends BaseBean{
         editState = EditState.EDIT;
         loadVehicles();
         loadDrivers();
+        Collections.sort(entityList);
         
     }
     
     public String save(){
         if(editState.equals(EditState.ADD)){
-            crashReportID = crashReportDAO.create(getAccountID(), crashReport);
+            crashReportID = crashReportDAO.create(crashReport.getVehicleID(), crashReport);
         }else if(editState.equals(EditState.EDIT)){
             crashReportDAO.update(crashReport);
         }
@@ -106,30 +111,30 @@ public class CrashReportBean extends BaseBean{
             return "pretty:crashHistory";
     }
     
-    public List<Vehicle> filterVehicleList(Object suggest){
-        logger.debug("Filtering List For Autocompletion");
-        List<Vehicle> filteredVehicleList = new ArrayList<Vehicle>();
-        for(Vehicle vehicle:vehicleList){
-            if(vehicle.getFullName().toLowerCase().indexOf(((String)suggest).toLowerCase()) > -1){
-                filteredVehicleList.add(vehicle);
-            }
-        }
-        
-        return filteredVehicleList;
-    }
+//    public List<Vehicle> filterVehicleList(Object suggest){
+//        logger.debug("Filtering List For Autocompletion");
+//        List<Vehicle> filteredVehicleList = new ArrayList<Vehicle>();
+//        for(Vehicle vehicle:vehicleList){
+//            if(vehicle.getFullName().toLowerCase().indexOf(((String)suggest).toLowerCase()) > -1){
+//                filteredVehicleList.add(vehicle);
+//            }
+//        }
+//        
+//        return filteredVehicleList;
+//    }
     
     
-    public List<SelectItem> filterDriverList(Object suggest){
-        logger.debug("Filtering List For Autocompletion: " + suggest);
-        List<SelectItem> filteredDriverList = new ArrayList<SelectItem>();
-        for(Driver driver:driverList){
-            if(driver.getPerson().getFirst().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0 ||
-                    driver.getPerson().getLast().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0){
-                filteredDriverList.add(new SelectItem(driver.getDriverID(),driver.getPerson().getFullName()));
-            }
-        }
-        return filteredDriverList;
-    }
+//    public List<SelectItem> filterDriverList(Object suggest){
+//        logger.debug("Filtering List For Autocompletion: " + suggest);
+//        List<SelectItem> filteredDriverList = new ArrayList<SelectItem>();
+//        for(Driver driver:driverList){
+//            if(driver.getPerson().getFirst().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0 ||
+//                    driver.getPerson().getLast().toLowerCase().indexOf(((String)suggest).toLowerCase()) >= 0){
+//                filteredDriverList.add(new SelectItem(driver.getDriverID(),driver.getPerson().getFullName()));
+//            }
+//        }
+//        return filteredDriverList;
+//    }
     
     public List<SelectItem> filterEntityList(Object suggest){
         logger.debug("Filtering List For Autocompletion: " + suggest);
@@ -147,7 +152,7 @@ public class CrashReportBean extends BaseBean{
     
     private void loadVehicles(){
         logger.debug("loading vehicles");
-        vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(getGroupHierarchy().getTopGroup().getGroupID());
+        List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(getGroupHierarchy().getTopGroup().getGroupID());
         for(Vehicle vehicle:vehicleList){
             entityList.add(new VehicleBean(vehicle));
         }
@@ -155,7 +160,7 @@ public class CrashReportBean extends BaseBean{
     
     private void loadDrivers(){
         logger.debug("loading drivers");
-        driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
+        List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
         for(Driver driver:driverList){
             if(driver != null)
                 entityList.add(new DriverBean(driver));
@@ -202,17 +207,20 @@ public class CrashReportBean extends BaseBean{
 
     public List<SelectItem> getVehiclesAsSelectItems(){
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
-        for(Vehicle vehicle:vehicleList){
-            selectItems.add(new SelectItem(vehicle.getVehicleID(),vehicle.getFullName()));
+        for(IdentifiableEntityBean entityBean:entityList){
+            if(EntityType.ENTITY_VEHICLE.equals(entityBean.getEntityType()))
+                selectItems.add(new SelectItem(entityBean.getId(),entityBean.getLongName()));
         }
+        
         selectItems.add(0, new SelectItem(null, ""));
         return selectItems;
     }
     
     public List<SelectItem> getDriversAsSelectItems(){
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
-        for(Driver driver:driverList){
-            selectItems.add(new SelectItem(driver.getDriverID(),driver.getPerson().getFullName()));
+        for(IdentifiableEntityBean entityBean:entityList){
+            if(EntityType.ENTITY_DRIVER.equals(entityBean.getEntityType()))
+                selectItems.add(new SelectItem(entityBean.getId(),entityBean.getLongName()));
         }
         
         selectItems.add(0, new SelectItem(null, ""));
@@ -222,7 +230,8 @@ public class CrashReportBean extends BaseBean{
     public List<SelectItem> getEntitysAsSelectItems(){
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for(IdentifiableEntityBean entityBean:entityList){
-            selectItems.add(new SelectItem(entityBean.getId(),entityBean.getName() + " (" + entityBean.getEntityType() + ")"));
+            if(selectedEntityType.equals(entityBean.getEntityType()))
+                selectItems.add(new SelectItem(entityBean.getId(),entityBean.getLongName()));
         }
         
         selectItems.add(0, new SelectItem(null, ""));
@@ -293,17 +302,6 @@ public class CrashReportBean extends BaseBean{
         return crashReportID;
     }
 
-
-    
-    public List<Vehicle> getVehicleList() {
-        return vehicleList;
-    }
-
-    
-    public void setVehicleList(List<Vehicle> vehicleList) {
-        this.vehicleList = vehicleList;
-    }
-
     
     public List<Trip> getTripList() {
         return tripList;
@@ -324,28 +322,12 @@ public class CrashReportBean extends BaseBean{
         this.entityList = entityList;
     }
 
-    public void setPersonList(List<Person> personList) {
-        this.personList = personList;
-    }
-
-    public List<Person> getPersonList() {
-        return personList;
-    }
-
     public void setUseExistingTrip(Boolean useExistingTrip) {
         this.useExistingTrip = useExistingTrip;
     }
 
     public Boolean getUseExistingTrip() {
         return useExistingTrip;
-    }
-
-    public void setDriverList(List<Driver> driverList) {
-        this.driverList = driverList;
-    }
-
-    public List<Driver> getDriverList() {
-        return driverList;
     }
 
     public void setEditState(EditState editState) {
@@ -375,6 +357,37 @@ public class CrashReportBean extends BaseBean{
 
     public Trip getSelectedTrip() {
         return selectedTrip;
+    }
+
+
+    public void setCrashTime(Integer crashTime) {
+        if(crashReport != null && crashReport.getDate() != null){
+            Calendar dateTime = Calendar.getInstance();
+            dateTime.setTime(crashReport.getDate());
+            dateTime.set(Calendar.HOUR, crashTime / 60);
+            dateTime.set(Calendar.MINUTE, crashTime % 60 );
+        }
+        this.crashTime = crashTime;
+    }
+
+
+    public Integer getCrashTime() {
+        if(crashReport != null && crashReport.getDate() != null){
+           Calendar dateTime = Calendar.getInstance();
+           dateTime.setTime(crashReport.getDate());
+           int time = dateTime.get(Calendar.HOUR) * 60 * 60;
+           time += dateTime.get(Calendar.MINUTE) * 60;
+           crashTime = time;
+        }
+        return crashTime;
+    }
+
+    public void setSelectedEntityType(EntityType selectedEntityType) {
+        this.selectedEntityType = selectedEntityType;
+    }
+
+    public EntityType getSelectedEntityType() {
+        return selectedEntityType;
     }
 
 

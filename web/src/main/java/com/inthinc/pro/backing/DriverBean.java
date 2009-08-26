@@ -84,10 +84,15 @@ public class DriverBean extends BaseBean implements IdentifiableEntityBean {
     @Override
     public String getLongName() {
         if (driver != null) {
-            return driver.getPerson().getFullNameWithId();
+            return driver.getPerson().getFullName();
         }
         else {
             return null;
         }
+    }
+    
+    @Override
+    public int compareTo(IdentifiableEntityBean o) {
+        return o!=null?this.getLongName().compareTo(o.getLongName()):0;
     }
 }

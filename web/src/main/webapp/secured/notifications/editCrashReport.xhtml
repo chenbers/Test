@@ -11,13 +11,14 @@
     xmlns:c="http://java.sun.com/jstl/core"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-	<ui:param name="adminSelected" value="current" />
+	<ui:param name="notificationsSelected" value="current" />
     <ui:param name="title" value="#{reportScheduleBean.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : messages.adminHeader_editReportSchedule)}"/>
 	<ui:param name="helpFile" value="Add_Edit_a_Report.htm" />
    
     <ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
         <script src="#{facesContext.externalContext.request.contextPath}/js/mapstraction/mapstraction.js" type="text/javascript"></script>
+         <script src="#{facesContext.externalContext.request.contextPath}/js/mapGeocode.js" type="text/javascript"></script>
         <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6"></script>
 	</ui:define>
     
@@ -119,14 +120,15 @@
 				function initMap()
 	            {
 					if (GBrowserIsCompatible()) {
-						
 						 GUnload();
 						 map = new GMap2(document.getElementById("map-canvas"));
 	
 		
 		                 map.addControl(new GMapTypeControl());
 						 map.setMapType(G_NORMAL_MAP);
-						 map.setCenter(new GLatLng(40,-111),12);
+						 <ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
+						 	 map.setCenter(new GLatLng('#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}'),12);
+						 </ui:fragment>
 						 map.addControl(new GLargeMapControl());
 
 						 if(eventListener)
@@ -139,8 +141,11 @@
 								  }
 							 });
 						 </ui:fragment>
-	
-						 placeMarker('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
+
+						 <ui:fragment rendered="#{crashReportBean.crashReport.lat ne null}">
+						 	map.setCenter(new GLatLng('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}'),15);
+						 	updateLocation('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
+						 </ui:fragment>
 					}
 	                          
 	            } 
@@ -166,6 +171,9 @@
 	   					polyline = new GPolyline(points,"#0000ff", 6);
 	   					map.addOverlay(polyline);
 						map.addOverlay(createMarker(points[0],"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
+
+						
+						
 	   					updateLocation(points[index-1].lat(),points[index-1].lng());
 	   					
 	
@@ -235,113 +243,27 @@
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<rich:message for="dateCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<rich:calendar id="dateCalendar" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}"/>
+										<rich:calendar id="dateCalendar" datePattern="MMM dd yyyy hh:mm a" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}" timeZone="#{crashReportBean.person.timeZone}"/>
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<h:outputText value="#{messages.crashReport_vehicle}" />
 	                                    <h:outputText styleClass="required" value=" *" />
 		                			</h:panelGroup>
-		                			<h:panelGroup id="vehicleEditPanelGroup">
-		                				<rich:message for="vehicleIDHidden" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:panelGroup id="vehicleAutoSuggestPanel">
-											<h:inputHidden id="vehicleIDHidden" value="#{crashReportBean.crashReport.vehicleID}" required="true" requiredMessage="#{messages.required}"/>
-											<h:inputText id="searchVehicleInputText" rendered="#{crashReportBean.crashReport.vehicleID eq null}"/>
-											<h:outputText rendered="#{crashReportBean.crashReport.vehicleID ne null}">
-											  <span class="pick-item">
-									              <h:outputText value="#{crashReportBean.crashReport.vehicle.fullName}"/>
-									              <a4j:region>
-										              <a4j:commandLink id="picker-delete" 
-										              		styleClass="delete-pick-item" 
-										              		action="#{crashReportBean.clearSelectedVehicle}" 
-										              		data="#{crashReportBean.crashReport.vehicleID}"
-										              		reRender="vehicleAutoSuggestPanel"
-										              		oncomplete="document.getElementById('edit-form:vehicleIDHidden').value = data"
-										              		limitToList="true">
-										                <h:graphicImage value="/images/x.gif" width="16" height="20" />
-										              </a4j:commandLink>
-									              </a4j:region>
-								              </span>
-								            </h:outputText>
-								            <rich:suggestionbox style="border:0px solid white;" 
-												suggestionAction="#{crashReportBean.filterVehicleList}" 
-												for="searchVehicleInputText" var="vehicle"
-												eventsQueue="pickerQueue" ignoreDupResponses="false"
-												onobjectchange="updateVehicleItemValue(suggestion)"
-												usingSuggestObjects="true" limitToList="true">
-												<h:column>
-													<h:outputText value="#{vehicle.fullName}"/>
-												</h:column>
-											</rich:suggestionbox>
-							            </h:panelGroup>
-										
-										<a4j:region>
-											<a4j:jsFunction name="setSelectedVehicleID" reRender="vehicleAutoSuggestPanel" limitToList="true">
-												<a4j:actionparam name="vehicleID" assignTo="#{crashReportBean.selectedVehicleID}"/>
-											</a4j:jsFunction>
-										</a4j:region>
-										<script>
-											function updateVehicleItemValue(suggestion)
-									      	{
-										        var selected = suggestion.getSelectedItems();
-										        
-										        if (selected.length > 0){
-										        	setSelectedVehicleID(selected[0].vehicleID);
-										        }
-									      	}
-										</script>
+		                			<h:panelGroup>
+		                				<rich:message for="vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:selectOneMenu id="vehicle" value="#{crashReportBean.crashReport.vehicleID}" required="true" requiredMessage="#{messages.required}">
+											<f:selectItems value="#{crashReportBean.vehiclesAsSelectItems}"/>
+										</h:selectOneMenu>
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<h:outputText value="#{messages.crashReport_driver}" />
 	                                    <h:outputText styleClass="required" value=" *" />
 		                			</h:panelGroup>
 		                			<h:panelGroup>
-										<rich:message for="driverIDHidden" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:panelGroup id="driverAutoSuggestPanel">
-											<h:inputHidden id="driverIDHidden" value="#{crashReportBean.crashReport.driverID}" required="true" requiredMessage="#{messages.required}"/>
-											<h:inputText id="searchDriverInputText" rendered="#{crashReportBean.crashReport.driverID eq null}"/>
-											<h:outputText rendered="#{crashReportBean.crashReport.driverID ne null}">
-											  <span class="pick-item">
-									              <h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>
-									              <a4j:region>
-										              <a4j:commandLink id="picker-driver-delete" 
-										              		styleClass="delete-pick-item" 
-										              		action="#{crashReportBean.clearSelectedDriver}" 
-										              		data="#{crashReportBean.crashReport.driverID}"
-										              		reRender="driverAutoSuggestPanel"
-										              		oncomplete="document.getElementById('edit-form:driverIDHidden').value = data"
-										              		limitToList="true">
-										                	<h:graphicImage value="/images/x.gif" width="16" height="20" />
-										              </a4j:commandLink>
-									              </a4j:region>
-								              </span>
-								            </h:outputText>
-								            <rich:suggestionbox style="border:0px solid white;" 
-												suggestionAction="#{crashReportBean.filterDriverList}" 
-												for="searchDriverInputText" var="driver"
-												eventsQueue="pickerQueue" ignoreDupResponses="false"
-												onobjectchange="updateDriverItemValue(suggestion)"
-												usingSuggestObjects="true" limitToList="true">
-												<h:column>
-													<h:outputText value="#{driver.label}"/>
-												</h:column>
-											</rich:suggestionbox>
-							            </h:panelGroup>
-										
-										<a4j:region>
-											<a4j:jsFunction name="setSelectedDriverID" reRender="driverAutoSuggestPanel" limitToList="true">
-												<a4j:actionparam name="driverID" assignTo="#{crashReportBean.selectedDriverID}"/>
-											</a4j:jsFunction>
-										</a4j:region>
-										<script>
-											function updateDriverItemValue(suggestion)
-									      	{
-										        var selected = suggestion.getSelectedItems();
-										        
-										        if (selected.length > 0){
-										        	setSelectedDriverID(selected[0].value);
-										        }
-									      	}
-										</script>
+		                				<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:selectOneMenu id="driver" value="#{crashReportBean.crashReport.driverID}" required="true" requiredMessage="#{messages.required}">
+											<f:selectItems value="#{crashReportBean.driversAsSelectItems}"/>
+										</h:selectOneMenu>
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<h:outputText value="#{messages.crashReport_weather}" />
@@ -356,6 +278,14 @@
 		                			<h:panelGroup>
 		                				<rich:inputNumberSpinner minValue="0" maxValue="50" value="#{crashReportBean.crashReport.occupantCount}"/>
 		                			</h:panelGroup>
+									<h:outputText value="#{messages.crashReport_existingTrip}"/>
+									<a4j:region>
+										<h:selectOneRadio value="#{crashReportBean.useExistingTrip}" layout="lineDirection">
+											<f:selectItem itemValue="FALSE" itemLabel="No"/>
+											<f:selectItem itemValue="TRUE" itemLabel="Yes"/>
+											<a4j:support event="onchange" reRender="mapPanel,initMap" oncomplete="initMap()" limitToList="true"/>
+										</h:selectOneRadio>
+									</a4j:region>
 		                		</h:panelGrid>
 		                	</h:panelGroup>
 		                	<h:panelGroup>
@@ -370,117 +300,112 @@
 						
 						 <div class="spacer"></div>
 						 <rich:message for="crashLocation" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-						 <div class="add_section_title"><h:outputText value="#{messages.crashReport_crashLocation}" /><h:outputText styleClass="required" value=" *" /></div>
+						 <div class="add_section_title">
+						 	<h:outputText value="#{messages.crashReport_crashLocation}" />
+						 	<h:outputText styleClass="required" rendered="#{empty crashReportBean.crashReport.crashDataPoints}" value=" *" />
+						 </div>
 						 <rich:panel id="crashLocationHiddleInputPanel">
 						 	<h:inputHidden id="crashLocation" value="#{crashReportBean.crashReport.lat}" required="true" requiredMessage="#{messages.required}"/>
 						 </rich:panel>
 						 
-						 <table width="850" style="padding:10px">
-						 	<tr>
-						 		<td width="200">
-									<h:outputText value="#{messages.crashReport_existingTrip}"/>
-								</td>
-								<td align="left">
-									<a4j:region>
-										<h:selectOneRadio value="#{crashReportBean.useExistingTrip}" layout="lineDirection">
-											<f:selectItem itemValue="FALSE" itemLabel="No"/>
-											<f:selectItem itemValue="TRUE" itemLabel="Yes"/>
-											<a4j:support event="onchange" reRender="mapPanel,initMap" oncomplete="initMap()" limitToList="true"/>
-										</h:selectOneRadio>
-									</a4j:region>
-								</td>
-						   </tr>
-						   <tr>
-						   		<td colspan="2">
-						   			<rich:panel id="mapPanel">
-						   				
-										<table width="870">
-											<tr>
-												<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'true'}">
-													<td width="400" valign="top">
-														<h:panelGrid columns="2" width="400x">
-															<h:outputText value="Vehicle/Driver Search:"></h:outputText>
-															<h:panelGroup>
-															<h:inputText id="searchVehicleDriverInput"/>
-												            <rich:suggestionbox style="border:0px solid white;" 
-																suggestionAction="#{crashReportBean.filterEntityList}" 
-																for="searchVehicleDriverInput" var="item"
-																eventsQueue="pickerQueue" ignoreDupResponses="false"
-																onobjectchange="updateEntityValue(suggestion)"
-																usingSuggestObjects="true" limitToList="true">
-																<h:column>
-																	<h:outputText value="#{item.label}"/>
-																</h:column>
-															</rich:suggestionbox>
+						 <rich:panel rendered="#{empty crashReportBean.crashReport.crashDataPoints}">
+							 <table width="850" style="padding:10px">
+							 	<tr>
+							 		
+							   </tr>
+							   <tr>
+							   		<td colspan="2">
+							   			<rich:panel id="mapPanel">
+							   				
+											<table width="870">
+												<tr>
+													<td colspan="2">
+														<ui:fragment rendered="#{crashReportBean.useExistingTrip ne 'true'}">
+															#{messages.group_find_address}
+															<input type="text" size="42"
+																id="addressTextBox"
+																value="" tabindex="6"/>
+																<a4j:commandButton immediate="true" tabindex="7" onclick="showAddressWithAccuracy(document.getElementById('addressTextBox').value);" styleClass="left">
+																	<span class="search">
+																		#{messages.group_locate}
+																	</span>
+																</a4j:commandButton>
 															
+														</ui:fragment>
+													</td>
+												</tr>
+												<tr>
+													<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'true'}">
+														<td width="400" valign="top">
+															<h:panelGrid id="driverVehicleSearchPanel" columnClasses="section_fields" columns="2" width="400x">
+																<h:outputText value="#{messages.crashReport_searchType}"></h:outputText>
+																<a4j:region>
+																	<h:selectOneRadio value="#{crashReportBean.selectedEntityType}" layout="lineDirection">
+																		<f:selectItem itemValue="ENTITY_DRIVER" itemLabel="#{messages.crashReport_driver}"/>
+																		<f:selectItem itemValue="ENTITY_VEHICLE" itemLabel="#{messages.crashReport_vehicle}"/>
+																		<a4j:support event="onchange" reRender="driverVehicleSearchPanel" limitToList="true"/>
+																	</h:selectOneRadio>
+																</a4j:region>
+																<h:outputText value="#{messages.crashReport_driverVehicleSearch}"></h:outputText>
+																<a4j:region id="driverVehicleSearchRegion">
+																	<h:selectOneMenu value="#{crashReportBean.entityID}">
+																		<f:selectItems value="#{crashReportBean.entitysAsSelectItems}"/>
+																		<a4j:support event="onchange" reRender="tripsListPanel" action="#{crashReportBean.loadTrips}"/>
+																	</h:selectOneMenu>
+																</a4j:region>
+															</h:panelGrid>
+															<rich:spacer height="10px"/>
 															<a4j:region>
-																<a4j:jsFunction name="setSelectedEntityID" reRender="tripsListPanel" action="#{crashReportBean.loadTrips}" limitToList="true">
-																	<a4j:actionparam name="entityID" assignTo="#{crashReportBean.entityID}"/>
-																</a4j:jsFunction>
+																<rich:panel id="tripsListPanel">
+																		<div class="datagrid_panel" style="width: 400px">
+																			<div class="instructions"><h:outputText styleClass="instructions" value="#{messages.crashReport_tripSelection}" /></div>
+																			<rich:spacer height="5px"/>
+																			<rich:extendedDataTable value="#{crashReportBean.tripList}"
+																			        rowClasses="tableOdd,tableEven"
+																			        styleClass="datagrid"
+																			        selectionMode="single"
+																			        enableContextMenu="false"
+																			        selectedClass="selected-row"
+																					var="trip" width="390px" height="440px">
+																				<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip()">
+												                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
+												                                </a4j:support>
+																				<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="160px">
+																					<f:facet name="header"><h:outputText value="#{messages.crashReport_startTime}"></h:outputText></f:facet>
+																					<h:outputText value="#{trip.startTime}">
+																						<f:convertDateTime pattern="MMM dd yyyy hh:mm a z" timeZone="#{crashReportBean.person.timeZone}"/>
+																					</h:outputText>
+																				</rich:column>
+																				<rich:column width="160px">
+																					<f:facet name="header"><h:outputText value="#{messages.crashReport_endTime}" timeZone="#{crashReportBean.person.timeZone}"></h:outputText></f:facet>
+																					<h:outputText value="#{trip.endTime}">
+																						<f:convertDateTime pattern="MMM dd yyyy hh:mm a z" timeZone="#{crashReportBean.person.timeZone}"/>
+																					</h:outputText>
+																				</rich:column>
+																			</rich:extendedDataTable> 
+																		</div>
+																</rich:panel>
 															</a4j:region>
-															<script>
-																function updateEntityValue(suggestion)
-														      	{
-															        var selected = suggestion.getSelectedItems();
-															        
-															        if (selected.length > 0){
-															        	setSelectedEntityID(selected[0].value);
-															        }
-														      	}
-															</script>
-															</h:panelGroup>
-														</h:panelGrid>
-														<rich:spacer height="10px"/>
+														</td>	
+													</ui:fragment>
+													<td>
+														
+														<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
+														
 														<a4j:region>
-															<rich:panel id="tripsListPanel">
-																	<div class="datagrid_panel" style="width: 400px">
-																		<h:outputText value="Trips: "/>
-																		<rich:spacer height="5px"/>
-																		<rich:extendedDataTable value="#{crashReportBean.tripList}"
-																		        rowClasses="tableOdd,tableEven"
-																		        styleClass="datagrid"
-																		        selectionMode="single"
-																		        selectedClass="selected-row"
-																				var="trip" width="390px" height="450px">
-																			<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip()">
-											                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
-											                                </a4j:support>
-																			<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="150px">
-																				<f:facet name="header"><h:outputText value="Start Time"></h:outputText></f:facet>
-																				<h:outputText value="#{trip.startTime}">
-																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
-																				</h:outputText>
-																			</rich:column>
-																			<rich:column width="150px">
-																				<f:facet name="header"><h:outputText value="End Time"></h:outputText></f:facet>
-																				<h:outputText value="#{trip.endTime}">
-																					<f:convertDateTime pattern="MMM dd yyyy hh:mm:ss"/>
-																				</h:outputText>
-																			</rich:column>
-																		</rich:extendedDataTable> 
-																	</div>
-															</rich:panel>
+															<a4j:jsFunction data="#{crashReportBean.crashReport}" reRender="crashLocationHiddleInputPanel" name="updateLocation" oncomplete="placeCrashMarker(data.lat,data.lng)" requestDelay="100" limitToList="true">
+																<a4j:actionparam name="latitude" assignTo="#{crashReportBean.crashReport.lat}"/>
+																<a4j:actionparam name="longitude" assignTo="#{crashReportBean.crashReport.lng}"/>
+															</a4j:jsFunction>
 														</a4j:region>
-													</td>	
-												</ui:fragment>
-												<td>
-													
-													<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
-													
-													<a4j:region>
-														<a4j:jsFunction data="#{crashReportBean.crashReport}" reRender="crashLocationHiddleInputPanel" name="updateLocation" oncomplete="placeCrashMarker(data.lat,data.lng)" requestDelay="100" limitToList="true">
-															<a4j:actionparam name="latitude" assignTo="#{crashReportBean.crashReport.lat}"/>
-															<a4j:actionparam name="longitude" assignTo="#{crashReportBean.crashReport.lng}"/>
-														</a4j:jsFunction>
-													</a4j:region>
-												</td>
-											</tr>
-										</table>
-									</rich:panel>
-						 		</td>
-						 	</tr>
-						 </table>
-						
+													</td>
+												</tr>
+											</table>
+										</rich:panel>
+							 		</td>
+							 	</tr>
+							 </table>
+						 </rich:panel>
 						 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 						 
 						 <rich:spacer height="10px"/>

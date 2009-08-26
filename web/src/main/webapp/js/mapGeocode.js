@@ -76,3 +76,30 @@ function showAddressAndZone(latLngBounds, address)
   );
 }
 
+/*
+ * Displays the selected address at the appropriate zoom level. e.i. Typing in utah will display the entire state of utah
+ * within the map.
+ */
+function showAddressWithAccuracy(address) {
+	  
+	  var geocoder = new GClientGeocoder();
+	  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
+	  
+	  geocoder.getLocations(address,
+		    function(response) {
+		      if(response.Status.code!=200){
+		    	 alert("The address: [" + address + "] was not found.");
+		      } else {
+		    	  var place = response.Placemark[0];
+			        var accuracy = place.AddressDetails.Accuracy;
+			        var point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
+			        map.setCenter(point, zoomLookup[accuracy]);
+					
+			        var marker = new GMarker(point);
+			        map.addOverlay(marker);
+			        marker.openInfoWindowHtml(address);
+		      }
+		    }
+	  );										  
+}
+

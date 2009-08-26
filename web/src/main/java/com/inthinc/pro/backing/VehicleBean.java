@@ -83,8 +83,13 @@ public class VehicleBean extends BaseBean implements IdentifiableEntityBean {
     @Override
     public String getLongName() {
         if (vehicle != null) {
-            return vehicle.getFullName();
+            return vehicle.getName() + " - " + vehicle.getFullName();
         }
         return null;
+    }
+    
+    @Override
+    public int compareTo(IdentifiableEntityBean o) {
+        return o!=null?this.getLongName().compareTo(o.getLongName()):0;
     }
 }

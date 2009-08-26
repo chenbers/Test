@@ -11,7 +11,7 @@ import com.inthinc.pro.model.EntityType;
  *         bean with out prior knowledge of the entity type.
  * 
  */
-public interface IdentifiableEntityBean {
+public interface IdentifiableEntityBean extends Comparable<IdentifiableEntityBean>{
 
     public Integer getId();
 
@@ -24,4 +24,5 @@ public interface IdentifiableEntityBean {
     public Object getEntity();
     
     public String getLongName();
+    
 }
