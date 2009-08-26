@@ -145,7 +145,7 @@ public abstract class AbstractMapper implements Mapper
         final Column annotation = field.getAnnotation(Column.class);
         if (annotation != null)
             fieldType = annotation.type();
-        if ((fieldType == null) && (field.getGenericType() instanceof ParameterizedType))
+        if ((fieldType == null || fieldType == Object.class) && (field.getGenericType() instanceof ParameterizedType))
             fieldType = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
         return fieldType;
     }

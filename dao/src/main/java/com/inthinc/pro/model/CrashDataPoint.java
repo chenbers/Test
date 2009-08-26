@@ -5,24 +5,28 @@ import java.util.Date;
 import com.inthinc.pro.dao.annotations.Column;
 
 public class CrashDataPoint extends BaseEntity {
-
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
-    
     private Integer crashDataPointID;
     private LatLng latLng;
-    private Date date;
+    private Date time;
     private Integer fullEventID;
-    @Column(updateable=false)
+    @Column(updateable = false)
     private FullEvent fullEvent;
     private Integer gpsSpeed;
     private Integer obdSpeed;
     private Integer rpm;
-    private Boolean seatBelt;
-    
-    public CrashDataPoint(){}
+    @Column(name = "seatbeltState")
+    private Boolean seatBeltState;
+    @Column(name = "seatbeltAvail")
+    private Boolean seatBeltAvailable;
+    @Column(name = "ptOfImpact")
+    private Integer pointOfImpact;
+
+    public CrashDataPoint() {
+    }
 
     public void setLatLng(LatLng latLng) {
         this.latLng = latLng;
@@ -32,12 +36,12 @@ public class CrashDataPoint extends BaseEntity {
         return latLng;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTime() {
+        return time;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     public Integer getFullEventID() {
@@ -72,14 +76,6 @@ public class CrashDataPoint extends BaseEntity {
         this.rpm = rpm;
     }
 
-    public Boolean getSeatBelt() {
-        return seatBelt;
-    }
-
-    public void setSeatBelt(Boolean seatBelt) {
-        this.seatBelt = seatBelt;
-    }
-
     public void setCrashDataPointID(Integer crashDataPointID) {
         this.crashDataPointID = crashDataPointID;
     }
@@ -96,10 +92,35 @@ public class CrashDataPoint extends BaseEntity {
         return fullEvent;
     }
 
+    public Boolean getSeatBeltState() {
+        return seatBeltState;
+    }
+
+    public void setSeatBeltState(Boolean seatBeltState) {
+        this.seatBeltState = seatBeltState;
+    }
+
+    public Boolean getSeatBeltAvailable() {
+        return seatBeltAvailable;
+    }
+
+    public void setSeatBeltAvailable(Boolean seatBeltAvailable) {
+        this.seatBeltAvailable = seatBeltAvailable;
+    }
+
+    public Integer getPointOfImpact() {
+        return pointOfImpact;
+    }
+
+    public void setPointOfImpact(Integer pointOfImpact) {
+        this.pointOfImpact = pointOfImpact;
+    }
+
     @Override
     public String toString() {
-        return "CrashDataPoint [crashDataPointID=" + crashDataPointID + ", date=" + date + ", fullEventID=" + fullEventID + ", gpsSpeed=" + gpsSpeed + ", latLng=" + latLng
-                + ", obdSpeed=" + obdSpeed + ", rpm=" + rpm + ", seatBelt=" + seatBelt + "]";
+        return "CrashDataPoint [crashDataPointID=" + crashDataPointID + ", fullEvent=" + fullEvent + ", fullEventID=" + fullEventID + ", gpsSpeed="
+                + gpsSpeed + ", latLng=" + latLng + ", obdSpeed=" + obdSpeed + ", pointOfImpact=" + pointOfImpact + ", rpm=" + rpm + ", seatBeltAvailable=" + seatBeltAvailable
+                + ", seatBeltState=" + seatBeltState + ", time=" + time + "]";
     }
 
     @Override
@@ -132,6 +153,4 @@ public class CrashDataPoint extends BaseEntity {
         }
         return true;
     }
-    
-    
 }

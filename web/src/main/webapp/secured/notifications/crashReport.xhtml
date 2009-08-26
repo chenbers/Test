@@ -112,7 +112,7 @@
 							<f:facet name="header">
 								#{messages.crashReport_dateTime}
 							</f:facet>
-							<h:outputText value="#{dataPoint.date}">
+							<h:outputText value="#{dataPoint.time}">
 								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
 							</h:outputText>
 						</rich:column>
@@ -136,9 +136,15 @@
 						</rich:column>
 						<rich:column>
 							<f:facet name="header">
-								#{messages.crashReport_seatBelt}
+								#{messages.crashReport_seatBeltAvailable}
 							</f:facet>
-							#{dataPoint.seatBelt}
+							#{dataPoint.seatBeltAvailable}
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								#{messages.crashReport_seatBeltState}
+							</f:facet>
+							#{dataPoint.seatBeltState}
 						</rich:column>
 					</rich:dataTable>
 

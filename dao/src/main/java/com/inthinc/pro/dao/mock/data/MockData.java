@@ -550,10 +550,11 @@ public class MockData {
         List<CrashDataPoint> crashDataPointList = new ArrayList<CrashDataPoint>();
         for(int i = 10; i > 0; i--) {
             CrashDataPoint point = new CrashDataPoint();
-            point.setDate(new Date());
+            point.setTime(new Date());
             point.setGpsSpeed(76);
             point.setObdSpeed(70);
-            point.setSeatBelt(false);
+            point.setSeatBeltAvailable(false);
+            point.setSeatBeltState(false);
             point.setRpm(5800);
             point.setLatLng(new LatLng((40.7109991d + (i * 0.75)),(-111.9928979d) + (i * 0.75)));
             crashDataPointList.add(point);
