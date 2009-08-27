@@ -120,7 +120,7 @@
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 				</a4j:commandLink>
  				<a4j:commandLink rendered="#{item.forgiven == 1}" 
- 					title="#{messages.notes_crashhistory_change_status}" id="excluded"
+ 					title="#{messages.notes_crashhistory_change_status}" 
  					oncomplete="javascript:Richfaces.showModalPanel('clearCrashPanel')" 
  					reRender="clearItemForm:clearItem,#{clearRerender}" >
 					<h:outputText value="#{messages.notes_crashhistory_lowercase_status}" />
