@@ -293,6 +293,11 @@ public abstract class BaseCrashBean
         cr.setCrashReportID(clearItem.getCrashReportID());
         cr.setCrashReportStatus(CrashReportStatus.NEW);
         
+        // carry the date, so it's not updated in the mapper
+        Date d = new Date();
+        d.setTime(clearItem.getTime());
+        cr.setDate(d);        
+        
         if ( crashReportDAO.update(cr) >= 1 ) {
             initTableData();
         }
@@ -304,6 +309,11 @@ public abstract class BaseCrashBean
         cr.setCrashReportID(clearItem.getCrashReportID());
         cr.setCrashReportStatus(CrashReportStatus.CONFIRMED);
         
+        // carry the date, so it's not updated in the mapper
+        Date d = new Date();
+        d.setTime(clearItem.getTime());
+        cr.setDate(d);
+        
         if ( crashReportDAO.update(cr) >= 1 ) {
             initTableData();
         }
@@ -314,6 +324,11 @@ public abstract class BaseCrashBean
         CrashReport cr = new CrashReport();
         cr.setCrashReportID(clearItem.getCrashReportID());
         cr.setCrashReportStatus(CrashReportStatus.FORGIVEN);
+        
+        // carry the date, so it's not updated in the mapper
+        Date d = new Date();
+        d.setTime(clearItem.getTime());
+        cr.setDate(d);        
         
         if ( crashReportDAO.update(cr) >= 1 ) {
             initTableData();
