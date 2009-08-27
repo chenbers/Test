@@ -44,9 +44,8 @@ public class CrashReportBean extends BaseBean{
     private CrashReportDAO crashReportDAO;
     private List<Trip> tripList;
     private Trip selectedTrip;
-    private Boolean useExistingTrip = Boolean.FALSE;
+    private Boolean useExistingTrip = Boolean.TRUE;
     private List<IdentifiableEntityBean> entityList; //Used for selecting trips in the selectCrashLocation page.
-    private Integer entityID;
     private EntityType selectedEntityType = EntityType.ENTITY_DRIVER;
 
     private CrashReport crashReport;
@@ -173,25 +172,12 @@ public class CrashReportBean extends BaseBean{
     
     public void loadTrips(){
         logger.debug("loading trips");
-
-        IdentifiableEntityBean identifiableEntityBean = getSelectedEntityBean();
-       
-        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
-            tripList = driverDAO.getTrips(identifiableEntityBean.getId(), new Date(0), new Date());
-        }else{
-            tripList = vehicleDAO.getTrips(identifiableEntityBean.getId(), new Date(0), new Date());
+        if(selectedEntityType.equals(EntityType.ENTITY_DRIVER)){
+            tripList = driverDAO.getTrips(crashReport.getDriverID() == null?0:crashReport.getDriverID(), new Date(0), new Date());
+        }else {
+            tripList = vehicleDAO.getTrips(crashReport.getVehicleID() == null?0:crashReport.getVehicleID(), new Date(0), new Date());
         }
         
-    }
-    
-    private IdentifiableEntityBean getSelectedEntityBean() {
-        for(IdentifiableEntityBean entityBean:entityList){
-            if(entityBean.getId().equals(entityID)){
-                return entityBean;
-            }
-        }
-        
-        return null;
     }
     
     public void clearSelectedVehicle(){
@@ -336,16 +322,6 @@ public class CrashReportBean extends BaseBean{
 
     public EditState getEditState() {
         return editState;
-    }
-
-
-    public void setEntityID(Integer entityID) {
-        this.entityID = entityID;
-    }
-
-
-    public Integer getEntityID() {
-        return entityID;
     }
 
 
