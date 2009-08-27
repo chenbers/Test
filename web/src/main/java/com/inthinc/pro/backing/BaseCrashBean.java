@@ -139,9 +139,8 @@ public abstract class BaseCrashBean
 
     public void refreshAction()
     {
-        setTableData(null);
-        
-//        init();
+        setTableData(null);        
+        init();
     }
     private void init()
     {
