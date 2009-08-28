@@ -193,6 +193,7 @@ public interface SiloService extends HessianService
     
     Map<String, Object> unforgive(Integer driverID, Long noteID) throws ProDAOException;
     
+    Map<String, Object> getNoteNearLoc(Integer driverID, Double lat, Double lng, Long startDT, Long stopDT);
     
     // -------------------------    Trips   -----------------------------------------------
     /**

@@ -172,12 +172,32 @@ public class CrashReportBean extends BaseBean{
     
     public void loadTrips(){
         logger.debug("loading trips");
+        Calendar searchStartDate = Calendar.getInstance();
+        Calendar searchEndDate = Calendar.getInstance();
+        searchEndDate.roll(Calendar.DATE, 1);
+        if(crashReport.getDate() != null){
+            searchStartDate.setTime(crashReport.getDate());
+            searchEndDate.setTime(crashReport.getDate());
+            resetTime(searchEndDate);
+            resetTime(searchStartDate);
+            searchEndDate.roll(Calendar.DATE, 1);
+        }
+        
+        logger.debug("Begin Date: " + searchStartDate.getTime());
+        logger.debug("End Date: " + searchEndDate.getTime());
+        
         if(selectedEntityType.equals(EntityType.ENTITY_DRIVER)){
-            tripList = driverDAO.getTrips(crashReport.getDriverID() == null?0:crashReport.getDriverID(), new Date(0), new Date());
+            tripList = driverDAO.getTrips(crashReport.getDriverID() == null?0:crashReport.getDriverID(), searchStartDate.getTime(), searchEndDate.getTime());
         }else {
             tripList = vehicleDAO.getTrips(crashReport.getVehicleID() == null?0:crashReport.getVehicleID(), new Date(0), new Date());
         }
         
+    }
+    
+    public void resetTime(Calendar calendar){
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
     }
     
     public void clearSelectedVehicle(){

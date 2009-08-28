@@ -31,6 +31,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
@@ -1191,6 +1192,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         }
 
         return returnList;
+    }
+    
+    @Override
+    public Map<String, Object> getNoteNearLoc(Integer driverID, Double lat, Double lng, Long startDate, Long endDate) {
+        return getDriverNote(driverID,startDate,endDate,0, new Integer[]{EventType.SPEEDING.getCode()}).size() > 0?getDriverNote(driverID,startDate,endDate,0, new Integer[]{EventType.SPEEDING.getCode()}).get(0):null;
     }
 
     @Override

@@ -262,6 +262,12 @@ public class SiloServiceImpl implements SiloService
         // TODO Auto-generated method stub
         return null;
     }
+    
+    @Override
+    public Map<String, Object> getNoteNearLoc(Integer driverID, Double lat, Double lng, Long startDT, Long stopDT) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     @MethodDescription(description="Fetches notes associated with this driver, within the specified timeframe (start, stop). (optional)typeList would contain a list of note types to be fetched. Returns a list of noteMap, or an Integer error.")

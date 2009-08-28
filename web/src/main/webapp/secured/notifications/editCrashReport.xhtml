@@ -182,7 +182,7 @@
 	
 	   					tripPoints = points;
 
-	   					GEvent.addListener(map,"mousemove",function(point){
+	   					GEvent.addListener(polyline,"click",function(point){
 	   						var tripPoint = getClosestPointFromList(point,tripPoints);
 	   						updateLocation(tripPoint.lat(),tripPoint.lng());
 						});
@@ -248,7 +248,11 @@
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<rich:message for="dateCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<rich:calendar id="dateCalendar" datePattern="MMM dd yyyy hh:mm a" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}" timeZone="#{crashReportBean.person.timeZone}"/>
+										<a4j:region>
+											<rich:calendar id="dateCalendar" datePattern="MMM dd yyyy hh:mm a" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}" timeZone="#{crashReportBean.person.timeZone}">
+												<a4j:support event="oninputchange" reRender="tripsListPanel" ajaxSingle="true" limitToList="true" action="#{crashReportBean.loadTrips}"/>
+											</rich:calendar>
+										</a4j:region>
 		                			</h:panelGroup>
 		                			<h:panelGroup>
 		                				<h:outputText value="#{messages.crashReport_vehicle}" />
