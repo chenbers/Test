@@ -138,11 +138,11 @@
 					  </li>
 					  
 					  <security:authorize ifAnyGranted="ROLE_SUPERUSER">
-					  <li class="l text">
-						<pretty:link mappingId="addCrashReport" styleClass="ls_tab_add_crash">
-							#{messages.notes_crashhistory_addnew}
-						</pretty:link>
-					  </li>  					  
+					  	<li class="l text">
+							<pretty:link mappingId="addCrashReport" styleClass="ls_tab_add_crash">
+								#{messages.notes_crashhistory_addnew}
+							</pretty:link>
+					  	</li>  					  
 					  </security:authorize>
 					  <li class="r grid_icon">
 						<h:panelGroup id="crashHistoryReportToolImageId">
