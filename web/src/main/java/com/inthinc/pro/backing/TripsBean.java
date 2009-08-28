@@ -209,15 +209,18 @@ public class TripsBean extends BaseBean {
     }
 
     public void setEndDate(Date endDate) {
+        Date dateOut = null;
+        
         // Set Time to 11:59:99 PM Always
         if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
             // Set end date to now using driver's time zone.
-            endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(identifiableEntityBean.getId()));
+            dateOut = SetTimeToEndOfDay(endDate, getTimeZoneFromDriver(identifiableEntityBean.getId()));
         }
         else {
-            endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDeviceID()));
+            dateOut = SetTimeToEndOfDay(endDate, getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDeviceID()));
         }
-        this.endDate = endDate;
+        
+        this.endDate = dateOut;
     }
     
     public TimeZone getTimeZone(){
