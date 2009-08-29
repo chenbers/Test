@@ -14,7 +14,6 @@
     <ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
         <script src="#{facesContext.externalContext.request.contextPath}/js/mapstraction/mapstraction.js" type="text/javascript"></script>
-        <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6"></script>
 	    <script language="javascript" type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/jquery.flot.js"></script>
 	</ui:define>
 	<ui:define name="content">
@@ -50,10 +49,11 @@
              }           
 
             function updateVehicleMarker(point) {
+                /*
                 var latlng = vehicleMarker.getLatLng();
-                var point = new GLatLng(latlng.lat() + 0.5, latlng.lng() + 0.5);
+                point = new GLatLng(latlng.lat() + 0.0005, latlng.lng() + 0.0005);
+                */
                 vehicleMarker.setLatLng(point);
-                map.setCenter(point, 12);
             }
             
 		</script>
@@ -167,7 +167,12 @@
 						    <div id="placeholder" style="width:100%;height:200px"></div>
 								
 						    <p id="hoverdata">Mouse hovers at
-						    (<span id="x">0</span>, <span id="y">0</span>). <span id="clickdata"></span></p>
+						    (<span id="x">0</span>, <span id="y">0</span>). </p>
+						    
+						    <p><span id="clickdata"></span></p>
+						    <p> <span id="eventinfo"></span></p>
+						    <p> <span id="iteminfo"></span></p>
+						    <p> <span id="posinfo"></span></p>
 						</h:panelGroup>
 					</h:panelGrid>
 					
@@ -187,8 +192,8 @@
 				var gpsSpeed = [], obdSpeed = [], rpm = [];
 		    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
 		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, #{point.lat}, #{point.lng}])
-		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}]);
-		    		rpm.push([#{point.time.time}, #{point.rpm}]);
+		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, #{point.lat}, #{point.lng}]);
+		    		rpm.push([#{point.time.time}, #{point.rpm}, #{point.lat}, #{point.lng}]);
 		    	</a4j:repeat>
 			
 			    var plot = jQuery.plot(jQuery("#placeholder"),
@@ -198,7 +203,7 @@
 			           	 lines: { show: true },
 			             points: { show: true },
 			             selection: { mode: "xy" },
-			             grid: { hoverable: true, clickable: true }
+			             grid: { hoverable: true, clickable: true, autoHighlight: true, mouseActiveRadius: 100 }
 			           });
 		           
 			    function showTooltip(x, y, contents) {
@@ -216,9 +221,22 @@
 
 			    var previousPoint = null;
 			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {
-			        jQuery("#x").text(pos.x.toFixed(2));
-			        jQuery("#y").text(pos.y.toFixed(2)); 
+				    /*
+		        	jQuery("#eventinfo").text("Event: ");
+		            jQuery.each(event, function(name, value) {
+			        	jQuery("#eventinfo").append("<p>" + name + ": " + value + " </p> ");
+		            });
+		            */
+		            
+		        	jQuery("#posinfo").text("Position: ");
+		            jQuery.each(pos, function(name, value) {
+			        	jQuery("#posinfo").append("<p>" + name + ": " + value + " </p> ");
+		            });
 		            if (item) {
+			        	jQuery("#iteminfo").text("Item: ");
+			            jQuery.each(item, function(name, value) {
+				        	jQuery("#iteminfo").append("<p>" + name + ": " + value + " </p> ");
+			            });
 		                if (previousPoint != item.datapoint) {
 		                    previousPoint = item.datapoint;
 		                    
@@ -229,21 +247,20 @@
 		                    showTooltip(item.pageX, item.pageY,
 		                                item.series.label + " of " + x + " = " + y);
 		                }
-		                var location = gpsSpeed[item.seriesIndex];
-		                updateVehicleMarker(new GLatLng(location[3],location[4]));
+		                updateVehicleMarker(new GLatLng(item.datapoint[2],item.datapoint[3]));
 		            }
 		            else {
 		                jQuery("#tooltip").remove();
-		                previousPoint = null;            
+		                previousPoint = null;           
 		            }      
 			    });
 			
-			    jQuery("#placeholder").bind("plotclick", function (event, pos, item) {
+			    /*jQuery("#placeholder").bind("plotclick", function (event, pos, item) {
 			        if (item) {
 			            jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ". ");
 			            plot.highlight(item.series, item.datapoint);
 			        }
-			    });
+			    });*/
 			});
 		</script>
 		
