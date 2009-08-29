@@ -35,16 +35,27 @@
 		</style>
 		<script type="text/javascript">
 			var map = null;
+			var vehicleMarker = null;
 			function initMap() {
 				if (GBrowserIsCompatible()) {					
 					 GUnload();
+					 var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
 					 map = new GMap2(document.getElementById("map-canvas"));	
 					 map.setMapType(G_NORMAL_MAP);
-					 map.setCenter(new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng}),12);
+					 map.setCenter(point,12);
 					 map.setUIToDefault();
-				}
-                           
+					 vehicleMarker = new GMarker(point);
+					 map.addOverlay(vehicleMarker);
+				}                           
              }           
+
+            function updateVehicleMarker(point) {
+                var latlng = vehicleMarker.getLatLng();
+                var point = new GLatLng(latlng.lat() + 0.5, latlng.lng() + 0.5);
+                vehicleMarker.setLatLng(point);
+                map.setCenter(point, 12);
+            }
+            
 		</script>
 		
 		
@@ -106,59 +117,61 @@
 						</h:panelGroup>
 					</h:panelGrid>
 					
-					<div class="section_title"><h:outputText value="#{messages.crashReport_crashLocation}" /></div>
-					<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
-					<script type="text/javascript">initMap();</script>
 					
+					<h:panelGrid columns="2" columnClasses="section">
+						<h:panelGroup>
+							<div class="section_title"><h:outputText value="#{messages.crashReport_crashDetails}" /></div>
+							<rich:dataTable value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column rowspan="2">#{messages.crashReport_dateTime}</rich:column>
+									<rich:column rowspan="2">#{messages.crashReport_rpm}</rich:column>
+									<rich:column colspan="2">Speed</rich:column>
+									<rich:column colspan="2">Seat Belt</rich:column>
+									<rich:column breakBefore="true">OBD</rich:column>
+									<rich:column>GPS</rich:column>
+									<rich:column>Avail</rich:column>
+									<rich:column>On</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+								<rich:column>
+									<h:outputText value="#{dataPoint.time}">
+										<f:convertDateTime pattern="#{messages.timeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
+									</h:outputText>
+								</rich:column>
+								<rich:column>
+									#{dataPoint.rpm}
+								</rich:column>
+								<rich:column>
+									#{dataPoint.obdSpeed}
+								</rich:column>
+								<rich:column>
+									#{dataPoint.gpsSpeed}
+								</rich:column>
+								<rich:column>
+									#{dataPoint.seatBeltAvailable}
+								</rich:column>
+								<rich:column>
+									#{dataPoint.seatBeltState}
+								</rich:column>
+							</rich:dataTable>
+						</h:panelGroup>
 					
-		
-				    <div id="placeholder" style="width:100%;height:300px"></div>
-						
-				    <p id="hoverdata">Mouse hovers at
-				    (<span id="x">0</span>, <span id="y">0</span>). <span id="clickdata"></span></p>
+						<h:panelGroup>
+							<div class="section_title"><h:outputText value="#{messages.crashReport_crashLocation}" /></div>
+							<div id="map-canvas" style="width: 100%; height: 300px; border: 0"></div>
+							<script type="text/javascript">initMap();</script>
+							
+							
+				
+						    <div id="placeholder" style="width:100%;height:200px"></div>
+								
+						    <p id="hoverdata">Mouse hovers at
+						    (<span id="x">0</span>, <span id="y">0</span>). <span id="clickdata"></span></p>
+						</h:panelGroup>
+					</h:panelGrid>
 					
-					
-					<div class="section_title"><h:outputText value="#{messages.crashReport_crashDetails}" /></div>
-					<rich:dataTable value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
-						<rich:column>
-							<f:facet name="header">
-								#{messages.crashReport_dateTime}
-							</f:facet>
-							<h:outputText value="#{dataPoint.time}">
-								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
-							</h:outputText>
-						</rich:column>
-						<rich:column>
-							<f:facet name="header">
-								#{messages.crashReport_rpm}
-							</f:facet>
-							#{dataPoint.rpm}
-						</rich:column>
-						<rich:column>
-							<f:facet name="header">
-								#{messages.crashReport_obd_speed}
-							</f:facet>
-							#{dataPoint.obdSpeed}
-						</rich:column>
-						<rich:column>
-							<f:facet name="header">
-								#{messages.crashReport_gps_speed}
-							</f:facet>
-							#{dataPoint.gpsSpeed}
-						</rich:column>
-						<rich:column>
-							<f:facet name="header">
-								#{messages.crashReport_seatBeltAvailable}
-							</f:facet>
-							#{dataPoint.seatBeltAvailable}
-						</rich:column>
-						<rich:column>
-							<f:facet name="header">
-								#{messages.crashReport_seatBeltState}
-							</f:facet>
-							#{dataPoint.seatBeltState}
-						</rich:column>
-					</rich:dataTable>
+
 
 				</div>
 			</div>
@@ -170,20 +183,24 @@
 		<script language="javascript" type="text/javascript">
 
 			jQuery(function () {
-				var dataX = [];
+
+				var gpsSpeed = [], obdSpeed = [], rpm = [];
 		    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
-		    		dataX.push([#{point.time.time}, #{point.gpsSpeed}])
+		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, #{point.lat}, #{point.lng}])
+		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}]);
+		    		rpm.push([#{point.time.time}, #{point.rpm}]);
 		    	</a4j:repeat>
 			
 			    var plot = jQuery.plot(jQuery("#placeholder"),
-			           [ { data: dataX, label: "Data X"} ],
-			           { xaxis: { mode: "time" },
+			           [ { data: gpsSpeed, label: "GPS Speed"}, {data: obdSpeed, label: "OBD Speed"}, {data: rpm, label: "RPM", yaxis: 2} ],
+			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
+		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 			           	 lines: { show: true },
 			             points: { show: true },
 			             selection: { mode: "xy" },
 			             grid: { hoverable: true, clickable: true }
-			             });
-			
+			           });
+		           
 			    function showTooltip(x, y, contents) {
 			        jQuery('<div id="tooltip">' + contents + '</div>').css( {
 			            position: 'absolute',
@@ -196,16 +213,34 @@
 			            opacity: 0.80
 			        }).appendTo("body").fadeIn(200);
 			    }
-			
+
 			    var previousPoint = null;
 			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {
 			        jQuery("#x").text(pos.x.toFixed(2));
-			        jQuery("#y").text(pos.y.toFixed(2));
+			        jQuery("#y").text(pos.y.toFixed(2)); 
+		            if (item) {
+		                if (previousPoint != item.datapoint) {
+		                    previousPoint = item.datapoint;
+		                    
+		                    jQuery("#tooltip").remove();
+		                    var x = item.datapoint[0].toFixed(2),
+		                        y = item.datapoint[1].toFixed(2);
+		                    
+		                    showTooltip(item.pageX, item.pageY,
+		                                item.series.label + " of " + x + " = " + y);
+		                }
+		                var location = gpsSpeed[item.seriesIndex];
+		                updateVehicleMarker(new GLatLng(location[3],location[4]));
+		            }
+		            else {
+		                jQuery("#tooltip").remove();
+		                previousPoint = null;            
+		            }      
 			    });
 			
 			    jQuery("#placeholder").bind("plotclick", function (event, pos, item) {
 			        if (item) {
-			            jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+			            jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ". ");
 			            plot.highlight(item.series, item.datapoint);
 			        }
 			    });

@@ -11,6 +11,8 @@ public class CrashDataPoint extends BaseEntity {
     private static final long serialVersionUID = 1L;
     private Integer crashDataPointID;
     private LatLng latLng;
+    private Double lat;
+    private Double lng;
     private Date time;
     private Integer fullEventID;
     @Column(updateable = false)
@@ -34,6 +36,22 @@ public class CrashDataPoint extends BaseEntity {
 
     public LatLng getLatLng() {
         return latLng;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     public Date getTime() {
@@ -118,9 +136,9 @@ public class CrashDataPoint extends BaseEntity {
 
     @Override
     public String toString() {
-        return "CrashDataPoint [crashDataPointID=" + crashDataPointID + ", fullEvent=" + fullEvent + ", fullEventID=" + fullEventID + ", gpsSpeed="
-                + gpsSpeed + ", latLng=" + latLng + ", obdSpeed=" + obdSpeed + ", pointOfImpact=" + pointOfImpact + ", rpm=" + rpm + ", seatBeltAvailable=" + seatBeltAvailable
-                + ", seatBeltState=" + seatBeltState + ", time=" + time + "]";
+        return "CrashDataPoint [crashDataPointID=" + crashDataPointID + ", fullEvent=" + fullEvent + ", fullEventID=" + fullEventID + ", gpsSpeed=" + gpsSpeed + ", latLng="
+                + latLng + ", obdSpeed=" + obdSpeed + ", pointOfImpact=" + pointOfImpact + ", rpm=" + rpm + ", seatBeltAvailable=" + seatBeltAvailable + ", seatBeltState="
+                + seatBeltState + ", time=" + time + "]";
     }
 
     @Override
