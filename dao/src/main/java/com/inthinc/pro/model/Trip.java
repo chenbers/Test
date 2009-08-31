@@ -9,7 +9,7 @@ import com.inthinc.pro.dao.annotations.ID;
 public class Trip extends BaseEntity
 {
     @ID
-    private Integer tripID;
+    private Long tripID;
     private Integer vehicleID;
     private Integer driverID;
     private Date startTime;
@@ -28,7 +28,7 @@ public class Trip extends BaseEntity
     {
         super();
     }
-    public Trip(Integer tripID, Integer vehicleID, Date startTime, Date endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr)
+    public Trip(Long tripID, Integer vehicleID, Date startTime, Date endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr)
     {
         super();
         this.tripID = tripID;
@@ -130,11 +130,14 @@ public class Trip extends BaseEntity
     {
         return events != null && events.size() > 0;
     }
-    public Integer getTripID()
+    public Long getTripID()
     {
+        if(startTime != null){
+            return startTime.getTime();
+        }
         return tripID;
     }
-    public void setTripID(Integer tripID)
+    public void setTripID(Long tripID)
     {
         this.tripID = tripID;
     }

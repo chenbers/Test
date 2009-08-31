@@ -490,7 +490,7 @@ public class MockData {
                         route.add(new LatLng(randomLat(), randomLng()));
                     }
                 }
-                Trip trip = new Trip(id, vehicle.getVehicleID(), startDate, endDate, randomInt(500, 10000), route, addressStr[startAddressIdx], addressStr[endAddressIdx]);
+                Trip trip = new Trip(Long.valueOf(id), vehicle.getVehicleID(), startDate, endDate, randomInt(500, 10000), route, addressStr[startAddressIdx], addressStr[endAddressIdx]);
                 trip.setDriverID(driver.getDriverID());
                 int eventCnt = addEventsAndRedFlagsForTrip(driver, vehicle, trip, eventIdOffset);
                 if (tripCnt == numTrips - 2) {
@@ -681,7 +681,7 @@ public class MockData {
             event.setVehicle(vehicle);
             event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
             storeObject(event, Event.class);
-            Integer redFlagID = new Integer(idOffset + trip.getTripID() * MAX_EVENTS + eventCnt);
+            Integer redFlagID = new Integer(idOffset * MAX_EVENTS + eventCnt);
             RedFlag redFlag = new RedFlag(redFlagID, RedFlagLevel.valueOf(randomInt(1, 3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
             storeObject(redFlag);
             if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID)) {

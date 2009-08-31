@@ -241,6 +241,11 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     }
     
     @Override
+    public Event getEventNearLocation(Integer driverID, Double latitude, Double longitude, Date startDate, Date endDate) {
+        return getMapper().convertToModelObject(getSiloService().getNoteNearLoc(driverID, latitude, longitude, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Event.class);
+    }
+    
+    @Override
     public <T> T getEventByType(Long noteID, Class<T> clazz)
     {
         return getMapper().convertToModelObject(this.getSiloService().getNote(noteID), clazz);

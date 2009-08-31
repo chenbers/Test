@@ -192,4 +192,10 @@ public class DateUtil
         return difInDays;
         
     }
+    
+    public static void resetTime(Calendar calendar){
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+    }
 }
