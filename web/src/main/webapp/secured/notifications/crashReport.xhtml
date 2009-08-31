@@ -33,8 +33,15 @@
 			}
 		</style>
 		<script type="text/javascript">
+		    var baseIcon = new GIcon();
+			baseIcon.iconSize = new GSize(25, 30);
+			baseIcon.iconAnchor = new GPoint(9, 30);
+			baseIcon.infoWindowAnchor = new GPoint(5, 1);
+
 			var map = null;
 			var vehicleMarker = null;
+
+			
 			function initMap() {
 				if (GBrowserIsCompatible()) {					
 					 GUnload();
@@ -42,8 +49,12 @@
 					 map = new GMap2(document.getElementById("map-canvas"));	
 					 map.setMapType(G_NORMAL_MAP);
 					 map.setCenter(point,12);
-					 map.setUIToDefault();
-					 vehicleMarker = new GMarker(point);
+					 map.setUIToDefault();				 	
+					 
+					 var vehicleIcon = new GIcon(baseIcon);
+					 vehicleIcon.image = "#{facesContext.externalContext.request.contextPath}/images/googleMapIcons/icon_2.png";
+					 markerOptions = { icon:vehicleIcon };					 					 
+					 vehicleMarker = new GMarker(point, markerOptions);
 					 map.addOverlay(vehicleMarker);
 				}                           
              }           
@@ -189,13 +200,19 @@
 
 			jQuery(function () {
 
-				var gpsSpeed = [], obdSpeed = [], rpm = [];
+				var gpsSpeed = [], obdSpeed = [], rpm = [], tripPoints = [];
 		    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
 		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, #{point.lat}, #{point.lng}])
 		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, #{point.lat}, #{point.lng}]);
 		    		rpm.push([#{point.time.time}, #{point.rpm}, #{point.lat}, #{point.lng}]);
+					tripPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
 		    	</a4j:repeat>
-			
+
+				
+
+				var polyline = new GPolyline(tripPoints, "#0000ff", 6);
+				map.addOverlay(polyline);
+				
 			    var plot = jQuery.plot(jQuery("#placeholder"),
 			           [ { data: gpsSpeed, label: "GPS Speed"}, {data: obdSpeed, label: "OBD Speed"}, {data: rpm, label: "RPM", yaxis: 2} ],
 			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
@@ -237,22 +254,9 @@
 			            jQuery.each(item, function(name, value) {
 				        	jQuery("#iteminfo").append("<p>" + name + ": " + value + " </p> ");
 			            });
-		                if (previousPoint != item.datapoint) {
-		                    previousPoint = item.datapoint;
-		                    
-		                    jQuery("#tooltip").remove();
-		                    var x = item.datapoint[0].toFixed(2),
-		                        y = item.datapoint[1].toFixed(2);
-		                    
-		                    showTooltip(item.pageX, item.pageY,
-		                                item.series.label + " of " + x + " = " + y);
-		                }
+
 		                updateVehicleMarker(new GLatLng(item.datapoint[2],item.datapoint[3]));
 		            }
-		            else {
-		                jQuery("#tooltip").remove();
-		                previousPoint = null;           
-		            }      
 			    });
 			
 			    /*jQuery("#placeholder").bind("plotclick", function (event, pos, item) {
