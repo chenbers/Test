@@ -125,6 +125,11 @@
 		
 		                 map.addControl(new GMapTypeControl());
 						 map.setMapType(G_NORMAL_MAP);
+						 <ui:fragment rendered="#{not empty crashReportBean.crashReport.crashDataPoints}">
+						 	map.disableDragging();
+							map.disableScrollWheelZoom();
+							map.disableDoubleClickZoom();
+						 </ui:fragment>
 						 <ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
 						 	 map.setCenter(new GLatLng('#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}'),12);
 						 </ui:fragment>
@@ -133,7 +138,7 @@
 						 if(eventListener)
 						 	GEvent.removeListener(eventListener);
 
-						 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq false}">
+						 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq false and empty crashReportBean.crashReport.crashDataPoints}">
 						 	 eventListener = GEvent.addListener(map,"click", function(overlay, latLng) {     
 								  if (latLng) { 
 								    updateLocation(latLng.lat(),latLng.lng());
@@ -211,12 +216,22 @@
 							errorClass="error" fatalClass="error" warnClass="warning"
 							infoClass="info" styleClass="msg" />
 							
+						
+							
 						<ul id="grid_nav" style="margin: 0;">
 		                   	<li class="r">
 		                      <h:commandButton action="#{crashReportBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
 		                      <h:outputText value=" " /><h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
 		                    </li>
 		                </ul>
+		                
+		                <ui:fragment rendered="#{not empty crashReportBean.crashReport.crashDataPoints}">	
+						    <dl id="display-form:j_id122" class="rich-messages msg" style="">
+	                           <dt class="warning">
+	                              <h:outputText value="#{messages.crashReport_readOnlyMessage}"/>
+	                           </dt>
+	                        </dl>
+                        </ui:fragment>
 		                
 		                <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
 		                  <dl id="display-form:j_id122" class="rich-messages msg" style="">
@@ -228,7 +243,7 @@
 		                     </dt>
 		                  </dl>
 		                </ui:fragment>
-		                
+	
 		                <h:panelGrid columns="2" columnClasses="section">
 		                	<h:panelGroup>
 		                		<div class="section_title"><h:outputText value="#{messages.crashReport_crashSummary}" /></div>
@@ -250,7 +265,7 @@
 		                			<h:panelGroup id="crashDatePanel">
 		                				<rich:message for="dateCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 										<a4j:region>
-											<rich:calendar id="dateCalendar" datePattern="MMM dd yyyy hh:mm a" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}" timeZone="#{crashReportBean.person.timeZone}">
+											<rich:calendar readonly="#{not empty crashReportBean.crashReport.crashDataPoints}" id="dateCalendar" datePattern="MMM dd yyyy hh:mm a" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}" timeZone="#{crashReportBean.person.timeZone}">
 												<a4j:support event="onchanged" reRender="tripsListPanel" ajaxSingle="true" limitToList="true" action="#{crashReportBean.loadTrips}"/>
 											</rich:calendar>
 										</a4j:region>
@@ -316,8 +331,8 @@
 						 	<h:inputHidden id="crashLocation" value="#{crashReportBean.crashReport.lat}" required="true" requiredMessage="#{messages.required}"/>
 						 </rich:panel>
 						 
-						 <rich:panel id="mapPanel" rendered="#{empty crashReportBean.crashReport.crashDataPoints}">
-						 	 <h:panelGrid columns="3" style="padding-left:12px">
+						 <rich:panel id="mapPanel">
+						 	 <h:panelGrid columns="3" style="padding-left:12px" rendered="#{empty crashReportBean.crashReport.crashDataPoints}">
 						 	 	<h:outputText value="#{messages.crashReport_existingTrip}"/>
 								<a4j:region>
 									<h:selectOneRadio value="#{crashReportBean.useExistingTrip}" layout="lineDirection">

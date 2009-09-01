@@ -108,6 +108,10 @@ public class CrashReportBean extends BaseBean{
             setUseExistingTrip(Boolean.FALSE);
         }
         
+        if(crashReport.getCrashDataPoints() != null && crashReport.getCrashDataPoints().size() > 0){
+            setUseExistingTrip(Boolean.FALSE);
+        }
+        
         
         Collections.sort(entityList);
         
