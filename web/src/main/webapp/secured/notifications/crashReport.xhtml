@@ -75,10 +75,6 @@
              }           
 
             function updateVehicleMarker(point) {
-                /*
-                var latlng = vehicleMarker.getLatLng();
-                point = new GLatLng(latlng.lat() + 0.0005, latlng.lng() + 0.0005);
-                */
                 vehicleMarker.setLatLng(point);
             }
             
@@ -148,19 +144,19 @@
 								<rich:dataTable id="crashPointTable" value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="20" cellspacing="1" width="100%">
 								<f:facet name="header">
 									<rich:columnGroup>
-										<rich:column rowspan="2">Time</rich:column>
+										<rich:column rowspan="2">#{messages.crashReport_time}</rich:column>
 										<rich:column rowspan="2">#{messages.crashReport_rpm}</rich:column>
-										<rich:column colspan="2">Speed</rich:column>
-										<rich:column colspan="2">Seat Belt</rich:column>
-										<rich:column breakBefore="true">OBD</rich:column>
-										<rich:column>GPS</rich:column>
-										<rich:column>Available</rich:column>
-										<rich:column>On</rich:column>
+										<rich:column colspan="2">#{messages.crashReport_speed}</rich:column>
+										<rich:column colspan="2">#{messages.crashReport_seatBelt}</rich:column>
+										<rich:column breakBefore="true">#{messages.crashReport_obd}</rich:column>
+										<rich:column>#{messages.crashReport_gps}</rich:column>
+										<rich:column>#{messages.crashReport_available}</rich:column>
+										<rich:column>#{messages.crashReport_state}</rich:column>
 									</rich:columnGroup>
 								</f:facet>
 									<rich:column>
 										<h:outputText value="#{dataPoint.time}">
-											<f:convertDateTime pattern="h:mm:ss a" timeZone="#{crashReportBean.person.timeZone}" />
+											<f:convertDateTime pattern="#{messages.timeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
 										</h:outputText>
 									</rich:column>
 									<rich:column>
@@ -229,7 +225,7 @@
 				map.addOverlay(polyline);
 				
 			    var plot = jQuery.plot(jQuery("#placeholder"),
-			           [ { data: gpsSpeed, label: "GPS Speed"}, {data: obdSpeed, label: "OBD Speed"}, {data: rpm, label: "RPM", yaxis: 2} ],
+			           [ { data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed}"}, {data: obdSpeed, label: "#{messages.crashReport_obdSpeed}"}, {data: rpm, label: "#{messages.crashReport_rpm}", yaxis: 2} ],
 			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 			           	 lines: { show: true },
