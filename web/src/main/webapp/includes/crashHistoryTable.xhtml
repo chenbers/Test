@@ -78,7 +78,16 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_status}" />
                 </f:facet>
-                <h:outputText value="#{item.status}" />
+				         		
+				<h:selectOneMenu rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}" 
+					id="crashID_#{item.crashReportID}" value="#{item.status}" >	
+					<a4j:support event="onselect" reRender="items" actionListener="#{bean.selectionChangedAction}"/>	         				
+					<f:selectItem itemLabel="NEW" itemValue="NEW_#{item.crashReportID}"/>
+					<f:selectItem itemLabel="CONFIRMED" itemValue="CONFIRMED_#{item.crashReportID}"/>
+					<f:selectItem itemLabel="FORGIVEN" itemValue="FORGIVEN_#{item.crashReportID}"/>
+				</h:selectOneMenu>	                
+                <h:outputText rendered="#{bean.userRole != 'superUser' and bean.userRole != 'supervisor'}"
+                	value="#{item.status}" />
             </rich:column>
             
             <rich:column rendered="#{tableColumns['weather'].visible}" sortBy="#{item.weather}" >
@@ -96,44 +105,7 @@
                     <f:param value="#{item.crashReportID}"/>
                     #{messages.notes_crashhistory_details}
                 </pretty:link>
-            </rich:column>
-             	             					
-            <rich:column rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}">
-                <f:facet name="header">
-                    <h:outputText value="" />
-                </f:facet>                
-                <pretty:link mappingId="editCrashReport" title="#{messages.notes_crashhistory_edit_crash}">
-        			<f:param value="#{item.crashReportID}"/>
-        			 #{messages.notes_crashhistory_edit}        			
-				</pretty:link>											
-            </rich:column>           
-            		
-            <rich:column rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}" >
-                <f:facet name="header">
-                    <h:outputText value="" />
-                </f:facet>                		
- 				<a4j:commandLink rendered="#{item.forgiven == 0}" 
- 					title="#{messages.notes_crashhistory_change_status}" 
- 					oncomplete="javascript:Richfaces.showModalPanel('clearCrashPanel')" 
- 					reRender="clearItemForm:clearItem,#{clearRerender}" >
-					<h:outputText value="#{messages.notes_crashhistory_lowercase_status}" />
-					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
-				</a4j:commandLink>
- 				<a4j:commandLink rendered="#{item.forgiven == 1}" 
- 					title="#{messages.notes_crashhistory_change_status}" 
- 					oncomplete="javascript:Richfaces.showModalPanel('clearCrashPanel')" 
- 					reRender="clearItemForm:clearItem,#{clearRerender}" >
-					<h:outputText value="#{messages.notes_crashhistory_lowercase_status}" />
-					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
-				</a4j:commandLink>		
- 				<a4j:commandLink rendered="#{item.forgiven == 2}" 
- 					title="#{messages.notes_crashhistory_change_status}"
- 					oncomplete="javascript:Richfaces.showModalPanel('clearCrashPanel')"   
- 					reRender="clearItemForm:clearItem,#{clearRerender}" >
-					<h:outputText value="#{messages.notes_crashhistory_lowercase_status}" />
-					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
-				</a4j:commandLink>										
-            </rich:column>              
+            </rich:column>                     
                                   
         </rich:dataTable>
     </div>
