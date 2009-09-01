@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -79,7 +80,8 @@ public abstract class BaseCrashBean
 
     }
     
-    private String                              userRole;                
+    private String                              userRole;  
+    private String                              selectedCrash;
         
     private static DateFormat dateFormatter = 
         new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));        
@@ -411,23 +413,25 @@ public abstract class BaseCrashBean
         this.userRole = userRole;
     }
 
+    public String getSelectedCrash() {
+        return selectedCrash;
+    }
+
+    public void setSelectedCrash(String selectedCrash) {
+        this.selectedCrash = selectedCrash;
+    }
+
     @Override
     public void personListChanged()
     {
         refreshAction();
-    }
+    }    
     
-    public void selectionChangedAction(ActionEvent vce) {
+    public void updateCrashStatus() {
         CrashReport cr = new CrashReport();
         
-        // extract the value
-//        String changedValue = (String)vce.getComponent();
-        ActionEvent vceIn = vce;
-        UIInput comboBox = (UIInput)vce.getComponent().getParent();
-        String changedValue = (String)comboBox.getValue();
-        
         // tokenizer to get the status and id
-        StringTokenizer st = new StringTokenizer(changedValue,"_");
+        StringTokenizer st = new StringTokenizer(selectedCrash,"_");
         String newStatus = (String)st.nextToken();
         Integer crashReportID = new Integer(st.nextToken());
         cr.setCrashReportID(crashReportID);
@@ -456,6 +460,6 @@ public abstract class BaseCrashBean
         // update
         if ( crashReportDAO.update(cr) >= 1 ) {
             initTableData();
-        }        
+        }     
     }
 }
