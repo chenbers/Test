@@ -114,7 +114,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     }
 
     @Override
-    public Driver getDriverByPersonID(Integer personID)
+    public Driver findByPersonID(Integer personID)
     {
         try
         {

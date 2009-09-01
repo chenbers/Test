@@ -82,7 +82,7 @@ public class MyAccountBean extends BaseBean
     public String getTeamName()
     {
         if (getUser().getPerson().getDriver() == null)
-            getUser().getPerson().setDriver(driverDAO.getDriverByPersonID(getUser().getPersonID()));
+            getUser().getPerson().setDriver(driverDAO.findByPersonID(getUser().getPersonID()));
         if (getUser().getPerson().getDriver() != null)
         {
             final Group group = getGroupHierarchy().getGroup(getUser().getPerson().getDriver().getGroupID());

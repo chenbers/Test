@@ -59,7 +59,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @param personID
      * @return
      */
-    Driver getDriverByPersonID(Integer personID);
+    Driver findByPersonID(Integer personID);
 
     /**
      * Find a driver ID by RFID.

@@ -17,6 +17,7 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -120,38 +121,37 @@ public class SiloServiceTest {
         // HessianDebug.debugIn = true;
         // HessianDebug.debugOut = true;
         // HessianDebug.debugRequest = true;
-        initApp();
-    }
-
-    private static void initApp() {
-        StateHessianDAO stateDAO = new StateHessianDAO();
-        stateDAO.setSiloService(siloService);
-        States states = new States();
-        states.setStateDAO(stateDAO);
-        states.init();
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(siloService);
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
         mapping.setDeviceDAO(deviceDAO);
         mapping.init();
+        
+        //Setup Speedracer
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
         User user = userDAO.findByUserName(SPEEDRACER);
+        assertNotNull("Error retrieving the User 'speedracer'", user);
         TESTING_GROUP_ID = user.getGroupID();
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
-        Driver driver = driverDAO.getDriverByPersonID(user.getPerson().getPersonID());
+        Driver driver = driverDAO.findByPersonID(user.getPerson().getPersonID());
+        assertNotNull("Error retrieving the Driver associated with 'speedracer'", driver);
         TESTING_DRIVER_ID = driver.getDriverID();
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
-        Vehicle vehicle = vehicleDAO.findByDriverInGroup(TESTING_DRIVER_ID, TESTING_GROUP_ID);
+        Vehicle vehicle = vehicleDAO.findByDriverID(TESTING_DRIVER_ID);
+        assertNotNull("Error retrieving the Vehicle associated with 'speedracer'", vehicle);
         TESTING_VEHICLE_ID = vehicle.getVehicleID();
     }
+    
+    @Test
+    public void testDeviceSensitivityMapping() {
+        for (SensitivityType type : SensitivityType.values()) {
+            assertNotNull(DeviceSensitivityMapping.getForwardCommand(type, 1));
+        }
+    }
+
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
@@ -223,8 +223,7 @@ public class SiloServiceTest {
             for (DriverLocation d : result) {
                 System.out.println("found " + d.getDriver().getGroupID() + " " + d.getDriver().getDriverID() + " " + d.getLoc().getLat() + " " + d.getLoc().getLng());
             }
-        }
-        else {
+        } else {
             System.out.println("NO DRIVERS FOUND NEAR");
         }
     }
@@ -255,8 +254,7 @@ public class SiloServiceTest {
                         EventDAO.EXCLUDE_FORGIVEN);
                 assertEquals("list size should be same after forgive/unforgive", size, newResult.size());
             }
-        }
-        else {
+        } else {
             System.out.println("NO VEHICLES FOUND");
         }
     }
@@ -276,8 +274,7 @@ public class SiloServiceTest {
             for (Event r : result) {
                 System.out.println("vehicle id " + r.getVehicleID() + " speed " + r.getSpeed() + " lat " + r.getLatitude() + " lng " + r.getLongitude());
             }
-        }
-        else {
+        } else {
             System.out.println("NO VEHICLES FOUND");
         }
     }
@@ -690,8 +687,7 @@ public class SiloServiceTest {
         if (teamGroup.getGroupID().equals(team1Group.getGroupID())) {
             Util.compareObjects(team1Group, teamGroup, ignoreFields);
             Util.compareObjects(team2Group, groupList.get(3), ignoreFields);
-        }
-        else {
+        } else {
             Util.compareObjects(team2Group, teamGroup, ignoreFields);
             Util.compareObjects(team1Group, groupList.get(3), ignoreFields);
         }
@@ -725,11 +721,9 @@ public class SiloServiceTest {
         try {
             Device dupDevice = new Device(0, acctID, DeviceStatus.NEW, "Device " + 0, "IMEI " + acctID + 0, "SIM " + 0, "SERIALNUM" + 0, "PHONE " + 0, "EPHONE " + 0);
             deviceDAO.create(acctID, dupDevice);
-        }
-        catch (DuplicateIMEIException e) {
+        } catch (DuplicateIMEIException e) {
             exceptionThrown = true;
-        }
-        catch (DuplicateEntryException ex) {
+        } catch (DuplicateEntryException ex) {
             exceptionThrown = true;
         }
         assertTrue("excepted a DuplicateException", exceptionThrown);
@@ -792,11 +786,9 @@ public class SiloServiceTest {
         for (ForwardCommand forwardCommand : queuedCommands) {
             if (forwardCommand.getCmd().equals(ForwardCommandID.SET_GPRS_APN)) {
                 Util.compareObjects(stringDataCmd, forwardCommand, ignoreFields);
-            }
-            else if (forwardCommand.getCmd().equals(ForwardCommandID.SET_MSGS_PER_NOTIFICATION)) {
+            } else if (forwardCommand.getCmd().equals(ForwardCommandID.SET_MSGS_PER_NOTIFICATION)) {
                 Util.compareObjects(intDataCmd, forwardCommand, ignoreFields);
-            }
-            else if (forwardCommand.getCmd().equals(ForwardCommandID.BUZZER_SEATBELT_DISABLE)) {
+            } else if (forwardCommand.getCmd().equals(ForwardCommandID.BUZZER_SEATBELT_DISABLE)) {
                 Util.compareObjects(noDataCmd, forwardCommand, ignoreFields);
             }
         }
@@ -1099,7 +1091,7 @@ public class SiloServiceTest {
             Driver returnedDriver = driverDAO.findByID(driver.getDriverID());
             Util.compareObjects(driver, returnedDriver, ignoreFields);
             // find by PersonID
-            returnedDriver = driverDAO.getDriverByPersonID(person.getPersonID());
+            returnedDriver = driverDAO.findByPersonID(person.getPersonID());
             Util.compareObjects(driver, returnedDriver, ignoreFields);
             driverList.add(driver);
             // get last loc (should be empty);
@@ -1246,13 +1238,11 @@ public class SiloServiceTest {
                 }
                 try {
                     Thread.sleep(1000l);
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                     break;
                 }
-            }
-            else {
+            } else {
                 break;
             }
         }
