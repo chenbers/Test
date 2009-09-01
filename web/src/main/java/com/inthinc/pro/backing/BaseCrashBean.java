@@ -3,12 +3,19 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
+
+import javax.faces.component.UIInput;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
@@ -72,7 +79,7 @@ public abstract class BaseCrashBean
 
     }
     
-    private String                              userRole;
+    private String                              userRole;                
         
     private static DateFormat dateFormatter = 
         new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));        
@@ -140,7 +147,7 @@ public abstract class BaseCrashBean
     public void refreshAction()
     {
         setTableData(null);        
-        init();
+//        init();
     }
     private void init()
     {
@@ -285,69 +292,6 @@ public abstract class BaseCrashBean
     {
         this.clearItem = clearItem;
     }
-    
-    public void newItemAction()
-    {
-        CrashReport cr = new CrashReport();
-        cr.setCrashReportID(clearItem.getCrashReportID());
-        cr.setCrashReportStatus(CrashReportStatus.NEW);
-        
-        // carry the date, so it's not updated in the mapper
-        Date d = new Date();
-        d.setTime(clearItem.getTime());
-        cr.setDate(d);        
-        
-        if ( crashReportDAO.update(cr) >= 1 ) {
-            initTableData();
-        }
-    }
-    
-    public void confirmItemAction()
-    {
-        CrashReport cr = new CrashReport();
-        cr.setCrashReportID(clearItem.getCrashReportID());
-        cr.setCrashReportStatus(CrashReportStatus.CONFIRMED);
-        
-        // carry the date, so it's not updated in the mapper
-        Date d = new Date();
-        d.setTime(clearItem.getTime());
-        cr.setDate(d);
-        
-        if ( crashReportDAO.update(cr) >= 1 ) {
-            initTableData();
-        }
-    }
-    
-    public void forgiveItemAction()
-    {
-        CrashReport cr = new CrashReport();
-        cr.setCrashReportID(clearItem.getCrashReportID());
-        cr.setCrashReportStatus(CrashReportStatus.FORGIVEN);
-        
-        // carry the date, so it's not updated in the mapper
-        Date d = new Date();
-        d.setTime(clearItem.getTime());
-        cr.setDate(d);        
-        
-        if ( crashReportDAO.update(cr) >= 1 ) {
-            initTableData();
-        }
-    }    
-    
-    public void clearItemAction()
-    {
-        if ( crashReportDAO.forgiveCrash(clearItem.getCrashReportID()) >= 1 ) {
-            initTableData();
-        }
-    }
-    
-    public void includeEventAction(){
-    	
-        if ( crashReportDAO.unforgiveCrash(clearItem.getCrashReportID()) >= 1 ) {
-            initTableData();
-        }
-    	
-    }
 
     private void reinit()
     {
@@ -471,5 +415,47 @@ public abstract class BaseCrashBean
     public void personListChanged()
     {
         refreshAction();
+    }
+    
+    public void selectionChangedAction(ActionEvent vce) {
+        CrashReport cr = new CrashReport();
+        
+        // extract the value
+//        String changedValue = (String)vce.getComponent();
+        ActionEvent vceIn = vce;
+        UIInput comboBox = (UIInput)vce.getComponent().getParent();
+        String changedValue = (String)comboBox.getValue();
+        
+        // tokenizer to get the status and id
+        StringTokenizer st = new StringTokenizer(changedValue,"_");
+        String newStatus = (String)st.nextToken();
+        Integer crashReportID = new Integer(st.nextToken());
+        cr.setCrashReportID(crashReportID);
+
+        // set status in update object
+        if (        newStatus.equalsIgnoreCase(CrashReportStatus.NEW.name()) ) { 
+            cr.setCrashReportStatus(CrashReportStatus.NEW);
+        }
+        else if (   newStatus.equalsIgnoreCase(CrashReportStatus.CONFIRMED.name()) ) {
+            cr.setCrashReportStatus(CrashReportStatus.CONFIRMED);
+        }
+        else if (   newStatus.equalsIgnoreCase(CrashReportStatus.FORGIVEN.name()) ) {
+            cr.setCrashReportStatus(CrashReportStatus.FORGIVEN);
+        }        
+        
+        // find and carry the date, so it's not updated in the mapper
+        Date d = new Date();
+        for ( CrashHistoryReportItem c:tableData ) {
+            if ( c.getCrashReportID().equals(crashReportID) ) {
+                d.setTime(c.getTime());
+                cr.setDate(d); 
+                break;
+            }            
+        }
+       
+        // update
+        if ( crashReportDAO.update(cr) >= 1 ) {
+            initTableData();
+        }        
     }
 }
