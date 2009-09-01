@@ -72,6 +72,13 @@
 
         	return marker;
         }
+        function tryThis(crashIndex,tableIndex) {           
+            var itemToFind =  "crashHistory_Table_Form:items:"+tableIndex+":crashMenu";
+            var crash = document.getElementById(itemToFind);          
+			var crashID = crash.options[crash.selectedIndex].value;
+                      
+            updCrshStat(crashID);
+        }
 		</script>
     </ui:define>    
 
