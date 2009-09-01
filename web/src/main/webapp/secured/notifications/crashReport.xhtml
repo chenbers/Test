@@ -22,6 +22,7 @@
 				width: 460px;
 				vertical-align: top;
 				text-align: left;
+				padding: 5px;
 			}
 			.section_title {
 				font: bold 10px Verdana, Arial, Helvetica, sans-serif;
@@ -30,6 +31,20 @@
 				margin-bottom:10px;
 				margin-top:10px;
 				text-align: left;
+			}
+			.col1 {
+				padding-right: 30px;
+			}
+			.col2{
+			}
+			
+			.datagrid th {			
+				background: #BFD292;
+				padding: 0;
+				text-align: center;
+			}
+			.datagrid > tbody > tr > td {
+				text-align: center;
 			}
 		</style>
 		<script type="text/javascript">
@@ -69,6 +84,7 @@
             
 		</script>
 		
+		<t:saveState value="#{crashReportBean}"/>
 		
     
     
@@ -100,13 +116,13 @@
 					<h:panelGrid columns="2" columnClasses="section">
 						<h:panelGroup>
 							<div class="section_title"><h:outputText value="#{messages.crashReport_crashDetails}" /></div>
-							<h:panelGrid columns="2">								
+							<h:panelGrid columns="2" columnClasses="col1,col2" cellspacing="2px" cellpadding="4px">								
 								<h:outputText value="#{messages.crashReport_status}:" />
 								<h:outputText value="#{messages[crashReportBean.crashReport.crashReportStatus]}"/>								
 								
 								<h:outputText value="#{messages.crashReport_date}:" />
-								<h:outputText value="#{crashReportBean.crashReport.date}">	
-									<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
+								<h:outputText value="#{crashReportBean.crashReport.date}" style="font-weight: bold;">	
+									<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{crashReportBean.person.timeZone}" />
 								</h:outputText>								
 								
 					            <h:outputText value="#{messages.crashReport_vehicle}:" />
@@ -126,46 +142,45 @@
 							<div class="section_title"><h:outputText value="#{messages.crashReport_description}" /></div>
 							<div class="panel_content">#{crashReportBean.crashReport.description}</div>		
 						</h:panelGroup>
-					</h:panelGrid>
-					
-					
-					<h:panelGrid columns="2" columnClasses="section">
 						<h:panelGroup>
 							<div class="section_title"><h:outputText value="#{messages.crashReport_crashDetails}" /></div>
-							<rich:dataTable value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
-							<f:facet name="header">
-								<rich:columnGroup>
-									<rich:column rowspan="2">#{messages.crashReport_dateTime}</rich:column>
-									<rich:column rowspan="2">#{messages.crashReport_rpm}</rich:column>
-									<rich:column colspan="2">Speed</rich:column>
-									<rich:column colspan="2">Seat Belt</rich:column>
-									<rich:column breakBefore="true">OBD</rich:column>
-									<rich:column>GPS</rich:column>
-									<rich:column>Avail</rich:column>
-									<rich:column>On</rich:column>
-								</rich:columnGroup>
-							</f:facet>
-								<rich:column>
-									<h:outputText value="#{dataPoint.time}">
-										<f:convertDateTime pattern="#{messages.timeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
-									</h:outputText>
-								</rich:column>
-								<rich:column>
-									#{dataPoint.rpm}
-								</rich:column>
-								<rich:column>
-									#{dataPoint.obdSpeed}
-								</rich:column>
-								<rich:column>
-									#{dataPoint.gpsSpeed}
-								</rich:column>
-								<rich:column>
-									#{dataPoint.seatBeltAvailable}
-								</rich:column>
-								<rich:column>
-									#{dataPoint.seatBeltState}
-								</rich:column>
-							</rich:dataTable>
+							<h:form>
+								<rich:dataTable id="crashPointTable" value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="20" cellspacing="1" width="100%">
+								<f:facet name="header">
+									<rich:columnGroup>
+										<rich:column rowspan="2">Time</rich:column>
+										<rich:column rowspan="2">#{messages.crashReport_rpm}</rich:column>
+										<rich:column colspan="2">Speed</rich:column>
+										<rich:column colspan="2">Seat Belt</rich:column>
+										<rich:column breakBefore="true">OBD</rich:column>
+										<rich:column>GPS</rich:column>
+										<rich:column>Available</rich:column>
+										<rich:column>On</rich:column>
+									</rich:columnGroup>
+								</f:facet>
+									<rich:column>
+										<h:outputText value="#{dataPoint.time}">
+											<f:convertDateTime pattern="h:mm:ss a" timeZone="#{crashReportBean.person.timeZone}" />
+										</h:outputText>
+									</rich:column>
+									<rich:column>
+										#{dataPoint.rpm}
+									</rich:column>
+									<rich:column>
+										<h:outputText value="#{dataPoint.obdSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" />		
+									</rich:column>
+									<rich:column>
+										<h:outputText value="#{dataPoint.gpsSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" />									
+									</rich:column>
+									<rich:column>
+										<h:graphicImage value="#{dataPoint.seatBeltAvailable == true ? '/images/icon_checkmark.png' : '/images/ico_x.png'}" /> 
+									</rich:column>
+									<rich:column>
+										<h:graphicImage value="#{dataPoint.seatBeltAvailable == false ? '' : dataPoint.seatBeltState == true ? '/images/icon_checkmark.png' : '/images/ico_x.png'}" /> 
+									</rich:column>
+								</rich:dataTable>	
+							    <rich:datascroller for="crashPointTable" styleClass="dataScroller" reRender="crashPointTable"/>
+						    </h:form>
 						</h:panelGroup>
 					
 						<h:panelGroup>
@@ -175,7 +190,7 @@
 							
 							
 				
-						    <div id="placeholder" style="width:100%;height:200px"></div>
+						    <div id="placeholder" style="width:100%;height:300px"></div>
 								
 						    <p id="hoverdata">Mouse hovers at
 						    (<span id="x">0</span>, <span id="y">0</span>). </p>
@@ -218,25 +233,11 @@
 			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 			           	 lines: { show: true },
-			             points: { show: true },
+			             points: { show: false },
 			             selection: { mode: "xy" },
 			             grid: { hoverable: true, clickable: true, autoHighlight: true, mouseActiveRadius: 100 }
-			           });
-		           
-			    function showTooltip(x, y, contents) {
-			        jQuery('<div id="tooltip">' + contents + '</div>').css( {
-			            position: 'absolute',
-			            display: 'none',
-			            top: y + 5,
-			            left: x + 5,
-			            border: '1px solid #fdd',
-			            padding: '2px',
-			            'background-color': '#fee',
-			            opacity: 0.80
-			        }).appendTo("body").fadeIn(200);
-			    }
+			           });		           
 
-			    var previousPoint = null;
 			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {
 				    /*
 		        	jQuery("#eventinfo").text("Event: ");
