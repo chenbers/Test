@@ -15,7 +15,7 @@
     <div class="datagrid_panel" style="width:925px; overflow: auto">
         
 
-        <rich:dataTable id="items" value="#{tableData}" var="item" styleClass="datagrid" 
+        <rich:dataTable id="items" value="#{tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
         	rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
             <!-- Data -->
@@ -79,9 +79,8 @@
                     <h:outputText value="#{messages.notes_crashhistory_status}" />
                 </f:facet>
 				         		
-				<h:selectOneMenu rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}" 
-					id="crashID_#{item.crashReportID}" value="#{item.status}" >	
-					<a4j:support event="onselect" reRender="items" actionListener="#{bean.selectionChangedAction}"/>	         				
+				<h:selectOneMenu id="crashMenu" rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}" 
+					value="#{item.status}_#{item.crashReportID}" onchange="tryThis('#{item.crashReportID}','#{index}');">                    
 					<f:selectItem itemLabel="NEW" itemValue="NEW_#{item.crashReportID}"/>
 					<f:selectItem itemLabel="CONFIRMED" itemValue="CONFIRMED_#{item.crashReportID}"/>
 					<f:selectItem itemLabel="FORGIVEN" itemValue="FORGIVEN_#{item.crashReportID}"/>
@@ -203,5 +202,12 @@
         </div>
     </rich:modalPanel>
     <!-- END LOCATION MODAL -->
+    
+	<a4j:form id="updateCrashStatus">
+		<a4j:jsFunction name="updCrshStat" action="#{crashHistoryBean.updateCrashStatus}" 
+			reRender="items" >
+			<a4j:actionparam name="selectedCrash" assignTo="#{crashHistoryBean.selectedCrash}"/>
+		</a4j:jsFunction>
+	</a4j:form>	    
 
 </ui:composition>
