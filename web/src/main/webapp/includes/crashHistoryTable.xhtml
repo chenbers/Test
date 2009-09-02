@@ -81,9 +81,9 @@
 				         		
 				<h:selectOneMenu id="crashMenu" rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}" 
 					value="#{item.status}_#{item.crashReportID}" onchange="tryThis('#{item.crashReportID}','#{index}');">                    
-					<f:selectItem itemLabel="NEW" itemValue="NEW_#{item.crashReportID}"/>
-					<f:selectItem itemLabel="CONFIRMED" itemValue="CONFIRMED_#{item.crashReportID}"/>
-					<f:selectItem itemLabel="FORGIVEN" itemValue="FORGIVEN_#{item.crashReportID}"/>
+					<f:selectItem itemLabel="#{messages.notes_crashhistory_new}" itemValue="#{messages.notes_crashhistory_new}_#{item.crashReportID}"/>
+					<f:selectItem itemLabel="#{messages.notes_crashhistory_confirmed}" itemValue="#{messages.notes_crashhistory_confirmed}_#{item.crashReportID}"/>
+					<f:selectItem itemLabel="#{messages.notes_crashhistory_forgiven}" itemValue="#{messages.notes_crashhistory_forgiven}_#{item.crashReportID}"/>
 				</h:selectOneMenu>	                
                 <h:outputText rendered="#{bean.userRole != 'superUser' and bean.userRole != 'supervisor'}"
                 	value="#{item.status}" />
