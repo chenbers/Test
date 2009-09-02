@@ -202,7 +202,7 @@ public class TripsBean extends BaseBean {
                 endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(identifiableEntityBean.getId()));
             }
             else {
-                endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDeviceID()));
+                endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID()));
             }
         }
         return endDate;
@@ -217,7 +217,7 @@ public class TripsBean extends BaseBean {
             dateOut = SetTimeToEndOfDay(endDate, getTimeZoneFromDriver(identifiableEntityBean.getId()));
         }
         else {
-            dateOut = SetTimeToEndOfDay(endDate, getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDeviceID()));
+            dateOut = SetTimeToEndOfDay(endDate, getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID()));
         }
         
         this.endDate = dateOut;
@@ -229,7 +229,7 @@ public class TripsBean extends BaseBean {
             return getTimeZoneFromDriver(identifiableEntityBean.getId());
         }
         else {
-            return getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDeviceID());
+            return getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID());
         }
     }
     
