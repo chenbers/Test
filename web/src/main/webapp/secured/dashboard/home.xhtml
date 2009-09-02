@@ -69,7 +69,6 @@
 
     					<!-- START TREND PANEL -->
                         <a4j:outputPanel id="trendOutputPanel">
-        					<div>
         
         						<div class="panel_nw">
         							<div class="panel_title">
@@ -133,10 +132,7 @@
         							</div>					
         							<rich:spacer height="3" />
         							<h:form id="trendTable">
-<!--    									<rich:datascroller id="topScroller" for="items" immediate="true" styleClass="dataScrollerLarge"-->
-<!--    	        								scrollerListener="#{trendBean.scrollerListener}" maxPages="5" align="center" -->
-<!--    	        								reRender="bottomScroller,countString,items,xypanel">        			-->
-<!--    			        				</rich:datascroller>-->
+
         					        	<rich:spacer height="15" />
                 							
            								<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   						
@@ -205,14 +201,13 @@
         					
         						
         						</div>
+       						</div>
         
         						<div class="panel_sw">
         							<div class="panel_statusbar"></div>
         						</div>
-        					</div>
-        	
-        					</div>				
-                        </a4j:outputPanel>
+         	
+                         </a4j:outputPanel>
     					<!-- END PANEL -->
     				</td>
       			</tr>

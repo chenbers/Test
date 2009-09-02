@@ -129,18 +129,19 @@
       	<div class="panel_w">
       		<div class="panel_content">
       		  
-      		  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
-      		  			rendered="#{driverLocationBean.teamLevel}">
+      		  <rich:dataGrid value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
+      		  			rendered="#{driverLocationBean.teamLevel}" columns="3" border="0" cellpadding="5" cellspacing="5">
+      		  			
       			  	<div onclick="showInfoWindow('#{icon.entityID}', new GLatLng(#{icon.lat},#{icon.lng}))" style="cursor: pointer;">
       				  	<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
       				  	<h:outputText value="#{icon.caption}" style="margin-left:5px" /></div>
       			  	
-      		</rich:dataList>
-      		  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
-      		  		rendered="#{!driverLocationBean.teamLevel}">
+      		</rich:dataGrid>
+      		  <rich:dataGrid value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
+      		  		rendered="#{!driverLocationBean.teamLevel}"  columns="3" border="0" cellpadding="5" cellspacing="5">
       		  		<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
       			  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
-      		  </rich:dataList>
+      		  </rich:dataGrid>
       		  <div style="clear:both"/>
       		</div>
       	</div>

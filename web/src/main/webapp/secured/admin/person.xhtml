@@ -195,6 +195,10 @@
                             <td><h:outputText value="#{personBean.item.title}" /></td>
                           </tr>
                           <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_locale}" /></td>
+                            <td><h:outputText value="#{personBean.item.locale.displayName}" /></td>
+                          </tr>
+                          <tr>
                             <td width="150"><h:outputText value="#{messages.editPerson_timeZone}" /></td>
                             <td><h:outputText value="#{personBean.item.timeZone.ID}" /></td>
                           </tr>
@@ -218,10 +222,6 @@
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_username}" /></td>
                             <td><h:outputText value="#{personBean.item.user.username}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_user_locale}" /></td>
-                            <td><h:outputText value="#{personBean.item.locale.displayName}" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_group}" /></td>
