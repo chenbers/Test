@@ -20,23 +20,43 @@
             <div class="panel_content">
                <div style="height:#{xyheight};width:#{xywidth}">
                      <div class="" id="">
-                        <table id="" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody><tr>
-                        <td width="25%"> 
+                        <table id="" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody>
+                        <tr style="font-weight:bold" align="center">
+                        <td width="33%"> 
                            <h:outputFormat value=" #{messages.crash_summary_overDistance} " >
                                 <a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                             </h:outputFormat>
-                           <h:outputText value="#{crashSummaryBean.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+                            </td>
+                        <td width="33%"  style="border-right-width:1px; border-left-width:1px">
+                        #{messages.crash_summary_daysSinceLastCrash} 
                         </td>
-                        <td width="25%">
-                        #{messages.crash_summary_daysSinceLastCrash} #{crashSummaryBean.daysSinceLastCrash}
-                        </td>
-                         <td width="50%">
-                        #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} 
-                             <h:outputText value=" "/>
-                             <h:outputText value="#{crashSummaryBean.milesSinceLastCrash}" converter="MilesToKilometersConverter"/>
-                             <h:outputText value=" "/>
-                             <h:outputText value="miles" converter="MeasurementTextConverter"/>
-                        </td>
+                         <td width="33%">
+                           <h:outputFormat value=" #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} " >
+                                <a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
+                            </h:outputFormat>
+                         </td>
+                        </tr>
+                        <tr  style="font-weight:bold; font-size:30px" align="center">
+                            <td>
+                           		<h:outputText value="#{crashSummaryBean.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+                        	</td>
+                        	<td style="border-right-width:1px; border-left-width:1px">
+                       			#{crashSummaryBean.daysSinceLastCrash}
+                        	</td>
+                        	<td>
+                        	     <h:outputText value="#{crashSummaryBean.milesSinceLastCrash}" converter="MilesToKilometersConverter"/>
+                        	</td>
+                        	</tr>
+                       <tr>
+                        </tr>
+                        <tr style="font-weight:normal" align="center">
+                        	<td>
+                           <h:outputFormat value=" #{messages.crash_summary_lastXmonths} " >
+                                <a4j:actionparam value="12" />
+                            </h:outputFormat>
+                        	
+                        	</td>
+                        	<td   style="border-right-width:1px; border-left-width:1px"></td>
                         </tr>
                         </tbody>
                         </table>

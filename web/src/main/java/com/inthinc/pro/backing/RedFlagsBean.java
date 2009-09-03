@@ -2,20 +2,17 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.ui.NotificationReportItem;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
-import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
@@ -26,24 +23,23 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
-import com.inthinc.pro.reports.ReportCriteria;
 
-public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener {
-    private static final Logger logger = Logger.getLogger(RedFlagsBean.class);
+public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> implements TablePrefOptions<RedFlagReportItem>{
+	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3166689931697428969L;
+	private static final Logger logger = Logger.getLogger(RedFlagsBean.class);
     private final static String COLUMN_LABEL_PREFIX = "notes_redflags_";
     // TODO: what should this number be (settable by user?)
-    private static final Integer RED_FLAG_COUNT = 500;
-    private static final Integer numRowsPerPg = 25;
-    private Integer start;
-    private Integer end;
-    private List<RedFlagReportItem> tableData;
-    private List<RedFlagReportItem> filteredTableData;
+ //   private static final Integer RED_FLAG_COUNT = 500;
+//    private List<RedFlagReportItem> tableData;
+//    private List<RedFlagReportItem> filteredTableData;
     private EventDAO eventDAO;
     private RedFlagDAO redFlagDAO;
-    private ZoneDAO zoneDAO;
-    private TablePreferenceDAO tablePreferenceDAO;
-    private Integer maxCount;
-    private RedFlagReportItem clearItem;
+ //   private RedFlagReportItem clearItem;
     private EventCategory categoryFilter;
     private Event eventFilter;
     private TablePref<RedFlagReportItem> tablePref;
@@ -69,49 +65,18 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         tablePref = new TablePref<RedFlagReportItem>(this);
     }
 
-    public void scrollerListener(DataScrollerEvent event) {
-        logger.debug("scroll event page: " + event.getPage() + " old " + event.getOldScrolVal() + " new " + event.getNewScrolVal());
-        this.start = (event.getPage() - 1) * numRowsPerPg + 1;
-        this.end = (event.getPage()) * numRowsPerPg;
-        // Partial page
-        if (this.end > getFilteredTableData().size()) {
-            this.end = getFilteredTableData().size();
-        }
-    }
-
-    public Integer getNumRowsPerPg() {
-        return numRowsPerPg;
-    }
-
-    public List<RedFlagReportItem> getTableData() {
-        init();
-        return getFilteredTableData();
-    }
 
     @Override
-    public void personListChanged() {
-        refreshAction();
-    }
-
-    public void refreshAction()
+    public void searchAction()
     {
-        setTableData(null);
-        
-//        init();
+        super.searchAction();
+        setEventFilter(null);  
     }
-    private void init()
-    {
-        if (tableData == null)
-        {
-            initTableData();
-            filterTableData();
-        }
-        else if (filteredTableData == null)
-        {
-            filterTableData();
-        }
-
-    }
+	@Override
+	public int getDisplaySize() {
+		// TODO Auto-generated method stub
+		return filteredTableData.size();
+	}
 
     @Override
     protected void filterTableData() {
@@ -159,6 +124,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
         setPage(1);
+        tableData = filteredTableData;
     }
 
     @Override
@@ -201,7 +167,8 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
         setPage(1);
-    }
+        tableData = filteredTableData;
+   }
 
     /**
      * Returns the value of the property of the given item described by the given column name. The default implementation calls TablePref.fieldValue.
@@ -256,10 +223,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         setTableData(redFlagReportItemList);
     }
 
-    public void setTableData(List<RedFlagReportItem> tableData) {
-        this.tableData = tableData;
-    }
-
     public RedFlagDAO getRedFlagDAO() {
         return redFlagDAO;
     }
@@ -268,49 +231,21 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         this.redFlagDAO = redFlagDAO;
     }
 
-    public ZoneDAO getZoneDAO() {
-        return zoneDAO;
-    }
 
-    public void setZoneDAO(ZoneDAO zoneDAO) {
-        this.zoneDAO = zoneDAO;
-    }
-
-    public Integer getStart() {
-        if (start == null) {
-            init();
-        }
-        return start;
-    }
-
-    public void setStart(Integer start) {
-        this.start = start;
-    }
-
-    public Integer getEnd() {
-        if (end == null) {
-            init();
-        }
-        return end;
-    }
-
-    public void setEnd(Integer end) {
-        this.end = end;
-    }
-
-    public RedFlagReportItem getClearItem() {
-        return clearItem;
-    }
-
-    public void setClearItem(RedFlagReportItem clearItem) {
-        this.clearItem = clearItem;
-    }
+//    public NotificationReportItem getClearItem() {
+//        return clearItem;
+//    }
+//
+//    public void setClearItem(RedFlagReportItem clearItem) {
+//        this.clearItem = clearItem;
+//    }
 
     public void excludeEventAction() {
     	
     	if(clearItem.getRedFlag().getEvent().getForgiven().intValue()==0){
 	        if (eventDAO.forgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1) {
-	            initTableData();
+//	            initTableData();
+	        	clearData();
 	        }
     	}
     }
@@ -319,7 +254,8 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     	
     	if(clearItem.getRedFlag().getEvent().getForgiven().intValue()==1){
     		if (eventDAO.unforgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID()) >= 1) {
-	            initTableData();
+//	            initTableData();
+    			clearData();
 	        }
     	}
     }
@@ -328,21 +264,31 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         return categoryFilter;
     }
 
-    private void reinit() {
-        // setTableData(null);
-        setFilteredTableData(null);
-        setStart(null);
-        setEnd(null);
-        setMaxCount(null);
-    }
+//    private void reinit() {
+//        setTableData(null);
+//        setFilteredTableData(null);
+//        setStart(null);
+//        setEnd(null);
+//        setMaxCount(null);
+//        init();
+//    }
 
     public void setCategoryFilter(EventCategory categoryFilter) {
-        reinit();
+//        reinit();
         this.eventFilter = null;
         this.categoryFilter = categoryFilter;
     }
 
-    public List<RedFlagReportItem> getFilteredTableData() {
+    public List<RedFlagReportItem> getTableData() {
+    	if(tableData==null) fetchData();
+		return tableData;
+	}
+
+	public void setTableData(List<RedFlagReportItem> tableData) {
+		this.tableData = tableData;
+	}
+
+	public List<RedFlagReportItem> getFilteredTableData() {
         return filteredTableData;
     }
 
@@ -356,7 +302,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
 
     public void setEventFilter(Event eventFilter) {
         // force table data to reinit
-        reinit();
+//        reinit();
         this.categoryFilter = null;
         this.eventFilter = eventFilter;
     }
@@ -395,11 +341,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     }
 
     @Override
-    public TablePreferenceDAO getTablePreferenceDAO() {
-        return tablePreferenceDAO;
-    }
-
-    @Override
     public TableType getTableType() {
         return TableType.RED_FLAG;
     }
@@ -407,10 +348,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     @Override
     public Integer getUserID() {
         return getUser().getUserID();
-    }
-
-    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO) {
-        this.tablePreferenceDAO = tablePreferenceDAO;
     }
 
     // wrappers for tablePref
@@ -432,37 +369,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
 
     public void setEventDAO(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
-    }
-
-    public void exportReportToPdf() {
-        getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
-    }
-
-    public void emailReport() {
-        getReportRenderer().exportReportToEmail(getReportCriteria(), getEmailAddress());
-    }
-
-    public void exportReportToExcel() {
-        getReportRenderer().exportReportToExcel(getReportCriteria(), getFacesContext());
-    }
-
-    private ReportCriteria getReportCriteria() {
-        ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID());
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setMainDataset(getTableData());
-        reportCriteria.setLocale(getLocale());
-        return reportCriteria;
-    }
-
-    public Integer getMaxCount() {
-        if (maxCount == null) {
-            init();
-        }
-        return maxCount;
-    }
-
-    public void setMaxCount(Integer maxCount) {
-        this.maxCount = maxCount;
     }
 
     protected void addDrivers(List<RedFlag> redFlagList) {
@@ -490,11 +396,11 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     }
 
     private Map<Integer, Zone> getZones() {
-        List<Zone> zones = zoneDAO.getZones(this.getUser().getPerson().getAcctID());
+        List<Zone> zones = getZoneDAO().getZones(this.getUser().getPerson().getAcctID());
         Map<Integer, Zone> zoneMap = new HashMap<Integer, Zone>();
         for (Zone zone : zones) {
             zoneMap.put(zone.getZoneID(), zone);
         }
         return zoneMap;
     }
-}
+ }

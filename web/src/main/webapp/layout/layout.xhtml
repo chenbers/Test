@@ -40,32 +40,7 @@
 </script>
 <!-- Override "scripts" to include any javascript needed for individual pages -->
 
-<!-- The following is to enable searching from the main menubar -->
-<!--<script type="text/javascript">-->
-<!--	function goTo() -->
-<!--	{		-->
-<!--		var urlToGoTo = "#{facesContext.externalContext.request.contextPath}/secured/reports/";-->
-<!--//		var search = document.getElementById('navigation:redirectSearch').value;-->
-<!--		-->
-<!--		if (		document.getElementById('navigation:redirectTo').value == "1" ) {-->
-<!--			urlToGoTo += "drivers.faces";-->
-<!--			-->
-<!--		} else if ( document.getElementById('navigation:redirectTo').value == "2" ) {		-->
-<!--			urlToGoTo += "vehicles.faces";-->
-<!--			-->
-<!--		} else if ( document.getElementById('navigation:redirectTo').value == "3" ) {-->
-<!--			urlToGoTo += "idling.faces";-->
-<!--		-->
-<!--		} else if ( document.getElementById('navigation:redirectTo').value == "4" ) {-->
-<!--			urlToGoTo += "devices.faces";-->
-<!--		-->
-<!--		}-->
-<!--		-->
-<!--//		urlToGoTo = urlToGoTo + "?searchFor=" + search;-->
-<!--		window.location.href=urlToGoTo;-->
-<!--	}-->
-<!--</script>-->
-<ui:insert name="scripts" />
+ <ui:insert name="scripts" />
 
 </head>
     <body onload="reloadAjaxPanels();if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">

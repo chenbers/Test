@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.Column;
 
-public class Event implements Comparable<Event>, Serializable
+public class Event extends BaseEntity implements Comparable<Event>, Serializable
 {
     /**
      * 
@@ -48,10 +48,6 @@ public class Event implements Comparable<Event>, Serializable
     private Integer state;
     private Integer heading;
     private Integer sats;
-    @Column(updateable=false)
-    private Date modified;
-    @Column(updateable=false)
-    private Date created;
 
     public Event()
     {
@@ -325,26 +321,6 @@ public class Event implements Comparable<Event>, Serializable
     public void setSats(Integer sats)
     {
         this.sats = sats;
-    }
-
-    public Date getModified()
-    {
-        return modified;
-    }
-
-    public void setModified(Date modified)
-    {
-        this.modified = modified;
-    }
-
-    public Date getCreated()
-    {
-        return created;
-    }
-
-    public void setCreated(Date created)
-    {
-        this.created = created;
     }
 
     @Override

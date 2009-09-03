@@ -8,6 +8,7 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
     
+ 	<t:saveState value="#{bean}"/>
     
     <h:form id="#{formId}">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />

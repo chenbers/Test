@@ -19,11 +19,12 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(BaseReportBean.class);
 
+	protected static Integer numRowsPerPg = 25;
+	
     private TablePreferenceDAO tablePreferenceDAO;
     private TablePref<T> tablePref;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-    private Integer numRowsPerPg = 25;
     protected Integer maxCount;
     private Integer start;
     private Integer end;

@@ -66,6 +66,10 @@ public class CrashSummaryBean extends BaseBean {
 		return crashSummary.getMilesSinceLastCrash();
 	}
 	
+	public Integer getTotalCrashes(){
+		
+		return crashSummary.getTotalCrashes();
+	}
 	public NavigationBean getNavigation() {
 		return navigation;
 	}

@@ -62,7 +62,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private BaseBean    vehicleSpeedBean;
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
-    private CrashSummary 		crashSummary;
+    private CrashSummaryBean 		crashSummary;
    
     
 
@@ -523,16 +523,17 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 		// TODO Auto-generated method stub
 		
 	}
-	public CrashSummary getCrashSummary() {
+	public CrashSummaryBean getCrashSummary() {
 		
 		 //   	crashSummary = scoreDAO.getVehicleCrashSummaryData(getDriverID());
-				crashSummary = new CrashSummary(100,2345,new Date(),204);
-				return crashSummary;
-			}
+		//		crashSummary = new CrashSummary(100,2345,new Date(),204);
+		crashSummary.getCrashSummaryForVehicle(getVehicleID());
+		return crashSummary;
+	}
 
-			public void setCrashSummary(CrashSummary crashSummary) {
-				this.crashSummary = crashSummary;
-			}
+	public void setCrashSummary(CrashSummaryBean crashSummary) {
+		this.crashSummary = crashSummary;
+	}
 
 
 }

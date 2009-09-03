@@ -1,9 +1,6 @@
 package com.inthinc.pro.backing.ui;
 
-import java.awt.TrayIcon.MessageType;
-import java.text.DateFormat;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
 
@@ -12,29 +9,17 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
-import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneArrivalEvent;
-import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.util.MessageUtil;
 
-public class RedFlagReportItem implements Comparable<RedFlagReportItem>
+public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
 {
     
     private static final Logger logger = Logger.getLogger(RedFlagReportItem.class);
     
-    private String date;
-    private String group;
-    private String driverName;
-    private String vehicleName;
-    private String category;
-    private String detail;
-    
-    private Zone zone;
     private RedFlag redFlag;
-    
-    private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
 
+	private Zone zone;
     
     public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy,MeasurementType measurementType)
     {
@@ -69,45 +54,9 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
  
         String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
 
-//        String mphString = MessageUtil.getMessageString(MeasurementType.ENGLISH.toString() + "_mph");
-//        if(measurementType.equals(MeasurementType.METRIC))
-//            mphString = MessageUtil.getMessageString(MeasurementType.METRIC.toString() + "_mph");
-        
         setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name()),measurementType,mphString));
     }
     
-    public String getDate()
-    {
-        return date;
-    }
-    public void setDate(String date)
-    {
-        this.date = date;
-    }
-    public String getGroup()
-    {
-        return group;
-    }
-    public void setGroup(String group)
-    {
-        this.group = group;
-    }
-    public String getCategory()
-    {
-        return category;
-    }
-    public void setCategory(String category)
-    {
-        this.category = category;
-    }
-    public String getDetail()
-    {
-        return detail;
-    }
-    public void setDetail(String detail)
-    {
-        this.detail = detail;
-    }
 
     public RedFlag getRedFlag()
     {
@@ -119,42 +68,20 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
         this.redFlag = redFlag;
     }
 
+	public Zone getZone() {
+	    return zone;
+	}
+
+	public void setZone(Zone zone) {
+	    this.zone = zone;
+	}
     @Override
     public int compareTo(RedFlagReportItem o)
     {
         return this.getRedFlag().getLevel().compareTo(o.getRedFlag().getLevel());
     }
 
-    public String getDriverName()
-    {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName)
-    {
-        this.driverName = driverName;
-    }
-
-    public String getVehicleName()
-    {
-        return vehicleName;
-    }
-
-    public void setVehicleName(String vehicleName)
-    {
-        this.vehicleName = vehicleName;
-    }
-
-    public Zone getZone()
-    {
-        return zone;
-    }
-
-    public void setZone(Zone zone)
-    {
-        this.zone = zone;
-    }
-    
+   
     
 }
 

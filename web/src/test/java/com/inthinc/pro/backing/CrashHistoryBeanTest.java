@@ -171,7 +171,7 @@ public class CrashHistoryBeanTest extends BaseBeanTest {
         assertEquals(new Integer(totalRows), new Integer(noSearchRows));
     }
     
-    private void checkScrolling(int page, RedFlagsBean redFlagsBean)
+    private void checkScrolling(int page, BaseNotificationsBean<RedFlagReportItem> redFlagsBean)
     {
         List<RedFlagReportItem> redFlagItems = redFlagsBean.getTableData();
         assertNotNull(redFlagItems);

@@ -2955,6 +2955,16 @@ table td {
 	}
 	
 	*/ /*  MAP CAR LEGEND */
+table.carlegend {
+	margin: 0 0 0 0px;
+	padding: 0;
+	width: 100%;
+	border-width:0px;
+}
+.carlegend tr td{
+	border-width:0px;
+	border-bottom:0px;
+}	
 ul.legend {
 	margin: 0 0 0 10px;
 	padding: 0;
@@ -2965,6 +2975,18 @@ ul.legend {
 	padding: 5px 0 5px 20px;
 	float: left;
 	width: 125px;
+}
+
+.legend td a {
+	color: #333333;
+	text-decoration: underline;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-size-adjust: none;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: normal;
 }
 
 .legend li a {

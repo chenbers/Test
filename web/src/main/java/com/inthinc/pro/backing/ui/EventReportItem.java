@@ -1,8 +1,6 @@
 package com.inthinc.pro.backing.ui;
 
-import java.text.DateFormat;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -15,25 +13,16 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.util.MessageUtil;
 
-public class EventReportItem implements Comparable<EventReportItem>
+public class EventReportItem extends NotificationReportItem<EventReportItem> 
 {
     
     private static final Logger logger = Logger.getLogger(EventReportItem.class);
     
-    private String date;
-    private String group;
-    private String driverName;
-    private String vehicleName;
-    private String category;
-    private String detail;
     private Event event;
     private RedFlagLevel level;
     private boolean alert;
     
     private long noteID;
-    
-    private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
-
     
     public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy,MeasurementType measurementType)
     {
@@ -84,45 +73,9 @@ public class EventReportItem implements Comparable<EventReportItem>
 
         String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
 
-//        String mphString = MessageUtil.getMessageString("MeasurementType.ENGLISH_mph");
-//        if(measurementType.equals(MeasurementType.METRIC))
-//            mphString = MessageUtil.getMessageString("MeasurementType.METRIC_mph");
-        
         setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()),measurementType,mphString));
     }
     
-    public String getDate()
-    {
-        return date;
-    }
-    public void setDate(String date)
-    {
-        this.date = date;
-    }
-    public String getGroup()
-    {
-        return group;
-    }
-    public void setGroup(String group)
-    {
-        this.group = group;
-    }
-    public String getCategory()
-    {
-        return category;
-    }
-    public void setCategory(String category)
-    {
-        this.category = category;
-    }
-    public String getDetail()
-    {
-        return detail;
-    }
-    public void setDetail(String detail)
-    {
-        this.detail = detail;
-    }
 
     public Event getEvent()
     {
@@ -153,31 +106,11 @@ public class EventReportItem implements Comparable<EventReportItem>
     {
         this.alert = alert;
     }
-
+    
     @Override
     public int compareTo(EventReportItem o)
     {
         return this.getEvent().getTime().compareTo(o.getEvent().getTime());
-    }
-
-    public String getDriverName()
-    {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName)
-    {
-        this.driverName = driverName;
-    }
-
-    public String getVehicleName()
-    {
-        return vehicleName;
-    }
-
-    public void setVehicleName(String vehicleName)
-    {
-        this.vehicleName = vehicleName;
     }
 
     public long getNoteID()

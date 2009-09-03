@@ -6,7 +6,6 @@ import java.util.List;
 import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.dao.RedFlagDAO;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.RedFlag;
 
 public class RedFlagsCountBean extends RedFlagsBean implements SearchChangeListener{

@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.reports.ReportCriteria;
 
 public class EventsBean extends BaseEventsBean {
     private static final Logger logger = Logger.getLogger(EventsBean.class);
@@ -29,28 +27,8 @@ public class EventsBean extends BaseEventsBean {
     public String showAllFromRecentAction() {
         setCategoryFilter(null);
         setEventFilter(null);
-        refreshAction();
+        clearData();
         return "go_safety";
-    }
-
-    public void exportReportToPdf() {
-        getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
-    }
-
-    public void emailReport() {
-        getReportRenderer().exportReportToEmail(getReportCriteria(), getEmailAddress());
-    }
-
-    public void exportReportToExcel() {
-        getReportRenderer().exportReportToExcel(getReportCriteria(), getFacesContext());
-    }
-
-    private ReportCriteria getReportCriteria() {
-        ReportCriteria reportCriteria = getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID());
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setMainDataset(getTableData());
-        reportCriteria.setLocale(getLocale());
-        return reportCriteria;
     }
 
     public void setLinkFromTeam(long linkFromTeam) {

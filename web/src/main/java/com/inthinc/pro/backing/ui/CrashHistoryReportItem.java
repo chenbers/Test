@@ -1,35 +1,25 @@
 package com.inthinc.pro.backing.ui;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.util.MessageUtil;
 
 /**
  * @author pwehan
  *
  */
-public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem> {
+public class CrashHistoryReportItem extends NotificationReportItem<CrashHistoryReportItem>  {
     private static final Logger logger = Logger.getLogger(CrashHistoryReportItem.class);
     
     private Integer crashReportID;
     
-    private String group;
-    private String driverName;
-    private String vehicleName;
-    private String date;
     private String nbrOccupants;
     private String status;
     
     private Long time;    
     private Integer forgiven;
-    private String detail;
-
     private Double latitude;
     private Double longitude;
     private LatLng latlng;
@@ -47,37 +37,6 @@ public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem
         this.crashReportID = crashReportID;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getDriverName() {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
-    }
-
-    public String getVehicleName() {
-        return vehicleName;
-    }
-
-    public void setVehicleName(String vehicleName) {
-        this.vehicleName = vehicleName;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public String getNbrOccupants() {
         return nbrOccupants;
@@ -124,14 +83,6 @@ public class CrashHistoryReportItem implements Comparable<CrashHistoryReportItem
         this.time = time;
     }
 
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-    
     public Double getLatitude() {
         return latitude;
     }

@@ -16,7 +16,7 @@
     .rich-message {margin:5px;display:block;}
   </style>
   
-  <h:form id="my_form">
+  <a4j:form id="my_form">
  
     <ul id="grid_nav">
       <li class="r">
@@ -88,6 +88,7 @@
                                 <td width="150"><h:outputText value="#{messages.myAccount_measurement}:" /></td>
                                 <td>
                                     <h:selectOneMenu value="#{measurementBean.person.measurementType}" converter="SimpleBeanConverter">
+                                    	<a4j:support event="onchange" action="#{measurementBean.measurementTypeChosenAction}" reRender="fuelEfficiency"/>
                                         <f:selectItems value="#{measurementBean.measurementTypeItems}"/>
                                     </h:selectOneMenu>
                                 </td>
@@ -95,7 +96,7 @@
                               <tr>
                                 <td width="150"><h:outputText value="#{messages.myAccount_fuel_efficiency}:" /></td>
                                 <td>
-                                    <h:selectOneMenu value="#{fuelEfficiencyBean.person.fuelEfficiencyType}" converter="SimpleBeanConverter">
+                                    <h:selectOneMenu id="fuelEfficiency" value="#{fuelEfficiencyBean.person.fuelEfficiencyType}" converter="SimpleBeanConverter">
                                         <f:selectItems value="#{fuelEfficiencyBean.fuelEfficiencyTypeItems}"/>
                                     </h:selectOneMenu>
                                 </td>
@@ -269,7 +270,7 @@
           </tr>
         </tbody>
       </table>
-    </h:form>  
+    </a4j:form>  
     
     
     <script type="text/javascript" language="Javascript">

@@ -8,7 +8,7 @@ import com.inthinc.pro.model.TableType;
 
 public interface TablePrefOptions<T>
 {
-    public String getColumnLabelPrefix();
+	public String getColumnLabelPrefix();
     public TablePreferenceDAO getTablePreferenceDAO();
     public List<String> getAvailableColumns();
     public Map<String, Boolean> getDefaultColumns();

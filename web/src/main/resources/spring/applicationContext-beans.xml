@@ -139,12 +139,7 @@
             <ref local="vehiclesBean" />
             <ref local="zoneAlertsBean" />
             <ref local="redFlagAlertsBean" />
-            <ref local="eventsBean" />
-            <ref local="diagnosticsBean" />
-            <ref local="zoneAlertEventsBean" />
-            <ref local="redFlagsBean" />
-            <ref local="crashHistoryBean" />
-            <ref local="idlingReportBean" />
+           <ref local="idlingReportBean" />
             <ref local="driverReportBean" />
             <ref local="vehicleReportBean" />
           </list>
@@ -228,6 +223,7 @@
         <property name="vehicleSpeedBean" ref="vehicleSpeedBean"/>
         <property name="vehicleStyleBean" ref="vehicleStyleBean"/>
         <property name="vehicleSeatBeltBean" ref="vehicleSeatBeltBean"/>
+        <property name="crashSummary" ref="crashSummaryBean"/>
     </bean>
     
     <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="basePerformanceEventsBean">
@@ -268,6 +264,7 @@
         <property name="driverSpeedBean" ref="driverSpeedBean"/>
         <property name="driverStyleBean" ref="driverStyleBean"/>
         <property name="driverSeatBeltBean" ref="driverSeatBeltBean"/>
+        <property name="crashSummary" ref="crashSummaryBean"/>
      </bean>
 
     <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="basePerformanceEventsBean">
@@ -365,38 +362,31 @@
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     </bean>
     <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
-    <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseRedFlagsBean" scope="session" parent="baseBean" abstract="true">
+    <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseNotificationsBean" scope="session" parent="baseBean" abstract="true">
         <property name="driverDAO" ref="driverDAO"/>
         <property name="vehicleDAO" ref="vehicleDAO"/>
         <property name="zoneDAO" ref="zoneDAO"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
         <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
-    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseRedFlagsBean" init-method="initBean">
+    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
         <property name="redFlagDAO" ref="redFlagDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-    </bean>
+     </bean>
     <bean id="redFlagsCountBean" class="com.inthinc.pro.backing.RedFlagsCountBean" scope="session" parent="redFlagsBean" init-method="initBean">
     </bean>
-    <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseRedFlagsBean" abstract="true">
+    <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="request" parent="baseRedFlagsBean" abstract="true">
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-        <property name="reportRenderer" ref="reportRenderer"></property>
-        <property name="reportCriteriaService" ref="reportCriteriaService"></property>
-    </bean>
-    <bean id="baseCrashBean" class="com.inthinc.pro.backing.BaseCrashBean" scope="session" parent="baseRedFlagsBean" abstract="true">
-        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+     </bean>
+    <bean id="crashHistoryBean" class="com.inthinc.pro.backing.CrashHistoryBean" scope="request" parent="baseRedFlagsBean" init-method="initBean" >
         <property name="crashReportDAO" ref="crashReportDAO"></property>       
-        <property name="reportRenderer" ref="reportRenderer"></property>
-        <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     </bean>    
-    <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean"  init-method="initBean"/>
-    <bean id="diagnosticsBean" class="com.inthinc.pro.backing.DiagnosticsBean" scope="session" parent="baseEventsBean" init-method="initBean"/>
-    <bean id="emergencyBean" class="com.inthinc.pro.backing.EmergencyBean" scope="session" parent="baseEventsBean" init-method="initBean"/>
-    <bean id="crashHistoryBean" class="com.inthinc.pro.backing.CrashHistoryBean" scope="session" parent="baseCrashBean" init-method="initBean"/>    
-    <bean id="zoneAlertEventsBean" class="com.inthinc.pro.backing.ZoneAlertEventsBean" scope="session" parent="baseEventsBean"  init-method="initBean"/>
+    <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="request" parent="baseEventsBean"  init-method="initBean"/>
+    <bean id="diagnosticsBean" class="com.inthinc.pro.backing.DiagnosticsBean" scope="request" parent="baseEventsBean" init-method="initBean"/>
+    <bean id="emergencyBean" class="com.inthinc.pro.backing.EmergencyBean" scope="request" parent="baseEventsBean" init-method="initBean"/>
+     <bean id="zoneAlertEventsBean" class="com.inthinc.pro.backing.ZoneAlertEventsBean" scope="request" parent="baseEventsBean"  init-method="initBean"/>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseReportBean" >
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="scoreDAO" ref="scoreDAO"></property>   
@@ -428,8 +418,10 @@
         <property name="eventDAO" ref="eventDAO"></property>
     </bean>
     <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"/>
-    <bean id="measurementBean" class="com.inthinc.pro.backing.MeasurementBean" scope="request" init-method="init"/>
-    <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request" init-method="init"/>
+     <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request" init-method="init"/>
+     <bean id="measurementBean" class="com.inthinc.pro.backing.MeasurementBean" scope="request" init-method="init">
+    	<property name="fuelEfficiencyBean" ref="fuelEfficiencyBean"/>
+    </bean>
     
     <!-- Duration Beans -->
     <bean id="overallScoreDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>

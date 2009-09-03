@@ -7,44 +7,32 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 
-//import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener
+public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportItem> implements TablePrefOptions<EventReportItem>
 {
-    private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5169760158209219888L;
+
+	static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
     private final static String COLUMN_LABEL_PREFIX = "notes_";
     protected final static Integer DAYS_BACK = 7;
 
-    private static final Integer                 numRowsPerPg = 25;
-    private Integer                 start;
-    private Integer                 end;
-    private Integer                 maxCount;
-    private List<EventReportItem>   tableData;
-    private List<EventReportItem>   filteredTableData;
     private EventDAO                eventDAO;
-    private TablePreferenceDAO tablePreferenceDAO;
-    
-    private EventReportItem   clearItem;
     
     private EventCategory categoryFilter;
     private Event eventFilter;
     private Long eventFilterID;
-    
-    private ReportRenderer      reportRenderer;
-    private ReportCriteriaService reportCriteriaService;
     
     private TablePref<EventReportItem> tablePref;
 
@@ -64,6 +52,11 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
 
     }
     
+	@Override
+	public int getDisplaySize() {
+		// TODO Auto-generated method stub
+		return filteredTableData.size();
+	}
     
 
     @Override
@@ -71,8 +64,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     {
         super.initBean();
         tablePref = new TablePref<EventReportItem>(this);
-//        searchCoordinationBean.addSearchChangeListener(this);
-   }
+    }
     
     /*
      *When the search button is actually clicked, we want to make sure we use what's in
@@ -81,8 +73,8 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     @Override
     public void searchAction()
     {
-        setEventFilter(null);  
         super.searchAction();
+        setEventFilter(null);  
     }
 
     public TablePref<EventReportItem> getTablePref()
@@ -104,57 +96,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         tablePref.setTableColumns(tableColumns);
     }
 
-    public void scrollerListener(DataScrollerEvent event)
-    {
-
-        logger.debug("scroll event page: " + event.getPage() + " old " + event.getOldScrolVal() + " new " + event.getNewScrolVal());
-
-        this.start = (event.getPage() - 1) * numRowsPerPg + 1;
-        this.end = (event.getPage()) * numRowsPerPg;
-        // Partial page
-        if (this.end > getFilteredTableData().size())
-        {
-            this.end = getFilteredTableData().size();
-        }
-    }
-
-    public Integer getNumRowsPerPg()
-    {
-        return numRowsPerPg;
-    }
-
-
-    public List<EventReportItem> getTableData()
-    {
-        init();
-        return getFilteredTableData();
-    }
-
-    @Override
-    public void personListChanged()
-    {
-        refreshAction();
-    }
-
-    public void refreshAction()
-    {
-        setTableData(null);
-        
-//        init();
-    }
-    private void init()
-    {
-        if (tableData == null)
-        {
-            initTableData();
-            filterTableData();
-        }
-        else if (filteredTableData == null)
-        {
-            filterTableData();
-        }
-
-    }
     @Override
     protected void filterTableData()
     {
@@ -221,6 +162,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
         setPage(1);
+        tableData = filteredTableData;
     }
 
     @Override
@@ -277,6 +219,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
         setPage(1);
+        tableData = filteredTableData;
     }
     private void initTableData()
     {
@@ -298,69 +241,18 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
 
     protected abstract List<Event> getEventsForGroup(Integer groupID);
 
-    public void setTableData(List<EventReportItem> tableData)
-    {
-        this.tableData = tableData;
-    }
-
-    public Integer getStart()
-    {
-        if (start == null)
-        {
-            init();
-        }
-        return start;
-    }
-
-    public void setStart(Integer start)
-    {
-        this.start = start;
-    }
-
-    public Integer getEnd()
-    {
-        if (end == null)
-        {
-            init();
-        }
-        return end;
-    }
-
-    public void setEnd(Integer end)
-    {
-        this.end = end;
-    }
-
-    public Integer getMaxCount()
-    {
-        if (maxCount == null) 
-        {
-            init();
-        }
-        return maxCount;
-    }
-
-    public void setMaxCount(Integer maxCount)
-    {
-        this.maxCount = maxCount;
-    }
-
-
-    public EventReportItem getClearItem()
-    {
-        return clearItem;
-    }
-
-    public void setClearItem(EventReportItem clearItem)
-    {
-        this.clearItem = clearItem;
-    }
+//    public void setTableData(List<EventReportItem> tableData)
+//    {
+//        this.tableData = tableData;
+//    }
     
     public void clearItemAction()
     {
-        if (eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID()) >= 1){
-    		initTableData();
-        }
+    	if(clearItem.getEvent().getForgiven().intValue()==0){
+	        if (eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID()) >= 1){
+	    		clearData();
+	        }
+    	}
 //        tableData.remove(clearItem);
 //        filteredTableData.remove(clearItem);
 //        maxCount--;
@@ -370,9 +262,11 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     
     public void includeEventAction(){
     	
-    	if (eventDAO.unforgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID())>= 1){
-    		initTableData();
-        }
+    	if(clearItem.getEvent().getForgiven().intValue()==1){
+	    	if (eventDAO.unforgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID())>= 1){
+	    		clearData();
+	        }
+    	}
     	
     }
     public EventCategory getCategoryFilter()
@@ -380,29 +274,22 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         return categoryFilter;
     }
 
-    private void reinit()
-    {
-        setFilteredTableData(null);
-        setStart(null);
-        setEnd(null);
-        setMaxCount(null);
-    }
+//    private void reinit()
+//    {
+//    	setTableData(null);
+//        setFilteredTableData(null);
+//        setStart(null);
+//        setEnd(null);
+//        setMaxCount(null);
+//        init();
+//    }
     public void setCategoryFilter(EventCategory categoryFilter)
     {
-        reinit();
+//        reinit();
         this.eventFilter = null;
         this.categoryFilter = categoryFilter;
     }
 
-    public List<EventReportItem> getFilteredTableData()
-    {
-        return filteredTableData;
-    }
-
-    public void setFilteredTableData(List<EventReportItem> filteredTableData)
-    {
-        this.filteredTableData = filteredTableData;
-    }
 
     public Event getEventFilter()
     {
@@ -412,7 +299,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     public void setEventFilter(Event eventFilter)
     {
         // force table data to reinit
-        reinit();
+//        reinit();
         this.categoryFilter = null;
         this.eventFilter = eventFilter;
     }
@@ -462,12 +349,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     }
 
     @Override
-    public TablePreferenceDAO getTablePreferenceDAO()
-    {
-        return tablePreferenceDAO;
-    }
-
-    @Override
     public TableType getTableType()
     {
         return TableType.EVENTS;
@@ -479,10 +360,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         return getUser().getUserID();
     }
 
-    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
-    {
-        this.tablePreferenceDAO = tablePreferenceDAO;
-    }
     public EventDAO getEventDAO()
     {
         return eventDAO;
@@ -491,26 +368,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     public void setEventDAO(EventDAO eventDAO)
     {
         this.eventDAO = eventDAO;
-    }
-
-    public void setReportRenderer(ReportRenderer reportRenderer)
-    {
-        this.reportRenderer = reportRenderer;
-    }
-
-    public ReportRenderer getReportRenderer()
-    {
-        return reportRenderer;
-    }
-
-    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
-    {
-        this.reportCriteriaService = reportCriteriaService;
-    }
-
-    public ReportCriteriaService getReportCriteriaService()
-    {
-        return reportCriteriaService;
     }
 
     public void setEventFilterID(Long eventFilterID)
@@ -533,6 +390,22 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     {
         return eventFilterID;
     }
+	public void setTableData(List<EventReportItem> tableData) {
+		this.tableData = tableData;
+	}
+
+    public List<EventReportItem> getTableData() {
+    	if (tableData==null) fetchData();
+		return tableData;
+	}
+
+    public List<EventReportItem> getFilteredTableData() {
+		return filteredTableData;
+	}
+
+	public void setFilteredTableData(List<EventReportItem> filteredTableData) {
+		this.filteredTableData = filteredTableData;
+	}
 
 }
 

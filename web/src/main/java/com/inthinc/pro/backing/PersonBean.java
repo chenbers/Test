@@ -153,7 +153,17 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private PasswordEncryptor passwordEncryptor;
     private List<PersonChangeListener> changeListeners;
 
-    public void setPersonDAO(PersonDAO personDAO) {
+    private FuelEfficiencyBean fuelEfficiencyBean;
+    
+    public FuelEfficiencyBean getFuelEfficiencyBean() {
+		return fuelEfficiencyBean;
+	}
+
+	public void setFuelEfficiencyBean(FuelEfficiencyBean fuelEfficiencyBean) {
+		this.fuelEfficiencyBean = fuelEfficiencyBean;
+	}
+
+	public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
 
@@ -355,6 +365,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
             item.getDriver().setRFID(null);
+        fuelEfficiencyBean = new FuelEfficiencyBean();
+        fuelEfficiencyBean.init(item.getMeasurementType());
         return item;
     }
 
@@ -730,6 +742,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     public List<SelectItem> getStatuses() {
         return SelectItemUtil.toList(Status.class, false, Status.DELETED);
+    }
+    public void measurementTypeChosenAction(){
+    	
+		fuelEfficiencyBean.init(getMeasurementType());
     }
 
     public static class PersonView extends Person implements EditItem {

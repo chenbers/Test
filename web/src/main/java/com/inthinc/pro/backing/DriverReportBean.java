@@ -203,6 +203,9 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
+        
         return reportCriteria;
     }
 

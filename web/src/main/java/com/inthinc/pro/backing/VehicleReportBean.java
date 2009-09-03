@@ -177,6 +177,8 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         reportCriteria.setMainDataset(vehicleData);
         reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
         return reportCriteria;
     }
 

@@ -1,29 +1,44 @@
 package com.inthinc.pro.backing;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.richfaces.event.DataScrollerEvent;
+
+import com.inthinc.pro.backing.ui.NotificationReportItem;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseRedFlagsBean extends BaseBean
+public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>> extends BaseBean 
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -628902123783350377L;
+
+	protected static final Integer numRowsPerPg = 25;
+	
     private DriverDAO                driverDAO;
     private VehicleDAO               vehicleDAO;
+
+    private ZoneDAO                  zoneDAO;
+	private TablePreferenceDAO       tablePreferenceDAO;
 
     private Map<Integer, Driver>     driverMap;
     private Map<Integer, Vehicle>    vehicleMap;
     
-    private ZoneDAO                  zoneDAO;
-
     private Map<EventType, String>   driverActionMap;
     private Map<EventType, String>   vehicleActionMap;
 
@@ -33,11 +48,72 @@ public abstract class BaseRedFlagsBean extends BaseBean
     private ReportCriteriaService    reportCriteriaService;
     private RedFlagReportItem        selectedRedFlag;
 
-    private Integer                  page;
+    protected List<T> tableData;
+    protected List<T> filteredTableData;
 
-    protected SearchCoordinationBean searchCoordinationBean;
+    protected T clearItem;
+ 
+ 
+	protected SearchCoordinationBean searchCoordinationBean;
 
-    public void initBean()
+    private Integer start;
+    private Integer end;
+    private Integer maxCount;
+	private Integer page;
+	
+	public T getClearItem() {
+		return clearItem;
+	}
+
+	public void setClearItem(T clearItem) {
+		this.clearItem = clearItem;
+	}
+
+    public Integer getStart() {
+    	
+    	if (start == null){
+     		
+      		fetchData();
+    	}
+		return start;
+	}
+
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+
+	public Integer getEnd() {
+    	if (end == null){
+     		
+      		fetchData();
+    	}
+		return end;
+	}
+
+	public void setEnd(Integer end) {
+		this.end = end;
+	}
+
+	public Integer getMaxCount() {
+    	if (maxCount == null){
+     		
+      		fetchData();
+    	}
+		return maxCount;
+	}
+
+	public void setMaxCount(Integer maxCount) {
+		this.maxCount = maxCount;
+	}
+
+	public Integer getNumRowsPerPg() {
+		return numRowsPerPg;
+	}
+
+
+
+
+	public void initBean()
     {
         driverMap = new HashMap<Integer, Driver>();
         vehicleMap = new HashMap<Integer, Vehicle>();
@@ -168,9 +244,11 @@ public abstract class BaseRedFlagsBean extends BaseBean
 
     public void searchAction()
     {
+        clearData();
         page = 1;
-        filterTableData();
-
+    }
+    public void refreshAction(){
+    	clearData();
     }
     protected abstract void filterTableDataWithoutSearch();
 
@@ -221,4 +299,77 @@ public abstract class BaseRedFlagsBean extends BaseBean
         return zoneDAO;
     }
 
+	public TablePreferenceDAO getTablePreferenceDAO() {
+	    return tablePreferenceDAO;
+	}
+
+	public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO) {
+	    this.tablePreferenceDAO = tablePreferenceDAO;
+	}
+
+	public void fetchData() {
+		
+		filterTableData();
+	
+	}
+
+	public List<T> getTableData() {
+		
+		if (tableData==null) fetchData();
+		return tableData;
+	}
+
+	public void setTableData(List<T> tableData) {
+		this.tableData = tableData;
+	}
+
+	public List<T> getFilteredTableData() {
+		return filteredTableData;
+	}
+
+	public void setFilteredTableData(List<T> filteredTableData) {
+		this.filteredTableData = filteredTableData;
+	}
+	public void clearData(){
+		
+		start = null;
+		end = null;
+		maxCount = null;
+		tableData = null;
+	    filteredTableData = null;		
+		
+	}
+
+	public void scrollerListener(DataScrollerEvent event) {
+	
+	
+	    this.start = (event.getPage() - 1) * numRowsPerPg + 1;
+	    this.end = (event.getPage()) * numRowsPerPg;
+	    // Partial page
+	    if (this.end > getDisplaySize())
+	    {
+	        this.end = getDisplaySize();
+	    }
+	}
+	public abstract int getDisplaySize();
+
+	public void exportReportToPdf() {
+	    getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
+	}
+
+	public void emailReport() {
+	    getReportRenderer().exportReportToEmail(getReportCriteria(), getEmailAddress());
+	}
+
+	public void exportReportToExcel() {
+	    getReportRenderer().exportReportToExcel(getReportCriteria(), getFacesContext());
+	}
+
+	private ReportCriteria getReportCriteria() {
+	    ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID());
+	    reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+	    reportCriteria.setMainDataset(getTableData());
+	    reportCriteria.setLocale(getLocale());
+	    return reportCriteria;
+	}
 }

@@ -54,7 +54,7 @@
     </url-mapping>  
     <url-mapping id="fleet">
         <pattern>/app/fleet/#{navigationBean.groupID}</pattern>
-        <view-id>/secured/dashboard/home.faces</view-id>
+        <view-id>/secured/dashboard/executive.faces</view-id>
     </url-mapping> 
     <url-mapping id="division">
         <pattern>/app/division/#{navigationBean.groupID}</pattern>

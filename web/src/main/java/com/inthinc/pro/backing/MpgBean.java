@@ -120,9 +120,8 @@ public class MpgBean extends BaseBean implements Serializable
     
     public List<MpgEntity> getMpgEntities()
     {
-        if(mpgEntities == null)
-            mpgEntities = mpgDAO.getEntities(group, durationBean.getDuration());
-        	sortEntitiesByGroup();
+        mpgEntities = mpgDAO.getEntities(group, durationBean.getDuration());
+    	sortEntitiesByGroup();
         return mpgEntities;
     }
 
