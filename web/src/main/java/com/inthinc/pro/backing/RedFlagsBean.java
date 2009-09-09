@@ -8,11 +8,11 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ui.NotificationReportItem;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
+import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
@@ -204,19 +204,25 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         addDrivers(redFlagList);
         addVehicles(redFlagList);
-        Map<Integer, Zone> zoneMap = getZones();
+        Map<Integer, Zone> zoneMap = new HashMap<Integer, Zone>();
         for (RedFlag redFlag : redFlagList) {
-            // fillInDriver(redFlag.getEvent());
-            // fillInVehicle(redFlag.getEvent());
             RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy(), getMeasurementType());
+            Integer zoneID = null;
+
             if (redFlag.getEvent() instanceof ZoneDepartureEvent) {
-                item.setZone(zoneMap.get(((ZoneDepartureEvent) redFlag.getEvent()).getZoneID()));
-                // item.setZone(zoneDAO.findByID(((ZoneDepartureEvent)redFlag.getEvent()).getZoneID()));
+                zoneID = ((ZoneDepartureEvent) redFlag.getEvent()).getZoneID();
+            } else if (redFlag.getEvent() instanceof ZoneArrivalEvent) {
+                zoneID = ((ZoneArrivalEvent) redFlag.getEvent()).getZoneID();
             }
-            if (redFlag.getEvent() instanceof ZoneArrivalEvent) {
-                item.setZone(zoneMap.get(((ZoneArrivalEvent) redFlag.getEvent()).getZoneID()));
-                // item.setZone(zoneDAO.findByID(((ZoneArrivalEvent)redFlag.getEvent()).getZoneID()));
+            
+            if(zoneID != null && zoneMap.containsKey(zoneID)) {
+                item.setZone(zoneMap.get(zoneID));
+            } else if (zoneID != null){
+                Zone zone = getZoneDAO().findByID(zoneID);
+                item.setZone(zone);
+                zoneMap.put(zone.getZoneID(), zone);
             }
+            
             redFlagReportItemList.add(item);
         }
         Collections.sort(redFlagReportItemList);
@@ -372,35 +378,34 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
     }
 
     protected void addDrivers(List<RedFlag> redFlagList) {
-        // Get the set of possible drivers
-        List<Driver> drivers = getDriverDAO().getAllDrivers(getEffectiveGroupId());
         Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
-        for (Driver driver : drivers) {
-            driverMap.put(driver.getDriverID(), driver);
-        }
         for (RedFlag redFlag : redFlagList) {
-            redFlag.getEvent().setDriver(driverMap.get(redFlag.getEvent().getDriverID()));
+            if(driverMap.containsKey(redFlag.getEvent().getDriverID())) {
+                redFlag.getEvent().setDriver(driverMap.get(redFlag.getEvent().getDriverID()));
+            } else {
+                Driver driver = getDriverDAO().findByID(redFlag.getEvent().getDriverID());
+                if(driver != null) {
+                    redFlag.getEvent().setDriver(driver);
+                    driverMap.put(driver.getDriverID(), driver);
+                }
+            }
         }
     }
 
     protected void addVehicles(List<RedFlag> redFlagList) {
         // Get the set of possible vehicles
-        List<Vehicle> vehicles = getVehicleDAO().getVehiclesInGroupHierarchy(getEffectiveGroupId());
         Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
-        for (Vehicle vehicle : vehicles) {
-            vehicleMap.put(vehicle.getVehicleID(), vehicle);
-        }
         for (RedFlag redFlag : redFlagList) {
             redFlag.getEvent().setVehicle(vehicleMap.get(redFlag.getEvent().getVehicleID()));
+            if(vehicleMap.containsKey(redFlag.getEvent().getVehicleID())) {
+                redFlag.getEvent().setVehicle(vehicleMap.get(redFlag.getEvent().getVehicleID()));
+            } else {
+                Vehicle vehicle = getVehicleDAO().findByID(redFlag.getEvent().getVehicleID());
+                if(vehicle != null) {
+                    redFlag.getEvent().setVehicle(vehicle);
+                    vehicleMap.put(vehicle.getVehicleID(), vehicle);
+                }
+            }
         }
-    }
-
-    private Map<Integer, Zone> getZones() {
-        List<Zone> zones = getZoneDAO().getZones(this.getUser().getPerson().getAcctID());
-        Map<Integer, Zone> zoneMap = new HashMap<Integer, Zone>();
-        for (Zone zone : zones) {
-            zoneMap.put(zone.getZoneID(), zone);
-        }
-        return zoneMap;
     }
  }

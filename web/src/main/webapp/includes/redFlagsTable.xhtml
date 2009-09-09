@@ -54,31 +54,31 @@
                 	
               
             </rich:column>
-            <rich:column rendered="#{tableColumns['level'].visible}" sortBy="#{item.redFlag.level}" width="10%">
+            <rich:column rendered="#{tableColumns['level'].visible}" sortBy="#{item.redFlag.level}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_level}" />
                 </f:facet>
                 <h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{item.redFlag.level.description}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['alerts'].visible}" sortBy="#{item.redFlag.alert}" width="5%">
+            <rich:column rendered="#{tableColumns['alerts'].visible}" sortBy="#{item.redFlag.alert}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_alerts}" />
                 </f:facet>
                 <h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />
             </rich:column>
-            <rich:column id="time" rendered="#{tableColumns['date'].visible}" sortBy="#{item.redFlag.event.time}" sortOrder="DESCENDING" width="15%">
+            <rich:column id="time" rendered="#{tableColumns['date'].visible}" sortBy="#{item.redFlag.event.time}" sortOrder="DESCENDING">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_date}" />
                 </f:facet>
                 <h:outputText value="#{item.date}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}" width="10%">
+            <rich:column rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_group}" />
                 </f:facet>
                 <h:outputText value="#{item.group}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" width="10%">
+            <rich:column rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_driver}" />
                 </f:facet>
@@ -87,7 +87,7 @@
                                 #{item.driverName}
                             </pretty:link>
             </rich:column>
-            <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" width="10%">
+            <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_vehicle}" />
                 </f:facet>
@@ -96,19 +96,19 @@
                     #{item.vehicleName}
                 </pretty:link>
             </rich:column>
-            <rich:column rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}" width="20%">
+            <rich:column rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_category}" />
                 </f:facet>
                 <h:outputText value="#{item.category}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['detail'].visible}" sortBy="#{item.detail}" width="20%">
+            <rich:column rendered="#{tableColumns['detail'].visible}" sortBy="#{item.detail}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_detail}" />
                 </f:facet>
                 <h:outputText value="#{item.detail}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['clear'].visible}" width="10%">
+            <rich:column rendered="#{tableColumns['clear'].visible}" >
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>

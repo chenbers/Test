@@ -2384,7 +2384,7 @@ These styles should be added when very long tables are expected
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	/*border-right: 1px solid #8BAD37; 
         border-bottom: 1px solid #8BAD37; */
-	padding: 6px 12px 6px 12px;
+	padding: 8px ;
 	color: #333;
 }
 

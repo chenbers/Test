@@ -13,8 +13,9 @@
                 
     <ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=s&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
-        <script src="#{facesContext.externalContext.request.contextPath}/js/mapstraction/mapstraction.js" type="text/javascript"></script>
-	    <script language="javascript" type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/jquery.flot.js"></script>
+        <script src="#{request.contextPath}/js/mapstraction/mapstraction.js" type="text/javascript"></script>
+	    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.js"></script>
+
 	</ui:define>
 	<ui:define name="content">
 		<style>
@@ -47,14 +48,13 @@
 				text-align: center;
 			}
 		</style>
-		<script type="text/javascript">
-		    var baseIcon = new GIcon();
+	    <script language="javascript" type="text/javascript">
+	     var baseIcon = new GIcon();
 			baseIcon.iconSize = new GSize(25, 30);
 			baseIcon.iconAnchor = new GPoint(9, 30);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
-			var map = null;
-			var vehicleMarker = null;
+			var map, vehicleMarker, polyline, plot, tripPoints = [];
 
 			
 			function initMap() {
@@ -64,20 +64,16 @@
 					 map = new GMap2(document.getElementById("map-canvas"));	
 					 map.setMapType(G_NORMAL_MAP);
 					 map.setCenter(point,12);
-					 map.setUIToDefault();				 	
-					 
+					 map.setUIToDefault();				 
+
 					 var vehicleIcon = new GIcon(baseIcon);
 					 vehicleIcon.image = "#{facesContext.externalContext.request.contextPath}/images/googleMapIcons/icon_2.png";
 					 markerOptions = { icon:vehicleIcon };					 					 
 					 vehicleMarker = new GMarker(point, markerOptions);
 					 map.addOverlay(vehicleMarker);
-				}                           
+				}
+                      
              }           
-
-            function updateVehicleMarker(point) {
-                vehicleMarker.setLatLng(point);
-            }
-            
 		</script>
 		
 		<t:saveState value="#{crashReportBean}"/>
@@ -156,7 +152,7 @@
 								</f:facet>
 									<rich:column>
 										<h:outputText value="#{dataPoint.time}">
-											<f:convertDateTime pattern="#{messages.timeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
+											<f:convertDateTime pattern="#{messages.longTimeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
 										</h:outputText>
 									</rich:column>
 									<rich:column>
@@ -187,11 +183,7 @@
 							
 				
 						    <div id="placeholder" style="width:100%;height:300px"></div>
-								
-						    <p id="hoverdata">Mouse hovers at
-						    (<span id="x">0</span>, <span id="y">0</span>). </p>
-						    
-						    <p><span id="clickdata"></span></p>
+														    
 						    <p> <span id="eventinfo"></span></p>
 						    <p> <span id="iteminfo"></span></p>
 						    <p> <span id="posinfo"></span></p>
@@ -208,61 +200,99 @@
 		</div>
         
 		<script language="javascript" type="text/javascript">
-
+			
 			jQuery(function () {
 
-				var gpsSpeed = [], obdSpeed = [], rpm = [], tripPoints = [];
+				var gpsSpeed = [], obdSpeed = [], rpm = [];
+
+				/* TODO: Retrieve data via JSON. Remove all the uses of new */
 		    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
-		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, #{point.lat}, #{point.lng}])
-		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, #{point.lat}, #{point.lng}]);
-		    		rpm.push([#{point.time.time}, #{point.rpm}, #{point.lat}, #{point.lng}]);
+		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new GLatLng(#{point.lat}, #{point.lng})])
+		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
+		    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
 					tripPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
 		    	</a4j:repeat>
 
-				
-
-				var polyline = new GPolyline(tripPoints, "#0000ff", 6);
+				polyline = new GPolyline(tripPoints, "#0000ff", 6);
 				map.addOverlay(polyline);
-				
-			    var plot = jQuery.plot(jQuery("#placeholder"),
+
+		        /*<![CDATA[*/
+			    plot = jQuery.plot(jQuery("#placeholder"),
 			           [ { data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed}"}, {data: obdSpeed, label: "#{messages.crashReport_obdSpeed}"}, {data: rpm, label: "#{messages.crashReport_rpm}", yaxis: 2} ],
 			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 			           	 lines: { show: true },
 			             points: { show: false },
 			             selection: { mode: "xy" },
-			             grid: { hoverable: true, clickable: true, autoHighlight: true, mouseActiveRadius: 100 }
-			           });		           
+			             grid: { hoverable: true, clickable: true, autoHighlight: false, mouseActiveRadius: 100 }
+			           });		
 
-			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {
-				    /*
-		        	jQuery("#eventinfo").text("Event: ");
-		            jQuery.each(event, function(name, value) {
-			        	jQuery("#eventinfo").append("<p>" + name + ": " + value + " </p> ");
-		            });
-		            */
-		            
+	            var previousIndex;
+			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {	
 		        	jQuery("#posinfo").text("Position: ");
 		            jQuery.each(pos, function(name, value) {
 			        	jQuery("#posinfo").append("<p>" + name + ": " + value + " </p> ");
 		            });
-		            if (item) {
-			        	jQuery("#iteminfo").text("Item: ");
-			            jQuery.each(item, function(name, value) {
+		            if (item) {			            
+			            if(previousIndex) {
+							for ( i = 0; i < 3; i++) {
+								plot.unhighlight(i,previousIndex);
+							}
+	            		}
+			            vehicleMarker.setLatLng(item.datapoint[2]);
+
+						for ( i = 0; i < 3; i++) {
+							plot.highlight(i,item.dataIndex);
+						}
+						previousIndex = item.dataIndex;
+			        	jQuery("#iteminfo").text("item: ");
+			            jQuery.each(plot, function(name, value) {
 				        	jQuery("#iteminfo").append("<p>" + name + ": " + value + " </p> ");
 			            });
-
-		                updateVehicleMarker(new GLatLng(item.datapoint[2],item.datapoint[3]));
 		            }
 			    });
-			
-			    /*jQuery("#placeholder").bind("plotclick", function (event, pos, item) {
-			        if (item) {
-			            jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ". ");
-			            plot.highlight(item.series, item.datapoint);
-			        }
-			    });*/
+	            /*]]>*/
 			});
+		</script>
+		<script type="text/javascript">
+
+        /*<![CDATA[*/
+        function getClosestPointFromList(latLng,latLngArray){
+        	if(latLng){
+                var closestLatLng, difference, returnIndex; 
+                for (i = 0; i < latLngArray.length; i++){
+					var latDifference = Math.abs(latLng.lat() - latLngArray[i].lat());
+					var lngDifference = Math.abs(latLng.lng() - latLngArray[i].lng());
+					var tempDifference = latDifference + lngDifference;
+					
+					if(difference == null || tempDifference <= difference){
+							closestLatLng = latLngArray[i];
+							difference = tempDifference;
+							returnIndex = i;
+					}
+                }
+                if(closestLatLng) {
+                    return {index: returnIndex, latlng: closestLatLng};
+                }
+        	}
+            return  {index: 0, latlng: latLngArray[latLngArray.length - 1]};
+        }
+        var closestPoint = null;
+		GEvent.addListener(map, 'mousemove', function(point) {
+			if(closestPoint) {
+		    	 for ( i = 0; i < 3; i++) {
+		     	 	plot.unhighlight(i,closestPoint.index);
+		     	 }
+			}
+			closestPoint = getClosestPointFromList(point, tripPoints);
+			
+			vehicleMarker.setLatLng(closestPoint.latlng);
+			for ( i = 0; i < 3; i++) {
+				plot.highlight(i,closestPoint.index);
+			}
+		}); // for detecting if mouse is above displayed route
+
+		   	 	/*]]>*/
 		</script>
 		
 	</ui:define>

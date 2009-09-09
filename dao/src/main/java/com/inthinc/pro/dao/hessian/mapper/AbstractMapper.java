@@ -92,8 +92,8 @@ public abstract class AbstractMapper implements Mapper
 
     private <E> E convertToModelObject(Map<String, Object> map, E modelObject)
     {
-        if(logger.isTraceEnabled()) {
-            logger.trace("Returned Map being converted into Model Object: " + map);
+        if(logger.isDebugEnabled()) {
+            logger.debug("Returned Map converted to [" + modelObject.getClass().getSimpleName() + "]: " + map);
         }
         List<Field> fieldList = getAllFields(modelObject.getClass());
         for (Map.Entry<String, Object> entry : map.entrySet())

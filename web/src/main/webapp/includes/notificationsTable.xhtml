@@ -26,7 +26,7 @@
         <rich:dataTable id="items" value="#{tableData}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
             <!-- Data -->
-            <rich:column id="mapColumn">
+            <rich:column id="mapColumn" style="text-align: center;">
                 <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
                     <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
                         <f:param name="lat" value="#{item.event.latitude}" />
@@ -37,19 +37,19 @@
                     <h:outputText id="address" value="#{item.event.latLng}" converter="#{latLngAddressConverter}" />
                 </rich:toolTip>
             </rich:column>
-            <rich:column rendered="#{tableColumns['date'].visible}" sortBy="#{item.event.time}" width="20%">
+            <rich:column rendered="#{tableColumns['date'].visible}" sortBy="#{item.event.time}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_date}" />
                 </f:facet>
                 <h:outputText value="#{item.date}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}" width="10%">
+            <rich:column rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_group}" />
                 </f:facet>
                 <h:outputText value="#{item.group}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" width="10%">
+            <rich:column rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_driver}" />
                 </f:facet>
@@ -58,7 +58,7 @@
                     #{item.driverName}
                 </pretty:link>
             </rich:column>
-            <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" width="10%">
+            <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_vehicle}" />
                 </f:facet>
@@ -69,19 +69,19 @@
                 <h:outputText rendered="#{item.vehicleName == 'None Assigned'}" value="#{item.vehicleName}">
                 </h:outputText>
             </rich:column>
-            <rich:column rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}" width="20%">
+            <rich:column rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_category}" />
                 </f:facet>
                 <h:outputText value="#{item.category}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['detail'].visible}" sortBy="#{item.detail}" width="20%">
+            <rich:column rendered="#{tableColumns['detail'].visible}" sortBy="#{item.detail}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_detail}" />
                 </f:facet>
                 <h:outputText value="#{item.detail}" />
             </rich:column>
-            <rich:column rendered="#{tableColumns['clear'].visible}" width="10%">
+            <rich:column rendered="#{tableColumns['clear'].visible}">
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
