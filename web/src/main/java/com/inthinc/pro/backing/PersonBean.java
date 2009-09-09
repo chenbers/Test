@@ -34,9 +34,11 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
@@ -345,6 +347,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             person.setLocale(locale);
         else
             person.setLocale(Locale.US);
+        person.setMeasurementType(MeasurementType.ENGLISH);
+        person.setFuelEfficiencyType(FuelEfficiencyType.MPG_US);
         person.setDriver(new Driver());
         person.setUserSelected(true);
         person.setDriverSelected(true);
