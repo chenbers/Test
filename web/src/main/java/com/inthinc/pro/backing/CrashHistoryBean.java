@@ -110,16 +110,25 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         // the following will be how we access data when LIVE data is available
         List<CrashReport> crashList = crashReportDAO.getCrashReportsByGroupID(getProUser().getUser().getGroupID());
         List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
+        // temporary map to hold drivers that have already been looked up. This will go away when pagination is implemented
+        Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
         for (CrashReport cr : crashList) {
             CrashHistoryReportItem reportItem = new CrashHistoryReportItem();
             reportItem.setCrashReportID(cr.getCrashReportID());
             reportItem.setDate(dateFormatter.format(cr.getDate()));
             reportItem.setTime(cr.getDate().getTime());
-            Driver driver = this.getDriverDAO().findByID(cr.getVehicle().getDriverID());
+            Driver driver = null;
+            if (driverMap.containsKey(cr.getVehicle().getDriverID())) {
+                driver = driverMap.get(cr.getVehicle().getDriverID());
+            } else {
+                driver = this.getDriverDAO().findByID(cr.getVehicle().getDriverID());
+            }
             if (driver != null) {
                 reportItem.setDriver(driver);
-                reportItem.setDriverName(driver.getPerson().getFullName());
-                reportItem.setGroup(getGroupHierarchy().getGroup(driver.getGroupID()).getName());
+                if (driver.getPerson() != null) {
+                    reportItem.setDriverName(driver.getPerson().getFullName());
+                    reportItem.setGroup(getGroupHierarchy().getGroup(driver.getGroupID()).getName());
+                }
             }
             reportItem.setNbrOccupants(String.valueOf(cr.getOccupantCount().intValue()));
             reportItem.setStatus(cr.getCrashReportStatus().name());
