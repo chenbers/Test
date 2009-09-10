@@ -20,7 +20,7 @@ public class UIConditionalCSS extends UIComponentBase
     public static final String COMPONENT_TYPE = "conditionalCSS";
     public static final String COMPONENT_FAMILY = "facelets";
 
-    public static final String COMMENT_BEGIN_1 = "<!--[if ";
+    public static final String COMMENT_BEGIN_1 = "\n<!--[if ";
     public static final String COMMENT_BEGIN_2 = "]>";
     public static final String COMMENT_END = "<![endif]-->";
     
