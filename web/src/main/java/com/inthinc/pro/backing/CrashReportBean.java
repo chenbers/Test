@@ -54,6 +54,7 @@ public class CrashReportBean extends BaseBean{
     private CrashReport crashReport;
     private Integer crashTime;
     private Integer crashReportID; //Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
+    private Trip crashReportTrip;
     
        
     public List<SelectItem> getCrashReportStatusAsSelectItems(){
@@ -392,7 +393,14 @@ public class CrashReportBean extends BaseBean{
     public Trip getSelectedTrip() {
         return selectedTrip;
     }
-
+    
+    //returns the Trip associated with the current CrashReport. Used on the Crash Report Detail page
+    public Trip getCrashReportTrip() {
+        if(crashReport != null && crashReportTrip == null) {
+            crashReportTrip = crashReportDAO.getTrip(crashReport);
+        }
+        return crashReportTrip;
+    }
 
     public void setCrashTime(Integer crashTime) {
         if(crashReport != null && crashReport.getDate() != null){

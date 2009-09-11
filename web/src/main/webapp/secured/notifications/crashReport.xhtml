@@ -49,6 +49,12 @@
 			.datagrid > tbody > tr > td {
 				text-align: center;
 			}
+			.legendLabel {
+				width: 100px;
+			}
+			#legend table {
+				margin: auto;
+			}
 		</style>
 	    <script language="javascript" type="text/javascript">
 	     var baseIcon = new GIcon();
@@ -56,26 +62,87 @@
 			baseIcon.iconAnchor = new GPoint(9, 30);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
-			var map, vehicleMarker, polyline, plot, tripPoints = [];
+			var map, vehicleMarker, plot;
+			var showWarnings = true;
+			var showIdleMarkers = true;
+			var showTamperMarkers = true;
+			var bounds = new GLatLngBounds();
 
 			
 			function initMap() {
 				if (GBrowserIsCompatible()) {					
-					 GUnload();
-					 var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
-					 map = new GMap2(document.getElementById("map-canvas"));	
-					 map.setMapType(G_NORMAL_MAP);
-					 map.setCenter(point,12);
-					 map.setUIToDefault();				 
+					GUnload();
+					var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
+					map = new GMap2(document.getElementById("map-canvas"));						
+					map.addControl(new GLargeMapControl());
+					map.addControl(new GMapTypeControl());
+					map.addControl(new GOverviewMapControl()); 
+					map.setCenter(point, 14);
+					map.setMapType(G_NORMAL_MAP);
+					bounds = new GLatLngBounds();
+					
+					
+					var vehicleIcon = new GIcon(baseIcon);
+					vehicleIcon.image = "#{request.contextPath}/images/googleMapIcons/icon_2.png";
+					markerOptions = { icon:vehicleIcon };					 					 
+					vehicleMarker = new GMarker(point, markerOptions);
+					map.addOverlay(vehicleMarker);
 
-					 var vehicleIcon = new GIcon(baseIcon);
-					 vehicleIcon.image = "#{facesContext.externalContext.request.contextPath}/images/googleMapIcons/icon_2.png";
-					 markerOptions = { icon:vehicleIcon };					 					 
-					 vehicleMarker = new GMarker(point, markerOptions);
-					 map.addOverlay(vehicleMarker);
+					var crashIcon = new GIcon(baseIcon);
+					crashIcon.image = "#{request.contextPath}/images/icon_crash.png";
+					map.addOverlay(new GMarker(point, { icon: crashIcon }));
 				}
                       
              }           
+
+			function createMarker(point, divID, iconImage) 
+	        {
+	        	var markerIcon;
+	        	var marker;
+
+				//Use passed in image.
+	        	if(iconImage != null)
+	        	{
+					markerIcon = new GIcon(baseIcon);
+		       	    markerIcon.image = iconImage;
+		       	 	markerOptions = { icon:markerIcon,zIndexProcess:orderOfCreation };
+		       	 	marker = new GMarker(point, markerOptions);
+	        	}
+	        	//Use default GoogleMap marker image.
+	        	else
+	        	{
+			      	markerIcon = new GIcon();
+					marker = new GMarker(point);
+	        	}
+	       
+	       		GEvent.addListener(marker, "click", function() {
+						var node = document.getElementById(divID).cloneNode(true);
+	          			node.style.display = 'block';
+			            marker.openInfoWindow(node);
+			 			});
+
+	        	return marker;
+	        }
+	        
+	        function showInfoWindow(noteID, latLng)
+	        {
+	        	var node = document.getElementById(noteID).cloneNode(true);
+	  			node.style.display = 'block';
+
+	  			map.openInfoWindow(latLng, node);
+	        }
+
+			function showTrips()
+			{
+				drawSelectedTrips();
+			    map.setZoom(map.getBoundsZoomLevel(bounds));
+			    map.setCenter(bounds.getCenter());
+		    }
+
+			function bodyUnload()
+			{
+				GUnload();
+			}	
 		</script>
 		
 		<t:saveState value="#{crashReportBean}"/>
@@ -108,91 +175,142 @@
 	                </h:form>
 
 					<h:panelGrid columns="2" columnClasses="section">
-						<h:panelGroup>
-							<div class="section_title"><h:outputText value="#{messages.crashReport_crashDetails}" /></div>
-							<h:panelGrid columns="2" columnClasses="col1,col2" cellspacing="2px" cellpadding="4px">								
-								<h:outputText value="#{messages.crashReport_status}:" />
-								<h:outputText value="#{messages[crashReportBean.crashReport.crashReportStatus]}"/>								
-								
-								<h:outputText value="#{messages.crashReport_date}:" />
-								<h:outputText value="#{crashReportBean.crashReport.date}" style="font-weight: bold;">	
-									<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{crashReportBean.person.timeZone}" />
-								</h:outputText>								
-								
-					            <h:outputText value="#{messages.crashReport_vehicle}:" />
-								<h:outputText value="#{crashReportBean.crashReport.vehicle.name}"/>									
-								
-	                            <h:outputText value="#{messages.crashReport_driver}:" />
-								<h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>	
-								
-								<h:outputText value="#{messages.crashReport_weather}:" />	
-								<h:outputText value="#{crashReportBean.crashReport.weather}"/>									
-								
-								<h:outputText value="#{messages.crashReport_occupantCount}:" />
-								<h:outputText value="#{crashReportBean.crashReport.occupantCount}"/>							
-							</h:panelGrid>	
+						<h:panelGroup>							
+							<div class="panel_nw">    						        
+	            				<div class="panel_title" style="z-index: #{zorder}">
+	            					#{messages.crashReport_crashDetails}
+	            				</div>		
+	            			</div>		
+	            		
+					        <div class="panel_w">
+					            <div class="panel_content">
+									<h:panelGrid columns="2" columnClasses="col1,col2" cellspacing="2px" cellpadding="4px">								
+										<h:outputText value="#{messages.crashReport_status}:" />
+										<h:outputText value="#{messages[crashReportBean.crashReport.crashReportStatus]}"/>								
+										
+										<h:outputText value="#{messages.crashReport_date}:" />
+										<h:outputText value="#{crashReportBean.crashReport.date}" style="font-weight: bold;">	
+											<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
+										</h:outputText>								
+										
+							            <h:outputText value="#{messages.crashReport_vehicle}:" />
+										<h:outputText value="#{crashReportBean.crashReport.vehicle.name}"/>									
+										
+			                            <h:outputText value="#{messages.crashReport_driver}:" />
+										<h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>	
+										
+										<h:outputText value="#{messages.crashReport_weather}:" />	
+										<h:outputText value="#{crashReportBean.crashReport.weather}"/>									
+										
+										<h:outputText value="#{messages.crashReport_occupantCount}:" />
+										<h:outputText value="#{crashReportBean.crashReport.occupantCount}"/>	
+										
+										<h:outputText value="#{messages.crashReport_description}:" />
+										<h:outputText value="#{crashReportBean.crashReport.description}"/>							
+									</h:panelGrid>	
+								</div>
+							</div>
+							
+					        <div class="panel_sw">
+					            <div class="panel_statusbar"/>
+					        </div>
 						</h:panelGroup>
-						<h:panelGroup>					
-							<div class="section_title"><h:outputText value="#{messages.crashReport_description}" /></div>
-							<div class="panel_content">#{crashReportBean.crashReport.description}</div>		
-						</h:panelGroup>
-						<h:panelGroup>
-							<div class="section_title"><h:outputText value="#{messages.crashReport_crashDetails}" /></div>
-							<h:form>
-								<rich:dataTable id="crashPointTable" value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="20" cellspacing="1" width="100%">
-								<f:facet name="header">
-									<rich:columnGroup>
-										<rich:column rowspan="2">#{messages.crashReport_time}</rich:column>
-										<rich:column rowspan="2">#{messages.crashReport_rpm}</rich:column>
-										<rich:column colspan="2">#{messages.crashReport_speed}</rich:column>
-										<rich:column colspan="2">#{messages.crashReport_seatBelt}</rich:column>
-										<rich:column breakBefore="true">#{messages.crashReport_obd}</rich:column>
-										<rich:column>#{messages.crashReport_gps}</rich:column>
-										<rich:column>#{messages.crashReport_available}</rich:column>
-										<rich:column>#{messages.crashReport_state}</rich:column>
-									</rich:columnGroup>
-								</f:facet>
-									<rich:column>
-										<h:outputText value="#{dataPoint.time}">
-											<f:convertDateTime pattern="#{messages.longTimeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
-										</h:outputText>
-									</rich:column>
-									<rich:column>
-										#{dataPoint.rpm}
-									</rich:column>
-									<rich:column>
-										<h:outputText value="#{dataPoint.obdSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" />		
-									</rich:column>
-									<rich:column>
-										<h:outputText value="#{dataPoint.gpsSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" />									
-									</rich:column>
-									<rich:column>
-										<h:graphicImage value="#{dataPoint.seatBeltAvailable == true ? '/images/icon_checkmark.png' : '/images/ico_x.png'}" /> 
-									</rich:column>
-									<rich:column>
-										<h:graphicImage value="#{dataPoint.seatBeltState == true ? '/images/icon_checkmark.png' : '/images/ico_x.png'}" rendered="#{dataPoint.seatBeltAvailable == true}" /> 
-									</rich:column>
-								</rich:dataTable>	
-							    <rich:datascroller for="crashPointTable" styleClass="dataScroller" reRender="crashPointTable"/>
-						    </h:form>
-						</h:panelGroup>
+
 					
 						<h:panelGroup>
-							<div class="section_title"><h:outputText value="#{messages.crashReport_crashLocation}" /></div>
-							<div id="map-canvas" style="width: 100%; height: 300px; border: 0"></div>
-							<script type="text/javascript">initMap();</script>
+							<div class="panel_nw">    						        
+	            				<div class="panel_title" style="z-index: #{zorder}">
+	            					#{messages.crashReport_crashLocation}
+	            				</div>		
+	            			</div>		
+	            		
+					        <div class="panel_w">
+					            <div class="panel_content">
+									<div id="map-canvas" style="width: 100%; height: 325px; border: 0"></div>
+									<script type="text/javascript">initMap();</script>	
+								</div>
+							</div>			
 							
-							
-				
-						    <div id="placeholder" style="width:100%;height:300px"></div>
-														    
+					        <div class="panel_sw">
+					            <div class="panel_statusbar"/>
+					        </div>											    
 						</h:panelGroup>
-												
+						<h:panelGroup>					        
+							<div class="panel_nw">    						        
+	            				<div class="panel_title" style="z-index: #{zorder}">
+	            					#{messages.crashReport_crashDetails}
+	            				</div>		
+	            			</div>		
+	            		
+					        <div class="panel_w">
+					            <div class="panel_content">
+									<h:form>
+										<rich:dataTable id="crashPointTable" value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="10" cellspacing="1" width="100%">
+										<f:facet name="header">
+											<rich:columnGroup>
+												<rich:column rowspan="2">#{messages.crashReport_time}</rich:column>
+												<rich:column rowspan="2">#{messages.crashReport_rpm}</rich:column>
+												<rich:column colspan="2">#{messages.crashReport_speed}</rich:column>
+												<rich:column colspan="2">#{messages.crashReport_seatBelt}</rich:column>
+												<rich:column breakBefore="true">#{messages.crashReport_obd}</rich:column>
+												<rich:column>#{messages.crashReport_gps}</rich:column>
+												<rich:column>#{messages.crashReport_available}</rich:column>
+												<rich:column>#{messages.crashReport_state}</rich:column>
+											</rich:columnGroup>
+										</f:facet>
+											<rich:column>
+												<h:outputText value="#{dataPoint.time}">
+													<f:convertDateTime pattern="#{messages.longTimeFormat}" timeZone="#{crashReportBean.person.timeZone}" />
+												</h:outputText>
+											</rich:column>
+											<rich:column>
+												#{dataPoint.rpm}
+											</rich:column>
+											<rich:column>
+												<h:outputText value="#{dataPoint.obdSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" />		
+											</rich:column>
+											<rich:column>
+												<h:outputText value="#{dataPoint.gpsSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" />									
+											</rich:column>
+											<rich:column>
+												<h:graphicImage value="#{dataPoint.seatBeltAvailable == true ? '/images/icon_checkmark.png' : '/images/ico_x.png'}" /> 
+											</rich:column>
+											<rich:column>
+												<h:graphicImage value="#{dataPoint.seatBeltState == true ? '/images/icon_checkmark.png' : '/images/ico_x.png'}" rendered="#{dataPoint.seatBeltAvailable == true}" /> 
+											</rich:column>
+										</rich:dataTable>	
+									    <rich:datascroller for="crashPointTable" styleClass="dataScroller" reRender="crashPointTable"/>
+								    </h:form>
+								</div>
+						    </div>
+							
+					        <div class="panel_sw">
+					            <div class="panel_statusbar"/>
+					        </div>
+						</h:panelGroup>
+						<h:panelGroup>	
+					        <div class="panel_nw">    						        
+	            				<div class="panel_title" style="z-index: #{zorder}">
+	            				</div>		
+	            			</div>		
+	            		
+					        <div class="panel_w">
+					            <div class="panel_content">		       
+					            	<div id="legend"/>		            
+							    	<div id="placeholder" style="width: 475px; height: 325px;"></div>
+							    </div>
+						    </div>
+							
+					        <div class="panel_sw">
+					            <div class="panel_statusbar"/>
+					        </div>
+						</h:panelGroup>
 					</h:panelGrid>
 					
-						    <p> <span id="eventinfo"></span></p>
-						    <p> <span id="iteminfo"></span></p>
-						    <p> <span id="posinfo"></span></p>
+				    <p> <span id="eventinfo"></span></p>
+				    <p> <span id="iteminfo"></span></p>
+				    <p> <span id="posinfo"></span></p>
+				    <p> <span id="datainfo"></span></p>
 
 
 				</div>
@@ -203,25 +321,34 @@
 		</div>
         
 		<script language="javascript" type="text/javascript">
-			
-			jQuery(function () {
 
-				var gpsSpeed = [], obdSpeed = [], rpm = [];
+			var gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [];
+			var crashPolyline, tripPolyline;
+			jQuery(function () {
 
 				/* TODO: Retrieve data via JSON. Remove all the uses of new */
 		    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
-		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new GLatLng(#{point.lat}, #{point.lng})])
+		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
 		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
 		    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
+					crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
+		    	</a4j:repeat>
+				
+		    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="point">
 					tripPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
 		    	</a4j:repeat>
 
-				polyline = new GPolyline(tripPoints, "#0000ff", 6);
-				map.addOverlay(polyline);
+				crashPolyline = new GPolyline(crashPoints, "#0000ff", 5);
+				map.addOverlay(crashPolyline);
+
+				tripPolyline = new GPolyline(tripPoints, "#ffffff", 5);
+				map.addOverlay(tripPolyline);
+
+				
 
 		        /*<![CDATA[*/
 			    plot = jQuery.plot(jQuery("#placeholder"),
-			           [ { data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed}"}, {data: obdSpeed, label: "#{messages.crashReport_obdSpeed}"}, {data: rpm, label: "#{messages.crashReport_rpm}", yaxis: 2} ],
+			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0"}, {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0"}, {data: rpm, label: "#{messages.crashReport_rpm} = 0", yaxis: 2} ],
 			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 		                 series: {
@@ -230,30 +357,21 @@
 		                 },
 		                 selection: { mode: "xy" },
                          crosshair: { mode: "x" },
-			             grid: { hoverable: true, autoHighlight: false, mouseActiveRadius: 100 }
+			             grid: { hoverable: true, autoHighlight: false, mouseActiveRadius: 100 },
+			             legend: { 
+				             		noColumns: 12, 
+				             		container: "#legend"
+		            	  }
 			           });		
 
 			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {	
-				    /*
-		        	jQuery("#posinfo").text("Position: ");
-		            jQuery.each(pos, function(name, value) {
-			        	jQuery("#posinfo").append("<p>" + name + ": " + value + " </p> ");
-		            });
-		            */
-					/*
-		        	jQuery("#eventinfo").text("Canvas: ");
-		        	var canvas = plot.getCanvas();
-		            jQuery.each(canvas, function(name, value) {
-			        	jQuery("#posinfo").append("<p>" + name + ": " + value + " </p> ");
-		            });
-		            */
-		            
-		            if (item) {			   
-			        	jQuery("#iteminfo").text("Item: ");
-			            jQuery.each(item.datapoint, function(name, value) {
-				        	jQuery("#iteminfo").append("<p>" + name + ": " + value + " </p> ");
-			            });  
-			            vehicleMarker.setLatLng(tripPoints[item.dataIndex]);
+				   	//printObject(plot.getData(),"#iteminfo" ,0);
+		            if (item) {		   
+			            vehicleMarker.setLatLng(crashPoints[item.dataIndex])
+			            jQuery("#legend .legendLabel").each(
+				            function(i){
+				            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[item.dataIndex][1]));				
+						});
 		            }
 			    });
 	            /*]]>*/
@@ -282,25 +400,24 @@
         	}
             return  {index: 0, latlng: latLngArray[latLngArray.length - 1]};
         }
-        var closestPoint = null;
 		GEvent.addListener(map, 'mousemove', function(point) {
-			/*
-			if(closestPoint) {
-		    	 for ( i = 0; i < 3; i++) {
-		     	 	plot.unhighlight(i,closestPoint.index);
-		     	 }
-			}
-			*/
-			closestPoint = getClosestPointFromList(point, tripPoints);
-			
+			var closestPoint = getClosestPointFromList(point, crashPoints);			
 			vehicleMarker.setLatLng(closestPoint.latlng);
-			/*
-			for ( i = 0; i < 3; i++) {
-				plot.highlight(i,closestPoint.index);
-			}
-			*/
+			plot.setCrosshair({ x: gpsSpeed[closestPoint.index][0], y:gpsSpeed[closestPoint.index][1]});
+            jQuery("#legend .legendLabel").each(
+	            function(i){
+	            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[closestPoint.index][1]));				
+			});
 		}); // for detecting if mouse is above displayed route
 
+		function printObject(obj, element, deep) {
+            jQuery.each(obj, function(name, value) {
+	        	jQuery(element).append("<p style='padding-left: " + deep + "px'>" + name + ": " + value + " </p> ");
+	        	if(deep < 100 && name != 'data' && null != value && typeof(value) == 'object') {
+					printObject(value, element, deep + 10);
+	        	}
+            });
+		}
 		   	 	/*]]>*/
 		</script>
 		

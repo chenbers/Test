@@ -133,7 +133,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
             reportItem.setNbrOccupants(String.valueOf(cr.getOccupantCount().intValue()));
             reportItem.setStatus(cr.getCrashReportStatus().name());
             reportItem.setVehicle(cr.getVehicle());
-            reportItem.setVehicleName(cr.getVehicle().getFullName());
+            reportItem.setVehicleName(cr.getVehicle().getName());
             reportItem.setLatitude(cr.getLatLng().getLat());
             reportItem.setLongitude(cr.getLatLng().getLng());
             reportItem.setForgiven(cr.getCrashReportStatus().getCode());
