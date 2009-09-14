@@ -58,8 +58,8 @@
 		</style>
 	    <script language="javascript" type="text/javascript">
 	     var baseIcon = new GIcon();
-			baseIcon.iconSize = new GSize(25, 30);
-			baseIcon.iconAnchor = new GPoint(9, 30);
+			baseIcon.iconSize = new GSize(20, 20);
+			baseIcon.iconAnchor = new GPoint(9, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
 			var map, vehicleMarker, plot;
@@ -83,13 +83,14 @@
 					
 					
 					var vehicleIcon = new GIcon(baseIcon);
-					vehicleIcon.image = "#{request.contextPath}/images/googleMapIcons/icon_2.png";
+					vehicleIcon.image = "#{request.contextPath}/images/ico_vehicle.png";
 					markerOptions = { icon:vehicleIcon };					 					 
 					vehicleMarker = new GMarker(point, markerOptions);
 					map.addOverlay(vehicleMarker);
 
 					var crashIcon = new GIcon(baseIcon);
-					crashIcon.image = "#{request.contextPath}/images/icon_crash.png";
+					crashIcon.iconSize = new GSize(25, 20);
+					crashIcon.image = "#{request.contextPath}/images/ico_vehicle_crash.png";
 					map.addOverlay(new GMarker(point, { icon: crashIcon }));
 				}
                       
@@ -338,10 +339,10 @@
 					tripPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
 		    	</a4j:repeat>
 
-				crashPolyline = new GPolyline(crashPoints, "#0000ff", 5);
+				crashPolyline = new GPolyline(crashPoints, "#0000ff", 6);
 				map.addOverlay(crashPolyline);
 
-				tripPolyline = new GPolyline(tripPoints, "#ffffff", 5);
+				tripPolyline = new GPolyline(tripPoints, "#ffffff", 6);
 				map.addOverlay(tripPolyline);
 
 				

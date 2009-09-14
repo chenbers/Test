@@ -43,7 +43,7 @@ public class FuelEfficiencyBean extends BaseBean {
     	
      	fuelEfficiencyTypeItems = new ArrayList<SelectItem>();
    	
-    	if (measurementType.equals(MeasurementType.METRIC)){
+    	if (measurementType != null && measurementType.equals(MeasurementType.METRIC)){
     		
             fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.KMPL, MessageUtil.getMessageString(FuelEfficiencyType.KMPL.toString(), getLocale())));
             fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.LP100KM, MessageUtil.getMessageString(FuelEfficiencyType.LP100KM.toString(), getLocale())));
