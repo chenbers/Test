@@ -9,7 +9,9 @@ public enum NoteType {
 	CRASH(1),
 	ZONES_ARRIVAL(117),
 	NOTE(2),
-	UNPLUGGED(202);
+	UNPLUGGED(202),
+	LOW_BATTERY_VEHICLE(22),
+	SEAT_BELT(3);
 	
 	int code;
 	

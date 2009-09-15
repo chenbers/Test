@@ -85,7 +85,8 @@ public interface NoteService {
 	
 	@GET
     @Path("/createZoneArrivalEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{zoneID}")
-    public String createZoneArrivalEvent(@PathParam("imei")String imei,
+    public String createZoneArrivalEvent(
+            @PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude,
             @PathParam("currentSpeed")Integer speed,
@@ -94,12 +95,29 @@ public interface NoteService {
             @PathParam("zoneID")Integer zoneID);
 	
 	@GET
-    @Path("/createTamperingEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{backupBatteryValue}")
-    public String createTamperingEvent(@PathParam("imei")String imei,
+    @Path("/createTamperingEvent/{imei}/{lat}/{lng}/{currentSpeed}/{bearing}")
+    public String createTamperingEvent(
+            @PathParam("imei")String imei,
+            @PathParam("lat")Double latitude,
+            @PathParam("lng")Double longitude,
+            @PathParam("currentSpeed")Integer speed,
+            @PathParam("bearing")Integer bearing);
+	
+	@GET
+    @Path("/createVehicleLowBatteryEvent/{imei}/{lat}/{lng}/{currentSpeed}/{bearing}")
+    public String createVehicleLowBatteryEvent(@PathParam("imei")String imei,
+            @PathParam("lat")Double latitude,
+            @PathParam("lng")Double longitude,
+            @PathParam("currentSpeed")Integer speed,
+            @PathParam("bearing")Integer bearing);
+	
+	@GET
+    @Path("/createSeatBeltEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{distance}")
+    public String createSeatBeltEvent(@PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude,
             @PathParam("currentSpeed")Integer speed,
             @PathParam("speedLimit")Integer speedLimit,
             @PathParam("bearing")Integer bearing,
-            @PathParam("backupBatteryValue")Integer backupBatteryValue);
+            @PathParam("distance")Integer distance);
 }

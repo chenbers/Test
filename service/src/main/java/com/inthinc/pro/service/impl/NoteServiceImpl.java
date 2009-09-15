@@ -8,15 +8,20 @@ import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.PathParam;
 
+import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.hessian.proserver.MCMService;
 import com.inthinc.pro.service.NoteService;
 import com.inthinc.pro.service.note.Attribute;
 import com.inthinc.pro.service.note.AttributeType;
+import com.inthinc.pro.service.note.CrashData;
 import com.inthinc.pro.service.note.Heading;
 import com.inthinc.pro.service.note.Note;
 import com.inthinc.pro.service.note.NoteType;
+
 public class NoteServiceImpl implements NoteService {
+
     private MCMService mcmService;
+    private CrashReportDAO crashReportDAO;
     private static final Integer BOUNDRY = 146;
 
     public String createSpeedEvent(String imei, Double latitude, Double longitude, Integer speed, Integer speedLimit, Integer averageSpeed, Integer distance) {
@@ -123,9 +128,32 @@ public class NoteServiceImpl implements NoteService {
         byteList.add(note.getBytes());
         List<Map> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
+            createCrashDataPoints(imei, latitude, longitude, speed, speedLimit);
             return mapList.get(0).get("data").toString();
         }
+        
+      
         return "1";
+    }
+    
+    private void createCrashDataPoints(String imei,Double latitude, Double longitude,Integer speed,Integer speedLimit){
+        
+        List<byte[]> crashDataPointList = new ArrayList<byte[]>();
+        int interate_count = 1;
+        double latIncrement = 0.02;
+        double lngIncrement = 0.04;
+        double lat = latitude - .2;
+        double lng = longitude - .4;
+        int s = speed + interate_count;
+        Date date = new Date();
+        date.setTime(date.getTime() - 20000);
+        for(int i = 0;i < interate_count;i++){
+            CrashData crashData = new CrashData(date, lat+=latIncrement, lng+=lngIncrement, s--, s--, 4000);
+            
+            crashDataPointList.add(crashData.getBytes());
+        }
+        
+        mcmService.crash(imei, crashDataPointList);
     }
 
     public void setMcmService(MCMService mcmService) {
@@ -153,12 +181,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public String createTamperingEvent(String imei, Double latitude, Double longitude, Integer speed, Integer speedLimit, Integer bearing, Integer backupBatteryValue) {
+    public String createTamperingEvent(String imei, Double latitude, Double longitude, Integer speed, Integer bearing) {
         Integer heading = Heading.valueOf(bearing).getCode();
-        Attribute speedLimitAttribute = new Attribute(AttributeType.ATTR_TYPE_SPEED_LIMIT, speedLimit);
         Attribute boundryAttribute = new Attribute(AttributeType.ATTR_TYPE_BOUNDRY, 146);// /146 = Utah
-        Attribute backupBatteryAttribute = new Attribute(AttributeType.ATTR_TYPE_BACKUP_BATTERY, backupBatteryValue);
-        Note note = new Note(NoteType.UNPLUGGED, new Date(), latitude, longitude, speed, 10, 9, heading, speedLimitAttribute, boundryAttribute,backupBatteryAttribute);
+        Attribute backupBatteryAttribute = new Attribute(AttributeType.ATTR_TYPE_BACKUP_BATTERY, 1);
+        Note note = new Note(NoteType.UNPLUGGED, new Date(), latitude, longitude, speed, 10, 9, heading, boundryAttribute, backupBatteryAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
         List<Map> mapList = mcmService.note(imei, byteList);
@@ -167,4 +194,48 @@ public class NoteServiceImpl implements NoteService {
         }
         return "1";
     }
+
+    @Override
+    public String createVehicleLowBatteryEvent(String imei, Double latitude, Double longitude, Integer speed, Integer bearing) {
+        Integer heading = Heading.valueOf(bearing).getCode();
+        Attribute boundryAttribute = new Attribute(AttributeType.ATTR_TYPE_BOUNDRY, 146);// /146 = Utah
+        Note note = new Note(NoteType.LOW_BATTERY_VEHICLE, new Date(), latitude, longitude, speed, 10, 9, heading, boundryAttribute);
+        List<byte[]> byteList = new ArrayList<byte[]>();
+        byteList.add(note.getBytes());
+        List<Map> mapList = mcmService.note(imei, byteList);
+        if (mapList.size() > 0) {
+            return mapList.get(0).get("data").toString();
+        }
+        return "1";
+    }
+    
+    @Override
+    public String createSeatBeltEvent(String imei, Double latitude, Double longitude, Integer speed, Integer speedLimit, Integer bearing,Integer distance) {
+        Integer heading = Heading.valueOf(bearing).getCode();
+        Attribute boundryAttribute = new Attribute(AttributeType.ATTR_TYPE_BOUNDRY, 146);// /146 = Utah
+        Attribute speedLimitAttribute = new Attribute(AttributeType.ATTR_TYPE_SPEED_LIMIT, speedLimit);
+        Attribute distanceAttribute = new Attribute(AttributeType.ATTR_TYPE_DISTANCE, distance);
+        Attribute averageSpeedAttribute = new Attribute(AttributeType.ATTR_TYPE_AVG_SPEED, speed);
+        Attribute topSpeedAttribute = new Attribute(AttributeType.ATTR_TYPE_TOP_SPEED,speed);
+        Note note = new Note(NoteType.SEAT_BELT, new Date(), latitude, longitude, speed, 10, 9, heading, boundryAttribute,speedLimitAttribute,distanceAttribute,averageSpeedAttribute,topSpeedAttribute);
+        List<byte[]> byteList = new ArrayList<byte[]>();
+        byteList.add(note.getBytes());
+        List<Map> mapList = mcmService.note(imei, byteList);
+        if (mapList.size() > 0) {
+            return mapList.get(0).get("data").toString();
+        }
+        return "1";
+    }
+
+    
+    public CrashReportDAO getCrashReportDAO() {
+        return crashReportDAO;
+    }
+
+    
+    public void setCrashReportDAO(CrashReportDAO crashReportDAO) {
+        this.crashReportDAO = crashReportDAO;
+    }
+    
+    
 }
