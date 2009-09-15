@@ -29,6 +29,7 @@ import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
 
@@ -721,6 +722,48 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	    {
 	        return new CrashSummary(0,0,new Date(),0);
 	    }
+	}
+
+	@Override
+	public List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration) {
+        try
+        {
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
+            List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
+
+            List<SpeedPercentItem> speedPercentItemList = new ArrayList<SpeedPercentItem>();
+            for (int i = 0; i < duration.getDvqCount(); i++)
+            {
+            	speedPercentItemList.add(new SpeedPercentItem(0,0));
+            }
+            
+            for (GQVMap gqv : gqvList)
+            {
+            	int i = 0;
+                for (DriveQMap driveQMap : gqv.getDriveQV())
+                {
+                	Long distance = 0l;
+                	if (driveQMap.getEndingOdometer() != null && driveQMap.getStartingOdometer() != null)
+                	{
+                		distance = driveQMap.getEndingOdometer().longValue()-driveQMap.getStartingOdometer().longValue();
+                	}
+                	SpeedPercentItem item = speedPercentItemList.get(i++);
+                	item.setMiles(distance + item.getMiles().longValue());
+                	// TODO: PUT THIS BACK!!!
+//                	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? 0 : driveQMap.getSpeedOdometer()) + item.getMilesSpeeding().longValue());
+                	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? (distance/2l) : driveQMap.getSpeedOdometer()) + item.getMilesSpeeding().longValue());
+                }
+
+            }
+            
+            return speedPercentItemList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        
+        
 	}
 
     

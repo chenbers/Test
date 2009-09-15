@@ -5,7 +5,6 @@ import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.*;
 
 import com.inthinc.pro.model.LatLng;
-import common.Logger;
 
 import java.io.*;
 import java.net.MalformedURLException;

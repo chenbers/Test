@@ -23,7 +23,9 @@ public class DashboardReportBean extends BaseBean
     private MpgBean mpgBean;
     private OverallScoreBean overallScoreBean;
     private TrendBean trendBean;
-    private ReportRenderer reportRenderer;
+    private SpeedPercentageBean speedPercentageBean;
+
+	private ReportRenderer reportRenderer;
     
 
     // For single reports
@@ -46,25 +48,7 @@ public class DashboardReportBean extends BaseBean
     
     public void exportReportToPDF()
     {
-        List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-        for(ReportType rt:reports)
-        {
-            switch(rt){
-            case OVERALL_SCORE:reportCriteriaList.add(overallScoreBean.buildReportCriteria());break;
-            case TREND: reportCriteriaList.add(trendBean.buildReportCriteria());break;
-            case MPG_GROUP: reportCriteriaList.add(mpgBean.buildReportCriteria());break;
-            }
-        }
-        
-        if(duration != null)
-        {
-            for(ReportCriteria rt:reportCriteriaList){
-                rt.setDuration(this.duration);
-                rt.setLocale(getLocale());
-                rt.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
-            }
-        }
-        
+        List<ReportCriteria> reportCriteriaList = getReportCriteriaList();
         
         if(reportCriteriaList.size() > 0){
             reportRenderer.exportReportToPDF(reportCriteriaList, getFacesContext());
@@ -73,13 +57,25 @@ public class DashboardReportBean extends BaseBean
     
     public void emailReport()
     {
-        List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
+        List<ReportCriteria> reportCriteriaList = getReportCriteriaList();
+        
+        if(reportCriteriaList.size() > 0){
+            reportRenderer.exportReportToEmail(reportCriteriaList, getEmailAddress());
+        }
+        
+        addInfoMessage(MessageUtil.getMessageString("reports_email_sent"));
+    }
+
+	private List<ReportCriteria> getReportCriteriaList() {
+		
+		List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         for(ReportType rt:reports)
         {
             switch(rt){
             case OVERALL_SCORE:reportCriteriaList.add(overallScoreBean.buildReportCriteria());break;
             case TREND: reportCriteriaList.add(trendBean.buildReportCriteria());break;
             case MPG_GROUP: reportCriteriaList.add(mpgBean.buildReportCriteria());break;
+            case SPEED_PERCENTAGE: reportCriteriaList.add(speedPercentageBean.buildReportCriteria());break;
             }
         }
         
@@ -91,17 +87,8 @@ public class DashboardReportBean extends BaseBean
                 rt.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
             }
         }
-        
-        
-        if(reportCriteriaList.size() > 0){
-            reportRenderer.exportReportToEmail(reportCriteriaList, getEmailAddress());
-        }
-        
-        
-        addInfoMessage(MessageUtil.getMessageString("reports_email_sent"));
-        
-        
-    }
+		return reportCriteriaList;
+	}
 
     public ReportType getReport()
     {
@@ -145,6 +132,14 @@ public class DashboardReportBean extends BaseBean
     {
         this.trendBean = trendBean;
     }
+
+    public SpeedPercentageBean getSpeedPercentageBean() {
+		return speedPercentageBean;
+	}
+
+	public void setSpeedPercentageBean(SpeedPercentageBean speedPercentageBean) {
+		this.speedPercentageBean = speedPercentageBean;
+	}
 
     public void setReportRenderer(ReportRenderer reportRenderer)
     {

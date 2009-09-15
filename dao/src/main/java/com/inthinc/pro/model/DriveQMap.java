@@ -1,8 +1,6 @@
 package com.inthinc.pro.model;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +44,16 @@ public class DriveQMap extends BaseEntity
     private Integer totalCrashes;
 	private Date startingDate;
     private Date endingDate;
+    // TODO: these will change to Longs in the future, but leaving as Integer now for consistency
+	private Integer speedOdometer;
+    private Integer speedOdometer1;
+    private Integer speedOdometer2;
+    private Integer speedOdometer3;
+    private Integer speedOdometer4;
+    private Integer speedOdometer5;
     
-    @Column(updateable = false)
+    
+	@Column(updateable = false)
     private transient Map<ScoreType, Integer> scoreMap = new HashMap<ScoreType, Integer>();
     
     public Integer getStartingOdometer()
@@ -351,5 +357,41 @@ public class DriveQMap extends BaseEntity
 	}
 	public void setTotalCrashes(Integer totalCrashes) {
 		this.totalCrashes = totalCrashes;
+	}
+	public Integer getSpeedOdometer() {
+		return speedOdometer;
+	}
+	public void setSpeedOdometer(Integer speedOdometer) {
+		this.speedOdometer = speedOdometer;
+	}
+	public Integer getSpeedOdometer1() {
+		return speedOdometer1;
+	}
+	public void setSpeedOdometer1(Integer speedOdometer1) {
+		this.speedOdometer1 = speedOdometer1;
+	}
+	public Integer getSpeedOdometer2() {
+		return speedOdometer2;
+	}
+	public void setSpeedOdometer2(Integer speedOdometer2) {
+		this.speedOdometer2 = speedOdometer2;
+	}
+	public Integer getSpeedOdometer3() {
+		return speedOdometer3;
+	}
+	public void setSpeedOdometer3(Integer speedOdometer3) {
+		this.speedOdometer3 = speedOdometer3;
+	}
+	public Integer getSpeedOdometer4() {
+		return speedOdometer4;
+	}
+	public void setSpeedOdometer4(Integer speedOdometer4) {
+		this.speedOdometer4 = speedOdometer4;
+	}
+	public Integer getSpeedOdometer5() {
+		return speedOdometer5;
+	}
+	public void setSpeedOdometer5(Integer speedOdometer5) {
+		this.speedOdometer5 = speedOdometer5;
 	}
 }

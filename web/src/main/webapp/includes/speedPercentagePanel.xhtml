@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+    <a4j:outputPanel id="speedPercentageOutputPanel">
+    	<div class="">
+    		<div class="panel_nw">
+    			<div class="panel_title" style="z-index: #{zorder}">
+    				<ui:param name="TitleMsgKey" value="speeding_percentage_#{speedPercentageBean.measurementType}"/>
+    			
+    				<span class="line">
+    					<h:outputText value="#{messages[TitleMsgKey]}"/>
+    				</span>  
+                    <ui:include src="/includes/durationPanelHeader.xhtml">
+                        <ui:param name="reRenderList" value="speedPercentageOutputPanel" />
+                        <ui:param name="duration" value="#{speedPercentageBean.durationBean.duration}" />
+                        <ui:param name="report" value="SPEED_PERCENTAGE" />
+                        <ui:param name="id" value="speedPercentage" />
+                        <ui:param name="includeDetailsLink" value="false"/>
+                        <ui:param name="maximized" value="#{false}"/>
+                    </ui:include>
+    			</div>
+    		</div>	
+    		
+    		<div class="panel_w">
+    			<rich:panel bodyClass="panel_content" id="speedPercentagePanel" border="0">
+                   	<table width="#{xywidth}-50" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="50%"><h:outputText value="#{messages.speeding_percentage_distance_title}"/></td>
+                            <td><h:outputText id="totalDistance" value="#{speedPercentageBean.totalDistance}"/></td>
+                          </tr>
+                          <tr>
+                            <td width="50%"><h:outputText value="#{messages.speeding_percentage_speeding_title}" /></td>
+                            <td><h:outputText value="#{speedPercentageBean.totalSpeeding}" /></td>
+                          </tr>
+                     </table>
+                	<div style="height:#{xyheight};width:#{xywidth}">
+                   	<div id="speedPercentChartdiv" align="center"/>
+		  			<h:inputHidden value="#{speedPercentageBean.chartDef}" id="hiddenSPChartField"/>
+					<script type="text/javascript">
+						var targetChartElement = document.getElementById("hiddenSPChartField");
+						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf?", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
+						chart2.setDataXML(targetChartElement.value);	
+						chart2.setTransparent(true);								   	   
+						chart2.render("speedPercentChartdiv");
+					</script>
+					</div>
+    			</rich:panel>
+    		</div>
+    		<div class="panel_sw">
+    			<div class="panel_statusbar"></div>
+    		</div>
+    	</div>
+    </a4j:outputPanel>
+		
+</ui:composition>	

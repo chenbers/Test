@@ -184,12 +184,14 @@ public class JasperReportBuilder
                         chartIdFieldValue = getPropertyValue(chartIdField,chartData);
                     }
                     
-                    for(String value:masterIdFieldValueList)
-                    {
-                        if(chartIdFieldValue.toLowerCase().equals(value.toLowerCase()))
-                        {
-                            newChartDataList.add(chartData);
-                        }   
+                    if(chartIdFieldValue != null) {
+	                    for(String value:masterIdFieldValueList)
+	                    {
+	                        if(value != null && chartIdFieldValue.toLowerCase().equals(value.toLowerCase()))
+	                        {
+	                            newChartDataList.add(chartData);
+	                        }   
+	                    }
                     }
                     
                 }

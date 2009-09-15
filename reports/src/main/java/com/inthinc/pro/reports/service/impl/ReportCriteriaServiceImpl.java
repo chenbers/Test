@@ -25,9 +25,9 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.PhoneNumber;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -36,6 +36,7 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.reports.util.ReportUtil;
 
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
@@ -49,7 +50,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     private DeviceDAO deviceDAO;
     
-    //Locale
     private Locale locale;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
@@ -396,6 +396,53 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return reportCriteria;
     }    
 
+    @Override
+	public ReportCriteria getSpeedPercentageReportCriteria(Integer groupID, Duration duration) {
+        
+        
+        List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
+        List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
+		List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(groupID, duration);
+        List<String> monthList = ReportUtil.createMonthList(duration, "M/dd");
+       	int index = 0;
+
+   		String distanceSeries = "driving";
+   		String speedingSeries = "speeding";
+   		String percentSeries = "percent";
+   		if (locale != null)
+   		{
+   			String prefix = "report.speedpercent.";
+   			distanceSeries = MessageUtil.getMessageString(prefix+distanceSeries, locale);
+   			distanceSeries = MessageUtil.getMessageString(prefix+speedingSeries, locale);
+   			distanceSeries = MessageUtil.getMessageString(prefix+percentSeries, locale);
+   		}
+       	for (SpeedPercentItem speedItem : speedPercentItemList)
+        {
+       		long distance = (speedItem.getMiles() == null) ? 0  : (speedItem.getMiles().longValue()/100);
+       		long speeding = (speedItem.getMilesSpeeding() == null) ? 0  : (speedItem.getMilesSpeeding().longValue()/100);
+       		float percent = ((distance == 0l) ? 0f : ((float)speeding /(float)distance));
+       		logger.info(distance + " " + speeding + " " + percent);
+       		barChartList.add(new CategorySeriesData(speedingSeries, monthList.get(index), speeding, speedingSeries));
+       		barChartList.add(new CategorySeriesData(distanceSeries, monthList.get(index), distance, distanceSeries));
+       		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));
+            index++;
+        }
+       	
+       	
+
+
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.SPEED_PERCENTAGE, group.getName());
+        reportCriteria.addChartDataSet(barChartList);
+        reportCriteria.addChartDataSet(lineChartList);
+        reportCriteria.setDuration(duration);
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
+        return reportCriteria;
+	}
+
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -475,5 +522,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
 
 }

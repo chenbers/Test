@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SpeedPercentageReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="CategorySeriesSubDataset">
+		<parameter name="MEASUREMENT_TYPE" class="com.inthinc.pro.model.MeasurementType" isForPrompting="false"/>
+		<parameter name="FUEL_EFFICIENCY_TYPE" class="com.inthinc.pro.model.FuelEfficiencyType" isForPrompting="false"/>
+		<field name="seriesID" class="java.lang.String"/>
+		<field name="category" class="java.lang.String"/>
+		<field name="value" class="java.lang.Number"/>
+		<field name="label" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="ACCOUNT_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ENTITY_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUB_DATASET_1" class="java.util.List" isForPrompting="false"/>
+	<parameter name="DURATION" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
+	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="MEASUREMENT_TYPE" class="com.inthinc.pro.model.MeasurementType" isForPrompting="false"/>
+	<parameter name="SUB_DATASET_2" class="java.util.List" isForPrompting="false"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="422">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="382" y="0" width="153" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-8" x="382" y="16" width="153" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField-9" x="54" y="17" width="318" height="26"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("report.speedpercent.header." + $P{MEASUREMENT_TYPE}.toString())]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-10" x="54" y="4" width="122" height="16" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" vAlign="Top">
+				<reportElement key="image-1" x="0" y="1" width="51" height="47"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement key="line-4" x="0" y="61" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-5" x="651" y="258" width="4" height="1"/>
+			</line>
+			<multiAxisChart>
+				<chart>
+					<reportElement x="0" y="76" width="535" height="332"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend backgroundColor="#FFFFFF"/>
+				</chart>
+				<multiAxisPlot>
+					<plot labelRotation="-45.0"/>
+					<axis position="rightOrBottom">
+						<lineChart>
+							<chart customizerClass="com.inthinc.pro.reports.jasper.customizer.SpeedPercentLineChartCustomizer">
+								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
+								<chartTitle color="#000000"/>
+								<chartSubtitle color="#000000"/>
+								<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+							</chart>
+							<categoryDataset>
+								<dataset>
+									<datasetRun subDataset="CategorySeriesSubDataset">
+										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_2})]]></dataSourceExpression>
+									</datasetRun>
+								</dataset>
+								<categorySeries>
+									<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+									<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+									<valueExpression><![CDATA[$F{value}]]></valueExpression>
+									<labelExpression><![CDATA[str("report.speedpercent." + $F{label}.toString())]]></labelExpression>
+									<itemHyperlink/>
+								</categorySeries>
+							</categoryDataset>
+							<linePlot>
+								<plot>
+									<seriesColor seriesOrder="0" color="#0066CC"/>
+								</plot>
+								<categoryAxisFormat>
+									<axisFormat>
+										<labelFont/>
+										<tickLabelFont/>
+									</axisFormat>
+								</categoryAxisFormat>
+								<valueAxisFormat>
+									<axisFormat tickLabelMask="#0 %">
+										<labelFont/>
+										<tickLabelFont>
+											<font fontName="DejaVu Sans"/>
+										</tickLabelFont>
+									</axisFormat>
+								</valueAxisFormat>
+							</linePlot>
+						</lineChart>
+					</axis>
+					<axis>
+						<stackedBarChart>
+							<chart>
+								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
+								<chartTitle color="#000000"/>
+								<chartSubtitle color="#000000"/>
+								<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+							</chart>
+							<categoryDataset>
+								<dataset>
+									<datasetRun subDataset="CategorySeriesSubDataset">
+										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
+									</datasetRun>
+								</dataset>
+								<categorySeries>
+									<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+									<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+									<valueExpression><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMilesToKilometers($F{value},$P{MEASUREMENT_TYPE})]]></valueExpression>
+									<labelExpression><![CDATA[str("report.speedpercent." + $F{label}.toString())]]></labelExpression>
+									<itemHyperlink/>
+								</categorySeries>
+							</categoryDataset>
+							<barPlot isShowLabels="false">
+								<plot labelRotation="-45.0">
+									<seriesColor seriesOrder="0" color="#99CCFF"/>
+									<seriesColor seriesOrder="1" color="#CCCCCC"/>
+								</plot>
+								<categoryAxisFormat>
+									<axisFormat>
+										<labelFont/>
+										<tickLabelFont/>
+									</axisFormat>
+								</categoryAxisFormat>
+								<valueAxisFormat>
+									<axisFormat>
+										<labelFont/>
+										<tickLabelFont/>
+									</axisFormat>
+								</valueAxisFormat>
+							</barPlot>
+						</stackedBarChart>
+					</axis>
+				</multiAxisPlot>
+			</multiAxisChart>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="4"/>
+	</columnHeader>
+	<detail>
+		<band/>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26">
+			<line>
+				<reportElement key="line-3" x="0" y="5" width="535" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-9" x="0" y="12" width="198" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

@@ -12,6 +12,7 @@ import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.VehicleReportItem;
 
 public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
@@ -234,4 +235,6 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     CrashSummary getDriverCrashSummaryData(Integer driverID);
     CrashSummary getVehicleCrashSummaryData(Integer vehicleID);
 
+    
+    List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration);
 }

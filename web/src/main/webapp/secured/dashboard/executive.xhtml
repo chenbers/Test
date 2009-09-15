@@ -206,7 +206,10 @@
     					</ui:include>
     					<!-- END CRASH SUMMARY -->
     					<div class="spacer"></div>
-						<div> Speeding percentage</div>
+    					<ui:include src="/includes/speedPercentagePanel.xhtml">	
+                            <ui:param name="xyheight" value="350"/>
+                            <ui:param name="xywidth" value="440"/>  
+    					</ui:include>
 						<div> Idling Percentage</div>
 						<!-- START FLEET MAP PANEL -->
 						<!-- leave reRenderList alone -->	
