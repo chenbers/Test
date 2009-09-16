@@ -183,15 +183,12 @@ public class JasperReportBuilder
                     {
                         chartIdFieldValue = getPropertyValue(chartIdField,chartData);
                     }
-                    
-                    if(chartIdFieldValue != null) {
-	                    for(String value:masterIdFieldValueList)
-	                    {
-	                        if(value != null && chartIdFieldValue.toLowerCase().equals(value.toLowerCase()))
-	                        {
-	                            newChartDataList.add(chartData);
-	                        }   
-	                    }
+                    for(String value:masterIdFieldValueList)
+                    {
+                        if(chartIdFieldValue.toLowerCase().equals(value.toLowerCase()))
+                        {
+                            newChartDataList.add(chartData);
+                        }   
                     }
                     
                 }
@@ -222,7 +219,7 @@ public class JasperReportBuilder
         }
         for(int i=0;i < methods.length;i++)
         {
-            if(methods[i].getName().toLowerCase().contains("get" + iField.toLowerCase()))
+            if(methods[i].getName().toLowerCase().equals("get" + iField.toLowerCase()))
             {
                 try
                 {
