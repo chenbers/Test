@@ -10,5 +10,5 @@ import com.inthinc.pro.ProDAOException;
 public interface MCMService extends HessianService
 {
 	List<Map> note(String mcmID, List<byte[]> noteList);
-	List<Map> crash(String mcmID, List<byte[]> noteList) throws ProDAOException;
+	Integer crash(String mcmID, List<byte[]> crashDataList) throws ProDAOException;
 }

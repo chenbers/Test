@@ -22,8 +22,14 @@ public class CrashDataTest {
         CrashData crashData = new CrashData(new Date(), latitude,longitude,35, 35, 5000);
         byte[] bytes = crashData.getBytes();
         
-        Assert.assertEquals(decodeLat(bytes), latitude,0.00003);
-        Assert.assertEquals(decodeLng(bytes), longitude,0.00003);
+        double retrievedLat = decodeLat(bytes);
+        double retrievedLng = decodeLng(bytes);
+        
+        Assert.assertEquals(retrievedLat, latitude,0.00003);
+        Assert.assertEquals(retrievedLng, longitude,0.00003);
+        
+        logger.info("Retrieved Latitude = " + retrievedLat);
+        logger.info("Retrieved Longitude = " + retrievedLng);
         
         
     }
