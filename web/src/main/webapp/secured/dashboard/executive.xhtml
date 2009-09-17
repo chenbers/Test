@@ -209,8 +209,15 @@
     					<ui:include src="/includes/speedPercentagePanel.xhtml">	
                             <ui:param name="xyheight" value="350"/>
                             <ui:param name="xywidth" value="440"/>  
+                            <ui:param name="zorder" value="6"/>	
     					</ui:include>
-						<div> Idling Percentage</div>
+    					<div class="spacer"></div>
+    					<ui:include src="/includes/idlingPercentagePanel.xhtml">	
+                            <ui:param name="xyheight" value="350"/>
+                            <ui:param name="xywidth" value="440"/>  
+                            <ui:param name="zorder" value="6"/>	
+    					</ui:include>
+						<div class="spacer"></div>
 						<!-- START FLEET MAP PANEL -->
 						<!-- leave reRenderList alone -->	
 		               <pretty:urlbuffer var="mapDetailedDashboardLink" mappingId="detailedDashboard">

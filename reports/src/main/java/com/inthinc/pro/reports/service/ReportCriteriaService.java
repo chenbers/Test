@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.service;
 
 import java.util.Date;
+import java.util.Locale;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -20,5 +21,7 @@ public interface ReportCriteriaService
     ReportCriteria getEmergencyReportCriteria(Integer groupID);
     ReportCriteria getZoneAlertsReportCriteria(Integer groupID);
     ReportCriteria getCrashHistoryReportCriteria(Integer groupID);
-    ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration);
+    ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale);
+    ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
+
 }

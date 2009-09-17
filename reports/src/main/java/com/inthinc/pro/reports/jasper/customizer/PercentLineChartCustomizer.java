@@ -6,7 +6,7 @@ import net.sf.jasperreports.engine.JRChart;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 
-public class SpeedPercentLineChartCustomizer extends JRAbstractChartCustomizer
+public class PercentLineChartCustomizer extends JRAbstractChartCustomizer
 {
     @Override
     public void customize(JFreeChart jFreeChart, JRChart jrChart)

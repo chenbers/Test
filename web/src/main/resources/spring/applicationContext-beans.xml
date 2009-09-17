@@ -53,6 +53,7 @@
     	 <property name="overallScoreBean" ref="overallScoreBean"></property>
     	 <property name="mpgBean" ref="mpgBean"></property>
     	 <property name="speedPercentageBean" ref="speedPercentageBean"></property>
+    	 <property name="idlePercentageBean" ref="idlePercentageBean"></property>
     	 <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
     
@@ -113,6 +114,12 @@
     <bean id="speedPercentageBean" class="com.inthinc.pro.backing.SpeedPercentageBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"/>
         <property name="durationBean" ref="speedPercentDurationBean"/>
+        <property name="reportCriteriaService" ref="reportCriteriaService"/>
+    </bean>
+
+    <bean id="idlePercentageBean" class="com.inthinc.pro.backing.IdlePercentageBean" scope="request" parent="baseBean">
+        <property name="scoreDAO" ref="scoreDAO"/>
+        <property name="durationBean" ref="idlePercentDurationBean"/>
         <property name="reportCriteriaService" ref="reportCriteriaService"/>
     </bean>
 
@@ -439,6 +446,7 @@
     <bean id="driverStyleDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="driverCoachingDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="driverMpgDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="idlePercentDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="mpgDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="navigationDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="speedPercentDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>

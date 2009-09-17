@@ -24,6 +24,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
+import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ScoreType;
@@ -766,5 +767,45 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         
 	}
 
+	@Override
+	public List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration) {
+        try
+        {
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
+            List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
+logger.info("getIdlePercentItems gqvList size = " + gqvList.size());
+            List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem>();
+            for (int i = 0; i < duration.getDvqCount(); i++)
+            {
+            	idlePercentItemList.add(new IdlePercentItem(0l,0l));
+            }
+            
+            for (GQVMap gqv : gqvList)
+            {
+            	int i = 0;
+                for (DriveQMap driveQMap : gqv.getDriveQV())
+                {
+                	Long driveTime = (driveQMap.getDriveTime() != null) ? driveQMap.getDriveTime() : 0l; 
+                	Long idleTime = (driveQMap.getIdleHi() != null) ? driveQMap.getIdleHi() : 0l; 
+                	idleTime += (driveQMap.getIdleLo() != null) ? driveQMap.getIdleLo(): 0l; 
+logger.info(i + ": drive = " + driveTime + " idle = " + idleTime);
+                	IdlePercentItem item = idlePercentItemList.get(i++);
+                	item.setDrivingTime(driveTime + item.getDrivingTime());
+                	// TODO: PUT THIS BACK!!!
+//                	item.setIdlingTime(idleTime + item.getIdlingTime()); 
+                	item.setIdlingTime(idleTime + item.getDrivingTime()/2); 
+                }
+
+            }
+            
+            return idlePercentItemList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        
+        
+	}
     
 }

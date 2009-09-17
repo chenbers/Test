@@ -37,6 +37,11 @@ public class DateUtil
         return (seconds * 1000l);
     }
 
+    public static float convertSecondsToHours(long seconds)
+    {
+        return seconds / 3600.0f;
+    }
+
     public static int convertMillisecondsToSeconds(long milliseconds)
     {
         return (int) (milliseconds / 1000l);

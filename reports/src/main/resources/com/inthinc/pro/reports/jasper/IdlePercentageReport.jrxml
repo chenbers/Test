@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SpeedPercentageReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IdlePercentageReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -41,7 +41,7 @@
 				<textElement>
 					<font size="16"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("report.speedpercent.header." + $P{MEASUREMENT_TYPE}.toString())]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("report.idlepercent.header")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-10" x="54" y="4" width="122" height="16" isPrintWhenDetailOverflows="true"/>
@@ -138,7 +138,7 @@
 							</categoryDataset>
 							<barPlot isShowLabels="false">
 								<plot labelRotation="-45.0">
-									<seriesColor seriesOrder="0" color="#1E88C8"/>
+									<seriesColor seriesOrder="0" color="#6B9D1B"/>
 									<seriesColor seriesOrder="1" color="#CCCCCC"/>
 								</plot>
 								<categoryAxisFormat>

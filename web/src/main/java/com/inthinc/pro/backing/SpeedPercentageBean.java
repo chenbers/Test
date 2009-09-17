@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
+import com.inthinc.pro.charts.ChartColor;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Group;
@@ -33,9 +34,9 @@ public class SpeedPercentageBean extends BaseBean {
 	private String totalSpeeding;
 	
 	// TODO: how are we doing colors??
-	private static final String DISTANCE_BAR_COLOR = ColorSelectorStandard.StandardColors.GRAY.entitycolorKey();
-	private static final String SPEED_BAR_COLOR = "b0c4de"; //ColorSelectorStandard.StandardColors.BLUE.entitycolorKey();
-	private static final String SPEED_LINE_COLOR = "b0c4de"; // ColorSelectorStandard.StandardColors.BLUE.entitycolorKey();
+	private static final String DISTANCE_BAR_COLOR = ChartColor.GRAY.toString();
+	private static final String SPEED_BAR_COLOR = ChartColor.BLUE.toString();
+	private static final String SPEED_LINE_COLOR = ChartColor.DARK_BLUE.toString();
 
 	public ScoreDAO getScoreDAO() {
 		return scoreDAO;
@@ -106,7 +107,7 @@ public class SpeedPercentageBean extends BaseBean {
         format.setMaximumFractionDigits(2);
         format.setMinimumFractionDigits(2);
 
-        return format.format(d);
+        return format.format(d + .005);
 	}
 
 	private Long getDistance(Number miles) {
@@ -178,7 +179,7 @@ public class SpeedPercentageBean extends BaseBean {
 		if (groupID == null) {
 			setGroupID(getUser().getGroupID());
 		}
-        ReportCriteria reportCriteria = reportCriteriaService.getSpeedPercentageReportCriteria(getGroupID(), durationBean.getDuration());
+        ReportCriteria reportCriteria = reportCriteriaService.getSpeedPercentageReportCriteria(getGroupID(), durationBean.getDuration(), getLocale());
         reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setMeasurementType(getMeasurementType());

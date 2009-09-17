@@ -17,12 +17,14 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.dao.util.PhoneNumberUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -397,9 +399,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }    
 
     @Override
-	public ReportCriteria getSpeedPercentageReportCriteria(Integer groupID, Duration duration) {
+	public ReportCriteria getSpeedPercentageReportCriteria(Integer groupID, Duration duration, Locale locale) {
         
-        
+        this.locale = locale;
         List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
         List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
 		List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(groupID, duration);
@@ -413,8 +415,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
    		{
    			String prefix = "report.speedpercent.";
    			distanceSeries = MessageUtil.getMessageString(prefix+distanceSeries, locale);
-   			distanceSeries = MessageUtil.getMessageString(prefix+speedingSeries, locale);
-   			distanceSeries = MessageUtil.getMessageString(prefix+percentSeries, locale);
+   			speedingSeries = MessageUtil.getMessageString(prefix+speedingSeries, locale);
+   			percentSeries = MessageUtil.getMessageString(prefix+percentSeries, locale);
    		}
        	for (SpeedPercentItem speedItem : speedPercentItemList)
         {
@@ -427,12 +429,53 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
        		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));
             index++;
         }
-       	
-       	
-
 
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.SPEED_PERCENTAGE, group.getName());
+        reportCriteria.addChartDataSet(barChartList);
+        reportCriteria.addChartDataSet(lineChartList);
+        reportCriteria.setDuration(duration);
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
+        return reportCriteria;
+	}
+
+    @Override
+	public ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale) {
+        
+    	this.locale = locale;
+        List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
+        List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
+		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(groupID, duration);
+        List<String> monthList = ReportUtil.createMonthList(duration, "M/dd");
+       	int index = 0;
+
+   		String drivingSeries = "driving";
+   		String idlingSeries = "idling";
+   		String percentSeries = "percent";
+   		if (locale != null)
+   		{
+   			String prefix = "report.idlepercent.";
+   			drivingSeries = MessageUtil.getMessageString(prefix+drivingSeries, locale);
+   			idlingSeries = MessageUtil.getMessageString(prefix+idlingSeries, locale);
+   			percentSeries = MessageUtil.getMessageString(prefix+percentSeries, locale);
+   		}
+       	for (IdlePercentItem idleItem : idlePercentItemList)
+        {
+       		float driving = DateUtil.convertSecondsToHours(idleItem.getDrivingTime());
+       		float idling = DateUtil.convertSecondsToHours(idleItem.getIdlingTime());
+       		float percent = ((idleItem.getDrivingTime() == 0l) ? 0f : ((float)idleItem.getIdlingTime() /(float)idleItem.getDrivingTime()));
+       		logger.info(driving + " " + idling + " " + percent);
+       		barChartList.add(new CategorySeriesData(idlingSeries, monthList.get(index), idling, idlingSeries));
+       		barChartList.add(new CategorySeriesData(drivingSeries, monthList.get(index), driving, drivingSeries));
+       		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));
+            index++;
+        }
+
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLE_PERCENTAGE, group.getName());
         reportCriteria.addChartDataSet(barChartList);
         reportCriteria.addChartDataSet(lineChartList);
         reportCriteria.setDuration(duration);

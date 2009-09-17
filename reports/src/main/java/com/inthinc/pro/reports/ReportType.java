@@ -29,7 +29,8 @@ public enum ReportType
     ZONE_ALERT_REPORT("Zone Alert Report", "EventReport.jrxml","EventReportRaw.jrxml"),
     RED_FLAG_REPORT("Red Flag Report", "RedFlagReport.jrxml","RedFlagReportRaw.jrxml"),
     CRASH_HISTORY_REPORT("Crash History Report", "CrashHistoryReport.jrxml", "CrashHistoryReportRaw.jrxml"),
-    SPEED_PERCENTAGE("Speeding Percentage Report", "SpeedPercentageReport.jrxml");
+    SPEED_PERCENTAGE("Speeding Percentage Report", "SpeedPercentageReport.jrxml"),
+    IDLE_PERCENTAGE("Idling Percentage Report", "IdlePercentageReport.jrxml");
   
     private String prettyTemplate;
     private String rawTemplate;

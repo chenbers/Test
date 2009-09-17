@@ -13,4 +13,18 @@ public class MathUtil
         BigDecimal bigDecimal = new BigDecimal(roundedNumber);
         return bigDecimal.movePointLeft(2).floatValue();
     }
+    
+    public static Integer percent(Long n, Long total)
+    {
+    	if (total == null || total == 0l)
+    		return 0;
+    	
+		Integer percent = (int)(((float)n * 100f) / (float)total + .005f);
+		
+		if (percent > 100)
+			percent = 100;
+		
+		return percent;
+
+    }
 }

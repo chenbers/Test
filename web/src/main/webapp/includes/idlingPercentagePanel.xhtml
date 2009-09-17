@@ -8,21 +8,21 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-    <t:saveState value="#{speedPercentageBean.groupID}"/>
-    <a4j:outputPanel id="speedPercentageOutputPanel">
+    <t:saveState value="#{idlePercentageBean.groupID}"/>
+    <a4j:outputPanel id="idlePercentageOutputPanel">
     	<div class="">
     		<div class="panel_nw">
     			<div class="panel_title" style="z-index: #{zorder}">
-    				<ui:param name="TitleMsgKey" value="speeding_percentage_#{speedPercentageBean.measurementType}"/>
+    				<ui:param name="TitleMsgKey" value="idling_percentage_title"/>
     			
     				<span class="line">
     					<h:outputText value="#{messages[TitleMsgKey]}"/>
     				</span>  
                     <ui:include src="/includes/durationPanelHeader.xhtml">
-                        <ui:param name="reRenderList" value="speedPercentageOutputPanel" />
-                        <ui:param name="duration" value="#{speedPercentDurationBean.duration}" />
-                        <ui:param name="report" value="SPEED_PERCENTAGE" />
-                        <ui:param name="id" value="speedPercentage" />
+                        <ui:param name="reRenderList" value="idlePercentageOutputPanel" />
+                        <ui:param name="duration" value="#{idlePercentDurationBean.duration}" />
+                        <ui:param name="report" value="IDLE_PERCENTAGE" />
+                        <ui:param name="id" value="idlePercentage" />
                         <ui:param name="includeDetailsLink" value="false"/>
                         <ui:param name="maximized" value="#{false}"/>
                     </ui:include>
@@ -30,26 +30,26 @@
     		</div>	
     		
     		<div class="panel_w">
-    			<rich:panel bodyClass="panel_content" id="speedPercentagePanel" border="0">
+    			<rich:panel bodyClass="panel_content" id="idlePercentagePanel" border="0">
                    	<table width="#{xywidth}-50" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="50%"><h:outputText value="#{messages.speeding_percentage_distance_title}"/></td>
-                            <td><h:outputText id="totalDistance" value="#{speedPercentageBean.totalDistance}"/></td>
+                            <td width="50%"><h:outputText value="#{messages.idling_percentage_driving_title}"/></td>
+                            <td><h:outputText id="totalDriving" value="#{idlePercentageBean.totalDriving}"/></td>
                           </tr>
                           <tr>
-                            <td width="50%"><h:outputText value="#{messages.speeding_percentage_speeding_title}" /></td>
-                            <td><h:outputText value="#{speedPercentageBean.totalSpeeding}" /></td>
+                            <td width="50%"><h:outputText value="#{messages.idling_percentage_idling_title}" /></td>
+                            <td><h:outputText value="#{idlePercentageBean.totalIdling}" /></td>
                           </tr>
                      </table>
                 	<div style="height:#{xyheight};width:#{xywidth}">
-                   	<div id="speedPercentChartdiv" align="center"/>
-		  			<h:inputHidden value="#{speedPercentageBean.chartDef}" id="hiddenSPChartField"/>
+                   	<div id="idlePercentChartdiv" align="center"/>
+		  			<h:inputHidden value="#{idlePercentageBean.chartDef}" id="hiddenIPChartField"/>
 					<script type="text/javascript">
-						var targetChartElement = document.getElementById("hiddenSPChartField");
+						var targetChartElement = document.getElementById("hiddenIPChartField");
 						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf?", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
 						chart2.setDataXML(targetChartElement.value);	
 						chart2.setTransparent(true);								   	   
-						chart2.render("speedPercentChartdiv");
+						chart2.render("idlePercentChartdiv");
 					</script>
 					</div>
     			</rich:panel>

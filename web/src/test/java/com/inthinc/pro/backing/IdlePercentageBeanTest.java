@@ -10,22 +10,22 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.SpeedPercentItem;
+import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.reports.ReportCriteria;
 
 
-public class SpeedPercentageBeanTest  extends BaseBeanTest {
+public class IdlePercentageBeanTest extends BaseBeanTest {
 
 	private static final String EXPECTED_CHART_XML = "<chart bgColor='#ffffff' showBorder='0' showToolTips='1' showValues='0' showLabels='1' rotateLabels='1' slantLabels='1' connectNullData='1' decimals='0' SYAxisMinValue='0' SYAxisMaxValue='100' SNumberSuffix='%' showLegend='1' legendPosition='BOTTOM' legendMarkerCircle='0' legendBorderThickness='0' legendShadow='0' chartLeftMargin='3' chartRightMargin='3' areaOverColumns='0'> " +
 			"<categories> <category label='JUL'/> <category label='AUG'/> <category label='SEP'/></categories>" +
 			"<dataset>" +
-			"<dataset seriesName='Speeding Distance' color='1e88c8' showValues='0'> <set value='5'/> <set value='10'/> <set value='15'/></dataset>" +
-			"<dataset seriesName='Driving Distance' color='cccccc' showValues='0'> <set value='10'/> <set value='20'/> <set value='30'/></dataset>" +
+			"<dataset seriesName='Idle Time' color='6b9d1b' showValues='0'> <set value='0.5'/> <set value='2.5'/> <set value='5.0'/></dataset>" +
+			"<dataset seriesName='Driving Time' color='cccccc' showValues='0'> <set value='1.0'/> <set value='5.0'/> <set value='10.0'/></dataset>" +
 			"</dataset>" +
-			"<lineset seriesName='% Distance Speeding' color='000066' showValues='0' > <set value='50'/> <set value='50'/> <set value='50'/></lineset></chart>";
+			"<lineset seriesName='% Idle' color='006600' showValues='0' > <set value='50'/> <set value='50'/> <set value='50'/></lineset></chart>";
 	
-	private static final String EXPECTED_TOTAL_DISTANCE = "60 mi"; 
-	private static final String EXPECTED_TOTAL_SPEEDING = "30 mi (50.00%)"; 
+	private static final String EXPECTED_TOTAL_DRIVING = "16.00 hrs"; 
+	private static final String EXPECTED_TOTAL_IDLING = "8.00 hrs (50.00%)"; 
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -43,7 +43,7 @@ public class SpeedPercentageBeanTest  extends BaseBeanTest {
         // fleet manager login
         loginUser(UnitTestStats.UNIT_TEST_LOGIN);
      
-        SpeedPercentageBean bean = (SpeedPercentageBean)applicationContext.getBean("speedPercentageBean");
+        IdlePercentageBean bean = (IdlePercentageBean)applicationContext.getBean("idlePercentageBean");
         
         assertNotNull(bean.getDurationBean());
         assertNotNull(bean.getReportCriteriaService());
@@ -56,8 +56,7 @@ public class SpeedPercentageBeanTest  extends BaseBeanTest {
     {
         // fleet manager login
         loginUser(UnitTestStats.UNIT_TEST_LOGIN);
-     
-        SpeedPercentageBean bean = (SpeedPercentageBean)applicationContext.getBean("speedPercentageBean");
+        IdlePercentageBean bean = (IdlePercentageBean)applicationContext.getBean("idlePercentageBean");
         bean.getDurationBean().setDuration(Duration.THREE);
         
         ReportCriteria reportCriteria = bean.buildReportCriteria();
@@ -67,8 +66,8 @@ public class SpeedPercentageBeanTest  extends BaseBeanTest {
         Map<String, Object> paramMap = reportCriteria.getPramMap();
         assertNotNull("Line Chart Data set", paramMap.get("SUB_DATASET_1"));
         assertNotNull("Bar Chart Data set", paramMap.get("SUB_DATASET_2"));
-        
-//        ReportRenderer rrb = (ReportRenderer)applicationContext.getBean("reportRenderer");
+
+        //        ReportRenderer rrb = (ReportRenderer)applicationContext.getBean("reportRenderer");
 //        rrb.exportSingleReportToPDF(reportCriteria, facesContext);
         
 
@@ -101,29 +100,30 @@ public class SpeedPercentageBeanTest  extends BaseBeanTest {
     @Test
     public void fusionCharts()
     {
-        SpeedPercentageBean bean = (SpeedPercentageBean)applicationContext.getBean("speedPercentageBean");
+        IdlePercentageBean bean = (IdlePercentageBean)applicationContext.getBean("idlePercentageBean");
         loginUser(UnitTestStats.UNIT_TEST_LOGIN);
         bean.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         bean.getDurationBean().setDuration(Duration.THREE);
         
-        List<SpeedPercentItem> speedPercentItemList = new ArrayList<SpeedPercentItem> ();
-        speedPercentItemList.add(new SpeedPercentItem(1000, 500));
-        speedPercentItemList.add(new SpeedPercentItem(2000, 1000));
-        speedPercentItemList.add(new SpeedPercentItem(3000, 1500));
+        List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem> ();
+        idlePercentItemList.add(new IdlePercentItem(3600l, 1800l));	// 1 hr driving, 1/2 hr idle
+        idlePercentItemList.add(new IdlePercentItem(18000l, 9000l));	// 5 hr driving, 2 1/2 hr idle
+        idlePercentItemList.add(new IdlePercentItem(36000l, 18000l));	// 10 hr driving, 5 hr idle
         
-    	bean.initChartData(speedPercentItemList);
+    	bean.initChartData(idlePercentItemList);
     	
     	String chartXML = bean.getChartDef();
     	assertNotNull("chart xml should be set", chartXML);
-//    	System.out.println(chartXML);
+    	System.out.println(chartXML);
     	assertEquals(EXPECTED_CHART_XML,  chartXML);
     	
-    	String totalDistance = bean.getTotalDistance();
-//    	System.out.println(totalDistance);
-    	assertEquals(EXPECTED_TOTAL_DISTANCE,  totalDistance);
+    	String totalDriving = bean.getTotalDriving();
+    	System.out.println(totalDriving);
+    	assertEquals(EXPECTED_TOTAL_DRIVING,  totalDriving);
     	
-    	String totalSpeeding = bean.getTotalSpeeding();
-//    	System.out.println(totalSpeeding);
-    	assertEquals(EXPECTED_TOTAL_SPEEDING,  totalSpeeding);
+    	String totalIdling = bean.getTotalIdling();
+    	System.out.println(totalIdling);
+    	assertEquals(EXPECTED_TOTAL_IDLING,  totalIdling);
     }
+
 }

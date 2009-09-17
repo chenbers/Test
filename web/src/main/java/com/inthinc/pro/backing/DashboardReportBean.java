@@ -24,6 +24,15 @@ public class DashboardReportBean extends BaseBean
     private OverallScoreBean overallScoreBean;
     private TrendBean trendBean;
     private SpeedPercentageBean speedPercentageBean;
+    private IdlePercentageBean idlePercentageBean;
+
+	public IdlePercentageBean getIdlePercentageBean() {
+		return idlePercentageBean;
+	}
+
+	public void setIdlePercentageBean(IdlePercentageBean idlePercentageBean) {
+		this.idlePercentageBean = idlePercentageBean;
+	}
 
 	private ReportRenderer reportRenderer;
     
@@ -76,6 +85,7 @@ public class DashboardReportBean extends BaseBean
             case TREND: reportCriteriaList.add(trendBean.buildReportCriteria());break;
             case MPG_GROUP: reportCriteriaList.add(mpgBean.buildReportCriteria());break;
             case SPEED_PERCENTAGE: reportCriteriaList.add(speedPercentageBean.buildReportCriteria());break;
+            case IDLE_PERCENTAGE: reportCriteriaList.add(idlePercentageBean.buildReportCriteria());break;
             }
         }
         
