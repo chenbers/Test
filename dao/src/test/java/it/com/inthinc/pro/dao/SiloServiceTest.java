@@ -388,7 +388,11 @@ public class SiloServiceTest {
         Integer acctID = account.getAcctID();
         groupHierarchy(acctID);
         // zones
-        zones(acctID, team1Group.getGroupID());
+        
+        
+//        zones(acctID, team1Group.getGroupID());
+        
+        
         // devices
         devices(acctID);
         // forward commands to devices

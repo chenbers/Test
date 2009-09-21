@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.converters.NumberConverter;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -235,9 +236,9 @@ public abstract class AbstractMapper implements Mapper
     {
         if (propertyType != null)
         {
-            if (propertyType.equals(Date.class) && value instanceof Long)
+            if (propertyType.equals(Date.class) && value instanceof Number)
             {
-                // note: negative values represent dates before 1/1/1970, 1 means null
+                // note: negative values represent dates before 1/1/1970, 1 means null                
                 Long seconds = (Long) value;
                 if (seconds != 1)
                     value = new Date(seconds.longValue() * 1000l);

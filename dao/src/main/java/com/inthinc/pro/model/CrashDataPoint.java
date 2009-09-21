@@ -9,7 +9,7 @@ public class CrashDataPoint extends BaseEntity {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private Integer crashDataPointID;
+    private Integer crashDataID;
     private LatLng latLng;
     private Double lat;
     private Double lng;
@@ -94,12 +94,12 @@ public class CrashDataPoint extends BaseEntity {
         this.rpm = rpm;
     }
 
-    public void setCrashDataPointID(Integer crashDataPointID) {
-        this.crashDataPointID = crashDataPointID;
+    public Integer getCrashDataID() {
+        return crashDataID;
     }
 
-    public Integer getCrashDataPointID() {
-        return crashDataPointID;
+    public void setCrashDataID(Integer crashDataID) {
+        this.crashDataID = crashDataID;
     }
 
     public void setFullEvent(FullEvent fullEvent) {
@@ -136,7 +136,7 @@ public class CrashDataPoint extends BaseEntity {
 
     @Override
     public String toString() {
-        return "CrashDataPoint [crashDataPointID=" + crashDataPointID + ", fullEvent=" + fullEvent + ", fullEventID=" + fullEventID + ", gpsSpeed=" + gpsSpeed + ", latLng="
+        return "CrashDataPoint [crashDataPointID=" + crashDataID + ", fullEvent=" + fullEvent + ", fullEventID=" + fullEventID + ", gpsSpeed=" + gpsSpeed + ", latLng="
                 + latLng + ", obdSpeed=" + obdSpeed + ", pointOfImpact=" + pointOfImpact + ", rpm=" + rpm + ", seatBeltAvailable=" + seatBeltAvailable + ", seatBeltState="
                 + seatBeltState + ", time=" + time + "]";
     }
@@ -145,7 +145,7 @@ public class CrashDataPoint extends BaseEntity {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((crashDataPointID == null) ? 0 : crashDataPointID.hashCode());
+        result = prime * result + ((crashDataID == null) ? 0 : crashDataID.hashCode());
         return result;
     }
 
@@ -161,12 +161,12 @@ public class CrashDataPoint extends BaseEntity {
             return false;
         }
         CrashDataPoint other = (CrashDataPoint) obj;
-        if (crashDataPointID == null) {
-            if (other.crashDataPointID != null) {
+        if (crashDataID == null) {
+            if (other.crashDataID != null) {
                 return false;
             }
         }
-        else if (!crashDataPointID.equals(other.crashDataPointID)) {
+        else if (!crashDataID.equals(other.crashDataID)) {
             return false;
         }
         return true;

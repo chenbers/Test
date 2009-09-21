@@ -8,7 +8,8 @@
   				xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:c="http://java.sun.com/jstl/core"
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"                
+      			xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
                 xmlns:security="http://pro.tiwi.com/jsf/security">
                 
     <ui:define name="scripts">
@@ -17,10 +18,8 @@
 		<tiwi:conditionalCSS browserVersion="IE"><script language="javascript" type="text/javascript" src="#{request.contextPath}/js/excanvas.pack.js"></script></tiwi:conditionalCSS>
 	    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.js"></script>
     <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.crosshair.js"></script>
-
-	</ui:define>
-	<ui:define name="content">
-		<style>
+    
+    		<style>
 			.section {
 				width: 460px;
 				vertical-align: top;
@@ -52,14 +51,15 @@
 			.legendLabel {
 				width: 100px;
 			}
-			#legend table {
-				margin: auto;
+			.crash_panel_content {
+				height: 380px;
 			}
+			
 		</style>
 	    <script language="javascript" type="text/javascript">
 	     var baseIcon = new GIcon();
 			baseIcon.iconSize = new GSize(20, 20);
-			baseIcon.iconAnchor = new GPoint(9, 20);
+			baseIcon.iconAnchor = new GPoint(5, 13);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
 			var map, vehicleMarker, plot;
@@ -96,6 +96,19 @@
                       
              }           
 
+
+			function showTrips()
+			{
+				drawSelectedTrips();
+			    map.setZoom(map.getBoundsZoomLevel(bounds));
+			    map.setCenter(bounds.getCenter());
+		    }
+		    
+		    function orderOfCreation(marker,b) 
+		    {
+		          return 1;
+		    }	
+
 			function createMarker(point, divID, iconImage) 
 	        {
 	        	var markerIcon;
@@ -124,27 +137,16 @@
 
 	        	return marker;
 	        }
-	        
-	        function showInfoWindow(noteID, latLng)
-	        {
-	        	var node = document.getElementById(noteID).cloneNode(true);
-	  			node.style.display = 'block';
-
-	  			map.openInfoWindow(latLng, node);
-	        }
-
-			function showTrips()
-			{
-				drawSelectedTrips();
-			    map.setZoom(map.getBoundsZoomLevel(bounds));
-			    map.setCenter(bounds.getCenter());
-		    }
 
 			function bodyUnload()
 			{
 				GUnload();
 			}	
 		</script>
+
+	</ui:define>
+	<ui:define name="content">
+
 		
 		<t:saveState value="#{crashReportBean}"/>
 		
@@ -184,7 +186,7 @@
 	            			</div>		
 	            		
 					        <div class="panel_w">
-					            <div class="panel_content">
+					            <div class="panel_content crash_panel_content">
 									<h:panelGrid columns="2" columnClasses="col1,col2" cellspacing="2px" cellpadding="4px">								
 										<h:outputText value="#{messages.crashReport_status}:" />
 										<h:outputText value="#{messages[crashReportBean.crashReport.crashReportStatus]}"/>								
@@ -221,13 +223,13 @@
 						<h:panelGroup>
 							<div class="panel_nw">    						        
 	            				<div class="panel_title" style="z-index: #{zorder}">
-	            					#{messages.crashReport_crashLocation}
+	            					#{messages.crashReport_crashRoute}
 	            				</div>		
 	            			</div>		
 	            		
 					        <div class="panel_w">
-					            <div class="panel_content">
-									<div id="map-canvas" style="width: 100%; height: 325px; border: 0"></div>
+					            <div class="panel_content crash_panel_content">
+									<div id="map-canvas" style="width: 100%; height: 375px; border: 0"></div>
 									<script type="text/javascript">initMap();</script>	
 								</div>
 							</div>			
@@ -239,12 +241,12 @@
 						<h:panelGroup>					        
 							<div class="panel_nw">    						        
 	            				<div class="panel_title" style="z-index: #{zorder}">
-	            					#{messages.crashReport_crashDetails}
+	            					#{messages.crashReport_crashEvents}
 	            				</div>		
 	            			</div>		
 	            		
 					        <div class="panel_w">
-					            <div class="panel_content">
+					            <div class="panel_content crash_panel_content">
 									<h:form>
 										<rich:dataTable id="crashPointTable" value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="10" cellspacing="1" width="100%">
 										<f:facet name="header">
@@ -296,9 +298,9 @@
 	            			</div>		
 	            		
 					        <div class="panel_w">
-					            <div class="panel_content">		       
+					            <div class="panel_content crash_panel_content">		       
 					            	<div id="legend"/>		            
-							    	<div id="placeholder" style="width: 475px; height: 325px;"></div>
+							    	<div id="placeholder" style="width: 475px; height: 350px;"></div>
 							    </div>
 						    </div>
 							
@@ -311,7 +313,8 @@
 				    <p> <span id="eventinfo"></span></p>
 				    <p> <span id="iteminfo"></span></p>
 				    <p> <span id="posinfo"></span></p>
-				    <p> <span id="datainfo"></span></p>
+				    <p> <span id="datainfo">
+				    </span></p>
 
 
 				</div>
@@ -325,6 +328,7 @@
 
 			var gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [];
 			var crashPolyline, tripPolyline;
+			var crashPoint = {latlng: new GLatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
 			jQuery(function () {
 
 				/* TODO: Retrieve data via JSON. Remove all the uses of new */
@@ -334,53 +338,91 @@
 		    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
 					crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
 		    	</a4j:repeat>
-				
-		    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="point">
-					tripPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
-		    	</a4j:repeat>
 
-				crashPolyline = new GPolyline(crashPoints, "#0000ff", 6);
+
+		    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
+					tripPoints.push(new GLatLng(#{route.lat}, #{route.lng}));
+	    		</a4j:repeat>
+
+				tripPolyline = new GPolyline(tripPoints, "#0000ff", 6, 1);
+				map.addOverlay(tripPolyline);
+				
+				crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
 				map.addOverlay(crashPolyline);
 
-				tripPolyline = new GPolyline(tripPoints, "#ffffff", 6);
-				map.addOverlay(tripPolyline);
+				//Start of trip marker
+				startlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[0].lat}, #{crashReportBean.crashReportTrip.route[0].lng});
+				marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
+
+				//End of trip marker
+				endlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) -1].lat}, #{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) -1].lng});
+				marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
+
 
 				
 
 		        /*<![CDATA[*/
 			    plot = jQuery.plot(jQuery("#placeholder"),
-			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0"}, {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0"}, {data: rpm, label: "#{messages.crashReport_rpm} = 0", yaxis: 2} ],
+			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0", color: "#0000FF"}, {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0", color: "#00FF00"}, {data: rpm, label: "#{messages.crashReport_rpm} = 0", color: "#FF9900", yaxis: 2} ],
 			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 		                 series: {
 		                     lines: { show: true },
 		                     points: { show: false }
 		                 },
-		                 selection: { mode: "xy" },
-                         crosshair: { mode: "x" },
-			             grid: { hoverable: true, autoHighlight: false, mouseActiveRadius: 100 },
+                         crosshair: { mode: "x", color: "#999999" },
+			             grid: { 
+    			             hoverable: true, 
+    			             autoHighlight: false,
+    			             markings: [{xaxis: {from: crashPoint.time, to: crashPoint.time}, color: "#CB4B4B"}]
+    			         },
 			             legend: { 
 				             		noColumns: 12, 
 				             		container: "#legend"
 		            	  }
 			           });		
 
+			    var o;
+
+			    o = plot.pointOffset({ x: crashPoint.time, y: 30});
+			    // we just append it to the placeholder which Flot already uses
+			    // for positioning
+			    //jQuery("#placeholder").append('<div style="position:absolute;left:' + (o.left + 4) + 'px;top:' + o.top + 'px;color:#000000;font-size:smaller; background-color: #BFD292;">Crash</div>');
+		        
 			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {	
 				   	//printObject(plot.getData(),"#iteminfo" ,0);
-		            if (item) {		   
-			            vehicleMarker.setLatLng(crashPoints[item.dataIndex])
-			            jQuery("#legend .legendLabel").each(
-				            function(i){
-				            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[item.dataIndex][1]));				
-						});
-		            }
+		   	        var axes = plot.getAxes();
+			        if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||
+			            pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
+			            return;
+			
+			        var i, dataIndex, dataset = plot.getData();
+			        for (i = 0; i < dataset.length; ++i) {
+			            var series = dataset[i];
+			
+			            // find the nearest points, x-wise
+			            for (dataIndex = 0; dataIndex < series.data.length; ++dataIndex)
+			                if (series.data[dataIndex][0] > pos.x)
+			                    break;		
+			        }
+
+		            jQuery("#legend .legendLabel").each(
+			            function(series){
+			            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[series].data[dataIndex][1]));				
+					});
+		            vehicleMarker.setLatLng(crashPoints[dataIndex])
 			    });
 	            /*]]>*/
 			});
 		</script>
 		<script type="text/javascript">
 
-        /*<![CDATA[*/
+        /*<![CDATA[*/        
+        
         function getClosestPointFromList(latLng,latLngArray){
         	if(latLng){
                 var closestLatLng, difference, returnIndex; 

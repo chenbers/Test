@@ -13,10 +13,7 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.CrashHistoryReportItem;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 

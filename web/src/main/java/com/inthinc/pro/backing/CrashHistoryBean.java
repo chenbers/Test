@@ -141,8 +141,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
             histList.add(reportItem);
         }
         // Sort by date of crash
-        Collections.sort(histList);
-        Collections.reverse(histList);
+        Collections.sort(histList,Collections.reverseOrder());
         setTableData(histList);
         // count initialization
         setMaxCount(histList.size());

@@ -1,12 +1,10 @@
 package com.inthinc.pro.dao.hessian;
 
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -96,28 +94,39 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
 
     @Override
     public Trip getTrip(CrashReport crashReport) {
-        Calendar searchStartDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        Calendar searchEndDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        searchEndDate.roll(Calendar.DATE, 1);
-        if (crashReport.getDate() != null) {
-            searchStartDate.setTime(crashReport.getDate());
-            searchEndDate.setTime(crashReport.getDate());
-            DateUtil.resetTime(searchEndDate);
-            DateUtil.resetTime(searchStartDate);
-            searchEndDate.roll(Calendar.DATE, 1);
-        }
-        logger.debug("Begin Date: " + searchStartDate.getTime());
-        logger.debug("End Date: " + searchEndDate.getTime());
-        Trip trip = null;
+        DateTime crashTime = new DateTime(crashReport.getDate());
+        // Calendar searchStartDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        // Calendar searchEndDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        // searchEndDate.roll(Calendar.DATE, 1);
+        // if (crashReport.getDate() != null) {
+        // searchStartDate.setTime(crashReport.getDate());
+        // searchEndDate.setTime(crashReport.getDate());
+        // DateUtil.resetTime(searchEndDate);
+        // DateUtil.resetTime(searchStartDate);
+        // searchEndDate.roll(Calendar.DATE, 1);
+        // }
+        // logger.debug("Begin Date: " + searchStartDate.getTime());
+        // logger.debug("End Date: " + searchEndDate.getTime());
+//        Trip trip = null;
+        
+        List<Trip> tripList = null;
         if (crashReport.getDriverID() != null) {
-            List<Trip> tripList = driverDAO.getTrips(crashReport.getDriverID(), searchStartDate.getTime(), searchEndDate.getTime());
-            trip = locateTripInList(tripList, crashReport.getLatLng());
+            tripList = driverDAO.getTrips(crashReport.getDriverID(), crashTime.minusMinutes(1).toDate(), crashTime.plusMinutes(1).toDate());
+        } else if (crashReport.getVehicleID() != null) {
+            tripList = vehicleDAO.getTrips(crashReport.getVehicleID(), crashTime.minusMinutes(1).toDate(), crashTime.plusMinutes(1).toDate());
         }
-        if (crashReport.getVehicleID() != null && trip == null) {
-            List<Trip> tripList = vehicleDAO.getTrips(crashReport.getVehicleID(), searchStartDate.getTime(), searchEndDate.getTime());
-            trip = locateTripInList(tripList, crashReport.getLatLng());
+        
+        if(tripList != null && tripList.size() > 0) {
+            for (Trip trip : tripList) {
+                DateTime startTime = new DateTime(trip.getStartTime());
+                DateTime endTime = new DateTime(trip.getEndTime());
+                if(crashTime.isAfter(startTime.minusSeconds(1).getMillis()) && crashTime.isBefore(endTime.plusSeconds(1).getMillis())) {
+                    return trip;
+                }
+            }
         }
-        return trip;
+        
+        return null;
     }
 
     public Trip locateTripInList(List<Trip> tripList, LatLng latLng) {
