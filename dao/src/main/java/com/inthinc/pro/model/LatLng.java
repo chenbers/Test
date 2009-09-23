@@ -60,7 +60,6 @@ public class LatLng implements Serializable, Comparable<LatLng>
     }
 
     
-//  Implementing the equals and hashcode method causes hessain calls to break. Until David Story or Dave Harry fix their end to be able to handle many references to one object, we can't use this.
     @Override
     public boolean equals(Object obj)
     {

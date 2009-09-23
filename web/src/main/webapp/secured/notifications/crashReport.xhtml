@@ -13,11 +13,11 @@
                 xmlns:security="http://pro.tiwi.com/jsf/security">
                 
     <ui:define name="scripts">
-		<script src="http://maps.google.com/maps?file=api&amp;v=s&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
 		
 		<tiwi:conditionalCSS browserVersion="IE"><script language="javascript" type="text/javascript" src="#{request.contextPath}/js/excanvas.pack.js"></script></tiwi:conditionalCSS>
 	    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.js"></script>
-    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.crosshair.js"></script>
+    	<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.crosshair.js"></script>
     
     		<style>
 			.section {
@@ -57,53 +57,117 @@
 			
 		</style>
 	    <script language="javascript" type="text/javascript">
-	     var baseIcon = new GIcon();
-			baseIcon.iconSize = new GSize(20, 20);
-			baseIcon.iconAnchor = new GPoint(5, 13);
-			baseIcon.infoWindowAnchor = new GPoint(5, 1);
+	     	var baseIcon = new GIcon();
+				baseIcon.iconSize = new GSize(20, 20);
+				baseIcon.iconAnchor = new GPoint(5, 13);
+				baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
-			var map, vehicleMarker, plot;
-			var showWarnings = true;
-			var showIdleMarkers = true;
-			var showTamperMarkers = true;
+			var map, vehicleMarker, plot, gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [], tripSpeed = [], crashPolyline, tripPolyline;
 			var bounds = new GLatLngBounds();
+			var crashPoint = {latlng: new GLatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
 
+			/* TODO: Retrieve data via JSON */
+	    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
+	    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
+	    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
+	    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
+				crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
+				bounds.extend(new GLatLng(#{point.lat}, #{point.lng}));
+	    	</a4j:repeat>    	
+
+	    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
+				tripPoints.push(new GLatLng(#{route.lat}, #{route.lng}));
+    		</a4j:repeat>
 			
 			function initMap() {
 				if (GBrowserIsCompatible()) {					
 					GUnload();
-					var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
+					//var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
 					map = new GMap2(document.getElementById("map-canvas"));						
 					map.addControl(new GLargeMapControl());
 					map.addControl(new GMapTypeControl());
 					map.addControl(new GOverviewMapControl()); 
-					map.setCenter(point, 14);
 					map.setMapType(G_NORMAL_MAP);
-					bounds = new GLatLngBounds();
+					map.setCenter(crashPoint.latlng, 14);
 					
 					
 					var vehicleIcon = new GIcon(baseIcon);
 					vehicleIcon.image = "#{request.contextPath}/images/ico_vehicle.png";
 					markerOptions = { icon:vehicleIcon };					 					 
-					vehicleMarker = new GMarker(point, markerOptions);
+					vehicleMarker = new GMarker(crashPoint.latlng, markerOptions);
 					map.addOverlay(vehicleMarker);
 
 					var crashIcon = new GIcon(baseIcon);
 					crashIcon.iconSize = new GSize(25, 20);
 					crashIcon.image = "#{request.contextPath}/images/ico_vehicle_crash.png";
-					map.addOverlay(new GMarker(point, { icon: crashIcon }));
+					map.addOverlay(new GMarker(crashPoint.latlng, { icon: crashIcon }));
+
+					//Start of trip marker
+					startlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[0].lat}, #{crashReportBean.crashReportTrip.route[0].lng});
+					marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{request.contextPath}/images/ico_start.png");
+					map.addOverlay(marker);
+
+					//End of trip marker
+					endlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lat}, #{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lng});
+					marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{request.contextPath}/images/ico_end_trip.png");
+					map.addOverlay(marker);
+					
+					tripPolyline = new GPolyline(tripPoints, "#0000ff", 6, 1);
+					map.addOverlay(tripPolyline);
+					
+					crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
+					map.addOverlay(crashPolyline);
+					
+				    map.setZoom(map.getBoundsZoomLevel(bounds));
+					map.setCenter(bounds.getCenter());
+
+					GEvent.addListener(map, 'mousemove', function(point) {
+						var closestPoint = getClosestPointFromList(point, crashPoints);			
+						vehicleMarker.setLatLng(closestPoint.latlng);
+						plot.setCrosshair({ x: gpsSpeed[closestPoint.index][0], y:gpsSpeed[closestPoint.index][1]});
+			            jQuery("#legend .legendLabel").each(
+				            function(i){
+				            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[closestPoint.index][1]));				
+						});
+					}); // for detecting if mouse is above displayed route
+
 				}
                       
              }           
 
+	        /*<![CDATA[*/    
+	        function getClosestPointFromList(latLng,latLngArray){
+	        	if(latLng){
+	                var closestLatLng, difference, returnIndex; 
+	                for (i = 0; i < latLngArray.length; i++){
+						var latDifference = Math.abs(latLng.lat() - latLngArray[i].lat());
+						var lngDifference = Math.abs(latLng.lng() - latLngArray[i].lng());
+						var tempDifference = latDifference + lngDifference;
+						
+						if(difference == null || tempDifference <= difference){
+								closestLatLng = latLngArray[i];
+								difference = tempDifference;
+								returnIndex = i;
+						}
+	                }
+	                if(closestLatLng) {
+	                    return {index: returnIndex, latlng: closestLatLng};
+	                }
+	        	}
+	            return  {index: 0, latlng: latLngArray[latLngArray.length - 1]};
+	        }
 
-			function showTrips()
-			{
-				drawSelectedTrips();
-			    map.setZoom(map.getBoundsZoomLevel(bounds));
-			    map.setCenter(bounds.getCenter());
-		    }
-		    
+			function printObject(obj, element, deep) {
+	            jQuery.each(obj, function(name, value) {
+		        	jQuery(element).append("<p style='padding-left: " + deep + "px'>" + name + ": " + value + " </p> ");
+		        	if(deep < 100 && name != 'data' && null != value && typeof(value) == 'object') {
+						printObject(value, element, deep + 10);
+		        	}
+	            });
+			}
+			/*]]>*/
+            
+
 		    function orderOfCreation(marker,b) 
 		    {
 		          return 1;
@@ -138,8 +202,12 @@
 	        	return marker;
 	        }
 
-			function bodyUnload()
-			{
+	        
+
+			function bodyLoad() {
+				initMap();
+			}
+			function bodyUnload() {
 				GUnload();
 			}	
 		</script>
@@ -149,9 +217,24 @@
 
 		
 		<t:saveState value="#{crashReportBean}"/>
-		
-    
-    
+		<ui:include src="/includes/tripBubble.xhtml">
+			<ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
+			<ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
+			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
+			<ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
+			<ui:param name="eventLocation" value="#{trip.startAddress}" />
+			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+		</ui:include>
+		<ui:include src="/includes/tripBubble.xhtml">
+			<ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
+			<ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
+			<ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+			<ui:param name="eventLocation" value="#{trip.endAddress}" />
+			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
+			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+		</ui:include>
+
+
 		<div style="width: 940px; margin:auto">
 			<div class="panel_nw">
 				<div class="panel_title">
@@ -230,7 +313,6 @@
 					        <div class="panel_w">
 					            <div class="panel_content crash_panel_content">
 									<div id="map-canvas" style="width: 100%; height: 375px; border: 0"></div>
-									<script type="text/javascript">initMap();</script>	
 								</div>
 							</div>			
 							
@@ -313,8 +395,7 @@
 				    <p> <span id="eventinfo"></span></p>
 				    <p> <span id="iteminfo"></span></p>
 				    <p> <span id="posinfo"></span></p>
-				    <p> <span id="datainfo">
-				    </span></p>
+				    <p> <span id="datainfo"></span></p>
 
 
 				</div>
@@ -325,49 +406,10 @@
 		</div>
         
 		<script language="javascript" type="text/javascript">
-
-			var gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [];
-			var crashPolyline, tripPolyline;
-			var crashPoint = {latlng: new GLatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
+			/*<![CDATA[*/
 			jQuery(function () {
-
-				/* TODO: Retrieve data via JSON. Remove all the uses of new */
-		    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
-		    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
-		    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
-		    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
-					crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
-		    	</a4j:repeat>
-
-
-		    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
-					tripPoints.push(new GLatLng(#{route.lat}, #{route.lng}));
-	    		</a4j:repeat>
-
-				tripPolyline = new GPolyline(tripPoints, "#0000ff", 6, 1);
-				map.addOverlay(tripPolyline);
-				
-				crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
-				map.addOverlay(crashPolyline);
-
-				//Start of trip marker
-				startlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[0].lat}, #{crashReportBean.crashReportTrip.route[0].lng});
-				marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-
-				//End of trip marker
-				endlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) -1].lat}, #{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) -1].lng});
-				marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-
-
-				
-
-		        /*<![CDATA[*/
 			    plot = jQuery.plot(jQuery("#placeholder"),
-			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0", color: "#0000FF"}, {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0", color: "#00FF00"}, {data: rpm, label: "#{messages.crashReport_rpm} = 0", color: "#FF9900", yaxis: 2} ],
+			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0", color: "#0000FF"}, {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0", color: "#00FF00"}, {data: rpm, label: "#{messages.crashReport_rpm} = 0", color: "#FF9900", yaxis: 2}],
 			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 		                 series: {
@@ -393,6 +435,7 @@
 			    // for positioning
 			    //jQuery("#placeholder").append('<div style="position:absolute;left:' + (o.left + 4) + 'px;top:' + o.top + 'px;color:#000000;font-size:smaller; background-color: #BFD292;">Crash</div>');
 		        
+		         
 			    jQuery("#placeholder").bind("plothover", function (event, pos, item) {	
 				   	//printObject(plot.getData(),"#iteminfo" ,0);
 		   	        var axes = plot.getAxes();
@@ -412,57 +455,19 @@
 
 		            jQuery("#legend .legendLabel").each(
 			            function(series){
-			            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[series].data[dataIndex][1]));				
+				            if( series < 3) {
+			            		jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[series].data[dataIndex][1]));	
+				            }			
 					});
 		            vehicleMarker.setLatLng(crashPoints[dataIndex])
 			    });
+
+				jQuery("#legend > table > tbody > tr").append("<td class='legendColorBox'><div style='border: 1px solid #CCCCCC; padding: 1px;'><div style='border: 5px solid #CB4B4B; overflow: hidden; width: 4px; height: 0pt;'/></div></td><td style='width: 100px'>#{messages.crashReport_crashPoint}</td>");
 	            /*]]>*/
 			});
+		       
 		</script>
-		<script type="text/javascript">
 
-        /*<![CDATA[*/        
-        
-        function getClosestPointFromList(latLng,latLngArray){
-        	if(latLng){
-                var closestLatLng, difference, returnIndex; 
-                for (i = 0; i < latLngArray.length; i++){
-					var latDifference = Math.abs(latLng.lat() - latLngArray[i].lat());
-					var lngDifference = Math.abs(latLng.lng() - latLngArray[i].lng());
-					var tempDifference = latDifference + lngDifference;
-					
-					if(difference == null || tempDifference <= difference){
-							closestLatLng = latLngArray[i];
-							difference = tempDifference;
-							returnIndex = i;
-					}
-                }
-                if(closestLatLng) {
-                    return {index: returnIndex, latlng: closestLatLng};
-                }
-        	}
-            return  {index: 0, latlng: latLngArray[latLngArray.length - 1]};
-        }
-		GEvent.addListener(map, 'mousemove', function(point) {
-			var closestPoint = getClosestPointFromList(point, crashPoints);			
-			vehicleMarker.setLatLng(closestPoint.latlng);
-			plot.setCrosshair({ x: gpsSpeed[closestPoint.index][0], y:gpsSpeed[closestPoint.index][1]});
-            jQuery("#legend .legendLabel").each(
-	            function(i){
-	            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[closestPoint.index][1]));				
-			});
-		}); // for detecting if mouse is above displayed route
-
-		function printObject(obj, element, deep) {
-            jQuery.each(obj, function(name, value) {
-	        	jQuery(element).append("<p style='padding-left: " + deep + "px'>" + name + ": " + value + " </p> ");
-	        	if(deep < 100 && name != 'data' && null != value && typeof(value) == 'object') {
-					printObject(value, element, deep + 10);
-	        	}
-            });
-		}
-		   	 	/*]]>*/
-		</script>
 		
 	</ui:define>
 </ui:composition>
