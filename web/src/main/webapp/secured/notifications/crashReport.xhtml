@@ -202,7 +202,15 @@
 	        	return marker;
 	        }
 
-	        
+	        function formatDate(date) {
+		        var hour = date.getHours();
+		        var timePeriod = "#{messages.time_period_am}";
+		        if(hour > 12) {
+			        hour = hour - 12;
+			        timePeriod = "#{messages.time_period_pm}";
+		        }
+		        return hour + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + timePeriod;
+	        }
 
 			function bodyLoad() {
 				initMap();
@@ -280,10 +288,17 @@
 										</h:outputText>								
 										
 							            <h:outputText value="#{messages.crashReport_vehicle}:" />
-										<h:outputText value="#{crashReportBean.crashReport.vehicle.name}"/>									
+						                <pretty:link mappingId="vehiclePerformance" rendered="#{crashReportBean.crashReport.vehicleID != null}">
+						                    <f:param value="#{crashReportBean.crashReport.vehicleID}"/>
+										<h:outputText value="#{crashReportBean.crashReport.vehicle.name}"/>	
+						                </pretty:link>								
 										
 			                            <h:outputText value="#{messages.crashReport_driver}:" />
-										<h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>	
+			                                      
+						                <pretty:link mappingId="driverPerformance" rendered="#{crashReportBean.crashReport.driverID != null}">
+						                    <f:param value="#{crashReportBean.crashReport.driverID}"/>
+											<h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>	
+						                </pretty:link>
 										
 										<h:outputText value="#{messages.crashReport_weather}:" />	
 										<h:outputText value="#{crashReportBean.crashReport.weather}"/>									
@@ -410,7 +425,9 @@
 			jQuery(function () {
 			    plot = jQuery.plot(jQuery("#placeholder"),
 			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0", color: "#0000FF"}, {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0", color: "#00FF00"}, {data: rpm, label: "#{messages.crashReport_rpm} = 0", color: "#FF9900", yaxis: 2}],
-			           { xaxis: { mode: "time", timeformat: "%h:%M:%S" },
+			           { xaxis: {  tickFormatter: function (time, axis) {
+							        return formatDate(new Date(time));
+							      } },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
 		                 series: {
 		                     lines: { show: true },

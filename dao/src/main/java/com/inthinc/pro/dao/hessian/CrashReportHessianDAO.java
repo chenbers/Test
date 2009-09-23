@@ -49,7 +49,14 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
 
     @Override
     public CrashReport findByID(Integer id) {
-        return super.findByID(id);
+        CrashReport report = super.findByID(id);
+        if(report.getVehicleID() != null) {
+            report.setVehicle(vehicleDAO.findByID(report.getVehicleID()));
+        }
+        if(report.getDriverID() != null) {
+            report.setDriver(driverDAO.findByID(report.getDriverID()));
+        }
+        return report;
     }
 
     @Override
