@@ -44,4 +44,7 @@ public class TrendBeanItem {
 	public Boolean getShow() {
 		return scoreableEntityPkg.getShow();
 	}
+	public void setShow(Boolean show) {
+		scoreableEntityPkg.setShow(show);
+	}
 }

@@ -85,8 +85,9 @@ public class ReportServiceImpl implements ReportService
 
     @Override
     @MethodDescription(description="Returns a driveQMap for the specified group and duration. The scores represent the weighted average scores for all drivers in the group and its subgroups.")
-    public Map<String, Object> getGDTrendByGTC(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration)
+    public List<Map<String, Object>> getGDTrendByGTC(@DaoParam(name="groupID")Integer groupID, 
+            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration,
+            @DaoParam(name="count", inputDesc="30 (30 days), 3 (3 months), 6 (6 months), 12 (12 months)")Integer count)
     {
         // TODO Auto-generated method stub
         return null;

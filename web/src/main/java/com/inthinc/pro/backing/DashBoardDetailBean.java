@@ -21,8 +21,9 @@ public class DashBoardDetailBean extends BaseBean {
     private OverallScoreBean overallScoreBean;
     private NavigationBean navigationBean;
     private GroupDAO groupDAO;
+    private TrendBeanState trendBeanState;
 
-    public Integer getGroupID() {
+	public Integer getGroupID() {
         return groupID;
     }
 
@@ -102,5 +103,16 @@ public class DashBoardDetailBean extends BaseBean {
         dashBoardBean.setGroupID(groupID);
         overallScoreBean.setGroupID(groupID);
         navigationBean.setGroupID(groupID);
+        trendBeanState.setMaximized(Boolean.TRUE);
+        trendBeanState.setGroupID(groupID);
     }
+    
+    public TrendBeanState getTrendBeanState() {
+		return trendBeanState;
+	}
+
+	public void setTrendBeanState(TrendBeanState trendBeanState) {
+		this.trendBeanState = trendBeanState;
+	}
+
 }

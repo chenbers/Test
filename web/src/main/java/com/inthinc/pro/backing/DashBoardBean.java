@@ -3,11 +3,9 @@ package com.inthinc.pro.backing;
 import java.io.Serializable;
 
 import org.springframework.security.AccessDeniedException;
-import org.springframework.security.AuthorizationServiceException;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.security.AuthErrorBean;
 import com.inthinc.pro.util.MessageUtil;
 
 public class DashBoardBean extends BaseBean implements Serializable {
@@ -20,8 +18,9 @@ public class DashBoardBean extends BaseBean implements Serializable {
     private OverallScoreBean overallScoreBean;
     private Integer groupID;
     private GroupDAO groupDAO;
+    private TrendBeanState trendBeanState;
 
-    public String getViewPath() {
+	public String getViewPath() {
         if (groupID == null)
             groupID = getUser().getGroupID();
         // TODO: try to pull the group from the group hierarchy before looking it up
@@ -30,6 +29,8 @@ public class DashBoardBean extends BaseBean implements Serializable {
         if (group == null)
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
         navigationBean.setGroupID(groupID);
+        trendBeanState.setMaximized(Boolean.FALSE);
+        trendBeanState.setGroupID(groupID);
         mpgBean.setGroupID(groupID);
         overallScoreBean.setGroupID(groupID);
         switch (group.getType()) {
@@ -82,4 +83,12 @@ public class DashBoardBean extends BaseBean implements Serializable {
     public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
+    public TrendBeanState getTrendBeanState() {
+		return trendBeanState;
+	}
+
+	public void setTrendBeanState(TrendBeanState trendBeanState) {
+		this.trendBeanState = trendBeanState;
+	}
+
 }

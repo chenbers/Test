@@ -18,7 +18,7 @@ public class ScoreableEntityPkg implements Serializable{
 	private String colorKey;
 //	private String goTo;
 	private Integer position;
-	private Boolean show;
+	private Boolean show = Boolean.TRUE;
 	
     public ScoreableEntityPkg() {
 		this.se = new ScoreableEntity();
@@ -70,7 +70,7 @@ public class ScoreableEntityPkg implements Serializable{
 
     public Boolean getShow()
     {
-        return show;
+    	return show;
     }
 
 

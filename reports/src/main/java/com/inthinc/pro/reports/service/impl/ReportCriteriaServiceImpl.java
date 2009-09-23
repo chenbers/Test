@@ -19,10 +19,12 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.dao.util.PhoneNumberUtil;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
@@ -167,47 +169,52 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
         List<ScoreableEntity> s = getScores(groupID, duration);
+        ScoreableEntity summaryScore = scoreDAO.getTrendSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL);
+        Group group = groupDAO.findByID(summaryScore.getEntityID());
+    	String summaryTitle = MessageUtil.formatMessageString("report.trend.summary", (getLocale() == null) ? Locale.getDefault() : getLocale(), group.getName());
+        summaryScore.setIdentifier(summaryTitle);
+        s.add(0,summaryScore);
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(groupID, duration);
 
         List<String> monthList = ReportUtil.createMonthList(duration, "M/dd");
 
-        for (int i = 0; i < groupTrendMap.size(); i++)
+
+        for (int i = 0; i < s.size(); i++)
         {
             ScoreableEntity se = s.get(i);
             List<ScoreableEntity> scoreableEntityList = groupTrendMap.get(se.getEntityID());
 
             // Not a full range, pad w/ zero
-            int holes = 0;
-            if (duration == Duration.DAYS)
-            {
-                holes = duration.getNumberOfDays() - scoreableEntityList.size();
-            }
-            else
-            {
-                holes = ReportUtil.convertToMonths(duration) - scoreableEntityList.size();
-            }
-            int index = 0;
-            for (int k = 0; k < holes; k++)
-            {
-                lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), 0F, se.getIdentifier()));
-            }
-            for (ScoreableEntity scoreableEntity : scoreableEntityList)
-            {
-                if (scoreableEntity.getScore() != null && scoreableEntity.getScore() >= 0)
-                {
-                    Float score = new Float((scoreableEntity.getScore() == null || scoreableEntity.getScore() < 0) ? 5 : scoreableEntity.getScore() / 10.0);
-                    lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), score, se.getIdentifier()));
-                }
-                else
-                {
-                    lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), null, se.getIdentifier()));
-                } 
-            }
-
+    		int holes = 0;
+    		if (duration == Duration.DAYS)
+    		{
+    		    holes = duration.getNumberOfDays() - scoreableEntityList.size();
+    		}
+    		else
+    		{
+    		    holes = ReportUtil.convertToMonths(duration) - scoreableEntityList.size();
+    		}
+    		int index = 0;
+    		for (int k = 0; k < holes; k++)
+    		{
+    		    lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), 0F, se.getIdentifier()));
+    		}
+    		for (ScoreableEntity scoreableEntity : scoreableEntityList)
+    		{
+    		    if (scoreableEntity.getScore() != null && scoreableEntity.getScore() >= 0)
+    		    {
+    		        Float score = new Float((scoreableEntity.getScore() == null || scoreableEntity.getScore() < 0) ? 5 : scoreableEntity.getScore() / 10.0);
+    		        lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), score, se.getIdentifier()));
+    		    }
+    		    else
+    		    {
+    		        lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), null, se.getIdentifier()));
+    		    } 
+    		}
         }
 
-        Group group = groupDAO.findByID(groupID);
+        
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND, group.getName());
         reportCriteria.addChartDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(s);
@@ -250,7 +257,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
         catch (Exception e)
         {
-            logger.debug("graphicDao error: " + e.getMessage());
+            logger.debug("scoreDao error: " + e.getMessage());
         }
 
         return s;

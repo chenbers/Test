@@ -70,7 +70,7 @@ public class TeamOverviewBean extends BaseBean {
         TabAction action = getSelectedAction();
         ScoreType scoreType = action.getScoreType();
         if (getBarDefMap().get(scoreType) == null) {
-            barDefMap.put(scoreType, createBar3DChart(scoreType));
+        	getBarDefMap().put(scoreType, createBar3DChart(scoreType));
         }
         return getBarDefMap().get(scoreType);
     }
@@ -226,9 +226,12 @@ public class TeamOverviewBean extends BaseBean {
     }
 
     public void setDuration(Duration duration) {
-        durationBean.setDuration(duration);
-        setOverallScoreMap(null);
-        setBarDefMap(null);
+    	if (durationBean.getDuration() == null || !durationBean.getDuration().equals(duration))
+    	{
+    		durationBean.setDuration(duration);
+    		setOverallScoreMap(null);
+    		setBarDefMap(null);
+    	}
     }
 
     public String exportToPDF() {

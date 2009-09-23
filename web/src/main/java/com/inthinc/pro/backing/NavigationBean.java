@@ -1,8 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupLevel;
@@ -14,7 +11,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Vehicle;
 
-public class NavigationBean extends BaseBean implements Serializable
+public class NavigationBean extends BaseBean 
 {
     
     
@@ -30,8 +27,6 @@ public class NavigationBean extends BaseBean implements Serializable
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
 
-   
-
     private DurationBean durationBean;
     
     // Key to using widgets
@@ -46,10 +41,6 @@ public class NavigationBean extends BaseBean implements Serializable
     private Integer driverID;
     private Vehicle vehicle;
     
-    // Trend chart function
-    private Integer start = 0;
-    private Integer end = 0;
-    private String numRowsPerPg = "5";
     
     // Capture for sort
     private String sortedFirst = "false";
@@ -59,9 +50,6 @@ public class NavigationBean extends BaseBean implements Serializable
     // Unable to persist maxCount in liveFleetBean with Tomahawk when using a4j:jsFunction
     private Integer liveFleetCount;
     
-    // Save flyout state for trend chart
-    private HashMap flyout = new HashMap();
-        
     public NavigationBean()
     {
 
@@ -119,27 +107,6 @@ public class NavigationBean extends BaseBean implements Serializable
         this.vehicle = vehicle;
         setGroupID(vehicle.getGroupID());
     }
-
-    public Integer getStart()
-    {
-        return start;
-    }
-
-    public void setStart(Integer start)
-    {
-        this.start = start;
-    }
-
-    public Integer getEnd()
-    {
-        return end;
-    }
-
-    public void setEnd(Integer end)
-    {
-        this.end = end;
-    }
-
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -219,28 +186,6 @@ public class NavigationBean extends BaseBean implements Serializable
         }
     }
 
-    
-    public String getNumRowsPerPg()
-    {
-        return numRowsPerPg;
-    }
-
-    public void setNumRowsPerPg(String numRowsPerPg)
-    {
-        logger.debug("numRowsPerPg " + numRowsPerPg + 
-                " start " + this.start + 
-                " end " + this.end);
-        
-        String localStr = new String(numRowsPerPg);
-        this.numRowsPerPg = localStr;
-        int local = (new Integer(this.numRowsPerPg)).intValue();
-        
-        this.start = 1;
-        if ( this.end > local ) {
-            this.end = local;
-        }
-    }
-
     public Integer getLiveFleetCount()
     {
         return liveFleetCount;
@@ -252,16 +197,6 @@ public class NavigationBean extends BaseBean implements Serializable
         this.liveFleetCount = liveFleetCount;
     }
 
-    public HashMap getFlyout()
-    {
-        return flyout;
-    }
-
-    public void setFlyout(HashMap flyout)
-    {
-        this.flyout = flyout;
-    }
-    
     private void initGroup(){
 //       //DebugUtil.dumpRequestParameterMap();
 //
@@ -326,5 +261,6 @@ public class NavigationBean extends BaseBean implements Serializable
     {
         logger.debug("in test action");
     }
+
   
 }

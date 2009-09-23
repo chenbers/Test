@@ -67,6 +67,8 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType);
     
+    ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType);
+    
     Map<Integer,List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration);
 
 

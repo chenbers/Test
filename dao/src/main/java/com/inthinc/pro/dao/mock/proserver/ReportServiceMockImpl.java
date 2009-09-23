@@ -141,7 +141,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     }  
     
     @Override
-    public Map<String, Object> getGDTrendByGTC(Integer groupID, Integer duration)
+    public List<Map<String, Object>> getGDTrendByGTC(Integer groupID, Integer duration, Integer count)
     {
         // TODO Auto-generated method stub
         return null;

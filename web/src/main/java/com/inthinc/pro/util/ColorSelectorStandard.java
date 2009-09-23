@@ -27,7 +27,8 @@ public class ColorSelectorStandard extends ColorSelector {
 									TAN (new Color(0xcc6600),"#cc6600"),
 									RED_BROWN (new Color(0xcc6699),"#cc6699"),
 									MID_GREEN (new Color(0x66cc99),"#66cc99"),
-									BLACKBERRY (new Color(0x666699),"#666699");
+									BLACKBERRY (new Color(0x666699),"#666699"),
+									BLACK(new Color(0x000000),"#000000");
 
 
 		private final Color color;

@@ -204,7 +204,7 @@ public interface ReportService extends HessianService
     
     Map<String, Object> getGDScoreByGT(Integer groupID, Integer duration);
     
-    Map<String, Object> getGDTrendByGTC(Integer groupID, Integer duration);
+    List<Map<String, Object>> getGDTrendByGTC(Integer groupID, Integer duration, Integer metric);
     
     Map<String, Object> getGDScoreByGSE(Integer groupID, Long start, Long end);
     

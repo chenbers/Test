@@ -18,9 +18,8 @@
         </div>
         <div class="panel_w">
             <div class="panel_content">
-               <div style="height:#{xyheight};width:#{xywidth}">
-                     <div class="" id="">
-                        <table id="" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody>
+               <div id="crashSummaryInnerPanel" style="height:#{xyheight};width:#{xywidth}">
+					<table id="crashSummaryTable" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody>
                         <tr style="font-weight:bold" align="center">
                         <td width="33%"> 
                            <h:outputFormat value=" #{messages.crash_summary_overDistance} " >
@@ -39,6 +38,7 @@
                         <tr  style="font-weight:bold; font-size:30px" align="center">
                             <td>
                            		<h:outputText value="#{crashSummaryBean.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
+                           		
                         	</td>
                         	<td style="border-right-width:1px; border-left-width:1px">
                        			#{crashSummaryBean.daysSinceLastCrash}
@@ -59,10 +59,9 @@
                         	<td   style="border-right-width:1px; border-left-width:1px"></td>
                         </tr>
                         </tbody>
-                        </table>
-                        </div>
-                        </div>
-        </div>
+					</table>
+				</div>
+        	</div>
         </div>
         
         <div class="panel_sw">

@@ -9,8 +9,8 @@ import com.inthinc.pro.dao.annotations.Column;
 public class DriveQMap extends BaseEntity
 {
     private Integer startingOdometer;
-    private Integer endingOdometer;
-    private Integer odometer;
+    private Integer endingOdometer;				// mileage over all time
+    private Integer odometer;					// mileage in time period
     private Integer odometer1;
     private Integer odometer2;
     private Integer odometer3;
@@ -38,12 +38,16 @@ public class DriveQMap extends BaseEntity
     private Integer idleLo;
     private Integer idleHi;
     private Integer driveTime;
-    private Date lastCrashDate;
-    private Integer crashEvents;
-    private Integer crashOdometer;
-    private Integer totalCrashes;
+    // CRASH SUMMARY  
+    private Integer crashEvents;			// total crashes in the time period			
+    private Integer crashTotal;				// total crashes ever
+	private Integer crashOdometer;
+    private Integer crashDays;
+    // END - CRASH SUMMARY
+    
+    // not sure what these are for
 	private Date startingDate;
-    private Date endingDate;
+	private Date endingDate;
     // TODO: these will change to Longs in the future, but leaving as Integer now for consistency
 	private Integer speedOdometer;
     private Integer speedOdometer1;
@@ -334,29 +338,29 @@ public class DriveQMap extends BaseEntity
     {
         this.endingDate = endingDate;
     }
-    public Date getLastCrashDate() {
-		return lastCrashDate;
-	}
-	public void setLastCrashDate(Date lastCrashDate) {
-		this.lastCrashDate = lastCrashDate;
-	}
-	public Integer getCrashEvents() {
-		return crashEvents;
-	}
-	public void setCrashEvents(Integer crashEvents) {
-		this.crashEvents = crashEvents;
-	}
 	public Integer getCrashOdometer() {
 		return crashOdometer;
 	}
 	public void setCrashOdometer(Integer crashOdometer) {
 		this.crashOdometer = crashOdometer;
 	}
-	public Integer getTotalCrashes() {
-		return totalCrashes;
+    public Integer getCrashTotal() {
+		return crashTotal;
 	}
-	public void setTotalCrashes(Integer totalCrashes) {
-		this.totalCrashes = totalCrashes;
+	public void setCrashTotal(Integer crashTotal) {
+		this.crashTotal = crashTotal;
+	}
+	public Integer getCrashDays() {
+		return crashDays;
+	}
+	public void setCrashDays(Integer crashDays) {
+		this.crashDays = crashDays;
+	}
+    public Integer getCrashEvents() {
+		return crashEvents;
+	}
+	public void setCrashEvents(Integer crashEvents) {
+		this.crashEvents = crashEvents;
 	}
 	public Integer getSpeedOdometer() {
 		return speedOdometer;

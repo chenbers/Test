@@ -525,8 +525,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 	}
 	public CrashSummaryBean getCrashSummary() {
 		
-		 //   	crashSummary = scoreDAO.getVehicleCrashSummaryData(getDriverID());
-		//		crashSummary = new CrashSummary(100,2345,new Date(),204);
 		crashSummary.getCrashSummaryForVehicle(getVehicleID());
 		return crashSummary;
 	}

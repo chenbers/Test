@@ -1,7 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.text.DecimalFormat;
-import java.util.Date;
+
 
 public class CrashSummary extends BaseEntity {
 
@@ -9,20 +9,27 @@ public class CrashSummary extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 8590279451272849269L;
-	private static DecimalFormat onePlace = new DecimalFormat("#0.0");
-	
-	public CrashSummary(Integer crashEvents, Integer crashOdometer,Date lastCrashDate,Integer totalCrashes) {
-		super();
-       	calculateAndSetCrashesPerMillionMiles(crashEvents, crashOdometer);
-        calculateAndSetDaysSinceLastCrash(lastCrashDate);
-        calculateAndSetMilesSinceLastCrash(crashOdometer);
-        setTotalCrashes(totalCrashes);
 
-	}
-	private Double crashesPerMillionMiles;
-	private Integer milesSinceLastCrash;
 	private Integer daysSinceLastCrash;
 	private Integer totalCrashes;
+	private Integer crashesInTimePeriod;
+	private Number totalMiles;
+	private Number milesSinceLastCrash;
+	
+	private Double crashesPerMillionMiles;
+	
+	private static DecimalFormat onePlace = new DecimalFormat("#0.0");
+
+
+	public CrashSummary(Integer crashesInTimePeriod, Integer totalCrashes, Integer daysSinceLastCrash, Number totalMiles, Number milesSinceLastCrash) {
+		super();
+		this.crashesInTimePeriod = crashesInTimePeriod;
+		this.daysSinceLastCrash = daysSinceLastCrash;
+		this.totalCrashes = totalCrashes;
+		this.totalMiles = totalMiles;
+		this.milesSinceLastCrash = milesSinceLastCrash;
+		calculateAndSetCrashesPerMillionMiles();
+	}
 	
 	public Integer getTotalCrashes() {
 		return totalCrashes;
@@ -30,51 +37,51 @@ public class CrashSummary extends BaseEntity {
 	public void setTotalCrashes(Integer totalCrashes) {
 		this.totalCrashes = totalCrashes;
 	}
-	public void setCrashesPerMillionMiles(Double crashesPerMillionMiles) {
-		this.crashesPerMillionMiles = crashesPerMillionMiles;
-	}
-	public void setMilesSinceLastCrash(Integer milesSinceLastCrash) {
+	public void setMilesSinceLastCrash(Number milesSinceLastCrash) {
 		this.milesSinceLastCrash = milesSinceLastCrash;
 	}
 	public void setDaysSinceLastCrash(Integer daysSinceLastCrash) {
 		this.daysSinceLastCrash = daysSinceLastCrash;
 	}
+	public Number getMilesSinceLastCrash() {
+		return milesSinceLastCrash;
+	}
+	public Integer getDaysSinceLastCrash() {
+		return daysSinceLastCrash;
+	}
+	public Number getTotalMiles() {
+		return totalMiles;
+	}
+	public void setTotalMiles(Number totalMiles) {
+		this.totalMiles = totalMiles;
+	}
 	
 	public Double getCrashesPerMillionMiles() {
 		return crashesPerMillionMiles;
+	}
+	public void setCrashesPerMillionMiles(Double crashesPerMillionMiles) {
+		this.crashesPerMillionMiles = crashesPerMillionMiles;
 	}
 	public String getCrashesPerMillionMilesString(){
 		
 		return onePlace.format(getCrashesPerMillionMiles());
 		
 	}
-	public Integer getMilesSinceLastCrash() {
-		return milesSinceLastCrash;
-	}
-	public Integer getDaysSinceLastCrash() {
-		return daysSinceLastCrash;
-	}
-	
-	public void calculateAndSetCrashesPerMillionMiles(Integer crashEvents, Integer crashOdometer){
-		if (crashOdometer.equals(0)){
+	public void calculateAndSetCrashesPerMillionMiles()
+	{
+		if (totalMiles.equals(0)){
 			
 			crashesPerMillionMiles = 0.0;
 			return;
 		}
-		crashesPerMillionMiles = new Double(crashEvents)/new Double(crashOdometer)/100000000.0;
+		crashesPerMillionMiles = new Double(crashesInTimePeriod)/new Double(totalMiles.longValue())/100000000.0;
 	}
-	public void calculateAndSetMilesSinceLastCrash(Integer crashOdometer){
-		milesSinceLastCrash = crashOdometer*100;
+
+	public Integer getCrashesInTimePeriod() {
+		return crashesInTimePeriod;
 	}
-	public void calculateAndSetDaysSinceLastCrash(Date lastCrashDate){
-		if (lastCrashDate == null){
-			
-			daysSinceLastCrash = 365;
-			return;
-		}
-		Date now = new Date();
-		Long diffInDays = new Long((now.getTime()-lastCrashDate.getTime())/1000/60/60/24);
-		
-		daysSinceLastCrash = diffInDays.intValue();
+
+	public void setCrashesInTimePeriod(Integer crashesInTimePeriod) {
+		this.crashesInTimePeriod = crashesInTimePeriod;
 	}
 }

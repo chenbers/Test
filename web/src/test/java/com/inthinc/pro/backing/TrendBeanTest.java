@@ -35,11 +35,12 @@ public class TrendBeanTest extends BaseBeanTest
         
         // make sure the spring injection worked
         assertNotNull(trendBean.getScoreDAO());
-        assertNotNull(trendBean.getNavigation());
+        assertNotNull(trendBean.getDurationBean());
+        assertNotNull(trendBean.getTrendBeanState());
                 
         // try grabbing some regions based on above, should be 3 
         //  for normal101
-        trendBean.getNavigation().setGroupID(101);
+        trendBean.getTrendBeanState().setGroupID(101);
         Integer start = trendBean.getStart();   
 /*        
         assertEquals(3,

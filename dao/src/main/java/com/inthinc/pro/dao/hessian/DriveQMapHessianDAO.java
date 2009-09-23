@@ -143,11 +143,11 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
     }      
 
     @Override    
-    public DriveQMap getGDTrendByGTC(Integer groupID, Integer duration)
+    public List<DriveQMap> getGDTrendByGTC(Integer groupID, Integer duration, Integer count)
     {
         try
         {
-            return getMapper().convertToModelObject(getReportService().getGDTrendByGTC(groupID,duration), DriveQMap.class);           
+            return getMapper().convertToModelObject(getReportService().getGDTrendByGTC(groupID,duration,count), DriveQMap.class);           
         }
         catch (EmptyResultSetException e)
         {

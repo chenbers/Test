@@ -24,6 +24,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
@@ -174,6 +175,43 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyList();
         }
     }
+    
+    @Override
+    public ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
+    {
+    	// TODO: This may change to just call the backend directly
+        List<ScoreableEntity> scores = getScores(groupID, duration, scoreType);
+        
+    	ScoreableEntity groupScore = new ScoreableEntity();
+    	groupScore.setEntityType(EntityType.ENTITY_GROUP);
+    	groupScore.setEntityID(groupID);
+//        Group group = groupDAO.findByID(groupID);
+//    	groupScore.setIdentifier(group.getName() + " Average");
+    	
+    	Integer totalScore = 0;
+    	Integer totalGroups = 0;
+    	for (ScoreableEntity item : scores)
+    	{
+    		Integer score = item.getScore();  	
+    		if (score != null && score >= 0)
+    		{
+    			totalGroups++;
+    			totalScore += score;
+    		}
+    	}
+    	if (totalGroups != 0)
+    	{
+    		groupScore.setScore(totalScore/totalGroups);
+    	}
+    	else
+    	{
+    		groupScore.setScore(-1);
+    	}
+    	
+        return groupScore;
+
+
+    }
 
     @Override
     public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration)
@@ -181,26 +219,30 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 
         try
         {
+        	// subgroups
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
-
+            
+            
             Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
             for (GQVMap gqv : gqvList)
             {
                 List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+                int idx = 0;
                 for (DriveQMap driveQMap : gqv.getDriveQV())
                 {
                     ScoreableEntity entity = new ScoreableEntity();
                     entity.setEntityID(gqv.getGroup().getGroupID());
                     entity.setEntityType(EntityType.ENTITY_GROUP);
-                    // entity.setScore(null);
                     entity.setScore(driveQMap.getOverall() == null ? NO_SCORE : driveQMap.getOverall());
                     entity.setScoreType(ScoreType.SCORE_OVERALL);
                     scoreList.add(entity);
+                    
                 }
                 returnMap.put(gqv.getGroup().getGroupID(), scoreList);
 
             }
+            returnMap.put(groupID, getTopGroupScoreList(groupID, returnMap));
             return returnMap;
         }
         catch (EmptyResultSetException e)
@@ -209,7 +251,56 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    @Override
+    private List<ScoreableEntity> getTopGroupScoreList(Integer topGroupID, Map<Integer, List<ScoreableEntity>> returnMap) {
+    	
+        List<ScoreableEntity> topGroupScoreList = null;
+        for (Integer groupID : returnMap.keySet())
+        {
+        	List<ScoreableEntity> groupScores = returnMap.get(groupID);
+        	if (topGroupScoreList == null)
+        	{
+        		topGroupScoreList = new ArrayList<ScoreableEntity>();
+            	for (ScoreableEntity entity : groupScores)
+            	{
+                    ScoreableEntity topGroupEntity = new ScoreableEntity();
+                    topGroupEntity.setEntityID(topGroupID);
+                    topGroupEntity.setEntityType(EntityType.ENTITY_GROUP);
+                    topGroupEntity.setScore(0);
+                    topGroupEntity.setScoreType(ScoreType.SCORE_OVERALL);
+                    topGroupEntity.setIdentifierNum(0);
+                    topGroupScoreList.add(topGroupEntity);
+            	}
+        		
+        	}
+        	int idx = 0;
+        	for (ScoreableEntity entity : groupScores)
+        	{
+                if (entity.getScore() != NO_SCORE)
+                {
+                	ScoreableEntity topGroupEntity = topGroupScoreList.get(idx);
+                	topGroupEntity.setScore(topGroupEntity.getScore() + entity.getScore());
+                	topGroupEntity.setIdentifierNum(topGroupEntity.getIdentifierNum()+ 1);
+                }
+        		idx++;
+        	}
+        }
+        
+        
+    	for (ScoreableEntity entity : topGroupScoreList)
+    	{
+    		if (entity.getIdentifierNum() > 0)
+    		{
+    			entity.setScore(entity.getScore()/entity.getIdentifierNum());
+    		}
+    		else
+    		{
+    			entity.setScore(NO_SCORE);
+    		}
+    	}
+		return topGroupScoreList;
+	}
+
+	@Override
     public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType)
     {
         try
@@ -680,14 +771,17 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 			
 	        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getCode());
 	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-	 //TODO       CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
-	        CrashSummary crashSummary = new CrashSummary(100,2345,new Date(),204);
-	               
+	        CrashSummary crashSummary = new CrashSummary(
+	        					dqMap.getCrashEvents() == null ? 0 : dqMap.getCrashEvents(), 
+	        					dqMap.getCrashTotal() == null ? 0 : dqMap.getCrashTotal(), 
+	        					dqMap.getCrashDays() == null ? 0 : dqMap.getCrashDays(),
+	        					dqMap.getOdometer() == null ? 0 : dqMap.getOdometer(), 
+	        					dqMap.getCrashOdometer() == null ? 0 : dqMap.getCrashOdometer());
 	        return crashSummary;
 		}
 		catch (EmptyResultSetException e)
         {
-            return new CrashSummary(0,0,new Date(),0);
+	        return new CrashSummary(0,0,0,0,0);
         }
 	}
 
@@ -697,14 +791,18 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 		try {
 	        Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, Duration.TWELVE.getCode());
 	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-	//TODO        CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
-	        CrashSummary crashSummary = new CrashSummary(50,2345,new Date(),204);
+	        CrashSummary crashSummary = new CrashSummary(
+					dqMap.getCrashEvents() == null ? 0 : dqMap.getCrashEvents(), 
+					dqMap.getCrashTotal() == null ? 0 : dqMap.getCrashTotal(), 
+					dqMap.getCrashDays() == null ? 0 : dqMap.getCrashDays(),
+					dqMap.getOdometer() == null ? 0 : dqMap.getOdometer(), 
+					dqMap.getCrashOdometer() == null ? 0 : dqMap.getCrashOdometer());
 	         
 	        return crashSummary;
 		}
 		catch (EmptyResultSetException e)
 	    {
-	        return new CrashSummary(0,0,new Date(),0);
+	        return new CrashSummary(0,0,0,0,0);
 	    }
 	}
 
@@ -714,14 +812,18 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 		try {
 	        Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, Duration.TWELVE.getCode());
 	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-	//       CrashSummary crashSummary = new CrashSummary(dqMap.getCrashEvents(), dqMap.getCrashOdometer(),dqMap.getLastCrashDate(),dqMap.getTotalCrashes());
-	        CrashSummary crashSummary = new CrashSummary(25,2345,new Date(),204);
+	        CrashSummary crashSummary = new CrashSummary(
+					dqMap.getCrashEvents() == null ? 0 : dqMap.getCrashEvents(), 
+					dqMap.getCrashTotal() == null ? 0 : dqMap.getCrashTotal(), 
+					dqMap.getCrashDays() == null ? 0 : dqMap.getCrashDays(),
+					dqMap.getOdometer() == null ? 0 : dqMap.getOdometer(), 
+					dqMap.getCrashOdometer() == null ? 0 : dqMap.getCrashOdometer());
 	               
 	        return crashSummary;
 		}
 		catch (EmptyResultSetException e)
 	    {
-	        return new CrashSummary(0,0,new Date(),0);
+	        return new CrashSummary(0,0,0,0,0);
 	    }
 	}
 
@@ -743,16 +845,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             	int i = 0;
                 for (DriveQMap driveQMap : gqv.getDriveQV())
                 {
-                	Long distance = 0l;
-                	if (driveQMap.getEndingOdometer() != null && driveQMap.getStartingOdometer() != null)
-                	{
-                		distance = driveQMap.getEndingOdometer().longValue()-driveQMap.getStartingOdometer().longValue();
-                	}
+                	Long distance = (driveQMap.getOdometer() == null) ? 0l : driveQMap.getOdometer();
+
                 	SpeedPercentItem item = speedPercentItemList.get(i++);
                 	item.setMiles(distance + item.getMiles().longValue());
-                	// TODO: PUT THIS BACK!!!
-//                	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? 0 : driveQMap.getSpeedOdometer()) + item.getMilesSpeeding().longValue());
-                	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? (distance/2l) : driveQMap.getSpeedOdometer()) + item.getMilesSpeeding().longValue());
+                	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? 0 : driveQMap.getSpeedOdometer()) + item.getMilesSpeeding().longValue());
                 }
 
             }
@@ -773,7 +870,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
-logger.info("getIdlePercentItems gqvList size = " + gqvList.size());
+//logger.info("getIdlePercentItems gqvList size = " + gqvList.size());
             List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem>();
             for (int i = 0; i < duration.getDvqCount(); i++)
             {
@@ -788,12 +885,11 @@ logger.info("getIdlePercentItems gqvList size = " + gqvList.size());
                 	Long driveTime = (driveQMap.getDriveTime() != null) ? driveQMap.getDriveTime() : 0l; 
                 	Long idleTime = (driveQMap.getIdleHi() != null) ? driveQMap.getIdleHi() : 0l; 
                 	idleTime += (driveQMap.getIdleLo() != null) ? driveQMap.getIdleLo(): 0l; 
-logger.info(i + ": drive = " + driveTime + " idle = " + idleTime);
+//logger.info(i + ": drive = " + driveTime + " idle = " + idleTime);
                 	IdlePercentItem item = idlePercentItemList.get(i++);
                 	item.setDrivingTime(driveTime + item.getDrivingTime());
-                	// TODO: PUT THIS BACK!!!
-//                	item.setIdlingTime(idleTime + item.getIdlingTime()); 
-                	item.setIdlingTime(idleTime + item.getDrivingTime()/2); 
+                	item.setIdlingTime(idleTime + item.getIdlingTime()); 
+//                	item.setIdlingTime(idleTime + item.getDrivingTime()/2); 
                 }
 
             }

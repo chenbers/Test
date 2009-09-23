@@ -470,10 +470,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
 	}
 	public CrashSummaryBean getCrashSummary() {
 		
- //   	crashSummary = scoreDAO.getDriverCrashSummaryData(getDriverID());
-//		crashSummary = new CrashSummary(100,2345,new Date(),204);
 		crashSummary.getCrashSummaryForDriver(getDriverID());
-		
 		return crashSummary;
 	}
 

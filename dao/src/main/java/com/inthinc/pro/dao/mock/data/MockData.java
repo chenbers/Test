@@ -291,9 +291,16 @@ public class MockData {
         driveQMap.setSpeeding5(randomInt(0, 50));
         driveQMap.setSpeeding((driveQMap.getSpeeding1() + driveQMap.getSpeeding2() + driveQMap.getSpeeding3() + driveQMap.getSpeeding4() + driveQMap.getSpeeding5()) / 5);
         driveQMap.setOverall((driveQMap.getDrivingStyle() + driveQMap.getSeatbelt() + driveQMap.getSpeeding()) / 3);
-        driveQMap.setCrashEvents(randomInt(0,50));
-        driveQMap.setCrashOdometer(odometer*10);
-        driveQMap.setLastCrashDate(new Date());
+        driveQMap.setCrashEvents(randomInt(0,10));
+        driveQMap.setCrashTotal(randomInt(10,50));
+        driveQMap.setCrashOdometer(odometer/2);
+        driveQMap.setCrashDays(randomInt(0, 10));
+        driveQMap.setSpeedOdometer1(randomInt(0, 100));
+        driveQMap.setSpeedOdometer2(randomInt(0, 100));
+        driveQMap.setSpeedOdometer3(randomInt(0, 100));
+        driveQMap.setSpeedOdometer4(randomInt(0, 100));
+        driveQMap.setSpeedOdometer5(randomInt(0, 100));
+        driveQMap.setSpeedOdometer(driveQMap.getSpeedOdometer1() + driveQMap.getSpeedOdometer2() + driveQMap.getSpeedOdometer3() + driveQMap.getSpeedOdometer4() + driveQMap.getSpeedOdometer5());
         return driveQMap;
     }
 
