@@ -248,11 +248,11 @@ public class ReportServiceIntegrationTest
         
         try 
         {
-            DriveQMap dqm = dqmDAO.getGDTrendByGTC(
-                    16777217, 5);
+            List<DriveQMap> dqm = dqmDAO.getGDTrendByGTC(
+                    16777217, Duration.TWELVE.getCode(), Duration.TWELVE.getDvqCount());
             if ( dqm != null ) {
-                System.out.println("for group 16777217 " +
-                        dqm.getOverall());
+//                System.out.println("for group 16777217 " +
+//                        dqm.getOverall());
             } else {
                 System.out.println("null map returned");
             }
