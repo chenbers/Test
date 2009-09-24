@@ -10,8 +10,8 @@ public class TrendBeanItem {
 	private ScoreableEntityPkg scoreableEntityPkg;
 	private CrashSummary crashSummary;
 	
-	public String getCrashesPerMillionMiles() {
-		return crashSummary.getCrashesPerMillionMilesString();
+	public Double getCrashesPerMillionMiles() {
+		return crashSummary.getCrashesPerMillionMiles();
 	}
 	public ScoreableEntityPkg getScoreableEntityPkg() {
 		return scoreableEntityPkg;

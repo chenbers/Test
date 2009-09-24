@@ -78,6 +78,10 @@
         <converter-class>com.inthinc.pro.convert.PerMillionsMilesToPerMillionsKmConverter</converter-class>
     </converter>
     <converter>
+        <converter-id>PerMillionsMilesToPerMillionsKmEstimateConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.PerMillionsMilesToPerMillionsKmEstimateConverter</converter-class>
+    </converter>
+    <converter>
         <converter-id>MpgToKplConverter</converter-id>
         <converter-class>com.inthinc.pro.convert.MpgToKplConverter</converter-class>
     </converter>

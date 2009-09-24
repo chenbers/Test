@@ -65,31 +65,31 @@
 						<c:if test="#{not scroll}">
 							<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="5%">
 								<h:selectBooleanCheckbox id="showCheckBox" value="#{trendBean.summaryItem.show}">
-			                    	<a4j:support event="onclick" reRender="xypanel,hiddenField1" action="#{trendBean.saveStateAction}">
+			                    	<a4j:support event="onclick" reRender="xypanel,hiddenFieldTrend" action="#{trendBean.saveStateAction}">
 			                        	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
 			                            <f:param name="selected" value="#{trendBean.summaryItem.groupID}"/>
 			                        </a4j:support>
 								</h:selectBooleanCheckbox>
 							</td>
 						</c:if>
-				
-						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="10%">
+						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 10 : 8}%">
 							<rich:spacer width="17" height="17"
 								style="background-color:#{trendBean.summaryItem.scoreableEntityPkg.colorKey};border-style:solid;border-width:1px;border-color:#000000">
 							</rich:spacer>
 						</td>
-						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 50 : 65}%">
+						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 45 : 60}%">
 							<h:outputText value="#{trendBean.summaryItem.groupName}" />
-						</td>
-						<td id="trendTable:summaryitems:0:j_id268" class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 10}%">
-							<h:outputText value="#{trendBean.summaryItem.crashesPerMillionMiles}"
-								converter="PerMillionsMilesToPerMillionsKmConverter" />
 						</td>
 						<td class="dr-table-cell rich-table-cell trendTableScore" style="border-bottom: none" width="15%">
 							<ui:include src="/includes/scoreBox.xhtml">
 								<ui:param name="scoreStyle" value="#{trendBean.summaryItem.scoreableEntityPkg.style}" />
 								<ui:param name="score" value="#{trendBean.summaryItem.score}" />
 							</ui:include>
+						</td>
+						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 15}%">
+							<h:outputText value="#{trendBean.summaryItem.crashesPerMillionMiles}"
+								converter="PerMillionsMilesToPerMillionsKmEstimateConverter" 
+								style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>
 						</td>
 					</tr>
 				</tbody>
@@ -102,7 +102,7 @@
 				
 				<rich:column width="5%" rendered="#{not scroll}">
 					<h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}">
-                    	<a4j:support event="onclick" reRender="xypanel,hiddenField1" action="#{trendBean.saveStateAction}">
+                    	<a4j:support event="onclick" reRender="xypanel,hiddenFieldTrend" action="#{trendBean.saveStateAction}">
                         	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
                             <f:param name="selected" value="#{item.groupID}"/>
                         </a4j:support>
@@ -140,21 +140,6 @@
 						<h:outputText value="#{item.groupName}" />
 					</pretty:link>
 				</rich:column>
-				<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}"
-					id="crashes">
-					<f:facet name="header">
-						<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
-					</f:facet>
-					<rich:toolTip for="trendTable:items:crashesheader">
-						<h:outputFormat
-							value="#{messages.crash_summary_overDistanceTitle}">
-							<a4j:actionparam value="miles"
-								converter="MeasurementTextConverter" />
-						</h:outputFormat>
-					</rich:toolTip>
-					<h:outputText value="#{item.crashesPerMillionMiles}"
-						converter="PerMillionsMilesToPerMillionsKmConverter" />
-				</rich:column>
 				<rich:column width="15%" styleClass="trendTableScore">
 					<f:facet name="header">
 						<a4j:commandLink value="#{messages.trendReport_header_score}"
@@ -177,6 +162,22 @@
 							value="#{item.scoreableEntityPkg.style}" />
 						<ui:param name="score" value="#{item.score}" />
 					</ui:include>
+				</rich:column>
+				<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}"
+					id="crashes">
+					<f:facet name="header">
+						<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
+					</f:facet>
+					<rich:toolTip for="trendTable:items:crashesheader">
+						<h:outputFormat
+							value="#{messages.crash_summary_overDistanceTitle}">
+							<a4j:actionparam value="miles"
+								converter="MeasurementTextConverter" />
+						</h:outputFormat>
+					</rich:toolTip>
+					<h:outputText value="#{item.crashesPerMillionMiles}"
+						converter="PerMillionsMilesToPerMillionsKmEstimateConverter" 
+						style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>
 				</rich:column>
 			</rich:dataTable>
 

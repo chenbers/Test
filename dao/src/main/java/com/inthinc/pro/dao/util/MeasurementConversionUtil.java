@@ -63,8 +63,7 @@ public class MeasurementConversionUtil
 
     public static Number fromPerMillionMilesToPerMillionKm(Number perMillionMiles){
     	
-        Double perMillionKm = perMillionMiles.doubleValue() * 0.62137;
-        return Long.valueOf(Math.round(perMillionKm)).intValue();
+        return perMillionMiles.doubleValue() * 0.62137;
     }
     public static Number fromMPGtoKPL(Number milesPerGallon)
     {
