@@ -103,6 +103,7 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
     public Trip getTrip(CrashReport crashReport) {
         DateTime crashTime = new DateTime(crashReport.getDate());        
         List<Trip> tripList = null;
+        //TODO: Don't lookup trips by driverID if the driver is the UNKNOWN driver
         if (crashReport.getDriverID() != null) {
             tripList = driverDAO.getTrips(crashReport.getDriverID(), crashTime.minusDays(1).toDate(), crashTime.plusDays(1).toDate());
         } else if (crashReport.getVehicleID() != null) {

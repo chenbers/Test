@@ -63,7 +63,6 @@
 				baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
 			var map, vehicleMarker, plot, gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [], tripSpeed = [], crashPolyline, tripPolyline;
-			var bounds = new GLatLngBounds();
 			var crashPoint = {latlng: new GLatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
 
 			/* TODO: Retrieve data via JSON */
@@ -72,7 +71,7 @@
 	    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
 	    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
 				crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
-				bounds.extend(new GLatLng(#{point.lat}, #{point.lng}));
+				//bounds.extend(new GLatLng(#{point.lat}, #{point.lng}));
 	    	</a4j:repeat>    	
 
 	    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
@@ -117,9 +116,9 @@
 					
 					crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
 					map.addOverlay(crashPolyline);
-					
-				    map.setZoom(map.getBoundsZoomLevel(bounds));
-					map.setCenter(bounds.getCenter());
+
+					var bounds = crashPolyline.getBounds();
+   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
 
 					GEvent.addListener(map, 'mousemove', function(point) {
 						var closestPoint = getClosestPointFromList(point, crashPoints);			
@@ -204,12 +203,16 @@
 
 	        function formatDate(date) {
 		        var hour = date.getHours();
+		        var min = date.getMinutes();
 		        var timePeriod = "#{messages.time_period_am}";
 		        if(hour > 12) {
 			        hour = hour - 12;
 			        timePeriod = "#{messages.time_period_pm}";
 		        }
-		        return hour + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + timePeriod;
+		        if(10 > min) {
+			        min = "0" + min;
+		        }
+		        return hour + ":" + min + ":" + date.getSeconds() + " " + timePeriod;
 	        }
 
 			function bodyLoad() {

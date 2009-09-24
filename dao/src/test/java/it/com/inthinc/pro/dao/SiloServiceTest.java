@@ -390,7 +390,7 @@ public class SiloServiceTest {
         // zones
         
         
-//        zones(acctID, team1Group.getGroupID());
+        zones(acctID, team1Group.getGroupID());
         
         
         // devices
