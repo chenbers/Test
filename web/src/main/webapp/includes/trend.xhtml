@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+   	<t:saveState value="#{trendBean.sortColumn}"></t:saveState>
+	<t:saveState value="#{trendBean.sortDirection}"></t:saveState>
+	<t:saveState value="#{trendBean.trendBeanItems}"></t:saveState>
+	<t:saveState value="#{trendBean.groupTrendMap}"></t:saveState>
+	<a4j:outputPanel id="trendOutputPanel" >
+		<div class="panel_nw">
+		<div class="panel_title" style="z-index: #{zorder}">
+			<span class="line">#{messages.trendReport_header}</span>
+
+			<pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
+				<f:param value="#{trendBeanState.groupID}" />
+				<f:param value="TREND" />
+			</pretty:urlbuffer> 
+			<pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
+            	<f:param value="#{trendBeanState.groupID}"/>
+            </pretty:urlbuffer>
+			
+			<ui:include src="/includes/durationPanelHeader.xhtml">
+				<ui:param name="reRenderList" value="trendOutputPanel" />
+				<ui:param name="duration" value="#{trendDurationBean.duration}" />
+				<ui:param name="groupID" value="#{trendBeanState.groupID}" />
+				<ui:param name="report" value="TREND" />
+				<ui:param name="id" value="trend" />
+				<ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
+                <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
+			</ui:include>
+			
+		</div>
+		</div>
+
+
+		<div class="panel_w">
+		<div class="panel_content">
+			<rich:panel style="height:#{xyheight};width:#{xywidth}">
+				<div id="chartdiv2" align="center"></div>
+				<script type="text/javascript">
+        			var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");						   						   		
+        			chart.setDataXML("<chart></chart>");
+        			chart.setTransparent(true);
+        			chart.render("chartdiv2");
+        		</script>
+			</rich:panel> 
+			<!-- Start xy graph --> 
+			<rich:panel id="xypanel">
+				<h:inputHidden value="#{trendBean.lineDef}" id="hiddenField1" />
+				<script type="text/javascript">
+    					 var trendTargetElement = document.getElementById("hiddenField1");
+    					 var chartObj = getChartFromId("TrendChartId");
+    					 chartObj.setDataXML(trendTargetElement.value);
+    					 function FC_Rendered(DOMId)
+    					 {
+    					         //If it's our required chart
+    					         if (DOMId=="TrendChartId"){
+    					            //Simply alert
+    								chartObj = getChartFromId("TrendChartId");
+        							chartObj.setDataXML(trendTargetElement.value);
+        				            return;
+        				         }
+        			      }
+        		</script>
+			</rich:panel> 
+			<!-- End xy graph --> 
+			<rich:spacer height="3" /> 
+			<h:form id="trendTable">
+				<rich:spacer height="15" />
+				<rich:separator />
+				<table id="trendTable:summaryitems"
+					class="dr-table rich-table datatable" width="100%" cellspacing="1"
+					cellpadding="0" border="0" style="border: none;">
+					<colgroup span="5" />
+					<tbody id="trendTable:summaryitems:tb">
+					<tr class="dr-table-row rich-table-row dr-table-firstrow rich-table-firstrow tableOdd">
+						<c:if test="#{not scroll}">
+							<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="5%">
+								<h:selectBooleanCheckbox id="showCheckBox" value="#{trendBean.summaryItem.show}">
+			                    	<a4j:support event="onclick" reRender="xypanel,hiddenField1" action="#{trendBean.saveStateAction}">
+			                        	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
+			                            <f:param name="selected" value="#{trendBean.summaryItem.groupID}"/>
+			                        </a4j:support>
+								</h:selectBooleanCheckbox>
+							</td>
+						</c:if>
+				
+						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="10%">
+							<rich:spacer width="17" height="17"
+								style="background-color:#{trendBean.summaryItem.scoreableEntityPkg.colorKey};border-style:solid;border-width:1px;border-color:#000000">
+							</rich:spacer>
+						</td>
+						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 50 : 65}%">
+							<h:outputText value="#{trendBean.summaryItem.groupName}" />
+						</td>
+						<td id="trendTable:summaryitems:0:j_id268" class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 10}%">
+							<h:outputText value="#{trendBean.summaryItem.crashesPerMillionMiles}"
+								converter="PerMillionsMilesToPerMillionsKmConverter" />
+						</td>
+						<td class="dr-table-cell rich-table-cell trendTableScore" style="border-bottom: none" width="15%">
+							<ui:include src="/includes/scoreBox.xhtml">
+								<ui:param name="scoreStyle" value="#{trendBean.summaryItem.scoreableEntityPkg.style}" />
+								<ui:param name="score" value="#{trendBean.summaryItem.score}" />
+							</ui:include>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<rich:dataTable value="#{trendBean.trendBeanItems}" id="items"	var="item" styleClass="datatable" 
+				rowClasses="tableOdd,tableEven" cellspacing="1" width="100%" 
+				rows="#{scroll ? 5 : 0}" >
+				
+				
+				<rich:column width="5%" rendered="#{not scroll}">
+					<h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}">
+                    	<a4j:support event="onclick" reRender="xypanel,hiddenField1" action="#{trendBean.saveStateAction}">
+                        	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
+                            <f:param name="selected" value="#{item.groupID}"/>
+                        </a4j:support>
+					</h:selectBooleanCheckbox>
+                </rich:column>      
+				
+				<rich:column width="10%">
+					<f:facet name="header">
+						<h:outputText value=" " />
+					</f:facet>
+					<rich:spacer width="17" height="17"
+						style="background-color:#{item.scoreableEntityPkg.colorKey};border-style:solid;border-width:1px;border-color:#000000">
+					</rich:spacer>
+				</rich:column>
+				<rich:column width="65%">
+					<f:facet name="header">
+						<a4j:commandLink
+							value="#{messages.trendReport_header_divisionTeam}"
+							reRender="xypanel,bottomScroller,items"
+							action="#{trendBean.sort}" ajaxSingle="true">
+							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
+								value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}" />
+							<f:setPropertyActionListener target="#{trendBean.sortColumn}"
+								value="se.identifier" />
+							<h:graphicImage styleClass="sortArrows"
+								rendered="#{trendBean.sortColumn eq 'se.identifier'}"
+								value="/images/#{trendBean.sortDirection eq 'DESC' ? 'sort_desc.gif' : 'sort_asc.gif'}" />
+							<h:graphicImage styleClass="sortArrows"
+								rendered="#{trendBean.sortColumn ne 'se.identifier'}"
+								value="/images/sort_available.gif" />
+						</a4j:commandLink>
+					</f:facet>
+					<pretty:link mappingId="dashboard">
+						<f:param value="#{item.groupID}" />
+						<h:outputText value="#{item.groupName}" />
+					</pretty:link>
+				</rich:column>
+				<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}"
+					id="crashes">
+					<f:facet name="header">
+						<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
+					</f:facet>
+					<rich:toolTip for="trendTable:items:crashesheader">
+						<h:outputFormat
+							value="#{messages.crash_summary_overDistanceTitle}">
+							<a4j:actionparam value="miles"
+								converter="MeasurementTextConverter" />
+						</h:outputFormat>
+					</rich:toolTip>
+					<h:outputText value="#{item.crashesPerMillionMiles}"
+						converter="PerMillionsMilesToPerMillionsKmConverter" />
+				</rich:column>
+				<rich:column width="15%" styleClass="trendTableScore">
+					<f:facet name="header">
+						<a4j:commandLink value="#{messages.trendReport_header_score}"
+							reRender="xypanel,bottomScroller,items"
+							action="#{trendBean.sort}" ajaxSingle="true">
+							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
+								value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}" />
+							<f:setPropertyActionListener target="#{trendBean.sortColumn}"
+								value="se.score" />
+							<h:graphicImage styleClass="sortArrows"
+								rendered="#{trendBean.sortColumn eq 'se.score'}"
+								value="/images/#{trendBean.sortDirection eq 'DESC' ? 'sort_desc.gif' : 'sort_asc.gif'}" />
+							<h:graphicImage styleClass="sortArrows"
+								rendered="#{trendBean.sortColumn ne 'se.score'}"
+								value="/images/sort_available.gif" />
+						</a4j:commandLink>
+					</f:facet>
+					<ui:include src="/includes/scoreBox.xhtml">
+						<ui:param name="scoreStyle"
+							value="#{item.scoreableEntityPkg.style}" />
+						<ui:param name="score" value="#{item.score}" />
+					</ui:include>
+				</rich:column>
+			</rich:dataTable>
+
+		
+			<rich:datascroller id="bottomScroller" for="items" immediate="true"
+				align="center" styleClass="dataScrollerLarge"
+				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
+				renderIfSinglePage="false" reRender="items,xypanel"
+				rendered="#{scroll}">
+			</rich:datascroller>
+
+
+		</h:form></div>
+		</div>
+
+		<div class="panel_sw">
+		<div class="panel_statusbar"></div>
+		</div>
+
+	</a4j:outputPanel>
+
+</ui:composition>
