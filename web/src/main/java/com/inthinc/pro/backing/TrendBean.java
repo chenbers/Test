@@ -39,10 +39,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     private ScoreDAO scoreDAO;
     private TrendBeanState trendBeanState;
 	private DurationBean durationBean;
-
-
 	private List<TrendBeanItem> trendBeanItems;
-    private String lineDef;
+	Map<Integer, List<ScoreableEntity>> groupTrendMap;
+	private String lineDef;
 
     private TrendBeanItem summaryItem;
     
@@ -97,8 +96,8 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
             trendBeanItem.setScoreableEntity(score);
             
             Integer groupID = se.getSe().getEntityID();
-            if (trendBeanState.getFlyout().get(groupID) != null) {
-                se.setShow((Boolean) trendBeanState.getFlyout().get(groupID));
+            if (trendBeanState.getGroupVisibleState().get(groupID) != null) {
+                se.setShow((Boolean) trendBeanState.getGroupVisibleState().get(groupID));
             }
             getTrendBeanItems().add(trendBeanItem);
         }
@@ -183,6 +182,18 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
 		this.trendBeanItems = trendBeanItems;
 	}
 
+    public Map<Integer, List<ScoreableEntity>> getGroupTrendMap() {
+    	if (groupTrendMap == null)
+    	{
+            groupTrendMap = getScoreDAO().getTrendScores(trendBeanState.getGroupID(), getDurationBean().getDuration());
+    	}
+		return groupTrendMap;
+	}
+
+	public void setGroupTrendMap(Map<Integer, List<ScoreableEntity>> groupTrendMap) {
+		this.groupTrendMap = groupTrendMap;
+	}
+
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
@@ -200,8 +211,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     }
 
     public String getLineDef()
-    {      
-        lineDef = createLineDef();
+    {
+    	if (lineDef == null)
+    		lineDef = createLineDef();
         return lineDef;
     }
 
@@ -228,15 +240,13 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         sb.append(GraphicUtil.createMonthsString(getDurationBean().getDuration()));
         sb.append("</categories>");
 
-        // Loop over returned set of group ids, controlled by scroller
-// TODO: should this be cached?        
-        Map<Integer, List<ScoreableEntity>> groupTrendMap = getScoreDAO().getTrendScores(
-                trendBeanState.getGroupID(), getDurationBean().getDuration());
-        
         // top group
-        ScoreableEntityPkg summaryPkg = summaryItem.getScoreableEntityPkg();
-        List<ScoreableEntity> summaryList = groupTrendMap.get(summaryPkg.getSe().getEntityID());
-        addDataSet(sb, summaryPkg, summaryList);
+        if (!trendBeanState.getMaximized() || (trendBeanState.getMaximized() && summaryItem.getShow()))
+        {
+        	ScoreableEntityPkg summaryPkg = summaryItem.getScoreableEntityPkg();
+        	List<ScoreableEntity> summaryList = getGroupTrendMap().get(summaryPkg.getSe().getEntityID());
+        	addDataSet(sb, summaryPkg, summaryList);
+        }
         int pgStart = start;
         int pgEnd = end;
         if (trendBeanState.getMaximized())
@@ -257,7 +267,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
             	continue;
             }
             // Fetch to get children's observations
-            List<ScoreableEntity> ss = groupTrendMap.get(se.getSe().getEntityID());
+            List<ScoreableEntity> ss = getGroupTrendMap().get(se.getSe().getEntityID());
 
             // Y-coordinates
             addDataSet(sb, se, ss);
@@ -312,6 +322,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     private TrendBeanItem createSummaryItem() {
     	TrendBeanItem summaryTrendBeanItem = new TrendBeanItem();
     	ScoreableEntity score = getScoreDAO().getTrendSummaryScore(trendBeanState.getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
+        score.setEntityID(trendBeanState.getGroupID());
     	
     	String summaryTitle = MessageUtil.formatMessageString("trendReport_summary", getGroupHierarchy().getGroup(trendBeanState.getGroupID()).getName());
     	score.setIdentifier(summaryTitle);
@@ -320,6 +331,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         se.setSe(score);
         se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
         se.setColorKey(ColorSelectorStandard.StandardColors.BLACK.entitycolorKey());
+        if (trendBeanState.getGroupVisibleState().get(trendBeanState.getGroupID()) != null) {
+            se.setShow((Boolean) trendBeanState.getGroupVisibleState().get(trendBeanState.getGroupID()));
+        }
 
         CrashSummary crashSummary = getScoreDAO().getGroupCrashSummaryData(score.getEntityID());
         
@@ -332,8 +346,8 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
 
     public void scrollerListener(DataScrollerEvent se)     
     {  
-        this.start = (se.getPage()-1)*this.ROWS_PER_PAGE + 1;
-        this.end = (se.getPage())*this.ROWS_PER_PAGE;
+        this.start = (se.getPage()-1)*ROWS_PER_PAGE + 1;
+        this.end = (se.getPage())*ROWS_PER_PAGE;
         
         //Partial page
         if ( this.end > getTrendBeanItems().size() ) {
@@ -436,14 +450,16 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
 
 	public void setDurationBean(DurationBean durationBean) {
 		this.durationBean = durationBean;
-		setTrendBeanItems(null);
 	}
     
     public void saveStateAction()
     {
+    	TrendBeanItem summaryItem = getSummaryItem();
+		trendBeanState.getGroupVisibleState().put(summaryItem.getGroupID(), summaryItem.getShow());
+    	
     	for (TrendBeanItem item : getTrendBeanItems())
     	{
-    		trendBeanState.getFlyout().put(item.getGroupID(), item.getShow());
+    		trendBeanState.getGroupVisibleState().put(item.getGroupID(), item.getShow());
     	}
     }
 }

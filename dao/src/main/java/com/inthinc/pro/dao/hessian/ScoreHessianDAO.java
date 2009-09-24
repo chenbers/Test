@@ -179,6 +179,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
     {
+    	return this.getAverageScoreByType(groupID, duration, scoreType);
+/*    	
     	// TODO: This may change to just call the backend directly
         List<ScoreableEntity> scores = getScores(groupID, duration, scoreType);
         
@@ -209,7 +211,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     	}
     	
         return groupScore;
-
+*/
 
     }
 

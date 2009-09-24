@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public class TrendBeanState extends BaseBean {
 
 	private Boolean maximized;
     
-    private Map<Integer, Boolean> flyout;
+    private Map<Integer, Boolean> groupVisibleState;
     
     private Integer groupID;
     private Group group;
@@ -36,16 +35,16 @@ public class TrendBeanState extends BaseBean {
 	public void setMaximized(Boolean maximized) {
 		this.maximized = maximized;
 	}
-    public Map<Integer, Boolean> getFlyout()
+    public Map<Integer, Boolean> getGroupVisibleState()
     {
-    	if (flyout == null)
-    		flyout = new HashMap<Integer, Boolean>();
-        return flyout;
+    	if (groupVisibleState == null)
+    		groupVisibleState = new HashMap<Integer, Boolean>();
+        return groupVisibleState;
     }
 
-    public void setFlyout(Map<Integer, Boolean> flyout)
+    public void setGroupVisibleState(Map<Integer, Boolean> flyout)
     {
-        this.flyout = flyout;
+        this.groupVisibleState = flyout;
     }
     
     public Integer getGroupID() {
@@ -57,7 +56,7 @@ public class TrendBeanState extends BaseBean {
 	public void setGroupID(Integer newGroupID) {
 		if (groupID == null || !groupID.equals(newGroupID))
 		{
-			setFlyout(null);
+			setGroupVisibleState(null);
 		}
 		groupID = newGroupID;
         group = getGroupHierarchy().getGroup(groupID);

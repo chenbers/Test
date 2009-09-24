@@ -11,7 +11,7 @@
    	<t:saveState value="#{trendBean.sortColumn}"></t:saveState>
 	<t:saveState value="#{trendBean.sortDirection}"></t:saveState>
 	<t:saveState value="#{trendBean.trendBeanItems}"></t:saveState>
-	<a4j:outputPanel id="trendOutputPanel" >
+		<a4j:outputPanel id="trendOutputPanel" >
 		<div class="panel_nw">
 		<div class="panel_title" style="z-index: #{zorder}">
 			<span class="line">#{messages.trendReport_header}</span>
@@ -40,32 +40,15 @@
 
 		<div class="panel_w">
 		<div class="panel_content">
-			<rich:panel style="height:#{xyheight};width:#{xywidth}">
-				<div id="chartdiv2" align="center"></div>
+			<rich:panel id="xypanel" style="height:#{xyheight};width:#{xywidth}">
+				<div id="chartdivTrend" align="center"></div>
+				<h:inputHidden value="#{trendBean.lineDef}" id="hiddenFieldTrend" />
 				<script type="text/javascript">
+					var trendTargetElement = document.getElementById("hiddenFieldTrend");
         			var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");						   						   		
-        			chart.setDataXML("<chart></chart>");
+					chart.setDataXML(trendTargetElement.value);
         			chart.setTransparent(true);
-        			chart.render("chartdiv2");
-        		</script>
-			</rich:panel> 
-			<!-- Start xy graph --> 
-			<rich:panel id="xypanel">
-				<h:inputHidden value="#{trendBean.lineDef}" id="hiddenField1" />
-				<script type="text/javascript">
-    					 var trendTargetElement = document.getElementById("hiddenField1");
-    					 var chartObj = getChartFromId("TrendChartId");
-    					 chartObj.setDataXML(trendTargetElement.value);
-    					 function FC_Rendered(DOMId)
-    					 {
-    					         //If it's our required chart
-    					         if (DOMId=="TrendChartId"){
-    					            //Simply alert
-    								chartObj = getChartFromId("TrendChartId");
-        							chartObj.setDataXML(trendTargetElement.value);
-        				            return;
-        				         }
-        			      }
+        			chart.render("chartdivTrend");
         		</script>
 			</rich:panel> 
 			<!-- End xy graph --> 
