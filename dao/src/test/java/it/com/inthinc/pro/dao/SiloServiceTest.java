@@ -551,7 +551,7 @@ public class SiloServiceTest {
         assertEquals("Zone update count (restore after delete)", Integer.valueOf(1), changedCount);
         // find after un-delete
         returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
-        assertEquals("Zone alert have deleted status after delete", Status.DELETED, returnedZoneAlert.getStatus());
+        assertEquals("Zone alert have deleted status after delete", Status.ACTIVE, returnedZoneAlert.getStatus());
         zoneAlertDAO.deleteByZoneID(zoneID);
         returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         assertEquals("Zone alert have deleted status after deletebyzoneID", Status.DELETED, returnedZoneAlert.getStatus());
