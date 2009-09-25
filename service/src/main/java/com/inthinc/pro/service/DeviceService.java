@@ -10,16 +10,21 @@ import com.inthinc.pro.model.Device;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.context.annotation.Scope;
+
 
 
 @Produces("application/xml")
 @Path("/deviceService")
+@Scope("request")
 public interface DeviceService {
 
 
+	@GET
 	@Path("/devices/{userName}")
 	public List<Device> getDevices(@PathParam("userName")String userName);
 
+	@GET
 	@Path("/device/{userName}")
 	public Device getDevice(@PathParam("userName")String userName);
 
