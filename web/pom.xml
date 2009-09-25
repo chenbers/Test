@@ -467,11 +467,13 @@
 				</configuration>
 			</plugin>
 			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.7</version>
 				<configuration>
 					<sourceExcludes>
-						<sourceExclude>${basedir}/src/main/resources/spring/applicationContext-serverPropertiesRemote.xml</sourceExclude>
-						<sourceExclude>${basedir}/src/main/resources/spring/applicationContext-mockdao.xml</sourceExclude>
+						<sourceExclude>**/applicationContext-serverPropertiesRemote.xml</sourceExclude>
+						<sourceExclude>**/applicationContext-mockdao.xml</sourceExclude>
 					</sourceExcludes>
 				</configuration>
 			</plugin>
