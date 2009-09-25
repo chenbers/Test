@@ -11,6 +11,7 @@ import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.DeviceService;
+import javax.ws.rs.Produces;
 
 public class DeviceServiceImpl implements DeviceService{
 	
@@ -19,7 +20,8 @@ public class DeviceServiceImpl implements DeviceService{
 	private GroupDAO groupDAO;
 
 
-	public String getDevices(String userName) {
+	public List<Device> getDevices(String userName) {
+		System.out.println("setGroupDAO");
 		List<Device> deviceList = new ArrayList<Device>();
 		if(userName != null)
         {
@@ -47,7 +49,12 @@ public class DeviceServiceImpl implements DeviceService{
     				sb.append(";");
 		    }
 		}
-		return sb.toString();
+		return deviceList;
+	}
+	
+	public Device getDevice(String userName)
+	{
+		return (Device)getDevices(userName).get(0);
 	}
 
 	public void setDeviceDAO(DeviceDAO deviceDAO) {
@@ -67,10 +74,12 @@ public class DeviceServiceImpl implements DeviceService{
 	}
 
 	public void setGroupDAO(GroupDAO groupDAO) {
+		System.out.println("setGroupDAO");
 		this.groupDAO = groupDAO;
 	}
 
 	public GroupDAO getGroupDAO() {
+		System.out.println("getGroupDAO");
 		return groupDAO;
 	}
 
