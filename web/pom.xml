@@ -442,15 +442,6 @@
 	</dependencies>
 	<build>
 		<finalName>tiwipro</finalName>
-		<testResources>
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-			</testResource>
-			<testResource>
-				<directory>${basedir}/src/main/resources/spring</directory>
-				<targetPath>spring</targetPath>
-			</testResource>
-		</testResources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -473,6 +464,15 @@
 							</includes>
 						</resource>
 					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<sourceExcludes>
+						<sourceExclude>${basedir}/src/main/resources/spring/applicationContext-serverPropertiesRemote.xml</sourceExclude>
+						<sourceExclude>${basedir}/src/main/resources/spring/applicationContext-mockdao.xml</sourceExclude>
+					</sourceExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
