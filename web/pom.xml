@@ -448,7 +448,6 @@
 			</testResource>
 			<testResource>
 				<directory>${basedir}/src/main/resources/spring</directory>
-				<targetPath>spring</targetPath>
 			</testResource>
 		</testResources>
 		<plugins>
@@ -474,18 +473,7 @@
 						</resource>
 					</webResources>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<sourceExcludes>
-						<sourceExclude>**/applicationContext-serverPropertiesRemote.xml</sourceExclude>
-						<sourceExclude>**/applicationContext-mockdao.xml</sourceExclude>
-					</sourceExcludes>
-				</configuration>
-			</plugin>
+			</plugin>			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
