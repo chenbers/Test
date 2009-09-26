@@ -9,6 +9,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 public class Person extends BaseEntity implements Comparable<Person> {
@@ -58,6 +59,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
     private MeasurementType measurementType;
     @Column(name = "fuelEffType")
     private FuelEfficiencyType fuelEfficiencyType;
+    
     private Locale locale;
 
     public Person() {
@@ -399,6 +401,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
+    @XmlTransient 
     public Locale getLocale() {
         return locale;
     }
