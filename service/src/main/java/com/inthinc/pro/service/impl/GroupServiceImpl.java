@@ -3,58 +3,47 @@ package com.inthinc.pro.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.service.DeviceService;
+import com.inthinc.pro.service.GroupService;
 
 
-public class DeviceServiceImpl implements DeviceService{
+public class GroupServiceImpl implements GroupService{
 	
-	private DeviceDAO deviceDAO;
 	private UserDAO userDAO;
 	private GroupDAO groupDAO;
 
 
-	public List<Device> getDevices(String userName) {
-		List<Device> deviceList = new ArrayList<Device>();
+	public List<Group> getGroups(String userName) {
+		List<Group> groupList = new ArrayList<Group>();
 		if(userName != null)
         {
             User user = userDAO.findByUserName(userName);
             if(user != null)
             {
                 Group group = groupDAO.findByID(user.getGroupID());
-                deviceList = deviceDAO.getDevicesByAcctID(group.getAccountID());
+                groupList = groupDAO.getGroupsByAcctID(group.getAccountID());
             }
         }
-		return deviceList;
+		return groupList;
 	}
 	
-	public Device getDevice(Integer deviceID)
+	public Group getGroup(Integer groupID)
 	{
 		//TODO username for group security but get from logged in user
         User user = userDAO.findByUserName("speedracer");
-        Group group = groupDAO.findByID(user.getGroupID());
+        Group usergroup = groupDAO.findByID(user.getGroupID());
 
         //TODO Security!!! Limit to users account? 
 		//TODO Group is tough unless we hop to vehicle but that won't work for unassigned.
-		Device device = deviceDAO.findByID(deviceID);
-		if (device!=null && group.getAccountID().equals(device.getAccountID()))
+		Group group = groupDAO.findByID(groupID);
+		if (group!=null && usergroup.getAccountID().equals(group.getAccountID()))
 		{
-			return device;
+			return group;
 		}
 		return null;
-	}
-
-	public void setDeviceDAO(DeviceDAO deviceDAO) {
-		this.deviceDAO = deviceDAO;
-	}
-
-	public DeviceDAO getDeviceDAO() {
-		return deviceDAO;
 	}
 
 	public void setUserDAO(UserDAO userDAO) {
