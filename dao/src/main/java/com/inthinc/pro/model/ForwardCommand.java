@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import com.inthinc.pro.dao.annotations.ID;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ForwardCommand extends BaseEntity implements Comparable<ForwardCommand>
 {
     @ID

@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import java.text.NumberFormat;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class IdlingReportItem extends BaseEntity implements Comparable<IdlingReportItem>
 {
    

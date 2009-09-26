@@ -5,6 +5,9 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.util.DateUtil;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class IdleEvent extends Event
 {
     private static final long serialVersionUID = 1L;

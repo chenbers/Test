@@ -5,6 +5,9 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.Column;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Event extends BaseEntity implements Comparable<Event>, Serializable
 {
     /**

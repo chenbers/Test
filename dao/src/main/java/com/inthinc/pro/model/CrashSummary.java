@@ -3,6 +3,9 @@ package com.inthinc.pro.model;
 import java.text.DecimalFormat;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class CrashSummary extends BaseEntity {
 
 	/**

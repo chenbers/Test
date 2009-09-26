@@ -5,6 +5,9 @@ import java.io.Serializable;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.inthinc.pro.dao.annotations.Column;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class LatLng implements Serializable, Comparable<LatLng>
 {
     /**

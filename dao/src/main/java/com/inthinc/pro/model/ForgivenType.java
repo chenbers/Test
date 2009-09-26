@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum ForgivenType implements BaseEnum {
         EXCLUDE(0), INCLUDE(1);
         private int code;

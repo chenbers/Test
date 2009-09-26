@@ -1,5 +1,8 @@
 package com.inthinc.pro.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class PhoneNumber extends BaseEntity
 {
     String          number;     // 10 digits

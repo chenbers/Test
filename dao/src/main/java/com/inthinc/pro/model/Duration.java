@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 /* Duration Enum
  * 
  * 4/1/2009 - dvqCode added to retrieve 7 day aggregation.

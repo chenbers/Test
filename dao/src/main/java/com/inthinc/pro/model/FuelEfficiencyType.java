@@ -3,6 +3,9 @@ package com.inthinc.pro.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum FuelEfficiencyType implements BaseEnum {
 	
     MPG_US(1) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon;}},

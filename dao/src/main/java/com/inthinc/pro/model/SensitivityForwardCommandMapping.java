@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class SensitivityForwardCommandMapping
 {
 	private SensitivityType setting;

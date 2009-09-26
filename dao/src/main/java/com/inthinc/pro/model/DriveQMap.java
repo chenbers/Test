@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.Column;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DriveQMap extends BaseEntity
 {
     private Integer startingOdometer;

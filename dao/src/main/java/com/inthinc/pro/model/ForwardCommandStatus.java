@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum ForwardCommandStatus implements BaseEnum
 {
     STATUS_ALL(0, "STATUS_ALL"),

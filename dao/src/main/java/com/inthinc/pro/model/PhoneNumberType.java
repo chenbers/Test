@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum PhoneNumberType implements BaseEnum
 {
     WORK(1, "WORK"), HOME(2, "HOME"), CELL(3, "CELL"), OTHER(4, "OTHER");

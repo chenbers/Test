@@ -1,5 +1,8 @@
 package com.inthinc.pro.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class AssetReportItem extends BaseEntity
 {
     //Minimalist class from another.  Done this way to 

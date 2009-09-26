@@ -21,6 +21,9 @@ import java.io.Serializable;
  * }
  * </pre>
  */
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public interface BaseEnum extends Serializable
 {
     public Integer getCode();

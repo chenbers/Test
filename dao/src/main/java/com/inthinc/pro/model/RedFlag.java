@@ -5,6 +5,9 @@ import java.util.TimeZone;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class RedFlag extends BaseEntity
 {
     @Column(updateable=false)

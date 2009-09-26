@@ -3,6 +3,9 @@ package com.inthinc.pro.model;
 import java.util.List;
 import java.util.Locale;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class AlertMessageBuilder
 {
     private Integer alertMessageID;

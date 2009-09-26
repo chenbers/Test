@@ -4,6 +4,9 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.ID;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
 	@ID
 	private Integer entityID;

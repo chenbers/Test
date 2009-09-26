@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class QuintileMap extends BaseEntity
 {
     private Integer percent1;

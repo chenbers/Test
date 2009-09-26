@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DriverScore implements Comparable<DriverScore>
 {
     private static final Logger logger = Logger.getLogger(DriverScore.class);

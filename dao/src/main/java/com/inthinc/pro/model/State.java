@@ -4,6 +4,9 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.app.States;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class State extends BaseEntity implements ReferenceEntity, Comparable<State>
 {
     @Column(updateable = false)

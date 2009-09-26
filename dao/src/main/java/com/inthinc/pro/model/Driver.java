@@ -4,12 +4,15 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * You'll see this through out this bean. It is mainly used so that the table sorting on these fields treats "" and null the same. if(fieldName != null && fieldName.equals(""))
  * return null
  * 
  */
+
+@XmlRootElement
 public class Driver extends BaseEntity implements Comparable<Driver> {
 
     @Column(updateable = false)

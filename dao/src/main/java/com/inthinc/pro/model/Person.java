@@ -8,6 +8,9 @@ import java.util.TimeZone;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Person extends BaseEntity implements Comparable<Person> {
 
     @Column(updateable = false)

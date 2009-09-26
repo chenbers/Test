@@ -3,6 +3,9 @@ package com.inthinc.pro.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class EventAttr
 {
     public static final Map<Integer, String> mapping = new HashMap<Integer, String>();

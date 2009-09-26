@@ -5,6 +5,9 @@ package com.inthinc.pro.model;
  * enum, so that it can be extended without having to change portal code.
  * 
  */
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public interface ForwardCommandID
 {
     public static Integer GET_GPS_GET_LOCATION = 10;

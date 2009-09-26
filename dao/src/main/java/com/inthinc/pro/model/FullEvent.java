@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class FullEvent extends Event
 {
     private static final long serialVersionUID = 1L;

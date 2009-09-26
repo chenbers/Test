@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum Occurrence implements BaseEnum
 {
     DAILY(0,"Daily",Status.ACTIVE),

@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import java.math.BigDecimal;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DriverReportItem extends BaseEntity implements Comparable<DriverReportItem>
 {
     

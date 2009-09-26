@@ -7,6 +7,9 @@ import java.util.StringTokenizer;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Zone extends BaseEntity
 {
     @Column(updateable = false)

@@ -6,6 +6,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.app.Roles;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Role extends BaseEntity implements ReferenceEntity, Comparable<Role>
 {
     /**

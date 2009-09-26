@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum SensitivityType implements BaseEnum
 {
     HARD_ACCEL_SETTING(1,10,5),

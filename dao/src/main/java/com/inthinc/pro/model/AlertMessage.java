@@ -7,6 +7,9 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.util.DateUtil;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class AlertMessage 
 {
 

@@ -3,6 +3,9 @@ package com.inthinc.pro.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum ForwardCommandType
 {
     GET_GPS_GET_LOCATION(10),

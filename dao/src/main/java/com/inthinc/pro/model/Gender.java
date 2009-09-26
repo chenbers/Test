@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum Gender implements BaseEnum
 {
     MALE(1, "MALE"), FEMALE(2, "FEMALE");

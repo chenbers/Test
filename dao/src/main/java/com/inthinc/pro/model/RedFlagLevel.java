@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum RedFlagLevel implements BaseEnum
 {
     NONE(0, "none"),

@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum GroupStatus implements BaseEnum
 {
     GROUP_NEW(0, "GROUP_NEW"),

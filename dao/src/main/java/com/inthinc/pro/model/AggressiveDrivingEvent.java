@@ -5,6 +5,9 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class AggressiveDrivingEvent extends Event
 {
     /**

@@ -8,6 +8,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class EventMapper
 {
     

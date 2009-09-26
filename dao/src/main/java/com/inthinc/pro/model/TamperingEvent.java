@@ -2,6 +2,9 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class TamperingEvent extends Event{
     /**
      * 

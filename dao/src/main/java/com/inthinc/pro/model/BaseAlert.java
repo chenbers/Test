@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public abstract class BaseAlert extends BaseEntity
 {
     /**

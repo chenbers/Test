@@ -3,6 +3,9 @@ package com.inthinc.pro.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum VehicleType implements BaseEnum
 {
     LIGHT(0, "Light"), MEDIUM(1, "Medium"), HEAVY(2, "Heavy");

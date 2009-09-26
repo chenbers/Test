@@ -3,6 +3,9 @@ package com.inthinc.pro.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum MeasurementType implements BaseEnum {
     ENGLISH(1), METRIC(2);
     private int code;

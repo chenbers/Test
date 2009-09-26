@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum SeatBeltType implements BaseEnum{
     OFF(0), ON(1), UNKOWN(2);
 
