@@ -17,9 +17,10 @@ public class DeviceServiceImpl implements DeviceService{
 	private DeviceDAO deviceDAO;
 	private UserDAO userDAO;
 	private GroupDAO groupDAO;
+	private String userName="speedracer";
 
 
-	public List<Device> getDevices(String userName) {
+	public List<Device> getDevices() {
 		List<Device> deviceList = new ArrayList<Device>();
 		if(userName != null)
         {

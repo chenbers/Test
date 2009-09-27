@@ -14,9 +14,10 @@ public class GroupServiceImpl implements GroupService{
 	
 	private UserDAO userDAO;
 	private GroupDAO groupDAO;
+	private String userName="speedracer";
 
 
-	public List<Group> getGroups(String userName) {
+	public List<Group> getGroups() {
 		List<Group> groupList = new ArrayList<Group>();
 		if(userName != null)
         {

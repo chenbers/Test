@@ -2,7 +2,9 @@ package com.inthinc.pro.service;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam;
@@ -12,17 +14,21 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/vehicleService")
+@Path("/vehicles")
 @Scope("request")
 public interface VehicleService {
 
 
 	@GET
-	@Path("/vehicles/{userName}")
-	public List<Vehicle> getVehicles(@PathParam("userName")String userName);
+	@Path("/")
+	public List<Vehicle> getVehicles();
 
 	@GET
-	@Path("/vehicle/{vehicleID}")
+	@Path("/id/{vehicleID}")
 	public Vehicle getVehicle(@PathParam("vehicleID")Integer vehicleID);
 
+	@POST
+	@Consumes("application/xml")
+	@Path("/add")
+	public Integer addVehicle(Vehicle vehicle);
 }

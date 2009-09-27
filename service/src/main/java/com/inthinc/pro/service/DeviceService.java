@@ -12,17 +12,17 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/deviceService")
+@Path("/devices")
 @Scope("request")
 public interface DeviceService {
 
 
 	@GET
-	@Path("/devices/{userName}")
-	public List<Device> getDevices(@PathParam("userName")String userName);
+	@Path("/")
+	public List<Device> getDevices();
 //TODO findBy imei, serialnum, sim, group.......
 	@GET
-	@Path("/device/{deviceID}")
+	@Path("/id/{deviceID}")
 	public Device getDevice(@PathParam("deviceID")Integer deviceID);
 
 }

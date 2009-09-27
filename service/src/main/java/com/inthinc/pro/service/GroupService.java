@@ -13,17 +13,17 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/groupService")
+@Path("/groups")
 @Scope("request")
 public interface GroupService {
 
 
 	@GET
-	@Path("/groups/{userName}")
-	public List<Group> getGroups(@PathParam("userName")String userName);
+	@Path("/")
+	public List<Group> getGroups();
 	
 	@GET
-	@Path("/group/{groupID}")
+	@Path("/id/{groupID}")
 	public Group getGroup(@PathParam("groupID")Integer groupID);
 
 }

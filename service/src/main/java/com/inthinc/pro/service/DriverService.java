@@ -12,17 +12,17 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/driverService")
+@Path("/drivers")
 @Scope("request")
 public interface DriverService {
 
 
 	@GET
-	@Path("/drivers/{userName}")
-	public List<Driver> getDrivers(@PathParam("userName")String userName);
+	@Path("/")
+	public List<Driver> getDrivers();
 
 	@GET
-	@Path("/driver/{driverID}")
+	@Path("/id/{driverID}")
 	public Driver getDriver(@PathParam("driverID")Integer driverID);
 
 }

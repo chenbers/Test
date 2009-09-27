@@ -3,16 +3,12 @@ package com.inthinc.pro.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.service.DeviceService;
 import com.inthinc.pro.service.VehicleService;
 
 
@@ -21,9 +17,10 @@ public class VehicleServiceImpl implements VehicleService{
 	private VehicleDAO vehicleDAO;
 	private UserDAO userDAO;
 	private GroupDAO groupDAO;
+	private String userName="speedracer";
 	
 
-	public List<Vehicle> getVehicles(String userName) {
+	public List<Vehicle> getVehicles() {
 		List<Vehicle> vehicleList = new ArrayList<Vehicle>();
 		if(userName != null)
         {
@@ -51,6 +48,10 @@ public class VehicleServiceImpl implements VehicleService{
         	return null;
         
 		return vehicle;
+	}
+	public Integer addVehicle(Vehicle vehicle)
+	{
+		return vehicleDAO.create(vehicle.getGroupID(), vehicle);
 	}
 
 	public void setVehicleDAO(VehicleDAO vehicleDAO) {

@@ -17,9 +17,10 @@ public class DriverServiceImpl implements DriverService{
 	private DriverDAO driverDAO;
 	private UserDAO userDAO;
 	private GroupDAO groupDAO;
+	private String userName="speedracer";
 	
 
-	public List<Driver> getDrivers(String userName) {
+	public List<Driver> getDrivers() {
 		List<Driver> driverList = new ArrayList<Driver>();
 		if(userName != null)
         {
