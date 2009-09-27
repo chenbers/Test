@@ -21,14 +21,42 @@ public interface VehicleService {
 
 	@GET
 	@Path("/")
-	public List<Vehicle> getVehicles();
+	public List<Vehicle> getAll();
 
 	@GET
-	@Path("/id/{vehicleID}")
-	public Vehicle getVehicle(@PathParam("vehicleID")Integer vehicleID);
+	@Path("/id/{id}")
+	public Vehicle get(@PathParam("id")Integer id);
+
+	@GET
+	@Path("/vin/{vin}")
+	public Vehicle findByVIN(@PathParam("vin")String vin);
+
+	@GET
+	@Path("/delete/{id}")
+	public Integer delete(@PathParam("id")Integer id);
 
 	@POST
 	@Consumes("application/xml")
 	@Path("/add")
-	public Integer addVehicle(Vehicle vehicle);
+	public Integer add(Vehicle vehicle);
+
+	@POST
+	@Consumes("application/xml")
+	@Path("/update")
+	public Integer update(Vehicle vehicle);
+	
+	@POST
+	@Consumes("application/xml")
+	@Path("/add")
+	public List<Integer> add(List<Vehicle> vehicles);
+
+	@POST
+	@Consumes("application/xml")
+	@Path("/update")
+	public List<Integer> update(List<Vehicle> vehicles);
+	
+	@POST
+	@Consumes("application/xml")
+	@Path("/delete")
+	public List<Integer> delete(List<Integer> vehicleIDs);
 }
