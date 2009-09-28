@@ -24,6 +24,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
@@ -67,14 +68,18 @@ public class TripsBean extends BaseBean {
     public void initTrips() {
         if (trips.isEmpty()) {
             List<Trip> tempTrips = new ArrayList<Trip>();
+            LastLocation loc = null;
             if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
                 tempTrips = driverDAO.getTrips(identifiableEntityBean.getId(), getStartDate(), getEndDate());
+                loc = driverDAO.getLastLocation(identifiableEntityBean.getId());
+                
             }else{
                 tempTrips = vehicleDAO.getTrips(identifiableEntityBean.getId(), getStartDate(), getEndDate());
+                loc = vehicleDAO.getLastLocation(identifiableEntityBean.getId());
             }
             
             for (Trip trip : tempTrips) {
-                trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup.getMapServerURLString()));
+                trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup.getMapServerURLString(), loc.getTime()));
             }
             Collections.sort(trips);
             Collections.reverse(trips);

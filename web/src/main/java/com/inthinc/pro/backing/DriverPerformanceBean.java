@@ -18,6 +18,7 @@ import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -158,11 +159,12 @@ public class DriverPerformanceBean extends BasePerformanceBean
         if (lastTrip == null)
         {
             Trip tempTrip = driverBean.getDriverDAO().getLastTrip(getDriver().getDriverID());
+            LastLocation lastLocation = driverBean.getDriverDAO().getLastLocation(getDriver().getDriverID());
 
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
                 hasLastTrip = true;
-                TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString());
+                TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString(), lastLocation.getTime());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }

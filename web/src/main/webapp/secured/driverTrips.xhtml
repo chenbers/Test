@@ -160,6 +160,7 @@
 			isReady = true;
 			dynamicTableStyles();
 		}
+
 		</script>
 
    <rich:panel id="script">
@@ -210,7 +211,14 @@
 
 					//End of trip marker
 					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-					marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					if ("#{trip.inProgress}" == "true")
+					{
+						marker = createMarker(endlatlng, "#{trip.trip.endTime}_INPROGRESS", "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png");
+					}
+					else
+					{
+						marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
   				</ui:repeat>
@@ -276,6 +284,14 @@
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
+                    <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+                    <ui:param name="eventLocation" value="#{trip.endAddress}" />
+                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
+                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+                </ui:include>
+                <ui:include src="/includes/tripBubble.xhtml">
+                    <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_INPROGRESS" />
+                    <ui:param name="bubbleTitle" value="#{messages.TRIP_INPROGRESS}" />
                     <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
                     <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
@@ -592,6 +608,8 @@
                         <tr>
                         	<td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
                             <td>#{messages.drivertrip_legend_end}</td>
+                        	<td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png" width="21" height="20" /></td>
+                            <td>#{messages.drivertrip_legend_inprogress}</td>
                         </tr>
                     </tbody>
                 </table>

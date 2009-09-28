@@ -58,7 +58,14 @@
 		
 					//End of trip marker
 					var endlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng});
-					marker = createMarker(endlatlng, "tripEndBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					if ("#{driverPerformanceBean.lastTrip.inProgress}" == "true")
+					{
+						marker = createMarker(endlatlng, "tripInProgressBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png");
+					}
+					else
+					{
+						marker = createMarker(endlatlng, "tripEndBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 		
@@ -149,6 +156,14 @@
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripEndBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
+            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
+            <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
+            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
+            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+	</ui:include>
+	<ui:include src="/includes/tripBubble.xhtml">
+            <ui:param name="hiddenDivID" value="tripInProgessBubble" />
+            <ui:param name="bubbleTitle" value="#{messages.TRIP_INPROGRESS}" />
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
             <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />

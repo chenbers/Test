@@ -2,6 +2,7 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -26,10 +27,11 @@ public class TripDisplay implements Comparable<TripDisplay>
     Long durationMiliSeconds;
     Trip trip;
     TimeZone timeZone;
+    boolean inProgress = false;
+    private static final int MINUTES_BUFFER = 5;    
+	private static DateFormat dateFormatter;
     
-    private static DateFormat dateFormatter;
-    
-    public TripDisplay(Trip trip, TimeZone timeZone, String mapServerUrl)
+    public TripDisplay(Trip trip, TimeZone timeZone, String mapServerUrl, Date lastReportedTime)
     {
         this.trip = trip;
         this.timeZone = timeZone;
@@ -64,6 +66,7 @@ public class TripDisplay implements Comparable<TripDisplay>
             setStartAddress(lookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
             setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
         }
+        determineIfTripInProgress(lastReportedTime);
     }
     public String getStartDateString()
     {
@@ -211,8 +214,20 @@ public class TripDisplay implements Comparable<TripDisplay>
         this.beginningPoint = beginningPoint;
     }
     
-    
-    
-    
-    
+    public boolean isInProgress() {
+		return inProgress;
+	}
+	public void setInProgress(boolean inProgress) {
+		this.inProgress = inProgress;
+	}
+
+	// TODO: this might not be sufficient -- may need to get from back end
+	public void determineIfTripInProgress(Date lastReportedTime)
+	{
+    	if (new Date().getTime() - lastReportedTime.getTime() < (DateUtil.MILLISECONDS_IN_MINUTE * MINUTES_BUFFER))
+    	{
+    		setInProgress(true);
+    	}
+
+	}
 }
