@@ -79,7 +79,7 @@ public class TripsBean extends BaseBean {
             }
             
             for (Trip trip : tempTrips) {
-                trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup.getMapServerURLString(), loc.getTime()));
+                trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup.getMapServerURLString(), (loc == null) ? null :  loc.getTime()));
             }
             Collections.sort(trips);
             Collections.reverse(trips);

@@ -164,7 +164,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
                 hasLastTrip = true;
-                TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString(), lastLocation.getTime());
+                TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString(), (lastLocation == null) ? null : lastLocation.getTime());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }

@@ -224,6 +224,9 @@ public class TripDisplay implements Comparable<TripDisplay>
 	// TODO: this might not be sufficient -- may need to get from back end
 	public void determineIfTripInProgress(Date lastReportedTime)
 	{
+		if (lastReportedTime == null)
+			return;
+		
     	if (new Date().getTime() - lastReportedTime.getTime() < (DateUtil.MILLISECONDS_IN_MINUTE * MINUTES_BUFFER))
     	{
     		setInProgress(true);

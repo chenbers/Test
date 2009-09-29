@@ -163,14 +163,14 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         if (lastTrip == null)
         {
             Trip tempTrip = vehicleDAO.getLastTrip(getVehicle().getVehicleID());
-            LastLocation loc = vehicleDAO.getLastLocation(getVehicle().getVehicleID());
+            LastLocation lastLocation = vehicleDAO.getLastLocation(getVehicle().getVehicleID());
 
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
                 hasLastTrip = true;
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup.getMapServerURLString(), loc.getTime());
+                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup.getMapServerURLString(), (lastLocation == null) ? null : lastLocation.getTime());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }
