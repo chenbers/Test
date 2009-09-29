@@ -27,6 +27,26 @@ public class DeviceServiceImpl implements DeviceService{
 		return null;
 	}
 	
+	public Device findByIMEI(String imei)
+	{
+		Device device = deviceDAO.findByIMEI(imei);
+		
+		if (securityBean.isAuthorized(device))
+			return device;
+
+		return null;
+	}
+
+	public Device findBySerialNum(String serialNum)
+	{
+		Device device = deviceDAO.findBySerialNum(serialNum);
+		
+		if (securityBean.isAuthorized(device))
+			return device;
+
+		return null;
+	}
+
 	public void setDeviceDAO(DeviceDAO deviceDAO) {
 		this.deviceDAO = deviceDAO;
 	}

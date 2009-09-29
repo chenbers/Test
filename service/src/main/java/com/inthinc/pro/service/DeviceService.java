@@ -20,11 +20,21 @@ public interface DeviceService {
 	@GET
 	@Path("/")
 	public List<Device> getAll();
-//TODO findBy imei, serialnum, sim, group.......
+
+	//TODO findBy group.......
+	
 	@GET
 	@Path("/id/{deviceID}")
 	public Device get(@PathParam("deviceID")Integer deviceID);
 
+	@GET
+	@Path("/imei/{imei}")
+	public Device findByIMEI(@PathParam("imei")String imei);
+
+	@GET
+	@Path("/serialnum/{serialnum}")
+	public Device findBySerialNum(@PathParam("serialnum")String serialnum);
+	
 //TODO do we disallow delete and add?
 //TODO do we allow update on limited fields like ecall?
 }
