@@ -8,35 +8,35 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.User;
 
 import org.springframework.context.annotation.Scope;
 
 
 
 @Produces("application/xml")
-@Path("/drivers")
+@Path("/users")
 @Scope("request")
-public interface DriverService {
+public interface UserService {
 
 
 	@GET
 	@Path("/")
-	public List<Driver> getAll();
+	public List<User> getAll();
 
 	@GET
-	@Path("/id/{driverID}")
-	public Driver get(@PathParam("driverID")Integer driverID);
+	@Path("/id/{userID}")
+	public User get(@PathParam("userID")Integer userID);
 
 	@POST
 	@Consumes("application/xml")
 	@Path("/add")
-	public Integer add(Driver driver);
+	public Integer add(User user);
 
 	@POST
 	@Consumes("application/xml")
 	@Path("/update")
-	public Integer update(Driver driver);
+	public Integer update(User user);
 
 	@GET
 	@Path("/delete/{id}")
@@ -45,16 +45,16 @@ public interface DriverService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/add")
-	public List<Integer> add(List<Driver> drivers);
+	public List<Integer> add(List<User> users);
 
 	@POST
 	@Consumes("application/xml")
 	@Path("/update")
-	public List<Integer> update(List<Driver> drivers);
+	public List<Integer> update(List<User> users);
 	
 	@POST
 	@Consumes("application/xml")
 	@Path("/delete")
-	public List<Integer> delete(List<Integer> vehicleIDs);
+	public List<Integer> delete(List<Integer> userIDs);
 
 }

@@ -98,6 +98,43 @@ public class SecurityBean {
 		return false;
 	}
 
+	public boolean isAuthorized(User user)
+	{
+		if (user!=null)
+		{
+			//TODO do we give user access to all groups, regardless of the users group????
+	        //TODO if so, we need a fast security check to verify a group intersects with user's groups
+			//TODO get Account from logged in user
+			Person person = personDAO.findByID(user.getPersonID());
+			if (person==null)
+				return false;
+			
+			if (!person.getAcctID().equals(getAccountID()))
+				return false;
+			
+	        Group usergroup = groupDAO.findByID(user.getGroupID());
+	        
+	        if (usergroup!=null && getAccountID().equals(usergroup.getAccountID()))
+	        	return true;
+	        			
+		}
+		return false;
+	}
+
+	public boolean isAuthorized(Person person)
+	{
+		if (person!=null)
+		{
+			//TODO do we give user access to all groups, regardless of the users group????
+	        //TODO if so, we need a fast security check to verify a group intersects with user's groups
+			//TODO get Account from logged in user
+	        if (getAccountID().equals(person.getAcctID()))
+	        	return true;
+	        			
+		}
+		return false;
+	}
+
 	public boolean isAuthorized(Group group)
 	{
 		if (group!=null)
@@ -131,6 +168,26 @@ public class SecurityBean {
 		if (driver==null)
 			return false;
 		return isAuthorized(driver);
+	}
+	
+	//TODO this is dangerous because parameters are not strongly typed
+	//     It would be easy to send in an id for the wrong entity type
+	public boolean isAuthorizedByUserID(Integer userID)
+	{
+		User user = userDAO.findByID(userID);
+		if (user==null)
+			return false;
+		return isAuthorized(user);
+	}
+	
+	//TODO this is dangerous because parameters are not strongly typed
+	//     It would be easy to send in an id for the wrong entity type
+	public boolean isAuthorizedByPersonID(Integer personID)
+	{
+		Person person = personDAO.findByID(personID);
+		if (person==null)
+			return false;
+		return isAuthorized(person);
 	}
 	
 	//TODO this is dangerous because parameters are not strongly typed

@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -51,6 +52,32 @@ public class DriverServiceImpl implements DriverService{
 		return -1;
 	}
 	
+	public List<Integer> add(List<Driver> drivers)
+	{
+		List<Integer> results = new ArrayList<Integer>();
+		for(Driver driver : drivers)
+			results.add(add(driver));
+		return results;
+	}
+
+	public List<Integer> update(List<Driver> drivers)
+	{
+		List<Integer> results = new ArrayList<Integer>();
+		for(Driver driver : drivers)
+			results.add(update(driver));
+		return results;
+	}
+
+	public List<Integer> delete(List<Integer> driverIDs)
+	{
+		List<Integer> results = new ArrayList<Integer>();
+		for(Integer id : driverIDs)
+		{
+			results.add(delete(id));
+		}
+		return results;
+	}
+
 	public void setDriverDAO(DriverDAO driverDAO) {
 		this.driverDAO = driverDAO;
 	}
