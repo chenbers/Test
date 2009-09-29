@@ -26,6 +26,7 @@
 				text-align: left;
 				padding: 5px;
 			}
+			
 			.section_title {
 				font: bold 10px Verdana, Arial, Helvetica, sans-serif;
 				border-bottom: 1px solid #333;
@@ -71,7 +72,6 @@
 	    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
 	    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
 				crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
-				//bounds.extend(new GLatLng(#{point.lat}, #{point.lng}));
 	    	</a4j:repeat>    	
 
 	    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">

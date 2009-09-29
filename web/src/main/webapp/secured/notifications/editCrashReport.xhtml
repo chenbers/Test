@@ -49,10 +49,7 @@
 		<t:saveState value="#{crashReportBean}"></t:saveState>
 		
 		<script type="text/javascript">
-				var map = null;
-				var tripPoints = null;
-				var crashMarker = null;
-				var eventListener = null;
+				var map,  crashMarker, eventListener, crashPolyline, editTripPolyline, editTripStartPoint, editTripEndPoint, addTripPoints = [], editTripPoints = [], crashPoints = [];
 				
 				function placeCrashMarker(lat,lng){
 					if(map){
@@ -110,9 +107,32 @@
 		                return latLngArray[latLngArray.length - 1];
 		            }
 	            /*]]>*/
-            
+	            
+	            
+	            /*<![CDATA[*/
+	           	function printObject(obj, element, deep) {
+		            jQuery.each(obj, function(name, value) {
+			        	jQuery(element).append("<p style='padding-left: " + deep + "px'>" + name + ": " + value + " </p> ");
+			        	if(deep < 100 && name != 'data' && null != value && typeof(value) == 'object') {
+							printObject(value, element, deep + 10);
+			        	}
+		            });
+				}
+
+
+	            /*]]>*/
+	    	<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'FALSE'}">		    	
+				<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
+					crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
+		    	</a4j:repeat>   	
+
+		    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
+					editTripPoints.push(new GLatLng(#{route.lat}, #{route.lng}));
+	    		</a4j:repeat>
+			</ui:fragment>
 		</script>
 		
+
 		<!-- initMap script - needs to be refreshed (use initMap panel to refresh script) -->
 		<rich:panel id="initMap">
 			<script type="text/javascript">
@@ -125,11 +145,6 @@
 		
 		                 map.addControl(new GMapTypeControl());
 						 map.setMapType(G_NORMAL_MAP);
-						 <ui:fragment rendered="#{not empty crashReportBean.crashReport.crashDataPoints}">
-						 	map.disableDragging();
-							map.disableScrollWheelZoom();
-							map.disableDoubleClickZoom();
-						 </ui:fragment>
 						 <ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
 						 	 map.setCenter(new GLatLng('#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}'),12);
 						 </ui:fragment>
@@ -148,10 +163,25 @@
 						 </ui:fragment>
 					 
 
-						 <ui:fragment rendered="#{crashReportBean.crashReport.lat ne null}">
+						 <ui:fragment rendered="#{crashReportBean.crashReport.lat ne null and empty crashReportBean.crashReport.crashDataPoints}">
 						 	map.setCenter(new GLatLng('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}'),15);
 						 	updateLocation('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
 						 </ui:fragment>
+
+						<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'FALSE'}">
+		                	editTripStartPoint = new GLatLng(#{crashReportBean.crashReportTrip.startLoc.lat},#{crashReportBean.crashReportTrip.startLoc.lng});
+		                	editTripEndPoint = new GLatLng(#{crashReportBean.crashReportTrip.endLoc.lat},#{crashReportBean.crashReportTrip.endLoc.lng});
+							editTripPolyline = new GPolyline(editTripPoints, "#0000ff", 6, 1);
+							map.addOverlay(editTripPolyline);
+
+							crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
+							map.addOverlay(crashPolyline);
+
+							var bounds = crashPolyline.getBounds();
+		   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
+
+		   					placeCrashMarker('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
+						</ui:fragment>
 					}
 	                          
 	            } 
@@ -177,18 +207,18 @@
 	   					polyline = new GPolyline(points,"#0000ff", 6);
 	   					map.addOverlay(polyline);
 						
-						map.addOverlay(createMarker(points[0],"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
-						map.addOverlay(createMarker(points[index-1],"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
+						map.addOverlay(createMarker(points[0],"#{request.contextPath}/images/ico_start.png"));
+						map.addOverlay(createMarker(points[index-1],"#{request.contextPath}/images/ico_end_trip.png"));
 	   					
 	   					
 	   					
 	   					var bounds = polyline.getBounds();
 	   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
 	
-	   					tripPoints = points;
+	   					addTripPoints = points;
 
 	   					GEvent.addListener(polyline,"click",function(point){
-	   						var tripPoint = getClosestPointFromList(point,tripPoints);
+	   						var tripPoint = getClosestPointFromList(point,addTripPoints);
 	   						updateLocation(tripPoint.lat(),tripPoint.lng());
 	   						updateCrashTime(tripPoint.lat(),tripPoint.lng());
 						});
@@ -327,9 +357,12 @@
 						 	<h:outputText value="#{messages.crashReport_crashLocation}" />
 						 	<h:outputText styleClass="required" rendered="#{empty crashReportBean.crashReport.crashDataPoints}" value=" *" />
 						 </div>
-						 <rich:panel id="crashLocationHiddleInputPanel">
-						 	<h:inputHidden id="crashLocation" value="#{crashReportBean.crashReport.lat}" required="true" requiredMessage="#{messages.required}"/>
-						 </rich:panel>
+						 
+						<ui:fragment rendered="#{empty crashReportBean.crashReport.crashDataPoints}">
+							 <rich:panel id="crashLocationHiddleInputPanel">
+							 	<h:inputHidden id="crashLocation" value="#{crashReportBean.crashReport.lat}" required="true" requiredMessage="#{messages.required}"/>
+							 </rich:panel>
+						 </ui:fragment>
 						 
 						 <rich:panel id="mapPanel">
 						 	 <h:panelGrid columns="3" style="padding-left:12px" rendered="#{empty crashReportBean.crashReport.crashDataPoints}">
@@ -402,19 +435,18 @@
 							 	 	</h:panelGroup>
 						 	 	</ui:fragment>
 						 	 	<h:panelGroup>
-						 	 		<div class="instructions"><h:outputText styleClass="instructions" value="#{messages.crashReport_tripSelection}" /></div>
+						 	 		<div class="instructions"><h:outputText styleClass="instructions" value="#{messages.crashReport_tripSelection}" rendered="#{empty crashReportBean.crashReport.crashDataPoints}" /></div>
 						 	 		<rich:spacer height="5"/>
 						 	 		
-						 	 		<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
-														
+						 	 		<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>														
 									<a4j:region>
-										<a4j:jsFunction data="#{crashReportBean.crashReport}" reRender="crashLocationHiddleInputPanel" name="updateLocation" oncomplete="placeCrashMarker(data.lat,data.lng)" requestDelay="100" limitToList="true">
+										<a4j:jsFunction data="#{crashReportBean.crashReport.latLng}" reRender="crashLocationHiddleInputPanel" name="updateLocation" oncomplete="placeCrashMarker(data.lat,data.lng)" limitToList="true">
 											<a4j:actionparam name="latitude" assignTo="#{crashReportBean.crashReport.lat}"/>
 											<a4j:actionparam name="longitude" assignTo="#{crashReportBean.crashReport.lng}"/>
 										</a4j:jsFunction>
 									</a4j:region>
 									<a4j:region>
-										<a4j:jsFunction data="#{crashReportBean.crashReport}" reRender="crashDatePanel" name="updateCrashTime" action="#{crashReportBean.updateCrashTime}" requestDelay="100" limitToList="true">
+										<a4j:jsFunction reRender="crashDatePanel" name="updateCrashTime" action="#{crashReportBean.updateCrashTime}" limitToList="true">
 											<a4j:actionparam name="latitude" assignTo="#{crashReportBean.crashReport.lat}"/>
 											<a4j:actionparam name="longitude" assignTo="#{crashReportBean.crashReport.lng}"/>
 										</a4j:jsFunction>
@@ -444,10 +476,9 @@
 				</td>
 			</tr>
 		</table>
-		
+		<div id="iteminfo"></div>
 		<script type="text/javascript">
 			initMap();
-
 			<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'TRUE'}">
 				displayTrip();
 			</ui:fragment>

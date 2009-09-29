@@ -402,7 +402,7 @@
 		<dependency>
 			<groupId>com.ocpsoft</groupId>
 			<artifactId>ocpsoft-pretty-faces</artifactId>
-			<version>1.2.4_PR1</version>
+			<version>1.2.5_GA</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

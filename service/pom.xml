@@ -21,8 +21,6 @@
             </activation>
             <properties>
                 <facelets.development>true</facelets.development>
-                <tomcatManagerURL>http://localhost:9091/manager</tomcatManagerURL>
-                <tomcatServerID>dev-pro-tomcat</tomcatServerID>
             </properties>
             <build>
                 <resources>
