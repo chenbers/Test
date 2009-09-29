@@ -5,8 +5,9 @@
     <!-- Service Related Beans -->
     <bean id="siloServiceBean" factory-bean="siloServiceCreator" factory-method="getService" />
     <bean id="reportServiceBean" factory-bean="reportServiceCreator" factory-method="getService" />
+<!--     
     <bean id="mcmServiceBean" factory-bean="mcmServiceCreator" factory-method="getService" />
-
+ -->
     <!-- DAO -->
     <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true">
         <property name="siloService" ref="siloServiceBean" />

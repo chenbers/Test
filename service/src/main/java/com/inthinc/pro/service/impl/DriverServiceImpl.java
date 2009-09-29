@@ -1,51 +1,56 @@
 package com.inthinc.pro.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.service.DriverService;
-
+import com.inthinc.pro.util.SecurityBean;
 
 public class DriverServiceImpl implements DriverService{
 	
 	private DriverDAO driverDAO;
-	private UserDAO userDAO;
-	private GroupDAO groupDAO;
-	private String userName="speedracer";
+	private SecurityBean securityBean;
 	
 
-	public List<Driver> getDrivers() {
-		List<Driver> driverList = new ArrayList<Driver>();
-		if(userName != null)
-        {
-            User user = userDAO.findByUserName(userName);
-            if(user != null)
-            {
-            	driverList = driverDAO.getAllDrivers(user.getGroupID());
-            }
-        }
-		
-		return driverList;
+	public List<Driver> getAll() {
+        return driverDAO.getAllDrivers(securityBean.getGroupID());		
 	}
 	
-	public Driver getDriver(Integer driverID)
+	public Driver get(Integer driverID)
 	{
-		//TODO username for group security but get from logged in user
-        User user = userDAO.findByUserName("speedracer");
+        Driver driver = driverDAO.findByID(driverID);
+		
+        if (securityBean.isAuthorized(driver))
+			return driver;
         
-        Driver driver = driverDAO.findByID(driverID);        
-        //TODO we need a fast security check to verify a group intersects with user's groups
-        Group group = groupDAO.findByID(driver.getGroupID());
-        
-		return driver;
+		return null;
 	}
 
+	public Integer add(Driver driver)
+	{
+		if (!securityBean.isAuthorized(driver))
+			return driverDAO.create(driver.getPersonID(), driver);
+	
+		return -1;
+	}
+
+	public Integer update(Driver driver)
+	{		
+		if (securityBean.isAuthorized(driver))
+			return driverDAO.update(driver);
+		
+		return -1;
+	}
+
+	public Integer delete(Integer driverID)
+	{
+		if(securityBean.isAuthorizedByDriverID(driverID))
+			return driverDAO.deleteByID(driverID);
+		
+		return -1;
+	}
+	
 	public void setDriverDAO(DriverDAO driverDAO) {
 		this.driverDAO = driverDAO;
 	}
@@ -53,21 +58,12 @@ public class DriverServiceImpl implements DriverService{
 	public DriverDAO getDriverDAO() {
 		return driverDAO;
 	}
-
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
+	
+	public SecurityBean getSecurityBean() {
+		return securityBean;
 	}
 
-	public UserDAO getUserDAO() {
-		return userDAO;
+	public void setSecurityBean(SecurityBean securityBean) {
+		this.securityBean = securityBean;
 	}
-
-	public void setGroupDAO(GroupDAO groupDAO) {
-		this.groupDAO = groupDAO;
-	}
-
-	public GroupDAO getGroupDAO() {
-		return groupDAO;
-	}
-
 }

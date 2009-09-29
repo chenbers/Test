@@ -7,36 +7,42 @@
     </bean>
     
     <!-- RestEasy Config -->
- 
+<!--     
     <bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl">
     	<property name="sbsUserId" value="${teenproxy.sbsUserId}"/>
 		<property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
 		<property name="teenServerDAO" ref="sbsDataAccessBean"/>
 		<property name="tigerDAO" ref="tigerDao"/>
     </bean>
-   
+ -->    
+    <bean id="securityBean" class="com.inthinc.pro.util.SecurityBean">
+    	<property name="userDAO" ref="userDAO"/>
+    	<property name="groupDAO" ref="groupDAO"/>
+    	<property name="vehicleDAO" ref="vehicleDAO"/>
+    	<property name="driverDAO" ref="driverDAO"/>
+    	<property name="deviceDAO" ref="deviceDAO"/>
+    	<property name="personDAO" ref="personDAO"/>
+    </bean>
     <bean class="com.inthinc.pro.service.impl.DeviceServiceImpl">
     	<property name="deviceDAO" ref="deviceDAO"/>
-    	<property name="userDAO" ref="userDAO"/>
-    	<property name="groupDAO" ref="groupDAO"/>
-    </bean>
-    <bean class="com.inthinc.pro.service.impl.VehicleServiceImpl">
-    	<property name="vehicleDAO" ref="vehicleDAO"/>
-    	<property name="userDAO" ref="userDAO"/>
-    	<property name="groupDAO" ref="groupDAO"/>
+    	<property name="securityBean" ref="securityBean"/>
     </bean>
     <bean class="com.inthinc.pro.service.impl.DriverServiceImpl">
     	<property name="driverDAO" ref="driverDAO"/>
-    	<property name="userDAO" ref="userDAO"/>
-    	<property name="groupDAO" ref="groupDAO"/>
+    	<property name="securityBean" ref="securityBean"/>
     </bean>
     <bean class="com.inthinc.pro.service.impl.GroupServiceImpl">
-    	<property name="userDAO" ref="userDAO"/>
     	<property name="groupDAO" ref="groupDAO"/>
+    	<property name="securityBean" ref="securityBean"/>
     </bean>
-   
+    <bean class="com.inthinc.pro.service.impl.VehicleServiceImpl">
+    	<property name="vehicleDAO" ref="vehicleDAO"/>
+    	<property name="mpgDAO" ref="mpgDAO"/>   	
+    	<property name="securityBean" ref="securityBean"/>
+    </bean>
+<!--     
     <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">
     	<property name="mcmService" ref="mcmServiceBean"/>
     </bean>
-
+ -->
 </beans>

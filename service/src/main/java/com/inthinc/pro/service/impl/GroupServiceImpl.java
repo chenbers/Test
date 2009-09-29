@@ -1,60 +1,56 @@
 package com.inthinc.pro.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.GroupService;
-
+import com.inthinc.pro.util.SecurityBean;
 
 public class GroupServiceImpl implements GroupService{
 	
-	private UserDAO userDAO;
 	private GroupDAO groupDAO;
-	private String userName="speedracer";
+	private SecurityBean securityBean;
 
-
-	public List<Group> getGroups() {
-		List<Group> groupList = new ArrayList<Group>();
-		if(userName != null)
-        {
-            User user = userDAO.findByUserName(userName);
-            if(user != null)
-            {
-                Group group = groupDAO.findByID(user.getGroupID());
-                groupList = groupDAO.getGroupsByAcctID(group.getAccountID());
-            }
-        }
-		return groupList;
+	public List<Group> getAll() {
+		//TODO do we want group level security?
+		//return groupDAO.getGroupsByAcctID(securityBean.getAccountID());
+		
+		return groupDAO.getGroupHierarchy(securityBean.getAccountID(), securityBean.getGroupID());
 	}
 	
-	public Group getGroup(Integer groupID)
+	public Group get(Integer groupID)
 	{
-		//TODO username for group security but get from logged in user
-        User user = userDAO.findByUserName("speedracer");
-        Group usergroup = groupDAO.findByID(user.getGroupID());
-
-        //TODO Security!!! Limit to users account? 
-		//TODO Group is tough unless we hop to vehicle but that won't work for unassigned.
 		Group group = groupDAO.findByID(groupID);
-		if (group!=null && usergroup.getAccountID().equals(group.getAccountID()))
-		{
+		if (securityBean.isAuthorized(group))
 			return group;
-		}
 		return null;
 	}
 
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
+	public Integer add(Group group)
+	{
+		if (!securityBean.isAuthorized(group))
+			return groupDAO.create(group.getAccountID(), group);
+	
+		return -1;
 	}
 
-	public UserDAO getUserDAO() {
-		return userDAO;
+	public Integer update(Group group)
+	{		
+		if (securityBean.isAuthorized(group))
+			return groupDAO.update(group);
+		
+		return -1;
 	}
 
+	public Integer delete(Integer groupID)
+	{
+		if(securityBean.isAuthorizedByGroupID(groupID))
+			return groupDAO.deleteByID(groupID);
+		
+		return -1;
+	}
+	
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
 	}
@@ -63,4 +59,11 @@ public class GroupServiceImpl implements GroupService{
 		return groupDAO;
 	}
 
+	public SecurityBean getSecurityBean() {
+		return securityBean;
+	}
+
+	public void setSecurityBean(SecurityBean securityBean) {
+		this.securityBean = securityBean;
+	}
 }

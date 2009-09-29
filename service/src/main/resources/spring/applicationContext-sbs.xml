@@ -11,7 +11,7 @@
 		<property name="centralDataAccessHost" value="${teenproxy.centralDataAccessHost}"/>
 		<property name="centralDataAccessPort" value="${teenproxy.centralDataAccessPort}"/>		
    </bean>
-   
+<!--     
      <bean id="tigerDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://${speedbystreet.iwigis}:5432/iwigis" />
@@ -20,9 +20,9 @@
 		<property name="initialSize" value="5" />
 		<property name="maxActive" value="10" />
    </bean>
-   
+  
    <bean id="tigerDao" class="com.inthinc.pro.sbs.jdbc.JdbcTigerDAO">
 		<property name="dataSource" ref="tigerDataSource" />
    </bean>
-   
+ -->   
 </beans>
