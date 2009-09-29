@@ -345,6 +345,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.dob = dob;
     }
 
+    @XmlTransient //Prevent Circular Reference on XML rendering 
     public User getUser() {
         return user;
     }
@@ -353,6 +354,13 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.user = user;
     }
 
+    public Integer getUserID() {
+    	if(user==null)
+    		return null;
+        return user.getUserID();
+    }
+
+    @XmlTransient //Prevent Circular Reference on XML rendering 
     public Driver getDriver() {
         return driver;
     }
@@ -361,6 +369,12 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.driver = driver;
     }
 
+    public Integer getDriverID() {
+    	if(driver==null)
+    		return null;
+        return driver.getDriverID();
+    }
+    
     public Integer getAddressID() {
         return addressID;
     }
