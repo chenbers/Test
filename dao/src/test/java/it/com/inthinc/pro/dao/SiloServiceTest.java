@@ -1210,7 +1210,7 @@ public class SiloServiceTest {
         // do these last to allow back end more time to update it's cache (can take up to 5 min)
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
-        findByKey(personDAO, personList.get(0), personList.get(0).getPriEmail(), new String[] { "modified", "address", "driver", "user", "measurementType" });
+        findByKey(personDAO, personList.get(0), personList.get(0).getPriEmail(), new String[] { "modified", "address", "driver", "user", "measurementType", "driverID", "userID" });
         findByKeyExpectNoResult(personDAO, "BAD_EMAIL");
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
