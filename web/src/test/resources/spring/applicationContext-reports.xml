@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+    <bean id="reportMailer" class="com.inthinc.pro.reports.mail.ReportMailerImpl">
+    	<property name="javaMailSender" ref="mailSenderBean"/>
+    	 <property name="from"><value><![CDATA[tiwiPRO Reporting <noreply@inthinc.com>]]></value></property>
+   	</bean>
+   	
+   	<bean id="reportCreator" class="com.inthinc.pro.reports.jasper.JasperReportCreator">
+    	<constructor-arg ref="reportMailer" />
+    </bean>
+    
+    <bean id="reportCriteriaService" class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
+    	<property name="groupDAO" ref="groupDAO"/>
+    	<property name="scoreDAO" ref="scoreDAO"/>
+    	<property name="mpgDAO" ref="mpgDAO"/>
+    	<property name="vehicleDAO" ref="vehicleDAO"/>
+    	<property name="deviceDAO" ref="deviceDAO"/>
+    	<property name="eventDAO" ref="eventDAO"/>
+    	<property name="redFlagDAO" ref="redFlagDAO"/>
+    </bean>
+    
+</beans>
