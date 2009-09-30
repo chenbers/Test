@@ -3,8 +3,10 @@ package com.inthinc.pro.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam;
@@ -17,73 +19,70 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/vehicles")
+@Path("/")
 @Scope("request")
 public interface VehicleService {
 
-
 	@GET
-	@Path("/")
+	@Path("vehicles")
 	public List<Vehicle> getAll();
 
 	@GET
-	@Path("/id/{id}")
+	@Path("vehicle/{id}")
 	public Vehicle get(@PathParam("id")Integer id);
 
 	@GET
-	@Path("/vin/{vin}")
+	@Path("vehicle/vin/{vin}")
 	public Vehicle findByVIN(@PathParam("vin")String vin);
 
 	@POST
 	@Consumes("application/xml")
-	@Path("/add")
+	@Path("vehicle")
 	public Integer add(Vehicle vehicle);
 
-	@POST
+	@PUT
 	@Consumes("application/xml")
-	@Path("/update")
+	@Path("vehicle")
 	public Integer update(Vehicle vehicle);
 
-	@GET
-	@Path("/delete/{id}")
+	@DELETE
+	@Path("vehicle/{id}")
 	public Integer delete(@PathParam("id")Integer id);
 	
 	@POST
 	@Consumes("application/xml")
-	@Path("/add")
+	@Path("vehicles")
 	public List<Integer> add(List<Vehicle> vehicles);
 
-	@POST
+	@PUT
 	@Consumes("application/xml")
-	@Path("/update")
+	@Path("vehicles")
 	public List<Integer> update(List<Vehicle> vehicles);
 	
-	@POST
+	@DELETE
 	@Consumes("application/xml")
-	@Path("/delete")
+	@Path("/vehicles")
 	public List<Integer> delete(List<Integer> vehicleIDs);
 
-	//TODO can we overload /id/ and remove assigndevice verb?
-	@GET
-	@Path("/assigndevice/{id}/deviceid/{deviceid}")
+	@PUT
+	@Path("vehicle/{id}/deviceid/{deviceid}")
 	public Vehicle assignDevice(@PathParam("id")Integer id, @PathParam("deviceid")Integer deviceid);
 
-	//TODO can we overload /id/ and remove assigndriver verb?
-	@GET
-	@Path("/assigndriver/{id}/driverid/{driverid}")
+	@PUT
+	@Path("vehicle/{id}/driverid/{driverid}")
 	public Vehicle assignDriver(@PathParam("id")Integer id, @PathParam("driverid")Integer driverid);
 
 	@GET
-	@Path("/trips/{id}/{date}")
+	@Path("vehicle/{id}/trips/{date}")
 	//DATE is in YYYYMMDD format
 	public List<Trip> getTrips(@PathParam("id")Integer id, @PathParam("date")String date);
 
 	@GET
-	@Path("/trips/{id}")
+	@Path("vehicle/{id}/trips")
 	public List<Trip> getTrips(@PathParam("id")Integer id);
 	
 	@GET
-	@Path("/mpg/{id}")
+	@Path("vehicle/{id}/mpg")
 	public List<MpgEntity> getVehicleMPG(@PathParam("id")Integer id);
 
 }
