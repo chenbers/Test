@@ -3,8 +3,10 @@ package com.inthinc.pro.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam;
@@ -15,30 +17,29 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/groups")
 @Scope("request")
 public interface GroupService {
 
 
 	@GET
-	@Path("/")
+	@Path("/groups")
 	public List<Group> getAll();
 	
 	@GET
-	@Path("/id/{groupID}")
+	@Path("/group/{groupID}")
 	public Group get(@PathParam("groupID")Integer groupID);
 
 	@POST
 	@Consumes("application/xml")
-	@Path("/add")
+	@Path("/group")
 	public Integer add(Group group);
 
-	@POST
+	@PUT
 	@Consumes("application/xml")
-	@Path("/update")
+	@Path("/group")
 	public Integer update(Group group);
 
-	@GET
-	@Path("/delete/{id}")
+	@DELETE
+	@Path("/group/{id}")
 	public Integer delete(@PathParam("id")Integer id);
 }

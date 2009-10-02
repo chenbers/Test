@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Duration;
@@ -26,17 +28,27 @@ public class VehicleServiceImpl implements VehicleService{
 	
 	//TODO Assign Driver and Device by explicit call or OVERLOAD add/update??
 	
+	private Response returnOK(Object object)
+	{
+		return Response.ok(object).build();
+	}
+	
+	private Response returnError()
+	{
+		return Response.serverError().build();
+	}
+	
 	public List<Vehicle> getAll() {
        	return vehicleDAO.getVehiclesInGroupHierarchy(securityBean.getGroupID());
 	}
 	
-	public Vehicle get(Integer vehicleID)
+	public Response get(Integer vehicleID)
 	{
         Vehicle vehicle = vehicleDAO.findByID(vehicleID);        
         if (securityBean.isAuthorized(vehicle))
-        	return vehicle;
+			return returnOK(vehicle);
 		
-        return null;
+        return returnError();
 	}
 
 	public Vehicle findByVIN(String vin)
@@ -182,7 +194,7 @@ public class VehicleServiceImpl implements VehicleService{
 		return vehicleDAO;
 	}
 
-	public MpgDAO getMpgDAO() {
+	public MpgDAO getMpgDAO() {	
 		return mpgDAO;
 	}
 

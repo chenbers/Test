@@ -3,8 +3,10 @@ package com.inthinc.pro.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam;
@@ -15,46 +17,45 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/users")
 @Scope("request")
 public interface UserService {
 
 
 	@GET
-	@Path("/")
+	@Path("/users")
 	public List<User> getAll();
 
 	@GET
-	@Path("/id/{userID}")
+	@Path("/user/{userID}")
 	public User get(@PathParam("userID")Integer userID);
 
 	@POST
 	@Consumes("application/xml")
-	@Path("/add")
+	@Path("/user")
 	public Integer add(User user);
 
-	@POST
+	@PUT
 	@Consumes("application/xml")
-	@Path("/update")
+	@Path("/user")
 	public Integer update(User user);
 
-	@GET
-	@Path("/delete/{id}")
+	@DELETE
+	@Path("/user/{id}")
 	public Integer delete(@PathParam("id")Integer id);
 
 	@POST
 	@Consumes("application/xml")
-	@Path("/add")
+	@Path("/users")
 	public List<Integer> add(List<User> users);
 
-	@POST
+	@PUT
 	@Consumes("application/xml")
-	@Path("/update")
+	@Path("/users")
 	public List<Integer> update(List<User> users);
 	
-	@POST
+	@DELETE
 	@Consumes("application/xml")
-	@Path("/delete")
+	@Path("/users")
 	public List<Integer> delete(List<Integer> userIDs);
 
 }

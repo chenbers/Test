@@ -12,27 +12,26 @@ import org.springframework.context.annotation.Scope;
 
 
 @Produces("application/xml")
-@Path("/devices")
 @Scope("request")
 public interface DeviceService {
 
 
 	@GET
-	@Path("/")
+	@Path("/devices")
 	public List<Device> getAll();
 
 	//TODO findBy group.......
 	
 	@GET
-	@Path("/id/{deviceID}")
+	@Path("/device/{deviceID}")
 	public Device get(@PathParam("deviceID")Integer deviceID);
 
 	@GET
-	@Path("/imei/{imei}")
+	@Path("/device/imei/{imei}")
 	public Device findByIMEI(@PathParam("imei")String imei);
 
 	@GET
-	@Path("/serialnum/{serialnum}")
+	@Path("/device/serialnum/{serialnum}")
 	public Device findBySerialNum(@PathParam("serialnum")String serialnum);
 	
 //TODO do we disallow delete and add?

@@ -1,11 +1,16 @@
 package com.inthinc.pro.service;
 
 import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
+import org.jboss.resteasy.plugins.spring.SpringBeanProcessor;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -28,14 +33,25 @@ public class BaseTest extends Assert{
  protected static ResteasyDeployment deployment;
  
  protected static int port = 8989;
+// private final String urlprefix = "http://localhost:" + port + "";
+ protected static final String urlprefix = "http://localhost:8080/services/api/";
+
  
- @BeforeClass
+// @BeforeClass
  public static void initialize() throws Exception{
   server = new TJWSEmbeddedJaxrsServer();
   deployment = new ResteasyDeployment();
   server.setDeployment(deployment);
   server.setPort(port);
+
+  SpringBeanProcessor processor 
+      = new  SpringBeanProcessor(deployment.getRegistry(), deployment.getProviderFactory());
+  ClassPathResource cpr = new ClassPathResource("spring/applicationContext-beans.xml");
+  ConfigurableBeanFactory factory = new XmlBeanFactory(cpr);
+ 
+  factory.addBeanPostProcessor((BeanPostProcessor) processor);
   server.start();
+
  }
  
  public void addPerRequestResource(Class<?> clazz) {
