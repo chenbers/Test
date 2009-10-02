@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Scope;
 
 
 
+@Path("/")
 @Produces("application/xml")
-@Scope("request")
 public interface DriverService {
 
 
