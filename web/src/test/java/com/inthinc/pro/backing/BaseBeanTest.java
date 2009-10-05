@@ -1,7 +1,11 @@
 package com.inthinc.pro.backing;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.test.base.AbstractJsfTestCase;
@@ -177,6 +181,22 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         assertEquals("", 1,1);
     }
     
+	protected String fillInMonths(String expectedChartXml, int numMonths) 
+	{
+        Calendar todayCal = Calendar.getInstance();
+        todayCal.setTime(new Date());
+
+        Object[] month = new String[numMonths];
+        for (int i = numMonths-1; i >=0; i--)
+        {
+        	month[i] = todayCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()).toUpperCase();
+        	todayCal.add(Calendar.MONTH, -1);
+        	System.out.println(i + " " + month[i]);
+        }
+
+
+		return MessageFormat.format(expectedChartXml, month);
+	}
     
 
 }

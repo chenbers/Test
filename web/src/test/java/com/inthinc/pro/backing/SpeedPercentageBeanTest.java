@@ -1,7 +1,11 @@
 package com.inthinc.pro.backing;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.AfterClass;
@@ -16,13 +20,13 @@ import com.inthinc.pro.reports.ReportCriteria;
 
 public class SpeedPercentageBeanTest  extends BaseBeanTest {
 
-	private static final String EXPECTED_CHART_XML = "<chart bgColor='#ffffff' showBorder='0' showToolTips='1' showValues='0' showLabels='1' rotateLabels='1' slantLabels='1' connectNullData='1' decimals='0' SYAxisMinValue='0' SYAxisMaxValue='100' SNumberSuffix='%' showLegend='1' legendPosition='BOTTOM' legendMarkerCircle='0' legendBorderThickness='0' legendShadow='0' chartLeftMargin='3' chartRightMargin='3' areaOverColumns='0'> " +
-			"<categories> <category label='JUL'/> <category label='AUG'/> <category label='SEP'/></categories>" +
+	private static final String EXPECTED_CHART_XML = "<chart bgColor=''#ffffff'' showBorder=''0'' showToolTips=''1'' showValues=''0'' showLabels=''1'' rotateLabels=''1'' slantLabels=''1'' connectNullData=''1'' decimals=''0'' SYAxisMinValue=''0'' SYAxisMaxValue=''100'' SNumberSuffix=''%'' showLegend=''1'' legendPosition=''BOTTOM'' legendMarkerCircle=''0'' legendBorderThickness=''0'' legendShadow=''0'' chartLeftMargin=''3'' chartRightMargin=''3'' areaOverColumns=''0''> " +
+			"<categories> <category label=''{0}''/> <category label=''{1}''/> <category label=''{2}''/></categories>" +
 			"<dataset>" +
-			"<dataset seriesName='Speeding Distance' color='1e88c8' showValues='0'> <set value='5'/> <set value='10'/> <set value='15'/></dataset>" +
-			"<dataset seriesName='Driving Distance' color='cccccc' showValues='0'> <set value='10'/> <set value='20'/> <set value='30'/></dataset>" +
+			"<dataset seriesName=''Speeding Distance'' color=''1e88c8'' showValues=''0''> <set value=''5''/> <set value=''10''/> <set value=''15''/></dataset>" +
+			"<dataset seriesName=''Driving Distance'' color=''cccccc'' showValues=''0''> <set value=''10''/> <set value=''20''/> <set value=''30''/></dataset>" +
 			"</dataset>" +
-			"<lineset seriesName='% Distance Speeding' color='000066' showValues='0' > <set value='50'/> <set value='50'/> <set value='50'/></lineset></chart>";
+			"<lineset seriesName=''% Distance Speeding'' color=''000066'' showValues=''0'' > <set value=''50''/> <set value=''50''/> <set value=''50''/></lineset></chart>";
 	
 	private static final String EXPECTED_TOTAL_DISTANCE = "60 mi"; 
 	private static final String EXPECTED_TOTAL_SPEEDING = "30 mi (50.00%)"; 
@@ -116,7 +120,10 @@ public class SpeedPercentageBeanTest  extends BaseBeanTest {
     	String chartXML = bean.getChartDef();
     	assertNotNull("chart xml should be set", chartXML);
 //    	System.out.println(chartXML);
-    	assertEquals(EXPECTED_CHART_XML,  chartXML);
+    	String expectedChartXml = fillInMonths(EXPECTED_CHART_XML, 3);
+//    	System.out.println(expectedChartXml);
+    	
+    	assertEquals(expectedChartXml,  chartXML);
     	
     	String totalDistance = bean.getTotalDistance();
 //    	System.out.println(totalDistance);
@@ -126,4 +133,5 @@ public class SpeedPercentageBeanTest  extends BaseBeanTest {
 //    	System.out.println(totalSpeeding);
     	assertEquals(EXPECTED_TOTAL_SPEEDING,  totalSpeeding);
     }
+
 }
