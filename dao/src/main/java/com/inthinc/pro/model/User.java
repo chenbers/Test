@@ -4,6 +4,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 public class User extends BaseEntity {
@@ -62,6 +63,7 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
+    @XmlTransient
     public String getPassword() {
         return password;
     }

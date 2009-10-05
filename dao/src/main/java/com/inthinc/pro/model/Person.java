@@ -9,7 +9,10 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 public class Person extends BaseEntity implements Comparable<Person> {
@@ -111,8 +114,12 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.personID = personID;
     }
 
+    @XmlJavaTypeAdapter(value=com.inthinc.pro.model.adapter.TimeZoneXmlAdapter.class)
     public TimeZone getTimeZone() {
         return timeZone;
+    }
+    public void setTimeZone(TimeZone timeZone) {
+        this.timeZone = timeZone;
     }
 
     public String getDisplayTimeZone() {
@@ -120,10 +127,6 @@ public class Person extends BaseEntity implements Comparable<Person> {
             return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
         else
             return null;
-    }
-
-    public void setTimeZone(TimeZone timeZone) {
-        this.timeZone = timeZone;
     }
 
     public Integer getCostPerHour() {
