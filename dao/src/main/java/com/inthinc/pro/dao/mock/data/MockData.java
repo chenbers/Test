@@ -242,7 +242,7 @@ public class MockData {
 
     private void addGroupDriveQMap(Group group) {
         GQMap gqMap = new GQMap();
-        Integer odometer = randomInt(500, 5000);
+        Long odometer = randomLong(500, 5000);
         gqMap.setDriveQ(createDriveQ(odometer));
         gqMap.setGroup(group);
         storeObject(gqMap);
@@ -251,7 +251,7 @@ public class MockData {
     private void addDriveQMaps(List<Driver> driversInGroup, List<Vehicle> vehiclesInGroup) {
         logger.debug("addDriveQMaps");
         for (Driver driver : driversInGroup) {
-            Integer odometer = randomInt(500, 5000);
+            Long odometer = randomLong(500, 5000);
             for (int i = 0; i < 30; i++) {
                 DVQMap dvqMap = new DVQMap();
                 dvqMap.setDriver(driver);
@@ -263,7 +263,7 @@ public class MockData {
         }
     }
 
-    private DriveQMap createDriveQ(Integer odometer) {
+    private DriveQMap createDriveQ(Long odometer) {
         DriveQMap driveQMap = new DriveQMap();
         driveQMap.setCreated(new Date()); // NEED TO CREATE OLD DATES
         driveQMap.setAggressiveAccel(randomInt(0, 50));
@@ -274,9 +274,9 @@ public class MockData {
         driveQMap.setAggressiveTurn((driveQMap.getAggressiveLeft() + driveQMap.getAggressiveRight()) / 2);
         driveQMap.setDrivingStyle((driveQMap.getAggressiveAccel() + driveQMap.getAggressiveBrake() + driveQMap.getAggressiveBump() + driveQMap.getAggressiveTurn()) / 4);
         driveQMap.setCoaching(randomInt(0, 50));
-        driveQMap.setDriveTime(randomInt(1, 5000));
-        driveQMap.setIdleHi(randomInt(0, 50));
-        driveQMap.setIdleLo(randomInt(0, 50));
+        driveQMap.setDriveTime(randomLong(1, 5000));
+        driveQMap.setIdleHi(randomLong(0, 50));
+        driveQMap.setIdleLo(randomLong(0, 50));
         driveQMap.setStartingOdometer(odometer);
         driveQMap.setEndingOdometer(odometer + 100);
         driveQMap.setOdometer(odometer);
@@ -295,12 +295,14 @@ public class MockData {
         driveQMap.setCrashTotal(randomInt(10,50));
         driveQMap.setCrashOdometer(odometer/2);
         driveQMap.setCrashDays(randomInt(0, 10));
-        driveQMap.setSpeedOdometer1(randomInt(0, 100));
-        driveQMap.setSpeedOdometer2(randomInt(0, 100));
-        driveQMap.setSpeedOdometer3(randomInt(0, 100));
-        driveQMap.setSpeedOdometer4(randomInt(0, 100));
-        driveQMap.setSpeedOdometer5(randomInt(0, 100));
-        driveQMap.setSpeedOdometer(driveQMap.getSpeedOdometer1() + driveQMap.getSpeedOdometer2() + driveQMap.getSpeedOdometer3() + driveQMap.getSpeedOdometer4() + driveQMap.getSpeedOdometer5());
+        driveQMap.setSpeedOdometer1(randomLong(0, 100));
+        driveQMap.setSpeedOdometer2(randomLong(0, 100));
+        driveQMap.setSpeedOdometer3(randomLong(0, 100));
+        driveQMap.setSpeedOdometer4(randomLong(0, 100));
+        driveQMap.setSpeedOdometer5(randomLong(0, 100));
+        driveQMap.setSpeedOdometer(	driveQMap.getSpeedOdometer1().longValue() + driveQMap.getSpeedOdometer2().longValue() + 
+        							driveQMap.getSpeedOdometer3().longValue() + driveQMap.getSpeedOdometer4().longValue() + 
+        							driveQMap.getSpeedOdometer5().longValue());
         return driveQMap;
     }
 
@@ -1083,6 +1085,9 @@ public class MockData {
         return (score + "." + decimal);
     }
 
+    static long randomLong(long min, long max) {
+        return (long) (Math.random() * ((max - min) + 1)) + min;
+    }
     static int randomInt(int min, int max) {
         return (int) (Math.random() * ((max - min) + 1)) + min;
     }

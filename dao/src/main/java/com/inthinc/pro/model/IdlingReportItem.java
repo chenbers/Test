@@ -15,7 +15,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private Driver driver;
     private Vehicle vehicle;
     private Float driveTime;
-    private Integer milesDriven;
+    private Number milesDriven;
     private Float lowHrs;
     private String lowPercent;
     private Float highHrs;
@@ -68,11 +68,11 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     {
         this.driveTime = driveTime;
     }
-    public Integer getMilesDriven()
+    public Number getMilesDriven()
     {
         return milesDriven;
     }
-    public void setMilesDriven(Integer milesDriven)
+    public void setMilesDriven(Number milesDriven)
     {
         this.milesDriven = milesDriven;
     }

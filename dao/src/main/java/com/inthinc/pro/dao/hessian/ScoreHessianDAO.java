@@ -63,7 +63,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             DriverScore driverScore = new DriverScore();
             driverScore.setDriver(dvq.getDriver());
             driverScore.setVehicle(dvq.getVehicle());
-            driverScore.setMilesDriven(dvq.getDriveQ().getEndingOdometer() == null ? 0 : dvq.getDriveQ().getEndingOdometer() / 100);
+            driverScore.setMilesDriven(dvq.getDriveQ().getEndingOdometer() == null ? 0 : dvq.getDriveQ().getEndingOdometer().longValue() / 100);
             driverScore.setScore(dvq.getDriveQ().getOverall() != null ? dvq.getDriveQ().getOverall() : NO_SCORE);
             scoreList.add(driverScore);
         }
@@ -222,8 +222,15 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
         	// subgroups
+Date current = new Date();
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
+Date last = current;            
+current = new Date();            
+logger.info("getSDTrendsByGTC " + (current.getTime() - last.getTime()));            
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
+last = current;            
+current = new Date();            
+logger.info("convertToModelObject " + (current.getTime() - last.getTime()));            
             
             
             Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
@@ -281,7 +288,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 {
                 	ScoreableEntity topGroupEntity = topGroupScoreList.get(idx);
                 	topGroupEntity.setScore(topGroupEntity.getScore() + entity.getScore());
-                	topGroupEntity.setIdentifierNum(topGroupEntity.getIdentifierNum()+ 1);
+                	topGroupEntity.setIdentifierNum(topGroupEntity.getIdentifierNum().longValue()+ 1l);
                 }
         		idx++;
         	}
@@ -290,9 +297,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         
     	for (ScoreableEntity entity : topGroupScoreList)
     	{
-    		if (entity.getIdentifierNum() > 0)
+    		if (entity.getIdentifierNum().longValue() > 0l)
     		{
-    			entity.setScore(entity.getScore()/entity.getIdentifierNum());
+    			entity.setScore((int)((long)entity.getScore().intValue()/entity.getIdentifierNum().longValue()));
     		}
     		else
     		{
@@ -553,7 +560,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 {
                     vri.setDriver(d.getDriver());
                 }
-                vri.setMilesDriven((dqm.getOdometer() == null ? 0 : dqm.getOdometer() / 100));
+                vri.setMilesDriven((dqm.getOdometer() == null ? 0 : dqm.getOdometer().longValue() / 100));
                 vri.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
                 vri.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
                 vri.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE : dqm.getDrivingStyle());
@@ -601,7 +608,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 {
                     driverReportItem.setVehicle(dvq.getVehicle());
                 }
-                driverReportItem.setMilesDriven(driverQMap.getOdometer() == null ? 0 : driverQMap.getOdometer() / 100);
+                driverReportItem.setMilesDriven(driverQMap.getOdometer() == null ? 0 : driverQMap.getOdometer().longValue() / 100);
                 driverReportItem.setOverallScore(driverQMap.getOverall() == null ? NO_SCORE : driverQMap.getOverall());
                 driverReportItem.setSpeedScore(driverQMap.getSpeeding() == null ? NO_SCORE : driverQMap.getSpeeding());
                 driverReportItem.setStyleScore(driverQMap.getDrivingStyle() == null ? NO_SCORE : driverQMap.getDrivingStyle());
@@ -654,16 +661,16 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 }
                 if (dqm.getIdleLo() != null)
                 {
-                    iri.setLowHrs((float) dqm.getIdleLo() / SECONDS_TO_HOURS);
+                    iri.setLowHrs(dqm.getIdleLo().floatValue() / SECONDS_TO_HOURS);
                 }
                 if (dqm.getIdleHi() != null)
                 {
-                    iri.setHighHrs((float) dqm.getIdleHi() / SECONDS_TO_HOURS);
+                    iri.setHighHrs(dqm.getIdleHi().floatValue() / SECONDS_TO_HOURS);
                 }
 
                 if (dqm.getDriveTime() != null)
                 {
-                    iri.setDriveTime(((float) dqm.getDriveTime() / SECONDS_TO_HOURS));
+                    iri.setDriveTime((dqm.getDriveTime().floatValue() / SECONDS_TO_HOURS));
                 }
                 
                 //Total idling            
@@ -847,11 +854,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             	int i = 0;
                 for (DriveQMap driveQMap : gqv.getDriveQV())
                 {
-                	Long distance = (driveQMap.getOdometer() == null) ? 0l : driveQMap.getOdometer();
+                	Long distance = (driveQMap.getOdometer() == null) ? 0l : driveQMap.getOdometer().longValue();
 
                 	SpeedPercentItem item = speedPercentItemList.get(i++);
                 	item.setMiles(distance + item.getMiles().longValue());
-                	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? 0 : driveQMap.getSpeedOdometer()) + item.getMilesSpeeding().longValue());
+                	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? 0 : driveQMap.getSpeedOdometer().longValue()) + item.getMilesSpeeding().longValue());
                 }
 
             }
@@ -881,12 +888,13 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             
             for (GQVMap gqv : gqvList)
             {
+            	logger.info("group: " + gqv.getGroup().getName() + " (" + gqv.getGroup().getGroupID() + ")");
             	int i = 0;
                 for (DriveQMap driveQMap : gqv.getDriveQV())
                 {
-                	Long driveTime = (driveQMap.getDriveTime() != null) ? driveQMap.getDriveTime() : 0l; 
-                	Long idleTime = (driveQMap.getIdleHi() != null) ? driveQMap.getIdleHi() : 0l; 
-                	idleTime += (driveQMap.getIdleLo() != null) ? driveQMap.getIdleLo(): 0l; 
+                	Long driveTime = (driveQMap.getDriveTime() != null) ? driveQMap.getDriveTime().longValue() : 0l; 
+                	Long idleTime = (driveQMap.getIdleHi() != null) ? driveQMap.getIdleHi().longValue() : 0l; 
+                	idleTime += (driveQMap.getIdleLo() != null) ? driveQMap.getIdleLo().longValue(): 0l; 
 //logger.info(i + ": drive = " + driveTime + " idle = " + idleTime);
                 	IdlePercentItem item = idlePercentItemList.get(i++);
                 	item.setDrivingTime(driveTime + item.getDrivingTime());

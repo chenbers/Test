@@ -16,7 +16,7 @@ public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
 	private Integer mediumValue;
 	private Integer heavyValue;
     private Date date;
-    private Integer odometer;
+    private Number odometer;
 
 
 
@@ -100,12 +100,12 @@ public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
 		this.date = date;
 	}
 	
-    public Integer getOdometer()
+    public Number getOdometer()
     {
         return odometer;
     }
 
-    public void setOdometer(Integer odometer)
+    public void setOdometer(Number odometer)
     {
         this.odometer = odometer;
     }

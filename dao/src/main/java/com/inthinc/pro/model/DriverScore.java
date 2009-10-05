@@ -10,7 +10,7 @@ public class DriverScore implements Comparable<DriverScore>
     private static final Logger logger = Logger.getLogger(DriverScore.class);
     Driver driver;
     Vehicle vehicle;
-    Integer milesDriven;
+    Number milesDriven;
     Integer score;
 
     public DriverScore()
@@ -38,12 +38,12 @@ public class DriverScore implements Comparable<DriverScore>
         this.vehicle = vehicle;
     }
 
-    public Integer getMilesDriven()
+    public Number getMilesDriven()
     {
         return milesDriven;
     }
 
-    public void setMilesDriven(Integer milesDriven)
+    public void setMilesDriven(Number milesDriven)
     {
         this.milesDriven = milesDriven;
     }

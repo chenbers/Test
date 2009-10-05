@@ -17,7 +17,7 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     private String group;
     private Vehicle vehicle;
     private String makeModelYear;
-    private Integer milesDriven;
+    private Number milesDriven;
     private Integer overallScore;
     private Integer speedScore;
     private Integer styleScore;
@@ -60,11 +60,11 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     {
         this.driver = driver;
     }
-    public Integer getMilesDriven()
+    public Number getMilesDriven()
     {
         return milesDriven;
     }
-    public void setMilesDriven(Integer milesDriven)
+    public void setMilesDriven(Number milesDriven)
     {
         this.milesDriven = milesDriven;
     }

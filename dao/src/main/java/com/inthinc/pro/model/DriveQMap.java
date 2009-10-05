@@ -11,14 +11,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DriveQMap extends BaseEntity
 {
-    private Integer startingOdometer;
-    private Integer endingOdometer;				// mileage over all time
-    private Integer odometer;					// mileage in time period
-    private Integer odometer1;
-    private Integer odometer2;
-    private Integer odometer3;
-    private Integer odometer4;
-    private Integer odometer5;
+    private Number startingOdometer;
+    private Number endingOdometer;				// mileage over all time
+    private Number odometer;					// mileage in time period
+    private Number odometer1;
+    private Number odometer2;
+    private Number odometer3;
+    private Number odometer4;
+    private Number odometer5;
     private Integer overall;
     private Integer speeding;
     private Integer speeding1;
@@ -38,92 +38,91 @@ public class DriveQMap extends BaseEntity
     private Integer mpgLight;
     private Integer mpgMedium;
     private Integer mpgHeavy;
-    private Integer idleLo;
-    private Integer idleHi;
-    private Integer driveTime;
+    private Number idleLo;
+    private Number idleHi;
+    private Number driveTime;
     // CRASH SUMMARY  
     private Integer crashEvents;			// total crashes in the time period			
     private Integer crashTotal;				// total crashes ever
-	private Integer crashOdometer;
+	private Number crashOdometer;
     private Integer crashDays;
     // END - CRASH SUMMARY
     
     // not sure what these are for
 	private Date startingDate;
 	private Date endingDate;
-    // TODO: these will change to Longs in the future, but leaving as Integer now for consistency
-	private Integer speedOdometer;
-    private Integer speedOdometer1;
-    private Integer speedOdometer2;
-    private Integer speedOdometer3;
-    private Integer speedOdometer4;
-    private Integer speedOdometer5;
+	private Number speedOdometer;
+    private Number speedOdometer1;
+    private Number speedOdometer2;
+    private Number speedOdometer3;
+    private Number speedOdometer4;
+    private Number speedOdometer5;
     
     
 	@Column(updateable = false)
     private transient Map<ScoreType, Integer> scoreMap = new HashMap<ScoreType, Integer>();
     
-    public Integer getStartingOdometer()
+    public Number getStartingOdometer()
     {
         return startingOdometer;
     }
-    public void setStartingOdometer(Integer startingOdometer)
+    public void setStartingOdometer(Number startingOdometer)
     {
         this.startingOdometer = startingOdometer;
     }
-    public Integer getEndingOdometer()
+    public Number getEndingOdometer()
     {
         return endingOdometer;
     }
-    public void setEndingOdometer(Integer endingOdometer)
+    public void setEndingOdometer(Number endingOdometer)
     {
         this.endingOdometer = endingOdometer;
     }
-    public Integer getOdometer()
+    public Number getOdometer()
     {
         return odometer;
     }
-    public void setOdometer(Integer odometer)
+    public void setOdometer(Number odometer)
     {
         this.odometer = odometer;
     }
-    public Integer getOdometer1()
+    public Number getOdometer1()
     {
         return odometer1;
     }
-    public void setOdometer1(Integer odometer1)
+    public void setOdometer1(Number odometer1)
     {
         this.odometer1 = odometer1;
     }
-    public Integer getOdometer2()
+    public Number getOdometer2()
     {
         return odometer2;
     }
-    public void setOdometer2(Integer odometer2)
+    public void setOdometer2(Number odometer2)
     {
         this.odometer2 = odometer2;
     }
-    public Integer getOdometer3()
+    public Number getOdometer3()
     {
         return odometer3;
     }
-    public void setOdometer3(Integer odometer3)
+    public void setOdometer3(Number odometer3)
     {
         this.odometer3 = odometer3;
     }
-    public Integer getOdometer4()
+    public Number getOdometer4()
     {
         return odometer4;
     }
-    public void setOdometer4(Integer odometer4)
+    public void setOdometer4(Number odometer4)
     {
         this.odometer4 = odometer4;
     }
-    public Integer getOdometer5()
+    public Number getOdometer5()
     {
         return odometer5;
     }
-    public void setOdometer5(Integer odometer5)
+    public void setOdometer5(Number odometer5)
     {
         this.odometer5 = odometer5;
     }
@@ -295,27 +294,27 @@ public class DriveQMap extends BaseEntity
     {
         this.mpgHeavy = mpgHeavy;
     }
-    public Integer getIdleLo()
+    public Number getIdleLo()
     {
         return idleLo;
     }
-    public void setIdleLo(Integer idleLo)
+    public void setIdleLo(Number idleLo)
     {
         this.idleLo = idleLo;
     }
-    public Integer getIdleHi()
+    public Number getIdleHi()
     {
         return idleHi;
     }
-    public void setIdleHi(Integer idleHi)
+    public void setIdleHi(Number idleHi)
     {
         this.idleHi = idleHi;
     }
-    public Integer getDriveTime()
+    public Number getDriveTime()
     {
         return driveTime;
     }
-    public void setDriveTime(Integer driveTime)
+    public void setDriveTime(Number driveTime)
     {
         this.driveTime = driveTime;
     }
@@ -341,10 +340,10 @@ public class DriveQMap extends BaseEntity
     {
         this.endingDate = endingDate;
     }
-	public Integer getCrashOdometer() {
+	public Number getCrashOdometer() {
 		return crashOdometer;
 	}
-	public void setCrashOdometer(Integer crashOdometer) {
+	public void setCrashOdometer(Number crashOdometer) {
 		this.crashOdometer = crashOdometer;
 	}
     public Integer getCrashTotal() {
@@ -365,40 +364,40 @@ public class DriveQMap extends BaseEntity
 	public void setCrashEvents(Integer crashEvents) {
 		this.crashEvents = crashEvents;
 	}
-	public Integer getSpeedOdometer() {
+	public Number getSpeedOdometer() {
 		return speedOdometer;
 	}
-	public void setSpeedOdometer(Integer speedOdometer) {
+	public void setSpeedOdometer(Number speedOdometer) {
 		this.speedOdometer = speedOdometer;
 	}
-	public Integer getSpeedOdometer1() {
+	public Number getSpeedOdometer1() {
 		return speedOdometer1;
 	}
-	public void setSpeedOdometer1(Integer speedOdometer1) {
+	public void setSpeedOdometer1(Number speedOdometer1) {
 		this.speedOdometer1 = speedOdometer1;
 	}
-	public Integer getSpeedOdometer2() {
+	public Number getSpeedOdometer2() {
 		return speedOdometer2;
 	}
-	public void setSpeedOdometer2(Integer speedOdometer2) {
+	public void setSpeedOdometer2(Number speedOdometer2) {
 		this.speedOdometer2 = speedOdometer2;
 	}
-	public Integer getSpeedOdometer3() {
+	public Number getSpeedOdometer3() {
 		return speedOdometer3;
 	}
-	public void setSpeedOdometer3(Integer speedOdometer3) {
+	public void setSpeedOdometer3(Number speedOdometer3) {
 		this.speedOdometer3 = speedOdometer3;
 	}
-	public Integer getSpeedOdometer4() {
+	public Number getSpeedOdometer4() {
 		return speedOdometer4;
 	}
-	public void setSpeedOdometer4(Integer speedOdometer4) {
+	public void setSpeedOdometer4(Number speedOdometer4) {
 		this.speedOdometer4 = speedOdometer4;
 	}
-	public Integer getSpeedOdometer5() {
+	public Number getSpeedOdometer5() {
 		return speedOdometer5;
 	}
-	public void setSpeedOdometer5(Integer speedOdometer5) {
+	public void setSpeedOdometer5(Number speedOdometer5) {
 		this.speedOdometer5 = speedOdometer5;
 	}
 }

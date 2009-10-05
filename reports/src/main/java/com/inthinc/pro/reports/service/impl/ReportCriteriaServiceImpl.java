@@ -169,11 +169,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
         List<ScoreableEntity> s = getScores(groupID, duration);
+    	Group group = groupDAO.findByID(groupID);
         ScoreableEntity summaryScore = scoreDAO.getTrendSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL);
-        Group group = groupDAO.findByID(summaryScore.getEntityID());
-    	String summaryTitle = MessageUtil.formatMessageString("report.trend.summary", (getLocale() == null) ? Locale.getDefault() : getLocale(), group.getName());
-        summaryScore.setIdentifier(summaryTitle);
-        s.add(0,summaryScore);
+        if (summaryScore != null)
+        {
+        	String summaryTitle = MessageUtil.formatMessageString("report.trend.summary", (getLocale() == null) ? Locale.getDefault() : getLocale(), group.getName());
+        	summaryScore.setIdentifier(summaryTitle);
+        	s.add(0,summaryScore);
+        }
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(groupID, duration);
 
@@ -184,6 +187,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         {
             ScoreableEntity se = s.get(i);
             List<ScoreableEntity> scoreableEntityList = groupTrendMap.get(se.getEntityID());
+            CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(se.getEntityID());
+//            trendBeanItem.setCrashSummary(crashSummary);
+
 
             // Not a full range, pad w/ zero
     		int holes = 0;

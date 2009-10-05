@@ -223,6 +223,18 @@ public abstract class AbstractMapper implements Mapper
         }
         catch (IllegalAccessException e)
         {
+            if (logger.isTraceEnabled())
+            {
+                logger.trace("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
+            }
+            throw new MappingException(e);
+        }
+        catch (IllegalArgumentException e)
+        {
+            if (logger.isTraceEnabled())
+            {
+                logger.trace("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
+            }
             throw new MappingException(e);
         }
         catch (InstantiationException e)

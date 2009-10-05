@@ -241,7 +241,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         sb.append("</categories>");
 
         // top group
-        if (!trendBeanState.getMaximized() || (trendBeanState.getMaximized() && summaryItem.getShow()))
+        if (summaryItem != null && (!trendBeanState.getMaximized() || (trendBeanState.getMaximized() && summaryItem.getShow())))
         {
         	ScoreableEntityPkg summaryPkg = summaryItem.getScoreableEntityPkg();
         	List<ScoreableEntity> summaryList = getGroupTrendMap().get(summaryPkg.getSe().getEntityID());
@@ -322,6 +322,10 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     private TrendBeanItem createSummaryItem() {
     	TrendBeanItem summaryTrendBeanItem = new TrendBeanItem();
     	ScoreableEntity score = getScoreDAO().getTrendSummaryScore(trendBeanState.getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
+    	if (score == null)
+    	{
+    		return null;
+    	}
         score.setEntityID(trendBeanState.getGroupID());
     	
     	String summaryTitle = MessageUtil.formatMessageString("trendReport_summary", getGroupHierarchy().getGroup(trendBeanState.getGroupID()).getName());
@@ -455,7 +459,10 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     public void saveStateAction()
     {
     	TrendBeanItem summaryItem = getSummaryItem();
-		trendBeanState.getGroupVisibleState().put(summaryItem.getGroupID(), summaryItem.getShow());
+    	if (summaryItem != null)
+    	{
+    		trendBeanState.getGroupVisibleState().put(summaryItem.getGroupID(), summaryItem.getShow());
+    	}
     	
     	for (TrendBeanItem item : getTrendBeanItems())
     	{

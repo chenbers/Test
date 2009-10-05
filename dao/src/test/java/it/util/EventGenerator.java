@@ -1,5 +1,7 @@
 package it.util;
 
+import it.config.ReportTestConst;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -9,6 +11,8 @@ import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.IdleEvent;
+import com.inthinc.pro.model.IgnitionOffEvent;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.SeatBeltEvent;
@@ -34,7 +38,12 @@ public class EventGenerator
     private final static int ATTR_TYPE_DELTAVX =  131;
     private final static int ATTR_TYPE_DELTAVY =  132;
     private final static int ATTR_TYPE_DELTAVZ =  133;
+    private final static int ATTR_TYPE_MPG = 149;
     private final static int ATTR_TYPE_ZONE_ID =  192;
+    
+    private final static int ATTR_TYPE_LO_IDLE  = 219;
+    private final static int ATTR_TYPE_HI_IDLE  = 220;
+
 /*    
     private final static int ATTR_TYPE_FIRMVER   193
     private final static int ATTR_TYPE_FWDCMD_ID 194
@@ -149,8 +158,96 @@ public class EventGenerator
     public EventGenerator()
     {
     }
+    
 
-    public void generateEvents(String imeiID, MCMSimulator service, Date startTime) throws Exception
+    // used for report testing
+    public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data ) throws Exception
+    {
+    	System.out.println("generate trip for imei" + imeiID + " Date: " + startTime);
+    	
+    	data.initIndexes(locations.length);
+        Date eventTime = startTime;
+        Event event = null;
+        
+        List<byte[]> noteList = new ArrayList<byte[]>();
+        Integer odometer = ReportTestConst.MILES_PER_EVENT;
+        Integer locCnt = ReportTestConst.EVENTS_PER_DAY;
+        for (int i = 0; i < locCnt; i++)
+        {
+        	if (i == 0)
+        	{
+                event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_IGNITION_ON,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
+        		
+        	}
+        	else if (i == (locCnt-1))
+        	{
+                int mpg = data.getMpg();
+                event = new IgnitionOffEvent(0l, 0, EventMapper.TIWIPRO_EVENT_IGNITION_OFF,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), mpg);
+                
+        	}
+        	else if (data.isSpeedingIndex(i))
+            {
+                event = new SpeedingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        90, 65, 60, 2, 10);
+                
+            }
+        	else if (data.isSeatbeltIndex(i))
+            {
+                event = new SeatBeltEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SEATBELT,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        55, 59, 3);
+                        
+                
+            }
+        	else if (data.isAggressiveDrivingIndex(i))
+            {
+        		int adType = randomInt(0, 1);
+                if (adType == 0) // hard vert
+                    event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        55, 11, -22, -33, 50);
+                else // hard brake
+                    event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT,
+                            eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                            55, -25, 22, -13, 50);
+                
+            }
+        	else if (data.isIdlingIndex(i))
+            {
+                event = new IdleEvent(0l, 0, EventMapper.TIWIPRO_EVENT_IDLE,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        ReportTestConst.LO_IDLE_TIME, ReportTestConst.HI_IDLE_TIME);
+            }
+            else
+            {
+                event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_LOCATION,
+                                    eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
+            }
+            event.setSats(7);
+            eventTime = new Date(eventTime.getTime() + ReportTestConst.ELAPSED_TIME_PER_EVENT);
+            
+            byte[] eventBytes = createDataBytesFromEvent(event);
+            noteList.add(eventBytes);
+            if ((i+1) % 4 == 0 ||(i+1) == locations.length)
+            {
+                service.note(imeiID, noteList);
+                noteList = new ArrayList<byte[]>();
+                System.out.print(".");
+            }
+            
+        }
+    	System.out.println(" COMPLETE");
+    }
+
+
+    int randomInt(int min, int max) {
+        return (int) (Math.random() * ((max - min) + 1)) + min;
+    }
+
+	public void generateEvents(String imeiID, MCMSimulator service, Date startTime) throws Exception
     {
         Date eventTime = startTime;
         Event event = null;
@@ -231,7 +328,7 @@ public class EventGenerator
         int idx = 0;
         eventBytes[idx++] = (byte) (event.getType() & 0x000000FF);
         idx = puti4(eventBytes, idx, (int)(event.getTime().getTime()/1000l));
-        eventBytes[idx++] = (byte) 1; // ?? flags
+        eventBytes[idx++] = (byte) (event.getSats() & 0x000000FF);
         eventBytes[idx++] = (byte) 1; // maprev
         idx = putlat(eventBytes, idx, event.getLatitude());
         idx = putlng(eventBytes, idx, event.getLongitude());
@@ -284,6 +381,20 @@ public class EventGenerator
             ZoneDepartureEvent zoneDepartureEvent = (ZoneDepartureEvent)event;
             eventBytes[idx++] = (byte) (ATTR_TYPE_ZONE_ID & 0x000000FF);
             idx = puti4(eventBytes, idx, zoneDepartureEvent.getZoneID());
+        }
+        else if (event instanceof IgnitionOffEvent)
+        {
+        	IgnitionOffEvent ignitionOffEvent = (IgnitionOffEvent)event;
+            eventBytes[idx++] = (byte) (ATTR_TYPE_MPG & 0x000000FF);
+            idx = puti2(eventBytes, idx, ignitionOffEvent.getMpg());
+        }
+        else if (event instanceof IdleEvent)
+        {
+            IdleEvent idleEvent = (IdleEvent)event;
+            eventBytes[idx++] = (byte) (ATTR_TYPE_LO_IDLE & 0x000000FF);
+            idx = puti4(eventBytes, idx, idleEvent.getLowIdle());
+            eventBytes[idx++] = (byte) (ATTR_TYPE_HI_IDLE & 0x000000FF);
+            idx = puti4(eventBytes, idx, idleEvent.getHighIdle());
         }
 
         return Arrays.copyOf(eventBytes, idx);

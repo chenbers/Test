@@ -15,7 +15,7 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 
 	private EntityType entityType;
 	private String identifier;
-	private Integer identifierNum;
+	private Number identifierNum;
 	private Integer score;
     private Date date;
     private ScoreType scoreType;
@@ -47,10 +47,10 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	public Integer getIdentifierNum() {
+	public Number getIdentifierNum() {
         return identifierNum;
     }
-    public void setIdentifierNum(Integer identifierNum){
+    public void setIdentifierNum(Number identifierNum){
         this.identifierNum = identifierNum;
     }
     public Integer getScore() {
