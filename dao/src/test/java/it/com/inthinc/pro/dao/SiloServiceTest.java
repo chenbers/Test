@@ -77,6 +77,7 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
@@ -363,6 +364,7 @@ public class SiloServiceTest {
             assertTrue(startDate.before(trip.getStartTime()));
             assertTrue(endDate.after(trip.getEndTime()));
             assertTrue(trip.getMileage() > 0);
+            assertTrue(trip.getStatus().equals(TripStatus.TRIP_COMPLETED));
         }
         Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
         assertNotNull(trip);

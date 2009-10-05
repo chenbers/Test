@@ -10,6 +10,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TripDisplay implements Comparable<TripDisplay>
@@ -31,7 +32,7 @@ public class TripDisplay implements Comparable<TripDisplay>
     private static final int MINUTES_BUFFER = 5;    
 	private static DateFormat dateFormatter;
     
-    public TripDisplay(Trip trip, TimeZone timeZone, String mapServerUrl, Date lastReportedTime)
+    public TripDisplay(Trip trip, TimeZone timeZone, String mapServerUrl)
     {
         this.trip = trip;
         this.timeZone = timeZone;
@@ -66,7 +67,6 @@ public class TripDisplay implements Comparable<TripDisplay>
             setStartAddress(lookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
             setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
         }
-        determineIfTripInProgress(lastReportedTime);
     }
     public String getStartDateString()
     {
@@ -215,22 +215,12 @@ public class TripDisplay implements Comparable<TripDisplay>
     }
     
     public boolean isInProgress() {
-		return inProgress;
+    	if (trip == null)
+    		return false;
+    	
+    	return trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);
 	}
 	public void setInProgress(boolean inProgress) {
 		this.inProgress = inProgress;
-	}
-
-	// TODO: this might not be sufficient -- may need to get from back end
-	public void determineIfTripInProgress(Date lastReportedTime)
-	{
-		if (lastReportedTime == null)
-			return;
-		
-    	if (new Date().getTime() - lastReportedTime.getTime() < (DateUtil.MILLISECONDS_IN_MINUTE * MINUTES_BUFFER))
-    	{
-    		setInProgress(true);
-    	}
-
 	}
 }

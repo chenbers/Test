@@ -68,18 +68,15 @@ public class TripsBean extends BaseBean {
     public void initTrips() {
         if (trips.isEmpty()) {
             List<Trip> tempTrips = new ArrayList<Trip>();
-            LastLocation loc = null;
             if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
                 tempTrips = driverDAO.getTrips(identifiableEntityBean.getId(), getStartDate(), getEndDate());
-                loc = driverDAO.getLastLocation(identifiableEntityBean.getId());
                 
             }else{
                 tempTrips = vehicleDAO.getTrips(identifiableEntityBean.getId(), getStartDate(), getEndDate());
-                loc = vehicleDAO.getLastLocation(identifiableEntityBean.getId());
             }
             
             for (Trip trip : tempTrips) {
-                trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup.getMapServerURLString(), (loc == null) ? null :  loc.getTime()));
+                trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup.getMapServerURLString()));
             }
             Collections.sort(trips);
             Collections.reverse(trips);

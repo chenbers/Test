@@ -26,8 +26,10 @@ public class Trip extends BaseEntity
     
     @Column(name="events", type=com.inthinc.pro.model.Event.class, updateable=false)
     private List<Event> events;
+    
+    private TripStatus status;
 
-    public Trip()
+	public Trip()
     {
         super();
     }
@@ -153,4 +155,10 @@ public class Trip extends BaseEntity
         this.driverID = driverID;
     }
 
+    public TripStatus getStatus() {
+		return status;
+	}
+	public void setStatus(TripStatus status) {
+		this.status = status;
+	}
 }
