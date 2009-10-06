@@ -54,7 +54,6 @@
                                     </pretty:link>
                                 </td>
                             </tr>
-                            <c:if test="#{dashBoardDetailBean.group.type != 'FLEET'}">
                                 <tr>
                                     <td class="tab #{dashBoardDetailBean.tabType == 'MAP' ? 'selected_tab' : ''}">
                                         <pretty:link mappingId="detailedDashboard">
@@ -65,7 +64,6 @@
                                         </pretty:link>
                                     </td>
                                 </tr>
-                            </c:if>
                             <tr>
                                 <td class="tab #{dashBoardDetailBean.tabType == 'MPG' ? 'selected_tab' : ''}">
                                     <pretty:link mappingId="detailedDashboard">
