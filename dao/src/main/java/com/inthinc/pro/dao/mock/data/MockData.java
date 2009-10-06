@@ -623,9 +623,19 @@ public class MockData {
 
     private int addEventsAndRedFlagsForTrip(Driver driver, Vehicle vehicle, Trip trip, int idOffset) {
         int numEvents = randomInt(MIN_EVENTS, MAX_EVENTS);
+        boolean firstSpeeding = true;
         trip.setEvents(new ArrayList<Event>());
+        int eventCategory;
         for (int eventCnt = 0; eventCnt < numEvents; eventCnt++) {
-            int eventCategory = randomInt(1, 4);
+        	
+        	if((eventCnt == (numEvents -1)) && firstSpeeding){
+        		
+        		eventCategory = 3;
+        	}
+        	else {
+        		
+        		eventCategory= randomInt(1, 4);
+        	}
             Event event = null;
             Long id = new Long(idOffset + trip.getTripID() * MAX_EVENTS + eventCnt);
             int dateInSeconds = randomInt((int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()));
@@ -671,9 +681,18 @@ public class MockData {
                     event.setAddressStr(addressStr[randomInt(0, 2)]);
                     break;
                 case 3:
-                    int speedLimit = randomInt(35, 75);
-                    int avgSpeed = randomInt(speedLimit, 80);
-                    int topSpeed = randomInt(avgSpeed, 100);
+                	int speedLimit,avgSpeed,topSpeed;
+                	if (firstSpeeding){
+                		speedLimit = 0;
+                		avgSpeed = 0;
+                		topSpeed = 0;
+                		firstSpeeding = false;
+                	}
+                	else {
+                    	speedLimit = randomInt(35, 75);
+                    	avgSpeed = randomInt(speedLimit, 80);
+                    	topSpeed = randomInt(avgSpeed, 100);
+                	}
                     event = new SpeedingEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, date, randomInt(15, 70), randomInt(10, 50), lat, lng, topSpeed,
                             avgSpeed, speedLimit, randomInt(5, 70), randomInt(10, 50));
                     event.setAddressStr(addressStr[randomInt(0, 2)]);

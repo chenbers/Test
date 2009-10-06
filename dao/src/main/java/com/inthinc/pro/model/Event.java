@@ -2,10 +2,12 @@ package com.inthinc.pro.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import com.inthinc.pro.dao.annotations.Column;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.dao.annotations.Column;
 
 @XmlRootElement
 public class Event extends BaseEntity implements Comparable<Event>, Serializable
@@ -332,7 +334,20 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     }
     
     
+    public boolean isValidEvent(){
+    	return true;
+    }
     
-    
-
+    public static List<Event> cleanEvents(List<Event> events){
+    	
+    	Iterator<Event> it = events.iterator();
+    	while (it.hasNext()){
+    		
+    		if (!it.next().isValidEvent()){
+    			
+    			it.remove();
+    		}
+    	}
+    	return events;
+    }
 }

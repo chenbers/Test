@@ -63,10 +63,11 @@ public class EventHessianDAOTest
         List<Event> eventList = eventHessianDAO.getMostRecentEvents(MockData.TOP_GROUP_ID, 5);
         
         assertNotNull(eventList);
+        // One speeding event will be invalid so not counted, but should be compensated for
         assertEquals(5, eventList.size());
         
         List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
-        // make sure they are in decending order by date
+        // make sure they are in descending order by date
         for (int i = 0 ; i < 4; i++)
         {
             assertTrue("Time Compare failed for event " + i  + " " + eventList.get(i).getTime() + " and " + (i+1) + " " + eventList.get(i+1).getTime(), 

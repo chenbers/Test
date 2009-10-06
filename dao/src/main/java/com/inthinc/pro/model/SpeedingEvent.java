@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class SpeedingEvent extends Event
 {
-    /**
+	/**
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
@@ -115,5 +115,11 @@ public class SpeedingEvent extends Event
         
         return MessageFormat.format(formatStr, topSpeed, speedLimit , mphString, mphString);
     }
+    @Override
+	public boolean isValidEvent() {
+		// TODO Auto-generated method stub
+		return (speedLimit != null) && (speedLimit != 0) && (topSpeed != null) && (topSpeed != 0);
+	}
+
 
 }
