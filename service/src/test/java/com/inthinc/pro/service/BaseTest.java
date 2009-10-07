@@ -15,22 +15,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 // any classes that extend this one will also have access to these configurations
 @ContextConfiguration(locations = { "classpath:spring/applicationContext-*.xml" })
-public class BaseTest implements ApplicationContextAware {
+public abstract class BaseTest implements ApplicationContextAware {
 
     protected static final TJWSEmbeddedJaxrsServer server = new TJWSEmbeddedJaxrsServer();
     protected ApplicationContext applicationContext;
 
     private static Integer port;
-    private static String urlprefix;
+    private static String urlprefix = "http://localhost:8080";
 
-    public BaseTest(Integer port) {
-        BaseTest.port = port;
-        BaseTest.urlprefix = "http://localhost:" + port;
-    }
+//    public BaseTest(Integer port) {
+//        BaseTest.port = port;
+//        BaseTest.urlprefix = "http://localhost:" + port;
+//    }
 
     @BeforeClass
     public static void beforeClass() {
-        server.setPort(port);
+        server.setPort(8080);
         server.start();
     }
 
@@ -54,14 +54,13 @@ public class BaseTest implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
-
-
-    public static Integer getPort() {
-        return port;
-    }
-
-    public static String getUrlprefix() {
-        return urlprefix;
-    }
+    
+//    public static Integer getPort() {
+//        return port;
+//    }
+//
+//    public static String getUrlprefix() {
+//        return urlprefix;
+//    }
 
 }
