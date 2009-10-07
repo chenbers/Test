@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
@@ -33,6 +34,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     private CrashReportDAO crashReportDAO;
     private CrashHistoryReportItem clearItem;
     private TablePref<CrashHistoryReportItem> tablePref;
+    private String selectedCrash;
     static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
@@ -158,53 +160,39 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         this.clearItem = clearItem;
     }
 
-    public void newItemAction() {
+    public void updateCrashStatus() {
+        // extract the new status and the crash id to change
+        StringTokenizer st = new StringTokenizer(this.selectedCrash,"_");
+        String stat = st.nextToken();
+        Integer crashID = new Integer(st.nextToken());
+        
+        // set the data for update 
         CrashReport cr = new CrashReport();
-        cr.setCrashReportID(clearItem.getCrashReportID());
-        cr.setCrashReportStatus(CrashReportStatus.NEW);
-        // carry the date, so it's not updated in the mapper
-        Date d = new Date();
-        d.setTime(clearItem.getTime());
-        cr.setDate(d);
+        cr.setCrashReportID(crashID);
+        
+        if (        stat.equalsIgnoreCase("new") ) {
+            cr.setCrashReportStatus(CrashReportStatus.NEW);
+            
+        } else if ( stat.equalsIgnoreCase("confirmed") ) {            
+            cr.setCrashReportStatus(CrashReportStatus.CONFIRMED);
+            
+        } else if ( stat.equalsIgnoreCase("forgiven") ) {
+            cr.setCrashReportStatus(CrashReportStatus.FORGIVEN);
+        } else {
+            return;
+        }
+        
+        for ( CrashHistoryReportItem chri: tableData ) {
+            if ( chri.getCrashReportID().equals(crashID) ) {
+                Date d = new Date();
+                d.setTime(chri.getTime());
+                cr.setDate(d);
+                break;
+            }
+        }
+        
+        // do the update
         if (crashReportDAO.update(cr) >= 1) {
-            initTableData();
-        }
-    }
-
-    public void confirmItemAction() {
-        CrashReport cr = new CrashReport();
-        cr.setCrashReportID(clearItem.getCrashReportID());
-        cr.setCrashReportStatus(CrashReportStatus.CONFIRMED);
-        // carry the date, so it's not updated in the mapper
-        Date d = new Date();
-        d.setTime(clearItem.getTime());
-        cr.setDate(d);
-        if (crashReportDAO.update(cr) >= 1) {
-            initTableData();
-        }
-    }
-
-    public void forgiveItemAction() {
-        CrashReport cr = new CrashReport();
-        cr.setCrashReportID(clearItem.getCrashReportID());
-        cr.setCrashReportStatus(CrashReportStatus.FORGIVEN);
-        // carry the date, so it's not updated in the mapper
-        Date d = new Date();
-        d.setTime(clearItem.getTime());
-        cr.setDate(d);
-        if (crashReportDAO.update(cr) >= 1) {
-            initTableData();
-        }
-    }
-
-    public void clearItemAction() {
-        if (crashReportDAO.forgiveCrash(clearItem.getCrashReportID()) >= 1) {
-            initTableData();
-        }
-    }
-
-    public void includeEventAction() {
-        if (crashReportDAO.unforgiveCrash(clearItem.getCrashReportID()) >= 1) {
             initTableData();
         }
     }
@@ -276,6 +264,14 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+    public String getSelectedCrash() {
+        return selectedCrash;
+    }
+
+    public void setSelectedCrash(String selectedCrash) {
+        this.selectedCrash = selectedCrash;
     }
 
     @Override
