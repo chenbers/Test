@@ -9,7 +9,6 @@ import org.jboss.resteasy.spi.UnauthorizedException;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.UserService;
-import com.inthinc.pro.util.SecurityBean;
 
 public class UserServiceImpl extends BaseService implements UserService {
 
@@ -22,12 +21,12 @@ public class UserServiceImpl extends BaseService implements UserService {
     public User get(Integer userID) {
 
         User user = userDAO.findByID(userID);
-        
-        if(user != null && securityBean.isAuthorized(user))
+
+        if (user != null && securityBean.isAuthorized(user))
             return user;
         else
-            throw new NotFoundException("Attempt to find UserID: " + userID + " by User '" + getUser().getUsername() + "' did not return a result. Either the UserID does not exist or the User does not have authority." );
-
+            throw new NotFoundException("Attempt to find UserID: " + userID + " by User '" + getUser().getUsername()
+                    + "' did not return a result. Either the UserID does not exist or the User does not have authority.");
 
     }
 
@@ -39,7 +38,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (securityBean.isAuthorized(user))
             return userDAO.update(user);
         else
-            throw new UnauthorizedException("Unauthorized attempt to update User: " + (user != null && user.getUsername() != null ? user.getUsername() : "Unknown User") + " by User: " + getUser().getUsername()   );
+            throw new UnauthorizedException("Unauthorized attempt to update User: " + (user != null && user.getUsername() != null ? user.getUsername() : "Unknown User")
+                    + " by User: " + getUser().getUsername());
 
     }
 
@@ -47,7 +47,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (securityBean.isAuthorizedByUserID(userID))
             return userDAO.deleteByID(userID);
         else
-            throw new UnauthorizedException("Unauthorized attempt to delete UserID: " + userID + " by User: " + getUser().getUsername()  );
+            throw new UnauthorizedException("Unauthorized attempt to delete UserID: " + userID + " by User: " + getUser().getUsername());
 
     }
 
