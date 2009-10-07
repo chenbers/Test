@@ -20,6 +20,7 @@ import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.util.MessageUtil;
 
 public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportItem> implements TablePrefOptions<CrashHistoryReportItem> {
@@ -110,7 +111,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         User user = getProUser().getUser();
         setUserRole(user.getRole().getName());
         // the following will be how we access data when LIVE data is available
-        List<CrashReport> crashList = crashReportDAO.findByGroupID(getProUser().getUser().getGroupID());
+        List<CrashReport> crashList = crashReportDAO.findByGroupID(user.getGroupID());
         List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
         // temporary map to hold drivers that have already been looked up. This will go away when pagination is implemented
         Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
@@ -285,4 +286,10 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         clearData();
         return "go_crashHistory";
     }
+    @Override
+    protected ReportCriteria getReportCriteria()
+    {
+        return getReportCriteriaService().getCrashHistoryReportCriteria(getUser().getGroupID());
+    }
+
 }

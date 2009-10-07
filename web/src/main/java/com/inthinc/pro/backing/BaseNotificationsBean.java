@@ -354,22 +354,24 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 	public abstract int getDisplaySize();
 
 	public void exportReportToPdf() {
-	    getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
+	    getReportRenderer().exportSingleReportToPDF(initReportCriteria(), getFacesContext());
 	}
 
 	public void emailReport() {
-	    getReportRenderer().exportReportToEmail(getReportCriteria(), getEmailAddress());
+	    getReportRenderer().exportReportToEmail(initReportCriteria(), getEmailAddress());
 	}
 
 	public void exportReportToExcel() {
-	    getReportRenderer().exportReportToExcel(getReportCriteria(), getFacesContext());
+	    getReportRenderer().exportReportToExcel(initReportCriteria(), getFacesContext());
 	}
 
-	private ReportCriteria getReportCriteria() {
-	    ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID());
-	    reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-	    reportCriteria.setMainDataset(getTableData());
-	    reportCriteria.setLocale(getLocale());
-	    return reportCriteria;
-	}
+    private ReportCriteria initReportCriteria()
+    {
+        ReportCriteria reportCriteria = getReportCriteria();
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setMainDataset(getTableData());
+        return reportCriteria;
+    }
+
+	protected abstract ReportCriteria getReportCriteria();
 }

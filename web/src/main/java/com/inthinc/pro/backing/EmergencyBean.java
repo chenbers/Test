@@ -1,11 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.reports.ReportCriteria;
 
 public class EmergencyBean extends BaseEventsBean
 {
@@ -32,5 +34,10 @@ public class EmergencyBean extends BaseEventsBean
 
         clearData();
         return "go_emergency";
+    }
+    @Override
+    protected ReportCriteria getReportCriteria()
+    {
+        return getReportCriteriaService().getEmergencyReportCriteria(getUser().getGroupID());
     }
 }

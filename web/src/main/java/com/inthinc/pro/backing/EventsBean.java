@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.reports.ReportCriteria;
 
 public class EventsBean extends BaseEventsBean {
     private static final Logger logger = Logger.getLogger(EventsBean.class);
@@ -67,5 +69,9 @@ public class EventsBean extends BaseEventsBean {
                     i.remove();
             }
         }
+    }
+    @Override
+    protected ReportCriteria getReportCriteria() {
+        return getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID());
     }
 }

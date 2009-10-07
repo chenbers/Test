@@ -15,6 +15,7 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.reports.ReportCriteria;
 
 public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportItem> implements TablePrefOptions<EventReportItem>
 {
@@ -406,6 +407,5 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
 	public void setFilteredTableData(List<EventReportItem> filteredTableData) {
 		this.filteredTableData = filteredTableData;
 	}
-
 }
 

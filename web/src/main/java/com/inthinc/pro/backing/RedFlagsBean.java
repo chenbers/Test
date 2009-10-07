@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
+import com.inthinc.pro.reports.ReportCriteria;
 
 public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> implements TablePrefOptions<RedFlagReportItem>{
 	
@@ -408,4 +410,10 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
             }
         }
     }
+	protected ReportCriteria getReportCriteria() {
+	    ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID());
+	    reportCriteria.setLocale(getLocale());
+	    return reportCriteria;
+	}
+
  }

@@ -1,11 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.reports.ReportCriteria;
 
 public class ZoneAlertEventsBean extends BaseEventsBean
 {
@@ -33,6 +35,11 @@ public class ZoneAlertEventsBean extends BaseEventsBean
 
         clearData();
         return "pretty:zoneAlerts";
+    }
+    @Override
+    protected ReportCriteria getReportCriteria()
+    {
+        return getReportCriteriaService().getZoneAlertsReportCriteria(getUser().getGroupID());
     }
 
 }
