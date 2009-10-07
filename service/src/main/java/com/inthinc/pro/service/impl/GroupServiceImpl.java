@@ -7,63 +7,50 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.service.GroupService;
 import com.inthinc.pro.util.SecurityBean;
 
-public class GroupServiceImpl implements GroupService{
-	
-	private GroupDAO groupDAO;
-	private SecurityBean securityBean;
+public class GroupServiceImpl extends BaseService implements GroupService {
 
-	public List<Group> getAll() {
-		//TODO do we want group level security?
-		//return groupDAO.getGroupsByAcctID(securityBean.getAccountID());
-		
-		return groupDAO.getGroupHierarchy(securityBean.getAccountID(), securityBean.getGroupID());
-	}
-	
-	public Group get(Integer groupID)
-	{
-		Group group = groupDAO.findByID(groupID);
-		if (securityBean.isAuthorized(group))
-			return group;
-		return null;
-	}
+    private GroupDAO groupDAO;
 
-	public Integer add(Group group)
-	{
-		if (!securityBean.isAuthorized(group))
-			return groupDAO.create(group.getAccountID(), group);
-	
-		return -1;
-	}
+    public List<Group> getAll() {
+        // TODO do we want group level security?
+        // return groupDAO.getGroupsByAcctID(securityBean.getAccountID());
 
-	public Integer update(Group group)
-	{		
-		if (securityBean.isAuthorized(group))
-			return groupDAO.update(group);
-		
-		return -1;
-	}
+        return groupDAO.getGroupHierarchy(securityBean.getAccountID(), securityBean.getGroupID());
+    }
 
-	public Integer delete(Integer groupID)
-	{
-		if(securityBean.isAuthorizedByGroupID(groupID))
-			return groupDAO.deleteByID(groupID);
-		
-		return -1;
-	}
-	
-	public void setGroupDAO(GroupDAO groupDAO) {
-		this.groupDAO = groupDAO;
-	}
+    public Group get(Integer groupID) {
+        Group group = groupDAO.findByID(groupID);
+        if (securityBean.isAuthorized(group))
+            return group;
+        return null;
+    }
 
-	public GroupDAO getGroupDAO() {
-		return groupDAO;
-	}
+    public Integer add(Group group) {
+        if (!securityBean.isAuthorized(group))
+            return groupDAO.create(group.getAccountID(), group);
 
-	public SecurityBean getSecurityBean() {
-		return securityBean;
-	}
+        return -1;
+    }
 
-	public void setSecurityBean(SecurityBean securityBean) {
-		this.securityBean = securityBean;
-	}
+    public Integer update(Group group) {
+        if (securityBean.isAuthorized(group))
+            return groupDAO.update(group);
+
+        return -1;
+    }
+
+    public Integer delete(Integer groupID) {
+        if (securityBean.isAuthorizedByGroupID(groupID))
+            return groupDAO.deleteByID(groupID);
+
+        return -1;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
 }

@@ -8,89 +8,72 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.util.SecurityBean;
 
-public class PersonServiceImpl implements PersonService{
-	
-	private PersonDAO personDAO;
-	private SecurityBean securityBean;
-	
+public class PersonServiceImpl extends BaseService implements PersonService {
 
-	public List<Person> getAll() {
-        return personDAO.getPeopleInGroupHierarchy(securityBean.getGroupID());		
-	}
-	
-	public Person get(Integer personID)
-	{
+    private PersonDAO personDAO;
+
+    public List<Person> getAll() {
+        return personDAO.getPeopleInGroupHierarchy(securityBean.getGroupID());
+    }
+
+    public Person get(Integer personID) {
         Person person = personDAO.findByID(personID);
-		
+
         if (securityBean.isAuthorized(person))
-			return person;
-        
-		return null;
-	}
+            return person;
 
-	public Integer add(Person person)
-	{
-		if (!securityBean.isAuthorized(person))
-			return personDAO.create(person.getPersonID(), person);
-	
-		return -1;
-	}
+        return null;
+    }
 
-	public Integer update(Person person)
-	{		
-		if (securityBean.isAuthorized(person))
-			return personDAO.update(person);
-		
-		return -1;
-	}
+    public Integer add(Person person) {
+        if (!securityBean.isAuthorized(person))
+            return personDAO.create(person.getPersonID(), person);
 
-	public Integer delete(Integer personID)
-	{
-		if(securityBean.isAuthorizedByPersonID(personID))
-			return personDAO.deleteByID(personID);
-		
-		return -1;
-	}
-	
-	public List<Integer> add(List<Person> persons)
-	{
-		List<Integer> results = new ArrayList<Integer>();
-		for(Person person : persons)
-			results.add(add(person));
-		return results;
-	}
+        return -1;
+    }
 
-	public List<Integer> update(List<Person> persons)
-	{
-		List<Integer> results = new ArrayList<Integer>();
-		for(Person person : persons)
-			results.add(update(person));
-		return results;
-	}
+    public Integer update(Person person) {
+        if (securityBean.isAuthorized(person))
+            return personDAO.update(person);
 
-	public List<Integer> delete(List<Integer> personIDs)
-	{
-		List<Integer> results = new ArrayList<Integer>();
-		for(Integer id : personIDs)
-		{
-			results.add(delete(id));
-		}
-		return results;
-	}
+        return -1;
+    }
 
-	public void setPersonDAO(PersonDAO personDAO) {
-		this.personDAO = personDAO;
-	}
+    public Integer delete(Integer personID) {
+        if (securityBean.isAuthorizedByPersonID(personID))
+            return personDAO.deleteByID(personID);
 
-	public PersonDAO getPersonDAO() {
-		return personDAO;
-	}
-	
-	public SecurityBean getSecurityBean() {
-		return securityBean;
-	}
+        return -1;
+    }
 
-	public void setSecurityBean(SecurityBean securityBean) {
-		this.securityBean = securityBean;
-	}
+    public List<Integer> add(List<Person> persons) {
+        List<Integer> results = new ArrayList<Integer>();
+        for (Person person : persons)
+            results.add(add(person));
+        return results;
+    }
+
+    public List<Integer> update(List<Person> persons) {
+        List<Integer> results = new ArrayList<Integer>();
+        for (Person person : persons)
+            results.add(update(person));
+        return results;
+    }
+
+    public List<Integer> delete(List<Integer> personIDs) {
+        List<Integer> results = new ArrayList<Integer>();
+        for (Integer id : personIDs) {
+            results.add(delete(id));
+        }
+        return results;
+    }
+
+    public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
+
+    public PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
 }

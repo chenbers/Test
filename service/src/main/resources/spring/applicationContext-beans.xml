@@ -37,6 +37,9 @@
     <bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl"> <property name="sbsUserId" value="${teenproxy.sbsUserId}"/> <property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
     <property name="teenServerDAO" ref="sbsDataAccessBean"/> <property name="tigerDAO" ref="tigerDao"/> </bean>
   -->
+  <bean id="baseServiceBean" class="com.inthinc.pro.service.impl.BaseService" abstract="true" >
+    <property name="securityBean" ref="securityBean"/>
+  </bean>
   <bean id="securityBean" class="com.inthinc.pro.util.SecurityBean">
     <property name="userDAO" ref="userDAO" />
     <property name="groupDAO" ref="groupDAO" />
@@ -45,30 +48,24 @@
     <property name="deviceDAO" ref="deviceDAO" />
     <property name="personDAO" ref="personDAO" />
   </bean>
-  <bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl">
+  <bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl" parent="baseServiceBean">
     <property name="deviceDAO" ref="deviceDAO" />
-    <property name="securityBean" ref="securityBean" />
   </bean>
-  <bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
+  <bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl" parent="baseServiceBean">
     <property name="driverDAO" ref="driverDAO" />
-    <property name="securityBean" ref="securityBean" />
   </bean>
-  <bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl">
+  <bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl" parent="baseServiceBean">
     <property name="personDAO" ref="personDAO" />
-    <property name="securityBean" ref="securityBean" />
   </bean>
-  <bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl">
+  <bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl" parent="baseServiceBean">
     <property name="userDAO" ref="userDAO" />
-    <property name="securityBean" ref="securityBean" />
   </bean>
-  <bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl">
+  <bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl" parent="baseServiceBean">
     <property name="groupDAO" ref="groupDAO" />
-    <property name="securityBean" ref="securityBean" />
   </bean>
-  <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
+  <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl" parent="baseServiceBean">
     <property name="vehicleDAO" ref="vehicleDAO" />
     <property name="mpgDAO" ref="mpgDAO" />
-    <property name="securityBean" ref="securityBean" />
   </bean>
   <!--     
     <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">

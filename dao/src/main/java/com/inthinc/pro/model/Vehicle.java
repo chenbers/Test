@@ -1,9 +1,9 @@
 package com.inthinc.pro.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Vehicle extends BaseEntity
@@ -241,5 +241,12 @@ public class Vehicle extends BaseEntity
         sb.append(" ");
         sb.append(this.model!=null?this.model:"");
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle [VIN=" + VIN + ", color=" + color + ", costPerHour=" + costPerHour + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
+                + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
+                + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + "]";
     }
 }

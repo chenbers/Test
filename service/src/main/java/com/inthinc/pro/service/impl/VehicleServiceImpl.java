@@ -17,210 +17,180 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.service.VehicleService;
-import com.inthinc.pro.util.SecurityBean;
 
+public class VehicleServiceImpl extends BaseService implements VehicleService {
 
-public class VehicleServiceImpl implements VehicleService{
-	
-	private VehicleDAO vehicleDAO;
-	private MpgDAO mpgDAO;
-	private SecurityBean securityBean;
-	
-	//TODO Assign Driver and Device by explicit call or OVERLOAD add/update??
-	
-	private Response returnOK(Object object)
-	{
-		return Response.ok(object).build();
-	}
-	
-	private Response returnError()
-	{
-		return Response.serverError().build();
-	}
-	
-	public List<Vehicle> getAll() {
-       	return vehicleDAO.getVehiclesInGroupHierarchy(securityBean.getGroupID());
-	}
-	
-	public Response get(Integer vehicleID)
-	{
-        Vehicle vehicle = vehicleDAO.findByID(vehicleID);        
+    private VehicleDAO vehicleDAO;
+    private MpgDAO mpgDAO;
+
+    // TODO Assign Driver and Device by explicit call or OVERLOAD add/update??
+
+    private Response returnOK(Object object) {
+        return Response.ok(object).build();
+    }
+
+    private Response returnError() {
+        return Response.serverError().build();
+    }
+
+    public List<Vehicle> getAll() {
+        return vehicleDAO.getVehiclesInGroupHierarchy(securityBean.getGroupID());
+    }
+
+    public Response get(Integer vehicleID) {
+        Vehicle vehicle = vehicleDAO.findByID(vehicleID);
         if (securityBean.isAuthorized(vehicle))
-			return returnOK(vehicle);
-		
+            return returnOK(vehicle);
+
         return returnError();
-	}
+    }
 
-	public Vehicle findByVIN(String vin)
-	{
-        Vehicle vehicle = vehicleDAO.findByVIN(vin);        
+    public Vehicle findByVIN(String vin) {
+        Vehicle vehicle = vehicleDAO.findByVIN(vin);
         if (securityBean.isAuthorized(vehicle))
-        	return vehicle;		
-    
+            return vehicle;
+
         return null;
-	}
+    }
 
-	public Integer add(Vehicle vehicle)
-	{
-		if (!securityBean.isAuthorized(vehicle))
-			return vehicleDAO.create(vehicle.getGroupID(), vehicle);
-	
-		return -1;
-	}
+    public Integer add(Vehicle vehicle) {
+        if (!securityBean.isAuthorized(vehicle))
+            return vehicleDAO.create(vehicle.getGroupID(), vehicle);
 
-	public Integer update(Vehicle vehicle)
-	{		
-		if (securityBean.isAuthorized(vehicle))
-			return vehicleDAO.update(vehicle);
-		
-		return -1;
-	}
+        return -1;
+    }
 
-	public Integer delete(Integer vehicleID)
-	{
-		if(securityBean.isAuthorizedByVehicleID(vehicleID))
-			return vehicleDAO.deleteByID(vehicleID);
-		
-		return -1;
-	}
+    public Integer update(Vehicle vehicle) {
+        if (securityBean.isAuthorized(vehicle))
+            return vehicleDAO.update(vehicle);
 
-	public List<Integer> add(List<Vehicle> vehicles)
-	{
-		List<Integer> results = new ArrayList<Integer>();
-		for(Vehicle vehicle : vehicles)
-			results.add(add(vehicle));
-		return results;
-	}
+        return -1;
+    }
 
-	public List<Integer> update(List<Vehicle> vehicles)
-	{
-		List<Integer> results = new ArrayList<Integer>();
-		for(Vehicle vehicle : vehicles)
-			results.add(update(vehicle));
-		return results;
-	}
+    public Integer delete(Integer vehicleID) {
+        if (securityBean.isAuthorizedByVehicleID(vehicleID))
+            return vehicleDAO.deleteByID(vehicleID);
 
-	public List<Integer> delete(List<Integer> vehicleIDs)
-	{
-		List<Integer> results = new ArrayList<Integer>();
-		for(Integer id : vehicleIDs)
-		{
-			results.add(delete(id));
-		}
-		return results;
-	}
-	
-	public LastLocation getLastLocation(Integer vehicleID)
-	{
-		if(securityBean.isAuthorizedByVehicleID(vehicleID))
-		
-			return vehicleDAO.getLastLocation(vehicleID);
-		return null;
+        return -1;
+    }
 
-	}
-	
-	//TODO do we implement these?
-//	vehicleDAO.getLastTrip(driverID);
-//	vehicleDAO.getVehiclesNearLoc(groupID, numof, lat, lng);
-//	vehicleDAO.getVehiclesInGroup(groupID);
+    public List<Integer> add(List<Vehicle> vehicles) {
+        List<Integer> results = new ArrayList<Integer>();
+        for (Vehicle vehicle : vehicles)
+            results.add(add(vehicle));
+        return results;
+    }
 
-	public List<Trip> getTrips(Integer vehicleID, String day) 
-	{
-		if(!securityBean.isAuthorizedByVehicleID(vehicleID))
-			return null;		
+    public List<Integer> update(List<Vehicle> vehicles) {
+        List<Integer> results = new ArrayList<Integer>();
+        for (Vehicle vehicle : vehicles)
+            results.add(update(vehicle));
+        return results;
+    }
 
-		Date startDate = parseDate(day);
-		if (startDate==null)
-			return null;
+    public List<Integer> delete(List<Integer> vehicleIDs) {
+        List<Integer> results = new ArrayList<Integer>();
+        for (Integer id : vehicleIDs) {
+            results.add(delete(id));
+        }
+        return results;
+    }
 
-		Calendar cal = Calendar.getInstance(); 
-		cal.setTime(startDate);
-		// Add 1 day to the calendar 		        
-		cal.add(Calendar.DATE, 1); 
+    public LastLocation getLastLocation(Integer vehicleID) {
+        if (securityBean.isAuthorizedByVehicleID(vehicleID))
 
-		return vehicleDAO.getTrips(vehicleID, startDate, cal.getTime());
-		
-	}
-	
-	public List<Trip> getTrips(Integer vehicleID) 
-	{		
-		if(!securityBean.isAuthorizedByVehicleID(vehicleID))
-			return null;		
+            return vehicleDAO.getLastLocation(vehicleID);
+        return null;
 
-		Calendar cal = Calendar.getInstance(); 
-		Date date = new Date();
-		cal.setTime(date);
-		// Add 1 day to the calendar 		        
-		cal.add(Calendar.DATE, -30); 
+    }
 
-		return vehicleDAO.getTrips(vehicleID, cal.getTime(), date);		
-	}
+    // TODO do we implement these?
+    // vehicleDAO.getLastTrip(driverID);
+    // vehicleDAO.getVehiclesNearLoc(groupID, numof, lat, lng);
+    // vehicleDAO.getVehiclesInGroup(groupID);
 
-	// fuel consumption for vehicle (parameter:day)"	
-	public List<MpgEntity> getVehicleMPG(Integer id)
-	{
-		if(!securityBean.isAuthorizedByVehicleID(id))
-			return null;		
+    public List<Trip> getTrips(Integer vehicleID, String day) {
+        if (!securityBean.isAuthorizedByVehicleID(vehicleID))
+            return null;
 
-		Duration duration = Duration.DAYS;
-		
-		return mpgDAO.getVehicleEntities(id, duration, 99);				
-	}
-	
-	public Vehicle assignDevice(Integer id, Integer deviceID)
-	{
-		if (!securityBean.isAuthorizedByVehicleID(id) || !securityBean.isAuthorizedByDeviceID(deviceID))
-			return null;
-		
-		vehicleDAO.setVehicleDevice(id, deviceID);
-		return vehicleDAO.findByID(id);
-	}
+        Date startDate = parseDate(day);
+        if (startDate == null)
+            return null;
 
-	public Vehicle assignDriver(Integer id, Integer driverID)
-	{
-		if (!securityBean.isAuthorizedByVehicleID(id) || !securityBean.isAuthorizedByDriverID(driverID))
-			return null;
-		
-		vehicleDAO.setVehicleDriver(id, driverID);
-		return vehicleDAO.findByID(id);
-	}
-	
-	
-	public void setVehicleDAO(VehicleDAO vehicleDAO) {
-		this.vehicleDAO = vehicleDAO;
-	}
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        // Add 1 day to the calendar
+        cal.add(Calendar.DATE, 1);
 
-	public VehicleDAO getVehicleDAO() {
-		return vehicleDAO;
-	}
+        return vehicleDAO.getTrips(vehicleID, startDate, cal.getTime());
 
-	public MpgDAO getMpgDAO() {	
-		return mpgDAO;
-	}
+    }
 
-	public void setMpgDAO(MpgDAO mpgDAO) {
-		this.mpgDAO = mpgDAO;
-	}
+    public List<Trip> getTrips(Integer vehicleID) {
+        if (!securityBean.isAuthorizedByVehicleID(vehicleID))
+            return null;
 
-	private Date parseDate(String datestring)
-	{
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		
-		Date date=null;
-		
-		try {
-			date = formatter.parse(datestring);
-		} catch (ParseException e) {
-			return null;
-		}
-		return date;
-	}
-	
-	public SecurityBean getSecurityBean() {
-		return securityBean;
-	}
+        Calendar cal = Calendar.getInstance();
+        Date date = new Date();
+        cal.setTime(date);
+        // Add 1 day to the calendar
+        cal.add(Calendar.DATE, -30);
 
-	public void setSecurityBean(SecurityBean securityBean) {
-		this.securityBean = securityBean;
-	}	
+        return vehicleDAO.getTrips(vehicleID, cal.getTime(), date);
+    }
+
+    // fuel consumption for vehicle (parameter:day)"
+    public List<MpgEntity> getVehicleMPG(Integer id) {
+        if (!securityBean.isAuthorizedByVehicleID(id))
+            return null;
+
+        Duration duration = Duration.DAYS;
+
+        return mpgDAO.getVehicleEntities(id, duration, 99);
+    }
+
+    public Vehicle assignDevice(Integer id, Integer deviceID) {
+        if (!securityBean.isAuthorizedByVehicleID(id) || !securityBean.isAuthorizedByDeviceID(deviceID))
+            return null;
+
+        vehicleDAO.setVehicleDevice(id, deviceID);
+        return vehicleDAO.findByID(id);
+    }
+
+    public Vehicle assignDriver(Integer id, Integer driverID) {
+        if (!securityBean.isAuthorizedByVehicleID(id) || !securityBean.isAuthorizedByDriverID(driverID))
+            return null;
+
+        vehicleDAO.setVehicleDriver(id, driverID);
+        return vehicleDAO.findByID(id);
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public MpgDAO getMpgDAO() {
+        return mpgDAO;
+    }
+
+    public void setMpgDAO(MpgDAO mpgDAO) {
+        this.mpgDAO = mpgDAO;
+    }
+
+    private Date parseDate(String datestring) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+
+        Date date = null;
+
+        try {
+            date = formatter.parse(datestring);
+        } catch (ParseException e) {
+            return null;
+        }
+        return date;
+    }
 }
