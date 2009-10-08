@@ -2,12 +2,14 @@ package com.inthinc.pro.util;
 
 import org.springframework.security.context.SecurityContextHolder;
 
+import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -24,10 +26,7 @@ public class SecurityBean {
     private DeviceDAO deviceDAO;
     private DriverDAO driverDAO;
     private PersonDAO personDAO;
-
-    private String getUserName() {
-        return getUser().getUsername();
-    }
+    private AddressDAO addressDAO;
 
     public ProUser getProUser() {
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -39,10 +38,6 @@ public class SecurityBean {
 
     public Person getPerson() {
         return getUser().getPerson();
-    }
-
-    private Group getUserGroup() {
-        return groupDAO.findByID(getUser().getGroupID());
     }
 
     public Integer getGroupID() {
@@ -146,6 +141,18 @@ public class SecurityBean {
         return false;
     }
 
+    public boolean isAuthorized(Address address) {
+        if (address != null) {
+        	//TODO We need an accountID element in Address
+        	//DANGER WILL ROBINSON
+//          if (getAccountID().equals(group.getAccountID()))
+
+                return true;
+
+        }
+        return false;
+    }
+
     // TODO this is dangerous because parameters are not strongly typed
     // It would be easy to send in an id for the wrong entity type
     public boolean isAuthorizedByVehicleID(Integer vehicleID) {
@@ -200,6 +207,15 @@ public class SecurityBean {
         return isAuthorized(group);
     }
 
+    // TODO this is dangerous because parameters are not strongly typed
+    // It would be easy to send in an id for the wrong entity type
+    public boolean isAuthorizedByAddressID(Integer addressID) {
+        Address address = addressDAO.findByID(addressID);
+        if (address == null)
+            return false;
+        return isAuthorized(address);
+    }
+
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
@@ -248,4 +264,11 @@ public class SecurityBean {
         this.personDAO = personDAO;
     }
 
+    public AddressDAO getAddressDAO() {
+        return addressDAO;
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
 }

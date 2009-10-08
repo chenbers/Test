@@ -6,7 +6,6 @@ import java.util.List;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.PersonService;
-import com.inthinc.pro.util.SecurityBean;
 
 public class PersonServiceImpl extends BaseService implements PersonService {
 

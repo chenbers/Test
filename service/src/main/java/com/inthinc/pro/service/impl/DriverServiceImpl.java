@@ -6,7 +6,6 @@ import java.util.List;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.service.DriverService;
-import com.inthinc.pro.util.SecurityBean;
 
 public class DriverServiceImpl extends BaseService implements DriverService {
 

@@ -5,7 +5,7 @@ import java.util.List;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.service.GroupService;
-import com.inthinc.pro.util.SecurityBean;
+
 
 public class GroupServiceImpl extends BaseService implements GroupService {
 

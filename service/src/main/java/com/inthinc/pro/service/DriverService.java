@@ -12,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam;
 import com.inthinc.pro.model.Driver;
 
-import org.springframework.context.annotation.Scope;
 
 
 
