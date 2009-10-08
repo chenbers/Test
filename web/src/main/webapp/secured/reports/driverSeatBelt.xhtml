@@ -183,7 +183,7 @@
 			<rich:panel id="notificationsTable" bodyClass="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTableForm">
-					   <a4j:queue  size="1" sizeExceededBehavior="dropNext"/>
+    					<a4j:queue requestDelay="500"/>
 					
 <!--					<rich:datascroller align="center" for="notificationsTable" id="scrollerTop" page="#{driverSeatBeltBean.tableStatsBean.page}"-->
 <!--					reRender="notificationsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>-->

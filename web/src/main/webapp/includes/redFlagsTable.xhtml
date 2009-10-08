@@ -12,9 +12,9 @@
 	            
      <h:form id="redFlagsTableForm">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
-    <a4j:queue  size="1" sizeExceededBehavior="dropNext"/>
+    <a4j:queue requestDelay="500"/>
     <div class="datagrid_panel" style="width:925px; overflow: auto">
-        <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" 
+        <rich:dataTable value="#{tableData}" id="items" var="item" rowKeyVar="index" styleClass="datagrid" 
         				rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
             <!-- Data -->
@@ -113,13 +113,14 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
+                 
  								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 0}" title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel');" 
  												reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.notes_redflags_clear}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{redFlagsBean.includeEventAction}" 
- 												reRender="#{clearRerender}" ignoreDupResponses="true" id="excluded" oncomplete="initializeTable()">
+ 												reRender="#{clearRerender}" ajaxSingle="true" id="excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" id="include"/>
 								</a4j:commandLink>

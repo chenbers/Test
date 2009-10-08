@@ -486,7 +486,7 @@ var firstLoad = new Boolean(true);
 				  
 				<div class="datagrid_panel">
 					<a4j:form id="notificationsTableForm" ajaxSubmit="true">
-					   <a4j:queue  size="1" sizeExceededBehavior="dropNext"/>
+    					<a4j:queue requestDelay="500"/>
 								
 						<rich:dataTable 
 						value="#{driverSpeedBean.filteredEvents}" 

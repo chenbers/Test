@@ -448,7 +448,7 @@ var firstLoad = new Boolean(true);
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
-						<a4j:queue  size="1" sizeExceededBehavior="dropNext"/>
+    					<a4j:queue requestDelay="500"/>
 					
 <!--					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{vehicleStyleBean.tableStatsBean.page}"-->
 <!--							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{vehicleStyleBean.tableStatsBean.scrollerListener}" />-->
