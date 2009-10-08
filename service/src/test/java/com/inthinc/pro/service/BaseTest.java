@@ -18,7 +18,7 @@ public abstract class BaseTest<T> {
     private Class<T> serviceClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     protected T service;
     private HttpClient client;
-    private static final int port = 7696;
+    private static final int port = 8080;
     private static final String domain = "localhost";
     private static final String url = "http://" + domain + ":" + port + "/service/api";
     
