@@ -20,6 +20,7 @@ import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
+import com.inthinc.pro.model.ZoneEvent;
 
 
 public class EventGenerator
@@ -378,7 +379,7 @@ public class EventGenerator
         }
         else if (event instanceof ZoneDepartureEvent)
         {
-            ZoneDepartureEvent zoneDepartureEvent = (ZoneDepartureEvent)event;
+            ZoneEvent zoneDepartureEvent = (ZoneEvent)event;
             eventBytes[idx++] = (byte) (ATTR_TYPE_ZONE_ID & 0x000000FF);
             idx = puti4(eventBytes, idx, zoneDepartureEvent.getZoneID());
         }

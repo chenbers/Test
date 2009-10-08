@@ -488,6 +488,8 @@ var firstLoad = new Boolean(true);
 				  
 				<div class="datagrid">
 					<a4j:form id="notificationsTableForm" ajaxSubmit="true">
+						<a4j:queue  size="1" sizeExceededBehavior="dropNext"/>
+					
 <!--					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{vehicleSpeedBean.tableStatsBean.page}"-->
 <!--									   id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" -->
 <!--								       scrollerListener="#{vehicleSpeedBean.tableStatsBean.scrollerListener}" />-->
@@ -570,7 +572,7 @@ var firstLoad = new Boolean(true);
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleSpeedBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
- 												eventsQueue="queue" ignoreDupResponses="true" id="excluded" oncomplete="initializeTable()">
+ 													id="excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.vehicleReports_include}" />
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -624,7 +626,7 @@ var firstLoad = new Boolean(true);
           <a4j:commandLink action="#{vehicleSpeedBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
-                			eventsQueue="queue" ignoreDupResponses="true" reRender="notificationsTable,tableStats,scrollerBottom">
+                			eventsQueue="notificationsTableForm" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="yes">
 	          						<h:outputText value="#{messages.button_yes}" />

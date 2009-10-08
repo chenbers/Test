@@ -445,6 +445,8 @@ var firstLoad = new Boolean(true);
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
+						<a4j:queue  size="1" sizeExceededBehavior="dropNext" />
+					
 <!--					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"-->
 <!--							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />-->
 						<rich:dataTable value="#{driverStyleBean.filteredEvents}" 
@@ -508,7 +510,7 @@ var firstLoad = new Boolean(true);
 									<f:setPropertyActionListener target="#{driverStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{driverStyleBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
- 													eventsQueue="queue" ignoreDupResponses="true" id="excluded" oncomplete="initializeTable()">
+ 													id="excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{driverStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -562,7 +564,7 @@ var firstLoad = new Boolean(true);
           <a4j:commandLink action="#{driverStyleBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
-                			eventsQueue="queue" ignoreDupResponses="true" reRender="notificationsTable,tableStats,scrollerBottom">
+                			eventsQueue="eventTable" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="yes">
 	          						<h:outputText value="#{messages.button_yes}" />

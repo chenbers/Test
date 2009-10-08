@@ -12,6 +12,7 @@
 	            
      <h:form id="redFlagsTableForm">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+    <a4j:queue  size="1" sizeExceededBehavior="dropNext"/>
     <div class="datagrid_panel" style="width:925px; overflow: auto">
         <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" 
         				rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
@@ -112,12 +113,13 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
- 								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 0}" title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel');" reRender="clearItemForm:clearItem" >
+ 								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 0}" title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel');" 
+ 												reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.notes_redflags_clear}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.redFlag.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{redFlagsBean.includeEventAction}" 
- 												reRender="#{clearRerender}" eventsQueue="queue" ignoreDupResponses="true" id="excluded" oncomplete="initializeTable()">
+ 												reRender="#{clearRerender}" ignoreDupResponses="true" id="excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" id="include"/>
 								</a4j:commandLink>
@@ -159,7 +161,7 @@
                 value="#{messages.button_no}" /></span></button>
             <a4j:commandButton id="yesButton" action="#{redFlagsBean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel'); initializeTable()"
                 onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
-                eventsQueue="queue" ignoreDupResponses="true">
+                eventsQueue="redFlagsTableForm" >
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
             </a4j:commandButton></div>
 

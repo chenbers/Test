@@ -24,6 +24,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
+import com.inthinc.pro.model.ZoneEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 
 public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> implements TablePrefOptions<RedFlagReportItem>{
@@ -209,22 +210,26 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
         Map<Integer, Zone> zoneMap = new HashMap<Integer, Zone>();
         for (RedFlag redFlag : redFlagList) {
             RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy(), getMeasurementType());
-            Integer zoneID = null;
-
-            if (redFlag.getEvent() instanceof ZoneDepartureEvent) {
-                zoneID = ((ZoneDepartureEvent) redFlag.getEvent()).getZoneID();
-            } else if (redFlag.getEvent() instanceof ZoneArrivalEvent) {
-                zoneID = ((ZoneArrivalEvent) redFlag.getEvent()).getZoneID();
-            }
             
-            if(zoneID != null && zoneMap.containsKey(zoneID)) {
-                item.setZone(zoneMap.get(zoneID));
-            } else if (zoneID != null){
-                Zone zone = getZoneDAO().findByID(zoneID);
-                item.setZone(zone);
-                zoneMap.put(zone.getZoneID(), zone);
-            }
+//            if (redFlag.getEvent() instanceof ZoneDepartureEvent) {
+//                zoneID = ((ZoneDepartureEvent) redFlag.getEvent()).getZoneID();
+//            } else if (redFlag.getEvent() instanceof ZoneArrivalEvent) {
+//                zoneID = ((ZoneArrivalEvent) redFlag.getEvent()).getZoneID();
+//            }
             
+            if (redFlag.getEvent() instanceof ZoneEvent) {
+            	
+            	Integer zoneID = null;
+            	zoneID = ((ZoneEvent) redFlag.getEvent()).getZoneID();
+            
+	            if(zoneID != null && zoneMap.containsKey(zoneID)) {
+	                item.setZone(zoneMap.get(zoneID));
+	            } else if (zoneID != null){
+	                Zone zone = getZoneDAO().findByID(zoneID);
+	                item.setZone(zone);
+	                zoneMap.put(zone.getZoneID(), zone);
+	            }
+            }
             redFlagReportItemList.add(item);
         }
         Collections.sort(redFlagReportItemList);
