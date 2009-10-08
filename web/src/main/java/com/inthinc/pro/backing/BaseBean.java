@@ -115,7 +115,7 @@ public class BaseBean implements Serializable {
         if (getPerson().getLocale() != null)
             return getPerson().getLocale();
         else
-            return Locale.ENGLISH;
+            return Locale.US;
     }
     
     public void setLocale(Locale locale) {
