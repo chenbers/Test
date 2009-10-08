@@ -47,6 +47,7 @@
     <property name="driverDAO" ref="driverDAO" />
     <property name="deviceDAO" ref="deviceDAO" />
     <property name="personDAO" ref="personDAO" />
+    <property name="addressDAO" ref="addressDAO" />
   </bean>
   <bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl" parent="baseServiceBean">
     <property name="deviceDAO" ref="deviceDAO" />
@@ -62,6 +63,9 @@
   </bean>
   <bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl" parent="baseServiceBean">
     <property name="groupDAO" ref="groupDAO" />
+  </bean>
+  <bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl" parent="baseServiceBean">
+    <property name="addressDAO" ref="addressDAO" />
   </bean>
   <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl" parent="baseServiceBean">
     <property name="vehicleDAO" ref="vehicleDAO" />
