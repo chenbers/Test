@@ -16,7 +16,7 @@ public class DriverServiceImpl extends BaseService implements DriverService {
     }
 
     public Driver get(Integer driverID) {
-        Driver driver = driverDAO.findByID(driverID);
+        Driver driver = securityBean.getDriver(driverID);
 
         if (securityBean.isAuthorized(driver))
             return driver;

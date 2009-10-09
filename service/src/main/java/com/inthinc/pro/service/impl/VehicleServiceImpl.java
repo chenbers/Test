@@ -28,7 +28,7 @@ public class VehicleServiceImpl extends BaseService implements VehicleService {
     }
 
     public Vehicle get(Integer vehicleID) {
-        Vehicle vehicle = vehicleDAO.findByID(vehicleID);
+        Vehicle vehicle = securityBean.getVehicle(vehicleID);
         if (securityBean.isAuthorized(vehicle))
             return vehicle;
 
@@ -36,7 +36,7 @@ public class VehicleServiceImpl extends BaseService implements VehicleService {
     }
 
     public Vehicle findByVIN(String vin) {
-        Vehicle vehicle = vehicleDAO.findByVIN(vin);
+        Vehicle vehicle = securityBean.getVehicleByVIN(vin);
         if (securityBean.isAuthorized(vehicle))
             return vehicle;
 

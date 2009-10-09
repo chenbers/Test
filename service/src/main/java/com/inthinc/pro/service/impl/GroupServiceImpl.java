@@ -19,7 +19,7 @@ public class GroupServiceImpl extends BaseService implements GroupService {
     }
 
     public Group get(Integer groupID) {
-        Group group = groupDAO.findByID(groupID);
+        Group group = securityBean.getGroup(groupID);
         if (securityBean.isAuthorized(group))
             return group;
         return null;

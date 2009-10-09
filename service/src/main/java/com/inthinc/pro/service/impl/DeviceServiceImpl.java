@@ -15,7 +15,7 @@ public class DeviceServiceImpl extends BaseService implements DeviceService {
     }
 
     public Device get(Integer deviceID) {
-        Device device = deviceDAO.findByID(deviceID);
+        Device device = securityBean.getDevice(deviceID);
 
         if (securityBean.isAuthorized(device))
             return device;
@@ -24,7 +24,7 @@ public class DeviceServiceImpl extends BaseService implements DeviceService {
     }
 
     public Device findByIMEI(String imei) {
-        Device device = deviceDAO.findByIMEI(imei);
+        Device device = securityBean.getDeviceByIMEI(imei);
 
         if (securityBean.isAuthorized(device))
             return device;
@@ -33,7 +33,7 @@ public class DeviceServiceImpl extends BaseService implements DeviceService {
     }
 
     public Device findBySerialNum(String serialNum) {
-        Device device = deviceDAO.findBySerialNum(serialNum);
+        Device device = securityBean.getDeviceBySerialNum(serialNum);
 
         if (securityBean.isAuthorized(device))
             return device;

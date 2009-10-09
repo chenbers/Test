@@ -12,7 +12,7 @@ public class AddressServiceImpl extends BaseService implements AddressService {
     private AddressDAO addressDAO;
 
     public Address get(Integer addressID) {
-        Address address = addressDAO.findByID(addressID);
+        Address address = securityBean.getAddress(addressID);
 
         if (securityBean.isAuthorized(address))
             return address;

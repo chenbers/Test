@@ -16,7 +16,7 @@ public class PersonServiceImpl extends BaseService implements PersonService {
     }
 
     public Person get(Integer personID) {
-        Person person = personDAO.findByID(personID);
+        Person person = securityBean.getPerson(personID);
         if (securityBean.isAuthorized(person))
             return person;
 
