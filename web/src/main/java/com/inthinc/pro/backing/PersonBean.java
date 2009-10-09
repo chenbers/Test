@@ -231,7 +231,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setSelected(false);
         if (person.getUser() != null)
             personView.getUser().setPerson(personView);
-        if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 0))
+        if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 1))
             person.getDriver().setRFID(null);
         if (logger.isTraceEnabled())
             logger.trace("createPersonView: END " + personView);
@@ -367,7 +367,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             item.setDriver(new Driver());
             item.getDriver().setPersonID(item.getPersonID());
         }
-        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
+        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 1))
             item.getDriver().setRFID(null);
         fuelEfficiencyBean = new FuelEfficiencyBean();
         fuelEfficiencyBean.init(item.getMeasurementType());
@@ -512,7 +512,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 valid = false;
             }
             // unique RFID
-            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 0)) {
+            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 1)) {
                 final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
                 if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID())) {
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
@@ -634,8 +634,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setHeight(0);
             if (person.getWeight() == null)
                 person.setWeight(0);
+            // approach to remove rfid from a driver
             if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
-                person.getDriver().setRFID(0L);
+                person.getDriver().setRFID(1L);               
             // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
@@ -648,8 +649,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID()))
                     BeanUtil.deepCopy(person.getUser(), getUser());
             }
-            // set zero RFID back to null
-            if ((person.getDriver() != null) && (person.getDriver().getRFID() == 0))
+            // set 1 RFID back to null
+            if ((person.getDriver() != null) && (person.getDriver().getRFID() == 1L))
                 person.getDriver().setRFID(null);
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
