@@ -31,7 +31,7 @@ public interface DriverService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/driver")
-	public Integer add(Driver driver);
+	public Integer create(Driver driver);
 
 	@PUT
 	@Consumes("application/xml")
@@ -45,7 +45,7 @@ public interface DriverService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/drivers")
-	public List<Integer> add(List<Driver> drivers);
+	public List<Integer> create(List<Driver> drivers);
 
 	@PUT
 	@Consumes("application/xml")

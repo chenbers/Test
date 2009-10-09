@@ -3,52 +3,38 @@ package com.inthinc.pro.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.service.DriverService;
+import com.inthinc.pro.util.SecureDriverDAO;
 
-public class DriverServiceImpl extends BaseService implements DriverService {
+public class DriverServiceImpl implements DriverService {
 
-    private DriverDAO driverDAO;
+    private SecureDriverDAO driverDAO;
 
     public List<Driver> getAll() {
-        return driverDAO.getAllDrivers(securityBean.getGroupID());
+        return driverDAO.getAll();
     }
 
     public Driver get(Integer driverID) {
-        Driver driver = securityBean.getDriver(driverID);
-
-        if (securityBean.isAuthorized(driver))
-            return driver;
-
-        return null;
+        return driverDAO.findByID(driverID);
     }
 
-    public Integer add(Driver driver) {
-        if (securityBean.isAuthorized(driver))
-            return driverDAO.create(driver.getPersonID(), driver);
-
-        return -1;
+    public Integer create(Driver driver) {
+        return driverDAO.create(driver);
     }
 
     public Integer update(Driver driver) {
-        if (securityBean.isAuthorized(driver))
-            return driverDAO.update(driver);
-
-        return -1;
+        return driverDAO.update(driver);
     }
 
     public Integer delete(Integer driverID) {
-        if (securityBean.isAuthorizedByDriverID(driverID))
-            return driverDAO.deleteByID(driverID);
-
-        return -1;
+        return driverDAO.deleteByID(driverID);
     }
 
-    public List<Integer> add(List<Driver> drivers) {
+    public List<Integer> create(List<Driver> drivers) {
         List<Integer> results = new ArrayList<Integer>();
         for (Driver driver : drivers)
-            results.add(add(driver));
+            results.add(create(driver));
         return results;
     }
 
@@ -67,11 +53,11 @@ public class DriverServiceImpl extends BaseService implements DriverService {
         return results;
     }
 
-    public void setDriverDAO(DriverDAO driverDAO) {
+    public void setDriverDAO(SecureDriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }
 
-    public DriverDAO getDriverDAO() {
+    public SecureDriverDAO getDriverDAO() {
         return driverDAO;
     }
 

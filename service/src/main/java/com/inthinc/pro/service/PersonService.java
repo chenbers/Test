@@ -31,7 +31,7 @@ public interface PersonService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/person")
-	public Integer add(Person person);
+	public Integer create(Person person);
 
 	@PUT
 	@Consumes("application/xml")
@@ -45,7 +45,7 @@ public interface PersonService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/persons")
-	public List<Integer> add(List<Person> persons);
+	public List<Integer> create(List<Person> persons);
 
 	@PUT
 	@Consumes("application/xml")

@@ -3,48 +3,34 @@ package com.inthinc.pro.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.service.AddressService;
+import com.inthinc.pro.util.SecureAddressDAO;
 
-public class AddressServiceImpl extends BaseService implements AddressService {
+public class AddressServiceImpl implements AddressService {
 
-    private AddressDAO addressDAO;
+    private SecureAddressDAO addressDAO;
 
     public Address get(Integer addressID) {
-        Address address = securityBean.getAddress(addressID);
-
-        if (securityBean.isAuthorized(address))
-            return address;
-
-        return null;
+        return addressDAO.findByID(addressID);
     }
 
-    public Integer add(Address address) {
-        if (securityBean.isAuthorized(address))
-            return addressDAO.create(getAccountID(), address);
-
-        return -1;
+    public Integer create(Address address) {
+        return addressDAO.create(address);
     }
 
     public Integer update(Address address) {
-        if (securityBean.isAuthorized(address))
-            return addressDAO.update(address);
-
-        return -1;
+        return addressDAO.update(address);
     }
 
     public Integer delete(Integer addressID) {
-        if (securityBean.isAuthorizedByAddressID(addressID))
-            return addressDAO.deleteByID(addressID);
-
-        return -1;
+        return addressDAO.delete(addressID);
     }
 
-    public List<Integer> add(List<Address> addresss) {
+    public List<Integer> create(List<Address> addresss) {
         List<Integer> results = new ArrayList<Integer>();
         for (Address address : addresss)
-            results.add(add(address));
+            results.add(create(address));
         return results;
     }
 
@@ -63,11 +49,11 @@ public class AddressServiceImpl extends BaseService implements AddressService {
         return results;
     }
 
-    public void setAddressDAO(AddressDAO addressDAO) {
+    public void setAddressDAO(SecureAddressDAO addressDAO) {
         this.addressDAO = addressDAO;
     }
 
-    public AddressDAO getAddressDAO() {
+    public SecureAddressDAO getAddressDAO() {
         return addressDAO;
     }
 

@@ -34,7 +34,7 @@ public interface VehicleService {
     @POST
     @Consumes("application/xml")
     @Path("/vehicle")
-    public Integer add(Vehicle vehicle);
+    public Integer create(Vehicle vehicle);
 
     @PUT
     @Consumes("application/xml")
@@ -48,7 +48,7 @@ public interface VehicleService {
     @POST
     @Consumes("application/xml")
     @Path("/vehicles")
-    public List<Integer> add(List<Vehicle> vehicles);
+    public List<Integer> create(List<Vehicle> vehicles);
 
     @PUT
     @Consumes("application/xml")

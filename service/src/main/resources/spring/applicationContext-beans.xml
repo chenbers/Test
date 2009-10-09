@@ -37,39 +37,57 @@
     <bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl"> <property name="sbsUserId" value="${teenproxy.sbsUserId}"/> <property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
     <property name="teenServerDAO" ref="sbsDataAccessBean"/> <property name="tigerDAO" ref="tigerDao"/> </bean>
   -->
-  <bean id="baseServiceBean" class="com.inthinc.pro.service.impl.BaseService" abstract="true" >
-    <property name="securityBean" ref="securityBean"/>
-  </bean>
-  <bean id="securityBean" class="com.inthinc.pro.util.SecurityBean">
-    <property name="userDAO" ref="userDAO" />
-    <property name="groupDAO" ref="groupDAO" />
-    <property name="vehicleDAO" ref="vehicleDAO" />
-    <property name="driverDAO" ref="driverDAO" />
-    <property name="deviceDAO" ref="deviceDAO" />
-    <property name="personDAO" ref="personDAO" />
+  <bean id="secureAddressDAO" class="com.inthinc.pro.util.SecureAddressDAO">
     <property name="addressDAO" ref="addressDAO" />
   </bean>
-  <bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl" parent="baseServiceBean">
+  <bean id="secureDeviceDAO" class="com.inthinc.pro.util.SecureDeviceDAO">
     <property name="deviceDAO" ref="deviceDAO" />
   </bean>
-  <bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl" parent="baseServiceBean">
-    <property name="driverDAO" ref="driverDAO" />
-  </bean>
-  <bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl" parent="baseServiceBean">
-    <property name="personDAO" ref="personDAO" />
-  </bean>
-  <bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl" parent="baseServiceBean">
-    <property name="userDAO" ref="userDAO" />
-  </bean>
-  <bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl" parent="baseServiceBean">
+  <bean id="secureGroupDAO" class="com.inthinc.pro.util.SecureGroupDAO">
     <property name="groupDAO" ref="groupDAO" />
   </bean>
-  <bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl" parent="baseServiceBean">
-    <property name="addressDAO" ref="addressDAO" />
+  <bean id="securePersonDAO" class="com.inthinc.pro.util.SecurePersonDAO">
+    <property name="personDAO" ref="personDAO" />
+    <property name="addressDAO" ref="secureAddressDAO" />
   </bean>
-  <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl" parent="baseServiceBean">
+  <bean id="secureDriverDAO" class="com.inthinc.pro.util.SecureDriverDAO">
+    <property name="driverDAO" ref="driverDAO" />
+    <property name="groupDAO" ref="secureGroupDAO" />
+    <property name="personDAO" ref="securePersonDAO" />
+  </bean>
+  <bean id="secureUserDAO" class="com.inthinc.pro.util.SecureUserDAO">
+    <property name="userDAO" ref="userDAO" />
+    <property name="groupDAO" ref="secureGroupDAO" />
+    <property name="personDAO" ref="securePersonDAO" />
+  </bean>
+  <bean id="secureVehicleDAO" class="com.inthinc.pro.util.SecureVehicleDAO">
     <property name="vehicleDAO" ref="vehicleDAO" />
     <property name="mpgDAO" ref="mpgDAO" />
+    <property name="driverDAO" ref="secureDriverDAO" />
+    <property name="groupDAO" ref="secureGroupDAO" />
+    <property name="deviceDAO" ref="secureDeviceDAO" />
+  </bean>
+  
+  <bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl">
+    <property name="addressDAO" ref="secureAddressDAO" />
+  </bean>
+  <bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl">
+    <property name="deviceDAO" ref="secureDeviceDAO" />
+  </bean>
+  <bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
+    <property name="driverDAO" ref="secureDriverDAO" />
+  </bean>
+  <bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl">
+    <property name="groupDAO" ref="secureGroupDAO" />
+  </bean>
+  <bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl">
+    <property name="personDAO" ref="securePersonDAO" />
+  </bean>
+  <bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl">
+    <property name="userDAO" ref="secureUserDAO" />
+  </bean>
+  <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
+    <property name="vehicleDAO" ref="secureVehicleDAO" />
   </bean>
   <!--     
     <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">

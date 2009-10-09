@@ -2,57 +2,40 @@ package com.inthinc.pro.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
-import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.UserService;
+import com.inthinc.pro.util.SecureUserDAO;
 
-public class UserServiceImpl extends BaseService implements UserService {
+public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
+    private SecureUserDAO userDAO;
 
     public List<User> getAll() {
-        return userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
+        return userDAO.getAll();
     }
 
     public User get(Integer userID) {
 
-        User user = securityBean.getUser(userID);
-
-        if (securityBean.isAuthorized(user))
-            return user;
-        else
-        	return null;
-
+        return userDAO.findByID(userID);
     }
 
-    public Integer add(User user) {
-        if (securityBean.isAuthorized(user))
-        	return userDAO.create(user.getPersonID(), user);
-        return -1;
+    public Integer create(User user) {
+       	return userDAO.create(user);
     }
 
     public Integer update(User user) {
-        if (securityBean.isAuthorized(user))
-            return userDAO.update(user);
-        else
-        	return -1;
+        return userDAO.update(user);
 
     }
 
     public Integer delete(Integer userID) {
-        if (securityBean.isAuthorizedByUserID(userID))
-            return userDAO.deleteByID(userID);
-        else
-        	return -1;
-
+        return userDAO.deleteByID(userID);
     }
 
-    public List<Integer> add(List<User> users) {
+    public List<Integer> create(List<User> users) {
         List<Integer> results = new ArrayList<Integer>();
         for (User user : users)
-            results.add(add(user));
+            results.add(create(user));
         return results;
     }
 
@@ -71,11 +54,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         return results;
     }
 
-    public void setUserDAO(UserDAO userDAO) {
+    public void setUserDAO(SecureUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public UserDAO getUserDAO() {
+    public SecureUserDAO getUserDAO() {
         return userDAO;
     }
 }

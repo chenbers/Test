@@ -31,7 +31,7 @@ public interface AddressService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/address")
-	public Integer add(Address address);
+	public Integer create(Address address);
 
 	@PUT
 	@Consumes("application/xml")
@@ -45,7 +45,7 @@ public interface AddressService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/addresses")
-	public List<Integer> add(List<Address> addresses);
+	public List<Integer> create(List<Address> addresses);
 
 	@PUT
 	@Consumes("application/xml")

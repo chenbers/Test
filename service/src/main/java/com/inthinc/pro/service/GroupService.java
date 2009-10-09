@@ -31,7 +31,7 @@ public interface GroupService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/group")
-	public Integer add(Group group);
+	public Integer create(Group group);
 
 	@PUT
 	@Consumes("application/xml")

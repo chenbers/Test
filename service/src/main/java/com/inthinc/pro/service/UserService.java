@@ -30,7 +30,7 @@ public interface UserService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/user")
-	public Integer add(User user);
+	public Integer create(User user);
 
 	@PUT
 	@Consumes("application/xml")
@@ -44,7 +44,7 @@ public interface UserService {
 	@POST
 	@Consumes("application/xml")
 	@Path("/users")
-	public List<Integer> add(List<User> users);
+	public List<Integer> create(List<User> users);
 
 	@PUT
 	@Consumes("application/xml")

@@ -2,55 +2,42 @@ package com.inthinc.pro.service.impl;
 
 import java.util.List;
 
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.service.GroupService;
+import com.inthinc.pro.util.SecureGroupDAO;
 
 
-public class GroupServiceImpl extends BaseService implements GroupService {
+public class GroupServiceImpl implements GroupService {
 
-    private GroupDAO groupDAO;
+    private SecureGroupDAO groupDAO;
 
     public List<Group> getAll() {
         // TODO do we want group level security?
         // return groupDAO.getGroupsByAcctID(securityBean.getAccountID());
-
-        return groupDAO.getGroupHierarchy(securityBean.getAccountID(), securityBean.getGroupID());
+    	return groupDAO.getAll();
     }
 
     public Group get(Integer groupID) {
-        Group group = securityBean.getGroup(groupID);
-        if (securityBean.isAuthorized(group))
-            return group;
-        return null;
+        return groupDAO.findByID(groupID);
     }
 
-    public Integer add(Group group) {
-        if (securityBean.isAuthorized(group))
-            return groupDAO.create(getAccountID(), group);
-
-        return -1;
+    public Integer create(Group group) {
+        return groupDAO.create(group);
     }
 
     public Integer update(Group group) {
-        if (securityBean.isAuthorized(group))
-            return groupDAO.update(group);
-
-        return -1;
+        return groupDAO.update(group);
     }
 
     public Integer delete(Integer groupID) {
-        if (securityBean.isAuthorizedByGroupID(groupID))
-            return groupDAO.deleteByID(groupID);
-
-        return -1;
+        return groupDAO.deleteByID(groupID);
     }
 
-    public void setGroupDAO(GroupDAO groupDAO) {
+    public void setGroupDAO(SecureGroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
 
-    public GroupDAO getGroupDAO() {
+    public SecureGroupDAO getGroupDAO() {
         return groupDAO;
     }
 }

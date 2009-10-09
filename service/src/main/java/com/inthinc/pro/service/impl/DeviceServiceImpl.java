@@ -2,51 +2,35 @@ package com.inthinc.pro.service.impl;
 
 import java.util.List;
 
-import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.service.DeviceService;
+import com.inthinc.pro.util.SecureDeviceDAO;
 
-public class DeviceServiceImpl extends BaseService implements DeviceService {
+public class DeviceServiceImpl implements DeviceService {
 
-    private DeviceDAO deviceDAO;
+    private SecureDeviceDAO deviceDAO;
 
     public List<Device> getAll() {
-        return deviceDAO.getDevicesByAcctID(securityBean.getAccountID());
+        return deviceDAO.getAll();
     }
 
     public Device get(Integer deviceID) {
-        Device device = securityBean.getDevice(deviceID);
-
-        if (securityBean.isAuthorized(device))
-            return device;
-
-        return null;
+        return deviceDAO.findByID(deviceID);
     }
 
     public Device findByIMEI(String imei) {
-        Device device = securityBean.getDeviceByIMEI(imei);
-
-        if (securityBean.isAuthorized(device))
-            return device;
-
-        return null;
+        return deviceDAO.findByIMEI(imei);
     }
 
     public Device findBySerialNum(String serialNum) {
-        Device device = securityBean.getDeviceBySerialNum(serialNum);
-
-        if (securityBean.isAuthorized(device))
-            return device;
-
-        return null;
+        return deviceDAO.findBySerialNum(serialNum);
     }
 
-    public void setDeviceDAO(DeviceDAO deviceDAO) {
+    public void setDeviceDAO(SecureDeviceDAO deviceDAO) {
         this.deviceDAO = deviceDAO;
     }
 
-    public DeviceDAO getDeviceDAO() {
+    public SecureDeviceDAO getDeviceDAO() {
         return deviceDAO;
     }
-
 }

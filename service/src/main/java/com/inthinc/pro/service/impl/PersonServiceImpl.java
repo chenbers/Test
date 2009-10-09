@@ -3,51 +3,38 @@ package com.inthinc.pro.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.PersonService;
+import com.inthinc.pro.util.SecurePersonDAO;
 
-public class PersonServiceImpl extends BaseService implements PersonService {
+public class PersonServiceImpl implements PersonService {
 
-    private PersonDAO personDAO;
+    private SecurePersonDAO personDAO;
 
     public List<Person> getAll() {
-        return personDAO.getPeopleInGroupHierarchy(securityBean.getGroupID());
+    	return personDAO.getAll();
     }
 
     public Person get(Integer personID) {
-        Person person = securityBean.getPerson(personID);
-        if (securityBean.isAuthorized(person))
-            return person;
-
-        return null;
+        return personDAO.findByID(personID);
     }
 
-    public Integer add(Person person) {
-        if (securityBean.isAuthorized(person))
-            return personDAO.create(getAccountID(), person);
-
-        return -1;
+    public Integer create(Person person) {
+        return personDAO.create(person);
     }
 
     public Integer update(Person person) {
-        if (securityBean.isAuthorized(person))
-            return personDAO.update(person);
-
-        return -1;
+        return personDAO.update(person);
     }
 
     public Integer delete(Integer personID) {
-        if (securityBean.isAuthorizedByPersonID(personID))
-            return personDAO.deleteByID(personID);
-
-        return -1;
+        return personDAO.deleteByID(personID);
     }
 
-    public List<Integer> add(List<Person> persons) {
+    public List<Integer> create(List<Person> persons) {
         List<Integer> results = new ArrayList<Integer>();
         for (Person person : persons)
-            results.add(add(person));
+            results.add(create(person));
         return results;
     }
 
@@ -66,11 +53,11 @@ public class PersonServiceImpl extends BaseService implements PersonService {
         return results;
     }
 
-    public void setPersonDAO(PersonDAO personDAO) {
+    public void setPersonDAO(SecurePersonDAO personDAO) {
         this.personDAO = personDAO;
     }
 
-    public PersonDAO getPersonDAO() {
+    public SecurePersonDAO getPersonDAO() {
         return personDAO;
     }
 
