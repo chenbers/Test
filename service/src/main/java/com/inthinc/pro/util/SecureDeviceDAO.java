@@ -13,15 +13,15 @@ public class SecureDeviceDAO extends BaseSecureDAO{
 
     private boolean isAuthorized(Device device) {
         if (device != null) {
-            // TODO do we give user access to all groups, regardless of the users group????
-            // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            // TODO get Account from logged in user
-
             if (!getAccountID().equals(device.getAccountID()))
                 throw new NotFoundException("accountID not found: " + device.getAccountID());
             return true;
         }
         throw new UnauthorizedException();
+    }
+
+    public boolean isAuthorized(Integer deviceID) {
+        return isAuthorized(findByID(deviceID));
     }
 
     public Device findByID(Integer deviceID) {
@@ -48,10 +48,6 @@ public class SecureDeviceDAO extends BaseSecureDAO{
     public List<Device> getAll()
     {
     	return deviceDAO.getDevicesByAcctID(getAccountID());
-    }
-
-    public boolean isAuthorized(Integer deviceID) {
-        return isAuthorized(findByID(deviceID));
     }
 
     public DeviceDAO getDeviceDAO() {
