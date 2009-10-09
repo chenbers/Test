@@ -11,17 +11,26 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:spring/applicationContext-*.xml" })
 @SuppressWarnings("unchecked")
-public abstract class BaseTest<T> {
+public abstract class BaseTest<T> implements ApplicationContextAware {
 
     private Class<T> serviceClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     protected T service;
-    private HttpClient client;
+    protected HttpClient client;
+    private ApplicationContext applicationContext;
     private static final int port = 8080;
     private static final String domain = "localhost";
     private static final String url = "http://" + domain + ":" + port + "/service/api";
-    
+
     @Before
     public void before() {
         RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
@@ -38,6 +47,11 @@ public abstract class BaseTest<T> {
 
     public T getService() {
         return service;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;        
     }
 
 }
