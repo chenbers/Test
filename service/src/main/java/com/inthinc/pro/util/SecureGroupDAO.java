@@ -16,7 +16,6 @@ public class SecureGroupDAO extends BaseSecureDAO{
         if (group != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            // TODO get Account from logged in user
 
             if (!getAccountID().equals(group.getAccountID()))
                 throw new UnauthorizedException("accountID not found" + group.getAccountID());
@@ -27,12 +26,10 @@ public class SecureGroupDAO extends BaseSecureDAO{
         throw new UnauthorizedException("Group not found");
     }
 
-    public List<Group> getAll()
-    {
-        return groupDAO.getGroupHierarchy(getAccountID(), getGroupID());
-
+    public boolean isAuthorizedByGroupID(Integer groupID) {
+        return isAuthorized(findByID(groupID));
     }
-    
+
     public Group findByID(Integer groupID) {
         Group group = groupDAO.findByID(groupID);
         if (group == null || !group.getAccountID().equals(getAccountID()))
@@ -40,6 +37,12 @@ public class SecureGroupDAO extends BaseSecureDAO{
         return group;
     }
 
+    public List<Group> getAll()
+    {
+        return groupDAO.getGroupHierarchy(getAccountID(), getGroupID());
+
+    }
+    
     public Integer create(Group group) {
         if (isAuthorized(group))
             return groupDAO.create(getAccountID(), group);
@@ -60,12 +63,7 @@ public class SecureGroupDAO extends BaseSecureDAO{
 
         return -1;
     }
-
     
-    public boolean isAuthorizedByGroupID(Integer groupID) {
-        return isAuthorized(findByID(groupID));
-    }
-
     public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
