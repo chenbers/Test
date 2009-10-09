@@ -25,4 +25,8 @@ public abstract class BaseService {
     public User getUser() {
         return getProUser().getUser();
     }
+
+    public Integer getAccountID() {
+        return securityBean.getAccountID();
+    }
 }
