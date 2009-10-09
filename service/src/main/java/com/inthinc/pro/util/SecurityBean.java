@@ -1,5 +1,6 @@
 package com.inthinc.pro.util;
 
+import org.jboss.resteasy.spi.UnauthorizedException;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.dao.AddressDAO;
@@ -59,7 +60,7 @@ public class SecurityBean {
                 return true;
 
         }
-        return false;
+        throw new UnauthorizedException();
     }
 
     public boolean isAuthorized(Device device) {
@@ -72,7 +73,7 @@ public class SecurityBean {
                 return true;
 
         }
-        return false;
+        throw new UnauthorizedException();
     }
 
     public boolean isAuthorized(Driver driver) {
@@ -82,10 +83,10 @@ public class SecurityBean {
             // TODO get Account from logged in user
             Person person = personDAO.findByID(driver.getPersonID());
             if (person == null)
-                return false;
+                throw new UnauthorizedException();
 
             if (!person.getAcctID().equals(getAccountID()))
-                return false;
+                throw new UnauthorizedException();
 
             Group drivergroup = groupDAO.findByID(driver.getGroupID());
 
@@ -93,7 +94,7 @@ public class SecurityBean {
                 return true;
 
         }
-        return false;
+        throw new UnauthorizedException();
     }
 
     public boolean isAuthorized(User user) {
@@ -105,7 +106,7 @@ public class SecurityBean {
             if (user.getPerson() == null) {
                 Person person = personDAO.findByID(user.getPersonID());
                 if (person == null)
-                    return false;
+                    throw new UnauthorizedException();
                 user.setPerson(person);
             }
 
@@ -113,7 +114,7 @@ public class SecurityBean {
                 return true;
 
         }
-        return false;
+        throw new UnauthorizedException();
     }
 
     public boolean isAuthorized(Person person) {
@@ -125,7 +126,7 @@ public class SecurityBean {
                 return true;
 
         }
-        return false;
+        throw new UnauthorizedException();
     }
 
     public boolean isAuthorized(Group group) {
@@ -138,7 +139,7 @@ public class SecurityBean {
                 return true;
 
         }
-        return false;
+        throw new UnauthorizedException();
     }
 
     public boolean isAuthorized(Address address) {
@@ -150,7 +151,7 @@ public class SecurityBean {
                 return true;
 
         }
-        return false;
+        throw new UnauthorizedException();
     }
 
     // TODO this is dangerous because parameters are not strongly typed

@@ -27,7 +27,7 @@ public class GroupServiceImpl extends BaseService implements GroupService {
 
     public Integer add(Group group) {
         if (!securityBean.isAuthorized(group))
-            return groupDAO.create(group.getAccountID(), group);
+            return groupDAO.create(getAccountID(), group);
 
         return -1;
     }

@@ -23,26 +23,16 @@ public class VehicleServiceImpl extends BaseService implements VehicleService {
     private VehicleDAO vehicleDAO;
     private MpgDAO mpgDAO;
 
-    // TODO Assign Driver and Device by explicit call or OVERLOAD add/update??
-
-    private Response returnOK(Object object) {
-        return Response.ok(object).build();
-    }
-
-    private Response returnError() {
-        return Response.serverError().build();
-    }
-
     public List<Vehicle> getAll() {
         return vehicleDAO.getVehiclesInGroupHierarchy(securityBean.getGroupID());
     }
 
-    public Response get(Integer vehicleID) {
+    public Vehicle get(Integer vehicleID) {
         Vehicle vehicle = vehicleDAO.findByID(vehicleID);
         if (securityBean.isAuthorized(vehicle))
-            return returnOK(vehicle);
+            return vehicle;
 
-        return returnError();
+        return null;
     }
 
     public Vehicle findByVIN(String vin) {
@@ -54,7 +44,7 @@ public class VehicleServiceImpl extends BaseService implements VehicleService {
     }
 
     public Integer add(Vehicle vehicle) {
-        if (!securityBean.isAuthorized(vehicle))
+        if (securityBean.isAuthorized(vehicle))
             return vehicleDAO.create(vehicle.getGroupID(), vehicle);
 
         return -1;

@@ -22,7 +22,7 @@ public class AddressServiceImpl extends BaseService implements AddressService {
 
     public Integer add(Address address) {
         if (!securityBean.isAuthorized(address))
-            return addressDAO.create(address.getAddrID(), address);
+            return addressDAO.create(getAccountID(), address);
 
         return -1;
     }
@@ -72,7 +72,7 @@ public class AddressServiceImpl extends BaseService implements AddressService {
     }
 
 	public List<Address> getAll() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub NOT IMPLEMENTED IN HESSIAN
 		return null;
 	}
 

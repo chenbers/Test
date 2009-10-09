@@ -10,7 +10,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
 
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
@@ -26,7 +25,7 @@ public interface VehicleService {
 
     @GET
     @Path("/vehicle/{id}")
-    public Response get(@PathParam("id") Integer id);
+    public Vehicle get(@PathParam("id") Integer id);
 
     @GET
     @Path("/vehicle/vin/{vin}")
