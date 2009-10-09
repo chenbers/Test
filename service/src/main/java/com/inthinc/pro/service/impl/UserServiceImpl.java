@@ -20,7 +20,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         User user = userDAO.findByID(userID);
 
-        if (user != null && securityBean.isAuthorized(user))
+        if (securityBean.isAuthorized(user))
             return user;
         else
         	return null;

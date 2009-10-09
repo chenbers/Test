@@ -24,7 +24,7 @@ public class PersonServiceImpl extends BaseService implements PersonService {
     }
 
     public Integer add(Person person) {
-        if (!securityBean.isAuthorized(person))
+        if (securityBean.isAuthorized(person))
             return personDAO.create(getAccountID(), person);
 
         return -1;

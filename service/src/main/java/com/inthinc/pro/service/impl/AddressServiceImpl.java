@@ -21,7 +21,7 @@ public class AddressServiceImpl extends BaseService implements AddressService {
     }
 
     public Integer add(Address address) {
-        if (!securityBean.isAuthorized(address))
+        if (securityBean.isAuthorized(address))
             return addressDAO.create(getAccountID(), address);
 
         return -1;

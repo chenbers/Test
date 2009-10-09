@@ -25,7 +25,7 @@ public class DriverServiceImpl extends BaseService implements DriverService {
     }
 
     public Integer add(Driver driver) {
-        if (!securityBean.isAuthorized(driver))
+        if (securityBean.isAuthorized(driver))
             return driverDAO.create(driver.getPersonID(), driver);
 
         return -1;
