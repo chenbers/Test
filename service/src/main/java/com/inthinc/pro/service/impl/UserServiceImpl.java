@@ -3,8 +3,6 @@ package com.inthinc.pro.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.resteasy.spi.NotFoundException;
-import org.jboss.resteasy.spi.UnauthorizedException;
 
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
@@ -25,21 +23,21 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (user != null && securityBean.isAuthorized(user))
             return user;
         else
-            throw new NotFoundException("Attempt to find UserID: " + userID + " by User '" + getUser().getUsername()
-                    + "' did not return a result. Either the UserID does not exist or the User does not have authority.");
+        	return null;
 
     }
 
     public Integer add(User user) {
-        return userDAO.create(user.getPersonID(), user);
+        if (securityBean.isAuthorized(user))
+        	return userDAO.create(user.getPersonID(), user);
+        return -1;
     }
 
     public Integer update(User user) {
         if (securityBean.isAuthorized(user))
             return userDAO.update(user);
         else
-            throw new UnauthorizedException("Unauthorized attempt to update User: " + (user != null && user.getUsername() != null ? user.getUsername() : "Unknown User")
-                    + " by User: " + getUser().getUsername());
+        	return -1;
 
     }
 
@@ -47,7 +45,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (securityBean.isAuthorizedByUserID(userID))
             return userDAO.deleteByID(userID);
         else
-            throw new UnauthorizedException("Unauthorized attempt to delete UserID: " + userID + " by User: " + getUser().getUsername());
+        	return -1;
 
     }
 
