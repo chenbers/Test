@@ -14,16 +14,19 @@ public class SecurePersonDAO extends BaseSecureDAO {
 
     public boolean isAuthorized(Person person) {
         if (person != null) {
-            // TODO do we give user access to all groups, regardless of the users group????
-            // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            // TODO get Account from logged in user
             if (!getAccountID().equals(person.getAcctID()))
                 throw new NotFoundException("accountID not found: " + person.getAcctID());
+           	if (!addressDAO.isAuthorized(person.getAddressID()))
+           		return false;
             
             return true;
 
         }
         throw new UnauthorizedException("Person not found");
+    }
+
+    public boolean isAuthorized(Integer personID) {
+        return isAuthorized(findByID(personID));
     }
     
     public Person findByID(Integer personID) {
@@ -56,10 +59,6 @@ public class SecurePersonDAO extends BaseSecureDAO {
             return personDAO.deleteByID(personID);
 
         return -1;
-    }
-
-    public boolean isAuthorized(Integer personID) {
-        return isAuthorized(findByID(personID));
     }
 
     public PersonDAO getPersonDAO() {

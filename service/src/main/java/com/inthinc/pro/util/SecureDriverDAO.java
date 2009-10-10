@@ -6,8 +6,6 @@ import org.jboss.resteasy.spi.NotFoundException;
 import org.jboss.resteasy.spi.UnauthorizedException;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.Person;
 
 public class SecureDriverDAO extends BaseSecureDAO{
 
@@ -19,35 +17,37 @@ public class SecureDriverDAO extends BaseSecureDAO{
         if (driver != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            // TODO get Account from logged in user
-            Person person = personDAO.findByID(driver.getPersonID());
 
-            if (!person.getAcctID().equals(getAccountID()))
-                throw new NotFoundException("personID not found: " + person.getPersonID());
+        	if (!groupDAO.isAuthorized(driver.getGroupID()))
+        		return false;
 
-            Group drivergroup = groupDAO.findByID(driver.getGroupID());
-
-            if (!getAccountID().equals(drivergroup.getAccountID()))
-            	throw new NotFoundException("groupID not found: " + driver.getGroupID());
+           	if (!personDAO.isAuthorized(driver.getPersonID()))
+            		return false;
             return true;
         }
-        throw new UnauthorizedException();
+        throw new UnauthorizedException("Driver not found");
+    }
+
+    public boolean isAuthorized(Integer driverID) {
+        return isAuthorized(findByID(driverID));
     }
 
     public Driver findByID(Integer driverID) {
     	
         Driver driver = driverDAO.findByID(driverID);
-        if (driver != null)
-	        try 
-	        {
-	            if (isAuthorized(driver))
-	            	return driver;
-	        	
-	        }
-	        catch (Exception ex)
-	        {
-	        }
-        throw new NotFoundException("driverID not found: " + driverID);
+        if (driver == null)
+            throw new NotFoundException("driverID not found: " + driverID);
+        try 
+        {
+            if (isAuthorized(driver))
+            	return driver;
+        	
+        }
+        catch (Exception ex)
+        {
+            throw new NotFoundException("driverID not found: " + driverID);
+        }
+        return null;
     }
     
     public Integer create(Driver driver) {
@@ -71,10 +71,6 @@ public class SecureDriverDAO extends BaseSecureDAO{
 
     public List<Driver> getAll() {
         return driverDAO.getAllDrivers(getGroupID());
-    }
-
-    public boolean isAuthorized(Integer driverID) {
-        return isAuthorized(findByID(driverID));
     }
 
     public DriverDAO getDriverDAO() {

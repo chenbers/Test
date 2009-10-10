@@ -26,7 +26,7 @@ public class SecureGroupDAO extends BaseSecureDAO{
         throw new UnauthorizedException("Group not found");
     }
 
-    public boolean isAuthorizedByGroupID(Integer groupID) {
+    public boolean isAuthorized(Integer groupID) {
         return isAuthorized(findByID(groupID));
     }
 
@@ -58,7 +58,7 @@ public class SecureGroupDAO extends BaseSecureDAO{
     }
 
     public Integer deleteByID(Integer groupID) {
-        if (isAuthorizedByGroupID(groupID))
+        if (isAuthorized(groupID))
             return groupDAO.deleteByID(groupID);
 
         return -1;

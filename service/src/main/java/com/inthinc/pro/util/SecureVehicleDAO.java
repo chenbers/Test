@@ -12,7 +12,6 @@ import org.jboss.resteasy.spi.UnauthorizedException;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
@@ -30,35 +29,56 @@ public class SecureVehicleDAO extends BaseSecureDAO{
         if (vehicle != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            // TODO get Account from logged in user
-            Group vehiclegroup = groupDAO.findByID(vehicle.getGroupID());
+        	if (groupDAO.isAuthorized(vehicle.getGroupID()))
+        		return true;
 
-            if (!getAccountID().equals(vehiclegroup.getAccountID()))
-            	throw new NotFoundException("groupID not found: " + vehicle.getGroupID());
-            return true;
         }
-        throw new UnauthorizedException();
+        throw new UnauthorizedException("Vehicle Not Found");
     }
 
-    public List<Vehicle> getAll()
-    {
-    	return vehicleDAO.getVehiclesInGroupHierarchy(getGroupID());
-    }
-    
     public Vehicle findByID(Integer vehicleID)
     {
         Vehicle vehicle = vehicleDAO.findByID(vehicleID);
         if (vehicle == null)
             throw new NotFoundException("vehicleID not found: " + vehicleID);
-        return vehicle;
+
+        try
+        {
+        	if (isAuthorized(vehicle))
+        		return vehicle;
+        }
+        catch (Exception ex)
+        {
+            throw new NotFoundException("vehicleID not found: " + vehicleID);
+        }
+        return null;
     }
 
+    private boolean isAuthorized(Integer vehicleID) {
+        return isAuthorized(findByID(vehicleID));
+    }
+    
+    public List<Vehicle> getAll()
+    {
+    	return vehicleDAO.getVehiclesInGroupHierarchy(getGroupID());
+    }
+    
     public Vehicle findByVIN(String vin)
     {
         Vehicle vehicle = vehicleDAO.findByVIN(vin);
         if (vehicle == null)
             throw new NotFoundException("vehicle VIN not found: " + vin);
-        return vehicle;
+        
+        try
+        {
+        	if (isAuthorized(vehicle))
+        		return vehicle;
+        }
+        catch (Exception ex)
+        {
+            throw new NotFoundException("vehicle VIN not found: " + vin);
+        }
+        return null;
     }
 
     public Integer create(Vehicle vehicle) {
@@ -82,10 +102,6 @@ public class SecureVehicleDAO extends BaseSecureDAO{
         return -1;
     }
 
-    private boolean isAuthorized(Integer vehicleID) {
-        return isAuthorized(findByID(vehicleID));
-    }
-    
     public LastLocation getLastLocation(Integer vehicleID) {
         if (isAuthorized(vehicleID))
 

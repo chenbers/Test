@@ -23,6 +23,10 @@ public class SecureAddressDAO extends BaseSecureDAO{
         throw new UnauthorizedException("Address not found");
     }
     
+    public boolean isAuthorized(Integer addressID) {
+        return isAuthorized(findByID(addressID));
+    }
+
     public Address findByID(Integer addressID) {
         Address address = addressDAO.findByID(addressID);
         //TODO add address accountID check
@@ -52,10 +56,6 @@ public class SecureAddressDAO extends BaseSecureDAO{
         return -1;
     }
     
-    public boolean isAuthorized(Integer addressID) {
-        return isAuthorized(findByID(addressID));
-    }
-
     public AddressDAO getAddressDAO() {
         return addressDAO;
     }

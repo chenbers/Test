@@ -5,8 +5,6 @@ import java.util.List;
 import org.jboss.resteasy.spi.NotFoundException;
 import org.jboss.resteasy.spi.UnauthorizedException;
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 
 public class SecureUserDAO extends BaseSecureDAO {
@@ -19,20 +17,19 @@ public class SecureUserDAO extends BaseSecureDAO {
         if (user != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            // TODO get Account from logged in user
+            
+        	if (!groupDAO.isAuthorized(user.getGroupID()))
+        		return false;
 
-            if (user.getPerson() == null) {
-                Person person = personDAO.findByID(user.getPersonID());
-                user.setPerson(person);
-            }
- 
-            Group usergroup = groupDAO.findByID(user.getGroupID());
-
-            if (getAccountID().equals(user.getPerson().getAcctID()))
-                return true;
-
+           	if (!personDAO.isAuthorized(user.getPersonID()))
+           		return false;
+           	return true;
         }
         throw new UnauthorizedException("User not found");
+    }
+
+    public boolean isAuthorized(Integer userID) {
+        return isAuthorized(findByID(userID));
     }
 
     public User findByID(Integer userID) {
@@ -77,10 +74,6 @@ public class SecureUserDAO extends BaseSecureDAO {
         	return -1;
     }
     
-    public boolean isAuthorized(Integer userID) {
-        return isAuthorized(findByID(userID));
-    }
-
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
