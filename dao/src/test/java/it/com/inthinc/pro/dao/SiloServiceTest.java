@@ -713,7 +713,9 @@ public class SiloServiceTest {
         assertEquals("no devices yet for account", 0, emptyDeviceList.size());
         // create all as new
         for (int i = 0; i < DEVICE_COUNT; i++) {
-            Device device = new Device(0, acctID, DeviceStatus.NEW, "Device " + i, "IMEI " + acctID + i, "SIM " + i, Integer.valueOf(Util.randomInt(40, 99999)).toString(),
+            Device device = new Device(0, acctID, DeviceStatus.NEW, "Device " + i, "IMEI " + acctID + i, "SIM " + i, 
+            		// Integer.valueOf(Util.randomInt(40, 99999)).toString(),
+            		"SN" + acctID + i,
                     "555555123" + i, // phone
                     "555555987" + i); // ephone
             Integer deviceID = deviceDAO.create(acctID, device);
