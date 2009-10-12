@@ -48,6 +48,10 @@ public abstract class BaseTest<T> implements ApplicationContextAware {
     public T getService() {
         return service;
     }
+    
+    public <E> E getService(Class<E> serviceClass) {
+        return ProxyFactory.create(serviceClass, url, client);
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
