@@ -12,8 +12,8 @@
   <version>1.0.19-SNAPSHOT</version>
   <build>
     <finalName>service</finalName>
-    <plugins>
-      <plugin><!--
+    <plugins><!--
+      <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
         <version>6.1.21</version>
@@ -48,8 +48,8 @@
             </goals>
           </execution>
         </executions>
-      --></plugin>
-      <plugin>
+      </plugin>
+      --><plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.4.3</version>
