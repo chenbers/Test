@@ -82,6 +82,10 @@ public class HessianExceptionConverter
         REMOTESERVER_EXCEPTION_MAP.put(326, "TSCodeDuplicateMcmid.    An attempt to use an existing mcmid");
         REMOTESERVER_EXCEPTION_MAP.put(327, "TSCodeDataMissReq....    The data required missing from the database.");
         REMOTESERVER_EXCEPTION_MAP.put(331, "TSCodeDuplicate...       Duplicate RFID.");
+        REMOTESERVER_EXCEPTION_MAP.put(333, "TSCodeDuplicateAcct..   An attempt to use an existing acct name.");
+        REMOTESERVER_EXCEPTION_MAP.put(334, "TSCodeDuplicateSerial   An attempt to use an existing serial number.");
+        REMOTESERVER_EXCEPTION_MAP.put(335, "TSCodeDuplicateVin...   An attempt to use an existing vin.");
+        
         
         PROXY_EXCEPTION_MAP.put(401, "ProxyNoMem...........    Insufficient memory for the proxy server.");
         PROXY_EXCEPTION_MAP.put(402, "ProxyNoDB............    The server is not able to get a Database connection.");
