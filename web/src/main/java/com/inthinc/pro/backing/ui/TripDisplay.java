@@ -13,7 +13,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.util.MessageUtil;
 
-public class  implements Comparable<TripDisplay>
+public class TripDisplay implements Comparable<TripDisplay>
 {
     String dateShort;       // Jul 01
     String timeStartShort;  // 1:32 PM
