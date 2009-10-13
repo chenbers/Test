@@ -125,7 +125,20 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
 
             // TODO: not sure if this duration mapping is correct
-            Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, duration.getCode());
+//for (int bin = 0; bin < 7; bin++)
+//{
+//	System.out.println("bin = " + bin);
+//            Map<String, Object> returnMap1 = reportService.getVScoreByVT(vehicleID, bin);
+//            System.out.println(returnMap1);
+//}            
+//List<Map<String, Object>> list1 = reportService.getVTrendByVTC(vehicleID, 0, 31);
+//for (Map<String, Object> map : list1)
+//{
+//	System.out.println("odometer: " + map.get("odometer"));
+//}
+        	
+
+			Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, duration.getCode());
             DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
 
             ScoreableEntity scoreableEntity = new ScoreableEntity();
@@ -222,15 +235,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
         	// subgroups
-Date current = new Date();
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
-Date last = current;            
-current = new Date();            
-logger.info("getSDTrendsByGTC " + (current.getTime() - last.getTime()));            
+//            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getDvqMetric(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
-last = current;            
-current = new Date();            
-logger.info("convertToModelObject " + (current.getTime() - last.getTime()));            
             
             
             Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
@@ -347,13 +354,26 @@ logger.info("convertToModelObject " + (current.getTime() - last.getTime()));
         // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
         Integer code;
         if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
-            code = duration.getDvqMetric();
+            code = duration.getAggregationBinSize();
         else
             code = duration.getCode();
            
         try
         {
+for (int i = 0; i < 7; i++)
+{
+	System.out.println("calling getDTrendByDTC driverId:" + driverID + " code: " + i + " count: " + duration.getDvqCount());        	
+            List<Map<String, Object>> cumulativList = reportService.getDTrendByDTC(driverID, i, duration.getDvqCount());
+System.out.println("First DAY:");       
+dumpMap(cumulativList.get(0));
+}
+            
+            
+//System.out.println("calling getDTrendByDTC driverId:" + driverID + " code: " + code + " count: " + duration.getDvqCount());        	
             List<Map<String, Object>> cumulativList = reportService.getDTrendByDTC(driverID, code, duration.getDvqCount());
+//System.out.println("First DAY:");       
+//dumpMap(cumulativList.get(0));
+            
             List<DriveQMap> driveQList = getMapper().convertToModelObject(cumulativList, DriveQMap.class);
              
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -378,12 +398,19 @@ logger.info("convertToModelObject " + (current.getTime() - last.getTime()));
         }
     }
     
-    @Override
+    private void dumpMap(Map<String, Object> map) {
+    	for (String key : map.keySet())
+    	{
+    		System.out.println(key + " = " + map.get(key));
+    	}
+	}
+
+	@Override
     public List<ScoreableEntity> getDriverTrendDaily(Integer driverID, Duration duration, ScoreType scoreType)
     {
         try
         {
-            List<Map<String, Object>> dailyList = reportService.getDTrendByDTC(driverID, duration.getDvqMetric(), duration.getDvqCount());
+            List<Map<String, Object>> dailyList = reportService.getDTrendByDTC(driverID, duration.getAggregationBinSize(), duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(dailyList, DriveQMap.class);
              
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -429,12 +456,13 @@ logger.info("convertToModelObject " + (current.getTime() - last.getTime()));
         // Condition added for Coaching Events.  Do not get cumulative average for Coaching events only
         Integer code;
         if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
-            code = duration.getDvqMetric();
+            code = duration.getAggregationBinSize();
         else
             code = duration.getCode();
         
         try
         {
+        	
             List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, code, duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
@@ -467,7 +495,7 @@ logger.info("convertToModelObject " + (current.getTime() - last.getTime()));
          
         try
         {
-            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getDvqMetric(), duration.getDvqCount());
+            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getAggregationBinSize(), duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -540,7 +568,13 @@ logger.info("convertToModelObject " + (current.getTime() - last.getTime()));
     {
         try
         {
-            List<DVQMap> result = getMapper().convertToModelObject(reportService.getVDScoresByGT(groupID, duration.getCode()), DVQMap.class);
+        	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getCode());
+dumpMap(list.get(0));            
+
+//List<Map<String, Object>> list2 = reportService.getVTrendByVTC(Integer vehicleID, Integer duration, Integer count);
+
+            List<DVQMap> result = getMapper().convertToModelObject(list, DVQMap.class);
+//            List<DVQMap> result = getMapper().convertToModelObject(reportService.getVDScoresByGT(groupID, duration.getCode()), DVQMap.class);
             List<VehicleReportItem> lVri = new ArrayList<VehicleReportItem>();
             VehicleReportItem vri = null;
 
@@ -840,7 +874,7 @@ logger.info("convertToModelObject " + (current.getTime() - last.getTime()));
 	public List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration) {
         try
         {
-            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
 
             List<SpeedPercentItem> speedPercentItemList = new ArrayList<SpeedPercentItem>();
@@ -877,7 +911,7 @@ logger.info("convertToModelObject " + (current.getTime() - last.getTime()));
 	public List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration) {
         try
         {
-            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
 //logger.info("getIdlePercentItems gqvList size = " + gqvList.size());
             List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem>();

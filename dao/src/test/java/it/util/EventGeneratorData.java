@@ -1,5 +1,7 @@
 package it.util;
 
+import it.config.ReportTestConst;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,35 +10,51 @@ public class EventGeneratorData {
 	int seatbeltCnt;
 	int aggressiveDrivingCnt;
 	int idlingCnt;
+	boolean includeCrash;
 	int mpg;
+	int severity;
 	
 	List<Integer> speedingIndexes;
 	List<Integer> seatbeltIndexes;
 	List<Integer> aggressiveDrivingIndexes;
 	List<Integer> idlingIndexes;
+	List<Integer> crashIndexes;
 
 	List<Integer> allIndexes;
 
 
 	
 
-	public EventGeneratorData(	int speedingCnt, int seatbeltCnt, int aggressiveDrivingCnt, int idlingCnt, int mpg)
+	public EventGeneratorData(	int speedingCnt, int seatbeltCnt, int aggressiveDrivingCnt, int idlingCnt, boolean includeCrash, int mpg, int severity)
 	{
 		this.speedingCnt = speedingCnt;
 		this.seatbeltCnt = seatbeltCnt;
 		this.aggressiveDrivingCnt = aggressiveDrivingCnt;
 		this.idlingCnt = idlingCnt;
+		this.includeCrash = includeCrash;
 		this.mpg = mpg;
+		this.severity = severity;
 	}
 	
 
 	public void initIndexes(int numLocs)
 	{
 		allIndexes = new ArrayList<Integer>();
+		allIndexes.add(Integer.valueOf(0));	// ignition on
+		allIndexes.add(Integer.valueOf(numLocs-1));	// ignition off
+		crashIndexes = new ArrayList<Integer>();
+		if (includeCrash)
+		{
+			crashIndexes.add(Integer.valueOf(ReportTestConst.CRASH_EVENT_IDX));
+		}
+
+		
+		
 		speedingIndexes = initIndexes(speedingCnt, numLocs);
 		seatbeltIndexes = initIndexes(seatbeltCnt, numLocs);
 		aggressiveDrivingIndexes = initIndexes(aggressiveDrivingCnt, numLocs);
 		idlingIndexes = initIndexes(idlingCnt, numLocs);
+		
 	}
 	
 	public boolean isSpeedingIndex(int idx)
@@ -55,15 +73,24 @@ public class EventGeneratorData {
 	{
 		return idlingIndexes.contains(Integer.valueOf(idx));
 	}
+	public boolean isCrashIndex(int idx)
+	{
+		return crashIndexes.contains(Integer.valueOf(idx));
+	}
 
 	private List<Integer> initIndexes(int cnt, int numLocs) {
 		
 		List<Integer> indexList = new ArrayList<Integer>();
 		
+		int maxIndex = numLocs - 1;
+		if (includeCrash)
+		{
+			maxIndex = ReportTestConst.CRASH_EVENT_IDX-1;
+		}
 		int i = 0;
 		while (i < cnt)
 		{
-			int idx = randomInt(0, numLocs-1);
+			int idx = randomInt(0, maxIndex);
 			if (!indexList.contains(Integer.valueOf(idx)) && !allIndexes.contains(Integer.valueOf(idx)))
 			{
 				indexList.add(Integer.valueOf(idx));

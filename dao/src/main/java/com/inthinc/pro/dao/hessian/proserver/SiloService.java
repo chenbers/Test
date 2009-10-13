@@ -74,6 +74,12 @@ public interface SiloService extends HessianService
 
     Map<String, Object> clrVehicleDevice(Integer vehicleID, Integer deviceID) throws ProDAOException;
 
+
+    // -!!!! WARNING !!!!  ----------
+    // Method is only available on the dev server to allow tests to generate event's in the past.
+    Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID, Long assignTime ) throws ProDAOException;
+    // ----------------------------
+
     
     // ------- Person  ----------
     Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException;

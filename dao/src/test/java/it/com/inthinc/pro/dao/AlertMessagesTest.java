@@ -66,6 +66,7 @@ import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -105,6 +106,14 @@ public class AlertMessagesTest {
     private static final int GROUPS = 4;
     private static final int CONTACT_INFO = 5;
     private static final int ANY_TIME = 6;
+    private static AlertMessageHessianDAO alertMessageDAO;
+    private static EventHessianDAO eventDAO;
+    private static DriverHessianDAO driverDAO;
+    private static GroupHessianDAO groupDAO;
+    private static PersonHessianDAO personDAO;
+    private static VehicleHessianDAO vehicleDAO;
+    private static ZoneHessianDAO zoneHessianDAO;
+    private static AddressLookup addressLookup;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -115,6 +124,8 @@ public class AlertMessagesTest {
         siloService = new SiloServiceCreator(host, port).getService();
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
+        
+        initDAOs();
         // HessianDebug.debugIn = true;
         // HessianDebug.debugOut = true;
         // HessianDebug.debugRequest = true;
@@ -129,6 +140,7 @@ public class AlertMessagesTest {
         States states = new States();
         states.setStateDAO(stateDAO);
         states.init();
+        
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
         Roles roles = new Roles();
@@ -143,68 +155,74 @@ public class AlertMessagesTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        // modZoneAlertPref(GROUPS);
-        // modRedFlagAlertPref(GROUPS);
+        modZoneAlertPref(GROUPS);
+        modRedFlagAlertPref(GROUPS);
     }
 
     @Test
-    @Ignore
     public void zoneAlerts() {
         zoneID = zone.getZoneID();
         IMEI = device.getImei();
+        boolean anyAlertsFound = false;
         // generate zone arrival/departure event
         if (!genZoneEvent(IMEI, zoneID))
             fail("Unable to generate zone arrival event");
-        pollForMessages("Zone Alert Groups Set");
+        if (pollForMessages("Zone Alert Groups Set"))
+        	anyAlertsFound = true;
         modZoneAlertPref(DRIVERS);
         if (!genZoneEvent(IMEI, zoneID))
             fail("Unable to generate zone arrival event");
-        pollForMessages("Zone Alert Drivers Set");
+        if (pollForMessages("Zone Alert Drivers Set"))
+        	anyAlertsFound = true;
         modZoneAlertPref(VEHICLES);
         if (!genZoneEvent(IMEI, zoneID))
             fail("Unable to generate zone arrival event");
-        pollForMessages("Zone Alert Vehicles Set");
+        if (pollForMessages("Zone Alert Vehicles Set"))
+        	anyAlertsFound = true;
         modZoneAlertPref(VEHICLE_TYPES);
         if (!genZoneEvent(IMEI, zoneID))
             fail("Unable to generate zone arrival event");
-        pollForMessages("Zone Alert Vehicle Types Set");
+        if (pollForMessages("Zone Alert Vehicle Types Set"))
+        	anyAlertsFound = true;
         modZoneAlertPref(CONTACT_INFO);
         if (!genZoneEvent(IMEI, zoneID))
             fail("Unable to generate zone arrival event");
-        pollForMessages("Zone Alert Contact Info Set");
+        if (pollForMessages("Zone Alert Contact Info Set"))
+        	anyAlertsFound = true;
         modZoneAlertPref(ANY_TIME);
         if (!genZoneEvent(IMEI, zoneID))
             fail("Unable to generate zone arrival event");
-        pollForMessages("Zone Alert ANY TIME (0,0) Set");
+        if (pollForMessages("Zone Alert ANY TIME (0,0) Set"))
+        	anyAlertsFound = true;
+        assertTrue("No Zone Alerts were generated", anyAlertsFound);
     }
 
     @Test
-    @Ignore
     public void redFlagAlerts() {
         IMEI = device.getImei();
         // generate zone arrival/departure event
-        if (!genSpeedingEvent(IMEI))
-            fail("Unable to generate speeding event");
+        if (!genSeatBeltEvent(IMEI))
+            fail("Unable to generate seatbelt event");
         pollForMessages("Red Flag Alert Groups Set");
         modRedFlagAlertPref(DRIVERS);
-        if (!genSpeedingEvent(IMEI))
-            fail("Unable to generate speeding event");
+        if (!genSeatBeltEvent(IMEI))
+            fail("Unable to generate seatbelt event");
         pollForMessages("Red Flag Alert Drivers Set");
         modRedFlagAlertPref(VEHICLES);
-        if (!genSpeedingEvent(IMEI))
-            fail("Unable to generate speeding event");
+        if (!genSeatBeltEvent(IMEI))
+            fail("Unable to generate seatbelt event");
         pollForMessages("Red Flag Alert Vehicles Set");
         modRedFlagAlertPref(VEHICLE_TYPES);
-        if (!genSpeedingEvent(IMEI))
-            fail("Unable to generate speeding event");
+        if (!genSeatBeltEvent(IMEI))
+            fail("Unable to generate seatbelt event");
         pollForMessages("Red Flag Alert Vehicle Types Set");
         modRedFlagAlertPref(ANY_TIME);
-        if (!genSpeedingEvent(IMEI))
-            fail("Unable to generate speeding event");
+        if (!genSeatBeltEvent(IMEI))
+            fail("Unable to generate seatbelt event");
         pollForMessages("Red Flag Alert Any Time Info Set");
         modRedFlagAlertPref(CONTACT_INFO);
-        if (!genSpeedingEvent(IMEI))
-            fail("Unable to generate speeding event");
+        if (!genSeatBeltEvent(IMEI))
+            fail("Unable to generate seatbelt event");
         pollForMessages("Red Flag Alert Contact Info Set");
         checkRedFlags();
     }
@@ -223,7 +241,7 @@ public class AlertMessagesTest {
             xml.writeObject(vehicle);
             xml.writeObject(zone);
             xml.writeObject(zoneAlert);
-            // xml.writeObject(redFlagAlert);
+            xml.writeObject(redFlagAlert);
             xml.close();
             System.out.println(" -- base data generation complete -- ");
         }
@@ -246,7 +264,7 @@ public class AlertMessagesTest {
             vehicle = getNext(xml, Vehicle.class);
             zone = getNext(xml, Zone.class);
             zoneAlert = getNext(xml, ZoneAlert.class);
-            // redFlagAlert = getNext(xml, RedFlagAlert.class);
+            redFlagAlert = getNext(xml, RedFlagAlert.class);
             xml.close();
             return dataExists();
         }
@@ -282,9 +300,11 @@ public class AlertMessagesTest {
     }
 
     private static void genData() {
+    	
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         account = new Account(null, null, null, Status.ACTIVE);
+        account.setAcctName("AA" + Util.randomInt(0, 10000));
         // create
         Integer siloID = 0;
         Integer acctID = accountDAO.create(siloID, account);
@@ -316,11 +336,11 @@ public class AlertMessagesTest {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
         Date expired = Util.genDate(2010, 8, 30);
-        Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345");
-        Driver driver = new Driver(0, 0, Status.ACTIVE, 100l + groupID.longValue(), "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
-        User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
+        Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
+        Driver driver = new Driver(0, 0, Status.ACTIVE, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
+        User user = new User(0, 0, superuserRole(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
-        person = new Person(0, acctID, TimeZone.getTimeZone("MST"), null, address.getAddrID(), "email" + groupID + "@email.com", "secEmail@test.com", "8015551111", "8015552222",
+        person = new Person(0, acctID, TimeZone.getTimeZone("US/Mountain"), null, address.getAddrID(), "email" + groupID + "@email.com", "secEmail@test.com", "8015551111", "8015552222",
                 "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, "emp" + groupID, null, "title" + groupID, "dept" + groupID, "first" + groupID, "m" + groupID, "last"
                         + groupID, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
         person.setUser(user);
@@ -351,7 +371,7 @@ public class AlertMessagesTest {
         vehicleDAO.setVehicleDevice(vehicleID, deviceID);
         vehicleDAO.setVehicleDriver(vehicleID, driver.getDriverID());
         zoneAlert(acctID, team1Group.getGroupID(), personID);
-        // redFlagAlert(acctID, team1Group.getGroupID());
+        redFlagAlert(acctID, team1Group.getGroupID());
     }
 
     private static String genNumericID(Integer acctID, Integer len) {
@@ -386,7 +406,6 @@ public class AlertMessagesTest {
         groupIDList.add(team1Group.getGroupID());
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-        emailList.add("mstrong@inthinc.com");
         List<Integer> notifyPersonIDList = new ArrayList<Integer>();
         notifyPersonIDList.add(notifyPersonIDs[0]);
         zoneAlert = new ZoneAlert(acctID, "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
@@ -412,11 +431,10 @@ public class AlertMessagesTest {
         vehicleTypes.add(vehicle.getVtype());
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(team1Group.getGroupID());
-        List<Integer> notifyUserIDs = new ArrayList<Integer>();
-        notifyUserIDs.add(person.getUser().getUserID());
+        List<Integer> notifyPersonIDs = new ArrayList<Integer>();
+        notifyPersonIDs.add(person.getPersonID());
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-        emailList.add("mstrong@inthinc.com");
         zoneAlert.setStartTOD(0);
         zoneAlert.setStopTOD(1439);
         List<Integer> emptyList = new ArrayList<Integer>();
@@ -427,7 +445,7 @@ public class AlertMessagesTest {
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
+                zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case VEHICLES:
@@ -435,7 +453,7 @@ public class AlertMessagesTest {
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(vehicleIDs);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
+                zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case VEHICLE_TYPES:
@@ -443,7 +461,7 @@ public class AlertMessagesTest {
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(vehicleTypes);
-                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
+                zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case GROUPS:
@@ -451,7 +469,7 @@ public class AlertMessagesTest {
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
+                zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case CONTACT_INFO:
@@ -459,7 +477,7 @@ public class AlertMessagesTest {
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
+                zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(new ArrayList<String>());
                 break;
             case ANY_TIME:
@@ -467,7 +485,7 @@ public class AlertMessagesTest {
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(null);
                 zoneAlert.setVehicleTypes(null);
-                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
+                zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setStartTOD(0);
                 zoneAlert.setStopTOD(0);
                 zoneAlert.setEmailTo(emailList);
@@ -487,8 +505,8 @@ public class AlertMessagesTest {
         vehicleTypes.add(vehicle.getVtype());
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(team1Group.getGroupID());
-        List<Integer> notifyUserIDs = new ArrayList<Integer>();
-        notifyUserIDs.add(person.getUser().getUserID());
+        List<Integer> notifyPersonIDs = new ArrayList<Integer>();
+        notifyPersonIDs.add(person.getPersonID());
         List<Integer> emptyList = new ArrayList<Integer>();
         List<VehicleType> emptyVTList = new ArrayList<VehicleType>();
         List<String> emailList = new ArrayList<String>();
@@ -501,7 +519,7 @@ public class AlertMessagesTest {
                 redFlagAlert.setGroupIDs(emptyList);
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
-                redFlagAlert.setNotifyPersonIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case VEHICLES:
@@ -509,7 +527,7 @@ public class AlertMessagesTest {
                 redFlagAlert.setGroupIDs(emptyList);
                 redFlagAlert.setVehicleIDs(vehicleIDs);
                 redFlagAlert.setVehicleTypes(emptyVTList);
-                redFlagAlert.setNotifyPersonIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case VEHICLE_TYPES:
@@ -517,7 +535,7 @@ public class AlertMessagesTest {
                 redFlagAlert.setGroupIDs(emptyList);
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(vehicleTypes);
-                redFlagAlert.setNotifyPersonIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case GROUPS:
@@ -525,7 +543,7 @@ public class AlertMessagesTest {
                 redFlagAlert.setGroupIDs(groupIDList);
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
-                redFlagAlert.setNotifyPersonIDs(notifyUserIDs);
+                redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case CONTACT_INFO:
@@ -533,7 +551,7 @@ public class AlertMessagesTest {
                 redFlagAlert.setGroupIDs(groupIDList);
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
-                redFlagAlert.setNotifyPersonIDs(notifyUserIDs);
+                redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(new ArrayList<String>());
                 break;
             case ANY_TIME:
@@ -541,7 +559,7 @@ public class AlertMessagesTest {
                 redFlagAlert.setGroupIDs(groupIDList);
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
-                redFlagAlert.setNotifyPersonIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setStartTOD(0);
                 redFlagAlert.setStopTOD(1439);
@@ -568,6 +586,7 @@ public class AlertMessagesTest {
         }
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
+        // speeding alert
         redFlagAlert = new RedFlagAlert(acctID, "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time
                 dayOfWeek, groupIDList,
@@ -576,8 +595,10 @@ public class AlertMessagesTest {
                 null, // vehicleTypeIDs
                 null,
                 emailList, // emailTo
-                speedSettings, speedLevels, 3, 3, 3, 3, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING,
-                RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING);
+                null, null, null, null, null, null,
+                RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
+                RedFlagLevel.CRITICAL, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+        
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);
@@ -585,22 +606,22 @@ public class AlertMessagesTest {
     }
 
     private boolean genZoneEvent(String imei, Integer zoneID) {
-        logger.debug("IMEI: " + imei);
-        logger.debug("ZoneID: " + zoneID);
+        System.out.println("IMEI: " + imei);
+        System.out.println("ZoneID: " + zoneID);
         ZoneArrivalEvent event = new ZoneArrivalEvent(0l, 0, EventMapper.TIWIPRO_EVENT_WSZONES_ARRIVAL_EX, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f),
                 zoneID);
         return genEvent(event, imei);
     }
 
-    private boolean genSpeedingEvent(String imei) {
-        SpeedingEvent event = new SpeedingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f), 120, 100,
-                30, 20, 1000);
-        // Integer topSpeed, Integer avgSpeed, Integer speedLimit, Integer distance, Integer avgRPM)
+    private boolean genSeatBeltEvent(String imei) {
+        SeatBeltEvent event = new SeatBeltEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SEATBELT, new Date(), 60, 1000, 
+        		new Double(40.704246f), new Double(-111.948613f), 80, 100, 20);
         return genEvent(event, imei);
     }
 
     private boolean genEvent(Event event, String imei) {
         List<byte[]> noteList = new ArrayList<byte[]>();
+
         byte[] eventBytes = EventGenerator.createDataBytesFromEvent(event);
         noteList.add(eventBytes);
         boolean errorFound = false;
@@ -611,9 +632,9 @@ public class AlertMessagesTest {
                 break;
             }
             catch (ProxyException ex) {
-                logger.error(ex.getMessage());
+//                logger.error(ex.getMessage());
                 if (ex.getErrorCode() != 414) {
-                    System.out.print(ex.getErrorCode() + "");
+                    System.out.print("RETRY EVENT GEN because: " + ex.getErrorCode() + "");
                     errorFound = true;
                 }
                 else {
@@ -622,6 +643,8 @@ public class AlertMessagesTest {
                         errorFound = true;
                     }
                     else {
+                    	if (retryCnt == 0)
+                    		System.out.println("waiting for IMEI to show up in central server");
                         try {
                             Thread.sleep(1000l);
                             retryCnt++;
@@ -644,16 +667,17 @@ public class AlertMessagesTest {
         return !errorFound;
     }
 
-    private void pollForMessages(String description) {
-        AlertMessageHessianDAO alertMessageDAO = new AlertMessageHessianDAO();
+    private static void initDAOs()
+    {
+        alertMessageDAO = new AlertMessageHessianDAO();
         alertMessageDAO.setSiloService(siloService);
-        EventHessianDAO eventDAO = new EventHessianDAO();
-        DriverHessianDAO driverDAO = new DriverHessianDAO();
-        GroupHessianDAO groupDAO = new GroupHessianDAO();
-        PersonHessianDAO personDAO = new PersonHessianDAO();
-        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
-        ZoneHessianDAO zoneHessianDAO = new ZoneHessianDAO();
-        AddressLookup addressLookup = new AddressLookup();
+        eventDAO = new EventHessianDAO();
+        driverDAO = new DriverHessianDAO();
+        groupDAO = new GroupHessianDAO();
+        personDAO = new PersonHessianDAO();
+        vehicleDAO = new VehicleHessianDAO();
+        zoneHessianDAO = new ZoneHessianDAO();
+        addressLookup = new AddressLookup();
         addressLookup.setMapServerURLString(mapServerURL);
         driverDAO.setSiloService(siloService);
         groupDAO.setSiloService(siloService);
@@ -668,12 +692,17 @@ public class AlertMessagesTest {
         alertMessageDAO.setPersonDAO(personDAO);
         alertMessageDAO.setZoneDAO(zoneHessianDAO);
         alertMessageDAO.setAddressLookup(addressLookup);
-        System.out.print("Poll for message");
-        for (int i = 0; i < 100; i++) {
+    }
+    
+    private boolean pollForMessages(String description) {
+        System.out.print("Poll for message: " + description);
+        int secondsToWait = 30;
+        for (int i = 0; i < secondsToWait; i++) {
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
             if (msgList.size() == 0) {
-                if (i == 99) {
-                    fail(description + " getMessages failed even after waiting 10 sec");
+                if (i == (secondsToWait-1)) {
+                	System.out.println();
+                	logger.error(description + " getMessages failed even after waiting " + secondsToWait + " sec -- most likely the scheduler picked them up");
                 }
                 try {
                     Thread.sleep(1000l);
@@ -691,10 +720,13 @@ public class AlertMessagesTest {
                 assertNotNull(description, msg);
                 assertNotNull(description, msg.getAddress());
                 assertNotNull(description, msg.getParamterList());
-                logger.debug(description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList());
-                break;
+                System.out.println(description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList());
+                // logger.debug(description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList());
+                return true;
             }
         }
+        
+        return false;
     }
 
     private void checkRedFlags() {
@@ -718,11 +750,9 @@ public class AlertMessagesTest {
         return null;
     }
 
-    private static Role randomRole() {
-        int idx = Util.randomInt(0, Roles.getRoleMap().size() - 1);
-        int cnt = 0;
+    private static Role superuserRole() {
         for (Role role : Roles.getRoleMap().values()) {
-            if (cnt++ == idx)
+            if (role.getRoleID().intValue() == 5)	// superuser
                 return role;
         }
         return null;

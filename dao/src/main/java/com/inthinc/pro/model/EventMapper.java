@@ -55,6 +55,8 @@ public class EventMapper
     public static final int TIWIPRO_EVENT_LOW_TIWI_BATTERY = 207;
     public static final int TIWIPRO_EVENT_IDLE = 208;
     public static final int TIWIPRO_EVENT_ROLLOVER = 209;
+    public static final int TIWIPRO_EVENT_COACHING_SPEEDING = 210;
+    public static final int TIWIPRO_EVENT_COACHING_SEATBELT = 211;
     public static final int TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA    = 246;
     public static final int TIWIPRO_EVENT_ZONE_ENTER_ALERTED = 247;
     public static final int TIWIPRO_EVENT_ZONE_EXIT_ALERTED = 248;

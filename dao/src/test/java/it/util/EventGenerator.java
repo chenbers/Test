@@ -7,10 +7,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.FullEvent;
 import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.IgnitionOffEvent;
 import com.inthinc.pro.model.LatLng;
@@ -34,16 +36,20 @@ public class EventGenerator
     private final static int ATTR_TYPE_MANRESET_REASON= 6;
     private final static int ATTR_TYPE_FWDCMD_STATUS= 7;
     private final static int ATTR_TYPE_SEVERITY=   24;
+    													// 128-192 2 byte values
     private final static int ATTR_TYPE_DISTANCE =129;
     private final static int ATTR_TYPE_MAX_RPM =  130;
     private final static int ATTR_TYPE_DELTAVX =  131;
     private final static int ATTR_TYPE_DELTAVY =  132;
     private final static int ATTR_TYPE_DELTAVZ =  133;
     private final static int ATTR_TYPE_MPG = 149;
+    														// 192 up has 4 byte values
     private final static int ATTR_TYPE_ZONE_ID =  192;
-    
+    private final static int ATTR_SPEED_ID = 201;
     private final static int ATTR_TYPE_LO_IDLE  = 219;
     private final static int ATTR_TYPE_HI_IDLE  = 220;
+    private final static int ATTR_TYPE_MPG_DISTANCE  = 224;
+    private final static int ATTR_TYPE_DRIVETIME  = 225;
 
 /*    
     private final static int ATTR_TYPE_FIRMVER   193
@@ -159,7 +165,7 @@ public class EventGenerator
     public EventGenerator()
     {
     }
-    
+static int eventCount;    
 
     // used for report testing
     public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data ) throws Exception
@@ -173,6 +179,7 @@ public class EventGenerator
         List<byte[]> noteList = new ArrayList<byte[]>();
         Integer odometer = ReportTestConst.MILES_PER_EVENT;
         Integer locCnt = ReportTestConst.EVENTS_PER_DAY;
+eventCount = 0;        
         for (int i = 0; i < locCnt; i++)
         {
         	if (i == 0)
@@ -183,23 +190,25 @@ public class EventGenerator
         	}
         	else if (i == (locCnt-1))
         	{
-                int mpg = data.getMpg();
+                int mpg = data.getMpg()*10;
                 event = new IgnitionOffEvent(0l, 0, EventMapper.TIWIPRO_EVENT_IGNITION_OFF,
-                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), mpg);
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), mpg,
+                        locCnt*ReportTestConst.MILES_PER_EVENT,
+                        (int)(locCnt*ReportTestConst.ELAPSED_TIME_PER_EVENT/1000l));
                 
         	}
         	else if (data.isSpeedingIndex(i))
             {
                 event = new SpeedingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3,
-                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
-                        90, 65, 60, 2, 10);
+                        eventTime, 80, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        90, 65, 60, ReportTestConst.MILES_PER_EVENT, 10);
                 
             }
         	else if (data.isSeatbeltIndex(i))
             {
                 event = new SeatBeltEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SEATBELT,
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
-                        55, 59, 3);
+                        55, 59, ReportTestConst.MILES_PER_EVENT);
                         
                 
             }
@@ -209,11 +218,11 @@ public class EventGenerator
                 if (adType == 0) // hard vert
                     event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT,
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
-                        55, 11, -22, -33, 50);
+                        55, 11, -22, -33, data.severity);
                 else // hard brake
                     event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT,
                             eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
-                            55, -25, 22, -13, 50);
+                            55, -25, 22, -13, data.severity);
                 
             }
         	else if (data.isIdlingIndex(i))
@@ -222,16 +231,37 @@ public class EventGenerator
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
                         ReportTestConst.LO_IDLE_TIME, ReportTestConst.HI_IDLE_TIME);
             }
+        	else if (data.isCrashIndex(i))
+            {
+//        					FullEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+                event = new FullEvent(0l, 0, EventMapper.TIWIPRO_EVENT_FULLEVENT,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        25, 11, -22, -33);
+            }
             else
             {
                 event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_LOCATION,
                                     eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
             }
             event.setSats(7);
-            eventTime = new Date(eventTime.getTime() + ReportTestConst.ELAPSED_TIME_PER_EVENT);
-            
             byte[] eventBytes = createDataBytesFromEvent(event);
             noteList.add(eventBytes);
+
+            // coaching events
+        	if (data.isSpeedingIndex(i) || data.isSeatbeltIndex(i)) 
+            {
+        		if (data.isSpeedingIndex(i))
+        			event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_COACHING_SPEEDING,
+        					new Date(eventTime.getTime() + 2000l), 60, odometer,  locations[i].getLat(), locations[i].getLng());
+        		else event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_COACHING_SEATBELT,
+        				new Date(eventTime.getTime() + 2000l), 60, odometer,  locations[i].getLat(), locations[i].getLng());
+	            event.setSats(7);
+	            eventBytes = createDataBytesFromEvent(event);
+	            noteList.add(eventBytes);
+            }
+            
+            eventTime = new Date(eventTime.getTime() + ReportTestConst.ELAPSED_TIME_PER_EVENT);
+            
             if ((i+1) % 4 == 0 ||(i+1) == locations.length)
             {
                 service.note(imeiID, noteList);
@@ -241,6 +271,7 @@ public class EventGenerator
             
         }
     	System.out.println(" COMPLETE");
+    	System.out.println(" event count: " + eventCount);
     }
 
 
@@ -325,10 +356,14 @@ public class EventGenerator
     // does -- this is currently only used to generate test data
     public static byte[] createDataBytesFromEvent(Event event)
     {
+eventCount++;    	
+System.out.println("type: " + event.getType() + " time: " + DateUtil.convertDateToSeconds(event.getTime()));    	
         byte[] eventBytes = new byte[200];
         int idx = 0;
         eventBytes[idx++] = (byte) (event.getType() & 0x000000FF);
         idx = puti4(eventBytes, idx, (int)(event.getTime().getTime()/1000l));
+        if (event.getSats() == null || event.getSats().intValue() == 0)
+        	event.setSats(10);
         eventBytes[idx++] = (byte) (event.getSats() & 0x000000FF);
         eventBytes[idx++] = (byte) 1; // maprev
         idx = putlat(eventBytes, idx, event.getLatitude());
@@ -347,7 +382,7 @@ public class EventGenerator
             eventBytes[idx++] = (byte) (ATTR_TYPE_TOP_SPEED & 0x000000FF);
             eventBytes[idx++] = (byte) (speedingEvent.getTopSpeed() & 0x000000FF);
             eventBytes[idx++] = (byte) (ATTR_TYPE_DISTANCE & 0x000000FF);
-            eventBytes[idx++] = (byte) (speedingEvent.getDistance() & 0x000000FF);
+            idx = puti2(eventBytes, idx, speedingEvent.getDistance());
         }
         else if (event instanceof SeatBeltEvent)
         {
@@ -357,7 +392,7 @@ public class EventGenerator
             eventBytes[idx++] = (byte) (ATTR_TYPE_TOP_SPEED & 0x000000FF);
             eventBytes[idx++] = (byte) (seatbeltEvent.getTopSpeed() & 0x000000FF);
             eventBytes[idx++] = (byte) (ATTR_TYPE_DISTANCE & 0x000000FF);
-            eventBytes[idx++] = (byte) (seatbeltEvent.getDistance() & 0x000000FF);
+            idx = puti2(eventBytes, idx, seatbeltEvent.getDistance());
         }
         else if (event instanceof AggressiveDrivingEvent)
         {
@@ -370,6 +405,18 @@ public class EventGenerator
             idx = puti2(eventBytes, idx, adEvent.getDeltaY());
             eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVZ & 0x000000FF);
             idx = puti2(eventBytes, idx, adEvent.getDeltaZ());
+        }
+        else if (event instanceof FullEvent)
+        {
+        	FullEvent fullEvent = (FullEvent) event;
+            eventBytes[idx++] = (byte) (ATTR_TYPE_AVG_SPEED & 0x000000FF);
+            eventBytes[idx++] = (byte) (fullEvent.getSpeed() & 0x000000FF);
+            eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVX & 0x000000FF);
+            idx = puti2(eventBytes, idx, fullEvent.getDeltaX());
+            eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVY & 0x000000FF);
+            idx = puti2(eventBytes, idx, fullEvent.getDeltaY());
+            eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVZ & 0x000000FF);
+            idx = puti2(eventBytes, idx, fullEvent.getDeltaZ());
         }
         else if (event instanceof ZoneArrivalEvent)
         {
@@ -388,6 +435,11 @@ public class EventGenerator
         	IgnitionOffEvent ignitionOffEvent = (IgnitionOffEvent)event;
             eventBytes[idx++] = (byte) (ATTR_TYPE_MPG & 0x000000FF);
             idx = puti2(eventBytes, idx, ignitionOffEvent.getMpg());
+            eventBytes[idx++] = (byte) (ATTR_TYPE_MPG_DISTANCE & 0x000000FF);
+            idx = puti4(eventBytes, idx, ignitionOffEvent.getMpgDistance());
+            eventBytes[idx++] = (byte) (ATTR_TYPE_DRIVETIME & 0x000000FF);
+            idx = puti4(eventBytes, idx, ignitionOffEvent.getDriveTime());
+            
         }
         else if (event instanceof IdleEvent)
         {
@@ -396,6 +448,11 @@ public class EventGenerator
             idx = puti4(eventBytes, idx, idleEvent.getLowIdle());
             eventBytes[idx++] = (byte) (ATTR_TYPE_HI_IDLE & 0x000000FF);
             idx = puti4(eventBytes, idx, idleEvent.getHighIdle());
+        }
+        else if (event.getType().equals(EventMapper.TIWIPRO_EVENT_COACHING_SPEEDING))
+        {
+            eventBytes[idx++] = (byte) (ATTR_SPEED_ID & 0x000000FF);
+            idx = puti4(eventBytes, idx, 2); //DateUtil.convertMillisecondsToSeconds(event.getTime().getTime()));
         }
 
         return Arrays.copyOf(eventBytes, idx);

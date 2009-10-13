@@ -48,7 +48,6 @@ public class DriveQMap extends BaseEntity
     private Integer crashDays;
     // END - CRASH SUMMARY
     
-    // not sure what these are for
 	private Date startingDate;
 	private Date endingDate;
 	private Number speedOdometer;
@@ -58,7 +57,39 @@ public class DriveQMap extends BaseEntity
     private Number speedOdometer4;
     private Number speedOdometer5;
     
-    
+/*
+ * These fields are also available in the driveQ map, but excluding for now in the interest of performance since we don't use these fields.
+		aggressiveBrakeEvents
+		seatbeltEvents
+		speedEvents
+		speedEvents1
+		speedEvents2
+		speedEvents3
+		speedEvents4
+		speedEvents5
+		idleLoEvents
+		idleHiEvents
+		rpmEvents
+		aggressiveEvents
+		aggressiveAccelEvents
+		aggressiveBumpEvents
+		aggressiveRightEvents
+		aggressiveLeftEvents
+		
+		speedCoaching
+		speedCoaching1
+		speedCoaching2
+		speedCoaching3
+		speedCoaching4
+		speedCoaching5
+		seatbeltCoaching
+		
+		speedOver
+		speedOver4
+		avgSpeed
+		trips
+ * 
+ */
 	@Column(updateable = false)
     private transient Map<ScoreType, Integer> scoreMap = new HashMap<ScoreType, Integer>();
     

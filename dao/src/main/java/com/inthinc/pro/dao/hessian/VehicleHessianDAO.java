@@ -57,6 +57,11 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     }
 
     @Override
+    public void setVehicleDriver(Integer vehicleID, Integer driverID, Date assignDate) {
+        getSiloService().setVehicleDriver(vehicleID, driverID, DateUtil.convertDateToSeconds(assignDate));
+    }
+
+    @Override
     public void setVehicleDevice(Integer vehicleID, Integer deviceID) {
         Device device = null;
         if (deviceID != null)

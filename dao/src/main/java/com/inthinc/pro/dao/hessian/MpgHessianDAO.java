@@ -100,7 +100,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
         {
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
 //logger.debug("getDriverEntities calling getDTrendByDTC(" + driverID + "," + duration.getDvqMetric() + "," +  ((count == null) ? duration.getDvqCount() : count)+")");
-            List<Map<String, Object>> returnMapList = reportService.getDTrendByDTC(driverID, duration.getDvqMetric(), (count == null) ? duration.getDvqCount() : count);
+            List<Map<String, Object>> returnMapList = reportService.getDTrendByDTC(driverID, duration.getAggregationBinSize(), (count == null) ? duration.getDvqCount() : count);
             List<DriveQMap> dqMapList = getMapper().convertToModelObject(returnMapList, DriveQMap.class);
 
             for (DriveQMap dqMap : dqMapList)
@@ -130,7 +130,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
 //logger.debug("getVehicleEntities calling getVTrendByDTC(" + vehicleID + "," + duration.getDvqMetric() + "," +  ((count == null) ? duration.getDvqCount() : count)+")");
 
-            List<Map<String, Object>> returnMapList = reportService.getVTrendByVTC(vehicleID, duration.getDvqMetric(), (count == null) ? duration.getDvqCount() : count);
+            List<Map<String, Object>> returnMapList = reportService.getVTrendByVTC(vehicleID, duration.getAggregationBinSize(), (count == null) ? duration.getDvqCount() : count);
             List<DriveQMap> dqMapList = getMapper().convertToModelObject(returnMapList, DriveQMap.class);
 
             for (DriveQMap dqMap : dqMapList)

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  * 4/1/2009 - dvqCode added to retrieve 7 day aggregation.
  * 
- * code - specifies cumulative of entities based on 30 day aggegation
+ * code - specifies cumulative of entities based on 30 day aggregation
  * dvqMetric - specifies sum of entities
  * dvqCode - specifies cumulative of entities based on 7 day aggregation
  * dvqCount - specifies number of records to retrieve
@@ -24,13 +24,34 @@ public enum Duration implements BaseEnum
     SIX(4, "6 months", 180, "MMM", 2, 6, 4), 
     TWELVE(5, "12 months", 360, "MMM", 2, 12, 5);
 
-    private final int numberOfDays;
+    /*
+     * from aggregation method docs  (dvqMetric above)
+	    0 - 1 day bins
+	    1 - 7 day bins
+	    2 - 1 month bins
+	    3 - 3 month bins
+	    4 - 6 month bins
+	    5 - 12 month bins
+	    6 - 30 day bins
+    */
+    
+	private static final int BINSIZE_1_DAY = 0;
+    private static final int BINSIZE_7_DAY = 1;
+    private static final int BINSIZE_1_MONTH = 2;
+    private static final int BINSIZE_3_MONTHS = 3;
+    private static final int BINSIZE_6_MONTHS = 4;
+    private static final int BINSIZE_12_MONTHS = 5;
+    private static final int BINSIZE_30_DAYS = 6;
+
+
+	private final int numberOfDays;
     private String durationValue;
     private Integer code;
     private String datePattern;
-    private Integer dvqMetric;
+    private Integer aggregationBinSize;
     private Integer dvqCount;
     private Integer dvqCode;
+    
     
     private static final Map<Integer, Duration> lookup = new HashMap<Integer, Duration>();
     
@@ -47,13 +68,13 @@ public enum Duration implements BaseEnum
         for(Duration d : EnumSet.allOf(Duration.class))
             codeLookup.put(d.getCode(), d);
     }
-    Duration(Integer code, String durationValue, int numberOfDays, String datePattern, Integer dvqMetric, Integer dvqCount, Integer dvqCode)
+    Duration(Integer code, String durationValue, int numberOfDays, String datePattern, Integer aggregationBinSize, Integer dvqCount, Integer dvqCode)
     {
         this.code = code;
         this.durationValue = durationValue;
         this.numberOfDays = numberOfDays;
         this.datePattern = datePattern;
-        this.dvqMetric = dvqMetric;
+        this.aggregationBinSize = aggregationBinSize;
         this.dvqCode = dvqCode;
         this.dvqCount = dvqCount;
     }
@@ -98,14 +119,18 @@ public enum Duration implements BaseEnum
         return this.datePattern;
     }
 
-    public Integer getDvqMetric()
+    public Integer getAggregationBinSize()
     {
-        return dvqMetric;
+        return aggregationBinSize;
     }
 
     public Integer getDvqCount()
     {
         return dvqCount;
     }
+
+    public String getDurationValue() {
+		return durationValue;
+	}
 
 }

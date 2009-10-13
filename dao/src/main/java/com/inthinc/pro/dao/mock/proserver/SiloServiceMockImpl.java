@@ -1413,5 +1413,12 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     {
         Integer temp = 1;
         return TempConversionUtil.createMapFromObject(temp, true);
-    }        
+    }
+
+	@Override
+	public Map<String, Object> setVehicleDriver(Integer vehicleID,
+			Integer driverID, Long assignTime) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}        
 }

@@ -635,7 +635,7 @@ public class SiloServiceTest {
         AddressHessianDAO addressDAO = new AddressHessianDAO();
         addressDAO.setSiloService(siloService);
         // create
-        address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345");
+        address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
         Integer addrID = addressDAO.create(acctID, address);
         address.setAddrID(addrID);
         // find
@@ -1183,7 +1183,7 @@ public class SiloServiceTest {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
         Date expired = Util.genDate(2010, 8, 30);
-        Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345");
+        Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
         Driver driver = new Driver(0, 0, Status.ACTIVE, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);

@@ -108,7 +108,7 @@ public class DataGenerator
         AddressHessianDAO addressDAO = new AddressHessianDAO();
         addressDAO.setSiloService(siloService);
         address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10,99),
-                            States.getStateByAbbrev("UT"), "12345");
+                            States.getStateByAbbrev("UT"), "12345", acctID);
         Integer addrID = addressDAO.create(acctID, address);
         address.setAddrID(addrID);
 
