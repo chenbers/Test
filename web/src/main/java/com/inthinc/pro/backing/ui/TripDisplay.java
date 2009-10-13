@@ -13,7 +13,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.util.MessageUtil;
 
-public class TripDisplay implements Comparable<TripDisplay>
+public class  implements Comparable<TripDisplay>
 {
     String dateShort;       // Jul 01
     String timeStartShort;  // 1:32 PM
@@ -215,7 +215,7 @@ public class TripDisplay implements Comparable<TripDisplay>
     }
     
     public boolean isInProgress() {
-    	if (trip == null)
+    	if (trip == null || trip.getStatus() == null)
     		return false;
     	
     	return trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);
