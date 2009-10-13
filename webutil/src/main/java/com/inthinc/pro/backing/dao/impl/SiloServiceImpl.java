@@ -619,4 +619,12 @@ public class SiloServiceImpl implements SiloService {
     public Map<String, Object> unforgiveCrash(@DaoParam(name = "crashReportID") Integer crashReportID) throws ProDAOException {
         return null;
     }
+
+	@Override
+    @MethodDescription(description = "Do not use. Method only to be used by test data generators on development server.")
+	public Map<String, Object> setVehicleDriver(Integer vehicleID,
+			Integer driverID, Long assignTime) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
