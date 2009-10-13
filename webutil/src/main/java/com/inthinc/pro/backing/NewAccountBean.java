@@ -58,7 +58,7 @@ public class NewAccountBean {
         Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, null, email, null, "5555555555", "5555555555", null, null, null, null, null, "0", null,
                 "title", "dept", "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale
                         .getDefault());
-        person.setAddress(new Address(null, "", null, "", null, ""));
+        person.setAddress(new Address(null, "", null, "", null, "", acctID));
         Integer personID = null;
         try {
             personID = personDAO.create(acctID, person);
