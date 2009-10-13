@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
 import com.inthinc.pro.dao.ScoreDAO;
@@ -17,7 +18,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
-import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.MessageUtil;
 
 public class IdlePercentageBean extends BaseBean {

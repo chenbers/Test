@@ -17,12 +17,10 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -53,6 +51,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     private TripDisplay         lastTrip;
     private List<Event>         violationEvents = new ArrayList<Event>();
+    private List<Event>			tamperEvents;
     private Integer             overallScore;
     private String              overallScoreHistory;
     private String              overallScoreStyle;
@@ -93,12 +92,14 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     {
         if (violationEvents.isEmpty())
         {
-            List<Integer> types = new ArrayList<Integer>();
+        	//test null EventMapper map item
+        	System.out.println(EventMapper.getEventType(40002));
+        	List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
             types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
-
+            types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types,showExcludedEvents);
 
             // Lookup Addresses for events
@@ -107,7 +108,12 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             {
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             }
-        }
+            // Lookup Addresses for tamper events
+//            for (Event event :tamperEvents)
+//            {
+//                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+//            }
+       }
     }
 
     public Integer getOverallScore()
@@ -533,6 +539,14 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 	public void setCrashSummary(CrashSummaryBean crashSummary) {
 		this.crashSummary = crashSummary;
 	}
+    public List<Event> getTamperEvents() {
+		return tamperEvents;
+	}
+
+	public void setTamperEvents(List<Event> tamperEvents) {
+		this.tamperEvents = tamperEvents;
+	}
+
 
 
 }

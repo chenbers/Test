@@ -164,16 +164,31 @@
 					</div>	
 	 				<div class="panel_w">
 						<div class="panel_content">
-							<rich:dataList id="fleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="legend">
+						   <rich:dataGrid id="fleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="carlegend" 
+      		  											columns="3" border="0" cellpadding="5" cellspacing="5">
+      		  			
                                <pretty:link mappingId="dashboard">
                                   <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>
                                   <f:param value="#{group.groupID}"/>
                                </pretty:link>
+                               <h:outputText value=" "/>
                                <pretty:link mappingId="dashboard">
                                   <h:outputText value="#{group.name}"/>
                                   <f:param value="#{group.groupID}"/>
                                </pretty:link>
-							</rich:dataList>
+     			  	
+      					</rich:dataGrid>
+						
+<!--							<rich:dataList id="fleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="legend">-->
+<!--                               <pretty:link mappingId="dashboard">-->
+<!--                                  <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>-->
+<!--                                  <f:param value="#{group.groupID}"/>-->
+<!--                               </pretty:link>-->
+<!--                               <pretty:link mappingId="dashboard">-->
+<!--                                  <h:outputText value="#{group.name}"/>-->
+<!--                                  <f:param value="#{group.groupID}"/>-->
+<!--                               </pretty:link>-->
+<!--							</rich:dataList>-->
 						</div>
 						<div style="clear:both"/>
 	  					

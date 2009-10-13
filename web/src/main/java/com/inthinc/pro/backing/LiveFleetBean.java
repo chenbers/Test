@@ -58,7 +58,7 @@ public class LiveFleetBean extends BaseBean
         // Get colored map icons.
         MapIconFactory mif = new MapIconFactory();
         List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 24);
-        List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.LEGEND, 24);
+        List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.MAP_LEGEND, 24);
 
         Iterator<MapIcon> mapIconIt = mapIcons.iterator();
         Iterator<MapIcon> legendIconIt = legendIcons.iterator();

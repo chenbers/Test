@@ -467,4 +467,9 @@
     <bean id="latLngAddressConverter" class="com.inthinc.pro.convert.LatLngAddressConverter">
         <property name="addressLookup" ref="addressLookupBean"/>
     </bean>
+    
+    <!-- UI backing beans -->
+        <bean id="eventTypeIcons" class="com.inthinc.pro.backing.ui.EventTypeIcons" scope="session" init-method="init" parent="baseBean">
+    </bean>
+    
 </beans>

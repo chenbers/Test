@@ -53,6 +53,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
 
 	private TripDisplay         lastTrip;
     private List<Event>         violationEvents = new ArrayList<Event>();
+    private List<Event>			tamperEvents;
     private Integer             overallScore;
     private String              overallScoreHistory;
     private String              overallScoreStyle;
@@ -92,6 +93,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
+            types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
+            
             violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, showExcludedEvents );
 
             // Lookup Addresses for events
@@ -102,7 +105,15 @@ public class DriverPerformanceBean extends BasePerformanceBean
         }
     }
     
-    // OVERALL SCORE properties
+    public List<Event> getTamperEvents() {
+		return tamperEvents;
+	}
+
+	public void setTamperEvents(List<Event> tamperEvents) {
+		this.tamperEvents = tamperEvents;
+	}
+
+	// OVERALL SCORE properties
     public Integer getOverallScore()
     {
         setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));

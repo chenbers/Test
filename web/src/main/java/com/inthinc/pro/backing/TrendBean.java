@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
@@ -22,7 +23,6 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
-import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;

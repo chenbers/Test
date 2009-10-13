@@ -2964,7 +2964,19 @@ table.carlegend {
 .carlegend tr td{
 	border-width:0px;
 	border-bottom:0px;
-}	
+}
+.carlegend td a {
+	color: #333333;
+	text-decoration: underline;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-size-adjust: none;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: normal;
+}
+
 ul.legend {
 	margin: 0 0 0 10px;
 	padding: 0;

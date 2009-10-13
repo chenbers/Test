@@ -1,4 +1,4 @@
-package com.inthinc.pro.util;
+package com.inthinc.pro.backing.ui;
 
 import java.awt.Color;
 

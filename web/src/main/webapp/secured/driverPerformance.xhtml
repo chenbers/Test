@@ -71,22 +71,14 @@
 		
 					//Create Violation markers. //IDLE EVENT is the only event with different icon.
 					var violation;
-					var image;
 					<ui:repeat value="#{driverPerformanceBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
 
-						<h:outputText rendered="#{violation.eventType.code eq '13'}" >
-							image = "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png";
-						</h:outputText>
-						<h:outputText rendered="#{violation.eventType.code ne '13'}" >
-							image = "#{facesContext.externalContext.request.contextPath}/images/ico_violation.png";
-						</h:outputText>
-						
-						marker = createMarker(violation, "#{violation.noteID}", image);
+						marker = createMarker(violation, "#{violation.noteID}", "#{eventTypeIcons.iconMap[violation.eventType]}");
 						map.addOverlay(marker);
 						bounds.extend(marker.getPoint());
 					</ui:repeat>
-		
+							
 					//Zoom and Center on trip.
 					map.setZoom(map.getBoundsZoomLevel(bounds));
 				    map.setCenter(bounds.getCenter());
