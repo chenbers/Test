@@ -22,12 +22,13 @@ public class Address extends BaseEntity {
     @Column(name = "stateID")
     State state;
     String zip;
+	Integer accountID;
 
     public Address() {
         super();
     }
 
-    public Address(Integer addrID, String addr1, String addr2, String city, State state, String zip) {
+    public Address(Integer addrID, String addr1, String addr2, String city, State state, String zip, Integer accountID) {
         super();
         this.addrID = addrID;
         this.addr1 = addr1;
@@ -35,6 +36,7 @@ public class Address extends BaseEntity {
         this.city = city;
         this.state = state;
         this.zip = zip;
+        this.accountID = accountID;
     }
 
     public Integer getAddrID() {
@@ -84,9 +86,16 @@ public class Address extends BaseEntity {
     public void setState(State state) {
         this.state = state;
     }
+    public Integer getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(Integer accountID) {
+		this.accountID = accountID;
+	}
 
     @Override
     public String toString() {
-        return "Address [addr1=" + addr1 + ", addr2=" + addr2 + ", addrID=" + addrID + ", city=" + city + ", state=" + state + ", zip=" + zip + "]";
+        return "Address [addr1=" + addr1 + ", addr2=" + addr2 + ", addrID=" + addrID + ", city=" + city + ", state=" + state + ", zip=" + zip + ", accountID=" + accountID + "]";
     }
 }
