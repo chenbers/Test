@@ -66,7 +66,7 @@ public class ReportServiceTest
 	private static ReportService reportService;
     private static SiloService siloService;
 
-    private static final String REPORT_BASE_DATA_XML = "ReportTest2.xml";
+    private static final String REPORT_BASE_DATA_XML = "ReportTest.xml";
     private static final int MAX_TOTAL_DAYS = 360;
     
     private static Account account;
