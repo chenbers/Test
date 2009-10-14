@@ -13,10 +13,7 @@ public class SecureAddressDAO extends BaseSecureDAO{
 
     public boolean isAuthorized(Address address) {
         if (address != null) {
-        	//TODO We need an accountID element in Address
-        	//DANGER WILL ROBINSON
-//          if (getAccountID().equals(group.getAccountID()))
-
+          if (getAccountID().equals(address.getAccountID()))
                 return true;
 
         }
@@ -29,8 +26,7 @@ public class SecureAddressDAO extends BaseSecureDAO{
 
     public Address findByID(Integer addressID) {
         Address address = addressDAO.findByID(addressID);
-        //TODO add address accountID check
-        if (address == null)
+        if (address == null || !address.getAccountID().equals(getAccountID()))
             throw new NotFoundException("addressID not found: " + addressID);
         return address;
     }    
