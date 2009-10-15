@@ -80,6 +80,7 @@ public class CrashReportBean extends BaseBean {
         entityList = new ArrayList<IdentifiableEntityBean>();
         logger.debug("Crash Report Add Begin");
         editState = EditState.ADD;
+        // Do we want to use this?
         setUseExistingTrip(Boolean.TRUE);
         loadVehicles();
         loadDrivers();
@@ -118,6 +119,9 @@ public class CrashReportBean extends BaseBean {
     }
 
     public String save() {
+        // Temporary fix to make sure the correct date for the crash is loaded
+        updateCrashTime();
+               
         if (editState.equals(EditState.ADD)) {
             crashReportID = crashReportDAO.create(crashReport.getVehicleID(), crashReport);
         } else if (editState.equals(EditState.EDIT)) {
@@ -273,10 +277,18 @@ public class CrashReportBean extends BaseBean {
 
         if (driverID != null) {
             logger.debug("loading event to get event time");
-            Event event = eventDAO.getEventNearLocation(crashReport.getDriverID(), crashReport.getLat(), crashReport.getLng(), getSelectedTrip().getStartTime(), getSelectedTrip()
+            
+            // Could be a crash with no trip so don't try to find one
+            if ( getSelectedTrip() != null ) {
+                Event event = eventDAO.getEventNearLocation(crashReport.getDriverID(), crashReport.getLat(), crashReport.getLng(), getSelectedTrip().getStartTime(), getSelectedTrip()
                     .getEndTime());
-            crashReport.setDate(event.getTime());
+                crashReport.setDate(event.getTime());
+            }
         }
+    }
+    
+    public void setLatLngAction() {
+        
     }
 
     public void setDriverDAO(DriverDAO driverDAO) {
@@ -389,6 +401,15 @@ public class CrashReportBean extends BaseBean {
         if (crashReport != null && crashReportTrip == null) {
             crashReportTrip = crashReportDAO.getTrip(crashReport);
         }
+        
+        // if, after looking for the trip, we don't find one, must be a
+        //  crash with just a crash location
+//        if ( crashReportTrip == null ) {
+//            setUseExistingTrip(Boolean.FALSE);           
+//        } else {
+//            setUseExistingTrip(Boolean.TRUE);
+//        }
+        
         return crashReportTrip;
     }
 

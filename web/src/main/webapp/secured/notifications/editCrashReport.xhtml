@@ -12,12 +12,29 @@
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:param name="notificationsSelected" value="current" />
-    <ui:param name="title" value="#{reportScheduleBean.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : messages.adminHeader_editReportSchedule)}"/>
 	<ui:param name="helpFile" value="Add_Edit_a_Report.htm" />
    
     <ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
          <script src="#{facesContext.externalContext.request.contextPath}/js/mapGeocode.js" type="text/javascript"></script>
+         <script type="text/javascript">
+         	function setLatLng(address) {
+             	
+         		  var geocoder = new GClientGeocoder();
+         		  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
+         		  
+         		  geocoder.getLocations(address,
+         			    function(response) {
+         			      if(response.Status.code!=200){
+         			    	 alert("The address: [" + address + "] was not found.");
+         			      } else {
+         			    	  var place = response.Placemark[0];
+         			    	  updateLocation(place.Point.coordinates[1],place.Point.coordinates[0]);							
+         			      }
+         			    }
+         		  );						
+         	}
+         </script>
 	</ui:define>
     
 	<ui:define name="content">
@@ -121,7 +138,8 @@
 
 
 	            /*]]>*/
-	    	<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'FALSE'}">		    	
+	        // add ability to show trip points, if they exist
+	    	<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'FALSE'  or  not empty crashReportBean.crashReportTrip.route}">		    	
 				<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
 					crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
 		    	</a4j:repeat>   	
@@ -137,14 +155,14 @@
 		<rich:panel id="initMap">
 			<script type="text/javascript">
 				function initMap()
-	            {
+	            {		          
 					if (GBrowserIsCompatible()) {
 						 GUnload();
 						 map = new GMap2(document.getElementById("map-canvas"));
-	
-		
+			
 		                 map.addControl(new GMapTypeControl());
 						 map.setMapType(G_NORMAL_MAP);
+
 						 <ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
 						 	 map.setCenter(new GLatLng('#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}'),12);
 						 </ui:fragment>
@@ -160,28 +178,36 @@
 								    
 								  }
 							 });
-						 </ui:fragment>
-					 
+						 </ui:fragment>					 
 
 						 <ui:fragment rendered="#{crashReportBean.crashReport.lat ne null and empty crashReportBean.crashReport.crashDataPoints}">
 						 	map.setCenter(new GLatLng('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}'),15);
 						 	updateLocation('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
 						 </ui:fragment>
 
-						<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'FALSE'}">
-		                	editTripStartPoint = new GLatLng(#{crashReportBean.crashReportTrip.startLoc.lat},#{crashReportBean.crashReportTrip.startLoc.lng});
-		                	editTripEndPoint = new GLatLng(#{crashReportBean.crashReportTrip.endLoc.lat},#{crashReportBean.crashReportTrip.endLoc.lng});
+						 // Changed from test on useExistingTrip						 									
+						 <ui:fragment rendered="#{crashReportBean.crashReportTrip ne null}">						 
+		                	editTripStartPoint = new GLatLng(	#{crashReportBean.crashReportTrip.startLoc.lat},
+				                								#{crashReportBean.crashReportTrip.startLoc.lng});
+		                	editTripEndPoint = new GLatLng(		#{crashReportBean.crashReportTrip.endLoc.lat},
+				                								#{crashReportBean.crashReportTrip.endLoc.lng});
 							editTripPolyline = new GPolyline(editTripPoints, "#0000ff", 6, 1);
 							map.addOverlay(editTripPolyline);
 
-							crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
-							map.addOverlay(crashPolyline);
+							// Should there be no crash points
+							var bounds = editTripPolyline.getBounds();
+		   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));							
 
-							var bounds = crashPolyline.getBounds();
-		   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
+		   					if ( crashPoints.length != 0 ) {
+								crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
+								map.addOverlay(crashPolyline);
+
+								var bounds = crashPolyline.getBounds();
+		   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
+		   					}
 
 		   					placeCrashMarker('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
-						</ui:fragment>
+						 </ui:fragment>						 
 					}
 	                          
 	            } 
@@ -191,37 +217,41 @@
 		<!-- displayTrip script - needs to be refreshed (use displayTrip panel to refresh script) -->
 		<rich:panel id="displayTrip">
 			<script type="text/javascript">
-					function displayTrip(){
+					function displayTrip(){						
 						var polyline;
 						var marker;
 				
-	
 						map.clearOverlays();
 						
 						var points = new Array();
 						var index = 0;
+						var bounds = null;
+						
 	   					<ui:repeat value="#{crashReportBean.selectedTrip.route}" var="latLng">
 	   						points[index] = new GLatLng(#{latLng.lat}, #{latLng.lng}),
 	   						index++;
 	   					</ui:repeat>
-	   					polyline = new GPolyline(points,"#0000ff", 6);
-	   					map.addOverlay(polyline);
-						
-						map.addOverlay(createMarker(points[0],"#{request.contextPath}/images/ico_start.png"));
-						map.addOverlay(createMarker(points[index-1],"#{request.contextPath}/images/ico_end_trip.png"));
-	   					
-	   					
-	   					
-	   					var bounds = polyline.getBounds();
-	   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
-	
+
+	   					polyline = new GPolyline(points,"#0000ff", 6);						
+	   					if ( index != 0 ) {				   									
+	   						map.addOverlay(polyline);	  
+	   						bounds = polyline.getBounds();
+	   						 											   																				
+							map.addOverlay(createMarker(points[0],"#{request.contextPath}/images/ico_start.png"));
+							map.addOverlay(createMarker(points[index-1],"#{request.contextPath}/images/ico_end_trip.png"));			
+						}
+ 						 	   					
+	   					if ( bounds != null ) {
+	   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
+	   					}
+   			
 	   					addTripPoints = points;
 
-	   					GEvent.addListener(polyline,"click",function(point){
+	   					GEvent.addListener(polyline,"click",function(point){		   					
 	   						var tripPoint = getClosestPointFromList(point,addTripPoints);
 	   						updateLocation(tripPoint.lat(),tripPoint.lng());
 	   						updateCrashTime(tripPoint.lat(),tripPoint.lng());
-						});
+						});									
 					}
 			</script>
 		</rich:panel>
@@ -245,13 +275,20 @@
 						<rich:messages globalOnly="true"
 							errorClass="error" fatalClass="error" warnClass="warning"
 							infoClass="info" styleClass="msg" />
-							
-						
-							
+																		
 						<ul id="grid_nav" style="margin: 0;">
 		                   	<li class="r">
-		                      <h:commandButton action="#{crashReportBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-		                      <h:outputText value=" " /><h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+		                      <h:commandButton action="#{crashReportBean.save}" styleClass="left">
+		                      	<span class="save">
+		                      		<h:outputText value="#{messages.button_save}" />
+		                      	</span>
+		                      </h:commandButton>
+		                      <h:outputText value=" " />
+		                      <h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left">
+		                      	<span class="cancel">
+		                      		<h:outputText value="#{messages.button_cancel}" />
+		                      	</span>
+		                      </h:commandButton>
 		                    </li>
 		                </ul>
 		                
@@ -360,47 +397,55 @@
 						 
 						<ui:fragment rendered="#{empty crashReportBean.crashReport.crashDataPoints}">
 							 <rich:panel id="crashLocationHiddleInputPanel">
-							 	<h:inputHidden id="crashLocation" value="#{crashReportBean.crashReport.lat}" required="true" requiredMessage="#{messages.required}"/>
+							 	<h:inputHidden id="crashLocation" value="#{crashReportBean.crashReport.lat}" required="true" 
+							 		requiredMessage="#{messages.required}"/>
 							 </rich:panel>
 						 </ui:fragment>
 						 
 						 <rich:panel id="mapPanel">
 						 	 <h:panelGrid columns="3" style="padding-left:12px" rendered="#{empty crashReportBean.crashReport.crashDataPoints}">
 						 	 	<h:outputText value="#{messages.crashReport_existingTrip}"/>
+						 	 	
 								<a4j:region>
 									<h:selectOneRadio value="#{crashReportBean.useExistingTrip}" layout="lineDirection">
 										<f:selectItem itemValue="TRUE" itemLabel="#{messages.crashReport_trips}"/>
 										<f:selectItem itemValue="FALSE" itemLabel="#{messages.group_find_address}"/>
-										<a4j:support event="onclick" reRender="mapPanel,initMap" oncomplete="initMap()" limitToList="true"/>
-									</h:selectOneRadio>
-									
+										<a4j:support event="onclick" reRender="mapPanel,initMap" oncomplete="initMap();" limitToList="true"/>
+									</h:selectOneRadio>									
 								</a4j:region>
+								
 								<ui:fragment rendered="#{crashReportBean.useExistingTrip ne 'true'}">
-									<input type="text" size="42"
-										id="addressTextBox"
-										value="" tabindex="6"/>
-										<a4j:commandButton immediate="true" tabindex="7" onclick="showAddressWithAccuracy(document.getElementById('addressTextBox').value);" styleClass="left">
-											<span class="search">
-												#{messages.group_locate}
-											</span>
-										</a4j:commandButton>
-									
+									<input type="text" size="42" id="addressTextBox" value=""/>
+									<rich:spacer width="10px"/>
+									<a4j:commandButton immediate="true" 
+										onclick="showAddressWithAccuracy(document.getElementById('addressTextBox').value);setLatLng(document.getElementById('addressTextBox').value);" 
+										styleClass="left">
+										<span class="search">
+											#{messages.group_locate}
+										</span>
+									</a4j:commandButton>									
 								</ui:fragment>
 						 	 </h:panelGrid>
-						 	 <h:panelGrid columns="#{crashReportBean.useExistingTrip eq 'true' ? '2' : '1'}" columnClasses="#{crashReportBean.useExistingTrip eq 'true' ? 'section' : ' '}" width="100%">
+						 	 
+						 	 <h:panelGrid columns="#{crashReportBean.useExistingTrip eq 'true' ? '2' : '1'}" 
+						 	 	columnClasses="#{crashReportBean.useExistingTrip eq 'true' ? 'section' : ' '}" width="100%">
+						 	 	
 						 	    <ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'true'}">
 							 	 	<h:panelGroup>
 										<h:panelGrid id="driverVehicleSearchPanel" style="padding-left:10px" columns="2">
-											<h:outputText value="#{messages.crashReport_searchType}"></h:outputText>
+											<h:outputText value="#{messages.crashReport_searchType}"/>
 											<a4j:region>
 												<h:selectOneRadio value="#{crashReportBean.selectedEntityType}" layout="lineDirection">
 													<f:selectItem itemValue="ENTITY_DRIVER" itemLabel="#{messages.crashReport_driver}"/>
 													<f:selectItem itemValue="ENTITY_VEHICLE" itemLabel="#{messages.crashReport_vehicle}"/>
-													<a4j:support ajaxSingle="true" event="onclick" reRender="tripsListPanel" limitToList="true" action="#{crashReportBean.loadTrips}"/>
+													<a4j:support ajaxSingle="true" event="onclick" reRender="tripsListPanel" limitToList="true" 
+														action="#{crashReportBean.loadTrips}"/>
 												</h:selectOneRadio>
 											</a4j:region>
 										</h:panelGrid>
+										
 										<rich:spacer height="10px"/>
+										
 										<a4j:region>
 											<rich:panel id="tripsListPanel">
 													<div class="datagrid_panel" style="padding-right: 5px">
@@ -412,17 +457,21 @@
 														        enableContextMenu="false"
 														        selectedClass="selected-row"
 																var="trip" height="440px">
-															<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip()">
+															<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip();">
 							                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
 							                                </a4j:support>
 															<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="160px">
-																<f:facet name="header"><h:outputText value="#{messages.crashReport_startTime}"></h:outputText></f:facet>
+																<f:facet name="header">
+																	<h:outputText value="#{messages.crashReport_startTime}"/>
+																</f:facet>
 																<h:outputText value="#{trip.startTime}">
 																	<f:convertDateTime pattern="MMM dd yyyy hh:mm a z" timeZone="#{crashReportBean.person.timeZone}"/>
 																</h:outputText>
 															</rich:column>
 															<rich:column width="160px">
-																<f:facet name="header"><h:outputText value="#{messages.crashReport_endTime}" timeZone="#{crashReportBean.person.timeZone}"></h:outputText></f:facet>
+																<f:facet name="header">
+																	<h:outputText value="#{messages.crashReport_endTime}" timeZone="#{crashReportBean.person.timeZone}"/>
+																</f:facet>
 																<h:outputText value="#{trip.endTime}">
 																	<f:convertDateTime pattern="MMM dd yyyy hh:mm a z" timeZone="#{crashReportBean.person.timeZone}"/>
 																</h:outputText>
@@ -434,24 +483,34 @@
 										
 							 	 	</h:panelGroup>
 						 	 	</ui:fragment>
+						 	 	
 						 	 	<h:panelGroup>
-						 	 		<div class="instructions"><h:outputText styleClass="instructions" value="#{messages.crashReport_tripSelection}" rendered="#{empty crashReportBean.crashReport.crashDataPoints}" /></div>
-						 	 		<rich:spacer height="5"/>
+						 	 		<div class="instructions">
+						 	 			<h:outputText styleClass="instructions" value="#{messages.crashReport_tripSelection}" 
+						 	 				rendered="#{empty crashReportBean.crashReport.crashDataPoints}" />
+						 	 		</div>
 						 	 		
-						 	 		<div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>														
+				 	 				<rich:spacer height="5px"/>
+						 	 								 	 		
+						 	 		<div id="map-canvas" style="width: 100%; height: 500px; border: 0px;"/>
+						 	 	
 									<a4j:region>
-										<a4j:jsFunction data="#{crashReportBean.crashReport.latLng}" reRender="crashLocationHiddleInputPanel" name="updateLocation" oncomplete="placeCrashMarker(data.lat,data.lng)" limitToList="true">
+										<a4j:jsFunction data="#{crashReportBean.crashReport.latLng}" 
+											reRender="crashLocationHiddleInputPanel" name="updateLocation" 
+											oncomplete="placeCrashMarker(data.lat,data.lng);" limitToList="true">
 											<a4j:actionparam name="latitude" assignTo="#{crashReportBean.crashReport.lat}"/>
 											<a4j:actionparam name="longitude" assignTo="#{crashReportBean.crashReport.lng}"/>
 										</a4j:jsFunction>
 									</a4j:region>
 									<a4j:region>
-										<a4j:jsFunction reRender="crashDatePanel" name="updateCrashTime" action="#{crashReportBean.updateCrashTime}" limitToList="true">
+										<a4j:jsFunction reRender="crashDatePanel" name="updateCrashTime" 
+											action="#{crashReportBean.updateCrashTime}" limitToList="true">
 											<a4j:actionparam name="latitude" assignTo="#{crashReportBean.crashReport.lat}"/>
 											<a4j:actionparam name="longitude" assignTo="#{crashReportBean.crashReport.lng}"/>
 										</a4j:jsFunction>
-									</a4j:region>
+									</a4j:region>		
 						 	 	</h:panelGroup>
+						 	 	
 						 	 </h:panelGrid>
 						 </rich:panel>
 						 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
@@ -460,8 +519,17 @@
 						 
 						 <ul id="grid_nav" style="margin: 0;">
 		                   	<li class="r">
-		                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-		                      <h:outputText value=" " /><h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+		                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left">
+		                      	<span class="save">
+		                      		<h:outputText value="#{messages.button_save}" />
+		                      	</span>
+		                      </h:commandButton>
+		                      <h:outputText value=" " />
+		                      <h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left">
+		                      	<span class="cancel">
+		                      		<h:outputText value="#{messages.button_cancel}" />
+		                      	</span>
+		                      </h:commandButton>
 		                    </li>
 		                 </ul>
 					</div>
@@ -469,20 +537,24 @@
 				</div>
 
 				<div class="panel_sw">
-				<div class="panel_statusbar"></div>
+					<div class="panel_statusbar"/>
 				</div>
-				</div>
-					</a4j:form>
-				</td>
-			</tr>
-		</table>
-		<div id="iteminfo"></div>
-		<script type="text/javascript">
+			</div>
+		</a4j:form>
+	</td>
+	</tr>
+	</table>
+	
+	<div id="iteminfo">
+	</div>
+	
+	<script type="text/javascript">
 			initMap();
 			<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'TRUE'}">
 				displayTrip();
 			</ui:fragment>
-		</script>
+	</script>
+	
 	</ui:define>
 
 </ui:composition>

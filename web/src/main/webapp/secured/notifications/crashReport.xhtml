@@ -15,8 +15,8 @@
     <ui:define name="scripts">
         <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
 		
-		<tiwi:conditionalCSS browserVersion="IE"><script language="javascript" type="text/javascript" src="#{request.contextPath}/js/excanvas.pack.js"></script></tiwi:conditionalCSS>
-	    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.js"></script>
+		<tiwi:conditionalCSS browserVersion="IE"><script language="javascript" type="text/javascript" src="#{request.contextPath}/js/crshdetl.excanvas.min.js"></script></tiwi:conditionalCSS>
+	    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/crshdetl.jquery.flot.js"></script>
     	<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.flot.crosshair.js"></script>
     
     		<style>
@@ -53,7 +53,7 @@
 				width: 100px;
 			}
 			.crash_panel_content {
-				height: 380px;
+				height: 410px;
 			}
 			
 		</style>
@@ -65,7 +65,7 @@
 
 			var map, vehicleMarker, plot, gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [], tripSpeed = [], crashPolyline, tripPolyline;
 			var crashPoint = {latlng: new GLatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
-
+			
 			/* TODO: Retrieve data via JSON */
 	    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
 	    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
@@ -73,12 +73,13 @@
 	    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
 				crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
 	    	</a4j:repeat>    	
-
+		
 	    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
 				tripPoints.push(new GLatLng(#{route.lat}, #{route.lng}));
     		</a4j:repeat>
 			
 			function initMap() {
+				
 				if (GBrowserIsCompatible()) {					
 					GUnload();
 					//var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
@@ -89,47 +90,52 @@
 					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(crashPoint.latlng, 14);
 					
-					
 					var vehicleIcon = new GIcon(baseIcon);
 					vehicleIcon.image = "#{request.contextPath}/images/ico_vehicle.png";
 					markerOptions = { icon:vehicleIcon };					 					 
 					vehicleMarker = new GMarker(crashPoint.latlng, markerOptions);
 					map.addOverlay(vehicleMarker);
-
+				
 					var crashIcon = new GIcon(baseIcon);
 					crashIcon.iconSize = new GSize(25, 20);
 					crashIcon.image = "#{request.contextPath}/images/ico_vehicle_crash.png";
 					map.addOverlay(new GMarker(crashPoint.latlng, { icon: crashIcon }));
-
-					//Start of trip marker
-					startlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[0].lat}, #{crashReportBean.crashReportTrip.route[0].lng});
-					marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{request.contextPath}/images/ico_start.png");
-					map.addOverlay(marker);
-
+					
+					//Start of trip marker					
+					<ui:fragment rendered="#{crashReportBean.crashReportTrip.route ne null}">
+						startlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[0].lat}, #{crashReportBean.crashReportTrip.route[0].lng});
+						marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{request.contextPath}/images/ico_start.png");
+						map.addOverlay(marker);					
+					
 					//End of trip marker
-					endlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lat}, #{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lng});
-					marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{request.contextPath}/images/ico_end_trip.png");
-					map.addOverlay(marker);
+						endlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lat}, #{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lng});
+						marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{request.contextPath}/images/ico_end_trip.png");
+						map.addOverlay(marker);
 					
-					tripPolyline = new GPolyline(tripPoints, "#0000ff", 6, 1);
-					map.addOverlay(tripPolyline);
+						tripPolyline = new GPolyline(tripPoints, "#0000ff", 6, 1);
+						map.addOverlay(tripPolyline);
+						//Set here, just in case there are not crashdatapoints
+						var bounds = tripPolyline.getBounds();
+   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));   											
+					</ui:fragment>
 					
-					crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
-					map.addOverlay(crashPolyline);
+					<ui:fragment rendered="#{crashReportBean.crashReport.crashDataPoints ne null}">
+						crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
+						map.addOverlay(crashPolyline);
 
-					var bounds = crashPolyline.getBounds();
-   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
+						var bounds = crashPolyline.getBounds();
+   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));   					
 
-					GEvent.addListener(map, 'mousemove', function(point) {
-						var closestPoint = getClosestPointFromList(point, crashPoints);			
-						vehicleMarker.setLatLng(closestPoint.latlng);
-						plot.setCrosshair({ x: gpsSpeed[closestPoint.index][0], y:gpsSpeed[closestPoint.index][1]});
-			            jQuery("#legend .legendLabel").each(
-				            function(i){
-				            	jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[closestPoint.index][1]));				
-						});
-					}); // for detecting if mouse is above displayed route
-
+						GEvent.addListener(map, 'mousemove', function(point) {
+							var closestPoint = getClosestPointFromList(point, crashPoints);			
+							vehicleMarker.setLatLng(closestPoint.latlng);
+							plot.setCrosshair({ x: gpsSpeed[closestPoint.index][0], y:gpsSpeed[closestPoint.index][1]});
+			            	jQuery("#legend .legendLabel").each(
+				            	function(i){
+				            		jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[closestPoint.index][1]));				
+							});
+						}); // for detecting if mouse is above displayed route
+					</ui:fragment>
 				}
                       
              }           
@@ -259,13 +265,18 @@
 							 <li class="l text"><a4j:htmlCommandLink action="pretty:crashHistory" value="#{messages.crashReport_backToCrashHistory}" /></li>
 		                   	 <security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
 			                   	 <li class="r">
-			                      <h:outputText value=" " />
-			                      <pretty:link mappingId="editCrashReport">
-			                      	 <button class="left">
-			                      	 	<span class="edit"><h:outputText value="#{messages.button_edit}" /></span>
-			                      	 </button>
-			                      	 <f:param value="#{crashReportBean.crashReport.crashReportID}"/>
-			                      </pretty:link>
+			                      	<h:outputText value=" " />
+			                      
+			                      	<pretty:urlbuffer var="editCrashLink" mappingId="editCrashReport">
+			                      		<f:param value="#{crashReportBean.crashReport.crashReportID}"/>
+			                      	</pretty:urlbuffer>
+			                      	
+			                      	<button type="button" class="left" onclick="location.href = '#{requestScope.editCrashLink}';">
+			                      		<span class="edit">
+			                      	 		<h:outputText value="#{messages.button_edit}" />
+			                      	 	</span>
+			                      	</button>	
+			                      			                      	 
 			                   	 </li>
 		                   	 </security:authorize>
 		                </ul>
@@ -348,7 +359,9 @@
 					        <div class="panel_w">
 					            <div class="panel_content crash_panel_content">
 									<h:form>
-										<rich:dataTable id="crashPointTable" value="#{crashReportBean.crashReport.crashDataPoints}" var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="10" cellspacing="1" width="100%">
+										<rich:dataTable id="crashPointTable" value="#{crashReportBean.crashReport.crashDataPoints}" 
+											var="dataPoint" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="10" cellspacing="1" 
+											width="100%">
 										<f:facet name="header">
 											<rich:columnGroup>
 												<rich:column rowspan="2">#{messages.crashReport_time}</rich:column>
@@ -425,9 +438,11 @@
         
 		<script language="javascript" type="text/javascript">
 			/*<![CDATA[*/
-			jQuery(function () {
+			jQuery(function () {					
 			    plot = jQuery.plot(jQuery("#placeholder"),
-			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0", color: "#0000FF"}, {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0", color: "#00FF00"}, {data: rpm, label: "#{messages.crashReport_rpm} = 0", color: "#FF9900", yaxis: 2}],
+			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0", color: "#0000FF"}, 
+				          {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0", color: "#00FF00"}, 
+				          {data: rpm, label: "#{messages.crashReport_rpm} = 0", color: "#FF9900", yaxis: 2}],
 			           { xaxis: {  tickFormatter: function (time, axis) {
 							        return formatDate(new Date(time));
 							      } },
@@ -485,7 +500,6 @@
 				jQuery("#legend > table > tbody > tr").append("<td class='legendColorBox'><div style='border: 1px solid #CCCCCC; padding: 1px;'><div style='border: 5px solid #CB4B4B; overflow: hidden; width: 4px; height: 0pt;'/></div></td><td style='width: 100px'>#{messages.crashReport_crashPoint}</td>");
 	            /*]]>*/
 			});
-		       
 		</script>
 
 		
