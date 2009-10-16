@@ -237,7 +237,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:ephone", message);
             }
-            else if (deviceView.getEphone() != null && !deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}"))
+//            else if (deviceView.getEphone() != null && !deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")
+//            		&& !deviceView.getPhone().matches("\\+\\d*"))
+            else if(deviceView.getEphone() != null && 
+            		((deviceView.getEphone().length() >22) || (MiscUtil.unformatPhone(deviceView.getEphone()).length() > 15)) )
             {
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
@@ -299,7 +302,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:phone", message);
             }
-            else if (deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}"))
+//            else if (deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")
+//            		&& !deviceView.getPhone().matches("\\+\\d*"))
+            else if(deviceView.getEphone() != null && 
+            		((deviceView.getEphone().length() > 22) || (MiscUtil.unformatPhone(deviceView.getEphone()).length() > 15)) )
             {
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
@@ -342,8 +348,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final DeviceView device : saveItems)
         {
-            device.setPhone(MiscUtil.unformatPhone(device.getPhone()));
-            device.setEphone(MiscUtil.unformatPhone(device.getEphone()));
+//            device.setPhone(MiscUtil.unformatPhone(device.getPhone()));
+//            device.setEphone(MiscUtil.unformatPhone(device.getEphone()));
             // if batch editing, copy individual speed settings by hand
             if (isBatchEdit())
             {

@@ -280,14 +280,15 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     protected String formatPhone(String incoming)
     {
-        String result = "";
-
-        if (incoming != null)
-        {
-            result = "(" + incoming.substring(0, 3) + ") " + incoming.substring(3, 6) + "-" + incoming.substring(6, 10);
-        }
-
-        return result;
+//        String result = "";
+//
+//        if (incoming != null)
+//        {
+//            result = "(" + incoming.substring(0, 3) + ") " + incoming.substring(3, 6) + "-" + incoming.substring(6, 10);
+//        }
+//
+//        return result;
+    	return incoming;
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer)

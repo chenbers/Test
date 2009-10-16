@@ -27,17 +27,20 @@ public class MiscUtil
 
     public static String formatPhone(String phone)
     {
-        if ((phone == null) || (phone.length() == 0))
-            return null;
-        if (phone.length() != 10)
-        {
-            final String unfo = unformatPhone(phone);
-            if (unfo.length() == 10)
-                phone = unfo;
-            else
-                return phone;
-        }
-        return MessageUtil.formatMessageString("phoneFormat", phone.substring(0, 3), phone.substring(3, 6), phone.substring(6));
+    	return phone;
+//        if ((phone == null) || (phone.length() == 0))
+//            return null;
+//        if (phone.length() != 10)
+//        {
+//            final String unfo = unformatPhone(phone);
+//            if (unfo.length() == 10)
+//                phone = unfo;
+//            else if (unfo.length() > 10)
+//            	return MessageUtil.formatMessageString("internationalPhoneFormat", unfo);
+//            else
+//                return phone;
+//        }
+//        return MessageUtil.formatMessageString("phoneFormat", phone.substring(0, 3), phone.substring(3, 6), phone.substring(6));
     }
 
     public static String unformatPhone(String phone)

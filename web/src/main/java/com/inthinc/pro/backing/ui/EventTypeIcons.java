@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.backing.BaseBean;
+import com.inthinc.pro.dao.util.DefaultedMap;
 import com.inthinc.pro.model.EventType;
-import com.inthinc.pro.util.DefaultedMap;
 
 public class EventTypeIcons extends BaseBean {
 

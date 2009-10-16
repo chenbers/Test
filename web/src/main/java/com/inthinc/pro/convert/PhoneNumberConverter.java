@@ -11,7 +11,8 @@ public class PhoneNumberConverter extends BaseConverter
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
     {
-        return MiscUtil.unformatPhone(value);
+//        return MiscUtil.unformatPhone(value);
+    	return value;
     }
 
     @Override

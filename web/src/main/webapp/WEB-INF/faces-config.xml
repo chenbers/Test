@@ -544,6 +544,10 @@
 		<validator-class>com.inthinc.pro.validators.RegexValidator</validator-class>
 	</validator>
 	<validator>
+		<validator-id>com.inthinc.pro.validators.PhoneValidator</validator-id>
+		<validator-class>com.inthinc.pro.validators.PhoneValidator</validator-class>
+	</validator>
+	<validator>
 		<validator-id>com.inthinc.pro.validators.EmailValidator</validator-id>
 		<validator-class>com.inthinc.pro.validators.EmailValidator</validator-class>
 	</validator>

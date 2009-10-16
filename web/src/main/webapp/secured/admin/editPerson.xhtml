@@ -645,8 +645,10 @@
                           <td>
                             <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.priPhone}" id="priPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
-                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                                  <f:validateLength  maximum="22" />
+                             	  <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
+<!--                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />-->
+<!--                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />-->
                             </h:inputText>
                           </td>
                         </tr>
@@ -655,8 +657,10 @@
                           <td>
                             <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.secPhone}" id="secPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
-                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                                  <f:validateLength  maximum="22" />
+                                  <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
+<!--                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />-->
+<!--                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />-->
                             </h:inputText>
                           </td>
                         </tr>

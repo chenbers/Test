@@ -1,4 +1,4 @@
-package com.inthinc.pro.util;
+package com.inthinc.pro.dao.util;
 
 import java.util.Collection;
 import java.util.Map;

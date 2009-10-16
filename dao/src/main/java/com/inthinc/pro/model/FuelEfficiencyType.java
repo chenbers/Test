@@ -3,23 +3,31 @@ package com.inthinc.pro.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.dao.util.DefaultedMap;
+import com.inthinc.pro.dao.util.MathUtil;
 
 @XmlRootElement
 public enum FuelEfficiencyType implements BaseEnum {
 	
-    MPG_US(1) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon;}},
-    MPG_UK(2) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon.doubleValue()*1.2;}},
-    KMPL(3) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon.doubleValue()*0.42514;}}, 
-    LP100KM(4) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon.equals(0)?0.0:100.0/( milesPerGallon.doubleValue() * 0.42514);}} ;
+    MPG_US(1) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon,1);}},
+    MPG_UK(2) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon.doubleValue()*MPGTOMPGUK,1);}},
+    KMPL(3) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon.doubleValue()*MPGTOKPL,1);}}, 
+    LP100KM(4) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:milesPerGallon.equals(0)?0.0:MathUtil.round(100.0/( milesPerGallon.doubleValue() * MPGTOKPL),1);}} ;
     
+	private static final Double MPGTOKPL = 0.42514;
+	private static final Double MPGTOMPGUK = 1.2;
+
     private int code;
     
     private FuelEfficiencyType(int code) {
         this.code = code;
     }
 
-    private static final Map<Integer, FuelEfficiencyType> lookup = new HashMap<Integer, FuelEfficiencyType>();
+    private static final Map<Integer, FuelEfficiencyType> lookup = new DefaultedMap<Integer,FuelEfficiencyType>(new HashMap<Integer, FuelEfficiencyType>(),
+    																				FuelEfficiencyType.MPG_US);
     static {
         for (FuelEfficiencyType type : EnumSet.allOf(FuelEfficiencyType.class)) {
             lookup.put(type.code, type);

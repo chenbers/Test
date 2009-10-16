@@ -4,7 +4,6 @@ package com.inthinc.pro.convert;
 import org.junit.Test;
 
 import com.inthinc.pro.backing.BaseBeanTest;
-import com.inthinc.pro.convert.PerMillionsMilesToPerMillionsKmEstimateConverter;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.security.userdetails.ProUser;
 
@@ -44,7 +43,10 @@ public class PerMillionMilesToPerMillionsKmEstimateConverterTest extends BaseBea
     	str = converter.getAsString(this.facesContext, null, 0.001);
     	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.BELOW_POINT_ZERO_ONE, str);
     	
-    	// Metric units  (conversion: perMilMiles * 0.62137 = perMilKM)
+    	str = converter.getAsString(this.facesContext, null, 0.0);
+    	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.BELOW_POINT_ZERO_ONE, str);
+    	
+   	// Metric units  (conversion: perMilMiles * 0.62137 = perMilKM)
     	user.getUser().getPerson().setMeasurementType(MeasurementType.METRIC);
     	str = converter.getAsString(this.facesContext, null, 100.0);		// 100 pmm = 62 pmkm 
     	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.ABOVE_FIFTY, str);

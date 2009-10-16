@@ -49,15 +49,12 @@ public class CrashSummaryBean extends BaseBean {
 		this.crashSummary = crashSummary;
 	}
 	
-	public String getCrashesPerMillionMiles() {
-		return crashSummary.getCrashesPerMillionMilesString();
+	public Double getCrashesPerMillionMiles() {
+		return crashSummary.getCrashesPerMillionMiles();
 	}
-	public String getDaysSinceLastCrash() {
-		if (crashSummary.getTotalCrashes() == 0)
-		{
-			return "";
-		}
-		return String.valueOf(crashSummary.getDaysSinceLastCrash());
+	public Integer getDaysSinceLastCrash() {
+
+		return crashSummary.getDaysSinceLastCrash();
 	}
 
 	public Long getMilesSinceLastCrash() {

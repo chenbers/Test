@@ -1,12 +1,10 @@
 package com.inthinc.pro.dao.util;
 
-import java.math.BigDecimal;
-
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 
 /**
- * Utility for converty units of measurment from metric to english and eglish to metric MPH = Miles Per Hour KPH = Kilometers Per Hour MPS = Meters Per Second MPG = Miles Per
+ * Utility for converting units of measurement from metric to English and English to metric MPH = Miles Per Hour KPH = Kilometers Per Hour MPS = Meters Per Second MPG = Miles Per
  * Gallon KPL = Kilometers Per Liter
  * 
  * 
@@ -16,16 +14,22 @@ import com.inthinc.pro.model.MeasurementType;
 
 public class MeasurementConversionUtil
 {
-    /**
+	private static final Double MILESTOKM = 1.609344;
+	private static final Double KMTOMILES = 0.62137;
+	private static final Double MPGTOKPL = 0.42514;
+	private static final Double MPGTOMPGUK = 1.2;
+	private static final Double LBTOKG = .45359237;
+	private static final Double INCHESTOCM = 2.54;
+
+	/**
      * 
      * @param miles
      * @return kilometers rounded to the nearest tenth
      */
     public static Number fromMilesToKilometers(Number miles)
     {
-        Number kilometers = miles.doubleValue() * 1.609344;
-        BigDecimal bigDecimal = new BigDecimal(Math.round(kilometers.doubleValue() * 100));
-        return bigDecimal.movePointLeft(2);
+        return miles==null?null:MathUtil.round(miles.doubleValue() * MILESTOKM, 1);
+        
     }
 
     /**
@@ -35,14 +39,12 @@ public class MeasurementConversionUtil
      */
     public static Number fromKilometersToMiles(Number kilometers)
     {
-        Number miles = kilometers.doubleValue() * 0.62137;
-        BigDecimal bigDecimal = new BigDecimal(Math.round(miles.doubleValue() * 100));
-        return bigDecimal.movePointLeft(2).floatValue();
+        return kilometers==null?null:MathUtil.round(kilometers.doubleValue() * KMTOMILES, 1);
     }
 
     public static Number convertMilesToKilometers(Number distance, MeasurementType convertToMeasurementType)
     {
-        if (distance != null && convertToMeasurementType == MeasurementType.METRIC)
+        if (convertToMeasurementType == MeasurementType.METRIC)
             return fromMilesToKilometers(distance);
         else
             return distance;
@@ -50,39 +52,37 @@ public class MeasurementConversionUtil
 
     public static Number fromMPHtoKPH(Number milesPerHour)
     {
-        Double kilometersPerHour = milesPerHour.doubleValue() * 1.609344;
         
-        return Long.valueOf(Math.round(kilometersPerHour)).intValue();
+        return milesPerHour==null?null:Long.valueOf(Math.round(milesPerHour.doubleValue() * MILESTOKM)).intValue();
     }
 
     public static Number fromKPHtoMPH(Number kilometersPerHour)
     {
-        Double milesPerHour = kilometersPerHour.doubleValue() * 0.62137;
-        return Long.valueOf(Math.round(milesPerHour)).intValue();
+        return kilometersPerHour==null?null:Long.valueOf(Math.round(kilometersPerHour.doubleValue() * KMTOMILES)).intValue();
     }
 
     public static Number fromPerMillionMilesToPerMillionKm(Number perMillionMiles){
     	
-        return perMillionMiles.doubleValue() * 0.62137;
+        return perMillionMiles==null?null:perMillionMiles.doubleValue() * KMTOMILES;
     }
     public static Number fromMPGtoKPL(Number milesPerGallon)
     {
-         return milesPerGallon.doubleValue() * 0.42514;
+         return milesPerGallon==null?null:milesPerGallon.doubleValue() * MPGTOKPL;
     }
 
     public static Number fromMPGtoLP100KM(Number milesPerGallon)
     {
-        return new Double(100)/fromMPGtoKPL(milesPerGallon).doubleValue();
+        return  milesPerGallon==null?null:new Double(100)/fromMPGtoKPL(milesPerGallon).doubleValue();
     }
     
     public static Number fromMPGtoMPGUK(Number milesPerGallon)
     {
-        return new Double(1.2)*milesPerGallon.doubleValue();
+        return  milesPerGallon==null?null:new Double(MPGTOMPGUK)*milesPerGallon.doubleValue();
     }
     
     public static Number convertMpgToKpl(Number mileage, MeasurementType convertToMeasurmentType)
     {
-        if (mileage != null && convertToMeasurmentType == MeasurementType.METRIC)
+        if (convertToMeasurmentType == MeasurementType.METRIC)
             return fromMPGtoKPL(mileage);
         else
             return mileage;
@@ -90,11 +90,9 @@ public class MeasurementConversionUtil
 
     public static Number convertMpgToFuelEfficiencyType(Number mileage, MeasurementType convertToMeasurementType, FuelEfficiencyType convertToFuelEficiencyType)
     {
-        if (mileage == null ) return mileage;
-        
         if (convertToFuelEficiencyType == null) {
             
-            if (convertToMeasurementType == null || convertToMeasurementType == MeasurementType.ENGLISH) return mileage;
+            if (convertToMeasurementType == null || convertToMeasurementType == MeasurementType.ENGLISH) return FuelEfficiencyType.MPG_US.convertFromMPG(mileage);
             
             if (convertToMeasurementType == MeasurementType.METRIC) return FuelEfficiencyType.KMPL.convertFromMPG(mileage);
         }
@@ -112,12 +110,12 @@ public class MeasurementConversionUtil
     //Convert Pounds
     public static Long fromPoundsToKg(Long pounds)
     {
-        return Math.round(pounds * .45359237);
+        return pounds==null?null:Math.round(pounds * LBTOKG);
     }
     
     public static Long fromKgToPounds(Long kg)
     {
-        return Math.round(kg / .45359237);
+        return kg==null?null:Math.round(kg / LBTOKG);
     }
     
     public static Long convertWeight(Long weight, MeasurementType convertToMeasurementType)
@@ -130,34 +128,18 @@ public class MeasurementConversionUtil
     
     public static Long fromFeetInchToCentimeters(Integer feet,Integer inches)
     {
-        
-        inches = (feet * 12) + inches;
-        return fromInchesToCentimeters(inches);
-        
+        if (feet == null) return fromInchesToCentimeters(inches);
+        return inches==null?fromInchesToCentimeters(feet*12):fromInchesToCentimeters(feet*12+inches);
     }
-    
     
     public static Long fromInchesToCentimeters(Integer inches)
     {
         
-        return Math.round(inches * 2.54);
+        return inches==null?null:Math.round(inches * INCHESTOCM);
     }
     
     public static Long fromCentimetersToInches(Integer cm)
     {
-        return Math.round(cm / 2.54);
+        return cm==null?null:Math.round(cm / INCHESTOCM);
     }
-    
-    public static Number roundToNearestFive(Number value){
-    	Integer remainder = value.intValue() % 5;
-    	Integer roundedValue = value.intValue() - remainder;
-    	if(remainder < 3){
-    		return roundedValue;
-    	}else{
-    		return roundedValue + 5;
-    	}
-    }
-    
-    
-
 }

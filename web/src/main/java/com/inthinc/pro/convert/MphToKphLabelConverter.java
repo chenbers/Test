@@ -6,7 +6,7 @@ import javax.faces.convert.ConverterException;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
-
+import com.inthinc.pro.dao.util.MathUtil;
 /**
  * 
  * @author mstrong
@@ -31,13 +31,13 @@ public class MphToKphLabelConverter extends BaseConverter{
 		if (Long.class.isInstance(value))
         {
             if (getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.roundToNearestFive(MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value).intValue())).toString();
+                return MathUtil.roundToNearestFive(MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value).intValue())).toString();
         }
         
         if (Integer.class.isInstance(value))
         {
             if (getMeasurementType().equals(MeasurementType.METRIC))
-            	return MeasurementConversionUtil.roundToNearestFive(MeasurementConversionUtil.fromMPHtoKPH(Integer.class.cast(value).intValue())).toString();
+            	return MathUtil.roundToNearestFive(MeasurementConversionUtil.fromMPHtoKPH(Integer.class.cast(value).intValue())).toString();
         }
         
      
