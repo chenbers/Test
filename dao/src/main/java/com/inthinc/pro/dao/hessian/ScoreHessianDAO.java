@@ -124,19 +124,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
 
-            // TODO: not sure if this duration mapping is correct
-//for (int bin = 0; bin < 7; bin++)
-//{
-//	System.out.println("bin = " + bin);
-//            Map<String, Object> returnMap1 = reportService.getVScoreByVT(vehicleID, bin);
-//            System.out.println(returnMap1);
-//}            
-//List<Map<String, Object>> list1 = reportService.getVTrendByVTC(vehicleID, 0, 31);
-//for (Map<String, Object> map : list1)
-//{
-//	System.out.println("odometer: " + map.get("odometer"));
-//}
-        	
 
 			Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, duration.getCode());
             DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
@@ -193,39 +180,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     public ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
     {
     	return this.getAverageScoreByType(groupID, duration, scoreType);
-/*    	
-    	// TODO: This may change to just call the backend directly
-        List<ScoreableEntity> scores = getScores(groupID, duration, scoreType);
-        
-    	ScoreableEntity groupScore = new ScoreableEntity();
-    	groupScore.setEntityType(EntityType.ENTITY_GROUP);
-    	groupScore.setEntityID(groupID);
-//        Group group = groupDAO.findByID(groupID);
-//    	groupScore.setIdentifier(group.getName() + " Average");
-    	
-    	Integer totalScore = 0;
-    	Integer totalGroups = 0;
-    	for (ScoreableEntity item : scores)
-    	{
-    		Integer score = item.getScore();  	
-    		if (score != null && score >= 0)
-    		{
-    			totalGroups++;
-    			totalScore += score;
-    		}
-    	}
-    	if (totalGroups != 0)
-    	{
-    		groupScore.setScore(totalScore/totalGroups);
-    	}
-    	else
-    	{
-    		groupScore.setScore(-1);
-    	}
-    	
-        return groupScore;
-*/
-
     }
 
     @Override
@@ -236,7 +190,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
         	// subgroups
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
-//            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getDvqMetric(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
             
             
@@ -360,20 +313,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
            
         try
         {
-for (int i = 0; i < 7; i++)
-{
-	System.out.println("calling getDTrendByDTC driverId:" + driverID + " code: " + i + " count: " + duration.getDvqCount());        	
-            List<Map<String, Object>> cumulativList = reportService.getDTrendByDTC(driverID, i, duration.getDvqCount());
-System.out.println("First DAY:");       
-dumpMap(cumulativList.get(0));
-}
-            
-            
-//System.out.println("calling getDTrendByDTC driverId:" + driverID + " code: " + code + " count: " + duration.getDvqCount());        	
             List<Map<String, Object>> cumulativList = reportService.getDTrendByDTC(driverID, code, duration.getDvqCount());
-//System.out.println("First DAY:");       
-//dumpMap(cumulativList.get(0));
-            
             List<DriveQMap> driveQList = getMapper().convertToModelObject(cumulativList, DriveQMap.class);
              
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -398,12 +338,12 @@ dumpMap(cumulativList.get(0));
         }
     }
     
-    private void dumpMap(Map<String, Object> map) {
-    	for (String key : map.keySet())
-    	{
-    		System.out.println(key + " = " + map.get(key));
-    	}
-	}
+//    private void dumpMap(Map<String, Object> map) {
+//    	for (String key : map.keySet())
+//    	{
+//    		System.out.println(key + " = " + map.get(key));
+//    	}
+//	}
 
 	@Override
     public List<ScoreableEntity> getDriverTrendDaily(Integer driverID, Duration duration, ScoreType scoreType)
@@ -569,12 +509,7 @@ dumpMap(cumulativList.get(0));
         try
         {
         	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getCode());
-dumpMap(list.get(0));            
-
-//List<Map<String, Object>> list2 = reportService.getVTrendByVTC(Integer vehicleID, Integer duration, Integer count);
-
             List<DVQMap> result = getMapper().convertToModelObject(list, DVQMap.class);
-//            List<DVQMap> result = getMapper().convertToModelObject(reportService.getVDScoresByGT(groupID, duration.getCode()), DVQMap.class);
             List<VehicleReportItem> lVri = new ArrayList<VehicleReportItem>();
             VehicleReportItem vri = null;
 
@@ -894,7 +829,6 @@ dumpMap(list.get(0));
                 	item.setMiles(distance + item.getMiles().longValue());
                 	item.setMilesSpeeding(((driveQMap.getSpeedOdometer()== null) ? 0 : driveQMap.getSpeedOdometer().longValue()) + item.getMilesSpeeding().longValue());
                 }
-
             }
             
             return speedPercentItemList;
@@ -913,7 +847,6 @@ dumpMap(list.get(0));
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
-//logger.info("getIdlePercentItems gqvList size = " + gqvList.size());
             List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem>();
             for (int i = 0; i < duration.getDvqCount(); i++)
             {
@@ -929,11 +862,9 @@ dumpMap(list.get(0));
                 	Long driveTime = (driveQMap.getDriveTime() != null) ? driveQMap.getDriveTime().longValue() : 0l; 
                 	Long idleTime = (driveQMap.getIdleHi() != null) ? driveQMap.getIdleHi().longValue() : 0l; 
                 	idleTime += (driveQMap.getIdleLo() != null) ? driveQMap.getIdleLo().longValue(): 0l; 
-//logger.info(i + ": drive = " + driveTime + " idle = " + idleTime);
                 	IdlePercentItem item = idlePercentItemList.get(i++);
                 	item.setDrivingTime(driveTime + item.getDrivingTime());
                 	item.setIdlingTime(idleTime + item.getIdlingTime()); 
-//                	item.setIdlingTime(idleTime + item.getDrivingTime()/2); 
                 }
 
             }
