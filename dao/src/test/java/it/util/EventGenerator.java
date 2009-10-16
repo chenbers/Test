@@ -357,7 +357,7 @@ eventCount = 0;
     public static byte[] createDataBytesFromEvent(Event event)
     {
 eventCount++;    	
-System.out.println("type: " + event.getType() + " time: " + DateUtil.convertDateToSeconds(event.getTime()));    	
+//System.out.println("type: " + event.getType() + " time: " + DateUtil.convertDateToSeconds(event.getTime()));    	
         byte[] eventBytes = new byte[200];
         int idx = 0;
         eventBytes[idx++] = (byte) (event.getType() & 0x000000FF);

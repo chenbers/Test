@@ -1,6 +1,5 @@
 package it.util;
 
-import static org.junit.Assert.assertNotNull;
 import it.com.inthinc.pro.dao.Util;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
@@ -308,7 +307,6 @@ public class DataGenForReportTesting {
                 null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
 
         Integer personID = personDAO.create(acctID, person);
-        assertNotNull(personID);
         person.setPersonID(personID);
 
         return person;
@@ -467,14 +465,14 @@ public class DataGenForReportTesting {
         return !errorFound;
     }
 
-	private void waitForIMEIs(MCMSimulator mcmSim) {
+	private void waitForIMEIs(MCMSimulator mcmSim, int eventDateSec) {
 		
 		for (GroupData data : teamGroupData)
 		{
-	        Date eventDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
+//	        Date eventDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
 
-			Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_LOCATION,
-                    eventDate, 60, 1,  33.0089, -117.1100);
+			Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_FIRMWARE_UP_TO_DATE,//EventMapper.TIWIPRO_EVENT_LOCATION,
+                    new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 			if (!genTestEvent(mcmSim, testEvent, data.device.getImei()))
 			{
 				System.out.println("Error: imei has not moved to central server");
@@ -580,14 +578,14 @@ public class DataGenForReportTesting {
 	            // generate data for today (midnight) and 30 previous days
 	            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
 	            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
-	            testData.waitForIMEIs(mcmSim);
+
+	            int todayInSec = DateUtil.getTodaysDate();
+	            testData.waitForIMEIs(mcmSim, DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60);
 	            
 	            int numDays = NUM_EVENT_DAYS;
-	            int todayInSec = DateUtil.getTodaysDate();
 	            for (int teamType = GOOD; teamType <= BAD; teamType++)
 	            {
-	            	for (int day = numDays; day > 2; day--)
-//	            	for (int day = numDays; day > 0; day--)
+	            	for (int day = numDays; day >= 0; day--)
 	            	{
 	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 	                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
