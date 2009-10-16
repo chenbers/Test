@@ -24,7 +24,9 @@ public class Account extends BaseEntity
 
 	private Integer       mailID;
     private Integer       billID;
-    private Status status;
+    private Status        status;
+    
+    private Integer       unkDriverID;
 
     public Account()
     {
@@ -95,5 +97,13 @@ public class Account extends BaseEntity
 	public void setAcctName(String acctName) {
 		this.acctName = acctName;
 	}
+
+    public Integer getUnkDriverID() {
+        return unkDriverID;
+    }
+
+    public void setUnkDriverID(Integer unkDriverID) {
+        this.unkDriverID = unkDriverID;
+    }
 
 }
