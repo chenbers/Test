@@ -131,7 +131,12 @@ public class AlertMessagesTest {
         // HessianDebug.debugRequest = true;
         initApp();
         if (!testDateExists())
-            genTestData();
+        {
+//            genTestData();
+        	// to regenerate the test data uncomment the line above
+        	// check in the file src/test/resources/ITBaseData.xml
+        	fail("Test data does not exist.  Please regenerate it from a dev machine and check it into source control (ITBaseData.xml).");
+        }
     }
 
     private static void initApp() {
