@@ -5,7 +5,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
@@ -16,7 +21,32 @@ public class EmergencyBean extends BaseEventsBean
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-        return getEventDAO().getEmergencyEventsForGroup(groupID, 7,showExcludedEvents);
+        List<Event> evtForGrp = getEventDAO().getEmergencyEventsForGroup(groupID, 7,showExcludedEvents);
+        
+        // Add the unknown driver
+        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());
+        List<Event> evtForUnk = getEventDAO().getEventsForUnknownDriver(
+                acct.getUnkDriverID(), EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY), 7, showExcludedEvents);
+        
+        // Work with the unknown driver.
+        for ( Event e: evtForUnk ) {
+            Person p = new Person();
+            p.setFirst("Unknown");
+            p.setLast("Driver");
+            
+            if ( e.getDriver() == null ) {
+                Driver d = new Driver();
+                d.setDriverID(acct.getAcctID());
+                d.setPerson(p);
+                e.setDriver(d);
+            } else {
+                e.getDriver().setPerson(p);
+            }
+        }
+        
+        evtForGrp.addAll(evtForUnk);
+        
+        return evtForGrp;
     }
 
     // TablePrefOptions interface
