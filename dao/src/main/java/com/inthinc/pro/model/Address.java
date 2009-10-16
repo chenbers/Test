@@ -22,6 +22,7 @@ public class Address extends BaseEntity {
     @Column(name = "stateID")
     State state;
     String zip;
+    @Column(name="acctID")
 	Integer accountID;
 
     public Address() {
