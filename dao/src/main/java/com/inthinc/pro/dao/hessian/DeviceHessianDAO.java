@@ -66,7 +66,10 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
     @Override
     public Device findByKey(String key)
     {
-        return findByIMEI(key);
+        Device device = findByIMEI(key);
+        if (device==null)
+        	device = findBySerialNum(key);
+        return device;
     }
     
     @Override
