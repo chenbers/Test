@@ -615,9 +615,10 @@ public class SiloServiceTest {
         account.setAcctID(acctID);
         logger.debug("CREATED ACCOUNT: " + account.getAcctID());
         // find
-        String ignoreFields[] = { "modified", "baseID" };
+        String ignoreFields[] = { "modified", "unkDriverID" };  // baseID was the previous 2nd value? found on device object but?
         Account savedAccount = accountDAO.findByID(account.getAcctID());
         Util.compareObjects(account, savedAccount, ignoreFields);
+        assertNotNull("Account unknownDriverID",savedAccount.getUnkDriverID());
         Address mailAddress = address(acctID);
         account.setMailID(mailAddress.getAddrID());
         Address billAddress = address(acctID);
@@ -741,7 +742,7 @@ public class SiloServiceTest {
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
         }
         // find
-        String ignoreFields[] = { "modified", "baseID" };
+        String ignoreFields[] = { "modified", "baseID" };  
         for (Device device : deviceList) {
             Device returnedDevice = deviceDAO.findByID(device.getDeviceID());
             Util.compareObjects(device, returnedDevice, ignoreFields);
