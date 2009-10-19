@@ -13,24 +13,20 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
-import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.MpgHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
-import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -44,7 +40,6 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.IdlePercentItem;
@@ -67,6 +62,7 @@ public class ReportServiceTest
     private static SiloService siloService;
 
     private static final String REPORT_BASE_DATA_XML = "ReportTest.xml";
+//    private static final String REPORT_BASE_DATA_XML = "ReportTest3.xml";		// test against 3/4 cluster on dev
     private static final int MAX_TOTAL_DAYS = 360;
     
     private static Account account;
@@ -129,7 +125,8 @@ public class ReportServiceTest
 //    		new CrashSummary(Integer crashesInTimePeriod, Integer totalCrashes, Integer daysSinceLastCrash, Number totalMiles, Number milesSinceLastCrash);
     		new CrashSummary(0, 0,  totalDays, expectedDailyMileagePerGroup[GOOD] * totalDays, expectedDailyMileagePerGroup[GOOD] * totalDays),		// GOOD
     		new CrashSummary(0, 0,  totalDays, expectedDailyMileagePerGroup[INTERMEDIATE] * totalDays, expectedDailyMileagePerGroup[INTERMEDIATE] * totalDays),		// Intermediate
-    		new CrashSummary(totalDays, totalDays,  0, expectedDailyMileagePerGroup[BAD] * totalDays, (ReportTestConst.EVENTS_PER_DAY - ReportTestConst.CRASH_EVENT_IDX) * ReportTestConst.MILES_PER_EVENT),		// BAD
+//    		new CrashSummary(totalDays, totalDays,  0, expectedDailyMileagePerGroup[BAD] * totalDays, (ReportTestConst.EVENTS_PER_DAY - ReportTestConst.CRASH_EVENT_IDX) * ReportTestConst.MILES_PER_EVENT),		// BAD
+    		new CrashSummary(totalDays, totalDays,  0, expectedDailyMileagePerGroup[BAD] * totalDays, 0l),		// BAD
     };
     
     Integer expectedDriverCoaching[] = {
@@ -335,7 +332,7 @@ public class ReportServiceTest
     
     
     @Test
-    @Ignore
+    //@Ignore
     public void averageScoreByType()
     {
     	// getGDScoreByGT
@@ -372,7 +369,7 @@ public class ReportServiceTest
     
     
     @Test
-    @Ignore
+    //@Ignore
     public void getScores()
     {
     	// getSDScoresByGT
@@ -405,7 +402,7 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void getScoreBreakdown()
     {
     	// getDPctByGT
@@ -435,7 +432,7 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void getScoreTrend()
     {
     	// getSDTrendsByGTC
@@ -489,7 +486,7 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void speedPercent()
     {
         // getSDTrendsByGTC
@@ -525,7 +522,7 @@ public class ReportServiceTest
 
     
     @Test
-    @Ignore
+    //@Ignore
     public void idlePercent()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -558,7 +555,7 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void crashSummaryGroup()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -581,7 +578,7 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void crashSummaryDriver()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -604,7 +601,7 @@ public class ReportServiceTest
     }
         
      @Test
-     @Ignore
+     //@Ignore
      public void crashSummaryVehicle()
      {
             ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -623,7 +620,7 @@ public class ReportServiceTest
 
      
      @Test
-     @Ignore
+     //@Ignore
      public void getSortedDriverScores()
      {
     	 // getDVScoresByGT
@@ -648,7 +645,7 @@ public class ReportServiceTest
      
      
      @Test
-     @Ignore
+     //@Ignore
      public void driverScores()
      {
     	 
@@ -663,6 +660,7 @@ public class ReportServiceTest
          {
         	 Integer driverID = getTeamDriverID(teamType);
              ScoreableEntity avgScore = scoreDAO.getDriverAverageScoreByType(driverID, duration, ScoreType.SCORE_OVERALL);
+             assertNotNull("getDriverAverageScoreByType ", avgScore);
 	         assertEquals("getDriverAverageScoreByType for driver ID: " + avgScore.getEntityID(), expectedTeamOverall[teamType], avgScore.getScore());
            
 	         Map<ScoreType, ScoreableEntity> scoreBreakdownMap = scoreDAO.getDriverScoreBreakdownByType(driverID, duration, ScoreType.SCORE_OVERALL);
@@ -679,7 +677,7 @@ public class ReportServiceTest
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void driverTrendScores()
      {
     	 
@@ -713,7 +711,6 @@ public class ReportServiceTest
          
      }
      @Test
-     @Ignore
      public void driverCoachingTrendScores()
      {
     	 // getDTrendByDTC
@@ -737,8 +734,7 @@ public class ReportServiceTest
              		scoreVal = score.getScore().intValue();
              	}
              	int expected = expectedDriverCoaching[teamType].intValue();
-             	System.out.println("" + scoreVal);
-//             	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " DriverID: " + driverID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+             	assertTrue((idx++) + ": Unexpected Coaching trend score " + scoreVal + " expected: " + expected + " DriverID: " + driverID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
              }
          
          }
@@ -746,7 +742,7 @@ public class ReportServiceTest
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void driverMPGScores()
      {
     	 // getDTrendByDTC
@@ -772,7 +768,7 @@ public class ReportServiceTest
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void vehicleScores()
      {
     	 
@@ -812,6 +808,7 @@ for (Event event : events)
 
 
              ScoreableEntity avgScore = scoreDAO.getVehicleAverageScoreByType(vehicleID, duration, ScoreType.SCORE_OVERALL);
+             assertNotNull("getVehicleScoreBreakdownByType", avgScore);
 	         assertEquals("getVehicleAverageScoreByType for driver ID: " + avgScore.getEntityID(), expectedTeamOverall[teamType], avgScore.getScore());
            
 	         Map<ScoreType, ScoreableEntity> scoreBreakdownMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, duration, ScoreType.SCORE_OVERALL);
@@ -828,7 +825,7 @@ for (Event event : events)
          
      }
      @Test
-     @Ignore
+     //@Ignore
      public void vehicleTrendScores()
      {
     	 
@@ -853,10 +850,10 @@ for (Event event : events)
              	{
              		scoreVal = score.getScore().intValue();
              	}
-             	else if (idx == 0)	// 1st score may be blank because of trending
-             	{
-             		continue;
-             	}
+//             	else if (idx == 0)	// 1st score may be blank because of trending
+//             	{
+//             		continue;
+//             	}
              	int expected = expectedTeamOverall[teamType].intValue();
 //             	System.out.println("" + scoreVal);
              	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " VehicleID: " + vehicleID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
@@ -865,7 +862,7 @@ for (Event event : events)
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void vehicleMPGScores()
      {
     	 // getVTrendByDTC
@@ -892,7 +889,7 @@ for (Event event : events)
 
      
      @Test
-     @Ignore
+     //@Ignore
      public void getVehicleReportData()
      {
     	 // getVDScoresByGT
@@ -916,7 +913,7 @@ for (Event event : events)
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void getDriverReportData()
      {
     	 // getDVScoresByGT
@@ -939,7 +936,7 @@ for (Event event : events)
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void getIdlingReportData()
      {
     	 // getDVScoresByGSE
@@ -971,7 +968,7 @@ for (Event event : events)
      }
 
      @Test
-     @Ignore
+     //@Ignore
      public void getDriverTrendDaily()
      {
          ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -990,13 +987,14 @@ for (Event event : events)
                  	int expected = expectedTeamOverall[teamType].intValue();
                  	Integer scoreVal = scoreableEntity.getScore(); 
 //                   	System.out.println("" + scoreVal);
+                 	assertNotNull("Unexpected null overall trend score", scoreVal);
                  	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " DriverID: " + driverID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
              }
          }
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void getVehicleTrendDaily()
      {
          ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -1015,13 +1013,14 @@ for (Event event : events)
                  	int expected = expectedTeamOverall[teamType].intValue();
                  	Integer scoreVal = scoreableEntity.getScore(); 
 //                   	System.out.println("" + scoreVal);
+                 	assertNotNull("Unexpected null overall trend score", scoreVal);
                  	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " VehicleID: " + vehicleID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
              }
          }
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void getScoreBreakdownByType()
      {
          ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -1054,7 +1053,7 @@ for (Event event : events)
 
      
      @Test
-     @Ignore
+     //@Ignore
      public void teamMPG()
      {
     	 // getDVScoresByGT
@@ -1079,7 +1078,7 @@ for (Event event : events)
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void fleetMPG()
      {
     	 // getSDScoresByGT

@@ -585,7 +585,7 @@ public class DataGenForReportTesting {
 	            int numDays = NUM_EVENT_DAYS;
 	            for (int teamType = GOOD; teamType <= BAD; teamType++)
 	            {
-	            	for (int day = numDays; day >= 0; day--)
+	            	for (int day = numDays; day > 0; day--)
 	            	{
 	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 	                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
