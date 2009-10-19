@@ -936,7 +936,10 @@ public class SiloServiceTest {
 
     private void reportSchedules(Integer acctID, Integer userID, Integer groupID) {
         ReportScheduleHessianDAO reportScheduleHessianDAO = new ReportScheduleHessianDAO();
+
         reportScheduleHessianDAO.setSiloService(siloService);
+        
+        // Weekly report create
         ReportSchedule reportSchedule = new ReportSchedule();
         reportSchedule.setReportDuration(Duration.DAYS);
         reportSchedule.setStatus(Status.ACTIVE);
@@ -947,25 +950,30 @@ public class SiloServiceTest {
         reportSchedule.setGroupID(groupID);
         reportSchedule.setReportID(1);
         reportSchedule.setAccountID(acctID);
+        
         Calendar lastDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         lastDate.set(Calendar.HOUR, 0);
         lastDate.set(Calendar.MINUTE, 0);
         lastDate.set(Calendar.SECOND, 0);
         lastDate.set(Calendar.MILLISECOND, 0);
         lastDate.add(Calendar.DATE, -7);
+        
         Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         endDate.set(Calendar.HOUR, 0);
         endDate.set(Calendar.MINUTE, 0);
         endDate.set(Calendar.SECOND, 0);
         endDate.set(Calendar.MILLISECOND, 0);
+        
         reportSchedule.setLastDate(lastDate.getTime());
         reportSchedule.setEndDate(endDate.getTime());
         reportSchedule.setStartDate(lastDate.getTime());
+        
         List<String> emailList = new ArrayList<String>();
         emailList.add("foo@inthinc.com");
         emailList.add("bar@inthinc.com");
         emailList.add("baz@inthinc.com");
         reportSchedule.setEmailTo(emailList);
+        
         List<Boolean> booleanList = new ArrayList<Boolean>();
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
@@ -975,24 +983,94 @@ public class SiloServiceTest {
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
         reportSchedule.setDayOfWeek(booleanList);
+        
         Integer id = reportScheduleHessianDAO.create(acctID, reportSchedule);
         logger.debug("Report Schedule ID: " + id);
         logger.debug("Report Schedule acctID: " + acctID);
         assertNotNull(id);
+        
+        // Daily report create
+        ReportSchedule reportSchedule1 = new ReportSchedule();
+        reportSchedule1.setReportDuration(Duration.DAYS); 
+        reportSchedule1.setStatus(Status.ACTIVE);  
+        reportSchedule1.setName("Report Schedule 1");  
+        reportSchedule1.setOccurrence(Occurrence.DAILY); 
+        reportSchedule1.setUserID(userID); 
+        reportSchedule1.setGroupID(groupID);  
+        reportSchedule1.setReportID(10);    
+        reportSchedule1.setAccountID(acctID);      
+        
+        reportSchedule1.setLastDate(lastDate.getTime()); 
+        reportSchedule1.setEndDate(endDate.getTime());  
+        reportSchedule1.setStartDate(lastDate.getTime());  
+        
+        reportSchedule1.setEmailTo(emailList);      
+        
+        reportSchedule1.setDayOfWeek(booleanList);  
+        
+        Integer id1 = reportScheduleHessianDAO.create(acctID, reportSchedule1);
+        logger.debug("Report Schedule ID: " + id);
+        logger.debug("Report Schedule acctID: " + acctID);        
+        assertNotNull(id1);
+        
+        // Monthly report create
+        ReportSchedule reportSchedule2 = new ReportSchedule();
+        reportSchedule2.setReportDuration(Duration.DAYS); 
+        reportSchedule2.setStatus(Status.ACTIVE);  
+        reportSchedule2.setName("Report Schedule 2");  
+        reportSchedule2.setOccurrence(Occurrence.MONTHLY); 
+        reportSchedule2.setUserID(userID); 
+        reportSchedule2.setGroupID(groupID);  
+        reportSchedule2.setReportID(10);    
+        reportSchedule2.setAccountID(acctID);      
+        
+        reportSchedule2.setLastDate(lastDate.getTime()); 
+        reportSchedule2.setEndDate(endDate.getTime());  
+        reportSchedule2.setStartDate(lastDate.getTime());  
+        
+        reportSchedule2.setEmailTo(emailList);      
+        
+        reportSchedule2.setDayOfWeek(booleanList);  
+        
+        Integer id2 = reportScheduleHessianDAO.create(acctID, reportSchedule2);
+        logger.debug("Report Schedule ID: " + id);
+        logger.debug("Report Schedule acctID: " + acctID);        
+        assertNotNull(id2);        
+        
+        // Retrieve all
         List<ReportSchedule> reportSchedules = reportScheduleHessianDAO.getReportSchedulesByAccountID(acctID);
-        assertTrue(reportSchedules.size() > 0);
-        ReportSchedule reportSchedule2 = reportScheduleHessianDAO.findByID(id);
+        
+        // Found some?
+        assertTrue(reportSchedules.size() > 0);   
+        
+        // One of each?
+        assertTrue(checkTypes("daily",reportSchedules));
+        assertTrue(checkTypes("weekly",reportSchedules));
+        assertTrue(checkTypes("monthly",reportSchedules));
+        
+//        ReportSchedule reportSchedule3 = reportScheduleHessianDAO.findByID(id);
         // TODO get this compare working.
         // Util.compareObjects(reportSchedule, reportSchedule2, "modified","emailToAsString","endDate","startDate",
         // "lastDate","reportScheduleID");
-        reportSchedule2.setName("Report S");
-        reportScheduleHessianDAO.update(reportSchedule2);
-        ReportSchedule reportSchedule3 = reportScheduleHessianDAO.findByID(id);
-        assertTrue(reportSchedule2.getName().equals("Report S"));
-        List<ReportSchedule> reportSchedules2 = reportScheduleHessianDAO.getReportSchedulesByUserID(userID);
-        assertTrue(reportSchedules2.size() > 0);
-        reportScheduleHessianDAO.deleteByID(reportSchedule3.getReportScheduleID());
-        reportScheduleHessianDAO.deleteByID(116);
+//        reportSchedule3.setName("Report S");
+//        reportScheduleHessianDAO.update(reportSchedule3);
+//        ReportSchedule reportSchedule4 = reportScheduleHessianDAO.findByID(id);
+//        assertTrue(reportSchedule3.getName().equals("Report S"));
+//        List<ReportSchedule> reportSchedules2 = reportScheduleHessianDAO.getReportSchedulesByUserID(userID);
+//        assertTrue(reportSchedules2.size() > 0);
+//        reportScheduleHessianDAO.deleteByID(reportSchedule4.getReportScheduleID());
+//        reportScheduleHessianDAO.deleteByID(116);
+    }
+    
+    private boolean checkTypes(String type,List<ReportSchedule> reports) {
+        
+        for ( ReportSchedule rp: reports ) {
+            if ( rp.getOccurrence().getDescription().equalsIgnoreCase(type)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     private void groupManager(Integer groupID) {
