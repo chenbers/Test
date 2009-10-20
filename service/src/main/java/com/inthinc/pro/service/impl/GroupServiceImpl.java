@@ -1,8 +1,16 @@
 package com.inthinc.pro.service.impl;
 
+import java.net.URI;
 import java.util.List;
 
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
+
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.GroupService;
 import com.inthinc.pro.util.SecureGroupDAO;
 
@@ -11,26 +19,49 @@ public class GroupServiceImpl implements GroupService {
 
     private SecureGroupDAO groupDAO;
 
-    public List<Group> getAll() {
+    @Override
+    public Response getAll() {
         // TODO do we want group level security?
         // return groupDAO.getGroupsByAcctID(securityBean.getAccountID());
-    	return groupDAO.getAll();
+
+        List<Group> list = groupDAO.getAll();
+        return Response.ok(new GenericEntity<List<Group>>(list) {
+        }).build();
     }
 
-    public Group get(Integer groupID) {
-        return groupDAO.findByID(groupID);
+    @Override
+    public Response get(Integer groupID) {
+        Group group = groupDAO.findByID(groupID);
+        if (group != null)
+            return Response.ok(group).build();
+        return Response.status(Status.NOT_FOUND).build();
     }
 
-    public Integer create(Group group) {
-        return groupDAO.create(group);
+    @Override
+    public Response create(Group group, UriInfo uriInfo) {
+        Integer id = groupDAO.create(group);
+        if (id != null) {
+            UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+            URI uri = uriBuilder.path(id.toString()).build();
+            return Response.created(uri).build();
+        }
+        return Response.serverError().build();
     }
 
-    public Integer update(Group group) {
-        return groupDAO.update(group);
+    @Override
+    public Response update(Group group) {
+        if (groupDAO.update(group).intValue() != 0) {
+            return Response.ok().build();
+        }
+        return Response.status(Status.NOT_MODIFIED).build();
     }
 
-    public Integer delete(Integer groupID) {
-        return groupDAO.deleteByID(groupID);
+    @Override
+    public Response delete(Integer groupID) {
+        if (groupDAO.deleteByID(groupID).intValue() != 0) {
+            return Response.ok().build();
+        }
+        return Response.status(Status.NOT_MODIFIED).build();
     }
 
     public void setGroupDAO(SecureGroupDAO groupDAO) {

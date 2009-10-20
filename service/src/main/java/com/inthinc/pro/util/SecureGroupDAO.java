@@ -23,7 +23,7 @@ public class SecureGroupDAO extends BaseSecureDAO{
             return true;
 
         }
-        throw new UnauthorizedException("Group not found");
+        return false;
     }
 
     public boolean isAuthorized(Integer groupID) {
@@ -47,21 +47,21 @@ public class SecureGroupDAO extends BaseSecureDAO{
         if (isAuthorized(group))
             return groupDAO.create(getAccountID(), group);
 
-        return -1;
+        return null;
     }
 
     public Integer update(Group group) {
         if (isAuthorized(group))
             return groupDAO.update(group);
 
-        return -1;
+        return 0;
     }
 
     public Integer deleteByID(Integer groupID) {
         if (isAuthorized(groupID))
             return groupDAO.deleteByID(groupID);
 
-        return -1;
+        return 0;
     }
     
     public void setGroupDAO(GroupDAO groupDAO) {

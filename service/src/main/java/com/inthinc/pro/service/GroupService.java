@@ -1,7 +1,5 @@
 package com.inthinc.pro.service;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -10,6 +8,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Group;
 
@@ -22,23 +23,23 @@ public interface GroupService {
 
 	@GET
 	@Path("/groups")
-	public List<Group> getAll();
+	public Response getAll();
 	
 	@GET
 	@Path("/group/{groupID}")
-	public Group get(@PathParam("groupID")Integer groupID);
+	public Response get(@PathParam("groupID")Integer groupID);
 
 	@POST
 	@Consumes("application/xml")
 	@Path("/group")
-	public Integer create(Group group);
+	public Response create(Group group, @Context UriInfo uriInfo);
 
 	@PUT
 	@Consumes("application/xml")
 	@Path("/group")
-	public Integer update(Group group);
+	public Response update(Group group);
 
 	@DELETE
 	@Path("/group/{id}")
-	public Integer delete(@PathParam("id")Integer id);
+	public Response delete(@PathParam("id")Integer id);
 }
