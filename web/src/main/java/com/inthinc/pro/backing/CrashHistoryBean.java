@@ -122,16 +122,21 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
             reportItem.setDate(dateFormatter.format(cr.getDate()));
             reportItem.setTime(cr.getDate().getTime());
             Driver driver = null;
-            if (driverMap.containsKey(cr.getVehicle().getDriverID())) {
-                driver = driverMap.get(cr.getVehicle().getDriverID());
+            if (driverMap.containsKey(cr.getDriverID())) {
+                driver = driverMap.get(cr.getDriverID());
             } else {
-                driver = this.getDriverDAO().findByID(cr.getVehicle().getDriverID());
+                driver = this.getDriverDAO().findByID(cr.getDriverID());
             }
             if (driver != null) {
                 reportItem.setDriver(driver);
+                
+                // The unknown driver has a null person
                 if (driver.getPerson() != null) {
                     reportItem.setDriverName(driver.getPerson().getFullName());
                     reportItem.setGroup(getGroupHierarchy().getGroup(driver.getGroupID()).getName());
+                } else {
+                    reportItem.setDriverName("Unknown Driver");
+                    reportItem.setGroup("");
                 }
             }
             reportItem.setNbrOccupants(String.valueOf(cr.getOccupantCount().intValue()));
