@@ -357,7 +357,8 @@
 		                			<h:panelGroup>
 		                				<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 										<a4j:region>
-											<h:selectOneMenu id="driver" value="#{crashReportBean.crashReport.driverID}" required="true" requiredMessage="#{messages.required}">
+											<h:selectOneMenu id="driver" value="#{crashReportBean.crashReport.driverID}" disabled="#{crashReportBean.editState eq 'EDIT'}"  
+												required="true" requiredMessage="#{messages.required}">
 												<f:selectItems value="#{crashReportBean.driversAsSelectItems}"/>
 												<a4j:support event="onchange"  ajaxSingle="true" reRender="tripsListPanel" limitToList="true" action="#{crashReportBean.loadTrips}"/>
 											</h:selectOneMenu>
