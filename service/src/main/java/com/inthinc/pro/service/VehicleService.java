@@ -10,9 +10,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
-import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
 @Path("/")
@@ -21,64 +22,68 @@ public interface VehicleService {
 
     @GET
     @Path("/vehicles")
-    public List<Vehicle> getAll();
+    public Response getAll();
 
     @GET
     @Path("/vehicle/{id}")
-    public Vehicle get(@PathParam("id") Integer id);
+    public Response get(@PathParam("id") Integer id);
 
     @GET
     @Path("/vehicle/vin/{vin}")
-    public Vehicle findByVIN(@PathParam("vin") String vin);
+    public Response findByVIN(@PathParam("vin") String vin);
 
     @POST
     @Consumes("application/xml")
     @Path("/vehicle")
-    public Integer create(Vehicle vehicle);
+    public Response create(Vehicle vehicle, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")
     @Path("/vehicle")
-    public Integer update(Vehicle vehicle);
+    public Response update(Vehicle vehicle);
 
     @DELETE
     @Path("/vehicle/{id}")
-    public Integer delete(@PathParam("id") Integer id);
+    public Response delete(@PathParam("id") Integer id);
 
     @POST
     @Consumes("application/xml")
     @Path("/vehicles")
-    public List<Integer> create(List<Vehicle> vehicles);
+    public Response create(List<Vehicle> vehicles, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")
     @Path("/vehicles")
-    public List<Integer> update(List<Vehicle> vehicles);
+    public Response update(List<Vehicle> vehicles);
 
     @DELETE
     @Consumes("application/xml")
     @Path("/vehicles")
-    public List<Integer> delete(List<Integer> vehicleIDs);
+    public Response delete(List<Integer> vehicleIDs);
 
     @PUT
     @Path("/vehicle/{id}/deviceid/{deviceid}")
-    public Vehicle assignDevice(@PathParam("id") Integer id, @PathParam("deviceid") Integer deviceid);
+    public Response assignDevice(@PathParam("id") Integer id, @PathParam("deviceid") Integer deviceid);
 
     @PUT
     @Path("/vehicle/{id}/driverid/{driverid}")
-    public Vehicle assignDriver(@PathParam("id") Integer id, @PathParam("driverid") Integer driverid);
+    public Response assignDriver(@PathParam("id") Integer id, @PathParam("driverid") Integer driverid);
 
     @GET
     @Path("/vehicle/{id}/trips/{date}")
     // DATE is in YYYYMMDD format
-    public List<Trip> getTrips(@PathParam("id") Integer id, @PathParam("date") String date);
+    public Response getTrips(@PathParam("id") Integer id, @PathParam("date") String date);
 
     @GET
     @Path("/vehicle/{id}/trips")
-    public List<Trip> getTrips(@PathParam("id") Integer id);
+    public Response getTrips(@PathParam("id") Integer id);
+
+    @GET
+    @Path("/vehicle/{id}/lastlocation")
+    public Response getLastLocation(@PathParam("id") Integer vehicleID);
 
     @GET
     @Path("/vehicle/{id}/mpg")
-    public List<MpgEntity> getVehicleMPG(@PathParam("id") Integer id);
+    public Response getVehicleMPG(@PathParam("id") Integer id);
 
 }

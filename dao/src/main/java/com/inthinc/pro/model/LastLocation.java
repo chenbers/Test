@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -12,7 +13,7 @@ public class LastLocation
     private Date time;
     private LatLng loc;
     
-    
+    @XmlElement(name="location")
     public LatLng getLoc()
     {
         return loc;

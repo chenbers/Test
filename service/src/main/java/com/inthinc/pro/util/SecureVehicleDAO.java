@@ -6,9 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.resteasy.spi.NotFoundException;
-import org.jboss.resteasy.spi.UnauthorizedException;
-
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Duration;
@@ -17,7 +14,7 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
-public class SecureVehicleDAO extends BaseSecureDAO{
+public class SecureVehicleDAO extends BaseSecureDAO {
 
     private VehicleDAO vehicleDAO;
     private SecureGroupDAO groupDAO;
@@ -29,55 +26,32 @@ public class SecureVehicleDAO extends BaseSecureDAO{
         if (vehicle != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-        	if (groupDAO.isAuthorized(vehicle.getGroupID()))
-        		return true;
+            if (groupDAO.isAuthorized(vehicle.getGroupID()))
+                return true;
 
         }
-        throw new UnauthorizedException("Vehicle Not Found");
+        return false;
     }
 
-    public Vehicle findByID(Integer vehicleID)
-    {
+    public Vehicle findByID(Integer vehicleID) {
         Vehicle vehicle = vehicleDAO.findByID(vehicleID);
-        if (vehicle == null)
-            throw new NotFoundException("vehicleID not found: " + vehicleID);
-
-        try
-        {
-        	if (isAuthorized(vehicle))
-        		return vehicle;
-        }
-        catch (Exception ex)
-        {
-            throw new NotFoundException("vehicleID not found: " + vehicleID);
-        }
+        if (isAuthorized(vehicle))
+            return vehicle;
         return null;
     }
 
     private boolean isAuthorized(Integer vehicleID) {
         return isAuthorized(findByID(vehicleID));
     }
-    
-    public List<Vehicle> getAll()
-    {
-    	return vehicleDAO.getVehiclesInGroupHierarchy(getGroupID());
+
+    public List<Vehicle> getAll() {
+        return vehicleDAO.getVehiclesInGroupHierarchy(getGroupID());
     }
-    
-    public Vehicle findByVIN(String vin)
-    {
+
+    public Vehicle findByVIN(String vin) {
         Vehicle vehicle = vehicleDAO.findByVIN(vin);
-        if (vehicle == null)
-            throw new NotFoundException("vehicle VIN not found: " + vin);
-        
-        try
-        {
-        	if (isAuthorized(vehicle))
-        		return vehicle;
-        }
-        catch (Exception ex)
-        {
-            throw new NotFoundException("vehicle VIN not found: " + vin);
-        }
+        if (isAuthorized(vehicle))
+            return vehicle;
         return null;
     }
 
@@ -85,29 +59,27 @@ public class SecureVehicleDAO extends BaseSecureDAO{
         if (isAuthorized(vehicle))
             return vehicleDAO.create(vehicle.getGroupID(), vehicle);
 
-        return -1;
+        return null;
     }
 
     public Integer update(Vehicle vehicle) {
         if (isAuthorized(vehicle))
             return vehicleDAO.update(vehicle);
 
-        return -1;
+        return 0;
     }
 
     public Integer deleteByID(Integer vehicleID) {
         if (isAuthorized(vehicleID))
             return vehicleDAO.deleteByID(vehicleID);
 
-        return -1;
+        return 0;
     }
 
     public LastLocation getLastLocation(Integer vehicleID) {
         if (isAuthorized(vehicleID))
-
             return vehicleDAO.getLastLocation(vehicleID);
         return null;
-
     }
 
     // TODO do we implement these?
@@ -200,30 +172,28 @@ public class SecureVehicleDAO extends BaseSecureDAO{
         this.vehicleDAO = vehicleDAO;
     }
 
+    public SecureGroupDAO getGroupDAO() {
+        return groupDAO;
+    }
 
-	public SecureGroupDAO getGroupDAO() {
-		return groupDAO;
-	}
+    public void setGroupDAO(SecureGroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
 
+    public SecureDeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
 
-	public void setGroupDAO(SecureGroupDAO groupDAO) {
-		this.groupDAO = groupDAO;
-	}
+    public void setDeviceDAO(SecureDeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
+    }
 
-	public SecureDeviceDAO getDeviceDAO() {
-		return deviceDAO;
-	}
+    public SecureDriverDAO getDriverDAO() {
+        return driverDAO;
+    }
 
-	public void setDeviceDAO(SecureDeviceDAO deviceDAO) {
-		this.deviceDAO = deviceDAO;
-	}
-
-	public SecureDriverDAO getDriverDAO() {
-		return driverDAO;
-	}
-
-	public void setDriverDAO(SecureDriverDAO driverDAO) {
-		this.driverDAO = driverDAO;
-	}
+    public void setDriverDAO(SecureDriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
 
 }
