@@ -63,8 +63,9 @@ public class Device extends BaseEntity
     @Column(updateable = false)
     private Integer           hardVertical;
     private Integer           baseID;
+    private AutoLogoff		  autoLogoff;
 
-    public Device()
+	public Device()
     {
         super();
     }
@@ -340,5 +341,15 @@ public class Device extends BaseEntity
     {
         this.vert = vert;
     }
+	public AutoLogoff getAutoLogoff() {
+		if (autoLogoff == null)
+		{
+			autoLogoff = AutoLogoff.OFF;
+		}
+		return autoLogoff;
+	}
+	public void setAutoLogoff(AutoLogoff autoLogoff) {
+		this.autoLogoff = autoLogoff;
+	}
 
 }

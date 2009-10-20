@@ -1067,13 +1067,27 @@ public class MockData {
         Integer idOffset = accountID * MAX_DEVICES;
         for (int i = 0; i < numDevices; i++) {
             int id = idOffset + i + 1;
-            Device device = createDevice(id, accountID, DeviceStatus.values()[randomInt(0, 2)], "DEVICE" + id, String.valueOf(randomInt(10000, Integer.MAX_VALUE)), String
-                    .valueOf(randomInt(10000, Integer.MAX_VALUE)), randomPhone(), randomPhone(), new Date());
+            Device device = createDevice(id, accountID, DeviceStatus.values()[randomInt(0, 2)], "DEVICE" + id, 
+            				genNumericID(accountID, 15), genNumericID(accountID, 19), 
+            				randomPhone(), randomPhone(), new Date());
             storeObject(device);
             deviceList.add(device);
         }
         return deviceList;
     }
+    
+    private String genNumericID(Integer acctID, Integer len)
+    {
+        String id = "999" + acctID.toString();
+        
+        for (int i = id.length(); i < len; i++)
+        {
+            id += "9";
+        }
+        
+        return id;
+    }
+
 
     private Device createDevice(Integer id, Integer accountID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone, Date activated) {
         final Device device = new Device();

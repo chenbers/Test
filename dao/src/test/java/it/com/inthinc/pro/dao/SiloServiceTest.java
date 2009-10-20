@@ -46,6 +46,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -769,10 +770,11 @@ public class SiloServiceTest {
             device.setHardVertical(15);
             device.setSpeedSettings(new Integer[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 });
             device.setEphone("5555559999");
+            device.setAutoLogoff(AutoLogoff.ON);
             Integer changedCount = deviceDAO.update(device);
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
             List<ForwardCommand> fwdCmdQueue = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
-            assertEquals("expected 16 forward commands to be queued for device: " + device.getDeviceID(), 16, fwdCmdQueue.size());
+            assertEquals("expected 17 forward commands to be queued for device: " + device.getDeviceID(), 17, fwdCmdQueue.size());
         }
     }
 

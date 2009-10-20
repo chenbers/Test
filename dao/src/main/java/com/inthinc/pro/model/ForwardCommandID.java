@@ -177,4 +177,6 @@ public interface ForwardCommandID
     public static Integer DMM_SET_HARD_BRAKE = 2092;
     public static Integer DMM_SET_HARD_TURN = 2093;
     public static Integer DMM_SET_HARD_VERT = 2094;
+
+    public static Integer AUTO_LOGOFF = 2146;		// set integer data to 900 for on and 0 for off
 }

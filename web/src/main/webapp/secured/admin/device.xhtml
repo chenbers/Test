@@ -103,6 +103,10 @@
                                 <td><h:outputText value="#{devicesBean.item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText></td>
                               </tr>
                               </ui:fragment>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_autoLogoff}" /></td>
+                                <td><c:set var="autoLogoff" value="#{devicesBean.item.autoLogoff.description}" /><h:outputText value="#{messages[autoLogoff]}" /></td>
+                              </tr>
                             </table>
 
                             <div class="spacer"></div>

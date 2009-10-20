@@ -18,6 +18,7 @@ import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.SensitivityType;
@@ -422,6 +423,11 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public List<SelectItem> getStatuses()
     {
         return SelectItemUtil.toList(DeviceStatus.class, false, DeviceStatus.DELETED);
+    }
+
+    public List<SelectItem> getAutoLogoffs()
+    {
+        return SelectItemUtil.toList(AutoLogoff.class, false);
     }
     
     @Override

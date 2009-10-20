@@ -183,6 +183,11 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
              queueForwardCommand(deviceID, new ForwardCommand(0, ForwardCommandID.ADD_VALID_CALLER, "1 " + filterPhoneNumber(device.getEphone()), ForwardCommandStatus.STATUS_QUEUED));
          }
          
+         // autoLogoff
+         if (device.getAutoLogoff() != null)
+         {
+         	queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, ForwardCommandID.AUTO_LOGOFF, device.getAutoLogoff().getForwardCommandSetting(), ForwardCommandStatus.STATUS_QUEUED));
+         }
          
          return deviceID;
     }
@@ -230,6 +235,12 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
             {
                 queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, ForwardCommandID.SET_CALL_NUMBER, filterPhoneNumber(device.getEphone()), ForwardCommandStatus.STATUS_QUEUED));
                 queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, ForwardCommandID.ADD_VALID_CALLER, "1 " + filterPhoneNumber(device.getEphone()), ForwardCommandStatus.STATUS_QUEUED));
+            }
+            
+            // autoLogoff
+            if (!originalDevice.getAutoLogoff().equals(device.getAutoLogoff()))
+            {
+            	queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, ForwardCommandID.AUTO_LOGOFF, device.getAutoLogoff().getForwardCommandSetting(), ForwardCommandStatus.STATUS_QUEUED));
             }
             
         }
