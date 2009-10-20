@@ -20,6 +20,7 @@ import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.BeanUtil;
@@ -194,7 +195,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             {
                 //final User user = userDAO.findByID(id);
                 final Person person = personDAO.findByID(id);
-                if (person != null)
+                if (person != null && !person.getStatus().equals(Status.DELETED))
                     notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
             }
             MiscUtil.sortSelectItems(notifyPeople);
