@@ -7,7 +7,7 @@ import java.util.Map;
 public enum AutoLogoff implements BaseEnum
 {
     OFF(0, "AutoLogoff.DISABLE", 0),
-    ON(1, "AutoLogoff.ENABLE", 900);
+    ON(1, "AutoLogoff.ENABLE", 600);
     
     Integer code;
     String description;
