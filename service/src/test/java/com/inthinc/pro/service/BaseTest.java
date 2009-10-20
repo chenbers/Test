@@ -1,13 +1,15 @@
 package com.inthinc.pro.service;
 
-import java.lang.reflect.ParameterizedType;
-
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.params.HttpClientParams;
+import org.jboss.resteasy.client.ClientExecutor;
+import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
+import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.junit.Before;
@@ -21,15 +23,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext-*.xml" })
 @SuppressWarnings("unchecked")
-public abstract class BaseTest<T> implements ApplicationContextAware {
+public abstract class BaseTest implements ApplicationContextAware {
 
-    private Class<T> serviceClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    protected T service;
-    protected HttpClient client;
+//    private Class<T> serviceClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+//    protected T service;
     private ApplicationContext applicationContext;
     private static final int port = 8080;
     private static final String domain = "localhost";
     private static final String url = "http://" + domain + ":" + port + "/service/api";
+        
+    protected HttpClient httpClient;
+    protected ClientExecutor clientExecutor;
+    
+    protected AddressService addressService;
+    protected DeviceService deviceService;
+    protected DriverService driverService;
+    protected GroupService groupService;
+    protected PersonService personService;
+    protected UserService userService;
+    protected VehicleService vehicleService;
 
     @Before
     public void before() {
@@ -37,21 +49,27 @@ public abstract class BaseTest<T> implements ApplicationContextAware {
 
         HttpClientParams params = new HttpClientParams();
         params.setAuthenticationPreemptive(true);
-        client = new HttpClient(params);
+        httpClient = new HttpClient(params);
 
         Credentials defaultcreds = new UsernamePasswordCredentials("mraby", "password");
-        client.getState().setCredentials(new AuthScope("localhost", port, AuthScope.ANY_REALM), defaultcreds);
-        service = ProxyFactory.create(serviceClass, url, client);
-        System.out.println("Created Service Client: " + serviceClass.getSimpleName());
+        httpClient.getState().setCredentials(new AuthScope("localhost", port, AuthScope.ANY_REALM), defaultcreds);
+        clientExecutor = new ApacheHttpClientExecutor(httpClient);
+//        service = ProxyFactory.create(serviceClass, url, client);
+//        System.out.println("Created Service Client: " + serviceClass.getSimpleName());
+        
+        addressService = ProxyFactory.create(AddressService.class, url, httpClient);
+        deviceService = ProxyFactory.create(DeviceService.class, url, httpClient);
+        driverService = ProxyFactory.create(DriverService.class, url, httpClient);
+        groupService = ProxyFactory.create(GroupService.class, url, httpClient);
+        personService = ProxyFactory.create(PersonService.class, url, httpClient);
+        userService = ProxyFactory.create(UserService.class, url, httpClient);
+        vehicleService = ProxyFactory.create(VehicleService.class, url, httpClient);
     }
 
-    public T getService() {
-        return service;
-    }
     
-    public <E> E getService(Class<E> serviceClass) {
-        return ProxyFactory.create(serviceClass, url, client);
-    }
+//    public <E> E getService(Class<E> serviceClass) {
+//        return ProxyFactory.create(serviceClass, url, clientExecutor);
+//    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

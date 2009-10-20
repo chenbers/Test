@@ -1,7 +1,6 @@
 package com.inthinc.pro.util;
 
 import org.jboss.resteasy.spi.NotFoundException;
-import org.jboss.resteasy.spi.UnauthorizedException;
 
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.model.Address;
@@ -17,7 +16,7 @@ public class SecureAddressDAO extends BaseSecureDAO{
                 return true;
 
         }
-        throw new UnauthorizedException("Address not found");
+        return false;
     }
     
     public boolean isAuthorized(Integer addressID) {
@@ -35,21 +34,21 @@ public class SecureAddressDAO extends BaseSecureDAO{
         if (isAuthorized(address))
             return addressDAO.create(getAccountID(), address);
 
-        return -1;
+        return null;
     }
 
     public Integer update(Address address) {
         if (isAuthorized(address))
             return addressDAO.update(address);
 
-        return -1;
+        return 0;
     }
 
     public Integer delete(Integer addressID) {
         if (isAuthorized(addressID))
             return addressDAO.deleteByID(addressID);
 
-        return -1;
+        return 0;
     }
     
     public AddressDAO getAddressDAO() {
