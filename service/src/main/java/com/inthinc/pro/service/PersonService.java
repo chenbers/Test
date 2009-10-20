@@ -10,6 +10,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Person;
 
@@ -22,39 +25,39 @@ public interface PersonService {
 
 	@GET
 	@Path("/persons")
-	public List<Person> getAll();
+	public Response getAll();
 
 	@GET
 	@Path("/person/{personID}")
-	public Person get(@PathParam("personID")Integer personID);
+	public Response get(@PathParam("personID")Integer personID);
 
 	@POST
 	@Consumes("application/xml")
 	@Path("/person")
-	public Integer create(Person person);
+	public Response create(Person person, @Context UriInfo uriInfo);
 
 	@PUT
 	@Consumes("application/xml")
 	@Path("/person")
-	public Integer update(Person person);
+	public Response update(Person person);
 
 	@DELETE
 	@Path("/person/{id}")
-	public Integer delete(@PathParam("id")Integer id);
+	public Response delete(@PathParam("id")Integer id);
 
 	@POST
 	@Consumes("application/xml")
 	@Path("/persons")
-	public List<Integer> create(List<Person> persons);
+	public Response create(List<Person> persons, @Context UriInfo uriInfo);
 
 	@PUT
 	@Consumes("application/xml")
 	@Path("/persons")
-	public List<Integer> update(List<Person> persons);
+	public Response update(List<Person> persons);
 	
 	@DELETE
 	@Consumes("application/xml")
 	@Path("/persons")
-	public List<Integer> delete(List<Integer> personIDs);
+	public Response delete(List<Integer> personIDs);
 
 }

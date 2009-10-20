@@ -2,8 +2,6 @@ package com.inthinc.pro.util;
 
 import java.util.List;
 
-import org.jboss.resteasy.spi.NotFoundException;
-import org.jboss.resteasy.spi.UnauthorizedException;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Person;
 
@@ -15,25 +13,24 @@ public class SecurePersonDAO extends BaseSecureDAO {
     public boolean isAuthorized(Person person) {
         if (person != null) {
             if (!getAccountID().equals(person.getAcctID()))
-                throw new NotFoundException("accountID not found: " + person.getAcctID());
-           	if (!addressDAO.isAuthorized(person.getAddressID()))
-           		return false;
-            
-            return true;
+                return false;
+            if (!addressDAO.isAuthorized(person.getAddressID()))
+                return false;
 
+            return true;
         }
-        throw new UnauthorizedException("Person not found");
+        return false;
     }
 
     public boolean isAuthorized(Integer personID) {
         return isAuthorized(findByID(personID));
     }
-    
+
     public Person findByID(Integer personID) {
         Person person = personDAO.findByID(personID);
-        if (person == null || !person.getAcctID().equals(getAccountID()))
-            throw new NotFoundException("personID not found: " + personID);
-        return person;
+        if (isAuthorized(person))
+            return person;
+        return null;
     }
 
     public List<Person> getAll() {
@@ -44,21 +41,21 @@ public class SecurePersonDAO extends BaseSecureDAO {
         if (isAuthorized(person))
             return personDAO.create(getAccountID(), person);
 
-        return -1;
+        return null;
     }
 
     public Integer update(Person person) {
         if (isAuthorized(person))
             return personDAO.update(person);
 
-        return -1;
+        return 0;
     }
 
     public Integer deleteByID(Integer personID) {
         if (isAuthorized(personID))
             return personDAO.deleteByID(personID);
 
-        return -1;
+        return 0;
     }
 
     public PersonDAO getPersonDAO() {
@@ -69,11 +66,11 @@ public class SecurePersonDAO extends BaseSecureDAO {
         this.personDAO = personDAO;
     }
 
-	public SecureAddressDAO getAddressDAO() {
-		return addressDAO;
-	}
+    public SecureAddressDAO getAddressDAO() {
+        return addressDAO;
+    }
 
-	public void setAddressDAO(SecureAddressDAO addressDAO) {
-		this.addressDAO = addressDAO;
-	}
+    public void setAddressDAO(SecureAddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
 }

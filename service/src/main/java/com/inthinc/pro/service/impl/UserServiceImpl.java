@@ -10,7 +10,6 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.UserService;
 import com.inthinc.pro.service.model.BatchResponse;

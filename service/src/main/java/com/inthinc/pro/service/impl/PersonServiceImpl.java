@@ -1,56 +1,117 @@
 package com.inthinc.pro.service.impl;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
+
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.PersonService;
+import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.SecurePersonDAO;
 
 public class PersonServiceImpl implements PersonService {
 
     private SecurePersonDAO personDAO;
 
-    public List<Person> getAll() {
-    	return personDAO.getAll();
+    @Override
+    public Response getAll() {
+    	List<Person> list = personDAO.getAll();
+        return Response.ok(new GenericEntity<List<Person>>(list) {}).build();
     }
 
-    public Person get(Integer personID) {
-        return personDAO.findByID(personID);
+    @Override
+    public Response get(Integer personID) {
+        Person person = personDAO.findByID(personID);
+        if (person != null)
+            return Response.ok(person).build();
+        return Response.status(Status.NOT_FOUND).build();
     }
 
-    public Integer create(Person person) {
-        return personDAO.create(person);
-    }
-
-    public Integer update(Person person) {
-        return personDAO.update(person);
-    }
-
-    public Integer delete(Integer personID) {
-        return personDAO.deleteByID(personID);
-    }
-
-    public List<Integer> create(List<Person> persons) {
-        List<Integer> results = new ArrayList<Integer>();
-        for (Person person : persons)
-            results.add(create(person));
-        return results;
-    }
-
-    public List<Integer> update(List<Person> persons) {
-        List<Integer> results = new ArrayList<Integer>();
-        for (Person person : persons)
-            results.add(update(person));
-        return results;
-    }
-
-    public List<Integer> delete(List<Integer> personIDs) {
-        List<Integer> results = new ArrayList<Integer>();
-        for (Integer id : personIDs) {
-            results.add(delete(id));
+    @Override
+    public Response create(Person person, UriInfo uriInfo) {
+        Integer id = personDAO.create(person);
+        if (id != null) {
+            UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+            URI uri = uriBuilder.path(id.toString()).build();
+            return Response.created(uri).build();
         }
-        return results;
+        return Response.serverError().build();
+    }
+
+    @Override
+    public Response update(Person person) {
+        if (personDAO.update(person).intValue() != 0) {
+            return Response.ok().build();
+        }
+        return Response.status(Status.NOT_MODIFIED).build();
+    }
+
+    @Override
+    public Response delete(Integer personID) {
+        if (personDAO.deleteByID(personID).intValue() != 0) {
+            return Response.ok().build();
+        }
+        return Response.status(Status.NOT_MODIFIED).build();
+    }
+
+    @Override
+    public Response create(List<Person> persons, UriInfo uriInfo) {
+
+        List<BatchResponse> responseList = new ArrayList<BatchResponse>();
+        for (Person person : persons) {
+            BatchResponse batchResponse = new BatchResponse();
+            UriBuilder uriBuilder = uriInfo.getBaseUriBuilder().path("person");
+            Integer id = personDAO.create(person);
+            if (id == null) {
+                batchResponse.setStatus(Status.INTERNAL_SERVER_ERROR.getStatusCode());
+            } else {
+                batchResponse.setStatus(Status.CREATED.getStatusCode());
+                batchResponse.setUri(uriBuilder.path(id.toString()).build().toString());
+            }
+            responseList.add(batchResponse);
+        }
+        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
+        }).build();
+    }
+
+    @Override
+    public Response update(List<Person> persons) {
+        List<BatchResponse> responseList = new ArrayList<BatchResponse>();
+        for (Person person : persons) {
+            BatchResponse batchResponse = new BatchResponse();
+            Integer changeCount = personDAO.update(person);
+            if (changeCount == 0) {
+                batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
+            } else {
+                batchResponse.setStatus(Status.OK.getStatusCode());
+            }
+            responseList.add(batchResponse);
+        }
+        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
+        }).build();
+    }
+
+    @Override
+    public Response delete(List<Integer> personIDs) {
+        List<BatchResponse> responseList = new ArrayList<BatchResponse>();
+        for (Integer personID : personIDs) {
+            BatchResponse batchResponse = new BatchResponse();
+            Integer changeCount = personDAO.deleteByID(personID);
+            if (changeCount == 0) {
+                batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
+            } else {
+                batchResponse.setStatus(Status.OK.getStatusCode());
+            }
+            responseList.add(batchResponse);
+        }
+        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
+        }).build();
     }
 
     public void setPersonDAO(SecurePersonDAO personDAO) {

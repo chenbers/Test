@@ -8,7 +8,7 @@ import org.jboss.resteasy.spi.UnauthorizedException;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 
-public class SecureGroupDAO extends BaseSecureDAO{
+public class SecureGroupDAO extends BaseSecureDAO {
 
     private GroupDAO groupDAO;
 
@@ -18,10 +18,8 @@ public class SecureGroupDAO extends BaseSecureDAO{
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
 
             if (!getAccountID().equals(group.getAccountID()))
-                throw new UnauthorizedException("accountID not found" + group.getAccountID());
-            
+                return false;
             return true;
-
         }
         return false;
     }
@@ -32,17 +30,16 @@ public class SecureGroupDAO extends BaseSecureDAO{
 
     public Group findByID(Integer groupID) {
         Group group = groupDAO.findByID(groupID);
-        if (group == null || !group.getAccountID().equals(getAccountID()))
-            throw new NotFoundException("groupID not found: " + groupID);
-        return group;
+        if (isAuthorized(group))
+            return group;
+        return null;
     }
 
-    public List<Group> getAll()
-    {
+    public List<Group> getAll() {
         return groupDAO.getGroupHierarchy(getAccountID(), getGroupID());
 
     }
-    
+
     public Integer create(Group group) {
         if (isAuthorized(group))
             return groupDAO.create(getAccountID(), group);
@@ -63,7 +60,7 @@ public class SecureGroupDAO extends BaseSecureDAO{
 
         return 0;
     }
-    
+
     public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
