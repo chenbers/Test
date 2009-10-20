@@ -53,6 +53,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     }
     private String userRole;
     private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
+    private final static String UNKNOWN_DRIVER = "unknown_driver";
 
     @Override
     public void initBean() {
@@ -135,7 +136,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
                     reportItem.setDriverName(driver.getPerson().getFullName());
                     reportItem.setGroup(getGroupHierarchy().getGroup(driver.getGroupID()).getName());
                 } else {
-                    reportItem.setDriverName("Unknown Driver");
+                    reportItem.setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
                     reportItem.setGroup("");
                 }
             }

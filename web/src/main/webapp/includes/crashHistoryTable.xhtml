@@ -49,12 +49,12 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_driver}" />
                 </f:facet>                
-                <pretty:link mappingId="driverPerformance" rendered="#{item.driverName != 'Unknown Driver'}">
+                <pretty:link mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
                     <f:param value="#{item.driver == null ? 0 : item.driver.driverID}"/>
                     #{item.driverName}
                 </pretty:link>
                 <h:outputText value="#{messages.unknown_driver}" 
-                	rendered="#{item.driverName == 'Unknown Driver'}"/>
+                	rendered="#{item.driverName eq 'Unknown Driver'}"/>
             </rich:column>
             
             <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" >
