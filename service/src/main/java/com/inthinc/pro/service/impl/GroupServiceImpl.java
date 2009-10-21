@@ -58,7 +58,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Response delete(Integer groupID) {
-        if (groupDAO.deleteByID(groupID).intValue() != 0) {
+        if (groupDAO.delete(groupID).intValue() != 0) {
             return Response.ok().build();
         }
         return Response.status(Status.NOT_MODIFIED).build();

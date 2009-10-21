@@ -55,7 +55,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Response delete(Integer driverID) {
-        if (driverDAO.deleteByID(driverID).intValue() != 0) {
+        if (driverDAO.delete(driverID).intValue() != 0) {
             return Response.ok().build();
         }
         return Response.status(Status.NOT_MODIFIED).build();
@@ -103,7 +103,7 @@ public class DriverServiceImpl implements DriverService {
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (Integer driverID : driverIDs) {
             BatchResponse batchResponse = new BatchResponse();
-            Integer changeCount = driverDAO.deleteByID(driverID);
+            Integer changeCount = driverDAO.delete(driverID);
             if (changeCount == 0) {
                 batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
             } else {

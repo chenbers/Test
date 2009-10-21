@@ -2,16 +2,14 @@ package com.inthinc.pro.util;
 
 import java.util.List;
 
-import org.jboss.resteasy.spi.NotFoundException;
-import org.jboss.resteasy.spi.UnauthorizedException;
-
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 
-public class SecureGroupDAO extends BaseSecureDAO {
+public class SecureGroupDAO extends SecureDAO<Group> {
 
     private GroupDAO groupDAO;
 
+    @Override
     public boolean isAuthorized(Group group) {
         if (group != null) {
             // TODO do we give user access to all groups, regardless of the users group????
@@ -28,6 +26,7 @@ public class SecureGroupDAO extends BaseSecureDAO {
         return isAuthorized(findByID(groupID));
     }
 
+    @Override
     public Group findByID(Integer groupID) {
         Group group = groupDAO.findByID(groupID);
         if (isAuthorized(group))
@@ -35,11 +34,13 @@ public class SecureGroupDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public List<Group> getAll() {
         return groupDAO.getGroupHierarchy(getAccountID(), getGroupID());
 
     }
 
+    @Override
     public Integer create(Group group) {
         if (isAuthorized(group))
             return groupDAO.create(getAccountID(), group);
@@ -47,6 +48,7 @@ public class SecureGroupDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public Integer update(Group group) {
         if (isAuthorized(group))
             return groupDAO.update(group);
@@ -54,7 +56,8 @@ public class SecureGroupDAO extends BaseSecureDAO {
         return 0;
     }
 
-    public Integer deleteByID(Integer groupID) {
+    @Override
+    public Integer delete(Integer groupID) {
         if (isAuthorized(groupID))
             return groupDAO.deleteByID(groupID);
 

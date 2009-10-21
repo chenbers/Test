@@ -54,7 +54,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Response delete(Integer personID) {
-        if (personDAO.deleteByID(personID).intValue() != 0) {
+        if (personDAO.delete(personID).intValue() != 0) {
             return Response.ok().build();
         }
         return Response.status(Status.NOT_MODIFIED).build();
@@ -102,7 +102,7 @@ public class PersonServiceImpl implements PersonService {
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (Integer personID : personIDs) {
             BatchResponse batchResponse = new BatchResponse();
-            Integer changeCount = personDAO.deleteByID(personID);
+            Integer changeCount = personDAO.delete(personID);
             if (changeCount == 0) {
                 batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
             } else {

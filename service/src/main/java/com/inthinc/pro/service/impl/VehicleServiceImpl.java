@@ -66,7 +66,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Response delete(Integer vehicleID) {
-        if (vehicleDAO.deleteByID(vehicleID).intValue() != 0) {
+        if (vehicleDAO.delete(vehicleID).intValue() != 0) {
             return Response.ok().build();
         }
         return Response.status(Status.NOT_MODIFIED).build();
@@ -113,7 +113,7 @@ public class VehicleServiceImpl implements VehicleService {
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (Integer vehicleID : vehicleIDs) {
             BatchResponse batchResponse = new BatchResponse();
-            Integer changeCount = vehicleDAO.deleteByID(vehicleID);
+            Integer changeCount = vehicleDAO.delete(vehicleID);
             if (changeCount == 0) {
                 batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
             } else {

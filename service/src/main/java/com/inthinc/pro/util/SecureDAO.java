@@ -1,12 +1,14 @@
 package com.inthinc.pro.util;
 
+import java.util.List;
+
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
-public abstract class BaseSecureDAO {
+public abstract class SecureDAO<T> {
 
 	
     public ProUser getProUser() {
@@ -28,4 +30,12 @@ public abstract class BaseSecureDAO {
     public Integer getAccountID() {
         return getUser().getPerson().getAcctID();
     }
+    
+    public abstract List<T> getAll();
+    public abstract T findByID(Integer id);
+    public abstract Integer create(T object);
+    public abstract Integer update(T object);
+    public abstract Integer delete(Integer id);
+
+    public abstract boolean isAuthorized(T object);    
 }

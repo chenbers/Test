@@ -14,7 +14,7 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
-public class SecureVehicleDAO extends BaseSecureDAO {
+public class SecureVehicleDAO extends SecureDAO<Vehicle> {
 
     private VehicleDAO vehicleDAO;
     private SecureGroupDAO groupDAO;
@@ -22,7 +22,8 @@ public class SecureVehicleDAO extends BaseSecureDAO {
     private SecureDeviceDAO deviceDAO;
     private SecureDriverDAO driverDAO;
 
-    private boolean isAuthorized(Vehicle vehicle) {
+    @Override
+    public boolean isAuthorized(Vehicle vehicle) {
         if (vehicle != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
@@ -33,19 +34,21 @@ public class SecureVehicleDAO extends BaseSecureDAO {
         return false;
     }
 
+    private boolean isAuthorized(Integer vehicleID) {
+        return isAuthorized(findByID(vehicleID));
+    }
+
+    @Override
+    public List<Vehicle> getAll() {
+        return vehicleDAO.getVehiclesInGroupHierarchy(getGroupID());
+    }
+
+    @Override
     public Vehicle findByID(Integer vehicleID) {
         Vehicle vehicle = vehicleDAO.findByID(vehicleID);
         if (isAuthorized(vehicle))
             return vehicle;
         return null;
-    }
-
-    private boolean isAuthorized(Integer vehicleID) {
-        return isAuthorized(findByID(vehicleID));
-    }
-
-    public List<Vehicle> getAll() {
-        return vehicleDAO.getVehiclesInGroupHierarchy(getGroupID());
     }
 
     public Vehicle findByVIN(String vin) {
@@ -55,6 +58,7 @@ public class SecureVehicleDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public Integer create(Vehicle vehicle) {
         if (isAuthorized(vehicle))
             return vehicleDAO.create(vehicle.getGroupID(), vehicle);
@@ -62,6 +66,7 @@ public class SecureVehicleDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public Integer update(Vehicle vehicle) {
         if (isAuthorized(vehicle))
             return vehicleDAO.update(vehicle);
@@ -69,7 +74,8 @@ public class SecureVehicleDAO extends BaseSecureDAO {
         return 0;
     }
 
-    public Integer deleteByID(Integer vehicleID) {
+    @Override
+    public Integer delete(Integer vehicleID) {
         if (isAuthorized(vehicleID))
             return vehicleDAO.deleteByID(vehicleID);
 

@@ -5,13 +5,14 @@ import java.util.List;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 
-public class SecureDriverDAO extends BaseSecureDAO {
+public class SecureDriverDAO extends SecureDAO<Driver> {
 
     private DriverDAO driverDAO;
     private SecureGroupDAO groupDAO;
     private SecurePersonDAO personDAO;
 
-    private boolean isAuthorized(Driver driver) {
+    @Override
+    public boolean isAuthorized(Driver driver) {
         if (driver != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
@@ -30,6 +31,7 @@ public class SecureDriverDAO extends BaseSecureDAO {
         return isAuthorized(findByID(driverID));
     }
 
+    @Override
     public Driver findByID(Integer driverID) {
 
         Driver driver = driverDAO.findByID(driverID);
@@ -38,24 +40,28 @@ public class SecureDriverDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public Integer create(Driver driver) {
         if (isAuthorized(driver))
             return driverDAO.create(driver.getPersonID(), driver);
         return null;
     }
 
+    @Override
     public Integer update(Driver driver) {
         if (isAuthorized(driver))
             return driverDAO.update(driver);
         return 0;
     }
 
-    public Integer deleteByID(Integer driverID) {
+    @Override
+    public Integer delete(Integer driverID) {
         if (isAuthorized(driverID))
             return driverDAO.deleteByID(driverID);
         return 0;
     }
 
+    @Override
     public List<Driver> getAll() {
         return driverDAO.getAllDrivers(getGroupID());
     }

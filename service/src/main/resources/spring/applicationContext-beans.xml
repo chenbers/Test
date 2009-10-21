@@ -37,6 +37,9 @@
     <bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl"> <property name="sbsUserId" value="${teenproxy.sbsUserId}"/> <property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
     <property name="teenServerDAO" ref="sbsDataAccessBean"/> <property name="tigerDAO" ref="tigerDao"/> </bean>
   -->
+  <bean id="secureAccountDAO" class="com.inthinc.pro.util.SecureAccountDAO">
+    <property name="accountDAO" ref="accountDAO"/>
+  </bean>
   <bean id="secureAddressDAO" class="com.inthinc.pro.util.SecureAddressDAO">
     <property name="addressDAO" ref="addressDAO" />
   </bean>
@@ -68,6 +71,9 @@
     <property name="deviceDAO" ref="secureDeviceDAO" />
   </bean>
   
+  <bean id="accountService" class="com.inthinc.pro.service.impl.AccountServiceImpl">
+    <property name="dao" ref="secureAccountDAO"/>
+  </bean>
   <bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl">
     <property name="addressDAO" ref="secureAddressDAO" />
   </bean>

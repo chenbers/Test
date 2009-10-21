@@ -5,13 +5,14 @@ import java.util.List;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
 
-public class SecureUserDAO extends BaseSecureDAO {
+public class SecureUserDAO extends SecureDAO<User> {
 
     private UserDAO userDAO;
     private SecurePersonDAO personDAO;
     private SecureGroupDAO groupDAO;
 
-    private boolean isAuthorized(User user) {
+    @Override
+    public boolean isAuthorized(User user) {
         if (user != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
@@ -30,6 +31,7 @@ public class SecureUserDAO extends BaseSecureDAO {
         return isAuthorized(findByID(userID));
     }
 
+    @Override
     public User findByID(Integer userID) {
         User user = userDAO.findByID(userID);
         if (isAuthorized(user))
@@ -44,16 +46,19 @@ public class SecureUserDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public List<User> getAll() {
         return userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
     }
 
+    @Override
     public Integer create(User user) {
         if (isAuthorized(user))
             return userDAO.create(user.getPersonID(), user);
         return null;
     }
 
+    @Override
     public Integer update(User user) {
         if (isAuthorized(user))
             return userDAO.update(user);
@@ -61,7 +66,8 @@ public class SecureUserDAO extends BaseSecureDAO {
             return 0;
     }
 
-    public Integer deleteByID(Integer userID) {
+    @Override
+    public Integer delete(Integer userID) {
         if (isAuthorized(userID))
             return userDAO.deleteByID(userID);
         else

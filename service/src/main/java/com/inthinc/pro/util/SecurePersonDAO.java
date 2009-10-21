@@ -5,11 +5,12 @@ import java.util.List;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Person;
 
-public class SecurePersonDAO extends BaseSecureDAO {
+public class SecurePersonDAO extends SecureDAO<Person> {
 
     private PersonDAO personDAO;
     private SecureAddressDAO addressDAO;
 
+    @Override
     public boolean isAuthorized(Person person) {
         if (person != null) {
             if (!getAccountID().equals(person.getAcctID()))
@@ -26,6 +27,7 @@ public class SecurePersonDAO extends BaseSecureDAO {
         return isAuthorized(findByID(personID));
     }
 
+    @Override
     public Person findByID(Integer personID) {
         Person person = personDAO.findByID(personID);
         if (isAuthorized(person))
@@ -33,10 +35,12 @@ public class SecurePersonDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public List<Person> getAll() {
         return personDAO.getPeopleInGroupHierarchy(getGroupID());
     }
 
+    @Override
     public Integer create(Person person) {
         if (isAuthorized(person))
             return personDAO.create(getAccountID(), person);
@@ -44,6 +48,7 @@ public class SecurePersonDAO extends BaseSecureDAO {
         return null;
     }
 
+    @Override
     public Integer update(Person person) {
         if (isAuthorized(person))
             return personDAO.update(person);
@@ -51,7 +56,8 @@ public class SecurePersonDAO extends BaseSecureDAO {
         return 0;
     }
 
-    public Integer deleteByID(Integer personID) {
+    @Override
+    public Integer delete(Integer personID) {
         if (isAuthorized(personID))
             return personDAO.deleteByID(personID);
 

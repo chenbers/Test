@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response delete(Integer userID) {
-        if (userDAO.deleteByID(userID).intValue() != 0) {
+        if (userDAO.delete(userID).intValue() != 0) {
             return Response.ok().build();
         }
         return Response.status(Status.NOT_MODIFIED).build();
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (Integer userID : userIDs) {
             BatchResponse batchResponse = new BatchResponse();
-            Integer changeCount = userDAO.deleteByID(userID);
+            Integer changeCount = userDAO.delete(userID);
             if (changeCount == 0) {
                 batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
             } else {
