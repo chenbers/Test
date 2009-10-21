@@ -195,7 +195,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             {
                 //final User user = userDAO.findByID(id);
                 final Person person = personDAO.findByID(id);
-                if (person != null && !person.getStatus().equals(Status.DELETED))
+                if (person != null && person.getStatus() != null && !person.getStatus().equals(Status.DELETED))
                     notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
             }
             MiscUtil.sortSelectItems(notifyPeople);
