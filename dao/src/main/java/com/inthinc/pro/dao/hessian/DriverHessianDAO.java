@@ -87,15 +87,6 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         {
             return null;
         }
-        // TODO: Remove when method is impl on back end
-        catch (ProxyException ex)
-        {
-            if (ex.getErrorCode() == 422)
-            {
-                return null;
-            }
-            throw ex;
-        }
     }
 
     @Override

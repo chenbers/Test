@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.RedFlagsAlertMapper;
 import com.inthinc.pro.model.RedFlagAlert;
 
