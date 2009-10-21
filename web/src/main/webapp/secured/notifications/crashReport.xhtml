@@ -309,10 +309,12 @@
 										
 			                            <h:outputText value="#{messages.crashReport_driver}:" />
 			                                      
-						                <pretty:link mappingId="driverPerformance" rendered="#{crashReportBean.crashReport.driverID != null}">
+						                <pretty:link mappingId="driverPerformance" rendered="#{crashReportBean.crashReport.driver.person.fullName != 'Unknown Driver'}">
 						                    <f:param value="#{crashReportBean.crashReport.driverID}"/>
 											<h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>	
 						                </pretty:link>
+						                <h:outputText rendered="#{crashReportBean.crashReport.driver.person.fullName == 'Unknown Driver'}" 
+						                	value="#{crashReportBean.crashReport.driver.person.fullName}"/>
 										
 										<h:outputText value="#{messages.crashReport_weather}:" />	
 										<h:outputText value="#{crashReportBean.crashReport.weather}"/>									

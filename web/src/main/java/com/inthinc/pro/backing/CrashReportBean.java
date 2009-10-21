@@ -15,11 +15,13 @@ import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
@@ -119,7 +121,7 @@ public class CrashReportBean extends BaseBean {
     }
 
     public String save() {
-        // Temporary fix to make sure the correct date for the crash is loaded
+        // Fix to make sure the correct date for the crash is loaded
         updateCrashTime();
                
         if (editState.equals(EditState.ADD)) {
@@ -340,6 +342,18 @@ public class CrashReportBean extends BaseBean {
 
     public void setCrashReportID(Integer crashReportID) {
         this.crashReport = crashReportDAO.findByID(crashReportID);
+        
+        // Check if the driver in this crash is the unknown driver
+        if ( this.crashReport.getDriver().getDriverID() != null ) {
+            Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());
+            if ( this.crashReport.getDriver().getDriverID().equals(acct.getUnkDriverID()) ) {
+                Person p = new Person();
+                p.setFirst("Unknown");
+                p.setLast("Driver");
+                this.crashReport.getDriver().setPerson(p);
+            }
+        }
+
         this.crashReportID = crashReportID;
     }
 
