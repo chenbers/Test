@@ -56,6 +56,8 @@ public class CrashReportBean extends BaseBean {
     private Integer crashTime;
     private Integer crashReportID; // Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
     private Trip crashReportTrip;
+    
+    private Driver unkDriver = null;
 
     public List<SelectItem> getCrashReportStatusAsSelectItems() {
         return SelectItemUtil.toList(CrashReportStatus.class, true, CrashReportStatus.FORGIVEN, CrashReportStatus.DELETED);
@@ -187,6 +189,11 @@ public class CrashReportBean extends BaseBean {
     private void loadDrivers() {
         logger.debug("loading drivers");
         List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
+        
+        // Add the unknown driver, should they exist
+        if ( unkDriver != null ) {
+            driverList.add(unkDriver);
+        }
         for (Driver driver : driverList) {
             if (driver != null)
                 entityList.add(new DriverBean(driver));
@@ -351,6 +358,7 @@ public class CrashReportBean extends BaseBean {
                 p.setFirst("Unknown");
                 p.setLast("Driver");
                 this.crashReport.getDriver().setPerson(p);
+                this.unkDriver = this.crashReport.getDriver();
             }
         }
 
