@@ -636,7 +636,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setWeight(0);
             // approach to remove rfid from a driver
             if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
-                person.getDriver().setRFID(1L);               
+                person.getDriver().setRFID(1L);     
+            // if create and no user info, check for "" on primary and secondary e-mail
+            if ( create && !person.isUserSelected() ) {
+                if ( (person.getPriEmail() != null) && (person.getPriEmail().trim().length() == 0) ) {
+                    person.setPriEmail(null);
+                }
+                if ( (person.getSecEmail() != null) && (person.getSecEmail().trim().length() == 0) ) {
+                    person.setSecEmail(null);
+                }                
+            }
             // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
