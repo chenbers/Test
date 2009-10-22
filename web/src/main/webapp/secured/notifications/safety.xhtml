@@ -45,7 +45,7 @@
 		                </table>
 		              </li>
 					  <li class="l">
-							<a4j:commandButton id="searchButton" action="#{eventsBean.searchAction}" 
+							<a4j:commandButton id="searchButton" action="#{eventsBean.searchAction}" oncomplete="initializeTable()"
 		            					reRender="navigation:redirectSearch,header,notificationsTableForm:items,notificationsTableForm:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />

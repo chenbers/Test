@@ -32,7 +32,7 @@
                                             </tr>
                                         </table>
                                         </li>
-                                        <li class="l"><a4j:commandButton id="searchButton" action="#{emergencyBean.searchAction}"
+                                        <li class="l"><a4j:commandButton id="searchButton" action="#{emergencyBean.searchAction}" oncomplete="initializeTable()"
                                             reRender="navigation:redirectSearch,header,emergency_table_form:items,emergency_table_form:bottomScroller"
                                             styleClass="left">
                                             <span class="search"> <h:outputText value="#{messages.button_search}" /> </span>

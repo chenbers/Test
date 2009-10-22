@@ -44,7 +44,7 @@
 		                </table>
 		              </li>
 					  <li class="l">
-							<a4j:commandButton id="searchButton" action="#{diagnosticsBean.searchAction}" 
+							<a4j:commandButton id="searchButton" action="#{diagnosticsBean.searchAction}" oncomplete="initializeTable()"
 		            					reRender="navigation:redirectSearch,header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
