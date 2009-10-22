@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -486,7 +487,7 @@ public class ReportServiceTest
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void speedPercent()
     {
         // getSDTrendsByGTC
@@ -555,7 +556,7 @@ public class ReportServiceTest
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void crashSummaryGroup()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -578,7 +579,7 @@ public class ReportServiceTest
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void crashSummaryDriver()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -601,7 +602,7 @@ public class ReportServiceTest
     }
         
      @Test
-     //@Ignore
+     @Ignore
      public void crashSummaryVehicle()
      {
             ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -742,7 +743,7 @@ public class ReportServiceTest
      }
      
      @Test
-     //@Ignore
+     @Ignore
      public void driverMPGScores()
      {
     	 // getDTrendByDTC
@@ -862,7 +863,7 @@ for (Event event : events)
      }
      
      @Test
-     //@Ignore
+     @Ignore
      public void vehicleMPGScores()
      {
     	 // getVTrendByDTC
@@ -889,7 +890,7 @@ for (Event event : events)
 
      
      @Test
-     //@Ignore
+     @Ignore
      public void getVehicleReportData()
      {
     	 // getVDScoresByGT
@@ -913,7 +914,7 @@ for (Event event : events)
      }
      
      @Test
-     //@Ignore
+     @Ignore
      public void getDriverReportData()
      {
     	 // getDVScoresByGT
