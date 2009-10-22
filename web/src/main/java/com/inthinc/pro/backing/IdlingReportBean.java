@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
 
 public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implements PersonChangeListener {
@@ -24,14 +24,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     static final List<String> AVAILABLE_COLUMNS;
     private ScoreDAO scoreDAO;
     private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
-    private Date startDate = null;
-    private Date intStartDate = null;
-    private Date defaultStartDate = null;
-    private Date internalStartDate = null;
-    private Date endDate = null;
-    private Date intEndDate = null;
-    private Date defaultEndDate = null;
-    private Date internalEndDate = null;
+    private Date startDate;
+    private Date endDate;
     private String badDates = "Search dates: * Okay.";
     private final static String NO_START_DATE = " * No start date, reset";
     private final static String NO_END_DATE = " * No end date, reset";
@@ -62,18 +56,18 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         super.initBean();
         // Set start and end date to last 7 days
         endDate = new Date();
-        startDate = new Date();
-        startDate.setTime(endDate.getTime() - DAYS_BACK);
-        // Start with today
-        intEndDate = resetTime(null);
-        // Now, seven days back
-        intStartDate = resetTime(new Date(intEndDate.getTime() - DAYS_BACK));
+        startDate = new Date(endDate.getTime() - DAYS_BACK);
     }
 
     @Override
     protected void loadDBData() {
         checkDates();
-        this.idlingsData = scoreDAO.getIdlingReportData(getEffectiveGroupId(), this.internalStartDate, this.internalEndDate);
+//Date internalStartDate = startOfDay(this.startDate);
+//Date internalEndDate = endOfDay(this.endDate);
+//System.out.println("IDLING DATE RANGE: " + internalStartDate + "(" + internalStartDate.getTime() + ") - " + internalEndDate + "(" + internalEndDate.getTime() + ")");        
+        this.idlingsData = scoreDAO.getIdlingReportData(getEffectiveGroupId(), 
+        							startOfDay(this.startDate), 
+        							endOfDay(this.endDate));
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for (IdlingReportItem iri : this.idlingsData) {
             iri.setGroup(this.getGroupHierarchy().getGroup(iri.getGroupID()).getName());
@@ -96,13 +90,23 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
      * @param date
      * @return
      */
-    private Date resetTime(Date date) {
+    private Date startOfDay(Date date) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         if (date != null) // Otherwise it will be the current date
             calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    private Date endOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        if (date != null) // Otherwise it will be the current date
+            calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
         return calendar.getTime();
     }
 
@@ -130,19 +134,17 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         boolean good = true;
         // null checks
         if (this.startDate == null) {
-            this.startDate = this.defaultStartDate;
             sb.append(NO_START_DATE);
             good = false;
         }
         if (this.endDate == null) {
-            this.endDate = this.defaultEndDate;
             sb.append(NO_END_DATE);
             good = false;
         }
         // start after end?
         if (this.startDate.getTime() > this.endDate.getTime()) {
-            this.startDate = this.defaultStartDate;
-            this.endDate = this.defaultEndDate;
+            this.startDate = null;
+            this.endDate = null;
             sb.append(START_BEFORE_END);
             good = false;
         }
@@ -153,8 +155,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         sb.append(".");
         badDates = sb.toString();
         // CAREFULLY compute the search dates
-        this.internalStartDate = resetTime(this.startDate);
-        this.internalEndDate = resetTime(this.endDate);
+//        this.internalStartDate = resetTime(this.startDate);
+//        this.internalEndDate = resetTime(new Date(this.endDate.getTime() + DateUtil.MILLISECONDS_IN_DAY));
     }
 
     @Override
@@ -252,7 +254,9 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     }
 
     private ReportCriteria loadReportCriteria() {
-        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), internalStartDate, internalEndDate);
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(),
+        				startOfDay(this.startDate),
+        				endOfDay(this.endDate));
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         reportCriteria.setLocale(getLocale());
