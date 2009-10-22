@@ -748,6 +748,10 @@ public class SiloServiceTest {
             Device returnedDevice = deviceDAO.findByID(device.getDeviceID());
             Util.compareObjects(device, returnedDevice, ignoreFields);
         }
+        for (Device device : deviceList) {
+            Device returnedDevice = deviceDAO.findBySerialNum(device.getSerialNum());
+            Util.compareObjects(device, returnedDevice, ignoreFields);
+        }
         // find all
         List<Device> returnDeviceList = deviceDAO.getDevicesByAcctID(acctID);
         assertEquals("device count for account", deviceList.size(), returnDeviceList.size());
@@ -776,6 +780,22 @@ public class SiloServiceTest {
             List<ForwardCommand> fwdCmdQueue = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
             assertEquals("expected 17 forward commands to be queued for device: " + device.getDeviceID(), 17, fwdCmdQueue.size());
         }
+
+    
+    
+        Device device = new Device(0, acctID, DeviceStatus.NEW, "Device DEL", "IMEI " + acctID + "DEL", "SIM " + "DEL", 
+        		"SN" + acctID + "DEL",
+                "5555551239", // phone
+                "5555559879"); // ephone
+        Integer deviceID = deviceDAO.create(acctID, device);
+        assertNotNull(deviceID);
+        device.setDeviceID(deviceID);
+        
+        int delCnt = deviceDAO.deleteByID(deviceID);
+        assertEquals("Device delete count", 1, delCnt);
+        
+        Device delDevice = deviceDAO.findByID(deviceID);
+        assertEquals("Deleted device status ", DeviceStatus.DELETED, delDevice.getStatus());
     }
 
     private void forwardCommands() {
@@ -837,8 +857,25 @@ public class SiloServiceTest {
                 Util.compareObjects(vehicle, returnedVehicle, ignoreFields);
             }
         }
-        // find all
+        // find all (deep)
         List<Vehicle> groupVehicleList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
+        assertEquals("vehicle count for group", Integer.valueOf(VEHICLE_COUNT), new Integer(groupVehicleList.size()));
+        for (Vehicle vehicle : vehicleList) {
+            if (vehicle.getGroupID().equals(groupID)) {
+                boolean found = false;
+                for (Vehicle groupVehicle : groupVehicleList) {
+                    if (vehicle.getVehicleID().equals(groupVehicle.getVehicleID())) {
+                        Util.compareObjects(vehicle, groupVehicle, ignoreFields);
+                        found = true;
+                        break;
+                    }
+                }
+                assertTrue("vehicle " + vehicle.getName(), found);
+            }
+        }
+        
+        // find all (not deep)
+        groupVehicleList = vehicleDAO.getVehiclesInGroup(groupID);
         assertEquals("vehicle count for group", Integer.valueOf(VEHICLE_COUNT), new Integer(groupVehicleList.size()));
         for (Vehicle vehicle : vehicleList) {
             if (vehicle.getGroupID().equals(groupID)) {
@@ -1248,6 +1285,34 @@ public class SiloServiceTest {
         vehicleDAO.setDeviceDAO(deviceDAO);
         List<Vehicle> groupVehicles = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
         assertEquals(Integer.valueOf(VEHICLE_COUNT), Integer.valueOf(groupVehicles.size()));
+
+        // switch device assignment
+        Integer vehicle1ID = groupVehicles.get(0).getVehicleID();
+        Integer device1ID = deviceList.get(0).getDeviceID();
+        Integer device2ID = deviceList.get(1).getDeviceID();
+//System.out.println("------- " + cnt + " ----------");
+//System.out.println("vehicleID: " + vehicle1ID);
+//System.out.println("deviceID 1: " + device1ID);
+//System.out.println("deviceID 2: " + device2ID);
+        
+        vehicleDAO.setVehicleDevice(vehicle1ID, device1ID);
+        Vehicle returnedVehicle1 = vehicleDAO.findByID(vehicle1ID);
+//System.out.println("after setting device 1 to vehicle -- deviceID in vehicle = " + returnedVehicle1.getDeviceID());
+		assertEquals("setVehicleDevice failed", device1ID, returnedVehicle1.getDeviceID());
+        
+        vehicleDAO.setVehicleDevice(vehicle1ID, device2ID);
+        Vehicle returnedVehicle2 = vehicleDAO.findByID(vehicle1ID);
+//        System.out.println("after setting device 2 to vehicle -- deviceID in vehicle = " + returnedVehicle2.getDeviceID());
+        assertEquals("setVehicleDevice failed vehicle id: " + vehicle1ID, device2ID, returnedVehicle2.getDeviceID());
+
+        Device returnedDevice1 = deviceDAO.findByID(device1ID);
+        Device returnedDevice2 = deviceDAO.findByID(device2ID);
+//System.out.println("vehicleID in device 1 = " + returnedDevice1.getVehicleID());
+//System.out.println("vehicleID in device 2 = " + returnedDevice2.getVehicleID());
+//        }
+        assertNull("setVehicleDevice failed", returnedDevice1.getVehicleID());
+        assertEquals("setVehicleDevice failed vehicle id: " + vehicle1ID, vehicle1ID, returnedDevice2.getVehicleID());
+
         int deviceIdx = 0;
         for (Vehicle vehicle : groupVehicles) {
             Device device = deviceList.get(deviceIdx++);
@@ -1264,6 +1329,8 @@ public class SiloServiceTest {
             }
             logger.debug(vehicle.getVehicleID() + " assigned to " + deviceID);
         }
+        
+        
     }
 
     private void assignDriversToVehicles(Integer groupID) {
