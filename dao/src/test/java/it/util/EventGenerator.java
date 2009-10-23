@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
@@ -264,7 +266,19 @@ eventCount = 0;
             
             if ((i+1) % 4 == 0 ||(i+1) == locations.length)
             {
-                service.note(imeiID, noteList);
+            	for (int retryCnt = 0; retryCnt < 10; retryCnt++)
+            	{
+	            	try
+	            	{
+	            		service.note(imeiID, noteList);
+	            		break;
+	            	}
+	            	catch (HessianException e)
+	            	{
+	            		System.out.println("Exception inserting notes: " + e.getErrorCode() + " retrying...");
+	            		
+	            	}
+            	}
                 noteList = new ArrayList<byte[]>();
                 System.out.print(".");
             }
