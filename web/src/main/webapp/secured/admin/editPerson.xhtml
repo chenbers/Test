@@ -67,7 +67,7 @@
 
                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_personalInformation}" /></div>
 
-                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top">
@@ -156,7 +156,7 @@
 
                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_contactInformation}" /></div>
 
-                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_address_addr1}" /></td>
@@ -221,7 +221,7 @@
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
                       </div>
 
-                      <table id="driverTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                      <table id="driverTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_license}" /></td>
@@ -355,10 +355,10 @@
 
                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
 
-                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">     
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">     
                       <ui:fragment rendered="#{not personBean.batchEdit}">  
                         <tr>
-                          <td width="150" valign="top">
+                          <td width="160" valign="top">
                             <h:outputText value="#{messages.editPerson_empid}" />
                           </td>
                           <td>
@@ -369,7 +369,7 @@
                         </tr>   
                         </ui:fragment>
                         <tr>
-                          <td width="150" valign="top">
+                          <td width="160" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_reportsTo" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['reportsTo']}" />
                             <h:outputText value="#{messages.editPerson_reportsTo}" />
                           </td>
@@ -381,7 +381,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="150" valign="top">
+                          <td width="160" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_title" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['title']}" />
                             <h:outputText value="#{messages.editPerson_title}" />
                           </td>
@@ -390,7 +390,7 @@
                           </td>
                         </tr>
                          <tr>
-                             <td width="100">
+                             <td width="160">
                                  <ui:include src="../../includes/inputLabel.xhtml">
                                     <ui:param name="required" value="TRUE"/>
                                     <ui:param name="fieldName" value="locale"/>
@@ -407,7 +407,7 @@
                              </td>
                         </tr>
                         <tr>
-                          <td width="150" valign="top">
+                          <td width="160" valign="top">
                           	<ui:include src="../../includes/inputLabel.xhtml">
 								<ui:param name="required" value="TRUE"/>
 								<ui:param name="for" value="timeZone"/>
@@ -432,7 +432,7 @@
                           
                         </tr>
                         <tr>
-                             <td width="150">
+                             <td width="160">
                                  <ui:include src="../../includes/inputLabel.xhtml">
                                     <ui:param name="required" value="TRUE"/>
                                     <ui:param name="fieldName" value="measurementType"/>
@@ -443,14 +443,14 @@
                              </td>
                              <td>
                                  <rich:message for="user_person_measurementType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                 <h:selectOneMenu id="user_person_measurementType" value="#{personBean.item.measurementType}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-                                      	<a4j:support event="onchange" action="#{personBean.measurementTypeChosenAction}" reRender="user_person_fuelEfficiencyType"/>
+                                 <h:selectOneMenu id="user_person_measurementType" value="#{personBean.item.measurementType}" converter="SimpleBeanConverter">
+                                      	<a4j:support event="onchange" oncomplete="checkMultiple(this);checkMultiple('user_person_fuelEfficiencyType')"  action="#{personBean.measurementTypeChosenAction}" reRender="user_person_fuelEfficiencyType"/>
                                         <f:selectItems value="#{measurementBean.measurementTypeItems}"/>
                                  </h:selectOneMenu>
                              </td>
                         </tr>
                         <tr>
-                             <td width="150">
+                             <td width="160">
                                  <ui:include src="../../includes/inputLabel.xhtml">
                                     <ui:param name="required" value="TRUE"/>
                                     <ui:param name="fieldName" value="fuelEfficiencyType"/>
@@ -478,7 +478,7 @@
    
                       <h:panelGroup id="userInfoPanel">
                       <h:outputText rendered="#{personBean.item.userSelected}">
-                      <table id="userTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                      <table id="userTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top">
@@ -593,7 +593,7 @@
                       <div class="spacer"></div>
                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_notifications}" /></div>
 
-                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top">
