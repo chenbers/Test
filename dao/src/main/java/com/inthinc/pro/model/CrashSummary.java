@@ -77,7 +77,7 @@ public class CrashSummary extends BaseEntity {
 			crashesPerMillionMiles = 0.0;
 			return;
 		}
-		crashesPerMillionMiles = new Double(crashesInTimePeriod)/new Double(totalMiles.longValue())/100000000.0;
+		crashesPerMillionMiles = (new Double(crashesInTimePeriod)*1000000.0)/new Double(totalMiles.longValue());
 	}
 
 	public Integer getCrashesInTimePeriod() {
