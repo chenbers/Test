@@ -42,6 +42,7 @@ public class Device extends BaseEntity
     private String			  serialNum;
     private String            phone;
     private String            ephone;
+    @Column(updateable = false)
     private Date              activated;
     private String            speedSet;
     @Column(updateable = false)
