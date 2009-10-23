@@ -8,7 +8,7 @@ import org.jboss.resteasy.spi.UnauthorizedException;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.Device;
 
-public class SecureDeviceDAO extends SecureDAO<Device>{
+public class SecureDeviceDAO extends SecureDAO<Device> {
 
     private DeviceDAO deviceDAO;
 
@@ -25,33 +25,32 @@ public class SecureDeviceDAO extends SecureDAO<Device>{
     public boolean isAuthorized(Integer deviceID) {
         return isAuthorized(findByID(deviceID));
     }
-    
+
     @Override
     public Device findByID(Integer deviceID) {
         Device device = deviceDAO.findByID(deviceID);
-        if (device == null || !device.getAccountID().equals(getAccountID()))
-            throw new NotFoundException("deviceID not found: " + deviceID);
-        return device;
+        if (isAuthorized(device))
+            return device;
+        return null;
     }
 
     public Device findByIMEI(String imei) {
         Device device = deviceDAO.findByIMEI(imei);
-        if (device == null || !device.getAccountID().equals(getAccountID()))
-            throw new NotFoundException("device IMEI not found: " + imei);
-        return device;
+        if (isAuthorized(device))
+            return device;
+        return null;
     }
 
     public Device findBySerialNum(String serialNum) {
         Device device = deviceDAO.findBySerialNum(serialNum);
-        if (device == null || !device.getAccountID().equals(getAccountID()))
-            throw new NotFoundException("device serialNum not found: " + serialNum);
-        return device;
+        if (isAuthorized(device))
+            return device;
+        return null;
     }
-    
+
     @Override
-    public List<Device> getAll()
-    {
-    	return deviceDAO.getDevicesByAcctID(getAccountID());
+    public List<Device> getAll() {
+        return deviceDAO.getDevicesByAcctID(getAccountID());
     }
 
     @Override

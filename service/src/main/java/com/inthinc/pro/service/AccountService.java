@@ -17,34 +17,36 @@ import com.inthinc.pro.model.Account;
 @Produces("application/xml")
 public interface AccountService extends GenericService<Account> {
 
+    @Context
+    public void setUriInfo(UriInfo uriInfo);
+
     @GET
     @Path("/account")
-    @Override
     public Response get();
-    
+
     @GET
     @Path("/account/{accountID}")
     @Override
     public Response get(@PathParam("accountID") Integer id);
-    
+
     @GET
     @Path("/accounts")
     @Override
     public Response getAll();
-    
+
     @POST
     @Path("/account")
     @Override
-    public Response create(Account account, @Context UriInfo uriInfo);
-    
+    public Response create(Account account);
+
     @PUT
     @Path("/account")
     @Override
     public Response update(Account account);
-    
+
     @DELETE
     @Override
     @Path("/account")
     public Response delete(Integer id);
-    
+
 }

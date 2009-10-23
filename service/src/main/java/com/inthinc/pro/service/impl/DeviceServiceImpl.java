@@ -2,35 +2,38 @@ package com.inthinc.pro.service.impl;
 
 import java.util.List;
 
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.service.DeviceService;
 import com.inthinc.pro.util.SecureDeviceDAO;
 
-public class DeviceServiceImpl implements DeviceService {
+public class DeviceServiceImpl extends AbstractService<Device, SecureDeviceDAO> implements DeviceService {
 
-    private SecureDeviceDAO deviceDAO;
-
-    public List<Device> getAll() {
-        return deviceDAO.getAll();
+    @Override
+    public Response getAll() {
+        List<Device> list = getDao().getAll();
+        return Response.ok(new GenericEntity<List<Device>>(list) {
+        }).build();
+    }
+    public Response findByIMEI(String imei) {
+        Device device = getDao().findByIMEI(imei);
+        if (device != null)
+            return Response.ok(device).build();
+        return Response.status(Status.NOT_FOUND).build();
     }
 
-    public Device get(Integer deviceID) {
-        return deviceDAO.findByID(deviceID);
+    public Response findBySerialNum(String serialNum) {
+        Device device = getDao().findBySerialNum(serialNum);
+        if (device != null)
+            return Response.ok(device).build();
+        return Response.status(Status.NOT_FOUND).build();
+    }
+    @Override
+    public Response create(List<Device> list) {
+        return Response.status(501).build();
     }
 
-    public Device findByIMEI(String imei) {
-        return deviceDAO.findByIMEI(imei);
-    }
-
-    public Device findBySerialNum(String serialNum) {
-        return deviceDAO.findBySerialNum(serialNum);
-    }
-
-    public void setDeviceDAO(SecureDeviceDAO deviceDAO) {
-        this.deviceDAO = deviceDAO;
-    }
-
-    public SecureDeviceDAO getDeviceDAO() {
-        return deviceDAO;
-    }
 }

@@ -10,9 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Vehicle;
 
@@ -22,6 +20,7 @@ public interface VehicleService {
 
     @GET
     @Path("/vehicles")
+    @Produces("application/xml")
     public Response getAll();
 
     @GET
@@ -35,7 +34,7 @@ public interface VehicleService {
     @POST
     @Consumes("application/xml")
     @Path("/vehicle")
-    public Response create(Vehicle vehicle, @Context UriInfo uriInfo);
+    public Response create(Vehicle vehicle);
 
     @PUT
     @Consumes("application/xml")
@@ -49,7 +48,7 @@ public interface VehicleService {
     @POST
     @Consumes("application/xml")
     @Path("/vehicles")
-    public Response create(List<Vehicle> vehicles, @Context UriInfo uriInfo);
+    public Response create(List<Vehicle> vehicles);
 
     @PUT
     @Consumes("application/xml")

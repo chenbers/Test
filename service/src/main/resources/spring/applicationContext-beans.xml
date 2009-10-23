@@ -75,25 +75,25 @@
     <property name="dao" ref="secureAccountDAO"/>
   </bean>
   <bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl">
-    <property name="addressDAO" ref="secureAddressDAO" />
+    <property name="dao" ref="secureAddressDAO" />
   </bean>
   <bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl">
-    <property name="deviceDAO" ref="secureDeviceDAO" />
+    <property name="dao" ref="secureDeviceDAO" />
   </bean>
   <bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
-    <property name="driverDAO" ref="secureDriverDAO" />
+    <property name="dao" ref="secureDriverDAO" />
   </bean>
   <bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl">
-    <property name="groupDAO" ref="secureGroupDAO" />
+    <property name="dao" ref="secureGroupDAO" />
   </bean>
   <bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl">
-    <property name="personDAO" ref="securePersonDAO" />
+    <property name="dao" ref="securePersonDAO" />
   </bean>
   <bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl">
-    <property name="userDAO" ref="secureUserDAO" />
+    <property name="dao" ref="secureUserDAO" />
   </bean>
   <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
-    <property name="vehicleDAO" ref="secureVehicleDAO" />
+    <property name="dao" ref="secureVehicleDAO" />
   </bean>
   <!--     
     <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">

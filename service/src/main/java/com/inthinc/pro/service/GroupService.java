@@ -8,38 +8,34 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Group;
-
-
 
 @Path("/")
 @Produces("application/xml")
 public interface GroupService {
 
 
-	@GET
-	@Path("/groups")
-	public Response getAll();
-	
-	@GET
-	@Path("/group/{groupID}")
-	public Response get(@PathParam("groupID")Integer groupID);
+    @GET
+    @Path("/groups")
+    public Response getAll();
 
-	@POST
-	@Consumes("application/xml")
-	@Path("/group")
-	public Response create(Group group, @Context UriInfo uriInfo);
+    @GET
+    @Path("/group/{groupID}")
+    public Response get(@PathParam("groupID") Integer groupID);
 
-	@PUT
-	@Consumes("application/xml")
-	@Path("/group")
-	public Response update(Group group);
+    @POST
+    @Consumes("application/xml")
+    @Path("/group")
+    public Response create(Group group);
 
-	@DELETE
-	@Path("/group/{id}")
-	public Response delete(@PathParam("id")Integer id);
+    @PUT
+    @Consumes("application/xml")
+    @Path("/group")
+    public Response update(Group group);
+
+    @DELETE
+    @Path("/group/{id}")
+    public Response delete(@PathParam("id") Integer id);
 }
