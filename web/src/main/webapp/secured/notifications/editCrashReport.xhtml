@@ -344,7 +344,8 @@
 		                			<h:panelGroup>
 		                				<rich:message for="vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 										<a4j:region>
-											<h:selectOneMenu id="vehicle" value="#{crashReportBean.crashReport.vehicleID}"  disabled="#{crashReportBean.editState eq 'EDIT'}" 
+											<h:selectOneMenu id="vehicle" style="width:250px" 
+												value="#{crashReportBean.crashReport.vehicleID}"  disabled="#{crashReportBean.editState eq 'EDIT'}" 
 												required="true" requiredMessage="#{messages.required}">
 												<f:selectItems value="#{crashReportBean.vehiclesAsSelectItems}"/>
 												<a4j:support event="onchange" reRender="tripsListPanel" ajaxSingle="true" limitToList="true" action="#{crashReportBean.loadTrips}"/>
@@ -358,7 +359,8 @@
 		                			<h:panelGroup>
 		                				<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 										<a4j:region>
-											<h:selectOneMenu id="driver" value="#{crashReportBean.crashReport.driverID}" disabled="#{crashReportBean.editState eq 'EDIT'}"  
+											<h:selectOneMenu id="driver" style="width:250px" 
+												value="#{crashReportBean.crashReport.driverID}" disabled="#{crashReportBean.editState eq 'EDIT'}"  
 												required="true" requiredMessage="#{messages.required}">
 												<f:selectItems value="#{crashReportBean.driversAsSelectItems}"/>
 												<a4j:support event="onchange"  ajaxSingle="true" reRender="tripsListPanel" limitToList="true" action="#{crashReportBean.loadTrips}"/>
