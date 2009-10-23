@@ -8,7 +8,7 @@
 
 
   <http auto-config="true" create-session="never" session-fixation-protection="newSession">
-    <intercept-url pattern="/api/**" access="ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSER" />
+    <intercept-url pattern="/api/**" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER" />
     <http-basic />
   </http>
   <authentication-provider user-service-ref="userDetailsService">
