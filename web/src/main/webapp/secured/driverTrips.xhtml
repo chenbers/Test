@@ -516,8 +516,8 @@
                         </rich:dataTable>
                      
                         <table align="center"><tr><td>
-                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" maxPages="5" 
-                        				   reRender="selectedTripTable" page="#{driverTripsBean.eventsPage}" styleClass="dataScrollerSmall"/>
+                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller"  maxPages="5"
+                        				   reRender="selectedTripTable"  styleClass="dataScrollerSmall" renderIfSinglePage="false"/>
                         </td></tr></table>
                     </a4j:form>
                 </rich:panel> <!-- End Trip table --></div>
