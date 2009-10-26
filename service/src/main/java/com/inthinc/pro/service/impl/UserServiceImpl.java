@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.User;
@@ -31,7 +32,7 @@ public class UserServiceImpl extends AbstractService<User, SecureUserDAO> implem
     }
 
     @Override
-    public Response create(List<User> users) {
+    public Response create(List<User> users, UriInfo uriInfo) {
 
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (User user : users) {

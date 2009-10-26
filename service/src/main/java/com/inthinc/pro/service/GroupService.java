@@ -8,7 +8,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Group;
 
@@ -28,7 +30,7 @@ public interface GroupService {
     @POST
     @Consumes("application/xml")
     @Path("/group")
-    public Response create(Group group);
+    public Response create(Group group, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")

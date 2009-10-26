@@ -17,20 +17,15 @@ import com.inthinc.pro.util.SecureDAO;
 public abstract class AbstractService<T, DAO extends SecureDAO<T>> implements GenericService<T> {
 
     private DAO dao;
-    protected UriInfo uriInfo;
 
     @Override
-    public void setUriInfo(UriInfo uriInfo) {
-        this.uriInfo = uriInfo;
-    }
-
-    @Override
-    public Response create(T object) {
+    public Response create(T object, UriInfo uriInfo) {
         Integer id = dao.create(object);
         if (id != null) {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            URI uri = uriBuilder.path(id.toString()).build();
-            return Response.created(uri).build();
+            URI uri = uriBuilder.path(id.toString()).build();            
+            T t = dao.findByID(id);         
+            return Response.created(uri).entity(t).build();
         }
         return Response.serverError().build();
     }

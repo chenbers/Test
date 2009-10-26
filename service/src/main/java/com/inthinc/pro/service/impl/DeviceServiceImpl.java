@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Device;
@@ -32,7 +33,7 @@ public class DeviceServiceImpl extends AbstractService<Device, SecureDeviceDAO> 
         return Response.status(Status.NOT_FOUND).build();
     }
     @Override
-    public Response create(List<Device> list) {
+    public Response create(List<Device> list, UriInfo uriInfo) {
         return Response.status(501).build();
     }
 

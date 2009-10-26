@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Driver;
@@ -22,7 +23,7 @@ public class DriverServiceImpl extends AbstractService<Driver, SecureDriverDAO> 
     }
 
     @Override
-    public Response create(List<Driver> drivers) {
+    public Response create(List<Driver> drivers, UriInfo uriInfo) {
 
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (Driver driver : drivers) {

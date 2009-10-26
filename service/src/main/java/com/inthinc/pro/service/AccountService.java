@@ -17,9 +17,6 @@ import com.inthinc.pro.model.Account;
 @Produces("application/xml")
 public interface AccountService extends GenericService<Account> {
 
-    @Context
-    public void setUriInfo(UriInfo uriInfo);
-
     @GET
     @Path("/account")
     public Response get();
@@ -37,7 +34,7 @@ public interface AccountService extends GenericService<Account> {
     @POST
     @Path("/account")
     @Override
-    public Response create(Account account);
+    public Response create(Account account, @Context UriInfo uriInfo);
 
     @PUT
     @Path("/account")

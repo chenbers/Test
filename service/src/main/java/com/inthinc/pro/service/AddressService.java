@@ -10,7 +10,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Address;
 
@@ -18,7 +20,6 @@ import com.inthinc.pro.model.Address;
 @Produces("application/xml")
 @Consumes("application/xml")
 public interface AddressService extends GenericService<Address> {
-
 
     @GET
     @Path("/addresses")
@@ -33,7 +34,7 @@ public interface AddressService extends GenericService<Address> {
     @Consumes("application/xml")
     @Path("/address")
     @Override
-    public Response create(Address address);
+    public Response create(Address address, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")
@@ -49,7 +50,7 @@ public interface AddressService extends GenericService<Address> {
     @POST
     @Consumes("application/xml")
     @Path("/addresses")
-    public Response create(List<Address> addresses);
+    public Response create(List<Address> addresses, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")

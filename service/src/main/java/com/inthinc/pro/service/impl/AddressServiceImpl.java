@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Address;
@@ -17,6 +18,7 @@ public class AddressServiceImpl extends AbstractService<Address, SecureAddressDA
 
     private SecureAddressDAO addressDAO;
 
+    
     @Override
     public Response getAll() {
         // Return 501 - Not Implemented
@@ -31,7 +33,7 @@ public class AddressServiceImpl extends AbstractService<Address, SecureAddressDA
     }
 
     @Override
-    public Response create(List<Address> addresses) {
+    public Response create(List<Address> addresses, UriInfo uriInfo) {
 
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (Address address : addresses) {

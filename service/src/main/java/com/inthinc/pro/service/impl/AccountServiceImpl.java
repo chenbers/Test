@@ -3,6 +3,7 @@ package com.inthinc.pro.service.impl;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.service.AccountService;
@@ -20,12 +21,12 @@ public class AccountServiceImpl extends AbstractService<Account, SecureAccountDA
     }
 
     @Override
-    public Response create(Account object) {
+    public Response create(Account object, UriInfo uriInfo) {
         return Response.status(501).build();
     }
 
     @Override
-    public Response create(List<Account> list) {
+    public Response create(List<Account> list, UriInfo uriInfo) {
         return Response.status(501).build();
     }
 

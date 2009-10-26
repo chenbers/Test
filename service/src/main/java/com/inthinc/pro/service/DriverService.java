@@ -10,7 +10,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Driver;
 
@@ -29,7 +31,7 @@ public interface DriverService {
     @POST
     @Consumes("application/xml")
     @Path("/driver")
-    public Response create(Driver driver);
+    public Response create(Driver driver, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")
@@ -43,7 +45,7 @@ public interface DriverService {
     @POST
     @Consumes("application/xml")
     @Path("/drivers")
-    public Response create(List<Driver> drivers);
+    public Response create(List<Driver> drivers, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")

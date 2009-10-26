@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.LastLocation;
@@ -34,7 +35,7 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
     }
 
     @Override
-    public Response create(List<Vehicle> vehicles) {
+    public Response create(List<Vehicle> vehicles, UriInfo uriInfo) {
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (Vehicle vehicle : vehicles) {
             BatchResponse batchResponse = new BatchResponse();
