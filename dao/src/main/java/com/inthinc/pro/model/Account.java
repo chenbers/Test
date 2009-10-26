@@ -4,6 +4,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -16,16 +17,20 @@ public class Account extends BaseEntity
 	 */
 	private static final long serialVersionUID = 2388000038869935798L;
 
+	//TODO: refactor names of fields. Remove the prefix acct. Acct is in
 	@ID
+	@XmlElement(name="id")
     private Integer       acctID;
 	
 	@Column(name="name")
+	@XmlElement(name="name")
 	private String        acctName;
 
 	private Integer       mailID;
     private Integer       billID;
     private Status        status;
     
+    @XmlElement(name="UnknownDriverID")
     private Integer       unkDriverID;
 
     public Account()

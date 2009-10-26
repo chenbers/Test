@@ -238,9 +238,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         {
             Map<String, Object> returnMap = getSiloService().getID(CENTRAL_ID_KEY, email);
             Integer personID = getCentralId(returnMap);
-            Person person = findByID(personID);
-            populateInnerObjects(personID, person);
-            return person;
+            return findByID(personID);
         }
         catch (EmptyResultSetException e)
         {

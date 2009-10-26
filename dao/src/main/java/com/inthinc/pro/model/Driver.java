@@ -5,6 +5,7 @@ import java.util.Date;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * You'll see this through out this bean. It is mainly used so that the table sorting on these fields treats "" and null the same. if(fieldName != null && fieldName.equals(""))
@@ -137,6 +138,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.dot = dot;
     }
 
+    @XmlTransient //Prevent Circular Reference on XML rendering 
     public Person getPerson() {
         return person;
     }
