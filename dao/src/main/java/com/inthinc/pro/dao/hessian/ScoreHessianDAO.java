@@ -774,8 +774,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 					dqMap.getCrashEvents() == null ? 0 : dqMap.getCrashEvents(), 
 					dqMap.getCrashTotal() == null ? 0 : dqMap.getCrashTotal(), 
 					dqMap.getCrashDays() == null ? 0 : dqMap.getCrashDays(),
-					dqMap.getOdometer() == null ? 0 : dqMap.getOdometer(), 
-					dqMap.getCrashOdometer() == null ? 0 : dqMap.getCrashOdometer());
+					dqMap.getOdometer() == null ? 0 : dqMap.getOdometer().doubleValue()/100.0, 
+					dqMap.getCrashOdometer() == null ? 0 : dqMap.getCrashOdometer().doubleValue()/100.0);
 	         
 	        return crashSummary;
 		}
@@ -795,8 +795,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 					dqMap.getCrashEvents() == null ? 0 : dqMap.getCrashEvents(), 
 					dqMap.getCrashTotal() == null ? 0 : dqMap.getCrashTotal(), 
 					dqMap.getCrashDays() == null ? 0 : dqMap.getCrashDays(),
-					dqMap.getOdometer() == null ? 0 : dqMap.getOdometer(), 
-					dqMap.getCrashOdometer() == null ? 0 : dqMap.getCrashOdometer());
+					dqMap.getOdometer() == null ? 0 : dqMap.getOdometer().doubleValue()/100.0, 
+					dqMap.getCrashOdometer() == null ? 0 : dqMap.getCrashOdometer().doubleValue()/100.0);
 	               
 	        return crashSummary;
 		}
