@@ -15,9 +15,6 @@ import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.SecureAddressDAO;
 
 public class AddressServiceImpl extends AbstractService<Address, SecureAddressDAO> implements AddressService {
-
-    private SecureAddressDAO addressDAO;
-
     
     @Override
     public Response getAll() {
@@ -39,7 +36,7 @@ public class AddressServiceImpl extends AbstractService<Address, SecureAddressDA
         for (Address address : addresses) {
             BatchResponse batchResponse = new BatchResponse();
             UriBuilder uriBuilder = uriInfo.getBaseUriBuilder().path("address");
-            Integer id = addressDAO.create(address);
+            Integer id = getDao().create(address);
             if (id == null) {
                 batchResponse.setStatus(Status.INTERNAL_SERVER_ERROR.getStatusCode());
             } else {
@@ -57,14 +54,6 @@ public class AddressServiceImpl extends AbstractService<Address, SecureAddressDA
         // Return 501 - Not Implemented
         return Response.status(501).build();
 
-    }
-
-    public void setAddressDAO(SecureAddressDAO addressDAO) {
-        this.addressDAO = addressDAO;
-    }
-
-    public SecureAddressDAO getAddressDAO() {
-        return addressDAO;
     }
 
 }

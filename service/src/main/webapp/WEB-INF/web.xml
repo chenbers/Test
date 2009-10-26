@@ -55,9 +55,4 @@
         <session-timeout>1</session-timeout>
     </session-config>
     
-    <!-- Error Pages -->
-    <error-page>
-	     <error-code>500</error-code>
-	     <location>/error/500.jsp</location>
-	</error-page>
 </web-app>
