@@ -200,7 +200,7 @@ public abstract class BasePerformanceBean extends BaseBean
         {
             if (e.getScore() != null)
             {
-                sb.append(column.getChartItem(new Object[] { (e.getScore() / 10), monthList.get(cnt) }));
+                sb.append(column.getChartItem(new Object[] { e.getScore(), monthList.get(cnt) }));
             }
             else
             {
