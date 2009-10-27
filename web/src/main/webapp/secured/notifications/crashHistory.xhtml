@@ -148,7 +148,7 @@
 						</a4j:status>
 					  </li>
 					  
-					  <security:authorize ifAnyGranted="ROLE_SUPERUSER">
+					  <security:authorize ifAnyGranted="ROLE_SUPERUSER,ROLE_INTHINC">
 					  	<li class="l text">
 							<pretty:link mappingId="addCrashReport" styleClass="ls_tab_add_crash">
 								#{messages.notes_crashhistory_addnew}

@@ -23,12 +23,12 @@
 			<li class="#{notificationsSelected}">
                 <pretty:link mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
 			</li>
-			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
+			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
     			<li class="#{liveFleetSelected}">
                     <pretty:link mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
     			</li>
 			</security:authorize>
-			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
+			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
 				<li class="#{adminSelected}">
                     <pretty:link mappingId="admin"><span>#{messages.navigation_admin}</span></pretty:link>
 				</li>
