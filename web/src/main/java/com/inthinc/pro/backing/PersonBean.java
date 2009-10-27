@@ -741,9 +741,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     public List<SelectItem> getRoles() {
+        //TODO: improve detection of roles that are selectable by users
+        Role inthincRole = Roles.getRoleByName("inthinc");
         List<SelectItem> roleList = new ArrayList<SelectItem>();
         for (Role role : Roles.getRoleList()) {
-            roleList.add(new SelectItem(role, role.getName()));
+            if (inthincRole == null || !role.getRoleID().equals(inthincRole.getRoleID()))
+                roleList.add(new SelectItem(role, role.getName()));
         }
         roleList.add(0, new SelectItem(null, ""));
         return roleList;
