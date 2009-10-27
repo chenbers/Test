@@ -4,9 +4,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
   <!-- Message Bundles -->
+  <!-- 
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="com.inthinc.pro.resources.Messages" />
   </bean>
+  -->
   <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="ignoreResourceNotFound" value="true" />
     <property name="locations">

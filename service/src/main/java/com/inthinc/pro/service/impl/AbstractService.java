@@ -23,9 +23,8 @@ public abstract class AbstractService<T, DAO extends SecureDAO<T>> implements Ge
         Integer id = dao.create(object);
         if (id != null) {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            URI uri = uriBuilder.path(id.toString()).build();            
-            T t = dao.findByID(id);         
-            return Response.created(uri).entity(t).build();
+            URI uri = uriBuilder.path(id.toString()).build();       
+            return Response.created(uri).build();
         }
         return Response.serverError().build();
     }
