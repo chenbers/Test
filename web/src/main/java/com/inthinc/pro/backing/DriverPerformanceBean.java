@@ -49,7 +49,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private DriverSpeedBean     driverSpeedBean;
     private DriverStyleBean     driverStyleBean;
     private DriverSeatBeltBean  driverSeatBeltBean;
-    private CrashSummaryBean 	crashSummary;
+    private CrashSummary	 	crashSummary;
 
 	private TripDisplay         lastTrip;
     private List<Event>         violationEvents = new ArrayList<Event>();
@@ -480,13 +480,16 @@ public class DriverPerformanceBean extends BasePerformanceBean
 		// TODO Auto-generated method stub
 		
 	}
-	public CrashSummaryBean getCrashSummary() {
-		
-		crashSummary.getCrashSummaryForDriver(getDriverID());
+	public CrashSummary getCrashSummary() {
+
+		if (crashSummary == null)
+		{
+			crashSummary = scoreDAO.getDriverCrashSummaryData(getDriverID());
+		}
 		return crashSummary;
 	}
 
-	public void setCrashSummary(CrashSummaryBean crashSummary) {
+	public void setCrashSummary(CrashSummary crashSummary) {
 		this.crashSummary = crashSummary;
 	}
     

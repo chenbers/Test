@@ -234,7 +234,6 @@
         <property name="vehicleSpeedBean" ref="vehicleSpeedBean"/>
         <property name="vehicleStyleBean" ref="vehicleStyleBean"/>
         <property name="vehicleSeatBeltBean" ref="vehicleSeatBeltBean"/>
-        <property name="crashSummary" ref="crashSummaryBean"/>
     </bean>
     
     <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="basePerformanceEventsBean">
@@ -275,7 +274,6 @@
         <property name="driverSpeedBean" ref="driverSpeedBean"/>
         <property name="driverStyleBean" ref="driverStyleBean"/>
         <property name="driverSeatBeltBean" ref="driverSeatBeltBean"/>
-        <property name="crashSummary" ref="crashSummaryBean"/>
      </bean>
 
     <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="basePerformanceEventsBean">

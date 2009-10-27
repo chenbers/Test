@@ -24,33 +24,31 @@ public class CrashSummaryBean extends BaseBean {
 
 		if (navigation.getGroupID() != null)
 			setCrashSummary(getCrashSummaryForGroup(navigation.getGroupID()));
-		else if (navigation.getDriverID() != null)
-			setCrashSummary(getCrashSummaryForDriver(navigation.getDriverID()));
+//		else if (navigation.getDriverID() != null)
+//			setCrashSummary(getCrashSummaryForDriver(navigation.getDriverID()));
 		
 	}
-	public CrashSummary getCrashSummaryForGroup(Integer groupID) {
+	private CrashSummary getCrashSummaryForGroup(Integer groupID) {
 		logger.info("getCrashSummaryForGroup:  " + groupID);
 		return scoreDAO.getGroupCrashSummaryData(groupID);
 		
 	}
 
-	public CrashSummary getCrashSummaryForDriver(Integer driverID) {
-		
-		logger.info("getCrashSummaryForDriver:  " + driverID);
-		return scoreDAO.getDriverCrashSummaryData(driverID);
-		
-	}
-	public CrashSummary getCrashSummaryForVehicle(Integer vehicleID) {
-		
-		logger.info("getCrashSummaryForVehicle:  " + vehicleID);
-		return scoreDAO.getVehicleCrashSummaryData(vehicleID);
-	}
+//	public CrashSummary getCrashSummaryForDriver(Integer driverID) {
+//		
+//		logger.info("getCrashSummaryForDriver:  " + driverID);
+//		return scoreDAO.getDriverCrashSummaryData(driverID);
+//		
+//	}
 	public void setCrashSummary(CrashSummary crashSummary) {
 		this.crashSummary = crashSummary;
 	}
 	
 	public Double getCrashesPerMillionMiles() {
 		return crashSummary.getCrashesPerMillionMiles();
+	}
+	public CrashSummary getCrashSummary() {
+		return crashSummary;
 	}
 	public Integer getDaysSinceLastCrash() {
 

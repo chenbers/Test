@@ -37,14 +37,14 @@
                         </tr>
                         <tr  style="font-weight:bold; font-size:30px" align="center">
                             <td>
-                           		<h:outputText value="#{crashSummaryBean.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
+                           		<h:outputText value="#{crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
                            		
                         	</td>
                         	<td style="border-right-width:1px; border-left-width:1px">
-                       			<h:outputText value="#{crashSummaryBean.daysSinceLastCrash}"/>
+                       			<h:outputText value="#{crashSummary.daysSinceLastCrash}"/>
                         	</td>
                         	<td>
-                        	     <h:outputText value="#{crashSummaryBean.milesSinceLastCrash}" converter="MilesToKilometersConverter"/>
+                        	     <h:outputText value="#{crashSummary.milesSinceLastCrash}" converter="MilesToKilometersConverter"/>
                         	</td>
                         	</tr>
                        <tr>

@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
@@ -62,7 +63,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private BaseBean    vehicleSpeedBean;
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
-    private CrashSummaryBean 		crashSummary;
+    private CrashSummary 		crashSummary;
    
     
 
@@ -530,13 +531,16 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 		// TODO Auto-generated method stub
 		
 	}
-	public CrashSummaryBean getCrashSummary() {
+	public CrashSummary getCrashSummary() {
 		
-		crashSummary.getCrashSummaryForVehicle(getVehicleID());
+		if (crashSummary == null)
+		{
+			crashSummary = scoreDAO.getVehicleCrashSummaryData(getVehicleID());
+		}
 		return crashSummary;
 	}
 
-	public void setCrashSummary(CrashSummaryBean crashSummary) {
+	public void setCrashSummary(CrashSummary crashSummary) {
 		this.crashSummary = crashSummary;
 	}
     public List<Event> getTamperEvents() {
