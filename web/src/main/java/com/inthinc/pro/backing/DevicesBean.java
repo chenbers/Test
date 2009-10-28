@@ -293,7 +293,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             getFacesContext().addMessage("edit-form:sim", message);
         }
-        // PHONE
+        // PHONE        
         if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
         {
             if (deviceView.getPhone() == null || deviceView.getPhone().equals(""))
@@ -305,8 +305,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             }
 //            else if (deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")
 //            		&& !deviceView.getPhone().matches("\\+\\d*"))
-            else if(deviceView.getEphone() != null && 
-            		((deviceView.getEphone().length() > 22) || (MiscUtil.unformatPhone(deviceView.getEphone()).length() > 15)) )
+            else if(deviceView.getPhone() != null &&             		
+                    ((deviceView.getPhone().length() > 22) || (MiscUtil.unformatPhone(deviceView.getPhone()).length() > 15)) )                
             {
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
