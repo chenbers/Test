@@ -464,7 +464,7 @@
 															<a4j:support event="onRowClick" reRender="displayTrip" oncomplete="displayTrip();">
 							                                    <f:setPropertyActionListener value="#{trip}" target="#{crashReportBean.selectedTrip}" />
 							                                </a4j:support>
-															<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="160px">
+															<rich:column sortBy="#{trip.startTime}" sortOrder="ASCENDING" sortable="false" width="200px">
 																<f:facet name="header">
 																	<h:outputText value="#{messages.crashReport_startTime}"/>
 																</f:facet>
@@ -472,7 +472,7 @@
 																	<f:convertDateTime pattern="MMM dd yyyy hh:mm a z" timeZone="#{crashReportBean.person.timeZone}"/>
 																</h:outputText>
 															</rich:column>
-															<rich:column width="160px">
+															<rich:column width="200px">
 																<f:facet name="header">
 																	<h:outputText value="#{messages.crashReport_endTime}" timeZone="#{crashReportBean.person.timeZone}"/>
 																</f:facet>
