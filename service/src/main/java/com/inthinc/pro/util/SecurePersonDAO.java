@@ -13,6 +13,8 @@ public class SecurePersonDAO extends SecureDAO<Person> {
     @Override
     public boolean isAuthorized(Person person) {
         if (person != null) {
+            if(getUser().getRole().equals(inthincRole))
+                return true;
             if (!getAccountID().equals(person.getAcctID()))
                 return false;
             if (!addressDAO.isAuthorized(person.getAddressID()))

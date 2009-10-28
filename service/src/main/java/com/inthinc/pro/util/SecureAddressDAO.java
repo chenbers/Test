@@ -14,6 +14,8 @@ public class SecureAddressDAO extends SecureDAO<Address> {
     @Override
     public boolean isAuthorized(Address address) {
         if (address != null) {
+            if(getUser().getRole().equals(inthincRole))
+                return true;
             if (getAccountID().equals(address.getAccountID()))
                 return true;
         }

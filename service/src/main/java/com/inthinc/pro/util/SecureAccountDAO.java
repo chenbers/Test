@@ -10,8 +10,9 @@ public class SecureAccountDAO extends SecureDAO<Account> {
     private AccountDAO accountDAO;
 
     @Override
-    public Integer create(Account object) {
-        // TODO Auto-generated method stub
+    public Integer create(Account account) {
+        if (isAuthorized(account))
+            return accountDAO.create(account);
         return null;
     }
 
@@ -31,13 +32,17 @@ public class SecureAccountDAO extends SecureDAO<Account> {
 
     @Override
     public List<Account> getAll() {
-        // TODO Auto-generated method stub
+        if (isAuthorized(null)) {
+            return accountDAO.getAllAcctIDs();
+        }
         return null;
     }
 
     @Override
     public boolean isAuthorized(Account account) {
-        if (account != null) {
+        if (getUser().getRole().equals(inthincRole))
+            return true;
+        if (account != null && account.getAcctID() != null) {
             if (getAccountID().equals(account.getAcctID()))
                 return true;
         }

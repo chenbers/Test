@@ -16,10 +16,10 @@ public class SecureUserDAO extends SecureDAO<User> {
         if (user != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-
+            if(getUser().getRole().equals(inthincRole))
+                return true;
             if (!groupDAO.isAuthorized(user.getGroupID()))
                 return false;
-
             if (!personDAO.isAuthorized(user.getPersonID()))
                 return false;
             return true;

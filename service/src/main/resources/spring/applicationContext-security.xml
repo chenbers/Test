@@ -6,7 +6,7 @@
                     http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
 
   <http auto-config="true" create-session="never" session-fixation-protection="newSession">
-    <intercept-url pattern="/api/**" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER" />
+    <intercept-url pattern="/api/**" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC" />
     <http-basic />
   </http>
   <authentication-provider user-service-ref="userDetailsService">

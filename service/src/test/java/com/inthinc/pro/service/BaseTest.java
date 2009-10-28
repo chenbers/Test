@@ -28,9 +28,11 @@ public abstract class BaseTest implements ApplicationContextAware {
 //    private Class<T> serviceClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 //    protected T service;
     private ApplicationContext applicationContext;
+//    private static final int port = 8081;
+//    private static final String domain = "dev-pro.inthinc.com";
     private static final int port = 8080;
     private static final String domain = "localhost";
-    private static final String url = "http://" + domain + ":" + port + "/service/api";
+    protected static final String url = "http://" + domain + ":" + port + "/service/api";
         
     protected HttpClient httpClient;
     protected ClientExecutor clientExecutor;
@@ -52,18 +54,18 @@ public abstract class BaseTest implements ApplicationContextAware {
         httpClient = new HttpClient(params);
 
         Credentials defaultcreds = new UsernamePasswordCredentials("mraby", "password");
-        httpClient.getState().setCredentials(new AuthScope("localhost", port, AuthScope.ANY_REALM), defaultcreds);
-        clientExecutor = new ApacheHttpClientExecutor(httpClient);
+        httpClient.getState().setCredentials(new AuthScope(domain, port, AuthScope.ANY_REALM), defaultcreds);
+//        clientExecutor = new ApacheHttpClientExecutor(httpClient);
 //        service = ProxyFactory.create(serviceClass, url, client);
 //        System.out.println("Created Service Client: " + serviceClass.getSimpleName());
         
-        addressService = ProxyFactory.create(AddressService.class, url, httpClient);
-        deviceService = ProxyFactory.create(DeviceService.class, url, httpClient);
-        driverService = ProxyFactory.create(DriverService.class, url, httpClient);
-        groupService = ProxyFactory.create(GroupService.class, url, httpClient);
-        personService = ProxyFactory.create(PersonService.class, url, httpClient);
-        userService = ProxyFactory.create(UserService.class, url, httpClient);
-        vehicleService = ProxyFactory.create(VehicleService.class, url, httpClient);
+//        addressService = ProxyFactory.create(AddressService.class, url, httpClient);
+//        deviceService = ProxyFactory.create(DeviceService.class, url, httpClient);
+//        driverService = ProxyFactory.create(DriverService.class, url, httpClient);
+//        groupService = ProxyFactory.create(GroupService.class, url, httpClient);
+//        personService = ProxyFactory.create(PersonService.class, url, httpClient);
+//        userService = ProxyFactory.create(UserService.class, url, httpClient);
+//        vehicleService = ProxyFactory.create(VehicleService.class, url, httpClient);
     }
 
     
