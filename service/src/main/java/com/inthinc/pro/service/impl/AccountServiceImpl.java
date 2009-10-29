@@ -23,18 +23,8 @@ public class AccountServiceImpl extends AbstractService<Account, SecureAccountDA
         }).build();
     }
 
-//    @Override
-//    public Response create(Account object, UriInfo uriInfo) {
-//        return Response.status(501).build();
-//    }
-
     @Override
     public Response create(List<Account> list, UriInfo uriInfo) {
-        return Response.status(501).build();
-    }
-
-    @Override
-    public Response delete(Integer id) {
         return Response.status(501).build();
     }
 
@@ -44,14 +34,8 @@ public class AccountServiceImpl extends AbstractService<Account, SecureAccountDA
     }
 
     @Override
-    public Response update(Account object) {
-        return Response.status(501).build();
-    }
-
-    @Override
     public Response update(List<Account> list) {
         return Response.status(501).build();
     }
-
 
 }

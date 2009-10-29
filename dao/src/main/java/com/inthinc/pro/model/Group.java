@@ -226,5 +226,11 @@ public class Group extends BaseEntity
     {
         this.zoneRev = zoneRev;
     }
+
+    @Override
+    public String toString() {
+        return "Group [accountID=" + accountID + ", description=" + description + ", groupID=" + groupID + ", managerID=" + managerID + ", mapLat=" + mapLat + ", mapLng=" + mapLng + ", mapZoom="
+                + mapZoom + ", name=" + name + ", parentID=" + parentID + ", status=" + status + ", type=" + type + ", zoneRev=" + zoneRev + "]";
+    }
     
 }

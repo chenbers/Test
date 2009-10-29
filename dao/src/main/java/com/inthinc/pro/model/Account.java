@@ -1,11 +1,10 @@
 package com.inthinc.pro.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @SimpleName(simpleName="Acct")
@@ -19,18 +18,12 @@ public class Account extends BaseEntity
 
 	//TODO: refactor names of fields. Remove the prefix acct. Acct is in
 	@ID
-	@XmlElement(name="id")
-    private Integer       acctID;
-	
+    private Integer       acctID;	
 	@Column(name="name")
-	@XmlElement(name="name")
 	private String        acctName;
-
 	private Integer       mailID;
     private Integer       billID;
-    private Status        status;
-    
-    @XmlElement(name="UnknownDriverID")
+    private Status        status;    
     private Integer       unkDriverID;
 
     public Account()
@@ -109,6 +102,11 @@ public class Account extends BaseEntity
 
     public void setUnkDriverID(Integer unkDriverID) {
         this.unkDriverID = unkDriverID;
+    }
+
+    @Override
+    public String toString() {
+        return "Account [acctID=" + acctID + ", acctName=" + acctName + ", billID=" + billID + ", mailID=" + mailID + ", status=" + status + ", unkDriverID=" + unkDriverID + "]";
     }
 
 }

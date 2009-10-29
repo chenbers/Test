@@ -64,7 +64,6 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
-    @XmlTransient
     public String getPassword() {
         return password;
     }

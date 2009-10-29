@@ -64,7 +64,7 @@ public class SecureDeviceDAO extends SecureDAO<Device> {
     }
 
     @Override
-    public Integer update(Device object) {
+    public Device update(Device object) {
         throw new NotImplementedException();
     }
 

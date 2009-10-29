@@ -48,10 +48,10 @@ public class SecureDriverDAO extends SecureDAO<Driver> {
     }
 
     @Override
-    public Integer update(Driver driver) {
-        if (isAuthorized(driver))
-            return driverDAO.update(driver);
-        return 0;
+    public Driver update(Driver driver) {
+        if (isAuthorized(driver) && driverDAO.update(driver) != 0)
+            return driverDAO.findByID(driver.getDriverID());
+        return null;
     }
 
     @Override

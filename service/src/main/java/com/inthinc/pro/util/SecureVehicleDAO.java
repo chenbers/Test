@@ -67,11 +67,10 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
     }
 
     @Override
-    public Integer update(Vehicle vehicle) {
-        if (isAuthorized(vehicle))
-            return vehicleDAO.update(vehicle);
-
-        return 0;
+    public Vehicle update(Vehicle vehicle) {
+        if (isAuthorized(vehicle) && vehicleDAO.update(vehicle) != 0)
+            return vehicleDAO.findByID(vehicle.getVehicleID());
+        return null;
     }
 
     @Override

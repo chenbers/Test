@@ -14,7 +14,7 @@ public class SecureGroupDAO extends SecureDAO<Group> {
         if (group != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            if(getUser().getRole().equals(inthincRole))
+            if (getUser().getRole().equals(inthincRole))
                 return true;
             if (!getAccountID().equals(group.getAccountID()))
                 return false;
@@ -50,11 +50,10 @@ public class SecureGroupDAO extends SecureDAO<Group> {
     }
 
     @Override
-    public Integer update(Group group) {
-        if (isAuthorized(group))
-            return groupDAO.update(group);
-
-        return 0;
+    public Group update(Group group) {
+        if (isAuthorized(group) && groupDAO.update(group) != 0)
+            return groupDAO.findByID(group.getGroupID());
+        return null;
     }
 
     @Override

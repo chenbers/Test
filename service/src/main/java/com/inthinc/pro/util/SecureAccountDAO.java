@@ -18,8 +18,10 @@ public class SecureAccountDAO extends SecureDAO<Account> {
 
     @Override
     public Integer delete(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        //Only INTHINC users can delete an account
+        if(getUser().getRole().equals(inthincRole))
+            return accountDAO.deleteByID(id);
+        return 0;
     }
 
     @Override
@@ -50,9 +52,11 @@ public class SecureAccountDAO extends SecureDAO<Account> {
     }
 
     @Override
-    public Integer update(Account object) {
-        // TODO Auto-generated method stub
+    public Account update(Account account) {
+        if(isAuthorized(account) && accountDAO.update(account) != 0) 
+            return accountDAO.findByID(account.getAcctID());
         return null;
+            
     }
 
     public AccountDAO getAccountDAO() {

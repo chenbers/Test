@@ -76,8 +76,9 @@ public abstract class AbstractService<T, DAO extends SecureDAO<T>> implements Ge
 
     @Override
     public Response update(T object) {
-        if (dao.update(object).intValue() != 0) {
-            return Response.ok().build();
+        T t = dao.update(object);
+        if (t != null) { 
+            return Response.ok(t).build();
         }
         return Response.status(Status.NOT_MODIFIED).build();
     }
@@ -108,8 +109,8 @@ public abstract class AbstractService<T, DAO extends SecureDAO<T>> implements Ge
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (T t : list) {
             BatchResponse batchResponse = new BatchResponse();
-            Integer changeCount = dao.update(t);
-            if (changeCount == 0) {
+            T tUpdate = dao.update(t);
+            if (tUpdate == null) {
                 batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
             } else {
                 batchResponse.setStatus(Status.OK.getStatusCode());

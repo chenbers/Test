@@ -37,7 +37,7 @@ public abstract class SecureDAO<T> {
     public abstract List<T> getAll();
     public abstract T findByID(Integer id);
     public abstract Integer create(T object);
-    public abstract Integer update(T object);
+    public abstract T update(T object);
     public abstract Integer delete(Integer id);
 
     public abstract boolean isAuthorized(T object);    

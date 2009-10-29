@@ -14,7 +14,7 @@ public class SecureAddressDAO extends SecureDAO<Address> {
     @Override
     public boolean isAuthorized(Address address) {
         if (address != null) {
-            if(getUser().getRole().equals(inthincRole))
+            if (getUser().getRole().equals(inthincRole))
                 return true;
             if (getAccountID().equals(address.getAccountID()))
                 return true;
@@ -43,11 +43,10 @@ public class SecureAddressDAO extends SecureDAO<Address> {
     }
 
     @Override
-    public Integer update(Address address) {
-        if (isAuthorized(address))
-            return addressDAO.update(address);
-
-        return 0;
+    public Address update(Address address) {
+        if (isAuthorized(address) && addressDAO.update(address) != 0)
+            return addressDAO.findByID(address.getAddrID());
+        return null;
     }
 
     @Override
@@ -57,7 +56,6 @@ public class SecureAddressDAO extends SecureDAO<Address> {
 
         return 0;
     }
-
 
     @Override
     public List<Address> getAll() {
