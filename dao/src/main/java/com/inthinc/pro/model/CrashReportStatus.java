@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public enum CrashReportStatus implements BaseEnum{
     NEW(0),
     CONFIRMED(1),
-    FORGIVEN(2),
+    EXCLUDE(2),
     DELETED(3);
 
     private int code;

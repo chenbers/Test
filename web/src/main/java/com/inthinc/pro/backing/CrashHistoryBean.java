@@ -185,7 +185,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
             cr.setCrashReportStatus(CrashReportStatus.CONFIRMED);
             
         } else if ( stat.equalsIgnoreCase(MessageUtil.getMessageString("notes_crashhistory_exclude")) ) {
-            cr.setCrashReportStatus(CrashReportStatus.FORGIVEN);
+            cr.setCrashReportStatus(CrashReportStatus.EXCLUDE);
             
         } else {
             return;

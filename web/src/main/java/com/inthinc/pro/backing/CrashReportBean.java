@@ -60,7 +60,7 @@ public class CrashReportBean extends BaseBean {
     private Driver unkDriver = null;
 
     public List<SelectItem> getCrashReportStatusAsSelectItems() {
-        return SelectItemUtil.toList(CrashReportStatus.class, true, CrashReportStatus.FORGIVEN, CrashReportStatus.DELETED);
+        return SelectItemUtil.toList(CrashReportStatus.class, true, CrashReportStatus.DELETED);
     }
 
     public List<SelectItem> getEntityTypeAsSelectItems() {

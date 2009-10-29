@@ -79,15 +79,8 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_status}" />
                 </f:facet>
-				         		
-				<h:selectOneMenu id="crashMenu" rendered="#{bean.userRole == 'superUser' or bean.userRole == 'supervisor'}" 
-					value="#{item.status}_#{item.crashReportID}" onchange="tryThis('#{item.crashReportID}','#{index}');">                    
-					<f:selectItem itemLabel="#{messages.notes_crashhistory_new}" itemValue="#{messages.notes_crashhistory_new}_#{item.crashReportID}"/>
-					<f:selectItem itemLabel="#{messages.notes_crashhistory_confirmed}" itemValue="#{messages.notes_crashhistory_confirmed}_#{item.crashReportID}"/>
-					<f:selectItem itemLabel="#{messages.notes_crashhistory_exclude}" itemValue="#{messages.notes_crashhistory_exclude}_#{item.crashReportID}"/>
-				</h:selectOneMenu>	                
-                <h:outputText rendered="#{bean.userRole != 'superUser' and bean.userRole != 'supervisor'}"
-                	value="#{item.status}" />
+				         					              
+                <h:outputText value="#{item.status}" />
             </rich:column>
             
             <rich:column rendered="#{tableColumns['weather'].visible}" sortBy="#{item.weather}" >
