@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MPGGroupReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<subDataset name="CategorySeriesSubDataset">
 		<parameter name="MEASUREMENT_TYPE" class="com.inthinc.pro.model.MeasurementType" isForPrompting="false"/>
@@ -45,6 +45,9 @@
 							</datasetParameter>
 							<datasetParameter name="FUEL_EFFICIENCY_TYPE">
 								<datasetParameterExpression><![CDATA[$P{FUEL_EFFICIENCY_TYPE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="REPORT_LOCALE">
+								<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
 							</datasetParameter>
 							<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 						</datasetRun>

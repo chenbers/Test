@@ -2,9 +2,9 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
-import com.inthinc.pro.dao.annotations.ID;
-
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.dao.annotations.ID;
 
 @XmlRootElement
 public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableEntity>
@@ -92,8 +92,25 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
         
         return fScore;
     }
+    public Double getScoreAsDouble(){
+        Double dScore = null;
+        if(score != null){
+        	dScore = Double.valueOf((Double)(this.getScore()==null ? 0 : this.getScore() / 10.0));
+        }
+        
+        return dScore;
+    }
     
     public String getScoreAsString(){
+    	
+//        String returnString = "N/A";
+//        if(score != null && score >= 0)
+//        {
+//            returnString =  NumberFormat.getInstance(getLocale()).format(new BigDecimal(score).movePointLeft(1));
+//        }
+//        
+//        return returnString;
+
         String returnString = null;
         if(score < 0)
         {

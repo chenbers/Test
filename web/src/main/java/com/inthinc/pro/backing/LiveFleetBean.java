@@ -9,7 +9,6 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.DriverLocation;
@@ -36,8 +35,6 @@ public class LiveFleetBean extends BaseBean
     private Integer              selectedVehicleID;
     private Integer              selectedDriverID;
     private List<Group>          displayedGroups;
-    private AddressLookup        addressLookup;
-
     public void initBean()
     {
         organizationHierarchy = getGroupHierarchy();
@@ -71,7 +68,7 @@ public class LiveFleetBean extends BaseBean
         for (DriverLocation driver : drivers)
         {
             driver.setPosition((count++));
-            driver.setAddressStr(addressLookup.getAddress(driver.getLoc().getLat(), driver.getLoc().getLng()));
+            driver.setAddressStr(getAddress(driver.getLoc()));
             driver.setDevice(deviceDAO.findByID(driver.getVehicle().getDeviceID()));  // ADD TO return map for getVehiclesNearLoc()
             
             // Add groups to Group map for Legend
@@ -156,16 +153,6 @@ public class LiveFleetBean extends BaseBean
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
-    }
-
-    public AddressLookup getAddressLookup()
-    {
-        return addressLookup;
-    }
-
-    public void setAddressLookup(AddressLookup addressLookup)
-    {
-        this.addressLookup = addressLookup;
     }
 
     // ADDRESS LATLNG PROPERTIES

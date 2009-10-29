@@ -59,13 +59,14 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_level}" />
                 </f:facet>
-                <h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{item.redFlag.level.description}" />
+                <ui:param name="descriptionKey" value="redFlag_#{item.description}"/>
+                <h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{messages[descriptionKey]}" />
             </rich:column>
             <rich:column rendered="#{tableColumns['alerts'].visible}" sortBy="#{item.redFlag.alert}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_alerts}" />
                 </f:facet>
-                <h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />
+                <h:outputText value="#{(item.redFlag.alert) ? messages.yes : messages.no }" />
             </rich:column>
             <rich:column id="time" rendered="#{tableColumns['date'].visible}" sortBy="#{item.redFlag.event.time}" sortOrder="DESCENDING">
                 <f:facet name="header">
@@ -101,7 +102,10 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_category}" />
                 </f:facet>
-                <h:outputText value="#{item.category}" />
+                <ui:param name="categoryKey" value="redflags_cat#{item.category}"/>
+                <h:outputFormat value="#{messages[categoryKey]}" >
+                	<f:param value="#{messages[item.eventType]}"/>
+                </h:outputFormat>
             </rich:column>
             <rich:column rendered="#{tableColumns['detail'].visible}" sortBy="#{item.detail}" >
                 <f:facet name="header">

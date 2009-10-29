@@ -16,13 +16,17 @@ import org.springframework.security.context.SecurityContextHolder;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
+import com.inthinc.pro.util.MessageUtil;
 
 public class BaseBean implements Serializable {
     private static final Logger logger = Logger.getLogger(BaseBean.class);
@@ -30,7 +34,9 @@ public class BaseBean implements Serializable {
     private AccountDAO accountDAO;
     private String emailAddress;
     protected Integer showExcludedEvents = EventDAO.INCLUDE_FORGIVEN;
+	protected AddressLookup addressLookup;
     private static final MapType mapType = MapType.GOOGLE;
+
 
     public BaseBean() {
         super();
@@ -176,4 +182,23 @@ public class BaseBean implements Serializable {
     public void setShowExcludedEvents(boolean showExcludedEvents) {
         this.showExcludedEvents = showExcludedEvents ? EventDAO.INCLUDE_FORGIVEN : EventDAO.EXCLUDE_FORGIVEN;
     }
+
+	public AddressLookup getAddressLookup() {
+	    return addressLookup;
+	}
+
+	public void setAddressLookup(AddressLookup addressLookup) {
+	    this.addressLookup = addressLookup;
+	}
+	
+	public String getAddress(LatLng latLng){
+		try {
+			
+			return addressLookup.getAddress(latLng);
+		}
+		catch(NoAddressFoundException nafe){
+			
+			return MessageUtil.getMessageString(nafe.getMessage());
+		}
+	}
 }

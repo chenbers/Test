@@ -64,6 +64,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         for (DriverReportItem dri : this.driversData)
         {
             dri.setGroup(this.getGroupHierarchy().getGroup(dri.getGroupID()).getName());
+            dri.setLocale(getLocale());
         }
 
     }
@@ -198,10 +199,9 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
 
     private ReportCriteria buildReportCriteria()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
+        ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE, getLocale());
         reportCriteria.setMainDataset(driverData);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());

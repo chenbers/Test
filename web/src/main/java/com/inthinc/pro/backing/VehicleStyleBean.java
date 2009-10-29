@@ -117,7 +117,7 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
 
         for (Event event : tempEvents)
         {
-            event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            event.setAddressStr(getAddress(event.getLatLng()));
             events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
         }
         sortEvents();
@@ -127,7 +127,7 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
     public ReportCriteria buildReport()
     {
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_STYLE, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_STYLE, getGroupHierarchy().getTopGroup().getName(), getLocale());
 
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
@@ -139,7 +139,6 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         reportCriteria.addParameter("SCORE_HARDACCEL", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_HARDTURN", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_HARDBUMP", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString()) / 10.0D);
-        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();

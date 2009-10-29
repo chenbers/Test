@@ -128,7 +128,7 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
 
         for (Event event : tempEvents)
         {
-            event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            event.setAddressStr(getAddress(event.getLatLng()));
             events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
         }
         sortEvents();
@@ -136,7 +136,7 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
 
     public ReportCriteria buildReport(ReportType reportType)
     {
-        ReportCriteria reportCriteria = new ReportCriteria(reportType, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(reportType, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.addParameter("ENTITY_NAME", this.getDriver().getPerson().getFullName());
@@ -148,7 +148,6 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
         reportCriteria.addParameter("SCORE_FOURTYONE", getScoreMap().get(ScoreType.SCORE_SPEEDING_41_54.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_FIFTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_55_64.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_SIXTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_65_80.toString()) / 10.0D);
-        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();

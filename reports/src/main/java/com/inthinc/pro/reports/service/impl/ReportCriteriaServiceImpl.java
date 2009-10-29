@@ -24,7 +24,6 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
@@ -59,8 +58,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
 
     @Override
-    public ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration)
+    public ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration, Locale locale)
     {
+    	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         List<DriverReportItem> driverReportItems = scoreDAO.getDriverReportData(groupID, duration);
         for (DriverReportItem driverReportItem : driverReportItems)
@@ -68,20 +68,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             Group tmpGroup = groupDAO.findByID(driverReportItem.getGroupID());
             driverReportItem.setGroup(tmpGroup.getName()); 
         }
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName(), locale);
         reportCriteria.setDuration(duration);
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         reportCriteria.setMainDataset(driverReportItems);
 
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getMpgReportCriteria(Integer groupID, Duration duration)
+    public ReportCriteria getMpgReportCriteria(Integer groupID, Duration duration, Locale locale)
     {
+    	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         List<MpgEntity> entities = mpgDAO.getEntities(group, duration);
 
@@ -98,22 +95,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             seriesData.add(new CategorySeriesData("Heavy", seriesID, heavyValue, seriesID));
         }
 
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP, group.getName(), locale);
         reportCriteria.setMainDataset(entities);
         reportCriteria.addChartDataSet(seriesData);
         reportCriteria.setDuration(duration);
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         reportCriteria.setRecordsPerReportParameters(6, "entityName", "category");
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration)
+    public ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale)
     {
-        NumberFormat format = NumberFormat.getInstance();
+    	this.locale = locale;
+        NumberFormat format = NumberFormat.getInstance(locale);
         format.setMaximumFractionDigits(1);
         format.setMinimumFractionDigits(1);
         ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL);
@@ -122,7 +116,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         Group group = groupDAO.findByID(groupID);
 
         String overallScore = format.format((double) ((double) scoreableEntity.getScore() / (double) 10.0));
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE, group.getName(), locale);
         reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration));
         reportCriteria.addParameter("OVERALL_SCORE", overallScore);
         reportCriteria.addParameter("OVERALL_SCORE_DATA", getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration));
@@ -130,10 +124,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.addParameter("SEATBELT_USE_DATA", getPieScoreData(ScoreType.SCORE_SEATBELT, groupID, duration));
         reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING, groupID, duration));
         reportCriteria.setDuration(duration);
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         return reportCriteria;
     }
 
@@ -165,8 +155,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     @Override
-    public ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration)
+    public ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration, Locale locale)
     {
+    	this.locale = locale;
         List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
         List<ScoreableEntity> s = getScores(groupID, duration);
     	Group group = groupDAO.findByID(groupID);
@@ -180,7 +171,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(groupID, duration);
 
-        List<String> monthList = ReportUtil.createMonthList(duration, "M/dd");
+        List<String> monthList = ReportUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
 
 
         for (int i = 0; i < s.size(); i++)
@@ -192,15 +183,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
 
             // Not a full range, pad w/ zero
-    		int holes = 0;
-    		if (duration == Duration.DAYS)
-    		{
-    		    holes = duration.getNumberOfDays() - scoreableEntityList.size();
-    		}
-    		else
-    		{
-    		    holes = ReportUtil.convertToMonths(duration) - scoreableEntityList.size();
-    		}
+    		int holes = duration.getDvqCount() - scoreableEntityList.size();
+//    		if (duration == Duration.DAYS)
+//    		{
+//    		    holes = duration.getNumberOfDays() - scoreableEntityList.size();
+//    		}
+//    		else
+//    		{
+//    		    holes = ReportUtil.convertToMonths(duration) - scoreableEntityList.size();
+//    		}
     		int index = 0;
     		for (int k = 0; k < holes; k++)
     		{
@@ -221,21 +212,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
 
         
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND, group.getName(), locale);
         reportCriteria.addChartDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(s);
         reportCriteria.setDuration(duration);
         reportCriteria.setRecordsPerReportParameters(8, "identifier", "seriesID");
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getVehicleReportCriteria(Integer groupID, Duration duration)
+    public ReportCriteria getVehicleReportCriteria(Integer groupID, Duration duration, Locale locale)
     {
+    	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         List<VehicleReportItem> vehicleReportItems = scoreDAO.getVehicleReportData(groupID, duration);
 
@@ -244,13 +232,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             Group tmpGroup = groupDAO.findByID(vehicleReportItem.getGroupID());
             vehicleReportItem.setGroup(tmpGroup.getName());
         }
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName(), locale);
         reportCriteria.setMainDataset(vehicleReportItems);
         reportCriteria.setDuration(duration);
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         return reportCriteria;
     }
 
@@ -270,8 +254,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     @Override
-    public ReportCriteria getDevicesReportCriteria(Integer groupID)
+    public ReportCriteria getDevicesReportCriteria(Integer groupID, Locale locale)
     {
+    	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         List<Vehicle> vehicList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
         List<DeviceReportItem> deviceReportItems = new ArrayList<DeviceReportItem>();
@@ -292,18 +277,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             }
         }
         
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, group.getName(), locale);
         reportCriteria.setMainDataset(deviceReportItems);
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getIdlingReportCriteria(Integer groupID, Date startDate, Date endDate)
+    public ReportCriteria getIdlingReportCriteria(Integer groupID, Date startDate, Date endDate, Locale locale)
     {
+    	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
 
         List<IdlingReportItem> idlingReportItems = scoreDAO.getIdlingReportData(groupID, startDate, endDate);
@@ -314,99 +296,80 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             // Group name
             Group tmpGroup = groupDAO.findByID(idlingReportItem.getGroupID());
             idlingReportItem.setGroup(tmpGroup.getName());
+            idlingReportItem.setLocale(getLocale());
+            idlingReportItem.prepareForDisplay();
         }
 
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);
         reportCriteria.setMainDataset(idlingReportItems);
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat", getLocale()));
         reportCriteria.addParameter("BEGIN_DATE", sdf.format(startDate));
         reportCriteria.addParameter("END_DATE", sdf.format(endDate));
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
 
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getEventsReportCriteria(Integer groupID)
+    public ReportCriteria getEventsReportCriteria(Integer groupID, Locale locale)
     {
         // List<Event> eventList = eventDAO.getViolationEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EVENT_REPORT, tmpGroup.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EVENT_REPORT, tmpGroup.getName(), locale);
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getRedFlagsReportCriteria(Integer groupID)
+    public ReportCriteria getRedFlagsReportCriteria(Integer groupID, Locale locale)
     {
+    	this.locale = locale;
         // List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
         Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT, tmpGroup.getName());
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT, tmpGroup.getName(), locale);
         // reportCriteria.setMainDataset(redFlagList);
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getWarningsReportCriteria(Integer groupID)
+    public ReportCriteria getWarningsReportCriteria(Integer groupID, Locale locale)
     {
+    	this.locale = locale;
         // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT, tmpGroup.getName());
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT, tmpGroup.getName(), locale);
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
 
     @Override
-    public ReportCriteria getEmergencyReportCriteria(Integer groupID)
+    public ReportCriteria getEmergencyReportCriteria(Integer groupID, Locale locale)
     {
+    	this.locale = locale;
         // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName());
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName(), locale);
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
     
     @Override
-    public ReportCriteria getZoneAlertsReportCriteria(Integer groupID)
+    public ReportCriteria getZoneAlertsReportCriteria(Integer groupID, Locale locale)
     {
-
+    	this.locale = locale;
         // List<Event> eventList = eventDAO.getZoneAlertsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName());
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName(), locale);
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
     
     @Override
-    public ReportCriteria getCrashHistoryReportCriteria(Integer groupID)
+    public ReportCriteria getCrashHistoryReportCriteria(Integer groupID, Locale locale)
     {
-
+    	this.locale = locale;
         // List<Event> eventList = eventDAO.getZoneAlertsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.CRASH_HISTORY_REPORT, tmpGroup.getName());
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.CRASH_HISTORY_REPORT, tmpGroup.getName(), locale);
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }    
@@ -418,7 +381,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
         List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
 		List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(groupID, duration);
-        List<String> monthList = ReportUtil.createMonthList(duration, "M/dd");
+        List<String> monthList = ReportUtil.createMonthList(duration,MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
        	int index = 0;
 
    		String distanceSeries = "driving";
@@ -444,14 +407,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
 
         Group group = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.SPEED_PERCENTAGE, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.SPEED_PERCENTAGE, group.getName(), locale);
         reportCriteria.addChartDataSet(barChartList);
         reportCriteria.addChartDataSet(lineChartList);
         reportCriteria.setDuration(duration);
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         return reportCriteria;
 	}
 
@@ -462,7 +421,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
         List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
 		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(groupID, duration);
-        List<String> monthList = ReportUtil.createMonthList(duration, "M/dd");
+        List<String> monthList = ReportUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
        	int index = 0;
 
    		String drivingSeries = "driving";
@@ -488,14 +447,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
 
         Group group = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLE_PERCENTAGE, group.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLE_PERCENTAGE, group.getName(), locale);
         reportCriteria.addChartDataSet(barChartList);
         reportCriteria.addChartDataSet(lineChartList);
         reportCriteria.setDuration(duration);
-        if(locale != null)
-        {
-            reportCriteria.setLocale(locale);
-        }
         return reportCriteria;
 	}
 

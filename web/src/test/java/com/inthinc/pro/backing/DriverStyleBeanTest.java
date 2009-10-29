@@ -51,7 +51,9 @@ public class DriverStyleBeanTest extends BaseBeanTest
         DriverStyleBean driverStyleBean = (DriverStyleBean)applicationContext.getBean("driverStyleBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
-        
+        LocaleBean localeBean = new LocaleBean();
+        localeBean.getLocale();
+       
         Person p = new Person();
         p.setFirst("John");
         p.setLast("Doe");

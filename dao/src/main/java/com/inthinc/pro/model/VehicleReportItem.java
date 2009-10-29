@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -138,7 +139,10 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
         String returnString = NA;
         if(speedScore != null && speedScore >= 0)
         {
-            returnString = new BigDecimal(speedScore).movePointLeft(1).toString();
+        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+        	nf.setMinimumFractionDigits(1);
+        	nf.setMaximumFractionDigits(1);
+            returnString = nf.format(new BigDecimal(speedScore).movePointLeft(1));
         }
         
         return returnString;
@@ -149,7 +153,10 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
         String returnString = NA;
         if(styleScore != null && styleScore >= 0)
         {
-            returnString = new BigDecimal(styleScore).movePointLeft(1).toString();
+        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+        	nf.setMinimumFractionDigits(1);
+        	nf.setMaximumFractionDigits(1);
+            returnString = nf.format(new BigDecimal(styleScore).movePointLeft(1));
         }
         
         return returnString;
@@ -161,12 +168,15 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
         
         if(overallScore != null && overallScore >= 0)
         {
-            returnString = new BigDecimal(overallScore).movePointLeft(1).toString();
+        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+        	nf.setMinimumFractionDigits(1);
+        	nf.setMaximumFractionDigits(1);
+            returnString = nf.format(new BigDecimal(overallScore).movePointLeft(1));
         }
         
         return returnString;
     }
-    
+        
     @Override
     public int compareTo(VehicleReportItem item)
     {

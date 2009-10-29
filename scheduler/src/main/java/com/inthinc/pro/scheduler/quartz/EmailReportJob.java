@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -112,22 +113,22 @@ public class EmailReportJob extends QuartzJobBean
         {
             switch (reportGroup.getReports()[i]) {
             case OVERALL_SCORE:
-                reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration()));
+                reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
                 break;
             case TREND:
-                reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration()));
+                reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
                 break;
             case MPG_GROUP:
-                reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration()));
+                reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
                 break;
             case DEVICES_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID()));
+                reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                 break;
             case DRIVER_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration()));
+                reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
                 break;
             case VEHICLE_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration()));
+                reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
                 break;
             case IDLING_REPORT:
                 final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -139,7 +140,7 @@ public class EmailReportJob extends QuartzJobBean
                     logger.debug("Start Time: " + sdf.format(startDate.getTime()));
                     logger.debug("End Time: " + sdf.format(endDate.getTime()));
                 }
-                reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), startDate.getTime(), endDate.getTime()));
+                reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), startDate.getTime(), endDate.getTime(), user.getPerson().getLocale()));
                 break;
             default:
                 break;

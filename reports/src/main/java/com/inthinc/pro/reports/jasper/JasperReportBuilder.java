@@ -36,7 +36,7 @@ public class JasperReportBuilder
 
     private static Logger logger = Logger.getLogger(JasperReportBuilder.class);
     private JasperPrint jasperPrint;
-    private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    private static final Locale DEFAULT_LOCALE = Locale.US;
 
     /**
      * 

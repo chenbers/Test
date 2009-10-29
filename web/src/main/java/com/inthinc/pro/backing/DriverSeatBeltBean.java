@@ -67,7 +67,7 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
         events = new ArrayList<EventReportItem>();
         for (Event event : tempEvents)
         {
-            event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            event.setAddressStr(getAddress(event.getLatLng()));
             events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
         }
         tableStatsBean.reset(ROWCOUNT, events.size());
@@ -157,14 +157,13 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
     public ReportCriteria buildReport()
     {
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("ENTITY_NAME", this.getDriver().getPerson().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", this.getSeatBeltEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", this.getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
-        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();

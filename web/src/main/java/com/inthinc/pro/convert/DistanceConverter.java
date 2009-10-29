@@ -36,13 +36,16 @@ public class DistanceConverter extends BaseConverter
         {
             miles = (Integer)value / 100D;
         }
-        
-        NumberFormat format = NumberFormat.getInstance();
-        format.setMaximumFractionDigits(2);
+        else if (value instanceof Long){
+        	
+            miles = (Long)value / 100D;
+        }
+        NumberFormat format = NumberFormat.getInstance(getLocale());
+        format.setMaximumFractionDigits(1);
 
         if (getMeasurementType().equals(MeasurementType.METRIC))
         {
-            return MeasurementConversionUtil.fromMilesToKilometers(miles).toString();
+            return format.format(MeasurementConversionUtil.fromMilesToKilometers(miles));
             
         }
         else

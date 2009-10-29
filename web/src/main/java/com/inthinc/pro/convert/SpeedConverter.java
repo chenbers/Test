@@ -27,8 +27,9 @@ public class SpeedConverter extends BaseConverter
             value = new Integer(((Long)value).intValue());
         }
         Integer speed = (Integer)value;
-        NumberFormat format = NumberFormat.getInstance();
+        NumberFormat format = NumberFormat.getInstance(getLocale());
         format.setMaximumFractionDigits(1);
+        format.setMinimumFractionDigits(1);
     
         if (getIsMetric())
         {
@@ -37,7 +38,7 @@ public class SpeedConverter extends BaseConverter
         }
         else
         {
-            return speed + " " + MessageUtil.getMessageString(context, "mph_label");
+            return format.format(speed + " " + MessageUtil.getMessageString(context, "mph_label"));
         }
         
     }

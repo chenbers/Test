@@ -10,6 +10,7 @@
     <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
         <property name="errorBean" ref="errorBean" />
         <property name="accountDAO" ref="accountDAO" />
+        <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean"></bean>
     <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init"></bean>
@@ -122,13 +123,13 @@
 
 	<bean id="flyOutBean" class="com.inthinc.pro.backing.FlyOutBean" scope="request" />
     
-    <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" init-method="initBean">
+    <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" parent="baseBean" init-method="initBean">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="deviceDAO" ref="deviceDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="groupDAO" ref="groupDAO"></property>
-        <property name="addressLookup" ref="addressLookupBean"></property>
+
     </bean>
     
     <bean id="crashReportBean" class="com.inthinc.pro.backing.CrashReportBean" scope="request" parent="baseBean">
@@ -253,8 +254,7 @@
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="addressLookup" ref="addressLookupBean"></property>
-        <property name="identifiableEntityBean" ref="vehicleBean"/>
+         <property name="identifiableEntityBean" ref="vehicleBean"/>
     </bean>
     
     <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="session" parent="baseBean">
@@ -293,7 +293,6 @@
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="addressLookup" ref="addressLookupBean"></property>
         <property name="identifiableEntityBean" ref="driverBean"/>
     </bean>
 
@@ -314,7 +313,6 @@
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="groupDAO" ref="groupDAO"></property>
-        <property name="addressLookup" ref="addressLookupBean"></property>
         
     </bean>
     
@@ -413,11 +411,10 @@
     
     <bean id="tableStatsBean" class="com.inthinc.pro.backing.TableStatsBean" scope="request"/>
     
-    <bean id="basePerformanceBean" class="com.inthinc.pro.backing.BasePerformanceBean" scope="request">
+    <bean id="basePerformanceBean" class="com.inthinc.pro.backing.BasePerformanceBean" scope="request" parent="baseBean">
     	<property name="reportRenderer" ref="reportRenderer"/>
     	<property name="groupDAO" ref="groupDAO"/>
         <property name="tableStatsBean" ref="tableStatsBean" />
-        <property name="addressLookup" ref="addressLookupBean"/>
         <property name="driverBean" ref="driverBean"/>
         <property name="vehicleBean" ref="vehicleBean"/>
     </bean>

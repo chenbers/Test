@@ -2,13 +2,13 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.util.MessageUtil;
@@ -63,9 +63,20 @@ public class TripDisplay implements Comparable<TripDisplay>
             
             beginningPoint = route.get(0);
             beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
-            
-            setStartAddress(lookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
-            setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
+            try{
+            	setStartAddress(lookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
+            }
+            catch (NoAddressFoundException nafe){
+            	
+            	setStartAddress(MessageUtil.getMessageString(nafe.getMessage()));
+            }
+            try {
+            	setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
+            }
+            catch (NoAddressFoundException nafe){
+            	
+            	setEndAddress(MessageUtil.getMessageString(nafe.getMessage()));
+            }
         }
     }
     public String getStartDateString()

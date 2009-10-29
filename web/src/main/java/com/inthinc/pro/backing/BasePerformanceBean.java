@@ -13,7 +13,6 @@ import com.inthinc.pro.charts.FusionMultiAreaChart;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
@@ -32,7 +31,6 @@ public abstract class BasePerformanceBean extends BaseBean
     
     protected DurationBean durationBean;
     protected TableStatsBean tableStatsBean;
-    protected AddressLookup addressLookup;
     protected ReportRenderer reportRenderer;
     protected GroupDAO groupDAO;
     protected GroupTreeNodeImpl groupTreeNodeImpl;
@@ -63,7 +61,7 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(duration);
+        List<String> monthList = GraphicUtil.createMonthList(duration, getLocale());
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
@@ -98,7 +96,7 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> cumulativeList = getTrendCumulative(id, duration, scoreType);
         List<ScoreableEntity> dailyList = getTrendDaily(id, duration, scoreType);
 
-        List<String> catLabelList = GraphicUtil.createMonthList(duration);
+        List<String> catLabelList = GraphicUtil.createMonthList(duration,getLocale());
 
         Double cumulativeValues[] = new Double[cumulativeList.size()];
         Double odometerValues[] = new Double[dailyList.size()];
@@ -140,7 +138,7 @@ public abstract class BasePerformanceBean extends BaseBean
         {
             List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
 
-            List<String> monthList = GraphicUtil.createMonthList(duration, "M/dd");
+            List<String> monthList = GraphicUtil.createMonthList(duration,MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
@@ -164,7 +162,7 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(duration, "M/dd");
+        List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
 
         int count = 0;
         for (ScoreableEntity se : scoreList)
@@ -193,7 +191,7 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(duration);
+        List<String> monthList = GraphicUtil.createMonthList(duration,getLocale());
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
@@ -263,16 +261,6 @@ public abstract class BasePerformanceBean extends BaseBean
     public void setTableStatsBean(TableStatsBean tableStatsBean)
     {
         this.tableStatsBean = tableStatsBean;
-    }
-
-    public AddressLookup getAddressLookup()
-    {
-        return addressLookup;
-    }
-
-    public void setAddressLookup(AddressLookup addressLookup)
-    {
-        this.addressLookup = addressLookup;
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer)

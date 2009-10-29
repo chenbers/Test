@@ -71,6 +71,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for (IdlingReportItem iri : this.idlingsData) {
             iri.setGroup(this.getGroupHierarchy().getGroup(iri.getGroupID()).getName());
+            iri.setLocale(getLocale());
         }
     }
 
@@ -256,10 +257,11 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     private ReportCriteria loadReportCriteria() {
         ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(),
         				startOfDay(this.startDate),
-        				endOfDay(this.endDate));
+        				endOfDay(this.endDate),
+        				getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
-        reportCriteria.setLocale(getLocale());
+        
         return reportCriteria;
     }
 

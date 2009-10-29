@@ -64,7 +64,8 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         for (VehicleReportItem vri : this.vehiclesData)
         {
             vri.setGroup(this.getGroupHierarchy().getGroup(vri.getGroupID()).getName());
-        }
+            vri.setLocale(getLocale());
+       }
    }
 
     @Override
@@ -172,10 +173,10 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     
     private ReportCriteria buildReportCriteria()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
+        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE, getLocale());
+        reportCriteria.setLocale(getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
-        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());

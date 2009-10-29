@@ -35,13 +35,13 @@ public enum Duration implements BaseEnum
 	    6 - 30 day bins
     */
     
-	private static final int BINSIZE_1_DAY = 0;
-    private static final int BINSIZE_7_DAY = 1;
-    private static final int BINSIZE_1_MONTH = 2;
-    private static final int BINSIZE_3_MONTHS = 3;
-    private static final int BINSIZE_6_MONTHS = 4;
-    private static final int BINSIZE_12_MONTHS = 5;
-    private static final int BINSIZE_30_DAYS = 6;
+//	private static final int BINSIZE_1_DAY = 0;
+//    private static final int BINSIZE_7_DAY = 1;
+//    private static final int BINSIZE_1_MONTH = 2;
+//    private static final int BINSIZE_3_MONTHS = 3;
+//    private static final int BINSIZE_6_MONTHS = 4;
+//    private static final int BINSIZE_12_MONTHS = 5;
+//    private static final int BINSIZE_30_DAYS = 6;
 
 
 	private final int numberOfDays;

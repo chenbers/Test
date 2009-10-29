@@ -3,6 +3,7 @@ package com.inthinc.pro.backing.ui;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.util.MessageUtil;
 
 public abstract class NotificationReportItem<T> implements Comparable<T>{
@@ -22,7 +23,8 @@ public abstract class NotificationReportItem<T> implements Comparable<T>{
 		this.detail = detail;
 	}
 
-	protected static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
+	protected static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"),
+																	LocaleBean.getCurrentLocale());
 
 	public NotificationReportItem() {
 		super();

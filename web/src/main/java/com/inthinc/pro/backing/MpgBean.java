@@ -73,7 +73,7 @@ public class MpgBean extends BaseBean implements Serializable
     {
         StringBuffer sb = new StringBuffer();
         // Control parameters
-        sb.append(GraphicUtil.getBarControlParameters());
+        sb.append(GraphicUtil.getBarControlParameters(getLocale()));
         int yAxisName = sb.indexOf("yAxisName");
         sb.replace(yAxisName+10, yAxisName+11, "'"+MessageUtil.getMessageString(getFuelEfficiencyType()+"_Miles_Per_Gallon"));
          logger.debug("getting scores for groupID: " + groupID);
@@ -139,9 +139,9 @@ public class MpgBean extends BaseBean implements Serializable
 
     public ReportCriteria buildReportCriteria()
     {
-        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration());
-        reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
+        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration(), getLocale());
         reportCriteria.setLocale(getLocale());
+        reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setMeasurementType(getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
         return reportCriteria;

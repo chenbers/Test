@@ -11,14 +11,14 @@ import javax.faces.model.SelectItem;
 import org.springframework.security.context.SecurityContextHolder;
 
 public class LocaleBean extends BaseBean {
-    private static final List<Locale> supportedLocles = new ArrayList<Locale>();
+    private static final List<Locale> supportedLocales = new ArrayList<Locale>();
     private static final List<SelectItem> supportedLocalesItems = new ArrayList<SelectItem>();
     private static Locale currentLocale;
     static {
         Iterator<Locale> iterator = FacesContext.getCurrentInstance().getApplication().getSupportedLocales();
         while (iterator.hasNext()) {
             Locale locale = iterator.next();
-            supportedLocles.add(locale);
+            supportedLocales.add(locale);
             supportedLocalesItems.add(new SelectItem(locale, locale.getDisplayName(locale)));
         }
     }
@@ -44,7 +44,7 @@ public class LocaleBean extends BaseBean {
 
     public static boolean supportedLocale(Locale locale) {
         boolean supported = false;
-        for (Locale l : supportedLocles) {
+        for (Locale l : supportedLocales) {
             if (l.equals(locale))
                 supported = true;
         }
@@ -56,7 +56,7 @@ public class LocaleBean extends BaseBean {
     }
 
     public List<Locale> getSupportedLocales() {
-        return supportedLocles;
+        return supportedLocales;
     }
 
     public List<SelectItem> getSupportedLocalesItems() {

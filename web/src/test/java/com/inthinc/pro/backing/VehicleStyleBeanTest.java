@@ -17,14 +17,10 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EventType;
-import com.inthinc.pro.model.FullEvent;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.Vehicle;
 
 public class VehicleStyleBeanTest extends BaseBeanTest
@@ -51,7 +47,10 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         VehicleStyleBean vehicleStyleBean = (VehicleStyleBean)applicationContext.getBean("vehicleStyleBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
-              
+         
+        LocaleBean localeBean = new LocaleBean();
+        localeBean.getLocale();
+        
         Person p = new Person();
         p.setFirst("John");
         p.setLast("Doe");

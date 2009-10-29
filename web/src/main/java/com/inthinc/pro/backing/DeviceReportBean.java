@@ -56,6 +56,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem> {
                 dri.getDevice().setEphone(MiscUtil.formatPhone(dri.getDevice().getEphone()));
                 dri.getDevice().setPhone(MiscUtil.formatPhone(dri.getDevice().getPhone()));
                 dri.setVehicle(v);
+                dri.setLocale(getLocale());
                 list.add(dri);
             }
         }
@@ -131,26 +132,23 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem> {
     }
 
     public void exportReportToPdf() {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
-        reportCriteria.setLocale(getLocale());
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
 
     public void emailReport() {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
-        reportCriteria.setLocale(getLocale());
         getReportRenderer().exportReportToEmail(reportCriteria, getEmailAddress());
     }
 
     public void exportReportToExcel() {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
-        reportCriteria.setLocale(getLocale());
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
 

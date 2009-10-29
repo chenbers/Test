@@ -21,7 +21,7 @@ public class ScoreConverter extends BaseConverter
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
         Integer score = (Integer)value;
-        NumberFormat format = NumberFormat.getInstance();
+        NumberFormat format = NumberFormat.getInstance(getLocale());
         format.setMaximumFractionDigits(1);
         format.setMinimumFractionDigits(1);
 

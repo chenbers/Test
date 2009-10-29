@@ -21,6 +21,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Trip;
@@ -107,7 +108,15 @@ public class DriverPerformanceBean extends BasePerformanceBean
             // Lookup Addresses for events
             for (Event event : violationEvents)
             {
-                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            	String address = "";
+            	try {
+            		address = addressLookup.getAddress(event.getLatitude(), event.getLongitude());
+            	}
+            	catch (NoAddressFoundException nafe){
+            	
+            		address = MessageUtil.getMessageString(nafe.getMessage());
+            	}
+                event.setAddressStr(address);
             }
         }
     }
@@ -259,7 +268,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private String createMpgLineDef()
     {
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
-        List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
+        List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),getLocale());
 
         StringBuffer sb = new StringBuffer();
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
@@ -297,7 +306,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
 
-        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(), "M/dd");
+        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/, getLocale());
 
         int count = 0;
         for (MpgEntity me : mpgEntities)
@@ -316,8 +325,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
         List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
         Integer driverID = getDriver().getDriverID();
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
-        reportCriteria.setLocale(getLocale());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName(),getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getPerson().getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
@@ -338,8 +346,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
         tempCriteria.add(reportCriteria);
 
         // Page 2
-        reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
-        reportCriteria.setLocale(getLocale());
+        reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getPerson().getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());

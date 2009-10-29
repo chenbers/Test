@@ -1,6 +1,7 @@
 package com.inthinc.pro.convert;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,8 +29,9 @@ public class PerMillionsMilesToPerMillionsKmEstimateConverter extends BaseConver
 	public String getAsString(FacesContext context, UIComponent component,
 			Object value) throws ConverterException {
 
-        if(Number.class.isInstance(value))
+		if(Number.class.isInstance(value))
         {
+        	NumberFormat nf = NumberFormat.getInstance(getLocale());
 			Number milesOrKM = Number.class.cast(value); 
 	        if (getMeasurementType().equals(MeasurementType.METRIC))
 	        {
@@ -37,14 +39,14 @@ public class PerMillionsMilesToPerMillionsKmEstimateConverter extends BaseConver
 	        }
 	        if (milesOrKM.doubleValue() < 0.01d)
 	        {
-	        	return BELOW_POINT_ZERO_ONE;
+	        	return "<"+nf.format(0.01);
 	        }
-	        else if (milesOrKM.doubleValue() > 50.0)
+	        if (milesOrKM.doubleValue() > 50.0)
 	        {
-	        	return ABOVE_FIFTY;
+	        	return ">"+nf.format(50.0);
 	        }
 	        
-	        return onePlace.format(milesOrKM.doubleValue());
+	        return nf.format(milesOrKM.doubleValue());
         }
         return value.toString();
 	}

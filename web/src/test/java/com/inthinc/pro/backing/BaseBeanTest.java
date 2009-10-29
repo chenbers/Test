@@ -189,7 +189,7 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         Object[] month = new String[numMonths];
         for (int i = numMonths-1; i >=0; i--)
         {
-        	month[i] = todayCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()).toUpperCase();
+        	month[i] = todayCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
         	todayCal.add(Calendar.MONTH, -1);
         	System.out.println(i + " " + month[i]);
         }

@@ -116,7 +116,7 @@
 			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
 				<reportElement key="textField-4" x="560" y="3" width="105" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{status}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("report.crashhistory.status."+$F{status})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-9" x="344" y="2" width="106" height="17"/>

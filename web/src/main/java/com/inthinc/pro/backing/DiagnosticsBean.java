@@ -38,7 +38,7 @@ public class DiagnosticsBean extends BaseEventsBean
     @Override
     protected ReportCriteria getReportCriteria()
     {
-        return getReportCriteriaService().getWarningsReportCriteria(getUser().getGroupID());
+        return getReportCriteriaService().getWarningsReportCriteria(getUser().getGroupID(), getLocale());
     }
 
 }

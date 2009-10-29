@@ -48,7 +48,9 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         DriverSpeedBean driverSpeedBean = (DriverSpeedBean)applicationContext.getBean("driverSpeedBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
-        
+        LocaleBean localeBean = new LocaleBean();
+        localeBean.getLocale();
+       
         Person p = new Person();
         p.setFirst("John");
         p.setLast("Doe");

@@ -2,6 +2,7 @@ package com.inthinc.pro.charts;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Locale;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.util.GraphicUtil;
@@ -20,10 +21,10 @@ public class DateCategoryChart implements CategoryChart {
 	}
 	
 	@Override
-	public String getCategories() {
+	public String getCategories(Locale locale) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(CHART_CAT_START);
-		List<String> labelList = GraphicUtil.createMonthList(getDuration());
+		List<String> labelList = GraphicUtil.createMonthList(getDuration(), locale);
 		for (String label : labelList) {
 			builder.append(MessageFormat.format(CHART_CAT_LABEL, new Object[] {label}));
 		}

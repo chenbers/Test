@@ -1,5 +1,7 @@
 package com.inthinc.pro.convert;
 
+import java.text.NumberFormat;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
@@ -32,11 +34,11 @@ public class MphToKphConverter extends BaseConverter
         if (Number.class.isInstance(value))
         {
             if (getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.fromMPHtoKPH(Number.class.cast(value)).toString();
+                return NumberFormat.getInstance(getLocale()).format(MeasurementConversionUtil.fromMPHtoKPH(Number.class.cast(value)));
         }
       
         if(value != null)
-            return value.toString();
+            return NumberFormat.getInstance(getLocale()).format(value);
         else
             return null;
     }    

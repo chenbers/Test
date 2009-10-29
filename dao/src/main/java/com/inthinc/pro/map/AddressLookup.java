@@ -17,6 +17,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.NoAddressFoundException;
 public class AddressLookup
 {
     public static Logger logger = Logger.getLogger(AddressLookup.class);
@@ -44,7 +45,7 @@ public class AddressLookup
      * @param returnLatLng determines if the result should contain the Lat and Long if no address was found or the text "No address found at location.
      * @return
      */
-    public String getAddress(LatLng latLng,boolean returnLatLng)
+    public String getAddress(LatLng latLng,boolean returnLatLng) throws NoAddressFoundException
     {
         //The caching is broken until David Story or Dave Harry update their hessian library to handle many references to one object. After this is done, the equals() an hashcode() methods in the LatLng class need to be uncommented.
         if (addressMap.containsKey(latLng))
@@ -69,7 +70,8 @@ public class AddressLookup
                 if(returnLatLng){
                     address = latLng.getLat() + ", " + latLng.getLng();
                 }else{
-                    address = "No address found at location.";
+//                    address = "No address found at location.";
+                	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng());
                 }
                 
             }
@@ -78,16 +80,16 @@ public class AddressLookup
         catch (MalformedURLException e)
         {
             logger.debug(e);
-            return "";
+           	return "";
         }
     }
 
-    public String getAddress(double lat, double lng)
+    public String getAddress(double lat, double lng) throws NoAddressFoundException
     {
         return getAddress(new LatLng(lat, lng));
     }
     
-    public String getAddress(LatLng latLng)
+    public String getAddress(LatLng latLng) throws NoAddressFoundException
     {
         return getAddress(latLng, false);
     }

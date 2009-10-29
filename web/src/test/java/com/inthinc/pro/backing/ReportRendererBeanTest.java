@@ -2,9 +2,11 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -27,7 +29,7 @@ public class ReportRendererBeanTest extends BaseBeanTest
         list.add(se1);
         list.add(se2);
         
-        ReportCriteria rc = new ReportCriteria(ReportType.OVERALL_SCORE,"Group1");
+        ReportCriteria rc = new ReportCriteria(ReportType.OVERALL_SCORE,"Group1", Locale.US);
         rc.setMainDataset(list);
         rc.addParameter("DRIVER_STYLE_DATA", list);
         rc.addParameter("SEATBELT_USE_DATA", list);

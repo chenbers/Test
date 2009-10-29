@@ -114,7 +114,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
             for (Event event : violationEvents)
             {
-                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+                event.setAddressStr(getAddress(event.getLatLng()));
             }
             // Lookup Addresses for tamper events
 //            for (Event event :tamperEvents)
@@ -308,7 +308,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private String createMultiLineDef()
     {
         List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(getVehicle().getVehicleID(), mpgDurationBean.getDuration(), null);
-        List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
+        List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),getLocale());
 
         StringBuffer sb = new StringBuffer();
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
@@ -418,7 +418,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(getVehicle().getVehicleID(), mpgDurationBean.getDuration(), null);
 
-        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(), "M/dd");
+        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(), MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
 
         int count = 0;
         for (MpgEntity me : mpgEntities)
@@ -443,9 +443,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         Integer id = getVehicle().getVehicleID();
 
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getPerson().getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
@@ -465,9 +464,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         tempCriteria.add(reportCriteria);
 
         // Page 2
-        reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setLocale(getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getPerson().getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());

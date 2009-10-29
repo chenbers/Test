@@ -1,9 +1,11 @@
 package com.inthinc.pro.convert;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.faces.component.UIComponent;
@@ -58,18 +60,18 @@ public class TimeAgoConverter extends BaseConverter
         
         if(hours > 48)
         {
-            DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
+            DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"),getLocale());
             dateFormatter.setTimeZone(tz);
             return dateFormatter.format(DateUtil.convertTimeInSecondsToDate(thenSecs));
         }
         else if(hours > 1)
-            return hours + " hrs " + minutes + " min ago";
+            return hours + " "+MessageUtil.getMessageString("hrs")+" " + minutes + " "+MessageUtil.getMessageString("minago");
         else if (hours == 1)
-            return hours + " hr " + minutes + " min ago";
+            return hours + " "+MessageUtil.getMessageString("hr")+" " + minutes + " "+MessageUtil.getMessageString("minago");
         else if (minutes > 0)
-            return minutes + " minutes ago";
+            return minutes + " "+MessageUtil.getMessageString("minutesago");
         else if (seconds > 0)
-            return seconds + " seconds ago";
+            return seconds + " "+MessageUtil.getMessageString("secondsago");
         else
             return "";
     }

@@ -1,10 +1,10 @@
 package com.inthinc.pro.backing.ui;
 
-import java.text.MessageFormat;
-
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
@@ -20,8 +20,11 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
     private RedFlag redFlag;
 
 	private Zone zone;
+	private String mphString;
+	private MeasurementType measurementType;
     
-    public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy,MeasurementType measurementType)
+
+	public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy,MeasurementType measurementType)
     {
         this.redFlag = redFlag;
 
@@ -48,17 +51,42 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
         
         setDriverName(event.getDriver().getPerson().getFullName());
         setVehicleName(event.getVehicle().getName());
-        
-        String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
-        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(redFlag.getEvent().getEventType().toString())}));
- 
-        String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
-
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name()),measurementType,mphString));
+//        String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString(),LocaleBean.getCurrentLocale());
+//        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(redFlag.getEvent().getEventType().toString(),LocaleBean.getCurrentLocale())}));
+//        setCategory(redFlag.getEvent().getEventCategory().toString());
+        setMphString(MessageUtil.getMessageString(measurementType.toString()+"_mph"));
+        setMeasurementType(measurementType);
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name(),LocaleBean.getCurrentLocale()),measurementType,mphString));
     }
     
 
-    public RedFlag getRedFlag()
+    public MeasurementType getMeasurementType() {
+		return measurementType;
+	}
+
+
+	public void setMeasurementType(MeasurementType measurementType) {
+		this.measurementType = measurementType;
+	}
+
+
+	@Override
+	public String getCategory() {
+
+		return redFlag.getEvent().getEventCategory().toString();
+	}
+    public String getEventType(){
+    	
+    	return redFlag.getEvent().getEventType().toString();
+    }
+
+	@Override
+	public String getDetail() {
+		return redFlag.getEvent().getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name()),measurementType,mphString); 
+	}
+
+
+	public RedFlag getRedFlag()
     {
         return redFlag;
     }
@@ -81,7 +109,18 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
         return this.getRedFlag().getLevel().compareTo(o.getRedFlag().getLevel());
     }
 
-   
+    public String getDescription(){
+    	
+    	return redFlag.getLevel().getDescription();
+    }
+    public String getMphString(){
+    	return mphString;
+    }
+
+
+	public void setMphString(String mphString) {
+		this.mphString = mphString;
+	}
     
 }
 

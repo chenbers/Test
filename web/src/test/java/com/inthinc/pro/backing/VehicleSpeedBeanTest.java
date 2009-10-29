@@ -46,6 +46,8 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         VehicleSpeedBean vehicleSpeedBean = (VehicleSpeedBean)applicationContext.getBean("vehicleSpeedBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
+        LocaleBean localeBean = new LocaleBean();
+        localeBean.getLocale();
         
         
         Vehicle v = new Vehicle();

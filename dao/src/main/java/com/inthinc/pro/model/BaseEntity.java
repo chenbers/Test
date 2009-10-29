@@ -2,11 +2,11 @@ package com.inthinc.pro.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import com.inthinc.pro.dao.annotations.Column;
-
+import java.util.Locale;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.dao.annotations.Column;
 
 @XmlRootElement
 public abstract class BaseEntity implements Serializable {
@@ -15,8 +15,18 @@ public abstract class BaseEntity implements Serializable {
   private Date modified;
   @Column(updateable=false)
   private Date created;
+  
+  private Locale locale;
 
-  public Date getModified() {
+  public Locale getLocale() {
+	return locale;
+}
+
+public void setLocale(Locale locale) {
+	this.locale = locale;
+}
+
+public Date getModified() {
     return modified;
   }
 
@@ -31,5 +41,5 @@ public abstract class BaseEntity implements Serializable {
   public void setCreated(Date created) {
     this.created = created;
   }
-
+  public void prepareForDisplay(){}
 }

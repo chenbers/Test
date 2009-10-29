@@ -18,7 +18,6 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
@@ -40,7 +39,6 @@ public class TripsBean extends BaseBean {
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
     private EventDAO eventDAO;
-    private AddressLookup addressLookup;
     private Date startDate;
     private Date endDate;
     private Integer milesDriven = 0;
@@ -148,7 +146,7 @@ public class TripsBean extends BaseBean {
                 event.setLatitude(lastValidLatLng.getLat() + 0.00001);
                 event.setLongitude(lastValidLatLng.getLng());
             }
-            event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            event.setAddressStr(getAddress(event.getLatLng()));
             lastValidLatLng = event.getLatLng();
         }
     }
@@ -432,14 +430,6 @@ public class TripsBean extends BaseBean {
 
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
-    }
-
-    public AddressLookup getAddressLookup() {
-        return addressLookup;
-    }
-
-    public void setAddressLookup(AddressLookup addressLookup) {
-        this.addressLookup = addressLookup;
     }
 
     // SELECTED TRIPS PROPERTIES

@@ -84,7 +84,7 @@ public class SpeedPercentageBean extends BaseBean {
 				getDurationBean().getDuration());
 		StringBuilder chartBuilder = new StringBuilder();
 		chartBuilder.append(bar2DMultiAxisChart.getControlParameters());
-		chartBuilder.append(bar2DMultiAxisChart.getCategories());
+		chartBuilder.append(bar2DMultiAxisChart.getCategories(getLocale()));
 		chartBuilder.append("<dataset>");
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("speeding_percentage_speeding_bar_label", getLocale()), 
 				SPEED_BAR_COLOR, false, speedValues));
@@ -103,7 +103,7 @@ public class SpeedPercentageBean extends BaseBean {
 	}
 
 	private String formatPercent(double d) {
-        NumberFormat format = NumberFormat.getInstance();
+        NumberFormat format = NumberFormat.getInstance(getLocale());
         format.setMaximumFractionDigits(2);
         format.setMinimumFractionDigits(2);
 
@@ -180,8 +180,8 @@ public class SpeedPercentageBean extends BaseBean {
 			setGroupID(getUser().getGroupID());
 		}
         ReportCriteria reportCriteria = reportCriteriaService.getSpeedPercentageReportCriteria(getGroupID(), durationBean.getDuration(), getLocale());
-        reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
+        reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setMeasurementType(getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
         return reportCriteria;

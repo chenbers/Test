@@ -9,6 +9,8 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.NoAddressFoundException;
+import com.inthinc.pro.util.MessageUtil;
 public class LatLngAddressConverter implements Converter
 {
     private AddressLookup addressLookup;
@@ -26,10 +28,16 @@ public class LatLngAddressConverter implements Converter
         if (LatLng.class.isInstance(value))
         {
             LatLng latlng = LatLng.class.cast(value);
-            if ((latlng.getLat() < -0.0001 || latlng.getLat() > 0.0001) && (latlng.getLng() < -0.0001 || latlng.getLng() > 0.0001))
-                return addressLookup.getAddress(latlng);
+            if ((latlng.getLat() < -0.0001 || latlng.getLat() > 0.0001) && (latlng.getLng() < -0.0001 || latlng.getLng() > 0.0001)){
+            	try{
+            		return addressLookup.getAddress(latlng);
+            	}
+            	catch (NoAddressFoundException nafe){
+            		return MessageUtil.getMessageString(nafe.getMessage());
+            	}
+            }
         }
-        return "No address found at location.";
+        return MessageUtil.getMessageString("noAddressFound");
     }
 
     public AddressLookup getAddressLookup()

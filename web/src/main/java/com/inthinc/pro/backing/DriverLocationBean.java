@@ -14,7 +14,6 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
@@ -42,8 +41,6 @@ public class DriverLocationBean extends BaseBean {
 	private GroupHierarchy       organizationHierarchy;
 	private Integer selectedDriverID;
 	private Integer selectedVehicleID;
-	private AddressLookup addressLookup;
-
 	public DriverLocationBean() {
 		super();
 	
@@ -126,7 +123,7 @@ public class DriverLocationBean extends BaseBean {
         	db.setDriver(driver);
         	db.setDriverName(driver.getPerson().getFirst()+" "+ driver.getPerson().getLast());
         	db.setTime(loc.getTime());
-        	db.setAddress(addressLookup.getAddress(loc.getLoc().getLat(), loc.getLoc().getLng()));
+        	db.setAddress(getAddress(loc.getLoc()));
         	
         	driverLastLocations.put(driver.getDriverID(),db);
         	driverLastLocationBeans.add(db);
@@ -197,16 +194,7 @@ public class DriverLocationBean extends BaseBean {
 		this.navigation = navigation;
 	}
 
-	public AddressLookup getAddressLookup()
-    {
-        return addressLookup;
-    }
-	
-    public void setAddressLookup(AddressLookup addressLookup)
-    {
-        this.addressLookup = addressLookup;
-    }
-    public LatLng getCenter() {
+	public LatLng getCenter() {
 		return center;
 	}
 

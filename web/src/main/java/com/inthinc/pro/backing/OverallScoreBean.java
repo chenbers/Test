@@ -256,9 +256,9 @@ public class OverallScoreBean extends BaseBean
     }
     
     public ReportCriteria buildReportCriteria(){
-        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(groupID, durationBean.getDuration());
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(groupID, durationBean.getDuration(), getLocale());
         reportCriteria.setLocale(getLocale());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         return reportCriteria;
     }

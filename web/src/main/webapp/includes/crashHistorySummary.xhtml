@@ -18,19 +18,36 @@
         </div>
         <div class="panel_w">
             <div class="panel_content">
-               <div style="height:#{xyheight};width:#{xywidth}">
+               <div id="crashSummaryInnerPanel" style="height:#{xyheight};width:#{xywidth}">
                     <div id="crashSummaryDiv" align="center"></div>
                      <rich:panel>
-                       <table width="100%"><tbody><tr>
-                        <td class="crash-summary-title" width="50%"> 
+                       <table id="crashSummaryTable" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody>
+                       <tr style="font-weight:bold" align="center">
+                        <td  width="50%"> 
                            <h:outputFormat value=" #{messages.crash_summary_overDistance} " >
                                 <a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                             </h:outputFormat>
-                            <h:outputText value="#{crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
                         </td>
-                        <td class="crash-summary-title" width="50%">
-                        #{messages.crash_summary_totalCrashes} #{crashSummary.totalCrashes}
+                        <td style="border-right-width:1px; border-left-width:1px" width="50%">
+                        #{messages.crash_summary_totalCrashes}
                         </td>
+                        </tr>
+                        <tr style="font-weight:bold; font-size:30px" align="center">
+                        <td>
+                           <h:outputText value="#{crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
+                        </td>
+                        <td>
+                         #{crashSummary.totalCrashes}
+                        </td>
+                        </tr>
+                        <tr style="font-weight:normal" align="center">
+                        	<td>
+                           <h:outputFormat value=" #{messages.crash_summary_lastXmonths} " >
+                                <a4j:actionparam value="12" />
+                            </h:outputFormat>
+                        	
+                        	</td>
+                        	<td   style="border-right-width:1px; border-left-width:1px"></td>
                         </tr>
                          </tbody>
                         </table>

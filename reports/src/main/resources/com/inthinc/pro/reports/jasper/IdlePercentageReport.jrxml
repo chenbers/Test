@@ -59,7 +59,7 @@
 				<reportElement key="line-5" x="651" y="258" width="4" height="1"/>
 			</line>
 			<multiAxisChart>
-				<chart>
+				<chart isShowLegend="false">
 					<reportElement x="0" y="76" width="535" height="332"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -69,7 +69,7 @@
 					<plot labelRotation="-45.0"/>
 					<axis position="rightOrBottom">
 						<lineChart>
-							<chart customizerClass="com.inthinc.pro.reports.jasper.customizer.PercentLineChartCustomizer">
+							<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.PercentLineChartCustomizer">
 								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
 								<chartTitle color="#000000"/>
 								<chartSubtitle color="#000000"/>
@@ -78,6 +78,9 @@
 							<categoryDataset>
 								<dataset>
 									<datasetRun subDataset="CategorySeriesSubDataset">
+										<datasetParameter name="REPORT_LOCALE">
+											<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+										</datasetParameter>
 										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_2})]]></dataSourceExpression>
 									</datasetRun>
 								</dataset>
@@ -86,7 +89,6 @@
 									<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
 									<valueExpression><![CDATA[$F{value}]]></valueExpression>
 									<labelExpression><![CDATA[$F{label}]]></labelExpression>
-									<itemHyperlink/>
 								</categorySeries>
 							</categoryDataset>
 							<linePlot isShowShapes="false">
@@ -116,7 +118,7 @@
 					</axis>
 					<axis>
 						<stackedBarChart>
-							<chart>
+							<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.StackedbarChartCustomizer">
 								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
 								<chartTitle color="#000000"/>
 								<chartSubtitle color="#000000"/>
@@ -125,6 +127,9 @@
 							<categoryDataset>
 								<dataset>
 									<datasetRun subDataset="CategorySeriesSubDataset">
+										<datasetParameter name="REPORT_LOCALE">
+											<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+										</datasetParameter>
 										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 									</datasetRun>
 								</dataset>
@@ -133,7 +138,6 @@
 									<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
 									<valueExpression><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMilesToKilometers($F{value},$P{MEASUREMENT_TYPE})]]></valueExpression>
 									<labelExpression><![CDATA[$F{label}]]></labelExpression>
-									<itemHyperlink/>
 								</categorySeries>
 							</categoryDataset>
 							<barPlot isShowLabels="false">

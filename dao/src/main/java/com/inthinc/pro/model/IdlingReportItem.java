@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -180,7 +181,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private String floatToString(Float flt)
     {
        
-            NumberFormat format = NumberFormat.getInstance();
+            NumberFormat format = NumberFormat.getInstance(getLocale());
             format.setMaximumFractionDigits(2);
             format.setMinimumFractionDigits(2);
             return format.format(flt);
@@ -191,4 +192,31 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     { 
         return this.getDriver().getPerson().getFullName().toLowerCase().compareTo(item.getDriver().getPerson().getFullName().toLowerCase());
     }
+	@Override
+	public void prepareForDisplay() {
+		
+		if (getLocale() == null) setLocale(Locale.US);
+        NumberFormat format = NumberFormat.getInstance(getLocale());
+        format.setMaximumFractionDigits(1);
+        format.setMinimumFractionDigits(1);
+		
+        //Percentages, if any driving
+        setLowPercent(format.format(0.0));
+        setHighPercent(format.format(0.0));
+        setTotalPercent(format.format(0.0));
+        Float totHrs = new Float(getDriveTime()) +
+            getLowHrs() + getHighHrs();                
+        if ( totHrs != 0.0f ) {
+            Float low = 100.0f*getLowHrs()/totHrs; 
+            setLowPercent(format.format(low));  
+            
+            Float hi = 100.0f*getHighHrs()/totHrs;
+            setHighPercent(format.format(hi));
+            
+            Float total = 100.0f*getTotalHrs()/totHrs;
+            setTotalPercent(format.format(total));
+        } 
+		
+	}
+
 }

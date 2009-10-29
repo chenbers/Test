@@ -76,7 +76,7 @@ public class IdlePercentageBean extends BaseBean {
 				getDurationBean().getDuration());
 		StringBuilder chartBuilder = new StringBuilder();
 		chartBuilder.append(bar2DMultiAxisChart.getControlParameters());
-		chartBuilder.append(bar2DMultiAxisChart.getCategories());
+		chartBuilder.append(bar2DMultiAxisChart.getCategories(getLocale()));
 		chartBuilder.append("<dataset>");
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("idling_percentage_idling_bar_label", getLocale()), 
 				IDLE_BAR_COLOR, false, idlingValues));
@@ -94,7 +94,7 @@ public class IdlePercentageBean extends BaseBean {
 	}
 
 	private String formatDecimal(double d) {
-        NumberFormat format = NumberFormat.getInstance();
+        NumberFormat format = NumberFormat.getInstance(getLocale());
         format.setMaximumFractionDigits(2);
         format.setMinimumFractionDigits(2);
 //logger.info("decimal: " + d + " formatted: " + format.format(d+.005));
@@ -150,8 +150,8 @@ public class IdlePercentageBean extends BaseBean {
 			setGroupID(getUser().getGroupID());
 		}
         ReportCriteria reportCriteria = reportCriteriaService.getIdlePercentageReportCriteria(getGroupID(), durationBean.getDuration(), getLocale());
-        reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
+        reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setMeasurementType(getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
         return reportCriteria;

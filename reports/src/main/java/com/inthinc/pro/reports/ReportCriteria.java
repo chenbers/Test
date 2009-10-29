@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.model.ChartData;
+import com.inthinc.pro.reports.util.MessageUtil;
 
 public class ReportCriteria
 {
@@ -47,13 +49,18 @@ public class ReportCriteria
         setReport(reportCriteria.getReport());
         paramMap.put("ENTITY_NAME", reportCriteria.getPramMap().get("ENTITY_NAME"));
         paramMap.put("REPORT_NAME", report.toString());
+        paramMap.put("REPORT_LOCALE", reportCriteria.getLocale());
+        this.locale = reportCriteria.getLocale();
     }
 
-    public ReportCriteria(ReportType report, String entityName)
+    public ReportCriteria(ReportType report, String entityName, Locale locale)
     {
         setReport(report);
         paramMap.put("ENTITY_NAME", entityName);
         paramMap.put("REPORT_NAME", report.toString());
+        paramMap.put("REPORT_LOCALE", locale);
+        this.locale = locale;
+       
     }
 
     public void setMainDataset(List mainDataset)
@@ -122,8 +129,7 @@ public class ReportCriteria
 
     public String getCopyRight()
     {
-        Date today = new Date();
-        return String.valueOf(today.getYear()) + " " + INTHINC_NAME;
+        return String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " " + INTHINC_NAME;
     }
     
     /**
@@ -155,7 +161,7 @@ public class ReportCriteria
      * @param timeZone Time Zone to 
      */
     public void setReportDate(Date date,TimeZone timeZone){
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat", locale));
         sdf.setTimeZone(timeZone);
         paramMap.put(REPORT_DATE_STRING, sdf.format(date));
     }
@@ -177,6 +183,7 @@ public class ReportCriteria
 
     public void setLocale(Locale locale)
     {
+        paramMap.put("REPORT_LOCALE",locale);
         this.locale = locale;
     }
 

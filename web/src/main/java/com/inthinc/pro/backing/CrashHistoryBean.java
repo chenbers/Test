@@ -297,7 +297,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     @Override
     protected ReportCriteria getReportCriteria()
     {
-        return getReportCriteriaService().getCrashHistoryReportCriteria(getUser().getGroupID());
+        return getReportCriteriaService().getCrashHistoryReportCriteria(getUser().getGroupID(), getLocale());
     }
 
 }

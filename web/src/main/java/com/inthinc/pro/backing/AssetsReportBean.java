@@ -147,6 +147,7 @@ public class AssetsReportBean extends BaseBean
         {
             art = new AssetReportItem();
             art.setAsset(a);
+            art.setLocale(getLocale());
             assetData.add(art);
         }
     }

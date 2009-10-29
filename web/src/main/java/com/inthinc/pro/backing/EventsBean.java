@@ -72,6 +72,6 @@ public class EventsBean extends BaseEventsBean {
     }
     @Override
     protected ReportCriteria getReportCriteria() {
-        return getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID());
+        return getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID(), getLocale());
     }
 }

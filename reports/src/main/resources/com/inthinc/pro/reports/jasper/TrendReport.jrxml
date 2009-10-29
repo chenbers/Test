@@ -1,315 +1,183 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="Trend Report"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="AllSectionsNoDetail"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<subDataset name="TrendChartDataset" >
-
-
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Trend Report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="TrendChartDataset">
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
 		<field name="value" class="java.lang.Number"/>
 		<field name="label" class="java.lang.String"/>
-
 	</subDataset>
-
-	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
-	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
-	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
-
+	<parameter name="ACCOUNT_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ENTITY_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUB_DATASET_1" class="java.util.List" isForPrompting="false"/>
+	<parameter name="DURATION" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
+	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<field name="identifier" class="java.lang.String"/>
-	<field name="scoreAsString" class="java.lang.String"/>
-
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="426"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="382"
-						y="0"
-						width="153"
-						height="14"
-						key="textField-1"/>
-					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
-				</textField>
-				<lineChart>
-					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.TrendLineChartCustomizer" >
-					<reportElement
-						x="0"
-						y="79"
-						width="535"
-						height="332"
-						key="element-1"/>
-					<box></box>
-						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
-					</chartLegend>
-					</chart>
-					<categoryDataset>
-						<dataset >
-							<datasetRun subDataset="TrendChartDataset">
-					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
-							</datasetRun>
-						</dataset>
-						<categorySeries>
-							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
-							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{value}]]></valueExpression>
-							<labelExpression><![CDATA[$F{label}]]></labelExpression>
-				<itemHyperlink >
-				</itemHyperlink>
-						</categorySeries>
-					</categoryDataset>
-					<linePlot isShowShapes="false" >
-						<plot labelRotation="-45.0" >
-							<seriesColor seriesOrder="0" color="#FF0000"/>
-							<seriesColor seriesOrder="1" color="#00FF00"/>
-							<seriesColor seriesOrder="2" color="#0000FF"/>
-							<seriesColor seriesOrder="3" color="#FF9900"/>
-							<seriesColor seriesOrder="4" color="#9900FF"/>
-							<seriesColor seriesOrder="5" color="#0099FF"/>
-							<seriesColor seriesOrder="6" color="#00FFFF"/>
-							<seriesColor seriesOrder="7" color="#FFFF00"/>
-							<seriesColor seriesOrder="8" color="#FF00FF"/>
-							<seriesColor seriesOrder="9" color="#990066"/>
-							<seriesColor seriesOrder="10" color="#CC9933"/>
-							<seriesColor seriesOrder="11" color="#009933"/>
-							<seriesColor seriesOrder="12" color="#99CCCC"/>
-							<seriesColor seriesOrder="13" color="#FF99FF"/>
-							<seriesColor seriesOrder="14" color="#FFCC99"/>
-							<seriesColor seriesOrder="15" color="#CCCC66"/>
-							<seriesColor seriesOrder="16" color="#99FF99"/>
-							<seriesColor seriesOrder="17" color="#99CCFF"/>
-							<seriesColor seriesOrder="18" color="#CCCCFF"/>
-							<seriesColor seriesOrder="19" color="#CC3333"/>
-							<seriesColor seriesOrder="20" color="#CC6600"/>
-							<seriesColor seriesOrder="21" color="#CC6699"/>
-							<seriesColor seriesOrder="22" color="#66CC99"/>
-							<seriesColor seriesOrder="23" color="#666699"/>
-</plot>
-						<categoryAxisFormat>
-							<axisFormat >
-								<labelFont>
-					<font fontName="SansSerif" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
-								</labelFont>
-								<tickLabelFont>
-								</tickLabelFont>
-							</axisFormat>
-						</categoryAxisFormat>
-						<valueAxisFormat>
-							<axisFormat >
-								<labelFont>
-					<font fontName="SansSerif" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
-								</labelFont>
-								<tickLabelFont>
-								</tickLabelFont>
-							</axisFormat>
-						</valueAxisFormat>
-					</linePlot>
-				</lineChart>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="382"
-						y="16"
-						width="153"
-						height="14"
-						key="textField-5"/>
-					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION})]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="54"
-						y="17"
-						width="328"
-						height="26"
-						key="textField-6"/>
-					<box></box>
-					<textElement>
-						<font size="16"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.trend.header}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="54"
-						y="4"
-						width="122"
-						height="16"
-						key="textField-7"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
-				</textField>
-				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="1"
-						width="51"
-						height="47"
-						key="image-1"/>
-					<box></box>
-					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
-				</image>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="61"
-						width="535"
-						height="0"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="30"  isSplitAllowed="true" >
-				<rectangle radius="1" >
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="5"
-						width="535"
-						height="22"
-						forecolor="#999999"
-						backcolor="#E7E6E6"
-						key="rectangle-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="10"
-						y="7"
-						width="390"
-						height="18"
-						forecolor="#666666"
-						key="textField-4"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.trend.division.team}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="450"
-						y="7"
-						width="82"
-						height="18"
-						forecolor="#666666"
-						key="textField-5"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.trend.score}]]></textFieldExpression>
-				</textField>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="24"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="10"
-						y="2"
-						width="390"
-						height="19"
-						forecolor="#666666"
-						key="textField-3"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{identifier}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="450"
-						y="3"
-						width="80"
-						height="19"
-						forecolor="#666666"
-						key="textField-4"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{scoreAsString}.toString()]]></textFieldExpression>
-				</textField>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="26"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="5"
-						width="535"
-						height="0"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="8"
-						width="198"
-						height="14"
-						key="textField-6"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
-				</textField>
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</summary>
+	<field name="scoreAsDouble" class="java.lang.Double"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="426">
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-1" x="382" y="0" width="153" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
+			</textField>
+			<lineChart>
+				<chart isShowLegend="false" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.TrendLineChartCustomizer">
+					<reportElement key="element-1" x="0" y="94" width="535" height="332"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="TrendChartDataset">
+							<datasetParameter name="REPORT_LOCALE">
+								<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{value}]]></valueExpression>
+						<labelExpression><![CDATA[$F{label}]]></labelExpression>
+						<itemHyperlink hyperlinkType="None"/>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot isShowShapes="false">
+					<plot labelRotation="-45.0">
+						<seriesColor seriesOrder="0" color="#FF0000"/>
+						<seriesColor seriesOrder="1" color="#00FF00"/>
+						<seriesColor seriesOrder="2" color="#0000FF"/>
+						<seriesColor seriesOrder="3" color="#FF9900"/>
+						<seriesColor seriesOrder="4" color="#9900FF"/>
+						<seriesColor seriesOrder="5" color="#0099FF"/>
+						<seriesColor seriesOrder="6" color="#00FFFF"/>
+						<seriesColor seriesOrder="7" color="#FFFF00"/>
+						<seriesColor seriesOrder="8" color="#FF00FF"/>
+						<seriesColor seriesOrder="9" color="#990066"/>
+						<seriesColor seriesOrder="10" color="#CC9933"/>
+						<seriesColor seriesOrder="11" color="#009933"/>
+						<seriesColor seriesOrder="12" color="#99CCCC"/>
+						<seriesColor seriesOrder="13" color="#FF99FF"/>
+						<seriesColor seriesOrder="14" color="#FFCC99"/>
+						<seriesColor seriesOrder="15" color="#CCCC66"/>
+						<seriesColor seriesOrder="16" color="#99FF99"/>
+						<seriesColor seriesOrder="17" color="#99CCFF"/>
+						<seriesColor seriesOrder="18" color="#CCCCFF"/>
+						<seriesColor seriesOrder="19" color="#CC3333"/>
+						<seriesColor seriesOrder="20" color="#CC6600"/>
+						<seriesColor seriesOrder="21" color="#CC6699"/>
+						<seriesColor seriesOrder="22" color="#66CC99"/>
+						<seriesColor seriesOrder="23" color="#666699"/>
+					</plot>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont>
+								<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+							</labelFont>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont>
+								<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+							</labelFont>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-5" x="382" y="16" width="153" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-6" x="54" y="17" width="328" height="26"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.trend.header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-7" x="54" y="4" width="122" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" vAlign="Top" hyperlinkType="None">
+				<reportElement key="image-1" x="0" y="1" width="51" height="47"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement key="line-4" x="0" y="61" width="535" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30">
+			<rectangle radius="1">
+				<reportElement key="rectangle-2" mode="Opaque" x="0" y="5" width="535" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
+			</rectangle>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-4" x="10" y="7" width="390" height="18" forecolor="#666666"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.trend.division.team}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-5" mode="Transparent" x="450" y="7" width="82" height="18" forecolor="#666666"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.trend.score}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24">
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-3" x="10" y="2" width="390" height="19" forecolor="#666666"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{identifier}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-4" x="450" y="3" width="80" height="19" forecolor="#666666"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(($F{scoreAsDouble}==null)||($F{scoreAsDouble}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{scoreAsDouble})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26">
+			<line>
+				<reportElement key="line-3" x="0" y="5" width="535" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement key="textField-6" x="0" y="8" width="198" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
 </jasperReport>

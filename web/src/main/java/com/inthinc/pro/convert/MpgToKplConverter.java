@@ -1,6 +1,7 @@
 package com.inthinc.pro.convert;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -11,7 +12,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 public class MpgToKplConverter extends BaseConverter
 {
-    private static final DecimalFormat decimalFormat = new DecimalFormat("######.##");
+//    private static final DecimalFormat decimalFormat = new DecimalFormat("######.##");
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
     {
@@ -23,10 +24,10 @@ public class MpgToKplConverter extends BaseConverter
     {
         if (Number.class.isInstance(value))
         {
-            return decimalFormat.format(MeasurementConversionUtil.convertMpgToFuelEfficiencyType((Number.class.cast(value)).doubleValue(),
+            return NumberFormat.getInstance(getLocale()).format(MeasurementConversionUtil.convertMpgToFuelEfficiencyType((Number.class.cast(value)).doubleValue(),
                                                                                                 getMeasurementType(), 
                                                                                                 getFuelEfficiencyType()));
         }
-        return value.toString();
+        return NumberFormat.getInstance(getLocale()).format(value);
     }
 }

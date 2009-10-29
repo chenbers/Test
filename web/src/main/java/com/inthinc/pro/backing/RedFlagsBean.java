@@ -202,6 +202,10 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
     }
 
     protected void initTableData() {
+    	
+        LocaleBean localeBean = new LocaleBean();
+        localeBean.getLocale();
+
         setFilteredTableData(null);
         List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7, RedFlagDAO.INCLUDE_FORGIVEN);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
@@ -416,8 +420,7 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
         }
     }
 	protected ReportCriteria getReportCriteria() {
-	    ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID());
-	    reportCriteria.setLocale(getLocale());
+	    ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID(), getLocale());
 	    return reportCriteria;
 	}
 

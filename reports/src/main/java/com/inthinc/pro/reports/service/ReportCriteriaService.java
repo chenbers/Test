@@ -8,19 +8,19 @@ import com.inthinc.pro.reports.ReportCriteria;
 
 public interface ReportCriteriaService
 {
-    ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration);
-    ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration);
-    ReportCriteria getMpgReportCriteria(Integer groupID,Duration duration);
-    ReportCriteria getDriverReportCriteria(Integer groupID,Duration duration);
-    ReportCriteria getVehicleReportCriteria(Integer groupID,Duration duration);
-    ReportCriteria getIdlingReportCriteria(Integer groupID,Date startDate,Date endDate);
-    ReportCriteria getDevicesReportCriteria(Integer groupID);
-    ReportCriteria getEventsReportCriteria(Integer groupID);
-    ReportCriteria getRedFlagsReportCriteria(Integer groupID);
-    ReportCriteria getWarningsReportCriteria(Integer groupID);
-    ReportCriteria getEmergencyReportCriteria(Integer groupID);
-    ReportCriteria getZoneAlertsReportCriteria(Integer groupID);
-    ReportCriteria getCrashHistoryReportCriteria(Integer groupID);
+    ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration, Locale locale);
+    ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale);
+    ReportCriteria getMpgReportCriteria(Integer groupID,Duration duration, Locale locale);
+    ReportCriteria getDriverReportCriteria(Integer groupID,Duration duration, Locale locale);
+    ReportCriteria getVehicleReportCriteria(Integer groupID,Duration duration, Locale locale);
+    ReportCriteria getIdlingReportCriteria(Integer groupID,Date startDate,Date endDate, Locale locale);
+    ReportCriteria getDevicesReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getEventsReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getRedFlagsReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getWarningsReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getEmergencyReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getZoneAlertsReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getCrashHistoryReportCriteria(Integer groupID, Locale locale);
     ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
 

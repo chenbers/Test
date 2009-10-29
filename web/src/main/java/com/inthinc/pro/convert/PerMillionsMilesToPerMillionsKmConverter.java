@@ -1,5 +1,7 @@
 package com.inthinc.pro.convert;
 
+import java.text.NumberFormat;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
@@ -22,14 +24,15 @@ public class PerMillionsMilesToPerMillionsKmConverter extends BaseConverter {
 	public String getAsString(FacesContext context, UIComponent component,
 			Object value) throws ConverterException {
 
-        if (getMeasurementType().equals(MeasurementType.METRIC))
+        if(Number.class.isInstance(value))
         {
-            if(Number.class.isInstance(value))
-            {
-                return MeasurementConversionUtil.fromPerMillionMilesToPerMillionKm(Number.class.cast(value).doubleValue()).toString();
-            }
-        }
-        
+	        if (getMeasurementType().equals(MeasurementType.METRIC))
+	        {
+	              return NumberFormat.getInstance(getLocale()).format(MeasurementConversionUtil.fromPerMillionMilesToPerMillionKm(Number.class.cast(value).doubleValue()));
+	        }
+	        
+	        return NumberFormat.getInstance(getLocale()).format(value);
+		}
         return value.toString();
 	}
 

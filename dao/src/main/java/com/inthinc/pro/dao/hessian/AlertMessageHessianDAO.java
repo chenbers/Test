@@ -27,6 +27,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
@@ -189,12 +190,22 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
                 Number speedLimit = MeasurementConversionUtil.convertSpeed(((SpeedingEvent) event).getSpeedLimit(), person.getMeasurementType());
                 parameterList.add(String.valueOf(topSpeed));
                 parameterList.add(String.valueOf(speedLimit));
-                parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
+                try {
+                	parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
+                }
+                catch (NoAddressFoundException nafe){
+                	//Shouldn't happen because returning lat lng when there is no address
+                }
             case ALERT_TYPE_TAMPERING:
             case ALERT_TYPE_LOW_BATTERY:
                 break;
             default:
-                parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
+                try {
+                	parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
+                }
+                catch (NoAddressFoundException nafe){
+                	//Shouldn't happen because returning lat lng when there is no address
+                }
         }
         alertMessageBuilder.setParamterList(parameterList);
         return alertMessageBuilder;

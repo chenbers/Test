@@ -68,6 +68,6 @@ public class EmergencyBean extends BaseEventsBean
     @Override
     protected ReportCriteria getReportCriteria()
     {
-        return getReportCriteriaService().getEmergencyReportCriteria(getUser().getGroupID());
+        return getReportCriteriaService().getEmergencyReportCriteria(getUser().getGroupID(), getLocale());
     }
 }

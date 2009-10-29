@@ -227,7 +227,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         StringBuffer sb = new StringBuffer();
 
         // Control parameters
-        sb.append(GraphicUtil.getXYControlParameters(animateChartData));
+        sb.append(GraphicUtil.getXYControlParameters(animateChartData, getLocale()));
 
         // Fetch to get parents children, qualifier is groupId (parent),
         // date from, date to
@@ -237,7 +237,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         
         // X-coordinates
         sb.append("<categories>");
-        sb.append(GraphicUtil.createMonthsString(getDurationBean().getDuration()));
+        sb.append(GraphicUtil.createMonthsString(getDurationBean().getDuration(),getLocale()));
         sb.append("</categories>");
 
         // top group
@@ -284,15 +284,15 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
 		sb.append("\'>");
 
 		// Not a full range, pad w/ zero
-		int holes = 0;
-		if (getDurationBean().getDuration() == Duration.DAYS)
-		{
-		    holes = getDurationBean().getDuration().getNumberOfDays() - ss.size();            
-		}
-		else
-		{
-		    holes = GraphicUtil.convertToMonths(getDurationBean().getDuration()) - ss.size();
-		}
+		int holes = getDurationBean().getDuration().getDvqCount() - ss.size();
+//		if (getDurationBean().getDuration() == Duration.DAYS)
+//		{
+//		    holes = getDurationBean().getDuration().getNumberOfDays() - ss.size();            
+//		}
+//		else
+//		{
+//		    holes = GraphicUtil.convertToMonths(getDurationBean().getDuration()) - ss.size();
+//		}
 		for (int k = 0; k < holes; k++)
 		{
 		    sb.append("<set value=\'0.0\' alpha=\'0\'/>");
@@ -389,9 +389,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     
     public ReportCriteria buildReportCriteria()
     {
-        ReportCriteria reportCriteria = reportCriteriaService.getTrendChartReportCriteria(trendBeanState.getGroupID(), getDurationBean().getDuration());
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        ReportCriteria reportCriteria = reportCriteriaService.getTrendChartReportCriteria(trendBeanState.getGroupID(), getDurationBean().getDuration(), getLocale());
         reportCriteria.setLocale(getLocale());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         return reportCriteria;
     }

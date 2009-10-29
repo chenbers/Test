@@ -39,7 +39,7 @@ public class ZoneAlertEventsBean extends BaseEventsBean
     @Override
     protected ReportCriteria getReportCriteria()
     {
-        return getReportCriteriaService().getZoneAlertsReportCriteria(getUser().getGroupID());
+        return getReportCriteriaService().getZoneAlertsReportCriteria(getUser().getGroupID(), getLocale());
     }
 
 }
