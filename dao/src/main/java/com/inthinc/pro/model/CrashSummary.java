@@ -72,7 +72,7 @@ public class CrashSummary extends BaseEntity {
 	}
 	public void calculateAndSetCrashesPerMillionMiles()
 	{
-		if (totalMiles.equals(0)){
+		if (totalMiles.doubleValue() == 0){
 			
 			crashesPerMillionMiles = 0.0;
 			return;
