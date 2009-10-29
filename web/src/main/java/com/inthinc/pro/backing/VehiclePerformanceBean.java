@@ -41,7 +41,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private VehicleDAO          vehicleDAO;
     private DriverDAO           driverDAO;
     private ScoreDAO            scoreDAO;
-    private MpgDAO              mpgDAO;
+
+	private MpgDAO              mpgDAO;
     private EventDAO            eventDAO;
 
     private DurationBean        coachDurationBean;
@@ -64,7 +65,13 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
     private CrashSummary 		crashSummary;
-   
+    private Boolean 			tripMayExist;
+    
+    public VehiclePerformanceBean() {
+		super();
+		tripMayExist = true;
+		
+    }
     
 
     @Override
@@ -167,7 +174,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public TripDisplay getLastTrip()
     {
-        if (lastTrip == null)
+        if (lastTrip == null && tripMayExist)
         {
             Trip tempTrip = vehicleDAO.getLastTrip(getVehicle().getVehicleID());
 
@@ -184,6 +191,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             {
                 hasLastTrip = false;
             }
+            tripMayExist = false;
         }
         return lastTrip;
     }
@@ -394,8 +402,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public Boolean getHasLastTrip()
     {
-        if (this.lastTrip == null)
-            this.getLastTrip();
+//        if (this.lastTrip == null)
+//            this.getLastTrip();
 
         return hasLastTrip;
     }

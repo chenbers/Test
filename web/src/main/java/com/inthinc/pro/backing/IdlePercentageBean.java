@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.awt.Color;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,7 +7,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
 import com.inthinc.pro.dao.ScoreDAO;
@@ -63,15 +61,17 @@ public class IdlePercentageBean extends BaseBean {
 			drivingValues.add(getHours(item.getDrivingTime()));
 			idlingValues.add(getHours(item.getIdlingTime()));
 			Integer percent = MathUtil.percent(item.getIdlingTime(), item.getDrivingTime());
-logger.info(item.getDrivingTime() + " " + item.getIdlingTime() + " " + percent);
+//logger.info(item.getDrivingTime() + " " + item.getIdlingTime() + " " + percent);
 			percentValues.add(percent);
 			totalDriving += item.getDrivingTime();
 			totalIdling += item.getIdlingTime();
 		}
+/*		
 		logger.info("---start----");
 		logger.info(drivingValues.toString());
 		logger.info(idlingValues.toString());
 		logger.info(percentValues.toString());
+*/		
 		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(
 				getDurationBean().getDuration());
 		StringBuilder chartBuilder = new StringBuilder();
@@ -86,7 +86,6 @@ logger.info(item.getDrivingTime() + " " + item.getIdlingTime() + " " + percent);
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("idling_percentage_idling_line_label", getLocale()), 
 				IDLE_LINE_COLOR, true, percentValues));
 		chartBuilder.append(bar2DMultiAxisChart.getClose());
-		logger.error(chartBuilder.toString());
 		setChartDef(chartBuilder.toString());
 		setTotalDriving(formatDecimal(getHours(totalDriving)) + " " + getTimeLabel());
 		setTotalIdling(formatDecimal(getHours(totalIdling)) + " " + getTimeLabel()
@@ -98,7 +97,7 @@ logger.info(item.getDrivingTime() + " " + item.getIdlingTime() + " " + percent);
         NumberFormat format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(2);
         format.setMinimumFractionDigits(2);
-logger.info("decimal: " + d + " formatted: " + format.format(d+.005));
+//logger.info("decimal: " + d + " formatted: " + format.format(d+.005));
         return format.format(d+.005);
 	}
 

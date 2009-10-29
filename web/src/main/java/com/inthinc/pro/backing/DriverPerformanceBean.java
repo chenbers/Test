@@ -33,7 +33,8 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class DriverPerformanceBean extends BasePerformanceBean
 {
-    private static final Logger logger          = Logger.getLogger(DriverPerformanceBean.class);
+
+	private static final Logger logger          = Logger.getLogger(DriverPerformanceBean.class);
 
     private ScoreDAO            scoreDAO;
     private MpgDAO              mpgDAO;
@@ -60,7 +61,13 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private String              mpgHistory;
     private String              coachingHistory;
     private Boolean             hasLastTrip;
+    private Boolean 			tripMayExist;
+
     
+    public DriverPerformanceBean() {
+		super();
+		tripMayExist = true;
+	}
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
@@ -167,7 +174,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     // LAST TRIP
     public TripDisplay getLastTrip()
     {
-        if (lastTrip == null)
+        if (lastTrip == null && tripMayExist)
         {
             Trip tempTrip = driverBean.getDriverDAO().getLastTrip(getDriver().getDriverID());
 
@@ -182,6 +189,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
             {
                 hasLastTrip = false;
             }
+            tripMayExist = false;
+
         }
         return lastTrip;
     }
@@ -423,8 +432,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
 
     public Boolean getHasLastTrip()
     {
-        if (this.lastTrip == null)
-            this.getLastTrip();
+//        if (this.lastTrip == null)
+//            this.getLastTrip();
 
         return hasLastTrip;
     }
