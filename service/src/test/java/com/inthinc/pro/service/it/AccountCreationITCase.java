@@ -1,6 +1,7 @@
 package com.inthinc.pro.service.it;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     @Test
     public void accountTest() throws Exception {
+        // TODO: This test really needs some help. I'll come back to it, just need to get something going right now.
 
         // Setup new account
 
@@ -51,9 +53,15 @@ public class AccountCreationITCase extends BaseITCase {
 
         // Update account objects
         account = updateAccount(account);
-        groupList = updateGroup(groupList);
+        groupList = updateGroupHierarchy(groupList);
         address = updateAddress(address);
         person = updatePerson(person);
+
+        // Delete account objects
+        deleteAddress(address);
+        deletePerson(person);
+        deleteGroupHierarchy(groupList);
+        deleteAccount(account);
 
     }
 
@@ -83,6 +91,16 @@ public class AccountCreationITCase extends BaseITCase {
 
         logger.info("Account updated successfully: " + updateAccount);
         return updateAccount;
+    }
+
+    private void deleteAccount(Account account) throws Exception {
+        ClientRequest request = new ClientRequest(url + "/account/" + account.getAcctID(), httpClient);
+        ClientResponse<Account> response = request.delete(Account.class);
+        assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
+        response = request.get(Account.class);
+        assertEquals("Account was found, but should be deleted. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.NOT_FOUND, response
+                .getResponseStatus());
+        logger.info("Account deleted successfully");
     }
 
     private List<Group> createGroupHierarchy(Account account) throws Exception {
@@ -143,7 +161,7 @@ public class AccountCreationITCase extends BaseITCase {
         return groupList;
     }
 
-    private List<Group> updateGroup(List<Group> groupList) throws Exception {
+    private List<Group> updateGroupHierarchy(List<Group> groupList) throws Exception {
         List<Group> responseList = new ArrayList<Group>();
         ClientRequest request = new ClientRequest(url + "/group", httpClient);
         ClientResponse<Group> response = null;
@@ -164,8 +182,20 @@ public class AccountCreationITCase extends BaseITCase {
             logger.info("Group updated successfully: " + updateGroup);
             responseList.add(updateGroup);
         }
-        
+
         return responseList;
+    }
+
+    private void deleteGroupHierarchy(List<Group> groupList) throws Exception {
+        for (Group group : groupList) {
+            ClientRequest request = new ClientRequest(url + "/group/" + group.getGroupID(), httpClient);
+            ClientResponse<Group> response = request.delete(Group.class);
+            assertEquals("Error deleting group. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
+            response = request.get(Group.class);
+            assertEquals("Group was found, but should be deleted. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.NOT_FOUND, response
+                    .getResponseStatus());
+            logger.info("Group deleted successfully");
+        }
     }
 
     private Address createAddress(Account account) throws Exception {
@@ -201,6 +231,16 @@ public class AccountCreationITCase extends BaseITCase {
 
         logger.info("Address updated successfully: " + updateAddress);
         return updateAddress;
+    }
+
+    private void deleteAddress(Address address) throws Exception {
+        ClientRequest request = new ClientRequest(url + "/address/" + address.getAddrID(), httpClient);
+        ClientResponse<Address> response = request.delete(Address.class);
+        assertEquals("Error deleting address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
+        response = request.get(Address.class);
+        assertEquals("Address was found, but should be deleted. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.NOT_FOUND, response
+                .getResponseStatus());
+        logger.info("Address deleted successfully");
     }
 
     private Person createPerson(Account account, List<Group> groupList, Address address) throws Exception {
@@ -265,23 +305,23 @@ public class AccountCreationITCase extends BaseITCase {
         person.setLast(person.getLast() + "Update");
         person.setLocale(Locale.JAPAN);
         person.setTimeZone(TimeZone.getTimeZone("PST"));
-        
-//        person.getUser().setPassword();
+
+        // person.getUser().setPassword();
         person.getUser().setRole(Roles.getRoleByName("readOnly"));
-        
+
         person.getDriver().setState(States.getStateByAbbrev("CA"));
         person.getDriver().setLicense(person.getDriver().getLicense() + "Update");
         person.getDriver().setLicenseClass(person.getDriver().getLicenseClass() + "Update");
         person.getDriver().setCertifications(person.getDriver().getCertifications() + "Update");
         person.getDriver().setRFID(RandomUtils.nextLong());
         person.getDriver().setExpiration(new DateTime().plusYears(4).toDate());
-        
+
         ClientRequest request = new ClientRequest(url + "/person", httpClient);
         request.body(MediaType.APPLICATION_XML_TYPE, person);
         ClientResponse<Person> response = request.put(Person.class);
         assertEquals("Error updating address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         Person updatePerson = response.getEntity();
-        //TODO: add more robust testing
+        // TODO: add more robust testing
         assertTrue(person.getDept().equals(updatePerson.getDept()));
         assertTrue(person.getEmpid().equals(updatePerson.getEmpid()));
         assertTrue(person.getFirst().equals(updatePerson.getFirst()));
@@ -290,9 +330,19 @@ public class AccountCreationITCase extends BaseITCase {
         assertTrue(person.getUser().getRole().equals(updatePerson.getUser().getRole()));
         assertTrue(person.getDriver().getState().getAbbrev().equals(updatePerson.getDriver().getState().getAbbrev()));
         assertTrue(person.getDriver().getLicense().equals(updatePerson.getDriver().getLicense()));
-//        assertTrue(person.getDriver().getExpiration().equals(updatePerson.getDriver().getExpiration()));        
-        
+        // assertTrue(person.getDriver().getExpiration().equals(updatePerson.getDriver().getExpiration()));
+
         logger.info("Person updated successfully: " + updatePerson);
         return updatePerson;
+    }
+
+    private void deletePerson(Person person) throws Exception {
+        ClientRequest request = new ClientRequest(url + "/person/" + person.getPersonID(), httpClient);
+        ClientResponse<Person> response = request.delete(Person.class);
+        assertEquals("Error deleting person. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
+        response = request.get(Person.class);
+        assertEquals("Person was found, but should be deleted. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.NOT_FOUND, response
+                .getResponseStatus());
+        logger.info("Person deleted successfully");
     }
 }
