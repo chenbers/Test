@@ -58,7 +58,7 @@ public class AccountCreationITCase extends BaseITCase {
         person = updatePerson(person);
 
         // Delete account objects
-//        deleteAddress(address);
+        // deleteAddress(address);
         deletePerson(person);
         deleteGroupHierarchy(groupList);
         deleteAccount(account);
@@ -95,10 +95,10 @@ public class AccountCreationITCase extends BaseITCase {
 
     private void deleteAccount(Account account) throws Exception {
         ClientRequest request = new ClientRequest(url + "/account/" + account.getAcctID(), httpClient);
-        ClientResponse<Account> response = request.delete(Account.class);
+        ClientResponse response = request.delete();
         assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
-        response = request.get(Account.class);
-        assertEquals("Account was found, but should be deleted. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.NOT_FOUND, response
+        ClientResponse<Account> getResponse = request.get(Account.class);
+        assertEquals("Account was found, but should be deleted. HTTP Status Code: " + getResponse.getStatus() + " - " + getResponse.getResponseStatus(), Response.Status.NOT_FOUND, getResponse
                 .getResponseStatus());
         logger.info("Account deleted successfully");
     }
@@ -344,7 +344,7 @@ public class AccountCreationITCase extends BaseITCase {
         User user = userResponse.getEntity();
         assertEquals("User was not deleted successfully.", user.getStatus(), Status.DELETED);
         logger.info("User deleted successfully");
-        
+
         ClientRequest driverRequest = new ClientRequest(url + "/driver/" + person.getDriver().getDriverID(), httpClient);
         ClientResponse<Driver> driverResponse = driverRequest.delete(Driver.class);
         assertEquals("Error deleting driver. HTTP Status Code: " + driverResponse.getStatus() + " - " + driverResponse.getResponseStatus(), Response.Status.OK, driverResponse.getResponseStatus());
@@ -352,7 +352,7 @@ public class AccountCreationITCase extends BaseITCase {
         Driver driver = driverResponse.getEntity();
         assertEquals("Driver was not deleted successfully.", driver.getStatus(), Status.DELETED);
         logger.info("Driver deleted successfully");
-        
+
         ClientRequest personRequest = new ClientRequest(url + "/person/" + person.getPersonID(), httpClient);
         ClientResponse<Person> personResponse = personRequest.delete(Person.class);
         assertEquals("Error deleting person. HTTP Status Code: " + personResponse.getStatus() + " - " + personResponse.getResponseStatus(), Response.Status.OK, personResponse.getResponseStatus());

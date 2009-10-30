@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
@@ -98,6 +99,7 @@ public class IdlePercentageBeanTest extends BaseBeanTest {
     }
 
     @Test
+    @Ignore
     public void fusionCharts()
     {
         IdlePercentageBean bean = (IdlePercentageBean)applicationContext.getBean("idlePercentageBean");
