@@ -523,7 +523,7 @@ public class ReportServiceTest
 
     
     @Test
-    //@Ignore
+    @Ignore
     public void idlePercent()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -936,8 +936,8 @@ for (Event event : events)
          }
      }
      
-     @Test
-     //@Ignore
+     @Test     
+     @Ignore
      public void getIdlingReportData()
      {
     	 // getDVScoresByGSE
