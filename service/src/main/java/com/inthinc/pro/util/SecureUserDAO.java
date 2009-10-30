@@ -31,6 +31,7 @@ public class SecureUserDAO extends SecureDAO<User> {
         return isAuthorized(findByID(userID));
     }
 
+    //TODO: Wondering if we should filter user with a status of DELETED
     @Override
     public User findByID(Integer userID) {
         User user = userDAO.findByID(userID);
@@ -70,8 +71,7 @@ public class SecureUserDAO extends SecureDAO<User> {
     public Integer delete(Integer userID) {
         if (isAuthorized(userID))
             return userDAO.deleteByID(userID);
-        else
-            return 0;
+        return 0;
     }
 
     public void setUserDAO(UserDAO userDAO) {

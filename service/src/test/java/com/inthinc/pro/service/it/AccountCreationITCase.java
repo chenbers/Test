@@ -58,7 +58,7 @@ public class AccountCreationITCase extends BaseITCase {
         person = updatePerson(person);
 
         // Delete account objects
-        deleteAddress(address);
+//        deleteAddress(address);
         deletePerson(person);
         deleteGroupHierarchy(groupList);
         deleteAccount(account);
@@ -337,12 +337,28 @@ public class AccountCreationITCase extends BaseITCase {
     }
 
     private void deletePerson(Person person) throws Exception {
-        ClientRequest request = new ClientRequest(url + "/person/" + person.getPersonID(), httpClient);
-        ClientResponse<Person> response = request.delete(Person.class);
-        assertEquals("Error deleting person. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
-        response = request.get(Person.class);
-        assertEquals("Person was found, but should be deleted. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.NOT_FOUND, response
-                .getResponseStatus());
+        ClientRequest userRequest = new ClientRequest(url + "/user/" + person.getUser().getUserID(), httpClient);
+        ClientResponse<User> userResponse = userRequest.delete(User.class);
+        assertEquals("Error deleting user. HTTP Status Code: " + userResponse.getStatus() + " - " + userResponse.getResponseStatus(), Response.Status.OK, userResponse.getResponseStatus());
+        userResponse = userRequest.get(User.class);
+        User user = userResponse.getEntity();
+        assertEquals("User was not deleted successfully.", user.getStatus(), Status.DELETED);
+        logger.info("User deleted successfully");
+        
+        ClientRequest driverRequest = new ClientRequest(url + "/driver/" + person.getDriver().getDriverID(), httpClient);
+        ClientResponse<Driver> driverResponse = driverRequest.delete(Driver.class);
+        assertEquals("Error deleting driver. HTTP Status Code: " + driverResponse.getStatus() + " - " + driverResponse.getResponseStatus(), Response.Status.OK, driverResponse.getResponseStatus());
+        driverResponse = driverRequest.get(Driver.class);
+        Driver driver = driverResponse.getEntity();
+        assertEquals("Driver was not deleted successfully.", driver.getStatus(), Status.DELETED);
+        logger.info("Driver deleted successfully");
+        
+        ClientRequest personRequest = new ClientRequest(url + "/person/" + person.getPersonID(), httpClient);
+        ClientResponse<Person> personResponse = personRequest.delete(Person.class);
+        assertEquals("Error deleting person. HTTP Status Code: " + personResponse.getStatus() + " - " + personResponse.getResponseStatus(), Response.Status.OK, personResponse.getResponseStatus());
+        personResponse = personRequest.get(Person.class);
+        Person deletePerson = personResponse.getEntity();
+        assertEquals("Person was not deleted successfully.", deletePerson.getStatus(), Status.DELETED);
         logger.info("Person deleted successfully");
     }
 }

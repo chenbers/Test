@@ -42,8 +42,8 @@ public interface AccountService extends GenericService<Account> {
     public Response update(Account account);
 
     @DELETE
-    @Override
     @Path("/account")
+    @Override
     public Response delete(Integer id);
 
 }
