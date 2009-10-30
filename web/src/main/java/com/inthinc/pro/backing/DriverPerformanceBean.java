@@ -165,6 +165,11 @@ public class DriverPerformanceBean extends BasePerformanceBean
 
     public void setOverallScoreStyle(String overallScoreStyle)
     {
+        if ( overallScoreStyle.equalsIgnoreCase("null") ) {
+            this.overallScoreStyle = null;
+            return;
+        }
+        
         this.overallScoreStyle = overallScoreStyle;
     }
 
