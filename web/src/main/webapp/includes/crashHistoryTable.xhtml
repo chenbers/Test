@@ -79,8 +79,8 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_status}" />
                 </f:facet>
-				         					              
-                <h:outputText value="#{item.status}" />
+				<ui:param name="status" value="CrashReportStatus.#{item.status}"/>         					              
+                <h:outputText value="#{messages[status]}" />
             </rich:column>
             
             <rich:column rendered="#{tableColumns['weather'].visible}" sortBy="#{item.weather}" >

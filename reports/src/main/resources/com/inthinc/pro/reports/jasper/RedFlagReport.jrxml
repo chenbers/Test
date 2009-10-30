@@ -20,6 +20,7 @@
 	<field name="category" class="java.lang.String"/>
 	<field name="detail" class="java.lang.String"/>
 	<field name="redFlag.alert" class="java.lang.Boolean"/>
+	<field name="eventType" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
@@ -107,11 +108,11 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="32">
+		<band height="30">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-1" x="59" y="3" width="29" height="17"/>
 				<textElement rotation="None"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{redFlag.alert}.booleanValue() ? $R{yes} : $R{no} ]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{redFlag.alert}.booleanValue() ? $R{yes} : $R{no}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-2" x="93" y="3" width="173" height="17"/>
@@ -126,7 +127,7 @@
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-5" x="543" y="3" width="76" height="27"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{category}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("redflags_cat"+$F{category})+" "+str($F{eventType})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-6" x="627" y="3" width="148" height="26"/>

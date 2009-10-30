@@ -166,7 +166,8 @@
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_status}" />
                                       					</f:facet>
-                                      					<h:outputText value="#{item.device.status}" />
+      															<ui:param name="status" value="status#{item.device.status.code}" />
+      															<h:outputText value="#{messages[status]}" />
                                     				</rich:column>  
                                     				<rich:column rendered="#{deviceReportBean.tableColumns['device_ephone'].visible}" 
                                     					sortBy="#{item.device.ephone}">
