@@ -8,8 +8,10 @@ import com.inthinc.pro.model.Duration;
 public class Bar2DMultiAxisChart extends DateCategoryChart {
 
     private static final String CHART_CONTROL_PARAMS ="<chart " +
-                                                // use actual numbers for y axis
-            "formatNumberScale=\'0\' " +
+                                                // y axis formatting
+            "adjustDiv=\'0\' " +
+            "numDivLines=\'4\' " +
+            "yAxisValueDecimals=\'2\' " +
     											// background color/border
     		"bgColor=\'#ffffff\' " +
     		"showBorder=\'0\' " +
