@@ -16,7 +16,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 
 public class SpeedPercentageBeanTest extends BaseBeanTest {
 
-    private static final String EXPECTED_CHART_XML = "<chart bgColor=''#ffffff'' showBorder=''0'' showToolTips=''1'' showValues=''0'' showLabels=''1'' rotateLabels=''1'' slantLabels=''1'' connectNullData=''1'' decimals=''0'' SYAxisMinValue=''0'' SYAxisMaxValue=''100'' SNumberSuffix=''%'' showLegend=''1'' legendPosition=''BOTTOM'' legendMarkerCircle=''0'' legendBorderThickness=''0'' legendShadow=''0'' chartLeftMargin=''3'' chartRightMargin=''3'' areaOverColumns=''0''> "
+    private static final String EXPECTED_CHART_XML = "<chart adjustDiv=''0'' numDivLines=''4'' yAxisValueDecimals=''2'' bgColor=''#ffffff'' showBorder=''0'' showToolTips=''1'' showValues=''0'' showLabels=''1'' rotateLabels=''1'' slantLabels=''1'' connectNullData=''1'' decimals=''0'' SYAxisMinValue=''0'' SYAxisMaxValue=''100'' SNumberSuffix=''%'' showLegend=''1'' legendPosition=''BOTTOM'' legendMarkerCircle=''0'' legendBorderThickness=''0'' legendShadow=''0'' chartLeftMargin=''3'' chartRightMargin=''3'' areaOverColumns=''0''> "
             + "<categories> <category label=''{0}''/> <category label=''{1}''/> <category label=''{2}''/></categories>"
             + "<dataset>"
             + "<dataset seriesName=''Speeding Distance'' color=''1e88c8'' showValues=''0''> <set value=''5''/> <set value=''10''/> <set value=''15''/></dataset>"
@@ -78,7 +78,6 @@ public class SpeedPercentageBeanTest extends BaseBeanTest {
     }
 
     @Test
-    @Ignore
     public void fusionCharts() {
         SpeedPercentageBean bean = (SpeedPercentageBean) applicationContext.getBean("speedPercentageBean");
         loginUser(UnitTestStats.UNIT_TEST_LOGIN);
