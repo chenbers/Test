@@ -44,7 +44,4 @@ public abstract class BaseEntity implements Serializable {
         this.created = created;
     }
 
-    //TODO: is this necessary in the BaseEntity? Display what? The DAO shouldn't know about the view.
-    public void prepareForDisplay() {
-    }
 }
