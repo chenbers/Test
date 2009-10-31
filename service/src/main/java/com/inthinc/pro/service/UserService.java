@@ -17,30 +17,27 @@ import javax.ws.rs.core.UriInfo;
 import com.inthinc.pro.model.User;
 
 @Path("/")
+@Produces("application/xml")
+@Consumes("application/xml")
 public interface UserService extends GenericService<User> {
 
     @GET
     @Path("/users")
-    @Produces("application/xml")
     public Response getAll();
 
     @GET
     @Path("/user/{userID:[0-9]+}")
-    @Produces("application/xml")
     public Response get(@PathParam("userID") Integer userID);
 
     @GET
     @Path("/user/{userName:[A-Za-z]+}")
-    @Produces("application/xml")
     public Response get(@PathParam("userName") String userName);
 
     @POST
-    @Consumes("application/xml")
     @Path("/user")
     public Response create(User user, @Context UriInfo uriInfo);
 
     @PUT
-    @Consumes("application/xml")
     @Path("/user")
     public Response update(User user);
 
@@ -49,17 +46,14 @@ public interface UserService extends GenericService<User> {
     public Response delete(@PathParam("id") Integer id);
 
     @POST
-    @Consumes("application/xml")
     @Path("/users")
     public Response create(List<User> users, @Context UriInfo uriInfo);
 
     @PUT
-    @Consumes("application/xml")
     @Path("/users")
     public Response update(List<User> users);
 
     @DELETE
-    @Consumes("application/xml")
     @Path("/users")
     public Response delete(List<Integer> userIDs);
 

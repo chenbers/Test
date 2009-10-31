@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.impl;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,18 @@ public class PersonServiceImpl extends AbstractService<Person, SecurePersonDAO> 
         }
         return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
         }).build();
+    }
+
+    @Override
+    public Response create(Integer id, Person person, UriInfo uriInfo) {
+        Integer personID = getDao().create(id, person);
+        if (personID != null) {
+            UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+            URI uri = uriBuilder.path(personID.toString()).build();            
+            person = getDao().findByID(personID);         
+            return Response.created(uri).entity(person).build();
+        }
+        return Response.serverError().build();
     }
 
 }

@@ -16,13 +16,8 @@ public class SecureUserDAO extends SecureDAO<User> {
         if (user != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            if (getUser().getRole().equals(inthincRole))
+            if (isInthincUser() || (groupDAO.isAuthorized(user.getGroupID()) && personDAO.isAuthorized(user.getPersonID())))
                 return true;
-            if (!groupDAO.isAuthorized(user.getGroupID()))
-                return false;
-            if (!personDAO.isAuthorized(user.getPersonID()))
-                return false;
-            return true;
         }
         return false;
     }
@@ -31,7 +26,7 @@ public class SecureUserDAO extends SecureDAO<User> {
         return isAuthorized(findByID(userID));
     }
 
-    //TODO: Wondering if we should filter user with a status of DELETED
+    // TODO: Wondering if we should filter user with a status of DELETED
     @Override
     public User findByID(Integer userID) {
         User user = userDAO.findByID(userID);

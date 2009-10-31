@@ -19,7 +19,7 @@ public class SecureAccountDAO extends SecureDAO<Account> {
     @Override
     public Integer delete(Integer id) {
         //Only INTHINC users can delete an account
-        if(getUser().getRole().equals(inthincRole))
+        if(isInthincUser())
             return accountDAO.deleteByID(id);
         return 0;
     }
@@ -34,7 +34,7 @@ public class SecureAccountDAO extends SecureDAO<Account> {
 
     @Override
     public List<Account> getAll() {
-        if (isAuthorized(null)) {
+        if (isInthincUser()) {
             return accountDAO.getAllAcctIDs();
         }
         return null;
@@ -42,10 +42,8 @@ public class SecureAccountDAO extends SecureDAO<Account> {
 
     @Override
     public boolean isAuthorized(Account account) {
-        if (getUser().getRole().equals(inthincRole))
-            return true;
-        if (account != null && account.getAcctID() != null) {
-            if (getAccountID().equals(account.getAcctID()))
+        if (account != null) {
+            if (isInthincUser() || getAccountID().equals(account.getAcctID()))
                 return true;
         }
         return false;

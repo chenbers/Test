@@ -34,6 +34,10 @@ public abstract class SecureDAO<T> {
         return getUser().getPerson().getAcctID();
     }
     
+    public boolean isInthincUser() {
+        return getUser().getRole().equals(inthincRole);
+    }
+    
     public abstract List<T> getAll();
     public abstract T findByID(Integer id);
     public abstract Integer create(T object);

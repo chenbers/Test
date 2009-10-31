@@ -3,8 +3,7 @@ package com.inthinc.pro.util;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.jboss.resteasy.spi.NotFoundException;
-import org.jboss.resteasy.spi.UnauthorizedException;
+
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.Device;
 
@@ -15,11 +14,10 @@ public class SecureDeviceDAO extends SecureDAO<Device> {
     @Override
     public boolean isAuthorized(Device device) {
         if (device != null) {
-            if (!getAccountID().equals(device.getAccountID()))
-                throw new NotFoundException("accountID not found: " + device.getAccountID());
-            return true;
+            if (isInthincUser() || getAccountID().equals(device.getAccountID()))
+                return true;
         }
-        throw new UnauthorizedException();
+        return false;
     }
 
     public boolean isAuthorized(Integer deviceID) {
@@ -54,8 +52,10 @@ public class SecureDeviceDAO extends SecureDAO<Device> {
     }
 
     @Override
-    public Integer create(Device object) {
-        throw new NotImplementedException();
+    public Integer create(Device device) {
+        if (isAuthorized(device))
+            return deviceDAO.create(getAccountID(), device);
+        return null;
     }
 
     @Override

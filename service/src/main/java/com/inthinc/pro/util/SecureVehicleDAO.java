@@ -27,9 +27,8 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
         if (vehicle != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-            if (groupDAO.isAuthorized(vehicle.getGroupID()))
+            if (isInthincUser() || groupDAO.isAuthorized(vehicle.getGroupID()))
                 return true;
-
         }
         return false;
     }

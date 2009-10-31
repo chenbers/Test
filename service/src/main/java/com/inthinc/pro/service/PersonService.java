@@ -18,7 +18,8 @@ import com.inthinc.pro.model.Person;
 
 @Path("/")
 @Produces("application/xml")
-public interface PersonService {
+@Consumes("application/xml")
+public interface PersonService extends GenericService<Person> {
 
     @GET
     @Path("/persons")
@@ -29,12 +30,14 @@ public interface PersonService {
     public Response get(@PathParam("personID") Integer personID);
 
     @POST
-    @Consumes("application/xml")
     @Path("/person")
     public Response create(Person person, @Context UriInfo uriInfo);
+    
+    @POST
+    @Path("/person/{accountID}")
+    public Response create(@PathParam("accountID") Integer id, Person person, @Context UriInfo uriInfo);
 
     @PUT
-    @Consumes("application/xml")
     @Path("/person")
     public Response update(Person person);
 
@@ -43,17 +46,14 @@ public interface PersonService {
     public Response delete(@PathParam("id") Integer id);
 
     @POST
-    @Consumes("application/xml")
     @Path("/persons")
     public Response create(List<Person> persons, @Context UriInfo uriInfo);
 
     @PUT
-    @Consumes("application/xml")
     @Path("/persons")
     public Response update(List<Person> persons);
 
     @DELETE
-    @Consumes("application/xml")
     @Path("/persons")
     public Response delete(List<Integer> personIDs);
 

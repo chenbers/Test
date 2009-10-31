@@ -53,7 +53,7 @@ public abstract class BaseTest implements ApplicationContextAware {
         params.setAuthenticationPreemptive(true);
         httpClient = new HttpClient(params);
 
-        Credentials defaultcreds = new UsernamePasswordCredentials("speedracer", "secret");
+        Credentials defaultcreds = new UsernamePasswordCredentials("mraby", "password");
         httpClient.getState().setCredentials(new AuthScope(domain, port, AuthScope.ANY_REALM), defaultcreds);
 //        clientExecutor = new ApacheHttpClientExecutor(httpClient);
 //        service = ProxyFactory.create(serviceClass, url, client);

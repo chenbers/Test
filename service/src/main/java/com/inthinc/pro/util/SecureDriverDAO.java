@@ -16,13 +16,8 @@ public class SecureDriverDAO extends SecureDAO<Driver> {
         if (driver != null) {
             // TODO do we give user access to all groups, regardless of the users group????
             // TODO if so, we need a fast security check to verify a group intersects with user's groups
-
-            if (!groupDAO.isAuthorized(driver.getGroupID()))
-                return false;
-
-            if (!personDAO.isAuthorized(driver.getPersonID()))
-                return false;
-            return true;
+            if (isInthincUser() || (groupDAO.isAuthorized(driver.getGroupID()) && personDAO.isAuthorized(driver.getPersonID())))
+                return true;
         }
         return false;
     }

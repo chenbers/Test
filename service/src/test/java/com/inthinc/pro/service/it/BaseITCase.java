@@ -23,8 +23,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class BaseITCase implements ApplicationContextAware {
     
         private ApplicationContext applicationContext;
-        private static final int port = 8080;
-        private static final String domain = "localhost";
+        private static final int port = 8081;
+        private static final String domain = "slcgw2.iwiglobal.com";
+//        private static final int port = 8080;
+//        private static final String domain = "localhost";
         protected static final String url = "http://" + domain + ":" + port + "/service/api";
             
         protected HttpClient httpClient;

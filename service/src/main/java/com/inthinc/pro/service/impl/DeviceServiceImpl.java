@@ -36,5 +36,13 @@ public class DeviceServiceImpl extends AbstractService<Device, SecureDeviceDAO> 
     public Response create(List<Device> list, UriInfo uriInfo) {
         return Response.status(501).build();
     }
+    @Override
+    public Response update(List<Device> list) {
+        return Response.status(501).build();
+    }
+    @Override
+    public Response delete(List<Integer> list) {
+        return Response.status(501).build();
+    }
 
 }
