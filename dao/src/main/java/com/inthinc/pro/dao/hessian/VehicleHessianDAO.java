@@ -132,13 +132,6 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         } catch (EmptyResultSetException e) {
             return null;
         }
-        // TODO: Remove when method is impl on back end
-        catch (ProxyException ex) {
-            if (ex.getErrorCode() == 422) {
-                return null;
-            }
-            throw ex;
-        }
     }
 
     @Override
@@ -159,13 +152,6 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
             return getMapper().convertToModelObject(this.getSiloService().getVehiclesNearLoc(groupID, numof, lat, lng), DriverLocation.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
-        }
-        // TODO: Remove when method is impl on back end
-        catch (ProxyException ex) {
-            if (ex.getErrorCode() == 422) {
-                return Collections.emptyList();
-            }
-            throw ex;
         }
     }
 

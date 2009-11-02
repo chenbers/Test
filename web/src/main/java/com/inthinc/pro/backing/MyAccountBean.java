@@ -31,8 +31,9 @@ public class MyAccountBean extends BaseBean
     private PersonDAO personDAO;
     private UserDAO userDAO;
     private DriverDAO driverDAO;
+    private HelpBean helpBean;
 
-    public MyAccountBean()
+	public MyAccountBean()
     {
         super();
     }
@@ -51,6 +52,7 @@ public class MyAccountBean extends BaseBean
         try
         {
             personDAO.update(getUser().getPerson());
+            helpBean.setPath(null);
         }
         catch (DuplicateEmailException ex)
         {
@@ -111,4 +113,12 @@ public class MyAccountBean extends BaseBean
     {
         this.userDAO = userDAO;
     }
+    public HelpBean getHelpBean() {
+		return helpBean;
+	}
+
+	public void setHelpBean(HelpBean helpBean) {
+		this.helpBean = helpBean;
+	}
+
 }

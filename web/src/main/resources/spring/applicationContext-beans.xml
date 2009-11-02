@@ -325,6 +325,7 @@
         <property name="personDAO" ref="personDAO"/>
         <property name="userDAO" ref="userDAO"/>
         <property name="driverDAO" ref="driverDAO"/>
+        <property name="helpBean" ref="helpBean"/>
     </bean>
 
     <!-- Map Backing Beans -->
@@ -466,5 +467,6 @@
     <!-- UI backing beans -->
         <bean id="eventTypeIcons" class="com.inthinc.pro.backing.ui.EventTypeIcons" scope="session" init-method="init" parent="baseBean">
     </bean>
+    <bean id="helpBean" class="com.inthinc.pro.backing.HelpBean" scope="session" parent="baseBean"/>
     
 </beans>

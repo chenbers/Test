@@ -627,4 +627,20 @@ public class SiloServiceImpl implements SiloService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Map<String, Object> getRedFlagsCount(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Map<String, String> filter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getRedFlagsPage(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
