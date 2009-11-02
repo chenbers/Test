@@ -192,7 +192,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     { 
         return this.getDriver().getPerson().getFullName().toLowerCase().compareTo(item.getDriver().getPerson().getFullName().toLowerCase());
     }
-	@Override
+	
 	public void prepareForDisplay() {
 		
 		if (getLocale() == null) setLocale(Locale.US);
