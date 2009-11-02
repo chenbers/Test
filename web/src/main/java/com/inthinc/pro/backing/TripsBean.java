@@ -229,7 +229,10 @@ public class TripsBean extends BaseBean {
             return getTimeZoneFromDriver(identifiableEntityBean.getId());
         }
         else {
-            return getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID());
+            // The vehicle could currently NOT be associated with a driver, so,
+            //  grab the trips now and get the driver from the latest trip
+            initTrips();
+            return getTimeZoneFromDriver(selectedDriver.getDriverID());
         }
     }
     
