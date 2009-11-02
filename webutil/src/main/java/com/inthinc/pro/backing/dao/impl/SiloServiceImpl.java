@@ -627,7 +627,7 @@ public class SiloServiceImpl implements SiloService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+/*
 	@Override
 	public Map<String, Object> getRedFlagsCount(Integer groupID,
 			Long startDate, Long endDate, Integer includeForgiven,
@@ -643,4 +643,5 @@ public class SiloServiceImpl implements SiloService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+*/	
 }
