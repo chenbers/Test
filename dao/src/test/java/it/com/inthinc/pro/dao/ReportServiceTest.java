@@ -41,15 +41,18 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
+import com.inthinc.pro.model.TrendItem;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
@@ -556,7 +559,7 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void crashSummaryGroup()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -573,13 +576,13 @@ public class ReportServiceTest
         	assertEquals("DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash());
         	assertEquals("TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(),  crashSummary.getTotalCrashes() );
         	assertEquals("CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(),  crashSummary.getCrashesInTimePeriod() );
-        	assertEquals("TotalMiles: ", expectedCrashSummary[teamType].getTotalMiles(),  crashSummary.getTotalMiles() );
-        	assertEquals("MilesSinceLastCrash: ", expectedCrashSummary[teamType].getMilesSinceLastCrash(),  crashSummary.getMilesSinceLastCrash() );
+        	assertEquals("TotalMiles: ", (expectedCrashSummary[teamType].getTotalMiles().floatValue()/100f),  crashSummary.getTotalMiles().floatValue(), 1.0 );
+        	assertEquals("MilesSinceLastCrash: ", (expectedCrashSummary[teamType].getMilesSinceLastCrash().floatValue()/100f),  crashSummary.getMilesSinceLastCrash().floatValue(), 1.0 );
         }
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void crashSummaryDriver()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -596,13 +599,13 @@ public class ReportServiceTest
         	assertEquals(teamType + " DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash());
         	assertEquals(teamType + " TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(),  crashSummary.getTotalCrashes() );
         	assertEquals(teamType + " CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(),  crashSummary.getCrashesInTimePeriod() );
-        	assertEquals(teamType + " TotalMiles: ", expectedCrashSummary[teamType].getTotalMiles(),  crashSummary.getTotalMiles() );
-        	assertEquals(teamType + " MilesSinceLastCrash: ", expectedCrashSummary[teamType].getMilesSinceLastCrash(),  crashSummary.getMilesSinceLastCrash() );
+        	assertEquals(teamType + " TotalMiles: ", expectedCrashSummary[teamType].getTotalMiles().floatValue()/100f,  crashSummary.getTotalMiles().floatValue(), 1.0);
+        	assertEquals(teamType + " MilesSinceLastCrash: ", (expectedCrashSummary[teamType].getMilesSinceLastCrash().floatValue()/100f),  crashSummary.getMilesSinceLastCrash().floatValue(), 1.0 );
         }
     }
         
      @Test
-     @Ignore
+     // @Ignore
      public void crashSummaryVehicle()
      {
             ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -614,8 +617,8 @@ public class ReportServiceTest
             	assertEquals("DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash());
             	assertEquals("TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(),  crashSummary.getTotalCrashes() );
             	assertEquals("CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(),  crashSummary.getCrashesInTimePeriod() );
-            	assertEquals("TotalMiles: ", expectedCrashSummary[teamType].getTotalMiles(),  crashSummary.getTotalMiles() );
-            	assertEquals("MilesSinceLastCrash: ", expectedCrashSummary[teamType].getMilesSinceLastCrash(),  crashSummary.getMilesSinceLastCrash() );
+            	assertEquals("TotalMiles: ", expectedCrashSummary[teamType].getTotalMiles().floatValue()/100f,  crashSummary.getTotalMiles().floatValue(), 1.0 );
+            	assertEquals("MilesSinceLastCrash: ", (expectedCrashSummary[teamType].getMilesSinceLastCrash().floatValue()/100f),  crashSummary.getMilesSinceLastCrash().floatValue(), 1.0 );
             }
     }
 
@@ -643,8 +646,7 @@ public class ReportServiceTest
 	         assertEquals("driver score for driver ID: " + driverScore.getDriver().getDriverID(), expectedTeamOverall[teamType], driverScore.getScore());
          }
      }
-     
-     
+
      @Test
      //@Ignore
      public void driverScores()
@@ -660,10 +662,20 @@ public class ReportServiceTest
          for (int teamType = GOOD; teamType <= BAD; teamType++)
          {
         	 Integer driverID = getTeamDriverID(teamType);
-             ScoreableEntity avgScore = scoreDAO.getDriverAverageScoreByType(driverID, duration, ScoreType.SCORE_OVERALL);
+     		 List<ScoreItem> avgItemList = scoreDAO.getAverageScores(driverID, EntityType.ENTITY_DRIVER, duration);
+     		 ScoreItem avgScore = null;
+     		 for (ScoreItem item : avgItemList)
+     		 {
+     			 if (item.getScoreType().equals(ScoreType.SCORE_OVERALL))
+     			 {
+     				 avgScore = item;
+     				 break;
+     			 }
+     		 }
+
              assertNotNull("getDriverAverageScoreByType ", avgScore);
-	         assertEquals("getDriverAverageScoreByType for driver ID: " + avgScore.getEntityID(), expectedTeamOverall[teamType], avgScore.getScore());
-           
+	         assertEquals("getDriverAverageScoreByType for driver ID: " + driverID, expectedTeamOverall[teamType], avgScore.getScore());
+/*           
 	         Map<ScoreType, ScoreableEntity> scoreBreakdownMap = scoreDAO.getDriverScoreBreakdownByType(driverID, duration, ScoreType.SCORE_OVERALL);
              assertNotNull("getDriverScoreBreakdownByType", scoreBreakdownMap);
              assertEquals("getDriverScoreBreakdownByType", overallScoreSubTypes.size(),  scoreBreakdownMap.size());
@@ -673,8 +685,8 @@ public class ReportServiceTest
                  ScoreableEntity scoreBreakdown = scoreBreakdownMap.get(st);
                  assertEquals("getDriverAverageScoreByType matches getDriverScoreBreakdownByType " + st.name(), score.getScore(), scoreBreakdown.getScore());
              }
+*/         
          }
-         
      }
      
      @Test
@@ -690,29 +702,35 @@ public class ReportServiceTest
          for (int teamType = GOOD; teamType <= BAD; teamType++)
          {
         	 Integer driverID = getTeamDriverID(teamType);
-             List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(driverID, duration, ScoreType.SCORE_OVERALL);
+//             List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(driverID, duration, ScoreType.SCORE_OVERALL);
+ 			 List<TrendItem> scoreList = scoreDAO.getTrendCumulative(driverID, EntityType.ENTITY_DRIVER, duration);
+
              
              assertNotNull("getDriverTrendCumulative" , scoreList);
-             assertEquals("getDriverTrendCumulative size", duration.getDvqCount(), Integer.valueOf(scoreList.size()));
+             assertEquals("getDriverTrendCumulative size", duration.getDvqCount()*ScoreType.values().length, scoreList.size());
 
              int idx = 0;
-             for (ScoreableEntity score : scoreList)
+             for (TrendItem score : scoreList)
              {
-             	int scoreVal = 0;
-             	if (score.getScore() != null)
-             	{
-             		scoreVal = score.getScore().intValue();
-             	}
-             	int expected = expectedTeamOverall[teamType].intValue();
+            	 if (score.getScoreType().equals(ScoreType.SCORE_OVERALL))
+            	 {
+            		 int scoreVal = 0;
+            		 if (score.getScore() != null)
+            		 {
+            			 scoreVal = score.getScore().intValue();
+            		 }
+            		 int expected = expectedTeamOverall[teamType].intValue();
 //             	System.out.println("" + scoreVal);
-             	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " DriverID: " + driverID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+            		 assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " DriverID: " + driverID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+            	 }
              }
          
          }
          
      }
+      
      @Test
-     @Ignore
+     //@Ignore
      public void driverCoachingTrendScores()
      {
     	 // getDTrendByDTC
@@ -722,21 +740,25 @@ public class ReportServiceTest
          for (int teamType = GOOD; teamType <= BAD; teamType++)
          {
         	 Integer driverID = getTeamDriverID(teamType);
-             List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(driverID, duration, ScoreType.SCORE_COACHING_EVENTS);
+ 			 List<TrendItem> scoreList = scoreDAO.getTrendScores(driverID, EntityType.ENTITY_DRIVER, duration);
+
              
              assertNotNull("getDriverTrendCumulative" , scoreList);
-             assertEquals("getDriverTrendCumulative size", duration.getDvqCount(), Integer.valueOf(scoreList.size()));
+             assertEquals("getDriverTrendCumulative size", duration.getDvqCount()*ScoreType.values().length, scoreList.size());
 
              int idx = 0;
-             for (ScoreableEntity score : scoreList)
+             for (TrendItem score : scoreList)
              {
-             	int scoreVal = 0;
-             	if (score.getScore() != null)
-             	{
-             		scoreVal = score.getScore().intValue();
-             	}
-             	int expected = expectedDriverCoaching[teamType].intValue();
-             	assertTrue((idx++) + ": Unexpected Coaching trend score " + scoreVal + " expected: " + expected + " DriverID: " + driverID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+            	if (score.getScoreType().equals(ScoreType.SCORE_COACHING_EVENTS))
+            	{
+	             	int scoreVal = 0;
+	             	if (score.getScore() != null)
+	             	{
+	             		scoreVal = score.getScore().intValue();
+	             	}
+	             	int expected = expectedDriverCoaching[teamType].intValue();
+	             	assertTrue((idx++) + ": Unexpected Coaching trend score " + scoreVal + " expected: " + expected + " DriverID: " + driverID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+            	}
              }
          
          }
@@ -809,19 +831,30 @@ for (Event event : events)
 */
 
 
-             ScoreableEntity avgScore = scoreDAO.getVehicleAverageScoreByType(vehicleID, duration, ScoreType.SCORE_OVERALL);
+//             ScoreableEntity avgScore = scoreDAO.getVehicleAverageScoreByType(vehicleID, duration, ScoreType.SCORE_OVERALL);
+     		 List<ScoreItem> avgItemList = scoreDAO.getAverageScores(vehicleID, EntityType.ENTITY_VEHICLE, duration);
+     		 ScoreItem avgScore = null;
+     		 for (ScoreItem item : avgItemList)
+     		 {
+     			 if (item.getScoreType().equals(ScoreType.SCORE_OVERALL))
+     			 {
+     				 avgScore = item;
+     				 break;
+     			 }
+     		 }
+
              assertNotNull("getVehicleScoreBreakdownByType", avgScore);
-	         assertEquals("getVehicleAverageScoreByType for driver ID: " + avgScore.getEntityID(), expectedTeamOverall[teamType], avgScore.getScore());
+	         assertEquals("getVehicleAverageScoreByType for vehicle ID: " + vehicleID, expectedTeamOverall[teamType], avgScore.getScore());
            
-	         Map<ScoreType, ScoreableEntity> scoreBreakdownMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, duration, ScoreType.SCORE_OVERALL);
-             assertNotNull("getVehicleScoreBreakdownByType", scoreBreakdownMap);
-             assertEquals("getVehilceScoreBreakdownByType", overallScoreSubTypes.size(),  scoreBreakdownMap.size());
-             for (ScoreType st : overallScoreSubTypes)
-             {
-                 ScoreableEntity score = scoreDAO.getVehicleAverageScoreByType(vehicleID, duration, st);
-                 ScoreableEntity scoreBreakdown = scoreBreakdownMap.get(st);
-                 assertEquals("getVehicleAverageScoreByType matches getVehicleScoreBreakdownByType " + st.name(), score.getScore(), scoreBreakdown.getScore());
-             }
+//	         Map<ScoreType, ScoreableEntity> scoreBreakdownMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, duration, ScoreType.SCORE_OVERALL);
+//             assertNotNull("getVehicleScoreBreakdownByType", scoreBreakdownMap);
+//             assertEquals("getVehicleScoreBreakdownByType", overallScoreSubTypes.size(),  scoreBreakdownMap.size());
+//             for (ScoreType st : overallScoreSubTypes)
+//             {
+//                 ScoreableEntity score = scoreDAO.getVehicleAverageScoreByType(vehicleID, duration, st);
+//                 ScoreableEntity scoreBreakdown = scoreBreakdownMap.get(st);
+//                 assertEquals("getVehicleAverageScoreByType matches getVehicleScoreBreakdownByType " + st.name(), score.getScore(), scoreBreakdown.getScore());
+//             }
              
          }
          
@@ -839,26 +872,27 @@ for (Event event : events)
          for (int teamType = GOOD; teamType <= BAD; teamType++)
          {
         	 Integer vehicleID = getTeamVehicleID(teamType);
-             List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(vehicleID, duration, ScoreType.SCORE_OVERALL);
+             //List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(vehicleID, duration, ScoreType.SCORE_OVERALL);
+ 			 List<TrendItem> scoreList = scoreDAO.getTrendCumulative(vehicleID, EntityType.ENTITY_VEHICLE, duration);
+
              
              assertNotNull("getVehicleTrendCumulative" , scoreList);
-             assertEquals("getVehicleTrendCumulative size", duration.getDvqCount(), Integer.valueOf(scoreList.size()));
+             assertEquals("getVehicleTrendCumulative size", duration.getDvqCount()*ScoreType.values().length, scoreList.size());
 
              int idx = 0;
-             for (ScoreableEntity score : scoreList)
+             for (TrendItem score : scoreList)
              {
-             	int scoreVal = 0;
-             	if (score.getScore() != null)
-             	{
-             		scoreVal = score.getScore().intValue();
-             	}
-//             	else if (idx == 0)	// 1st score may be blank because of trending
-//             	{
-//             		continue;
-//             	}
-             	int expected = expectedTeamOverall[teamType].intValue();
-//             	System.out.println("" + scoreVal);
-             	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " VehicleID: " + vehicleID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+            	if (score.getScoreType().equals(ScoreType.SCORE_OVERALL))
+            	{
+	             	int scoreVal = 0;
+	             	if (score.getScore() != null)
+	             	{
+	             		scoreVal = score.getScore().intValue();
+	             	}
+	             	int expected = expectedTeamOverall[teamType].intValue();
+	             	System.out.println("" + scoreVal);
+	             	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " VehicleID: " + vehicleID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+            	}
              }
          }
      }
@@ -968,7 +1002,7 @@ for (Event event : events)
              assertEquals("IdlingReportItem drive time", expectDailyHiIdleHrs,  item.getHighHrs(), 0.0003);
          }
      }
-
+/*
      @Test
      //@Ignore
      public void getDriverTrendDaily()
@@ -994,7 +1028,7 @@ for (Event event : events)
              }
          }
      }
-     
+  */   
      @Test
      //@Ignore
      public void getVehicleTrendDaily()
@@ -1005,18 +1039,22 @@ for (Event event : events)
          for (int teamType = GOOD; teamType <= BAD; teamType++)
          {
         	 Integer vehicleID = getTeamVehicleID(teamType);
-          	 List<ScoreableEntity> list = scoreDAO.getVehicleTrendDaily(vehicleID, duration, ScoreType.SCORE_OVERALL);
+//          	 List<ScoreableEntity> list = scoreDAO.getVehicleTrendDaily(vehicleID, duration, ScoreType.SCORE_OVERALL);
+     		 List<TrendItem> list = scoreDAO.getTrendScores(vehicleID, EntityType.ENTITY_VEHICLE, duration);
 
              assertNotNull("VehicleTrendDaily list", list);
-             assertEquals("VehicleTrendDaily list size", duration.getDvqCount(), Integer.valueOf(list.size()));
+             assertEquals("VehicleTrendDaily list size", Integer.valueOf(duration.getDvqCount()*ScoreType.values().length), Integer.valueOf(list.size()));
              int idx = 0;
-             for (ScoreableEntity scoreableEntity : list)
+             for (TrendItem item : list)
              {
+            	 if (item.getScoreType().equals(ScoreType.SCORE_OVERALL))
+            	 {
                  	int expected = expectedTeamOverall[teamType].intValue();
-                 	Integer scoreVal = scoreableEntity.getScore(); 
+                 	Integer scoreVal = item.getScore(); 
 //                   	System.out.println("" + scoreVal);
                  	assertNotNull("Unexpected null overall trend score", scoreVal);
                  	assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " VehicleID: " + vehicleID,  (scoreVal >= expected-1 && scoreVal <= expected+1) );
+            	 }
              }
          }
      }

@@ -6,12 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MeasurementType;
@@ -24,106 +23,50 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleSpeedBean extends BasePerformanceEventsBean
 {
-    private static final Logger                logger         = Logger.getLogger(VehicleSpeedBean.class);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4530706169066069581L;
+//	private static final Logger                logger         = Logger.getLogger(VehicleSpeedBean.class);
 
- //   private String                             selectedSpeed  = "OVERALL";
- //   private List<EventReportItem>              filteredSpeedingEvents;
- //   private List<EventReportItem>              speedingEvents;
- //   private Map<String, List<EventReportItem>> speedingListsMap;
 
     public VehicleSpeedBean() {
 		super();
 		selectedBreakdown="OVERALL";
 	}
-   
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
     }
-    
-    @Override
+
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
     }
 
     @Override
     protected void initScores()
     {
-        Map<ScoreType, ScoreableEntity> tempMap = scoreDAO.getVehicleScoreBreakdownByType(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
+        Map<ScoreType, ScoreableEntity> tempMap = getPerformanceDataBean().getAverageScoreBreakdown(getVehicle().getVehicleID(), EntityType.ENTITY_VEHICLE, durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
         
-        ScoreableEntity se = tempMap.get(ScoreType.SCORE_SPEEDING);
-//        scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
-//        scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
-//        scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
-//        scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
-//        scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-//
-//        se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
-//        scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
-//        styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-        
-        if (se != null)
+        for (ScoreType subType : ScoreType.SCORE_SPEEDING.getSubTypes())
         {
-            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        	ScoreableEntity se = tempMap.get(subType);
+        	if (se != null && se.getScore() != null)
+        	{
+        		scoreMap.put(subType.toString(), se.getScore());
+        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        	}
+        	else
+        	{
+        		scoreMap.put(subType.toString(), EMPTY_SCORE_VALUE);
+        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(NO_SCORE, ScoreBoxSizes.MEDIUM));
 
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-        }
-        else
-        {
-            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+        	}
         }
     }
 
@@ -158,69 +101,6 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
         sortEvents();
       
     }
-
-//    public List<EventReportItem> getFilteredSpeedingEvents()
-//    {
-//        if (filteredEvents == null)
-//        {
-//            initEvents();
-//            tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
-//        }
-//
-//        return filteredEvents;
-//    }
-
-//    public void setFilteredSpeedingEvents(List<EventReportItem> filteredEvents)
-//    {
-//        this.filteredEvents = filteredEvents;
-//    }
-
-//    public String getSelectedSpeed()
-//    {
-//        return selectedSpeed;
-//    }
-//
-//    public void setSelectedSpeed(String selectedSpeed)
-//    {
-//        this.selectedSpeed = selectedSpeed;
-//        setFilteredSpeedingEvents(getSpeedingListsMap().get(selectedSpeed));
-//    }
-    
-//    public void selectBreakdownChanged()
-//    {
-//        tableStatsBean.reset(ROWCOUNT, getEventsListsMap().get(selectedInterval).size());
-//    }
-
-    //    public void setSpeedingListsMap(Map<String, List<EventReportItem>> speedingListsMap)
-//    {
-//        this.eventsListsMap = speedingListsMap;
-//    }
-    @Override
-//    public void setDuration(Duration duration)
-//    {
-//        durationBean.setDuration(duration);
-//        initScores();
-//        initTrends();
-//        initEvents();
-//        tableStatsBean.reset(ROWCOUNT, getEventsListsMap().get(selectedBreakdown).size());
-//    }
-//
-//    public Duration getDuration()
-//    {
-//        return durationBean.getDuration();
-//    }
-//
-//    public List<EventReportItem> getSpeedingEvents()
-//    {
-//        return events;
-//    }
-//
-//    public void setSpeedingEvents(List<EventReportItem> speedingEvents)
-//    {
-//        this.events = speedingEvents;
-//        sortEvents();
-//    }
-
 
 
 	public EventReportItem getClearItem()

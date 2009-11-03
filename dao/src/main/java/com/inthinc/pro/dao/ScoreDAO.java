@@ -8,14 +8,21 @@ import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
+import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
+import com.inthinc.pro.model.TrendItem;
 import com.inthinc.pro.model.VehicleReportItem;
 
+/**
+ * @author cjennings
+ *
+ */
 public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
 {
     /**
@@ -30,27 +37,6 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @return
      */
     ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration,  ScoreType st);
-    
-    
-    /** NOT USED ANYMORE
-     * Retrieve the overall score by the specified driver and date range.   
-     * 
-     * @param driverID
-     * @param duration
-     * @param st
-     * @return
-     */
-    ScoreableEntity getDriverAverageScoreByType(Integer driverID, Duration duration,  ScoreType st);
-    
-    /**
-     * Retrieve the overall score by the specified vehicle and date range. 
-     * 
-     * @param vehicleID
-     * @param duration
-     * @param st
-     * @return
-     */
-    ScoreableEntity getVehicleAverageScoreByType(Integer vehicleID, Duration duration,  ScoreType st);
     
     
     /**
@@ -151,42 +137,6 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
 
     
     /**
-     * Retrieve cumulative driver scores by type and duration.
-     * 
-     * @param driverID
-     * @param duration
-     * @param scoreType
-     */
-    List<ScoreableEntity> getDriverTrendCumulative(Integer driverID, Duration duration, ScoreType scoreType);
-    
-    /**
-     * Retrieve daily driver scores by type and duration.
-     * 
-     * @param driverID
-     * @param duration
-     * @param scoreType
-     */
-    List<ScoreableEntity> getDriverTrendDaily(Integer driverID, Duration duration, ScoreType scoreType);
-    
-    /**
-     * Retrieve cumulative vehicle scores by type and duration.
-     * 
-     * @param vehicleID
-     * @param duration
-     * @param scoreType
-     */
-    List<ScoreableEntity> getVehicleTrendCumulative(Integer vehicleID, Duration duration, ScoreType scoreType);
-    
-    /**
-     * Retrieve daily vehicle scores by type and duration.
-     * 
-     * @param driverID
-     * @param duration
-     * @param scoreType
-     */
-    List<ScoreableEntity> getVehicleTrendDaily(Integer driverID, Duration duration, ScoreType scoreType);
-    
-    /**
      * Retrieve the individual lines in the Vehicle Report.
      * 
      * @param groupID
@@ -202,29 +152,6 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration);
 
-
-    /**
-     * Retrieve the score breakdown for the specified driver and mileage and score type.  The scoreType and all of it's subTypes
-     * are included in the return map.
-     * 
-     * @param driverID
-     * @param milesBack
-     * @param scoreType
-     * @return  Map with scoreType as key and the scorableEntity for that scoreType.
-     */
-    Map<ScoreType, ScoreableEntity> getDriverScoreBreakdownByType(Integer driverID, Duration duration, ScoreType scoreType);
-
-    /**
-     * Retrieve the score breakdown for the specified driver and mileage and score type.  The scoreType and all of it's subTypes
-     * are included in the return map.
-     * 
-     * @param driverID
-     * @param milesBack
-     * @param scoreType
-     * @return  Map with scoreType as key and the scorableEntity for that scoreType.
-     */
-    Map<ScoreType, ScoreableEntity> getVehicleScoreBreakdownByType(Integer vehicleID, Duration duration, ScoreType scoreType);
-
     
     /**
      * Retrieve the individual lines in the Idling Report.
@@ -239,8 +166,54 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     CrashSummary getVehicleCrashSummaryData(Integer vehicleID);
 
     
+    /**
+     * @param groupID
+     * @param duration
+     * @return
+     */
     List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration);
     
+    /**
+     * @param groupID
+     * @param duration
+     * @return
+     */
     List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration);
+
+    
+    /**
+     * @param id
+     * 			driver or vehicle id
+     * @param entityType
+     * 			type of entity -- driver or vehicle
+     * @param duration
+     * 			duration (30 days, 3 m, 6 m, 12 m
+     * @return
+     */
+    List<TrendItem> getTrendCumulative(Integer id, EntityType entityType, Duration duration);
+    
+    
+    /**
+     * @param id
+     * 			driver or vehicle id
+     * @param entityType
+     * 			type of entity -- driver or vehicle
+     * @param duration
+     * 			duration (30 days, 3 m, 6 m, 12 m
+     * @return
+     */
+    List<TrendItem> getTrendScores(Integer id, EntityType entityType, Duration duration);
+    
+    
+    /**
+     * @param id
+     * 			driver or vehicle id
+     * @param entityType
+     * 			type of entity -- driver or vehicle
+     * @param duration
+     * 			duration (30 days, 3 m, 6 m, 12 m
+     * @return
+     */
+    List<ScoreItem> getAverageScores(Integer id, EntityType entityType, Duration duration);
 
 }

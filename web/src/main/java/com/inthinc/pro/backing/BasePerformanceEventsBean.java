@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,8 +8,10 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.TrendItem;
 
 public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 
@@ -16,6 +19,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected EventDAO 			eventDAO;
 	protected EventReportItem 	clearItem;
 	protected final Integer 	ROWCOUNT = 10;
+	protected static final Integer NO_SCORE = -1;
 	protected List<ScoreType> 	scoreTypes;
 	protected int				eventType;
  	protected String 			selectedBreakdown;
@@ -24,12 +28,6 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected List<EventReportItem>              events;
 	protected Map<String, List<EventReportItem>> eventsListsMap;
   
-	protected abstract List<ScoreableEntity> getTrendCumulative(Integer id,
-			Duration duration, ScoreType scoreType) ;
-
-	protected abstract List<ScoreableEntity> getTrendDaily(Integer id,
-			Duration duration, ScoreType scoreType);
-
 	protected abstract void initTrends();
 	protected abstract void initScores();
 	protected abstract void initEvents();

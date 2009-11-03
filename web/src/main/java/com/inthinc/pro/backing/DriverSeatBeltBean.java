@@ -12,6 +12,7 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MeasurementType;
@@ -23,7 +24,12 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class DriverSeatBeltBean extends BasePerformanceEventsBean
 {
-    private static final Logger   logger         = Logger.getLogger(DriverSeatBeltBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4455874218373654630L;
+
+	private static final Logger   logger         = Logger.getLogger(DriverSeatBeltBean.class);
 
     private Integer               seatBeltScore;
     private String                seatBeltScoreHistoryOverall;
@@ -33,19 +39,18 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
-    
-    @Override
+
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
-    
+
     @Override
     protected void initScores()
     {
-        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+		ScoreableEntity se = getPerformanceDataBean().getAverageScore(getDriver().getDriverID(), EntityType.ENTITY_DRIVER, durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         
         if(se != null && se.getScore() != null)
             setSeatBeltScore(se.getScore());

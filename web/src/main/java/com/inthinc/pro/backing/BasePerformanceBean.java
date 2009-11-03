@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
-//import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
@@ -25,7 +22,12 @@ import com.inthinc.pro.util.MessageUtil;
 
 public abstract class BasePerformanceBean extends BaseBean 
 {
-    private static final Logger logger = Logger.getLogger(BasePerformanceBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5977023073247217407L;
+
+	//private static final Logger logger = Logger.getLogger(BasePerformanceBean.class);
     
     protected static final Integer EMPTY_SCORE_VALUE = -1;
     
@@ -42,9 +44,9 @@ public abstract class BasePerformanceBean extends BaseBean
     protected Map<String, String> styleMap;
     protected Map<String, String> trendMap;
     
+    protected PerformanceDataBean performanceDataBean;
     
-
-    protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
+	protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
 
     protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
 
@@ -159,7 +161,11 @@ public abstract class BasePerformanceBean extends BaseBean
      */
     public List<CategorySeriesData> createSingleJasperDef(Integer id, ScoreType scoreType, Duration duration)
     {
-        List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
+        List<ScoreableEntity> scoreList = null;
+        if (scoreType.equals(ScoreType.SCORE_COACHING_EVENTS))
+        	scoreList = getTrendDaily(id, duration, scoreType);
+        else
+        	scoreList = getTrendCumulative(id, duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
@@ -180,7 +186,7 @@ public abstract class BasePerformanceBean extends BaseBean
     /*
      * Create Fusion Charts XML bar chart for Coaching Events.
      */
-    public String createColumnDef(Integer id, ScoreType scoreType, Duration duration)
+    public String createCoachingChart(Integer id, ScoreType scoreType, Duration duration)
     {
         StringBuffer sb = new StringBuffer();
         FusionColumnChart column = new FusionColumnChart();
@@ -188,7 +194,7 @@ public abstract class BasePerformanceBean extends BaseBean
         // Start XML Data
         sb.append(column.getControlParameters());
 
-        List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
+        List<ScoreableEntity> scoreList = this.getTrendDaily(id, duration, scoreType);
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(duration,getLocale());
@@ -356,5 +362,13 @@ public abstract class BasePerformanceBean extends BaseBean
     }
     
     public abstract void setDuration(Duration duration);
+
+    public PerformanceDataBean getPerformanceDataBean() {
+		return performanceDataBean;
+	}
+
+	public void setPerformanceDataBean(PerformanceDataBean performanceDataBean) {
+		this.performanceDataBean = performanceDataBean;
+	}
 
 }

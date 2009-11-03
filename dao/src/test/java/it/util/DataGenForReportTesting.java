@@ -201,7 +201,7 @@ public class DataGenForReportTesting {
         vehicleDAO.setSiloService(siloService);
 
         Vehicle vehicle = new Vehicle(0, group.getGroupID(), 10, Status.ACTIVE, "Vehicle" + group.getName(), "Make", "Model", 2000, "Red", 
-                    VehicleType.LIGHT, "VIN_" + group.getGroupID(), 1000, "UT " + group.getGroupID(), 
+                    VehicleType.LIGHT, "VIN_" + deviceID, 1000, "UT " + group.getGroupID(), 
                     States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
         vehicle.setVehicleID(vehicleID);

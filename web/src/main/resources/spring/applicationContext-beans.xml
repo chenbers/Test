@@ -288,6 +288,12 @@
         <property name="durationBean" ref="driverSeatBeltDurationBean"/>
     </bean>
 
+    <bean id="performanceDataBean"  class="com.inthinc.pro.backing.PerformanceDataBean" scope="session" parent="baseBean">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+    </bean>
+    
+
+
     <bean id="driverTripsBean" class="com.inthinc.pro.backing.TripsBean" scope="request" parent="baseBean">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
@@ -418,6 +424,7 @@
         <property name="tableStatsBean" ref="tableStatsBean" />
         <property name="driverBean" ref="driverBean"/>
         <property name="vehicleBean" ref="vehicleBean"/>
+        <property name="performanceDataBean" ref="performanceDataBean"/>
     </bean>
     
     <bean id="basePerformanceEventsBean" class="com.inthinc.pro.backing.BasePerformanceEventBean" scope="request" parent="basePerformanceBean">

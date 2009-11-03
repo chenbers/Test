@@ -11,6 +11,7 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MeasurementType;
@@ -21,30 +22,33 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleSeatBeltBean extends BasePerformanceEventsBean {
-    private static final Logger logger = Logger.getLogger(VehicleSeatBeltBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1083371265347339772L;
+//	private static final Logger logger = Logger.getLogger(VehicleSeatBeltBean.class);
     private Integer seatBeltScore;
     private String seatBeltScoreHistoryOverall;
     private String seatBeltScoreStyle;
-    private static final Integer NO_SCORE = -1;
 
     public VehicleSeatBeltBean() {
         super();
         selectedBreakdown = "OVERALL";
     }
-
     @Override
-    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType) {
-        return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
+    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
     }
 
-    @Override
-    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType) {
-        return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
+    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
     }
 
     @Override
     protected void initScores() {
-        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+		ScoreableEntity se = getPerformanceDataBean().getAverageScore(getVehicle().getVehicleID(), EntityType.ENTITY_VEHICLE, durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         if (se != null && se.getScore() != null)
             setSeatBeltScore(se.getScore());
         else

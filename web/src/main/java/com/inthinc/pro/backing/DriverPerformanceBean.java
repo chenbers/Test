@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -16,9 +14,9 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -35,7 +33,12 @@ import com.inthinc.pro.util.MessageUtil;
 public class DriverPerformanceBean extends BasePerformanceBean
 {
 
-	private static final Logger logger          = Logger.getLogger(DriverPerformanceBean.class);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2678124055694144485L;
+
+//	private static final Logger logger          = Logger.getLogger(DriverPerformanceBean.class);
 
     private ScoreDAO            scoreDAO;
     private MpgDAO              mpgDAO;
@@ -69,27 +72,27 @@ public class DriverPerformanceBean extends BasePerformanceBean
 		super();
 		tripMayExist = true;
 	}
+    
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
 
-    @Override
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
-
-    private Integer initAverageScore(ScoreType scoreType, Duration duration)
+    
+    protected Integer initAverageScore(ScoreType scoreType, Duration duration)
     {
-        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(getDriver().getDriverID(), duration, scoreType);
-
+		ScoreableEntity se = getPerformanceDataBean().getAverageScore(getDriver().getDriverID(), EntityType.ENTITY_DRIVER, duration, scoreType);
         if (se != null && se.getScore() != null)
             return se.getScore();
         else
             return -1;
     }
+    
 
     // INIT VIOLATIONS
     public void initViolations(Date start, Date end)
@@ -176,7 +179,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     // COACHING properties
     public String getCoachingHistory()
     {
-        setCoachingHistory(createColumnDef(getDriver().getDriverID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        setCoachingHistory(createCoachingChart(getDriver().getDriverID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         return coachingHistory;
     }
 
@@ -302,7 +305,6 @@ public class DriverPerformanceBean extends BasePerformanceBean
         sb.append(multiLineChart.getChartDataSet(MessageUtil.getMessageString("driver_mpg_heavy"), "A8C634", "A8C634", heavyValues, catLabelList));
 
         sb.append(multiLineChart.getClose());
-
         return sb.toString();
     }
     

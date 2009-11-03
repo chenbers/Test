@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,7 +165,7 @@ public class DriveQMap extends BaseEntity
     public void setOverall(Integer overall)
     {
         this.overall = overall;
-        scoreMap.put(ScoreType.SCORE_OVERALL, overall);
+        getScoreMap().put(ScoreType.SCORE_OVERALL, overall);
     }
     public Integer getSpeeding()
     {
@@ -173,7 +174,7 @@ public class DriveQMap extends BaseEntity
     public void setSpeeding(Integer speeding)
     {
         this.speeding = speeding;
-        scoreMap.put(ScoreType.SCORE_SPEEDING, speeding);
+        getScoreMap().put(ScoreType.SCORE_SPEEDING, speeding);
     }
     public Integer getSpeeding1()
     {
@@ -182,7 +183,7 @@ public class DriveQMap extends BaseEntity
     public void setSpeeding1(Integer speeding1)
     {
         this.speeding1 = speeding1;
-        scoreMap.put(ScoreType.SCORE_SPEEDING_21_30, speeding1);
+        getScoreMap().put(ScoreType.SCORE_SPEEDING_21_30, speeding1);
     }
     public Integer getSpeeding2()
     {
@@ -191,7 +192,7 @@ public class DriveQMap extends BaseEntity
     public void setSpeeding2(Integer speeding2)
     {
         this.speeding2 = speeding2;
-        scoreMap.put(ScoreType.SCORE_SPEEDING_31_40, speeding2);
+        getScoreMap().put(ScoreType.SCORE_SPEEDING_31_40, speeding2);
     }
     public Integer getSpeeding3()
     {
@@ -200,7 +201,7 @@ public class DriveQMap extends BaseEntity
     public void setSpeeding3(Integer speeding3)
     {
         this.speeding3 = speeding3;
-        scoreMap.put(ScoreType.SCORE_SPEEDING_41_54, speeding3);
+        getScoreMap().put(ScoreType.SCORE_SPEEDING_41_54, speeding3);
     }
     public Integer getSpeeding4()
     {
@@ -209,7 +210,7 @@ public class DriveQMap extends BaseEntity
     public void setSpeeding4(Integer speeding4)
     {
         this.speeding4 = speeding4;
-        scoreMap.put(ScoreType.SCORE_SPEEDING_55_64, speeding4);
+        getScoreMap().put(ScoreType.SCORE_SPEEDING_55_64, speeding4);
     }
     public Integer getSpeeding5()
     {
@@ -218,7 +219,7 @@ public class DriveQMap extends BaseEntity
     public void setSpeeding5(Integer speeding5)
     {
         this.speeding5 = speeding5;
-        scoreMap.put(ScoreType.SCORE_SPEEDING_65_80, speeding5);
+        getScoreMap().put(ScoreType.SCORE_SPEEDING_65_80, speeding5);
     }
     public Integer getDrivingStyle()
     {
@@ -227,7 +228,7 @@ public class DriveQMap extends BaseEntity
     public void setDrivingStyle(Integer drivingStyle)
     {
         this.drivingStyle = drivingStyle;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE, drivingStyle);
+        getScoreMap().put(ScoreType.SCORE_DRIVING_STYLE, drivingStyle);
     }
     public Integer getAggressiveBrake()
     {
@@ -236,7 +237,7 @@ public class DriveQMap extends BaseEntity
     public void setAggressiveBrake(Integer aggressiveBrake)
     {
         this.aggressiveBrake = aggressiveBrake;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE, aggressiveBrake);
+        getScoreMap().put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE, aggressiveBrake);
     }
     public Integer getAggressiveAccel()
     {
@@ -245,7 +246,7 @@ public class DriveQMap extends BaseEntity
     public void setAggressiveAccel(Integer aggressiveAccel)
     {
         this.aggressiveAccel = aggressiveAccel;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL, aggressiveAccel);
+        getScoreMap().put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL, aggressiveAccel);
     }
     public Integer getAggressiveTurn()
     {
@@ -254,7 +255,7 @@ public class DriveQMap extends BaseEntity
     public void setAggressiveTurn(Integer aggressiveTurn)
     {
         this.aggressiveTurn = aggressiveTurn;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN, aggressiveTurn);
+        getScoreMap().put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN, aggressiveTurn);
     }
     public Integer getAggressiveLeft()
     {
@@ -263,7 +264,7 @@ public class DriveQMap extends BaseEntity
     public void setAggressiveLeft(Integer aggressiveLeft)
     {
         this.aggressiveLeft = aggressiveLeft;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_LTURN, aggressiveLeft);
+        getScoreMap().put(ScoreType.SCORE_DRIVING_STYLE_HARD_LTURN, aggressiveLeft);
     }
     public Integer getAggressiveRight()
     {
@@ -272,7 +273,7 @@ public class DriveQMap extends BaseEntity
     public void setAggressiveRight(Integer aggressiveRight)
     {
         this.aggressiveRight = aggressiveRight;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_RTURN, aggressiveRight);
+        getScoreMap().put(ScoreType.SCORE_DRIVING_STYLE_HARD_RTURN, aggressiveRight);
     }
     public Integer getAggressiveBump()
     {
@@ -281,7 +282,7 @@ public class DriveQMap extends BaseEntity
     public void setAggressiveBump(Integer aggressiveBump)
     {
         this.aggressiveBump = aggressiveBump;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP, aggressiveBump);
+        getScoreMap().put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP, aggressiveBump);
     }
     public Integer getSeatbelt()
     {
@@ -290,7 +291,7 @@ public class DriveQMap extends BaseEntity
     public void setSeatbelt(Integer seatbelt)
     {
         this.seatbelt = seatbelt;
-        scoreMap.put(ScoreType.SCORE_SEATBELT, seatbelt);
+        getScoreMap().put(ScoreType.SCORE_SEATBELT, seatbelt);
     }
     public Integer getCoaching()
     {
@@ -299,7 +300,7 @@ public class DriveQMap extends BaseEntity
     public void setCoaching(Integer coaching)
     {
         this.coaching = coaching;
-        scoreMap.put(ScoreType.SCORE_COACHING_EVENTS, coaching);
+        getScoreMap().put(ScoreType.SCORE_COACHING_EVENTS, coaching);
     }
     public Integer getMpgLight()
     {

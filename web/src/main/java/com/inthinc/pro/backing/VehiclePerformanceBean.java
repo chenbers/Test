@@ -20,6 +20,7 @@ import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MeasurementType;
@@ -36,7 +37,12 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class VehiclePerformanceBean extends BasePerformanceBean
 {
-    private static final Logger logger          = Logger.getLogger(VehiclePerformanceBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8811415462362897524L;
+
+	private static final Logger logger          = Logger.getLogger(VehiclePerformanceBean.class);
 
     private VehicleDAO          vehicleDAO;
     private DriverDAO           driverDAO;
@@ -61,7 +67,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private String              coachingHistory;
     private Boolean             hasLastTrip;
     private TimeZone            timeZone;
-    private BaseBean    vehicleSpeedBean;
+    private VehicleSpeedBean    vehicleSpeedBean;
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
     private CrashSummary 		crashSummary;
@@ -70,25 +76,25 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     public VehiclePerformanceBean() {
 		super();
 		tripMayExist = true;
-		
     }
     
-
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
     }
 
     @Override
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
+
     }
 
-    private Integer initAverageScore(ScoreType scoreType, Duration duration)
+    
+    protected Integer initAverageScore(ScoreType scoreType, Duration duration)
     {
-        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(getVehicle().getVehicleID(), duration, scoreType);
+		ScoreableEntity se = getPerformanceDataBean().getAverageScore(getVehicle().getVehicleID(), EntityType.ENTITY_VEHICLE, duration, scoreType);
 
         if (se != null && se.getScore() != null)
             return se.getScore();
@@ -116,11 +122,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             {
                 event.setAddressStr(getAddress(event.getLatLng()));
             }
-            // Lookup Addresses for tamper events
-//            for (Event event :tamperEvents)
-//            {
-//                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-//            }
        }
     }
 
@@ -168,7 +169,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public String getCoachingHistory()
     {
-        setCoachingHistory(createColumnDef(getVehicle().getVehicleID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        setCoachingHistory(createCoachingChart(getVehicle().getVehicleID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         return coachingHistory;
     }
 
@@ -507,12 +508,12 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 
-    public void setVehicleSpeedBean(BaseBean vehicleSpeedBean)
+    public void setVehicleSpeedBean(VehicleSpeedBean vehicleSpeedBean)
     {
         this.vehicleSpeedBean = vehicleSpeedBean;
     }
 
-    public BaseBean getVehicleSpeedBean()
+    public VehicleSpeedBean getVehicleSpeedBean()
     {
         return vehicleSpeedBean;
     }

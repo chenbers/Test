@@ -1,9 +1,9 @@
 package com.inthinc.pro.dao.hessian;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +24,15 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
+import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
+import com.inthinc.pro.model.TrendItem;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
 
@@ -93,55 +94,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return null;
         }
     }
-
-    @Override
-    public ScoreableEntity getDriverAverageScoreByType(Integer driverID, Duration duration, ScoreType scoreType)
-    {
-        try
-        {
-
-            // TODO: not sure if this duration mapping is correct
-            Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, duration.getCode());
-            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-
-            ScoreableEntity scoreableEntity = new ScoreableEntity();
-            scoreableEntity.setEntityID(driverID);
-            scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
-            scoreableEntity.setScoreType(scoreType);
-            scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType) == null ? NO_SCORE : dqMap.getScoreMap().get(scoreType));
-            return scoreableEntity;
-
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public ScoreableEntity getVehicleAverageScoreByType(Integer vehicleID, Duration duration, ScoreType scoreType)
-    {
-        try
-        {
-
-
-			Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, duration.getCode());
-            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-
-            ScoreableEntity scoreableEntity = new ScoreableEntity();
-            scoreableEntity.setEntityID(vehicleID);
-            scoreableEntity.setEntityType(EntityType.ENTITY_VEHICLE);
-            scoreableEntity.setScoreType(scoreType);
-            scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType) == null ? NO_SCORE : dqMap.getScoreMap().get(scoreType));
-            return scoreableEntity;
-
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-    }
-
     @Override
     public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
     {
@@ -300,37 +252,49 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyList();
         }
     }
-
-    @Override
-    public List<ScoreableEntity> getDriverTrendCumulative(Integer driverID, Duration duration, ScoreType scoreType)
+	
+	@Override
+    public List<TrendItem> getTrendCumulative(Integer id, EntityType entityType, Duration duration)
     {
-        // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
-        Integer code;
-        if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
-            code = duration.getAggregationBinSize();
-        else
-            code = duration.getCode();
-           
         try
         {
-            List<Map<String, Object>> cumulativList = reportService.getDTrendByDTC(driverID, code, duration.getDvqCount());
+            List<Map<String, Object>> cumulativList = null;
+            if (entityType.equals(EntityType.ENTITY_DRIVER))
+            {
+            	cumulativList = reportService.getDTrendByDTC(id, duration.getCode(), duration.getDvqCount());
+            }
+            else
+            {
+            	cumulativList = reportService.getVTrendByVTC(id, duration.getCode(), duration.getDvqCount());
+            }
             List<DriveQMap> driveQList = getMapper().convertToModelObject(cumulativList, DriveQMap.class);
-             
-            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-
+            
+            List<TrendItem> trendItemList = new ArrayList<TrendItem>();
             for (DriveQMap driveQMap : driveQList)
             {
-                ScoreableEntity entity = new ScoreableEntity();
-                entity.setEntityID(driverID);
-                entity.setEntityType(EntityType.ENTITY_DRIVER);
-                entity.setScoreType(scoreType);
-                entity.setIdentifierNum(driveQMap.getOdometer());
-                entity.setScore(driveQMap.getScoreMap().get(scoreType));
-                entity.setDate(driveQMap.getEndingDate());
-                scoreList.add(entity);
+            	Map<ScoreType, Integer> scoreMap = driveQMap.getScoreMap();
+            	
+                for (ScoreType scoreType : EnumSet.allOf(ScoreType.class)) {
+                	TrendItem item = new TrendItem();
+                    item.setScoreType(scoreType);
+                    item.setScore(scoreMap.get(scoreType));
+                    item.setDate(driveQMap.getEndingDate());
+                    if(scoreType == ScoreType.SCORE_SPEEDING_21_30)
+                    	item.setDistance(driveQMap.getOdometer1());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_31_40)
+                    	item.setDistance(driveQMap.getOdometer2());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_41_54)
+                    	item.setDistance(driveQMap.getOdometer3());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_55_64)
+                    	item.setDistance(driveQMap.getOdometer4());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_65_80)
+                    	item.setDistance(driveQMap.getOdometer5());
+                    else
+                    	item.setDistance(driveQMap.getOdometer());
+                	trendItemList.add(item);
+            	}
             }
-
-            return scoreList;
+            return trendItemList;
         }
         catch (EmptyResultSetException e)
         {
@@ -338,6 +302,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     
+	
 //    private void dumpMap(Map<String, Object> map) {
 //    	for (String key : map.keySet())
 //    	{
@@ -346,136 +311,53 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 //	}
 
 	@Override
-    public List<ScoreableEntity> getDriverTrendDaily(Integer driverID, Duration duration, ScoreType scoreType)
+    public List<TrendItem> getTrendScores(Integer id, EntityType entityType, Duration duration)
     {
         try
         {
-            List<Map<String, Object>> dailyList = reportService.getDTrendByDTC(driverID, duration.getAggregationBinSize(), duration.getDvqCount());
+        	List<Map<String, Object>> dailyList = null; 
+            if (entityType.equals(EntityType.ENTITY_DRIVER))
+            {
+            	dailyList = reportService.getDTrendByDTC(id, duration.getAggregationBinSize(), duration.getDvqCount());
+            }
+            else
+            {
+            	dailyList = reportService.getVTrendByVTC(id, duration.getAggregationBinSize(), duration.getDvqCount());
+            }
             List<DriveQMap> driveQList = getMapper().convertToModelObject(dailyList, DriveQMap.class);
-             
-            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-
+            
+            List<TrendItem> trendItemList = new ArrayList<TrendItem>();
             for (DriveQMap driveQMap : driveQList)
             {
-                ScoreableEntity entity = new ScoreableEntity();
-                entity.setEntityID(driverID);
-                entity.setEntityType(EntityType.ENTITY_DRIVER);
-                entity.setScoreType(scoreType);
-                
-                if(scoreType == ScoreType.SCORE_SPEEDING)
-                    entity.setIdentifierNum(driveQMap.getOdometer());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_21_30)
-                    entity.setIdentifierNum(driveQMap.getOdometer1());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_31_40)
-                    entity.setIdentifierNum(driveQMap.getOdometer2());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_41_54)
-                    entity.setIdentifierNum(driveQMap.getOdometer3());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_55_64)
-                    entity.setIdentifierNum(driveQMap.getOdometer4());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_65_80)
-                    entity.setIdentifierNum(driveQMap.getOdometer5());
-                else
-                    entity.setIdentifierNum(driveQMap.getOdometer());
-                
-                entity.setScore(driveQMap.getScoreMap().get(scoreType));
-                entity.setDate(driveQMap.getEndingDate());
-                scoreList.add(entity);
+            	Map<ScoreType, Integer> scoreMap = driveQMap.getScoreMap();
+            	
+                for (ScoreType scoreType : EnumSet.allOf(ScoreType.class)) {
+                	TrendItem item = new TrendItem();
+                    item.setScoreType(scoreType);
+                    item.setScore(scoreMap.get(scoreType));
+                    item.setDate(driveQMap.getEndingDate());
+                    if(scoreType == ScoreType.SCORE_SPEEDING_21_30)
+                    	item.setDistance(driveQMap.getOdometer1());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_31_40)
+                    	item.setDistance(driveQMap.getOdometer2());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_41_54)
+                    	item.setDistance(driveQMap.getOdometer3());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_55_64)
+                    	item.setDistance(driveQMap.getOdometer4());
+                    else if(scoreType == ScoreType.SCORE_SPEEDING_65_80)
+                    	item.setDistance(driveQMap.getOdometer5());
+                    else
+                    	item.setDistance(driveQMap.getOdometer());
+                	trendItemList.add(item);
+            	}
             }
-
-            return scoreList;
+            return trendItemList;
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
     }
-
-    @Override
-    public List<ScoreableEntity> getVehicleTrendCumulative(Integer vehicleID, Duration duration, ScoreType scoreType)
-    { 
-        // Condition added for Coaching Events.  Do not get cumulative average for Coaching events only
-        Integer code;
-        if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
-            code = duration.getAggregationBinSize();
-        else
-            code = duration.getCode();
-        
-        try
-        {
-        	
-            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, code, duration.getDvqCount());
-            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
-
-            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-
-            for (DriveQMap driveQMap : driveQList)
-            {
-                ScoreableEntity entity = new ScoreableEntity();
-                entity.setEntityID(vehicleID);
-                entity.setEntityType(EntityType.ENTITY_VEHICLE);
-                entity.setScoreType(scoreType);
-                entity.setIdentifierNum(driveQMap.getOdometer());
-                entity.setScore(driveQMap.getScoreMap().get(scoreType));
-                entity.setDate(driveQMap.getEndingDate());
-                scoreList.add(entity);
-            }
-
-            return scoreList;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-
-    }
-    
-    @Override
-    public List<ScoreableEntity> getVehicleTrendDaily(Integer vehicleID, Duration duration, ScoreType scoreType)
-    { 
-         
-        try
-        {
-            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getAggregationBinSize(), duration.getDvqCount());
-            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
-
-            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-
-            for (DriveQMap driveQMap : driveQList)
-            {
-                ScoreableEntity entity = new ScoreableEntity();
-                entity.setEntityID(vehicleID);
-                entity.setEntityType(EntityType.ENTITY_VEHICLE);
-                entity.setScoreType(scoreType);
-                
-                if(scoreType == ScoreType.SCORE_SPEEDING)
-                    entity.setIdentifierNum(driveQMap.getOdometer());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_21_30)
-                    entity.setIdentifierNum(driveQMap.getOdometer1());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_31_40)
-                    entity.setIdentifierNum(driveQMap.getOdometer2());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_41_54)
-                    entity.setIdentifierNum(driveQMap.getOdometer3());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_55_64)
-                    entity.setIdentifierNum(driveQMap.getOdometer4());
-                else if(scoreType == ScoreType.SCORE_SPEEDING_65_80)
-                    entity.setIdentifierNum(driveQMap.getOdometer5());
-                else
-                    entity.setIdentifierNum(driveQMap.getOdometer());
-                
-                entity.setScore(driveQMap.getScoreMap().get(scoreType));
-                entity.setDate(driveQMap.getEndingDate());
-                scoreList.add(entity);
-            }
-
-            return scoreList;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-
-    }
-
     @Override
     public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType)
     {
@@ -681,68 +563,37 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-
-    @Override
-    public Map<ScoreType, ScoreableEntity> getDriverScoreBreakdownByType(Integer driverID, Duration duration, ScoreType scoreType)
+	@Override
+    public List<ScoreItem> getAverageScores(Integer id, EntityType entityType, Duration duration)
     {
         try
         {
-            Map<ScoreType, ScoreableEntity> returnMap = new HashMap<ScoreType, ScoreableEntity>();
-            DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDT(driverID, duration.getCode()), DriveQMap.class);
-
-            List<ScoreType> subTypeList = scoreType.getSubTypes();
-
-            for (ScoreType subType : subTypeList)
+            DriveQMap driveQMap = null;
+            if (entityType.equals(EntityType.ENTITY_DRIVER))
             {
-                ScoreableEntity scoreableEntity = new ScoreableEntity();
-                scoreableEntity.setEntityID(driverID);
-                scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
-                scoreableEntity.setScoreType(subType);
-                Integer score = driveQMap.getScoreMap().get(subType);
-                scoreableEntity.setScore((score == null) ? NO_SCORE : score);
-                scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
-
-                returnMap.put(subType, scoreableEntity);
+            	driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDT(id, duration.getCode()), DriveQMap.class);
             }
-            return returnMap;
+            else
+            {
+            	driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(id, duration.getCode()), DriveQMap.class);
+            }
+            
+            List<ScoreItem> scoreItemList = new ArrayList<ScoreItem>();
+        	Map<ScoreType, Integer> scoreMap = driveQMap.getScoreMap();
+        	
+            for (ScoreType scoreType : EnumSet.allOf(ScoreType.class)) {
+            	ScoreItem item = new ScoreItem();
+                item.setScoreType(scoreType);
+                item.setScore(scoreMap.get(scoreType));
+            	scoreItemList.add(item);
+        	}
+            return scoreItemList;
         }
         catch (EmptyResultSetException e)
         {
-            return Collections.emptyMap();
+            return Collections.emptyList();
         }
     }
-
-    @Override
-    public Map<ScoreType, ScoreableEntity> getVehicleScoreBreakdownByType(Integer vehicleID, Duration duration, ScoreType scoreType)
-    {
-        try
-        {
-            Map<ScoreType, ScoreableEntity> returnMap = new HashMap<ScoreType, ScoreableEntity>();
-            DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(vehicleID, duration.getCode()), DriveQMap.class);
-
-            List<ScoreType> subTypeList = scoreType.getSubTypes();
-
-            for (ScoreType subType : subTypeList)
-            {
-                ScoreableEntity scoreableEntity = new ScoreableEntity();
-                scoreableEntity.setEntityID(vehicleID);
-                scoreableEntity.setEntityType(EntityType.ENTITY_VEHICLE);
-                scoreableEntity.setIdentifier("");
-                scoreableEntity.setScoreType(subType);
-                Integer score = driveQMap.getScoreMap().get(subType);
-                scoreableEntity.setScore((score == null) ? NO_SCORE : score);
-                scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
-
-                returnMap.put(subType, scoreableEntity);
-            }
-            return returnMap;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyMap();
-        }
-    }
-
 	@Override
 	public CrashSummary getGroupCrashSummaryData(Integer groupID) {
 		try {

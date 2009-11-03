@@ -12,6 +12,7 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.EventType;
@@ -24,72 +25,50 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleStyleBean extends BasePerformanceEventsBean
 {
-    private static final Logger   logger            = Logger.getLogger(VehicleStyleBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5922507244628036626L;
+	private static final Logger   logger            = Logger.getLogger(VehicleStyleBean.class);
 
     public VehicleStyleBean() {
 		super();
 
 		selectedBreakdown="OVERALL";
 	}
-
-	@Override
+    @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
     }
-    
-    @Override
+
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_VEHICLE, duration, scoreType);
     }
 
     @Override
     protected void initScores()
     {
-        Map<ScoreType, ScoreableEntity> tempMap = scoreDAO
-                .getVehicleScoreBreakdownByType(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
+        Map<ScoreType, ScoreableEntity> tempMap = getPerformanceDataBean().getAverageScoreBreakdown(getVehicle().getVehicleID(), EntityType.ENTITY_VEHICLE, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
-
-        ScoreableEntity se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE);
         
-        if(se != null)
+        for (ScoreType subType : ScoreType.SCORE_DRIVING_STYLE.getSubTypes())
         {
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-    
-            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-    
-            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-    
-            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-    
-            se = tempMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-        } else {
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+        	ScoreableEntity se = tempMap.get(subType);
+        	if (se != null && se.getScore() != null)
+        	{
+        		scoreMap.put(subType.toString(), se.getScore());
+        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        	}
+        	else
+        	{
+        		scoreMap.put(subType.toString(), EMPTY_SCORE_VALUE);
+        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(NO_SCORE, ScoreBoxSizes.MEDIUM));
 
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+        	}
         }
     }
 

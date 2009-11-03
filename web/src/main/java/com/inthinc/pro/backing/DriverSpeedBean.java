@@ -12,6 +12,7 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MeasurementType;
@@ -24,7 +25,11 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class DriverSpeedBean extends BasePerformanceEventsBean
 {
-    private static final Logger                logger         = Logger.getLogger(DriverSpeedBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7654119463494183673L;
+	private static final Logger                logger         = Logger.getLogger(DriverSpeedBean.class);
 
     
     public DriverSpeedBean() {
@@ -34,74 +39,41 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
 	}
 
     @Override
+    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_DRIVER, duration, scoreType);
+    }
+
     protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
     {
-        return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
+        return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
+    
     
     @Override
     protected void initScores()
     {
-        Map<ScoreType, ScoreableEntity> tempMap = scoreDAO.getDriverScoreBreakdownByType(getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
+        Map<ScoreType, ScoreableEntity> tempMap = getPerformanceDataBean().getAverageScoreBreakdown(getDriverID(), EntityType.ENTITY_DRIVER, durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
-
-        // TODO This needs to be cleaned up. The style should be pushed to the .xhtml page and a null ScoreableEntity needs to be handled better.
-        // Fixed for quick realease.
-        ScoreableEntity se = tempMap.get(ScoreType.SCORE_SPEEDING);
-        if (se != null)
+        
+        for (ScoreType subType : ScoreType.SCORE_SPEEDING.getSubTypes())
         {
-            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        	ScoreableEntity se = tempMap.get(subType);
+        	if (se != null && se.getScore() != null)
+        	{
+        		scoreMap.put(subType.toString(), se.getScore());
+        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        	}
+        	else
+        	{
+        		scoreMap.put(subType.toString(), EMPTY_SCORE_VALUE);
+        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(NO_SCORE, ScoreBoxSizes.MEDIUM));
 
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_21_30);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_31_40);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_41_54);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_55_64);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-
-            se = tempMap.get(ScoreType.SCORE_SPEEDING_65_80);
-            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), se.getScore());
-            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
-        }
-        else
-        {
-            scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
-
-            scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), EMPTY_SCORE_VALUE);
-            styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(null, ScoreBoxSizes.MEDIUM));
+        	}
         }
     }
-
-    @Override
-	protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
-	{
-	    return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
-	}
 
 	@Override
     protected void initTrends()
@@ -230,26 +202,5 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
     }
     
    
-//    @Override
-//	public void excludeEventAction() {
-//		
-//	    Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-//	    if(result >= 1)
-//	        {
-//	            initEvents();
-//	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
-//	        }
-//	}
-
-//    @Override
-//	public void includeEventAction() {
-//		
-//	    Integer result = eventDAO.unforgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-//	    if(result >= 1)
-//	        {
-//	            initEvents();
-//	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
-//	        }
-//	}
 
 }
