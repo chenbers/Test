@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
@@ -16,7 +15,6 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.CrashSummary;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -326,6 +324,10 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     	{
     		return null;
     	}
+        if (score.getScore() == null){
+        	
+        	score.setScore(-1);
+        }
         score.setEntityID(trendBeanState.getGroupID());
     	
     	String summaryTitle = MessageUtil.formatMessageString("trendReport_summary", getGroupHierarchy().getGroup(trendBeanState.getGroupID()).getName());
@@ -344,7 +346,6 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         summaryTrendBeanItem.setCrashSummary(crashSummary);
         summaryTrendBeanItem.setScoreableEntity(score);
         summaryTrendBeanItem.setScoreableEntityPkg(se);
-        
 		return summaryTrendBeanItem;
 	}
 
