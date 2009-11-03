@@ -11,21 +11,21 @@
 	<ul id="grid_nav_dark">
 	
 		<li class="r">
-			<a4j:commandButton
+			<a4j:commandButton id="groupViewAdd"
 				action="#{organizationBean.add}"
 				reRender="contentPanel" styleClass="left">
 				<span class="add"><h:outputText
 					value="#{messages.button_add}" /></span></a4j:commandButton>
 		</li>
 		<li class="r">
-			<a4j:commandButton
+			<a4j:commandButton id="groupViewEdit"
 				action="#{organizationBean.edit}"
 				reRender="contentPanel" styleClass="left">
 				<span class="edit"><h:outputText
 					value="#{messages.button_edit}" /></span></a4j:commandButton>
 		</li>
 		<li class="r">
-			<a4j:commandButton rendered="#{organizationBean.selectedGroupNode.treeNodeType ne 'FLEET'}"
+			<a4j:commandButton id="groupViewDelete" rendered="#{organizationBean.selectedGroupNode.treeNodeType ne 'FLEET'}"
 				onclick="Richfaces.showModalPanel('confirmDelete'); return false;" styleClass="left">
 				<span class="delete"><h:outputText
 					value="#{messages.button_delete}" /></span></a4j:commandButton>

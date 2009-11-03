@@ -20,7 +20,7 @@ public class MeasurementBean extends BaseBean {
     }
     public void measurementTypeChosenAction(){
     	
-    		fuelEfficiencyBean.init();
+    		fuelEfficiencyBean.update();
     }
     public List<SelectItem> getMeasurementTypeItems() {
         return measurementTypeItems;

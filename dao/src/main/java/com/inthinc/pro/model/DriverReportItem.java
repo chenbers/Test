@@ -1,8 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -13,9 +10,7 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
      * 
      */
     private static final long serialVersionUID = 6797365101619066450L;
-    
-    private static final String NA = "N/A";
-    
+        
     private String group;
     private String employeeID;
     private String employee;
@@ -152,64 +147,7 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
     {
         this.groupID = groupID;
     }
-    
-    public String getSpeedScoreAsString()
-    {
-        String returnString = NA;
-        if(speedScore != null && speedScore >= 0)
-        {
-        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
-        	nf.setMinimumFractionDigits(1);
-        	nf.setMaximumFractionDigits(1);
-            returnString = nf.format(new BigDecimal(speedScore).movePointLeft(1));
-        }
-        
-        return returnString;
-    }
-    
-    public String getStyleScoreAsString()
-    {
-        String returnString = NA;
-        if(styleScore != null && styleScore >= 0)
-        {
-        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
-        	nf.setMinimumFractionDigits(1);
-        	nf.setMaximumFractionDigits(1);
-            returnString = nf.format(new BigDecimal(styleScore).movePointLeft(1));
-        }
-        
-        return returnString;
-    }
-    
-    public String getOverallScoreAsString()
-    {
-        String returnString = NA;
-        
-        if(overallScore != null && overallScore >= 0)
-        {
-        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
-        	nf.setMinimumFractionDigits(1);
-        	nf.setMaximumFractionDigits(1);
-            returnString = nf.format(new BigDecimal(overallScore).movePointLeft(1));
-        }
-        
-        return returnString;
-    }
-    
-    public String getSeatBeltScoreAsString()
-    {
-        String returnString = NA;
-        if(seatBeltScore != null && seatBeltScore >= 0)
-        {
-        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
-        	nf.setMinimumFractionDigits(1);
-        	nf.setMaximumFractionDigits(1);
-            returnString = nf.format(new BigDecimal(seatBeltScore).movePointLeft(1));
-        }
-        
-        return returnString;
-    }
-    
+       
     @Override
     public int compareTo(DriverReportItem o)
     {

@@ -31,7 +31,7 @@
         <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>
       <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('editColumnsForm:cancelButton').onclick()" />
+        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('editColumnsForm:editColumnsPopupCancel').onclick()" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
@@ -49,7 +49,7 @@
     	</rich:dataGrid>
 
         <div class="popupactions">
-          <a4j:commandButton id="cancelButton"
+          <a4j:commandButton id="editColumnsPopupCancel"
             styleClass="left"
             action="#{bean.tablePref.cancelEdit}" 
             ajaxSingle="true" 
@@ -60,7 +60,7 @@
             </span>
           </a4j:commandButton>
           <h:outputText value=" " />
-          <a4j:commandButton 
+          <a4j:commandButton id="editColumnsPopupSave"
           	type="submit"
             action="#{bean.tablePref.saveColumns}"                 
             oncomplete="Richfaces.hideModalPanel('editColumns')" 

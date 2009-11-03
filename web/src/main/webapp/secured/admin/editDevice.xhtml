@@ -47,8 +47,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandButton action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                          <h:outputText value=" " /><h:commandButton action="#{devicesBean.cancelEdit}" id="cancelButton" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                          <h:commandButton id="editDeviceSave1" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editDeviceCancel1" action="#{devicesBean.cancelEdit}" id="cancelButton" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
                      
@@ -225,8 +225,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandButton action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                          <h:outputText value=" " /><h:commandButton action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                          <h:commandButton id="editDeviceSave2" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editDeviceCancel2" action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
 
@@ -238,8 +238,8 @@
                          <a4j:jsFunction name="reRenderTab" reRender="speeedSettingsPanel"></a4j:jsFunction>
                          <ul id="grid_nav" style="margin: 0;">
                            <li class="r">
-                             <h:commandButton action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                             <h:outputText value=" " /><h:commandButton action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                             <h:commandButton id="editDeviceSave3" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                             <h:outputText value=" " /><h:commandButton id="editDeviceCancel3" action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                            </li>
                          </ul>
    
@@ -254,8 +254,8 @@
    
                          <ul id="grid_nav" style="margin: 0;">
                            <li class="r">
-                             <h:commandButton action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                             <h:outputText value=" " /><h:commandButton action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                             <h:commandButton id="editDeviceSave4" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                             <h:outputText value=" " /><h:commandButton id="editDeviceCancel4" action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                            </li>
                          </ul>
                    	  </a4j:region>

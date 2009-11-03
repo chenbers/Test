@@ -64,7 +64,6 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         for (DriverReportItem dri : this.driversData)
         {
             dri.setGroup(this.getGroupHierarchy().getGroup(dri.getGroupID()).getName());
-            dri.setLocale(getLocale());
         }
 
     }

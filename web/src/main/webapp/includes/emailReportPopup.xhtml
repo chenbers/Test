@@ -58,18 +58,21 @@
           
           <button type="submit" tabindex="5"  class="left" onclick="Richfaces.hideModalPanel('#{id}'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
           
-          <a4j:commandButton tabindex="2" rendered="#{not empty reportList}" id="emailButton1" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{id}_form" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;">
+          <a4j:commandButton tabindex="2" rendered="#{not empty reportList}" id="emailReportPopupEmail1" 
+          				action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{id}_form" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;">
           	<span class="email"><h:outputText value="#{messages.button_email}" /></span>
           	<a4j:actionparam assignTo="#{dashBoardReportBean.reports}" converter="SimpleBeanConverter" value="#{reportList}"/>
           </a4j:commandButton>
           
-          <a4j:commandButton  tabindex="3" rendered="#{not empty report}"   id="emailReportButton2" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{id}_form" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;">
+          <a4j:commandButton  tabindex="3" rendered="#{not empty report}"   id="emailReportPopupEmail2" 
+          				action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{id}_form" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;">
           	<span class="email"><h:outputText value="#{messages.button_email}" /></span>
           	<a4j:actionparam assignTo="#{dashBoardReportBean.report}" value="#{report}"/>
           	<a4j:actionparam assignTo="#{dashBoardReportBean.duration}" converter="SimpleBeanConverter" value="#{duration}"/>
           </a4j:commandButton>
           
-          <a4j:commandButton  tabindex="4" rendered="#{empty report and empty reportList}" id="emailReportButton3" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{id}_form" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;">
+          <a4j:commandButton  tabindex="4" rendered="#{empty report and empty reportList}" id="emailReportPopupEmail3" 
+          				action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{id}_form" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;">
           	<span class="email"><h:outputText value="#{messages.button_email}" /></span>
           </a4j:commandButton>
         </div>

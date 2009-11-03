@@ -16,13 +16,13 @@
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="employeeID" class="java.lang.String"/>
 	<field name="employee" class="java.lang.String"/>
-	<field name="overallScoreAsString" class="java.lang.String"/>
-	<field name="speedScoreAsString" class="java.lang.String"/>
-	<field name="styleScoreAsString" class="java.lang.String"/>
-	<field name="seatBeltScoreAsString" class="java.lang.String"/>
 	<field name="vehicle.name" class="java.lang.String"/>
 	<field name="milesDriven" class="java.lang.Long"/>
 	<field name="group" class="java.lang.String"/>
+	<field name="overallScore" class="java.lang.Integer"/>
+	<field name="speedScore" class="java.lang.Integer"/>
+	<field name="styleScore" class="java.lang.Integer"/>
+	<field name="seatBeltScore" class="java.lang.Integer"/>
 	<background>
 		<band/>
 	</background>
@@ -131,22 +131,22 @@
 			<textField pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-4" x="600" y="3" width="45" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{overallScoreAsString}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[(($F{overallScore}==null)||($F{overallScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{overallScore}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-5" x="645" y="3" width="41" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{speedScoreAsString}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[(($F{speedScore}==null)||($F{speedScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{speedScore}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-6" x="686" y="3" width="41" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{styleScoreAsString}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[(($F{styleScore}==null)||($F{styleScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{styleScore}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-7" x="729" y="3" width="47" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{seatBeltScoreAsString}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[(($F{seatBeltScore}==null)||($F{seatBeltScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{seatBeltScore}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-9" x="385" y="3" width="146" height="17"/>

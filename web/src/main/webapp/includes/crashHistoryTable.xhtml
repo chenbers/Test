@@ -136,7 +136,7 @@
             </h:panelGroup>
 
             <div class="popupactions">
-            	<button type="submit" class="left" 
+            	<button id="crashHistoryTableNo" type="submit" class="left" 
             		onclick="Richfaces.hideModalPanel('clearCrashPanel'); return false;">
             		<span class="no">
             			<h:outputText value="#{messages.button_cancel}" />
@@ -188,7 +188,7 @@
         </div>
 
         <div class="popupactions">
-        	<a4j:commandButton value="#{messages.button_close}" 
+        	<a4j:commandButton id="crashHistoryTableNo" value="#{messages.button_close}" 
         		onclick="Richfaces.hideModalPanel('crashLocationModal')" styleClass="left">
             	<span class="edit"> <h:outputText value="#{messages.button_close}" /> 
             	</span>

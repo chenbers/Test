@@ -296,8 +296,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             // Group name
             Group tmpGroup = groupDAO.findByID(idlingReportItem.getGroupID());
             idlingReportItem.setGroup(tmpGroup.getName());
-            idlingReportItem.setLocale(getLocale());
-            idlingReportItem.prepareForDisplay();
+//            idlingReportItem.prepareForDisplay();
         }
 
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);

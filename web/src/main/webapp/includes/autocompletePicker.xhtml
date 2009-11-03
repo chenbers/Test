@@ -40,7 +40,7 @@
           <ui:repeat id="picker-repeater" value="#{autocompleter.picked}" var="item">
             <span class="pick-item">
               <h:outputText value="#{item.label}" />
-              <a4j:commandLink id="picker-delete" styleClass="delete-pick-item" reRender="pickerPanel" limitToList="true" oncomplete="changeComplete()">
+              <a4j:commandLink id="autoCompletePickerDelete" styleClass="delete-pick-item" reRender="pickerPanel" limitToList="true" oncomplete="changeComplete()">
                 <a4j:actionparam name="itemValue" value="#{item.value}" assignTo="#{autocompleter.itemValue}" />
                 <h:graphicImage value="/images/x.gif" width="16" height="20" />
               </a4j:commandLink></span>
@@ -80,10 +80,10 @@
         if (empty &amp;&amp; (e.keyCode == 8))
         {
           var index = 0;
-          while (document.getElementById("#{formName}:picker-repeater:" + index + ":picker-delete") != null)
+          while (document.getElementById("#{formName}:picker-repeater:" + index + ":autoCompletePickerDelete") != null)
             index++;
           if (index > 0)
-            document.getElementById("#{formName}:picker-repeater:" + (index - 1) + ":picker-delete").onclick();
+            document.getElementById("#{formName}:picker-repeater:" + (index - 1) + ":autoCompletePickerDelete").onclick();
         }
         empty = (input.value.length == 0);
       }

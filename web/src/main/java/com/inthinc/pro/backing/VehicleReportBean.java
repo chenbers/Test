@@ -64,7 +64,6 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         for (VehicleReportItem vri : this.vehiclesData)
         {
             vri.setGroup(this.getGroupHierarchy().getGroup(vri.getGroupID()).getName());
-            vri.setLocale(getLocale());
        }
    }
 

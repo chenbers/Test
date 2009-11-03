@@ -17,7 +17,7 @@
   <ui:define name="columns">
     <rich:column rendered="#{vehiclesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
-      <a4j:htmlCommandLink action="#{vehiclesBean.display}" value="#{item.name}">
+      <a4j:htmlCommandLink id="vehiclesTableName" action="#{vehiclesBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </a4j:htmlCommandLink>
     </rich:column>

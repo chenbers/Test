@@ -1,6 +1,5 @@
 package com.inthinc.pro.convert;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import javax.faces.component.UIComponent;
@@ -22,12 +21,15 @@ public class MpgToKplConverter extends BaseConverter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
+    	if (value==null) return null;
         if (Number.class.isInstance(value))
         {
-            return NumberFormat.getInstance(getLocale()).format(MeasurementConversionUtil.convertMpgToFuelEfficiencyType((Number.class.cast(value)).doubleValue(),
+        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+        	nf.setMaximumFractionDigits(2);
+            return nf.format(MeasurementConversionUtil.convertMpgToFuelEfficiencyType((Number.class.cast(value)).doubleValue(),
                                                                                                 getMeasurementType(), 
                                                                                                 getFuelEfficiencyType()));
         }
-        return NumberFormat.getInstance(getLocale()).format(value);
+        return value.toString();
     }
 }

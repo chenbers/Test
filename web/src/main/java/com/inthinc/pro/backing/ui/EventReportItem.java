@@ -48,8 +48,8 @@ public class EventReportItem extends NotificationReportItem<EventReportItem>
             setGroup("");
         }
         
-        setDriverName((event.getDriver() == null) ? "None Assigned" : event.getDriver().getPerson().getFullName());
-        setVehicleName((event.getVehicle() == null)? "None Assigned" : event.getVehicle().getName());
+        setDriverName((event.getDriver() == null) ? MessageUtil.getMessageString("unassigned") : event.getDriver().getPerson().getFullName());
+        setVehicleName((event.getVehicle() == null)?  MessageUtil.getMessageString("unaAssigned") : event.getVehicle().getName());
 
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));

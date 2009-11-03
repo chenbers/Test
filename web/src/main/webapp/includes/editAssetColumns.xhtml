@@ -15,7 +15,7 @@
       		</f:facet>
       		<f:facet name="controls">
         		<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
-        			onclick="document.getElementById('editColumnsForm:cancelButton').onclick()" />
+        			onclick="document.getElementById('editColumnsForm:editAssetColumnsCancel').onclick()" />
       		</f:facet>
 
 			<div class="popupsubtitle">
@@ -60,7 +60,7 @@
 				</rich:panel>
 			
 				<div class="popupactions">					
-					<a4j:commandButton id="cancelButton" rendered="true" 
+					<a4j:commandButton id="editAssetColumnsCancel" rendered="true" 
           				action="#{assetReportBean.cancelColumns}"           				
           				onclick="Richfaces.hideModalPanel('editAssetColumns')" 
           				reRender="items" styleClass="left">
@@ -68,7 +68,7 @@
           						<h:outputText value="#{messages.button_cancel}" />
           					</span>
           			</a4j:commandButton>  
-          			<a4j:commandButton rendered="true" 
+          			<a4j:commandButton id="editAssetColumnsSave" rendered="true" 
           				action="#{assetReportBean.saveColumns}"           				
           				onclick="Richfaces.hideModalPanel('editAssetColumns')" 
           				reRender="items" styleClass="left">

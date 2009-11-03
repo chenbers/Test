@@ -64,7 +64,7 @@
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
-            <a4j:commandLink action="#{editorBean.chooseVehicle}" onclick="Richfaces.hideModalPanel('chooseVehicle')" reRender="chooseVehicleTable,#{reRender}" value="#{messages.chooseVehicle_choose}">
+            <a4j:commandLink id="chooseVehicleChoose" action="#{editorBean.chooseVehicle}" onclick="Richfaces.hideModalPanel('chooseVehicle')" reRender="chooseVehicleTable,#{reRender}" value="#{messages.chooseVehicle_choose}">
               <f:param name="vehicleID" value="#{item.vehicleID}" />
               <f:param name="immediate" value="#{immediate}" />
             </a4j:commandLink>

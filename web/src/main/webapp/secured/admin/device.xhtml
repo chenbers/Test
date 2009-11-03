@@ -44,10 +44,13 @@
                     <rich:tab id="details" label="#{messages.device_details}">
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="l text"><a4j:htmlCommandLink action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
+                        <li class="l text"><a4j:htmlCommandLink id="deviceBack1"
+                        	action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
                         <li class="r">
-                          <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                          <h:outputText value=" " /><h:commandButton action="#{devicesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                          <a4j:commandButton id="deviceDelete1"
+                          styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;">
+                          <span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="deviceEdit1" action="#{devicesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                         </li>
                       </ul>
 
@@ -134,10 +137,11 @@
                     <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="l text"><a4j:htmlCommandLink action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
+                        <li class="l text"><a4j:htmlCommandLink id="deviceBack2"
+                        	action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
                         <li class="r">
-                          <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                          <h:outputText value=" " /><h:commandButton action="#{devicesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                          <a4j:commandButton id="deviceDelete2" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="deviceEdit2" action="#{devicesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                         </li>
                       </ul>
 

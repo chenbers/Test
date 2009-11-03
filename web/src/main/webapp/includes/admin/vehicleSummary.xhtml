@@ -9,7 +9,7 @@
 
 		<ul id="grid_nav_dark">
 			<li class="r text">											 
-				<h:commandLink action="#{vehiclesBean.edit}" value="#{messages.adminTable_edit}">
+				<h:commandLink  id="vehicleSummaryEdit" action="#{vehiclesBean.edit}" value="#{messages.adminTable_edit}">
                   <f:param name="editID" value="#{vehicle.vehicleID}" />
                 </h:commandLink>
 			</li>

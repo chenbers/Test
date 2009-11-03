@@ -15,7 +15,8 @@
       <h:outputText value="#{errorBean.errorMessage}"/>
     </p>
     <h:form>
-    	<h:commandButton onclick="Richfaces.hideModalPanel('errorPanel')" value="#{messages.button_ok}" action="#{errorBean.clearErrorAction}" style="float:right"/>
+    	<h:commandButton id="errorPopupOk" onclick="Richfaces.hideModalPanel('errorPanel')" 
+    			value="#{messages.button_ok}" action="#{errorBean.clearErrorAction}" style="float:right"/>
 	</h:form>
 </rich:modalPanel>    
 

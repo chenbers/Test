@@ -71,7 +71,6 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for (IdlingReportItem iri : this.idlingsData) {
             iri.setGroup(this.getGroupHierarchy().getGroup(iri.getGroupID()).getName());
-            iri.setLocale(getLocale());
         }
     }
 

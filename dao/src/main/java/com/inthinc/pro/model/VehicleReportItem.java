@@ -1,8 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -12,8 +9,6 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
      * 
      */
     private static final long serialVersionUID = -199959826868545534L;
-    
-    private static final String NA = "N/A";
     
     private String group;
     private Vehicle vehicle;
@@ -133,50 +128,7 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     {
         this.goTo = goTo;
     }
-    
-    public String getSpeedScoreAsString()
-    {
-        String returnString = NA;
-        if(speedScore != null && speedScore >= 0)
-        {
-        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
-        	nf.setMinimumFractionDigits(1);
-        	nf.setMaximumFractionDigits(1);
-            returnString = nf.format(new BigDecimal(speedScore).movePointLeft(1));
-        }
-        
-        return returnString;
-    }
-    
-    public String getStyleScoreAsString()
-    {
-        String returnString = NA;
-        if(styleScore != null && styleScore >= 0)
-        {
-        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
-        	nf.setMinimumFractionDigits(1);
-        	nf.setMaximumFractionDigits(1);
-            returnString = nf.format(new BigDecimal(styleScore).movePointLeft(1));
-        }
-        
-        return returnString;
-    }
-    
-    public String getOverallScoreAsString()
-    {
-        String returnString = NA;
-        
-        if(overallScore != null && overallScore >= 0)
-        {
-        	NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
-        	nf.setMinimumFractionDigits(1);
-        	nf.setMaximumFractionDigits(1);
-            returnString = nf.format(new BigDecimal(overallScore).movePointLeft(1));
-        }
-        
-        return returnString;
-    }
-        
+            
     @Override
     public int compareTo(VehicleReportItem item)
     {

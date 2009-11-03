@@ -1,8 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -18,11 +15,8 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private Float driveTime;
     private Number milesDriven;
     private Float lowHrs;
-    private String lowPercent;
     private Float highHrs;
-    private String highPercent;
     private Float totalHrs;
-    private String totalPercent;
 
     private Float lowPerSort;
     private Float highPerSort;
@@ -85,14 +79,6 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     {
         this.lowHrs = lowHrs;
     }
-    public String getLowPercent()
-    {
-        return lowPercent;
-    }
-    public void setLowPercent(String lowPercent)
-    {
-        this.lowPercent = lowPercent;
-    }
     public Float getHighHrs()
     {
         return highHrs;
@@ -101,14 +87,6 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     {
         this.highHrs = highHrs;
     }
-    public String getHighPercent()
-    {
-        return highPercent;
-    }
-    public void setHighPercent(String highPercent)
-    {
-        this.highPercent = highPercent;
-    }
     public Float getTotalHrs()
     {
         return totalHrs;
@@ -116,14 +94,6 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     public void setTotalHrs(Float totalHrs)
     {
         this.totalHrs = totalHrs;
-    }
-    public String getTotalPercent()
-    {
-        return totalPercent;
-    }
-    public void setTotalPercent(String totalPercent)
-    {
-        this.totalPercent = totalPercent;
     }
     public Float getLowPerSort()
     {
@@ -158,65 +128,46 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
         this.driveTimeSort = driveTimeSort;
     } 
     
-    public String getTotalHrsAsString()
-    {
-        return floatToString(getTotalHrs());
-    }
     
-    public String getLowHrsAsString()
-    {
-        return floatToString(getLowHrs());
+    public Float getLowPercent(){
+    	
+        Float totHrs = getTotalHours();
+        
+	    if ( totHrs.floatValue() != 0.0f ) {
+	    	
+	        return 100.0f*getLowHrs()/totHrs; 
+	    } 
+	    return 0f;
+	}
+    public Float getHighPercent(){
+    	
+        Float totHrs = getTotalHours();
+        
+	    if ( totHrs.floatValue() != 0.0f ) {
+	    	
+	        return 100.0f*getHighHrs()/totHrs; 
+	    } 
+	    return 0f;
+	}
+ 
+    public Float getTotalPercent(){
+    	
+        Float totHrs = getTotalHours();
+        
+	    if ( totHrs.floatValue() != 0.0f ) {
+	    	
+	        return 100.0f*getTotalHrs()/totHrs; 
+	    } 
+	    return 0f;
+	}
+    private Float getTotalHours(){
+    	
+    	return new Float(getDriveTime() + getLowHrs()+getHighHrs());
     }
-    
-    public String getHighHrsAsString()
-    {
-        return floatToString(getHighHrs());
-    }
-    
-    public String getDriveTimeAsString()
-    {
-        return floatToString(getDriveTime());
-    }
-    
-    private String floatToString(Float flt)
-    {
-       
-            NumberFormat format = NumberFormat.getInstance(getLocale());
-            format.setMaximumFractionDigits(2);
-            format.setMinimumFractionDigits(2);
-            return format.format(flt);
-    }
-    
     @Override
     public int compareTo(IdlingReportItem item)
     { 
         return this.getDriver().getPerson().getFullName().toLowerCase().compareTo(item.getDriver().getPerson().getFullName().toLowerCase());
     }
-	
-	public void prepareForDisplay() {
-		
-		if (getLocale() == null) setLocale(Locale.US);
-        NumberFormat format = NumberFormat.getInstance(getLocale());
-        format.setMaximumFractionDigits(1);
-        format.setMinimumFractionDigits(1);
-		
-        //Percentages, if any driving
-        setLowPercent(format.format(0.0));
-        setHighPercent(format.format(0.0));
-        setTotalPercent(format.format(0.0));
-        Float totHrs = new Float(getDriveTime()) +
-            getLowHrs() + getHighHrs();                
-        if ( totHrs != 0.0f ) {
-            Float low = 100.0f*getLowHrs()/totHrs; 
-            setLowPercent(format.format(low));  
-            
-            Float hi = 100.0f*getHighHrs()/totHrs;
-            setHighPercent(format.format(hi));
-            
-            Float total = 100.0f*getTotalHrs()/totHrs;
-            setTotalPercent(format.format(total));
-        } 
-		
-	}
 
 }

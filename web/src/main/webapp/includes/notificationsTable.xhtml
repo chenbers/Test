@@ -88,12 +88,16 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
- 								<a4j:commandLink rendered="#{item.event.forgiven == 0}" title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+ 								<a4j:commandLink id="notificationTableClear" rendered="#{item.event.forgiven == 0}" 
+ 									title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" 
+ 									reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.notes_clear}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
- 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{bean.includeEventAction}" reRender="#{clearRerender}"
-										 id="excluded" oncomplete="initializeTable()">
+ 								<a4j:commandLink id="notificationTable_excluded" rendered="#{item.event.forgiven == 1}" 
+ 									title="#{messages.driverReports_exclude}" action="#{bean.includeEventAction}" 
+ 									reRender="#{clearRerender}"
+										 oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -109,7 +113,7 @@
     </h:form>
 
     <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
-        onshow="document.getElementById('clearItemForm:yesButton').focus();">
+        onshow="document.getElementById('clearItemForm:notificationsTableYes').focus();">
         <f:facet name="header">
             <h:outputText value="#{clearTitle}" />
         </f:facet>
@@ -131,7 +135,7 @@
             <div class="popupactions">
             <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText
                 value="#{messages.button_no}" /></span></button>
-            <a4j:commandButton id="yesButton" action="#{bean.clearItemAction}" oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
+            <a4j:commandButton id="notificationsTableYes" action="#{bean.clearItemAction}" oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
                                eventsQueue="#{formId}" >
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
@@ -156,7 +160,7 @@
 
 		<h:form>
         <div class="popupactions">
-        	<a4j:commandButton type="button" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+        	<a4j:commandButton id="notificationsTableClose" type="button" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
             	<span class="edit"> 
             		<h:outputText value="#{messages.button_close}" /> 
             	</span>

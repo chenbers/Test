@@ -53,7 +53,7 @@
          							<div class="tabRight">
                                       <div class="tabBorder">
                                          <span class="#{action.key} tab">
-                                                <a4j:commandLink title="#{action.displayString}" reRender="overview-header,overview-form,overview-content,duration-links"
+                                                <a4j:commandLink id="teamOverviewDisplay" title="#{action.displayString}" reRender="overview-header,overview-form,overview-content,duration-links"
                                                       value="#{action.displayString}">
                                                       <f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
                                                 </a4j:commandLink>   

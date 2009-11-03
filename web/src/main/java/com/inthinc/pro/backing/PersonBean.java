@@ -369,11 +369,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 1))
             item.getDriver().setRFID(null);
-        if (fuelEfficiencyBean == null)
-        {
-        	fuelEfficiencyBean = new FuelEfficiencyBean();
-        }
-    	fuelEfficiencyBean.init(item.getMeasurementType());
+//        if (fuelEfficiencyBean == null)
+//        {
+//        	fuelEfficiencyBean = new FuelEfficiencyBean();
+//        }
+//    	fuelEfficiencyBean.init();
         return item;
     }
 
@@ -767,7 +767,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     	
 //		fuelEfficiencyBean.init(getMeasurementType());
     	
-    	fuelEfficiencyBean.init(this.getItem().getMeasurementType());
+//    	fuelEfficiencyBean.update(this.getItem().getMeasurementType());
     }
 
     public static class PersonView extends Person implements EditItem {

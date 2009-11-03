@@ -8,6 +8,8 @@ import javax.faces.convert.ConverterException;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.MessageUtil;
+
 public class ScoreConverter extends BaseConverter
 {
     private static final Logger logger = Logger.getLogger(ScoreConverter.class);
@@ -20,15 +22,19 @@ public class ScoreConverter extends BaseConverter
     
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        Integer score = (Integer)value;
-        NumberFormat format = NumberFormat.getInstance(getLocale());
-        format.setMaximumFractionDigits(1);
-        format.setMinimumFractionDigits(1);
 
-        if(score == null || score < 0)
-            return "N/A";
-        else
-            return format.format((double)((double)score/(double)10.0));
+        if ((value == null) || !Integer.class.isInstance(value) || Integer.class.cast(value).intValue() < 0)
+        	
+            return MessageUtil.getMessageString("NotApplicable",getLocale());
+        
+        else {
+        	
+	        NumberFormat format = NumberFormat.getNumberInstance(getLocale());
+	        format.setMaximumFractionDigits(1);
+	        format.setMinimumFractionDigits(1);
+       	
+            return format.format(Integer.class.cast(value).doubleValue()/10.0d);
+        }
 
     }
 

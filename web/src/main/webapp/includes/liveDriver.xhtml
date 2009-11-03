@@ -67,13 +67,13 @@
 	
 	    <div class="popupactions">
 	    <a4j:form id="controlsForm">
-	    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('liveDriverModal')" styleClass="left">
+	    	<a4j:commandButton id="liveDriverClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('liveDriverModal')" styleClass="left">
 	   			<span class="edit">
 	   				<h:outputText value="#{messages.button_close}" />
 	   			</span>
 		 	</a4j:commandButton>
 		    
-		     <a4j:commandButton styleClass="left" id="control"
+		     <a4j:commandButton id="liveDriverControl" styleClass="left" 
                     value="#{liveFleetBean.livePollEnabled ? 'Stop' : 'Start'} Polling"
                     reRender="pollForm,controlsForm">
                     <span class="edit">

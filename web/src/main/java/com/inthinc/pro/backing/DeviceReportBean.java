@@ -56,7 +56,6 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem> {
                 dri.getDevice().setEphone(MiscUtil.formatPhone(dri.getDevice().getEphone()));
                 dri.getDevice().setPhone(MiscUtil.formatPhone(dri.getDevice().getPhone()));
                 dri.setVehicle(v);
-                dri.setLocale(getLocale());
                 list.add(dri);
             }
         }
