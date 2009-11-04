@@ -278,13 +278,13 @@
 																		
 						<ul id="grid_nav" style="margin: 0;">
 		                   	<li class="r">
-		                      <h:commandButton action="#{crashReportBean.save}" styleClass="left">
+		                      <h:commandButton id="editCrashReportSave1" action="#{crashReportBean.save}" styleClass="left">
 		                      	<span class="save">
 		                      		<h:outputText value="#{messages.button_save}" />
 		                      	</span>
 		                      </h:commandButton>
 		                      <h:outputText value=" " />
-		                      <h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left">
+		                      <h:commandButton id="editCrashReportCancel1" action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left">
 		                      	<span class="cancel">
 		                      		<h:outputText value="#{messages.button_cancel}" />
 		                      	</span>
@@ -421,7 +421,7 @@
 								<ui:fragment rendered="#{crashReportBean.useExistingTrip ne 'true'}">
 									<input type="text" size="42" id="addressTextBox" value=""/>
 									<rich:spacer width="10px"/>
-									<a4j:commandButton immediate="true" 
+									<a4j:commandButton id="editCrashReportSearch" immediate="true" 
 										onclick="showAddressWithAccuracy(document.getElementById('addressTextBox').value);setLatLng(document.getElementById('addressTextBox').value);" 
 										styleClass="left">
 										<span class="search">
@@ -523,13 +523,13 @@
 						 
 						 <ul id="grid_nav" style="margin: 0;">
 		                   	<li class="r">
-		                      <h:commandButton action="#{crashReportBean.save}" styleClass="left">
+		                      <h:commandButton id="editCrashReportSave2" action="#{crashReportBean.save}" styleClass="left">
 		                      	<span class="save">
 		                      		<h:outputText value="#{messages.button_save}" />
 		                      	</span>
 		                      </h:commandButton>
 		                      <h:outputText value=" " />
-		                      <h:commandButton action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left">
+		                      <h:commandButton id="editCrashReportCancel2" action="#{crashReportBean.cancelEdit}" immediate="true" styleClass="left">
 		                      	<span class="cancel">
 		                      		<h:outputText value="#{messages.button_cancel}" />
 		                      	</span>

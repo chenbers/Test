@@ -222,7 +222,7 @@ var firstLoad = new Boolean(true);
 					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"     
+						  	  <a4j:commandLink id="vehicleSpeedOverall" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="OVERALL" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
@@ -261,7 +261,7 @@ var firstLoad = new Boolean(true);
                         <ui:param name="SPEEDING_21_30_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_21_30" />
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
+						  	  <a4j:commandLink id="vehicleSpeedTwentyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="TWENTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
@@ -296,7 +296,7 @@ var firstLoad = new Boolean(true);
                         <ui:param name="SPEEDING_31_40_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_31_40" />
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
+						  	  <a4j:commandLink id="vehicleSpeedThirtyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="THIRTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
@@ -333,7 +333,7 @@ var firstLoad = new Boolean(true);
                         <ui:param name="SPEEDING_41_54_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_41_54" />
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"     
+						  	  <a4j:commandLink id="vehicleSpeedFortyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FOURTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
@@ -368,7 +368,7 @@ var firstLoad = new Boolean(true);
                         <ui:param name="SPEEDING_55_64_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_55_64" />
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
+						  	  <a4j:commandLink id="vehicleSpeedFiftyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FIFTYFIVE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
@@ -403,7 +403,7 @@ var firstLoad = new Boolean(true);
                         <ui:param name="SPEEDING_65_80_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_65_80" />
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink action="#{vehicleSpeedBean.selectBreakdownChanged}"   
+						  	  <a4j:commandLink id="vehicleSpeedSixtyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
@@ -504,7 +504,7 @@ var firstLoad = new Boolean(true);
 									<h:outputText value="#{messages.vehicle_location}" />
 								</f:facet>
 								<div class="maplink">
-					              <a4j:commandLink style="cursor:pointer">
+					              <a4j:commandLink id="vehicleSpeedShow" style="cursor:pointer">
 						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
 						                  <f:param name="lat" value="#{item.event.latitude}"/>
 						                  <f:param name="lng" value="#{item.event.longitude}"/>
@@ -529,7 +529,7 @@ var firstLoad = new Boolean(true);
 									<h:outputText value="#{messages.vehicle_posted_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.speedLimit}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
-								<a4j:commandButton onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
+								<a4j:commandButton id="vehicleSpeedSlcr" onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
 												title="#{messages.sbs_submitRequest}" image="/images/ico_limit_edit.png"
 												style="vertical-align:middle;margin-left:10px">
 								</a4j:commandButton>
@@ -567,12 +567,12 @@ var firstLoad = new Boolean(true);
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
-								<a4j:commandLink rendered="#{item.event.forgiven == 0}" title="#{messages.vehicleReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+								<a4j:commandLink id="vehicleSpeedIncluded" rendered="#{item.event.forgiven == 0}" title="#{messages.vehicleReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.vehicleReports_exclude}" />
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleSpeedBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
- 													id="excluded" oncomplete="initializeTable()">
+ 													id="vehicleSpeed_excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.vehicleReports_include}" />
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -666,7 +666,7 @@ var firstLoad = new Boolean(true);
 	    </div>
 	
 	    <div class="popupactions">
-	    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+	    	<a4j:commandButton id="vehicleSpeedClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
 	   			<span class="edit">
 	   				<h:outputText value="#{messages.button_close}" />
 	   			</span>

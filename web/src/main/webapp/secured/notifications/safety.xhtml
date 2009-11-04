@@ -39,13 +39,13 @@
 		                  <tr>
 		                    <td>#{messages.notes_safety_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:searchButton').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:safetySearch').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
 		              </li>
 					  <li class="l">
-							<a4j:commandButton id="searchButton" action="#{eventsBean.searchAction}" oncomplete="initializeTable()"
+							<a4j:commandButton id="safetySearch" action="#{eventsBean.searchAction}" oncomplete="initializeTable()"
 		            					reRender="navigation:redirectSearch,header,notificationsTableForm:items,notificationsTableForm:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
@@ -53,13 +53,13 @@
 		            		</a4j:commandButton>            								
 					   </li>
 					  <li class="l text">
-						<a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+						<a4j:commandLink id="safetyEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
 					  </li>  
 					  <li class="l">
-						<a4j:commandButton styleClass="left"
+						<a4j:commandButton id="safetyRefresh" styleClass="left"
 									reRender="header,notificationsTableForm:items,notificationsTableForm:bottomScroller" 
 									action="#{eventsBean.refreshAction}">
 		            				<span class="refresh">

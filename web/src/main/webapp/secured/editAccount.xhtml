@@ -20,7 +20,7 @@
  
     <ul id="grid_nav">
       <li class="r">
-        <h:commandButton action="#{myAccountBean.saveFormAction}" styleClass="left" value="#{messages.button_save} "><h:outputText value="#{messages.button_save} " styleClass="save"/></h:commandButton>
+        <h:commandButton id="editAccountSave" action="#{myAccountBean.saveFormAction}" styleClass="left" value="#{messages.button_save} "><h:outputText value="#{messages.button_save} " styleClass="save"/></h:commandButton>
         
         <pretty:urlbuffer var="myAccountLink" mappingId="myAccount"/>
         <button type="button" class="left" onclick="location.href = '#{requestScope.myAccountLink}';"><h:outputText styleClass="cancel" value="#{messages.button_cancel}"/></button>

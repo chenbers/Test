@@ -47,13 +47,13 @@
                   											<h:outputText value="#{messages.button_search}" />
                   										</td>
                   										<td>
-                    										<h:inputText id="filterTable" value="#{searchCoordinationBean.searchFor}" class="text" size="15" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerIdlingReport:searchButton').onclick(); return false; } return true;" />
+                    										<h:inputText id="filterTable" value="#{searchCoordinationBean.searchFor}" class="text" size="15" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerIdlingReport:idlingSearch').onclick(); return false; } return true;" />
                   										</td>
                 									</tr>
               									</table>
             								</li>
             								<li class="l">
-            									<a4j:commandButton id="searchButton" action="#{idlingReportBean.doSearch}" 
+            									<a4j:commandButton id="idlingSearch" action="#{idlingReportBean.doSearch}" 
             										reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
@@ -77,6 +77,7 @@
             								</li>
             								<li class="l text">
             									<a4j:commandLink 
+            										id="idlingSearchzeditColumns" 
             										reRender="editColumnsForm:editColumnGrid"
             										action="#"
             									 	styleClass="ls_tab_edit_columns"

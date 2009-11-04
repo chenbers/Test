@@ -64,8 +64,8 @@
 													</rich:extendedDataTable>
 												</a4j:region>
 											</rich:panel>
-											<a4j:commandLink action="#{crashReportBean.loadTrips}" value="Load Trips" />
-											<a4j:commandButton action="#{crashReportBean.add}" value="Add" />
+											<a4j:commandLink id="editCrashLocationLoad" action="#{crashReportBean.loadTrips}" value="Load Trips" />
+											<a4j:commandButton id="editCrashLocationAdd" action="#{crashReportBean.add}" value="Add" />
 										</h:panelGrid>
 						
 										<h:panelGrid columns="1" width="300px" id="tripsPanel">

@@ -66,7 +66,7 @@
 		</table>
 		</form>
 		<h:form>
-			<h:commandLink title="#{messages.login_forgotLink}" onclick="Richfaces.showModalPanel('forgotPasswordPanel');selectEmailInput();return false" value="#{messages.login_forgotLink}"></h:commandLink>
+			<h:commandLink id="loginForgotPassword" title="#{messages.login_forgotLink}" onclick="Richfaces.showModalPanel('forgotPasswordPanel');selectEmailInput();return false" value="#{messages.login_forgotLink}"></h:commandLink>
             <script type="text/javascript">
               function selectEmailInput()
               {
@@ -108,7 +108,7 @@
 		<rich:modalPanel id="errorPanel" headerClass="popupHeader" controlsClass="popupControls" 
 				showWhenRendered="#{not empty authErrorBean.errorMessage}"  
 				 height="50" autosized="true" resizeable="false" zindex="2000" width="300"
-				onshow="document.getElementById('loginErrorForm:okButton').focus();">
+				onshow="document.getElementById('loginErrorForm:loginOk').focus();">
 		    <f:facet name="header">
 		      <h:outputText value="#{messages.login_error_title}"/>
 		    </f:facet>
@@ -121,7 +121,7 @@
 		    
 			<a4j:form id="loginErrorForm">
 				<div class="popupactions">
-		        <a4j:commandButton id="okButton" 
+		        <a4j:commandButton id="loginOk" 
             		oncomplete="Richfaces.hideModalPanel('errorPanel');jQuery('#j_username').focus();" 
             		styleClass="left">
             		<span class="ok">

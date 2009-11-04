@@ -219,7 +219,7 @@ var firstLoad = new Boolean(true);
 					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
+						  	  <a4j:commandLink id="driverStyleOverall" onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
 						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="OVERALL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
@@ -252,7 +252,7 @@ var firstLoad = new Boolean(true);
 					    <td id="BRAKE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink  onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
+						  	  <a4j:commandLink  id="driverStyleBrake" onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{driverStyleBean.selectedBreakdown}"/>
@@ -286,7 +286,7 @@ var firstLoad = new Boolean(true);
 					    <td id="ACCELERATE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink  onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
+						  	  <a4j:commandLink  id="driverStyleAccelerate" onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
@@ -322,7 +322,7 @@ var firstLoad = new Boolean(true);
 						<td id="TURN" valign="top" class="tiny_chart">
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink  onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
+						  	  <a4j:commandLink  id="driverStyleTurn" onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{driverStyleBean.selectedBreakdown}"/>
@@ -358,7 +358,7 @@ var firstLoad = new Boolean(true);
 					    <td id="BUMP" valign="top" class="tiny_chart">
 							<div class="tiny_title">
 						  <h:form>
-						  	  <a4j:commandLink  onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
+						  	  <a4j:commandLink  id="driverStyleBump"  onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{driverStyleBean.selectedBreakdown}"/>
@@ -459,7 +459,7 @@ var firstLoad = new Boolean(true);
 									<h:outputText value="#{messages.driver_location}" />
 								</f:facet>
 								<div class="maplink">
-					              <a4j:commandLink style="cursor:pointer">
+					              <a4j:commandLink id="driverStyleShow" style="cursor:pointer">
 						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
 						                  <f:param name="lat" value="#{item.event.latitude}"/>
 						                  <f:param name="lng" value="#{item.event.longitude}"/>
@@ -505,12 +505,12 @@ var firstLoad = new Boolean(true);
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
-								<a4j:commandLink rendered="#{item.event.forgiven == 0}" title="#{messages.driverReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+								<a4j:commandLink id="driverStyleInclude" rendered="#{item.event.forgiven == 0}" title="#{messages.driverReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.driverReports_exclude}" />
 									<f:setPropertyActionListener target="#{driverStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{driverStyleBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
- 													id="excluded" oncomplete="initializeTable()">
+ 													id="driverStyle_excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{driverStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -591,7 +591,7 @@ var firstLoad = new Boolean(true);
     </div>
 
     <div class="popupactions">
-    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+    	<a4j:commandButton id="driverStyleClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
    			<span class="edit">
    				<h:outputText value="#{messages.button_close}" />
    			</span>

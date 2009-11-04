@@ -51,10 +51,10 @@
                 <div class="panel_content">
 
                   <ul id="grid_nav" style="margin: 0;">
-                    <li class="l text"><a4j:htmlCommandLink action="#{zoneAlertsBean.cancelDisplay}" value="#{messages.zoneAlert_backToZoneAlerts}" /></li>
+                    <li class="l text"><a4j:htmlCommandLink id="zoneAlertCancel" action="#{zoneAlertsBean.cancelDisplay}" value="#{messages.zoneAlert_backToZoneAlerts}" /></li>
                     <li class="r">
-                      <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{zoneAlertsBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                      <a4j:commandButton id="zoneAlertDelete" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                      <h:outputText value=" " /><h:commandButton id="zoneAlertEdit" action="#{zoneAlertsBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                     </li>
                   </ul>
 

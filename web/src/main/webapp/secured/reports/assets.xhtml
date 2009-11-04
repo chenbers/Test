@@ -52,13 +52,13 @@
                   										<h:outputText value="#{messages.button_search}" />
                   									</td>
                   									<td>
-                    									<h:inputText id="filterTable" value="#{assetReportBean.searchFor}" class="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerAssetReport:searchButton').onclick(); return false; } return true;" />
+                    									<h:inputText id="filterTable" value="#{assetReportBean.searchFor}" class="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerAssetReport:assetsSearch').onclick(); return false; } return true;" />
                   									</td>
                 								</tr>
               								</table>
             							</li>
             							<li class="l">
-            								<a4j:commandButton id="searchButton" action="#{assetReportBean.search}" 
+            								<a4j:commandButton id="assetsSearch" action="#{assetReportBean.search}" 
             									reRender="items,bottomScroller,headerAssets" styleClass="left">
             										<span class="search">
             											<h:outputText value="#{messages.button_search}" />
@@ -67,6 +67,7 @@
             							</li>
             							<li class="l text">
             								<a4j:commandLink 
+            									id="assetsEditColumns" 
             									reRender="assetColumnPanel"
             									action="#"
             								 	styleClass="ls_tab_edit_columns"

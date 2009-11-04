@@ -264,7 +264,7 @@
 						<h2>#{messages.livefleet}</h2>
 				    			#{messages.livefleet_default_view}.
 				    			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
-				    				[<h:commandLink action="go_adminOrganization" value="#{messages.livefleet_change}" />]
+				    				[<h:commandLink id="liveFleetGo" action="go_adminOrganization" value="#{messages.livefleet_change}" />]
 				    			</security:authorize>
 			    	
 			    </div>

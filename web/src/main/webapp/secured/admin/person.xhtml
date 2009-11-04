@@ -41,10 +41,10 @@
                 <div class="panel_content">
 
                   <ul id="grid_nav" style="margin: 0;">
-                    <li class="l text"><a4j:htmlCommandLink action="#{personBean.cancelDisplay}" value="#{messages.person_backToPeople}" /></li>
+                    <li class="l text"><a4j:htmlCommandLink id="personCancel" action="#{personBean.cancelDisplay}" value="#{messages.person_backToPeople}" /></li>
                     <li class="r">
-                      <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{personBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                      <a4j:commandButton id="personDelete" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                      <h:outputText value=" " /><h:commandButton id="personEdit" action="#{personBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                     </li>
                   </ul>
 

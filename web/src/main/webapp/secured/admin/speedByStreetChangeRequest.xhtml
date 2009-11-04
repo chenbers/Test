@@ -99,8 +99,8 @@
 				<div class="panel_content">
      <a4j:form id="speedLimitChangeRequestTable">
           <ul id="grid_nav" style="margin: 0;">
-            <li class="l"><a4j:commandButton action="#{speedLimitChangeRequests.delete}" reRender="map-data" styleClass="left" onclick=""><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
-            <li class="l"><a4j:commandButton styleClass="left" action="#{speedLimitChangeRequests.deleteAll}" reRender="map-data" onclick=""><span class="delete"><h:outputText value="#{messages.sbs_clearAll}" /></span></a4j:commandButton></li>
+            <li class="l"><a4j:commandButton id="sbscrDelete" action="#{speedLimitChangeRequests.delete}" reRender="map-data" styleClass="left" onclick=""><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
+            <li class="l"><a4j:commandButton id="sbscrDeleteAll" styleClass="left" action="#{speedLimitChangeRequests.deleteAll}" reRender="map-data" onclick=""><span class="delete"><h:outputText value="#{messages.sbs_clearAll}" /></span></a4j:commandButton></li>
             <li class="l">
               <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                 <tr>
@@ -109,8 +109,8 @@
                  </tr>
               </table>
             </li>
-  		<li class="l"><a4j:commandButton styleClass="left" onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);"><span class="search"><h:outputText value="#{messages.sbs_findAddress}" /></span></a4j:commandButton></li>
-            <li class="l"><a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('saveSlcrPanel')"><span class="edit"><h:outputText value="#{messages.sbs_submitRequest}" /></span></a4j:commandButton></li>
+  		<li class="l"><a4j:commandButton id="sbscrSearch" styleClass="left" onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);"><span class="search"><h:outputText value="#{messages.sbs_findAddress}" /></span></a4j:commandButton></li>
+            <li class="l"><a4j:commandButton id="sbscrSubmit1" styleClass="left" onclick="Richfaces.showModalPanel('saveSlcrPanel')"><span class="edit"><h:outputText value="#{messages.sbs_submitRequest}" /></span></a4j:commandButton></li>
             </ul>
  				<div class="spacer"></div>			
 			 	<table>
@@ -291,12 +291,12 @@
     </div>
     <div class="popupactions">
       <button value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
-      <a4j:commandButton reRender="reRender" action="#{speedLimitChangeRequests.saveRequestsAction}" styleClass="left" onclick=""><span class="retrieve_password"><h:outputText value="#{messages.sbs_submit}" /></span></a4j:commandButton>
+      <a4j:commandButton id="sbscrSubmit2" reRender="reRender" action="#{speedLimitChangeRequests.saveRequestsAction}" styleClass="left" onclick=""><span class="retrieve_password"><h:outputText value="#{messages.sbs_submit}" /></span></a4j:commandButton>
  	</div>
    </c:if>
    <c:if test="#{speedLimitChangeRequests.requestSent}">
       <div class="popupactions">
-      	<a4j:commandButton reRender="map-data,reRender" action="#{speedLimitChangeRequests.resetAction}" styleClass="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel');"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></a4j:commandButton>
+      	<a4j:commandButton id="sbscrReset" reRender="map-data,reRender" action="#{speedLimitChangeRequests.resetAction}" styleClass="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel');"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></a4j:commandButton>
  	  </div>
    </c:if> 
   </a4j:form>

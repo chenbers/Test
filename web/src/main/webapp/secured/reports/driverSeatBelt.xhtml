@@ -199,7 +199,7 @@
 									<h:outputText value="#{messages.driver_location}" />
 								</f:facet>
 								<div class="maplink">
-					              <a4j:commandLink style="cursor:pointer">
+					              <a4j:commandLink id="driverSeatBeltShow" style="cursor:pointer">
 						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
 						                  <f:param name="lat" value="#{item.event.latitude}"/>
 						                  <f:param name="lng" value="#{item.event.longitude}"/>
@@ -243,12 +243,12 @@
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
-								<a4j:commandLink rendered="#{item.event.forgiven == 0}" title="#{messages.driverReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+								<a4j:commandLink id="driverSeatBelt_included" rendered="#{item.event.forgiven == 0}" title="#{messages.driverReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.driverReports_exclude}" />
 									<f:setPropertyActionListener target="#{driverSeatBeltBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{driverSeatBeltBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
- 												id="excluded" oncomplete="initializeTable()">
+ 												id="driverSeatBelt_excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{driverSeatBeltBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -297,7 +297,7 @@
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{driverSeatBeltBean.excludeEventAction}"         				
+          <a4j:commandLink id="driverSeatBeltConfirm" action="#{driverSeatBeltBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
                 			eventsQueue="eventTableForm" reRender="notificationsTable,tableStats,scrollerBottom">
@@ -328,7 +328,7 @@
     </div>
 
     <div class="popupactions">
-    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+    	<a4j:commandButton id="driverSeatBeltClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
    			<span class="edit">
    				<h:outputText value="#{messages.button_close}" />
    			</span>

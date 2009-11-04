@@ -234,7 +234,7 @@
 									</f:facet>
 								</a4j:status>
 								<rich:spacer width="10" />
-								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
+								<a4j:commandLink id="driverPerformanceDays" title="#{messages.duration_days}" immediate="true"
 									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"		
 									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_days}">
@@ -242,7 +242,7 @@
 									<a4j:actionparam name="style"    assignTo="#{driverPerformanceBean.overallScoreStyle}"      value="null" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
-								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
+								<a4j:commandLink id="driverPerformanceThreeMonths" title="#{messages.duration_three}" immediate="true"
 									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'THREE') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_three}">
@@ -250,7 +250,7 @@
 									<a4j:actionparam name="style"    assignTo="#{driverPerformanceBean.overallScoreStyle}"      value="null" />												
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
-								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
+								<a4j:commandLink id="driverPerformanceSixMonths" title="#{messages.duration_six}" immediate="true"
 									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'SIX') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_six}">
@@ -258,7 +258,7 @@
 									<a4j:actionparam name="style"    assignTo="#{driverPerformanceBean.overallScoreStyle}"      value="null" />					
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
-								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
+								<a4j:commandLink id="driverPerformanceTwelveMonths" title="#{messages.duration_twelve}" immediate="true"
 									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_twelve}">

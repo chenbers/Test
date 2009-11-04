@@ -149,7 +149,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             for (GQVMap gqv : gqvList)
             {
                 List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-                int idx = 0;
                 for (DriveQMap driveQMap : gqv.getDriveQV())
                 {
                     ScoreableEntity entity = new ScoreableEntity();

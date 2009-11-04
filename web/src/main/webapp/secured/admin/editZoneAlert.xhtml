@@ -56,8 +56,8 @@
 
                   <ul id="grid_nav" style="margin: 0;">
                     <li class="r">
-                      <h:commandButton action="#{zoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{zoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                      <h:commandButton id="editZoneAlertSave1" action="#{zoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                      <h:outputText value=" " /><h:commandButton id="editZoneAlertCancel1" action="#{zoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                     </li>
                   </ul>
                    <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
@@ -291,8 +291,8 @@
 
                   <ul id="grid_nav" style="margin: 0;">
                     <li class="r">
-                      <h:commandButton action="#{zoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{zoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                      <h:commandButton id="editZoneAlertSave2" action="#{zoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                      <h:outputText value=" " /><h:commandButton id="editZoneAlertCancel2" action="#{zoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                     </li>
                   </ul>
 

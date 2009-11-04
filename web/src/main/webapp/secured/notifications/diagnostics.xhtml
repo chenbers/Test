@@ -38,13 +38,13 @@
 		                  <tr>
 		                    <td>#{messages.notes_diagnostics_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:searchButton').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:diagnosticsSearch').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
 		              </li>
 					  <li class="l">
-							<a4j:commandButton id="searchButton" action="#{diagnosticsBean.searchAction}" oncomplete="initializeTable()"
+							<a4j:commandButton id="diagnosticsSearch" action="#{diagnosticsBean.searchAction}" oncomplete="initializeTable()"
 		            					reRender="navigation:redirectSearch,header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
@@ -52,13 +52,13 @@
 		            		</a4j:commandButton>            								
 					   </li>
 					  <li class="l text">
-						<a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+						<a4j:commandLink id="diagnosticsEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
 					  </li>  
 					  <li class="l">
-						<a4j:commandButton styleClass="left"
+						<a4j:commandButton id="diagnosticsRefresh" styleClass="left"
 		           					reRender="header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller"
 									action="#{diagnosticsBean.refreshAction}">
 		            				<span class="refresh">

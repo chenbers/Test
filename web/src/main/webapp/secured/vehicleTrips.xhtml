@@ -387,7 +387,7 @@
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td><a4j:commandButton action="#{vehicleTripsBean.DateChangedAction}"
+                                        <td><a4j:commandButton id="vehicleTripsDate" action="#{vehicleTripsBean.DateChangedAction}"
                                             reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();">
                                             <span class="edit"> <h:outputText value="#{messages.vehciletrip_updateDateRange}" /> </span>

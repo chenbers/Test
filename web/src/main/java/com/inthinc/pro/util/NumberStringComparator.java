@@ -84,6 +84,11 @@ public class NumberStringComparator implements Comparator<String> {
 		list.add("abcd ef hij -112");
 		list.add("0 abcd ef 10 hij");
 		list.add("0,0 abcd ef 1 hij");
+		list.add("1 abc def");
+		list.add("1 def ghi");
+		list.add("12 abc def");
+		list.add("2 def ghi");
+		list.add("31 abc def");
 		
 		Collections.sort(list, new NumberStringComparator(Locale.GERMAN));
 		System.out.println("German\n");
