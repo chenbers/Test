@@ -398,7 +398,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
        		long distance = (speedItem.getMiles() == null) ? 0  : (speedItem.getMiles().longValue()/100);
        		long speeding = (speedItem.getMilesSpeeding() == null) ? 0  : (speedItem.getMilesSpeeding().longValue()/100);
        		float percent = ((distance == 0l) ? 0f : ((float)speeding /(float)distance));
-       		logger.info(distance + " " + speeding + " " + percent);
+//       		logger.info(distance + " " + speeding + " " + percent);
        		barChartList.add(new CategorySeriesData(speedingSeries, monthList.get(index), speeding, speedingSeries));
        		barChartList.add(new CategorySeriesData(distanceSeries, monthList.get(index), distance, distanceSeries));
        		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));
@@ -440,7 +440,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
        		float driving = DateUtil.convertSecondsToHours(idleItem.getDrivingTime());
        		float idling = DateUtil.convertSecondsToHours(idleItem.getIdlingTime());
        		float percent = ((idleItem.getDrivingTime() == 0l) ? 0f : ((float)idleItem.getIdlingTime() /(float)idleItem.getDrivingTime()));
-       		logger.info(driving + " " + idling + " " + percent);
+//       		logger.info(driving + " " + idling + " " + percent);
        		barChartList.add(new CategorySeriesData(idlingSeries, monthList.get(index), idling, idlingSeries));
        		barChartList.add(new CategorySeriesData(drivingSeries, monthList.get(index), driving, drivingSeries));
        		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));

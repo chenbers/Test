@@ -229,7 +229,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 
             QuintileMap quintileMap = getMapper().convertToModelObject(returnMap, QuintileMap.class);
 
-            StringBuilder debugBuffer = new StringBuilder();
+//            StringBuilder debugBuffer = new StringBuilder();
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
             for (Integer score : quintileMap.getPercentList())
             {
@@ -239,10 +239,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setScore(score);
                 entity.setScoreType(scoreType);
                 scoreList.add(entity);
-                debugBuffer.append(score + ",");
+//                debugBuffer.append(score + ",");
             }
-            logger.debug("getScoreBreakdown: groupID[" + groupID + "] durationCode[" + duration.getCode() + "] metric[" + scoreType.getDriveQMetric() + "] scores["
-                    + debugBuffer.toString() + "]");
+//            logger.debug("getScoreBreakdown: groupID[" + groupID + "] durationCode[" + duration.getCode() + "] metric[" + scoreType.getDriveQMetric() + "] scores["
+//                    + debugBuffer.toString() + "]");
 
             return scoreList;
         }
@@ -713,7 +713,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
-logger.info("getIdlePercentItems " + groupID + "," + duration.getAggregationBinSize() + "," + duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
             List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem>();
             
@@ -727,7 +726,6 @@ logger.info("getIdlePercentItems " + groupID + "," + duration.getAggregationBinS
                 	idleTime += (driveQMap.getIdleLo() != null) ? driveQMap.getIdleLo().longValue(): 0l; 
                 	Integer numVehicles = (driveQMap.getnVehicles() != null) ? driveQMap.getnVehicles() : 0;
                 	Integer numEMUVehicles = (driveQMap.getEmuRpmVehicles() != null) ? driveQMap.getEmuRpmVehicles() : 0;
-                	logger.info("nVehicles: " + driveQMap.getnVehicles() + " emuVehicles: " + driveQMap.getEmuRpmVehicles());
                 	Date date = driveQMap.getEndingDate();
                 	if (first)
                 	{

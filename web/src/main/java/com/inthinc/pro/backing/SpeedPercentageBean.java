@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
-import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
 import com.inthinc.pro.dao.ScoreDAO;
@@ -20,7 +17,12 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class SpeedPercentageBean extends BaseBean {
 
-	private static final Logger logger = Logger.getLogger(SpeedPercentageBean.class);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8680673642726461850L;
+
+//	private static final Logger logger = Logger.getLogger(SpeedPercentageBean.class);
 
 	private ScoreDAO scoreDAO;
 	private Integer groupID;
@@ -33,7 +35,6 @@ public class SpeedPercentageBean extends BaseBean {
 	private String totalDistance;
 	private String totalSpeeding;
 	
-	// TODO: how are we doing colors??
 	private static final String DISTANCE_BAR_COLOR = ChartColor.GRAY.toString();
 	private static final String SPEED_BAR_COLOR = ChartColor.BLUE.toString();
 	private static final String SPEED_LINE_COLOR = ChartColor.DARK_BLUE.toString();
@@ -76,10 +77,6 @@ public class SpeedPercentageBean extends BaseBean {
 			totalDistance += distance;
 			totalSpeedDistance += speedDistance;
 		}
-		logger.info("---start----");
-		logger.info(distanceValues.toString());
-		logger.info(speedValues.toString());
-		logger.info(percentValues.toString());
 		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(
 				getDurationBean().getDuration());
 		StringBuilder chartBuilder = new StringBuilder();
@@ -94,7 +91,6 @@ public class SpeedPercentageBean extends BaseBean {
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("speeding_percentage_speeding_line_label", getLocale()), 
 				SPEED_LINE_COLOR, true, percentValues));
 		chartBuilder.append(bar2DMultiAxisChart.getClose());
-		logger.error(chartBuilder.toString());
 		setChartDef(chartBuilder.toString());
 		setTotalDistance(totalDistance + " " + getDistanceLabel());
 		setTotalSpeeding(totalSpeedDistance + " " + getDistanceLabel()
