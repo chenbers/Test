@@ -52,7 +52,16 @@
 						chart2.render("idlePercentChartdiv");
 					</script>
 					</div>
+                   	<table width="#{xywidth}" border="0" cellspacing="2" cellpadding="4" align="center">
+						<tr><td>
+	    					<h:outputFormat value="#{messages.idling_percentage_stats_msg}" >
+	    						<f:param value="#{idlePercentageBean.totalEMUVehicles}" />
+	    						<f:param value="#{idlePercentageBean.totalVehicles}" />
+			    			</h:outputFormat>
+	    				</td></tr>
+					</table>
     			</rich:panel>
+    			
     		</div>
     		<div class="panel_sw">
     			<div class="panel_statusbar"></div>

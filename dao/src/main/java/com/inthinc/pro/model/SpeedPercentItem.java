@@ -1,17 +1,20 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class SpeedPercentItem {
+public class SpeedPercentItem  implements Comparable<SpeedPercentItem> {
 	Number miles;
 	Number milesSpeeding;
+	Date date;
 	
-	
-	public SpeedPercentItem(Number miles, Number milesSpeeding) {
+	public SpeedPercentItem(Number miles, Number milesSpeeding, Date date) {
 		super();
 		this.miles = miles;
 		this.milesSpeeding = milesSpeeding;
+		this.date = date;
 	}
 	public Number getMiles() {
 		return miles;
@@ -24,6 +27,16 @@ public class SpeedPercentItem {
 	}
 	public void setMilesSpeeding(Number milesSpeeding) {
 		this.milesSpeeding = milesSpeeding;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	@Override
+	public int compareTo(SpeedPercentItem o) {
+        return getDate().compareTo(o.getDate());
 	}
 	
 }

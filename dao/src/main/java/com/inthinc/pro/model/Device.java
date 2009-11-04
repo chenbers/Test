@@ -65,6 +65,13 @@ public class Device extends BaseEntity
     private Integer           hardVertical;
     private Integer           baseID;
     private AutoLogoff		  autoLogoff;
+    
+    @Column(name="firmVer", updateable = false)
+    private Integer	firmwareVersion;
+    @Column(name="witnessVer", updateable = false)
+    private Integer	witnessVersion;
+    private String emuMd5;
+    
 
 	public Device()
     {
@@ -353,4 +360,22 @@ public class Device extends BaseEntity
 		this.autoLogoff = autoLogoff;
 	}
 
+	public Integer getFirmwareVersion() {
+		return firmwareVersion;
+	}
+	public void setFirmwareVersion(Integer firmwareVersion) {
+		this.firmwareVersion = firmwareVersion;
+	}
+	public Integer getWitnessVersion() {
+		return witnessVersion;
+	}
+	public void setWitnessVersion(Integer witnessVersion) {
+		this.witnessVersion = witnessVersion;
+	}
+	public String getEmuMd5() {
+		return emuMd5;
+	}
+	public void setEmuMd5(String emuMd5) {
+		this.emuMd5 = emuMd5;
+	}
 }

@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 
 public class IdlePercentageBeanTest extends BaseBeanTest {
 
-	private static final String EXPECTED_CHART_XML = "<chart adjustDiv=''0'' numDivLines=''4'' yAxisValueDecimals=''2'' bgColor=''#ffffff'' showBorder=''0'' showToolTips=''1'' showValues=''0'' showLabels=''1'' rotateLabels=''1'' slantLabels=''1'' connectNullData=''1'' decimals=''0'' SYAxisMinValue=''0'' SYAxisMaxValue=''100'' SNumberSuffix=''%'' showLegend=''1'' legendPosition=''BOTTOM'' legendMarkerCircle=''0'' legendBorderThickness=''0'' legendShadow=''0'' chartLeftMargin=''3'' chartRightMargin=''3'' areaOverColumns=''0''> " +
+	private static final String EXPECTED_CHART_XML = "<chart adjustDiv=''0'' numDivLines=''4'' yAxisValueDecimals=''2'' bgColor=''#ffffff'' showBorder=''0'' showToolTips=''1'' showValues=''0'' showLabels=''1'' rotateLabels=''1'' slantLabels=''1'' connectNullData=''1'' SYAxisMinValue=''0'' SYAxisMaxValue=''100'' SNumberSuffix=''%'' showLegend=''1'' legendPosition=''BOTTOM'' legendMarkerCircle=''0'' legendBorderThickness=''0'' legendShadow=''0'' decimals=''2'' forcedecimals=''1'' chartLeftMargin=''3'' chartRightMargin=''3'' areaOverColumns=''0''> " +
 			"<categories> <category label=''{0}''/> <category label=''{1}''/> <category label=''{2}''/></categories>" +
 			"<dataset>" +
 			"<dataset seriesName=''Idle Time'' color=''6b9d1b'' showValues=''0''> <set value=''0.5''/> <set value=''2.5''/> <set value=''5.0''/></dataset>" +
@@ -106,10 +108,14 @@ public class IdlePercentageBeanTest extends BaseBeanTest {
         bean.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         bean.getDurationBean().setDuration(Duration.THREE);
         
+        Date month[] = this.getMonths(3);
+        
         List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem> ();
-        idlePercentItemList.add(new IdlePercentItem(3600l, 1800l));	// 1 hr driving, 1/2 hr idle
-        idlePercentItemList.add(new IdlePercentItem(18000l, 9000l));	// 5 hr driving, 2 1/2 hr idle
-        idlePercentItemList.add(new IdlePercentItem(36000l, 18000l));	// 10 hr driving, 5 hr idle
+        idlePercentItemList.add(new IdlePercentItem(3600l, 1800l, month[2], 3, 3));	// 1 hr driving, 1/2 hr idle
+        idlePercentItemList.add(new IdlePercentItem(18000l, 9000l, month[1], 3, 3));	// 5 hr driving, 2 1/2 hr idle
+        idlePercentItemList.add(new IdlePercentItem(36000l, 18000l, month[0], 3, 3));	// 10 hr driving, 5 hr idle
+        
+        Collections.sort(idlePercentItemList);
         
     	bean.initChartData(idlePercentItemList);
     	

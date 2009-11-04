@@ -22,7 +22,6 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
 		    "rotateLabels=\'1\' " +
 		    "slantLabels=\'1\' " +
 		    "connectNullData=\'1\' " +
-		    "decimals=\'0\' " +
 		    									// secondary y-axis
             "SYAxisMinValue=\'0\' " +
             "SYAxisMaxValue=\'100\' " +
@@ -33,6 +32,11 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
             "legendMarkerCircle=\'0\' " + 
             "legendBorderThickness=\'0\' " +
             "legendShadow=\'0\' " +
+
+            									// chart general
+            "decimals=\'2\' " +
+            "forcedecimals=\'1\' " +
+            
 
             									// chart margins
 		    "chartLeftMargin=\'3\' " +

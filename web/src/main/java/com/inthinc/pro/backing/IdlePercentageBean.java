@@ -32,7 +32,9 @@ public class IdlePercentageBean extends BaseBean {
 	private String totalDriving;
 	private String totalIdling;
 	
-	// TODO: how are we doing colors??
+	private Integer totalEMUVehicles;
+	private Integer totalVehicles;
+	
 	private static final String DRIVING_BAR_COLOR = ChartColor.GRAY.toString();
 	private static final String IDLE_BAR_COLOR = ChartColor.GREEN.toString(); 
 	private static final String IDLE_LINE_COLOR = ChartColor.DARK_GREEN.toString(); 
@@ -61,17 +63,20 @@ public class IdlePercentageBean extends BaseBean {
 			drivingValues.add(getHours(item.getDrivingTime()));
 			idlingValues.add(getHours(item.getIdlingTime()));
 			Integer percent = MathUtil.percent(item.getIdlingTime(), item.getDrivingTime());
-//logger.info(item.getDrivingTime() + " " + item.getIdlingTime() + " " + percent);
+logger.info(item.getDrivingTime() + " " + item.getIdlingTime() + " " + percent);
 			percentValues.add(percent);
 			totalDriving += item.getDrivingTime();
 			totalIdling += item.getIdlingTime();
-		}
-/*		
+			
+			// this ends up being the last count in the list (i.e. last item)
+			setTotalEMUVehicles(item.getNumEMUVehicles());
+			setTotalVehicles(item.getNumVehicles());
+		}		
 		logger.info("---start----");
 		logger.info(drivingValues.toString());
 		logger.info(idlingValues.toString());
 		logger.info(percentValues.toString());
-*/		
+		
 		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(
 				getDurationBean().getDuration());
 		StringBuilder chartBuilder = new StringBuilder();
@@ -190,6 +195,22 @@ public class IdlePercentageBean extends BaseBean {
 
 	public void setTotalIdling(String totalIdling) {
 		this.totalIdling = totalIdling;
+	}
+
+	public Integer getTotalEMUVehicles() {
+		return totalEMUVehicles;
+	}
+
+	public void setTotalEMUVehicles(Integer totalEMUVehicles) {
+		this.totalEMUVehicles = totalEMUVehicles;
+	}
+
+	public Integer getTotalVehicles() {
+		return totalVehicles;
+	}
+
+	public void setTotalVehicles(Integer totalVehicles) {
+		this.totalVehicles = totalVehicles;
 	}
 
 }

@@ -31,6 +31,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
@@ -198,5 +199,25 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
 		return MessageFormat.format(expectedChartXml, month);
 	}
     
+	protected Date [] getMonths(int numMonths) 
+	{
+		Date[] dateList = new Date[numMonths];
+		
+        Calendar todayCal = Calendar.getInstance();
+        todayCal.setTime(DateUtil.getGregDate(new Date()));
+        
+        
+
+        int cnt = 0;
+        for (int i = numMonths-1; i >=0; i--)
+        {
+        	dateList[cnt++] = todayCal.getTime();
+        	todayCal.add(Calendar.MONTH, -1);
+        	
+        }
+
+
+		return dateList;
+	}
 
 }

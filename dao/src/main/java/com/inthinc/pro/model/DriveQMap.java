@@ -42,7 +42,10 @@ public class DriveQMap extends BaseEntity
     private Number idleLo;
     private Number idleHi;
     private Number driveTime;
-    // CRASH SUMMARY  
+    private Number emuRpmDriveTime;
+    private Integer emuRpmVehicles;
+	private Integer nVehicles;
+	// CRASH SUMMARY  
     private Integer crashEvents;			// total crashes in the time period			
     private Integer crashTotal;				// total crashes ever
 	private Number crashOdometer;
@@ -350,6 +353,12 @@ public class DriveQMap extends BaseEntity
     {
         this.driveTime = driveTime;
     }
+    public Number getEmuRpmDriveTime() {
+		return emuRpmDriveTime;
+	}
+	public void setEmuRpmDriveTime(Number emuRpmDriveTime) {
+		this.emuRpmDriveTime = emuRpmDriveTime;
+	}
     
     // maps from individual fields to our score types
     public Map<ScoreType, Integer> getScoreMap()
@@ -431,5 +440,17 @@ public class DriveQMap extends BaseEntity
 	}
 	public void setSpeedOdometer5(Number speedOdometer5) {
 		this.speedOdometer5 = speedOdometer5;
+	}
+    public Integer getEmuRpmVehicles() {
+		return emuRpmVehicles;
+	}
+	public void setEmuRpmVehicles(Integer emuRpmVehicles) {
+		this.emuRpmVehicles = emuRpmVehicles;
+	}
+	public Integer getnVehicles() {
+		return nVehicles;
+	}
+	public void setnVehicles(Integer nVehicles) {
+		this.nVehicles = nVehicles;
 	}
 }

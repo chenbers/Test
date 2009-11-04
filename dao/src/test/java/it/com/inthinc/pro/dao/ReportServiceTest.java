@@ -490,7 +490,7 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
+    // @Ignore
     public void speedPercent()
     {
         // getSDTrendsByGTC
@@ -526,7 +526,7 @@ public class ReportServiceTest
 
     
     @Test
-    @Ignore
+    // @Ignore
     public void idlePercent()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -548,12 +548,12 @@ public class ReportServiceTest
         {
         	long driveTime = item.getDrivingTime();
         	long idleTime = item.getIdlingTime();
-        	if (idx++ == 0)
-        		continue;
         	
 //        	System.out.println("driveTime: " + driveTime + " idleTime: " + idleTime);
         	assertEquals(idx + ": Unexpected drive Time ", fleetExpectedDailyDriveTime,  driveTime );
         	assertEquals(idx + ": Unexpected idle Time ", fleetExpectedDailyIdlingTime,  idleTime );
+        	assertEquals(idx + ": Unexpected vehicles ", 3,  item.getNumVehicles().intValue());
+        	assertEquals(idx + ": Unexpected emu vehicles ", 3,  item.getNumEMUVehicles().intValue());
         	
         }
     }
@@ -766,7 +766,7 @@ public class ReportServiceTest
      }
      
      @Test
-     @Ignore
+     // @Ignore
      public void driverMPGScores()
      {
     	 // getDTrendByDTC
@@ -898,7 +898,7 @@ for (Event event : events)
      }
      
      @Test
-     @Ignore
+     // @Ignore
      public void vehicleMPGScores()
      {
     	 // getVTrendByDTC
@@ -925,7 +925,7 @@ for (Event event : events)
 
      
      @Test
-     @Ignore
+     //@Ignore
      public void getVehicleReportData()
      {
     	 // getVDScoresByGT
@@ -949,7 +949,7 @@ for (Event event : events)
      }
      
      @Test
-     @Ignore
+     //@Ignore
      public void getDriverReportData()
      {
     	 // getDVScoresByGT
@@ -972,7 +972,7 @@ for (Event event : events)
      }
      
      @Test     
-     @Ignore
+     //@Ignore
      public void getIdlingReportData()
      {
     	 // getDVScoresByGSE

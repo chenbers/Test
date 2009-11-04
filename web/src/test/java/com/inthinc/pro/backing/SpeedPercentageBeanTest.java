@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 
 public class SpeedPercentageBeanTest extends BaseBeanTest {
 
-    private static final String EXPECTED_CHART_XML = "<chart adjustDiv=''0'' numDivLines=''4'' yAxisValueDecimals=''2'' bgColor=''#ffffff'' showBorder=''0'' showToolTips=''1'' showValues=''0'' showLabels=''1'' rotateLabels=''1'' slantLabels=''1'' connectNullData=''1'' decimals=''0'' SYAxisMinValue=''0'' SYAxisMaxValue=''100'' SNumberSuffix=''%'' showLegend=''1'' legendPosition=''BOTTOM'' legendMarkerCircle=''0'' legendBorderThickness=''0'' legendShadow=''0'' chartLeftMargin=''3'' chartRightMargin=''3'' areaOverColumns=''0''> "
+    private static final String EXPECTED_CHART_XML = "<chart adjustDiv=''0'' numDivLines=''4'' yAxisValueDecimals=''2'' bgColor=''#ffffff'' showBorder=''0'' showToolTips=''1'' showValues=''0'' showLabels=''1'' rotateLabels=''1'' slantLabels=''1'' connectNullData=''1'' SYAxisMinValue=''0'' SYAxisMaxValue=''100'' SNumberSuffix=''%'' showLegend=''1'' legendPosition=''BOTTOM'' legendMarkerCircle=''0'' legendBorderThickness=''0'' legendShadow=''0'' decimals=''2'' forcedecimals=''1'' chartLeftMargin=''3'' chartRightMargin=''3'' areaOverColumns=''0''> " 
             + "<categories> <category label=''{0}''/> <category label=''{1}''/> <category label=''{2}''/></categories>"
             + "<dataset>"
             + "<dataset seriesName=''Speeding Distance'' color=''1e88c8'' showValues=''0''> <set value=''5''/> <set value=''10''/> <set value=''15''/></dataset>"
@@ -84,10 +86,14 @@ public class SpeedPercentageBeanTest extends BaseBeanTest {
         bean.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         bean.getDurationBean().setDuration(Duration.THREE);
 
+        Date month[] = this.getMonths(3);
+
         List<SpeedPercentItem> speedPercentItemList = new ArrayList<SpeedPercentItem>();
-        speedPercentItemList.add(new SpeedPercentItem(1000, 500));
-        speedPercentItemList.add(new SpeedPercentItem(2000, 1000));
-        speedPercentItemList.add(new SpeedPercentItem(3000, 1500));
+        speedPercentItemList.add(new SpeedPercentItem(1000, 500, month[2]));
+        speedPercentItemList.add(new SpeedPercentItem(2000, 1000, month[1]));
+        speedPercentItemList.add(new SpeedPercentItem(3000, 1500, month[0]));
+        
+        Collections.sort(speedPercentItemList);
 
         bean.initChartData(speedPercentItemList);
 
