@@ -21,6 +21,7 @@
 	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="MEASUREMENT_TYPE" class="com.inthinc.pro.model.MeasurementType" isForPrompting="false"/>
 	<parameter name="SUB_DATASET_2" class="java.util.List" isForPrompting="false"/>
+	<parameter name="VEHICLE_STATS" class="java.lang.String" isForPrompting="false"/>
 	<background>
 		<band/>
 	</background>
@@ -60,7 +61,7 @@
 			</line>
 			<multiAxisChart>
 				<chart isShowLegend="false">
-					<reportElement x="0" y="76" width="535" height="332"/>
+					<reportElement x="0" y="76" width="535" height="320"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend backgroundColor="#FFFFFF"/>
@@ -166,6 +167,11 @@
 					</axis>
 				</multiAxisPlot>
 			</multiAxisChart>
+			<textField>
+				<reportElement x="0" y="402" width="535" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{VEHICLE_STATS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

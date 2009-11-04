@@ -433,6 +433,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
    			idlingSeries = MessageUtil.getMessageString(prefix+idlingSeries, locale);
    			percentSeries = MessageUtil.getMessageString(prefix+percentSeries, locale);
    		}
+   		Integer totalVehicles = 0;
+   		Integer totalEMUVehicles = 0;
        	for (IdlePercentItem idleItem : idlePercentItemList)
         {
        		float driving = DateUtil.convertSecondsToHours(idleItem.getDrivingTime());
@@ -442,6 +444,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
        		barChartList.add(new CategorySeriesData(idlingSeries, monthList.get(index), idling, idlingSeries));
        		barChartList.add(new CategorySeriesData(drivingSeries, monthList.get(index), driving, drivingSeries));
        		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));
+       		totalVehicles = idleItem.getNumVehicles();
+       		totalEMUVehicles = idleItem.getNumEMUVehicles();
             index++;
         }
 
@@ -450,6 +454,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.addChartDataSet(barChartList);
         reportCriteria.addChartDataSet(lineChartList);
         reportCriteria.setDuration(duration);
+        reportCriteria.addParameter("VEHICLE_STATS", MessageUtil.formatMessageString("report.idlepercent.vehicleStats", locale, new Object[] {totalEMUVehicles, totalVehicles}));
         return reportCriteria;
 	}
 

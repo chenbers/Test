@@ -543,17 +543,16 @@ public class ReportServiceTest
 //    	System.out.println("fleetExpectedDailyDriveTime: " + fleetExpectedDailyDriveTime + " fleetExpectedDailyIdlingTime: " + fleetExpectedDailyIdlingTime);
 
         
-    	int idx = 0;
         for (IdlePercentItem item : list)
         {
         	long driveTime = item.getDrivingTime();
         	long idleTime = item.getIdlingTime();
         	
 //        	System.out.println("driveTime: " + driveTime + " idleTime: " + idleTime);
-        	assertEquals(idx + ": Unexpected drive Time ", fleetExpectedDailyDriveTime,  driveTime );
-        	assertEquals(idx + ": Unexpected idle Time ", fleetExpectedDailyIdlingTime,  idleTime );
-        	assertEquals(idx + ": Unexpected vehicles ", 3,  item.getNumVehicles().intValue());
-        	assertEquals(idx + ": Unexpected emu vehicles ", 3,  item.getNumEMUVehicles().intValue());
+        	assertEquals("Fleet: Unexpected drive Time ", fleetExpectedDailyDriveTime,  driveTime );
+        	assertEquals("Fleet: Unexpected idle Time ", fleetExpectedDailyIdlingTime,  idleTime );
+        	assertEquals("Fleet: Unexpected vehicles ", 3,  item.getNumVehicles().intValue());
+        	assertEquals("Fleet: Unexpected emu vehicles ", 3,  item.getNumEMUVehicles().intValue());
         	
         }
     }

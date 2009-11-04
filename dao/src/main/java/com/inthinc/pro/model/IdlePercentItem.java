@@ -55,6 +55,12 @@ public class IdlePercentItem implements Comparable<IdlePercentItem> {
 	@Override
 	public int compareTo(IdlePercentItem o) {
 		
+		if (getDate() == null && o.getDate() == null)
+			return 0;
+		if (getDate() == null)
+			return -1;
+		if (o.getDate() == null)
+			return 1;
         return getDate().compareTo(o.getDate());
 
 	}

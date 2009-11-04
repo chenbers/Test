@@ -36,6 +36,13 @@ public class SpeedPercentItem  implements Comparable<SpeedPercentItem> {
 	}
 	@Override
 	public int compareTo(SpeedPercentItem o) {
+		if (getDate() == null && o.getDate() == null)
+			return 0;
+		if (getDate() == null)
+			return -1;
+		if (o.getDate() == null)
+			return 1;
+			
         return getDate().compareTo(o.getDate());
 	}
 	

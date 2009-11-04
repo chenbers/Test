@@ -678,9 +678,13 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 	}
                 	else
                 	{
-                		for (SpeedPercentItem item : speedPercentItemList)
+                   		if (date == null)
+                			continue;
+	            		for (SpeedPercentItem item : speedPercentItemList)
                 		{
-                			if (item.getDate().equals(date))
+	                   		if (item.getDate() == null)
+	                			continue;
+	            			if (item.getDate().equals(date))
                 			{
                 				item.setMiles(distance + item.getMiles().longValue());
                 				item.setMilesSpeeding(speeding + item.getMilesSpeeding().longValue());
@@ -709,7 +713,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
-logger.info(groupID + "," + duration.getAggregationBinSize() + "," + duration.getDvqCount());
+logger.info("getIdlePercentItems " + groupID + "," + duration.getAggregationBinSize() + "," + duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
             List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem>();
             
@@ -723,22 +727,26 @@ logger.info(groupID + "," + duration.getAggregationBinSize() + "," + duration.ge
                 	idleTime += (driveQMap.getIdleLo() != null) ? driveQMap.getIdleLo().longValue(): 0l; 
                 	Integer numVehicles = (driveQMap.getnVehicles() != null) ? driveQMap.getnVehicles() : 0;
                 	Integer numEMUVehicles = (driveQMap.getEmuRpmVehicles() != null) ? driveQMap.getEmuRpmVehicles() : 0;
+                	logger.info("nVehicles: " + driveQMap.getnVehicles() + " emuVehicles: " + driveQMap.getEmuRpmVehicles());
                 	Date date = driveQMap.getEndingDate();
                 	if (first)
                 	{
                     	idlePercentItemList.add(new IdlePercentItem(driveTime, idleTime, date, numVehicles, numEMUVehicles));
-	                	logger.info("nVehicles: " + driveQMap.getnVehicles() + " emuVehicles: " + driveQMap.getEmuRpmVehicles());
                 	}
                 	else
                 	{
+                		if (date == null)
+                			continue;
 	                	for (IdlePercentItem item : idlePercentItemList)
 	                	{
+	                		if (item.getDate() == null)
+	                			continue;
 	                		if (item.getDate().equals(date))
 	                		{
 	                			item.setDrivingTime(driveTime + item.getDrivingTime());
 	                			item.setIdlingTime(idleTime + item.getIdlingTime()); 
-	                			
-	                			// TODO: should vehicle counts also be summed?
+	                			item.setNumVehicles(numVehicles + item.getNumVehicles());
+	                			item.setNumEMUVehicles(numEMUVehicles + item.getNumEMUVehicles());
 	                			break;
 	                		}
 	                	}
