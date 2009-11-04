@@ -444,7 +444,7 @@
                              <td>
                                  <rich:message for="user_person_measurementType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                  <h:selectOneMenu id="user_person_measurementType" value="#{personBean.item.measurementType}" converter="SimpleBeanConverter">
-<!--                                      	<a4j:support event="onchange" oncomplete="checkMultiple(this);checkMultiple('user_person_fuelEfficiencyType')"  action="#{personBean.measurementTypeChosenAction}" reRender="user_person_fuelEfficiencyType"/>-->
+                                     	<a4j:support event="onchange" oncomplete="checkMultiple(this);checkMultiple('user_person_fuelEfficiencyType')"  action="#{personBean.measurementTypeChosenAction}" reRender="user_person_fuelEfficiencyType"/>
                                         <f:selectItems value="#{measurementBean.measurementTypeItems}"/>
                                  </h:selectOneMenu>
                              </td>
@@ -462,7 +462,7 @@
                              <td>
                                  <rich:message for="user_person_fuelEfficiencyType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                  <h:selectOneMenu id="user_person_fuelEfficiencyType" value="#{personBean.item.fuelEfficiencyType}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-                                        <f:selectItems value="#{fuelEfficiencyBean.fuelEfficiencyTypeItems}"/>
+                                        <f:selectItems value="#{personBean.fuelEfficiencyBean.fuelEfficiencyTypeItems}"/>
                                  </h:selectOneMenu>
                              </td>
                         </tr>

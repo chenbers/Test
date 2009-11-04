@@ -10,6 +10,10 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class MeasurementBean extends BaseBean {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -884893762620025514L;
 	private List<SelectItem> measurementTypeItems = new ArrayList<SelectItem>();
 	private FuelEfficiencyBean fuelEfficiencyBean;
 
@@ -17,10 +21,11 @@ public class MeasurementBean extends BaseBean {
         for (MeasurementType type : MeasurementType.values()) {
             measurementTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.toString(), getLocale())));
         }
+		fuelEfficiencyBean.init(getPerson().getMeasurementType());
     }
     public void measurementTypeChosenAction(){
     	
-    		fuelEfficiencyBean.update();
+    		fuelEfficiencyBean.init(getPerson().getMeasurementType());
     }
     public List<SelectItem> getMeasurementTypeItems() {
         return measurementTypeItems;

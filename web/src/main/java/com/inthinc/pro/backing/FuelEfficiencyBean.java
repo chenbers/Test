@@ -10,23 +10,22 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class FuelEfficiencyBean extends BaseBean {
-    private List<SelectItem> fuelEfficiencyTypeItems = new ArrayList<SelectItem>();
 
-    public void init() {
-        for (FuelEfficiencyType type : FuelEfficiencyType.values()) {
-            fuelEfficiencyTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.toString(), getLocale())));
-        }
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8995522918384544909L;
+	private List<SelectItem> fuelEfficiencyTypeItems = new ArrayList<SelectItem>();
 
     public List<SelectItem> getFuelEfficiencyTypeItems() {
         return fuelEfficiencyTypeItems;
     }
 
-    public void update(){
+    public void init(MeasurementType measurementType){
     	
      	fuelEfficiencyTypeItems = new ArrayList<SelectItem>();
    	
-    	if (getPerson().getMeasurementType().equals(MeasurementType.METRIC)){
+    	if (measurementType != null && measurementType.equals(MeasurementType.METRIC)){
     		
             fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.KMPL, MessageUtil.getMessageString(FuelEfficiencyType.KMPL.toString(), getLocale())));
             fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.LP100KM, MessageUtil.getMessageString(FuelEfficiencyType.LP100KM.toString(), getLocale())));
@@ -39,21 +38,4 @@ public class FuelEfficiencyBean extends BaseBean {
     	}
     	
     }
-//    public void init(MeasurementType measurementType){
-//    	
-//     	fuelEfficiencyTypeItems = new ArrayList<SelectItem>();
-//   	
-//    	if (measurementType != null && measurementType.equals(MeasurementType.METRIC)){
-//    		
-//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.KMPL, MessageUtil.getMessageString(FuelEfficiencyType.KMPL.toString(), getLocale())));
-//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.LP100KM, MessageUtil.getMessageString(FuelEfficiencyType.LP100KM.toString(), getLocale())));
-//               		
-//    	}
-//    	else{
-//    		
-//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.MPG_US, MessageUtil.getMessageString(FuelEfficiencyType.MPG_US.toString(), getLocale())));
-//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.MPG_UK, MessageUtil.getMessageString(FuelEfficiencyType.MPG_UK.toString(), getLocale())));
-//    	}
-//    	
-//    }
 }

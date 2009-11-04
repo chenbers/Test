@@ -432,7 +432,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
     </bean>
     <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"/>
-     <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request" init-method="init"/>
+     <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request"/>
      <bean id="measurementBean" class="com.inthinc.pro.backing.MeasurementBean" scope="request" init-method="init">
     	<property name="fuelEfficiencyBean" ref="fuelEfficiencyBean"/>
     </bean>
