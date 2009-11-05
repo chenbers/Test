@@ -129,8 +129,11 @@
 		function showTrips()
 		{
 			drawSelectedTrips();
-		    map.setZoom(map.getBoundsZoomLevel(bounds));
-		    map.setCenter(bounds.getCenter());
+
+			if ( map != null ) {
+		    	map.setZoom(map.getBoundsZoomLevel(bounds));
+		    	map.setCenter(bounds.getCenter());
+			}
 	    }
 
    		var isReady;
@@ -175,7 +178,9 @@
 	    // This is called on pageLoad 
 		function bodyLoad()
 		{
-			initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}0, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}0, 14);
+			if ( #{driverTripsBean.selectedTrips[0] ne null} ) {
+				initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}0, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}0, 14);
+			}
 	   		showTrips();
 		}
 
@@ -187,6 +192,10 @@
 				var startlatlng;
 				var endlatlng;
 
+				if ( map == null ) {
+					return;
+				}
+				
 				map.clearOverlays();
 				
    				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
@@ -269,6 +278,11 @@
         <t:saveState value="#{driverTripsBean.identifiableEntityBean}"></t:saveState>
         <t:saveState value="#{driverTripsBean.groupTreeNodeImpl}"></t:saveState>
         <t:saveState value="#{driverTripsBean.selectedTrip}"></t:saveState>
+        <t:saveState value="#{driverTripsBean.startDate}"></t:saveState>
+        <t:saveState value="#{driverTripsBean.endDate}"></t:saveState>
+        <t:saveState value="#{driverTripsBean.startDatePrev}"></t:saveState>
+        <t:saveState value="#{driverTripsBean.endDatePrev}"></t:saveState>
+        
 
         <rich:panel id="bubbles">
             <!-- BEGIN GOOGLE BUBBLES -->
@@ -396,12 +410,18 @@
                                     <tr>
                                         <td></td>
                                         <td><a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
-                                            reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
+                                            reRender="dateError,script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();">
                                             <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
                                         </a4j:commandButton></td>
                                         <td></td>
                                     </tr>
+                                    <tr>                                    	
+                                    	<td colspan="3" align="center">
+                                    		<h:outputText id="dateError" value="#{driverTripsBean.dateStatus}" style="color:#FF0000;font-weight:bold"/>
+                                    	</td>                                    
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
                             </div>

@@ -27,6 +27,7 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 
 public class TripsBean extends BaseBean {
 
@@ -35,12 +36,16 @@ public class TripsBean extends BaseBean {
      */
     private static final long serialVersionUID = 2409167667876030280L;
     private static final Logger logger = Logger.getLogger(TripsBean.class);
+    private static final long THIRTY_DAYS = 30L * 24L * 60L * 60L * 1000L;
+    
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
     private EventDAO eventDAO;
     private Date startDate;
+    private Date startDatePrev;
     private Date endDate;
+    private Date endDatePrev;
     private Integer milesDriven = 0;
     private Integer idleSeconds = 0;
     private Integer numTrips = 0;
@@ -62,6 +67,7 @@ public class TripsBean extends BaseBean {
     private IdentifiableEntityBean identifiableEntityBean;
     private GroupTreeNodeImpl groupTreeNodeImpl;
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
+    private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range");
 
     public void initTrips() {
         if (trips.isEmpty()) {
@@ -187,12 +193,21 @@ public class TripsBean extends BaseBean {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             startDate = calendar.getTime();
-        }
+            startDatePrev = startDate;
+        }        
         return startDate;
     }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public Date getStartDatePrev() {
+        return startDatePrev;
+    }
+
+    public void setStartDatePrev(Date startDatePrev) {
+        this.startDatePrev = startDatePrev;
     }
 
     public Date getEndDate() {
@@ -204,6 +219,7 @@ public class TripsBean extends BaseBean {
             else {
                 endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID()));
             }
+            endDatePrev = endDate;
         }
         return endDate;
     }
@@ -223,7 +239,17 @@ public class TripsBean extends BaseBean {
         this.endDate = dateOut;
     }
     
+    public Date getEndDatePrev() {
+        return endDatePrev;
+    }
+
+    public void setEndDatePrev(Date endDatePrev) {
+        this.endDatePrev = endDatePrev;
+    }
+
     public TimeZone getTimeZone(){
+        TimeZone timeZone;
+        
         if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
             // Set end date to now using driver's time zone.
             return getTimeZoneFromDriver(identifiableEntityBean.getId());
@@ -232,6 +258,12 @@ public class TripsBean extends BaseBean {
             // The vehicle could currently NOT be associated with a driver, so,
             //  grab the trips now and get the driver from the latest trip
             initTrips();
+            
+            // Could possibly have selected a date range with no trips,
+            //  and therefore, no driver, set default
+            if ( selectedDriver == null ) {
+                return TimeZone.getTimeZone("GMT");
+            } 
             return getTimeZoneFromDriver(selectedDriver.getDriverID());
         }
     }
@@ -446,8 +478,48 @@ public class TripsBean extends BaseBean {
     }
 
     public void DateChangedAction() {
+                
+        if ( checkDates() ) {        
+            // Save the good dates
+            startDatePrev = startDate;
+            endDatePrev = endDate;
+                    
+        } else {
+            // Bad dates, reload old
+            startDate = startDatePrev;
+            endDate = endDatePrev;
+        }
+        
         trips.clear();
+        violationEvents.clear();
+        
         initTrips();
+    }
+    
+    private boolean checkDates() {     
+        // Code implemented to make sure users don't go past 30 days when
+        //  searching for trips  
+        
+        //  Start before end date
+        if (        (this.endDate.getTime() - this.startDate.getTime()) < 0L ) {            
+            this.setDateStatus(MessageUtil.getMessageString("trip_end_before_start"));
+            return false;
+            
+        // Start date more than 30 days in the past from today    
+        } else if ( ((new Date()).getTime()-startDate.getTime()) > THIRTY_DAYS ) {
+            this.setDateStatus(MessageUtil.getMessageString("trip_start_more_than_thirty"));
+            return false;
+            
+        // Winner!
+        } else {
+            this.setDateStatus(MessageUtil.getMessageString("trip_valid_date_range"));
+            return true;
+        }        
+    }
+    
+    public void resetDate() {
+        startDate = startDatePrev;
+        endDate = endDatePrev;
     }
 
     public Integer getEventsPage() {
@@ -512,5 +584,13 @@ public class TripsBean extends BaseBean {
 
     public Driver getSelectedDriver() {
         return selectedDriver;
+    }
+
+    public String getDateStatus() {
+        return dateStatus;
+    }
+
+    public void setDateStatus(String dateStatus) {
+        this.dateStatus = dateStatus;
     }
 }
