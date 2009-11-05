@@ -516,11 +516,6 @@ public class TripsBean extends BaseBean {
             return true;
         }        
     }
-    
-    public void resetDate() {
-        startDate = startDatePrev;
-        endDate = endDatePrev;
-    }
 
     public Integer getEventsPage() {
         return eventsPage;
