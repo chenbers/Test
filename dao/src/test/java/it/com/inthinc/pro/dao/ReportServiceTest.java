@@ -572,7 +572,7 @@ public class ReportServiceTest
 
 //            System.out.println("CrashSummary GROUP: " + groupID);
         	CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(groupID);
-        	assertEquals("DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash(), 1);
+        	assertEquals(teamType + " DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash());
         	assertEquals("TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(),  crashSummary.getTotalCrashes() );
         	assertEquals("CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(),  crashSummary.getCrashesInTimePeriod() );
         	assertEquals("TotalMiles: ", (expectedCrashSummary[teamType].getTotalMiles().floatValue()/100f),  crashSummary.getTotalMiles().floatValue(), 1.0 );
@@ -595,7 +595,7 @@ public class ReportServiceTest
 //ScoreableEntity avgScore = scoreDAO.getDriverAverageScoreByType(driverID, Duration.TWELVE, ScoreType.SCORE_OVERALL);
         	
 	        CrashSummary crashSummary = scoreDAO.getDriverCrashSummaryData(driverID);
-        	assertEquals(teamType + " DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash(), 1);
+        	assertEquals(teamType + " DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash());
         	assertEquals(teamType + " TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(),  crashSummary.getTotalCrashes() );
         	assertEquals(teamType + " CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(),  crashSummary.getCrashesInTimePeriod() );
         	assertEquals(teamType + " TotalMiles: ", expectedCrashSummary[teamType].getTotalMiles().floatValue()/100f,  crashSummary.getTotalMiles().floatValue(), 1.0);
@@ -613,7 +613,7 @@ public class ReportServiceTest
             {
             	Integer vehicleID = getTeamVehicleID(teamType);
             	CrashSummary crashSummary = scoreDAO.getVehicleCrashSummaryData(vehicleID);
-            	assertEquals("DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash(), 1);
+            	assertEquals("DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(),  crashSummary.getDaysSinceLastCrash());
             	assertEquals("TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(),  crashSummary.getTotalCrashes() );
             	assertEquals("CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(),  crashSummary.getCrashesInTimePeriod() );
             	assertEquals("TotalMiles: ", expectedCrashSummary[teamType].getTotalMiles().floatValue()/100f,  crashSummary.getTotalMiles().floatValue(), 1.0 );
