@@ -84,10 +84,12 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_driver}" />
                 </f:facet>
-                            <pretty:link mappingId="driverPerformance">
-                                <f:param value="#{item.redFlag.event.driver.driverID}"/>
+                <pretty:link mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
+                	<f:param value="#{item.redFlag.event.driver.driverID}"/>
                                 #{item.driverName}
-                            </pretty:link>
+                </pretty:link>
+                <h:outputText value="#{messages.unknown_driver}" 
+                	rendered="#{item.driverName eq 'Unknown Driver'}"/>
             </rich:column>
             <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}">
                 <f:facet name="header">

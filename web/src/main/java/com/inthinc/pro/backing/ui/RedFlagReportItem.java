@@ -8,6 +8,7 @@ import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.util.MessageUtil;
@@ -22,6 +23,9 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
 	private Zone zone;
 	private String mphString;
 	private MeasurementType measurementType;
+	
+    private final static String UNKNOWN_DRIVER = "unknown_driver";
+	
     
 
 	public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy,MeasurementType measurementType)
@@ -49,7 +53,12 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
             setGroup("");
         }
         
-        setDriverName(event.getDriver().getPerson().getFullName());
+        // Addition of unknown driver requires a check for non-null person object
+        if ( event.getDriver().getPerson() == null ) {
+            setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
+        } else {        
+            setDriverName(event.getDriver().getPerson().getFullName());
+        }
         setVehicleName(event.getVehicle().getName());
 //        String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString(),LocaleBean.getCurrentLocale());
 //        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(redFlag.getEvent().getEventType().toString(),LocaleBean.getCurrentLocale())}));
