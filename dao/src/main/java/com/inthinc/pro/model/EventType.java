@@ -22,7 +22,9 @@ public enum EventType implements BaseEnum {
     IDLING(13),
     CRASH(14),
     ROLLOVER(15),
-    UNKNOWN(16);
+    UNKNOWN(16),
+    NO_DRIVER(17);
+    
     private int code;
 
     private EventType(int code) {

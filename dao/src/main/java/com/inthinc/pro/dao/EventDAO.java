@@ -64,6 +64,8 @@ public interface EventDAO extends GenericDAO<Event, Integer>
     List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven); 
     
     List<Event> getEventsForUnknownDriver(Integer driverID, List<Integer> eventTypes, Integer daysBack, Integer includeForgiven);
+  
+    List<Event> getEventsForGroupFromVehicles(Integer groupID, List<Integer> eventTypes, Integer daysBack);
     
     Event getEventNearLocation(Integer driverID,Double latitude,Double longitude,Date startDate,Date endDate);
     

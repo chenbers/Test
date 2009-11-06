@@ -28,7 +28,12 @@
 								<div class="panel_nw">
 									<div class="panel_title">
 										<span class="driver">#{messages.reports_idlingreporttitle}</span>
-										<span class="panel_links"></span>
+										<span class="panel_links">
+											    <h:outputFormat value="#{messages.idlingReport_enabled}" >
+	    											<f:param value="#{idlingReportBean.totalEMUDrivers}" />
+	    											<f:param value="#{idlingReportBean.totalDrivers}" />
+			    								</h:outputFormat>
+										</span>
 									</div>
 								</div>
 									<div class="panel_w">
@@ -186,7 +191,7 @@
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_percent}" />
                                   					</f:facet>
-                                  					<h:outputText value="#{item.lowPercent}" /> 
+                                  					<h:outputText value="#{item.lowPercent}" converter="FloatConverter"/> 
                                 				</rich:column>
                                 				<rich:column rendered="#{idlingReportBean.tableColumns['highHrs'].visible}"
                                 					sortBy="#{item.highHrs}">
@@ -199,7 +204,7 @@
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_percent}" />
                                   					</f:facet>
-                                  					<h:outputText value="#{item.highPercent}" /> 
+                                  					<h:outputText value="#{item.highPercent}" converter="FloatConverter"/> 
                                 				</rich:column>
                                 				<rich:column rendered="#{idlingReportBean.tableColumns['totalHrs'].visible}"
                                 					sortBy="#{item.totalHrs}">
@@ -213,7 +218,7 @@
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_percent}" />
                                   					</f:facet>      					
-                                  					<h:outputText value="#{item.totalPercent}" /> 
+                                  					<h:outputText value="#{item.totalPercent}" converter="FloatConverter"/> 
                                 				</rich:column>    				
                                 				<rich:column>
                                   					<f:facet name="header">

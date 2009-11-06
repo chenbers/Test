@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -15,6 +16,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.util.MessageUtil;
 
 public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implements PersonChangeListener {
     private static final Logger logger = Logger.getLogger(IdlingReportBean.class);
@@ -23,13 +25,15 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     private List<IdlingReportItem> idlingData = new ArrayList<IdlingReportItem>();
     static final List<String> AVAILABLE_COLUMNS;
     private ScoreDAO scoreDAO;
-    private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
+    private Integer totalDrivers;
+
+	private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
     private Date startDate;
     private Date endDate;
-    private String badDates = "Search dates: * Okay.";
-    private final static String NO_START_DATE = " * No start date, reset";
-    private final static String NO_END_DATE = " * No end date, reset";
-    private final static String START_BEFORE_END = " * Start before end, reset";
+    private String badDates = "";
+//    private final static String NO_START_DATE = " * No start date, reset";
+//    private final static String NO_END_DATE = " * No end date, reset";
+//    private final static String START_BEFORE_END = " * Start before end, reset";
     // set to SEVEN days back in calendar time
     private final static long DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
     private DriverDAO driverDAO;
@@ -68,6 +72,11 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         this.idlingsData = scoreDAO.getIdlingReportData(getEffectiveGroupId(), 
         							startOfDay(this.startDate), 
         							endOfDay(this.endDate));
+        //Extract count
+        setTotalDrivers(idlingsData.get(0).getGroupID());
+        idlingsData.remove(0);
+        Collections.sort(idlingsData); // Sort by driver name
+
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for (IdlingReportItem iri : this.idlingsData) {
             iri.setGroup(this.getGroupHierarchy().getGroup(iri.getGroupID()).getName());
@@ -130,29 +139,23 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 
     private void checkDates() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Search Dates: ");
         boolean good = true;
         // null checks
         if (this.startDate == null) {
-            sb.append(NO_START_DATE);
+            sb.append(MessageUtil.getMessageString("noStartDate",getLocale()));
             good = false;
         }
         if (this.endDate == null) {
-            sb.append(NO_END_DATE);
+            sb.append(MessageUtil.getMessageString("noEndDate",getLocale()));
             good = false;
         }
         // start after end?
         if (this.startDate.getTime() > this.endDate.getTime()) {
             this.startDate = null;
             this.endDate = null;
-            sb.append(START_BEFORE_END);
+            sb.append(MessageUtil.getMessageString("endDateBeforeStartDate",getLocale()));
             good = false;
         }
-        // all good?
-        if (good) {
-            sb.append("Okay");
-        }
-        sb.append(".");
         badDates = sb.toString();
         // CAREFULLY compute the search dates
 //        this.internalStartDate = resetTime(this.startDate);
@@ -278,4 +281,14 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     public String getMappingIdWithCriteria() {
         return "pretty:idlingReportWithCriteria";
     }
+    public Integer getTotalDrivers() {
+		return totalDrivers;
+	}
+
+	public void setTotalDrivers(Integer totalDrivers) {
+		this.totalDrivers = totalDrivers;
+	}
+	public Integer getTotalEMUDrivers(){
+		return idlingsData.size();
+	}
 }

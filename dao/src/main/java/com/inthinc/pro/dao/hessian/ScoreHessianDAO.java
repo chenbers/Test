@@ -488,70 +488,52 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             List<DVQMap> result = getMapper().convertToModelObject(
                     reportService.getDVScoresByGSE(groupID, DateUtil.convertDateToSeconds(start), DateUtil.convertDateToSeconds(end)), DVQMap.class);
             List<IdlingReportItem> lIri = new ArrayList<IdlingReportItem>();
-            IdlingReportItem iri = null;
-
+            //Horrible way of returning the original number of results, but at least don't need to create records for data we don't need
+            IdlingReportItem iriCount = new IdlingReportItem();
+            iriCount.setGroupID(result.size());
+            lIri.add(iriCount);
+            
             for (DVQMap d : result)
             {
-                iri = new IdlingReportItem();
-                Driver v = d.getDriver();
                 DriveQMap dqm = d.getDriveQ();
-
-                iri.setGroupID(v.getGroupID());
-                iri.setDriver(v);
-                iri.setVehicle(d.getVehicle());
-
-                iri.setDriveTime(0.0f);
-                iri.setMilesDriven(0);
-                iri.setLowHrs(0.0f);
-                iri.setHighHrs(0.0f);
-
-                if (dqm.getEndingOdometer() != null)
-                {
-                    iri.setMilesDriven(dqm.getEndingOdometer());
-                }
-                if (dqm.getIdleLo() != null)
-                {
-                    iri.setLowHrs(dqm.getIdleLo().floatValue() / SECONDS_TO_HOURS);
-                }
-                if (dqm.getIdleHi() != null)
-                {
-                    iri.setHighHrs(dqm.getIdleHi().floatValue() / SECONDS_TO_HOURS);
-                }
-
-                if (dqm.getDriveTime() != null)
-                {
-                    iri.setDriveTime((dqm.getDriveTime().floatValue() / SECONDS_TO_HOURS));
-                }
                 
-                //Total idling            
-                Float tot = iri.getLowHrs() + iri.getHighHrs();
-                iri.setTotalHrs(tot);
-                
-//                //Percentages, if any driving
-//                iri.setLowPercent("0.0");
-//                iri.setHighPercent("0.0");
-//                iri.setTotalPercent("0.0");
-//                Float totHrs = new Float(iri.getDriveTime()) +
-//                    iri.getLowHrs() + iri.getHighHrs();                
-//                NumberFormat format = NumberFormat.getInstance();
-//                format.setMaximumFractionDigits(1);
-//                format.setMinimumFractionDigits(1);
-//                if ( totHrs != 0.0f ) {
-//                    Float low = 100.0f*iri.getLowHrs()/totHrs; 
-//                    iri.setLowPercent(format.format(low));  
-//                    
-//                    Float hi = 100.0f*iri.getHighHrs()/totHrs;
-//                    iri.setHighPercent(format.format(hi));
-//                    
-//                    Float total = 100.0f*iri.getTotalHrs()/totHrs;
-//                    iri.setTotalPercent(format.format(total));
-//                } 
-
-                lIri.add(iri);
-                iri = null;
+                //Only count records that are returning the emuRpmDriveTime field which implies that the device is sending idling data
+                if(dqm.getEmuRpmDriveTime() != null){
+                	
+                	IdlingReportItem iri = new IdlingReportItem();
+	                Driver v = d.getDriver();
+	
+	                iri.setGroupID(v.getGroupID());
+	                iri.setDriver(v);
+	                iri.setVehicle(d.getVehicle());
+	
+	                iri.setDriveTime(0.0f);
+//	                iri.setMilesDriven(0);
+	                iri.setLowHrs(0.0f);
+	                iri.setHighHrs(0.0f);
+	
+//	                if (dqm.getEndingOdometer() != null)
+//	                {
+//	                    iri.setMilesDriven(dqm.getEndingOdometer());
+//	                }
+	                if (dqm.getIdleLo() != null)
+	                {
+	                    iri.setLowHrs(dqm.getIdleLo().floatValue() / SECONDS_TO_HOURS);
+	                }
+	                if (dqm.getIdleHi() != null)
+	                {
+	                    iri.setHighHrs(dqm.getIdleHi().floatValue() / SECONDS_TO_HOURS);
+	                }
+	
+	                iri.setDriveTime((dqm.getEmuRpmDriveTime().floatValue() / SECONDS_TO_HOURS));
+	                
+	                //Total idling            
+	                Float tot = iri.getLowHrs() + iri.getHighHrs();
+	                iri.setTotalHrs(tot);
+	                	
+	                lIri.add(iri);
+                }
             }
-
-            Collections.sort(lIri); // Sort by driver name
 
             return lIri;
 

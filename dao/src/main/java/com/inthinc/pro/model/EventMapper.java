@@ -28,6 +28,7 @@ public class EventMapper
     public static final int TIWIPRO_EVENT_IGNITION_OFF = 20;
     public static final int TIWIPRO_EVENT_LOW_BATTERY = 22;
     public static final int TIWIPRO_EVENT_VERSION = 27;
+    public static final int TIWIPRO_EVENT_NO_DRIVER = 46;
     public static final int TIWIPRO_EVENT_STATS = 51;
     public static final int TIWIPRO_EVENT_LOW_POWER_MODE = 52;
     public static final int TIWIPRO_EVENT_FIRMWARE_UP_TO_DATE = 74;
@@ -85,6 +86,7 @@ public class EventMapper
 //        typeMap.put(TIWIPRO_EVENT_ROLLOVER, RollOverEvent.class);
         typeMap.put(TIWIPRO_EVENT_ROLLOVER, FullEvent.class);
         typeMap.put(TIWIPRO_EVENT_POWER_ON, PowerOnEvent.class);
+        typeMap.put(TIWIPRO_EVENT_NO_DRIVER, NoDriverEvent.class);
         
     }
     @SuppressWarnings("unchecked")

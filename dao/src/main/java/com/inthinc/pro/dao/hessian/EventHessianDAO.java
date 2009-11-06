@@ -17,6 +17,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.Vehicle;
 
 public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
@@ -250,7 +251,28 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         return Event.cleanEvents(eventList);
     }
     
-    @Override
+
+	@Override
+	public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<Integer> eventTypes, Integer daysBack) {
+
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+
+        List<Vehicle> vehicleList = getMapper().convertToModelObject(this.getSiloService().getVehiclesByGroupIDDeep(groupID), Vehicle.class);
+        List<Event> eventList = new ArrayList<Event>();
+        for (Vehicle vehicle : vehicleList)
+        {
+            List<Event>vehicleEvents = getEventsForVehicle(vehicle.getVehicleID(), startDate, endDate, eventTypes, 1);
+            for (Event event : vehicleEvents)
+            {
+                event.setVehicle(vehicle);
+                eventList.add(event);
+            }
+        }
+        return Event.cleanEvents(eventList);
+	}
+
+	@Override
     public Event getEventNearLocation(Integer driverID, Double latitude, Double longitude, Date startDate, Date endDate) {
         return getMapper().convertToModelObject(getSiloService().getNoteNearLoc(driverID, latitude, longitude, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Event.class);
     }

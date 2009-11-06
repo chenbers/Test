@@ -55,7 +55,7 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
     
 	@Override
 	public int getDisplaySize() {
-		// TODO Auto-generated method stub
+
 		return filteredTableData.size();
 	}
     
