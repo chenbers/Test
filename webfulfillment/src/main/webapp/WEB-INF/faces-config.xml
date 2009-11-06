@@ -26,6 +26,12 @@
    <to-view-id>/secured/reworkDevice.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_assignDevice</from-outcome>
+   <to-view-id>/secured/assignDevice.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  
  
  

@@ -27,7 +27,9 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.security.userdetails.ProUser;
 
@@ -49,6 +51,7 @@ public class DAOUtilBean {
 	private Map<Integer, String> accountMap;
 	private String imei;
 	private String serialNum;
+	private String vehicleName;
 	private Integer selectedAccountID;
 
 	private String errorMsg;
@@ -238,6 +241,38 @@ public class DAOUtilBean {
 		setSerialNum(null);
 	}
 
+	public void assignDeviceAction() {
+		reInitAction();
+		loadDevice();
+		if (selectedAccountID==null || selectedAccountID<0)
+		{
+			setErrorMsg("Please select a customer account");
+		}
+		else if (vehicleName==null || vehicleName.trim().length()==0)
+		{
+			setErrorMsg("Please enter a valid vehicle Name, VIN or License");
+		}
+		else if (device != null)
+		{
+			if (!device.getAccountID().equals(selectedAccountID)) {
+				Account assignedAccount = accountDAO.findByID(device.getAccountID());
+				setErrorMsg("Error - Device "+ serialNum + " already assigned to account " + assignedAccount.getAcctName());
+			} else 
+			{
+				Vehicle vehicle = findVehicle(selectedAccountID, vehicleName);
+				if (vehicle==null)
+					setErrorMsg("Error - Vehicle "+ vehicleName + " not found");
+				else
+				{
+					vehicleDAO.setVehicleDevice(vehicle.getVehicleID(), device.getDeviceID());
+					setSuccessMsg("Device " + serialNum + " successfully assigned to vehicle: " + vehicleName);
+				}
+			}
+		}
+		setSerialNum(null);
+		setVehicleName(null);
+	}
+
 	public List<SelectItem> getAccountSelectList() {
 		List<SelectItem> accountList = new ArrayList<SelectItem>();
 		accountList.add(new SelectItem(-1,
@@ -248,6 +283,38 @@ public class DAOUtilBean {
 					accountID)));
 		}
 		return accountList;
+	}
+	
+	public Vehicle findVehicle(Integer accountID, String name)
+	{
+		Vehicle vehicle=null;
+
+		Group topGroup=null;
+		List<Group> groups = groupDAO.getGroupsByAcctID(accountID);
+		for (Iterator<Group> giter=groups.iterator(); giter.hasNext();)
+		{
+			topGroup=giter.next();
+			if (topGroup.getParentID().equals(0))
+				break;
+		}
+		if (topGroup==null)
+			return null;
+		
+		List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(topGroup.getGroupID());
+		name = name.toUpperCase().trim();
+		for (Iterator<Vehicle> viter=vehicles.iterator(); viter.hasNext();)
+		{
+			vehicle=viter.next();
+			if (vehicle.getLicense() != null && vehicle.getLicense().trim().toUpperCase().equals(name))
+				return vehicle;
+			if (vehicle.getVIN() != null && vehicle.getVIN().trim().toUpperCase().equals(name))
+				return vehicle;
+			if (vehicle.getName() != null && vehicle.getName().trim().toUpperCase().equals(name))
+				return vehicle;
+		}
+		
+		
+		return null;
 	}
 
 	public Map<Integer, String> getAccountMap() {
@@ -262,11 +329,14 @@ public class DAOUtilBean {
 			){
 				Account account = aiter.next();
 				account = accountDAO.findByID(account.getAcctID());
-				String acctName = account.getAcctName();
-				if (acctName == null) {
-					acctName = account.getAcctID().toString();
+				if (account!=null && account.getStatus()==Status.ACTIVE)
+				{
+					String acctName = account.getAcctName();
+					if (acctName == null) {
+						acctName = account.getAcctID().toString();
+					}
+					accountMap.put(account.getAcctID(), acctName);
 				}
-				accountMap.put(account.getAcctID(), acctName);
 			}
 		}
 		return accountMap;
@@ -276,6 +346,7 @@ public class DAOUtilBean {
     {
     	reInitAction();
         setSerialNum(null);
+//        setVehicleName(null);
     }
 
     public void reInitAction()
@@ -402,6 +473,14 @@ public class DAOUtilBean {
 
 	public void setSuccessMsg(String successMsg) {
 		this.successMsg = successMsg;
+	}
+
+	public String getVehicleName() {
+		return vehicleName;
+	}
+
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
 	}
 
 }
