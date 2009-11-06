@@ -161,11 +161,7 @@ public abstract class BasePerformanceBean extends BaseBean
      */
     public List<CategorySeriesData> createSingleJasperDef(Integer id, ScoreType scoreType, Duration duration)
     {
-        List<ScoreableEntity> scoreList = null;
-        if (scoreType.equals(ScoreType.SCORE_COACHING_EVENTS))
-        	scoreList = getTrendDaily(id, duration, scoreType);
-        else
-        	scoreList = getTrendCumulative(id, duration, scoreType);
+        List<ScoreableEntity> 	scoreList = getTrendCumulative(id, duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
@@ -178,6 +174,25 @@ public abstract class BasePerformanceBean extends BaseBean
                 score = se.getScore() / 10.0D;
 
             chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
+            count++;
+        }
+        return chartDataList;
+    }
+    public List<CategorySeriesData> createSingleJasperDefCoaching(Integer id, Duration duration)
+    {
+        List<ScoreableEntity> scoreList = getTrendDaily(id, duration, ScoreType.SCORE_COACHING_EVENTS);
+
+        List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
+        List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+
+        int count = 0;
+        for (ScoreableEntity se : scoreList)
+        {
+            Double score = null;
+            if (se.getScore() != null)
+                score = se.getScore().doubleValue();
+
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(ScoreType.SCORE_COACHING_EVENTS.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
             count++;
         }
         return chartDataList;

@@ -373,7 +373,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             reportCriteria.addParameter("MAP_URL", imageUrl);
         }
         reportCriteria.addChartDataSet(createMpgJasperDef());
-        reportCriteria.addChartDataSet(createSingleJasperDef(driverID, ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDefCoaching(driverID, coachDurationBean.getDuration()));
         reportCriteria.addParameter("COACH_DUR", coachDurationBean.getDuration().toString());
         reportCriteria.addParameter("MPG_DUR", mpgDurationBean.getDuration().toString());
         tempCriteria.add(reportCriteria);
