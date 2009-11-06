@@ -558,7 +558,7 @@ public class ReportServiceTest
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void crashSummaryGroup()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -581,7 +581,7 @@ public class ReportServiceTest
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void crashSummaryDriver()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -604,7 +604,7 @@ public class ReportServiceTest
     }
         
      @Test
-     // @Ignore
+     @Ignore
      public void crashSummaryVehicle()
      {
             ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -924,7 +924,7 @@ for (Event event : events)
 
      
      @Test
-     //@Ignore
+     @Ignore
      public void getVehicleReportData()
      {
     	 // getVDScoresByGT
