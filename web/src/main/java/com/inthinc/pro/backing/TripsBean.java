@@ -491,8 +491,6 @@ public class TripsBean extends BaseBean {
         }
         
         trips.clear();
-        violationEvents.clear();
-        
         initTrips();
     }
     
