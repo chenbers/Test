@@ -990,8 +990,8 @@ for (Event event : events)
          
         	 List<IdlingReportItem> list = scoreDAO.getIdlingReportData(groupID, DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
              assertNotNull("IdlingReportItem list", list);
-             assertEquals("IdlingReportItem list size", 1, list.size());
-             IdlingReportItem item = list.get(0);
+             assertEquals("IdlingReportItem list size", 2, list.size());
+             IdlingReportItem item = list.get(1);
 //System.out.println(" " + item.getDriveTime() + " " + item.getHighHrs() + " " + item.getLowHrs());
              assertEquals("IdlingReportItem groupID", groupID,  item.getGroupID());
              assertEquals("IdlingReportItem drive time", expectDailyDriveTimeHrs,  item.getDriveTime(), 0.0003);
