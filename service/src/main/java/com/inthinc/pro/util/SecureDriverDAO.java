@@ -1,5 +1,6 @@
 package com.inthinc.pro.util;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -11,6 +12,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.Trend;
 
 public class SecureDriverDAO extends SecureDAO<Driver> {
 
@@ -78,10 +80,16 @@ public class SecureDriverDAO extends SecureDAO<Driver> {
         return driverDAO.getAllDrivers(getGroupID());
     }
     
-    public Score getScore(Integer driverID) {
-        if(isAuthorized(driverID))
-            return driverReportDAO.getScore(driverID, Duration.DAYS);
+    public Score getScore(Integer driverID, Duration duration) {
+        if (isAuthorized(driverID))
+            return driverReportDAO.getScore(driverID, duration);
         return null;
+    }
+
+    public List<Trend> getTrend(Integer driverID, Duration duration) {
+        if (isAuthorized(driverID))
+            return driverReportDAO.getTrend(driverID, duration);
+        return Collections.emptyList();
     }
     
 

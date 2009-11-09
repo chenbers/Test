@@ -62,15 +62,15 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
         return null;
     }
 
-    public Score getScore(Integer vehicleID) {
+    public Score getScore(Integer vehicleID, Duration duration) {
         if (isAuthorized(vehicleID))
-            return vehicleReportDAO.getScore(vehicleID, Duration.DAYS);
+            return vehicleReportDAO.getScore(vehicleID, duration);
         return null;
     }
 
-    public List<Trend> getTrend(Integer vehicleID) {
+    public List<Trend> getTrend(Integer vehicleID, Duration duration) {
         if (isAuthorized(vehicleID))
-            return vehicleReportDAO.getTrend(vehicleID, Duration.DAYS);
+            return vehicleReportDAO.getTrend(vehicleID, duration);
         return Collections.emptyList();
     }
     

@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
@@ -36,17 +37,25 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
     }
 
     @Override
-    public Response getScore(Integer vehicleID) {
-        Score score = getDao().getScore(vehicleID);
-        if (score != null)
-            return Response.ok(score).build();
+    public Response getScore(Integer vehicleID, Integer numberOfDays) {
+        Duration duration = Duration.getDurationByDays(numberOfDays);
+        if (duration != null) {
+            Score score = getDao().getScore(vehicleID, duration);
+            if (score != null)
+                return Response.ok(score).build();
+        }
         return Response.status(Status.NOT_FOUND).build();
     }
 
     @Override
-    public Response getTrend(Integer vehicleID) {
-        List<Trend> list = getDao().getTrend(vehicleID);
-        return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
+    public Response getTrend(Integer vehicleID, Integer numberOfDays) {
+        Duration duration = Duration.getDurationByDays(numberOfDays);
+        if (duration != null) {
+            List<Trend> list = getDao().getTrend(vehicleID, duration);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
     }
 
     @Override

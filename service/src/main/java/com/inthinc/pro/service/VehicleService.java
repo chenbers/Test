@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -34,12 +35,12 @@ public interface VehicleService {
     public Response findByVIN(@PathParam("vin") String vin);
 
     @GET
-    @Path("/vehicle/{vehicleID}/score")
-    public Response getScore(@PathParam("vehicleID") Integer vehicleID);
+    @Path("/vehicle/{vehicleID}/score/{numberOfDays}")
+    public Response getScore(@PathParam("vehicleID") Integer vehicleID, @PathParam("numberOfDays") @DefaultValue("30") Integer numOfDays);
 
     @GET
-    @Path("/vehicle/{vehicleID}/trend")
-    public Response getTrend(@PathParam("vehicleID") Integer vehicleID);
+    @Path("/vehicle/{vehicleID}/trend/{numberOfDays}")
+    public Response getTrend(@PathParam("vehicleID") Integer vehicleID, @PathParam("numberOfDays") @DefaultValue("30") Integer numOfDays);
 
     @POST
     @Consumes("application/xml")

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -33,8 +34,12 @@ public interface DriverService {
     public Response getSpeedingEvents(@PathParam("driverID") Integer driverID);
 
     @GET
-    @Path("/driver/{driverID}/score")
-    public Response getScore(@PathParam("driverID") Integer driverID);
+    @Path("/driver/{driverID}/score/{numberOfDays}")
+    public Response getScore(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+
+    @GET
+    @Path("/driver/{driverID}/trend/{numberOfDays}")
+    public Response getTrend(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
     
     @POST
     @Consumes("application/xml")

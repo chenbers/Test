@@ -172,7 +172,7 @@
       <version>1.6.1</version>
       <type>jar</type>
       <scope>compile</scope>
-    </dependency>
+    </dependency><!--
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxrs</artifactId>
@@ -188,6 +188,13 @@
       <artifactId>resteasy-multipart-provider</artifactId>
       <version>1.1.GA</version>
     </dependency>
+    -->
+     <!-- JAXB support -->
+   <!-- multipart/form-data and multipart/mixed support -->
+   <!-- Resteasy Server Cache -->
+ 
+   <!-- Spring integration -->
+    
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
@@ -221,6 +228,37 @@
       <version>1.6</version>
       <type>jar</type>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.jboss.resteasy</groupId>
+    	<artifactId>jaxrs-api</artifactId>
+    	<version>1.2.GA</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.jboss.resteasy</groupId>
+    	<artifactId>resteasy-spring</artifactId>
+    	<version>1.2.GA</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.jboss.resteasy</groupId>
+    	<artifactId>resteasy-cache-core</artifactId>
+    	<version>1.2.GA</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.jboss.resteasy</groupId>
+    	<artifactId>resteasy-jaxrs</artifactId>
+    	<version>1.2.GA</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.jboss.resteasy</groupId>
+    	<artifactId>resteasy-jaxb-provider</artifactId>
+    	<version>1.2.GA</version>
+    	<scope>compile</scope>
     </dependency>
   </dependencies>
 </project>
