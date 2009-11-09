@@ -500,17 +500,17 @@ public class TripsBean extends BaseBean {
         
         //  Start before end date
         if (        (this.endDate.getTime() - this.startDate.getTime()) < 0L ) {            
-            this.setDateStatus(MessageUtil.getMessageString("trip_end_before_start"));
+            setDateStatus(MessageUtil.getMessageString("trip_end_before_start"));            
             return false;
             
         // Start date more than 30 days in the past from today    
         } else if ( ((new Date()).getTime()-startDate.getTime()) > THIRTY_DAYS ) {
-            this.setDateStatus(MessageUtil.getMessageString("trip_start_more_than_thirty"));
+            setDateStatus(MessageUtil.getMessageString("trip_start_more_than_thirty"));            
             return false;
             
         // Winner!
         } else {
-            this.setDateStatus(MessageUtil.getMessageString("trip_valid_date_range"));
+            setDateStatus(MessageUtil.getMessageString("trip_valid_date_range"));            
             return true;
         }        
     }
