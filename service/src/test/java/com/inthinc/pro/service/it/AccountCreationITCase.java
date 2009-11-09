@@ -56,7 +56,7 @@ public class AccountCreationITCase extends BaseITCase {
         Address address = createAddress(account);
         Person person = createPerson(account, groupList, address);
         Vehicle vehicle = createVehicle(groupList.get(2));
-//        Device device = createDevice(account);
+        Device device = createDevice(account);
 
         // Update account objects
         account = updateAccount(account);

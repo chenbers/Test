@@ -3,20 +3,25 @@ package com.inthinc.pro.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.Trend;
 
 public class SecureVehicleDAO extends SecureDAO<Vehicle> {
 
     private VehicleDAO vehicleDAO;
+    private VehicleReportDAO vehicleReportDAO;
     private SecureGroupDAO groupDAO;
     private MpgDAO mpgDAO;
     private SecureDeviceDAO deviceDAO;
@@ -57,6 +62,18 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
         return null;
     }
 
+    public Score getScore(Integer vehicleID) {
+        if (isAuthorized(vehicleID))
+            return vehicleReportDAO.getScore(vehicleID, Duration.DAYS);
+        return null;
+    }
+
+    public List<Trend> getTrend(Integer vehicleID) {
+        if (isAuthorized(vehicleID))
+            return vehicleReportDAO.getTrend(vehicleID, Duration.DAYS);
+        return Collections.emptyList();
+    }
+    
     @Override
     public Integer create(Vehicle vehicle) {
         if (isAuthorized(vehicle))
@@ -174,6 +191,14 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
 
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
+    }
+
+    public VehicleReportDAO getVehicleReportDAO() {
+        return vehicleReportDAO;
+    }
+
+    public void setVehicleReportDAO(VehicleReportDAO vehicleReportDAO) {
+        this.vehicleReportDAO = vehicleReportDAO;
     }
 
     public SecureGroupDAO getGroupDAO() {

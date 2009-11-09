@@ -78,7 +78,6 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;

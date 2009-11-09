@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.UserService;
 import com.inthinc.pro.service.model.BatchResponse;
@@ -30,6 +31,7 @@ public class UserServiceImpl extends AbstractService<User, SecureUserDAO> implem
             return Response.ok(user).build();
         return Response.status(Status.NOT_FOUND).build();
     }
+
 
     @Override
     public Response create(List<User> users, UriInfo uriInfo) {

@@ -2,7 +2,9 @@ package com.inthinc.pro.util;
 
 import java.util.List;
 
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.User;
 
 public class SecureUserDAO extends SecureDAO<User> {
@@ -41,6 +43,7 @@ public class SecureUserDAO extends SecureDAO<User> {
             return user;
         return null;
     }
+    
 
     @Override
     public List<User> getAll() {

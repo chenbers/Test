@@ -10,6 +10,8 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.service.DriverService;
 import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.SecureDriverDAO;
@@ -21,7 +23,14 @@ public class DriverServiceImpl extends AbstractService<Driver, SecureDriverDAO> 
         List<Driver> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Driver>>(list){}).build();
     }
-
+    @Override
+    public Response getSpeedingEvents(Integer driverID) {
+        List<Event> eventList = getDao().getSpeedingEvents(driverID);
+        if(eventList != null && !eventList.isEmpty()) {
+            return Response.ok(new GenericEntity<List<Event>>(eventList){}).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
+    }
     @Override
     public Response create(List<Driver> drivers, UriInfo uriInfo) {
 
@@ -41,6 +50,14 @@ public class DriverServiceImpl extends AbstractService<Driver, SecureDriverDAO> 
         return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
         }).build();
     }
+    @Override
+    public Response getScore(Integer driverID) {
+        Score score = getDao().getScore(driverID);
+        if(score != null)
+            return Response.ok(score).build();
+        return Response.status(Status.NOT_FOUND).build();
+    }
 
+    
 
 }

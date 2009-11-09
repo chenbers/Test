@@ -13,6 +13,8 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.service.VehicleService;
 import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.SecureVehicleDAO;
@@ -22,8 +24,7 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
     @Override
     public Response getAll() {
         List<Vehicle> list = getDao().getAll();
-        return Response.ok(new GenericEntity<List<Vehicle>>(list) {
-        }).build();
+        return Response.ok(new GenericEntity<List<Vehicle>>(list) {}).build();
     }
 
     @Override
@@ -32,6 +33,20 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
         if (vehicle != null)
             return Response.ok(vehicle).build();
         return Response.status(Status.NOT_FOUND).build();
+    }
+
+    @Override
+    public Response getScore(Integer vehicleID) {
+        Score score = getDao().getScore(vehicleID);
+        if (score != null)
+            return Response.ok(score).build();
+        return Response.status(Status.NOT_FOUND).build();
+    }
+
+    @Override
+    public Response getTrend(Integer vehicleID) {
+        List<Trend> list = getDao().getTrend(vehicleID);
+        return Response.ok(new GenericEntity<List<Trend>>(list) {}).build();
     }
 
     @Override
@@ -49,8 +64,7 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
             }
             responseList.add(batchResponse);
         }
-        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
-        }).build();
+        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {}).build();
     }
 
     @Override
@@ -70,23 +84,20 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
     @Override
     public Response getTrips(Integer vehicleID, String day) {
         List<Trip> list = getDao().getTrips(vehicleID, day);
-        return Response.ok(new GenericEntity<List<Trip>>(list) {
-        }).build();
+        return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
     }
 
     @Override
     public Response getTrips(Integer vehicleID) {
         List<Trip> list = getDao().getTrips(vehicleID);
-        return Response.ok(new GenericEntity<List<Trip>>(list) {
-        }).build();
+        return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
     }
 
     // fuel consumption for vehicle (parameter:day)"
     @Override
     public Response getVehicleMPG(Integer id) {
         List<MpgEntity> list = getDao().getVehicleMPG(id);
-        return Response.ok(new GenericEntity<List<MpgEntity>>(list) {
-        }).build();
+        return Response.ok(new GenericEntity<List<MpgEntity>>(list) {}).build();
     }
 
     @Override

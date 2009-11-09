@@ -57,6 +57,8 @@
   </bean>
   <bean id="secureDriverDAO" class="com.inthinc.pro.util.SecureDriverDAO">
     <property name="driverDAO" ref="driverDAO" />
+    <property name="driverReportDAO" ref="driverReportDAO"/>
+    <property name="eventDAO" ref="eventDAO"/>
     <property name="groupDAO" ref="secureGroupDAO" />
     <property name="personDAO" ref="securePersonDAO" />
   </bean>
@@ -67,6 +69,7 @@
   </bean>
   <bean id="secureVehicleDAO" class="com.inthinc.pro.util.SecureVehicleDAO">
     <property name="vehicleDAO" ref="vehicleDAO" />
+    <property name="vehicleReportDAO" ref="vehicleReportDAO"/>
     <property name="mpgDAO" ref="mpgDAO" />
     <property name="driverDAO" ref="secureDriverDAO" />
     <property name="groupDAO" ref="secureGroupDAO" />

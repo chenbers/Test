@@ -28,6 +28,14 @@ public interface DriverService {
     @Path("/driver/{driverID}")
     public Response get(@PathParam("driverID") Integer driverID);
 
+    @GET
+    @Path("/driver/{driverID}/events/speeding")
+    public Response getSpeedingEvents(@PathParam("driverID") Integer driverID);
+
+    @GET
+    @Path("/driver/{driverID}/score")
+    public Response getScore(@PathParam("driverID") Integer driverID);
+    
     @POST
     @Consumes("application/xml")
     @Path("/driver")

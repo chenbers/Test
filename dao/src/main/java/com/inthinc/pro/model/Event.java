@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -100,6 +101,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         return addressStr;
     }
 
+    @XmlElement
     public EventType getEventType()
     {
         return EventType.UNKNOWN;
@@ -259,6 +261,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         this.driverID = driverID;
     }
 
+    @XmlElement
     public EventCategory getEventCategory()
     {
         return EventCategory.NONE;

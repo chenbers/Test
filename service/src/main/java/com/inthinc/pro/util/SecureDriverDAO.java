@@ -2,12 +2,21 @@ package com.inthinc.pro.util;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.aggregation.Score;
 
 public class SecureDriverDAO extends SecureDAO<Driver> {
 
     private DriverDAO driverDAO;
+    private DriverReportDAO driverReportDAO;
+    private EventDAO eventDAO;
     private SecureGroupDAO groupDAO;
     private SecurePersonDAO personDAO;
 
@@ -32,6 +41,14 @@ public class SecureDriverDAO extends SecureDAO<Driver> {
         Driver driver = driverDAO.findByID(driverID);
         if (isAuthorized(driver))
             return driver;
+        return null;
+    }
+
+    public List<Event> getSpeedingEvents(Integer driverID) {
+        if (isAuthorized(driverID)) {
+            DateTime dateTime = new DateTime();
+            return eventDAO.getViolationEventsForDriver(driverID, dateTime.minusMonths(1).toDate(), dateTime.toDate(), 1);
+        }
         return null;
     }
 
@@ -60,6 +77,13 @@ public class SecureDriverDAO extends SecureDAO<Driver> {
     public List<Driver> getAll() {
         return driverDAO.getAllDrivers(getGroupID());
     }
+    
+    public Score getScore(Integer driverID) {
+        if(isAuthorized(driverID))
+            return driverReportDAO.getScore(driverID, Duration.DAYS);
+        return null;
+    }
+    
 
     public DriverDAO getDriverDAO() {
         return driverDAO;
@@ -67,6 +91,14 @@ public class SecureDriverDAO extends SecureDAO<Driver> {
 
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+
+    public EventDAO getEventDAO() {
+        return eventDAO;
+    }
+
+    public void setEventDAO(EventDAO eventDAO) {
+        this.eventDAO = eventDAO;
     }
 
     public SecureGroupDAO getGroupDAO() {
@@ -83,5 +115,13 @@ public class SecureDriverDAO extends SecureDAO<Driver> {
 
     public void setPersonDAO(SecurePersonDAO personDAO) {
         this.personDAO = personDAO;
+    }
+
+    public DriverReportDAO getDriverReportDAO() {
+        return driverReportDAO;
+    }
+
+    public void setDriverReportDAO(DriverReportDAO driverReportDAO) {
+        this.driverReportDAO = driverReportDAO;
     }
 }

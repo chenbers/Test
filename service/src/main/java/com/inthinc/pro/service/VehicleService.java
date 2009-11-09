@@ -33,6 +33,14 @@ public interface VehicleService {
     @Path("/vehicle/vin/{vin}")
     public Response findByVIN(@PathParam("vin") String vin);
 
+    @GET
+    @Path("/vehicle/{vehicleID}/score")
+    public Response getScore(@PathParam("vehicleID") Integer vehicleID);
+
+    @GET
+    @Path("/vehicle/{vehicleID}/trend")
+    public Response getTrend(@PathParam("vehicleID") Integer vehicleID);
+
     @POST
     @Consumes("application/xml")
     @Path("/vehicle")
