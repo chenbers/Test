@@ -415,15 +415,20 @@
                             </div>
                         </a4j:form>
                     </a4j:region>
-                    <table align="center">
-                    	<tr>                                    	
-                           	<td colspan="3" align="center">
-                           		<rich:panel id="dateError">  
-                                    <h:outputText value="#{vehicleTripsBean.dateStatus}" style="color:#FF0000;font-weight:bold"/>
-                                </rich:panel>
-                           	</td>                                    
-                        </tr>
-                    </table>                                        
+                                        
+                    <div class="panel_w">
+                    	<div class="panel_content">    
+                    		<table align="center">
+                    			<tr>                                    	
+                           			<td colspan="3" align="center">
+                           				<rich:panel id="dateError">  
+                                    		<h:outputText value="#{vehicleTripsBean.dateStatus}" style="color:#FF0000;font-weight:bold"/>
+                                		</rich:panel>
+                           			</td>                                    
+                        		</tr>
+                    		</table>
+                    	</div>
+                    </div>                                        
                 </rich:panel>
 
                 <div class="panel_sw">
