@@ -175,9 +175,9 @@
 
                             function updateMapValues(lat,lng,zoom){
             					
-								var latField = document.getElementById('#{formName}:#{uniqueID}-latvalue');
-								var longField = document.getElementById('#{formName}:#{uniqueID}-longvalue');
-								var zoomField = document.getElementById('#{formName}:#{uniqueID}-zoomlevel');
+								var latField = document.getElementById('#{formName}:#{context}-latvalue');
+								var longField = document.getElementById('#{formName}:#{context}-longvalue');
+								var zoomField = document.getElementById('#{formName}:#{context}-zoomlevel');
 				
 								latField.value = lat;
 								longField.value = lng;
