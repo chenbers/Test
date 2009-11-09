@@ -282,6 +282,7 @@
         <t:saveState value="#{driverTripsBean.endDate}"></t:saveState>
         <t:saveState value="#{driverTripsBean.startDatePrev}"></t:saveState>
         <t:saveState value="#{driverTripsBean.endDatePrev}"></t:saveState>
+        <t:saveState value="#{driverTripsBean.dateStatus}"></t:saveState>
         
 
         <rich:panel id="bubbles">
@@ -420,19 +421,22 @@
                                             <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
                                         </a4j:commandButton></td>
                                         <td></td>
-                                    </tr>
-                                    <tr>                                    	
-                                    	<td colspan="3" align="center">
-                                    		<h:outputText id="dateError" value="#{driverTripsBean.dateStatus}" style="color:#FF0000;font-weight:bold"/>
-                                    	</td>                                    
-                                    </tr>
-                                    
+                                    </tr>                                    
                                 </tbody>
                             </table>
                             </div>
                             </div>
                         </a4j:form>
                     </a4j:region>
+                    <table align="center">
+                    	<tr>                                    	
+                           	<td colspan="3" align="center">
+                           		<rich:panel id="dateError">                                    		
+                           			<h:outputText value="#{driverTripsBean.dateStatus}" style="color:#FF0000;font-weight:bold"/>
+                           		</rich:panel>
+                           	</td>                                    
+                        </tr>
+                    </table>                    
                 </rich:panel>
 
                 <div class="panel_sw">
