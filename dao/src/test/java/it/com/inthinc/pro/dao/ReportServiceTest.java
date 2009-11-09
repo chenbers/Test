@@ -433,7 +433,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+    @Ignore
     public void speedPercent() {
         // getSDTrendsByGTC
 
@@ -671,7 +671,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+     @Ignore
     public void driverMPGScores() {
         // getDTrendByDTC
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
@@ -776,7 +776,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+     @Ignore
     public void vehicleMPGScores() {
         // getVTrendByDTC
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
