@@ -26,9 +26,10 @@
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
-          <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
             <ui:param name="selectedAction" value="go_adminZoneAlerts" />
             <ui:param name="parentAction" value="go_adminZoneAlerts" />
+            <ui:param name="context" value="zoneAlert"/>
           </ui:include>
         </td>
         <td valign="top">
@@ -90,6 +91,7 @@
                               <ui:include src="../../includes/dayPicker.xhtml">
                                 <ui:param name="days" value="#{zoneAlertsBean.item.dayOfWeek}" />
                                 <ui:param name="disabled" value="true" />
+        						<ui:param name="context" value="zoneAlert" />
                               </ui:include>
                             </td>
                           </tr>
@@ -245,6 +247,7 @@
       <ui:param name="deleteBean" value="#{zoneAlertsBean}" />
       <ui:param name="explanation" value="#{messages.zoneAlert_confirmDelete}" />
       <ui:param name="supportRedirect" value="#{true}" />
+      <ui:param name="context" value="zoneAlert" />
     </ui:include>
 
   </ui:define>

@@ -96,6 +96,7 @@
 						<ui:param  name="reportBean" value="#{eventsBean}"/>
 						<ui:param  name="attachTo" value="eventReportToolImageId"/>
 						<ui:param  name="exportExcel" value="TRUE"/>
+    	 				<ui:param name="context" value="safety" />
 					</ui:include>
 		    		</a4j:form>
 		    		</a4j:region>
@@ -112,6 +113,7 @@
 		             		<ui:param name="clearTitle" value="#{messages.notes_safety_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_safety_clearInst}"/>
 		             		<ui:param name="clearRerender" value="eventsearch:header,notificationsTableForm:items"/>
+    	 					<ui:param name="context" value="safety" />
 		    			</ui:include>    							
 		            </h:panelGroup>
 		            
@@ -121,6 +123,7 @@
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{eventsBean}"/>	
 					<ui:param name="reRender" value="notificationsTableForm:items" />
+    	 			<ui:param name="context" value="safety" />
 				</ui:include>    
 				
 		        <h:panelGroup layout="block" styleClass="panel_sw">
@@ -137,6 +140,7 @@
 			<ui:include src="/includes/emailReportPopup.xhtml">	
 				<ui:param  name="id" value="eventsReportEmailModal" />
 				<ui:param  name="reportBean" value="#{eventsBean}"/>
+    	 		<ui:param name="context" value="safety" />
 			</ui:include>
 		</h:outputText>
 	</ui:define>

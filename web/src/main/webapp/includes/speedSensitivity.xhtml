@@ -24,6 +24,7 @@
   <ui:include src="/includes/speedSensitivity.xhtml">
     <ui:param name="device" value="#{myBean.device}" />
     <ui:param name="disabled" value="true" />
+    <ui:param name="context" value="#{context}-pageName"/> 
   </ui:include>
 
   -->
@@ -54,12 +55,12 @@
                                 <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{id}" value="#{updateField[id]}" />
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{id}" value="#{updateField[id]}" />
                                     <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="#{id}" value="#{device.speedSettings[index]}" width="250"
+                                          id="#{context}-#{id}" value="#{device.speedSettings[index]}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
@@ -74,8 +75,8 @@
                                 <tr class="tableEven">
                                   <td colspan="3" align="right" style="border-bottom: 1px solid #8BAD37">
                                     <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
-                                    <a href="#" onclick="bumpSpeeds(true); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
-                                    <a href="#" onclick="bumpSpeeds(false); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                    <a href="#" id="#{context}-plus" onclick="bumpSpeeds(true); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                    <a href="#" id="#{context}-minus" onclick="bumpSpeeds(false); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
                                   </td>
                                 </tr>
                               </ui:fragment>

@@ -25,6 +25,7 @@
             
             <ui:include src="/includes/overviewHeader.xhtml">
              <ui:param name="showContextMenu" value="true"/>
+     	 			<ui:param name="context" value="team" />
             </ui:include>
 	
 	<h:form id="setupTeam">
@@ -48,6 +49,7 @@
 	  <tr>
     	<td colspan="3" valign="top">
     		<ui:include src="/includes/teamOverview.xhtml">	
+     	 			<ui:param name="context" value="team" />
     		</ui:include>
     	</td>
 	  </tr>
@@ -69,6 +71,7 @@
 					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
 					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
 					<ui:param name="flyOutImage" value="" />  
+     	 			<ui:param name="context" value="team" />
 				</ui:include>
 			<!-- END PANEL -->
              
@@ -77,11 +80,17 @@
 		
 		<div class="spacer"></div>
 		
-		<ui:include src="/includes/teamRecentSafety.xhtml"/>	
+		<ui:include src="/includes/teamRecentSafety.xhtml">
+		    <ui:param name="context" value="team" />
+		    </ui:include>
+			
 		
 		<div class="spacer"></div>
 
-		<ui:include src="/includes/teamRecentDiagnostics.xhtml"/>	
+		<ui:include src="/includes/teamRecentDiagnostics.xhtml">
+		    <ui:param name="context" value="team" />
+		    </ui:include>
+				
 	
 	</td>
 	
@@ -94,6 +103,7 @@
              <ui:param name="topScores" value="#{teamTopBean.topDrivers}"/>
              <ui:param name="bottomScores" value="#{teamTopBean.bottomDrivers}"/>
              <ui:param name="table" value="#{trendTable.table}"/>
+		     <ui:param name="context" value="team" />
     		</ui:include>
         </rich:panel>
         
@@ -107,12 +117,15 @@
           <ui:param name="xywidth" value="440"/>
           <ui:param name="includeDetailsLink" value="false"/>
           <ui:param name="includeExportLink" value="false"/>
+		   <ui:param name="context" value="team" />
         </ui:include>
         <!-- END MPG -->  
         
         <div class="spacer"></div>
 
-		<ui:include src="/includes/teamRecentEmergency.xhtml"/>		
+		<ui:include src="/includes/teamRecentEmergency.xhtml">
+		    <ui:param name="context" value="team" />
+		    </ui:include>		
         
     	</td>
 	  </tr>

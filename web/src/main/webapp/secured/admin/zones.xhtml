@@ -27,9 +27,10 @@
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
-          <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
             <ui:param name="selectedAction" value="go_adminZones" />
             <ui:param name="parentAction" value="go_adminZones" />
+            <ui:param name="context" value="zones"/>
           </ui:include>
         </td>
         <td valign="top">
@@ -150,7 +151,7 @@
                             </tr>
                           </table>
                         </li>
-                        <li class="l"><button type="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
+                        <li class="l"><button id="zonesSearch" type="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
                       </ul>
 						
                     </h:panelGroup>
@@ -275,6 +276,7 @@
               <ui:param name="reRender" value="points,displayZone" />
               <ui:param name="ondelete" value="showZone(false)" />
               <ui:param name="explanation" value="#{messages.zones_confirmDelete}" />
+       			<ui:param name="context" value="zones" />
             </ui:include>
 
           </div>

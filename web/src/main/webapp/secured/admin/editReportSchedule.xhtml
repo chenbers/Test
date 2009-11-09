@@ -22,9 +22,10 @@
 			cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 			<tr>
 				<td valign="top" width="130">
-					<ui:include src="/includes/adminSideNav.xhtml">
+					<ui:include src="/includes/navigation/adminSideNav.xhtml">
 						<ui:param name="selectedAction" value="#{(reportScheduleBean.add) ? 'go_adminAddReportSchedule' : 'go_adminReportSchedules'}" />
 			            <ui:param name="parentAction" value="go_adminReportSchedules" />
+            			<ui:param name="context" value="editReportSchedule"/>
 					</ui:include>
 				</td>
 				<td valign="top">
@@ -89,10 +90,11 @@
 										<ui:param name="fieldName" value="status"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_status}"/>
+        								<ui:param name="context" value="editReportScheduleStatus" />
 									</ui:include>
 								</td>
 								<td>
-      								<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      								<h:selectOneMenu id="editReportScheduleStatus" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
       									<f:selectItems value="#{reportScheduleBean.statuses}"/> 
       								</h:selectOneMenu>
 								</td>
@@ -108,6 +110,7 @@
 										<ui:param name="for" value="timeOfDay"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_timeOfDay}"/>
+        								<ui:param name="context" value="editReportScheduleTimeOfDay" />
 									</ui:include>
 								</td>
 								<td>
@@ -116,6 +119,7 @@
                                       <ui:param name="id" value="timeOfDay" />
                                       <ui:param name="value" value="#{reportScheduleBean.item.timeOfDay}" />
                                       <ui:param name="onchange" value="checkMultiple('timeOfDay')" />
+         								<ui:param name="context" value="editReportScheduletimeOfDay" />
                                     </ui:include>
 								</td>
 							</tr>
@@ -131,6 +135,7 @@
                               <ui:param name="for" value="occurrence"/>
                               <ui:param name="editBean" value="#{reportScheduleBean}"/>
                               <ui:param name="label" value="#{messages.reportSchedule_reportOccurrence}"/>
+         					<ui:param name="context" value="editReportScheduleOccurrence" />
                            </ui:include>
                         </div>
 						
@@ -141,8 +146,8 @@
                                     <h:outputText value="#{messages.reportSchedule_occurrence}" />
 								</td>
 								<td>
-									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}">
+									<rich:message for="editRxeportScheduleOccurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+									<h:selectOneMenu id="editRxeportScheduleOccurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}">
 										<a4j:support event="onchange" reRender="occurenceDetailPanel" ajaxSingle="true" onsubmit="checkMultiple(this)"/>
 										<f:selectItems value="#{reportScheduleBean.occurrences}"/> 
 									</h:selectOneMenu>
@@ -163,6 +168,7 @@
       										<ui:include src="../../includes/dayPicker.xhtml">
       			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
       			                                <ui:param name="onchange" value="checkMultiple('occurrence')" />
+        										<ui:param name="context" value="editReportSchedule" />
       	                              		</ui:include>	
 	                              		</h:outputText>
 									</td>

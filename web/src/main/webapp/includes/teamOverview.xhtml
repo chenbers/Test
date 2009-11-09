@@ -36,6 +36,7 @@
 					<ui:param name="sixMonthsOn" value="#{teamOverviewDurationBean.styleClass6Months}"/>
 					<ui:param name="twelveMonthsOn" value="#{teamOverviewDurationBean.styleClass12Months}"/>
 					<ui:param name="duration" value="#{teamOverviewDurationBean.duration}" />
+                    <ui:param name="context" value="#{context}-teamOverview"/> 
 				</ui:include>
 				</a4j:region>	
 		</h:panelGroup>				
@@ -53,7 +54,7 @@
          							<div class="tabRight">
                                       <div class="tabBorder">
                                          <span class="#{action.key} tab">
-                                                <a4j:commandLink id="teamOverviewDisplay" title="#{action.displayString}" reRender="overview-header,overview-form,overview-content,duration-links"
+                                                <a4j:commandLink id="#{context}-teamOverviewDisplay" title="#{action.displayString}" reRender="overview-header,overview-form,overview-content,duration-links"
                                                       value="#{action.displayString}">
                                                       <f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
                                                 </a4j:commandLink>   
@@ -78,6 +79,7 @@
 						<a4j:region rendered="#{teamOverviewBean.selectedAction.key == tab.key}">
 							<ui:include src="/includes/teamOverviewTab.xhtml">
 								<ui:param name="type" value="#{tab.key}" />
+                    			<ui:param name="context" value="#{context}-teamOverview"/> 
 							</ui:include>
 						</a4j:region>
 					</ui:repeat>

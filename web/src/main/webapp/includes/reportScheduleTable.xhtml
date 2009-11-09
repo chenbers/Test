@@ -13,6 +13,7 @@
   <ui:param name="filterValue" value="#{reportScheduleBean.filterValue}" />
   <ui:param name="page" value="#{reportScheduleBean.page}" />
   <ui:param name="editorBean" value="#{reportScheduleBean}" />
+  <ui:param name="context" value="reportScheduleTable"/>		
 
   <ui:define name="columns">
   	<rich:column rendered="#{reportScheduleBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">

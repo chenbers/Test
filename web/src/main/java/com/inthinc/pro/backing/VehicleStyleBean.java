@@ -126,7 +126,14 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        if (durationBean.getDuration() == Duration.DAYS){
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDefDays(getVehicle().getVehicleID(), scoreTypes));
+        }
+        else {
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        }
         reportCriteria.setMainDataset(getEvents());
 
         return reportCriteria;

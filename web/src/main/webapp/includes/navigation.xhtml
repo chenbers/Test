@@ -15,22 +15,22 @@
 	<h:form id="navigation" > 
 		<ul>
 			<li class="#{homeSelected}">
-                <pretty:link mappingId="init-dashboard"><span>#{messages.navigation_home}</span></pretty:link>
+                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard"><span>#{messages.navigation_home}</span></pretty:link>
 			</li>
 			<li class="#{reportsSelected}">
-                <pretty:link mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>
+                <pretty:link id="#{context}-navigationReports" mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>
 			</li>
 			<li class="#{notificationsSelected}">
-                <pretty:link mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
+                <pretty:link id="#{context}-navigationNotifications" mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
 			</li>
 			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
     			<li class="#{liveFleetSelected}">
-                    <pretty:link mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
+                    <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
     			</li>
 			</security:authorize>
 			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
 				<li class="#{adminSelected}">
-                    <pretty:link mappingId="admin"><span>#{messages.navigation_admin}</span></pretty:link>
+                    <pretty:link id="#{context}-navigationAdmin" mappingId="admin"><span>#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
 			<li style="float:right">
@@ -41,11 +41,11 @@
 					</td>
 					<td width="105" height="100" class="middle">
                       <!-- What the? I thought the same thing. This hidden field is needed for the enter key to work in IE -->
-                      <h:inputText id="hiddenField" value="hiddenField" style="display:none"/>
-					  <h:inputText id="redirectSearch" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="15"/>
+                      <h:inputText id="#{context}-hiddenField" value="hiddenField" style="display:none"/>
+					  <h:inputText id="#{context}-redirectSearch" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="15"/>
 					</td>
                     <td class="middle">
-                      <h:selectOneMenu id="redirectTo" value="#{searchCoordinationBean.navigation}" styleClass="text" >
+                      <h:selectOneMenu id="#{context}-navigationRedirectTo" value="#{searchCoordinationBean.navigation}" styleClass="text" >
                         <f:selectItem itemLabel="#{messages.navigation_searchDrivers}" itemValue="1"/>                         
                                       <f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>  
                                       <f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>
@@ -54,7 +54,7 @@
                     </td>
 					<td class="middle" width="25" align="center">
                        
-						<h:commandButton action="#{searchCoordinationBean.navigationAction}" id="navigation_search_button"
+						<h:commandButton action="#{searchCoordinationBean.navigationAction}" id="#{context}-navigation_search_button"
 										title="#{messages.navigation_searchToolTip}" image="/images/ico_search.gif"
 										style="vertical-align:middle;margin-left:10px">
 						</h:commandButton>

@@ -20,7 +20,7 @@
      <a4j:region>
       	 <h:selectBooleanCheckbox 
       	 		rendered="#{editBean.batchEdit}" 
-      	 		id="update_#{for}" 
+      	 		id="#{context}-update_#{for}" 
       	 		value="#{editBean.updateField[fieldName]}"
       	 		disabled="#{enableCheckbox}">
       	 </h:selectBooleanCheckbox>

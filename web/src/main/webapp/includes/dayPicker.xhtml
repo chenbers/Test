@@ -44,15 +44,15 @@
       </tr>
       <tr>
         <c:if test="#{not disabled}">
-          <td align="center"><input type="checkbox" id="daysSelectAll" onclick="checkAll(this.checked)" /></td>
+          <td align="center"><input type="checkbox" id="#{context}-daysSelectAll" onclick="checkAll(this.checked)" /></td>
         </c:if>
-        <td align="center"><h:selectBooleanCheckbox id="day0" value="#{days[0]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
-        <td align="center"><h:selectBooleanCheckbox id="day1" value="#{days[1]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
-        <td align="center"><h:selectBooleanCheckbox id="day2" value="#{days[2]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
-        <td align="center"><h:selectBooleanCheckbox id="day3" value="#{days[3]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
-        <td align="center"><h:selectBooleanCheckbox id="day4" value="#{days[4]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
-        <td align="center"><h:selectBooleanCheckbox id="day5" value="#{days[5]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
-        <td align="center"><h:selectBooleanCheckbox id="day6" value="#{days[6]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="#{context}-day0" value="#{days[0]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="#{context}-day1" value="#{days[1]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="#{context}-day2" value="#{days[2]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="#{context}-day3" value="#{days[3]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="#{context}-day4" value="#{days[4]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="#{context}-day5" value="#{days[5]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="#{context}-day6" value="#{days[6]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
       </tr>
     </table>
 

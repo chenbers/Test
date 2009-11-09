@@ -31,6 +31,7 @@
       <ui:include src="/includes/confirmDelete.xhtml">
         <ui:param name="reRender" value="myStuff" />
         <ui:param name="deleteBean" value="#{myBean}" />
+    	<ui:param name="context" value="#{context}-pageName" />
       </ui:include>
 
   Elsewhere:
@@ -53,7 +54,7 @@
       <c:set var="explanation" value="#{messages.confirmDelete_explanation}" />
     </c:if>
 
-    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; var button = document.getElementById('confirmDeleteForm:deleteButton'); if (button == null) button = document.getElementById('confirmDeleteForm:deleteButtonDirect'); button.focus();">
+    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; var button = document.getElementById('confirmDeleteForm:deleteButton'); if (button == null) button = document.getElementById('confirmDeleteForm:#{context}-deleteButtonDirect'); button.focus();">
       <f:facet name="header">
         <h:outputText value="#{title}" />
       </f:facet>
@@ -72,9 +73,9 @@
         <input type="hidden" id="confirmDeleteID" name="deleteID" />
 
         <div class="popupactions">
-          <button id="confirmDeleteCancel" type="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
-          <h:commandButton id="deleteButtonDirect" rendered="#{supportRedirect}" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton>
-          <a4j:commandButton id="deleteButton" rendered="#{(empty supportRedirect) or !supportRedirect}" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" oncomplete="#{ondelete}" reRender="#{reRender},confirmDelete" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+          <button id="#{context}-confirmDeleteCancel" type="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+          <h:commandButton id="#{context}-deleteButtonDirect" rendered="#{supportRedirect}" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton>
+          <a4j:commandButton id="#{context}-deleteButton" rendered="#{(empty supportRedirect) or !supportRedirect}" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" oncomplete="#{ondelete}" reRender="#{reRender},confirmDelete" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
         </div>
 
       </a4j:form>

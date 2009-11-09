@@ -49,7 +49,7 @@ public class EventReportItem extends NotificationReportItem<EventReportItem>
         }
         
         setDriverName((event.getDriver() == null) ? MessageUtil.getMessageString("unassigned") : event.getDriver().getPerson().getFullName());
-        setVehicleName((event.getVehicle() == null)?  MessageUtil.getMessageString("unaAssigned") : event.getVehicle().getName());
+        setVehicleName((event.getVehicle() == null)?  MessageUtil.getMessageString("unassigned") : event.getVehicle().getName());
 
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));

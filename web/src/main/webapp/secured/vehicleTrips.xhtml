@@ -336,7 +336,7 @@
             <ul id="grid_nav">
                 <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
                 <li class="l grid_title">#{messages.vehicletrip_title}:
-                     <pretty:link mappingId="vehiclePerformance">
+                     <pretty:link id="vehicleTripsVehiclePerformance1" mappingId="vehiclePerformance">
                         <h:outputText value=" #{vehicleTripsBean.identifiableEntityBean.name}"/>
                         <f:param value="#{vehicleTripsBean.identifiableEntityBean.id}"/>
                      </pretty:link>
@@ -352,7 +352,7 @@
                 <li class="l" style="margin-left: -15px;">
                   <ul id="breadcrumb">
                         <li>
-                           <pretty:link mappingId="vehiclePerformance">
+                           <pretty:link id="vehicleTripsVehiclePerformance2" mappingId="vehiclePerformance">
                               <h:outputText value="#{vehicleTripsBean.identifiableEntityBean.name}"/>
                               <f:param value="#{vehicleTripsBean.identifiableEntityBean.id}"/>
                            </pretty:link>
@@ -730,7 +730,7 @@
                     <span class="map">
 	                    <h:outputText value="">#{messages.vehicletrip_driver}</h:outputText><rich:spacer width="5" />
                         <c:if test="#{vehicleTripsBean.selectedDriver ne null}">
-                           <pretty:link mappingId="driverPerformance">
+                           <pretty:link id="vehicleTripsDriverPerformance" mappingId="driverPerformance">
                               <h:outputText value="#{vehicleTripsBean.selectedDriver.person.fullName}"/>
                               <f:param value="#{vehicleTripsBean.selectedDriver.driverID}"/>
                            </pretty:link>

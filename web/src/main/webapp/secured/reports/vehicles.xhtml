@@ -14,7 +14,9 @@
     <ui:param name="ajaxPanels" value="outerVehicleReport" />
 
 	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" />
+		<ui:include src="/includes/reports/subNavigation.xhtml" >
+			<ui:param name="context" value="vehicles" />
+		</ui:include>
 	</ui:define>
 	
 	
@@ -38,7 +40,9 @@
 									<a4j:form id="outerVehicleReport">
 									
 <!--										<h:inputHidden value="#{vehicleReportBean.secret}"/>									-->
-											<ui:include src="/includes/redFlagsCount.xhtml" />																
+											<ui:include src="/includes/redFlagsCount.xhtml" >
+												<ui:param name="context" value="vehicles" />
+											</ui:include>																
 																			
 										<ul id="grid_nav" style="margin: 0;">            							
             								<li class="l">
@@ -133,7 +137,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_group}" />
                                             </f:facet>          
-                                            <pretty:link mappingId="dashboard">
+                                            <pretty:link id="vehiclesDashboard" mappingId="dashboard">
                                                 <h:outputText value="#{item.group}"/>
                                                 <f:param value="#{item.groupID}"/>
                                             </pretty:link>                                                                                
@@ -143,7 +147,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_vehicleID}" />
                                             </f:facet>
-                                            <pretty:link mappingId="vehiclePerformance">
+                                            <pretty:link id="vehiclesVehiclePerformance" mappingId="vehiclePerformance">
                                                 <h:outputText value="#{item.vehicle.name}"/>
                                                 <f:param value="#{item.vehicle.vehicleID}"/>
                                             </pretty:link>                        
@@ -160,7 +164,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_driver}" />
                                             </f:facet>
-                                            <pretty:link mappingId="driverPerformance" rendered="#{item.driver ne null}">
+                                            <pretty:link id="vehiclesDriverPerformance" mappingId="driverPerformance" rendered="#{item.driver ne null}">
                                                 <h:outputText value="#{item.driver.person.fullName}"/>
                                                 <f:param value="#{item.driver.driverID}"/>
                                             </pretty:link>
@@ -187,6 +191,7 @@
                                                     <ui:param name="scoreStyle" value="#{item.styleOverall}" /> 
                                                     <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
                                                     <ui:param name="scoreMappingId" value="vehiclePerformance"/> 
+													<ui:param name="context" value="vehiclesOverall" />
                                             </ui:include>               
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['speedScore'].visible}"
@@ -199,6 +204,7 @@
                                                     <ui:param name="scoreStyle" value="#{item.styleSpeed}" /> 
                                                     <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
                                                     <ui:param name="scoreMappingId" value="vehiclePerformanceSpeed"/>
+												<ui:param name="context" value="vehiclesSpeed" />
                                             </ui:include>            
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['styleScore'].visible}"
@@ -211,6 +217,7 @@
                                                     <ui:param name="scoreStyle" value="#{item.styleStyle}" /> 
                                                     <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
                                                     <ui:param name="scoreMappingId" value="vehiclePerformanceStyle"/>
+													<ui:param name="context" value="vehiclesStyle" />
                                             </ui:include>           
                                         </rich:column>
                                     </rich:dataTable>                     		
@@ -230,6 +237,7 @@
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{vehicleReportBean}"/>	
 									<ui:param name="reRender" value="outerVehicleReport:items" />
+									<ui:param name="context" value="vehicles" />
 								</ui:include>    
 								
 								
@@ -249,6 +257,7 @@
 			<ui:include src="/includes/emailReportPopup.xhtml">	
 				<ui:param  name="id" value="vehicleReportEmailModal" />
 				<ui:param  name="reportBean" value="#{vehicleReportBean}"/>
+				<ui:param name="context" value="vehicles" />
 			</ui:include>
 		</h:outputText>
 				

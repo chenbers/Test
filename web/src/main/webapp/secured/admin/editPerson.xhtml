@@ -20,9 +20,10 @@
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
       <td valign="top" width="130">
-        <ui:include src="/includes/adminSideNav.xhtml">
+        <ui:include src="/includes/navigation/adminSideNav.xhtml">
           <ui:param name="selectedAction" value="#{(personBean.add) ? 'go_adminAddPerson' : 'go_adminPeople'}" />
           <ui:param name="parentAction" value="go_adminPeople" />
+          <ui:param name="context" value="editPerson"/>
         </ui:include>
       </td>
       <td valign="top">
@@ -312,6 +313,7 @@
                            <ui:param name="fieldName" value="driver.groupID"/>
                            <ui:param name="editBean" value="#{personBean}"/>
                            <ui:param name="label" value="#{messages.editPerson_driver_team}"/>
+        					<ui:param name="context" value="editPersonDriverGroup" />
                        </ui:include>
                           </td>
                           <td>
@@ -334,6 +336,7 @@
                            <ui:param name="for" value="driver_status"/>
                            <ui:param name="editBean" value="#{personBean}"/>
                            <ui:param name="label" value="#{messages.editPerson_driver_status}"/>
+         					<ui:param name="context" value="editPersonDriverStatus" />
                       </ui:include>
                           </td>
                           <td>
@@ -397,6 +400,7 @@
                                     <ui:param name="for" value="user_locale"/>
                                     <ui:param name="editBean" value="#{personBean}"/>
                                     <ui:param name="label" value="#{messages.editPerson_user_locale}"/>
+         							<ui:param name="context" value="editPersonLocale" />
                                  </ui:include>
                              </td>
                              <td>
@@ -414,6 +418,7 @@
 								<ui:param name="fieldName" value="timeZone"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_timeZone}"/>
+        					<ui:param name="context" value="editPersonTimeZone" />
 							</ui:include>
                           </td>
                           <td>
@@ -439,6 +444,7 @@
                                     <ui:param name="for" value="user_person_measurementType"/>
                                     <ui:param name="editBean" value="#{personBean}"/>
                                     <ui:param name="label" value="#{messages.editPerson_user_measurementType}"/>
+         					<ui:param name="context" value="editPersonMeasurementType" />
                                  </ui:include>
                              </td>
                              <td>
@@ -457,6 +463,7 @@
                                     <ui:param name="for" value="user_person_fuelEfficiencyType"/>
                                     <ui:param name="editBean" value="#{personBean}"/>
                                     <ui:param name="label" value="#{messages.editPerson_user_fuelEfficiencyType}"/>
+          					<ui:param name="context" value="editPersonFuelEfficiencyType" />
                                  </ui:include>
                              </td>
                              <td>
@@ -527,6 +534,7 @@
                                 <ui:param name="for" value="user_groupID"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_group}"/>
+        					<ui:param name="context" value="editPersonGroupId" />
 							</ui:include>
                           </td>
                           <td>
@@ -549,6 +557,7 @@
 								<ui:param name="fieldName" value="user.role"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_role}"/>
+        					<ui:param name="context" value="editPersonRole" />
 							</ui:include>
                           </td>
                           <td>
@@ -571,6 +580,7 @@
 								<ui:param name="fieldName" value="user.status"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_status}"/>
+        					<ui:param name="context" value="editPersonStatus" />
 							</ui:include>
                           </td>
                           <td>
@@ -674,6 +684,7 @@
                                  <ui:param name="iconSrc" value="/images/ico_info.png"/>
                                  <ui:param name="editBean" value="#{personBean}"/>
                                  <ui:param name="label" value="#{messages.myAccount_information}"/>
+        					<ui:param name="context" value="editPersonInfo" />
                             </ui:include>
                           </td>
                           <td>
@@ -691,6 +702,7 @@
                                  <ui:param name="iconSrc" value="/images/ico_warning.png"/>
                                  <ui:param name="editBean" value="#{personBean}"/>
                                  <ui:param name="label" value="#{messages.myAccount_warning}"/>
+         					<ui:param name="context" value="editPersonWarn" />
                             </ui:include>
                           </td>
                           <td>
@@ -708,6 +720,7 @@
                                  <ui:param name="iconSrc" value="/images/ico_critical.png"/>
                                  <ui:param name="editBean" value="#{personBean}"/>
                                  <ui:param name="label" value="#{messages.myAccount_critical}"/>
+         					<ui:param name="context" value="editPersonCrit" />
                             </ui:include>
                           </td>
                           <td>

@@ -148,7 +148,14 @@ public class DriverPerformanceBean extends BasePerformanceBean
 
     public String getOverallScoreHistory()
     {
-        setOverallScoreHistory(createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_OVERALL));
+    	if (durationBean.getDuration() ==Duration.DAYS){
+    		
+            setOverallScoreHistory(createFusionMultiLineDefDays(getDriver().getDriverID(), ScoreType.SCORE_OVERALL));   		
+    	}
+    	else{
+    		
+    		setOverallScoreHistory(createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_OVERALL));
+    	}
         return overallScoreHistory;
     }
 

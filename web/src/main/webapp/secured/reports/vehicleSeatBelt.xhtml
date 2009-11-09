@@ -44,7 +44,7 @@
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
-            <pretty:link mappingId="vehiclePerformance">
+            <pretty:link id="vehicleSeatBeltTitle" mappingId="vehiclePerformance">
                <h:outputText value="#{vehicleSeatBeltBean.vehicle.name}"/>
                <f:param value="#{vehicleSeatBeltBean.vehicle.vehicleID}"/>
             </pretty:link>
@@ -55,12 +55,13 @@
             <ui:include src="/includes/breadcrumb.xhtml">
                <ui:param name="groupTreeNode" value="#{vehicleSeatBeltBean.groupTreeNodeImpl}" />
                <ui:param name="lastBreadCrumb" value="true" />
+ 			   <ui:param name="context" value="vehicleSeatBelt" />
             </ui:include>
          </li>
           <li class="l" style="margin-left: -15px;">
             <ul id="breadcrumb">
                   <li>
-                     <pretty:link mappingId="vehiclePerformance">
+                     <pretty:link id="vehicleSeatBeltVehicle" mappingId="vehiclePerformance">
                         <h:outputText value="#{vehicleSeatBeltBean.vehicle.name}"/>
                         <f:param value="#{vehicleSeatBeltBean.vehicle.vehicleID}"/>
                      </pretty:link>
@@ -95,6 +96,7 @@
      						<ui:param name="showDetail" value="TRUE" /> 
                             <ui:param name="mappingId"  value="vehiclePerformance"/>
                             <ui:param name="entityId"   value="#{vehicleSeatBeltBean.vehicle.vehicleID}"/>  
+ 							<ui:param name="context" value="vehicleSeatBelt" />
    						</ui:include>
 					</div>
 				</div>
@@ -112,6 +114,7 @@
 						            <ui:param name="chartVar" value="overallChart" />
    									<ui:param name="pYAxisName" value="#{messages.vehicle_chart_score}" />
 						            <ui:param name="sYAxisName" value="#{messages[MilesMsgKey]}" />
+ 									<ui:param name="context" value="vehicleSeatBelt" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
@@ -125,6 +128,7 @@
 										<ui:include src="../../includes/scoreBox.xhtml">
 									            <ui:param name="score" value="#{vehicleSeatBeltBean.seatBeltScore}" />
 									            <ui:param name="scoreStyle" value="#{vehicleSeatBeltBean.seatBeltScoreStyle}" />
+ 												<ui:param name="context" value="vehicleSeatBelt" />
 										</ui:include>
 									</td>
 								  </tr>
@@ -293,7 +297,7 @@
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
+          <button id="vehicleSeatBeltNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink id="vehicleSeatBeltConfirm" action="#{vehicleSeatBeltBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel') initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"

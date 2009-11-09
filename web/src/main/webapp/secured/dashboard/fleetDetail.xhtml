@@ -67,6 +67,7 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
 					<ui:param name="xywidth" value="800" />
 					<ui:param name="flyNavRule" value="go_home" />
 					<ui:param name="inFlyOut" value="true" />
+     	 			<ui:param name="context" value="fleetDetail" />
 				</ui:include></div>
 				<!-- END PANEL --></td>
 
@@ -107,6 +108,7 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
 					<ui:param name="flyNavRule" value="go_home" />
 					<ui:param name="flyOutImage" value="ico_minimize.png" />
 					<ui:param name="report" value="TREND" />
+     	 			<ui:param name="context" value="fleetDetail" />
 				</ui:include></div>
 				</div>
 				<div class="panel_w">
@@ -204,6 +206,7 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
                             <ui:include src="/includes/scoreBox.xhtml">  
                                 <ui:param name="scoreStyle" value="#{item.style}"/>                                  
                                 <ui:param name="score" value="#{item.se.score}"/>                                    
+         	 					<ui:param name="context" value="fleetDetail" />
                             </ui:include> 
 						</rich:column>
 
@@ -257,6 +260,7 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
 					<ui:param name="flyNavRule" value="go_home" />
 					<ui:param name="flyOutImage" value="ico_minimize.png" />
 					<ui:param name="report" value="OVERALL_SCORE" />
+	     	 		<ui:param name="context" value="fleetDetail" />
 				</ui:include></div>
 				</div>
 				<div class="panel_w"><rich:panel bodyClass="panel_content" id="overallPanel">
@@ -274,6 +278,7 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
 										<ui:include src="/includes/overallScoreBox.xhtml">
 											<ui:param name="scoreStyle" value="#{overallScoreBean.overallScoreStyle}" />
 											<ui:param name="score" value="#{overallScoreBean.overallScore}" />
+	     	 								<ui:param name="context" value="fleetDetail" />
 										</ui:include>
 									</rich:panel>
 								</td>
@@ -292,7 +297,12 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
 								</tr>
 								<tr>
 
-									<td align="center" valign="top" width="120"><ui:include src="/includes/scoreBoxLegend.xhtml" /></td>
+									<td align="center" valign="top" width="120">
+										<ui:include src="/includes/scoreBoxLegend.xhtml" >
+										     <ui:param name="context" value="fleetDetail" />
+										</ui:include>
+										
+									</td>
 								</tr>
 							</table>
 							</td>

@@ -136,7 +136,14 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
         scoreTypes.add(ScoreType.SCORE_SPEEDING_41_54);
         scoreTypes.add(ScoreType.SCORE_SPEEDING_55_64);
         scoreTypes.add(ScoreType.SCORE_SPEEDING_65_80);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        if (durationBean.getDuration() == Duration.DAYS){
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDefDays(getVehicle().getVehicleID(), scoreTypes));
+        }
+        else {
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        }
         reportCriteria.setMainDataset(events);
 
         return reportCriteria;

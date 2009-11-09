@@ -14,7 +14,10 @@
     <ui:param name="ajaxPanels" value="outerDeviceReport" />
 
 	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" />
+		<ui:include src="/includes/reports/subNavigation.xhtml" >
+		   <ui:param name="context" value="devices" />
+		</ui:include>
+		
 	</ui:define>
 
 
@@ -40,7 +43,9 @@
 																	
 <!--									<h:inputHidden value="#{deviceReportBean.secret}"/>-->
 																										
-										<ui:include src="/includes/redFlagsCount.xhtml" />																
+										<ui:include src="/includes/redFlagsCount.xhtml" >
+											<ui:param name="context" value="devices" />
+										</ui:include>																
 																		
 									<ul id="grid_nav" style="margin: 0;">            							
             							<li class="l">
@@ -143,7 +148,7 @@
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_assignedvehicle}" />
                                       					</f:facet>
-                                                        <pretty:link mappingId="vehiclePerformance">
+                                                        <pretty:link id="devicesVehiclePerformance" mappingId="vehiclePerformance">
                                                             <h:outputText value="#{item.vehicle.name}"/>
                                                             <f:param value="#{item.vehicle.vehicleID}"/>
                                                         </pretty:link>      
@@ -188,6 +193,7 @@
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{deviceReportBean}"/>	
 									<ui:param name="reRender" value="outerDeviceReport:items" />
+		   							<ui:param name="context" value="devices" />
 								</ui:include>    
 								</div>
 								</div>
@@ -205,6 +211,7 @@
 			<ui:include src="/includes/emailReportPopup.xhtml">	
 				<ui:param  name="id" value="deviceReportEmailModal" />
 				<ui:param  name="reportBean" value="#{deviceReportBean}"/>
+			    <ui:param  name="context" value="devices" />
 			</ui:include>
 		</h:outputText>
 	</ui:define>

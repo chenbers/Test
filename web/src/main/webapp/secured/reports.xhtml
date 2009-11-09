@@ -7,7 +7,10 @@
 	<ui:param name="reportsSelected" value="current" />
 
 	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" />
+		<ui:include src="/includes/reports/subNavigation.xhtml" >
+		 	<ui:param name="context" value="reports" />
+		</ui:include>
+		
 	</ui:define>
 
 	<ui:define name="content">

@@ -28,9 +28,10 @@
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
-          <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
             <ui:param name="selectedAction" value="#{(zoneAlertsBean.add) ? 'go_adminAddZoneAlert' : 'go_adminZoneAlerts'}" />
             <ui:param name="parentAction" value="go_adminZoneAlerts" />
+             <ui:param name="context" value="editZoneAlert"/>
           </ui:include>
         </td>
         <td valign="top">
@@ -88,6 +89,7 @@
                                  <ui:param name="fieldName" value="zoneID"/>
                                  <ui:param name="editBean" value="#{zoneAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editZoneAlert_zone}"/>
+								<ui:param name="context" value="editZoneAlertZoneId"/>
                               </ui:include>
                             </td>
                             <td>
@@ -109,6 +111,7 @@
                                  <ui:param name="fieldName" value="name"/>
                                  <ui:param name="editBean" value="#{zoneAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_name}"/>
+ 								<ui:param name="context" value="editZoneAlertName"/>
                               </ui:include>
                             </td>
                             <td>
@@ -135,6 +138,7 @@
                                  <ui:param name="fieldName" value="dayOfWeek"/>
                                  <ui:param name="editBean" value="#{zoneAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_dayOfWeek}"/>
+        						<ui:param name="context" value="editZoneAlertDayOfWeek" />
                               </ui:include>
                             </td>
                             <td>
@@ -142,6 +146,7 @@
                               <ui:include src="../../includes/dayPicker.xhtml">
                                 <ui:param name="days" value="#{zoneAlertsBean.item.dayOfWeek}" />
                                 <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+       							<ui:param name="context" value="editZoneAlert" />
                               </ui:include>
                             </td>
                           </tr>
@@ -153,10 +158,11 @@
                                  <ui:param name="fieldName" value="anytime"/>
                                  <ui:param name="editBean" value="#{zoneAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_timeframe}"/>
+        						<ui:param name="context" value="editZoneAlertAnyTime" />
                               </ui:include>
                             </td>
                             <td>
-                              <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <rich:message for="editZoneAlertStopTOD-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:selectOneRadio id="timeframe" onchange="checkMultiple('timeframe')" value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
@@ -168,6 +174,7 @@
                                       <ui:param name="id" value="startTOD" />
                                       <ui:param name="value" value="#{zoneAlertsBean.item.startTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
+        								<ui:param name="context" value="editZoneAlertStartTOD" />
                                     </ui:include>
                                   </td>
                                   <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
@@ -176,6 +183,7 @@
                                       <ui:param name="id" value="stopTOD" />
                                       <ui:param name="value" value="#{zoneAlertsBean.item.stopTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
+        						<ui:param name="context" value="editZoneAlertStopTOD" />
                                     </ui:include>
                                   </td>
                                 </tr>
@@ -204,6 +212,7 @@
                               <ui:param name="fieldName" value="defineAlerts"/>
                               <ui:param name="editBean" value="#{zoneAlertsBean}"/>
                               <ui:param name="label" value="#{messages.editZoneAlert_alertType}"/>
+ 								<ui:param name="context" value="editZoneAlertDefineAlerts"/>
                           </ui:include>
                         </div>
 
@@ -233,6 +242,7 @@
                               <ui:param name="fieldName" value="assignTo"/>
                               <ui:param name="editBean" value="#{zoneAlertsBean}"/>
                               <ui:param name="label" value="#{messages.editAlerts_assignTo}"/>
+								<ui:param name="context" value="editZoneAlertAssignTo"/>
                           </ui:include>
                         </div>
 
@@ -242,6 +252,7 @@
                           <ui:param name="bean" value="#{zoneAlertsBean.assignPicker}" />
                           <ui:param name="id" value="alertAssign" />
                           <ui:param name="onchange" value="checkMultiple('assignTo')" />
+						  <ui:param name="context" value="editZoneAlertAlertAssign"/>
                         </ui:include>
 
                       </td>
@@ -266,6 +277,7 @@
                         <ui:include src="../../includes/autocompletePicker.xhtml">
                           <ui:param name="autocompleter" value="#{zoneAlertsBean.peoplePicker}" />
                           <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
+						  <ui:param name="context" value="editZoneAlert"/>
                         </ui:include>
 
                       </td>

@@ -25,6 +25,7 @@
                         <ui:param name="id" value="speedPercentage" />
                         <ui:param name="includeDetailsLink" value="false"/>
                         <ui:param name="maximized" value="#{false}"/>
+                     <ui:param name="context" value="#{context}-speedPercentagePanel"/> 
                     </ui:include>
     			</div>
     		</div>	
@@ -43,9 +44,9 @@
                      </table>
                 	<div style="height:#{xyheight};width:#{xywidth}">
                    	<div id="speedPercentChartdiv" align="center"/>
-		  			<h:inputHidden value="#{speedPercentageBean.chartDef}" id="hiddenSPChartField"/>
+		  			<h:inputHidden value="#{speedPercentageBean.chartDef}" id="#{context}-hiddenSPChartField"/>
 					<script type="text/javascript">
-						var targetChartElement = document.getElementById("hiddenSPChartField");
+						var targetChartElement = document.getElementById("#{context}-hiddenSPChartField");
 						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf?", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
 						chart2.setDataXML(targetChartElement.value);	
 						chart2.setTransparent(true);								   	   

@@ -129,7 +129,14 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
         scoreTypes.add(ScoreType.SCORE_SPEEDING_41_54);
         scoreTypes.add(ScoreType.SCORE_SPEEDING_55_64);
         scoreTypes.add(ScoreType.SCORE_SPEEDING_65_80);
-        reportCriteria.addChartDataSet(this.createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
+        if (durationBean.getDuration() == Duration.DAYS){
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDefDays(getDriver().getDriverID(), scoreTypes));
+        }
+        else {
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
+        }
         reportCriteria.setMainDataset(this.events);
 
         return reportCriteria;

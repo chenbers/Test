@@ -13,6 +13,7 @@
   <ui:param name="filterValue" value="#{zoneAlertsBean.filterValue}" />
   <ui:param name="page" value="#{zoneAlertsBean.page}" />
   <ui:param name="editorBean" value="#{zoneAlertsBean}" />
+  <ui:param name="context" value="zoneAlertsTable"/>		
 
   <ui:define name="columns">
     <rich:column rendered="#{zoneAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">

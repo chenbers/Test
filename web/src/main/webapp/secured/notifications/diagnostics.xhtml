@@ -94,6 +94,7 @@
 						<ui:param  name="reportBean" value="#{diagnosticsBean}"/>
 						<ui:param  name="attachTo" value="diagnostics_report_tool_image_id"/>
 						<ui:param  name="exportExcel" value="TRUE"/>
+    	 				<ui:param name="context" value="diagnostics" />
 					</ui:include>
 		    		</a4j:form>
 		    		</a4j:region>        
@@ -109,6 +110,7 @@
 		             		<ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
 		             		<ui:param name="clearRerender" value="diagnostics_search:header,diagnostics_table_form:items"/>
+    	 					<ui:param name="context" value="diagnostics" />
 		    			</ui:include>    							
 		            </h:panelGroup>
 		            
@@ -118,6 +120,7 @@
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{diagnosticsBean}"/>	
 					<ui:param name="reRender" value="diagnostics_table_form:items" />
+    	 			<ui:param name="context" value="diagnostics" />
 				</ui:include>    
 				
 		        <h:panelGroup layout="block" styleClass="panel_sw">
@@ -133,6 +136,7 @@
 		<ui:include src="/includes/emailReportPopup.xhtml">	
 			<ui:param  name="id" value="diagnostics_report_email_modal" />
 			<ui:param  name="reportBean" value="#{diagnosticsBean}"/>
+    	 	<ui:param name="context" value="diagnostics" />
 		</ui:include>
 	</h:outputText>
 		

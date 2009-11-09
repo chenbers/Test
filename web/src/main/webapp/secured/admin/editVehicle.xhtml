@@ -20,9 +20,10 @@
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
-          <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
             <ui:param name="selectedAction" value="#{(vehiclesBean.add) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
             <ui:param name="parentAction" value="go_adminVehicles" />
+            <ui:param name="context" value="editVehicle"/>
           </ui:include>
         </td>
         <td valign="top">
@@ -96,12 +97,13 @@
 										<ui:param name="fieldName" value="make"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_make}"/>
+										<ui:param name="context" value="editVehicleMake"/>
 								  </ui:include>
                                 </td>
                                 
                                 <td>
-                                  <rich:message for="make" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.make}" id="make" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <rich:message for="editVehicleMake" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{vehiclesBean.item.make}" id="editVehicleMake" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
                                 </td>
                               </tr>
@@ -113,6 +115,7 @@
 										<ui:param name="fieldName" value="model"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_model}"/>
+										<ui:param name="context" value="editVehicleModel"/>
 								  </ui:include>
                                 </td>
                                 <td>
@@ -129,6 +132,7 @@
 										<ui:param name="fieldName" value="year"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 								  		<ui:param name="label" value="#{messages.editVehicle_year}"/>
+										<ui:param name="context" value="editVehicleYear"/>
 								  </ui:include>
                                 </td>
                                 <td>
@@ -323,6 +327,7 @@
                              <ui:param name="device" value="#{vehiclesBean.item.device}" />
                              <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
                              <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
+                             <ui:param name="context" value="editVehicle" />
                            </ui:include>
                          </ui:fragment>
                       </h:panelGroup>
@@ -359,6 +364,7 @@
     <ui:include src="../../includes/chooseDriver.xhtml">
       <ui:param name="editorBean" value="#{vehiclesBean}" />
       <ui:param name="reRender" value="edit-form:driverID" />
+      <ui:param name="context" value="editVehicle" />
     </ui:include>
     
 

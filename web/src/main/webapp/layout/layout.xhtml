@@ -52,7 +52,9 @@
         </ui:include>
     </ui:insert>
     <ui:insert name="navigation">
-        <ui:include src="/includes/navigation.xhtml" />
+        <ui:include src="/includes/navigation.xhtml" >
+        <ui:param name="context" value="layout"/>
+        </ui:include>
     </ui:insert>
     <ui:insert name="subnavigation">
         <!--  <ui:include src="/includes/driverSubNavigation.xhtml"/>   -->

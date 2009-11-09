@@ -25,7 +25,7 @@
                                             <h:graphicImage styleClass="ajax_status" value="/images/progress2.gif"/>
                                         </f:facet>
                                     </a4j:status> 
-                                    <a4j:commandLink id="durationPanelHeaderDays" 
+                                    <a4j:commandLink id="#{context}-durationPanelHeaderDays" 
                                         title="#{messages.duration_days}" 
                                         immediate="true" 
                                         styleClass="#{duration eq 'DAYS' ? 'selected_duration' : ''}" 
@@ -34,7 +34,7 @@
                                         <a4j:actionparam name="duration" assignTo="#{duration}" value="DAYS" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>
-                                    <a4j:commandLink id="durationPanelHeaderThreeMonths" 
+                                    <a4j:commandLink id="#{context}-durationPanelHeaderThreeMonths" 
                                         title="#{messages.duration_three}" 
                                         immediate="true" 
                                         styleClass="#{duration eq 'THREE' ? 'selected_duration' : ''}" 
@@ -43,7 +43,7 @@
                                         <a4j:actionparam name="duration" assignTo="#{duration}" value="THREE" />
                                     </a4j:commandLink> 
                                     <rich:spacer width="5"/>
-                                    <a4j:commandLink id="durationPanelHeaderSixMonths" 
+                                    <a4j:commandLink id="#{context}-durationPanelHeaderSixMonths" 
                                         title="#{messages.duration_six}" 
                                         immediate="true" 
                                         styleClass="#{duration eq 'SIX' ? 'selected_duration' : ''}" 
@@ -52,7 +52,7 @@
                                         <a4j:actionparam name="duration" assignTo="#{duration}" value="SIX" />
                                     </a4j:commandLink> 
                                     <rich:spacer width="5"/>
-                                    <a4j:commandLink id="durationPanelHeaderTwelveMonths"  
+                                    <a4j:commandLink id="#{context}-durationPanelHeaderTwelveMonths"  
                                         title="#{messages.duration_twelve}" 
                                         immediate="true" 
                                         styleClass="#{duration eq 'TWELVE' ? 'selected_duration' : ''}" 
@@ -81,11 +81,11 @@
                                 <a4j:region>
                                     <rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="server" attachTo="#{id}_toolImage">
                                         <rich:menuItem ajaxSingle="true" rendered="true" iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
-                                            onclick="Richfaces.showModalPanel('#{id}_singleEmail');return false;" value="#{messages.contextMenu_email_this_report}" id="#{id}_email" submitMode="none">
+                                            onclick="Richfaces.showModalPanel('#{id}_singleEmail');return false;" value="#{messages.contextMenu_email_this_report}" id="#{context}-#{id}_email" submitMode="none">
                                         </rich:menuItem>
                         
                                         <rich:menuItem iconDisabled="/images/ico_pdf.gif" disabled="#{report eq null?'true':'false'}" icon="/images/ico_pdf.gif"
-                                            value="#{messages.contextMenu_export_to_pdf}" action="#{dashBoardReportBean.exportReportToPDF}" id="export">
+                                            value="#{messages.contextMenu_export_to_pdf}" action="#{dashBoardReportBean.exportReportToPDF}" id="#{context}-export">
                                             <a4j:actionparam assignTo="#{dashBoardReportBean.report}" value="#{report}" />
                                             <a4j:actionparam assignTo="#{dashBoardReportBean.duration}" converter="SimpleBeanConverter" value="#{duration}" />
                                         </rich:menuItem>
@@ -99,6 +99,7 @@
                                     <ui:param name="duration" value="#{duration}" />
                                     <ui:param name="id" value="#{id}_singleEmail" />
                                     <ui:param name="reportBean" value="#{dashBoardReportBean}" />
+                                    <ui:param name="context" value="#{context}-durationPanelHeader"/>
                                 </ui:include>
                             </h:outputText>
                         </td>

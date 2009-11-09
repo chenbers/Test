@@ -126,7 +126,7 @@
 		<ui:param name="readOnly"
 			value="#{organizationBean.groupState eq 'VIEW'}" />
 		<ui:param name="formName" value="display-form" />
-		<ui:param name="uniqueID" value="EDIT"/>
+		<ui:param name="context" value="#{context}-groupEdit"/>
         <ui:param name="mapId" value="#{organizationBean.mapType.mapId}"/>
 	</ui:include></div>
 
@@ -134,14 +134,14 @@
 
 		<ul id="grid_nav_dark">
 			<li class="r">
-				<h:commandButton id="groupEditEditView" rendered="#{organizationBean.groupState ne 'VIEW'}"
+				<h:commandButton id="#{context}-groupEditEditView" rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
 					reRender="contentPanel,organizationTreePanel" immediate="true" styleClass="left" tabindex="9">
 					<span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
-				<a4j:commandButton id="groupEditEditEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="8"
+				<a4j:commandButton id="#{context}-groupEditEditEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="8"
 					action="#{organizationBean.update}"
 					reRender="contentPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
@@ -149,7 +149,7 @@
 						value="#{messages.button_save}" /></span></a4j:commandButton>
 			</li>
 			<li class="r">
-				<a4j:commandButton id="groupEditEditAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="8"
+				<a4j:commandButton id="#{context}-groupEditEditAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="8"
 					action="#{organizationBean.save}"
 					reRender="contentPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />

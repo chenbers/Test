@@ -13,6 +13,7 @@
   <ui:param name="filterValue" value="#{devicesBean.filterValue}" />
   <ui:param name="page" value="#{devicesBean.page}" />
   <ui:param name="editorBean" value="#{devicesBean}" />
+  <ui:param name="context" value="devicesTable"/>		
 
   <ui:define name="columns">
     <rich:column rendered="#{devicesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">

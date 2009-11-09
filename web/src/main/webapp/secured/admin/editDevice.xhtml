@@ -21,9 +21,10 @@
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
-          <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
             <ui:param name="selectedAction" value="#{(devicesBean.add) ? 'go_adminAddDevice' : 'go_adminDevices'}" />
             <ui:param name="parentAction" value="go_adminDevices" />
+            <ui:param name="context" value="editDevice"/>
           </ui:include>
         </td>
         <td valign="top">
@@ -140,6 +141,7 @@
                                        <ui:param name="fieldName" value="ephone"/>
                                        <ui:param name="editBean" value="#{devicesBean}"/>
                                        <ui:param name="label" value="#{messages.editDevice_ephone}"/>
+       									<ui:param name="context" value="editDeviceEPhone" />
                                   </ui:include>
                                 </td>
                                 <td>
@@ -167,6 +169,7 @@
                                        <ui:param name="fieldName" value="status"/>
                                        <ui:param name="editBean" value="#{devicesBean}"/>
                                        <ui:param name="label" value="#{messages.editDevice_status}"/>
+       									<ui:param name="context" value="editDeviceStatus" />
                                   </ui:include>
                                 </td>
                                 <td>
@@ -183,6 +186,7 @@
                                        <ui:param name="fieldName" value="autoLogoff"/>
                                        <ui:param name="editBean" value="#{devicesBean}"/>
                                        <ui:param name="label" value="#{messages.editDevice_autoLogoff}"/>
+       									<ui:param name="context" value="editDeviceAutoLogoff" />
                                   </ui:include>
                                 </td>
                                 <td>
@@ -249,6 +253,7 @@
                               <ui:param name="device" value="#{devicesBean.item}" />
                               <ui:param name="batchEdit" value="#{devicesBean.batchEdit}" />
                               <ui:param name="updateField" value="#{devicesBean.updateField}" />
+                              <ui:param name="context" value="editDevice" />
                             </ui:include>
                          </h:panelGroup>
    

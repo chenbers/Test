@@ -90,6 +90,7 @@
                   <ui:param name="xywidth" value="800"/>  
                   <ui:param name="flyNavRule" value="go_division" />
                   <ui:param name="inFlyOut" value="true" />
+     	 		  <ui:param name="context" value="divisionDetails" />
                 </ui:include>
               </div>
               <!-- END PANEL -->
@@ -138,6 +139,7 @@
 		            			<ui:param name="flyNavRule" value="go_division" />
 		            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 		            			<ui:param name="report" value="TREND"/>
+     	 		  				<ui:param name="context" value="divisionDetails" />
 							</ui:include>	
                     </div>
 				</div>
@@ -243,6 +245,7 @@
                                 <ui:include src="/includes/scoreBox.xhtml">  
                                     <ui:param name="scoreStyle" value="#{item.style}"/>                                  
                                     <ui:param name="score" value="#{item.se.score}"/>                                    
+     	 		  					<ui:param name="context" value="divisionDetails" />
                                 </ui:include> 
 												
 							</rich:column>
@@ -308,6 +311,7 @@
 	            			<ui:param name="flyNavRule" value="go_division" />
 	            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 	            			<ui:param name="report" value="OVERALL_SCORE"/>
+ 			    	 		<ui:param name="context" value="divisionDetails" />
 						</ui:include>	
                     </div>
 				</div>
@@ -327,6 +331,7 @@
 					    					<ui:include src="/includes/overallScoreBox.xhtml">	
 												<ui:param name="scoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
 				        	  					<ui:param name="score" value="#{overallScoreBean.overallScore}"/>             						
+     	 		  								<ui:param name="context" value="divisionDetails" />
 				    						</ui:include>   
 				    						</rich:panel> 							
 										</td>
@@ -348,7 +353,10 @@
 					                 <tr>
 					                 	
 					                    <td align="center" valign="top" width="120">
-											<ui:include src="/includes/scoreBoxLegend.xhtml"/>
+											<ui:include src="/includes/scoreBoxLegend.xhtml">
+											    <ui:param name="context" value="divisionDetails" />
+											</ui:include>
+											
 					                    </td>
 					                 </tr>
 								</table>
@@ -444,6 +452,7 @@
 					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
 		            <ui:param name="flyNavRule" value="go_division" />
 		            <ui:param name="flyOutImage" value="ico_minimize.png" />
+     	 		  	<ui:param name="context" value="divisionDetails" />
 				</ui:include>
 				<!-- END PANEL -->
 		<!-- END PANEL -->

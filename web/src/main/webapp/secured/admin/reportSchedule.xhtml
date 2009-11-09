@@ -17,9 +17,10 @@
 			cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 			<tr>
 				<td valign="top" width="130">
-					<ui:include src="/includes/adminSideNav.xhtml">
+					<ui:include src="/includes/navigation/adminSideNav.xhtml">
 						<ui:param name="selectedAction" value="#{(reportScheduleBean.add) ? 'go_adminAddReportSchedule' : 'go_adminReportSchedules'}" />
 			            <ui:param name="parentAction" value="go_adminReportSchedules" />
+            			<ui:param name="context" value="reportSchedule"/>
 					</ui:include>
 				</td>
 				<td valign="top">
@@ -108,6 +109,7 @@
 									<ui:include src="../../includes/dayPicker.xhtml">
 		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
 		                                <ui:param name="disabled" value="true" />
+        								<ui:param name="context" value="reportSchedule" />
                               		</ui:include>	
 								</td>
 							</tr>
@@ -220,6 +222,7 @@
 	      <ui:param name="deleteBean" value="#{reportScheduleBean}" />
 	      <ui:param name="explanation" value="#{messages.reportSchedule_confirmDelete}" />
 	      <ui:param name="supportRedirect" value="#{true}" />
+      <ui:param name="context" value="reportSchedule" />
 	    </ui:include>
 	</ui:define>
 

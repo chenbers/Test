@@ -9,7 +9,7 @@
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
     <div id="header">
         <h:form id="headerForm">
-            <div id="logo"><pretty:link mappingId="init-dashboard">
+            <div id="logo"><pretty:link id="headerInitDashboard" mappingId="init-dashboard">
                 <h:graphicImage width="80px" height="80px" value="/images/x.gif" style="border:none" />
             </pretty:link></div>
             <div id="horz_nav">
@@ -17,7 +17,7 @@
                 <li class="l text"><a class="tb-help" href="#{helpBean.path}#{helpFile ne null ? helpFile : 'Home.htm'}"
                     target="new">#{messages.header_help}</a></li>
                 <li class="l text">
-                     <pretty:link mappingId="myAccount" styleClass="tb-account"> 
+                     <pretty:link id="headerMyAccount" mappingId="myAccount" styleClass="tb-account"> 
                         <h:outputText value="#{messages.header_myAccount}"/>
                      </pretty:link>
                      </li>

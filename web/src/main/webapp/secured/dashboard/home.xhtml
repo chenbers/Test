@@ -28,6 +28,7 @@
 		
            <ui:include src="/includes/overviewHeader.xhtml">
              <ui:param name="showContextMenu" value="true"/>
+     	 			<ui:param name="context" value="home" />
            </ui:include>
     		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
       			<tr>
@@ -49,7 +50,8 @@
     					<!-- leave reRenderList alone -->
     					<ui:include src="/includes/overallScore.xhtml">
                            <ui:param name="zorder" value="6" />
-                        </ui:include>
+		      	 			<ui:param name="context" value="home" />
+                       </ui:include>
     					<!-- END PANEL -->
     					<div class="spacer"></div>
     				
@@ -59,6 +61,7 @@
                             <ui:param name="xyheight" value="350"/>
                             <ui:param name="xywidth" value="440"/>  
                             <ui:param name="zorder" value="6"/>	
+     	 					<ui:param name="context" value="home" />
     					</ui:include>
     					<!-- END MPG -->	
     
@@ -86,6 +89,7 @@
                                             <ui:param name="report" value="TREND" />
                                             <ui:param name="id" value="trend" />
                                             <ui:param name="detailLink" value="#{requestScope.detailedDashboardLink}"/>
+      	 									<ui:param name="context" value="home" />
                                         </ui:include>
         							</div>
         		
@@ -159,7 +163,7 @@
         												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn ne 'se.identifier'}" value="/images/sort_available.gif" />		
         											</a4j:commandLink>
         										</f:facet>
-                                                <pretty:link mappingId="dashboard">
+                                                <pretty:link id="homeDashboard" mappingId="dashboard">
                                                     <f:param value="#{item.groupID}"/>
                                                     <h:outputText value="#{item.groupName}" />
                                                 </pretty:link>
@@ -188,6 +192,7 @@
                                                 <ui:include src="/includes/scoreBox.xhtml">  
                                                     <ui:param name="scoreStyle" value="#{item.scoreableEntityPkg.style}"/>                                  
                                                     <ui:param name="score" value="#{item.score}"/>                                    
+     	 											<ui:param name="context" value="home" />
                                                 </ui:include>
         									</rich:column>
         								</rich:dataTable>

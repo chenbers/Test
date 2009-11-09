@@ -69,6 +69,7 @@
                                         <ui:param name="reportBean" value="#{emergencyBean}" />
                                         <ui:param name="attachTo" value="emergency_report_tool_image_id" />
                                         <ui:param name="exportExcel" value="TRUE" />
+     	 								<ui:param name="context" value="emergency" />
                                     </ui:include>
                                 </a4j:form>
                             </a4j:region>
@@ -84,6 +85,7 @@
                                     <ui:param name="clearTitle" value="#{messages.notes_emergency_clearTitle}" />
                                     <ui:param name="clearInst" value="#{messages.notes_emergency_clearInst}" />
                                     <ui:param name="clearRerender" value="emergency_search:header,emergency_table_form:items" />
+     	 							<ui:param name="context" value="emergency" />
                                 </ui:include>
                             </h:panelGroup>
 
@@ -93,6 +95,7 @@
                     <ui:include src="/includes/editColumnsPopup.xhtml">
                         <ui:param name="bean" value="#{emergencyBean}" />
                         <ui:param name="reRender" value="emergency_table_form:items" />
+      	 				<ui:param name="context" value="emergency" />
                     </ui:include>
 
                     <h:panelGroup layout="block" styleClass="panel_sw">
@@ -106,6 +109,7 @@
             <ui:include src="/includes/emailReportPopup.xhtml">
                 <ui:param name="id" value="emergency_report_email_modal" />
                 <ui:param name="reportBean" value="#{emergencyBean}" />
+     	 		<ui:param name="context" value="emergency" />
             </ui:include>
         </h:outputText>
 

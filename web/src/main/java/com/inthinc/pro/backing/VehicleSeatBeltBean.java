@@ -147,7 +147,14 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean {
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        if (durationBean.getDuration() == Duration.DAYS){
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDefDays(getVehicle().getVehicleID(), scoreTypes));
+        }
+        else {
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        }
         reportCriteria.setMainDataset(events);
         return reportCriteria;
     }

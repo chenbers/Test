@@ -22,9 +22,10 @@
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
-          <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
             <ui:param name="selectedAction" value="#{(redFlagAlertsBean.add) ? 'go_adminAddRedFlag' : 'go_adminRedFlags'}" />
             <ui:param name="parentAction" value="go_adminRedFlags" />
+            <ui:param name="context" value="editRedFlag"/>
           </ui:include>
         </td>
         <td valign="top">
@@ -81,6 +82,7 @@
                                  <ui:param name="fieldName" value="name"/>
                                  <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_name}"/>
+        					<ui:param name="context" value="editRedFlagName" />
                               </ui:include>
                             </td>
                             <td>
@@ -107,13 +109,15 @@
                                  <ui:param name="fieldName" value="dayOfWeek"/>
                                  <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_dayOfWeek}"/>
+        						<ui:param name="context" value="editRedFlagDayOfWeek" />
                               </ui:include>
                             </td>
                             <td>
-                              <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <rich:message for="editRedFlag-day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <ui:include src="../../includes/dayPicker.xhtml">
                                 <ui:param name="days" value="#{redFlagAlertsBean.item.dayOfWeek}" />
                                 <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+        						<ui:param name="context" value="editRedFlag" />
                               </ui:include>
                             </td>
                           </tr>
@@ -125,10 +129,11 @@
                                  <ui:param name="fieldName" value="anytime"/>
                                  <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_timeframe}"/>
-                              </ui:include>
+        							<ui:param name="context" value="editRedFlagAnyTime" />
+ 	                             </ui:include>
                             </td>
                             <td>
-                              <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <rich:message for="editRedFlagStopTOD-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:selectOneRadio id="timeframe" onchange="checkMultiple('timeframe')" value="#{redFlagAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
@@ -140,6 +145,7 @@
                                       <ui:param name="id" value="startTOD" />
                                       <ui:param name="value" value="#{redFlagAlertsBean.item.startTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
+        							<ui:param name="context" value="editRedFlagstartTOD" />
                                     </ui:include>
                                   </td>
                                   <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
@@ -148,7 +154,8 @@
                                       <ui:param name="id" value="stopTOD" />
                                       <ui:param name="value" value="#{redFlagAlertsBean.item.stopTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
-                                    </ui:include>
+       								  <ui:param name="context" value="editRedFlagStopTOD" />
+                                     </ui:include>
                                   </td>
                                 </tr>
                               </table>
@@ -167,6 +174,7 @@
                               <ui:param name="fieldName" value="assignTo"/>
                               <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
                               <ui:param name="label" value="#{messages.editAlerts_assignTo}"/>
+         					<ui:param name="context" value="editRedFlagAssignTo" />
                           </ui:include>
                         </div>
 
@@ -175,6 +183,7 @@
                         <ui:include src="../../includes/alertAssign.xhtml">
                           <ui:param name="alertsBean" value="#{redFlagAlertsBean}" />
                           <ui:param name="onchange" value="checkMultiple('assignTo')" />
+          					<ui:param name="context" value="editRedFlag" />
                         </ui:include>
 
                       </td>
@@ -190,6 +199,7 @@
                      <ui:param name="fieldName" value="type"/>
                      <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
                      <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>
+        			<ui:param name="context" value="editRedFlagType" />
                   </ui:include>
                   </div>
 
@@ -468,6 +478,7 @@
                         <ui:include src="../../includes/autocompletePicker.xhtml">
                           <ui:param name="autocompleter" value="#{redFlagAlertsBean.peoplePicker}" />
                           <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
+ 						  <ui:param name="context" value="editRedFlag"/>
                         </ui:include>
 
                       </td>

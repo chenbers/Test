@@ -49,7 +49,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_driver}" />
                 </f:facet>                
-                <pretty:link mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
+                <pretty:link id="#{context}-crashHistoryDriverPerformance" mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
                     <f:param value="#{item.driver == null ? 0 : item.driver.driverID}"/>
                     #{item.driverName}
                 </pretty:link>
@@ -61,7 +61,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_vehicle}" />
                 </f:facet>                
-                <pretty:link mappingId="vehiclePerformance" rendered="#{item.vehicle != null}">
+                <pretty:link id="#{context}-crashHistoryVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle != null}">
                     <f:param value="#{item.vehicle.vehicleID}"/>
                     #{item.vehicleName}
                 </pretty:link>
@@ -94,7 +94,7 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-                <pretty:link mappingId="crashReport" title="#{messages.notes_crashhistory_view_detail}">
+                <pretty:link id="#{context}-crashHistoryCrashReport" mappingId="crashReport" title="#{messages.notes_crashhistory_view_detail}">
                     <f:param value="#{item.crashReportID}"/>
                     #{messages.notes_crashhistory_details}
                 </pretty:link>

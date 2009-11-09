@@ -8,7 +8,7 @@
             <h:outputFormat id="headerRedCount" value="#{messages.reports_redflagscountheader}">
                 <a4j:actionparam value="#{redFlagsCountBean.maxCount}" />
             </h:outputFormat> 
-                  ( <pretty:link mappingId="redFlagsWithCriteria">
+                  ( <pretty:link id="#{context}-redFlagsCount" mappingId="redFlagsWithCriteria">
                         <h:outputText value="#{messages.reports_view}"/>
                    </pretty:link>)
        </p>

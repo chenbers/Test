@@ -25,28 +25,28 @@
 				</f:facet>
 			</a4j:status>
 			<rich:spacer width="10" />
-			<a4j:commandLink id="dateLinksToolsDetailDays" title="#{messages.duration_days}" immediate="true"
+			<a4j:commandLink id="#{context}-dateLinksToolsDetailDays" title="#{messages.duration_days}" immediate="true"
 				styleClass="#{thirtyDaysOn}"		
 				reRender="#{reRenderList}"
 				value="#{messages.duration_days}">
 				<a4j:actionparam name="duration" assignTo="#{duration}"	value="DAYS" />
 			</a4j:commandLink>
 			<rich:spacer width="5"></rich:spacer>
-			<a4j:commandLink id="dateLinksToolsDetailThreeMonths" title="#{messages.duration_three}" immediate="true"
+			<a4j:commandLink id="#{context}-dateLinksToolsDetailThreeMonths" title="#{messages.duration_three}" immediate="true"
 				styleClass="#{threeMonthsOn}"	
 				reRender="#{reRenderList}"
 				value="#{messages.duration_three}">
 				<a4j:actionparam name="duration" assignTo="#{duration}"	value="THREE" />
 			</a4j:commandLink>
 			<rich:spacer width="5"></rich:spacer>
-			<a4j:commandLink id="dateLinksToolsDetailSixMonths" title="#{messages.duration_six}" immediate="true"
+			<a4j:commandLink id="#{context}-dateLinksToolsDetailSixMonths" title="#{messages.duration_six}" immediate="true"
 				styleClass="#{sixMonthsOn}"	
 				reRender="#{reRenderList}"
 				value="#{messages.duration_six}">
 				<a4j:actionparam name="duration" assignTo="#{duration}"	value="SIX" />
 			</a4j:commandLink>
 			<rich:spacer width="5"></rich:spacer>
-			<a4j:commandLink id="dateLinksToolsDetailTwelveMonths" title="#{messages.duration_twelve}" immediate="true"
+			<a4j:commandLink id="#{context}-dateLinksToolsDetailTwelveMonths" title="#{messages.duration_twelve}" immediate="true"
 				styleClass="#{twelveMonthsOn}"	
 				reRender="#{reRenderList}"
 				value="#{messages.duration_twelve}">
@@ -58,7 +58,7 @@
 					<h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" alt="#{messages.tool_menu}" title="#{messages.tool_menu}" />
 					<rich:spacer width="4" /> 
 				</h:panelGroup>
-                <pretty:link mappingId="#{mappingId}" rendered="#{showDetail eq 'TRUE' ? true : false}" style="text-decoration: none; cursor: pointer" title="#{detailTitle}">
+                <pretty:link id="#{context}-dateLinksToolsDetailShow" mappingId="#{mappingId}" rendered="#{showDetail eq 'TRUE' ? true : false}" style="text-decoration: none; cursor: pointer" title="#{detailTitle}">
                    <h:graphicImage value="/images/#{flyOutImage}" style="border: none" />
                    <f:param value="#{entityId}"/>
                 </pretty:link>
@@ -70,19 +70,20 @@
 									iconDisabled="/images/ico_email.gif" 
 									icon="/images/ico_email.gif" 
 									onclick="Richfaces.showModalPanel('#{ajaxForm}_singleEmail');return false;"
-									value="#{messages.contextMenu_email_this_report}" id="emailMenuItem" submitMode="none">
+									value="#{messages.contextMenu_email_this_report}" 
+									id="#{context}-emailMenuItem" submitMode="none">
 					</rich:menuItem>
 					<rich:menuItem ajaxSingle="true"
 									iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
 									value="#{messages.contextMenu_export_to_pdf}"
 									action="#{reportBean.exportReportToPdf}"
-									id="export_menu_item">
+									id="#{context}-export_menu_item">
 					</rich:menuItem>
 					<rich:menuItem ajaxSingle="true" rendered="#{showExcel eq 'TRUE' ? true : false}"
 									iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png"
 									value="#{messages.contextMenu_export_to_Excel}"
 									action="#{reportBean.exportReportToExcel}"
-									id="exportExcelMenuItem">
+									id="#{context}-exportExcelMenuItem">
 					</rich:menuItem>
 				</rich:contextMenu>
 		</a4j:form>
@@ -92,6 +93,7 @@
 			<ui:include src="/includes/emailReportPopup.xhtml">	
 				<ui:param name="id" value="#{ajaxForm}_singleEmail" />
 				<ui:param name="reportBean" value="#{reportBean}"/>
+				<ui:param name="context" value="#{context}-dateLinksToolDetail"/>
 			</ui:include>
 		</h:outputText>
 	<!-- END EMAIL MODAL -->

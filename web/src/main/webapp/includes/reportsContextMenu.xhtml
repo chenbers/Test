@@ -25,20 +25,20 @@
 						iconDisabled="/images/ico_email.gif" 
 						icon="/images/ico_email.gif" 
 						onclick="Richfaces.showModalPanel('#{emailModalPanelID}');return false;"
-						value="#{messages.contextMenu_email_this_report}" id="emailMenuItem" submitMode="none">
+						value="#{messages.contextMenu_email_this_report}" id="#{context}-emailMenuItem" submitMode="none">
 		</rich:menuItem>
 
 		<rich:menuItem ajaxSingle="true"
 			iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
 			value="Export To PDF"
 			action="#{reportBean.exportReportToPdf}"
-			id="export_menu_item">
+			id="#{context}-export_menu_item">
 		</rich:menuItem>
 		<rich:menuItem ajaxSingle="true"
 			iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png"
 			value="Export To Excel"
 			action="#{reportBean.exportReportToExcel}"
-			id="exportExcelMEnuItem" rendered="#{exportExcel eq 'TRUE'}">
+			id="#{context}-exportExcelMEnuItem" rendered="#{exportExcel eq 'TRUE'}">
 		</rich:menuItem>
 
 	</rich:contextMenu>

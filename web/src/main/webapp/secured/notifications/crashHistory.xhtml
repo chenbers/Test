@@ -150,7 +150,7 @@
 					  
 					  <security:authorize ifAnyGranted="ROLE_SUPERUSER,ROLE_INTHINC">
 					  	<li class="l text">
-							<pretty:link mappingId="addCrashReport" styleClass="ls_tab_add_crash">
+							<pretty:link id="crashHistoryAdd" mappingId="addCrashReport" styleClass="ls_tab_add_crash">
 								#{messages.notes_crashhistory_addnew}
 							</pretty:link>
 					  	</li>  					  
@@ -176,6 +176,7 @@
 							<ui:param  name="reportBean" value="#{crashHistoryBean}"/>
 							<ui:param  name="attachTo" value="crashHistoryReportToolImageId"/>
 							<ui:param  name="exportExcel" value="TRUE"/>
+    	 					<ui:param name="context" value="crashHistory" />
 						</ui:include>
 		    		</a4j:form>
 		    		</a4j:region>
@@ -191,6 +192,7 @@
 		             		<ui:param name="clearTitle" value="#{messages.notes_crashhistory_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_crashhistory_clearInst}"/>
 		             		<ui:param name="clearRerender" value="crashHistorySearch:header,crashHistory_Table_Form:items"/>
+    	 					<ui:param name="context" value="crashHistory" />
 		    			</ui:include>    							
 		            </h:panelGroup>					
 		     
@@ -201,6 +203,7 @@
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{crashHistoryBean}"/>	
 					<ui:param name="reRender" value="crashHistory_Table_Form:items" />
+    	 			<ui:param name="context" value="crashHistory" />
 				</ui:include>    
 				
 		        <h:panelGroup layout="block" styleClass="panel_sw">
@@ -216,6 +219,7 @@
 		<ui:include src="/includes/emailReportPopup.xhtml">	
 			<ui:param  name="id" value="crashHistoryReportEmailModal" />
 			<ui:param  name="reportBean" value="#{crashHistoryBean}"/>
+    	 	<ui:param name="context" value="crashHistory" />
 		</ui:include>
 	</h:outputText>
 	

@@ -12,7 +12,9 @@
 	
 
 	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" />
+		<ui:include src="/includes/reports/subNavigation.xhtml" >
+    	 	<ui:param name="context" value="assets" />
+    	</ui:include>
 	</ui:define>
 
 
@@ -90,11 +92,13 @@
              								<ui:param name="assetData" value="#{assetReportBean.assetData}"/>             						
              								<ui:param name="assetColumns" value="#{assetReportBean.assetColumns}"/>
              								<ui:param name="assetTable" value="#{assetReportTable.table}"/>
+    	 									<ui:param name="context" value="assets" />
     									</ui:include>   
     								</div>	
     							</a4j:form>
     							<ui:include src="/includes/editAssetColumns.xhtml">
 									<ui:param name="assetColumns" value="#{assetReportBean.assetColumns}"/>										
+    	 							<ui:param name="context" value="assets" />
 								</ui:include>    
 								
 								</div>

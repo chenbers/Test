@@ -20,6 +20,7 @@
    <ui:define name="content">
        <ui:include src="/includes/overviewHeader.xhtml">
          <ui:param name="showContextMenu" value="true"/>
+ 		 <ui:param name="context" value="groupOverview" />
        </ui:include>
        
        <c:if test="#{navigationBean.group.type eq 'FLEET'}">

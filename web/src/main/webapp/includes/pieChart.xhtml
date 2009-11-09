@@ -21,6 +21,7 @@
 								<ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
 								<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
         	    				<ui:param name="duration" value="#{duration}" />
+                   				<ui:param name="context" value="#{context}-pieChart"/> 
 							</ui:include>								
 						
 					</div>
@@ -35,11 +36,11 @@
 								<td width="381" valign="top">
 									<!-- Start pie chart -->
 					  				<rich:panel id="piepanel" style="#{pieheight};#{piewidth}">
-					  					<h:inputHidden value="#{pieDef}" id="hiddenField2"/>
+					  					<h:inputHidden value="#{pieDef}" id="#{context}-hiddenField2"/>
 					  													  										
 										<div id="chartdiv" align="center"></div>									
 										<script type="text/javascript">
-											var targetElement1 = document.getElementById("hiddenField2");
+											var targetElement1 = document.getElementById("#{context}-hiddenField2");
 							
 											var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "#{piewidth}", "#{pieheight}", "0", "0");										
 											chart2.setDataXML(targetElement1.value);									   	   

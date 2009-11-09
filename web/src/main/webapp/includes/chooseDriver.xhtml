@@ -23,6 +23,7 @@
       <ui:include src="/includes/chooseDriver.xhtml">
         <ui:param name="reRender" value="myStuff" />
         <ui:param name="editorBean" value="#{myBean}" />
+       <ui:param name="context" value="pageName" />
       </ui:include>
 -->
 
@@ -64,7 +65,7 @@
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
-            <a4j:commandLink id="chooseDriverChoose" action="#{editorBean.chooseDriver}" onclick="Richfaces.hideModalPanel('chooseDriver')" reRender="chooseDriverTable,#{reRender}" value="#{messages.chooseDriver_choose}">
+            <a4j:commandLink id="#{context}-chooseDriverChoose" action="#{editorBean.chooseDriver}" onclick="Richfaces.hideModalPanel('chooseDriver')" reRender="chooseDriverTable,#{reRender}" value="#{messages.chooseDriver_choose}">
               <f:param name="driverID" value="#{item.driverID}" />
               <f:param name="immediate" value="#{immediate}" />
             </a4j:commandLink>

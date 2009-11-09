@@ -77,6 +77,7 @@
 	        	<ui:param name="distance" value="#{driverLoc.dist}" />
 	        	<ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
 	        	<ui:param name="messageDevicePhone" value="#{messages.livefleet_devicePhone}" /> 
+ 		 		<ui:param name="context" value="liveFleet" />
 			</ui:include>
 		</ui:repeat>
 	</rich:panel>
@@ -113,7 +114,7 @@
 									<f:facet name="header">
 										<h:outputText value="#{messages.livefleet_driver}" />
 									</f:facet>
-                                    <pretty:link mappingId="driverPerformance">
+                                    <pretty:link id="liveFleetsDriverPerformance" mappingId="driverPerformance">
                                        <h:outputText value="#{item.driver.person.fullName}"/>
                                        <f:param value="#{item.driver.driverID}"/>
                                     </pretty:link>
@@ -124,7 +125,7 @@
 										<h:outputText value="#{messages.livefleet_vehicle}" />
 									</f:facet>
                            
-                                    <pretty:link mappingId="vehiclePerformance">
+                                    <pretty:link id="liveFleetsVehiclePerformance" mappingId="vehiclePerformance">
                                        <h:outputText value="#{item.vehicle.name}"/>
                                        <f:param value="#{item.vehicle.vehicleID}"/>
                                     </pretty:link>
@@ -167,12 +168,12 @@
 						   <rich:dataGrid id="fleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="carlegend" 
       		  											columns="3" border="0" cellpadding="5" cellspacing="5">
       		  			
-                               <pretty:link mappingId="dashboard">
+                               <pretty:link id="liveFleetsDashboard1" mappingId="dashboard">
                                   <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>
                                   <f:param value="#{group.groupID}"/>
                                </pretty:link>
                                <h:outputText value=" "/>
-                               <pretty:link mappingId="dashboard">
+                               <pretty:link id="liveFleetsDashboard2" mappingId="dashboard">
                                   <h:outputText value="#{group.name}"/>
                                   <f:param value="#{group.groupID}"/>
                                </pretty:link>
@@ -234,7 +235,7 @@
 							<h:inputText id="addressTextBox" size="40" value="" onkeypress="checkEnter(event);" />
 						</td>
 						<td width="165" rowspan="2">
-							<button name="locationButton" value="" class="left" onclick="processForm('addressTextBox', 'countComboBox');">
+							<button id="liveFleetSearch" name="locationButton" value="" class="left" onclick="processForm('addressTextBox', 'countComboBox');">
 								<span class="search">#{messages.livefleet_locate}</span>
 							</button>
 						</td>

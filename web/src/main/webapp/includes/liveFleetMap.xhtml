@@ -68,6 +68,7 @@
       	        	<ui:param name="vehicleTime" value="#{driverLocation.time}" />
       	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
       	        	<ui:param name="vehicleAddress" value="#{driverLocation.address}" />
+    				<ui:param name="context" value="#{context}-liveFleetMap" />
       			</ui:include>
       		</ui:repeat>
       	</rich:panel>
@@ -88,7 +89,7 @@
                                              align="top" />&#160;</h:outputText>
                            </f:facet>
                         </a4j:status>
-   						<a4j:commandButton id="liveFleetMapRefresh" image="/images/ico_refresh.png" immediate="true"
+   						<a4j:commandButton id="#{context}-liveFleetMapRefresh" image="/images/ico_refresh.png" immediate="true"
    							reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"  alt="#{messages.refresh}"
    							value="#{messages.refresh}">
    						</a4j:commandButton>

@@ -17,10 +17,10 @@
 		zoomLevel(Required)
 		readOnly(required)
 		formName(required)
-		uniqueID(optional) I had to add this because I was using the map in different includes. This is optional
+		context(required) I had to add this because I was using the map in different includes.
         mapId(optional) This indicates which map api will be used. ('google','microsoft') Default is 'google'
 	 -->
-	<h:panelGroup id="#{uniqueID}-mapPanel">
+	<h:panelGroup id="#{context}-mapPanel">
 		
 			<div class="add_section_title">#{messages.group_default_view}</div>
 			<div style="width: 100%; height: 100%">
@@ -32,7 +32,7 @@
 							id="addressTextBox"
 							value="" tabindex="6"/></td>
 						<td width="50" align="left">
-							<a4j:commandButton id="groupMapViewSearch" immediate="true" tabindex="7" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
+							<a4j:commandButton  id="#{context}-groupMapViewSearch" immediate="true" tabindex="7" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
                      
 								<span class="search">
 									#{messages.group_locate}
@@ -186,9 +186,9 @@
 							};
 							initMap();
 						</script> 
-						<h:inputHidden id="#{uniqueID}-latvalue" value="#{latValue}" />
-						<h:inputHidden id="#{uniqueID}-longvalue" value="#{longValue}" />
-						<h:inputHidden id="#{uniqueID}-zoomlevel" value="#{zoomLevel}" />
+						<h:inputHidden id="#{context}-latvalue" value="#{latValue}" />
+						<h:inputHidden id="#{context}-longvalue" value="#{longValue}" />
+						<h:inputHidden id="#{context}-zoomlevel" value="#{zoomLevel}" />
 						</td>
 			
 					</tr>

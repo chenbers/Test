@@ -20,7 +20,10 @@
 
   To use:
   ==============
-  <ui:include src="/includes/timePicker.xhtml" />
+  <ui:include src="/includes/timePicker.xhtml" >
+      <ui:param name="context" value="#{context}-overallScoreBox"/> 
+  </ui:include>
+  
 -->
 
   <ui:composition>
@@ -35,9 +38,9 @@
       <c:set var="id" value="timePicker" />
     </c:if>
 
-    <h:inputHidden id="#{id}" value="#{value}" />
+    <h:inputHidden id="#{context}-#{id}" value="#{value}" />
 
-    <select id="#{id}Time" size="1" onchange="updateTime(this.value, '#{id}')">
+    <select id="#{context}-#{id}Time" size="1" onchange="updateTime(this.value, '#{id}')">
       <c:forEach begin="0" end="#{(720 / increment) - 1}" var="step">
         <c:set var="minutes" value="#{step * increment}" />
         <c:set var="hours" value="#{((minutes - (minutes % 60)) / 60)}" />
@@ -48,7 +51,7 @@
       </c:forEach>
     </select>
 
-    <select id="#{id}Afternoon" size="1" onchange="updateAfternoon(this.value, '#{id}')">
+    <select id="#{context}-#{id}Afternoon" size="1" onchange="updateAfternoon(this.value, '#{context}-#{id}')">
       <c:if test="#{(empty value) or (value lt 720)}">
         <option value="false" selected="selected"><h:outputText value="#{messages.timePicker_am}" /></option>
         <option value="true"><h:outputText value="#{messages.timePicker_pm}" /></option>

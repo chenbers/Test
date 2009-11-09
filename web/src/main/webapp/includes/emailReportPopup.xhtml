@@ -56,7 +56,7 @@
 		</h:panelGroup>
         <div class="popupactions">
           
-          <button type="submit" tabindex="5"  class="left" onclick="Richfaces.hideModalPanel('#{id}'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+          <button id="emailReportPopUpSubmit" type="submit" tabindex="5"  class="left" onclick="Richfaces.hideModalPanel('#{id}'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
           
           <a4j:commandButton tabindex="2" rendered="#{not empty reportList}" id="emailReportPopupEmail1" 
           				action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{id}_form" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;">

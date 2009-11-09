@@ -25,6 +25,7 @@
                         <ui:param name="id" value="idlePercentage" />
                         <ui:param name="includeDetailsLink" value="false"/>
                         <ui:param name="maximized" value="#{false}"/>
+                        <ui:param name="context" value="#{context}-idlingPercentagePanel"/>
                     </ui:include>
     			</div>
     		</div>	
@@ -43,9 +44,9 @@
                      </table>
                 	<div style="height:#{xyheight};width:#{xywidth}">
                    	<div id="idlePercentChartdiv" align="center"/>
-		  			<h:inputHidden value="#{idlePercentageBean.chartDef}" id="hiddenIPChartField"/>
+		  			<h:inputHidden value="#{idlePercentageBean.chartDef}" id="#{context}-hiddenIPChartField"/>
 					<script type="text/javascript">
-						var targetChartElement = document.getElementById("hiddenIPChartField");
+						var targetChartElement = document.getElementById("#{context}-hiddenIPChartField");
 						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf?", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
 						chart2.setDataXML(targetChartElement.value);	
 						chart2.setTransparent(true);								   	   

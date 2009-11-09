@@ -13,6 +13,7 @@
   <ui:param name="filterValue" value="#{vehiclesBean.filterValue}" />
   <ui:param name="page" value="#{vehiclesBean.page}" />
   <ui:param name="editorBean" value="#{vehiclesBean}" />
+  <ui:param name="context" value="vehiclesTable"/>		
 
   <ui:define name="columns">
     <rich:column rendered="#{vehiclesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">

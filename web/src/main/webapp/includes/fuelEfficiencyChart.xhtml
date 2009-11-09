@@ -20,6 +20,7 @@
 						<ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
 						<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
             			<ui:param name="duration" value="#{duration}" />
+    					<ui:param name="context" value="#{context}-fuelEfficiencyChart" />
 					</ui:include>	
 
 			</div>
@@ -28,7 +29,7 @@
 		<div class="panel_w">
 			<div class="panel_content">
 				<rich:panel id="barpanel" style="#{height};#{width}">
-	  				<h:inputHidden value="#{barDef}" id="hiddenField4"/>
+	  				<h:inputHidden value="#{barDef}" id="#{chart}-hiddenField4"/>
 					  				
 					<div id="chartdiv3" align="center"></div>
 					<script type="text/javascript">

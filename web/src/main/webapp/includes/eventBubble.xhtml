@@ -13,6 +13,7 @@
 	            <ui:param name="eventDistance" value="#{violation.distance}" />
 	            <ui:param name="eventSpeed" value="#{violation.speed}" />
 	            <ui:param name="eventSeverity" value="#{violation.severity}" />
+    			<ui:param name="context" value="#{context}-pageName" />
 		</ui:include>
 -->
 
@@ -47,6 +48,7 @@
 				<li>#{messages.eventBubble_severity}:
                   <ui:include src="/includes/severityGraphic.xhtml">
                      <ui:param name="severity" value="#{eventSeverity}" />
+     				 <ui:param name="context" value="#{context}-eventBubble" />
                   </ui:include>
                 </li>
 			</ul>

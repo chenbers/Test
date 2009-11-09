@@ -23,9 +23,10 @@
          align="center" style="margin: 0 auto 0 auto;">
          <tr>
             <td valign="top" width="130">
-               <ui:include src="/includes/adminSideNav.xhtml">
+               <ui:include src="/includes/navigation/adminSideNav.xhtml">
                   <ui:param name="selectedAction" value="#{selectedAction}" />
                   <ui:param name="parentAction" value="#{parentAction}" />
+                  <ui:param name="context" value="adminLayout"/> 
                </ui:include>
             </td>
             <td valign="top">

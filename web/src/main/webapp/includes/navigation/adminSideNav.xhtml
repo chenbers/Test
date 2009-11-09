@@ -12,12 +12,13 @@
   ==============
     selectedAction: The action that's selected; may be a child action.
       parentAction: The action whose child actions are visible; optional.
-
+	       context: The current page name, purpose is to give id attributes in tags in the included page(s) unique values for testing
   To use:
   ==============
-  <ui:include src="/includes/adminSideNav.xhtml">
+  <ui:include src="/includes/navigation/adminSideNav.xhtml">
     <ui:param name="selectedAction" value="action2_a" />
     <ui:param name="parentAction" value="action2" />
+    <ui:param name="context" value="pageName"/> 
   </ui:include>
  -->
   <ui:composition>
@@ -31,6 +32,7 @@
                   <ui:param name="mappingId" value="adminPeople"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminPeople') ? 'true' : 'false'}"/>
                   <ui:param name="value" value="#{messages.adminSideNav_go_adminPeople}"/>
+                  <ui:param name="context" value="#{context}-vlt-people"/>
                </ui:include>
           </td>
         </tr>
@@ -43,7 +45,8 @@
                   <ui:param name="action" value="add"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddPerson') ? 'true' : 'false'}"/>
                   <ui:param name="value" value="#{messages.adminSideNav_go_adminAddPerson}"/>
-                  <ui:param name="linkId" value="verticalLeftSubTableAct1"/>
+<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct1"/>-->
+                  <ui:param name="context" value="#{context}-vlst-people"/>
               </ui:include>
             </td>
           </tr>
@@ -55,7 +58,8 @@
                <ui:param name="mappingId" value="adminVehicles"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminVehicles') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminVehicles}"/>
-            </ui:include>
+                   <ui:param name="context" value="#{context}-vlt-vehicles"/>
+           </ui:include>
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminVehicles'}">
@@ -67,7 +71,8 @@
                   <ui:param name="action" value="add"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddVehicle') ? 'true' : 'false'}"/>
                   <ui:param name="value" value="#{messages.adminSideNav_go_adminAddVehicle}"/>
-                  <ui:param name="linkId" value="verticalLeftSubTableAct2"/>
+<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct2"/>-->
+                  <ui:param name="context" value="#{context}-vlst-vehicles"/>
               </ui:include>
             </td>
           </tr>
@@ -79,6 +84,7 @@
                <ui:param name="mappingId" value="adminDevices"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminDevices') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminDevices}"/>
+               <ui:param name="context" value="#{context}-vlt-devices"/>
             </ui:include>
           </td>
         </tr>
@@ -102,6 +108,7 @@
                <ui:param name="mappingId" value="adminZones"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminZones') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminZones}"/>
+               <ui:param name="context" value="#{context}-vlt-zones"/>
             </ui:include>
           </td>
         </tr>
@@ -112,6 +119,7 @@
                <ui:param name="mappingId" value="adminZoneAlerts"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminZoneAlerts') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminZoneAlerts}"/>
+               <ui:param name="context" value="#{context}-vlt-zoneAlerts"/>
             </ui:include>
           </td>
         </tr>
@@ -124,7 +132,9 @@
                   <ui:param name="action" value="add"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddZoneAlert') ? 'true' : 'false'}"/>
                   <ui:param name="value" value="#{messages.adminSideNav_go_adminAddZoneAlert}"/>
-                  <ui:param name="linkId" value="verticalLeftSubTableAct3"/>
+<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct3"/>-->
+				  <ui:param name="context" value="#{context}-vlst-zoneAlerts"/>
+				  
                </ui:include>
             </td>
           </tr>
@@ -136,6 +146,7 @@
                <ui:param name="mappingId" value="adminRedFlags"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminRedFlags') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminRedFlags}"/>
+                   <ui:param name="context" value="#{context}-vlt-redFlags"/>
             </ui:include>
           </td>
         </tr>
@@ -148,7 +159,9 @@
                   <ui:param name="action" value="add"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddRedFlag') ? 'true' : 'false'}"/>
                   <ui:param name="value" value="#{messages.adminSideNav_go_adminAddRedFlag}"/>
-                  <ui:param name="linkId" value="verticalLeftSubTableAct4"/>
+<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct4"/>-->
+                  <ui:param name="context" value="#{context}-vlst-AddRedFlag"/>
+
                </ui:include>
             </td>
           </tr>
@@ -160,6 +173,7 @@
                <ui:param name="mappingId" value="adminReportSchedules"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminReportSchedules') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminReportSchedules}"/>
+               <ui:param name="context" value="#{context}-vlt-reportSchedules"/>
             </ui:include>
           </td>
         </tr>
@@ -172,7 +186,8 @@
                   <ui:param name="action" value="add"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddReportSchedule') ? 'true' : 'false'}"/>
                   <ui:param name="value" value="#{messages.adminSideNav_go_adminAddReportSchedule}"/>
-                  <ui:param name="linkId" value="verticalLeftSubTableAct5"/>
+<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct5"/>-->
+                  <ui:param name="context" value="#{context}-vlst-addReportSchedule"/>
                   
                </ui:include>
             </td>
@@ -185,6 +200,7 @@
                <ui:param name="mappingId" value="adminOrganization"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminOrganization') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminOrganization}"/>
+               <ui:param name="context" value="#{context}-vlt-organization"/>
             </ui:include>
           </td>
         </tr>
@@ -195,6 +211,7 @@
                <ui:param name="mappingId" value="adminSpeedByStreet"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminSBSCR') ? 'true' : 'false'}"/>
                <ui:param name="value" value="#{messages.adminSideNav_go_adminSBSCR}"/>
+               <ui:param name="context" value="#{context}-vlt-sbscr"/>
             </ui:include>
           </td>
         </tr>

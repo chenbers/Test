@@ -20,6 +20,7 @@
       <ui:include src="/includes/editColumnsPopup.xhtml">
         <ui:param name="bean" value="#{myBean}" />
         <ui:param name="reRender" value="myStuff" />
+     	<ui:param name="context" value="#{context}-pageName" />
       </ui:include>
 -->
 	
@@ -43,13 +44,13 @@
 
         <rich:dataGrid id="editGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
-           <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" id="col" tabindex="1"/>
+           <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" id="#{context}-col" tabindex="1"/>
            <h:outputText value="#{bean.tableColumns[col].colLabel}" />
           </h:outputLabel>
     	</rich:dataGrid>
 
         <div class="popupactions">
-          <a4j:commandButton id="editColumnsPopupCancel"
+          <a4j:commandButton id="#{context}-editColumnsPopupCancel"
             styleClass="left"
             action="#{bean.tablePref.cancelEdit}" 
             ajaxSingle="true" 
@@ -60,7 +61,7 @@
             </span>
           </a4j:commandButton>
           <h:outputText value=" " />
-          <a4j:commandButton id="editColumnsPopupSave"
+          <a4j:commandButton id="#{context}-editColumnsPopupSave"
           	type="submit"
             action="#{bean.tablePref.saveColumns}"                 
             oncomplete="Richfaces.hideModalPanel('editColumns')" 

@@ -13,6 +13,7 @@
   <ui:param name="filterValue" value="#{redFlagAlertsBean.filterValue}" />
   <ui:param name="page" value="#{redFlagAlertsBean.page}" />
   <ui:param name="editorBean" value="#{redFlagAlertsBean}" />
+  <ui:param name="context" value="redFlagAlertsTable"/>		
 
   <ui:define name="columns">
     <rich:column rendered="#{redFlagAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">

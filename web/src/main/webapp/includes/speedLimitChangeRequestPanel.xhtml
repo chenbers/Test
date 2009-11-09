@@ -281,7 +281,7 @@
       <rich:message for="email" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
     </div>
     <div class="popupactions">
-      <button value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+      <button id="slcrpCancel" value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
       <a4j:commandButton id="slcrpSave" reRender="reRender" action="#{speedLimitChangeRequests.saveRequestsAction}" styleClass="left" onclick=""><span class="retrieve_password"><h:outputText value="#{messages.sbs_submit}" /></span></a4j:commandButton>
  	</div>
    </c:if>

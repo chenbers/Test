@@ -15,7 +15,7 @@
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="diagnostics_title">#{messages.team_emergency}</span>
 			<span class="panel_links">
-            <pretty:link mappingId="emergency">
+            <pretty:link id="#{context}-teamRecentEmergencyTitle" mappingId="emergency">
                 <f:param name="groupID" value="#{navigationBean.groupID}"/>
                 #{messages.team_emergencyShowAll}
             </pretty:link>
@@ -41,7 +41,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyVehicle}" />
 						</f:facet>
-                        <pretty:link mappingId="vehiclePerformance">
+                        <pretty:link id="#{context}-teamRecentEmergencyVehiclePerformance" mappingId="vehiclePerformance">
                             <f:param value="#{event.event.vehicle.vehicleID}"/>
                             #{event.vehicleName}
                         </pretty:link>
@@ -50,7 +50,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyDriver}" />
 						</f:facet>
-                        <pretty:link mappingId="driverPerformance">
+                        <pretty:link id="#{context}-teamRecentEmergencyDriverPerformance" mappingId="driverPerformance">
                             <f:param value="#{event.event.driver.driverID}"/>
                             #{event.driverName}
                         </pretty:link>
@@ -65,7 +65,7 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-                        <pretty:link mappingId="emergency">
+                        <pretty:link id="#{context}-teamRecentEmergencyEmergency" mappingId="emergency">
                             #{messages.team_emergencyDetails}
                              <f:param name="eventID" value="#{event.event.noteID}"/>
                         </pretty:link>

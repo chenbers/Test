@@ -9,10 +9,10 @@
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ul id="breadcrumb">
-		<a4j:repeat value="#{groupTreeNode.groupBreadCrumb}" var="crumb" rowKeyVar="rowKey">
+		<a4j:repeat value="#{groupTreeNode.groupBreadCrumb}" var="crumb" rowKeyVar="rowKey" id="breadcrumbItem">
 			<li class="#{(rowKey eq (groupTreeNode.breadCrumbCount - 1) and lastBreadCrumb eq null)?'last':''}">
                <h:graphicImage value="/images/x.gif" width="10" height="10" />
-               <pretty:link mappingId="dashboard">
+               <pretty:link id="#{context}-dashBoard" mappingId="dashboard">
                   <h:outputText value="#{crumb.label}"/>
                   <f:param value="#{crumb.id}"/>
                </pretty:link>

@@ -31,6 +31,7 @@
                         <ui:param name="groupID" value="#{overallScoreBean.groupID}"/>
                         <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
                         <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
+                        <ui:param name="context" value="#{context}-overallScore"/>
                     </ui:include>
     			</div>
     		</div>	
@@ -46,14 +47,15 @@
     	    					<ui:include src="/includes/overallScoreBox.xhtml">	
     								<ui:param name="overallScoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
             	  					<ui:param name="overallScore" value="#{overallScoreBean.overallScore}"/>             						
+                        			<ui:param name="context" value="#{context}-overallScore"/>
         						</ui:include>    							
     						</td>
     							
     	                    <td rowspan="2" width="">
     	                    	<div id="chartdiv" align="center"></div>
-    				  			<h:inputHidden value="#{overallScoreBean.overallPieDef}" id="hiddenField3"/>
+    				  			<h:inputHidden value="#{overallScoreBean.overallPieDef}" id="#{context}-hiddenField3"/>
     							<script type="text/javascript">
-    								var targetElement3 = document.getElementById("hiddenField3");
+    								var targetElement3 = document.getElementById("#{context}-hiddenField3");
     								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf?", "ChartId", "320", "300", "0", "1");										
     								chart2.setDataXML(targetElement3.value);	
     								chart2.setTransparent(true);								   	   
@@ -64,8 +66,10 @@
     	                 <tr>
     	                 	
     	                    <td align="center" valign="top" width="120">
-    							<ui:include src="/includes/scoreBoxLegend.xhtml"/>
-    	                    </td>
+    							<ui:include src="/includes/scoreBoxLegend.xhtml">
+                        			<ui:param name="context" value="#{context}-overallScore"/>
+                        		</ui:include>
+     	                    </td>
     	                 </tr>
     				</table>
     			</rich:panel>

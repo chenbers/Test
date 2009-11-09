@@ -32,6 +32,7 @@
 				<ui:param name="id" value="trend" />
 				<ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
                 <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
+                <ui:param name="context" value="#{context}-trend"/> 
 			</ui:include>
 			
 		</div>
@@ -42,9 +43,9 @@
 		<div class="panel_content">
 			<rich:panel id="xypanel" style="height:#{xyheight};width:#{xywidth}">
 				<div id="chartdivTrend" align="center"></div>
-				<h:inputHidden value="#{trendBean.lineDef}" id="hiddenFieldTrend" />
+				<h:inputHidden value="#{trendBean.lineDef}" id="#{context}-hiddenFieldTrend" />
 				<script type="text/javascript">
-					var trendTargetElement = document.getElementById("hiddenFieldTrend");
+					var trendTargetElement = document.getElementById("#{context}-hiddenFieldTrend");
         			var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");						   						   		
 					chart.setDataXML(trendTargetElement.value);
         			chart.setTransparent(true);
@@ -64,7 +65,7 @@
 					<tr class="dr-table-row rich-table-row dr-table-firstrow rich-table-firstrow tableOdd">
 						<c:if test="#{not scroll}">
 							<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="5%">
-								<h:selectBooleanCheckbox id="showCheckBox" value="#{trendBean.summaryItem.show}">
+								<h:selectBooleanCheckbox id="#{context}-showCheckBox" value="#{trendBean.summaryItem.show}">
 			                    	<a4j:support event="onclick" reRender="xypanel,hiddenFieldTrend" action="#{trendBean.saveStateAction}">
 			                        	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
 			                            <f:param name="selected" value="#{trendBean.summaryItem.groupID}"/>
@@ -84,6 +85,7 @@
 							<ui:include src="/includes/scoreBox.xhtml">
 								<ui:param name="scoreStyle" value="#{trendBean.summaryItem.scoreableEntityPkg.style}" />
 								<ui:param name="score" value="#{trendBean.summaryItem.score}" />
+                				<ui:param name="context" value="#{context}-trend"/> 
 							</ui:include>
 						</td>
 						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 15}%">
@@ -101,7 +103,7 @@
 				
 				
 				<rich:column width="5%" rendered="#{not scroll}">
-					<h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}">
+					<h:selectBooleanCheckbox id="#{context}-showCheckBox" value="#{item.show}">
                     	<a4j:support event="onclick" reRender="xypanel,hiddenFieldTrend" action="#{trendBean.saveStateAction}">
                         	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
                             <f:param name="selected" value="#{item.groupID}"/>
@@ -119,7 +121,7 @@
 				</rich:column>
 				<rich:column width="65%">
 					<f:facet name="header">
-						<a4j:commandLink id="trendGroupSort"
+						<a4j:commandLink id="#{context}trendGroupSort"
 							value="#{messages.trendReport_header_divisionTeam}"
 							reRender="xypanel,bottomScroller,items"
 							action="#{trendBean.sort}" ajaxSingle="true">
@@ -135,14 +137,14 @@
 								value="/images/sort_available.gif" />
 						</a4j:commandLink>
 					</f:facet>
-					<pretty:link mappingId="dashboard">
+					<pretty:link id="#{context}-trendGroup" mappingId="dashboard" >
 						<f:param value="#{item.groupID}" />
 						<h:outputText value="#{item.groupName}" />
 					</pretty:link>
 				</rich:column>
 				<rich:column width="15%" styleClass="trendTableScore">
 					<f:facet name="header">
-						<a4j:commandLink id="trendScoreSort" value="#{messages.trendReport_header_score}"
+						<a4j:commandLink id="#{context}-trendScoreSort" value="#{messages.trendReport_header_score}"
 							reRender="xypanel,bottomScroller,items"
 							action="#{trendBean.sort}" ajaxSingle="true">
 							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
@@ -161,10 +163,11 @@
 						<ui:param name="scoreStyle"
 							value="#{item.scoreableEntityPkg.style}" />
 						<ui:param name="score" value="#{item.score}" />
+                		<ui:param name="context" value="#{context}-trendItem"/> 
 					</ui:include>
 				</rich:column>
 				<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}"
-					id="crashes">
+					id="#{context}-crashes">
 					<f:facet name="header">
 						<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
 					</f:facet>

@@ -20,6 +20,7 @@
     					<ui:include src="/includes/breadcrumb.xhtml">
     						<ui:param name="groupTreeNode"
     							value="#{navigationBean.groupTreeNode}" />
+                    		<ui:param name="context" value="#{context}-overviewHeader"/> 
     					</ui:include>
     				</li>
     				
@@ -51,13 +52,13 @@
     			<rich:menuItem ajaxSingle="true" rendered="true"
     					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif" 
     					onclick="Richfaces.showModalPanel('overview_emailPopup');return false;" 
-    					value="#{messages.contextMenu_email_this_report}" id="#{ajaxForm}_email" submitMode="none">
+    					value="#{messages.contextMenu_email_this_report}" id="#{context}-#{ajaxForm}_email" submitMode="none">
     			</rich:menuItem>
     	
     	
     			<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
     				icon="/images/ico_pdf.gif" value="#{messages.contextMenu_export_to_pdf}"
-    				action="#{dashBoardReportBean.exportReportToPDF}" id="export_menu_item">
+    				action="#{dashBoardReportBean.exportReportToPDF}" id="#{context}-export_menu_item">
     				<a4j:actionparam assignTo="#{dashBoardReportBean.reports}" converter="SimpleBeanConverter" value="#{dashBoardReportBean.reportList}"/>
     			</rich:menuItem>
     		</rich:contextMenu>
@@ -68,6 +69,7 @@
 		<ui:param  name="reportList" value="#{dashBoardReportBean.reportList}"/>
 		<ui:param name="id" value="overview_emailPopup" />
 		<ui:param name="reportBean" value="#{dashBoardReportBean}" />
+        <ui:param name="context" value="#{context}-overviewHeader"/> 
     </ui:include>
 	
 	

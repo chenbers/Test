@@ -23,6 +23,7 @@
   ==============
   <ui:include src="/includes/listPicker.xhtml">
     <ui:param name="bean" value="#{myListPicker}" />
+    <ui:param name="context" value="#{context}-pageName" />
   </ui:include>
 -->
 
@@ -48,25 +49,25 @@
         <td width="8%" align="center">
           <table border="0" cellspacing="4" cellpadding="0">
             <tr>
-              <td><a href="#" onclick="pickMove('right', false); return false;" style="cursor:default"><h:graphicImage id="#{id}move_right" value="/images/btn_move_right.png" style="border:0px" /></a></td>
+              <td><a href="#" onclick="pickMove('right', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-#{id}move_right" value="/images/btn_move_right.png" style="border:0px" /></a></td>
             </tr>
             <tr>
-              <td><a href="#" onclick="pickMove('left', false); return false;" style="cursor:default"><h:graphicImage id="#{id}move_left" value="/images/btn_move_left.png" style="border:0px" /></a></td>
+              <td><a href="#" onclick="pickMove('left', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-#{id}move_left" value="/images/btn_move_left.png" style="border:0px" /></a></td>
             </tr>
             <tr>
               <td><hr noshade="noshade" /></td>
             </tr>
             <tr>
-              <td><a href="#" onclick="pickMove('right', true); return false;" style="cursor:default"><h:graphicImage id="#{id}move_all_right" value="/images/btn_move_all_right.png" style="border:0px" /></a></td>
+              <td><a href="#" onclick="pickMove('right', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-#{id}move_all_right" value="/images/btn_move_all_right.png" style="border:0px" /></a></td>
             </tr>
             <tr>
-              <td><a href="#" onclick="pickMove('left', true); return false;" style="cursor:default"><h:graphicImage id="#{id}move_all_left" value="/images/btn_move_all_left.png" style="border:0px" /></a></td>
+              <td><a href="#" onclick="pickMove('left', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-#{id}move_all_left" value="/images/btn_move_all_left.png" style="border:0px" /></a></td>
             </tr>
           </table>
         </td>
         <td width="46%">
           <h:inputHidden id="#{id}PickedIDs" value="#{bean.pickedIDs}" />
-          <h:selectManyListbox id="#{id}Picked" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
+          <h:selectManyListbox id="#{context}-#{id}Picked" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
             <f:selectItems value="#{bean.picked}" />
           </h:selectManyListbox>
         </td>

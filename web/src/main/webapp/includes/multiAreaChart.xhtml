@@ -20,9 +20,9 @@
 
 <rich:panel style="height:#{height};width:#{width}">
 	<div id="#{ChartDivID}" ></div>
-	<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
+	<h:inputHidden value="#{lineChartDef}" id="#{context}-#{hiddenFieldID}" />
 	<script type="text/javascript">
-		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
+		var #{tartgetElementVar} = document.getElementById("#{context}-#{hiddenFieldID}");
 		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
 
 		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   

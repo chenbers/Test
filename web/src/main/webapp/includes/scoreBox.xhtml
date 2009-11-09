@@ -20,6 +20,7 @@
 	<ui:include src="/includes/scoreBox.xhtml">
             <ui:param name="score" value="#{yourBean.Score}" />
             <ui:param name="scoreStyle" value="#{yourBean.ScoreCSSStyle}" /> 
+            <ui:param name="context" value="#{context}-pageName"/> 
 	</ui:include>
     
     
@@ -29,7 +30,7 @@
     <h:panelGrid columns="1" styleClass="#{scoreStyle} score" cellpadding="0" cellspacing="0"> 
         <h:panelGroup>
             <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
-            <pretty:link mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+            <pretty:link id="#{context}-score" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
                 <h:outputText value="#{score}" converter="ScoreConverter" />
                 <f:param value="#{item}" />
             </pretty:link>

@@ -30,6 +30,8 @@
                     <ui:param name="groupID" value="#{mpgBean.groupID}"/>
                     <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
                     <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
+    				<ui:param name="context" value="#{context}-mpgChart" />
+                    
                 </ui:include>
             </div>
         </div>
@@ -61,7 +63,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_name_column}" />
                                     </f:facet>
-                                    <pretty:link mappingId="dashboard">
+                                    <pretty:link id="#{context}-mggChartDashboard" mappingId="dashboard">
                                         <f:param value="#{item.groupID}"/>
                                         <h:outputText value="#{item.entityName}" />
                                     </pretty:link>

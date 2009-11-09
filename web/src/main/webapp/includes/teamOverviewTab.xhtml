@@ -9,8 +9,11 @@
         	<ui:include src="/includes/overallScoreBox.xhtml">	
 				<ui:param name="overallScoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />									
           		<ui:param name="overallScore" value="#{teamOverviewBean.selectedOverallScore}" />             						
+                <ui:param name="context" value="#{context}-teamOverviewTab"/> 
     		</ui:include>    							
-			<ui:include src="/includes/scoreBoxLegend.xhtml"/>
+			<ui:include src="/includes/scoreBoxLegend.xhtml">
+                <ui:param name="context" value="#{context}-teamOverviewTab"/> 
+            </ui:include>
 		</td>
         <td width="">
 				<div id="tab_#{type}Div" align="center"></div>

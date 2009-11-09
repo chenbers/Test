@@ -25,8 +25,9 @@
 			align="center" style="margin: 0 auto 0 auto;">
 			<tr>
 				<td valign="top" width="130"><ui:include
-					src="/includes/adminSideNav.xhtml">
+					src="/includes/navigation/adminSideNav.xhtml">
 					<ui:param name="selectedAction" value="go_adminOrganization" />
+            		<ui:param name="context" value="organization"/>
 				</ui:include></td>
 				<td valign="top">
 				  <a4j:form id="display-form">
@@ -119,7 +120,7 @@
       								</h:panelGroup>
 								</a4j:region>
 								<rich:dragIndicator id="indicator" />
-                                <!-- onDrop of a tree node reRender tree. Also set the deleay to 200 -->
+                                <!-- onDrop of a tree node reRender tree. Also set the delay to 200 -->
 								<script type="text/javascript">
 									function doRefreshTree(){
 										setTimeout('refreshTree()', 200)
@@ -152,6 +153,7 @@
       									<ui:include src="/includes/admin/groupView.xhtml">
       										<ui:param name="groupTreeNode"
       											value="#{organizationBean.selectedGroupNode}" />
+      										<ui:param name="context" value="organizationView"/>
       									</ui:include>
       								</ui:fragment>
       
@@ -160,6 +162,7 @@
       									<ui:include src="/includes/admin/groupEdit.xhtml">
       										<ui:param name="groupTreeNode"
       											value="#{organizationBean.tempGroupTreeNode}" />
+      										<ui:param name="context" value="organization"/>
       									</ui:include>
       
       								</ui:fragment>
@@ -177,6 +180,8 @@
                                              value="#{organizationBean.selectedDriverTreeNode.device}" />
                                         <ui:param name="vehicle"
                                              value="#{organizationBean.selectedDriverTreeNode.vehicle}" />
+                                        <ui:param name="context" value="organizationDriver"/>
+                                             
       								</ui:include>
                                 </ui:fragment>
                                 
@@ -188,6 +193,7 @@
                                              value="#{organizationBean.selectedUserTreeNode.user}" />
                                        <ui:param name="person"
                                              value="#{organizationBean.selectedUserTreeNode.user.person}" />
+                                       <ui:param name="context" value="organizationUser"/>
                                    </ui:include>
                                 </ui:fragment>
 
@@ -200,7 +206,8 @@
                                             value="#{organizationBean.selectedVehicleTreeNode.driver}" />
                                         <ui:param name="device"
                                    	        value="#{organizationBean.selectedVehicleTreeNode.device}" />
-      								</ui:include>
+    										<ui:param name="context" value="organization"/>
+        								</ui:include>
       						   </ui:fragment>
                            
                                <ui:fragment
@@ -212,7 +219,8 @@
                                              value="#{organizationBean.selectedDeviceTreeNode.vehicle}" />
                                        <ui:param name="driver"
                                              value="#{organizationBean.selectedDeviceTreeNode.driver}" />
-                                    </ui:include>
+   										<ui:param name="context" value="organization"/>
+                                       </ui:include>
                                </ui:fragment>
 							</h:panelGroup>
                            </div>
@@ -234,6 +242,7 @@
 	      <ui:param name="deleteBean" value="#{organizationBean}" />
 	      <ui:param name="explanation" value="#{messages.group_delete_confirmation}" />
 	      <ui:param name="reRender" value="contentPanel,organizationTreePanel" />
+      		<ui:param name="context" value="organization" />
 	    </ui:include>
     
 	    <script type="text/javascript">	

@@ -14,6 +14,7 @@
                   <ui:param name="disableLabels" value="true" /> default = false
 		          <ui:param name="pYAxisName" value="string" />
 		          <ui:param name="sYAxisName" value="string" />
+    			  <ui:param name="context" value="#{context}-pageName" />
          </ui:include>
       -->
       
@@ -29,9 +30,9 @@
       <div id="#{ChartDivID}"></div>
       <rich:panel id="#{ScriptDivID}">
          
-        <h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
+        <h:inputHidden value="#{lineChartDef}" id="#{context}-#{hiddenFieldID}" />
       	<script type="text/javascript">
-      		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
+      		var #{tartgetElementVar} = document.getElementById("#{context}-#{hiddenFieldID}");
       		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombiDY2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
       
       		<h:outputText rendered="#{hideLabels}">

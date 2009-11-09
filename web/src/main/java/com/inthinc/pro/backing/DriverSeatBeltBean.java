@@ -82,7 +82,15 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
     @Override
     protected void initTrends()
     {
-        seatBeltScoreHistoryOverall = createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+    	if (durationBean.getDuration() == Duration.DAYS){
+    		
+    		seatBeltScoreHistoryOverall = createFusionMultiLineDefDays(getDriver().getDriverID(), ScoreType.SCORE_SEATBELT);   		
+    	}
+    	else{
+    		
+    		seatBeltScoreHistoryOverall = createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+    	}
+//        seatBeltScoreHistoryOverall = createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
     }
 
     public Integer getSeatBeltScore()
@@ -173,7 +181,14 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
+        if (durationBean.getDuration() == Duration.DAYS){
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDefDays(getDriver().getDriverID(), scoreTypes));
+        }
+        else {
+        	
+        	reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
+        }
         reportCriteria.setMainDataset(events);
 
         return reportCriteria;

@@ -24,7 +24,8 @@
         <t:saveState value="#{dashDetailBoardBean}"></t:saveState>
 		
            <ui:include src="/includes/overviewHeader.xhtml">
-             <ui:param name="showContextMenu" value="true"/>
+             	<ui:param name="showContextMenu" value="true"/>
+     	 		<ui:param name="context" value="executive" />
            </ui:include>
     		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
     			<tr>	
@@ -33,7 +34,8 @@
     					<!-- START OVERALL/R PANEL -->
     					<!-- leave reRenderList alone -->
     					<ui:include src="/includes/overallScore.xhtml">
-                           <ui:param name="zorder" value="6" />
+                           	<ui:param name="zorder" value="6" />
+     	 					<ui:param name="context" value="executive" />
                         </ui:include>
     					<!-- END PANEL -->
     					<div class="spacer"></div>
@@ -44,7 +46,8 @@
                             <ui:param name="xywidth" value="445"/>  
                             <ui:param name="zorder" value="6"/>	
                             <ui:param name="scroll" value="true"/>	
-                            
+     	 					<ui:param name="context" value="executive" />
+	                           
     					</ui:include>
     					<!-- END PANEL -->
      					<div class="spacer"></div>
@@ -54,6 +57,7 @@
                             <ui:param name="xyheight" value="350"/>
                             <ui:param name="xywidth" value="440"/>  
                             <ui:param name="zorder" value="6"/>	
+      	 					<ui:param name="context" value="executive" />
     					</ui:include>
     					<!-- END MPG -->	
     
@@ -75,12 +79,14 @@
                             <ui:param name="xyheight" value="350"/>
                             <ui:param name="xywidth" value="440"/>  
                             <ui:param name="zorder" value="6"/>	
+     	 					<ui:param name="context" value="executive" />
     					</ui:include>
     					<div class="spacer"></div>
     					<ui:include src="/includes/idlingPercentagePanel.xhtml">	
                             <ui:param name="xyheight" value="350"/>
                             <ui:param name="xywidth" value="440"/>  
                             <ui:param name="zorder" value="6"/>	
+      	 					<ui:param name="context" value="executive" />
     					</ui:include>
 						<div class="spacer"></div>
 						<!-- START FLEET MAP PANEL -->
@@ -96,6 +102,7 @@
 							<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
 							<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
 		                    <ui:param name="detailLink" value="#{requestScope.mapDetailedDashboardLink}"/>
+     	 					<ui:param name="context" value="executive" />
 						</ui:include>
 						<!-- END PANEL -->
     				</td>

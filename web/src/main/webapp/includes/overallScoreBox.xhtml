@@ -5,7 +5,8 @@
         <div class="middle">
         	<ui:include src="scoreBox.xhtml">
                     <ui:param name="score" value="#{overallScore}" />
-                    <ui:param name="scoreStyle" value="#{overallScoreStyle}" /> 
+                    <ui:param name="scoreStyle" value="#{overallScoreStyle}" />
+                    <ui:param name="context" value="#{context}-overallScoreBox"/> 
         	</ui:include>
             <h:outputText value="#{messages.overallscore_box_subtitle}"/>
         </div>

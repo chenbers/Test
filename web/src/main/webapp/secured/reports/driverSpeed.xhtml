@@ -45,7 +45,7 @@
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName} " />
-            <pretty:link mappingId="driverPerformance">
+            <pretty:link id="driverSpeedDriverPerformance" mappingId="driverPerformance">
                <h:outputText value="#{driverSpeedBean.driver.person.fullName}"/>
                <f:param value="#{driverSpeedBean.driver.driverID}"/>
             </pretty:link>
@@ -56,6 +56,7 @@
             <ui:include src="/includes/breadcrumb.xhtml">
                <ui:param name="groupTreeNode" value="#{driverSpeedBean.groupTreeNodeImpl}" />
                <ui:param name="lastBreadCrumb" value="true" />
+ 				<ui:param name="context" value="driverSpeed" />
             </ui:include>
          </li>
       
@@ -63,7 +64,7 @@
 			<ul id="breadcrumb">
 				<li>
                      <h:graphicImage value="/images/x.gif" width="10" height="10" />
-                     <pretty:link mappingId="driverPerformance">
+                     <pretty:link id="driverSpeedPerson" mappingId="driverPerformance">
                         <h:outputText value="#{driverSpeedBean.driver.person.fullNameWithId}"/>
                         <f:param value="#{driverSpeedBean.driver.driverID}"/>
                      </pretty:link>
@@ -151,6 +152,7 @@ var firstLoad = new Boolean(true);
   							<ui:param name="showDetail" value="TRUE" />  
                             <ui:param name="mappingId" value="driverPerformance" />
                             <ui:param name="entityId" value="#{driverSpeedBean.driver.driverID}" />
+ 							<ui:param name="context" value="driverSpeed" />
 						</ui:include>	
 					</div>
 				</div>
@@ -175,6 +177,7 @@ var firstLoad = new Boolean(true);
 										<ui:include src="../../includes/scoreBox.xhtml">
 									            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING']}" />
 									            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING']}" />
+ 												<ui:param name="context" value="driverSpeed1" />
 										</ui:include>
 									</td>
 								  </tr>
@@ -243,12 +246,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+ 											<ui:param name="context" value="driverSpeedOverall" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING']}" />
 								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING']}" /> 
+ 											<ui:param name="context" value="driversSpeedOverall" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -279,12 +284,14 @@ var firstLoad = new Boolean(true);
 									            <ui:param name="hideLabels" value="true" />
 									            <ui:param name="hideLegend" value="true" />
 									            <ui:param name="hideNames" value="true" />
+ 												<ui:param name="context" value="driverSpeedTwentyOne" />
 									</ui:include>
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_21_30']}" />
 								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_21_30']}" /> 
+ 											<ui:param name="context" value="driverSpeedTwentyOne" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -315,12 +322,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+ 												<ui:param name="context" value="driverSpeedThirtyOne" />
 									</ui:include>
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_31_40']}" />
 								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_31_40']}" /> 
+ 												<ui:param name="context" value="driverSpeedThirtyOne" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -352,12 +361,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+ 												<ui:param name="context" value="driverSpeedFortyOne" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_41_54']}" />
 								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_41_54']}" /> 
+ 												<ui:param name="context" value="driverSpeedFortyOne" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -387,12 +398,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+ 												<ui:param name="context" value="driverSpeedFiftyFive" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_55_64']}" />
 								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_55_64']}" /> 
+ 												<ui:param name="context" value="driverSpeedFiftyFive" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -422,12 +435,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+ 												<ui:param name="context" value="driverSpeedSixtyFive" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_65_80']}" />
 								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_65_80']}" /> 
+ 												<ui:param name="context" value="driverSpeedSixtyFive" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -616,7 +631,7 @@ var firstLoad = new Boolean(true);
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
+          <button id="driverSpeedNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           
           <a4j:commandLink id="driverSpeedConfirm" action="#{driverSpeedBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
@@ -643,7 +658,10 @@ var firstLoad = new Boolean(true);
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('SLChangeRequestPanel')" />
       </f:facet>
-	  <ui:include src="../../includes/speedLimitChangeRequestPanel.xhtml" />
+	  <ui:include src="../../includes/speedLimitChangeRequestPanel.xhtml" >
+	  		<ui:param name="context" value="driverSpeed" />
+	  </ui:include>
+	  
 	</rich:modalPanel>	
 <!-- END SBS MODAL -->
 

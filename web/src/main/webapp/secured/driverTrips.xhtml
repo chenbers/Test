@@ -294,6 +294,7 @@
                     <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
                     <ui:param name="eventLocation" value="#{trip.startAddress}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+ 					<ui:param name="context" value="driverTripsStart" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
@@ -302,6 +303,7 @@
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
                     <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+  					<ui:param name="context" value="driverTripsEnd" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_INPROGRESS" />
@@ -310,6 +312,7 @@
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
                     <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+ 					<ui:param name="context" value="driverTripsInProgress" />
                 </ui:include>
             </ui:repeat>
             <ui:repeat value="#{driverTripsBean.allEvents}" var="violation">
@@ -328,6 +331,7 @@
                     <ui:param name="eventSeverity" value="#{violation.severity}" />
                     <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
                     <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
+ 					<ui:param name="context" value="driverTrips" />
                 </ui:include>
             </ui:repeat>
         </rich:panel>
@@ -338,7 +342,7 @@
             <ul id="grid_nav">
                 <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
                 <li class="l grid_title">#{messages.drivertrip_title}:
-                     <pretty:link mappingId="driverPerformance">
+                     <pretty:link id="driverTripsDriverPerformance1" mappingId="driverPerformance">
                         <h:outputText value=" #{driverTripsBean.identifiableEntityBean.name}"/>
                         <f:param value="#{driverTripsBean.identifiableEntityBean.id}"/>
                      </pretty:link>
@@ -350,6 +354,7 @@
                   <ui:include src="/includes/breadcrumb.xhtml">
                     <ui:param name="groupTreeNode" value="#{driverTripsBean.groupTreeNodeImpl}" />
                     <ui:param name="lastBreadCrumb" value="true" />
+  					<ui:param name="context" value="driverTrips" />
                    </ui:include>
                 </li>
                
@@ -357,7 +362,7 @@
                   <ul id="breadcrumb">
                      <li>
                         <h:graphicImage value="/images/x.gif" width="10" height="10" />
-                        <pretty:link mappingId="driverPerformance">
+                        <pretty:link id="driverTripsDriverPerformance2" mappingId="driverPerformance">
                            <h:outputText value="#{driverTripsBean.identifiableEntityBean.longName}"/>
                            <f:param value="#{driverTripsBean.identifiableEntityBean.id}"/>
                         </pretty:link>
@@ -733,7 +738,7 @@
 	                    <span class="map">
 		                    <h:outputText value="">#{messages.drivertrip_vehicle}</h:outputText><rich:spacer width="5" />
                             <c:if test="#{driverTripsBean.selectedVehicle ne null}">
-                              <pretty:link mappingId="vehiclePerformance">
+                              <pretty:link id="driverTripsVehiclePerformance" mappingId="vehiclePerformance">
                                  <h:outputText value="#{driverTripsBean.selectedVehicle.name}"/>
                                  <f:param value="#{driverTripsBean.selectedVehicle.vehicleID}"/>
                                </pretty:link>

@@ -15,7 +15,7 @@
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="event">#{messages.team_safetyEvents}</span>
 			<span class="panel_links">
-            <pretty:link mappingId="safetyWithGroupID">
+            <pretty:link id="#{context}-teamRecentSafetyWithGroupId" mappingId="safetyWithGroupID">
                 <f:param name="groupID" value="#{navigationBean.groupID}"/>
                 #{messages.team_safetyEventsShowAll}
             </pretty:link>
@@ -40,7 +40,7 @@
 						<f:facet name="header" >
 							<h:outputText value="#{messages.team_safetyEventsDriver}" />
 						</f:facet>
-                        <pretty:link mappingId="driverPerformance">
+                        <pretty:link id="#{context}-teamRecentSafetyDriverPerformance" mappingId="driverPerformance">
                             <f:param value="#{event.event.driver.driverID}"/>
                             #{event.driverName}
                         </pretty:link>
@@ -56,7 +56,7 @@
 							<h:outputText value="" />
 						</f:facet>
                         <!-- this is a hack, <c:if> would not work inside <rich:column>, need to come back to this and clean it up -->            
-                        <pretty:link mappingId="#{event.event.eventType == 'SPEEDING' ? 'driverPerformanceSpeed' : 'driverPerformanceStyle'}">
+                        <pretty:link id="#{context}-teamRecentSafetySpeedOrStyle" mappingId="#{event.event.eventType == 'SPEEDING' ? 'driverPerformanceSpeed' : 'driverPerformanceStyle'}">
                             <f:param value="#{event.event.driver.driverID}"/>
                             #{messages.team_safetyEventsDetails}
                         </pretty:link>

@@ -13,7 +13,7 @@
 			<div class="panel_title">
 				<span class="top5">#{messages.teamTop_top}</span>
 				<span class="panel_links">
-                   <pretty:link mappingId="driversReportWithGroup">
+                   <pretty:link id="#{context}-teamTopWithGroupId" mappingId="driversReportWithGroup">
                         <h:outputText value="#{messages.teamTop_showAll}"/>
                        <f:param value="#{navigationBean.groupID}"/>
                    </pretty:link>
@@ -39,7 +39,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.teamTop_driver}" />
 						</f:facet>
-                        <pretty:link mappingId="driverPerformance">
+                        <pretty:link id="#{context}-teamTopDriverPerformance" mappingId="driverPerformance">
                               #{topItem.driverName}
                               <f:param value="#{topItem.driverScore.driver.driverID}"/>
                         </pretty:link>
@@ -51,6 +51,7 @@
                         <ui:include src="/includes/scoreBox.xhtml">  
                             <ui:param name="scoreStyle" value="#{topItem.style}"/>                                  
                             <ui:param name="score" value="#{topItem.driverScore.score}"/>                                    
+                    		<ui:param name="context" value="#{context}-teamTop"/> 
                         </ui:include> 
 					</rich:column>
 
@@ -70,7 +71,7 @@
 			<div class="panel_title">
 				<span class="thumbsdown">#{messages.teamTop_bottom}</span>
 				<span class="panel_links">
-				   <pretty:link mappingId="driversReportWithGroup">
+				   <pretty:link id="#{context}-teamBottomDriverPerformanceWithGroup" mappingId="driversReportWithGroup">
                         <h:outputText value="#{messages.teamTop_showAll}"/>
                        <f:param  value="#{navigationBean.groupID}"/>
                    </pretty:link>
@@ -100,7 +101,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.teamTop_driver}" />
 						</f:facet>
-						<pretty:link mappingId="driverPerformance">
+						<pretty:link id="#{context}-teamBottomDriverPerformance" mappingId="driverPerformance">
                             #{bottomItem.driverName}
 							<f:param value="#{bottomItem.driverScore.driver.driverID}"/>
 						</pretty:link>
@@ -113,6 +114,7 @@
                         <ui:include src="/includes/scoreBox.xhtml">  
                             <ui:param name="scoreStyle" value="#{bottomItem.style}"/>                                  
                             <ui:param name="score" value="#{bottomItem.driverScore.score}"/>                                    
+                     		<ui:param name="context" value="#{context}-teamBottom"/> 
                         </ui:include> 
 												
 					</rich:column>

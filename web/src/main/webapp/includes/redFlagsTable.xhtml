@@ -37,7 +37,7 @@
                 	<div id="#{item.redFlag.event.noteID}" style="display: none;">
                 	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 						<f:facet name="header">
-                            <pretty:link mappingId="driverPerformance">
+                            <pretty:link id="#{context}-redFlagsTableDriverPerformance" mappingId="driverPerformance">
                                 <f:param value="#{item.redFlag.event.driver.driverID}"/>
                                 #{item.driverName}
                             </pretty:link>
@@ -84,7 +84,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_driver}" />
                 </f:facet>
-                <pretty:link mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
+                <pretty:link id="#{context}-redFlagsTableDriverPerformanceUnknown" mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
                 	<f:param value="#{item.redFlag.event.driver.driverID}"/>
                                 #{item.driverName}
                 </pretty:link>
@@ -95,7 +95,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_vehicle}" />
                 </f:facet>
-                <pretty:link mappingId="vehiclePerformance">
+                <pretty:link id="#{context}-redFlagsTableVehiclePerformance" mappingId="vehiclePerformance">
                     <f:param value="#{item.redFlag.event.vehicle.vehicleID}"/>
                     #{item.vehicleName}
                 </pretty:link>
@@ -120,14 +120,14 @@
                     <h:outputText value="" />
                 </f:facet>
                  
- 								<a4j:commandLink id="redFlagsTableClear" rendered="#{item.redFlag.event.forgiven == 0}" 
+ 								<a4j:commandLink id="#{context}-redFlagsTableClear" rendered="#{item.redFlag.event.forgiven == 0}" 
  										title="#{messages.notes_redflags_clear}" 
  										oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel');" 
  										reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.notes_redflags_clear}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
- 								<a4j:commandLink id="redFlagsTable_excluded" rendered="#{item.redFlag.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{redFlagsBean.includeEventAction}" 
+ 								<a4j:commandLink id="#{context}-redFlagsTable_excluded" rendered="#{item.redFlag.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{redFlagsBean.includeEventAction}" 
  												reRender="#{clearRerender}" ajaxSingle="true"  oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" id="include"/>
@@ -166,9 +166,9 @@
             </h:panelGroup>
 
             <div class="popupactions">
-            <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="no"><h:outputText
+            <button id="#{context}-redFlagsTableNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="no"><h:outputText
                 value="#{messages.button_no}" /></span></button>
-            <a4j:commandButton id="redFlagsTableYes" action="#{redFlagsBean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel'); initializeTable()"
+            <a4j:commandButton id="#{context}-redFlagsTableYes" action="#{redFlagsBean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel'); initializeTable()"
                 onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
                 eventsQueue="redFlagsTableForm" >
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>

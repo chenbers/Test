@@ -241,6 +241,7 @@
 			<ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
 			<ui:param name="eventLocation" value="#{trip.startAddress}" />
 			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+    	 	<ui:param name="context" value="crashReportStart" />
 		</ui:include>
 		<ui:include src="/includes/tripBubble.xhtml">
 			<ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
@@ -249,6 +250,7 @@
 			<ui:param name="eventLocation" value="#{trip.endAddress}" />
 			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+    	 	<ui:param name="context" value="crashReportEnd" />
 		</ui:include>
 
 
@@ -271,7 +273,7 @@
 			                      		<f:param value="#{crashReportBean.crashReport.crashReportID}"/>
 			                      	</pretty:urlbuffer>
 			                      	
-			                      	<button type="button" class="left" onclick="location.href = '#{requestScope.editCrashLink}';">
+			                      	<button id="crashReportEdit" type="button" class="left" onclick="location.href = '#{requestScope.editCrashLink}';">
 			                      		<span class="edit">
 			                      	 		<h:outputText value="#{messages.button_edit}" />
 			                      	 	</span>
@@ -302,14 +304,14 @@
 										</h:outputText>								
 										
 							            <h:outputText value="#{messages.crashReport_vehicle}:" />
-						                <pretty:link mappingId="vehiclePerformance" rendered="#{crashReportBean.crashReport.vehicleID != null}">
+						                <pretty:link id="crashHistoryVehiclePerformance" mappingId="vehiclePerformance" rendered="#{crashReportBean.crashReport.vehicleID != null}">
 						                    <f:param value="#{crashReportBean.crashReport.vehicleID}"/>
 										<h:outputText value="#{crashReportBean.crashReport.vehicle.name}"/>	
 						                </pretty:link>								
 										
 			                            <h:outputText value="#{messages.crashReport_driver}:" />
 			                                      
-						                <pretty:link mappingId="driverPerformance" rendered="#{crashReportBean.crashReport.driver.person.fullName != 'Unknown Driver'}">
+						                <pretty:link id="crashHistoryDriverPerformance" mappingId="driverPerformance" rendered="#{crashReportBean.crashReport.driver.person.fullName != 'Unknown Driver'}">
 						                    <f:param value="#{crashReportBean.crashReport.driverID}"/>
 											<h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>	
 						                </pretty:link>

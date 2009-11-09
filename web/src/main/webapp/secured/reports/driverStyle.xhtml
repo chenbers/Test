@@ -43,7 +43,7 @@
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName} " />
-            <pretty:link mappingId="driverPerformance">
+            <pretty:link id="driversStyleDriverPerformance" mappingId="driverPerformance">
                <h:outputText value="#{driverStyleBean.driver.person.fullName}"/>
                <f:param value="#{driverStyleBean.driver.driverID}"/>
             </pretty:link>
@@ -54,6 +54,7 @@
 			<ui:include src="/includes/breadcrumb.xhtml">
 				<ui:param name="groupTreeNode" value="#{driverStyleBean.groupTreeNodeImpl}" />
 				<ui:param name="lastBreadCrumb" value="true" />
+				<ui:param name="context" value="driverStyle" />
 			</ui:include>
 		</li>
 		
@@ -61,7 +62,7 @@
 			<ul id="breadcrumb">
 				<li>
                      <h:graphicImage value="/images/x.gif" width="10" height="10" />
-                     <pretty:link mappingId="driverPerformance">
+                     <pretty:link id="driverStylePerson" mappingId="driverPerformance">
                         <h:outputText value="#{driverStyleBean.driver.person.fullNameWithId}"/>
                         <f:param value="#{driverStyleBean.driver.driverID}"/>
                      </pretty:link>
@@ -148,6 +149,7 @@ var firstLoad = new Boolean(true);
   							<ui:param name="showDetail" value="TRUE" /> 
                             <ui:param name="mappingId" value="driverPerformance"/> 
                             <ui:param name="entityId" value="#{driverStyleBean.driver.driverID}"/>
+							<ui:param name="context" value="driverStyle" />
 						</ui:include>		
 					</div>
 				</div>
@@ -172,6 +174,7 @@ var firstLoad = new Boolean(true);
 										<ui:include src="../../includes/scoreBox.xhtml">
 									            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
 									            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE']}" />
+												<ui:param name="context" value="driverStyleOverallScore" />
 										</ui:include>
 									</td>
 								  </tr>
@@ -238,12 +241,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+											<ui:param name="context" value="driverStyleOverall" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
 								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE']}" /> 
+												<ui:param name="context" value="driverStyleOverall" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -272,12 +277,14 @@ var firstLoad = new Boolean(true);
 									            <ui:param name="hideLabels" value="true" />
 								            	<ui:param name="hideLegend" value="true" />
 								            	<ui:param name="hideNames" value="true" />
+												<ui:param name="context" value="driverStyleHardBrake" />
 									</ui:include>
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" />
 								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" /> 
+											<ui:param name="context" value="driverStyleHardBrake" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -306,12 +313,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+											<ui:param name="context" value="driverStyleHardAccel" />
 									</ui:include>
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" />
 								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" /> 
+											<ui:param name="context" value="driverStyleHardAccel" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -343,12 +352,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+											<ui:param name="context" value="driverStyleHardTurn" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_TURN']}" />
 								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_TURN']}" /> 
+											<ui:param name="context" value="driverStyleHardTurn" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -378,12 +389,14 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="hideLabels" value="true" />
 								            <ui:param name="hideLegend" value="true" />
 								            <ui:param name="hideNames" value="true" />
+											<ui:param name="context" value="driverStyleHardBump" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" />
 								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" /> 
+											<ui:param name="context" value="driverStyleHardBump" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -498,6 +511,7 @@ var firstLoad = new Boolean(true);
 								</f:facet>
                                 <ui:include src="/includes/severityGraphic.xhtml">
                                     <ui:param name="severity" value="#{item.event.severity}" />
+ 											<ui:param name="context" value="driverStyle" />
                                 </ui:include>
 							</rich:column>
 							
@@ -560,7 +574,7 @@ var firstLoad = new Boolean(true);
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
+          <button id="driverStyleNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink action="#{driverStyleBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"

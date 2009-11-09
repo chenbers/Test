@@ -23,6 +23,7 @@
  					<ui:include src="/includes/breadcrumb.xhtml">
  						<ui:param name="groupTreeNode"
  							value="#{navigationBean.groupTreeNode}" />
+    					<ui:param name="context" value="details" />
  					</ui:include>
  				</li>
             <!-- 
@@ -36,7 +37,7 @@
                         <table cellpadding="0" cellspacing="0">
                             <tr>
                                 <td class="tab #{dashBoardDetailBean.tabType == 'TREND' ? 'selected_tab' : ''}">
-                                    <pretty:link mappingId="detailedDashboard">
+                                    <pretty:link id="detailsTrend" mappingId="detailedDashboard">
                                         <f:param value="#{dashBoardDetailBean.groupID}"/>
                                         <f:param value="TREND"/>
                                         <h:graphicImage value="/images/ico_line.png" />
@@ -46,7 +47,7 @@
                             </tr>
                             <tr>
                                 <td class="tab #{dashBoardDetailBean.tabType == 'OVERALL' ? 'selected_tab' : ''}">
-                                    <pretty:link mappingId="detailedDashboard">
+                                    <pretty:link id="detailsOverall" mappingId="detailedDashboard">
                                         <f:param value="#{dashBoardDetailBean.groupID}"/>
                                         <f:param value="OVERALL"/>
                                         <h:graphicImage value="/images/ico_overall.png" />
@@ -56,7 +57,7 @@
                             </tr>
                                 <tr>
                                     <td class="tab #{dashBoardDetailBean.tabType == 'MAP' ? 'selected_tab' : ''}">
-                                        <pretty:link mappingId="detailedDashboard">
+                                        <pretty:link id="detailsMap" mappingId="detailedDashboard">
                                             <f:param value="#{dashBoardDetailBean.groupID}"/>
                                             <f:param value="MAP"/>
                                             <h:graphicImage value="/images/ico_map.png" />
@@ -66,7 +67,7 @@
                                 </tr>
                             <tr>
                                 <td class="tab #{dashBoardDetailBean.tabType == 'MPG' ? 'selected_tab' : ''}">
-                                    <pretty:link mappingId="detailedDashboard">
+                                    <pretty:link id="detailsMpg" mappingId="detailedDashboard">
                                         <f:param value="#{dashBoardDetailBean.groupID}"/>
                                         <f:param value="MPG"/>
                                         <h:graphicImage value="/images/ico_gas.png" />
@@ -87,6 +88,7 @@
                                         <ui:param name="includeTable" value="true"/>
                                         <ui:param name="maximized" value="true"/>
                                         <ui:param name="zorder" value="6"/> 
+    									<ui:param name="context" value="details" />
                                     </ui:include>
                                 </c:when>
                                 
@@ -102,6 +104,7 @@
                                         <ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
                                         <ui:param name="detailLink" value="#{requestScope.dashboardLink}"/>
                                         <ui:param name="maximized" value="true"/>
+     									<ui:param name="context" value="details" />
                                     </ui:include>
                                 </c:when>>
                                 
@@ -112,6 +115,7 @@
                                         <ui:param name="maximized" value="true"/>
                                         <ui:param name="zorder" value="6"/> 
                                         <ui:param name="scroll" value="false"/> 
+ 					   					<ui:param name="context" value="details" />
                                     </ui:include>
                                 </c:when>>
                                 
@@ -136,6 +140,7 @@
                                                         <ui:param name="groupID" value="#{overallScoreBean.groupID}"/>
                                                         <ui:param name="detailLink" value="#{requestScope.dashboardLink}"/>
                                                         <ui:param name="maximized" value="true"/>
+    													<ui:param name="context" value="details" />
                                                     </ui:include>
                                                     
                                                 </div>
@@ -156,6 +161,7 @@
                             					    					<ui:include src="/includes/overallScoreBox.xhtml">	
                             												<ui:param name="overallScoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
                             				        	  					<ui:param name="overallScore" value="#{overallScoreBean.overallScore}"/>             						
+    																		<ui:param name="context" value="details" />
                             				    						</ui:include>   
                             				    						</rich:panel> 							
                             										</td>
@@ -177,7 +183,10 @@
                             					                 <tr>
                             					                 	
                             					                    <td align="center" valign="top" width="120">
-                            											<ui:include src="/includes/scoreBoxLegend.xhtml"/>
+                            											<ui:include src="/includes/scoreBoxLegend.xhtml">
+                            											    <ui:param name="context" value="details" />
+                            											</ui:include>
+                            											
                             					                    </td>
                             					                 </tr>
                             								</table>
