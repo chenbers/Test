@@ -103,16 +103,22 @@
 									id="driversDataTable" var="item" styleClass="datagrid" sortMode="single"
 									rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">
 								
-								<rich:column sortBy="#{item.position}">
+								<rich:column sortBy="#{item.position}" width="10%">
 									<f:facet name="header">
 										<h:outputText value="#" />
 									</f:facet>
 									<h:outputText value="#{item.position}"/>
 								</rich:column>
 								
-								<rich:column sortBy="#{item.driver.person.fullName}">
+								<rich:column sortBy="#{item.driver.person.fullName}" width="40%">
 									<f:facet name="header">
-										<h:outputText value="#{messages.livefleet_driver}" />
+										<h:panelGroup>
+											<h:outputText value="#{messages.livefleet_driver_part1}" />
+											<h:panelGroup rendered="#{messages.livefleet_driver_part2 ne ''}">
+												<f:verbatim><br/></f:verbatim>
+												<h:outputText value="#{messages.livefleet_driver_part2}" />
+											</h:panelGroup>
+										</h:panelGroup>
 									</f:facet>
                                     <pretty:link id="liveFleetsDriverPerformance" mappingId="driverPerformance">
                                        <h:outputText value="#{item.driver.person.fullName}"/>
@@ -120,9 +126,15 @@
                                     </pretty:link>
 								</rich:column>
 	
-								<rich:column sortBy="#{item.vehicle.name}">
+								<rich:column sortBy="#{item.vehicle.name}" width="40%">
 									<f:facet name="header">
-										<h:outputText value="#{messages.livefleet_vehicle}" />
+										<h:panelGroup>
+											<h:outputText value="#{messages.livefleet_vehicle_part1}" />
+											<h:panelGroup rendered="#{messages.livefleet_vehicle_part2 ne ''}">
+												<f:verbatim><br/></f:verbatim>									
+												<h:outputText value="#{messages.livefleet_vehicle_part2}" />
+											</h:panelGroup>
+										</h:panelGroup>												
 									</f:facet>
                            
                                     <pretty:link id="liveFleetsVehiclePerformance" mappingId="vehiclePerformance">
@@ -131,7 +143,7 @@
                                     </pretty:link>
 								</rich:column>
 	
-								<rich:column sortBy="#{item.vehicle.groupID}">
+								<rich:column sortBy="#{item.vehicle.groupID}" width="10%">
 									<f:facet name="header">
 									
 									</f:facet>
