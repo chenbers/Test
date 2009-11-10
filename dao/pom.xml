@@ -3,12 +3,12 @@
   <parent>
     <groupId>com.inthinc.pro</groupId>
     <artifactId>root</artifactId>
-    <version>1.0.25</version>
+    <version>1.0.26-SNAPSHOT</version>
   </parent>
 
   <groupId>com.inthinc.pro.dao</groupId>
   <artifactId>dao</artifactId>
-  <version>1.0.25</version>
+  <version>1.0.26-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Pro Portal - Data Layer</name>
