@@ -79,7 +79,7 @@
                 <tr>
                   <td><h:outputText value="#{messages.button_search}" /></td>
                   <td>
-                    <h:inputText id="filterTable" value="#{filterValue}" class="text" size="20" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('admin-table-form:adminTableSearch').onclick(); return false; } return true;" />
+                    <h:inputText id="#{context}-filterTable" value="#{filterValue}" class="text" size="20" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('admin-table-form:adminTableSearch').onclick(); return false; } return true;" />
                   </td>
                 </tr>
               </table>
@@ -124,15 +124,15 @@
           <a4j:region>
           <div class="datagrid_panel" style="width: 790px">
 
-            <rich:dataTable id="dataTable" value="#{items}" var="item" rowKeyVar="index" styleClass="datagrid"
+            <rich:dataTable id="#{context}" value="#{items}" var="item" rowKeyVar="index" styleClass="datagrid"
               rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
               <rich:column>
                 <f:facet name="header">
-                  <h:selectBooleanCheckbox value="#{editorBean.selectAll}">
-                    <a4j:support event="onclick" action="#{editorBean.doSelectAll}" ajaxSingle="true" reRender="dataTable" limitToList="true" />
+                  <h:selectBooleanCheckbox value="#{editorBean.selectAll}" id="selectAll">
+                    <a4j:support event="onclick" action="#{editorBean.doSelectAll}" ajaxSingle="true" reRender="#{context}" limitToList="true" />
                   </h:selectBooleanCheckbox>
                 </f:facet>
-                <h:selectBooleanCheckbox value="#{item.selected}">
+                <h:selectBooleanCheckbox id="select" value="#{item.selected}">
                   <a4j:support event="onclick" reRender="confirmDelete" limitToList="true" />
                 </h:selectBooleanCheckbox>
               </rich:column>
@@ -141,15 +141,15 @@
                 <f:facet name="header">
                   <h:outputText value=" " />
                 </f:facet>
-                <a4j:htmlCommandLink id="#{context}-adminTableEdit" action="#{editorBean['edit']}" value="#{messages.adminTable_edit}">
+                <a4j:htmlCommandLink id="edit" action="#{editorBean['edit']}" value="#{messages.adminTable_edit}">
                   <f:param name="editID" value="#{item.id}" />
                 </a4j:htmlCommandLink>
               </rich:column>
             </rich:dataTable>
 
           </div>
-    	  <rich:spacer style="display:block" height="5px"/>
-          <rich:datascroller id="bottomScroller" for="dataTable" reRender="recordCounts,dataTable" page="#{page}" renderIfSinglePage="false"/>
+<!--    	  <rich:spacer style="display:block" height="5px"/>-->
+<!--          <rich:datascroller id="#{context}-dataTableScroller" for="#{context}" reRender="recordCounts, #{context}" page="#{page}" renderIfSinglePage="false"/>-->
           
           </a4j:region>
           </a4j:outputPanel>
@@ -159,18 +159,18 @@
     </a4j:form>
 
    
-    <ui:include src="confirmDelete.xhtml">
+    <ui:include src="../confirmDelete.xhtml">
       <ui:param name="deleteBean" value="#{editorBean}" />
-      <ui:param name="reRender" value="dataTable,recordCounts,bottomScroller" />
+      <ui:param name="reRender" value="#{context}-adminTableItems,recordCounts,#{context}-dataTableScroller" />
       <ui:param name="deleteItems" value="#{editorBean.selectedItems}" />
-      <ui:param name="context" value="#{context}-adminTable" />
+      <ui:param name="context" value="#{context}" />
     </ui:include>
 
-    <ui:include src="editColumnsPopup.xhtml">
+    <ui:include src="../editColumnsPopup.xhtml">
       <ui:param name="bean" value="#{editorBean}" />
-      <ui:param name="reRender" value="dataTable" />
+      <ui:param name="reRender" value="#{context}" />
       <ui:param name="deleteItems" value="#{editorBean.selectedItems}" />
-      <ui:param name="context" value="#{context}-adminTable" />
+      <ui:param name="context" value="#{context}" />
     </ui:include>
     
     </a4j:region>

@@ -12,6 +12,7 @@
   <ui:param name="helpFile" value="Admin_Red_Flags.htm" />
   <ui:param name="ajaxPanels" value="tablePanel"/>
   <ui:param name="title" value="#{messages.adminHeader_redFlags}"/>
+  <ui:param name="context" value="redFlags"/>
   
   <ui:define name="content">
 
@@ -38,7 +39,7 @@
               </div>
             </div>
 
-            <ui:include src="/includes/redFlagAlertsTable.xhtml" />
+            <ui:include src="/includes/admin/redFlagAlertsTable.xhtml" />
 
             <div class="panel_sw">
               <div class="panel_statusbar"></div>

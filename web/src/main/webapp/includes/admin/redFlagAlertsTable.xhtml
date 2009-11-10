@@ -16,17 +16,17 @@
   <ui:param name="context" value="redFlagAlertsTable"/>		
 
   <ui:define name="columns">
-    <rich:column rendered="#{redFlagAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+    <rich:column id="name" rendered="#{redFlagAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_name}" /></f:facet>
       <a4j:htmlCommandLink id="redFlagsAlertsTableName" action="#{redFlagAlertsBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </a4j:htmlCommandLink>
     </rich:column>
-    <rich:column rendered="#{redFlagAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
+    <rich:column id="description" rendered="#{redFlagAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_description}" /></f:facet>
       <h:outputText value="#{item.description}" />
     </rich:column>
-    <rich:column rendered="#{redFlagAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
+    <rich:column id="type" rendered="#{redFlagAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_type}" /></f:facet>
       <c:set var="typeMessage" value="redFlag_#{item.type}" />
       <h:outputText value="#{messages[typeMessage]}" />

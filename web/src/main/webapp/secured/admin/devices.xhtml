@@ -11,6 +11,7 @@
   <ui:param name="helpFile" value="Admin_Devices.htm" />
   <ui:param name="ajaxPanels" value="tablePanel"/>
   <ui:param name="title" value="#{messages.adminHeader_devices}"/>
+  <ui:param name="context" value="devices"/>
   
   <ui:define name="content">
 
@@ -35,7 +36,7 @@
               </div>
             </div>
 
-            <ui:include src="/includes/devicesTable.xhtml" />
+            <ui:include src="/includes/admin/devicesTable.xhtml" />
 
             <div class="panel_sw">
               <div class="panel_statusbar"></div>

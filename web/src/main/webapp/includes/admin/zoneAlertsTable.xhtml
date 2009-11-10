@@ -16,17 +16,17 @@
   <ui:param name="context" value="zoneAlertsTable"/>		
 
   <ui:define name="columns">
-    <rich:column rendered="#{zoneAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+    <rich:column id="name" rendered="#{zoneAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_name}" /></f:facet>
       <a4j:htmlCommandLink id="zoneAlertsTableName" action="#{zoneAlertsBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </a4j:htmlCommandLink>
     </rich:column>
-    <rich:column rendered="#{zoneAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
+    <rich:column id="description" rendered="#{zoneAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
       <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_description}" /></f:facet>
       <h:outputText value="#{item.description}" />
     </rich:column>
-    <rich:column rendered="#{zoneAlertsBean.tableColumns['zone'].visible}" sortBy="#{item.zone.name}">
+    <rich:column id="zoneName" rendered="#{zoneAlertsBean.tableColumns['zone'].visible}" sortBy="#{item.zone.name}">
       <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_zone}" /></f:facet>
       <h:outputText value="#{item.zone.name}" />
     </rich:column>
