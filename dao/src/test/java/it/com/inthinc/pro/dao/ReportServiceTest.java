@@ -844,7 +844,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+    @Ignore
     public void getIdlingReportData() {
         // getDVScoresByGSE
 
