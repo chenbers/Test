@@ -295,6 +295,7 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeStartShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.startAddress}" />
+   					<ui:param name="context" value="vehicleTripsStart" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
@@ -302,6 +303,7 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
+    					<ui:param name="context" value="vehicleTripsEnd" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_INPROGRESS" />
@@ -309,6 +311,7 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
+    					<ui:param name="context" value="vehicleTripsInProgress" />
                 </ui:include>
             </ui:repeat>
             <ui:repeat value="#{vehicleTripsBean.allEvents}" var="violation">
@@ -327,6 +330,7 @@
                     <ui:param name="eventSeverity" value="#{violation.severity}" />
                     <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
                     <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
+    					<ui:param name="context" value="vehicleTrips" />
                 </ui:include>
             </ui:repeat>
         </rich:panel>
@@ -348,6 +352,7 @@
                   <ui:include src="/includes/breadcrumb.xhtml">
                      <ui:param name="groupTreeNode" value="#{vehicleTripsBean.groupTreeNodeImpl}" />
                      <ui:param name="lastBreadCrumb" value="true" />
+   					<ui:param name="context" value="vehicleTrips" />
                   </ui:include>
                </li>
                 <li class="l" style="margin-left: -15px;">
