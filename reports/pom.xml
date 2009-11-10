@@ -2,7 +2,7 @@
   <parent>
     <artifactId>root</artifactId>
     <groupId>com.inthinc.pro</groupId>
-    <version>1.0.25-SNAPSHOT</version>
+    <version>1.0.25</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
   <name>Pro Portal - Reporting</name>
   <packaging>jar</packaging>
   
-  <version>1.0.25-SNAPSHOT</version>
+  <version>1.0.25</version>
   
   <build>  
     <finalName>reports</finalName>
