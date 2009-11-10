@@ -395,32 +395,28 @@
                             <div class="panel_w">
                             <div class="panel_content">
 
-                            <table width="320" cellpadding="4" cellspacing="0" class="" id="">
+                            <table width="320" border="0" cellpadding="4" cellspacing="0" class="" id="">
                                 <tbody>
                                     <tr>
-                                        <td width="80">#{messages.drivertrip_start_date}</td>
-                                        <td width="178"><a4j:outputPanel id="calendarStart" layout="block">
+                                        <td width="120">#{messages.drivertrip_start_date}</td>
+                                        <td width="200"><a4j:outputPanel id="calendarStart" layout="block">
                                             <rich:calendar value="#{driverTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                                 showApplyButton="false" cellWidth="24px" cellHeight="22px" />
-                                        </a4j:outputPanel></td>
-                                        <td></td>
+                                        </a4j:outputPanel></td>                                        
                                     </tr>
                                     <tr>
                                         <td>#{messages.drivertrip_end_date}</td>
                                         <td><a4j:outputPanel id="calendarEnd" layout="block">
                                             <rich:calendar value="#{driverTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                                 showApplyButton="false" cellWidth="24px" cellHeight="22px" />
-                                        </a4j:outputPanel></td>
-                                        <td></td>
+                                        </a4j:outputPanel></td>                                        
                                     </tr>
                                     <tr>
-                                        <td></td>
-                                        <td><a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
+                                        <td colspan="2" align="center"><a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
                                             reRender="dateError,script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();">
                                             <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
-                                        </a4j:commandButton></td>
-                                        <td></td>
+                                        </a4j:commandButton></td>                                      
                                     </tr>                                    
                                 </tbody>
                             </table>

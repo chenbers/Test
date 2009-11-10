@@ -390,12 +390,11 @@
                             <table width="320" cellpadding="4" cellspacing="0" class="" id="">
                                 <tbody>
                                     <tr>
-                                        <td width="80">#{messages.vehicletrip_start_date}</td>
-                                        <td width="178"><a4j:outputPanel id="calendarStart" layout="block">
+                                        <td width="120">#{messages.vehicletrip_start_date}</td>
+                                        <td width="200"><a4j:outputPanel id="calendarStart" layout="block">
                                             <rich:calendar value="#{vehicleTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                                timeZone="#{vehicleTripsBean.timeZone}" showApplyButton="false" cellWidth="24px" cellHeight="22px" />
-                                        </a4j:outputPanel></td>
-                                        <td></td>
+                                        </a4j:outputPanel></td>                                       
                                     </tr>
                                     <tr>
                                         <td>#{messages.vehicletrip_end_date}</td>
@@ -403,16 +402,13 @@
                                             <rich:calendar value="#{vehicleTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                                timeZone="#{vehicleTripsBean.timeZone}" showApplyButton="false" cellWidth="24px" cellHeight="22px" />
                                         </a4j:outputPanel></td>
-                                        <td></td>
                                     </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td><a4j:commandButton id="vehicleTripsDate" action="#{vehicleTripsBean.DateChangedAction}"
+                                    <tr>                                     
+                                        <td colspan="2" align="center"><a4j:commandButton id="vehicleTripsDate" action="#{vehicleTripsBean.DateChangedAction}"
                                             reRender="dateError,script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();">
                                             <span class="edit"> <h:outputText value="#{messages.vehciletrip_updateDateRange}" /> </span>
-                                        </a4j:commandButton></td>
-                                        <td></td>
+                                        </a4j:commandButton></td>                                      
                                     </tr>
                                 </tbody>
                             </table>
