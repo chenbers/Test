@@ -2,6 +2,8 @@ package com.inthinc.pro.fulfillment.backing;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -275,12 +277,25 @@ public class DAOUtilBean {
 
 	public List<SelectItem> getAccountSelectList() {
 		List<SelectItem> accountList = new ArrayList<SelectItem>();
-		accountList.add(new SelectItem(-1,
-				"--Select a Account--"));
-		for (Integer accountID : getAccountMap().keySet()) {
-			if (!accountID.equals(this.shipAccountID) && !accountID.equals(this.rmaAccountID))
-				accountList.add(new SelectItem(accountID, getAccountMap().get(
-					accountID)));
+		accountList.add(new SelectItem(-1, "--Select a Account--"));
+
+		// Put keys and values in to an arraylist using entryset
+		ArrayList sortedArrayList = new ArrayList(getAccountMap().entrySet());
+
+		// Sort the values based on values first and then keys.
+		Collections.sort(sortedArrayList, new AccountComparator());
+
+		// Show sorted results
+		Iterator itr = sortedArrayList.iterator();
+		Integer id = -1;
+		String name = "";
+
+		while (itr.hasNext()) {
+			Map.Entry e = (Map.Entry) itr.next();
+			id = (Integer) e.getKey();
+			name = ((String) e.getValue());
+			if (!id.equals(this.shipAccountID) && !id.equals(this.rmaAccountID))
+				accountList.add(new SelectItem(id, name));
 		}
 		return accountList;
 	}
@@ -482,5 +497,32 @@ public class DAOUtilBean {
 	public void setVehicleName(String vehicleName) {
 		this.vehicleName = vehicleName;
 	}
+	static class AccountComparator implements Comparator {
 
+		public int compare(Object obj1, Object obj2) {
+
+			int result = 0;
+			Map.Entry e1 = (Map.Entry) obj1;
+
+			Map.Entry e2 = (Map.Entry) obj2;// Sort based on values.
+
+			String value1 = (String) e1.getValue();
+			String value2 = (String) e2.getValue();
+
+			if (value1.compareTo(value2) == 0) {
+
+				Integer id1 = (Integer) e1.getKey();
+				Integer id2 = (Integer) e2.getKey();
+				
+				// Sort values in a ascending order
+				result = id1.compareTo(id2);
+
+			} else {
+				// Sort values in a ascending order
+				result = value1.compareToIgnoreCase(value2);
+			}
+
+			return result;
+		}
+	}
 }
