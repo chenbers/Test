@@ -186,7 +186,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
          // autoLogoff
          if (device.getAutoLogoff() != null)
          {
-         	queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, ForwardCommandID.AUTO_LOGOFF, device.getAutoLogoff().getForwardCommandSetting(), ForwardCommandStatus.STATUS_QUEUED));
+         	queueForwardCommand(deviceID, new ForwardCommand(0, ForwardCommandID.AUTO_LOGOFF, device.getAutoLogoff().getForwardCommandSetting(), ForwardCommandStatus.STATUS_QUEUED));
          }
          
          return deviceID;
