@@ -262,12 +262,20 @@ public class DAOUtilBean {
 			} else 
 			{
 				Vehicle vehicle = findVehicle(selectedAccountID, vehicleName);
-				if (vehicle==null)
+				if (vehicle==null || !vehicle.getStatus().equals(Status.ACTIVE))
 					setErrorMsg("Error - Vehicle "+ vehicleName + " not found");
 				else
 				{
+					Integer currentVID = device.getVehicleID();
+					String vwarn="";
+					if (currentVID!=null && currentVID>0 && !currentVID.equals(vehicle.getVehicleID()))
+					{
+						Vehicle currentV = vehicleDAO.findByID(currentVID);
+						if (currentV != null && currentV.getStatus().equals(Status.ACTIVE))
+							vwarn = "<BR/>Warning: Device was previously assigned to vehicle: " + currentV.getName() + " " + currentV.getFullName();
+					}
 					vehicleDAO.setVehicleDevice(vehicle.getVehicleID(), device.getDeviceID());
-					setSuccessMsg("Device " + serialNum + " successfully assigned to vehicle: " + vehicleName);
+					setSuccessMsg("Device " + serialNum + " successfully assigned to vehicle: " + vehicleName + vwarn);
 				}
 			}
 		}
