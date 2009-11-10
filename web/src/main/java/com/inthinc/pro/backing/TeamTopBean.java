@@ -25,20 +25,28 @@ public class TeamTopBean extends BaseBean
 
     public void init()
     {
-        List<DriverScore> tempList = scoreDAO.getSortedDriverScoreList(navigation.getGroupID(), durationBean.getDuration());
-        List<DriverScore> scoreList = new ArrayList<DriverScore>();
-
-        // Remove N/A drivers
-        for (DriverScore d : tempList)
-        {
-            if (d.getScore() != null && d.getScore() > 0)
-                scoreList.add(d);
+        List<DriverScore> driveScorerList = scoreDAO.getSortedDriverScoreList(navigation.getGroupID(), durationBean.getDuration());
+        
+        if ((driveScorerList != null) && (driveScorerList.size() > 0)){
+        	
+	        List<DriverScore> scoreList = new ArrayList<DriverScore>();
+	        // Remove N/A drivers
+	        for (DriverScore d : driveScorerList)
+	        {
+	            if (d.getScore() != null && d.getScore() > 0)
+	                scoreList.add(d);
+	        }
+	
+	        topDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
+	
+	        Collections.reverse(scoreList);
+	        bottomDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
         }
-
-        topDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
-
-        Collections.reverse(scoreList);
-        bottomDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
+        else {
+        	
+        	topDrivers = new ArrayList<DriverScoreItem>();
+           	bottomDrivers = new ArrayList<DriverScoreItem>();
+        }
     }
 
     public List<DriverScoreItem> getTopDrivers()

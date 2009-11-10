@@ -57,19 +57,26 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration)
     {
-        List<DVQMap> dvqList = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
-        List<DriverScore> scoreList = new ArrayList<DriverScore>();
-        for (DVQMap dvq : dvqList)
+        try
         {
-            DriverScore driverScore = new DriverScore();
-            driverScore.setDriver(dvq.getDriver());
-            driverScore.setVehicle(dvq.getVehicle());
-            driverScore.setMilesDriven(dvq.getDriveQ().getEndingOdometer() == null ? 0 : dvq.getDriveQ().getEndingOdometer().longValue() / 100);
-            driverScore.setScore(dvq.getDriveQ().getOverall() != null ? dvq.getDriveQ().getOverall() : NO_SCORE);
-            scoreList.add(driverScore);
+	        List<DVQMap> dvqList = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
+	        List<DriverScore> scoreList = new ArrayList<DriverScore>();
+	        for (DVQMap dvq : dvqList)
+	        {
+	            DriverScore driverScore = new DriverScore();
+	            driverScore.setDriver(dvq.getDriver());
+	            driverScore.setVehicle(dvq.getVehicle());
+	            driverScore.setMilesDriven(dvq.getDriveQ().getEndingOdometer() == null ? 0 : dvq.getDriveQ().getEndingOdometer().longValue() / 100);
+	            driverScore.setScore(dvq.getDriveQ().getOverall() != null ? dvq.getDriveQ().getOverall() : NO_SCORE);
+	            scoreList.add(driverScore);
+	        }
+	        Collections.sort(scoreList);
+	        return scoreList;
         }
-        Collections.sort(scoreList);
-        return scoreList;
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
     }
 
     @Override
