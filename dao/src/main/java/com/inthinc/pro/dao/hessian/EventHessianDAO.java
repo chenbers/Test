@@ -33,18 +33,12 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     @Override
     public List<Event> getMostRecentEvents(Integer groupID, Integer eventCount)
     {
-        Integer adjustedEventCount = eventCount;
-        
         try
         {
             Integer[] eventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION).toArray(new Integer[0]);
-            
-            // Stagnant accounts could return fewer than eventCount, handle...
-            if ( eventTypes.length < eventCount ) {
-                adjustedEventCount = eventTypes.length;
-            }
+
             //TODO Temporarily added arbitrary 10 to hopefully be able to get the eventCount of valid events back after the clean
-            return Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, adjustedEventCount+10, eventTypes), Event.class)).subList(0, adjustedEventCount);
+            return Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount+10, eventTypes), Event.class)).subList(0, eventCount);
         }
         catch (EmptyResultSetException e)
         {
