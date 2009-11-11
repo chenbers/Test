@@ -242,8 +242,12 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         if (summaryItem != null && (!trendBeanState.getMaximized() || (trendBeanState.getMaximized() && summaryItem.getShow())))
         {
         	ScoreableEntityPkg summaryPkg = summaryItem.getScoreableEntityPkg();
-        	List<ScoreableEntity> summaryList = getGroupTrendMap().get(summaryPkg.getSe().getEntityID());
-        	addDataSet(sb, summaryPkg, summaryList);
+        	
+        	// check the case of a fresh install
+        	if ( !getGroupTrendMap().isEmpty() ) {
+        	    List<ScoreableEntity> summaryList = getGroupTrendMap().get(summaryPkg.getSe().getEntityID());
+        	    addDataSet(sb, summaryPkg, summaryList);
+        	}
         }
         int pgStart = start;
         int pgEnd = end;
