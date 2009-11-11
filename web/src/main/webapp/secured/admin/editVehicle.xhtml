@@ -91,7 +91,7 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="for" value="make"/>
 										<ui:param name="fieldName" value="make"/>
@@ -109,7 +109,7 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="for" value="model"/>
 										<ui:param name="fieldName" value="model"/>
@@ -126,7 +126,7 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="for" value="year"/>
 										<ui:param name="fieldName" value="year"/>
@@ -152,12 +152,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="for" value="type"/>
 										<ui:param name="fieldName" value="vtype"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_type}"/>
+										<ui:param name="context" value="editVehicleType"/>
 								  </ui:include>
                                 </td>
                                 <td>
@@ -226,12 +227,13 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="for" value="status"/>
 										<ui:param name="fieldName" value="status"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_status}"/>
+										<ui:param name="context" value="editVehicleStatus"/>
 								  </ui:include>
                                 </td>
                                 <td>
@@ -249,12 +251,13 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="for" value="groupID"/>
 										<ui:param name="fieldName" value="groupID"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_groupID}"/>
+										<ui:param name="context" value="editVehicleGroup"/>
 								  </ui:include>
                                 </td>
                                 <td>
@@ -323,7 +326,7 @@
                       
                        <h:panelGroup id="speeedSettingsPanel">
                          <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
-                           <ui:include src="../../includes/speedSensitivity.xhtml">
+                           <ui:include src="../../includes/admin/speedSensitivity.xhtml">
                              <ui:param name="device" value="#{vehiclesBean.item.device}" />
                              <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
                              <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
@@ -361,7 +364,7 @@
       </tr>
     </table>
 
-    <ui:include src="../../includes/chooseDriver.xhtml">
+    <ui:include src="../../includes/admin/chooseDriver.xhtml">
       <ui:param name="editorBean" value="#{vehiclesBean}" />
       <ui:param name="reRender" value="edit-form:driverID" />
       <ui:param name="context" value="editVehicle" />

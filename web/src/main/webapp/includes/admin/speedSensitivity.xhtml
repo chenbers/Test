@@ -145,14 +145,14 @@
                                  </tr>
                                  <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
                                        <h:outputText value="#{messages[sensitivityType]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                           <h:outputText value="#{messages.editDevice_sensitivity1}" />
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                       <rich:inputNumberSlider id="#{sensitivityItem}" 
+                                       <rich:inputNumberSlider id="#{context}-#{sensitivityItem}" 
                                              disabled="#{disabled}" 
                                              value="#{device[sensitivityItem]}" 
                                              showToolTip="false" showBoundaryValues="false" 

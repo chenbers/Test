@@ -148,7 +148,7 @@
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-                      <ui:include src="../../includes/speedSensitivity.xhtml">
+                      <ui:include src="../../includes/admin/speedSensitivity.xhtml">
                         <ui:param name="device" value="#{devicesBean.item}" />
                         <ui:param name="disabled" value="true" />
                              <ui:param name="context" value="device" />
@@ -173,7 +173,7 @@
       </tr>
     </table>
 
-    <ui:include src="../../includes/chooseVehicle.xhtml">
+    <ui:include src="../../includes/admin/chooseVehicle.xhtml">
       <ui:param name="editorBean" value="#{devicesBean}" />
       <ui:param name="reRender" value="display-form:vehicleID" />
       <ui:param name="immediate" value="true" />

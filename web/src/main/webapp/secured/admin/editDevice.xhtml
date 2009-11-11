@@ -135,7 +135,7 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="TRUE"/>
                                        <ui:param name="for" value="ephone"/>
                                        <ui:param name="fieldName" value="ephone"/>
@@ -163,7 +163,7 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="TRUE"/>
                                        <ui:param name="for" value="status"/>
                                        <ui:param name="fieldName" value="status"/>
@@ -180,7 +180,7 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="FALSE"/>
                                        <ui:param name="for" value="autoLogoff"/>
                                        <ui:param name="fieldName" value="autoLogoff"/>
@@ -249,7 +249,7 @@
    
                          <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
                          <h:panelGroup id="speeedSettingsPanel">
-                            <ui:include src="../../includes/speedSensitivity.xhtml">
+                            <ui:include src="../../includes/admin/speedSensitivity.xhtml">
                               <ui:param name="device" value="#{devicesBean.item}" />
                               <ui:param name="batchEdit" value="#{devicesBean.batchEdit}" />
                               <ui:param name="updateField" value="#{devicesBean.updateField}" />
@@ -285,9 +285,10 @@
       </tr>
     </table>
 
-    <ui:include src="../../includes/chooseVehicle.xhtml">
+    <ui:include src="../../includes/admin/chooseVehicle.xhtml">
       <ui:param name="editorBean" value="#{devicesBean}" />
       <ui:param name="reRender" value="edit-form:vehicleID" />
+      <ui:param name="context" value="editDevice" />
     </ui:include>
     <script type="text/javascript">
   var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];

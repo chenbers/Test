@@ -11,48 +11,41 @@
 			<div class="datagrid">
 			<div class="spacer"></div> 
 			
-		
-			
-<!--        	<rich:datascroller id="topScroller" for="items" immediate="true"-->
-<!--        		scrollerListener="#{assetReportBean.scrollerListener}"-->
-<!--        		reRender="bottomScroller,items,headerAssets">-->
-<!--        	</rich:datascroller>-->
-			      		        						
-				<rich:dataTable value="#{assetData}" id="items"
+			<rich:dataTable value="#{assetData}" id="#{context}"
 					var="item" styleClass="datagrid" 
 					rowClasses="tableOdd,tableEven" cellspacing="1" 
 					rows="#{numRowsPerPg}"
 					width="100%">
 
-					<rich:column rendered="#{assetColumns['tiwiproID'].visible}" 
+					<rich:column id="tiwiproId" rendered="#{assetColumns['tiwiproID'].visible}" 
 						sortBy="#{item.asset.tiwiproID}">
 						<f:facet name="header">
 							<h:outputText value="#{messages.reports_tiwiproid}" />
 						</f:facet>							
 						<h:outputText value="#{item.asset.tiwiproID}"/>										
     				</rich:column>
-    				<rich:column rendered="#{assetColumns['assignedVehicle'].visible}" 
+    				<rich:column id="assignedVehicle" rendered="#{assetColumns['assignedVehicle'].visible}" 
     					sortBy="#{item.asset.assignedVehicle}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_assignedvehicle}" />
       					</f:facet>
 						<h:outputText value="#{item.asset.assignedVehicle}" />      
     				</rich:column>
-    				<rich:column rendered="#{assetColumns['IMEI'].visible}" 
+    				<rich:column id="imei" rendered="#{assetColumns['IMEI'].visible}" 
     					sortBy="#{item.asset.IMEI}">    					
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_imei}" />
       					</f:facet>
       					<h:outputText value="#{item.asset.IMEI}" />    					     					
     				</rich:column>
-    				<rich:column rendered="#{assetColumns['phoneNbr'].visible}" 
+    				<rich:column id="phone" rendered="#{assetColumns['phoneNbr'].visible}" 
     					sortBy="#{item.asset.phoneNbr}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_phonenumber}" />
       					</f:facet>
       					<h:outputText value="#{item.asset.phoneNbr}" />   
     				</rich:column>
-    				<rich:column rendered="#{assetColumns['status'].visible}" 
+    				<rich:column id="status" rendered="#{assetColumns['status'].visible}" 
     					sortBy="#{item.asset.status}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_status}" />
@@ -61,9 +54,9 @@
     				</rich:column>    		
     			</rich:dataTable>    	
     			
-    			<rich:datascroller id="bottomScroller" for="items" immediate="true"
+    			<rich:datascroller id="#{context}-scroller" for="#{context}" immediate="true"
     				scrollerListener="#{assetReportBean.scrollerListener}"
-        			reRender="items,headerDrivers" renderIfSinglePage="false">        			
+        			reRender="#{context},headerDrivers" renderIfSinglePage="false">        			
         		</rich:datascroller>
         		
         	

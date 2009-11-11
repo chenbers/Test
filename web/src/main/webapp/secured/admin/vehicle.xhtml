@@ -164,7 +164,7 @@
                          </ui:fragment>
                          <h:panelGroup id="speeedSettingsPanel">
                             <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
-                              <ui:include src="../../includes/speedSensitivity.xhtml">
+                              <ui:include src="../../includes/admin/speedSensitivity.xhtml">
                                 <ui:param name="device" value="#{vehiclesBean.item.device}" />
                                 <ui:param name="disabled" value="true" />
                               <ui:param name="context" value="vehicle" />
@@ -191,7 +191,7 @@
       </tr>
     </table>
 
-    <ui:include src="../../includes/chooseDriver.xhtml">
+    <ui:include src="../../includes/admin/chooseDriver.xhtml">
       <ui:param name="editorBean" value="#{vehiclesBean}" />
       <ui:param name="reRender" value="display-form:driverID" />
       <ui:param name="immediate" value="true" />

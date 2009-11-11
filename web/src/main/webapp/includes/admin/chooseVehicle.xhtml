@@ -39,33 +39,33 @@
 
       <a4j:form id="chooseVehicleForm">
 
-        <rich:dataTable id="chooseVehicleTable" value="#{editorBean.vehicles}" var="item" rowKeyVar="index" styleClass="datagrid"
+        <rich:dataTable id="#{context}-chooseVehicleTable" value="#{editorBean.vehicles}" var="item" rowKeyVar="index" styleClass="datagrid"
           rows="10" rowClasses="tableOdd,tableEven" width="100%">
-          <rich:column sortBy="#{item.name}" sortOrder="ASCENDING">
+          <rich:column id="name" sortBy="#{item.name}" sortOrder="ASCENDING">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
             <h:outputText value="#{item.name}" />
           </rich:column>
-          <rich:column sortBy="#{item.driver.person.fullName}">
+          <rich:column id="fullName" sortBy="#{item.driver.person.fullName}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
             <h:outputText value="#{item.driver.person.fullName}" />
           </rich:column>
-          <rich:column sortBy="#{item.group.name}">
+          <rich:column id="group" sortBy="#{item.group.name}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>
             <h:outputText value="#{item.group.name}" />
           </rich:column>
-          <rich:column sortBy="#{item.status}">
+          <rich:column id="status" sortBy="#{item.status}">
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_vehicleStatus}" /></f:facet>
             <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
           </rich:column>
-          <rich:column sortBy="#{empty item.deviceID}">
+          <rich:column id="vehicleAssigned" sortBy="#{empty item.deviceID}">
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
             <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
           </rich:column>
-          <rich:column filterExpression="#{(empty editorBean.item.vehicleID) or (item.vehicleID != editorBean.item.vehicleID)}">
+          <rich:column id="vehicle" filterExpression="#{(empty editorBean.item.vehicleID) or (item.vehicleID != editorBean.item.vehicleID)}">
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
-            <a4j:commandLink id="#{context}-chooseVehicleChoose" action="#{editorBean.chooseVehicle}" onclick="Richfaces.hideModalPanel('chooseVehicle')" reRender="chooseVehicleTable,#{reRender}" value="#{messages.chooseVehicle_choose}">
+            <a4j:commandLink id="chooseVehicleChoose" action="#{editorBean.chooseVehicle}" onclick="Richfaces.hideModalPanel('chooseVehicle')" reRender="chooseVehicleTable,#{reRender}" value="#{messages.chooseVehicle_choose}">
               <f:param name="vehicleID" value="#{item.vehicleID}" />
               <f:param name="immediate" value="#{immediate}" />
             </a4j:commandLink>
@@ -74,7 +74,7 @@
 
         <div class="spacer"></div>
 
-        <rich:datascroller id="chooseVehicleScroller" for="chooseVehicleTable" reRender="chooseVehicleTable" renderIfSinglePage="false"/>
+        <rich:datascroller id="#{context}-chooseVehicleScroller" for="#{context}-chooseVehicleTable" reRender="#{context}-chooseVehicleTable" renderIfSinglePage="false"/>
 
       </a4j:form>
 

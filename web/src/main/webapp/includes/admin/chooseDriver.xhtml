@@ -39,33 +39,33 @@
 
       <a4j:form id="chooseDriverForm">
 
-        <rich:dataTable id="chooseDriverTable" value="#{editorBean.drivers}" var="item" rowKeyVar="index" styleClass="datagrid"
+        <rich:dataTable id="#{context}-chooseDriverTable" value="#{editorBean.drivers}" var="item" rowKeyVar="index" styleClass="datagrid"
           rows="10" rowClasses="tableOdd,tableEven" width="100%">
-          <rich:column sortBy="#{item.person.empid}" sortOrder="ASCENDING">
+          <rich:column id="empId" sortBy="#{item.person.empid}" sortOrder="ASCENDING">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
             <h:outputText value="#{item.person.empid}" />
           </rich:column>
-          <rich:column sortBy="#{item.person.fullName}">
+          <rich:column id="fullName" sortBy="#{item.person.fullName}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
             <h:outputText value="#{item.person.fullName}" />
           </rich:column>
-          <rich:column sortBy="#{editorBean.groupNames[item.groupID]}">
+          <rich:column id="groupId" sortBy="#{editorBean.groupNames[item.groupID]}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_groupID}" /></f:facet>
             <h:outputText value="#{editorBean.groupNames[item.groupID]}" />
           </rich:column>
-          <rich:column sortBy="#{item.status}">
+          <rich:column id="status" sortBy="#{item.status}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
             <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
           </rich:column>
-          <rich:column sortBy="#{editorBean.driverAssigned[item.driverID]}">
+          <rich:column id="assignedDriver" sortBy="#{editorBean.driverAssigned[item.driverID]}">
             <f:facet name="header"><h:outputText value="#{messages.chooseDriver_assigned}" /></f:facet>
             <h:outputText value="#{editorBean.driverAssigned[item.driverID] ? messages.chooseDriver_assigned : messages.chooseDriver_unassigned}" />
           </rich:column>
-          <rich:column filterExpression="#{(empty editorBean.item.driverID) or (item.driverID != editorBean.item.driverID)}">
+          <rich:column id="driverId" filterExpression="#{(empty editorBean.item.driverID) or (item.driverID != editorBean.item.driverID)}">
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
-            <a4j:commandLink id="#{context}-chooseDriverChoose" action="#{editorBean.chooseDriver}" onclick="Richfaces.hideModalPanel('chooseDriver')" reRender="chooseDriverTable,#{reRender}" value="#{messages.chooseDriver_choose}">
+            <a4j:commandLink id="chooseDriverChoose" action="#{editorBean.chooseDriver}" onclick="Richfaces.hideModalPanel('chooseDriver')" reRender="#{context}-chooseDriverTable,#{reRender}" value="#{messages.chooseDriver_choose}">
               <f:param name="driverID" value="#{item.driverID}" />
               <f:param name="immediate" value="#{immediate}" />
             </a4j:commandLink>
@@ -74,7 +74,7 @@
 
         <div class="spacer"></div>
 
-        <rich:datascroller id="chooseDriverScroller" for="chooseDriverTable" reRender="chooseDriverTable" renderIfSinglePage="false"/>
+        <rich:datascroller id="#{context}-chooseDriverScroller" for="#{context}-chooseDriverTable" reRender="#{context}-chooseDriverTable" renderIfSinglePage="false"/>
 
       </a4j:form>
 
