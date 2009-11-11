@@ -9,25 +9,25 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
                
-<ui:param name="title" value="404 #{messages.error_title}"/>
+<ui:param name="title" value="404 #{errorTranslatorBean.errorTitle}"/>
 
 <ui:define name="content">
    <div style="margin: 50px auto; width: 400px;">
             <div class="panel_nw">
                <div class="panel_title">
-                  #{messages.error_unavailable_title}
+                  #{errorTranslatorBean.errorUnavailableTitle}
                </div>
             </div>
             <div class="panel_w">
                <div class="panel_content">
                  <p>
-                     #{messages.error_unavailableMsg}
+                     #{errorTranslatorBean.errorUnavailableMsg}
                      
                      <h:inputHidden value="#{errorBean.stackTrace}" />
                  </p>
                  
-                 <p>
-                     <pretty:link id="error404" mappingId="init-dashboard">#{messages.error_return_to_homepage}</pretty:link>
+                 <p> 
+                     <pretty:link id="error404" mappingId="init-dashboard">#{errorTranslatorBean.errorReturnToHomepage}</pretty:link>
                  </p>
 
                </div>

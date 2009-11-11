@@ -9,25 +9,25 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
                
-<ui:param name="title" value="403 #{messages.error_title}"/>
+<ui:param name="title" value="403 #{errorTranslatorBean.errorTitle}"/>
 
 <ui:define name="content">
    <div style="margin: 50px auto; width: 400px;">
             <div class="panel_nw">
                <div class="panel_title">
-                  #{messages.error_access_denied_title}
+                  #{errorTranslatorBean.errorAccessDeniedTitle}
                </div>
             </div>
             <div class="panel_w">
                <div class="panel_content">
                  <p>
-                     #{messages.error_access_denied_msg}
+                     #{errorTranslatorBean.errorAccessDeniedMsg}
                      
                      <h:inputHidden value="#{errorBean.stackTrace}" />
                  </p>
                  
                  <p>
-                     <pretty:link id="error403" mappingId="init-dashboard">#{messages.error_return_to_homepage}</pretty:link>
+                     <pretty:link id="error403" mappingId="init-dashboard">#{errorTranslatorBean.errorReturnToHomepage}</pretty:link>
                  </p>
 
                </div>
