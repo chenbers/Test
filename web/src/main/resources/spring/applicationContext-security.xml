@@ -27,7 +27,7 @@
         <!--  our additional properties  -->
         <beans:property name="groupDAO" ref="groupDAO" />
     </beans:bean>
-    <beans:bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+    <beans:bean id="authenticationProcessingFilterEntryPoint" class="com.inthinc.pro.security.ProAuthenticationProcessingFilterEntryPoint">
         <beans:property name="loginFormUrl" value="/login" />
         <beans:property name="forceHttps" value="false" />
     </beans:bean>

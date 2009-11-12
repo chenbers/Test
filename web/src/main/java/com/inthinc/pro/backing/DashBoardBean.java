@@ -19,6 +19,8 @@ public class DashBoardBean extends BaseBean implements Serializable {
     private Integer groupID;
     private GroupDAO groupDAO;
     private TrendBeanState trendBeanState;
+    private IdlePercentageBean idlePercentageBean;
+    private SpeedPercentageBean speedPercentageBean;
 
 	public String getViewPath() {
         if (groupID == null)
@@ -33,11 +35,13 @@ public class DashBoardBean extends BaseBean implements Serializable {
         trendBeanState.setGroupID(groupID);
         mpgBean.setGroupID(groupID);
         overallScoreBean.setGroupID(groupID);
+        idlePercentageBean.setGroupID(groupID);
+        speedPercentageBean.setGroupID(groupID);
         switch (group.getType()) {
             case FLEET:
-                return "pretty:fleet";
+                return "/secured/dashboard/executive.faces";
             case DIVISION:
-                return "pretty:division";
+                return "/secured/dashboard/executive.faces";
             case TEAM:
                 return "pretty:team";
         }
@@ -89,6 +93,22 @@ public class DashBoardBean extends BaseBean implements Serializable {
 
 	public void setTrendBeanState(TrendBeanState trendBeanState) {
 		this.trendBeanState = trendBeanState;
+	}
+
+	public IdlePercentageBean getIdlePercentageBean() {
+		return idlePercentageBean;
+	}
+
+	public void setIdlePercentageBean(IdlePercentageBean idlePercentageBean) {
+		this.idlePercentageBean = idlePercentageBean;
+	}
+
+	public SpeedPercentageBean getSpeedPercentageBean() {
+		return speedPercentageBean;
+	}
+
+	public void setSpeedPercentageBean(SpeedPercentageBean speedPercentageBean) {
+		this.speedPercentageBean = speedPercentageBean;
 	}
 
 }

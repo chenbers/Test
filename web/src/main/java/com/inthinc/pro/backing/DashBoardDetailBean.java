@@ -43,6 +43,10 @@ public class DashBoardDetailBean extends BaseBean {
     }
 
     public TabType getTabType() {
+    	if (tabType == null)
+    	{
+    		tabType = TabType.OVERALL;
+    	}
         return tabType;
     }
 
