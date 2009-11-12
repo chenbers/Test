@@ -466,7 +466,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+     @Ignore
     public void idlePercent() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -641,7 +641,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+     @Ignore
     public void driverCoachingTrendScores() {
         // getDTrendByDTC
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
