@@ -433,7 +433,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    @Ignore
+    // @Ignore
     public void speedPercent() {
         // getSDTrendsByGTC
 
@@ -466,7 +466,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+    @Ignore
     public void idlePercent() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -479,13 +479,14 @@ public class ReportServiceTest {
 
         long fleetExpectedDailyDriveTime = DateUtil.convertMillisecondsToSeconds(3l * expectedDailyDriveTime);
         long fleetExpectedDailyIdlingTime = 6 * (ReportTestConst.LO_IDLE_TIME + ReportTestConst.HI_IDLE_TIME); // 6 idling events per day (1 - intermediate, 5 - bad)
-        // System.out.println("fleetExpectedDailyDriveTime: " + fleetExpectedDailyDriveTime + " fleetExpectedDailyIdlingTime: " + fleetExpectedDailyIdlingTime);
+        System.out.println("fleetExpectedDailyDriveTime: " + fleetExpectedDailyDriveTime + " fleetExpectedDailyIdlingTime: " + fleetExpectedDailyIdlingTime);
 
         for (IdlePercentItem item : list) {
             long driveTime = item.getDrivingTime();
             long idleTime = item.getIdlingTime();
 
-            // System.out.println("driveTime: " + driveTime + " idleTime: " + idleTime);
+            System.out.println("driveTime: " + driveTime + " idleTime: " + idleTime);
+            
             assertEquals("Fleet: Unexpected drive Time ", fleetExpectedDailyDriveTime, driveTime);
             assertEquals("Fleet: Unexpected idle Time ", fleetExpectedDailyIdlingTime, idleTime);
             assertEquals("Fleet: Unexpected vehicles ", 3, item.getNumVehicles().intValue());
@@ -495,7 +496,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    @Ignore
+    // @Ignore
     public void crashSummaryGroup() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -514,7 +515,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    @Ignore
+    // @Ignore
     public void crashSummaryDriver() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -535,7 +536,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    @Ignore
+    // @Ignore
     public void crashSummaryVehicle() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -641,7 +642,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+    // @Ignore
     public void driverCoachingTrendScores() {
         // getDTrendByDTC
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -671,7 +672,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+     // @Ignore
     public void driverMPGScores() {
         // getDTrendByDTC
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
@@ -776,7 +777,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+     // @Ignore
     public void vehicleMPGScores() {
         // getVTrendByDTC
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
@@ -799,7 +800,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    @Ignore
+    // @Ignore
     public void getVehicleReportData() {
         // getVDScoresByGT
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -822,7 +823,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    @Ignore
+    // @Ignore
     public void getDriverReportData() {
         // getDVScoresByGT
 

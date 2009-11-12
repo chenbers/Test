@@ -55,6 +55,7 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 
 public class DataGenForReportTesting {
 	public String xmlPath;
@@ -222,17 +223,30 @@ public class DataGenForReportTesting {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         
-        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device", 
-        		genNumericID(group.getGroupID(), 15), genNumericID(group.getGroupID(), 19), genNumericID(group.getGroupID(), 10), 
-        		genNumericID(group.getGroupID(), 10), 
-        		"5555559876");
+        for (int cnt = 0; cnt < 10; cnt++)
+        {
+	        try
+	        {
+		        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device", 
+		        		genNumericID(group.getGroupID(), 15), genNumericID(group.getGroupID(), 19), genNumericID(group.getGroupID(), 10), 
+		        		genNumericID(group.getGroupID(), 10), 
+		        		"5555559876");
+		        
+		        device.setAccel("1100 50 4");
+		        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
+		        System.out.println("device imei " + device.getImei());
+		        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
+		        device.setDeviceID(deviceID);
+		        
+		        return device;
+	        }
+	        catch (DuplicateIMEIException ex)
+	        {
+	        	throw ex;
+	        }
+        }
         
-        device.setAccel("1100 50 4");
-        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
-        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
-        device.setDeviceID(deviceID);
-        
-        return device;
+        return null;
     }
 
     private String genNumericID(Integer acctID, Integer len)
@@ -241,7 +255,7 @@ public class DataGenForReportTesting {
         
         for (int i = id.length(); i < len; i++)
         {
-            id += "9";
+            id += "" + Util.randomInt(0, 9);
         }
         
         return id;
