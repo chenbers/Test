@@ -125,9 +125,9 @@
 		<ui:param name="zoomLevel" value="#{groupTreeNode.group.mapZoom}" />
 		<ui:param name="readOnly"
 			value="#{organizationBean.groupState eq 'VIEW'}" />
-		<ui:param name="formName" value="display-form" />
-		<ui:param name="context" value="#{context}-groupEdit"/>
+		<ui:param name="formName" value="#{context}Form" />
         <ui:param name="mapId" value="#{organizationBean.mapType.mapId}"/>
+		<ui:param name="context" value="#{context}-groupEdit"/>
 	</ui:include></div>
 
 	<h:outputText rendered="#{organizationBean.groupState eq 'EDIT'}">
@@ -170,7 +170,7 @@
 		    }
 		}
 
-		setFocus("#{groupTreeNode.group.type eq 'FLEET'? 'display-form:group_name' : 'display-form:parent_group'}");
+		setFocus("#{groupTreeNode.group.type eq 'FLEET'? '#{context}Form:group_name' : '#{context}Form:parent_group'}");
 									
 	</script> 
 </ui:composition>
