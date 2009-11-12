@@ -35,7 +35,7 @@
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="display-form">
+          <a4j:form id="zoneAlertForm">
 
             <h:inputHidden id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" />
 
@@ -212,7 +212,7 @@
             function showZone()
             {
               map.clearOverlays();
-              var outline = fromOutlineString(document.getElementById("display-form:zonePoints").value);
+              var outline = fromOutlineString(document.getElementById("zoneAlertForm:zonePoints").value);
               if (outline)
               {
                 centerMapAtZone(getLatLngBounds(outline));

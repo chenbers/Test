@@ -29,7 +29,7 @@
 					</ui:include>
 				</td>
 				<td valign="top">
-				<a4j:form id="edit-form">
+				<a4j:form id="editReportScheduleForm">
 				<div class="">
 					<div class="panel_nw">
 					<div class="panel_title"><span class="email"><h:outputText
@@ -309,7 +309,7 @@
 				 function bodyLoad()
 				  {
 		
-				    var elements = document.getElementById("edit-form").elements;
+				    var elements = document.getElementById("editReportScheduleForm").elements;
 				    for (var i = 0; i &lt; elements.length; i++)
 				      for (var j = 0; j &lt; formElements.length; j++)
 				        if (elements[i].getAttribute("type") == formElements[j])

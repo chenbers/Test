@@ -31,7 +31,7 @@
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="edit-form">
+          <a4j:form id="editRedFlagForm">
 
             <div class="">
               <div class="panel_nw">
@@ -180,7 +180,7 @@
 
                         <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                        <ui:include src="../../includes/alertAssign.xhtml">
+                        <ui:include src="../../includes/admin/alertAssign.xhtml">
                           <ui:param name="alertsBean" value="#{redFlagAlertsBean}" />
                           <ui:param name="onchange" value="checkMultiple('assignTo')" />
           					<ui:param name="context" value="editRedFlag" />
@@ -277,9 +277,9 @@
                               function bumpSpeeds(up)
                               {
                                 for (var i = 0; i &lt; 15; i++)
-                                  if (document.getElementById("edit-form:speed" + i + "Selected").checked)
+                                  if (document.getElementById("editRedFlagForm:speed" + i + "Selected").checked)
                                   {
-                                    var input = document.getElementById("edit-form:speed" + i).component;
+                                    var input = document.getElementById("editRedFlagForm:speed" + i).component;
                                     if (up)
                                       input.setValue(Number(input.input.value) + 1);
                                     else
@@ -531,9 +531,9 @@
 
       function bodyLoad()
       {
-        document.getElementById("timeframePickers").style.display = (document.getElementById("edit-form:timeframe:0").checked ? 'none' : '');
+        document.getElementById("timeframePickers").style.display = (document.getElementById("editRedFlagForm:timeframe:0").checked ? 'none' : '');
 
-        var elements = document.getElementById("edit-form").elements;
+        var elements = document.getElementById("editRedFlagForm").elements;
         for (var i = 0; i &lt; elements.length; i++)
           for (var j = 0; j &lt; formElements.length; j++)
             if (elements[i].getAttribute("type") == formElements[j])

@@ -29,7 +29,7 @@
       <td valign="top">
           <!-- START PANEL -->
 
-        <a4j:form id="edit-form">
+        <a4j:form id="editPersonForm">
 
           <div class="">
             <div class="panel_nw">
@@ -767,7 +767,7 @@
   {
     populateAlertText();
 
-    var elements = document.getElementById("edit-form").elements;
+    var elements = document.getElementById("editPersonForm").elements;
     for (var i = 0; i &lt; elements.length; i++)
       for (var j = 0; j &lt; formElements.length; j++)
         if (elements[i].getAttribute("type") == formElements[j])
@@ -784,19 +784,19 @@
 
     if (id == null)
     {
-      populateAlertText("edit-form:info");
-      populateAlertText("edit-form:warn");
-      populateAlertText("edit-form:crit");
+      populateAlertText("editPersonForm:info");
+      populateAlertText("editPersonForm:warn");
+      populateAlertText("editPersonForm:crit");
     }
     else
     {
       var select = document.getElementById(id);
-      populateAlertOption(select.options[1], "edit-form:priEmail");
-      populateAlertOption(select.options[2], "edit-form:secEmail");
-      populateAlertOption(select.options[3], "edit-form:priPhone");
-      populateAlertOption(select.options[4], "edit-form:secPhone");
-      populateAlertOption(select.options[5], "edit-form:priText");
-      populateAlertOption(select.options[6], "edit-form:secText");
+      populateAlertOption(select.options[1], "editPersonForm:priEmail");
+      populateAlertOption(select.options[2], "editPersonForm:secEmail");
+      populateAlertOption(select.options[3], "editPersonForm:priPhone");
+      populateAlertOption(select.options[4], "editPersonForm:secPhone");
+      populateAlertOption(select.options[5], "editPersonForm:priText");
+      populateAlertOption(select.options[6], "editPersonForm:secText");
     }
   }
 
@@ -817,11 +817,11 @@
     document.getElementById(id).style.display = show ? "" : "none";
   }
 
-  var isUser = document.getElementById("edit-form:isUser");
+  var isUser = document.getElementById("editPersonForm:isUser");
   if (isUser)
   {
     showSection("userTable", isUser.checked);
-    showSection("driverTable", document.getElementById("edit-form:isDriver").checked);
+    showSection("driverTable", document.getElementById("editPersonForm:isDriver").checked);
   }
     </script>
 

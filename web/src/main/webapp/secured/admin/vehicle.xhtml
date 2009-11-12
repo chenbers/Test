@@ -25,7 +25,7 @@
         <td valign="top">
         <!-- START PANEL -->
 
-          <a4j:form id="display-form">
+          <a4j:form id="vehicleForm">
 
             <div class="">
               <div class="panel_nw">
@@ -193,7 +193,7 @@
 
     <ui:include src="../../includes/admin/chooseDriver.xhtml">
       <ui:param name="editorBean" value="#{vehiclesBean}" />
-      <ui:param name="reRender" value="display-form:driverID" />
+      <ui:param name="reRender" value="vehicleForm:driverID" />
       <ui:param name="immediate" value="true" />
       <ui:param name="context" value="vehicle" />
     </ui:include>

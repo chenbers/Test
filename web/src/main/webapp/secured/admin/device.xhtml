@@ -26,7 +26,7 @@
         <td valign="top">
         <!-- START PANEL -->
 
-          <a4j:form id="display-form">
+          <a4j:form id="deviceForm">
 
             <div class="">
               <div class="panel_nw">
@@ -151,7 +151,7 @@
                       <ui:include src="../../includes/admin/speedSensitivity.xhtml">
                         <ui:param name="device" value="#{devicesBean.item}" />
                         <ui:param name="disabled" value="true" />
-                             <ui:param name="context" value="device" />
+                        <ui:param name="context" value="device" />
                       </ui:include>
 
                     </rich:tab>
@@ -175,7 +175,7 @@
 
     <ui:include src="../../includes/admin/chooseVehicle.xhtml">
       <ui:param name="editorBean" value="#{devicesBean}" />
-      <ui:param name="reRender" value="display-form:vehicleID" />
+      <ui:param name="reRender" value="deviceForm:vehicleID" />
       <ui:param name="immediate" value="true" />
       <ui:param name="context" value="device" />
     </ui:include>

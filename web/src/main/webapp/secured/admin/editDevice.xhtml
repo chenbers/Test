@@ -30,7 +30,7 @@
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="edit-form">
+          <a4j:form id="editDeviceForm">
 
             <div class="">
               <div class="panel_nw">
@@ -287,7 +287,7 @@
 
     <ui:include src="../../includes/admin/chooseVehicle.xhtml">
       <ui:param name="editorBean" value="#{devicesBean}" />
-      <ui:param name="reRender" value="edit-form:vehicleID" />
+      <ui:param name="reRender" value="editDeviceForm:vehicleID" />
       <ui:param name="context" value="editDevice" />
     </ui:include>
     <script type="text/javascript">
@@ -295,9 +295,9 @@
 
   function bodyLoad()
   {
-    document.getElementById("edit-form:details_shifted").onclick();
+    document.getElementById("editDeviceForm:details_shifted").onclick();
 
-    var elements = document.getElementById("edit-form").elements;
+    var elements = document.getElementById("editDeviceForm").elements;
     for (var i = 0; i &lt; elements.length; i++)
       for (var j = 0; j &lt; formElements.length; j++)
         if (elements[i].getAttribute("type") == formElements[j])

@@ -37,7 +37,7 @@
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="edit-form">
+          <a4j:form id="editZoneAlertForm">
 	
 			<h:panelGroup id="zonePoints-panel" >
            		<h:inputHidden  id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" rendered="#{zoneAlertsBean.item.zone ne null}" />
@@ -248,11 +248,11 @@
 
                         <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                        <ui:include src="../../includes/listPicker.xhtml">
+                        <ui:include src="../../includes/admin/listPicker.xhtml">
                           <ui:param name="bean" value="#{zoneAlertsBean.assignPicker}" />
                           <ui:param name="id" value="alertAssign" />
                           <ui:param name="onchange" value="checkMultiple('assignTo')" />
-						  <ui:param name="context" value="editZoneAlertAlertAssign"/>
+						  <ui:param name="context" value="editZoneAlert"/>
                         </ui:include>
 
                       </td>
@@ -327,10 +327,10 @@
       function showZone()
       {
         map.clearOverlays();
-        if(document.getElementById("edit-form:zonePoints") != null)
+        if(document.getElementById("editZoneAlertForm:zonePoints") != null)
         { 
            
-	        var outline = fromOutlineString(document.getElementById("edit-form:zonePoints").value);
+	        var outline = fromOutlineString(document.getElementById("editZoneAlertForm:zonePoints").value);
 	        if (outline)
 	        {
 	          centerMapAtZone(getLatLngBounds(outline));
@@ -352,9 +352,9 @@
           showZone();
         }
 
-        document.getElementById("timeframePickers").style.display = (document.getElementById("edit-form:timeframe:0").checked ? 'none' : '');
+        document.getElementById("timeframePickers").style.display = (document.getElementById("editZoneAlertForm:timeframe:0").checked ? 'none' : '');
 
-        var elements = document.getElementById("edit-form").elements;
+        var elements = document.getElementById("editZoneAlertForm").elements;
         for (var i = 0; i &lt; elements.length; i++)
           for (var j = 0; j &lt; formElements.length; j++)
             if (elements[i].getAttribute("type") == formElements[j])
