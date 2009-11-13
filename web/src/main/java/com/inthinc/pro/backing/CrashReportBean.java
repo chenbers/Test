@@ -220,10 +220,15 @@ public class CrashReportBean extends BaseBean {
         logger.debug("Begin Date: " + searchStartDate.getTime());
         logger.debug("End Date: " + searchEndDate.getTime());
 
+        tripList = Collections.emptyList();
         if (selectedEntityType.equals(EntityType.ENTITY_DRIVER)) {
-            tripList = driverDAO.getTrips(crashReport.getDriverID() == null ? 0 : crashReport.getDriverID(), searchStartDate.getTime(), searchEndDate.getTime());
+            if ( crashReport.getDriverID() != null ) {
+                tripList = driverDAO.getTrips(crashReport.getDriverID(), searchStartDate.getTime(), searchEndDate.getTime());
+            }
         } else {
-            tripList = vehicleDAO.getTrips(crashReport.getVehicleID() == null ? 0 : crashReport.getVehicleID(), searchStartDate.getTime(), searchEndDate.getTime());
+            if ( crashReport.getVehicleID() != null ) {                             
+                tripList = vehicleDAO.getTrips(crashReport.getVehicleID(), searchStartDate.getTime(), searchEndDate.getTime());
+            }
         }
 
     }
