@@ -13,6 +13,7 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.charts.DateCategoryChart;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.MeasurementType;
@@ -234,19 +235,31 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
         TrendBeanItem summaryItem = this.getSummaryItem();
         
         // X-coordinates
-        sb.append("<categories>");
-        sb.append(GraphicUtil.createMonthsString(getDurationBean().getDuration(),getLocale()));
-        sb.append("</categories>");
-
+//        sb.append("<categories>");
+//        sb.append(GraphicUtil.createMonthsString(getDurationBean().getDuration(),getLocale()));
+//        sb.append("</categories>");
+        
+        
+        
         // top group
-        if (summaryItem != null && (!trendBeanState.getMaximized() || (trendBeanState.getMaximized() && summaryItem.getShow())))
+        if (summaryItem != null )
         {
         	ScoreableEntityPkg summaryPkg = summaryItem.getScoreableEntityPkg();
         	
         	// check the case of a fresh install
         	if ( !getGroupTrendMap().isEmpty() ) {
         	    List<ScoreableEntity> summaryList = getGroupTrendMap().get(summaryPkg.getSe().getEntityID());
-        	    addDataSet(sb, summaryPkg, summaryList);
+    	        List<Date> dateList = new ArrayList<Date>();
+    	        for (ScoreableEntity item : summaryList)
+    	        {
+    	        	dateList.add(item.getDate());
+    	        }
+    	        DateCategoryChart chart = new DateCategoryChart(getDurationBean().getDuration(), dateList);
+    	        sb.append(chart.getCategories(getLocale()));
+    	        if (!trendBeanState.getMaximized() || (trendBeanState.getMaximized() && summaryItem.getShow()))
+    	        {
+    	        	addDataSet(sb, summaryPkg, summaryList);
+    	        }
         	}
         }
         int pgStart = start;

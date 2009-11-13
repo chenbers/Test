@@ -9,7 +9,6 @@ import java.util.Map;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
-import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Driver;
@@ -53,91 +52,6 @@ public abstract class BasePerformanceBean extends BaseBean
     protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
 
     /*
-     * Create Fusion Charts Multi Line chart.
-     */
-    public String createFusionLineDefDays(Integer id, ScoreType scoreType)
-    {
-        StringBuffer sb = new StringBuffer();
-        Line line = new Line();
-        
-        Calendar cal= Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -29);
-
-        // Start XML Data
-        sb.append(line.getControlParameters());
-        List<ScoreableEntity> scoreList = getTrendCumulative(id, Duration.DAYS, scoreType);
-
-        // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(Duration.DAYS, getLocale());
-
-        int count = 0;
-        for (ScoreableEntity e : scoreList)
-        {
-           	Date date = new Date(cal.getTimeInMillis());
-        	if (e.getDate().equals(date)){
-	           if (e.getScore() != null)
-	            {
-	                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(count) }));
-	            }
-	            else
-	            {
-	                sb.append(line.getChartItem(new Object[] { null, monthList.get(count) }));
-	            }
-	           
-               	cal.add(Calendar.DAY_OF_MONTH, 1);
-
-	           	count++;
-        	}
-        }
-
-        // End XML Data
-        sb.append(line.getClose());
-        return sb.toString();
-    }
-
-	/*
-     * Create Fusion Charts Multi Line chart.
-     */
-    public String createFusionLineDef(Integer id, Duration duration, ScoreType scoreType)
-    {
-        StringBuffer sb = new StringBuffer();
-        Line line = new Line();
-
-        // Start XML Data
-        sb.append(line.getControlParameters());
-        List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
-
-        // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(duration, getLocale());
-        
-        Calendar cal= Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -29);
-
-        int count = 0;
-        for (ScoreableEntity e : scoreList)
-        {
-           	Date date = new Date(cal.getTimeInMillis());
-        	if (e.getDate().equals(date)){
-
-	            if (e.getScore() != null)
-	            {
-	                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(count) }));
-	            }
-	            else
-	            {
-	                sb.append(line.getChartItem(new Object[] { null, monthList.get(count) }));
-	            }
-	            
-               	cal.add(Calendar.DAY_OF_MONTH, 1);
-	            count++;
-        	}
-        }
-
-        // End XML Data
-        sb.append(line.getClose());
-        return sb.toString();
-    }
-    /*
      * Create Fusion Charts Multi Line chart. Set no Drive days to dashed line. Integrated bar chart for mileage
      */
     public String createFusionMultiLineDefDays(Integer id, ScoreType scoreType)
@@ -151,7 +65,7 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> cumulativeList = getTrendCumulative(id, Duration.DAYS, scoreType);
         List<ScoreableEntity> dailyList = getTrendDaily(id, Duration.DAYS, scoreType);
 
-        List<String> catLabelList = GraphicUtil.createMonthList(Duration.DAYS,getLocale());
+        List<String> catLabelList = GraphicUtil.createDateLabelList(dailyList, Duration.DAYS,getLocale());
 
         Double cumulativeValues[] = new Double[cumulativeList.size()];
         Double odometerValues[] = new Double[dailyList.size()];
@@ -196,7 +110,7 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> cumulativeList = getTrendCumulative(id, duration, scoreType);
         List<ScoreableEntity> dailyList = getTrendDaily(id, duration, scoreType);
 
-        List<String> catLabelList = GraphicUtil.createMonthList(duration,getLocale());
+        List<String> catLabelList = GraphicUtil.createDateLabelList(dailyList, duration,getLocale());
 
         Double cumulativeValues[] = new Double[cumulativeList.size()];
         Double odometerValues[] = new Double[dailyList.size()];
@@ -236,7 +150,9 @@ public abstract class BasePerformanceBean extends BaseBean
 		    cal.add(Calendar.DAY_OF_MONTH, -29);
 		    List<ScoreableEntity> scoreList = getTrendCumulative(id, Duration.DAYS, scoreType);
 
-            List<String> monthList = GraphicUtil.createMonthList(Duration.DAYS,MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+//            List<String> monthList = GraphicUtil.createMonthList(Duration.DAYS,MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+            List<String> monthList = GraphicUtil.createDateLabelList(scoreList, Duration.DAYS, MessageUtil.getMessageString("shortDateFormat"), getLocale());
+            
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
@@ -268,7 +184,8 @@ public abstract class BasePerformanceBean extends BaseBean
         {
             List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
 
-            List<String> monthList = GraphicUtil.createMonthList(duration,MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+//            List<String> monthList = GraphicUtil.createMonthList(duration,MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+            List<String> monthList = GraphicUtil.createDateLabelList(scoreList, duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
@@ -292,7 +209,8 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> 	scoreList = getTrendCumulative(id, duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+//        List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+        List<String> monthList = GraphicUtil.createDateLabelList(scoreList, duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
 
         int count = 0;
         for (ScoreableEntity se : scoreList)
@@ -311,7 +229,8 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> scoreList = getTrendDaily(id, duration, ScoreType.SCORE_COACHING_EVENTS);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+//        List<String> monthList = GraphicUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
+        List<String> monthList = GraphicUtil.createDateLabelList(scoreList, duration, MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
 
         int count = 0;
         for (ScoreableEntity se : scoreList)
@@ -340,18 +259,18 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> scoreList = this.getTrendDaily(id, duration, scoreType);
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(duration,getLocale());
+        List<String> labelList = GraphicUtil.createDateLabelList(scoreList, duration,getLocale());
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {
             if (e.getScore() != null)
             {
-                sb.append(column.getChartItem(new Object[] { e.getScore(), monthList.get(cnt) }));
+                sb.append(column.getChartItem(new Object[] { e.getScore(), labelList.get(cnt) }));
             }
             else
             {
-                sb.append(column.getChartItem(new Object[] { null, monthList.get(cnt) }));
+                sb.append(column.getChartItem(new Object[] { null, labelList.get(cnt) }));
             }
             cnt++;
         }

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.inthinc.pro.dao.annotations.ID;
 
 @XmlRootElement
-public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableEntity>
+public class ScoreableEntity extends BaseScore implements Comparable<ScoreableEntity>
 {
 
     @ID
@@ -17,7 +17,6 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 	private String identifier;
 	private Number identifierNum;
 	private Integer score;
-    private Date date;
     private ScoreType scoreType;
     public ScoreableEntity()
     {
@@ -26,12 +25,11 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 	
 	public ScoreableEntity(Integer entityID, EntityType entityType, String identifier, Integer score, Date date, ScoreType scoreType)
     {
-        super();
+        super(date);
         this.entityID = entityID;
         this.entityType = entityType;
         this.identifier = identifier;
         this.score = score;
-        this.date = date;
         this.scoreType = scoreType;
     }
 	
@@ -59,14 +57,6 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 	public void setScore(Integer score) {
 		this.score = score;
 	}
-    public Date getDate()
-    {
-        return date;
-    }
-    public void setDate(Date date)
-    {
-        this.date = date;
-    }
     public EntityType getEntityType()
     {
         return entityType;

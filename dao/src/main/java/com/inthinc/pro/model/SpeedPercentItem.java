@@ -5,16 +5,14 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class SpeedPercentItem  implements Comparable<SpeedPercentItem> {
+public class SpeedPercentItem extends BaseScore implements Comparable<SpeedPercentItem> {
 	Number miles;
 	Number milesSpeeding;
-	Date date;
 	
 	public SpeedPercentItem(Number miles, Number milesSpeeding, Date date) {
-		super();
+		super(date);
 		this.miles = miles;
 		this.milesSpeeding = milesSpeeding;
-		this.date = date;
 	}
 	public Number getMiles() {
 		return miles;
@@ -27,12 +25,6 @@ public class SpeedPercentItem  implements Comparable<SpeedPercentItem> {
 	}
 	public void setMilesSpeeding(Number milesSpeeding) {
 		this.milesSpeeding = milesSpeeding;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
 	}
 	@Override
 	public int compareTo(SpeedPercentItem o) {

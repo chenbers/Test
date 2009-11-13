@@ -93,6 +93,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
             scoreableEntity.setScoreType(scoreType);
             scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType));
+            scoreableEntity.setDate(dqMap.getEndingDate());
             return scoreableEntity;
 
         }
@@ -120,6 +121,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
                 scoreableEntity.setIdentifier(gqMap.getGroup().getName() == null ? "unknown" : gqMap.getGroup().getName());
                 scoreableEntity.setScoreType(scoreType);
+                scoreableEntity.setDate(gqMap.getDriveQ().getEndingDate());
                 Integer score = gqMap.getDriveQ().getScoreMap().get(scoreType);
                 scoreableEntity.setScore((score == null) ? NO_SCORE : score);
                 scoreList.add(scoreableEntity);
@@ -163,6 +165,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     entity.setEntityType(EntityType.ENTITY_GROUP);
                     entity.setScore(driveQMap.getOverall() == null ? NO_SCORE : driveQMap.getOverall());
                     entity.setScoreType(ScoreType.SCORE_OVERALL);
+                    entity.setDate(driveQMap.getEndingDate());
                     scoreList.add(entity);
                     
                 }
@@ -195,6 +198,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     topGroupEntity.setScore(0);
                     topGroupEntity.setScoreType(ScoreType.SCORE_OVERALL);
                     topGroupEntity.setIdentifierNum(0);
+                    topGroupEntity.setDate(entity.getDate());
                     topGroupScoreList.add(topGroupEntity);
             	}
         		

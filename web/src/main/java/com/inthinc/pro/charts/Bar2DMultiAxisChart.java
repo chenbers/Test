@@ -1,6 +1,7 @@
 package com.inthinc.pro.charts;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Duration;
@@ -56,8 +57,8 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
     private static final String LINE_SERIES_END =    "</lineset>";
 
 
-    public Bar2DMultiAxisChart(Duration duration) {
-    	super(duration);
+    public Bar2DMultiAxisChart(Duration duration, List<Date> dateList) {
+    	super(duration, dateList);
     }
 
     public String getSeries(String title, String color, boolean isLine, List<?> values)

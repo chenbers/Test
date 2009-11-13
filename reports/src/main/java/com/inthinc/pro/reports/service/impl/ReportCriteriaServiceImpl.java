@@ -171,7 +171,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(groupID, duration);
 
-        List<String> monthList = ReportUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
+        List<String> monthList = null;
+        if (s != null && s.size() > 0)
+        {
+        	ScoreableEntity groupScore = s.get(0);
+        	List<ScoreableEntity> firstGroupScoreList = groupTrendMap.get(groupScore.getEntityID());
+        	monthList = ReportUtil.createDateLabelList(firstGroupScoreList, duration, MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
+        }
 
 
         for (int i = 0; i < s.size(); i++)
@@ -380,7 +386,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
         List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
 		List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(groupID, duration);
-        List<String> monthList = ReportUtil.createMonthList(duration,MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
+        List<String> monthList = ReportUtil.createDateLabelList(speedPercentItemList, duration,MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
        	int index = 0;
 
    		String distanceSeries = "driving";
@@ -420,7 +426,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
         List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
 		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(groupID, duration);
-        List<String> monthList = ReportUtil.createMonthList(duration, MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
+        List<String> monthList = ReportUtil.createDateLabelList(idlePercentItemList, duration, MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
        	int index = 0;
 
    		String drivingSeries = "driving";

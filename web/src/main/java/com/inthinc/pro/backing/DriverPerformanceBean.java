@@ -283,7 +283,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private String createMpgLineDef()
     {
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
-        List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),getLocale());
+        List<String> catLabelList = GraphicUtil.createDateLabelList(mpgEntities, mpgDurationBean.getDuration(),getLocale());
 
         StringBuffer sb = new StringBuffer();
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
@@ -320,7 +320,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
 
-        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/, getLocale());
+//        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/, getLocale());
+        List<String> monthList = GraphicUtil.createDateLabelList(mpgEntities, mpgDurationBean.getDuration(), MessageUtil.getMessageString("shortDateFormat"), getLocale());
 
         int count = 0;
         for (MpgEntity me : mpgEntities)

@@ -7,7 +7,7 @@ import com.inthinc.pro.dao.annotations.ID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
+public class MpgEntity extends BaseScore implements Comparable<MpgEntity> {
 	@ID
 	private Integer entityID;
 	private String entityName;
@@ -15,7 +15,6 @@ public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
 	private Integer lightValue;
 	private Integer mediumValue;
 	private Integer heavyValue;
-    private Date date;
     private Number odometer;
 
 
@@ -26,21 +25,20 @@ public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
 	
 	public MpgEntity(Integer entityID, String entityName, Integer groupID, Integer lightValue, Integer mediumValue, Integer heavyValue, Date date)
     {
-        super();
+        super(date);
         this.entityID = entityID;
         this.entityName = entityName;
         this.groupID = groupID;
         this.lightValue = lightValue;
         this.mediumValue = mediumValue;
         this.heavyValue = heavyValue;
-        this.date = date;
     }
     
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
         sb.append(entityID);
-        sb.append(", date: " + date + " (s" + date + ")");
+        sb.append(", date: " + getDate() + " (s" + getDate() + ")");
         return sb.toString();
     }
 
@@ -91,15 +89,6 @@ public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
 	public void setHeavyValue(Integer heavyValue) {
 		this.heavyValue = heavyValue;
 	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	
     public Number getOdometer()
     {
         return odometer;

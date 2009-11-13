@@ -1,44 +1,24 @@
 package com.inthinc.pro.util;
 
-import java.text.DateFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 import javax.faces.context.FacesContext;
 
+import com.inthinc.pro.charts.DateLabels;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.BaseScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.ScoreableEntity;
 
 public class GraphicUtil {
-//	private static List <String> monthLbls = new ArrayList<String>() {
-//		{
-//			add("JAN");add("FEB");add("MAR");add("APR");add("MAY");add("JUN");
-//			add("JUL");add("AUG");add("SEP");add("OCT");add("NOV");add("DEC");
-//			add("JAN");add("FEB");add("MAR");add("APR");add("MAY");add("JUN");
-//			add("JUL");add("AUG");add("SEP");add("OCT");add("NOV");add("DEC");
-//		}
-//	};
-	public static List <String> entityColorKey = new ArrayList<String>(){
-		{
-			add(new String("#880000"));add(new String("#008800"));
-			add(new String("#000088"));add(new String("#888800"));
-			add(new String("#880088"));add(new String("#008888"));
-			add(new String("#FF0000"));add(new String("#00FF00"));
-			add(new String("#0000FF"));add(new String("#FF00FF"));	
-		}
-	};
 
 	public static String createFakeXYData(int num) {
 		StringBuffer sb = new StringBuffer();
@@ -55,121 +35,42 @@ public class GraphicUtil {
 		return sb.toString();
 	}
 	
-	public static String createMonthsString(Duration duration, Locale locale) {
-		StringBuffer sb = new StringBuffer();
-		
-		List<String> monthList = createMonthList(duration, locale);
-		for(String month:monthList)
+
+	public static <T extends BaseScore> List<String> createDateLabelList(List<T> scoreList, Duration duration, Locale locale)
+	{
+		List<Date> dateList = new ArrayList<Date>();
+		for (BaseScore item : scoreList)
 		{
-		    sb.append("<category label=\'"); 
-		    sb.append(month);
-            sb.append("\'/>");
+			dateList.add(item.getDate());
 		}
 		
-		return sb.toString();
-	}
-	
-	public static List<String> createMonthList(Duration duration, Locale locale)
-	{
-		if (duration == Duration.DAYS){
-		    List<String> monthList = new ArrayList<String>();
-		    
-		    Calendar cal= Calendar.getInstance();
-		    DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("justDay"), locale);
-//		    DateFormat dateFormatter = new SimpleDateFormat("dd", locale);
-		    
-		    //On the first of every month use the following DateFormat
-		    DateFormat altDateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("monthDay"), locale);
-//		    DateFormat altDateFormatter = new SimpleDateFormat("MMM dd", locale);
-		    cal.add(Calendar.DAY_OF_MONTH, -29);
-	           for ( int i = 0; i <= 29; i++ )
-	            {
-	                
-	                String day = dateFormatter.format(cal.getTime());
-	                
-	                // If day is first of month (01) format as "Apr 01" 
-	                // else continue formatting using passed in pattern.
-	                if (day.equals("01"))
-	                {
-	                     day = altDateFormatter.format(cal.getTime());
-	                }
-	           
-	                monthList.add(day);
-	                
-	                cal.add(Calendar.DAY_OF_MONTH, 1);
-
-	            }       
-	           return monthList;
+		DateLabels dateLabels = new DateLabels(locale);
+		if (duration.equals(Duration.DAYS))
+		{
+			return dateLabels.createDayLabelList(dateList);
 		}
-	    return createMonthList(duration, MessageUtil.getMessageString("justDay"),locale);
-//	    return createMonthList(duration, "dd",locale);
+		
+		return dateLabels.createMonthLabelList(dateList);
+		
 	}
 	
-	public static List<String> createMonthList(Duration duration, String dateFormat, Locale locale)
+	public static <T extends BaseScore> List<String> createDateLabelList(List<T> scoreList, Duration duration, String dateFormat, Locale locale)
 	{
-	    List<String> monthList = new ArrayList<String>();
-	    
-	    Calendar cal= Calendar.getInstance();
-	    DateFormat dateFormatter = new SimpleDateFormat(dateFormat, locale);
-	    	    
-	    if ( duration == Duration.DAYS ) {
-		    cal.add(Calendar.DAY_OF_MONTH, -29);
-            for ( int i = 0; i <= 29; i++ )
-            {
-                
-                String day = dateFormatter.format(cal.getTime());
-                           
-                monthList.add(day);
-                
-                cal.add(Calendar.DAY_OF_MONTH, 1);
-
-            }       
-        } else {
-        	int months = duration.getDvqCount();
-            GregorianCalendar calendar = new GregorianCalendar();
-            calendar.add(Calendar.MONTH,-months+1);
-            DateFormat df = new SimpleDateFormat("MMM",locale);
-            //Start there
-            for ( int i = 0; i < months; i++ ) {
-                monthList.add(df.format(calendar.getTime()));
-            	calendar.add(Calendar.MONTH, 1);
-            }           
-        }
-	    
-	    return monthList;
+		List<Date> dateList = new ArrayList<Date>();
+		for (BaseScore item : scoreList)
+		{
+			dateList.add(item.getDate());
+		}
+		
+		DateLabels dateLabels = new DateLabels(locale, dateFormat);
+		if (duration.equals(Duration.DAYS))
+		{
+			return dateLabels.createDayLabelList(dateList);
+		}
+		
+		return dateLabels.createMonthLabelList(dateList);
+		
 	}
-	
-    
-    public static List<String> createMonthListFromMapDate(
-            List<ScoreableEntity> scoreList, Locale locale)
-    {
-        List<String> monthList = new ArrayList<String>();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("simpleDateFormat"),locale);
-        
-        for ( ScoreableEntity se: scoreList ) {
-            Date dt = new Date();
-            dt.setTime(se.getDate().getTime());
-            String dateOut = dateFormatter.format(dt);
-            monthList.add(dateOut);
-        }
-     
-        return monthList;
-    }
-	
-//	public static int convertToMonths(Duration duration) {
-//	    int months = 0;
-//	    
-//	    if (           duration.equals(Duration.THREE) ) {
-//	        return 3;
-//	    } else if (    duration.equals(Duration.SIX) ) {
-//	        return 6;
-//	    } else if (    duration.equals(Duration.TWELVE) ) {
-//	        return 12;
-//	    }
-//	    
-//	    return months;
-//	}
-	
 	public static String getXYControlParameters(boolean animate, Locale locale) {
 		StringBuffer sb = new StringBuffer();
 		

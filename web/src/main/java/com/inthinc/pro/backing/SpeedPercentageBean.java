@@ -63,6 +63,7 @@ public class SpeedPercentageBean extends BaseBean {
 		List<Long> distanceValues = new ArrayList<Long>();
 		List<Long> speedValues = new ArrayList<Long>();
 		List<Long> percentValues = new ArrayList<Long>();
+		List<Date> dateValues = new ArrayList<Date>();
 		Long totalDistance = 0l;
 		Long totalSpeedDistance = 0l;
 		for (SpeedPercentItem item : speedPercentItemList) {
@@ -76,9 +77,10 @@ public class SpeedPercentageBean extends BaseBean {
 			percentValues.add(percent);
 			totalDistance += distance;
 			totalSpeedDistance += speedDistance;
+			dateValues.add(item.getDate());
 		}
-		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(
-				getDurationBean().getDuration());
+		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(getDurationBean().getDuration(), dateValues);
+//				getDurationBean().getDuration());
 		StringBuilder chartBuilder = new StringBuilder();
 		chartBuilder.append(bar2DMultiAxisChart.getControlParameters());
 		chartBuilder.append(bar2DMultiAxisChart.getCategories(getLocale()));

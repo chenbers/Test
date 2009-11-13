@@ -59,6 +59,8 @@ public class IdlePercentageBean extends BaseBean {
 		List<Float> drivingValues = new ArrayList<Float>();
 		List<Float> idlingValues = new ArrayList<Float>();
 		List<Integer> percentValues = new ArrayList<Integer>();
+		List<Date> dateValues = new ArrayList<Date>();
+
 		Long totalDriving = 0l;
 		Long totalIdling = 0l;
 		for (IdlePercentItem item : idlePercentItemList) {
@@ -66,6 +68,7 @@ public class IdlePercentageBean extends BaseBean {
 			idlingValues.add(getHours(item.getIdlingTime()));
 			Integer percent = MathUtil.percent(item.getIdlingTime(), item.getDrivingTime());
 			percentValues.add(percent);
+			dateValues.add(item.getDate());
 			totalDriving += item.getDrivingTime();
 			totalIdling += item.getIdlingTime();
 			
@@ -74,8 +77,7 @@ public class IdlePercentageBean extends BaseBean {
 			setTotalVehicles(item.getNumVehicles());
 		}		
 		
-		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(
-				getDurationBean().getDuration());
+		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(getDurationBean().getDuration(), dateValues);
 		StringBuilder chartBuilder = new StringBuilder();
 		chartBuilder.append(bar2DMultiAxisChart.getControlParameters());
 		chartBuilder.append(bar2DMultiAxisChart.getCategories(getLocale()));

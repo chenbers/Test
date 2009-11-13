@@ -5,11 +5,14 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import com.inthinc.pro.model.BaseScore;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.reports.model.DateLabels;
 
 public class ReportUtil
 {
@@ -48,7 +51,24 @@ public class ReportUtil
 //    {
 //        return createMonthList(duration, "dd");
 //    }
-    
+	public static <T extends BaseScore> List<String> createDateLabelList(List<T> scoreList, Duration duration, String dateFormat, Locale locale)
+	{
+		List<Date> dateList = new ArrayList<Date>();
+		for (BaseScore item : scoreList)
+		{
+			dateList.add(item.getDate());
+		}
+		
+		DateLabels dateLabels = new DateLabels(locale, dateFormat);
+		if (duration.equals(Duration.DAYS))
+		{
+			return dateLabels.createDayLabelList(dateList);
+		}
+		
+		return dateLabels.createMonthLabelList(dateList);
+		
+	}
+/* 
 	public static List<String> createMonthList(Duration duration, String dateFormat, Locale locale)
 	{
 	    List<String> monthList = new ArrayList<String>();
@@ -82,7 +102,7 @@ public class ReportUtil
 	    
 	    return monthList;
 	}
-    
+*/    
 //    public static int convertToMonths(Duration duration) {
 //        int months = 0;
 //        
