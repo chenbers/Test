@@ -18,22 +18,27 @@ import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.security.userdetails.ProUser;
+import com.inthinc.pro.util.RFIDBean;
 
 public class DAOUtilBean {
 
@@ -43,6 +48,8 @@ public class DAOUtilBean {
 	private DeviceDAO deviceDAO;
 	private EventDAO eventDAO;
 	private UserDAO userDAO;
+	private PersonDAO personDAO;
+	private DriverDAO driverDAO;
 
 	private RoleDAO roleDAO;
 
@@ -62,6 +69,10 @@ public class DAOUtilBean {
 	private Account rmaAccount;
 	private Account shipAccount;
 	
+	private String driverID;
+	private String RFID;
+	private RFIDBean rfidBean;
+	
 	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
 	
@@ -71,7 +82,7 @@ public class DAOUtilBean {
 	{
 		
 	}
-
+	
 	public DAOUtilBean(String server, int port)  {
 
 	}
@@ -241,6 +252,45 @@ public class DAOUtilBean {
 			}
 		}
 		setSerialNum(null);
+	}
+	public void assignRFIDAction() {
+		reInitAction();
+		Integer did = 0;
+		Long barcode = 0L;
+		
+		try {
+			did = Integer.parseInt(driverID);
+		} catch (NumberFormatException e) {
+			setErrorMsg("Invalid Driver ID Number: " + driverID);
+			return;
+		}
+		try {
+			barcode = Long.parseLong(RFID);
+		} catch (NumberFormatException e) {
+			setErrorMsg("Invalid RFID Number: " + RFID);
+			return;
+		}
+		
+		Driver driver = driverDAO.findByID(did);
+		
+		Long rfid = rfidBean.findRFID(barcode);
+		
+		if (driver==null)
+		{
+			setErrorMsg("Driver not found: " + driverID);
+		}
+		else if (rfid==null)
+		{
+			setErrorMsg("RFID not found: " + RFID);
+		}
+		else
+		{
+			driver.setRFID(rfid);
+			driverDAO.update(driver);
+			setSuccessMsg("RFID " + rfid + " successfully assigned to driver: " + driver.getPerson().getFullNameWithId());
+		}
+		setRFID(null);
+		setDriverID(null);
 	}
 
 	public void assignDeviceAction() {
@@ -532,5 +582,44 @@ public class DAOUtilBean {
 
 			return result;
 		}
+	}
+	public String getDriverID() {
+		return driverID;
+	}
+
+	public void setDriverID(String driverID) {
+		this.driverID = driverID;
+	}
+
+	public String getRFID() {
+		return RFID;
+	}
+
+	public void setRFID(String rfid) {
+		RFID = rfid;
+	}
+
+	public PersonDAO getPersonDAO() {
+		return personDAO;
+	}
+
+	public void setPersonDAO(PersonDAO personDAO) {
+		this.personDAO = personDAO;
+	}
+
+	public DriverDAO getDriverDAO() {
+		return driverDAO;
+	}
+
+	public void setDriverDAO(DriverDAO driverDAO) {
+		this.driverDAO = driverDAO;
+	}
+
+	public RFIDBean getRfidBean() {
+		return rfidBean;
+	}
+
+	public void setRfidBean(RFIDBean rfidBean) {
+		this.rfidBean = rfidBean;
 	}
 }

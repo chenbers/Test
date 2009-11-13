@@ -15,5 +15,7 @@
    <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
 		<property name="deviceDAO" ref="deviceDAO"></property>
    </bean>
-
+   <bean id="rfidBean" class="com.inthinc.pro.util.RFIDBean" init-method="init">
+      	<property name="rfidCSVFile" value="${rfidbean.rfidCSVFile}"/>
+   </bean>
 </beans>

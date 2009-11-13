@@ -1,8 +1,11 @@
 package com.inthinc.pro.fulfillment.backing;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigInteger;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -15,6 +18,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.util.RFIDBean;
+
 public class DAOUtilBeanTest {
 	DAOUtilBean dm;
 
@@ -26,6 +31,7 @@ public class DAOUtilBeanTest {
 	public static void tearDownAfterClass() throws Exception {
 	}
 
+	@Ignore("not ready yet") 
 	@Before
 	public void setUp() throws Exception {
 		String server = "localhost";
@@ -36,6 +42,19 @@ public class DAOUtilBeanTest {
 		dm = new DAOUtilBean(server, port);
 	}
 
+
+	@Ignore("not ready yet") 
+	@Test
+	public void TestRFID()
+	{
+		RFIDBean rb = new RFIDBean();
+		rb.setRfidCSVFile("/tiwiimport/rfid.csv");
+		Long val = rb.findRFID(22L);
+		Long expected = (new BigInteger("E007000003589716",16)).longValue();
+		assertTrue(val.equals(expected));
+		assertNull(rb.findRFID(9999999L));
+	}
+	
 	@Ignore("not ready yet") 
 	@Test
 	public void TestGetAccounts() {

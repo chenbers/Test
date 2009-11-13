@@ -11,6 +11,8 @@
 		<property name="deviceDAO" ref="deviceDAO" />
 		<property name="eventDAO" ref="eventDAO" />
 		<property name="userDAO" ref="userDAO" />
+		<property name="driverDAO" ref="driverDAO" />
 		<property name="roleDAO" ref="roleDAO" />
+		<property name="rfidBean" ref="rfidBean" />
     </bean>
 </beans>

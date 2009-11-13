@@ -32,6 +32,12 @@
    <to-view-id>/secured/assignDevice.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_assignRFID</from-outcome>
+   <to-view-id>/secured/assignRFID.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  
  
  
