@@ -443,6 +443,7 @@ public class AccountCreationITCase extends BaseITCase {
         device.setStatus(DeviceStatus.NEW);
         device.setSim("IT_SIM" + randomInt);
         device.setSerialNum("IT_SN" + randomInt);
+        device.setAutoLogoff(AutoLogoff.ON);
         
         ClientRequest request = new ClientRequest(url + "/device", httpClient);
         request.body(MediaType.APPLICATION_XML_TYPE, device);

@@ -2,6 +2,7 @@ package com.inthinc.pro.service;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -18,7 +19,6 @@ import com.inthinc.pro.model.Group;
 @Produces("application/xml")
 public interface GroupService {
 
-
     @GET
     @Path("/groups")
     public Response getAll();
@@ -26,6 +26,26 @@ public interface GroupService {
     @GET
     @Path("/group/{groupID}")
     public Response get(@PathParam("groupID") Integer groupID);
+
+    @GET
+    @Path("/group/{groupID}/scores/drivers/{numberOfDays}")
+    public Response getDriverScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+
+//    @GET
+//    @Path("/group/{groupID}/score/driver/{numberOfDays}")
+//    public Response getDriverScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfdays);
+
+    @GET
+    @Path("/group/{groupID}/scores/vehicles/{numberOfDays}")
+    public Response getVehicleScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+
+//    @GET
+//    @Path("/group/{groupID}/score/vehicle/{numberOfDays}")
+//    public Response getVehicleScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+
+    @GET
+    @Path("/group/{groupID}/subgroups/trends/driver/{numberOfDays}")
+    public Response getSubGroupsDriverTrends(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
     @POST
     @Consumes("application/xml")

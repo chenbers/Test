@@ -50,6 +50,7 @@
   </bean>
   <bean id="secureGroupDAO" class="com.inthinc.pro.util.SecureGroupDAO">
     <property name="groupDAO" ref="groupDAO" />
+    <property name="groupReportDAO" ref="groupReportDAO"/>
   </bean>
   <bean id="securePersonDAO" class="com.inthinc.pro.util.SecurePersonDAO">
     <property name="personDAO" ref="personDAO" />

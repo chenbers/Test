@@ -9,7 +9,10 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 import com.inthinc.pro.service.GroupService;
 import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.SecureGroupDAO;
@@ -21,6 +24,39 @@ public class GroupServiceImpl extends AbstractService<Group, SecureGroupDAO> imp
         List<Group> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Group>>(list) {
         }).build();
+    }
+
+    @Override
+    public Response getDriverScores(Integer groupID, Integer numberOfDays) {
+        Duration duration = Duration.getDurationByDays(numberOfDays);
+        if (duration != null) {
+            List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(groupID, duration);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
+    }
+
+    @Override
+    public Response getVehicleScores(Integer groupID, Integer numberOfDays) {
+        Duration duration = Duration.getDurationByDays(numberOfDays);
+        if (duration != null) {
+            List<DriverVehicleScoreWrapper> list = getDao().getVehicleScores(groupID, duration);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
+    }
+
+    @Override
+    public Response getSubGroupsDriverTrends(Integer groupID, Integer numberOfDays) {
+        Duration duration = Duration.getDurationByDays(numberOfDays);
+        if (duration != null) {
+            List<GroupTrendWrapper> list = getDao().getChildGroupsDriverTrends(groupID, duration);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<GroupTrendWrapper>>(list) {}).build();
+        }
+        return Response.status(Status.NOT_FOUND).build();
     }
 
     @Override

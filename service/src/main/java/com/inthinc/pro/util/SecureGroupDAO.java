@@ -1,13 +1,19 @@
 package com.inthinc.pro.util;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 
 public class SecureGroupDAO extends SecureDAO<Group> {
 
     private GroupDAO groupDAO;
+    private GroupReportDAO groupReportDAO;
 
     @Override
     public boolean isAuthorized(Group group) {
@@ -36,6 +42,24 @@ public class SecureGroupDAO extends SecureDAO<Group> {
     public List<Group> getAll() {
         return groupDAO.getGroupHierarchy(getAccountID(), getGroupID());
 
+    }
+
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
+        if (isAuthorized(groupID))
+            return groupReportDAO.getDriverScores(groupID, duration);
+        return null;
+    }
+
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {
+        if (isAuthorized(groupID))
+            return groupReportDAO.getVehicleScores(groupID, duration);
+        return null;
+    }
+
+    public List<GroupTrendWrapper> getChildGroupsDriverTrends(Integer groupID, Duration duration) {
+        if (isAuthorized(groupID))
+            return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, duration);
+        return Collections.emptyList();
     }
 
     @Override
@@ -67,5 +91,13 @@ public class SecureGroupDAO extends SecureDAO<Group> {
 
     public GroupDAO getGroupDAO() {
         return groupDAO;
+    }
+
+    public GroupReportDAO getGroupReportDAO() {
+        return groupReportDAO;
+    }
+
+    public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
+        this.groupReportDAO = groupReportDAO;
     }
 }
