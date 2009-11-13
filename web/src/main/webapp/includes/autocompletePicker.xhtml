@@ -70,8 +70,8 @@
           target = e.target;
         else if (e.srcElement)
           target = e.srcElement;
-        if (target == picker)
-          document.getElementById('#{formName}:picker-input').focus();
+        if (target == picker)               
+          document.getElementById('#{formName}:#{context}-picker-input').focus();
       }
 
       function pickerKeyup(input, e)
@@ -81,10 +81,10 @@
         if (empty &amp;&amp; (e.keyCode == 8))
         {
           var index = 0;
-          while (document.getElementById("#{formName}:picker-repeater:" + index + ":autoCompletePickerDelete") != null)
+          while (document.getElementById("#{formName}:picker-repeater:" + index + ":#{context}-autoCompletePickerDelete") != null)
             index++;
           if (index > 0)
-            document.getElementById("#{formName}:picker-repeater:" + (index - 1) + ":autoCompletePickerDelete").onclick();
+            document.getElementById("#{formName}:picker-repeater:" + (index - 1) + ":#{context}-autoCompletePickerDelete").onclick();
         }
         empty = (input.value.length == 0);
       }
@@ -99,7 +99,7 @@
       function changeComplete()
       {
         empty = true;
-        var input = document.getElementById('#{formName}:picker-input');
+        var input = document.getElementById('#{formName}:#{context}-picker-input');
         input.value = "";
         input.size = 1;
         input.focus();
