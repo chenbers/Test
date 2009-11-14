@@ -271,9 +271,10 @@ public class DAOUtilBean {
 			return;
 		}
 		
+		Long rfid = rfidBean.findRFID(barcode);
+
 		Driver driver = driverDAO.findByID(did);
 		
-		Long rfid = rfidBean.findRFID(barcode);
 		
 		if (driver==null)
 		{
@@ -285,9 +286,21 @@ public class DAOUtilBean {
 		}
 		else
 		{
+			String existMsg = "";
+			Integer currentDriverID = driverDAO.getDriverIDForRFID(rfid);
+			if (currentDriverID!=null && currentDriverID>0)
+			{
+				if (currentDriverID != driver.getDriverID())
+				{
+					Driver currentDriver = driverDAO.findByID(currentDriverID);
+					existMsg="<BR/> Warning: RFID previously assigned to: " + currentDriver.getPerson().getFullNameWithId();
+					currentDriver.setRFID(1L);
+					driverDAO.update(currentDriver);
+				}
+			}
 			driver.setRFID(rfid);
 			driverDAO.update(driver);
-			setSuccessMsg("RFID " + rfid + " successfully assigned to driver: " + driver.getPerson().getFullNameWithId());
+			setSuccessMsg("RFID " + rfid + " successfully assigned to driver: " + driver.getPerson().getFullNameWithId() + existMsg);
 		}
 		setRFID(null);
 		setDriverID(null);
