@@ -135,9 +135,11 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
                 if (driver.getPerson() != null) {
                     reportItem.setDriverName(driver.getPerson().getFullName());
                     reportItem.setGroup(getGroupHierarchy().getGroup(driver.getGroupID()).getName());
+                    reportItem.setGroupID(driver.getGroupID());
                 } else {
                     reportItem.setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
                     reportItem.setGroup("");
+                    reportItem.setGroupID(null);
                 }
             }
             reportItem.setNbrOccupants(String.valueOf(cr.getOccupantCount().intValue()));

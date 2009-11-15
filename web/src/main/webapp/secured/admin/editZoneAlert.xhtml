@@ -37,10 +37,10 @@
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="editZoneAlertForm">
+          <a4j:form id="edit-form">
 	
 			<h:panelGroup id="zonePoints-panel" >
-           		<h:inputHidden  id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" rendered="#{zoneAlertsBean.item.zone ne null}" />
+           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" rendered="#{zoneAlertsBean.item.zone ne null}" />
             </h:panelGroup>
 
             <div class="">
@@ -93,8 +93,8 @@
                               </ui:include>
                             </td>
                             <td>
-                              <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}"  requiredMessage="#{messages.required}" style="width: 200px">
+                              <rich:message for="editZoneAlert-zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <h:selectOneMenu id="editZoneAlert-zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}"  requiredMessage="#{messages.required}" style="width: 200px">
                                 <a4j:support event="onchange" reRender="zonePoints-panel" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
                                 <f:selectItems value="#{zoneAlertsBean.zones}" />
                               </h:selectOneMenu>
@@ -115,18 +115,18 @@
                               </ui:include>
                             </td>
                             <td>
-                              <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:inputText value="#{zoneAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              <rich:message for="editZoneAlert-name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <h:inputText value="#{zoneAlertsBean.item.name}" id="editZoneAlert-name" onchange="checkMultiple(this)" styleClass="text" size="30"
                                 maxlength="30"/>
                             </td>
                           </tr>
                           <tr>
                             <td width="105" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_description" value="#{zoneAlertsBean.updateField['description']}" />
+                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="editZoneAlert-update_description" value="#{zoneAlertsBean.updateField['description']}" />
                               <h:outputText value="#{messages.editAlerts_description}" />
                             </td>
                             <td>
-                              <h:inputText value="#{zoneAlertsBean.item.description}" id="description" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              <h:inputText value="#{zoneAlertsBean.item.description}" id="editZoneAlert-description" onchange="checkMultiple(this)" styleClass="text" size="30"
                                 maxlength="64" />
                             </td>
                           </tr>
@@ -142,11 +142,12 @@
                               </ui:include>
                             </td>
                             <td>
-                              <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <rich:message for="editZoneAlert-day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <ui:include src="../../includes/dayPicker.xhtml">
                                 <ui:param name="days" value="#{zoneAlertsBean.item.dayOfWeek}" />
                                 <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
        							<ui:param name="context" value="editZoneAlert" />
+        						<ui:param name="formName" value="edit-form"/>
                               </ui:include>
                             </td>
                           </tr>
@@ -162,19 +163,20 @@
                               </ui:include>
                             </td>
                             <td>
-                              <rich:message for="editZoneAlertStopTOD-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneRadio id="timeframe" onchange="checkMultiple('timeframe')" value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
+                              <rich:message for="editZoneAlert-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <h:selectOneRadio id="editZoneAlert-timeframe" onchange="checkMultiple('timeframe')" value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('editZoneAlert-timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>
-                              <table id="timeframePickers" border="0" style="#{zoneAlertsBean.item.anytime ? 'display:none' : ''}">
+                              <table id="editZoneAlert-timeframePickers" border="0" style="#{zoneAlertsBean.item.anytime ? 'display:none' : ''}">
                                 <tr>
                                   <td>
                                     <ui:include src="../../includes/timePicker.xhtml">
                                       <ui:param name="id" value="startTOD" />
                                       <ui:param name="value" value="#{zoneAlertsBean.item.startTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
-        								<ui:param name="context" value="editZoneAlertStartTOD" />
+        								<ui:param name="context" value="editZoneAlert" />
+        								<ui:param name="formName" value="edit-form"/>
                                     </ui:include>
                                   </td>
                                   <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
@@ -183,7 +185,8 @@
                                       <ui:param name="id" value="stopTOD" />
                                       <ui:param name="value" value="#{zoneAlertsBean.item.stopTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
-        						<ui:param name="context" value="editZoneAlertStopTOD" />
+        							  <ui:param name="context" value="editZoneAlert" />
+        							  <ui:param name="formName" value="edit-form"/>
                                     </ui:include>
                                   </td>
                                 </tr>
@@ -216,16 +219,16 @@
                           </ui:include>
                         </div>
 
-                        <rich:message for="arrival" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        <rich:message for="editZoneAlert-arrival" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
                         <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox id="arrival" value="#{zoneAlertsBean.item.arrival}" onchange="checkMultiple('defineAlerts')" />
+                              <h:selectBooleanCheckbox id="editZoneAlert-arrival" value="#{zoneAlertsBean.item.arrival}" onchange="checkMultiple('defineAlerts')" />
                               <h:outputText value="#{messages.editZoneAlert_arrival}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox id="departure" value="#{zoneAlertsBean.item.departure}" onchange="checkMultiple('defineAlerts')" />
+                              <h:selectBooleanCheckbox id="editZoneAlert-departure" value="#{zoneAlertsBean.item.departure}" onchange="checkMultiple('defineAlerts')" />
                               <h:outputText value="#{messages.editZoneAlert_departure}" />
                             </td>
                           </tr>
@@ -246,13 +249,14 @@
                           </ui:include>
                         </div>
 
-                        <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        <rich:message for="editZoneAlert-from" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
                         <ui:include src="../../includes/admin/listPicker.xhtml">
                           <ui:param name="bean" value="#{zoneAlertsBean.assignPicker}" />
                           <ui:param name="id" value="alertAssign" />
                           <ui:param name="onchange" value="checkMultiple('assignTo')" />
 						  <ui:param name="context" value="editZoneAlert"/>
+						  <ui:param name="formName" value="edit-form"/>
                         </ui:include>
 
                       </td>
@@ -261,14 +265,14 @@
 
                   <div class="spacer"></div>
 
-                  <rich:message for="emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                  <rich:message for="editZoneAlert-emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="390" valign="top">
 
                         <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_notifyPersonIDs" value="#{zoneAlertsBean.updateField['notifyPersonIDs']}" />
+                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_editZoneAlert-notifyPersonIDs" value="#{zoneAlertsBean.updateField['notifyPersonIDs']}" />
                           <h:outputText value="#{messages.editAlerts_notificationsByName}" />
                         </div>
 
@@ -278,6 +282,7 @@
                           <ui:param name="autocompleter" value="#{zoneAlertsBean.peoplePicker}" />
                           <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
 						  <ui:param name="context" value="editZoneAlert"/>
+ 						  <ui:param name="formName" value="edit-form"/>
                         </ui:include>
 
                       </td>
@@ -327,10 +332,10 @@
       function showZone()
       {
         map.clearOverlays();
-        if(document.getElementById("editZoneAlertForm:zonePoints") != null)
+        if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
         { 
            
-	        var outline = fromOutlineString(document.getElementById("editZoneAlertForm:zonePoints").value);
+	        var outline = fromOutlineString(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
 	        if (outline)
 	        {
 	          centerMapAtZone(getLatLngBounds(outline));
@@ -352,9 +357,9 @@
           showZone();
         }
 
-        document.getElementById("timeframePickers").style.display = (document.getElementById("editZoneAlertForm:timeframe:0").checked ? 'none' : '');
+        document.getElementById("editZoneAlert-timeframePickers").style.display = (document.getElementById("edit-form:editZoneAlert-timeframe:0").checked ? 'none' : '');
 
-        var elements = document.getElementById("editZoneAlertForm").elements;
+        var elements = document.getElementById("edit-form").elements;
         for (var i = 0; i &lt; elements.length; i++)
           for (var j = 0; j &lt; formElements.length; j++)
             if (elements[i].getAttribute("type") == formElements[j])

@@ -10,6 +10,7 @@
 	<ui:param name="diagnosticsSubSelected" value="current" />
 	<ui:param name="helpFile" value="Warnings.htm" />
     <ui:param name="ajaxPanels" value="diagnostics_table,diagnostics_search"/>
+    <ui:param name="context" value="diagnostics"/>
 	
 
 	<ui:define name="content">
@@ -45,7 +46,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="diagnosticsSearch" action="#{diagnosticsBean.searchAction}" oncomplete="initializeTable()"
-		            					reRender="navigation:redirectSearch,header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,diagnostics-form:diagnostics,diagnostics-form:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -59,7 +60,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="diagnosticsRefresh" styleClass="left"
-		           					reRender="header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller"
+		           					reRender="header,diagnostics-form:diagnostics,diagnostics-form:bottomScroller"
 									action="#{diagnosticsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
@@ -106,10 +107,10 @@
 		             		<ui:param name="tableData" value="#{diagnosticsBean.tableData}"/>             						
 		             		<ui:param name="tableColumns" value="#{diagnosticsBean.tableColumns}"/>
 		             		<ui:param name="bean" value="#{diagnosticsBean}"/>
-		             		<ui:param name="formId" value="diagnostics_table_form"/>
+<!--		             		<ui:param name="formId" value="diagnostics_table_form"/>-->
 		             		<ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
-		             		<ui:param name="clearRerender" value="diagnostics_search:header,diagnostics_table_form:items"/>
+		             		<ui:param name="clearRerender" value="diagnostics_search:header,diagnostics-form:diagnostics"/>
     	 					<ui:param name="context" value="diagnostics" />
 		    			</ui:include>    							
 		            </h:panelGroup>
@@ -119,7 +120,7 @@
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{diagnosticsBean}"/>	
-					<ui:param name="reRender" value="diagnostics_table_form:items" />
+					<ui:param name="reRender" value="diagnostics-form:diagnostics" />
     	 			<ui:param name="context" value="diagnostics" />
 				</ui:include>    
 				

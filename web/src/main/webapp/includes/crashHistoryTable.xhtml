@@ -10,12 +10,12 @@
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
     
     
-    <h:form id="#{formId}">
+    <h:form id="#{context}-form">
     <rich:jQuery selector="document" query="ready(function(){initializeCrashTable()})" />          
     <div class="datagrid_panel" style="width:925px; overflow: auto">
         
 
-        <rich:dataTable id="items" value="#{tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
+        <rich:dataTable id="#{context}" value="#{tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
         	rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
             <!-- Data -->
@@ -31,25 +31,28 @@
                 </rich:toolTip>
             </rich:column>
             
-            <rich:column rendered="#{tableColumns['date'].visible}" sortBy="#{item.time}" >
+            <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{item.time}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_date}" />
                 </f:facet>
                 <h:outputText value="#{item.date}" />
             </rich:column>
             
-            <rich:column rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}" >
+            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_group}" />
                 </f:facet>
-                <h:outputText value="#{item.group}" />
+              <pretty:link id="#{context}-dashboard" mappingId="dashboard">
+                   <h:outputText value="#{item.group}"/>
+                   <f:param value="#{item.groupID}"/>
+               </pretty:link>                                                                                
             </rich:column>
             
-            <rich:column rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" >
+            <rich:column id="driverName" rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_driver}" />
                 </f:facet>                
-                <pretty:link id="#{context}-crashHistoryDriverPerformance" mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
+                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance" rendered="#{item.driverName ne 'Unknown Driver'}">
                     <f:param value="#{item.driver == null ? 0 : item.driver.driverID}"/>
                     #{item.driverName}
                 </pretty:link>
@@ -57,25 +60,25 @@
                 	rendered="#{item.driverName eq 'Unknown Driver'}"/>
             </rich:column>
             
-            <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" >
+            <rich:column id="vehiclename" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_vehicle}" />
                 </f:facet>                
-                <pretty:link id="#{context}-crashHistoryVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle != null}">
+                <pretty:link id="#{context}-vehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle != null}">
                     <f:param value="#{item.vehicle.vehicleID}"/>
                     #{item.vehicleName}
                 </pretty:link>
                 <h:outputText value="#{messages.unassigned}" rendered="#{item.vehicle == null}"/>
             </rich:column>
                                      
-            <rich:column rendered="#{tableColumns['nbr_occupants'].visible}" sortBy="#{item.nbrOccupants}" style="text-align: center;">
+            <rich:column id="occupants" rendered="#{tableColumns['nbr_occupants'].visible}" sortBy="#{item.nbrOccupants}" style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_nbr_occupants}" />
                 </f:facet>
                 <h:outputText value="#{item.nbrOccupants}" />
             </rich:column>
             
-            <rich:column rendered="#{tableColumns['status'].visible}" sortBy="#{item.status}" >
+            <rich:column id="status" rendered="#{tableColumns['status'].visible}" sortBy="#{item.status}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_status}" />
                 </f:facet>
@@ -83,18 +86,18 @@
                 <h:outputText value="#{messages[status]}" />
             </rich:column>
             
-            <rich:column rendered="#{tableColumns['weather'].visible}" sortBy="#{item.weather}" >
+            <rich:column id="weather" rendered="#{tableColumns['weather'].visible}" sortBy="#{item.weather}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_weather}" />
                 </f:facet>
                 <h:outputText value="#{item.weather}" />
             </rich:column>  
                       
-            <rich:column rendered="#{tableColumns['details'].visible}" >
+            <rich:column id="details" rendered="#{tableColumns['details'].visible}" >
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-                <pretty:link id="#{context}-crashHistoryCrashReport" mappingId="crashReport" title="#{messages.notes_crashhistory_view_detail}">
+                <pretty:link id="#{context}-crashReport" mappingId="crashReport" title="#{messages.notes_crashhistory_view_detail}">
                     <f:param value="#{item.crashReportID}"/>
                     #{messages.notes_crashhistory_details}
                 </pretty:link>
@@ -103,9 +106,9 @@
         </rich:dataTable>
     </div>
     
-    <rich:datascroller id="bottomScroller" for="items" 
+    <rich:datascroller id="#{context}-bottomScroller" for="#{context}" 
             immediate="true" scrollerListener="#{bean.scrollerListener}" 
-            reRender="items,header" oncomplete="initializeCrashTable();" 
+            reRender="#{context},header" oncomplete="initializeCrashTable();" 
             page="#{bean.page}" styleClass="dataScroller" renderIfSinglePage="false"/>
             
     </h:form>
@@ -118,7 +121,7 @@
             <h:outputText value="#{messages.notes_crashhistory_crash_status}" />
         </f:facet>
         <f:facet name="controls">
-            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
+            <h:graphicImage id="#{context}-clear" value="/images/modal_close.png" style="cursor:pointer" 
             	onclick="Richfaces.hideModalPanel('clearCrashPanel')" />
         </f:facet>
 
@@ -199,7 +202,7 @@
     
 	<a4j:form id="updateCrashStatus">
 		<a4j:jsFunction name="updCrshStat" action="#{crashHistoryBean.updateCrashStatus}" 
-			reRender="items" >
+			reRender="#{context}" >
 			<a4j:actionparam name="selectedCrash" assignTo="#{crashHistoryBean.selectedCrash}"/>
 		</a4j:jsFunction>
 	</a4j:form>	    

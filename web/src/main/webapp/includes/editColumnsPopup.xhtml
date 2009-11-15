@@ -42,7 +42,7 @@
 
       <a4j:form id="editColumnsForm">
 
-        <rich:dataGrid id="editGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
+        <rich:dataGrid id="#{context}-editColumnsGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
            <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" id="#{context}-col" tabindex="1"/>
            <h:outputText value="#{bean.tableColumns[col].colLabel}" />
@@ -55,7 +55,7 @@
             action="#{bean.tablePref.cancelEdit}" 
             ajaxSingle="true" 
             oncomplete="Richfaces.hideModalPanel('editColumns');"
-            reRender="editColumnsForm:editColumnsGrid" tabindex="3">
+            reRender="editColumnsForm:#{context}-editColumnsGrid" tabindex="3">
             <span class="cancel">
              <h:outputText value="#{messages.button_cancel}" />
             </span>

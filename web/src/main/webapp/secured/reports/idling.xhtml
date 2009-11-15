@@ -63,7 +63,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="idlingSearch" action="#{idlingReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,idlings,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -86,7 +86,7 @@
             								</li>
             								<li class="l text">
             									<a4j:commandLink 
-            										id="idlingSearchzeditColumns" 
+            										id="idlingSearchEditColumns" 
             										reRender="editColumnsForm:editColumnGrid"
             										action="#"
             									 	styleClass="ls_tab_edit_columns"
@@ -153,20 +153,23 @@
 <!--                                    styleClass="datascroller">-->
 <!--                                 </rich:datascroller>																																-->
                             	 <div class="datagrid_panel" style="width: 925px;">		        						
-                            				<rich:dataTable value="#{idlingReportBean.idlingData}" id="items"
+                            				<rich:dataTable value="#{idlingReportBean.idlingData}" id="idlings"
                             					var="item" styleClass="datagrid" 
                             					rowClasses="tableOdd,tableEven" cellspacing="1" 
                             					rows="#{idlingReportBean.numRowsPerPg}"
                             					width="100%">
                             
-                            					<rich:column rendered="#{idlingReportBean.tableColumns['group'].visible}" 
+                            					<rich:column id="group" rendered="#{idlingReportBean.tableColumns['group'].visible}" 
                             						sortBy="#{item.group}">
                             						<f:facet name="header">
                             							<h:outputText value="#{messages.reports_group}" />
                             						</f:facet>
-                            						<h:outputText value="#{item.group}" />   
-                                				</rich:column>
-                                				<rich:column rendered="#{idlingReportBean.tableColumns['driver_person_fullName'].visible}" 
+                                                	<pretty:link id="idlingsDashboard" mappingId="dashboard">
+                                                		<h:outputText value="#{item.group}"/>
+                                                		<f:param value="#{item.groupID}"/>
+                                            		</pretty:link>                                                                                
+       											</rich:column>
+                                				<rich:column id="fullName" rendered="#{idlingReportBean.tableColumns['driver_person_fullName'].visible}" 
                                 					sortBy="#{item.driver.person.first}">
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_driver}" />
@@ -177,14 +180,14 @@
                                                     </pretty:link>
                             						
                                 				</rich:column>
-                                				<rich:column rendered="#{idlingReportBean.tableColumns['driveTime'].visible}" 
+                                				<rich:column id="driveTime" rendered="#{idlingReportBean.tableColumns['driveTime'].visible}" 
                                 					sortBy="#{item.driveTime}">    					
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_drivetime}" />
                                   					</f:facet>
                                   					<h:outputText value="#{item.driveTime}" converter="FloatConverter"/>        					
                                 				</rich:column>    				
-                                				<rich:column rendered="#{idlingReportBean.tableColumns['lowHrs'].visible}" 
+                                				<rich:column id="lowHours" rendered="#{idlingReportBean.tableColumns['lowHrs'].visible}" 
                                 					sortBy="#{item.lowHrs}">
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_lowidlehrs}" />
@@ -197,7 +200,7 @@
                                   					</f:facet>
                                   					<h:outputText value="#{item.lowPercent}" converter="FloatConverter"/> 
                                 				</rich:column>
-                                				<rich:column rendered="#{idlingReportBean.tableColumns['highHrs'].visible}"
+                                				<rich:column id="highHours" rendered="#{idlingReportBean.tableColumns['highHrs'].visible}"
                                 					sortBy="#{item.highHrs}">
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_highidlehrs}" />
@@ -210,7 +213,7 @@
                                   					</f:facet>
                                   					<h:outputText value="#{item.highPercent}" converter="FloatConverter"/> 
                                 				</rich:column>
-                                				<rich:column rendered="#{idlingReportBean.tableColumns['totalHrs'].visible}"
+                                				<rich:column id="totalHours" rendered="#{idlingReportBean.tableColumns['totalHrs'].visible}"
                                 					sortBy="#{item.totalHrs}">
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_totalidlehrs}" />
@@ -236,16 +239,16 @@
                                 			</rich:dataTable>    	
                             	</div>	
                                 <div class="spacer"/>
-                                <rich:datascroller id="bottomScroller" for="items" immediate="true" 
+                                <rich:datascroller id="bottomScroller" for="idlings" immediate="true" 
                                           scrollerListener="#{idlingReportBean.scrollerListener}"
-                                             reRender="items,headerIdlings"
+                                             reRender="idlings,headerIdlings"
                                              requestDelay="200" eventsQueue="pagerQueue" page="#{idlingReportBean.page}"
                                              styleClass="datascroller" renderIfSinglePage="false">                 
                                           </rich:datascroller>
     							</a4j:form>
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{idlingReportBean}"/>	
-									<ui:param name="reRender" value="outerIdlingReport:items" />
+									<ui:param name="reRender" value="outerIdlingReport:idlings" />
 									<ui:param name="context" value="idling" />
 								</ui:include>    
 								

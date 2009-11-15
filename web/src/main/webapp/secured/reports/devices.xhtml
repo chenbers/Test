@@ -62,7 +62,7 @@
             							</li>
             							<li class="l">
             								<a4j:commandButton id="devicesSearch" action="#{deviceReportBean.doSearch}" 
-            									reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerDevices" styleClass="left">
+            									reRender="navigation:redirectSearch,headerRedCount,devices,bottomScroller,headerDevices" styleClass="left">
             										<span class="search">
             											<h:outputText value="#{messages.button_search}" />
             										</span>
@@ -130,44 +130,44 @@
 <!--                                    </rich:datascroller>																															-->
 									
                                 	<div class="datagrid_panel" style="width: 925px;">		        						
-                                				<rich:dataTable value="#{deviceReportBean.deviceData}" id="items"
+                                				<rich:dataTable value="#{deviceReportBean.deviceData}" id="devices"
                                 					var="item" styleClass="datagrid" 
                                 					rowClasses="tableOdd,tableEven" cellspacing="1" 
                                 					rows="#{deviceReportBean.numRowsPerPg}"
                                 					width="100%">
                                 
-                                					<rich:column rendered="#{deviceReportBean.tableColumns['device_name'].visible}" 
+                                					<rich:column id="deviceName" rendered="#{deviceReportBean.tableColumns['device_name'].visible}" 
                                 						sortBy="#{item.device.name}">
                                 						<f:facet name="header">
                                 							<h:outputText value="#{messages.reports_deviceid}" />
                                 						</f:facet>							
                                 						<h:outputText value="#{item.device.name}"/>										
                                     				</rich:column>
-                                    				<rich:column rendered="#{deviceReportBean.tableColumns['vehicle_name'].visible}" 
+                                    				<rich:column id="vehicleName" rendered="#{deviceReportBean.tableColumns['vehicle_name'].visible}" 
                                     					sortBy="#{item.vehicle.name}">
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_assignedvehicle}" />
                                       					</f:facet>
-                                                        <pretty:link id="devicesVehiclePerformance" mappingId="vehiclePerformance">
+                                                        <pretty:link id="vehiclePerformance" mappingId="vehiclePerformance">
                                                             <h:outputText value="#{item.vehicle.name}"/>
                                                             <f:param value="#{item.vehicle.vehicleID}"/>
                                                         </pretty:link>      
                                     				</rich:column>
-                                    				<rich:column rendered="#{deviceReportBean.tableColumns['device_imei'].visible}" 
+                                    				<rich:column id="imei" rendered="#{deviceReportBean.tableColumns['device_imei'].visible}" 
                                     					sortBy="#{item.device.imei}">    					
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_imei}" />
                                       					</f:facet>
                                       					<h:outputText value="#{item.device.imei}" />    					     					
                                     				</rich:column>
-                                    				<rich:column rendered="#{deviceReportBean.tableColumns['device_phone'].visible}" 
+                                    				<rich:column id="phone" rendered="#{deviceReportBean.tableColumns['device_phone'].visible}" 
                                     					sortBy="#{item.device.phone}">
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_devicephonenbr}" />
                                       					</f:facet>
                                       					<h:outputText value="#{item.device.phone}" />   
                                     				</rich:column>
-                                    				<rich:column rendered="#{deviceReportBean.tableColumns['device_status'].visible}" 
+                                    				<rich:column id="status" rendered="#{deviceReportBean.tableColumns['device_status'].visible}" 
                                     					sortBy="#{item.device.status}">
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_status}" />
@@ -175,7 +175,7 @@
       															<ui:param name="status" value="status#{item.device.status.code}" />
       															<h:outputText value="#{messages[status]}" />
                                     				</rich:column>  
-                                    				<rich:column rendered="#{deviceReportBean.tableColumns['device_ephone'].visible}" 
+                                    				<rich:column id="ephone" rendered="#{deviceReportBean.tableColumns['device_ephone'].visible}" 
                                     					sortBy="#{item.device.ephone}">
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_ecallphonenbr}" />
@@ -184,15 +184,15 @@
                                     				</rich:column>   		
                                     			</rich:dataTable>    	
                                 			</div>
-                                       <rich:datascroller id="bottomScroller" for="items" immediate="true"
+                                       <rich:datascroller id="devices-bottomScroller" for="devices" immediate="true"
                                           scrollerListener="#{deviceReportBean.scrollerListener}"
-                                          reRender="items,headerDevices" renderIfSinglePage="false"
+                                          reRender="devices,headerDevices" renderIfSinglePage="false"
                                           requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}" styleClass="datascroller">                 
                                        </rich:datascroller>
     							</a4j:form>
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{deviceReportBean}"/>	
-									<ui:param name="reRender" value="outerDeviceReport:items" />
+									<ui:param name="reRender" value="outerDeviceReport:devices" />
 		   							<ui:param name="context" value="devices" />
 								</ui:include>    
 								</div>

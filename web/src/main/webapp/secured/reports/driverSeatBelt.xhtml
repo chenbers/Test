@@ -186,14 +186,14 @@
 
 			<rich:panel id="notificationsTable" bodyClass="datagrid">
 				<!-- Start Event table --> 
-					<h:form id="eventTableForm">
+					<h:form id="driverSeatBeltForm">
     					<a4j:queue requestDelay="500"/>
 					
 <!--					<rich:datascroller align="center" for="notificationsTable" id="scrollerTop" page="#{driverSeatBeltBean.tableStatsBean.page}"-->
 <!--					reRender="notificationsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>-->
 						<rich:dataTable 
 							value="#{driverSeatBeltBean.seatBeltEvents}" 
-							id="notificationsTable" var="item" styleClass="datagrid"
+							id="events" var="item" styleClass="datagrid"
 							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSeatBeltBean.tableStatsBean.tableRowCount}"  
 							width="100%"> 
 						<!-- Data -->
@@ -213,7 +213,7 @@
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.event.time}">
+							<rich:column id="time" sortBy="#{item.event.time}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_datetime}" />
 								</f:facet>
@@ -222,21 +222,21 @@
 									</h:outputText>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.avgSpeed}">
+							<rich:column id="averageSpeed" sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_avg_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.avgSpeed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.topSpeed}">
+							<rich:column id="topSpeed" sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_top_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.topSpeed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.distance}">
+							<rich:column id="distance" sortBy="#{item.event.distance}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_distance}" />
 								</f:facet>
@@ -259,14 +259,17 @@
     						</rich:column>
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="notificationsTable" id="scrollerBottom" page="#{driverSeatBeltBean.tableStatsBean.page}"
-						reRender="notificationsTable,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"
+						<rich:datascroller align="center" for="events" id="scrollerBottom" page="#{driverSeatBeltBean.tableStatsBean.page}"
+						reRender="events,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"
 						renderIfSinglePage="false"/>
 					</h:form> 
 				<!-- End Event table -->
 				</rich:panel>
 				</div>
 				</div>
+<div class="panel_sw">
+	<div class="panel_statusbar"></div>
+</div>
 				</div>
 				</rich:panel>
 			</td>
@@ -274,9 +277,6 @@
 	</table>
 	 </div>
 
-<div class="panel_sw">
-	<div class="panel_statusbar"></div>
-</div>
  <!-- START FORGIVE MODAL -->
 <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="180" resizeable="false">
 <t:saveState value="#{driverSeatBeltBean.clearItem}" />
@@ -304,7 +304,7 @@
           <a4j:commandLink id="driverSeatBeltConfirm" action="#{driverSeatBeltBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
-                			eventsQueue="eventTableForm" reRender="notificationsTable,tableStats,scrollerBottom">
+                			eventsQueue="driverSeatBeltForm" reRender="events,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="yes">
 	          						<h:outputText value="#{messages.button_yes}" />

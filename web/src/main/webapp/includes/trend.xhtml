@@ -97,7 +97,7 @@
 				</tbody>
 			</table>
 
-			<rich:dataTable value="#{trendBean.trendBeanItems}" id="items"	var="item" styleClass="datatable" 
+			<rich:dataTable value="#{trendBean.trendBeanItems}" id="#{context}"	var="item" styleClass="datatable" 
 				rowClasses="tableOdd,tableEven" cellspacing="1" width="100%" 
 				rows="#{scroll ? 5 : 0}" >
 				
@@ -121,9 +121,9 @@
 				</rich:column>
 				<rich:column width="65%">
 					<f:facet name="header">
-						<a4j:commandLink id="#{context}trendGroupSort"
+						<a4j:commandLink id="#{context}-trendGroupSort"
 							value="#{messages.trendReport_header_divisionTeam}"
-							reRender="xypanel,bottomScroller,items"
+							reRender="xypanel,bottomScroller,#{context}"
 							action="#{trendBean.sort}" ajaxSingle="true">
 							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
 								value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}" />
@@ -145,7 +145,7 @@
 				<rich:column width="15%" styleClass="trendTableScore">
 					<f:facet name="header">
 						<a4j:commandLink id="#{context}-trendScoreSort" value="#{messages.trendReport_header_score}"
-							reRender="xypanel,bottomScroller,items"
+							reRender="xypanel,bottomScroller,#{context}"
 							action="#{trendBean.sort}" ajaxSingle="true">
 							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
 								value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}" />
@@ -167,11 +167,11 @@
 					</ui:include>
 				</rich:column>
 				<rich:column width="10%" sortBy="#{item.crashesPerMillionMiles}"
-					id="#{context}-crashes">
+					id="crashes">
 					<f:facet name="header">
 						<h:outputText value="#{messages.crash_summary_overDistanceColumn}" />
 					</f:facet>
-					<rich:toolTip for="trendTable:items:crashesheader">
+					<rich:toolTip for="trendTable:#{context}:crashesheader">
 						<h:outputFormat
 							value="#{messages.crash_summary_overDistanceTitle}">
 							<a4j:actionparam value="miles"
@@ -185,10 +185,10 @@
 			</rich:dataTable>
 
 		
-			<rich:datascroller id="bottomScroller" for="items" immediate="true"
+			<rich:datascroller id="#{context}-bottomScroller" for="#{context}" immediate="true"
 				align="center" styleClass="dataScrollerLarge"
 				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-				renderIfSinglePage="false" reRender="items,xypanel"
+				renderIfSinglePage="false" reRender="#{context},xypanel"
 				rendered="#{scroll}">
 			</rich:datascroller>
 

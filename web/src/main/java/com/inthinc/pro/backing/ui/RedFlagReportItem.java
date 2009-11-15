@@ -47,10 +47,12 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
         if (group != null)
         {
             setGroup(group.getName());
+            setGroupID(event.getGroupID());
         }
         else
         {
             setGroup("");
+            setGroupID(null);
         }
         
         // Addition of unknown driver requires a check for non-null person object

@@ -335,7 +335,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             {
                 final String summary = MessageUtil.formatMessageString("editAlerts_noDays");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:day0", message);
+                context.addMessage("edit-form:"+getAlertPage()+"-day0", message);
                 valid = false;
             }
         }
@@ -354,7 +354,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             {
                 final String summary = MessageUtil.formatMessageString("editAlerts_unassigned");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:alertAssignFrom", message);
+                context.addMessage("edit-form:"+getAlertPage()+"-from", message);
                 valid = false;
             }
         }
@@ -369,7 +369,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 {
                     final String summary = MessageUtil.formatMessageString("editAlerts_emailFormat", email);
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:emailToString", message);
+                    context.addMessage("edit-form:"+getAlertPage()+"-emailToString", message);
                     valid = false;
                     break;
                 }
@@ -409,6 +409,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 alert.setStopTOD(BaseAlert.DEFAULT_STOP_TOD);
         }
     }
+    public abstract String getAlertPage();
 
     public interface BaseAlertView extends EditItem
     {
@@ -455,5 +456,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         public String getEmailToString();
 
         public void setEmailToString(String emailToString);
+        
     }
 }

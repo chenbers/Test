@@ -179,18 +179,18 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
 							<rich:spacer width="17" height="17" style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
 						</rich:column>
 
-						<rich:column sortBy="#{item.se.identifier}">
+						<rich:column id="division" sortBy="#{item.se.identifier}">
 							<f:facet name="header">
-								<h:outputText value="Division/Team" />
+								<h:outputText value="#{messages.divisionTeam}" />
 							</f:facet>
 							<h:outputLink value="#{item.goTo}">
 								<h:outputText value="#{item.se.identifier}" />
 							</h:outputLink>
 						</rich:column>
 
-       					<rich:column width="10%" styleClass="trendTableScore" sortBy="#{item.crashesPerMillionMiles}">
+       					<rich:column id="crashes" width="10%" styleClass="trendTableScore" sortBy="#{item.crashesPerMillionMiles}">
         					<f:facet name="header">
-        						<h:outputText alue="#{messages.crash_summary_overDistanceColumn}"/>
+        						<h:outputText value="#{messages.crash_summary_overDistanceColumn}"/>
          							<rich:toolTip>
         					        	<h:outputFormat value=" #{messages.crash_summary_overDistanceTitle} " >
                                 			<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
@@ -199,7 +199,7 @@ s<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/x
         					</f:facet>
                             <h:outputText value="#{item.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmConverter"/>
  						</rich:column>
-						<rich:column width="73" sortBy="#{item.se.score}">
+						<rich:column id="score" width="73" sortBy="#{item.se.score}">
 							<f:facet name="header">
 								<h:outputText value="Score" />
 							</f:facet>

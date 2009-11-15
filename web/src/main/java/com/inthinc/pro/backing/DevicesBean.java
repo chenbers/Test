@@ -236,7 +236,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 valid = false;
                 final String summary = MessageUtil.getMessageString(required);
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:ephone", message);
+                getFacesContext().addMessage("edit-form:editDevices-ephone", message);
             }
 //            else if (deviceView.getEphone() != null && !deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")
 //            		&& !deviceView.getPhone().matches("\\+\\d*"))
@@ -246,7 +246,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:ephone", message);
+                getFacesContext().addMessage("edit-form:editDevices-ephone", message);
             }
         }
         // Name
@@ -255,7 +255,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             valid = false;
             final String summary = MessageUtil.getMessageString(required);
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            getFacesContext().addMessage("edit-form:name", message);
+            getFacesContext().addMessage("edit-form:editDevices-name", message);
         }
         Device byImei = null;
         if (deviceView.getImei() != null)
@@ -268,21 +268,21 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 valid = false;
                 final String summary = MessageUtil.getMessageString(required);
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:imei", message);
+                getFacesContext().addMessage("edit-form:editDevices-imei", message);
             }
             else if (!deviceView.getImei().matches("[0-9]{15}")) // format
             {
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:imei", message);
+                getFacesContext().addMessage("edit-form:editDevices-imei", message);
             }
             else if ((byImei != null) && !byImei.getDeviceID().equals(getItem().getDeviceID())) // unique
             {
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_uniqueImei");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:imei", message);
+                getFacesContext().addMessage("edit-form:editDevices-imei", message);
             }
         }
         // SIM
@@ -291,7 +291,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             valid = false;
             final String summary = MessageUtil.getMessageString(required);
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            getFacesContext().addMessage("edit-form:sim", message);
+            getFacesContext().addMessage("edit-form:editDevices-sim", message);
         }
         // PHONE        
         if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
@@ -301,7 +301,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 valid = false;
                 final String summary = MessageUtil.getMessageString(required);
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:phone", message);
+                getFacesContext().addMessage("edit-form:editDevices-phone", message);
             }
 //            else if (deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")
 //            		&& !deviceView.getPhone().matches("\\+\\d*"))
@@ -311,7 +311,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:phone", message);
+                getFacesContext().addMessage("edit-form:editDevices-phone", message);
             }
         }
         return valid;

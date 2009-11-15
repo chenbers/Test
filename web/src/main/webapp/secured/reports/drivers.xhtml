@@ -61,7 +61,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="driversSearch" action="#{driverReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,items,bottomScroller,headerDrivers" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,drivers,bottomScroller,headerDrivers" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -129,13 +129,13 @@
                                 <div class="datagrid_panel" style="width: 925px;">
 
                                     <rich:dataTable value="#{driverReportBean.driverData}" 
-                                         id="items" 
+                                         id="drivers" 
                                          var="item" 
                                          styleClass="datagrid" 
                                          rowClasses="tableOdd,tableEven" 
                                          rows="#{driverReportBean.numRowsPerPg}" >
                                 
-                                        <rich:column rendered="#{driverReportBean.tableColumns['group'].visible}" sortBy="#{item.group}">
+                                        <rich:column id="group" rendered="#{driverReportBean.tableColumns['group'].visible}" sortBy="#{item.group}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_group}" />
                                             </f:facet>
@@ -144,13 +144,13 @@
                                                 <f:param value="#{item.groupID}"/>
                                             </pretty:link> 
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['driver_person_empid'].visible}" sortBy="#{item.driver.person.empid}">
+                                        <rich:column id="empid" rendered="#{driverReportBean.tableColumns['driver_person_empid'].visible}" sortBy="#{item.driver.person.empid}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_empID}" />
                                             </f:facet>
                                             <h:outputText value="#{item.driver.person.empid}" />
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['driver_person_fullName'].visible}" sortBy="#{item.driver.person.first}">
+                                        <rich:column id="fullName" rendered="#{driverReportBean.tableColumns['driver_person_fullName'].visible}" sortBy="#{item.driver.person.first}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_driver}" />
                                             </f:facet>
@@ -160,7 +160,7 @@
                                             </pretty:link>
                                         
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['vehicle_name'].visible}" sortBy="#{item.vehicle.name}">
+                                        <rich:column id="vehiclename" rendered="#{driverReportBean.tableColumns['vehicle_name'].visible}" sortBy="#{item.vehicle.name}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_vehicle}" />
                                             </f:facet>
@@ -171,7 +171,7 @@
                                             
                                             <h:outputText rendered="#{item.vehicle eq null}" value="#{messages.reports_none_assigned}" />
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['distanceDriven'].visible}" sortBy="#{item.milesDriven}">
+                                        <rich:column id="distance" rendered="#{driverReportBean.tableColumns['distanceDriven'].visible}" sortBy="#{item.milesDriven}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_distanceDriven}"/>
                                             </f:facet>
@@ -180,7 +180,7 @@
                                                 <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                                             </h:outputFormat>
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['overallScore'].visible}" sortBy="#{item.overallScore}">
+                                        <rich:column id="overallScore" rendered="#{driverReportBean.tableColumns['overallScore'].visible}" sortBy="#{item.overallScore}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_overall}" />
                                             </f:facet>                       
@@ -192,7 +192,7 @@
 													<ui:param name="context" value="driversOverall" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['speedScore'].visible}" sortBy="#{item.speedScore}">
+                                        <rich:column id="speedScore" rendered="#{driverReportBean.tableColumns['speedScore'].visible}" sortBy="#{item.speedScore}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_speed}" />
                                             </f:facet>                               
@@ -204,7 +204,7 @@
 													<ui:param name="context" value="driversSpeed" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['styleScore'].visible}" sortBy="#{item.styleScore}">
+                                        <rich:column id="styleScore" rendered="#{driverReportBean.tableColumns['styleScore'].visible}" sortBy="#{item.styleScore}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_style}" />
                                             </f:facet>                     
@@ -216,7 +216,7 @@
 													<ui:param name="context" value="driversStyle" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column rendered="#{driverReportBean.tableColumns['seatBeltScore'].visible}" sortBy="#{item.seatBeltScore}">
+                                        <rich:column id="seatbeltScore" rendered="#{driverReportBean.tableColumns['seatBeltScore'].visible}" sortBy="#{item.seatBeltScore}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_seatbelt}" />
                                             </f:facet>      
@@ -231,10 +231,10 @@
                                     </rich:dataTable> 
                                 </div>
                                 <div class="spacer"></div>
-                                <rich:datascroller id="bottomScroller" 
-                                          for="items" immediate="true" 
+                                <rich:datascroller id="drivers-bottomScroller" 
+                                          for="drivers" immediate="true" 
                                           scrollerListener="#{driverReportBean.scrollerListener}" 
-                                          reRender="items,headerDrivers"
+                                          reRender="drivers,headerDrivers"
                                           requestDelay="200" eventsQueue="pagerQueue" 
                                           page="#{driverReportBean.page}" renderIfSinglePage="false"
                                           styleClass="datascroller">
@@ -244,7 +244,7 @@
     							</a4j:form>
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{driverReportBean}"/>	
-									<ui:param name="reRender" value="outerDriverReport:items" />
+									<ui:param name="reRender" value="outerDriverReport:drivers" />
 									<ui:param name="context" value="drivers" />
 								</ui:include>    
 								

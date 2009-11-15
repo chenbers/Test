@@ -400,7 +400,7 @@
 												<h:graphicImage value="#{dataPoint.seatBeltState == true ? '/images/icon_checkmark.png' : '/images/ico_x.png'}" rendered="#{dataPoint.seatBeltAvailable == true}" /> 
 											</rich:column>
 										</rich:dataTable>	
-									    <rich:datascroller for="crashPointTable" styleClass="dataScroller" reRender="crashPointTable"/>
+									    <rich:datascroller id="crashScroller" for="crashPointTable" styleClass="dataScroller" reRender="crashPointTable"/>
 								    </h:form>
 								</div>
 						    </div>

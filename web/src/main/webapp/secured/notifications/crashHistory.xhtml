@@ -14,6 +14,7 @@
 	<ui:param name="crashhistorySubSelected" value="current" />
 	<ui:param name="helpFile" value="CrashHistory.htm" />
     <ui:param name="ajaxPanels" value="crashHistoryTable,crashHistorySearch"/>
+    <ui:param name="context" value="crashHistory"/>
     
     <ui:define name="scripts">
         <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
@@ -76,7 +77,7 @@
         	return marker;
         }
         function tryThis(crashIndex,tableIndex) {           
-            var itemToFind =  "crashHistory_Table_Form:items:"+tableIndex+":crashMenu";
+            var itemToFind =  "crashHistory-form:crashHistory:"+tableIndex+":crashMenu";
             var crash = document.getElementById(itemToFind);          
 			var crashID = crash.options[crash.selectedIndex].value;
                       
@@ -119,7 +120,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="crashHistorySearch" action="#{crashHistoryBean.searchAction}" 
-		            					reRender="navigation:redirectSearch,header,crashHistory_Table_Form:items,crashHistory_Table_Form:bottomScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,crashHistory-form:crashHistory,crashHistory-form:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -133,7 +134,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="crashHistoryRefresh" styleClass="left"
-									reRender="header,crashHistory_Table_Form:items,crashHistory_Table_Form:bottomScroller" 
+									reRender="header,crashHistory-form:crashHistory,crashHistory-form:bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
@@ -188,10 +189,10 @@
 		             		<ui:param name="tableData" value="#{crashHistoryBean.tableData}"/>             						
 		             		<ui:param name="tableColumns" value="#{crashHistoryBean.tableColumns}"/>
 		             		<ui:param name="bean" value="#{crashHistoryBean}"/>
-		             		<ui:param name="formId" value="crashHistory_Table_Form"/>
+<!--		             		<ui:param name="formId" value="crashHistory_Table_Form"/>-->
 		             		<ui:param name="clearTitle" value="#{messages.notes_crashhistory_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_crashhistory_clearInst}"/>
-		             		<ui:param name="clearRerender" value="crashHistorySearch:header,crashHistory_Table_Form:items"/>
+		             		<ui:param name="clearRerender" value="crashHistorySearch:header,crashHistory-form:crashHistory"/>
     	 					<ui:param name="context" value="crashHistory" />
 		    			</ui:include>    							
 		            </h:panelGroup>					
@@ -202,7 +203,7 @@
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{crashHistoryBean}"/>	
-					<ui:param name="reRender" value="crashHistory_Table_Form:items" />
+					<ui:param name="reRender" value="crashHistory-form:crashHistory" />
     	 			<ui:param name="context" value="crashHistory" />
 				</ui:include>    
 				

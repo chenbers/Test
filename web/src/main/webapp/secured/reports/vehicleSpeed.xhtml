@@ -224,7 +224,7 @@ var firstLoad = new Boolean(true);
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartOverallSpeedForm">
 						  	  <a4j:commandLink id="vehicleSpeedOverall" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -265,7 +265,7 @@ var firstLoad = new Boolean(true);
 					    <td id="TWENTYONE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_21_30_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_21_30" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartTwentyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedTwentyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -302,7 +302,7 @@ var firstLoad = new Boolean(true);
 					    <td id="THIRTYONE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_31_40_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_31_40" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartThirtyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedThirtyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -341,7 +341,7 @@ var firstLoad = new Boolean(true);
 						<td id="FOURTYONE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_41_54_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_41_54" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartFortyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedFortyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -378,7 +378,7 @@ var firstLoad = new Boolean(true);
 						<td id="FIFTYFIVE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_55_64_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_55_64" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartFiftyFiveForm">
 						  	  <a4j:commandLink id="vehicleSpeedFiftyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -415,7 +415,7 @@ var firstLoad = new Boolean(true);
 					    <td id="SIXTYFIVE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_65_80_KEY" value="#{vehicleSpeedBean.measurementType}_SCORE_SPEEDING_65_80" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartSixtyFiveForm">
 						  	  <a4j:commandLink id="vehicleSpeedSixtyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -529,7 +529,7 @@ var firstLoad = new Boolean(true);
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.event.time}" >
+							<rich:column id="time" sortBy="#{item.event.time}" >
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
@@ -539,7 +539,7 @@ var firstLoad = new Boolean(true);
 									
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.speedLimit}">
+							<rich:column id="speedLimit" sortBy="#{item.event.speedLimit}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_posted_speed}" />
 								</f:facet>
@@ -551,7 +551,7 @@ var firstLoad = new Boolean(true);
 								
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.avgSpeed}">
+							<rich:column id="averageSpeed" sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
@@ -561,7 +561,7 @@ var firstLoad = new Boolean(true);
 					            <h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.topSpeed}">
+							<rich:column id="topSpeed" sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_top_speed}" />
 								</f:facet>
@@ -571,7 +571,7 @@ var firstLoad = new Boolean(true);
         					    <h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.distance}">
+							<rich:column id="distance"  sortBy="#{item.event.distance}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_distance}" />
 								</f:facet>

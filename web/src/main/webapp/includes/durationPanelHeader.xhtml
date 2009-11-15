@@ -69,7 +69,7 @@
                             	<span id="#{id}_toolImage"><h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" title="#{messages.tool_menu}" /></span>
                     		</c:if>
                     		<c:if test="#{includeDetailsLink}">
-                            	<a href="#{detailLink}" title="#{detailTitle}"><h:graphicImage value="#{detailImage}" /></a>
+                            	<a id="#{id}_details" href="#{detailLink}" title="#{detailTitle}"><h:graphicImage value="#{detailImage}" /></a>
                     		</c:if>
             
                             <!--

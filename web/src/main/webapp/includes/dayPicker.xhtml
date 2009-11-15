@@ -17,7 +17,7 @@
       formName: The name of the form containing the picker. If not provided, "edit-form" is used.
       disabled: Whether the picker is disabled.
       onchange: A javascript expression to call when the value changes.
-
+	   context: page this is included in - form name = #{context}Form
   To use:
   ==============
   <ui:include src="/includes/dayPicker.xhtml" />
@@ -63,13 +63,13 @@
           document.getElementById('#{formName}:#{context}-day' + i).checked = checked;
         #{onchange}
       }
-
+      
       function checkedOne()
       {
         var checked = true;
         for (var i = 0; i &lt; 7; i++)
           checked = checked &amp;&amp; document.getElementById('#{formName}:#{context}-day' + i).checked;
-        document.getElementById('#{formName}:#{context}-daysSelectAll').checked = checked;
+        document.getElementById('#{context}-daysSelectAll').checked = checked;
         #{onchange}
       }
     </script>

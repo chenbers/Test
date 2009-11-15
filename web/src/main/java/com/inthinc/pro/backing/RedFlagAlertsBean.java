@@ -273,7 +273,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         boolean valid = super.validateSaveItem(saveItem);
         if ((saveItem.getName() == null) || (saveItem.getName().length() == 0) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-            FacesContext.getCurrentInstance().addMessage("edit-form:name", message);
+            FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlag-name", message);
             valid = false;
         }
         return valid;
@@ -332,6 +332,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     protected String getFinishedRedirect() {
         return "pretty:adminRedFlags";
     }
+    @Override
+	public String getAlertPage() {
+
+		return "editRedFlag";
+	}
 
     public static class RedFlagAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView {
 

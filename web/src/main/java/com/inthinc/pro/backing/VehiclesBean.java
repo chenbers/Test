@@ -376,7 +376,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         {
             valid = false;
             String summary = MessageUtil.getMessageString(required);
-            context.addMessage("edit-form:make", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+            context.addMessage("edit-form:editVehicle-make", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
         }
         
         if(vehicle.getModel() == null || vehicle.getModel().equals("")
@@ -384,7 +384,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         {
             valid = false;
             String summary = MessageUtil.getMessageString(required);
-            context.addMessage("edit-form:model", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+            context.addMessage("edit-form:editVehicle-model", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
         }
         
         if((vehicle.getGroupID() == null)
@@ -392,7 +392,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         {
             valid = false;
             String summary = MessageUtil.getMessageString(required);
-            context.addMessage("edit-form:groupID", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+            context.addMessage("edit-form:editVehicle-groupID", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
         }
         
         // unique VIN
@@ -403,7 +403,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editVehicle_uniqueVIN");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:VIN", message);
+                context.addMessage("edit-form:editVehicle-VIN", message);
             }
         }
         

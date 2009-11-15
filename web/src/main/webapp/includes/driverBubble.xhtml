@@ -46,7 +46,7 @@
 	<div id="#{hiddenDivID}" style="display:none">
 		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 			<f:facet name="header">
-			    <pretty:link id="#{context}-driverBubbleDriver" mappingId="driverPerformance">
+			    <pretty:link id="driverBubbleDriver" mappingId="driverPerformance">
                      <h:outputText value="#{driver.person.fullName}"/>
                      <f:param value="#{driver.driverID}"/>
                 </pretty:link>
@@ -57,7 +57,7 @@
 			<h:outputText value="#{messageSecPhone}:"/>
 			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageVehicle}:"/>	
-				<pretty:link id="#{context}-driverBubbleVehicle" mappingId="vehiclePerformance">
+				<pretty:link id="driverBubbleVehicle" mappingId="vehiclePerformance">
                      <h:outputText value="#{vehicle.name}"/>
                      <f:param value="#{vehicle.vehicleID}"/>
                 </pretty:link>

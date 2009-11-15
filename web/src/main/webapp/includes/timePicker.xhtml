@@ -13,15 +13,14 @@
 
   Optional Parameters:
   ==============
-      formName: The name of the form containing the picker. If not provided, "edit-form" is used.
-     increment: The increment to use, in minutes.  If not provided 15 minutes is used.
+      increment: The increment to use, in minutes.  If not provided 15 minutes is used.
             id: If more than one timePicker is used on a page, must be a unique value for the time picker's ID.
       onchange: A javascript expression to call when the value changes.
 
   To use:
   ==============
   <ui:include src="/includes/timePicker.xhtml" >
-      <ui:param name="context" value="#{context}-overallScoreBox"/> 
+      <ui:param name="context" value="mypagename"/> 
   </ui:include>
   
 -->
@@ -31,16 +30,13 @@
     <c:if test="#{empty increment}">
       <c:set var="increment" value="#{15}" />
     </c:if>
-    <c:if test="#{empty formName}">
-      <c:set var="formName" value="edit-form" />
-    </c:if>
     <c:if test="#{empty id}">
       <c:set var="id" value="timePicker" />
     </c:if>
 
     <h:inputHidden id="#{context}-#{id}" value="#{value}" />
 
-    <select id="#{context}-#{id}Time" size="1" onchange="updateTime(this.value, '#{id}')">
+    <select id="#{context}-#{id}Time" size="1" onchange="updateTime(this.value, '#{context}-#{id}')">
       <c:forEach begin="0" end="#{(720 / increment) - 1}" var="step">
         <c:set var="minutes" value="#{step * increment}" />
         <c:set var="hours" value="#{((minutes - (minutes % 60)) / 60)}" />
@@ -68,7 +64,7 @@
         updateTime = function(minutes, id)
         {
           minutes = Number(minutes);
-          var time = document.getElementById("#{formName}:" + id);
+          var time = document.getElementById("#{formName}:"+id);
           if (Number(time.value) &gt;= 720)
             minutes += 720;
           time.value = minutes;
@@ -78,7 +74,7 @@
         updateAfternoon = function(pm, id)
         {
           pm = pm == "true";
-          var time = document.getElementById("#{formName}:" + id);
+          var time = document.getElementById("#{formName}:"+id);
           var minutes = Number(time.value);
           if (pm &amp;&amp; (minutes &lt; 720))
             time.value = minutes + 720;
@@ -89,7 +85,7 @@
 
         restoreTime = function(id)
         {
-          var minutes = Number(document.getElementById("#{formName}:" + id).value);
+          var minutes = Number(document.getElementById("#{formName}:"+id).value);
           document.getElementById(id + "Afternoon").selectedIndex = Math.floor(minutes / 720);
           minutes %= 720;
           var time = document.getElementById(id + "Time");
@@ -102,7 +98,7 @@
         }
       }
 
-      restoreTime("#{id}");
+      restoreTime("#{context}-#{id}");
     </script>
 
   </ui:composition>

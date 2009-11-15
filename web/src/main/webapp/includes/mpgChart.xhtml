@@ -58,8 +58,8 @@
                      <rich:panel>
                         <div class="spacer"></div>            
                         <a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable">
-                            <rich:dataTable id="mpgTable" value="#{mpgBean.mpgEntities}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
-                                <rich:column sortBy="#{item.entityName}">
+                            <rich:dataTable id="#{context}" value="#{mpgBean.mpgEntities}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
+                                <rich:column id="name" sortBy="#{item.entityName}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_name_column}" />
                                     </f:facet>
@@ -68,19 +68,19 @@
                                         <h:outputText value="#{item.entityName}" />
                                     </pretty:link>
                                 </rich:column>
-                                <rich:column sortBy="#{item.entity.lightValue}">
+                                <rich:column id="light" sortBy="#{item.entity.lightValue}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_light_column}" />
                                     </f:facet>
                                     <h:outputText value="#{item.lightValue}" converter="MpgToKplConverter"/>
                                 </rich:column>
-                                <rich:column sortBy="#{item.entity.mediumValue}">
+                                <rich:column id="medium" sortBy="#{item.entity.mediumValue}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_medium_column}" converter="MpgToKplConverter"/>
                                     </f:facet>
                                     <h:outputText value="#{item.mediumValue}" converter="MpgToKplConverter" />
                                 </rich:column>
-                                <rich:column sortBy="#{item.entity.heavyValue}">
+                                <rich:column id="heavy" sortBy="#{item.entity.heavyValue}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_heavy_column}" converter="MpgToKplConverter"/>
                                     </f:facet>

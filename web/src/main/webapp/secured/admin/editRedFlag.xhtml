@@ -31,7 +31,7 @@
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="editRedFlagForm">
+          <a4j:form id="edit-form">
 
             <div class="">
               <div class="panel_nw">
@@ -86,14 +86,14 @@
                               </ui:include>
                             </td>
                             <td>
-                              <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:inputText value="#{redFlagAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              <rich:message for="editRedFlag-name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <h:inputText value="#{redFlagAlertsBean.item.name}" id="editRedFlag-name" onchange="checkMultiple(this)" styleClass="text" size="30"
                                 maxlength="30" />
                             </td>
                           </tr>
                           <tr>
                             <td width="105" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_description" value="#{redFlagAlertsBean.updateField['description']}" />
+                              <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_editRedFlag-description" value="#{redFlagAlertsBean.updateField['description']}" />
                               <h:outputText value="#{messages.editAlerts_description}" />
                             </td>
                             <td>
@@ -118,6 +118,7 @@
                                 <ui:param name="days" value="#{redFlagAlertsBean.item.dayOfWeek}" />
                                 <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
         						<ui:param name="context" value="editRedFlag" />
+        						<ui:param name="formName" value="edit-form"/>
                               </ui:include>
                             </td>
                           </tr>
@@ -133,19 +134,20 @@
  	                             </ui:include>
                             </td>
                             <td>
-                              <rich:message for="editRedFlagStopTOD-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneRadio id="timeframe" onchange="checkMultiple('timeframe')" value="#{redFlagAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
+                              <rich:message for="editRedFlag-stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <h:selectOneRadio id="editRedFlag-timeframe" onchange="checkMultiple('timeframe')" value="#{redFlagAlertsBean.item.anytime}" onclick="document.getElementById('editRedFlag-timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>
-                              <table id="timeframePickers" border="0" style="#{redFlagAlertsBean.item.anytime ? 'display:none' : ''}">
+                              <table id="editRedFlag-timeframePickers" border="0" style="#{redFlagAlertsBean.item.anytime ? 'display:none' : ''}">
                                 <tr>
                                   <td>
                                     <ui:include src="../../includes/timePicker.xhtml">
                                       <ui:param name="id" value="startTOD" />
                                       <ui:param name="value" value="#{redFlagAlertsBean.item.startTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
-        							<ui:param name="context" value="editRedFlagstartTOD" />
+        							<ui:param name="context" value="editRedFlag" />
+         								<ui:param name="formName" value="edit-form"/>
                                     </ui:include>
                                   </td>
                                   <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
@@ -154,7 +156,8 @@
                                       <ui:param name="id" value="stopTOD" />
                                       <ui:param name="value" value="#{redFlagAlertsBean.item.stopTOD}" />
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
-       								  <ui:param name="context" value="editRedFlagStopTOD" />
+       								  <ui:param name="context" value="editRedFlag" />
+        								<ui:param name="formName" value="edit-form"/>
                                      </ui:include>
                                   </td>
                                 </tr>
@@ -178,12 +181,13 @@
                           </ui:include>
                         </div>
 
-                        <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        <rich:message for="editRedFlag-from" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
                         <ui:include src="../../includes/admin/alertAssign.xhtml">
-                          <ui:param name="alertsBean" value="#{redFlagAlertsBean}" />
-                          <ui:param name="onchange" value="checkMultiple('assignTo')" />
+                         	<ui:param name="alertsBean" value="#{redFlagAlertsBean}" />
+                          	<ui:param name="onchange" value="checkMultiple('assignTo')" />
           					<ui:param name="context" value="editRedFlag" />
+         				  	<ui:param name="formName" value="edit-form"/>
                         </ui:include>
 
                       </td>
@@ -210,7 +214,7 @@
                       <td width="130" valign="top">
                         <h:selectOneRadio id="type" value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="left_tab_table" enabledClass="radioitem"
                            onchange="checkMultiple('type')">
-                          <a4j:support event="onclick" reRender="speed,drivingStyle,safety,crash,tampering,lowBattery" limitToList="true" />
+                          <a4j:support event="onclick" reRender="editRedFlag-speed,drivingStyle,safety,crash,tampering,lowBattery" limitToList="true" />
                           <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
                           <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
                           <f:selectItem itemValue="seatBelt" itemLabel="#{messages.redFlag_seatBelt}" />
@@ -222,7 +226,7 @@
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="650" valign="top">
 
-                        <a4j:outputPanel id="speed">
+                        <a4j:outputPanel id="editRedFlag-speed">
                           <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'speed'}">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0">
@@ -277,9 +281,9 @@
                               function bumpSpeeds(up)
                               {
                                 for (var i = 0; i &lt; 15; i++)
-                                  if (document.getElementById("editRedFlagForm:speed" + i + "Selected").checked)
+                                  if (document.getElementById("edit-form:speed" + i + "Selected").checked)
                                   {
-                                    var input = document.getElementById("editRedFlagForm:speed" + i).component;
+                                    var input = document.getElementById("edit-form:speed" + i).component;
                                     if (up)
                                       input.setValue(Number(input.input.value) + 1);
                                     else
@@ -462,14 +466,14 @@
 
                   <div class="spacer"></div>
 
-                  <rich:message for="emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                  <rich:message for="editRedFlag-emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="390" valign="top">
 
                         <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_notifyPersonIDs" value="#{redFlagAlertsBean.updateField['notifyPersonIDs']}" />
+                          <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_editRedFlag-notifyPersonIDs" value="#{redFlagAlertsBean.updateField['notifyPersonIDs']}" />
                           <h:outputText value="#{messages.editAlerts_notificationsByName}" />
                         </div>
 
@@ -479,6 +483,7 @@
                           <ui:param name="autocompleter" value="#{redFlagAlertsBean.peoplePicker}" />
                           <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
  						  <ui:param name="context" value="editRedFlag"/>
+ 						  <ui:param name="formName" value="edit-form"/>
                         </ui:include>
 
                       </td>
@@ -531,9 +536,9 @@
 
       function bodyLoad()
       {
-        document.getElementById("timeframePickers").style.display = (document.getElementById("editRedFlagForm:timeframe:0").checked ? 'none' : '');
+        document.getElementById("editRedFlag-timeframePickers").style.display = (document.getElementById("edit-form:editRedFlag-timeframe:0").checked ? 'none' : '');
 
-        var elements = document.getElementById("editRedFlagForm").elements;
+        var elements = document.getElementById("edit-form").elements;
         for (var i = 0; i &lt; elements.length; i++)
           for (var j = 0; j &lt; formElements.length; j++)
             if (elements[i].getAttribute("type") == formElements[j])

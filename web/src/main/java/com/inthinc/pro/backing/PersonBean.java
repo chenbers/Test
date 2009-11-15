@@ -472,7 +472,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (person.getTimeZone() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("timeZone")))) {
             valid = false;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-            context.addMessage("edit-form:timeZone", message);
+            context.addMessage("edit-form:editPerson-timeZone", message);
         }
         // unique primary e-mail
         if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0)) {
@@ -481,7 +481,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editPerson_uniqueEmail");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:priEmail", message);
+                context.addMessage("edit-form:editPerson-priEmail", message);
             }
         }
         // birth date
@@ -490,7 +490,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             latest.add(Calendar.YEAR, -16);
             if (person.getDob().after(latest.getTime())) {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_dobTooLate"), null);
-                context.addMessage("edit-form:dob", message);
+                context.addMessage("edit-form:editPerson-dob", message);
                 valid = false;
             }
         }
@@ -500,18 +500,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (person.getDriver().getGroupID() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.groupID")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:driver_groupID", message);
+                context.addMessage("edit-form:editPerson-driver_groupID", message);
             }
             // required user status
             if (person.getDriver().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.status")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:driver_status", message);
+                context.addMessage("edit-form:editPerson-driver_status", message);
             }
             if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date())
                     && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.expiration")))) {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
-                context.addMessage("edit-form:driver_expiration", message);
+                context.addMessage("edit-form:editPerson-driver_expiration", message);
                 valid = false;
             }
             // unique RFID
@@ -519,7 +519,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
                 if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID())) {
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
-                    context.addMessage("edit-form:driver_RFID", message);
+                    context.addMessage("edit-form:editPerson-driver_RFID", message);
                     valid = false;
                 }
             }
@@ -530,37 +530,37 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (person.getUser().getGroupID() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.groupID")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:user_groupID", message);
+                context.addMessage("edit-form:editPerson-user_groupID", message);
             }
             // required user role
             if (person.getUser().getRole() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:user_role", message);
+                context.addMessage("edit-form:editPerson-user_role", message);
             }
             // required user status
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:user_status", message);
+                context.addMessage("edit-form:editPerson-user_status", message);
             }
             // required locale
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.person.locale")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:user_locale", message);
+                context.addMessage("edit-form:editPerson-user_locale", message);
             }
             // required measurementType
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.person.measurementType")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:user_person_measurementType", message);
+                context.addMessage("edit-form:editPerson-user_person_measurementType", message);
             }
             // required fuelEfficiencyType
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.person.fuelEfficiencyType")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:user_person_fuelEfficiencyType", message);
+                context.addMessage("edit-form:editPerson-user_person_fuelEfficiencyType", message);
             }
             if (!isBatchEdit()) {
                 final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
@@ -568,12 +568,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     valid = false;
                     final String summary = MessageUtil.getMessageString("editPerson_uniqueUsername");
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:user_username", message);
+                    context.addMessage("edit-form:editPerson-user_username", message);
                 }
                 // matching passwords
                 if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword())) {
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
-                    context.addMessage("edit-form:confirmPassword", message);
+                    context.addMessage("edit-form:editPerson-confirmPassword", message);
                     valid = false;
                 }
             }
@@ -582,13 +582,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 valid = false;
                 final String summary = MessageUtil.getMessageString(REQUIRED_KEY);
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:priEmail", message);
+                context.addMessage("edit-form:editPerson-priEmail", message);
             }
         }
         // must be a user or a driver or both while not in batch edit.
         else if (!person.isDriverSelected() && !isBatchEdit()) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
-            context.addMessage("edit-form:isUser", message);
+            context.addMessage("edit-form:editPerson-isUser", message);
             valid = false;
         }
         return valid;

@@ -20,7 +20,7 @@
   ==============
   <ui:include src="/includes/alertAssign.xhtml">
     <ui:param name="alertsBean" value="#{myAlertsBean}" />
-    <ui:param name="context" value="#{context}-pageName" />
+    <ui:param name="context" value="mypageName" />
     
   </ui:include>
 -->
@@ -36,7 +36,7 @@
         <td><h:outputText value="#{messages.editAlerts_assignType}" /></td>
         <td>
           <h:selectOneMenu id="#{context}-assignType" value="#{alertsBean.assignType}">
-            <a4j:support event="onchange" reRender="alertAssignFrom,alertAssignPickedIDs" limitToList="true" />
+            <a4j:support event="onchange" reRender="#{context}-from,#{context}-pickedIDs" limitToList="true" />
             <f:selectItem itemValue="groups" itemLabel="#{messages.editAlerts_groups}" />
             <f:selectItem itemValue="vehicleTypes" itemLabel="#{messages.editAlerts_vehicleTypes}" />
             <f:selectItem itemValue="vehicles" itemLabel="#{messages.editAlerts_vehicles}" />

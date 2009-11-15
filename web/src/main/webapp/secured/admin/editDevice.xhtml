@@ -30,7 +30,7 @@
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="editDeviceForm">
+          <a4j:form id="edit-form">
 
             <div class="">
               <div class="panel_nw">
@@ -76,25 +76,25 @@
                               <ui:fragment rendered="#{not devicesBean.batchEdit}">
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_name" value="#{devicesBean.updateField['name']}" />
+                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-name" value="#{devicesBean.updateField['name']}" />
                                   <h:outputText value="#{messages.editDevice_name}" />
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <h:message for="name" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:message for="editDevice-name" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
+                                  <h:inputText value="#{devicesBean.item.name}" id="editDevice-name" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="20" />
                                 </td>
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_imei" value="#{devicesBean.updateField['imei']}" />
+                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-imei" value="#{devicesBean.updateField['imei']}" />
                                   <h:outputText value="#{messages.editDevice_imei}" />
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <h:message for="imei" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.imei}" id="imei" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:message for="editDevice-imei" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
+                                  <h:inputText value="#{devicesBean.item.imei}" id="editDevice-imei" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="15" />
                                 </td>
                               </tr>
@@ -105,8 +105,8 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <h:message for="sim" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.sim}" id="sim" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:message for="editDevice-sim" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
+                                  <h:inputText value="#{devicesBean.item.sim}" id="editDevice-sim" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="19"  validatorMessage="#{messages.editDevice_simFormat}">
                                     <f:validateLength minimum="19" maximum="19" />
                                     <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
@@ -122,13 +122,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_phone" value="#{devicesBean.updateField['phone']}" />
+                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-phone" value="#{devicesBean.updateField['phone']}" />
                                   <h:outputText value="#{messages.editDevice_phone}" />
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <h:message for="phone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.phone}" id="phone" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:message for="editDevice-phone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
+                                  <h:inputText value="#{devicesBean.item.phone}" id="editDevice-phone" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" />
                                 </td>
                               </tr>
@@ -137,7 +137,7 @@
                                 <td width="100" valign="top">
                                   <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="TRUE"/>
-                                       <ui:param name="for" value="ephone"/>
+                                       <ui:param name="for" value="editDevice-ephone"/>
                                        <ui:param name="fieldName" value="ephone"/>
                                        <ui:param name="editBean" value="#{devicesBean}"/>
                                        <ui:param name="label" value="#{messages.editDevice_ephone}"/>
@@ -145,9 +145,9 @@
                                   </ui:include>
                                 </td>
                                 <td>
-                                  <h:message for="ephone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" >
+                                  <h:message for="editDevice-ephone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" >
                                   </h:message>
-                                  <h:inputText value="#{devicesBean.item.ephone}" id="ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{devicesBean.item.ephone}" id="editDevice-ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22">  
                                   </h:inputText>
                                 </td>
@@ -165,7 +165,7 @@
                                 <td width="100" valign="top">
                                   <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="TRUE"/>
-                                       <ui:param name="for" value="status"/>
+                                       <ui:param name="for" value="editDevice-status"/>
                                        <ui:param name="fieldName" value="status"/>
                                        <ui:param name="editBean" value="#{devicesBean}"/>
                                        <ui:param name="label" value="#{messages.editDevice_status}"/>
@@ -173,7 +173,7 @@
                                   </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{devicesBean.item.status}" id="status" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+                                  <h:selectOneMenu value="#{devicesBean.item.status}" id="editDevice-status" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                                     <f:selectItems value="#{devicesBean.statuses}" />
                                   </h:selectOneMenu>
                                 </td>
@@ -182,7 +182,7 @@
                                 <td width="100" valign="top">
                                   <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="FALSE"/>
-                                       <ui:param name="for" value="autoLogoff"/>
+                                       <ui:param name="for" value="editDevice-autoLogoff"/>
                                        <ui:param name="fieldName" value="autoLogoff"/>
                                        <ui:param name="editBean" value="#{devicesBean}"/>
                                        <ui:param name="label" value="#{messages.editDevice_autoLogoff}"/>
@@ -190,7 +190,7 @@
                                   </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{devicesBean.item.autoLogoff}" id="autoLogoff" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+                                  <h:selectOneMenu value="#{devicesBean.item.autoLogoff}" id="editDevice-autoLogoff" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                                     <f:selectItems value="#{devicesBean.autoLogoffs}" />
                                   </h:selectOneMenu>
                                 </td>
@@ -208,7 +208,7 @@
                                 <td>
                                   <h:panelGroup id="vehicleID">
                                     <h:outputText value="#{devicesBean.item.vehicle.name}" /><h:outputText value=" " />
-                                    <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
+                                    <a id="editDeviceChooseVehicle" href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
                                   </h:panelGroup>
                                 </td>
                               </tr>
@@ -287,7 +287,7 @@
 
     <ui:include src="../../includes/admin/chooseVehicle.xhtml">
       <ui:param name="editorBean" value="#{devicesBean}" />
-      <ui:param name="reRender" value="editDeviceForm:vehicleID" />
+      <ui:param name="reRender" value="edit-form:editDevice-vehicleID" />
       <ui:param name="context" value="editDevice" />
     </ui:include>
     <script type="text/javascript">
@@ -295,9 +295,9 @@
 
   function bodyLoad()
   {
-    document.getElementById("editDeviceForm:details_shifted").onclick();
+    document.getElementById("edit-form:details_shifted").onclick();
 
-    var elements = document.getElementById("editDeviceForm").elements;
+    var elements = document.getElementById("edit-form").elements;
     for (var i = 0; i &lt; elements.length; i++)
       for (var j = 0; j &lt; formElements.length; j++)
         if (elements[i].getAttribute("type") == formElements[j])

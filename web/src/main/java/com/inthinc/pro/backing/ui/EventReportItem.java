@@ -42,10 +42,12 @@ public class EventReportItem extends NotificationReportItem<EventReportItem>
         if (group != null)
         {
             setGroup(group.getName());
+            setGroupID(event.getGroupID());
         }
         else
         {
             setGroup("");
+            setGroupID(null);
         }
         
         setDriverName((event.getDriver() == null) ? MessageUtil.getMessageString("unassigned") : event.getDriver().getPerson().getFullName());
@@ -122,6 +124,5 @@ public class EventReportItem extends NotificationReportItem<EventReportItem>
     {
         this.noteID = noteID;
     }
-
     
 }

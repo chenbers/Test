@@ -14,7 +14,16 @@ public abstract class NotificationReportItem<T> implements Comparable<T>{
 	private String vehicleName;
 	private String category;
 	private String detail;
+	private Integer groupID;
 	
+	public Integer getGroupID() {
+		return groupID;
+	}
+
+	public void setGroupID(Integer groupID) {
+		this.groupID = groupID;
+	}
+
 	public String getDetail() {
 		return detail;
 	}
@@ -69,5 +78,5 @@ public abstract class NotificationReportItem<T> implements Comparable<T>{
 	public void setVehicleName(String vehicleName) {
 	    this.vehicleName = vehicleName;
 	}
-
+	
 }

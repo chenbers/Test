@@ -209,7 +209,7 @@
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.event.time}">
+							<rich:column id="time" sortBy="#{item.event.time}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
@@ -218,21 +218,21 @@
 									</h:outputText>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.avgSpeed}">
+							<rich:column id="averageSpeed" sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.avgSpeed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.topSpeed}">
+							<rich:column id="topSpeed" sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_top_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.topSpeed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.distance}">
+							<rich:column id="distance" sortBy="#{item.event.distance}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_distance}" />
 								</f:facet>

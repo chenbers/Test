@@ -32,9 +32,9 @@
     <c:if test="#{empty id}">
       <c:set var="id" value="listPicker" />
     </c:if>
-<!--    <c:if test="#{empty formName}">-->
-<!--      <c:set var="formName" value="edit-form" />-->
-<!--    </c:if>-->
+    <c:if test="#{empty formName}">
+      <c:set var="formName" value="edit-form" />
+    </c:if>
     <c:if test="#{empty rows}">
       <c:set var="rows" value="12" />
     </c:if>
@@ -42,32 +42,32 @@
     <table border="0" cellspacing="4" cellpadding="2" width="100%">
       <tr>
         <td width="46%">
-          <h:selectManyListbox id="From" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
+          <h:selectManyListbox id="#{context}-from" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
             <f:selectItems value="#{bean.pickFrom}" />
           </h:selectManyListbox>
         </td>
         <td width="8%" align="center">
           <table border="0" cellspacing="4" cellpadding="0">
             <tr>
-              <td><a href="#" id="right" onclick="pickMove('right', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_right" value="/images/btn_move_right.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-right" onclick="pickMove('right', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_right" value="/images/btn_move_right.png" style="border:0px" /></a></td>
             </tr>
             <tr>
-              <td><a href="#" id="left" onclick="pickMove('left', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_left" value="/images/btn_move_left.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-left" onclick="pickMove('left', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_left" value="/images/btn_move_left.png" style="border:0px" /></a></td>
             </tr>
             <tr>
               <td><hr noshade="noshade" /></td>
             </tr>
             <tr>
-              <td><a href="#" id="allRight" onclick="pickMove('right', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_right" value="/images/btn_move_all_right.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-allRight" onclick="pickMove('right', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_right" value="/images/btn_move_all_right.png" style="border:0px" /></a></td>
             </tr>
             <tr>
-              <td><a href="#" id="allLeft" onclick="pickMove('left', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_left" value="/images/btn_move_all_left.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-allLeft" onclick="pickMove('left', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_left" value="/images/btn_move_all_left.png" style="border:0px" /></a></td>
             </tr>
           </table>
         </td>
         <td width="46%">
-          <h:inputHidden id="PickedIDs" value="#{bean.pickedIDs}" />
-          <h:selectManyListbox id="Picked" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
+          <h:inputHidden id="#{context}-pickedIDs" value="#{bean.pickedIDs}" />
+          <h:selectManyListbox id="#{context}-picked" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
             <f:selectItems value="#{bean.picked}" />
           </h:selectManyListbox>
         </td>
@@ -77,8 +77,8 @@
     <script type="text/javascript">
       function pickMove(dir, all)
       {
-        var left = document.getElementById("#{context}Form:From");
-        var right = document.getElementById("#{context}Form:Picked");
+        var left = document.getElementById("#{formName}:#{context}-from");
+        var right = document.getElementById("#{formName}:#{context}-picked");
         var from = left;
         var to = right;
         if (dir == "left")
@@ -106,7 +106,7 @@
               s += ",";
             s += right.options[i].value;
           }
-          document.getElementById("#{context}Form:PickedIDs").value = s;
+          document.getElementById("#{formName}:#{context}-pickedIDs").value = s;
           enablePickButtons();
           #{onchange}
         }
@@ -114,12 +114,12 @@
 
       function restorePicked()
       {
-        var value = document.getElementById("#{context}Form:PickedIDs").value;
+        var value = document.getElementById("#{formName}:#{context}-pickedIDs").value;
         if (!value)
           return;
         var ids = value.split(",");
-        var from = document.getElementById("#{context}Form:From");
-        var to = document.getElementById("#{context}Form:Picked");
+        var from = document.getElementById("#{formName}:#{context}-from");
+        var to = document.getElementById("#{formName}:#{context}-picked");
         for (var i = 0; i &lt; ids.length; i++)
           for (var j = 0; j &lt; from.options.length; j++)
             if (from.options[j].value == ids[i])
@@ -132,8 +132,8 @@
 
       function enablePickButtons()
       {
-        var left = document.getElementById("#{context}Form:From");
-        var right = document.getElementById("#{context}Form:Picked");
+        var left = document.getElementById("#{formName}:#{context}-from");
+        var right = document.getElementById("#{formName}:#{context}-picked");
         enablePickButton("move_right", left.selectedIndex != -1);
         enablePickButton("move_all_right", left.length > 0);
         enablePickButton("move_left", right.selectedIndex != -1);
@@ -142,7 +142,7 @@
 
       function enablePickButton(id, enabled)
       {
-        var image = document.getElementById("#{context}Form:" + id);
+        var image = document.getElementById("#{formName}:#{context}-" + id);
         if (enabled)
           image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + id + ".png";
         else

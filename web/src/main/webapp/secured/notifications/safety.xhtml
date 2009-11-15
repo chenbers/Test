@@ -12,7 +12,9 @@
 	<ui:param name="safetySubSelected" value="current" />
 	<ui:param name="helpFile" value="Events.htm" />
     <ui:param name="ajaxPanels" value="notificationsTable,eventsearch"/>
-	<ui:define name="content">
+    <ui:param name="context" value="safety"/>
+    
+ 	<ui:define name="content">
 	
 	
 		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
@@ -46,7 +48,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="safetySearch" action="#{eventsBean.searchAction}" oncomplete="initializeTable()"
-		            					reRender="navigation:redirectSearch,header,notificationsTableForm:items,notificationsTableForm:bottomScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,safety-form:safety,safety-form:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -60,7 +62,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="safetyRefresh" styleClass="left"
-									reRender="header,notificationsTableForm:items,notificationsTableForm:bottomScroller" 
+									reRender="header,safety-form:items,safety-form:bottomScroller" 
 									action="#{eventsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
@@ -109,10 +111,9 @@
 		             		<ui:param name="tableData" value="#{eventsBean.tableData}"/>             						
 		             		<ui:param name="tableColumns" value="#{eventsBean.tableColumns}"/>
 		    				<ui:param name="bean" value="#{eventsBean}"/>
-		    				<ui:param name="formId" value="notificationsTableForm"/>
 		             		<ui:param name="clearTitle" value="#{messages.notes_safety_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_safety_clearInst}"/>
-		             		<ui:param name="clearRerender" value="eventsearch:header,notificationsTableForm:items"/>
+		             		<ui:param name="clearRerender" value="eventsearch:header,safety-form:safety"/>
     	 					<ui:param name="context" value="safety" />
 		    			</ui:include>    							
 		            </h:panelGroup>
@@ -122,7 +123,7 @@
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{eventsBean}"/>	
-					<ui:param name="reRender" value="notificationsTableForm:items" />
+					<ui:param name="reRender" value="safety-form:safety" />
     	 			<ui:param name="context" value="safety" />
 				</ui:include>    
 				

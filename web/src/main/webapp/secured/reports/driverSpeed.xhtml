@@ -40,7 +40,7 @@
 		<t:saveState value="#{driverSpeedBean}"/>
 	
 <div id="wrapper">
-<h:form>
+<h:form id="driverSpeedChartForm">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
@@ -224,7 +224,7 @@ var firstLoad = new Boolean(true);
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
-						  <h:form>
+						  <h:form id="driverChartOverallForm">
 						  	  <a4j:commandLink id="driverSpeedOverall"
 						  	  					action="#{driverSpeedBean.selectBreakdownChanged}"
 						  	  				   onclick="SelectBreakDown('OVERALL', overallChartVar, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
@@ -262,7 +262,7 @@ var firstLoad = new Boolean(true);
 					    <td id="TWENTYONE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_21_30_KEY" value="#{driverSpeedBean.measurementType}_SCORE_SPEEDING_21_30" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="driverChartTwentyOneForm">
 						  	  <a4j:commandLink id="driverSpeedTwentyOne"
 						  	  					action="#{driverSpeedBean.selectBreakdownChanged}" 
 						  	  				   onclick="SelectBreakDown('TWENTYONE', twentyOneChartVar, '#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}')" 
@@ -300,7 +300,7 @@ var firstLoad = new Boolean(true);
 					    <td id="THIRTYONE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_31_40_KEY" value="#{driverSpeedBean.measurementType}_SCORE_SPEEDING_31_40" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="driverChartThirtyOneForm">
 						  	  <a4j:commandLink id="driverSpeedThirtyOne" 
 						  	  					action="#{driverSpeedBean.selectBreakdownChanged}" 
 						  	  					onclick="SelectBreakDown('THIRTYONE', thirtyOneChartVar, '#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}')" 
@@ -340,7 +340,7 @@ var firstLoad = new Boolean(true);
 						<td id="FOURTYONE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_41_54_KEY" value="#{driverSpeedBean.measurementType}_SCORE_SPEEDING_41_54" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="driverChartFortyOneForm">
 						  	  <a4j:commandLink id="driverSpeedFortyOne" action="#{driverSpeedBean.selectBreakdownChanged}" 
 						  	   				   onclick="SelectBreakDown('FOURTYONE', fourtyOneChartVar, '#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}')" 
 						  	  				   reRender="notificationsTable,tableStats,scrollerBottom">
@@ -377,7 +377,7 @@ var firstLoad = new Boolean(true);
 						<td id="FIFTYFIVE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_55_64_KEY" value="#{driverSpeedBean.measurementType}_SCORE_SPEEDING_55_64" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="driverChartFiftyFiveForm">
 						  	  <a4j:commandLink id="driverSpeedFiftyFive" action="#{driverSpeedBean.selectBreakdownChanged}" 
 						  	              	   onclick="SelectBreakDown('FIFTYFIVE', fiftyFiveChartVar, '#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}')" 
 						  	  				   reRender="notificationsTable,tableStats,scrollerBottom">
@@ -414,7 +414,7 @@ var firstLoad = new Boolean(true);
 					    <td id="SIXTYFIVE" valign="top" class="tiny_chart">
                         <ui:param name="SPEEDING_65_80_KEY" value="#{driverSpeedBean.measurementType}_SCORE_SPEEDING_65_80" />
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="driverChartSixtyFiveForm">
 						  	  <a4j:commandLink id="driverSpeedSixtyFive" action="#{driverSpeedBean.selectBreakdownChanged}"
 						  	  				   onclick="SelectBreakDown('SIXTYFIVE', sixtyFiveChartVar, '#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}')" 
 						  	  				   reRender="notificationsTable,tableStats,scrollerBottom">
@@ -503,12 +503,12 @@ var firstLoad = new Boolean(true);
 				  <div class="panel_content">
 				  
 				<div class="datagrid_panel">
-					<a4j:form id="notificationsTableForm" ajaxSubmit="true">
+					<a4j:form id="driverSpeedForm" ajaxSubmit="true">
     					<a4j:queue requestDelay="500"/>
 								
 						<rich:dataTable 
 						value="#{driverSpeedBean.filteredEvents}" 
-						id="notificationsTable" var="item" styleClass="datagrid"
+						id="events" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedBean.tableStatsBean.tableRowCount}" width="100%">			
 
 							<rich:column>
@@ -526,7 +526,7 @@ var firstLoad = new Boolean(true);
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.event.time}">
+							<rich:column id="time" sortBy="#{item.event.time}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_datetime}" />
 								</f:facet>
@@ -535,7 +535,7 @@ var firstLoad = new Boolean(true);
 									</h:outputText>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.speedLimit}">
+							<rich:column id="speedLimit" sortBy="#{item.event.speedLimit}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_posted_speed}" />
 								</f:facet>
@@ -547,7 +547,7 @@ var firstLoad = new Boolean(true);
 								
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.avgSpeed}">
+							<rich:column id="averageSpeed" sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_avg_speed}" />
 								</f:facet>
@@ -557,7 +557,7 @@ var firstLoad = new Boolean(true);
 					            <h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.topSpeed}">
+							<rich:column id="topSpeed" sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_top_speed}" />
 								</f:facet>
@@ -567,7 +567,7 @@ var firstLoad = new Boolean(true);
         					    <h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.distance}">
+							<rich:column id="distance" sortBy="#{item.event.distance}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_distance}" />
 								</f:facet>
@@ -582,21 +582,24 @@ var firstLoad = new Boolean(true);
 									<h:outputText value="#{messages.driverReports_exclude}" />
 									<f:setPropertyActionListener target="#{driverSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
- 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{driverSpeedBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
+ 								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.driverReports_exclude}" action="#{driverSpeedBean.includeEventAction}" reRender="clearItemForm:clearItem,events,tableStats,scrollerBottom" 
 											 id="driverSpeed_excluded" oncomplete="initializeTable()">
 									<h:outputText value="#{messages.driverReports_include}" />
 									<f:setPropertyActionListener target="#{driverSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
     						</rich:column>
 						</rich:dataTable>
-						<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{driverSpeedBean.tableStatsBean.page}"
-										   id="scrollerBottom" reRender="notificationsTable,tableStats" renderIfSinglePage="false"
+						<rich:datascroller align="center" for="events" immediate="true" page="#{driverSpeedBean.tableStatsBean.page}"
+										   id="scrollerBottom" reRender="events,tableStats" renderIfSinglePage="false"
 										   scrollerListener="#{driverSpeedBean.tableStatsBean.scrollerListener}"/>
 						
 					</a4j:form> 
 					</div>
 				</div>
 			</div>
+<div class="panel_sw">
+	<div class="panel_statusbar"></div>
+</div>
 		</div>
 		</rich:panel>
 		</td>
@@ -604,9 +607,6 @@ var firstLoad = new Boolean(true);
 </table>
  </div>
  
-<div class="panel_sw">
-	<div class="panel_statusbar"></div>
-</div>
 	
  <!-- START FORGIVE MODAL -->
 <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="180" resizeable="false">
@@ -636,7 +636,7 @@ var firstLoad = new Boolean(true);
           <a4j:commandLink id="driverSpeedConfirm" action="#{driverSpeedBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
-                			eventsQueue="notificationsTableForm" reRender="notificationsTable,tableStats,scrollerBottom">
+                			eventsQueue="driverSpeedForm" reRender="events,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="yes">
 	          						<h:outputText value="#{messages.button_yes}" />

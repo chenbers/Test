@@ -78,40 +78,40 @@
       										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
       										changeExpandListener="#{organizationBean.changeExpandListener}"
       										ajaxSubmitSelection="true">
-      										<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png"
+      										<rich:treeNode id="fleet" type="FLEET" iconLeaf="/images/ico_truck.png"
       											icon="/images/ico_truck.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
       											<h:outputText value="#{item.label}" />
       										</rich:treeNode>
-      										<rich:treeNode type="DIVISION"
+      										<rich:treeNode id="division" type="DIVISION"
       											iconLeaf="/images/ico_trucks.png"
       											icon="/images/ico_trucks.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
       											<h:outputText value="#{item.label}" />
       										</rich:treeNode>
-      										<rich:treeNode type="TEAM" iconLeaf="/images/ico_team.png"
+      										<rich:treeNode id="team" type="TEAM" iconLeaf="/images/ico_team.png"
       											icon="/images/ico_team.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
       											<h:outputText value="#{item.label}" />
       										</rich:treeNode>
-      										<rich:treeNode type="DRIVER" iconLeaf="/images/ico_steering_wheel.png"
+      										<rich:treeNode id="driver" type="DRIVER" iconLeaf="/images/ico_steering_wheel.png"
       											icon="/images/ico_steering_wheel.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
       											<h:outputText value="#{item.label}" />
       										</rich:treeNode>
-      										<rich:treeNode type="VEHICLE"
+      										<rich:treeNode id="vehicle" type="VEHICLE"
       											iconLeaf="/images/ico_vehicle.png"
       											icon="/images/ico_vehicle.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
       											<h:outputText value="#{item.label}" />
       										</rich:treeNode>
-                                              <rich:treeNode type="DEVICE"
+                                              <rich:treeNode id="device" type="DEVICE"
                                                 iconLeaf="/images/ico_tiwi.png"
                                                 icon="/images/ico_tiwi.png">
                                                 <rich:dndParam name="label" type="drag" value="#{item.label}"/>
                                                 <h:outputText value="#{item.label}" />
                                               </rich:treeNode>
-                                              <rich:treeNode type="USER" iconLeaf="/images/ico_driver.png" 
+                                              <rich:treeNode id="user" type="USER" iconLeaf="/images/ico_driver.png" 
       											icon="/images/ico_driver.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
       											<h:outputText value="#{item.label}" />

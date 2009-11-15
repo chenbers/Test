@@ -221,7 +221,7 @@ var firstLoad = new Boolean(true);
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartOverallStyleForm">
 						  	  <a4j:commandLink  id="vehicleStyleOverall" onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="OVERALL" assignTo="#{vehicleStyleBean.selectedBreakdown}"/>
@@ -257,7 +257,7 @@ var firstLoad = new Boolean(true);
 						</td>
 					    <td id="BRAKE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartBrakeForm">
 						  	  <a4j:commandLink  id="vehicleStyleBrake" onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -294,7 +294,7 @@ var firstLoad = new Boolean(true);
 						</td>
 					    <td id="ACCELERATE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartAccelerateForm">
 						  	  <a4j:commandLink  id="vehicleStyleAccelerate" onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -332,7 +332,7 @@ var firstLoad = new Boolean(true);
 					  <tr>
 						<td id="TURN" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-						  <h:form>
+						  <h:form id="vehicleChartTurnForm">
 						  	  <a4j:commandLink  id="vehicleStyleTurn" onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -371,7 +371,7 @@ var firstLoad = new Boolean(true);
 						
 					    <td id="BUMP" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<h:form>
+							<h:form id="vehicleChartBumpForm">
 						  	  <a4j:commandLink  id="vehicleStyleBump" onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
@@ -485,7 +485,7 @@ var firstLoad = new Boolean(true);
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.event.time}">
+							<rich:column id="time" sortBy="#{item.event.time}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
@@ -494,21 +494,21 @@ var firstLoad = new Boolean(true);
 									</h:outputText>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.eventType}">
+							<rich:column id="type" sortBy="#{item.event.eventType}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_event}" />
 								</f:facet>
 								<strong><h:outputText value="#{messages[item.event.eventType]}" /></strong>		
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.speed}">
+							<rich:column id="speed" sortBy="#{item.event.speed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.speed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.event.severity}">
+							<rich:column id="severity" sortBy="#{item.event.severity}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_severity}" />
 								</f:facet>

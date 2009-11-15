@@ -50,9 +50,9 @@
 		</script>
 		
       	<!-- BEGIN GOOGLE MAP POPUPS -->
-      	<h:form>
+      	<h:form id="#{context}-liveFleetMapForm">
       	<rich:panel id="mapPopups">
-      		<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLocation">		
+      		<ui:repeat id="popUp" value="#{driverLocationBean.driverLastLocationBeans}" var="driverLocation">		
       			<ui:include src="../includes/driverBubble.xhtml">
       	            <ui:param name="hiddenDivID" value="#{driverLocation.driver.driverID}" />
       	            <ui:param name="driver" value="#{driverLocation.driver}" />
@@ -68,7 +68,6 @@
       	        	<ui:param name="vehicleTime" value="#{driverLocation.time}" />
       	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
       	        	<ui:param name="vehicleAddress" value="#{driverLocation.address}" />
-    				<ui:param name="context" value="#{context}-liveFleetMap" />
       			</ui:include>
       		</ui:repeat>
       	</rich:panel>
@@ -97,7 +96,7 @@
                          <!-- If the details parameter is not there, do not show the details image link -->
                          <ui:fragment rendered="#{detailLink ne null}">
                             <rich:spacer width="5px"></rich:spacer>
-                            <h:outputLink value="#{detailLink}" title="#{detailTitle}" >
+                            <h:outputLink id="#{context}-liveFleetMapRestore" value="#{detailLink}" title="#{detailTitle}" >
                                <h:graphicImage value="#{detailImage}" />
                             </h:outputLink>
                          </ui:fragment>

@@ -210,7 +210,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         {
             final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            context.addMessage("edit-form:arrival", message);
+            context.addMessage("edit-form:editZoneAlert-arrival", message);
             valid = false;
         }
         
@@ -219,7 +219,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-            FacesContext.getCurrentInstance().addMessage("edit-form:name", message);
+            FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-name", message);
             valid = false;
         }
         
@@ -227,6 +227,12 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     }
 
     @Override
+	public String getAlertPage() {
+
+		return "editZoneAlert";
+	}
+
+	@Override
     protected ZoneAlertView revertItem(ZoneAlertView editItem)
     {
         return createZoneAlertView(zoneAlertDAO.findByID(editItem.getZoneAlertID()));

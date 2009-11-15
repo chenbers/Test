@@ -4,6 +4,7 @@
     <ui:param name="emergencySubSelected" value="current" />
     <ui:param name="helpFile" value="Emergency.htm" />
     <ui:param name="ajaxPanels" value="emergency_table,emergency_search"/>
+    <ui:param name="context" value="emergency"/>
 
 
     <ui:define name="content">
@@ -33,7 +34,7 @@
                                         </table>
                                         </li>
                                         <li class="l"><a4j:commandButton id="emergencySearch" action="#{emergencyBean.searchAction}" oncomplete="initializeTable()"
-                                            reRender="navigation:redirectSearch,header,emergency_table_form:items,emergency_table_form:bottomScroller"
+                                            reRender="navigation:redirectSearch,header,emergency-form:emergency,emergency-form:bottomScroller"
                                             styleClass="left">
                                             <span class="search"> <h:outputText value="#{messages.button_search}" /> </span>
                                         </a4j:commandButton></li>
@@ -42,7 +43,7 @@
                             #{messages.button_editColumns}
                         </a4j:commandLink></li>
                                         <li class="l"><a4j:commandButton id="emergencyRefresh" styleClass="left"
-                                            reRender="header,emergency_table_form:items,emergency_table_form:bottomScroller"
+                                            reRender="header,emergency-form:emergency,emergency-form:bottomScroller"
                                             action="#{emergencyBean.refreshAction}">
                                             <span class="refresh"> <h:outputText value="#{messages.refresh}" /> </span>
                                         </a4j:commandButton></li>
@@ -81,10 +82,10 @@
                                     <ui:param name="tableData" value="#{emergencyBean.tableData}" />
                                     <ui:param name="tableColumns" value="#{emergencyBean.tableColumns}" />
                                     <ui:param name="bean" value="#{emergencyBean}" />
-                                    <ui:param name="formId" value="emergency_table_form" />
+<!--                                    <ui:param name="formId" value="emergency_table_form" />-->
                                     <ui:param name="clearTitle" value="#{messages.notes_emergency_clearTitle}" />
                                     <ui:param name="clearInst" value="#{messages.notes_emergency_clearInst}" />
-                                    <ui:param name="clearRerender" value="emergency_search:header,emergency_table_form:items" />
+                                    <ui:param name="clearRerender" value="emergency_search:header,emergency-form:emergency" />
      	 							<ui:param name="context" value="emergency" />
                                 </ui:include>
                             </h:panelGroup>
@@ -94,7 +95,7 @@
 
                     <ui:include src="/includes/editColumnsPopup.xhtml">
                         <ui:param name="bean" value="#{emergencyBean}" />
-                        <ui:param name="reRender" value="emergency_table_form:items" />
+                        <ui:param name="reRender" value="emergency-form:emergency" />
       	 				<ui:param name="context" value="emergency" />
                     </ui:include>
 
