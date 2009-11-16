@@ -1,59 +1,51 @@
 package com.inthinc.pro.map.google;
 
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.util.WebUtil;
 
-public class GoogleMapBacking
-{
+public class GoogleMapBacking {
     // this backing bean handles the generic google map stuff like keys
     private static Logger logger = Logger.getLogger(GoogleMapBacking.class);
-    
-    private GoogleMapKeys googleMapKeys;
+
+    // private GoogleMapKeys googleMapKeys;
+    private Properties googleMapProperties;
     private WebUtil webUtil;
-    
-    public String getKey()
-    {
-        
+
+    public String getKey() {
+
         String serverName = webUtil.getRequestServerName();
         int serverPort = webUtil.getRequestServerPort();
-        String googleMapsKey = googleMapKeys.getProperty(serverName);
-        if (serverPort != 80 && googleMapKeys.getProperty(serverName + ":" + serverPort) != null) {
-            googleMapsKey = googleMapKeys.getProperty(serverName + ":" + serverPort);
+        String googleMapsKey = googleMapProperties.getProperty(serverName);
+        if (serverPort != 80 && googleMapProperties.getProperty(serverName + ":" + serverPort) != null) {
+            googleMapsKey = googleMapProperties.getProperty(serverName + ":" + serverPort);
         }
         return googleMapsKey;
     }
 
-    public String getVersion()
-    {
-        String version = googleMapKeys.getProperty("version");
-        if(version == null || version.isEmpty())
+    public String getVersion() {
+        String version = googleMapProperties.getProperty("version");
+        if (version == null || version.isEmpty())
             version = "2";
-        
+
         return version;
     }
 
-    public GoogleMapKeys getGoogleMapKeys()
-    {
-        return googleMapKeys;
+    public Properties getGoogleMapProperties() {
+        return googleMapProperties;
     }
 
-
-    public void setGoogleMapKeys(GoogleMapKeys googleMapKeys)
-    {
-        logger.debug("in setGoogleMapKeys");
-        this.googleMapKeys = googleMapKeys;
+    public void setGoogleMapProperties(Properties googleMapProperties) {
+        this.googleMapProperties = googleMapProperties;
     }
 
-
-    public WebUtil getWebUtil()
-    {
+    public WebUtil getWebUtil() {
         return webUtil;
     }
 
-
-    public void setWebUtil(WebUtil webUtil)
-    {
+    public void setWebUtil(WebUtil webUtil) {
         this.webUtil = webUtil;
     }
 
