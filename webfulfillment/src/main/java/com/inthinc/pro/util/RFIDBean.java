@@ -20,7 +20,7 @@ public class RFIDBean {
 		
 	}
 	
-	public Long findRFID(Long barcode)
+	public Long findRFID(Long barcode, boolean useFob)
 	{
 		File file = new File(rfidCSVFile);
 		
@@ -47,7 +47,10 @@ public class RFIDBean {
 				Long i = Long.parseLong(pair[0]);
 				if (barcode.equals(i))
 				{
-					BigInteger bi = new BigInteger(pair[1],16);
+					int id=1;
+					if (useFob)
+						id=2;
+					BigInteger bi = new BigInteger(pair[id],16);
 					return bi.longValue();
 				}
 				

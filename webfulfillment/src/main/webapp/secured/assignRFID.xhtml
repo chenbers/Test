@@ -29,6 +29,9 @@
 						required="false" requiredMessage="required" /> 
 						<rich:message for="RFID" /> 
 						<br />
+<h:selectBooleanCheckbox value="#{daoUtilBean.useFOB}" id="useFOB">
+</h:selectBooleanCheckbox>						
+						Use FOB (instead of Card)<br/>
 					<script>
     						document.getElementById('mainform:driverID').focus();
   </script> <br />

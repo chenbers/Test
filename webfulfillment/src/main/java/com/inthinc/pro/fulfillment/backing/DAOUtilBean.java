@@ -71,6 +71,7 @@ public class DAOUtilBean {
 	
 	private String driverID;
 	private String RFID;
+	private boolean useFOB;
 	private RFIDBean rfidBean;
 	
 	private static final String rmausername = "RMA";
@@ -271,7 +272,7 @@ public class DAOUtilBean {
 			return;
 		}
 		
-		Long rfid = rfidBean.findRFID(barcode);
+		Long rfid = rfidBean.findRFID(barcode, useFOB);
 
 		Driver driver = driverDAO.findByID(did);
 		
@@ -304,6 +305,7 @@ public class DAOUtilBean {
 		}
 		setRFID(null);
 		setDriverID(null);
+		setUseFOB(false);
 	}
 
 	public void assignDeviceAction() {
@@ -338,7 +340,11 @@ public class DAOUtilBean {
 							vwarn = "<BR/>Warning: Device was previously assigned to vehicle: " + currentV.getName() + " " + currentV.getFullName();
 					}
 					vehicleDAO.setVehicleDevice(vehicle.getVehicleID(), device.getDeviceID());
-					setSuccessMsg("Device " + serialNum + " successfully assigned to vehicle: " + vehicleName + vwarn);
+					setSuccessMsg("Device " + serialNum + " successfully assigned to vehicle: " 
+							+ vehicleName
+							+ " " + vehicle.getFullName() 
+							+ " VIN: " + vehicle.getVIN()
+							+ vwarn);
 				}
 			}
 		}
@@ -634,5 +640,13 @@ public class DAOUtilBean {
 
 	public void setRfidBean(RFIDBean rfidBean) {
 		this.rfidBean = rfidBean;
+	}
+
+	public boolean getUseFOB() {
+		return useFOB;
+	}
+
+	public void setUseFOB(boolean useFOB) {
+		this.useFOB = useFOB;
 	}
 }

@@ -49,10 +49,10 @@ public class DAOUtilBeanTest {
 	{
 		RFIDBean rb = new RFIDBean();
 		rb.setRfidCSVFile("/tiwiimport/rfid.csv");
-		Long val = rb.findRFID(22L);
+		Long val = rb.findRFID(22L, false);
 		Long expected = (new BigInteger("E007000003589716",16)).longValue();
 		assertTrue(val.equals(expected));
-		assertNull(rb.findRFID(9999999L));
+		assertNull(rb.findRFID(9999999L, false));
 	}
 	
 	@Ignore("not ready yet") 
