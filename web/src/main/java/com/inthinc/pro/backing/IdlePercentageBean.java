@@ -196,6 +196,8 @@ public class IdlePercentageBean extends BaseBean {
 	}
 
 	public Integer getTotalEMUVehicles() {
+		if (totalEMUVehicles == null)
+			return 0;
 		return totalEMUVehicles;
 	}
 
@@ -204,6 +206,8 @@ public class IdlePercentageBean extends BaseBean {
 	}
 
 	public Integer getTotalVehicles() {
+		if (totalVehicles == null)
+			return 0;
 		return totalVehicles;
 	}
 
