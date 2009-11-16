@@ -78,6 +78,12 @@
 							<categoryDataset>
 								<dataset>
 									<datasetRun subDataset="CategorySeriesSubDataset">
+										<datasetParameter name="REPORT_LOCALE">
+											<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+										</datasetParameter>
+										<datasetParameter name="MEASUREMENT_TYPE">
+											<datasetParameterExpression><![CDATA[$P{MEASUREMENT_TYPE}]]></datasetParameterExpression>
+										</datasetParameter>
 										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_2})]]></dataSourceExpression>
 									</datasetRun>
 								</dataset>
@@ -125,6 +131,12 @@
 							<categoryDataset>
 								<dataset>
 									<datasetRun subDataset="CategorySeriesSubDataset">
+										<datasetParameter name="MEASUREMENT_TYPE">
+											<datasetParameterExpression><![CDATA[$P{MEASUREMENT_TYPE}]]></datasetParameterExpression>
+										</datasetParameter>
+										<datasetParameter name="REPORT_LOCALE">
+											<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+										</datasetParameter>
 										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 									</datasetRun>
 								</dataset>
