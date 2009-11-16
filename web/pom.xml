@@ -30,7 +30,6 @@
             <directory>${basedir}/src/main/resources</directory>
             <excludes>
               <exclude>**/applicationContext-mockdao.xml</exclude>
-              <exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
             </excludes>
           </resource>
         </resources>
@@ -53,7 +52,6 @@
             <directory>${basedir}/src/main/resources</directory>
             <excludes>
               <exclude>**/applicationContext-dao.xml</exclude>
-              <exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
             </excludes>
           </resource>
         </resources>
@@ -78,7 +76,6 @@
             <directory>${basedir}/src/main/resources</directory>
             <excludes>
               <exclude>**/applicationContext-mockdao.xml</exclude>
-              <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
             </excludes>
           </resource>
         </resources>
@@ -103,7 +100,6 @@
             <directory>${basedir}/src/main/resources</directory>
             <excludes>
               <exclude>**/applicationContext-mockdao.xml</exclude>
-              <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
             </excludes>
           </resource>
         </resources>
@@ -126,7 +122,6 @@
             <directory>${basedir}/src/main/resources</directory>
             <excludes>
               <exclude>**/applicationContext-mockdao.xml</exclude>
-              <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
             </excludes>
           </resource>
         </resources>
@@ -462,17 +457,6 @@
               </includes>
             </resource>
           </webResources>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <sourceExcludes>
-            <sourceExclude>**/applicationContext-serverPropertiesRemote.xml</sourceExclude>
-            <sourceExclude>**/applicationContext-mockdao.xml</sourceExclude>
-          </sourceExcludes>
         </configuration>
       </plugin>
       <plugin>
