@@ -36,16 +36,19 @@ public class MpgLineChartCustomizer extends JRAbstractChartCustomizer
         //they are, we are setting a default y axis range.
         boolean foundData = false;
       
-        for(int i = 0;i < plot.getDataset().getColumnCount();i++)
+        if (plot.getDataset() != null)
         {
-            for(int j = 0; j < plot.getDataset().getRowCount();j++)
-            {
-                Number value = plot.getDataset().getValue(j,i);
-                if(value != null && value.intValue() > 0){
-                    foundData = true;
-                    break;
-                }
-            }
+	        for(int i = 0;i < plot.getDataset().getColumnCount();i++)
+	        {
+	            for(int j = 0; j < plot.getDataset().getRowCount();j++)
+	            {
+	                Number value = plot.getDataset().getValue(j,i);
+	                if(value != null && value.intValue() > 0){
+	                    foundData = true;
+	                    break;
+	                }
+	            }
+	        }
         }
         if(!foundData)
         {
