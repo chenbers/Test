@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,13 +14,16 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.util.MessageUtil;
 
 public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>> extends BaseBean 
 {
@@ -374,4 +378,31 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     }
 
 	protected abstract ReportCriteria getReportCriteria();
+    
+    public List<Event> loadUnknownDriver(List<Event> warnings) {
+        List<Event> adjusted = new ArrayList<Event>();
+           
+        // Get the unknown driver from the account
+        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
+
+        // Fix the name
+        for ( Event e: warnings ) {
+            Person p = new Person();
+            p.setFirst(MessageUtil.getMessageString("notes_general_unknown",getLocale()));
+            p.setLast(MessageUtil.getMessageString("notes_general_driver",getLocale()));
+            
+            if ( e.getDriver() == null ) {
+                Driver d = new Driver();
+                d.setDriverID(acct.getAcctID());
+                d.setPerson(p);
+                e.setDriver(d);
+            } else {
+                e.getDriver().setPerson(p);
+            }
+            
+            adjusted.add(e);
+        }
+        
+        return adjusted;
+    }	
 }
