@@ -57,6 +57,8 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                     mpgEntity.setLightValue(dvq.getDriveQ().getMpgLight());
                     mpgEntity.setMediumValue(dvq.getDriveQ().getMpgMedium());
 
+                    mpgEntity.setDate(dvq.getDriveQ().getEndingDate());
+
                     scoreList.add(mpgEntity);
 
                 }
@@ -78,6 +80,8 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                     mpgEntity.setHeavyValue(gqMap.getDriveQ().getMpgHeavy());
                     mpgEntity.setLightValue(gqMap.getDriveQ().getMpgLight());
                     mpgEntity.setMediumValue(gqMap.getDriveQ().getMpgMedium());
+
+                    mpgEntity.setDate(gqMap.getDriveQ().getEndingDate());
 
                     scoreList.add(mpgEntity);
 
@@ -110,6 +114,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                 mpgEntity.setLightValue(dqMap.getMpgLight());
                 mpgEntity.setMediumValue(dqMap.getMpgMedium());
                 mpgEntity.setOdometer(dqMap.getOdometer());
+                mpgEntity.setDate(dqMap.getEndingDate());
 //logger.debug("L["+ dqMap.getMpgLight()+"] M["+ dqMap.getMpgMedium()+"] H["+ dqMap.getMpgMedium()+"]");
 
                 scoreList.add(mpgEntity);
@@ -141,6 +146,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                 mpgEntity.setMediumValue(dqMap.getMpgMedium());
                 mpgEntity.setOdometer(dqMap.getOdometer());
 //logger.debug("L["+ dqMap.getMpgLight()+"] M["+ dqMap.getMpgMedium()+"] H["+ dqMap.getMpgMedium()+"]");
+                mpgEntity.setDate(dqMap.getEndingDate());
 
                 scoreList.add(mpgEntity);
             }
