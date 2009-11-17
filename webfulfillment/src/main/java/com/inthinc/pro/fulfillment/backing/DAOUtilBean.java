@@ -415,6 +415,7 @@ public class DAOUtilBean {
 		{
 			accountMap = new Hashtable<Integer, String>();
 			int limit = 500; // TODO Lose this!!
+limit=4;			
 			List<Account> accounts = accountDAO.getAllAcctIDs();
 			for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext() && limit > 0; 
 			limit --
