@@ -224,7 +224,7 @@ public class MockData {
         QuintileMap qMap = new QuintileMap();
         for (int i = DriveQMetric.DRIVEQMETRIC_MIN; i <= DriveQMetric.DRIVEQMETRIC_MAX; i++) {
             for (Duration duration : EnumSet.allOf(Duration.class)) {
-                MockQuintileMap mockQuintileMap = new MockQuintileMap(randomQuintileMap(), group.getGroupID(), i, duration.getCode());
+                MockQuintileMap mockQuintileMap = new MockQuintileMap(randomQuintileMap(), group.getGroupID(), i, duration.getDvqCode());
                 storeObject(mockQuintileMap);
             }
         }
