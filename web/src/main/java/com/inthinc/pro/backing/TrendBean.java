@@ -10,12 +10,14 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.charts.DateCategoryChart;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.CrashSummary;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -26,7 +28,7 @@ import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
-public class TrendBean extends CustomSortBean<TrendBeanItem> 
+public class TrendBean extends CustomSortBean<TrendBeanItem> implements DurationChangeListener 
 {
 
     /**
@@ -471,7 +473,10 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
 	}
 
 	public void setDurationBean(DurationBean durationBean) {
+		if (this.durationBean == null && durationBean != null)
+			durationBean.addDurationChangeListener(this);
 		this.durationBean = durationBean;
+
 	}
     
     public void saveStateAction()
@@ -487,4 +492,9 @@ public class TrendBean extends CustomSortBean<TrendBeanItem>
     		trendBeanState.getGroupVisibleState().put(item.getGroupID(), item.getShow());
     	}
     }
+
+	@Override
+	public void onDurationChange(Duration d) {
+		setTrendBeanItems(null);
+	}
 }
