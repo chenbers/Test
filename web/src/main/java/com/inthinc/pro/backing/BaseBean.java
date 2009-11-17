@@ -204,31 +204,5 @@ public class BaseBean implements Serializable {
 			return MessageUtil.getMessageString(nafe.getMessage());
 		}
 	}
-	
-	public List<Event> loadUnknownDriver(List<Event> warnings) {
-	    List<Event> adjusted = new ArrayList<Event>();
-	       
-        // Get the unknown driver from the account
-        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
 
-        // Fix the name
-        for ( Event e: warnings ) {
-            Person p = new Person();
-            p.setFirst("Unknown");
-            p.setLast("Driver");
-            
-            if ( e.getDriver() == null ) {
-                Driver d = new Driver();
-                d.setDriverID(acct.getAcctID());
-                d.setPerson(p);
-                e.setDriver(d);
-            } else {
-                e.getDriver().setPerson(p);
-            }
-            
-            adjusted.add(e);
-        }
-        
-        return adjusted;
-	}
 }
