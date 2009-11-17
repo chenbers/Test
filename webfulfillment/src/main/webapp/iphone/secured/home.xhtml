@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+ xmlns:h="http://java.sun.com/jsf/html" 
+ xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+<title>tiwiPRO Fulfillment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+<link href="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.css" rel="stylesheet" type="text/css"/>
+<script type="application/x-javascript" src="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.js"></script>
+</head>
+<f:view contentType="text/html">
+    <body>
+
+<div class="toolbar">
+ <h1 id="pageTitle"></h1>
+<a class="button" href="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">Log out</a>
+</div>
+<ul id="home" title="Home" selected="true">
+<li><a href="moveDevice.faces">Move Device</a></li>
+<li><a href="assignDevice.faces">Assign Vehicle</a></li>
+<li><a href="assignRFID.faces">Assign RFID</a></li>
+<li><a href="queryDevice.faces">Query Device Info</a></li>
+</ul>
+
+    </body>
+</f:view>
+</html>

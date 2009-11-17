@@ -178,11 +178,72 @@ public class DAOUtilBean {
 
 	private void loadDevice()
 	{
-		device = deviceDAO.findBySerialNum(serialNum);	
+		device = deviceDAO.findBySerialNum(serialNum.toUpperCase());	
 		if (device==null)
 			device = deviceDAO.findByIMEI(serialNum);	
 		if (device==null)
-			setErrorMsg("Error - Device not found: " + serialNum);
+		{
+			Integer id = 0;
+			try {
+				id = Integer.parseInt(serialNum);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (id>0)
+			   device = deviceDAO.findByID(id);
+		}
+		
+		if (device==null)
+			setErrorMsg("Error: Device not found " + serialNum + ". Please enter an IMEI, Serial Number or deviceID.");
+	}
+	public void queryDeviceAction()
+	{
+		reInitAction();
+		loadDevice();
+		if (device != null)
+		{
+			Account dacct = accountDAO.findByID(device.getAccountID());
+			Vehicle dv = vehicleDAO.findByID(device.getVehicleID());
+			Driver dd=null;
+			Person dp=null;
+			LastLocation ll = null; 
+
+			if (dv!=null)
+			{
+				ll=vehicleDAO.getLastLocation(dv.getVehicleID());
+				dd=driverDAO.findByID(dv.getDriverID());
+				if (dd!=null)
+					dp=personDAO.findByID(dd.getPersonID());
+			}
+			String msg = ""; 
+			msg += "<BR/>ACCT: " + dacct.getAcctName();
+			msg += "<BR/>SN: " + device.getSerialNum();
+			msg += "<BR/>ECALL: <a target=\"_blank\" href=\"tel:" + device.getEphone() + "\">" + device.getEphone() + "</a>";
+			msg += "<BR/><a target=\"_blank\" href=\"https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&password=45Uu9i92A_8&submitRun=Run&reportId=131&msisdn=" 
+				+ device.getEphone() + "\">Radius Call Records</a>";
+			msg += "<BR/>IMEI: " + device.getImei();
+			msg += "<BR/>SIM: " + device.getSim();
+			msg += "<BR/>PHN: " + device.getPhone();
+			msg += "<BR/>SN: " + device.getEphone();
+			
+			if (ll!=null)
+				msg += "<BR/>LOC: " + ll.getTime() 
+				+ " <a target=\"_blank\" href=\"http://maps.google.com/maps?q="
+				+ll.getLoc().getLat()
+				+","+ll.getLoc().getLng()
+				+"\">" + ll.getLoc().toString() + "</a>";
+				
+			if (dv!=null)
+				msg += "<BR/><BR/>" + dv.toString();
+			if (dd!=null)
+				msg += "<BR/><BR/>" + dd.toString();
+			if (dp!=null)
+				msg += "<BR/><BR/>" + dp.toString();
+				
+			setSuccessMsg(msg);					
+		}
+		setSerialNum(null);
 	}
 	public void rmaDeviceAction()
 	{
@@ -262,13 +323,13 @@ public class DAOUtilBean {
 		try {
 			did = Integer.parseInt(driverID);
 		} catch (NumberFormatException e) {
-			setErrorMsg("Invalid Driver ID Number: " + driverID);
+			setErrorMsg("Error: Invalid Driver ID Number" + driverID);
 			return;
 		}
 		try {
 			barcode = Long.parseLong(RFID);
 		} catch (NumberFormatException e) {
-			setErrorMsg("Invalid RFID Number: " + RFID);
+			setErrorMsg("Error: Invalid RFID Barcode Number " + RFID);
 			return;
 		}
 		
@@ -279,11 +340,11 @@ public class DAOUtilBean {
 		
 		if (driver==null)
 		{
-			setErrorMsg("Driver not found: " + driverID);
+			setErrorMsg("Error: Driver not found " + driverID);
 		}
 		else if (rfid==null)
 		{
-			setErrorMsg("RFID not found: " + RFID);
+			setErrorMsg("Error: RFID not found " + RFID);
 		}
 		else
 		{
@@ -294,14 +355,23 @@ public class DAOUtilBean {
 				if (currentDriverID != driver.getDriverID())
 				{
 					Driver currentDriver = driverDAO.findByID(currentDriverID);
-					existMsg="<BR/> Warning: RFID previously assigned to: " + currentDriver.getPerson().getFullNameWithId();
+					String name=driverID;
+					if (currentDriver.getPerson()!=null)
+						name = currentDriver.getPerson().getFullNameWithId();
+
+					existMsg="<BR/> Warning: RFID previously assigned to " + name;
 					currentDriver.setRFID(1L);
 					driverDAO.update(currentDriver);
 				}
 			}
 			driver.setRFID(rfid);
 			driverDAO.update(driver);
-			setSuccessMsg("RFID " + rfid + " successfully assigned to driver: " + driver.getPerson().getFullNameWithId() + existMsg);
+
+			String name=driverID;
+			if (driver.getPerson()!=null)
+				name = driver.getPerson().getFullNameWithId();
+			
+			setSuccessMsg("RFID " + rfid + " successfully assigned to driver: " + name + existMsg);
 		}
 		setRFID(null);
 		setDriverID(null);
@@ -313,22 +383,22 @@ public class DAOUtilBean {
 		loadDevice();
 		if (selectedAccountID==null || selectedAccountID<0)
 		{
-			setErrorMsg("Please select a customer account");
+			setErrorMsg("Error: Please select a customer account");
 		}
 		else if (vehicleName==null || vehicleName.trim().length()==0)
 		{
-			setErrorMsg("Please enter a valid vehicle Name, VIN or License");
+			setErrorMsg("Error: Please enter a valid vehicle Name, VIN or License");
 		}
 		else if (device != null)
 		{
 			if (!device.getAccountID().equals(selectedAccountID)) {
 				Account assignedAccount = accountDAO.findByID(device.getAccountID());
-				setErrorMsg("Error - Device "+ serialNum + " already assigned to account " + assignedAccount.getAcctName());
+				setErrorMsg("Error: Device "+ serialNum + " already assigned to account " + assignedAccount.getAcctName());
 			} else 
 			{
 				Vehicle vehicle = findVehicle(selectedAccountID, vehicleName);
 				if (vehicle==null || !vehicle.getStatus().equals(Status.ACTIVE))
-					setErrorMsg("Error - Vehicle "+ vehicleName + " not found");
+					setErrorMsg("Error: Vehicle "+ vehicleName + " not found. Please enter a valid Name, VIN, or License.");
 				else
 				{
 					Integer currentVID = device.getVehicleID();

@@ -5,14 +5,14 @@
     <http auto-config="false" session-fixation-protection="newSession" access-denied-page="/accessDenied.faces" entry-point-ref="authenticationProcessingFilterEntryPoint">
         <!--  error if user logs in concurrently (only one login allowed at a time)  -->
         <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
-        <intercept-url pattern="/secured/**" access="ROLE_ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSERSUPERUSER" />
+        <intercept-url pattern="**/secured/**" access="ROLE_ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSERSUPERUSER" />
         <logout logout-success-url="/login.faces" />
     </http>
     <!--  i.e. fleet, region, team, and eventually driver levels  -->
     <beans:bean id="proFilter" class="com.inthinc.pro.security.ProAuthenticationProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />
         <beans:property name="authenticationFailureUrl" value="/login.faces" />
-        <beans:property name="defaultTargetUrl" value="/secured/moveDevice.faces" />
+        <beans:property name="defaultTargetUrl" value="/secured/home.faces" />
         <beans:property name="filterProcessesUrl" value="/j_spring_security_check" />
         <beans:property name="alwaysUseDefaultTargetUrl" value="true"/>
         <custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />

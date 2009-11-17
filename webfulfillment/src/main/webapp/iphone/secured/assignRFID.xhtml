@@ -1,49 +1,47 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition template="/template/iphoneTemplate.xhtml"
+<ui:composition 
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
+ 				<h:form id="assignRFID" class="panel" title="Assign RFID">
+ <fieldset>
 
-	<ui:param name="panelTitle" value="Assign RFID to Driver" />
-	<ui:param name="groupSelected" value="MAIN" />
-	<ui:define name="util_content">
-		<h:panelGrid columns="2">
-			<h:panelGroup>			
-				
-				<h:form id="mainform" focus="serialNum">
-					<div id="page_top_left"> 
-					Enter the Driver ID:<br/>
+<div class="row">
+					<label>Driver ID</label>
 					<h:inputText id="driverID" value="#{daoUtilBean.driverID}" size="30"
 						required="false" requiredMessage="required" /> 
 						<rich:message for="driverID" /> 
-						<br />
-					Enter the RFID Barcode:<br/>
+</div>						
+<div class="row">
+					<label>RFID</label>
 					<h:inputText id="RFID" value="#{daoUtilBean.RFID}" size="30"
 						required="false" requiredMessage="required" /> 
 						<rich:message for="RFID" /> 
-						<br />
+</div>
+<div class="row">
 <h:selectBooleanCheckbox value="#{daoUtilBean.useFOB}" id="useFOB">
 </h:selectBooleanCheckbox>						
 						Use FOB (instead of Card)<br/>
-					<script>
-    						document.getElementById('mainform:driverID').focus();
-  </script> <br />
-					<h:commandButton value="Assign RFID"
-						action="#{daoUtilBean.assignRFIDAction}" /> <br />
+</div>
+</fieldset>
+ 
+ <h:commandButton value="Assign RFID"
+						 action="#{daoUtilBean.assignRFIDAction}" />
+		<br />
+		<br />
+					<a class="whiteButton" href="#home">Cancel</a>
 					<br />
 					<p><h:outputText value="#{daoUtilBean.successMsg}"
-						escape="false" /></p>
-					</div>
+						escape="false" />
+				<h:outputText value="#{daoUtilBean.errorMsg}" escape="false" />
+						</p>
+
 				</h:form>
 				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
 				<h:outputText value="#{message}"/><br/>
 				</rich:dataList>
-				<h:outputText style="font-size:28px;color: red;" value="#{daoUtilBean.errorMsg}" escape="false" />
-			</h:panelGroup>
-		</h:panelGrid>
-	</ui:define>
 </ui:composition>

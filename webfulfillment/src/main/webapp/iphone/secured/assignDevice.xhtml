@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich">
+	<h:form id="assignDevice" class="panel" title="Assign Vehicle">
+		<fieldset>
+		<div class="row"><label>Customer</label> <h:selectOneMenu
+			id="account-select-menu" value="#{daoUtilBean.selectedAccountID}">
+			<f:selectItems value="#{daoUtilBean.accountSelectList}" />
+		</h:selectOneMenu></div>
+		<div class="row"><label>Vehicle</label> <h:inputText
+			id="vehicleName" value="#{daoUtilBean.vehicleName}" size="30"
+			required="false" requiredMessage="required" />
+		</div>
+		<div class="row">
+			<label>Tiwi</label> 
+			<h:inputText id="serialNum"
+				value="#{daoUtilBean.serialNum}" size="30" required="false"
+				requiredMessage="required" />
+		</div>
+		</fieldset>
+
+		<h:commandButton value="Assign Vehicle"
+			action="#{daoUtilBean.assignDeviceAction}" />
+		<br />
+		<br />
+					<a class="whiteButton" href="#home">Cancel</a>
+					<br />
+		<p><h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
+
+		<h:outputText value="#{daoUtilBean.errorMsg}" escape="false" /></p>
+	</h:form>
+	<rich:dataList rendered="#{daoUtilBean.messageList != null}"
+		value="#{daoUtilBean.messageList}" id="messages" var="message"
+		title="Messages">
+		<h:outputText value="#{message}" />
+	</rich:dataList>
+</ui:composition>
