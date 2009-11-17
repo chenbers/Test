@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.EventReportItem;
+import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -17,7 +20,18 @@ public class EventsBean extends BaseEventsBean {
 
     @Override
     protected List<Event> getEventsForGroup(Integer groupID) {
-        return getEventDAO().getViolationEventsForGroup(groupID, 7, showExcludedEvents);
+        List<Event> safety = getEventDAO().getViolationEventsForGroup(groupID, 7, showExcludedEvents);
+        
+        // Add the unknown driver, making sure the name is set
+        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
+        List<Event> noDriverWarnings = getEventDAO().getViolationEventsForDriver(
+                acct.getUnkDriverID(), DateUtil.getDaysBackDate(new Date(), 7), new Date(), showExcludedEvents);    
+        noDriverWarnings = this.loadUnknownDriver(noDriverWarnings);
+        
+        safety.addAll(noDriverWarnings);  
+        Collections.sort(safety);
+        
+        return safety;                         
     }
 
     // TablePrefOptions interface

@@ -1,10 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
@@ -23,28 +26,14 @@ public class EmergencyBean extends BaseEventsBean
     {
         List<Event> evtForGrp = getEventDAO().getEmergencyEventsForGroup(groupID, 7,showExcludedEvents);
         
-        // Add the unknown driver
-        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());
-        List<Event> evtForUnk = getEventDAO().getEventsForUnknownDriver(
-                acct.getUnkDriverID(), EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY), 7, showExcludedEvents);
+        // Add the unknown driver, making sure the name is set
+        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
+        List<Event> noDriverWarnings = getEventDAO().getEmergencyEventsForDriver(
+                acct.getUnkDriverID(), DateUtil.getDaysBackDate(new Date(), 7), new Date(), showExcludedEvents);    
+        noDriverWarnings = this.loadUnknownDriver(noDriverWarnings);     
         
-        // Work with the unknown driver.
-        for ( Event e: evtForUnk ) {
-            Person p = new Person();
-            p.setFirst("Unknown");
-            p.setLast("Driver");
-            
-            if ( e.getDriver() == null ) {
-                Driver d = new Driver();
-                d.setDriverID(acct.getAcctID());
-                d.setPerson(p);
-                e.setDriver(d);
-            } else {
-                e.getDriver().setPerson(p);
-            }
-        }
-        
-        evtForGrp.addAll(evtForUnk);
+        evtForGrp.addAll(noDriverWarnings);
+        Collections.sort(evtForGrp);                
         
         return evtForGrp;
     }
