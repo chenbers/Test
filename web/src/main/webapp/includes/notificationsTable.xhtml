@@ -42,10 +42,11 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_group}" />
                 </f:facet>
-               <pretty:link id="#{context}-dashboard" mappingId="dashboard">
+               <pretty:link id="#{context}-dashboard" mappingId="dashboard" rendered="#{item.groupID ne null}">
                    <h:outputText value="#{item.group}"/>
                    <f:param value="#{item.groupID}"/>
-               </pretty:link>                                                                                
+               </pretty:link>  
+               <h:outputText value="#{item.group}" rendered="#{item.groupID eq null}"/>                                                                              
             </rich:column>
             <rich:column id="driver" rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}">
                 <f:facet name="header">
