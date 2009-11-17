@@ -55,10 +55,9 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-                        <!-- this is a hack, <c:if> would not work inside <rich:column>, need to come back to this and clean it up -->            
-                        <pretty:link id="#{context}-teamRecentSafetySpeedOrStyle" mappingId="#{event.event.eventType == 'SPEEDING' ? 'driverPerformanceSpeed' : 'driverPerformanceStyle'}">
-                            <f:param value="#{event.event.driver.driverID}"/>
+                        <pretty:link id="#{context}-teamRecentSafetySpeedOrStyle" mappingId="safety">
                             #{messages.team_safetyEventsDetails}
+                             <f:param name="eventID" value="#{event.event.noteID}"/>
                         </pretty:link>
 					</rich:column>
 			</rich:dataTable>
