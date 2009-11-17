@@ -44,7 +44,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
 
             if (group.getType() == null || group.getType().equals(GroupType.TEAM))
             {
-                List<Map<String, Object>> returnMapList = reportService.getDVScoresByGT(groupID, duration.getCode());
+                List<Map<String, Object>> returnMapList = reportService.getDVScoresByGT(groupID, duration.getDvqCode());
                 List<DVQMap> dvqList = getMapper().convertToModelObject(returnMapList, DVQMap.class);
                 for (DVQMap dvq : dvqList)
                 {
@@ -66,7 +66,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
             }
             else
             {
-                List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getCode());
+                List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getDvqCode());
                 List<GQMap> gqMapList = getMapper().convertToModelObject(returnMapList, GQMap.class);
 
                 for (GQMap gqMap : gqMapList)

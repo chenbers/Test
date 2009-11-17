@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 4/1/2009 - dvqCode added to retrieve 7 day aggregation.
  * 
  * code - specifies cumulative of entities based on 30 day aggregation
- * dvqMetric - specifies sum of entities
  * dvqCode - specifies cumulative of entities based on 7 day aggregation
  * dvqCount - specifies number of records to retrieve
  */
@@ -25,7 +24,7 @@ public enum Duration implements BaseEnum
     TWELVE(5, "12 months", 360, "MMM", 2, 12, 5);
 
     /*
-     * from aggregation method docs  (dvqMetric above)
+     * dvqCode
 	    0 - 1 day bins
 	    1 - 7 day bins
 	    2 - 1 month bins
