@@ -368,7 +368,7 @@
 						<span class="speed">#{messages.driver_speed}</span>
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
-							<ui:param name="reRenderList" value="speed_multi_line_chart,speedForm,speedScoreBox"/>			
+							<ui:param name="reRenderList" value="driverSpeedChart,speedForm,speedScoreBox"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverPerformanceBean.driverSpeedBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverPerformanceBean.driverSpeedBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverPerformanceBean.driverSpeedBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
