@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +20,8 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
@@ -200,5 +203,32 @@ public class BaseBean implements Serializable {
 			
 			return MessageUtil.getMessageString(nafe.getMessage());
 		}
+	}
+	
+	public List<Event> loadUnknownDriver(List<Event> warnings) {
+	    List<Event> adjusted = new ArrayList<Event>();
+	       
+        // Get the unknown driver from the account
+        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
+
+        // Fix the name
+        for ( Event e: warnings ) {
+            Person p = new Person();
+            p.setFirst("Unknown");
+            p.setLast("Driver");
+            
+            if ( e.getDriver() == null ) {
+                Driver d = new Driver();
+                d.setDriverID(acct.getAcctID());
+                d.setPerson(p);
+                e.setDriver(d);
+            } else {
+                e.getDriver().setPerson(p);
+            }
+            
+            adjusted.add(e);
+        }
+        
+        return adjusted;
 	}
 }
