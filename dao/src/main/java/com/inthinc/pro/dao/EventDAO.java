@@ -37,6 +37,8 @@ public interface EventDAO extends GenericDAO<Event, Integer>
 
     List<Event> getWarningEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven);
 
+    List<Event> getEmergencyEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven);
+
     List<Event> getEventsForDriverByMiles(Integer driverID, Integer milesBack, List<Integer> eventTypes);
 
     List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes, Integer includeForgiven);
@@ -62,9 +64,7 @@ public interface EventDAO extends GenericDAO<Event, Integer>
     List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven);
 
     List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven); 
-    
-    List<Event> getEventsForUnknownDriver(Integer driverID, List<Integer> eventTypes, Integer daysBack, Integer includeForgiven);
-  
+     
     List<Event> getEventsForGroupFromVehicles(Integer groupID, List<Integer> eventTypes, Integer daysBack);
     
     Event getEventNearLocation(Integer driverID,Double latitude,Double longitude,Date startDate,Date endDate);

@@ -159,6 +159,12 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         return getEventsForDriver(driverID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.WARNING), includeForgiven);
     }
+    
+    @Override
+    public List<Event> getEmergencyEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
+    {
+        return getEventsForDriver(driverID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY), includeForgiven);
+    }    
 
     @Override
     public Integer forgive(Integer driverID, Long noteID)
@@ -220,15 +226,6 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY), includeForgiven);
     }
 
-    @Override
-    public List<Event> getEventsForUnknownDriver(Integer driverID, List<Integer> eventTypes, Integer daysBack, Integer includeForgiven)
-    {
-        Date endDate = new Date();
-        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);        
-        List<Event> eventList = getEventsForDriver(driverID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY), includeForgiven);
-        
-        return Event.cleanEvents(eventList);
-    }
     public List<Event> getEventsForGroup(Integer groupID, Integer daysBack, List<Integer> eventTypes, Integer includeForgiven)
     {
         Date endDate = new Date();
