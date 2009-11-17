@@ -7,6 +7,7 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
 	<h:form id="moveDevice" title="Move Device" class="panel">
+	<h:outputText value="#{daoUtilBean.errorMsg}" escape="false" />
 <fieldset>
 <div class="row">
 	<label>Customer</label>
@@ -29,9 +30,7 @@
 		<br />
 					<a class="whiteButton" href="#home">Cancel</a>
 					<br />
-		<p><h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
-	<h:outputText value="#{daoUtilBean.errorMsg}" escape="false" />
-		</p>
+		<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 	</h:form>
 	<rich:dataList rendered="#{daoUtilBean.messageList != null}"
 		value="#{daoUtilBean.messageList}" id="messages" var="message"

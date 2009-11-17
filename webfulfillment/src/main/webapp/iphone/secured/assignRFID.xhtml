@@ -8,6 +8,7 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
  				<h:form id="assignRFID" class="panel" title="Assign RFID">
+				<h:outputText value="#{daoUtilBean.errorMsg}" escape="false" />
  <fieldset>
 
 <div class="row">
@@ -35,10 +36,9 @@
 		<br />
 					<a class="whiteButton" href="#home">Cancel</a>
 					<br />
-					<p><h:outputText value="#{daoUtilBean.successMsg}"
+					<h:outputText value="#{daoUtilBean.successMsg}"
 						escape="false" />
-				<h:outputText value="#{daoUtilBean.errorMsg}" escape="false" />
-						</p>
+
 
 				</h:form>
 				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
