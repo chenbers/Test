@@ -8,6 +8,7 @@ import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 
 public class SecureGroupDAO extends SecureDAO<Group> {
@@ -59,6 +60,12 @@ public class SecureGroupDAO extends SecureDAO<Group> {
     public List<GroupTrendWrapper> getChildGroupsDriverTrends(Integer groupID, Duration duration) {
         if (isAuthorized(groupID))
             return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, duration);
+        return Collections.emptyList();
+    }
+
+    public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, Duration duration) {
+        if (isAuthorized(groupID))
+            return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, duration);
         return Collections.emptyList();
     }
 

@@ -31,21 +31,25 @@ public interface GroupService {
     @Path("/group/{groupID}/scores/drivers/{numberOfDays}")
     public Response getDriverScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
-//    @GET
-//    @Path("/group/{groupID}/score/driver/{numberOfDays}")
-//    public Response getDriverScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfdays);
+    // @GET
+    // @Path("/group/{groupID}/score/driver/{numberOfDays}")
+    // public Response getDriverScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfdays);
 
     @GET
     @Path("/group/{groupID}/scores/vehicles/{numberOfDays}")
     public Response getVehicleScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
-//    @GET
-//    @Path("/group/{groupID}/score/vehicle/{numberOfDays}")
-//    public Response getVehicleScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+    // @GET
+    // @Path("/group/{groupID}/score/vehicle/{numberOfDays}")
+    // public Response getVehicleScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
     @GET
     @Path("/group/{groupID}/subgroups/trends/driver/{numberOfDays}")
     public Response getSubGroupsDriverTrends(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+
+    @GET
+    @Path("/group/{groupID}/subgroups/scores/driver/{numberOfDays}")
+    public Response getSubGroupsDriverScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
     @POST
     @Consumes("application/xml")

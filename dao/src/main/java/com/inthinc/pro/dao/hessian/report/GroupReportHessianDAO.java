@@ -7,6 +7,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 import com.inthinc.pro.model.aggregation.Percentage;
 import com.inthinc.pro.model.aggregation.Score;
@@ -27,6 +28,16 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, Duration duration) {
         try {
             return mapper.convertToModelObject(reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount()), GroupTrendWrapper.class);
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
+    }
+    
+
+    @Override
+    public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, Duration duration) {
+        try {
+            return mapper.convertToModelObject(reportService.getSDScoresByGT(groupID, duration.getCode()), GroupScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
