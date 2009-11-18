@@ -435,7 +435,7 @@
   </dependencies>
   <build>
     <finalName>tiwipro</finalName>
-    <plugins>
+    <plugins>    
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
