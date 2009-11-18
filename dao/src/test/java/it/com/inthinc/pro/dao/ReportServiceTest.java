@@ -59,7 +59,6 @@ import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 
-@Ignore
 public class ReportServiceTest {
     private static ReportService reportService;
     private static SiloService siloService;
@@ -186,6 +185,7 @@ public class ReportServiceTest {
                 groupData.user = getNext(xml, User.class);
                 groupData.device = getNext(xml, Device.class);
                 groupData.driver = getNext(xml, Driver.class);
+                System.out.println("driverID: " + groupData.driver.getDriverID());
                 groupData.vehicle = getNext(xml, Vehicle.class);
             }
             startDateInSec = getNext(xml, Integer.class);
@@ -466,6 +466,7 @@ public class ReportServiceTest {
         }
     }
 
+    // this is currently not working because of the way the back end is determining if a device has an emu that supports idle time 
     @Test
     @Ignore
     public void idlePercent() {
@@ -486,7 +487,7 @@ public class ReportServiceTest {
             long driveTime = item.getDrivingTime();
             long idleTime = item.getIdlingTime();
 
-            System.out.println("driveTime: " + driveTime + " idleTime: " + idleTime);
+            System.out.println(item.getDate() + " driveTime: " + driveTime + " idleTime: " + idleTime);
             
             assertEquals("Fleet: Unexpected drive Time ", fleetExpectedDailyDriveTime, driveTime);
             assertEquals("Fleet: Unexpected idle Time ", fleetExpectedDailyIdlingTime, idleTime);
@@ -497,7 +498,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+    // @Ignore
     public void crashSummaryGroup() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -516,7 +517,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+   // @Ignore
     public void crashSummaryDriver() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -537,7 +538,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+    // @Ignore
     public void crashSummaryVehicle() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -845,6 +846,7 @@ public class ReportServiceTest {
         }
     }
 
+    // this is currently not working because of the way the back end is determining if a device has an emu that supports idle time 
     @Test
     @Ignore
     public void getIdlingReportData() {
