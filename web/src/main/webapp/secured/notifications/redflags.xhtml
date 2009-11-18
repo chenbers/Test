@@ -43,7 +43,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="redFlagsSearch" action="#{redFlagsBean.searchAction}" oncomplete="initializeTable()"
-		            					reRender="navigation:redirectSearch,header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,redFlagsTableForm:redFlags,redFlagsTableForm:bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -57,7 +57,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="redFlagsRefresh" styleClass="left"
-									reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller" 
+									reRender="header,redFlagsTableForm:redFlags,redFlagsTableForm:bottomScroller" 
 									action="#{redFlagsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
@@ -104,7 +104,7 @@
 							<ui:param name="numRowsPerPg" value="#{redFlagsBean.numRowsPerPg}"/>									
 		             		<ui:param name="tableData" value="#{redFlagsBean.tableData}"/>             						
 		             		<ui:param name="tableColumns" value="#{redFlagsBean.tableColumns}"/>
-							<ui:param name="clearRerender" value="redFlagSearch:header,redFlagsTableForm:items" />
+							<ui:param name="clearRerender" value="redFlagSearch:header,redFlagsTableForm:redFlags" />
                             <ui:param name="page" value="#{redFlagsBean.page}"/>
                             <ui:param name="bean" value="#{redFlagsBean}"/>
  		    			</ui:include>    							
@@ -115,7 +115,7 @@
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{redFlagsBean}"/>	
-					<ui:param name="reRender" value="redFlagsTableForm:items" />
+					<ui:param name="reRender" value="redFlagsTableForm:redFlags" />
     	 			<ui:param name="context" value="redFlags" />
 				</ui:include>    
 				
