@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:v="urn:schemas-microsoft-com:vml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:tiwi="http://pro.tiwi.com/jsf">
+	
+	<head>
+		<title>tiwiPRO - Customer Support</title>
+		<style>
+			body {
+				margin: 10px 0 0 0;
+				padding: 0;
+				font: normal 11px Verdana, Arial, Helvetica, sans-serif;
+			}
+		
+		</style>
+	</head>            
+                
+	<body>
+		<p align="center">                                                                                                        		
+		<a href="http://www.inthinc.com/index.php?option=com_contact&amp;view=contact&amp;id=1&amp;Itemid=60">
+			<img src="#{facesContext.externalContext.request.contextPath}/html/inthincCustomerSupport_files/inthinc-logo_medium.jpg" border="0" /></a>
+		</p>
+	
+		<center><h3>#{messages.customer_support_assistance}</h3></center>
+		<br />
+		<table align="center">
+			<tr>
+				<td>#{messages.customer_support_toll_free}</td>
+				<td><b>#{messages.customer_support_number}</b></td>
+			</tr>
+			<tr>
+				<td>#{messages.customer_support_email}</td>
+				<td><a href="mailto:#{messages.customer_support_email_address}">#{messages.customer_support_email_address}</a></td>
+			</tr>
+		</table>
+	</body>
+	                
+</html>                
