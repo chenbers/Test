@@ -74,12 +74,17 @@ public class EmailReportJob extends QuartzJobBean
         for (Account account : accounts)
         {
             Account a = accountDAO.findByID(account.getAcctID());
-            if(!a.getStatus().equals(Status.DELETED))
+            if(a != null && !a.getStatus().equals(Status.DELETED))
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
-            else
+            else {
+                if (a == null)
+                {
+                	logger.info("no account found for account.getAcctID()");
+                }
                 if(logger.isDebugEnabled()){
                     logger.debug("Account ID Deleted: " + account.getAcctID());
                 }
+            }
         }
 
         for (ReportSchedule reportSchedule : reportSchedules)
@@ -190,6 +195,11 @@ public class EmailReportJob extends QuartzJobBean
     protected boolean emailReport(ReportSchedule reportSchedule)
     {
         User user = userDAO.findByID(reportSchedule.getUserID());
+        if (user == null || user.getPerson() == null)
+        {
+        	logger.error("Unable to get Person record for userID" + reportSchedule.getUserID());
+        	return false;
+        }
         Calendar currentDateTime = Calendar.getInstance(user.getPerson().getTimeZone());
         int dayOfWeek = currentDateTime.get(Calendar.DAY_OF_WEEK);
         currentDateTime.setTimeZone(user.getPerson().getTimeZone());
