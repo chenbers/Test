@@ -26,7 +26,7 @@ public class IPhoneRewriteFilter implements Filter {
 		String userAgent = req.getHeader("USER-AGENT");
 
 //System.out.println(userAgent);
-		userAgent="xx_iphone";		
+//		userAgent="xx_iphone";		
 //System.out.println(uri);
 
 
