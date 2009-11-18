@@ -34,8 +34,22 @@
 				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
 				<h:outputText value="#{message}"/><br/>
 				</rich:dataList>
-				<h:outputText style="font-size:28px;color: red;" value="#{daoUtilBean.errorMsg}" escape="false" />
 			</h:panelGroup>
 		</h:panelGrid>
+		<h:panelGroup id="statusPanel">
+			<rich:modalPanel id="errorPanel" styleClass="errorPopup"
+				showWhenRendered="#{not empty daoUtilBean.errorMsg}" width="300"
+				height="200" zindex="2000">
+				<f:facet name="header">
+					<h:outputText value="Assignment Error" />
+				</f:facet>
+				<p><h:outputText value="#{daoUtilBean.errorMsg}" escape="false" /></p>
+				<h:form id="errorform">
+					<h:commandButton id="ok" onclick="Richfaces.hideModalPanel('errorPanel')"
+						value="OK" action="#{daoUtilBean.clearErrorAction}"
+						style="float:right" />
+				</h:form>
+			</rich:modalPanel>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>

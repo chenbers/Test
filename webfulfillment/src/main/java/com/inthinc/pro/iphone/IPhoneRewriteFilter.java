@@ -25,12 +25,12 @@ public class IPhoneRewriteFilter implements Filter {
 		String queryString = req.getQueryString();
 		String userAgent = req.getHeader("USER-AGENT");
 
-System.out.println(userAgent);
-//		userAgent="xx_iphone";		
-System.out.println(uri);
+//System.out.println(userAgent);
+		userAgent="xx_iphone";		
+//System.out.println(uri);
 
 
-		if (uri.endsWith("j_spring_security_check"))
+		if (uri.indexOf("j_spring_security_")>=0)
 		{
 			if(uri.indexOf("/iphone/")>=0)
 			{
@@ -53,11 +53,9 @@ System.out.println(uri);
 				}
 				res.sendRedirect(uri);
 				return;							
-			}
-
+			}			
 		}
 		else if (userAgent.toLowerCase().indexOf("iphone")>=0 
-//		&& uri.indexOf("/secured/")>=0
 			&& uri.indexOf("/iphone/")<0)
 		{
 			uri = StringUtils.replace(uri, req.getContextPath() + "/", req.getContextPath() + "/iphone/");		

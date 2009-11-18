@@ -5,7 +5,8 @@
     <http auto-config="false" session-fixation-protection="newSession" access-denied-page="/accessDenied.faces" entry-point-ref="authenticationProcessingFilterEntryPoint">
         <!--  error if user logs in concurrently (only one login allowed at a time)  -->
         <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
-        <intercept-url pattern="**/secured/**" access="ROLE_ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSERSUPERUSER" />
+        <intercept-url pattern="/secured/**" access="ROLE_ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSERSUPERUSER" />
+        <intercept-url pattern="/iphone/secured/**" access="ROLE_ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSERSUPERUSER" />
         <logout logout-success-url="/login.faces" />
     </http>
     <!--  i.e. fleet, region, team, and eventually driver levels  -->

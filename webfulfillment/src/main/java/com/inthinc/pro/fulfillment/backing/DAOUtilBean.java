@@ -93,7 +93,7 @@ javax.faces.event.PhaseListener {
 
 	public ProUser getProUser()
     {
-        return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 	public void init() throws Exception
@@ -222,13 +222,27 @@ javax.faces.event.PhaseListener {
 			String msg = ""; 
 			msg += "<BR/>ACCT: " + dacct.getAcctName();
 			msg += "<BR/>SN: " + device.getSerialNum();
-			msg += "<BR/>ECALL: <a target=\"_blank\" href=\"tel:" + device.getEphone() + "\">" + device.getEphone() + "</a>";
+			if (dv!=null)
+				msg += "<BR/>Vehicle: " + dv.getName() + " " + dv.getVIN() + " " + dv.getFullName();
+			if (dp!=null)
+				msg += "<BR/>Driver: " + dp.getFullNameWithId();
+			if (dd!=null)
+			{
+				String barcode = "Not found";
+				Long rfid = dd.getRFID();
+				Long value = null;
+				if (rfid!=null)
+					value=rfidBean.findBarcode(rfid);
+				if (value!=null)
+					barcode=value.toString();
+				msg += "<BR/>RFID Barcode: " + barcode;
+			}
+			msg += "<BR/>PHONE: <a target=\"_blank\" href=\"tel:" + device.getPhone() + "\">" + device.getPhone() + "</a>";
 			msg += "<BR/><a target=\"_blank\" href=\"https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&password=45Uu9i92A_8&submitRun=Run&reportId=131&msisdn=" 
 				+ device.getEphone() + "\">Radius Call Records</a>";
 			msg += "<BR/>IMEI: " + device.getImei();
 			msg += "<BR/>SIM: " + device.getSim();
-			msg += "<BR/>PHN: " + device.getPhone();
-			msg += "<BR/>SN: " + device.getEphone();
+			msg += "<BR/>ECALL: " + device.getEphone();
 			
 			if (ll!=null)
 				msg += "<BR/>LOC: " + ll.getTime() 
@@ -318,6 +332,15 @@ javax.faces.event.PhaseListener {
 		}
 		setSerialNum(null);
 	}
+	public void listAssignedVehiclesAction()
+	{
+		if (selectedAccountID==null || selectedAccountID<0)
+		{
+			setErrorMsg("Please select a customer account");
+		}
+		List<Vehicle> vehicles = getAssignedVehicles(selectedAccountID);
+		
+	}
 	public void assignRFIDAction() {
 		reInitAction();
 		Integer did = 0;
@@ -367,6 +390,10 @@ javax.faces.event.PhaseListener {
 					driverDAO.update(currentDriver);
 				}
 			}
+			Long currentRFID=driver.getRFID();
+			if (currentRFID!=null && !currentRFID.equals(rfid))
+				existMsg+="<BR/> Warning: Driver previous had RFID " + currentRFID;
+				
 			driver.setRFID(rfid);
 			driverDAO.update(driver);
 
@@ -449,11 +476,23 @@ javax.faces.event.PhaseListener {
 		}
 		return accountList;
 	}
-	
-	public Vehicle findVehicle(Integer accountID, String name)
-	{
-		Vehicle vehicle=null;
 
+	public List<Vehicle> getAssignedVehicles(Integer accountID)
+	{
+		Group topGroup = findTopGroup(selectedAccountID);
+		List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(topGroup.getGroupID());
+		List<Vehicle> assignedVehicles = new ArrayList<Vehicle>();
+		for (Iterator<Vehicle> viter=vehicles.iterator(); viter.hasNext();)
+		{
+			Vehicle vehicle=viter.next();
+			if (vehicle.getDeviceID()!=null)
+				assignedVehicles.add(vehicle);
+		}
+		return assignedVehicles;
+
+	}
+	public Group findTopGroup(Integer accountID)
+	{
 		Group topGroup=null;
 		List<Group> groups = groupDAO.getGroupsByAcctID(accountID);
 		for (Iterator<Group> giter=groups.iterator(); giter.hasNext();)
@@ -461,7 +500,14 @@ javax.faces.event.PhaseListener {
 			topGroup=giter.next();
 			if (topGroup.getParentID().equals(0))
 				break;
-		}
+		}	
+		return topGroup;
+	}
+	public Vehicle findVehicle(Integer accountID, String name)
+	{
+		Vehicle vehicle=null;
+
+		Group topGroup=findTopGroup(accountID);
 		if (topGroup==null)
 			return null;
 		
@@ -627,7 +673,9 @@ javax.faces.event.PhaseListener {
 	}
 
 	public String getErrorMsg() {
-		return errorMsg;
+		String tmp = errorMsg;
+		errorMsg=null;
+		return tmp;
 	}
 
 	public void setErrorMsg(String errorMsg) {
@@ -635,7 +683,9 @@ javax.faces.event.PhaseListener {
 	}
 
 	public String getSuccessMsg() {
-		return successMsg;
+		String tmp = successMsg;
+		successMsg=null;
+		return tmp;
 	}
 
 	public void setSuccessMsg(String successMsg) {

@@ -64,6 +64,54 @@ public class RFIDBean {
 		
 		return null;
 	}
+	
+	public Long findBarcode(Long rfid)
+	{
+		Long barcode=null;
+
+		File file = new File(rfidCSVFile);
+		
+		FileReader fr;
+		
+		try {
+			fr = new FileReader(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+		LineNumberReader r = new LineNumberReader(fr);
+		
+		String line = null;
+		
+		try {
+			line = r.readLine();
+			while (line!=null)
+			{
+				String pair[] = line.split(",");
+				barcode=Long.parseLong(pair[0]);
+				BigInteger card = new BigInteger(pair[1],16);
+				BigInteger fob = new BigInteger(pair[2],16);
+				
+				if (card.longValue()==rfid.longValue()
+					|| fob.longValue()==rfid.longValue())
+				{
+					return barcode.longValue();
+				}
+				
+				line = r.readLine();			
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}		
+
+		
+		return null;
+	}
+	
 	public String getRfidCSVFile() {
 		return rfidCSVFile;
 	}
