@@ -307,16 +307,16 @@
 							            <h:outputText value="#{messages.crashReport_vehicle}:" />
 						                <pretty:link id="crashHistoryVehiclePerformance" mappingId="vehiclePerformance" rendered="#{crashReportBean.crashReport.vehicleID != null}">
 						                    <f:param value="#{crashReportBean.crashReport.vehicleID}"/>
-										<h:outputText value="#{crashReportBean.crashReport.vehicle.name}"/>	
-						                </pretty:link>								
+											<h:outputText value="#{crashReportBean.crashReport.vehicle.name}"/>	
+						                </pretty:link>					
+						                <h:outputText value="#{crashReportBean.crashReport.vehicle.name}" rendered="#{crashReportBean.crashReport.vehicleID == null}"/>				
 										
-			                            <h:outputText value="#{messages.crashReport_driver}:" />
-			                                      
-						                <pretty:link id="crashHistoryDriverPerformance" mappingId="driverPerformance" rendered="#{crashReportBean.crashReport.driver.person.fullName != 'Unknown Driver'}">
+			                            <h:outputText value="#{messages.crashReport_driver}:" />			                                      
+						                <pretty:link id="crashHistoryDriverPerformance" mappingId="driverPerformance" rendered="#{crashReportBean.crashReport.driver.person.fullName != messages.unknown_driver}">
 						                    <f:param value="#{crashReportBean.crashReport.driverID}"/>
 											<h:outputText value="#{crashReportBean.crashReport.driver.person.fullName}"/>	
 						                </pretty:link>
-						                <h:outputText rendered="#{crashReportBean.crashReport.driver.person.fullName == 'Unknown Driver'}" 
+						                <h:outputText rendered="#{crashReportBean.crashReport.driver.person.fullName == messages.unknown_driver}" 
 						                	value="#{crashReportBean.crashReport.driver.person.fullName}"/>
 										
 										<h:outputText value="#{messages.crashReport_weather}:" />	
