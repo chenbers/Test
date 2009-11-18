@@ -52,22 +52,22 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_driver}" />
                 </f:facet>
-                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance"  rendered="#{item.driverName != 'Unknown Driver'}">
+                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance"  rendered="#{item.driverName != messages.unknown_driver}">
                     <f:param value="#{item.event.driver.driverID}"/>
                     #{item.driverName}
                 </pretty:link>
-                <h:outputText rendered="#{item.driverName == 'Unknown Driver'}" value="#{item.driverName}">
+                <h:outputText rendered="#{item.driverName == messages.unknown_driver}" value="#{item.driverName}">
                 </h:outputText>
             </rich:column>
             <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_vehicle}" />
                 </f:facet>
-                <pretty:link id="#{context}-vehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicleName != 'None Assigned'}">
+                <pretty:link id="#{context}-vehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicleName != messages.reports_none_assigned}">
                     <f:param value="#{item.event.vehicleID}"/>
                     #{item.vehicleName}
                 </pretty:link>
-                <h:outputText rendered="#{item.vehicleName == 'None Assigned'}" value="#{item.vehicleName}">
+                <h:outputText rendered="#{item.vehicleName == messages.reports_none_assigned}" value="#{item.vehicleName}">
                 </h:outputText>
             </rich:column>
             <rich:column id="category" rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}">
