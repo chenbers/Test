@@ -674,7 +674,7 @@ javax.faces.event.PhaseListener {
 
 	public String getErrorMsg() {
 		String tmp = errorMsg;
-		errorMsg=null;
+//		errorMsg=null;
 		return tmp;
 	}
 
@@ -684,7 +684,7 @@ javax.faces.event.PhaseListener {
 
 	public String getSuccessMsg() {
 		String tmp = successMsg;
-		successMsg=null;
+//		successMsg=null;
 		return tmp;
 	}
 
