@@ -13,7 +13,10 @@
 </head>
 <f:view contentType="text/html">
 	<body>
-	<form action="j_spring_security_check" method="post" class="panel" title="Login">
+    <div class="toolbar"> 
+       <h1 id="pageTitle"></h1> 
+     </div>
+ 	<form selected="true" target="_self" action="j_spring_security_check" method="post" class="panel" title="Login">
 	<fieldset>
 	<div class="row">
 	  <label>Username</label> 
@@ -24,8 +27,7 @@
 	  <h:inputSecret id="j_password" />
 	</div>
 	</fieldset>
-                    <h:outputText value="" />
-                    <button type="submit" id="login_btn">Login</button>
+     <a class="whiteButton" type="submit" id="login_btn" href="#">Login</a>
 	</form>
 	</body>
 </f:view>
