@@ -214,7 +214,7 @@
                       <td width="130" valign="top">
                         <h:selectOneRadio id="type" value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="left_tab_table" enabledClass="radioitem"
                            onchange="checkMultiple('type')">
-                          <a4j:support event="onclick" reRender="editRedFlag-speed,drivingStyle,safety,crash,tampering,lowBattery" limitToList="true" />
+                          <a4j:support event="onclick" reRender="editRedFlagType" limitToList="true" />
                           <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
                           <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
                           <f:selectItem itemValue="seatBelt" itemLabel="#{messages.redFlag_seatBelt}" />
@@ -225,9 +225,10 @@
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="650" valign="top">
-
+                        <rich:message id="message" for="editRedFlagType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+						<a4j:outputPanel id="editRedFlagType">
                         <a4j:outputPanel id="editRedFlag-speed">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'speed'}">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'speed'}" id="speedPanel">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0">
                               <tr class="datagrid">
@@ -360,7 +361,7 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
 
-                        <a4j:outputPanel id="safety">
+                        <a4j:outputPanel id="editRedFlag-safety">
                           <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'seatBelt'}">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
@@ -385,6 +386,7 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
                         
+                       <rich:message for="crash" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                         <a4j:outputPanel id="crash">
                           <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'crash'}">
 
@@ -410,6 +412,7 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
                         
+                       <rich:message for="tampering" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                         <a4j:outputPanel id="tampering">
                           <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'tampering'}">
 
@@ -435,6 +438,7 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
                         
+                       <rich:message for="lowBattery" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                         <a4j:outputPanel id="lowBattery">
                           <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'lowBattery'}">
 
@@ -459,7 +463,7 @@
 
                           </h:panelGroup>
                         </a4j:outputPanel>
-
+						</a4j:outputPanel>
                       </td>
                     </tr>
                   </table>

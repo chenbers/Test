@@ -268,14 +268,44 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         }
         return Boolean.FALSE;
     }
-
     protected boolean validateSaveItem(RedFlagAlertView saveItem) {
+    	
         boolean valid = super.validateSaveItem(saveItem);
         if ((saveItem.getName() == null) || (saveItem.getName().length() == 0) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlag-name", message);
             valid = false;
         }
+        if ("speed".equals(saveItem.getType())){
+        	boolean speedValid = false;
+        	for(int i=0;i< saveItem.getSpeedSelected().length; i++){
+        		
+        		speedValid=speedValid||saveItem.getSpeedSelected()[i];
+        	}
+        	if (!speedValid){
+        		
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeSpeedingMessage"), null);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+                valid = false;
+                
+        	}
+        }
+        else if ("drivingStyle".equals(saveItem.getType())){
+        	 
+        	boolean styleValid = saveItem.isHardAccelerationSelected() 
+        						|| saveItem.isHardBrakeSelected() 
+        						|| saveItem.isHardTurnSelected()
+        						|| saveItem.isHardVerticalSelected();
+        	
+        	if (!styleValid){
+        		
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeDrivingStyleMessage"), null);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+                
+                valid = false;
+        	}
+        }
+         
         return valid;
     }
 
