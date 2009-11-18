@@ -388,8 +388,8 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
         // Fix the name
         for ( Event e: warnings ) {
             Person p = new Person();
-            p.setFirst(MessageUtil.getMessageString("notes_general_unknown",getLocale()));
-            p.setLast(MessageUtil.getMessageString("notes_general_driver",getLocale()));
+            p.setFirst(MessageUtil.getMessageString("notes_general_unknown"));
+            p.setLast(MessageUtil.getMessageString("notes_general_driver"));
             
             if ( e.getDriver() == null ) {
                 Driver d = new Driver();
