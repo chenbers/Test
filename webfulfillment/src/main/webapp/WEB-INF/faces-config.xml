@@ -39,6 +39,9 @@
   </navigation-case>
  </navigation-rule>
  
+ 	<lifecycle>
+		<phase-listener>com.inthinc.pro.fulfillment.backing.DAOUtilBean</phase-listener>
+	</lifecycle>
  
  
   <!-- =========== FULL CONFIGURATION FILE ================================== -->

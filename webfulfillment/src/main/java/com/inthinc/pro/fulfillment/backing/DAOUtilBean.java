@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
 
 import org.springframework.security.AuthenticationException;
@@ -40,7 +42,8 @@ import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.security.userdetails.ProUser;
 import com.inthinc.pro.util.RFIDBean;
 
-public class DAOUtilBean {
+public class DAOUtilBean implements
+javax.faces.event.PhaseListener {
 
 	private AccountDAO accountDAO;
 	private GroupDAO groupDAO;
@@ -516,7 +519,8 @@ public class DAOUtilBean {
     {
         setErrorMsg(null);
         setSuccessMsg(null);
-        messageList.clear();
+        if (messageList!=null)
+        	messageList.clear();
     }
 
     public AccountDAO getAccountDAO()
@@ -719,5 +723,23 @@ public class DAOUtilBean {
 
 	public void setUseFOB(boolean useFOB) {
 		this.useFOB = useFOB;
+	}
+
+	@Override
+	public void afterPhase(PhaseEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void beforePhase(PhaseEvent event) {
+		this.clearErrorAction();
+		
+	}
+
+	@Override
+	public PhaseId getPhaseId() {
+		// TODO Auto-generated method stub
+		return PhaseId.RESTORE_VIEW;
 	}
 }

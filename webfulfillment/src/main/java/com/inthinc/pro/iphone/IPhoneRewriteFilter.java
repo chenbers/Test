@@ -1,6 +1,8 @@
 package com.inthinc.pro.iphone;
  
 import java.io.IOException;
+import java.util.Enumeration;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
  
@@ -27,9 +29,35 @@ System.out.println(userAgent);
 //		userAgent="xx_iphone";		
 System.out.println(uri);
 
-		if (userAgent.toLowerCase().indexOf("iphone")>=0 
-		&& !uri.endsWith("j_spring_security_check")
-		&& uri.indexOf("/secured/")>=0
+
+		if (uri.endsWith("j_spring_security_check"))
+		{
+			if(uri.indexOf("/iphone/")>=0)
+			{
+			    queryString="";
+				for(Enumeration e=req.getParameterNames(); e.hasMoreElements(); )
+				{
+				 String paramName = (String)e.nextElement();
+
+				 String paramValue = req.getParameter(paramName);
+				 if (queryString.length()>0)
+					 queryString+="&";
+				 queryString+=paramName + "=" + paramValue;
+				}
+
+
+				System.out.println(queryString);
+				uri = StringUtils.replace(uri, req.getContextPath() + "/iphone/", req.getContextPath() + "/");		
+				if (StringUtils.isNotBlank(queryString)) {
+					uri = uri + "?" + queryString;
+				}
+				res.sendRedirect(uri);
+				return;							
+			}
+
+		}
+		else if (userAgent.toLowerCase().indexOf("iphone")>=0 
+//		&& uri.indexOf("/secured/")>=0
 			&& uri.indexOf("/iphone/")<0)
 		{
 			uri = StringUtils.replace(uri, req.getContextPath() + "/", req.getContextPath() + "/iphone/");		
