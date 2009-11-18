@@ -57,7 +57,7 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
         
         // Addition of unknown driver requires a check for non-null person object
         if ( event.getDriver().getPerson() == null ) {
-            setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
+            setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER,LocaleBean.getCurrentLocale()));
         } else {        
             setDriverName(event.getDriver().getPerson().getFullName());
         }
