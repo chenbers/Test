@@ -208,7 +208,7 @@ public class EmailReportJob extends QuartzJobBean
         startCalendar.setTime(reportSchedule.getStartDate());
 
         Calendar endCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        if (reportSchedule.getEndDate() != null)
+        if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l)
         {
             endCalendar.setTime(reportSchedule.getEndDate());
         }
@@ -232,7 +232,7 @@ public class EmailReportJob extends QuartzJobBean
             return false;
         }
 
-        if (reportSchedule.getEndDate() != null && compareDates(currentDateTime, endCalendar) > 0)
+        if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l && compareDates(currentDateTime, endCalendar) > 0)
         {
             if (logger.isDebugEnabled())
             {
