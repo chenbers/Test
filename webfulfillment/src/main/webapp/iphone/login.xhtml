@@ -7,23 +7,22 @@
 <head>
 <title>tiwiPRO Fulfillment</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<meta name="viewport"
-	content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
-<link
-	href="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.css"
-	rel="stylesheet" type="text/css" />
-<script type="application/x-javascript"
-	src="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.js"></script>
+<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<link href="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.css" rel="stylesheet" type="text/css" />
+<script type="application/x-javascript"	src="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.js"></script>
 </head>
 <f:view contentType="text/html">
 	<body>
-	<form action="j_spring_security_check" method="post" class="panel"
-		title="Login">
+	<form action="j_spring_security_check" method="post" class="panel" title="Login">
 	<fieldset>
-	<div class="row"><label>Username</label> <h:inputText
-		id="j_username" /></div>
-	<div class="row"><label>Password</label> <h:inputSecret
-		id="j_password" /></div>
+	<div class="row">
+	  <label>Username</label> 
+	  <h:inputText id="j_username" />
+	</div>
+	<div class="row">
+	  <label>Password</label> 
+	  <h:inputSecret id="j_password" />
+	</div>
 	</fieldset>
                     <h:outputText value="" />
                     <button type="submit" id="login_btn">Login</button>

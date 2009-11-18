@@ -378,7 +378,7 @@ javax.faces.event.PhaseListener {
 			Integer currentDriverID = driverDAO.getDriverIDForRFID(rfid);
 			if (currentDriverID!=null && currentDriverID>0)
 			{
-				if (currentDriverID != driver.getDriverID())
+				if (!currentDriverID.equals(driver.getDriverID()))
 				{
 					Driver currentDriver = driverDAO.findByID(currentDriverID);
 					String name=driverID;
@@ -392,7 +392,7 @@ javax.faces.event.PhaseListener {
 			}
 			Long currentRFID=driver.getRFID();
 			if (currentRFID!=null && !currentRFID.equals(rfid))
-				existMsg+="<BR/> Warning: Driver previous had RFID " + currentRFID;
+				existMsg+="<BR/> Warning: Driver previously had RFID " + currentRFID;
 				
 			driver.setRFID(rfid);
 			driverDAO.update(driver);
