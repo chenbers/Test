@@ -8,6 +8,7 @@ import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -349,6 +350,8 @@ public class DaoUtilBean
                         columnHeaders.add(key);
                 }
             }
+            Collections.sort(columnHeaders);
+            
             // populate recordList
             for (Map<String, Object> map : recordMaps)
             {
@@ -374,7 +377,18 @@ public class DaoUtilBean
             for(Map.Entry<String, Object> entry : recordMap.entrySet())
             {
                 columnHeaders.add(entry.getKey());
-                recordList.add(entry.getValue().toString());
+            }
+            Collections.sort(columnHeaders);
+            for (String header : columnHeaders)
+            {
+                if (recordMap.containsKey(header))
+                {
+                    recordList.add(recordMap.get(header).toString());
+                }
+                else
+                {
+                    recordList.add("");
+                }
             }
             records.add(recordList);
         }
