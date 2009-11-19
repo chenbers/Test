@@ -39,7 +39,7 @@ public class DAOUtilBeanTest {
 		// !!!PRODUCTION!!!
 	    server = "67.208.138.211";
 		port = 8099;
-		dm = new DAOUtilBean(server, port);
+//		dm = new DAOUtilBean(server, port);
 	}
 
 

@@ -42,8 +42,7 @@ import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.security.userdetails.ProUser;
 import com.inthinc.pro.util.RFIDBean;
 
-public class DAOUtilBean implements
-javax.faces.event.PhaseListener {
+public class DAOUtilBean {
 
 	private AccountDAO accountDAO;
 	private GroupDAO groupDAO;
@@ -61,11 +60,13 @@ javax.faces.event.PhaseListener {
 	private Device device;
 
 	private Map<Integer, String> accountMap;
+	List<SelectItem> groupSelectList;
 	private String imei;
 	private String serialNum;
 	private String vehicleName;
 	private String VIN;
 	private Integer selectedAccountID;
+	private Integer selectedGroupID;
 
 	private String errorMsg;
 	private String successMsg;
@@ -77,22 +78,12 @@ javax.faces.event.PhaseListener {
 	private String RFID;
 	private boolean useFOB;
 	private RFIDBean rfidBean;
-	private String vehicleGrid;
 	
 	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
 	
 
 	
-	public DAOUtilBean()
-	{
-		
-	}
-	
-	public DAOUtilBean(String server, int port)  {
-
-	}
-
 	public ProUser getProUser()
     {
 		return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -332,13 +323,14 @@ javax.faces.event.PhaseListener {
 		}
 		setSerialNum(null);
 	}
-	public void assignedVehiclesAction()
+	public String getVehicleGrid()
 	{
-		if (selectedAccountID==null || selectedAccountID<0)
+		if (selectedGroupID==null || selectedGroupID<0)
 		{
-			setErrorMsg("Please select a customer account");
+			return "";
 		}
-		List<Vehicle> vehicles = getAssignedVehicles(selectedAccountID);
+		String vehicleGrid="";
+		List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupID);
 
 		vehicleGrid = "<table class=\"itable\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">";
 		vehicleGrid += "<tr class=\"header\"><th>Vehicle</th><th>Tiwi</th><th class=\"last\">RFID</th></tr>";
@@ -349,9 +341,14 @@ javax.faces.event.PhaseListener {
 		{
 			Vehicle vehicle=viter.next();
 			String rowStyle="\"reg\"";
-			Device device = deviceDAO.findByID(vehicle.getDeviceID());
+			String serialnum = "---";
+			if (vehicle.getDeviceID()!=null)
+			{
+				Device device = deviceDAO.findByID(vehicle.getDeviceID());
+				serialnum=device.getSerialNum();
+			}
 			
-			String barcode="n/a";
+			String barcode="---";
 			if (vehicle.getDriverID()!=null)
 			{
 				Driver driver = driverDAO.findByID(vehicle.getDeviceID());
@@ -364,12 +361,14 @@ javax.faces.event.PhaseListener {
 				rowStyle="\"alt\"";
 			vehicleGrid+="<tr class=" + rowStyle + ">";
 			vehicleGrid+="<td class=\"first\">" + vehicle.getName() + "</td>";
-			vehicleGrid+="<td>" + device.getSerialNum() + "</td>";
+			vehicleGrid+="<td>" + serialnum + "</td>";
 			vehicleGrid+="<td class=\"last\">" + barcode + "</td>";
 			vehicleGrid+="</tr>";
 		}
 
 		vehicleGrid+= "</table>";
+		
+		return vehicleGrid;
 				
 	}
 	public void editVINAction()
@@ -536,7 +535,7 @@ javax.faces.event.PhaseListener {
 		ArrayList sortedArrayList = new ArrayList(getAccountMap().entrySet());
 
 		// Sort the values based on values first and then keys.
-		Collections.sort(sortedArrayList, new AccountComparator());
+		Collections.sort(sortedArrayList, new AlphaComparator());
 
 		// Show sorted results
 		Iterator itr = sortedArrayList.iterator();
@@ -553,10 +552,64 @@ javax.faces.event.PhaseListener {
 		return accountList;
 	}
 
-	public List<Vehicle> getAssignedVehicles(Integer accountID)
+	public List<SelectItem> getGroupSelectList() {
+		 
+		if (groupSelectList==null)
+		{
+			groupSelectList = new ArrayList<SelectItem>();
+			if (selectedAccountID!=null && selectedAccountID>=0)
+			{
+				
+				groupSelectList = new ArrayList<SelectItem>();
+
+				groupSelectList.add(new SelectItem(-1, "--Select a Group--"));
+
+				// Put keys and values in to an arraylist using entryset
+				
+				Hashtable<Integer, String> groupMap = new Hashtable<Integer, String>();
+				List<Group> groups = groupDAO.getGroupsByAcctID(selectedAccountID);
+				for (Iterator<Group> giter=groups.iterator(); giter.hasNext();)
+				{
+					Group group = giter.next();
+					groupMap.put(group.getGroupID(), getGroupPath(group));
+				}
+			
+				ArrayList sortedArrayList = new ArrayList(groupMap.entrySet());
+				// Sort the values based on values first and then keys.
+				Collections.sort(sortedArrayList, new AlphaComparator());
+
+				// Show sorted results
+				Iterator itr = sortedArrayList.iterator();
+				Integer id = -1;
+				String name = "";
+
+				while (itr.hasNext()) {
+					Map.Entry e = (Map.Entry) itr.next();
+					id = (Integer) e.getKey();
+					name = ((String) e.getValue());
+					groupSelectList.add(new SelectItem(id, name));
+				}			
+			}			
+		}
+		
+
+		return groupSelectList;
+	}
+	
+	private String getGroupPath(Group group)
 	{
-		Group topGroup = findTopGroup(selectedAccountID);
-		List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(topGroup.getGroupID());
+		String path=group.getName();
+		if (group.getParentID()>0)
+		{
+			Group parent = groupDAO.findByID(group.getParentID());
+			path = getGroupPath(parent) + "/" + path;
+		}
+		return path;
+	}
+/*	
+	public List<Vehicle> getAssignedVehicles(Integer groupID)
+	{
+		List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
 		List<Vehicle> assignedVehicles = new ArrayList<Vehicle>();
 		for (Iterator<Vehicle> viter=vehicles.iterator(); viter.hasNext();)
 		{
@@ -567,6 +620,7 @@ javax.faces.event.PhaseListener {
 		return assignedVehicles;
 
 	}
+*/	
 	public Group findTopGroup(Integer accountID)
 	{
 		Group topGroup=null;
@@ -606,7 +660,7 @@ javax.faces.event.PhaseListener {
 
 	public Map<Integer, String> getAccountMap() {
 
-		if (accountMap==null)
+		if (accountMap==null || accountMap.isEmpty())
 		{
 			accountMap = new Hashtable<Integer, String>();
 			int limit = 700; // TODO Lose this!!
@@ -641,7 +695,6 @@ javax.faces.event.PhaseListener {
     {
         setErrorMsg(null);
         setSuccessMsg(null);
-        setVehicleGrid(null);
         if (messageList!=null)
         	messageList.clear();
     }
@@ -715,6 +768,11 @@ javax.faces.event.PhaseListener {
 	}
 
 	public void setSelectedAccountID(Integer selectedAccountID) {
+		if (!selectedAccountID.equals(this.selectedAccountID))
+		{
+			selectedGroupID=null;
+			groupSelectList=null;
+		}
 		this.selectedAccountID = selectedAccountID;
 	}
 
@@ -776,7 +834,7 @@ javax.faces.event.PhaseListener {
 	public void setVehicleName(String vehicleName) {
 		this.vehicleName = vehicleName;
 	}
-	static class AccountComparator implements Comparator {
+	static class AlphaComparator implements Comparator {
 
 		public int compare(Object obj1, Object obj2) {
 
@@ -852,24 +910,6 @@ javax.faces.event.PhaseListener {
 		this.useFOB = useFOB;
 	}
 
-	@Override
-	public void afterPhase(PhaseEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void beforePhase(PhaseEvent event) {
-		this.clearErrorAction();
-		
-	}
-
-	@Override
-	public PhaseId getPhaseId() {
-		// TODO Auto-generated method stub
-		return PhaseId.RESTORE_VIEW;
-	}
-
 	public String getVIN() {
 		return VIN;
 	}
@@ -878,11 +918,13 @@ javax.faces.event.PhaseListener {
 		VIN = vin;
 	}
 
-	public String getVehicleGrid() {
-		return vehicleGrid;
+	public Integer getSelectedGroupID() {
+		return selectedGroupID;
 	}
 
-	public void setVehicleGrid(String vehicleGrid) {
-		this.vehicleGrid = vehicleGrid;
+	public void setSelectedGroupID(Integer selectedGroupID) {
+		if (groupSelectList==null || groupSelectList.isEmpty())
+			selectedGroupID=null;
+		this.selectedGroupID = selectedGroupID;
 	}
 }
