@@ -59,6 +59,7 @@ import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 
+@Ignore
 public class ReportServiceTest {
     private static ReportService reportService;
     private static SiloService siloService;
@@ -192,7 +193,9 @@ public class ReportServiceTest {
             // dateFormat.setTimeZone(ReportTestConst.timeZone);
             // System.out.println("startDate: " + dateFormat.format(new Date(startDateInSec * 1000l)));
             Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
-            totalDays = (todayInSec - startDateInSec) / DateUtil.SECONDS_IN_DAY;
+            
+          totalDays = (todayInSec - startDateInSec) / DateUtil.SECONDS_IN_DAY;
+System.out.println("totalDays: " + totalDays);          
             if (totalDays > MAX_TOTAL_DAYS)
                 totalDays = MAX_TOTAL_DAYS;
             System.out.println("Total Days: " + totalDays);
