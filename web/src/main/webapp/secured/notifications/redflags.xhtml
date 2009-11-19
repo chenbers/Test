@@ -43,7 +43,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="redFlagsSearch" action="#{redFlagsBean.searchAction}" oncomplete="initializeTable()"
-		            					reRender="navigation:redirectSearch,header,redFlagsTableForm:redFlags,redFlagsTableForm:bottomScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,redFlagsTableForm:redFlags,redFlagsTableForm:redFlags-bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -57,7 +57,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="redFlagsRefresh" styleClass="left"
-									reRender="header,redFlagsTableForm:redFlags,redFlagsTableForm:bottomScroller" 
+									reRender="header,redFlagsTableForm:redFlags,redFlagsTableForm:redFlags-bottomScroller" 
 									action="#{redFlagsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
