@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+ 				<h:form id="editVIN" class="panel" title="Change VIN">
+				<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+ <fieldset>
+<div class="row">
+	<label>Customer</label>
+		<h:selectOneMenu
+			id="account-select-menu" 
+			value="#{daoUtilBean.selectedAccountID}">
+			<f:selectItems value="#{daoUtilBean.accountSelectList}" />
+		</h:selectOneMenu>
+</div>
+<div class="row">
+					<label>Vehicle</label>
+					<h:inputText id="vehicleName" value="#{daoUtilBean.vehicleName}" size="30"
+						required="false" requiredMessage="required" /> 
+</div>						
+<div class="row">
+					<label>VIN</label>
+					<h:inputText id="VIN" value="#{daoUtilBean.VIN}" size="30"
+						required="false" requiredMessage="required" /> 
+</div>
+</fieldset>
+ 
+ <h:commandButton value="Change VIN"
+						 action="#{daoUtilBean.editVINAction}" />
+		<br />
+		<br />
+					<a class="whiteButton" href="#home">Cancel</a>
+					<br />
+					<h:outputText value="#{daoUtilBean.successMsg}"
+						escape="false" />
+
+
+				</h:form>
+				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
+				<h:outputText value="#{message}"/><br/>
+				</rich:dataList>
+</ui:composition>
