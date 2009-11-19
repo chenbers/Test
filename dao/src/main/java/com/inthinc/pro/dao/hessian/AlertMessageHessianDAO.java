@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -173,7 +174,13 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         alertMessageBuilder.setAlertMessageType(alertMessage.getAlertMessageType());
         List<String> parameterList = new ArrayList<String>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
-        simpleDateFormat.setTimeZone(driver.getPerson().getTimeZone());
+        
+        // Check for unknown driver
+        if ( (driver != null) && (driver.getPerson() != null) ) {
+            simpleDateFormat.setTimeZone(driver.getPerson().getTimeZone());
+        } else {
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        }
         
         // Construct the message parameter list
         parameterList.add(simpleDateFormat.format(event.getTime()));
