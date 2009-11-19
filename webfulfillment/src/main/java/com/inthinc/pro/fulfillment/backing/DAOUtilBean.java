@@ -64,6 +64,7 @@ javax.faces.event.PhaseListener {
 	private String imei;
 	private String serialNum;
 	private String vehicleName;
+	private String VIN;
 	private Integer selectedAccountID;
 
 	private String errorMsg;
@@ -76,6 +77,7 @@ javax.faces.event.PhaseListener {
 	private String RFID;
 	private boolean useFOB;
 	private RFIDBean rfidBean;
+	private String vehicleGrid;
 	
 	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
@@ -229,10 +231,8 @@ javax.faces.event.PhaseListener {
 			if (dd!=null)
 			{
 				String barcode = "Not found";
-				Long rfid = dd.getRFID();
 				Long value = null;
-				if (rfid!=null)
-					value=rfidBean.findBarcode(rfid);
+				value=rfidBean.findBarcode(dd.getRFID());
 				if (value!=null)
 					barcode=value.toString();
 				msg += "<BR/>RFID Barcode: " + barcode;
@@ -332,14 +332,90 @@ javax.faces.event.PhaseListener {
 		}
 		setSerialNum(null);
 	}
-	public void listAssignedVehiclesAction()
+	public void assignedVehiclesAction()
 	{
 		if (selectedAccountID==null || selectedAccountID<0)
 		{
 			setErrorMsg("Please select a customer account");
 		}
 		List<Vehicle> vehicles = getAssignedVehicles(selectedAccountID);
+
+		vehicleGrid = "<table class=\"itable\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">";
+		vehicleGrid += "<tr class=\"header\"><th>Vehicle</th><th>Tiwi</th><th class=\"last\">RFID</th></tr>";
+
 		
+		int row=0; 
+		for (Iterator<Vehicle> viter=vehicles.iterator(); viter.hasNext();)
+		{
+			Vehicle vehicle=viter.next();
+			String rowStyle="\"reg\"";
+			Device device = deviceDAO.findByID(vehicle.getDeviceID());
+			
+			String barcode="n/a";
+			if (vehicle.getDriverID()!=null)
+			{
+				Driver driver = driverDAO.findByID(vehicle.getDeviceID());
+				Long rfid = rfidBean.findBarcode(driver.getRFID());
+				if (rfid!=null)
+					barcode=rfid.toString();
+			}
+			
+			if (row%2==1)
+				rowStyle="\"alt\"";
+			vehicleGrid+="<tr class=" + rowStyle + ">";
+			vehicleGrid+="<td class=\"first\">" + vehicle.getName() + "</td>";
+			vehicleGrid+="<td>" + device.getSerialNum() + "</td>";
+			vehicleGrid+="<td class=\"last\">" + barcode + "</td>";
+			vehicleGrid+="</tr>";
+		}
+
+		vehicleGrid+= "</table>";
+				
+	}
+	public void editVINAction()
+	{
+		reInitAction();
+		if (selectedAccountID==null || selectedAccountID<0)
+		{
+			setErrorMsg("Error: Please select a customer account");
+			return;
+		}
+		else if (vehicleName==null || vehicleName.trim().length()==0)
+		{
+			setErrorMsg("Error: Please enter a valid vehicle Name or License");
+			return;
+		}
+		else if (VIN==null || VIN.trim().length()<10)
+		{
+			setErrorMsg("Error: Please enter a valid VIN");
+			return;
+		}
+
+		Vehicle vehicleVIN = vehicleDAO.findByVIN(VIN);
+		if (vehicleVIN!=null && vehicleVIN.getStatus().equals(Status.ACTIVE))
+		{
+			Group group = groupDAO.findByID(vehicleVIN.getGroupID());			
+			Account vinAcct = accountDAO.findByID(group.getAccountID());
+			
+			setErrorMsg("Error: VIN " + VIN + " already in use by " 
+					+ vinAcct.getAcctName() + " Name: "
+					+ vehicleVIN.getName() + " License: "
+					+ vehicleVIN.getLicense() + " - "
+					+ vehicleVIN.getFullName());
+			return;
+		}
+		Vehicle vehicle = this.findVehicle(selectedAccountID, vehicleName);
+		if (vehicle==null || !vehicle.getStatus().equals(Status.ACTIVE))
+			setErrorMsg("Error: Vehicle "+ vehicleName + " not found. Please enter a valid Name, VIN, or License.");
+		else
+		{
+			vehicle.setVIN(VIN);
+			vehicleDAO.update(vehicle);
+			setSuccessMsg("VIN " + VIN + " successfully set for " + vehicleName);
+		}
+		setVIN(null);
+		setVehicleName(null);
+
 	}
 	public void assignRFIDAction() {
 		reInitAction();
@@ -533,7 +609,7 @@ javax.faces.event.PhaseListener {
 		if (accountMap==null)
 		{
 			accountMap = new Hashtable<Integer, String>();
-			int limit = 500; // TODO Lose this!!
+			int limit = 700; // TODO Lose this!!
 //limit=4;			
 			List<Account> accounts = accountDAO.getAllAcctIDs();
 			for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext() && limit > 0; 
@@ -565,6 +641,7 @@ javax.faces.event.PhaseListener {
     {
         setErrorMsg(null);
         setSuccessMsg(null);
+        setVehicleGrid(null);
         if (messageList!=null)
         	messageList.clear();
     }
@@ -791,5 +868,21 @@ javax.faces.event.PhaseListener {
 	public PhaseId getPhaseId() {
 		// TODO Auto-generated method stub
 		return PhaseId.RESTORE_VIEW;
+	}
+
+	public String getVIN() {
+		return VIN;
+	}
+
+	public void setVIN(String vin) {
+		VIN = vin;
+	}
+
+	public String getVehicleGrid() {
+		return vehicleGrid;
+	}
+
+	public void setVehicleGrid(String vehicleGrid) {
+		this.vehicleGrid = vehicleGrid;
 	}
 }

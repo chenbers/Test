@@ -68,6 +68,9 @@ public class RFIDBean {
 	public Long findBarcode(Long rfid)
 	{
 		Long barcode=null;
+		
+		if(rfid==null)
+			return null;
 
 		File file = new File(rfidCSVFile);
 		
