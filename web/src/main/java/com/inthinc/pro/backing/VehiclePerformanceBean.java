@@ -323,16 +323,16 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         int yAxisName = sb.indexOf("yAxisName");
         sb.replace(yAxisName+10, yAxisName+11, "'"+MessageUtil.getMessageString(getFuelEfficiencyType()+"_Miles_Per_Gallon"));
 
-        Long lightValues[] = new Long[mpgEntities.size()];
-        Long medValues[] = new Long[mpgEntities.size()];
-        Long heavyValues[] = new Long[mpgEntities.size()];
+        Float lightValues[] = new Float[mpgEntities.size()];
+        Float medValues[] = new Float[mpgEntities.size()];
+        Float heavyValues[] = new Float[mpgEntities.size()];
         int cnt = 0;
         sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(),getMeasurementType(),getFuelEfficiencyType()).longValue();
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getMeasurementType(),getFuelEfficiencyType()).longValue();
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(),getMeasurementType(),getFuelEfficiencyType()).longValue();
+            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(),getMeasurementType(),getFuelEfficiencyType()).floatValue();
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(),getMeasurementType(),getFuelEfficiencyType()).floatValue();
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
         }

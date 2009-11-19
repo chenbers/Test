@@ -122,13 +122,13 @@ public class MetricConversionUtilTest
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, null, FuelEfficiencyType.KMPL);
         Assert.assertEquals(result,8.5F); //20.0* 0.42514 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, null, FuelEfficiencyType.LP100KM);
-        Assert.assertEquals(result,11.8F); //100/(20.0* 0.42514) 
+        Assert.assertEquals(result,11.76F); //100/(20.0* 0.42514) 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US);
         Assert.assertEquals(result,20F); 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.KMPL);
         Assert.assertEquals(result,8.5F); //20.0* 0.42514 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.ENGLISH, FuelEfficiencyType.LP100KM);
-        Assert.assertEquals(result,11.8F); //100/(20.0* 0.42514) 
+        Assert.assertEquals(result,11.76F); //100/(20.0* 0.42514) 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.MPG_UK);
         Assert.assertEquals(result,24.0F); 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.MPG_US);
@@ -136,7 +136,7 @@ public class MetricConversionUtilTest
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.KMPL);
         Assert.assertEquals(result,8.5F); //20.0* 0.42514 
         result = MeasurementConversionUtil.convertMpgToFuelEfficiencyType(20, MeasurementType.METRIC, FuelEfficiencyType.LP100KM);
-        Number expected = 11.8F; // 100/(20.0* 0.42514)
+        Number expected = 11.76F; // 100/(20.0* 0.42514)
         Assert.assertEquals(result,expected); 
         
         Assert.assertEquals(FuelEfficiencyType.MPG_US, FuelEfficiencyType.valueOf(24)); 
