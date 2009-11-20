@@ -161,7 +161,7 @@
    
     <ui:include src="../confirmDelete.xhtml">
       <ui:param name="deleteBean" value="#{editorBean}" />
-      <ui:param name="reRender" value="#{context}-adminTableItems,recordCounts,#{context}-dataTableScroller" />
+      <ui:param name="reRender" value="#{context},recordCounts,#{context}-dataTableScroller" />
       <ui:param name="deleteItems" value="#{editorBean.selectedItems}" />
       <ui:param name="context" value="#{context}" />
     </ui:include>
