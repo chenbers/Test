@@ -181,7 +181,8 @@ static int eventCount;
         List<byte[]> noteList = new ArrayList<byte[]>();
         Integer odometer = ReportTestConst.MILES_PER_EVENT;
         Integer locCnt = ReportTestConst.EVENTS_PER_DAY;
-eventCount = 0;        
+eventCount = 0;
+//boolean tampering = false;
         for (int i = 0; i < locCnt; i++)
         {
         	if (i == 0)
@@ -242,8 +243,18 @@ eventCount = 0;
             }
             else
             {
-                event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_LOCATION,
+//                if (eventCount > 50 && !tampering)
+//                {
+//                    event = new TamperingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_UNPLUGGED, eventTime, 0, odometer, 
+//                    		locations[i].getLat(), locations[i].getLng());
+//                    tampering= true;
+//                    System.out.println("generated a tampering");
+//                }
+//                else
+//                {
+                	event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_LOCATION,
                                     eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
+//                }
             }
             event.setSats(7);
             byte[] eventBytes = createDataBytesFromEvent(event);

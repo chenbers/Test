@@ -14,7 +14,7 @@ public class DriverReportHessianDAO extends AbstractReportHessianDAO implements 
     @Override
     public Score getScore(Integer driverID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getDScoreByDT(driverID, duration.getDvqCode()), Score.class);
+            return mapper.convertToModelObject(reportService.getDScoreByDT(driverID, duration.getCode()), Score.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
@@ -23,7 +23,7 @@ public class DriverReportHessianDAO extends AbstractReportHessianDAO implements 
     @Override
     public List<Trend> getTrend(Integer driverID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getDTrendByDTC(driverID, duration.getDvqCode(), duration.getDvqCount()), Trend.class);
+            return mapper.convertToModelObject(reportService.getDTrendByDTC(driverID, duration.getCode(), duration.getDvqCount()), Trend.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }

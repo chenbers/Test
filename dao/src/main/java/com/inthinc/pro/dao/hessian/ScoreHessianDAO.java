@@ -59,7 +59,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-	        List<DVQMap> dvqList = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getDvqCode()), DVQMap.class);
+	        List<DVQMap> dvqList = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
 	        List<DriverScore> scoreList = new ArrayList<DriverScore>();
 	        for (DVQMap dvq : dvqList)
 	        {
@@ -85,7 +85,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
 
-            Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getDvqCode());
+            Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getCode());
             DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
 
             ScoreableEntity scoreableEntity = new ScoreableEntity();
@@ -108,7 +108,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
             // groupID = 16777218;
-            List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getDvqCode());
+            List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getCode());
 
             List<GQMap> gqMapList = getMapper().convertToModelObject(returnMapList, GQMap.class);
 
@@ -150,7 +150,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
         	// subgroups
-            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
+//            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
             
             
@@ -236,7 +237,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            Map<String, Object> returnMap = reportService.getDPctByGT(groupID, duration.getDvqCode(), scoreType.getDriveQMetric());
+            Map<String, Object> returnMap = reportService.getDPctByGT(groupID, duration.getCode(), scoreType.getDriveQMetric());
 
             QuintileMap quintileMap = getMapper().convertToModelObject(returnMap, QuintileMap.class);
 
@@ -271,11 +272,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             List<Map<String, Object>> cumulativList = null;
             if (entityType.equals(EntityType.ENTITY_DRIVER))
             {
-            	cumulativList = reportService.getDTrendByDTC(id, duration.getDvqCode(), duration.getDvqCount());
+            	cumulativList = reportService.getDTrendByDTC(id, duration.getCode(), duration.getDvqCount());
             }
             else
             {
-            	cumulativList = reportService.getVTrendByVTC(id, duration.getDvqCode(), duration.getDvqCount());
+            	cumulativList = reportService.getVTrendByVTC(id, duration.getCode(), duration.getDvqCount());
             }
             List<DriveQMap> driveQList = getMapper().convertToModelObject(cumulativList, DriveQMap.class);
             
@@ -400,7 +401,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-        	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getDvqCode());
+        	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getCode());
             List<DVQMap> result = getMapper().convertToModelObject(list, DVQMap.class);
             List<VehicleReportItem> lVri = new ArrayList<VehicleReportItem>();
             VehicleReportItem vri = null;
@@ -447,7 +448,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getDvqCode()), DVQMap.class);
+            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
             List<DriverReportItem> driverReportItemList = new ArrayList<DriverReportItem>();
             DriverReportItem driverReportItem = null;
 
@@ -563,11 +564,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             DriveQMap driveQMap = null;
             if (entityType.equals(EntityType.ENTITY_DRIVER))
             {
-            	driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDT(id, duration.getDvqCode()), DriveQMap.class);
+            	driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDT(id, duration.getCode()), DriveQMap.class);
             }
             else
             {
-            	driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(id, duration.getDvqCode()), DriveQMap.class);
+            	driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(id, duration.getCode()), DriveQMap.class);
             }
             
             List<ScoreItem> scoreItemList = new ArrayList<ScoreItem>();
@@ -590,7 +591,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	public CrashSummary getGroupCrashSummaryData(Integer groupID) {
 		try {
 			
-	        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getDvqCode());
+	        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getCode());
 	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
 	        
 	        CrashSummary crashSummary = new CrashSummary(
@@ -611,7 +612,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	public CrashSummary getDriverCrashSummaryData(Integer driverID) {
 
 		try {
-	        Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, Duration.TWELVE.getDvqCode());
+	        Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, Duration.TWELVE.getCode());
 	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
 	        CrashSummary crashSummary = new CrashSummary(
 					dqMap.getCrashEvents() == null ? 0 : dqMap.getCrashEvents(), 
@@ -632,7 +633,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	public CrashSummary getVehicleCrashSummaryData(Integer vehicleID) {
 
 		try {
-	        Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, Duration.TWELVE.getDvqCode());
+	        Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, Duration.TWELVE.getCode());
 	        DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
 	        CrashSummary crashSummary = new CrashSummary(
 					dqMap.getCrashEvents() == null ? 0 : dqMap.getCrashEvents(), 

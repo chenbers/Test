@@ -14,7 +14,7 @@ public class VehicleReportHessianDAO extends AbstractReportHessianDAO implements
     @Override
     public Score getScore(Integer vehicleID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getVScoreByVT(vehicleID, duration.getDvqCode()), Score.class);
+            return mapper.convertToModelObject(reportService.getVScoreByVT(vehicleID, duration.getCode()), Score.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
@@ -23,7 +23,7 @@ public class VehicleReportHessianDAO extends AbstractReportHessianDAO implements
     @Override
     public List<Trend> getTrend(Integer vehicleID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getVTrendByVTC(vehicleID, duration.getDvqCode(), duration.getDvqCount()), Trend.class);
+            return mapper.convertToModelObject(reportService.getVTrendByVTC(vehicleID, duration.getCode(), duration.getDvqCount()), Trend.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }

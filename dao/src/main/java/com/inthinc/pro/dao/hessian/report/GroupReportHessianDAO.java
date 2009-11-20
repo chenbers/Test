@@ -18,7 +18,7 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     @Override
     public Score getAggregateDriverScore(Integer groupID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getGDScoreByGT(groupID, duration.getDvqCode()), Score.class);
+            return mapper.convertToModelObject(reportService.getGDScoreByGT(groupID, duration.getCode()), Score.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
@@ -27,7 +27,7 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     @Override
     public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getSDTrendsByGTC(groupID, duration.getDvqCode(), duration.getDvqCount()), GroupTrendWrapper.class);
+            return mapper.convertToModelObject(reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount()), GroupTrendWrapper.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
@@ -52,7 +52,7 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getDvqCode()), DriverVehicleScoreWrapper.class);
+            return mapper.convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DriverVehicleScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
@@ -61,7 +61,7 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getVDScoresByGT(groupID, duration.getDvqCode()), DriverVehicleScoreWrapper.class);
+            return mapper.convertToModelObject(reportService.getVDScoresByGT(groupID, duration.getCode()), DriverVehicleScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }

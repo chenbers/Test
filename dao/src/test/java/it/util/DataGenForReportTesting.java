@@ -30,6 +30,7 @@ import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -449,7 +450,7 @@ public class DataGenForReportTesting {
                 break;
             }
             catch (ProxyException ex) {
-                if (ex.getErrorCode() != 414) {
+                if (ex.getErrorCode() != 414 && ex.getErrorCode() != 302 ) {
                     errorFound = true;
                 }
                 else {
@@ -471,6 +472,12 @@ public class DataGenForReportTesting {
                             System.out.println();
                     }
                 }
+            }
+            catch (RemoteServerException re) {
+                if (re.getErrorCode() != 302 ) {
+                    errorFound = true;
+                }
+            	
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -598,6 +605,7 @@ public class DataGenForReportTesting {
 	            testData.waitForIMEIs(mcmSim, DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60);
 	            
 	            int numDays = NUM_EVENT_DAYS;
+//numDays = 5;	            
 	            for (int teamType = GOOD; teamType <= BAD; teamType++)
 	            {
 	            	for (int day = numDays; day > 0; day--)

@@ -44,6 +44,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
 
             if (group.getType() == null || group.getType().equals(GroupType.TEAM))
             {
+            	// want 30 days daily scores on this, not 7 day aggregates
                 List<Map<String, Object>> returnMapList = reportService.getDVScoresByGT(groupID, duration.getDvqCode());
                 List<DVQMap> dvqList = getMapper().convertToModelObject(returnMapList, DVQMap.class);
                 for (DVQMap dvq : dvqList)
@@ -66,6 +67,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
             }
             else
             {
+            	// want 30 days daily scores on this, not 7 day aggregates
                 List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getDvqCode());
                 List<GQMap> gqMapList = getMapper().convertToModelObject(returnMapList, GQMap.class);
 

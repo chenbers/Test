@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -67,6 +68,11 @@ public class DataGenForHelpScreenShots {
     	"East",
     	"West",
     	"Central",
+    };
+    public static String NAME_ro[] = {
+    	"De Est",
+    	"Occidentul",
+    	"De Nord",
     };
     public static Integer TEAM_CNT = 5;
     
@@ -126,6 +132,29 @@ public class DataGenForHelpScreenShots {
     		{"Maria","Martinez"},
     		{"Susan","Robinson"},
     };
+    String names_ro[][] = {  // first, last
+    		{"Alexandru", "Munteanu"},
+   			{"Alin", "Caba"},
+   			{"Anca", "Filip"},
+    		{"Brigita", "Bara"},
+    		{"Camelia", "Casian"},
+    		{"Catalena", "Ursu"},
+    		{"Catalina", "Lupu"},
+    		{"Catarino", "Moldoveanu"},
+    		{"Cici", "Deleanu"},
+    		{"Claudiu", "Sava"},
+    		{"Crina", "Teodorescu"},
+    		{"Dragos", "Blaga"},
+    		{"Ecaterina", "Antonescu"},
+    		{"Elisabeta", "Grigoroiu"},
+    		{"Eugen ", "Tudose"},
+    		{"Luminita", "Medeleanu"},
+    		{"Octavian", "Ionescu"},
+    		{"Tavian", "Georgescu"},
+    		{"Tullia", "Popa"},
+    		{"Virgiliu", "Popescu"}
+    };
+    	
     String makes[] = { 
     		"Ford",
     		"Volkswagen ",
@@ -143,6 +172,8 @@ public class DataGenForHelpScreenShots {
     		{"Tundra", "Rav-4"}
     };
     
+    String localeStr = "";
+    Locale locale = Locale.getDefault();    
     private void createTestData()
     {
         init();
@@ -408,13 +439,29 @@ public class DataGenForHelpScreenShots {
     }
 
     private String getLastName() {
-    	int rnd = Util.randomInt(0, names.length-1);
-    	return names[rnd][1];
+    	if (localeStr.equals("ro"))
+    	{
+    		int rnd = Util.randomInt(0, names_ro.length-1);
+    		return names_ro[rnd][1];
+    	}
+    	else
+    	{
+    		int rnd = Util.randomInt(0, names.length-1);
+    		return names[rnd][1];
+    	}
 	}
 
 	private String getFirstName() {
-    	int rnd = Util.randomInt(0, names.length-1);
-    	return names[rnd][0];
+    	if (localeStr.equals("ro"))
+    	{
+    		int rnd = Util.randomInt(0, names_ro.length-1);
+    		return names_ro[rnd][0];
+    	}
+    	else
+    	{
+    		int rnd = Util.randomInt(0, names.length-1);
+    		return names[rnd][0];
+    	}
 	}
 
 	private void createGroupHierarchy(Integer acctID)
@@ -422,9 +469,18 @@ public class DataGenForHelpScreenShots {
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloService);
     
-        LatLng UTLatLng = new LatLng(40.7672, -111.906);
         // fleet
-        fleetGroup = new Group(0, acctID, "Fleet", 0, GroupType.FLEET,  null, "Fleet Group", 5, UTLatLng);
+        LatLng UTLatLng = null;
+    	if (localeStr.equals("ro"))
+    	{
+            UTLatLng = new LatLng(44.263298, 23.838501);
+    		fleetGroup = new Group(0, acctID, "Flota", 0, GroupType.FLEET,  null, "Flota", 5, UTLatLng);
+    	}
+    	else
+    	{
+            UTLatLng = new LatLng(40.7672, -111.906);
+    		fleetGroup = new Group(0, acctID, "Fleet", 0, GroupType.FLEET,  null, "Fleet Group", 5, UTLatLng);
+    	}
         Integer groupID = groupDAO.create(acctID, fleetGroup);
         fleetGroup.setGroupID(groupID);
         
@@ -433,7 +489,12 @@ public class DataGenForHelpScreenShots {
         // division
         for (int i = EAST; i <= CENTRAL; i++)
         {
-	        Group districtGroup = new Group(0, acctID, NAME[i] + " Division" , fleetGroup.getGroupID(), GroupType.DIVISION,  null, NAME[i] + " Division", 5, UTLatLng);
+        	String name = NAME[i] + " Division";
+        	if (localeStr.equals("ro"))
+        	{
+            	name = NAME_ro[i] + " Regiune";
+        	}
+	        Group districtGroup = new Group(0, acctID, name , fleetGroup.getGroupID(), GroupType.DIVISION,  null, name, 5, UTLatLng);
 	        groupID = groupDAO.create(acctID, districtGroup);
 	        districtGroup.setGroupID(groupID);
 	    
@@ -442,6 +503,10 @@ public class DataGenForHelpScreenShots {
 	        {
 	        	GroupData data = new GroupData();
 	        	String teamName = NAME[i]+ " Team " + (j+1);
+	        	if (localeStr.equals("ro"))
+	        	{
+	            	teamName = NAME_ro[i] + " Echipa " + (j+1);
+	        	}
 	        	data.group = new Group(0, acctID, teamName, districtGroup.getGroupID(), GroupType.TEAM,  null, teamName, 5, UTLatLng);
 	        	groupID = groupDAO.create(acctID, data.group);
 	        	data.group.setGroupID(groupID);
@@ -456,11 +521,12 @@ public class DataGenForHelpScreenShots {
         personDAO.setSiloService(siloService);
 
         // create a person
-        Person person = new Person(0, acctID, ReportTestConst.timeZone, 0, address.getAddrID(), first+last+groupID+"@email.com", null, "5555555555", "5555555555", 
+        Person person = new Person(0, acctID, ReportTestConst.timeZone, 0, address.getAddrID(), first + last +groupID+"@email" + Util.randomInt(0, 20) + ".com", null, "5555555555", "5555555555", 
         		null, null, null, null, null, "emp" + Util.randomInt(0, 9999), 
                 null, "title", "dept", first, "", last, "", Util.randomInt(0, 1) == 0 ? Gender.MALE : Gender.FEMALE, 
                 Util.randomInt(60, 75), Util.randomInt(150, 220), DateUtil.getDaysBackDate(new Date(), Util.randomInt(18*365, 50*365)), Status.ACTIVE, 
-                MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
+                localeStr.equals("ro") ? MeasurementType.METRIC : MeasurementType.ENGLISH, 
+                localeStr.equals("ro") ? FuelEfficiencyType.KMPL : FuelEfficiencyType.MPG_US, locale);
 
         try
         {
@@ -493,7 +559,7 @@ public class DataGenForHelpScreenShots {
 	
     private boolean genTestEvent(MCMSimulator mcmSim, Event event, String imei) {
         List<byte[]> noteList = new ArrayList<byte[]>();
-
+System.out.println("Waiting for imei: " + imei);
         byte[] eventBytes = EventGenerator.createDataBytesFromEvent(event);
         noteList.add(eventBytes);
         boolean errorFound = false;
@@ -525,6 +591,11 @@ public class DataGenForHelpScreenShots {
                         if (retryCnt % 25 == 0)
                             System.out.println();
                     }
+                }
+            }
+            catch (RemoteServerException re) {
+                if (re.getErrorCode() != 302 ) {
+                    errorFound = true;
                 }
             }
             catch (Exception e) {
@@ -606,6 +677,16 @@ public class DataGenForHelpScreenShots {
         
         DataGenForHelpScreenShots  testData = new DataGenForHelpScreenShots();
 
+        testData.localeStr = "ro";
+        Locale available[] = Locale.getAvailableLocales();
+        for (int i = 0; i  < available.length; i++)
+        {
+       		if (available[i].getLanguage().equals(new Locale(testData.localeStr, "", "").getLanguage()))
+       		{
+       			testData.locale = available[i];
+       			break;
+       		}
+        }
         IntegrationConfig config = new IntegrationConfig();
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
