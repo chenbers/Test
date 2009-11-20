@@ -7,10 +7,14 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
- 				<h:form id="assignRFID" class="panel" title="Vehicles">
+ 				<h:form id="vehicles" class="panel" title="Vehicles" target="_self" selected="true" method="get">
 				<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
  <fieldset>
 
+        <div class="row">
+            <label>Assigned Only</label>
+            <div class="toggle" onclick="" toggled="#{daoUtilBean.assignedVehiclesOnly}"><span class="thumb"></span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span></div>
+        </div>
 <div class="row">
 	<label>Customer</label>
 		<h:selectOneMenu
@@ -29,6 +33,9 @@
 			<f:selectItems value="#{daoUtilBean.groupSelectList}" />
 		</h:selectOneMenu>
 </div>
+
+
+
 </fieldset>
  
  		<h:outputText value="#{daoUtilBean.vehicleGrid}" escape="false" />

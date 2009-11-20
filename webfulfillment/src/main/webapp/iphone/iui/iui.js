@@ -25,7 +25,7 @@ var landscapeVal = "landscape";
 
 window.iui =
 {
-	animOn: false,	// Experimental slide animation with CSS transition disabled by default
+	animOn: true,	// Slide animation with CSS transition is now enabled by default where supported
 
 	showPage: function(page, backwards)
 	{
@@ -94,14 +94,14 @@ window.iui =
 
 		if (args)
 		{
-			req.open("POST", href, true);
+			req.open(method || "GET", href, true);
 			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			req.setRequestHeader("Content-Length", args.length);
 			req.send(args.join("&"));
 		}
 		else
 		{
-			req.open("POST", href, true);
+			req.open(method || "GET", href, true);
 			req.send(null);
 		}
 	},
@@ -206,7 +206,15 @@ addEventListener("click", function(event)
 		else if (link == $("backButton"))
 			history.back();
 		else if (link.getAttribute("type") == "submit")
-			submitForm(findParent(link, "form"));
+		{
+			var form = findParent(link, "form");
+			if (form.target == "_self")
+			{
+			    form.submit();
+			    return;  // return so we don't preventDefault
+			}
+			submitForm(form);
+		}
 		else if (link.getAttribute("type") == "cancel")
 			cancelDialog(findParent(link, "form"));
 		else if (link.target == "_replace")
@@ -451,10 +459,7 @@ function preloadImages()
 
 function submitForm(form)
 {
-  if (form.getAttribute("target") == "_self") 
-    form.submit(); 
-  else 
-    iui.showPageByHref(form.action, encodeForm(form), form.method || "POST"); 
+	iui.showPageByHref(form.action || "POST", encodeForm(form), form.method);
 }
 
 function encodeForm(form)

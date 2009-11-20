@@ -23,11 +23,12 @@
 						required="false" requiredMessage="required" /> 
 						<rich:message for="RFID" /> 
 </div>
-<div class="row">
-<h:selectBooleanCheckbox value="#{daoUtilBean.useFOB}" id="useFOB">
-</h:selectBooleanCheckbox>						
-						Use FOB (instead of Card)<br/>
-</div>
+
+        <div class="row">
+            <label>Use FOB</label>
+            <div class="toggle" onclick="" toggled="#{daoUtilBean.useFOB}"><span class="thumb"></span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span></div>
+        </div>
+
 </fieldset>
  
  <h:commandButton value="Assign RFID"
