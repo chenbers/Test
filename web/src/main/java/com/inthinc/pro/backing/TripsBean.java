@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -136,6 +137,12 @@ public class TripsBean extends BaseBean {
             populateAddresses(violationEvents);
             populateAddresses(idleEvents);
             populateAddresses(tamperEvents);
+            
+            // Get the correct timestamp for display (vehicle page only)
+            populateFormattedDate(violationEvents);
+            populateFormattedDate(idleEvents);
+            populateFormattedDate(tamperEvents);
+            
             allEvents.clear();
             allEvents.addAll(violationEvents);
             allEvents.addAll(idleEvents);
@@ -156,6 +163,16 @@ public class TripsBean extends BaseBean {
             lastValidLatLng = event.getLatLng();
         }
     }
+    
+
+    private void populateFormattedDate(List<Event> eventList) {
+       
+        for (Event event : eventList) {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
+            dateFormatter.setTimeZone(getTimeZone());
+            event.setFormattedTime(dateFormatter.format(event.getTime()));                       
+        }
+    }    
 
     public void generateStats() {
         milesDriven = 0;
@@ -256,15 +273,16 @@ public class TripsBean extends BaseBean {
         }
         else {
             // The vehicle could currently NOT be associated with a driver, so,
-            //  grab the trips now and get the driver from the latest trip
-            initTrips();
-            
+            //  grab the trips now 
+//            initTrips();
+
             // Could possibly have selected a date range with no trips,
             //  and therefore, no driver, set default
-            if ( selectedDriver == null ) {
+            if ( selectedTrip == null ) {
                 return TimeZone.getTimeZone("GMT");
             } 
-            return getTimeZoneFromDriver(selectedDriver.getDriverID());
+            
+            return getTimeZoneFromDriver(selectedTrip.getTrip().getDriverID());
         }
     }
     

@@ -26,9 +26,12 @@
 		<f:facet name="header">
 			<h:outputText value="#{messages[eventType]}" />
 		</f:facet>
-		<h:outputText value="#{eventDateTime}">
+		<!-- Conditional render because of odd behavior in vehicle performance associated with unknown driver -->
+		<h:outputText value="#{eventDateTime}" rendered="#{datePattern ne 'null'}">
 			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
 		</h:outputText>
+		<h:outputText value="#{eventDateTime}" rendered="#{datePattern eq 'null'}"/>
+
 		<h:outputText value="#{eventLocation}" />
 		
 		 <!-- SPEEDING EVENT -->

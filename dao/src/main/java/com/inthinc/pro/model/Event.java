@@ -54,6 +54,8 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer state;
     private Integer heading;
     private Integer sats;
+    
+    private String formattedTime;
 
     public Event()
     {
@@ -353,4 +355,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     	}
     	return events;
     }
+
+    public String getFormattedTime() {
+        return formattedTime;
+    }
+
+    public void setFormattedTime(String formattedTime) {
+        this.formattedTime = formattedTime;
+    }
+
 }

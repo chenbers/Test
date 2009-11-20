@@ -303,7 +303,7 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
-    					<ui:param name="context" value="vehicleTripsEnd" />
+    				<ui:param name="context" value="vehicleTripsEnd" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_INPROGRESS" />
@@ -311,17 +311,17 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
-    					<ui:param name="context" value="vehicleTripsInProgress" />
+    				<ui:param name="context" value="vehicleTripsInProgress" />
                 </ui:include>
             </ui:repeat>
             <ui:repeat value="#{vehicleTripsBean.allEvents}" var="violation">
                 <ui:include src="/includes/eventBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{violation.noteID}" />
                     <ui:param name="eventType" value="#{violation.eventType}" />
-                    <ui:param name="eventDateTime" value="#{violation.time}" />
+                    <ui:param name="eventDateTime" value="#{violation.formattedTime}" />
                     <ui:param name="eventLocation" value="#{violation.addressStr}" />
                     <ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
-                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+                    <ui:param name="datePattern" value="null" />
                     <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
                     <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
                     <ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
@@ -330,7 +330,7 @@
                     <ui:param name="eventSeverity" value="#{violation.severity}" />
                     <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
                     <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
-    					<ui:param name="context" value="vehicleTrips" />
+    				<ui:param name="context" value="vehicleTrips" />
                 </ui:include>
             </ui:repeat>
         </rich:panel>
@@ -531,9 +531,7 @@
                                     <h:outputText value="#{messages.vehicletrip_event_datetime}" />
                                 </f:facet>
 
-                                <h:outputText value="#{item.time}">
-                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
-                                </h:outputText>
+                                <h:outputText value="#{item.formattedTime}"/>                 
 
                             </rich:column>
                         </rich:dataTable>
