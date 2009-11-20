@@ -1,7 +1,9 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -114,7 +116,14 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
-            violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types,showExcludedEvents);
+            
+            //Add 1 second to end time to get events, eg tampering events that occur at the end of a trip 
+            // - method uses < end time, not <= end time
+            Calendar gc = new GregorianCalendar();
+            gc.setTime(end);
+            gc.add(Calendar.SECOND, 1);            
+
+            violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, gc.getTime(), types,showExcludedEvents);
 
             // Lookup Addresses for events
 

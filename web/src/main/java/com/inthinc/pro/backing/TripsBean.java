@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +116,14 @@ public class TripsBean extends BaseBean {
 
     public void initViolations(Date start, Date end) {
         if (violationEvents.isEmpty()) {
+        	
+            //Add 1 second to end time to get events, eg tampering events that occur at the end of a trip 
+            // - method uses < end time, not <= end time
+            Calendar gc = new GregorianCalendar();
+            gc.setTime(end);
+            gc.add(Calendar.SECOND, 1);
+            Date adjustedEnd = gc.getTime();
+
             List<Integer> violationEventTypeList = new ArrayList<Integer>();
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
@@ -124,14 +133,16 @@ public class TripsBean extends BaseBean {
             List<Integer> tamperEventTypeList = new ArrayList<Integer>();
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
+            	
                 violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, showExcludedEvents);
                 idleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, idleTypes, showExcludedEvents);
-                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, tamperEventTypeList, showExcludedEvents);
+                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, showExcludedEvents);
             }
             else {
+            	
                 violationEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, violationEventTypeList, showExcludedEvents);
                 idleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, idleTypes, showExcludedEvents);
-                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, tamperEventTypeList, showExcludedEvents);
+                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, showExcludedEvents);
             }
             // Lookup Addresses for events
             populateAddresses(violationEvents);

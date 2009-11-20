@@ -1,7 +1,9 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -106,7 +108,13 @@ public class DriverPerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             
-            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, showExcludedEvents );
+            //Add 1 second to end time to get events, eg tampering events that occur at the end of a trip 
+            // - method uses < end time, not <= end time
+            Calendar gc = new GregorianCalendar();
+            gc.setTime(end);
+            gc.add(Calendar.SECOND, 1);
+             
+            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, gc.getTime(), types, showExcludedEvents );
 
             // Lookup Addresses for events
             for (Event event : violationEvents)
