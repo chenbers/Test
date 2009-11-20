@@ -73,7 +73,7 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
             return vehicleReportDAO.getTrend(vehicleID, duration);
         return Collections.emptyList();
     }
-    
+
     @Override
     public Integer create(Vehicle vehicle) {
         if (isAuthorized(vehicle))
@@ -108,45 +108,22 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
     // vehicleDAO.getVehiclesNearLoc(groupID, numof, lat, lng);
     // vehicleDAO.getVehiclesInGroup(groupID);
 
-    public List<Trip> getTrips(Integer vehicleID, String day) {
-        if (!isAuthorized(vehicleID))
-            return null;
+    public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
+        if (isAuthorized(vehicleID))
+            return vehicleDAO.getTrips(vehicleID, startDate, endDate);
+        return null;
 
-        Date startDate = parseDate(day);
-        if (startDate == null)
-            return null;
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        // Add 1 day to the calendar
-        cal.add(Calendar.DATE, 1);
-
-        return vehicleDAO.getTrips(vehicleID, startDate, cal.getTime());
-
-    }
-
-    public List<Trip> getTrips(Integer vehicleID) {
-        if (!isAuthorized(vehicleID))
-            return null;
-
-        Calendar cal = Calendar.getInstance();
-        Date date = new Date();
-        cal.setTime(date);
-        // Add 1 day to the calendar
-        cal.add(Calendar.DATE, -30);
-
-        return vehicleDAO.getTrips(vehicleID, cal.getTime(), date);
     }
 
     // fuel consumption for vehicle (parameter:day)"
-    public List<MpgEntity> getVehicleMPG(Integer id) {
-        if (!isAuthorized(id))
-            return null;
-
-        Duration duration = Duration.DAYS;
-
-        return mpgDAO.getVehicleEntities(id, duration, 99);
-    }
+//    public List<MpgEntity> getVehicleMPG(Integer id) {
+//        if (!isAuthorized(id))
+//            return null;
+//
+//        Duration duration = Duration.DAYS;
+//
+//        return mpgDAO.getVehicleEntities(id, duration, 99);
+//    }
 
     public Vehicle assignDevice(Integer id, Integer deviceID) {
         if (!isAuthorized(id) || !deviceDAO.isAuthorized(deviceID))

@@ -1,6 +1,7 @@
 package com.inthinc.pro.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
@@ -9,9 +10,12 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.Score;
@@ -92,22 +96,25 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
 
     @Override
     public Response getTrips(Integer vehicleID, String day) {
-        List<Trip> list = getDao().getTrips(vehicleID, day);
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
+        DateTime startDate = formatter.parseDateTime(day).minusDays(1);
+        List<Trip> list = getDao().getTrips(vehicleID, startDate.toDate(), new Date());
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
     }
 
     @Override
     public Response getTrips(Integer vehicleID) {
-        List<Trip> list = getDao().getTrips(vehicleID);
+        DateTime startDate = new DateTime().minusDays(30);
+        List<Trip> list = getDao().getTrips(vehicleID, startDate.toDate(), new Date());
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
     }
 
     // fuel consumption for vehicle (parameter:day)"
-    @Override
-    public Response getVehicleMPG(Integer id) {
-        List<MpgEntity> list = getDao().getVehicleMPG(id);
-        return Response.ok(new GenericEntity<List<MpgEntity>>(list) {}).build();
-    }
+    // @Override
+    // public Response getVehicleMPG(Integer id) {
+    // List<MpgEntity> list = getDao().getVehicleMPG(id);
+    // return Response.ok(new GenericEntity<List<MpgEntity>>(list) {}).build();
+    // }
 
     @Override
     public Response assignDevice(Integer id, Integer deviceID) {

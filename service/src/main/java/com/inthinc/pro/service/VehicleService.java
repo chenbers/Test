@@ -42,6 +42,19 @@ public interface VehicleService {
     @Path("/vehicle/{vehicleID}/trend/{numberOfDays}")
     public Response getTrend(@PathParam("vehicleID") Integer vehicleID, @PathParam("numberOfDays") @DefaultValue("30") Integer numOfDays);
 
+    @GET
+    @Path("/vehicle/{id}/trips/{date}")
+    // DATE is in YYYYMMDD format
+    public Response getTrips(@PathParam("id") Integer id, @PathParam("date") String date);
+
+    @GET
+    @Path("/vehicle/{id}/trips")
+    public Response getTrips(@PathParam("id") Integer id);
+
+    @GET
+    @Path("/vehicle/{id}/lastlocation")
+    public Response getLastLocation(@PathParam("id") Integer vehicleID);
+
     @POST
     @Consumes("application/xml")
     @Path("/vehicle")
@@ -79,21 +92,8 @@ public interface VehicleService {
     @Path("/vehicle/{id}/driverid/{driverid}")
     public Response assignDriver(@PathParam("id") Integer id, @PathParam("driverid") Integer driverid);
 
-    @GET
-    @Path("/vehicle/{id}/trips/{date}")
-    // DATE is in YYYYMMDD format
-    public Response getTrips(@PathParam("id") Integer id, @PathParam("date") String date);
-
-    @GET
-    @Path("/vehicle/{id}/trips")
-    public Response getTrips(@PathParam("id") Integer id);
-
-    @GET
-    @Path("/vehicle/{id}/lastlocation")
-    public Response getLastLocation(@PathParam("id") Integer vehicleID);
-
-    @GET
-    @Path("/vehicle/{id}/mpg")
-    public Response getVehicleMPG(@PathParam("id") Integer id);
+    // @GET
+    // @Path("/vehicle/{id}/mpg")
+    // public Response getVehicleMPG(@PathParam("id") Integer id);
 
 }

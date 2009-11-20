@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.service.AccountService;
@@ -19,8 +20,9 @@ public class AccountServiceImpl extends AbstractService<Account, SecureAccountDA
     @Override
     public Response getAll() {
         List<Account> list = getDao().getAll();
-        return Response.ok(new GenericEntity<List<Account>>(list) {
-        }).build();
+        if (list != null)
+            return Response.ok(new GenericEntity<List<Account>>(list) {}).build();
+        return Response.status(Status.NOT_FOUND).build();
     }
 
     @Override
