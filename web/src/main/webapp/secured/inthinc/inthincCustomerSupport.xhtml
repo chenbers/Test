@@ -31,11 +31,16 @@
 		<table align="center">
 			<tr>
 				<td>#{messages.customer_support_toll_free}</td>
-				<td><b>#{messages.customer_support_number}</b></td>
+				<td><h:outputText style="font-weight:bold" value="#{messages.customer_support_number}"/></td>
+				<td><h:outputText style="font-weight:bold" rendered="#{messages.customer_support_number1 ne ''}"
+					value="#{messages.customer_support_number1}"/></td>
 			</tr>
 			<tr>
 				<td>#{messages.customer_support_email}</td>
-				<td><a href="mailto:#{messages.customer_support_email_address}">#{messages.customer_support_email_address}</a></td>
+				<td><h:outputLink href="mailto:#{messages.customer_support_email_address}">
+					#{messages.customer_support_email_address}</h:outputLink></td>
+				<td><h:outputLink href="mailto:#{messages.customer_support_email_address1}" rendered="#{messages.customer_support_email_address1 ne ''}">
+					#{messages.customer_support_email_address1}</h:outputLink></td>					
 			</tr>
 		</table>
 	</body>
