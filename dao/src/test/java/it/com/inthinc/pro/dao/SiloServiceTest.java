@@ -1220,10 +1220,10 @@ public class SiloServiceTest {
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
         List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
-        String ignoreFields[] = { "modified", "person" };
+        String ignoreFields[] = { "modified", "person", "barcode", "rfid1", "rfid2" };
         for (Person person : groupPersonList) {
             Date expired = Util.genDate(2010, 9, 30);
-            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, null, groupID);
+            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, null, groupID);
             // create
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
             assertNotNull("driver", driverID);
@@ -1362,7 +1362,7 @@ public class SiloServiceTest {
         personDAO.setSiloService(siloService);
         Date expired = Util.genDate(2010, 8, 30);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
-        Driver driver = new Driver(0, 0, Status.ACTIVE, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
+        Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
         Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111",

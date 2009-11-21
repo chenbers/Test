@@ -342,7 +342,7 @@ public class AlertMessagesTest {
         personDAO.setSiloService(siloService);
         Date expired = Util.genDate(2010, 8, 30);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
-        Driver driver = new Driver(0, 0, Status.ACTIVE, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
+        Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, superuserRole(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
         person = new Person(0, acctID, TimeZone.getTimeZone("US/Mountain"), null, address.getAddrID(), "email" + groupID + "@email.com", "secEmail@test.com", "8015551111", "8015552222",

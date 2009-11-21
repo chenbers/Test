@@ -145,7 +145,7 @@ public class DataGenerator
         Person person = createPerson(teamGroup.getAccountID(), teamGroup.getGroupID(), "Driver", "Last"+teamGroup.getGroupID());
         Date expired = Util.genDate(2010, 9, 30);
         
-        driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, "l"+person.getPersonID(), 
+        driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l"+person.getPersonID(), 
                                         States.getStateByAbbrev("UT"), "ABCD", expired, null, null, teamGroup.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
