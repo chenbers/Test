@@ -15,6 +15,5 @@
 		<property name="personDAO" ref="personDAO" />
 		<property name="roleDAO" ref="roleDAO" />
 		<property name="addressDAO" ref="addressDAO" />
-		<property name="rfidBean" ref="rfidBean" />
     </bean>
 </beans>

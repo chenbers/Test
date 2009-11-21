@@ -18,8 +18,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.util.RFIDBean;
-
 public class DAOUtilBeanTest {
 	DAOUtilBean dm;
 
@@ -40,19 +38,6 @@ public class DAOUtilBeanTest {
 	    server = "67.208.138.211";
 		port = 8099;
 //		dm = new DAOUtilBean(server, port);
-	}
-
-
-	@Ignore("not ready yet") 
-	@Test
-	public void TestRFID()
-	{
-		RFIDBean rb = new RFIDBean();
-		rb.setRfidCSVFile("/tiwiimport/rfid.csv");
-		Long val = rb.findRFID(22L, false);
-		Long expected = (new BigInteger("E007000003589716",16)).longValue();
-		assertTrue(val.equals(expected));
-		assertNull(rb.findRFID(9999999L, false));
 	}
 	
 	@Ignore("not ready yet") 

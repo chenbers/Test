@@ -49,7 +49,6 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.security.userdetails.ProUser;
-import com.inthinc.pro.util.RFIDBean;
 
 public class DAOUtilBean implements PhaseListener {
 
@@ -101,7 +100,6 @@ public class DAOUtilBean implements PhaseListener {
 
 	private boolean assignedVehiclesOnly;
 	private String vehicleGrid;
-	private RFIDBean rfidBean;
 
 	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
@@ -130,10 +128,6 @@ public class DAOUtilBean implements PhaseListener {
 		if (!shipAccountID.equals(userAccountID)
 				&& !rmaAccountID.equals(userAccountID))
 			throw new Exception("Logged in User not in ship or rma account");
-
-		// Roles roles = new Roles();
-		// roles.setRoleDAO(roleDAO);
-		// roles.init();
 
 		messageList = new ArrayList<String>();
 
@@ -236,11 +230,7 @@ public class DAOUtilBean implements PhaseListener {
 			if (dp != null)
 				msg += "<BR/>Driver: " + dp.getFullNameWithId();
 			if (dd != null) {
-				String barcode = "Not found";
-				Long value = null;
-				value = rfidBean.findBarcode(dd.getRFID());
-				if (value != null)
-					barcode = value.toString();
+				String barcode=dd.getBarcode();
 				msg += "<BR/>RFID Barcode: " + barcode;
 			}
 			msg += "<BR/>PHONE: <a target=\"_blank\" href=\"tel:"
@@ -309,7 +299,7 @@ public class DAOUtilBean implements PhaseListener {
 			} else {
 				deviceDAO.deleteByID(device.getDeviceID());
 				device.setAccountID(shipAccountID);
-				// TODO should we set ephone to tech support??
+
 				device.setEphone(null);
 				deviceDAO.create(shipAccountID, device);
 				setSuccessMsg("Device " + serialNum
@@ -335,7 +325,7 @@ public class DAOUtilBean implements PhaseListener {
 			} else if (checkDevice()) {
 				deviceDAO.deleteByID(device.getDeviceID());
 				device.setAccountID(selectedAccountID);
-				// TODO should we set ephone to tech support??
+
 				device.setEphone(null);
 				deviceDAO.create(selectedAccountID, device);
 				setSuccessMsg("Device " + serialNum
@@ -385,10 +375,9 @@ public class DAOUtilBean implements PhaseListener {
 				String barcode = "---";
 				if (vehicle.getDriverID() != null) {
 					Driver driver = driverDAO.findByID(vehicle.getDeviceID());
-					Long rfid = rfidBean.findBarcode(driver.getRFID());
-					if (rfid != null)
-						barcode = rfid.toString();
+					barcode = driver.getBarcode();
 				}
+
 
 				if (row % 2 == 1)
 					rowStyle = "\"alt\"";
@@ -435,10 +424,9 @@ public class DAOUtilBean implements PhaseListener {
 			vehicle.setVIN(VIN);
 			vehicleDAO.update(vehicle);
 			setSuccessMsg("VIN " + VIN + " successfully set for " + vehicleName);
+			setVIN(null);
+			setVehicleName(null);
 		}
-		setVIN(null);
-		setVehicleName(null);
-
 	}
 
 	public void assignRFIDAction() {
@@ -449,26 +437,18 @@ public class DAOUtilBean implements PhaseListener {
 			return;
 		}
 		
-		Long barcode = 0L;
-
-		try {
-			barcode = Long.parseLong(RFID);
-		} catch (NumberFormatException e) {
-			setErrorMsg("Error: Invalid RFID Barcode Number " + RFID);
-			return;
-		}
-
-		Long rfid = rfidBean.findRFID(barcode, useFOB);
-
 		Driver driver = findDriver(selectedAccountID, driverID);
 
 		if (driver == null) {
 			setErrorMsg("Error: Driver not found " + driverID);
-		} else if (rfid == null) {
+		} else if (RFID.length()<2) {
 			setErrorMsg("Error: RFID not found " + RFID);
 		} else {
 			String existMsg = "";
-			Integer currentDriverID = driverDAO.getDriverIDForRFID(rfid);
+			
+			//TODO check if barcode in use!
+			//Integer currentDriverID = driverDAO.getID(RFID);
+			Integer currentDriverID = driverDAO.getDriverIDForRFID(0L);
 			if (currentDriverID != null && currentDriverID > 0) {
 				if (!currentDriverID.equals(driver.getDriverID())) {
 					Driver currentDriver = driverDAO.findByID(currentDriverID);
@@ -476,30 +456,30 @@ public class DAOUtilBean implements PhaseListener {
 					if (currentDriver.getPerson() != null)
 						name = currentDriver.getPerson().getFullNameWithId();
 
-					existMsg = "<BR/> Warning: RFID previously assigned to "
-							+ name;
-					currentDriver.setRFID(1L);
+					existMsg = "Warning: RFID previously assigned to "
+							+ name + "<BR/>";
+					currentDriver.setBarcode(null);
 					driverDAO.update(currentDriver);
 				}
 			}
-			Long currentRFID = driver.getRFID();
-			if (currentRFID != null && !currentRFID.equals(rfid))
+			String currentBarcode = driver.getBarcode();
+			if (currentBarcode != null && !currentBarcode.equals(RFID))
 				existMsg += "<BR/> Warning: Driver previously had RFID "
-						+ currentRFID;
+						+ currentBarcode;
 
-			driver.setRFID(rfid);
+			driver.setBarcode(RFID);
 			driverDAO.update(driver);
 
 			String name = driverID;
 			if (driver.getPerson() != null)
 				name = driver.getPerson().getFullNameWithId();
 
-			setSuccessMsg("RFID " + rfid + " successfully assigned to driver: "
-					+ name + existMsg);
+			setSuccessMsg(existMsg + "RFID " + RFID + " successfully assigned to driver: "
+					+ name);
+			setRFID(null);
+			setDriverID(null);
+			setUseFOB(false);
 		}
-		setRFID(null);
-		setDriverID(null);
-		setUseFOB(false);
 	}
 
 	public void assignDeviceAction() {
@@ -531,22 +511,27 @@ public class DAOUtilBean implements PhaseListener {
 						Vehicle currentV = vehicleDAO.findByID(currentVID);
 						if (currentV != null
 								&& currentV.getStatus().equals(Status.ACTIVE))
-							vwarn = "<BR/>Warning: Device was previously assigned to vehicle: "
+							vwarn = "Warning: Device was previously assigned to vehicle: "
 									+ currentV.getName()
 									+ " "
-									+ currentV.getFullName();
+									+ currentV.getFullName() + "<BR/>";
+					}
+					if (vehicle.getDeviceID()!=null && vehicle.getDeviceID()!=device.getDeviceID())
+					{
+						Device currentDevice = deviceDAO.findByID(vehicle.getDeviceID());
+						vwarn+="Warning: Vehicle " + vehicleName + " previously had device " + currentDevice.getSerialNum();
 					}
 					vehicleDAO.setVehicleDevice(vehicle.getVehicleID(), device
 							.getDeviceID());
-					setSuccessMsg("Device " + serialNum
+					setSuccessMsg(vwarn + "Device " + serialNum
 							+ " successfully assigned to vehicle: "
 							+ vehicleName + " " + vehicle.getFullName()
-							+ " VIN: " + vehicle.getVIN() + vwarn);
+							+ " VIN: " + vehicle.getVIN());
+					setSerialNum(null);
+					setVehicleName(null);
 				}
 			}
 		}
-		setSerialNum(null);
-		setVehicleName(null);
 	}
 
 	public void createDriverAction() {
@@ -592,21 +577,8 @@ public class DAOUtilBean implements PhaseListener {
 
 		if (RFID!=null && RFID.trim().length()>0)
 		{
-			Long barcode = 0L;
-			try {
-				barcode = Long.parseLong(RFID);
-				if (barcode!=null)
-				{
-					Long rfid = rfidBean.findRFID(barcode, useFOB);
-					if (rfid==null)
-					{
-						setErrorMsg("Error: RFID not found for barcode: " + RFID);
-						return;
-					}
-					driver.setRFID(rfid);
-				}
-			} catch (NumberFormatException e) {
-			}
+			//TODO check if in use
+			driver.setBarcode(RFID);
 		}
 		
 		Integer driverID = driverDAO.create(personID, driver);
@@ -784,7 +756,7 @@ public class DAOUtilBean implements PhaseListener {
 		if (accountMap == null || accountMap.isEmpty()) {
 			accountMap = new Hashtable<Integer, String>();
 			int limit = 700; // TODO Lose this!!
-limit=10;
+//limit=10;
 			List<Account> accounts=null;
 try {			
 			accounts = accountDAO.getAllAcctIDs();
@@ -1089,14 +1061,6 @@ try {
 		this.driverDAO = driverDAO;
 	}
 
-	public RFIDBean getRfidBean() {
-		return rfidBean;
-	}
-
-	public void setRfidBean(RFIDBean rfidBean) {
-		this.rfidBean = rfidBean;
-	}
-
 	public boolean getUseFOB() {
 		return useFOB;
 	}
@@ -1133,7 +1097,6 @@ try {
 
 	@Override
 	public void afterPhase(PhaseEvent event) {
-		// TODO Auto-generated method stub
 		if (event.getPhaseId().equals(PhaseId.RENDER_RESPONSE))
 		{
 	    	FacesContext context = event.getFacesContext();  
@@ -1146,7 +1109,6 @@ try {
 
 	@Override
 	public void beforePhase(PhaseEvent event) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
