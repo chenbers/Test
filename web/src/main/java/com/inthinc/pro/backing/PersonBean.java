@@ -104,7 +104,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("driver_expiration");
         AVAILABLE_COLUMNS.add("driver_certifications");
         AVAILABLE_COLUMNS.add("driver_dot");
-        AVAILABLE_COLUMNS.add("driver_RFID");
+        AVAILABLE_COLUMNS.add("driver_barcode");
+        AVAILABLE_COLUMNS.add("driver_rfid1");
+        AVAILABLE_COLUMNS.add("driver_rfid1");
         AVAILABLE_COLUMNS.add("driver_groupID");
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
@@ -231,8 +233,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setSelected(false);
         if (person.getUser() != null)
             personView.getUser().setPerson(personView);
-        if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 1))
-            person.getDriver().setRFID(null);
+//        if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 1))
+//            person.getDriver().setRFID(null);
         if (logger.isTraceEnabled())
             logger.trace("createPersonView: END " + personView);
         return personView;
@@ -283,10 +285,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 value = 0;
             return MessageUtil.getMessageString("myAccount_alertText" + value);
         }
-        else if (column.equals("driver_RFID")) {
+        else if (column.equals("driver_rfid1")) {
             Long value = null;
             if (person.getDriver() != null)
-                value = person.getDriver().getRFID();
+                value = person.getDriver().getRfid1();
+            if (value == null)
+                value = 0L;
+            return Long.toHexString(value);
+        }
+        else if (column.equals("driver_rfid2")) {
+            Long value = null;
+            if (person.getDriver() != null)
+                value = person.getDriver().getRfid2();
             if (value == null)
                 value = 0L;
             return Long.toHexString(value);
@@ -367,8 +377,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             item.setDriver(new Driver());
             item.getDriver().setPersonID(item.getPersonID());
         }
-        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 1))
-            item.getDriver().setRFID(null);
+//        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 1))
+//            item.getDriver().setRFID(null);
         if (fuelEfficiencyBean == null)
         {
         	fuelEfficiencyBean = new FuelEfficiencyBean();
@@ -515,14 +525,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 valid = false;
             }
             // unique RFID
-            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 1)) {
-                final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
-                if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID())) {
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
-                    context.addMessage("edit-form:editPerson-driver_RFID", message);
-                    valid = false;
-                }
-            }
+//            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 1)) {
+//                final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
+//                if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID())) {
+//                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
+//                    context.addMessage("edit-form:editPerson-driver_RFID", message);
+//                    valid = false;
+//                }
+//            }
         }
         // unique username
         if (person.isUserSelected()) {
@@ -638,8 +648,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (person.getWeight() == null)
                 person.setWeight(0);
             // approach to remove rfid from a driver
-            if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
-                person.getDriver().setRFID(1L);     
+//            if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
+//                person.getDriver().setRFID(1L);     
             // if create and no user info, check for "" on primary and secondary e-mail
             if ( create && !person.isUserSelected() ) {
                 if ( (person.getPriEmail() != null) && (person.getPriEmail().trim().length() == 0) ) {
@@ -662,8 +672,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     BeanUtil.deepCopy(person.getUser(), getUser());
             }
             // set 1 RFID back to null
-            if ((person.getDriver() != null) && (person.getDriver().getRFID() == 1L))
-                person.getDriver().setRFID(null);
+//            if ((person.getDriver() != null) && (person.getDriver().getRFID() == 1L))
+//                person.getDriver().setRFID(null);
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);

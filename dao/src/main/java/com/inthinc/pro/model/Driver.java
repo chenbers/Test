@@ -22,8 +22,9 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private Integer driverID;
     private Integer personID;
     private Status status;
-    @Column(name = "rfid")
-    private Long RFID;
+    private String barcode;
+    private Long rfid1;
+    private Long rfid2;
     private String license; // max 10 characters
     @Column(name = "stateID")
     private State state;
@@ -37,13 +38,15 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private Person person;
     private Integer groupID;
 
-    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration, String certifications,
+    public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
             String dot, Integer groupID) {
         super();
         this.driverID = driverID;
         this.personID = personID;
         this.status = status;
-        RFID = rfid;
+        this.barcode = barcode;
+        this.rfid1 = rfid1;
+        this.rfid2 = rfid2;
         this.license = license;
         this.state = state;
         this.licenseClass = licenseClass;
@@ -76,12 +79,28 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.personID = personID;
     }
 
-    public Long getRFID() {
-        return RFID;
+    public String getBarcode() {
+        return barcode;
     }
 
-    public void setRFID(Long rfid) {
-        this.RFID = rfid;
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public Long getRfid1() {
+        return rfid1;
+    }
+
+    public void setRfid1(Long rfid1) {
+        this.rfid1 = rfid1;
+    }
+
+    public Long getRfid2() {
+        return rfid2;
+    }
+
+    public void setRfid2(Long rfid2) {
+        this.rfid2 = rfid2;
     }
 
     public String getLicense() {
@@ -138,7 +157,8 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.dot = dot;
     }
 
-    @XmlTransient //Prevent Circular Reference on XML rendering 
+    @XmlTransient
+    // Prevent Circular Reference on XML rendering
     public Person getPerson() {
         return person;
     }
@@ -172,7 +192,9 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     @Override
     public String toString() {
-        return "Driver [RFID=" + RFID + ", certifications=" + certifications + ", dot=" + dot + ", driverID=" + driverID + ", expiration=" + expiration + ", groupID=" + groupID
-                + ", license=" + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", state=" + state + ", status=" + status + "]";
+        return "Driver [barcode=" + barcode + ", certifications=" + certifications + ", dot=" + dot + ", driverID=" + driverID + ", expiration=" + expiration + ", groupID=" + groupID + ", license="
+                + license + ", licenseClass=" + licenseClass + ", person=" + person + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status
+                + "]";
     }
+
 }

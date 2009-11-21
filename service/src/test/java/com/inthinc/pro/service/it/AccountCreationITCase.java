@@ -85,7 +85,7 @@ public class AccountCreationITCase extends BaseITCase {
         account.setAcctName("IT" + randomInt);
         account.setStatus(Status.ACTIVE);
 
-        ClientRequest request = new ClientRequest(url + "/account", httpClient);
+        ClientRequest request = new ClientRequest(url + "/account", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, account);
         ClientResponse<Account> response = request.post(Account.class);
 
@@ -96,7 +96,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     private Account updateAccount(Account account) throws Exception {
         account.setAcctName("IT" + randomInt + "UPDATE");
-        ClientRequest updateRequest = new ClientRequest(url + "/account", httpClient);
+        ClientRequest updateRequest = new ClientRequest(url + "/account", clientExecutor);
         updateRequest.body(MediaType.APPLICATION_XML_TYPE, account);
         ClientResponse<Account> response = updateRequest.put(Account.class);
         assertEquals("Error updating address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
@@ -109,7 +109,7 @@ public class AccountCreationITCase extends BaseITCase {
     }
 
     private void deleteAccount(Account account) throws Exception {
-        ClientRequest request = new ClientRequest(url + "/account/" + account.getAcctID(), httpClient);
+        ClientRequest request = new ClientRequest(url + "/account/" + account.getAcctID(), clientExecutor);
         ClientResponse response = request.delete();
         assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         ClientResponse<Account> accountResponse = request.get(Account.class);
@@ -131,7 +131,7 @@ public class AccountCreationITCase extends BaseITCase {
         fleetGroup.setMapZoom(6);
         fleetGroup.setMapCenter(new LatLng(0.0, 0.0));
 
-        ClientRequest request = new ClientRequest(url + "/group", httpClient);
+        ClientRequest request = new ClientRequest(url + "/group", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, fleetGroup);
         ClientResponse<Group> response = request.post(Group.class);
         assertEquals("Error creating account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
@@ -148,7 +148,7 @@ public class AccountCreationITCase extends BaseITCase {
         divisionGroup.setMapZoom(6);
         divisionGroup.setMapCenter(new LatLng(0.0, 0.0));
 
-        request = new ClientRequest(url + "/group", httpClient);
+        request = new ClientRequest(url + "/group", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, fleetGroup);
         response = request.post(Group.class);
         assertEquals("Error creating account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
@@ -165,7 +165,7 @@ public class AccountCreationITCase extends BaseITCase {
         teamGroup.setMapZoom(6);
         teamGroup.setMapCenter(new LatLng(0.0, 0.0));
 
-        request = new ClientRequest(url + "/group", httpClient);
+        request = new ClientRequest(url + "/group", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, fleetGroup);
         response = request.post(Group.class);
         assertEquals("Error creating account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
@@ -178,7 +178,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     private List<Group> updateGroupHierarchy(List<Group> groupList) throws Exception {
         List<Group> responseList = new ArrayList<Group>();
-        ClientRequest request = new ClientRequest(url + "/group", httpClient);
+        ClientRequest request = new ClientRequest(url + "/group", clientExecutor);
         ClientResponse<Group> response = null;
         for (Group group : groupList) {
             group.setDescription(group.getDescription() + " Update");
@@ -203,7 +203,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     private void deleteGroupHierarchy(List<Group> groupList) throws Exception {
         for (Group group : groupList) {
-            ClientRequest request = new ClientRequest(url + "/group/" + group.getGroupID(), httpClient);
+            ClientRequest request = new ClientRequest(url + "/group/" + group.getGroupID(), clientExecutor);
             ClientResponse<Group> response = request.delete(Group.class);
             assertEquals("Error deleting group. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
             response = request.get(Group.class);
@@ -221,7 +221,7 @@ public class AccountCreationITCase extends BaseITCase {
         address.setCity("West Valley City");
         address.setZip("84120");
         address.setState(States.getStateByAbbrev("UT"));
-        ClientRequest request = new ClientRequest(url + "/address", httpClient);
+        ClientRequest request = new ClientRequest(url + "/address", clientExecutor);
         request.body(MediaType.valueOf("application/xml"), address, Address.class);
         ClientResponse<Address> response = request.post(Address.class);
         assertEquals("Error creating account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
@@ -234,7 +234,7 @@ public class AccountCreationITCase extends BaseITCase {
         address.setAddr2(address.getAddr2() + "Update");
         address.setCity("South Jordan");
         address.setZip("84095");
-        ClientRequest request = new ClientRequest(url + "/address", httpClient);
+        ClientRequest request = new ClientRequest(url + "/address", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, address);
         ClientResponse<Address> response = request.put(Address.class);
         assertEquals("Error updating address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
@@ -250,7 +250,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     //the delete address method has not been implement in the backend
     private void deleteAddress(Address address) throws Exception {
-        ClientRequest request = new ClientRequest(url + "/address/" + address.getAddrID(), httpClient);
+        ClientRequest request = new ClientRequest(url + "/address/" + address.getAddrID(), clientExecutor);
         ClientResponse<Address> response = request.delete(Address.class);
         assertEquals("Error deleting address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         response = request.get(Address.class);
@@ -294,13 +294,13 @@ public class AccountCreationITCase extends BaseITCase {
         driver.setLicense("12");
         driver.setLicenseClass("A");
         driver.setCertifications("Certificate");
-        driver.setRFID(RandomUtils.nextLong());
+//        driver.setRFID(RandomUtils.nextLong());
         driver.setExpiration(new DateTime().plusYears(2).toDate());
 
         person.setUser(user);
         person.setDriver(driver);
 
-        ClientRequest request = new ClientRequest(url + "/person/" + account.getAcctID(), httpClient);
+        ClientRequest request = new ClientRequest(url + "/person/" + account.getAcctID(), clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, person);
         ClientResponse<Person> response = request.post(Person.class);
 
@@ -329,10 +329,9 @@ public class AccountCreationITCase extends BaseITCase {
         person.getDriver().setLicense(person.getDriver().getLicense() + "Update");
         person.getDriver().setLicenseClass(person.getDriver().getLicenseClass() + "Update");
         person.getDriver().setCertifications(person.getDriver().getCertifications() + "Update");
-        person.getDriver().setRFID(RandomUtils.nextLong());
         person.getDriver().setExpiration(new DateTime().plusYears(4).toDate());
 
-        ClientRequest request = new ClientRequest(url + "/person", httpClient);
+        ClientRequest request = new ClientRequest(url + "/person", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, person);
         ClientResponse<Person> response = request.put(Person.class);
         assertEquals("Error updating address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
@@ -353,7 +352,7 @@ public class AccountCreationITCase extends BaseITCase {
     }
 
     private void deletePerson(Person person) throws Exception {
-        ClientRequest userRequest = new ClientRequest(url + "/user/" + person.getUser().getUserID(), httpClient);
+        ClientRequest userRequest = new ClientRequest(url + "/user/" + person.getUser().getUserID(), clientExecutor);
         ClientResponse<User> userResponse = userRequest.delete(User.class);
         assertEquals("Error deleting user. HTTP Status Code: " + userResponse.getStatus() + " - " + userResponse.getResponseStatus(), Response.Status.OK, userResponse.getResponseStatus());
         userResponse = userRequest.get(User.class);
@@ -361,7 +360,7 @@ public class AccountCreationITCase extends BaseITCase {
         assertEquals("User was not deleted successfully.", user.getStatus(), Status.DELETED);
         logger.info("User deleted successfully: " + userResponse);
 
-        ClientRequest driverRequest = new ClientRequest(url + "/driver/" + person.getDriver().getDriverID(), httpClient);
+        ClientRequest driverRequest = new ClientRequest(url + "/driver/" + person.getDriver().getDriverID(), clientExecutor);
         ClientResponse<Driver> driverResponse = driverRequest.delete(Driver.class);
         assertEquals("Error deleting driver. HTTP Status Code: " + driverResponse.getStatus() + " - " + driverResponse.getResponseStatus(), Response.Status.OK, driverResponse.getResponseStatus());
         driverResponse = driverRequest.get(Driver.class);
@@ -369,7 +368,7 @@ public class AccountCreationITCase extends BaseITCase {
         assertEquals("Driver was not deleted successfully.", driver.getStatus(), Status.DELETED);
         logger.info("Driver deleted successfully: " + driverResponse);
 
-        ClientRequest personRequest = new ClientRequest(url + "/person/" + person.getPersonID(), httpClient);
+        ClientRequest personRequest = new ClientRequest(url + "/person/" + person.getPersonID(), clientExecutor);
         ClientResponse<Person> personResponse = personRequest.delete(Person.class);
         assertEquals("Error deleting person. HTTP Status Code: " + personResponse.getStatus() + " - " + personResponse.getResponseStatus(), Response.Status.OK, personResponse.getResponseStatus());
         personResponse = personRequest.get(Person.class);
@@ -392,7 +391,7 @@ public class AccountCreationITCase extends BaseITCase {
         vehicle.setVtype(VehicleType.LIGHT);
         vehicle.setYear(2007);
 
-        ClientRequest request = new ClientRequest(url + "/vehicle", httpClient);
+        ClientRequest request = new ClientRequest(url + "/vehicle", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, vehicle);
         ClientResponse<Vehicle> response = request.post(Vehicle.class);
         assertEquals("Error creating Vehicle. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
@@ -409,7 +408,7 @@ public class AccountCreationITCase extends BaseITCase {
         vehicle.setState(States.getStateByAbbrev("CA"));
         vehicle.setStatus(Status.ACTIVE);
 
-        ClientRequest request = new ClientRequest(url + "/vehicle", httpClient);
+        ClientRequest request = new ClientRequest(url + "/vehicle", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, vehicle);
         ClientResponse<Vehicle> response = request.put(Vehicle.class);
         assertEquals("Error updating address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
@@ -421,7 +420,7 @@ public class AccountCreationITCase extends BaseITCase {
     }
     
     private void deleteVehicle(Vehicle vehicle) throws Exception {
-        ClientRequest request = new ClientRequest(url + "/vehicle/" + vehicle.getVehicleID(), httpClient);
+        ClientRequest request = new ClientRequest(url + "/vehicle/" + vehicle.getVehicleID(), clientExecutor);
         ClientResponse<Vehicle> response = request.delete(Vehicle.class);
         assertEquals("Error deleting vehicle. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         response = request.get(Vehicle.class);
@@ -445,7 +444,7 @@ public class AccountCreationITCase extends BaseITCase {
         device.setSerialNum("IT_SN" + randomInt);
         device.setAutoLogoff(AutoLogoff.ON);
         
-        ClientRequest request = new ClientRequest(url + "/device", httpClient);
+        ClientRequest request = new ClientRequest(url + "/device", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, device);
         ClientResponse<Device> response = request.post(Device.class);
         assertEquals("Error creating Device. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
@@ -469,7 +468,7 @@ public class AccountCreationITCase extends BaseITCase {
         device.setSpeedSettings(new Integer[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 });
         
 
-        ClientRequest request = new ClientRequest(url + "/device", httpClient);
+        ClientRequest request = new ClientRequest(url + "/device", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, device);
         ClientResponse<Device> response = request.put(Device.class);
         assertEquals("Error updating address. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
@@ -481,7 +480,7 @@ public class AccountCreationITCase extends BaseITCase {
     }
     
     private void deleteDevice(Device device) throws Exception {
-        ClientRequest request = new ClientRequest(url + "/device/" + device.getDeviceID(), httpClient);
+        ClientRequest request = new ClientRequest(url + "/device/" + device.getDeviceID(), clientExecutor);
         ClientResponse<Device> response = request.delete(Device.class);
         assertEquals("Error deleting device. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         response = request.get(Device.class);

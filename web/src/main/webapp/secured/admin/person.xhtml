@@ -157,14 +157,7 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_dot}" /></td>
                             <td><h:outputText value="#{personBean.item.driver.dot}" /></td>
                           </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_driver_RFID}" /></td>
-                            <td>
-                              <h:outputText value="#{personBean.item.driver.RFID}">
-                                <f:converter converterId="HexConverter" />
-                              </h:outputText>
-                            </td>
-                          </tr>
+
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_team}" /></td>
                             <td><h:outputText value="#{personBean.item.team.name}" /></td>
@@ -176,6 +169,32 @@
                         </table>
 
                         </ui:fragment>
+                        <div class="spacer"></div>
+
+                        <div class="add_section_title">#{messages.editPerson_rfidInformation}</div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                                                  <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid_barcode}:" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.barcode}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid1}:" /></td>
+                            <td>
+                              <h:outputText value="#{personBean.item.driver.rfid1}">
+                                <f:converter converterId="HexConverter" />
+                              </h:outputText>
+                            </td>
+                          </tr>                          
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid2}:" /></td>
+                            <td>
+                              <h:outputText value="#{personBean.item.driver.rfid2}">
+                                <f:converter converterId="HexConverter" />
+                              </h:outputText>
+                            </td>
+                          </tr>
+                        </table>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
