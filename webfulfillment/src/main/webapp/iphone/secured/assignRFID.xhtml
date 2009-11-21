@@ -7,10 +7,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
- 				<h:form id="assignRFID" class="panel" title="Assign RFID">
-				<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+	
+ 	<h:form id="assignRFID" class="panel" title="Assign RFID">
+		<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+		<h:outputText value="#{daoUtilBean.successMsg}"	escape="false" />
  <fieldset>
-
+<div class="row">
+	<label>Customer</label>
+		#{daoUtilBean.selectedAccountName}
+</div>
 <div class="row">
 					<label>Driver ID</label>
 					<h:inputText id="driverID" value="#{daoUtilBean.driverID}" size="30"
@@ -26,7 +31,11 @@
 
         <div class="row">
             <label>Use FOB</label>
+            <h:selectBooleanCheckbox value="#{daoUtilBean.useFOB}" id="useFOB">
+			</h:selectBooleanCheckbox>						      
+<ui:remove>          
             <div class="toggle" onclick="" toggled="#{daoUtilBean.useFOB}"><span class="thumb"></span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span></div>
+</ui:remove>
         </div>
 
 </fieldset>
@@ -36,11 +45,6 @@
 		<br />
 		<br />
 					<a class="whiteButton" href="#home">Cancel</a>
-					<br />
-					<h:outputText value="#{daoUtilBean.successMsg}"
-						escape="false" />
-
-
 				</h:form>
 				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
 				<h:outputText value="#{message}"/><br/>

@@ -6,12 +6,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:rich="http://richfaces.org/rich">
 	<h:form id="assignDevice" class="panel" title="Assign Vehicle">
-				<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+	<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+	<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 		<fieldset>
-		<div class="row"><label>Customer</label> <h:selectOneMenu
-			id="account-select-menu" value="#{daoUtilBean.selectedAccountID}">
-			<f:selectItems value="#{daoUtilBean.accountSelectList}" />
-		</h:selectOneMenu></div>
+		<div class="row"><label>Customer</label> 
+#{daoUtilBean.selectedAccountName}
+		</div>
 		<div class="row"><label>Vehicle</label> <h:inputText
 			id="vehicleName" value="#{daoUtilBean.vehicleName}" size="30"
 			required="false" requiredMessage="required" />
@@ -30,11 +30,5 @@
 		<br />
 					<a class="whiteButton" href="#home">Cancel</a>
 					<br />
-	  <h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 	</h:form>
-	<rich:dataList rendered="#{daoUtilBean.messageList != null}"
-		value="#{daoUtilBean.messageList}" id="messages" var="message"
-		title="Messages">
-		<h:outputText value="#{message}" />
-	</rich:dataList>
 </ui:composition>

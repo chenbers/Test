@@ -11,17 +11,12 @@
 <fieldset>
 <div class="row">
 	<label>Customer</label>
-		<h:selectOneMenu
-			id="account-select-menu" 
-			value="#{daoUtilBean.selectedAccountID}">
-			<f:selectItems value="#{daoUtilBean.accountSelectList}" />
-		</h:selectOneMenu>
+		#{daoUtilBean.selectedAccountName}
 </div>
 <div class="row"> 
 		<label>Tiwi</label>
 		<h:inputText id="serialNum" value="#{daoUtilBean.serialNum}" size="30"
-			required="false" requiredMessage="required" /> <rich:message
-			for="serialNum" /> <br />
+			required="false" requiredMessage="required" /> 
 </div>		
 </fieldset>
 		<h:commandButton value="Move to Account"

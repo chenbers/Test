@@ -4,48 +4,38 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich">
+	xmlns:f="http://java.sun.com/jsf/core">
  				<h:form id="vehicles" class="panel" title="Vehicles" selected="true">
 				<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+		<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
  <fieldset>
 <div class="row">
 	<label>Customer</label>
-		<h:selectOneMenu
-			id="account-select-menu" 
-			onchange="submit()"
-			value="#{daoUtilBean.selectedAccountID}">
-			<f:selectItems value="#{daoUtilBean.accountSelectList}" />
-		</h:selectOneMenu>
+		#{daoUtilBean.selectedAccountName}
+</div>
+<div class="row">
+	<label>Group</label>
+	<h:outputText rendered="#{not empty daoUtilBean.selectedGroupID}" value="#{daoUtilBean.selectedGroupName}"/>
+	<h:outputText rendered="#{empty daoUtilBean.selectedGroupID}" value="All Teams"/>
+		
 </div>
         <div class="row">
             <label>Assigned Only</label>
+            <h:selectBooleanCheckbox value="#{daoUtilBean.assignedVehiclesOnly}" id="assignedVehiclesOnly">
+			</h:selectBooleanCheckbox>						      
+<ui:remove>            
             <div class="toggle" onclick="" toggled="#{daoUtilBean.assignedVehiclesOnly}">
             <span class="thumb"></span>
             <span class="toggleOn">ON</span>
             <span class="toggleOff">OFF</span>
             </div>
+</ui:remove>  
         </div>
-<div class="row">
-	<label>Group</label>
-		<h:selectOneMenu
-			id="group-select-menu" 
-			onchange="submit()"
-			value="#{daoUtilBean.selectedGroupID}">
-			<f:selectItems value="#{daoUtilBean.groupSelectList}" />
-		</h:selectOneMenu>
-</div>
-
-
-
+          
 </fieldset>
- 
- 		<h:outputText value="#{daoUtilBean.vehicleGrid}" escape="false" />
-
+		<h:commandButton class="whiteButton" value="Get Vehicles" action="#{daoUtilBean.getVehiclesAction}" />
+					<br/>
 					<a class="whiteButton" href="#home">Cancel</a>
-				</h:form>
-				
-				
-				
+ 		<h:outputText value="#{daoUtilBean.vehicleGrid}" escape="false" />
+ 		</h:form>
 </ui:composition>

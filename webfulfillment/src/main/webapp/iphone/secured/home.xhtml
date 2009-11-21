@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
     xmlns:h="http://java.sun.com/jsf/html" 
     xmlns:f="http://java.sun.com/jsf/core" 
-    xmlns:rich="http://richfaces.org/rich" 
+	xmlns:a4j="http://richfaces.org/a4j"
     xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <head>
@@ -18,15 +18,50 @@
 <div class="toolbar">
  <h1 id="pageTitle"></h1>
 <a class="button" href="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">Log out</a>
+<ui:remove>
+<a class="button" href="#">Home</a>
+</ui:remove>
 </div>
 <ul id="home" title="Home" selected="true">
-<li><a href="moveDevice.faces">Move Device</a></li>
+<li><a href="#chooseCustomer">#{daoUtilBean.selectedAccountName}</a></li>
+<li>
+<h:outputLink value="#chooseGroup" rendered="#{not empty daoUtilBean.groupSelectList}">
+<h:outputText value="#{daoUtilBean.selectedGroupName}"/>
+</h:outputLink>
+</li>
 <li><a href="assignDevice.faces">Assign Vehicle</a></li>
 <li><a href="assignRFID.faces">Assign RFID</a></li>
+<li><a href="createDriver.faces">Create Driver</a></li>
+<li><a href="createVehicle.faces">Create Vehicle</a></li>
 <li><a href="editVIN.faces">Change VIN</a></li>
 <li><a href="queryDevice.faces">Query Device Info</a></li>
 <li><a href="vehicles.faces">Vehicles</a></li>
+<li><a href="moveDevice.faces">Move Device</a></li>
 </ul>
+
+<ul id="chooseCustomer" title="Choose Customer">
+ <a4j:repeat value="#{daoUtilBean.accountSelectList}" var="item">
+ <li>
+ <a href="#" onclick="document.getElementById('acctForm:idAccount').value=#{item.value};document.getElementById('acctForm').submit();">#{item.label}</a>
+ </li>
+</a4j:repeat>
+</ul>
+
+<h:form id="acctForm">
+ <h:inputHidden id="idAccount" value="#{daoUtilBean.selectedAccountID}" />
+</h:form>
+
+<ul id="chooseGroup" title="Choose Team">
+<a4j:repeat value="#{daoUtilBean.groupSelectList}" var="item">
+ <li>
+ <a href="#" onclick="document.getElementById('groupForm:idGroup').value=#{item.value};document.getElementById('groupForm').submit();">#{item.label}</a>
+ </li>
+</a4j:repeat>
+</ul>
+
+<h:form id="groupForm">
+<h:inputHidden id="idGroup" value="#{daoUtilBean.selectedGroupID}" />
+</h:form>
 
     </body>
 </f:view>
