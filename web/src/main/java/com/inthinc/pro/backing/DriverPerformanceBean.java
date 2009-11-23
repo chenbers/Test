@@ -68,7 +68,8 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private String              coachingHistory;
     private Boolean             hasLastTrip;
     private Boolean 			tripMayExist;
-
+    
+    private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";    
     
     public DriverPerformanceBean() {
 		super();
@@ -378,6 +379,15 @@ public class DriverPerformanceBean extends BasePerformanceBean
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getDriver().getPerson().getFullName());
 
+        // Should a print of the driver performance page be attempted with no last trip, 
+        //  the report will error
+        String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
+        reportCriteria.addParameter("MAP_URL", imageUrlDef);
+        reportCriteria.addParameter("START_TIME", MessageUtil.getMessageString(NO_LAST_TRIP_FOUND));
+        reportCriteria.addParameter("START_LOCATION", "");
+        reportCriteria.addParameter("END_TIME", "");
+        reportCriteria.addParameter("END_LOCATION", "");
+        
         if (lastTrip != null)
         {
             reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
