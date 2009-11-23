@@ -97,7 +97,7 @@
 
 		function refresh()
 		{
-			processForm('addressTextBox', 'countComboBox');
+			processForm('liveFleetAddressTextBox', 'countComboBox');
 		}
 	    
    		function processForm(addressId, countId)
