@@ -58,7 +58,7 @@
 					  <li class="l">
 						<a4j:commandButton id="redFlagsRefresh" styleClass="left"
 									reRender="header,redFlagsTableForm:redFlags,redFlagsTableForm:redFlags-bottomScroller" 
-									action="#{redFlagsBean.refreshAction}">
+									action="#{redFlagsBean.refreshAction}" oncomplete="initializeTable()">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
 		            				</span>

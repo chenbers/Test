@@ -62,8 +62,8 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="safetyRefresh" styleClass="left"
-									reRender="header,safety-form:items,safety-form:bottomScroller" 
-									action="#{eventsBean.refreshAction}">
+									reRender="header,safety-form:safety,safety-form:bottomScroller" 
+									action="#{eventsBean.refreshAction}" oncomplete="initializeTable()">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
 		            				</span>
