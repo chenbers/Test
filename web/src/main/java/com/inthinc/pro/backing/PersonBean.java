@@ -318,11 +318,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     @Override
-    public List<String> getAvailableColumns() {
-        return AVAILABLE_COLUMNS;
-    }
-
-    @Override
     public Map<String, Boolean> getDefaultColumns() {
         final HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
         final List<String> availableColumns = getAvailableColumns();
@@ -337,6 +332,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     @Override
+	public List<String> getAvailableColumns() {
+	    return AVAILABLE_COLUMNS;
+	}
+
+	@Override
     public TableType getTableType() {
         return TableType.ADMIN_PEOPLE;
     }
@@ -400,6 +400,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     @Override
     public void view() {
         super.view();
+        if (getItem().getUser().getUserID() == null) return;
         if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID())) {
             item = revertItem(getItem());
         }
@@ -606,11 +607,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     @Override
     protected Boolean authorizeAccess(PersonView item) {
-        Integer acctID = item.getAcctID();
-        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID)) {
-            return Boolean.TRUE;
-        }
-        return Boolean.FALSE;
+//        Integer acctID = item.getAcctID();
+//        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID)) {
+//            return Boolean.TRUE;
+//        }
+//        return Boolean.FALSE;
+    	return item.getGroup() != null;
+//        Group group = getGroupHierarchy().getGroup(item.getGroup().getGroupID());
+//
+//        if (group != null)
+//        {
+//            return Boolean.TRUE;
+//        }
+//
+//        return Boolean.FALSE;
     }
 
     @Override
