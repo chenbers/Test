@@ -13,7 +13,6 @@
 		<h:outputText value="#{daoUtilBean.successMsg}"	escape="false" />
  <fieldset>
 <div class="row">
-	<label>Customer</label>
 		#{daoUtilBean.selectedAccountName}
 </div>
 <div class="row">
@@ -42,9 +41,6 @@
  
  <h:commandButton value="Assign RFID"
 						 action="#{daoUtilBean.assignRFIDAction}" />
-		<br />
-		<br />
-					<a class="whiteButton" href="#home">Cancel</a>
 				</h:form>
 				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
 				<h:outputText value="#{message}"/><br/>

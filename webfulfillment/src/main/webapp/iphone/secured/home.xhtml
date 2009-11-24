@@ -16,27 +16,66 @@
     <body>
 
 <div class="toolbar">
- <h1 id="pageTitle"></h1>
+<h1 id="pageTitle"></h1>
 <a class="button" href="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">Log out</a>
 <ui:remove>
+<a id="backButton" class="button" href="#"></a>
 <a class="button" href="#">Home</a>
 </ui:remove>
 </div>
 <ul id="home" title="Home" selected="true">
+<li class="group">Customer</li>
 <li><a href="#chooseCustomer">#{daoUtilBean.selectedAccountName}</a></li>
+<li class="group">Team</li>
 <li>
 <h:outputLink value="#chooseGroup" rendered="#{not empty daoUtilBean.groupSelectList}">
 <h:outputText value="#{daoUtilBean.selectedGroupName}"/>
 </h:outputLink>
 </li>
+
+<li class="group">Driver</li>
+
+<li>
+<h:outputLink value="drivers.faces" rendered="#{daoUtilBean.selectedAccountID > 0}" target="_self">
+<h:outputText value="Drivers"/>
+</h:outputLink>
+</li>
+
+<li>
+<h:outputLink value="assignRFID.faces" rendered="#{daoUtilBean.selectedAccountID > 0}" target="_self">
+<h:outputText value="Assign RFID"/>
+</h:outputLink>
+</li>
+
+<li class="group">Vehicle</li>
+
+<li>
+<h:outputLink value="vehicles.faces" rendered="#{daoUtilBean.selectedAccountID > 0}" target="_self">
+<h:outputText value="Vehicles"/>
+</h:outputLink>
+</li>
+
+<li>
+<h:outputLink value="assignDevice.faces" rendered="#{daoUtilBean.selectedAccountID > 0}" target="_self">
+<h:outputText value="Assign Device"/>
+</h:outputLink>
+</li>
+
+<li>
+<h:outputLink value="vehicleReport.faces" rendered="#{daoUtilBean.selectedAccountID > 0}">
+<h:outputText value="Vehicle Report"/>
+</h:outputLink>
+</li>
+
+<li><a href="queryDevice.faces">Query Device Info</a></li>
+
+<ui:remove>
 <li><a href="assignDevice.faces">Assign Vehicle</a></li>
 <li><a href="assignRFID.faces">Assign RFID</a></li>
-<li><a href="createDriver.faces">Create Driver</a></li>
-<li><a href="createVehicle.faces">Create Vehicle</a></li>
 <li><a href="editVIN.faces">Change VIN</a></li>
-<li><a href="queryDevice.faces">Query Device Info</a></li>
-<li><a href="vehicles.faces">Vehicles</a></li>
 <li><a href="moveDevice.faces">Move Device</a></li>
+</ui:remove>
+
 </ul>
 
 <ul id="chooseCustomer" title="Choose Customer">

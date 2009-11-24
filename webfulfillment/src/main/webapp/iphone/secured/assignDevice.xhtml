@@ -9,7 +9,7 @@
 	<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
 	<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 		<fieldset>
-		<div class="row"><label>Customer</label> 
+		<div class="row">
 #{daoUtilBean.selectedAccountName}
 		</div>
 		<div class="row"><label>Vehicle</label> <h:inputText
@@ -27,8 +27,5 @@
 		<h:commandButton value="Assign Vehicle"
 			action="#{daoUtilBean.assignDeviceAction}" />
 		<br />
-		<br />
-					<a class="whiteButton" href="#home">Cancel</a>
-					<br />
 	</h:form>
 </ui:composition>

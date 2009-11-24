@@ -47,11 +47,12 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 public class DAOUtilBean implements PhaseListener {
 
+	private static final long serialVersionUID = 3658982314851556109L;
 	private AccountDAO accountDAO;
 	private GroupDAO groupDAO;
 	private VehicleDAO vehicleDAO;
@@ -61,6 +62,7 @@ public class DAOUtilBean implements PhaseListener {
 	private PersonDAO personDAO;
 	private DriverDAO driverDAO;
 	private AddressDAO addressDAO;
+	
 
 	private RoleDAO roleDAO;
 
@@ -70,8 +72,12 @@ public class DAOUtilBean implements PhaseListener {
 
 	private Map<Integer, String> accountMap;
 	private Map<Integer, String> groupMap;
+	private Map<Integer, String> driverMap;
+	private Map<Integer, String> vehicleMap;
 	private Integer selectedAccountID;
 	private Integer selectedGroupID;
+	private Integer selectedDriverID;
+	private Integer selectedVehicleID;
 
 		
 	private String imei;
@@ -84,6 +90,8 @@ public class DAOUtilBean implements PhaseListener {
 	private String model;
 	private String year;
 	private String license;
+	private Integer vehicleCount=0;
+	private String vehicleCriteria;
 
 	private String lastName;
 	private String firstName;
@@ -91,6 +99,7 @@ public class DAOUtilBean implements PhaseListener {
 	private String driverID;
 	private String RFID;
 	private boolean useFOB;	
+	private String driverCriteria;
 	
 	private String errorMsg;
 	private String successMsg;
@@ -104,6 +113,9 @@ public class DAOUtilBean implements PhaseListener {
 	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
 
+	
+	private String jscriptOnLoad;
+	
 	public ProUser getProUser() {
 		return (ProUser) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
@@ -135,7 +147,7 @@ public class DAOUtilBean implements PhaseListener {
 
 	// look for powerup events in last year
 	// and get last location
-	// TODO what is last location for a device that never got a fix??
+
 	public boolean checkDevice() {
 
 		if (device == null)
@@ -193,8 +205,6 @@ public class DAOUtilBean implements PhaseListener {
 			try {
 				id = Integer.parseInt(serialNum);
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 			if (id > 0)
 				device = deviceDAO.findByID(id);
@@ -275,7 +285,7 @@ public class DAOUtilBean implements PhaseListener {
 			} else {
 				deviceDAO.deleteByID(device.getDeviceID());
 				device.setAccountID(rmaAccountID);
-				// TODO should we set ephone to tech support??
+
 				device.setEphone(null);
 				deviceDAO.create(rmaAccountID, device);
 				setSuccessMsg("Device " + serialNum
@@ -360,12 +370,14 @@ public class DAOUtilBean implements PhaseListener {
 		vehicleGrid = "<table class=\"itable\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">";
 		vehicleGrid += "<tr class=\"header\"><th>Vehicle</th><th>Tiwi</th><th class=\"last\">RFID</th></tr>";
 
-		int row = 0;
+		vehicleCount = 0;
 		for (Iterator<Vehicle> viter = vehicles.iterator(); viter.hasNext();) {
 			Vehicle vehicle = viter.next();
 			if (vehicle.getStatus().equals(Status.ACTIVE))
 			{
 				String rowStyle = "\"reg\"";
+				if (vehicleCount % 2 == 1)
+					rowStyle = "\"alt\"";
 				String serialnum = "---";
 				if (vehicle.getDeviceID() != null) {
 					Device device = deviceDAO.findByID(vehicle.getDeviceID());
@@ -379,19 +391,22 @@ public class DAOUtilBean implements PhaseListener {
 				}
 
 
-				if (row % 2 == 1)
-					rowStyle = "\"alt\"";
 				vehicleGrid += "<tr class=" + rowStyle + ">";
 				vehicleGrid += "<td class=\"first\">" + vehicle.getName() + "</td>";
 				vehicleGrid += "<td>" + serialnum + "</td>";
 				vehicleGrid += "<td class=\"last\">" + barcode + "</td>";
 				vehicleGrid += "</tr>";
+				vehicleCount++;
 			}
 		}
 
 		vehicleGrid += "</table>";
 	}
 
+	public Integer getVehicleCount()
+	{
+		return vehicleCount;
+	}
 	public void editVINAction() {
 		reInitAction();
 		if (selectedAccountID == null || selectedAccountID < 0) {
@@ -442,7 +457,7 @@ public class DAOUtilBean implements PhaseListener {
 		if (driver == null) {
 			setErrorMsg("Error: Driver not found " + driverID);
 		} else if (RFID.length()<2) {
-			setErrorMsg("Error: RFID not found " + RFID);
+			setErrorMsg("Error: Please enter a valid RFID barcode value " + RFID);
 		} else {
 			String existMsg = "";
 			
@@ -480,6 +495,144 @@ public class DAOUtilBean implements PhaseListener {
 			setDriverID(null);
 			setUseFOB(false);
 		}
+	}
+
+	public void searchDriverAction() {
+		reInitAction();
+		if (selectedAccountID == null || selectedAccountID < 0) {
+			setErrorMsg("Error: Please select a customer account");
+			return;
+		} else if (driverCriteria==null || driverCriteria.length()<1) {
+			setErrorMsg("Error: Please enter a valid driverID, Last Name, employeeid");
+			return;
+		}
+		findDrivers(selectedAccountID, driverCriteria);
+		if (driverMap.isEmpty())
+		{
+			setErrorMsg("Driver not found");
+		}
+	}
+	
+	public void searchVehicleAction() {
+		reInitAction();
+		if (selectedAccountID == null || selectedAccountID < 0) {
+			setErrorMsg("Error: Please select a customer account");
+			return;
+		} else if (vehicleCriteria==null || vehicleCriteria.length()<1) {
+			setErrorMsg("Error: Please enter a valid vehicle name, license or VIN");
+			return;
+		}
+		findVehicles(selectedAccountID, vehicleCriteria);
+		if (vehicleMap.isEmpty())
+		{
+			setErrorMsg("Vehicle not found");
+		}
+	}
+	
+	public void editDriverAction() {
+		reInitAction();
+		if (selectedAccountID == null || selectedAccountID < 0) {
+			setErrorMsg("Error: Please select a customer account");
+			return;
+		} else if (selectedGroupID == null || selectedGroupID < 0) {
+			setErrorMsg("Error: Please select a Team");
+			return;
+		} else if (lastName == null || lastName.trim().length() == 0) {
+			setErrorMsg("Error: Please enter a valid lastName");
+			return;
+		}
+		
+		boolean doCreate=true;
+		Driver driver;
+		Address address = new Address();;
+		Person person;
+		
+		if (selectedDriverID==-1)
+		{
+			doCreate=true;
+			driver = new Driver();
+			person = new Person();
+			person.setTimeZone(TimeZone.getDefault());
+		}
+		else
+		{
+			doCreate=false;
+			driver=driverDAO.findByID(selectedDriverID);
+			person=personDAO.findByID(driver.getPersonID());
+		}
+
+		if (doCreate)
+		{
+			Integer addressID = addressDAO.create(selectedAccountID, address);
+			if (addressID==null || addressID<1)
+			{
+				setErrorMsg("Error creating address");
+				return;
+			}
+			person.setAddressID(addressID);
+		}
+		
+		person.setLast(lastName.trim());
+		person.setFirst(firstName.trim());
+		person.setEmpid(empID.trim());
+
+		if (doCreate)
+		{
+			Integer personID = personDAO.create(selectedAccountID, person);
+			if (personID==null || personID<1)
+			{
+				setErrorMsg("Error creating person");
+				return;
+			}
+			driver.setPersonID(personID);
+			driver.setGroupID(selectedGroupID);
+			driver.setStatus(Status.ACTIVE);
+		}
+		else
+		{
+			Integer count = personDAO.update(person);
+			if (count==null || count<1)
+			{
+				setErrorMsg("Error updating person");
+				return;
+			}
+		}
+					
+
+		if (RFID!=null && RFID.trim().length()>0)
+		{
+			//TODO check if in use
+			driver.setBarcode(RFID);
+		}
+
+		if (doCreate)
+		{
+			Integer driverID = driverDAO.create(driver.getPersonID(), driver);
+			if (driverID==null || driverID<1)
+			{
+				setErrorMsg("Error creating driver");
+				return;
+			}
+			setSuccessMsg("driverID " + driverID + " created successfully");
+		}
+		else
+		{
+			Integer count = driverDAO.update(driver);
+			if (count==null || count<1)
+			{
+				setErrorMsg("Error updating driver");
+				return;
+			}
+			setSuccessMsg("driverID " + driver.getDriverID() + " updated successfully");
+		}
+			
+		
+		lastName=null;
+		firstName=null;
+		RFID=null;
+		empID=null;
+		driverMap=null;
+
 	}
 
 	public void assignDeviceAction() {
@@ -534,70 +687,7 @@ public class DAOUtilBean implements PhaseListener {
 		}
 	}
 
-	public void createDriverAction() {
-		reInitAction();
-		if (selectedAccountID == null || selectedAccountID < 0) {
-			setErrorMsg("Error: Please select a customer account");
-			return;
-		} else if (selectedGroupID == null || selectedGroupID < 0) {
-			setErrorMsg("Error: Please select a Team");
-			return;
-		} else if (lastName == null || lastName.trim().length() == 0) {
-			setErrorMsg("Error: Please enter a valid lastName");
-			return;
-		}
-		
-		Address address = new Address();
-		Integer addressID = addressDAO.create(selectedAccountID, address);
-		if (addressID==null || addressID<1)
-		{
-			setErrorMsg("Error creating address");
-			return;
-		}
-		
-		
-		Person person = new Person();
-		person.setLast(lastName.trim());
-		person.setFirst(firstName.trim());
-		person.setAddressID(addressID);
-		person.setTimeZone(TimeZone.getDefault());
-		person.setEmpid(empID.trim());
-
-		Integer personID = personDAO.create(selectedAccountID, person);
-		if (personID==null || personID<1)
-		{
-			setErrorMsg("Error creating person");
-			return;
-		}
-					
-		Driver driver = new Driver();
-		driver.setGroupID(selectedGroupID);
-		driver.setPersonID(personID);
-		driver.setStatus(Status.ACTIVE);
-
-		if (RFID!=null && RFID.trim().length()>0)
-		{
-			//TODO check if in use
-			driver.setBarcode(RFID);
-		}
-		
-		Integer driverID = driverDAO.create(personID, driver);
-		if (driverID==null || driverID<1)
-		{
-			setErrorMsg("Error creating driver");
-			return;
-		}
-
-		setSuccessMsg("driverID " + driverID + "created successfully");
-		
-		lastName=null;
-		firstName=null;
-		RFID=null;
-		empID=null;
-
-	}
-
-	public void createVehicleAction() {
+	public void editVehicleAction() {
 		reInitAction();
 		
 		Integer yearint=null;
@@ -607,9 +697,6 @@ public class DAOUtilBean implements PhaseListener {
 			return;
 		} else if (selectedGroupID == null || selectedGroupID < 0) {
 			setErrorMsg("Error: Please select a Team");
-			return;
-		} else if (VIN == null || VIN.trim().length() == 0) {
-			setErrorMsg("Error: Please enter a valid VIN");
 			return;
 		} else if (year != null && year.trim().length() > 0) {
 			try {
@@ -627,8 +714,44 @@ public class DAOUtilBean implements PhaseListener {
 				return;
 		}
 	
-		
 		Vehicle vehicle = new Vehicle();
+		boolean doCreate = true;
+		
+		if (selectedVehicleID>-1)
+		{
+			vehicle = vehicleDAO.findByID(selectedVehicleID);
+			doCreate=false;
+		}
+
+		String vwarn = "";
+		Integer currentVID = device.getVehicleID();
+		Vehicle currentV=null;
+		if (currentVID != null && currentVID > 0
+				&& !currentVID.equals(vehicle.getVehicleID())) {
+			 currentV = vehicleDAO.findByID(currentVID);
+			if (currentV != null
+					&& currentV.getStatus().equals(Status.ACTIVE))
+				vwarn = "Warning: Device was previously assigned to vehicle: "
+						+ currentV.getName()
+						+ " "
+						+ currentV.getFullName() + "<BR/>";
+		}
+
+		if (VIN!=null && VIN.trim().length()>0)
+		{
+			currentV = vehicleDAO.findByVIN(VIN);
+			if (currentV != null && currentV.getStatus().equals(Status.ACTIVE) && !currentV.getVehicleID().equals(vehicle.getVehicleID()))
+			{
+				vwarn += "Warning: VIN was previously assigned to vehicle: "
+					+ currentV.getName()
+					+ " "
+					+ currentV.getFullName() + "<BR/>";
+				currentV.setVIN(null);
+				vehicleDAO.update(currentV);
+			}			
+		}
+	
+		
 		vehicle.setName(vehicleName.trim());
 		vehicle.setLicense(license.trim());
 		vehicle.setVIN(VIN.trim());
@@ -637,18 +760,34 @@ public class DAOUtilBean implements PhaseListener {
 		vehicle.setYear(yearint);
 		vehicle.setGroupID(selectedGroupID);
 		vehicle.setStatus(Status.ACTIVE);
-		Integer vehicleID = vehicleDAO.create(selectedGroupID, vehicle);
-		if (vehicleID==null || vehicleID<1)
+		
+		Integer vehicleID = vehicle.getVehicleID();
+		if (doCreate)
 		{
-			setErrorMsg("Error creating vehicleID " + vehicleID);
-			return;
+			vehicleID = vehicleDAO.create(selectedGroupID, vehicle);
+			if (vehicleID==null || vehicleID<1)
+			{
+				setErrorMsg("Error creating vehicleID " + vehicleID);
+				return;
+			}
+			setSuccessMsg(vwarn + "VehicleID " + vehicleID + " created successfully");
+		}
+		else
+		{
+			Integer count=vehicleDAO.update(vehicle);
+			if (count==null || count<1)
+			{
+				setErrorMsg("Error Updating vehicleID " + vehicle.getVehicleID());
+				return;
+			}
+			setSuccessMsg(vwarn + "VehicleID " + vehicleID + " updated successfully");
 		}
 		if (device!=null)
 			vehicleDAO.setVehicleDevice(vehicleID, device.getDeviceID());
 
-		setSuccessMsg("VehicleID " + vehicleID + " successfully created");
 		setVIN(null);
 		setVehicleName(null);
+		vehicleMap=null;
 		serialNum=null;
 		make=null;
 		model=null;
@@ -734,29 +873,124 @@ public class DAOUtilBean implements PhaseListener {
 
 		List<Vehicle> vehicles = vehicleDAO
 				.getVehiclesInGroupHierarchy(topGroup.getGroupID());
+		
 		name = name.toUpperCase().trim();
 		for (Iterator<Vehicle> viter = vehicles.iterator(); viter.hasNext();) {
 			vehicle = viter.next();
-			if (vehicle.getLicense() != null
-					&& vehicle.getLicense().trim().toUpperCase().equals(name))
-				return vehicle;
-			if (vehicle.getVIN() != null
-					&& vehicle.getVIN().trim().toUpperCase().equals(name))
-				return vehicle;
-			if (vehicle.getName() != null
-					&& vehicle.getName().trim().toUpperCase().equals(name))
-				return vehicle;
+			if (vehicle.getStatus()==Status.ACTIVE)
+			{
+				if (vehicle.getLicense() != null
+						&& vehicle.getLicense().trim().toUpperCase().equals(name))
+					return vehicle;
+				if (vehicle.getVIN() != null
+						&& vehicle.getVIN().trim().toUpperCase().equals(name))
+					return vehicle;
+				if (vehicle.getName() != null
+						&& vehicle.getName().trim().toUpperCase().equals(name))
+					return vehicle;
+			}
 		}
 
 		return null;
 	}
 
+	public void findDrivers(Integer accountID, String name)
+	{
+		driverMap = new Hashtable<Integer, String>();
+		vehicleMap = new Hashtable<Integer, String>();
+		selectedGroupID=null;
+
+		name = name.toUpperCase().trim();
+		if (name.length()==0)
+			return;
+
+		Group topGroup = findTopGroup(accountID);
+		if (topGroup == null)
+			return;
+
+		Integer did=0;
+		try {
+			did = Integer.parseInt(name);
+		} catch (NumberFormatException e) {
+
+		}
+
+		if (selectedGroupID!=null && selectedGroupID>0)
+			driverMap.put(-1, "--Create New--");
+
+		List<Driver> drivers = driverDAO.getAllDrivers(topGroup.getGroupID());
+
+		for (Iterator<Driver> diter = drivers.iterator(); diter.hasNext();) {
+			Driver driver = diter.next();
+			if(driver.getStatus()==Status.ACTIVE)
+			{
+				Person person = personDAO.findByID(driver.getPersonID());
+				if ((person.getEmpid()!=null && person.getEmpid().trim().toUpperCase().startsWith(name))
+					|| (person.getEmpid()!=null && person.getEmpid().trim().toUpperCase().startsWith(name))
+					|| (person.getLast()!=null && person.getLast().trim().toUpperCase().startsWith(name))
+					|| (driver.getBarcode()!=null && driver.getBarcode().trim().toUpperCase().startsWith(name))
+					|| (did>0 && did.equals(driver.getDriverID()))
+				)
+				{
+							driverMap.put(driver.getDriverID(), person.getFullNameWithId());
+				}
+			}
+		}
+
+
+	}
+	
+	public void findVehicles(Integer accountID, String name) 
+	{
+		vehicleMap = new Hashtable<Integer, String>();
+		driverMap = new Hashtable<Integer, String>();
+		selectedGroupID=null;
+
+		name = name.toUpperCase().trim();
+		if (name.length()==0)
+			return;
+
+		
+		Group topGroup = findTopGroup(accountID);
+		if (topGroup == null)
+			return;
+
+		Integer vid=0;
+		try {
+			vid = Integer.parseInt(name);
+		} catch (NumberFormatException e) {
+
+		}
+		
+		if (selectedGroupID!=null && selectedGroupID>0)
+			vehicleMap.put(-1, "--Create New--");
+		
+		List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(topGroup.getGroupID());
+
+		for (Iterator<Vehicle> viter = vehicles.iterator(); viter.hasNext();) {
+			Vehicle vehicle = viter.next();
+			if (vehicle.getStatus()==Status.ACTIVE)
+			{
+				if ((vehicle.getLicense() != null && vehicle.getLicense().trim().toUpperCase().startsWith(name))				
+				|| (vehicle.getVIN() != null && vehicle.getVIN().trim().toUpperCase().startsWith(name))
+				|| (vehicle.getName() != null && vehicle.getName().trim().toUpperCase().startsWith(name))
+				|| (vid>0 && vid.equals(vehicle.getVehicleID()))
+				)
+				{
+					vehicleMap.put(vehicle.getVehicleID(), vehicle.getName()+vehicle.getFullName());
+				}
+			}
+		}
+
+	}
+
+	
 	public Map<Integer, String> getAccountMap() {
 
 		if (accountMap == null || accountMap.isEmpty()) {
 			accountMap = new Hashtable<Integer, String>();
 			int limit = 700; // TODO Lose this!!
-//limit=10;
+limit=10;
 			List<Account> accounts=null;
 try {			
 			accounts = accountDAO.getAllAcctIDs();
@@ -849,7 +1083,103 @@ try {
 		return groupSelectList;
 	}
 
+	public Map<Integer, String> getDriverMap() {
+		if (driverMap==null || driverMap.isEmpty())
+		{
+			driverMap = new Hashtable<Integer, String>();
+			
+			if (selectedGroupID!=null && selectedGroupID> 0)
+			{
+				List<Driver> drivers = driverDAO.getAllDrivers(selectedGroupID);
+
+				driverMap.put(-1, "--Create New--");
+
+				for(Iterator<Driver> diter=drivers.iterator(); diter.hasNext();)
+				{
+					Driver driver = diter.next();
+					if (driver.getStatus().equals(Status.ACTIVE) && driver.getPersonID()!=null)
+					{
+						Person person = personDAO.findByID(driver.getPersonID());
+						driverMap.put(driver.getDriverID(), person.getFullNameWithId());
+					}
+					
+				}
+			}
+		}
+		return driverMap;
+	}
+
+	public List<SelectItem> getDriverSelectList() {
+
+		List<SelectItem> driverSelectList = new ArrayList<SelectItem>();
+		ArrayList sortedArrayList = new ArrayList(getDriverMap().entrySet());
+		// Sort the values based on values first and then keys.
+		Collections.sort(sortedArrayList, new AlphaComparator());
+
+		// Show sorted results
+		Iterator itr = sortedArrayList.iterator();
+		Integer id = -1;
+		String name = "";
+
+		while (itr.hasNext()) {
+			Map.Entry e = (Map.Entry) itr.next();
+			id = (Integer) e.getKey();
+			name = ((String) e.getValue());
+			driverSelectList.add(new SelectItem(id, name));
+		}
+
+		return driverSelectList;
+	}
+
+	public Map<Integer, String> getVehicleMap() {
+		if (vehicleMap==null || vehicleMap.isEmpty())
+		{
+			vehicleMap = new Hashtable<Integer, String>();
+			
+			if (selectedGroupID!=null && selectedGroupID> 0)
+			{
+				List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupID);
+				
+
+				vehicleMap.put(-1, "--Create New--");
+
+				for(Iterator<Vehicle> viter=vehicles.iterator(); viter.hasNext();)
+				{
+					Vehicle vehicle = viter.next();
+					if (vehicle.getStatus().equals(Status.ACTIVE))
+					{
+						vehicleMap.put(vehicle.getVehicleID(), vehicle.getName()+vehicle.getFullName());
+					}
+					
+				}			
+			}			
+		}
+		return vehicleMap;
+	}
+
 	
+	public List<SelectItem> getVehicleSelectList() {
+
+		List<SelectItem> vehicleSelectList = new ArrayList<SelectItem>();
+		ArrayList sortedArrayList = new ArrayList(getVehicleMap().entrySet());
+		// Sort the values based on values first and then keys.
+		Collections.sort(sortedArrayList, new AlphaComparator());
+
+		// Show sorted results
+		Iterator itr = sortedArrayList.iterator();
+		Integer id = -1;
+		String name = "";
+
+		while (itr.hasNext()) {
+			Map.Entry e = (Map.Entry) itr.next();
+			id = (Integer) e.getKey();
+			name = ((String) e.getValue());
+			vehicleSelectList.add(new SelectItem(id, name));
+		}
+
+		return vehicleSelectList;
+	}
+
 	
 	public void clearErrorAction() {
 		reInitAction();
@@ -861,6 +1191,7 @@ try {
 		setErrorMsg(null);
 		setSuccessMsg(null);
 		vehicleGrid="";
+		vehicleCount=0;
 		if (messageList != null)
 			messageList.clear();
 	}
@@ -929,6 +1260,10 @@ try {
 		if (!selectedAccountID.equals(this.selectedAccountID)) {
 			selectedGroupID = null;
 			groupMap = null;
+			driverMap=null;
+			vehicleMap=null;
+			selectedVehicleID = null;
+			selectedDriverID = null;
 		}
 		this.selectedAccountID = selectedAccountID;
 	}
@@ -948,6 +1283,19 @@ try {
 		return getGroupMap().get(this.selectedGroupID);
 	}
 
+	public String getSelectedDriverName() {
+		if (selectedDriverID == null)
+			return "--Select a Driver--";
+		return getDriverMap().get(this.selectedDriverID);
+	}
+
+	public String getSelectedVehicleName() {
+		if (selectedVehicleID == null)
+			return "--Select a Vehicle--";
+		return getVehicleMap().get(this.selectedVehicleID);
+	}
+
+	
 	public List<String> getMessageList() {
 		return messageList;
 	}
@@ -1085,6 +1433,10 @@ try {
 		if (groupMap == null || groupMap.isEmpty())
 			selectedGroupID = null;
 		this.selectedGroupID = selectedGroupID;
+		selectedVehicleID = null;
+		selectedDriverID = null;
+		driverMap=null;
+		vehicleMap=null;
 	}
 
 	public boolean getAssignedVehiclesOnly() {
@@ -1178,5 +1530,94 @@ try {
 
 	public void setAddressDAO(AddressDAO addressDAO) {
 		this.addressDAO = addressDAO;
+	}
+
+	public Integer getSelectedDriverID() {
+		return selectedDriverID;
+	}
+
+	public void setSelectedDriverID(Integer selectedDriverID) {
+		this.selectedDriverID = selectedDriverID;
+		setLastName(null);
+		setFirstName(null);
+		setEmpID(null);
+		setRFID(null);
+		if (selectedDriverID!=null && selectedDriverID>0)
+		{
+			Driver driver = driverDAO.findByID(selectedDriverID);
+			if (!driver.getGroupID().equals(selectedGroupID))
+			{
+				selectedGroupID=driver.getGroupID();
+				groupMap=null;
+			}
+			setRFID(driver.getBarcode());
+			Person person = personDAO.findByID(driver.getPersonID());
+			setLastName(person.getLast());
+			setFirstName(person.getFirst());
+			setEmpID(person.getEmpid());
+		}
+	}
+
+	public Integer getSelectedVehicleID() {
+		return selectedVehicleID;
+	}
+
+	public void setSelectedVehicleID(Integer selectedVehicleID) {
+		this.selectedVehicleID = selectedVehicleID;
+		setVehicleName(null);
+		setVIN(null);
+		setMake(null);
+		setModel(null);
+		setYear(null);
+		setLicense(null);
+		setSerialNum(null);			
+		if (selectedVehicleID!=null && selectedVehicleID>0)
+		{
+			Vehicle vehicle = vehicleDAO.findByID(selectedVehicleID);
+			if (!vehicle.getGroupID().equals(selectedGroupID))
+			{
+				selectedGroupID=vehicle.getGroupID();
+				groupMap=null;
+			}
+			setVehicleName(vehicle.getName());
+			setVIN(vehicle.getVIN());
+			setMake(vehicle.getMake());
+			setModel(vehicle.getModel());
+			setYear(vehicle.getYear().toString());
+			setLicense(vehicle.getLicense());
+			
+			if (vehicle.getDeviceID()!=null && vehicle.getDeviceID()>0)
+			{
+				Device device = deviceDAO.findByID(vehicle.getDeviceID());
+				setSerialNum(device.getSerialNum());
+				
+			}
+		}
+	}
+
+	public String getDriverCriteria() {
+		return driverCriteria;
+	}
+
+	public void setDriverCriteria(String driverCriteria) {
+		this.driverCriteria = driverCriteria;
+	}
+	public String getVehicleCriteria() {
+		return vehicleCriteria;
+	}
+
+	public void setVehicleCriteria(String vehicleCriteria) {
+		this.vehicleCriteria = vehicleCriteria;
+	}
+
+	public String getJscriptOnLoad() {
+		String tmp = jscriptOnLoad;
+		//This is a one shot method
+		jscriptOnLoad=null;
+		return tmp;
+	}
+
+	public void setJscriptOnLoad(String jscriptOnLoad) {
+		this.jscriptOnLoad = jscriptOnLoad;
 	}
 }

@@ -55,6 +55,12 @@ public class IPhoneRewriteFilter implements Filter {
 				return;							
 			}			
 		}
+//		else if (userAgent.toLowerCase().indexOf("iphone")>=0 
+//				&& uri.endsWith("home.faces"))
+//		{
+//			uri = StringUtils.replace(uri, ".faces", ".jsp");		
+//			res.sendRedirect(uri);
+//		}
 		else if (userAgent.toLowerCase().indexOf("iphone")>=0 
 			&& uri.indexOf("/iphone/")<0)
 		{

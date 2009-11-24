@@ -21,10 +21,6 @@
 </fieldset>
 		<h:commandButton value="Move to Account"
 			action="#{daoUtilBean.moveDeviceAction}" /> 
-		<br />
-		<br />
-					<a class="whiteButton" href="#home">Cancel</a>
-					<br />
 		<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 	</h:form>
 	<rich:dataList rendered="#{daoUtilBean.messageList != null}"

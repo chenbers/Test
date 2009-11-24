@@ -30,9 +30,6 @@
  
  <h:commandButton value="Change VIN"
 						 action="#{daoUtilBean.editVINAction}" />
-		<br />
-		<br />
-					<a class="whiteButton" href="#home">Cancel</a>
 				</h:form>
 				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
 				<h:outputText value="#{message}"/><br/>
