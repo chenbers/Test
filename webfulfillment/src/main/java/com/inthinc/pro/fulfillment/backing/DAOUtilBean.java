@@ -990,7 +990,7 @@ public class DAOUtilBean implements PhaseListener {
 		if (accountMap == null || accountMap.isEmpty()) {
 			accountMap = new Hashtable<Integer, String>();
 			int limit = 700; // TODO Lose this!!
-limit=10;
+//limit=10;
 			List<Account> accounts=null;
 try {			
 			accounts = accountDAO.getAllAcctIDs();
