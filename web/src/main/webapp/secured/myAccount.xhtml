@@ -127,19 +127,19 @@
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
                       <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
-                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.user.person.info}" />
+                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.info}" />
                       <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16"/></td>
                       <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
-                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.user.person.warn}" />
+                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.warn}" />
                       <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16"/></td>
                       <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
-                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.user.person.crit}" />
+                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.crit}" />
                       <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                   </tbody>

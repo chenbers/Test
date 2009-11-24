@@ -176,6 +176,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="groupDAO" ref="groupDAO"></property>
     <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    <property name="accountOptionsBean" ref="accountOptionsBean"></property>
     <property name="personChangeListeners">
       <list>
         <ref local="vehiclesBean" />
@@ -362,6 +363,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="userDAO" ref="userDAO" />
     <property name="driverDAO" ref="driverDAO" />
     <property name="helpBean" ref="helpBean" />
+    <property name="accountOptionsBean" ref="accountOptionsBean"></property>
   </bean>
 
   <!-- Map Backing Beans -->
@@ -507,4 +509,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   <!-- Error translator -->
   <bean id="errorTranslatorBean" class="com.inthinc.pro.backing.ErrorTranslatorBean">
   </bean>
+  
+  <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean">
+  		<property name="phoneAlerts" value="${accountOptions.phoneAlerts}"/>
+  </bean>
+  
 </beans>

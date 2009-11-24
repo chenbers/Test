@@ -19,6 +19,7 @@ import com.inthinc.pro.validators.EmailValidator;
 public class MyAccountBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(MyAccountBean.class);
+/*    
     private static final Map<String, Integer> ALERT_OPTIONS;
     static
     {
@@ -28,15 +29,18 @@ public class MyAccountBean extends BaseBean
             if (i != 5) // skip cell phone
                 ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
     }
+*/    
     private PersonDAO personDAO;
     private UserDAO userDAO;
     private DriverDAO driverDAO;
     private HelpBean helpBean;
+    private AccountOptionsBean accountOptionsBean;
 
-	public MyAccountBean()
+    public MyAccountBean()
     {
         super();
     }
+
 
     public void validateEmail(FacesContext context, UIComponent component, Object value)
     {
@@ -94,9 +98,16 @@ public class MyAccountBean extends BaseBean
         return null;
     }
 
-    public Map<String, Integer> getAlertOptions()
-    {
-        return ALERT_OPTIONS;
+    public Map<String, Integer> getAlertOptions() {
+        // alert options
+        LinkedHashMap<String, Integer> alertOptions = new LinkedHashMap<String, Integer>();
+        for (int i = 0; i < 8; i++) {
+            if (i == 5 ||  // skip cell phone 
+              (!accountOptionsBean.getEnablePhoneAlerts() && (i == 3 || i == 4)))  // skip phone alerts if account is set to this
+            	continue;
+            alertOptions.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
+        }
+        return alertOptions;
     }
 
     public void setPersonDAO(PersonDAO personDAO)
@@ -121,4 +132,34 @@ public class MyAccountBean extends BaseBean
 		this.helpBean = helpBean;
 	}
 
+    
+    public AccountOptionsBean getAccountOptionsBean() {
+		return accountOptionsBean;
+	}
+
+	public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
+		this.accountOptionsBean = accountOptionsBean;
+	}
+
+	public Integer getInfo()
+	{
+		return validAccountAlertValue(getUser().getPerson().getInfo());
+	}
+
+
+	public Integer getWarn()
+	{
+		return validAccountAlertValue(getUser().getPerson().getWarn());
+		
+	}
+	public Integer getCrit()
+	{
+		return  validAccountAlertValue(getUser().getPerson().getCrit());
+	}
+	private Integer validAccountAlertValue(Integer value) {
+        if (value == 5 ||  // skip cell phone 
+           (!accountOptionsBean.getEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
+           return 0;
+		return value;
+	}
 }
