@@ -955,7 +955,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         
     	private Integer validAccountAlertValue(Integer value) {
-            if (value == 5 ||  // skip cell phone 
+            if (value == null || value == 5 ||  // skip cell phone 
                (!bean.getAccountOptionsBean().getEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
                return 0;
     		return value;
