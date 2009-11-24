@@ -72,8 +72,7 @@ public class MeasurementConversionUtil
 
     public static Number fromMPGtoLP100KM(Number milesPerGallon)
     {
-    	if(milesPerGallon.doubleValue()== 0D) return null;
-        return  milesPerGallon==null?null:new Double(100)/fromMPGtoKPL(milesPerGallon).doubleValue();
+        return  (milesPerGallon==null || milesPerGallon.doubleValue()== 0D)?null:new Double(100)/fromMPGtoKPL(milesPerGallon).doubleValue();
     }
     
     public static Number fromMPGtoMPGUK(Number milesPerGallon)
