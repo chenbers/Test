@@ -55,7 +55,7 @@
       <h:outputText value="#{item.report.label}">
       </h:outputText>
     </rich:column>
-    <rich:column id="status" rendered="#{reportScheduleBean.tableColumns['report'].visible}" sortBy="#{item.status}">
+    <rich:column id="status" rendered="#{reportScheduleBean.tableColumns['status'].visible}" sortBy="#{item.status}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_status}" /></f:facet>
       <h:outputText value="#{messages[item.status]}">
       </h:outputText>
