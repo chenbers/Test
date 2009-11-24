@@ -184,7 +184,11 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         
         // Construct the message parameter list
         parameterList.add(simpleDateFormat.format(event.getTime()));
-        parameterList.add(driver.getPerson().getFullName());
+        if (driver != null && driver.getPerson() != null)
+        	parameterList.add(driver.getPerson().getFullName());
+        else {
+        	parameterList.add("");
+        }
         parameterList.add(vehicle.getName());
         switch (alertMessage.getAlertMessageType()) {
             case ALERT_TYPE_ENTER_ZONE:
