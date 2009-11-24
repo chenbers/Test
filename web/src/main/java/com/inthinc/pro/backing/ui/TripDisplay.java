@@ -51,7 +51,7 @@ public class TripDisplay implements Comparable<TripDisplay>
         durationMiliSeconds = trip.getEndTime().getTime() - trip.getStartTime().getTime();
         setDuration(DateUtil.getDurationFromMilliseconds(durationMiliSeconds));
         
-        setDistance(trip.getMileage() / 100);
+        setDistance(trip.getMileage() / 100D);
         
         AddressLookup lookup = new AddressLookup();
         lookup.setMapServerURLString(mapServerUrl);
