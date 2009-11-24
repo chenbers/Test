@@ -93,10 +93,13 @@ public class AlertMessagesTest {
     private static Person person;
     private static Device device;
     private static Vehicle vehicle;
+    private static Device noDriverDevice;
+    private static Vehicle noDriverVehicle;
     private static Zone zone;
     private static ZoneAlert zoneAlert;
     private static RedFlagAlert redFlagAlert;
     private static String IMEI;
+    private static String noDriverDeviceIMEI;
     private static Integer zoneID;
     private static String mapServerURL;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
@@ -203,6 +206,25 @@ public class AlertMessagesTest {
     }
 
     @Test
+    public void alertsUnknownDriver() {
+        zoneID = zone.getZoneID();
+        noDriverDeviceIMEI = noDriverDevice.getImei();
+        
+        boolean anyAlertsFound = false;
+        // generate zone arrival/departure event
+        if (!genZoneEvent(noDriverDeviceIMEI, zoneID))
+            fail("Unable to generate zone arrival event");
+        if (pollForMessages("Zone Alert Groups Set"))
+        	anyAlertsFound = true;
+
+        if (!genSeatBeltEvent(noDriverDeviceIMEI))
+            fail("Unable to generate seatbelt event");
+        if (pollForMessages("Red Flag Alert Groups Set"))
+        	anyAlertsFound = true;
+        assertTrue("No Alerts were generated for No Driver", anyAlertsFound);
+    }
+    
+    @Test
     public void redFlagAlerts() {
         IMEI = device.getImei();
         // generate zone arrival/departure event
@@ -243,7 +265,9 @@ public class AlertMessagesTest {
             xml.writeObject(team1Group);
             xml.writeObject(person);
             xml.writeObject(device);
+            xml.writeObject(noDriverDevice);
             xml.writeObject(vehicle);
+            xml.writeObject(noDriverVehicle);
             xml.writeObject(zone);
             xml.writeObject(zoneAlert);
             xml.writeObject(redFlagAlert);
@@ -266,7 +290,9 @@ public class AlertMessagesTest {
             team1Group = getNext(xml, Group.class);
             person = getNext(xml, Person.class);
             device = getNext(xml, Device.class);
+            noDriverDevice = getNext(xml, Device.class);
             vehicle = getNext(xml, Vehicle.class);
+            noDriverVehicle = getNext(xml, Vehicle.class);
             zone = getNext(xml, Zone.class);
             zoneAlert = getNext(xml, ZoneAlert.class);
             redFlagAlert = getNext(xml, RedFlagAlert.class);
@@ -356,6 +382,7 @@ public class AlertMessagesTest {
         assertNotNull(personID);
         logger.debug("PERSON ID: " + personID);
         logger.debug("DRIVER ID: " + person.getDriver().getDriverID());
+        
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         device = new Device(0, acctID, DeviceStatus.ACTIVE, "Device", genNumericID(acctID, 15), genNumericID(acctID, 19), genNumericID(account.getAcctID(), 10), "5555551234",
@@ -375,6 +402,24 @@ public class AlertMessagesTest {
         vehicleDAO.setDeviceDAO(deviceDAO);
         vehicleDAO.setVehicleDevice(vehicleID, deviceID);
         vehicleDAO.setVehicleDriver(vehicleID, driver.getDriverID());
+        
+        deviceDAO.setSiloService(siloService);
+        noDriverDevice = new Device(0, acctID, DeviceStatus.ACTIVE, "Device", genNumericID(acctID, 15, "7"), genNumericID(acctID, 19, "7"), genNumericID(account.getAcctID(), 10, "7"), "5555551235",
+                "5555559877");
+        noDriverDevice.setAccel("1100 50 4");
+        deviceID = deviceDAO.create(acctID, noDriverDevice);
+        noDriverDevice.setDeviceID(deviceID);
+        noDriverDeviceIMEI = noDriverDevice.getImei();
+        logger.debug("DEVICE ID: " + deviceID);
+        vehicleDAO.setSiloService(siloService);
+        noDriverVehicle = new Vehicle(0, groupID, 10, Status.ACTIVE, "Test Vehicle", "Make", "Model", 2000, "Red", VehicleType.LIGHT, "VINa_" + groupID, 1000, "UT " + groupID, States
+                .getStateByAbbrev("UT"));
+        vehicleID = vehicleDAO.create(groupID, noDriverVehicle);
+        noDriverVehicle.setVehicleID(vehicleID);
+        logger.debug("VEHICLE ID: " + vehicleID);
+        vehicleDAO.setDeviceDAO(deviceDAO);
+        vehicleDAO.setVehicleDevice(vehicleID, deviceID);
+        
         zoneAlert(acctID, team1Group.getGroupID(), personID);
         redFlagAlert(acctID, team1Group.getGroupID());
     }
@@ -383,6 +428,13 @@ public class AlertMessagesTest {
         String id = "999" + acctID.toString();
         for (int i = id.length(); i < len; i++) {
             id += "9";
+        }
+        return id;
+    }
+    private static String genNumericID(Integer acctID, Integer len, String ch) {
+        String id = "999" + acctID.toString();
+        for (int i = id.length(); i < len; i++) {
+            id += ch;
         }
         return id;
     }
