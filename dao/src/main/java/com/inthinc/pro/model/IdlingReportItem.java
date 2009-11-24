@@ -57,7 +57,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     }
     public Float getDriveTime()
     {
-        return driveTime;
+        return (driveTime == null) ? 0f : driveTime;
     }
     public void setDriveTime(Float driveTime)
     {
@@ -73,7 +73,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
 //    }
     public Float getLowHrs()
     {
-        return lowHrs;
+        return (lowHrs == null) ? 0f : lowHrs;
     }
     public void setLowHrs(Float lowHrs)
     {
@@ -81,7 +81,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     }
     public Float getHighHrs()
     {
-        return highHrs;
+        return (highHrs == null) ? 0f : highHrs;
     }
     public void setHighHrs(Float highHrs)
     {
@@ -133,7 +133,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     	
         Float totHrs = getTotalHours();
         
-	    if ( totHrs.floatValue() != 0.0f ) {
+	    if ( totHrs != null && totHrs.floatValue() != 0.0f ) {
 	    	
 	        return 100.0f*getLowHrs()/totHrs; 
 	    } 
@@ -143,7 +143,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     	
         Float totHrs = getTotalHours();
         
-	    if ( totHrs.floatValue() != 0.0f ) {
+	    if ( totHrs != null && totHrs.floatValue() != 0.0f ) {
 	    	
 	        return 100.0f*getHighHrs()/totHrs; 
 	    } 
@@ -154,7 +154,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     	
         Float totHrs = getTotalHours();
         
-	    if ( totHrs.floatValue() != 0.0f ) {
+	    if ( totHrs != null && totHrs.floatValue() != 0.0f ) {
 	    	
 	        return 100.0f*getTotalHrs()/totHrs; 
 	    } 
@@ -167,6 +167,10 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     @Override
     public int compareTo(IdlingReportItem item)
     { 
+    	if (getDriver() == null || getDriver().getPerson() == null || getDriver().getPerson().getFullName() == null)
+    		return -1;
+    	if (item.getDriver() == null || item.getDriver().getPerson() == null || item.getDriver().getPerson().getFullName() == null)
+    		return 1;
         return this.getDriver().getPerson().getFullName().toLowerCase().compareTo(item.getDriver().getPerson().getFullName().toLowerCase());
     }
 

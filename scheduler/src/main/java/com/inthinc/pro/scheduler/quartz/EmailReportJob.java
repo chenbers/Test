@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
@@ -116,24 +117,33 @@ public class EmailReportJob extends QuartzJobBean
         User user = userDAO.findByID(reportSchedule.getUserID());
         for (int i = 0; i < reportGroup.getReports().length; i++)
         {
+        	Duration duration = reportSchedule.getReportDuration();
+        	if (duration == null) {
+        		duration = Duration.DAYS;
+        	}
+        	if (reportSchedule.getGroupID() == null)
+        	{
+        		logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
+        		continue;
+        	}
             switch (reportGroup.getReports()[i]) {
             case OVERALL_SCORE:
-                reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
+                reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
                 break;
             case TREND:
-                reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
+                reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
                 break;
             case MPG_GROUP:
-                reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
+                reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
                 break;
             case DEVICES_REPORT:
                 reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                 break;
             case DRIVER_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
+                reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
                 break;
             case VEHICLE_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration(), user.getPerson().getLocale()));
+                reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
                 break;
             case IDLING_REPORT:
                 final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
