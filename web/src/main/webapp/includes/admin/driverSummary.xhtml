@@ -136,7 +136,7 @@
 
 			<div class="spacer"></div>
 
-			<div class="add_section_title">Driver Information</div>
+			<div class="add_section_title"><h:outputText value="#{messages.editPerson_driverInformation}"/></div>
 
 			<table width="500" border="0" cellspacing="2" cellpadding="4"
 				align="center">
@@ -163,14 +163,14 @@
 						<f:convertDateTime dateStyle="long" timeZone="UTC" />
 					</h:outputText></td>
 				</tr>
-				<tr>
-					<td width="100"><h:outputText
-						value="#{messages.editPerson_driver_RFID}" /></td>
-					<td><h:outputText value="#{driver.RFID}" >
-                           <f:converter converterId="HexConverter" />
-                        </h:outputText>
-                     </td>
-				</tr>
+<!--				<tr>-->
+<!--					<td width="100"><h:outputText-->
+<!--						value="#{messages.editPerson_driver_RFID}" /></td>-->
+<!--					<td><h:outputText value="#{driver.RFID}" >-->
+<!--                           <f:converter converterId="HexConverter" />-->
+<!--                        </h:outputText>-->
+<!--                     </td>-->
+<!--				</tr>-->
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_status}" /></td>

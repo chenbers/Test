@@ -23,7 +23,8 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     private static final Integer DRIVER_TYPE = 1;
 
     private static final String CENTRAL_ID_KEY = "rfid";
-
+    private static final String BARCODE_KEY = "barcode";
+    
     @Override
     public List<Driver> getAllDrivers(Integer groupID)
     {
@@ -118,11 +119,38 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     }
 
     @Override
+	public List<Long> getRfidsByBarcode(String barcode) {
+
+    	try
+    	{
+    		List<Long> rfids = getSiloService().getRfidsForBarcode(barcode);
+    		return rfids;
+    	}
+    	catch(EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
+
+	@Override
     public Integer getDriverIDForRFID(Long rfid)
     {
         try
         {
             Map<String, Object> returnMap = getSiloService().getIDLong(CENTRAL_ID_KEY, rfid);
+            return getCentralId(returnMap);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
+	@Override
+    public Integer getDriverIDByBarcode(String barcode)
+    {
+        try
+        {
+            Map<String, Object> returnMap = getSiloService().getID(BARCODE_KEY, barcode);
             return getCentralId(returnMap);
         }
         catch (EmptyResultSetException e)

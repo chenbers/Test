@@ -168,13 +168,12 @@
                           </tr>
                         </table>
 
-                        </ui:fragment>
                         <div class="spacer"></div>
 
-                        <div class="add_section_title">#{messages.editPerson_rfidInformation}</div>
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_rfidInformation}"/></div>
                   
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                                                  <tr>
+                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid_barcode}:" /></td>
                             <td><h:outputText value="#{personBean.item.driver.barcode}" /></td>
                           </tr>
@@ -195,6 +194,7 @@
                             </td>
                           </tr>
                         </table>
+                        </ui:fragment>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">

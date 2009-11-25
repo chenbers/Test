@@ -69,4 +69,23 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return The driver ID or <code>null</code> if not found.
      */
     Integer getDriverIDForRFID(Long rfid);
+    
+    /**
+     * Find a RFIDs for a barcode.
+     * 
+     * @param barcode
+     *            The barcode to find by.
+     * @return List of RFIDs or <code>null</code> if not found.
+     */
+    List<Long> getRfidsByBarcode(String barcode);
+    
+    /**
+     * Find a driver for a barcode.
+     * 
+     * @param barcode
+     *            The barcode to find by.
+     * @return List of RFIDs or <code>null</code> if not found.
+     */
+    Integer getDriverIDByBarcode(String barcode);
+
 }

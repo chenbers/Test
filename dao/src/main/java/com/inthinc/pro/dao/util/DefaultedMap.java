@@ -38,7 +38,7 @@ public class DefaultedMap<K, V> implements Map<K,V>{
 		
 		if (value == null){
 			
-			logger.info("Unsupported key = [" + key + "] requested, returning default value");
+			logger.trace("Unsupported key = [" + key + "] requested, returning default value");
 			
 			return defaultValue;
 		}

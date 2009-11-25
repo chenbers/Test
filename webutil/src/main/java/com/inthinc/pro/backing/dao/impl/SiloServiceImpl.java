@@ -539,6 +539,11 @@ public class SiloServiceImpl implements SiloService {
     public List<Map<String, Object>> getUsersByGroupIDDeep(@DaoParam(name = "groupID") Integer groupID) {
         return null;
     }
+    @Override
+    public List<Long> getRfidsForBarcode(String barcode) throws ProDAOException{
+    	
+    	return null;
+    }
 
     // rfid - driverID
     @Override

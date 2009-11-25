@@ -20,6 +20,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -186,7 +187,16 @@ public class SiloServiceTest {
         supportedTimeZones.init();
         assertTrue(SupportedTimeZones.getSupportedTimeZones().size() > 0);
     }
-
+    @Test
+    public void rfidsFromBarcode(){
+    	
+    	DriverHessianDAO driverDAO = new DriverHessianDAO();
+    	driverDAO.setSiloService(siloService);
+    	
+    	List<Long> rfids = driverDAO.getRfidsByBarcode("0000055");
+    	assertEquals(rfids.get(0).longValue(),-2303872684320581800l);
+    	assertEquals(rfids.get(1).longValue(),-2303872684320581797l);
+    }
     @Test
     public void sensitivityForwardCommandMapping() {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();

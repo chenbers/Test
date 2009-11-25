@@ -106,7 +106,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("driver_dot");
         AVAILABLE_COLUMNS.add("driver_barcode");
         AVAILABLE_COLUMNS.add("driver_rfid1");
-        AVAILABLE_COLUMNS.add("driver_rfid1");
+        AVAILABLE_COLUMNS.add("driver_rfid2");
         AVAILABLE_COLUMNS.add("driver_groupID");
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
@@ -294,6 +294,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 value = 0;
             return MessageUtil.getMessageString("myAccount_alertText" + value);
         }
+        else if (column.equals("driver_barcode")) {
+            if (person.getDriver() != null)
+                return person.getDriver().getBarcode();
+            return null;
+        }
         else if (column.equals("driver_rfid1")) {
             Long value = null;
             if (person.getDriver() != null)
@@ -459,8 +464,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     break;
                 }
         }
-        final String result = super.save();
-        // revert partial-edit changes if user editable
+         final String result = super.save();
+       // revert partial-edit changes if user editable
         if ((result != null) && partialEdit) {
             items = null;
             getItems();
@@ -533,6 +538,42 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
                 context.addMessage("edit-form:editPerson-driver_expiration", message);
                 valid = false;
+            }
+            if (!isBatchEdit() && (person.getDriver().getBarcode() != null) && !person.getDriver().getBarcode().isEmpty()) {
+            	
+            	List<Long> rfids = driverDAO.getRfidsByBarcode(person.getDriver().getBarcode());
+            	if (rfids == null || rfids.isEmpty()){
+            		
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_barcodeNotAvailable"), null);
+                    context.addMessage("edit-form:editPerson-driver_barcode", message);
+                    person.getDriver().setBarcode("");
+	            	person.getDriver().setRfid1(null);
+	            	person.getDriver().setRfid2(null);
+                    
+                    valid = false;
+            		
+            	}
+            	else {
+            		
+	            	Integer existingBarCodeDriverId = driverDAO.getDriverIDByBarcode(person.getDriver().getBarcode());
+	            	if (existingBarCodeDriverId != null && !existingBarCodeDriverId.equals(person.getDriver().getDriverID()) ){
+	            		
+	    	    		Driver existingBarCodeDriver = driverDAO.findByID(existingBarCodeDriverId);
+	                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.formatMessageString("editPerson_uniqueBarcode", existingBarCodeDriver.getPerson().getFullName()), null);
+	                    context.addMessage("edit-form:editPerson-driver_barcode", message);
+	                    
+		            	person.getDriver().setRfid1(rfids.get(0));
+		            	person.getDriver().setRfid2(rfids.size()>1?rfids.get(1):null);
+	                    
+	                    valid = false;
+	            	}
+	            	else {
+	            		
+		            	person.getDriver().setRfid1(rfids.get(0));
+		            	person.getDriver().setRfid2(rfids.size()>1?rfids.get(1):null);
+	            	}
+            	}
+            
             }
             // unique RFID
 //            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 1)) {
@@ -678,6 +719,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     person.setSecEmail(null);
                 }                
             }
+            if(person.getDriver().getBarcode() == null || person.getDriver().getBarcode().isEmpty()){
+           	
+            	person.getDriver().setBarcode("");
+            	person.getDriver().setRfid1(0l);
+            	person.getDriver().setRfid2(0l);
+            }
+
             // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
