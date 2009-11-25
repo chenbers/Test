@@ -659,20 +659,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     @Override
     protected Boolean authorizeAccess(PersonView item) {
-//        Integer acctID = item.getAcctID();
-//        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID)) {
-//            return Boolean.TRUE;
-//        }
-//        return Boolean.FALSE;
-    	return item.getGroup() != null;
-//        Group group = getGroupHierarchy().getGroup(item.getGroup().getGroupID());
-//
-//        if (group != null)
-//        {
-//            return Boolean.TRUE;
-//        }
-//
-//        return Boolean.FALSE;
+        Integer acctID = item.getAcctID();
+        if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID)) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     }
 
     @Override
