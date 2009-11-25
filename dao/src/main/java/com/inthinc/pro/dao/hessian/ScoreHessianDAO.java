@@ -173,7 +173,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 returnMap.put(gqv.getGroup().getGroupID(), scoreList);
 
             }
-            returnMap.put(groupID, getTopGroupScoreList(groupID, returnMap));
+            returnMap.put(groupID, getTopGroupScoreList(groupID, duration));
             return returnMap;
         }
         catch (EmptyResultSetException e)
@@ -182,53 +182,26 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    private List<ScoreableEntity> getTopGroupScoreList(Integer topGroupID, Map<Integer, List<ScoreableEntity>> returnMap) {
     	
-        List<ScoreableEntity> topGroupScoreList = null;
-        for (Integer groupID : returnMap.keySet())
+      private List<ScoreableEntity> getTopGroupScoreList(Integer topGroupID, Duration duration) {
+        
+        
+        List<Map<String, Object>> topGroupMap = reportService.getGDTrendByGTC(topGroupID, duration.getCode(), duration.getDvqCount());
+        List<DriveQMap> topGroupList = getMapper().convertToModelObject(topGroupMap, DriveQMap.class);
+        
+        List<ScoreableEntity> topGroupScoreList = new ArrayList<ScoreableEntity>();
+        for (DriveQMap driveQMap : topGroupList)
         {
-        	List<ScoreableEntity> groupScores = returnMap.get(groupID);
-        	if (topGroupScoreList == null)
-        	{
-        		topGroupScoreList = new ArrayList<ScoreableEntity>();
-            	for (ScoreableEntity entity : groupScores)
-            	{
-                    ScoreableEntity topGroupEntity = new ScoreableEntity();
-                    topGroupEntity.setEntityID(topGroupID);
-                    topGroupEntity.setEntityType(EntityType.ENTITY_GROUP);
-                    topGroupEntity.setScore(0);
-                    topGroupEntity.setScoreType(ScoreType.SCORE_OVERALL);
-                    topGroupEntity.setIdentifierNum(0);
-                    topGroupEntity.setDate(entity.getDate());
-                    topGroupScoreList.add(topGroupEntity);
-            	}
-        		
-        	}
-        	int idx = 0;
-        	for (ScoreableEntity entity : groupScores)
-        	{
-                if (entity.getScore() != NO_SCORE)
-                {
-                	ScoreableEntity topGroupEntity = topGroupScoreList.get(idx);
-                	topGroupEntity.setScore(topGroupEntity.getScore() + entity.getScore());
-                	topGroupEntity.setIdentifierNum(topGroupEntity.getIdentifierNum().longValue()+ 1l);
-                }
-        		idx++;
-        	}
+            ScoreableEntity entity = new ScoreableEntity();
+            entity.setEntityID(topGroupID);
+            entity.setEntityType(EntityType.ENTITY_GROUP);
+            entity.setScore(driveQMap.getOverall() == null ? NO_SCORE : driveQMap.getOverall());
+            entity.setScoreType(ScoreType.SCORE_OVERALL);
+            entity.setDate(driveQMap.getEndingDate());
+            topGroupScoreList.add(entity);
+            
         }
-        
-        
-    	for (ScoreableEntity entity : topGroupScoreList)
-    	{
-    		if (entity.getIdentifierNum().longValue() > 0l)
-    		{
-    			entity.setScore((int)((long)entity.getScore().intValue()/entity.getIdentifierNum().longValue()));
-    		}
-    		else
-    		{
-    			entity.setScore(NO_SCORE);
-    		}
-    	}
+              
 		return topGroupScoreList;
 	}
 
