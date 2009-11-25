@@ -10,6 +10,7 @@ import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.IdlePercentItem;
+import com.inthinc.pro.model.IdlingReportData;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
@@ -159,7 +160,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-    List<IdlingReportItem> getIdlingReportData(Integer groupID, Date start, Date end);    
+    IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end);    
 
     CrashSummary getGroupCrashSummaryData(Integer groupID);
     CrashSummary getDriverCrashSummaryData(Integer driverID);

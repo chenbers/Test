@@ -25,6 +25,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.IdlePercentItem;
+import com.inthinc.pro.model.IdlingReportData;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ScoreItem;
@@ -466,17 +467,17 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public List<IdlingReportItem> getIdlingReportData(Integer groupID, Date start, Date end)
+    public IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end)
     {
+        IdlingReportData data = new IdlingReportData();
         try
         {
             List<DVQMap> result = getMapper().convertToModelObject(
                     reportService.getDVScoresByGSE(groupID, DateUtil.convertDateToSeconds(start), DateUtil.convertDateToSeconds(end)), DVQMap.class);
             List<IdlingReportItem> lIri = new ArrayList<IdlingReportItem>();
-            //Horrible way of returning the original number of results, but at least don't need to create records for data we don't need
-            IdlingReportItem iriCount = new IdlingReportItem();
-            iriCount.setGroupID(result.size());
-            lIri.add(iriCount);
+            
+            data.setTotal(result.size());
+            data.setItemList(lIri);
             
             for (DVQMap d : result)
             {
@@ -493,14 +494,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	                iri.setVehicle(d.getVehicle());
 	
 	                iri.setDriveTime(0.0f);
-//	                iri.setMilesDriven(0);
 	                iri.setLowHrs(0.0f);
 	                iri.setHighHrs(0.0f);
 	
-//	                if (dqm.getEndingOdometer() != null)
-//	                {
-//	                    iri.setMilesDriven(dqm.getEndingOdometer());
-//	                }
 	                if (dqm.getIdleLo() != null)
 	                {
 	                    iri.setLowHrs(dqm.getIdleLo().floatValue() / SECONDS_TO_HOURS);
@@ -520,12 +516,14 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 }
             }
 
-            return lIri;
+            return data;
 
         }
         catch (EmptyResultSetException e)
         {
-            return Collections.emptyList();
+        	data.setTotal(0);
+        	data.setItemList(new ArrayList<IdlingReportItem>());
+            return data;
         }
 
     }

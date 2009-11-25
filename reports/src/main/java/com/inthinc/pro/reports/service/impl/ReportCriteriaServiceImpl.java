@@ -26,6 +26,7 @@ import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
+import com.inthinc.pro.model.IdlingReportData;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -294,7 +295,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
 
-        List<IdlingReportItem> idlingReportItems = scoreDAO.getIdlingReportData(groupID, startDate, endDate);
+        IdlingReportData data = scoreDAO.getIdlingReportData(groupID, startDate, endDate);
+        List<IdlingReportItem> idlingReportItems = data.getItemList();
 
         for (IdlingReportItem idlingReportItem : idlingReportItems)
         {

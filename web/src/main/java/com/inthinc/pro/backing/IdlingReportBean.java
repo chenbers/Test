@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.IdlingReportData;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -69,12 +70,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 //Date internalStartDate = startOfDay(this.startDate);
 //Date internalEndDate = endOfDay(this.endDate);
 //System.out.println("IDLING DATE RANGE: " + internalStartDate + "(" + internalStartDate.getTime() + ") - " + internalEndDate + "(" + internalEndDate.getTime() + ")");        
-        this.idlingsData = scoreDAO.getIdlingReportData(getEffectiveGroupId(), 
+        IdlingReportData data = scoreDAO.getIdlingReportData(getEffectiveGroupId(), 
         							startOfDay(this.startDate), 
         							endOfDay(this.endDate));
         //Extract count
-        setTotalDrivers(idlingsData.get(0).getGroupID());
-        idlingsData.remove(0);
+        this.idlingsData = data.getItemList();
+        setTotalDrivers(data.getTotal());
         Collections.sort(idlingsData); // Sort by driver name
 
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
