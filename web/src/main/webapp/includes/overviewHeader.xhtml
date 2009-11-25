@@ -59,6 +59,7 @@
     			<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
     				icon="/images/ico_pdf.gif" value="#{messages.contextMenu_export_to_pdf}"
     				action="#{dashBoardReportBean.exportReportToPDF}" id="#{context}-export_menu_item">
+    				<a4j:actionparam assignTo="#{dashBoardReportBean.context}" converter="SimpleBeanConverter" value="#{context}"/>  				
     				<a4j:actionparam assignTo="#{dashBoardReportBean.reports}" converter="SimpleBeanConverter" value="#{dashBoardReportBean.reportList}"/>
     			</rich:menuItem>
     		</rich:contextMenu>

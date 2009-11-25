@@ -19,6 +19,8 @@ public class DashboardReportBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(DashboardReportBean.class);
     
+    private String context = "executive";
+    
     // Report Beans
     private MpgBean mpgBean;
     private OverallScoreBean overallScoreBean;
@@ -26,7 +28,15 @@ public class DashboardReportBean extends BaseBean
     private SpeedPercentageBean speedPercentageBean;
     private IdlePercentageBean idlePercentageBean;
 
-	public IdlePercentageBean getIdlePercentageBean() {
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public IdlePercentageBean getIdlePercentageBean() {
 		return idlePercentageBean;
 	}
 
@@ -78,11 +88,17 @@ public class DashboardReportBean extends BaseBean
 	private List<ReportCriteria> getReportCriteriaList() {
 		
 		List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
+		
         for(ReportType rt:reports)
         {
             switch(rt){
             case OVERALL_SCORE:reportCriteriaList.add(overallScoreBean.buildReportCriteria());break;
-            case TREND: reportCriteriaList.add(trendBean.buildReportCriteria());break;
+            case TREND:
+                // TODO: this is a quick fix to do the right thing for the team page, change later
+                if ( context.equalsIgnoreCase("executive") ) {
+                    reportCriteriaList.add(trendBean.buildReportCriteria());
+                }
+                break;
             case MPG_GROUP: reportCriteriaList.add(mpgBean.buildReportCriteria());break;
             case SPEED_PERCENTAGE: reportCriteriaList.add(speedPercentageBean.buildReportCriteria());break;
             case IDLE_PERCENTAGE: reportCriteriaList.add(idlePercentageBean.buildReportCriteria());break;
@@ -173,9 +189,11 @@ public class DashboardReportBean extends BaseBean
     
     public List<ReportType> getReportList(){
         List<ReportType> reportList = new ArrayList<ReportType>();
+        
         reportList.add(ReportType.OVERALL_SCORE);
+        reportList.add(ReportType.MPG_GROUP);        
         reportList.add(ReportType.TREND);
-        reportList.add(ReportType.MPG_GROUP);
+
         return reportList;
     }
     
