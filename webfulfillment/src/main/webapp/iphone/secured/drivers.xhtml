@@ -15,28 +15,6 @@
 </head>
 
 <body >
-<script language="JavaScript">
-
-function setNextPane(pgID)
-{
-  setTimeout("iui.showPageById('"+pgID+"');",750)
-}
-
-function setUpMessageBox()
-{
-document.getElementById('editDriver:idJscriptOnLoad').value="setNextPane('idMessages')";
-}
-
-function chooseDriver(val)
-{
-document.getElementById('driverForm:idDriver').value=val;
-document.getElementById('driverForm:idJscriptOnLoad').value="setNextPane('editDriver')";
-document.getElementById('driverForm').submit();
-}
-
-#{daoUtilBean.jscriptOnLoad}
-
-</script>
 
 <div class="toolbar">
 <h1 id="pageTitle"></h1>
@@ -45,32 +23,20 @@ document.getElementById('driverForm').submit();
 </div>
 
 <ul id="chooseDriver" title="Choose Driver" selected="true">
+
 <li class="group">#{daoUtilBean.selectedGroupName}</li>
+<li class="group">#{daoUtilBean.errorMsg}#{daoUtilBean.successMsg}</li>
+
 <a4j:repeat value="#{daoUtilBean.driverSelectList}" var="item">
  <li>
- <a href="#" onclick="chooseDriver(#{item.value})">#{item.label}</a>
+ <a href="#" onclick="document.getElementById('driverForm:idDriver').value=#{item.value};document.getElementById('driverForm:idEditDriver').click();">#{item.label}</a>
  </li>
 </a4j:repeat>
 </ul>
 
-<h:form id="driverForm" target="_self" method="POST">
-<h:inputHidden id="idDriver" value="#{daoUtilBean.selectedDriverID}" />
-<h:inputHidden id="idJscriptOnLoad" value="#{daoUtilBean.jscriptOnLoad}" />
-
-</h:form>
-
-<h:form id="idMessages" class="panel" title="Result">
-<fieldset>
-		<div class="row">
-		<div style="color: red; font-weight:bold;">#{daoUtilBean.errorMsg}</div>
-		#{daoUtilBean.successMsg}
-		</div>
-
-		<div class="row">
-		<a class="whiteButton" href="#chooseDriver">Cancel</a>
-		</div>
-</fieldset>
-
+<h:form id="driverForm">
+	<h:inputHidden id="idDriver" value="#{daoUtilBean.selectedDriverID}" />
+	<h:commandButton id="idEditDriver" class="whiteButton" value="Submit" action="go_editDriver" />
 </h:form>
 
 <h:form id="searchDriver" class="panel" title="Find Driver" target="_self">
@@ -81,41 +47,9 @@ document.getElementById('driverForm').submit();
 			<h:inputText id="driverID" value="#{daoUtilBean.driverCriteria}" size="30"/>
 		</div>
 	</fieldset>
-	<h:commandButton onclick="setUpMessageBox();" class="whiteButton" value="Search" action="#{daoUtilBean.searchDriverAction}" />
+	<h:commandButton class="whiteButton" value="Search" action="#{daoUtilBean.searchDriverAction}" />
 	<br/>
 	<a class="whiteButton" href="#chooseDriver">Cancel</a>
-</h:form>
-
-
-<h:form id="editDriver" class="panel" title="Edit Driver" target="_self">
-
-<h:inputHidden id="idJscriptOnLoad" value="#{daoUtilBean.jscriptOnLoad}" />
- <fieldset>
-<div class="row">
-		#{daoUtilBean.selectedAccountName}<br/>
-	#{daoUtilBean.selectedGroupName}<br/>
-	Driver ID: #{daoUtilBean.selectedDriverID}
-</div>
-<div class="row">
-	<label>Last</label>
-		<h:inputText id="lastName" value="#{daoUtilBean.lastName}" size="30"/> 
-</div>		          
-<div class="row">
-	<label>First</label>
-		<h:inputText id="firstName" value="#{daoUtilBean.firstName}" size="30"/> 
-</div>		          
-<div class="row">
-	<label>RFID</label>
-		<h:inputText id="RFID" value="#{daoUtilBean.RFID}" size="20"/> 
-</div>		          
-<div class="row">
-	<label>EmployeeID</label>
-		<h:inputText id="empID" value="#{daoUtilBean.empID}" size="30"/> 
-</div>		          
-</fieldset>
-		<h:commandButton onclick="setUpMessageBox();" class="whiteButton" value="Submit" action="#{daoUtilBean.editDriverAction}" />
-		<br/>
-		<a class="whiteButton" href="#chooseDriver">Cancel</a>
 </h:form>
 
     </body>

@@ -110,8 +110,14 @@ public class DAOUtilBean implements PhaseListener {
 	private boolean assignedVehiclesOnly;
 	private String vehicleGrid;
 
+	private String outcome;
+	
 	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
+	
+	private static final String FAILURE = "failure";
+	private static final String SUCCESS = "success";
+	private static final String NORESULTS = "no results";
 
 	
 	private String jscriptOnLoad;
@@ -461,9 +467,8 @@ public class DAOUtilBean implements PhaseListener {
 		} else {
 			String existMsg = "";
 			
-			//TODO check if barcode in use!
-			//Integer currentDriverID = driverDAO.getID(RFID);
-			Integer currentDriverID = driverDAO.getDriverIDForRFID(0L);
+			//check if barcode in use!
+			Integer currentDriverID = driverDAO.getDriverIDByBarcode(RFID);
 			if (currentDriverID != null && currentDriverID > 0) {
 				if (!currentDriverID.equals(driver.getDriverID())) {
 					Driver currentDriver = driverDAO.findByID(currentDriverID);
@@ -529,17 +534,17 @@ public class DAOUtilBean implements PhaseListener {
 		}
 	}
 	
-	public void editDriverAction() {
+	public String editDriverAction() {
 		reInitAction();
 		if (selectedAccountID == null || selectedAccountID < 0) {
 			setErrorMsg("Error: Please select a customer account");
-			return;
+			return FAILURE;
 		} else if (selectedGroupID == null || selectedGroupID < 0) {
 			setErrorMsg("Error: Please select a Team");
-			return;
+			return FAILURE;
 		} else if (lastName == null || lastName.trim().length() == 0) {
 			setErrorMsg("Error: Please enter a valid lastName");
-			return;
+			return FAILURE;
 		}
 		
 		boolean doCreate=true;
@@ -567,7 +572,7 @@ public class DAOUtilBean implements PhaseListener {
 			if (addressID==null || addressID<1)
 			{
 				setErrorMsg("Error creating address");
-				return;
+				return FAILURE;
 			}
 			person.setAddressID(addressID);
 		}
@@ -582,7 +587,7 @@ public class DAOUtilBean implements PhaseListener {
 			if (personID==null || personID<1)
 			{
 				setErrorMsg("Error creating person");
-				return;
+				return FAILURE;
 			}
 			driver.setPersonID(personID);
 			driver.setGroupID(selectedGroupID);
@@ -594,14 +599,25 @@ public class DAOUtilBean implements PhaseListener {
 			if (count==null || count<1)
 			{
 				setErrorMsg("Error updating person");
-				return;
+				return FAILURE;
 			}
 		}
-					
+			
+		String dwarn="";
 
 		if (RFID!=null && RFID.trim().length()>0)
 		{
-			//TODO check if in use
+			List<Long> rfids = driverDAO.getRfidsByBarcode(RFID);
+			if (rfids.size()==0)
+			{
+				setErrorMsg("RFID not found for barcode: " + RFID);
+				return FAILURE;
+			}	
+			//check if in use
+			Integer currentDriveID = driverDAO.getDriverIDByBarcode(RFID);
+			if (currentDriveID!=null && !currentDriveID.equals(driver.getDriverID()))
+				dwarn+="Warning, Barcode previously assigned to driverID: " + currentDriveID;
+			
 			driver.setBarcode(RFID);
 		}
 
@@ -611,7 +627,7 @@ public class DAOUtilBean implements PhaseListener {
 			if (driverID==null || driverID<1)
 			{
 				setErrorMsg("Error creating driver");
-				return;
+				return FAILURE;
 			}
 			setSuccessMsg("driverID " + driverID + " created successfully");
 		}
@@ -621,7 +637,7 @@ public class DAOUtilBean implements PhaseListener {
 			if (count==null || count<1)
 			{
 				setErrorMsg("Error updating driver");
-				return;
+				return FAILURE;
 			}
 			setSuccessMsg("driverID " + driver.getDriverID() + " updated successfully");
 		}
@@ -632,6 +648,8 @@ public class DAOUtilBean implements PhaseListener {
 		RFID=null;
 		empID=null;
 		driverMap=null;
+		
+		return SUCCESS;
 
 	}
 
@@ -687,17 +705,17 @@ public class DAOUtilBean implements PhaseListener {
 		}
 	}
 
-	public void editVehicleAction() {
+	public String editVehicleAction() {
 		reInitAction();
 		
 		Integer yearint=null;
 		
 		if (selectedAccountID == null || selectedAccountID < 0) {
 			setErrorMsg("Error: Please select a customer account");
-			return;
+			return FAILURE;
 		} else if (selectedGroupID == null || selectedGroupID < 0) {
 			setErrorMsg("Error: Please select a Team");
-			return;
+			return FAILURE;
 		} else if (year != null && year.trim().length() > 0) {
 			try {
 				yearint=Integer.parseInt(year);
@@ -706,12 +724,12 @@ public class DAOUtilBean implements PhaseListener {
 			if (yearint==null || yearint<1900 || yearint>3000)
 			{
 				setErrorMsg("Error: Please enter a valid Year");
-				return;
+				return FAILURE;
 			}
 		} else if (serialNum!=null && serialNum.trim().length()>0) {
 			loadDevice();
 			if (device==null)
-				return;
+				return FAILURE;
 		}
 	
 		Vehicle vehicle = new Vehicle();
@@ -724,17 +742,21 @@ public class DAOUtilBean implements PhaseListener {
 		}
 
 		String vwarn = "";
-		Integer currentVID = device.getVehicleID();
 		Vehicle currentV=null;
-		if (currentVID != null && currentVID > 0
-				&& !currentVID.equals(vehicle.getVehicleID())) {
-			 currentV = vehicleDAO.findByID(currentVID);
-			if (currentV != null
-					&& currentV.getStatus().equals(Status.ACTIVE))
-				vwarn = "Warning: Device was previously assigned to vehicle: "
-						+ currentV.getName()
-						+ " "
-						+ currentV.getFullName() + "<BR/>";
+
+		if (device!=null)
+		{
+			Integer currentVID = device.getVehicleID();
+			if (currentVID != null && currentVID > 0
+					&& !currentVID.equals(vehicle.getVehicleID())) {
+				 currentV = vehicleDAO.findByID(currentVID);
+				if (currentV != null
+						&& currentV.getStatus().equals(Status.ACTIVE))
+					vwarn = "Warning: Device was previously assigned to vehicle: "
+							+ currentV.getName()
+							+ " "
+							+ currentV.getFullName() + "<BR/>";
+			}
 		}
 
 		if (VIN!=null && VIN.trim().length()>0)
@@ -768,7 +790,7 @@ public class DAOUtilBean implements PhaseListener {
 			if (vehicleID==null || vehicleID<1)
 			{
 				setErrorMsg("Error creating vehicleID " + vehicleID);
-				return;
+				return FAILURE;
 			}
 			setSuccessMsg(vwarn + "VehicleID " + vehicleID + " created successfully");
 		}
@@ -778,7 +800,7 @@ public class DAOUtilBean implements PhaseListener {
 			if (count==null || count<1)
 			{
 				setErrorMsg("Error Updating vehicleID " + vehicle.getVehicleID());
-				return;
+				return FAILURE;
 			}
 			setSuccessMsg(vwarn + "VehicleID " + vehicleID + " updated successfully");
 		}
@@ -794,6 +816,7 @@ public class DAOUtilBean implements PhaseListener {
 		year=null;
 		license=null;
 
+		return SUCCESS;
 	}
 
 	private String getGroupPath(Group group) {
@@ -899,6 +922,7 @@ public class DAOUtilBean implements PhaseListener {
 		driverMap = new Hashtable<Integer, String>();
 		vehicleMap = new Hashtable<Integer, String>();
 		selectedGroupID=null;
+		groupMap=null;
 
 		name = name.toUpperCase().trim();
 		if (name.length()==0)
@@ -914,9 +938,6 @@ public class DAOUtilBean implements PhaseListener {
 		} catch (NumberFormatException e) {
 
 		}
-
-		if (selectedGroupID!=null && selectedGroupID>0)
-			driverMap.put(-1, "--Create New--");
 
 		List<Driver> drivers = driverDAO.getAllDrivers(topGroup.getGroupID());
 
@@ -945,6 +966,7 @@ public class DAOUtilBean implements PhaseListener {
 		vehicleMap = new Hashtable<Integer, String>();
 		driverMap = new Hashtable<Integer, String>();
 		selectedGroupID=null;
+		groupMap=null;
 
 		name = name.toUpperCase().trim();
 		if (name.length()==0)
@@ -961,10 +983,7 @@ public class DAOUtilBean implements PhaseListener {
 		} catch (NumberFormatException e) {
 
 		}
-		
-		if (selectedGroupID!=null && selectedGroupID>0)
-			vehicleMap.put(-1, "--Create New--");
-		
+				
 		List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(topGroup.getGroupID());
 
 		for (Iterator<Vehicle> viter = vehicles.iterator(); viter.hasNext();) {
@@ -989,8 +1008,7 @@ public class DAOUtilBean implements PhaseListener {
 
 		if (accountMap == null || accountMap.isEmpty()) {
 			accountMap = new Hashtable<Integer, String>();
-			int limit = 700; // TODO Lose this!!
-//limit=10;
+
 			List<Account> accounts=null;
 try {			
 			accounts = accountDAO.getAllAcctIDs();
@@ -998,6 +1016,11 @@ try {
 {
 	e.printStackTrace();
 }
+
+int limit = 700; // TODO Lose this!!
+if (accounts.size()>100)
+	limit=20;
+
 			for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext()
 					&& limit > 0; limit--) {
 				Account account = aiter.next();
@@ -1140,7 +1163,6 @@ try {
 			{
 				List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupID);
 				
-
 				vehicleMap.put(-1, "--Create New--");
 
 				for(Iterator<Vehicle> viter=vehicles.iterator(); viter.hasNext();)
@@ -1545,11 +1567,7 @@ try {
 		if (selectedDriverID!=null && selectedDriverID>0)
 		{
 			Driver driver = driverDAO.findByID(selectedDriverID);
-			if (!driver.getGroupID().equals(selectedGroupID))
-			{
-				selectedGroupID=driver.getGroupID();
-				groupMap=null;
-			}
+
 			setRFID(driver.getBarcode());
 			Person person = personDAO.findByID(driver.getPersonID());
 			setLastName(person.getLast());
@@ -1574,11 +1592,7 @@ try {
 		if (selectedVehicleID!=null && selectedVehicleID>0)
 		{
 			Vehicle vehicle = vehicleDAO.findByID(selectedVehicleID);
-			if (!vehicle.getGroupID().equals(selectedGroupID))
-			{
-				selectedGroupID=vehicle.getGroupID();
-				groupMap=null;
-			}
+
 			setVehicleName(vehicle.getName());
 			setVIN(vehicle.getVIN());
 			setMake(vehicle.getMake());
@@ -1620,4 +1634,11 @@ try {
 	public void setJscriptOnLoad(String jscriptOnLoad) {
 		this.jscriptOnLoad = jscriptOnLoad;
 	}
+
+	public String getOutcome() {
+		if (errorMsg!=null && errorMsg.length()>0)
+			return "failure";
+		return "success";
+	}
+
 }

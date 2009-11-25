@@ -5,10 +5,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core">
- 				<h:form id="vehicleReport" class="panel" title="Vehicle Report" selected="true">
-				<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
-		<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
- <fieldset>
+<h:form id="vehicleReport" class="panel" title="Vehicle Report" selected="true">
+<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
+<fieldset>
 <div class="row">
 	<label>Customer</label>
 		#{daoUtilBean.selectedAccountName}

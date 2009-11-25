@@ -3,14 +3,66 @@
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
 
+
+<!-- IPHONE NAV -->
+
+<navigation-rule>	
+<description>Edit Driver Rule</description>	
+<from-view-id>/iphone/secured/driver.xhtml</from-view-id>	
+	<navigation-case>		
+		<description>On edit driver success, Go back to driver list</description>		
+		<from-action>#{daoUtilBean.editDriverAction}</from-action>		
+		<from-outcome>success</from-outcome>		
+		<to-view-id>/iphone/secured/drivers.xhtml</to-view-id>	
+	</navigation-case>
+	<navigation-case>		
+		<description>On edit driver fail, Go back to edit driver</description>		
+		<from-action>#{daoUtilBean.editDriverAction}</from-action>		
+		<from-outcome>failure</from-outcome>		
+		<to-view-id>/iphone/secured/driver.xhtml</to-view-id>	
+	</navigation-case>
+</navigation-rule>
+
  <navigation-rule>
   <navigation-case>
-   <from-outcome>go_editDevice</from-outcome>
-   <to-view-id>/secured/home.faces#_driver</to-view-id>
+   <from-outcome>go_editDriver</from-outcome>
+   <to-view-id>/iphone/secured/driver.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+
+<navigation-rule>	
+<description>Edit Vehicle Rule</description>	
+<from-view-id>/iphone/secured/vehicle.xhtml</from-view-id>	
+	<navigation-case>		
+		<description>On edit vehicle success, Go back to vehicle list</description>		
+		<from-action>#{daoUtilBean.editVehicleAction}</from-action>		
+		<from-outcome>success</from-outcome>		
+		<to-view-id>/iphone/secured/vehicles.xhtml</to-view-id>	
+	</navigation-case>
+	<navigation-case>		
+		<description>On edit vehicle fail, Go back to vehicle vehicle</description>		
+		<from-action>#{daoUtilBean.editVehicleAction}</from-action>		
+		<from-outcome>failure</from-outcome>		
+		<to-view-id>/iphone/secured/vehicle.xhtml</to-view-id>	
+	</navigation-case>
+</navigation-rule>
+
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_editVehicle</from-outcome>
+   <to-view-id>/iphone/secured/vehicle.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_home</from-outcome>
+   <to-view-id>/iphone/secured/home.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
 
 
+<!-- PC Browser NAV -->
 
  <navigation-rule>
   <navigation-case>

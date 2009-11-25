@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+<title>tiwiPRO Fulfillment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+<link href="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.css" rel="stylesheet" type="text/css"/>
+<link href="#{facesContext.externalContext.requestContextPath}/iphone/iui/table.css" rel="stylesheet" type="text/css"/>
+<script type="application/x-javascript" src="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.js"></script>
+</head>
+
+<body >
+
+
+<div class="toolbar">
+<h1 id="pageTitle"></h1>
+<a class="button leftButton" href="vehicles.faces" target="_self">Vehicles</a>
+<a class="button" href="home.faces">Home</a>
+</div>
+
+<h:form id="editVehicle" class="panel" title="Edit Vehicle" target="_self" selected="true">
+<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+ <fieldset>
+<div class="row">
+		#{daoUtilBean.selectedAccountName}<br/>
+	#{daoUtilBean.selectedGroupName}<br/>
+	Vehicle ID: #{daoUtilBean.selectedVehicleID}
+</div>
+
+<div class="row">
+	<label>License</label>
+		<h:inputText id="license" value="#{daoUtilBean.license}" maxlength="10" size="30"
+			required="false"/> 
+</div>		          
+<div class="row">
+	<label>VIN</label>
+		<h:inputText id="VIN" value="#{daoUtilBean.VIN}" maxlength="17" size="30"
+			required="false"/> 
+</div>		          
+<div class="row">
+	<label>Name</label>
+		<h:inputText id="vehicleName" value="#{daoUtilBean.vehicleName}" maxlength="20" size="30"
+			required="false"/> 
+</div>		          
+<div class="row">
+	<label>Make</label>
+		<h:inputText id="make" value="#{daoUtilBean.make}" maxlength="22" size="30"
+			required="false"/> 
+</div>		          
+<div class="row">
+	<label>Model</label>
+		<h:inputText id="model" value="#{daoUtilBean.model}" maxlength="22" size="30"
+			required="false"/> 
+</div>		          
+<div class="row">
+	<label>Year</label>
+		<h:inputText id="year" value="#{daoUtilBean.year}" maxlength="4" size="10"
+			required="false"/> 
+</div>		          
+<div class="row">
+	<label>Tiwi</label> 
+	<h:inputText id="serialNum"
+		value="#{daoUtilBean.serialNum}" size="30" required="false"
+		requiredMessage="required" />
+</div>
+</fieldset>
+		<h:commandButton class="whiteButton" value="Submit" action="#{daoUtilBean.editVehicleAction}" />
+</h:form>
+<script>document.getElementById('editVehicle').setAttribute("selected","true");</script>
+
+    </body>
+</html>

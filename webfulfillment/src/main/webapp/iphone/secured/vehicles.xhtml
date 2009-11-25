@@ -14,29 +14,8 @@
 <script type="application/x-javascript" src="#{facesContext.externalContext.requestContextPath}/iphone/iui/iui.js"></script>
 </head>
 
-    <body>
-<script language="JavaScript">
+<body >
 
-function setNextPane(pgID)
-{
-  setTimeout("iui.showPageById('"+pgID+"');",750)
-}
-
-function setUpMessageBox()
-{
-document.getElementById('editVehicle:idJscriptOnLoad').value="setNextPane('idMessages')";
-}
-
-function chooseVehicle(val)
-{
-document.getElementById('vehicleForm:idVehicle').value=val;
-document.getElementById('vehicleForm:idJscriptOnLoad').value="setNextPane('editVehicle')";
-document.getElementById('vehicleForm').submit();
-}
-
-#{daoUtilBean.jscriptOnLoad}
-
-</script>
 <div class="toolbar">
 <h1 id="pageTitle"></h1>
 <a class="button leftButton" href="home.faces" target="_self">Home</a>
@@ -44,33 +23,20 @@ document.getElementById('vehicleForm').submit();
 </div>
 
 <ul id="chooseVehicle" title="Choose Vehicle" selected="true">
+
 <li class="group">#{daoUtilBean.selectedGroupName}</li>
+<li class="group">#{daoUtilBean.errorMsg}#{daoUtilBean.successMsg}</li>
+
 <a4j:repeat value="#{daoUtilBean.vehicleSelectList}" var="item">
  <li>
- <a href="#" onclick="chooseVehicle(#{item.value})">#{item.label}</a>
+ <a href="#" onclick="document.getElementById('vehicleForm:idVehicle').value=#{item.value};document.getElementById('vehicleForm:idEditVehicle').click();">#{item.label}</a>
  </li>
 </a4j:repeat>
 </ul>
 
-
 <h:form id="vehicleForm" target="_self" method="POST">
-<h:inputHidden id="idVehicle" value="#{daoUtilBean.selectedVehicleID}" />
-<h:inputHidden id="idJscriptOnLoad" value="#{daoUtilBean.jscriptOnLoad}" />
-
-</h:form>
-
-<h:form id="idMessages" class="panel" title="Result">
-<fieldset>
-		<div class="row">
-		<div style="color: red; font-weight:bold;">#{daoUtilBean.errorMsg}</div>
-		#{daoUtilBean.successMsg}
-		</div>
-
-		<div class="row">
-		<a class="whiteButton" href="#chooseVehicle">Cancel</a>
-		</div>
-</fieldset>
-
+	<h:inputHidden id="idVehicle" value="#{daoUtilBean.selectedVehicleID}" />
+	<h:commandButton id="idEditVehicle" class="whiteButton" value="Submit" action="go_editVehicle" />
 </h:form>
 
 <h:form id="searchVehicle" class="panel" title="Find Vehicle" target="_self">
@@ -78,65 +44,13 @@ document.getElementById('vehicleForm').submit();
 		<div class="row">Search by VIN, Vehicle Name, or License</div>
 		<div class="row">
 			<label>Vehicle</label>
-			<h:inputText id="vehicleName" value="#{daoUtilBean.vehicleCriteria}" size="30"/>
+			<h:inputText id="vehicleID" value="#{daoUtilBean.vehicleCriteria}" size="30"/>
 		</div>
 	</fieldset>
-	<h:commandButton onclick="setUpMessageBox();" class="whiteButton" value="Search" action="#{daoUtilBean.searchVehicleAction}" />
+	<h:commandButton class="whiteButton" value="Search" action="#{daoUtilBean.searchVehicleAction}" />
 	<br/>
 	<a class="whiteButton" href="#chooseVehicle">Cancel</a>
 </h:form>
-
-
-<h:form id="editVehicle" class="panel" title="Edit Vehicle" action="#idMessages" target="_self" method="POST">
-<h:inputHidden id="idJscriptOnLoad" value="#{daoUtilBean.jscriptOnLoad}" />
- <fieldset>
-<div class="row">
-		#{daoUtilBean.selectedAccountName}<br/>
-  	    #{daoUtilBean.selectedGroupName}<br/>
-  	    #{daoUtilBean.selectedVehicleID}
-</div>		          
-<div class="row">
-	<label>License</label>
-		<h:inputText id="license" value="#{daoUtilBean.license}" size="30"
-			required="false"/> 
-</div>		          
-<div class="row">
-	<label>VIN</label>
-		<h:inputText id="VIN" value="#{daoUtilBean.VIN}" size="30"
-			required="false"/> 
-</div>		          
-<div class="row">
-	<label>Name</label>
-		<h:inputText id="vehicleName" value="#{daoUtilBean.vehicleName}" size="30"
-			required="false"/> 
-</div>		          
-<div class="row">
-	<label>Make</label>
-		<h:inputText id="make" value="#{daoUtilBean.make}" size="30"
-			required="false"/> 
-</div>		          
-<div class="row">
-	<label>Model</label>
-		<h:inputText id="model" value="#{daoUtilBean.model}" size="30"
-			required="false"/> 
-</div>		          
-<div class="row">
-	<label>Year</label>
-		<h:inputText id="year" value="#{daoUtilBean.year}" size="10"
-			required="false"/> 
-</div>		          
-		<div class="row">
-			<label>Tiwi</label> 
-			<h:inputText id="serialNum"
-				value="#{daoUtilBean.serialNum}" size="30" required="false"
-				requiredMessage="required" />
-		</div>
-</fieldset>
-		<h:commandButton onclick="setUpMessageBox();" class="whiteButton" value="Submit" action="#{daoUtilBean.editVehicleAction}" />
-		<br/>
-		<a class="whiteButton" href="#chooseVehicle">Cancel</a>
-</h:form>
-
 
     </body>
 </html>
