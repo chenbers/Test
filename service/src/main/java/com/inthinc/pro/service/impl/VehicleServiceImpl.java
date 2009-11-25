@@ -14,8 +14,10 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.Score;
@@ -25,6 +27,8 @@ import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.SecureVehicleDAO;
 
 public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDAO> implements VehicleService {
+
+    private AddressLookup addressLookup;
 
     @Override
     public Response getAll() {
@@ -99,6 +103,20 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
         DateTime startDate = formatter.parseDateTime(day).minusDays(1);
         List<Trip> list = getDao().getTrips(vehicleID, startDate.toDate(), new Date());
+
+        for (Trip trip : list) {
+            try {
+                trip.setStartAddressStr(addressLookup.getAddress(trip.getStartLoc()));
+            } catch (NoAddressFoundException e) {
+                trip.setStartAddressStr("Address Not Found");
+            }
+
+            try {
+                trip.setEndAddressStr(addressLookup.getAddress(trip.getEndLoc()));
+            } catch (NoAddressFoundException e) {
+                trip.setStartAddressStr("Address Not Found");
+            }
+        }
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
     }
 
@@ -132,5 +150,13 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
             return Response.ok(vehicle).build();
         }
         return Response.status(Status.NOT_MODIFIED).build();
+    }
+
+    public AddressLookup getAddressLookup() {
+        return addressLookup;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup) {
+        this.addressLookup = addressLookup;
     }
 }
