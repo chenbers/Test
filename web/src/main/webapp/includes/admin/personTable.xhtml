@@ -108,17 +108,17 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_gender}" /></f:facet>
       <h:outputText value="#{messages[item.gender]}" />
     </rich:column>
-    <rich:column id="barcode" rendered="#{personBean.tableColumns['driver_barcode'].visible}" sortBy="#{item.driver.barcode}">
+    <rich:column id="barcode" rendered="#{personBean.tableColumns['barcode'].visible}" sortBy="#{item.driver.barcode}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_barcode}" /></f:facet>
       <h:outputText value="#{item.driver.barcode}" />
     </rich:column>
-    <rich:column id="rfid1" rendered="#{personBean.tableColumns['driver_rfid1'].visible}" sortBy="#{item.driver.rfid1}">
+    <rich:column id="rfid1" rendered="#{personBean.tableColumns['rfid1'].visible}" sortBy="#{item.driver.rfid1}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_rfid1}" /></f:facet>
       <h:outputText value="#{item.driver.rfid1}" >
       <f:converter converterId="HexConverter" />
       </h:outputText>
     </rich:column>
-    <rich:column id="rfid2" rendered="#{personBean.tableColumns['driver_rfid2'].visible}" sortBy="#{item.driver.rfid2}">
+    <rich:column id="rfid2" rendered="#{personBean.tableColumns['rfid2'].visible}" sortBy="#{item.driver.rfid2}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_rfid2}" /></f:facet>
       <h:outputText value="#{item.driver.rfid2}" >
       <f:converter converterId="HexConverter" />

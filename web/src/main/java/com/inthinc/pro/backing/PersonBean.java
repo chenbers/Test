@@ -104,9 +104,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("driver_expiration");
         AVAILABLE_COLUMNS.add("driver_certifications");
         AVAILABLE_COLUMNS.add("driver_dot");
-        AVAILABLE_COLUMNS.add("driver_barcode");
-        AVAILABLE_COLUMNS.add("driver_rfid1");
-        AVAILABLE_COLUMNS.add("driver_rfid2");
+        AVAILABLE_COLUMNS.add("barcode");
+        AVAILABLE_COLUMNS.add("rfid1");
+        AVAILABLE_COLUMNS.add("rfid2");
         AVAILABLE_COLUMNS.add("driver_groupID");
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
@@ -546,6 +546,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             		
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_barcodeNotAvailable"), null);
                     context.addMessage("edit-form:editPerson-driver_barcode", message);
+                    
                     person.getDriver().setBarcode("");
 	            	person.getDriver().setRfid1(null);
 	            	person.getDriver().setRfid2(null);
@@ -559,11 +560,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	            	if (existingBarCodeDriverId != null && !existingBarCodeDriverId.equals(person.getDriver().getDriverID()) ){
 	            		
 	    	    		Driver existingBarCodeDriver = driverDAO.findByID(existingBarCodeDriverId);
-	                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.formatMessageString("editPerson_uniqueBarcode", existingBarCodeDriver.getPerson().getFullName()), null);
+	                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.formatMessageString("editPerson_uniqueBarcode", person.getDriver().getBarcode(),existingBarCodeDriver.getPerson().getFullName()), null);
 	                    context.addMessage("edit-form:editPerson-driver_barcode", message);
 	                    
-		            	person.getDriver().setRfid1(rfids.get(0));
-		            	person.getDriver().setRfid2(rfids.size()>1?rfids.get(1):null);
+	                    person.getDriver().setBarcode("");
+		            	person.getDriver().setRfid1(null);
+		            	person.getDriver().setRfid2(null);
 	                    
 	                    valid = false;
 	            	}
