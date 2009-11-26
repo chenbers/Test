@@ -477,7 +477,7 @@ public class DAOUtilBean implements PhaseListener {
 						name = currentDriver.getPerson().getFullNameWithId();
 
 					existMsg = "Warning: RFID previously assigned to "
-							+ name + "<BR/>";
+							+ name + "<BR/> ";
 					currentDriver.setBarcode(null);
 					driverDAO.update(currentDriver);
 				}
@@ -621,7 +621,7 @@ public class DAOUtilBean implements PhaseListener {
 				currentDriver.setBarcode("");
 				driverDAO.update(currentDriver);
 				
-				dwarn+="Warning, Barcode previously assigned to driver: " + currentDriverID + "<br/>";
+				dwarn+="Warning, Barcode previously assigned to driver: " + currentDriverID + "<br/> ";
 				
 			}
 			
@@ -692,7 +692,7 @@ public class DAOUtilBean implements PhaseListener {
 							vwarn = "Warning: Device was previously assigned to vehicle: "
 									+ currentV.getName()
 									+ " "
-									+ currentV.getFullName() + "<BR/>";
+									+ currentV.getFullName() + "<BR/> ";
 					}
 					if (vehicle.getDeviceID()!=null && vehicle.getDeviceID()!=device.getDeviceID())
 					{
@@ -723,7 +723,8 @@ public class DAOUtilBean implements PhaseListener {
 		} else if (selectedGroupID == null || selectedGroupID < 0) {
 			setErrorMsg("Error: Please select a Team");
 			return FAILURE;
-		} else if (year != null && year.trim().length() > 0) {
+		} 
+		if (year != null && year.trim().length() > 0) {
 			try {
 				yearint=Integer.parseInt(year);
 			} catch (NumberFormatException e) {
@@ -733,7 +734,8 @@ public class DAOUtilBean implements PhaseListener {
 				setErrorMsg("Error: Please enter a valid Year");
 				return FAILURE;
 			}
-		} else if (serialNum!=null && serialNum.trim().length()>0) {
+		} 
+		if (serialNum!=null && serialNum.trim().length()>0) {
 			loadDevice();
 			if (device==null)
 				return FAILURE;
@@ -762,7 +764,7 @@ public class DAOUtilBean implements PhaseListener {
 					vwarn = "Warning: Device was previously assigned to vehicle: "
 							+ currentV.getName()
 							+ " "
-							+ currentV.getFullName() + "<BR/>";
+							+ currentV.getFullName() + "<BR/> ";
 			}
 		}
 
@@ -774,19 +776,29 @@ public class DAOUtilBean implements PhaseListener {
 				vwarn += "Warning: VIN was previously assigned to vehicle: "
 					+ currentV.getName()
 					+ " "
-					+ currentV.getFullName() + "<BR/>";
+					+ currentV.getFullName() + "<BR/> ";
 				currentV.setVIN(null);
 				vehicleDAO.update(currentV);
 			}			
 		}
 	
-		
 		vehicle.setName(vehicleName.trim());
 		vehicle.setLicense(license.trim());
-		vehicle.setVIN(VIN.trim());
+
+		if (VIN.trim().length()>0)
+			vehicle.setVIN(VIN.trim());
+		else 
+			vehicle.setVIN(null);
+
 		vehicle.setMake(make.trim());
+
 		vehicle.setModel(model.trim());
+
 		vehicle.setYear(yearint);
+		
+		if (device==null)
+			vehicle.setDeviceID(null);
+		
 		vehicle.setGroupID(selectedGroupID);
 		vehicle.setStatus(Status.ACTIVE);
 		
@@ -1220,6 +1232,7 @@ if (accounts.size()>100)
 		setSuccessMsg(null);
 		vehicleGrid="";
 		vehicleCount=0;
+		device=null;
 		if (messageList != null)
 			messageList.clear();
 	}
@@ -1605,7 +1618,9 @@ if (accounts.size()>100)
 			setVIN(vehicle.getVIN());
 			setMake(vehicle.getMake());
 			setModel(vehicle.getModel());
-			setYear(vehicle.getYear().toString());
+			year="";
+			if (vehicle.getYear()!=null)
+				setYear(vehicle.getYear().toString());
 			setLicense(vehicle.getLicense());
 			
 			if (vehicle.getDeviceID()!=null && vehicle.getDeviceID()>0)
