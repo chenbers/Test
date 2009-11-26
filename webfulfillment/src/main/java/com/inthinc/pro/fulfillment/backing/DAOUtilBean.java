@@ -608,15 +608,22 @@ public class DAOUtilBean implements PhaseListener {
 		if (RFID!=null && RFID.trim().length()>0)
 		{
 			List<Long> rfids = driverDAO.getRfidsByBarcode(RFID);
-			if (rfids.size()==0)
+			if (rfids==null || rfids.size()==0)
 			{
 				setErrorMsg("RFID not found for barcode: " + RFID);
 				return FAILURE;
 			}	
 			//check if in use
-			Integer currentDriveID = driverDAO.getDriverIDByBarcode(RFID);
-			if (currentDriveID!=null && !currentDriveID.equals(driver.getDriverID()))
-				dwarn+="Warning, Barcode previously assigned to driverID: " + currentDriveID;
+			Integer currentDriverID = driverDAO.getDriverIDByBarcode(RFID);
+			if (currentDriverID!=null && !currentDriverID.equals(driver.getDriverID()))
+			{
+				Driver currentDriver=driverDAO.findByID(currentDriverID);
+				currentDriver.setBarcode("");
+				driverDAO.update(currentDriver);
+				
+				dwarn+="Warning, Barcode previously assigned to driver: " + currentDriverID + "<br/>";
+				
+			}
 			
 			driver.setBarcode(RFID);
 		}
@@ -626,20 +633,20 @@ public class DAOUtilBean implements PhaseListener {
 			Integer driverID = driverDAO.create(driver.getPersonID(), driver);
 			if (driverID==null || driverID<1)
 			{
-				setErrorMsg("Error creating driver");
+				setErrorMsg("dwarn+Error creating driver");
 				return FAILURE;
 			}
-			setSuccessMsg("driverID " + driverID + " created successfully");
+			setSuccessMsg(dwarn+"driverID " + driverID + " created successfully");
 		}
 		else
 		{
 			Integer count = driverDAO.update(driver);
 			if (count==null || count<1)
 			{
-				setErrorMsg("Error updating driver");
+				setErrorMsg("dwarn_Error updating driver");
 				return FAILURE;
 			}
-			setSuccessMsg("driverID " + driver.getDriverID() + " updated successfully");
+			setSuccessMsg(dwarn+"driverID " + driver.getDriverID() + " updated successfully");
 		}
 			
 		
@@ -922,7 +929,6 @@ public class DAOUtilBean implements PhaseListener {
 		driverMap = new Hashtable<Integer, String>();
 		vehicleMap = new Hashtable<Integer, String>();
 		selectedGroupID=null;
-		groupMap=null;
 
 		name = name.toUpperCase().trim();
 		if (name.length()==0)
@@ -966,7 +972,6 @@ public class DAOUtilBean implements PhaseListener {
 		vehicleMap = new Hashtable<Integer, String>();
 		driverMap = new Hashtable<Integer, String>();
 		selectedGroupID=null;
-		groupMap=null;
 
 		name = name.toUpperCase().trim();
 		if (name.length()==0)
@@ -1017,9 +1022,10 @@ try {
 	e.printStackTrace();
 }
 
-int limit = 700; // TODO Lose this!!
+//TODO Lose this!!
+int limit = 700; 
 if (accounts.size()>100)
-	limit=20;
+	limit=100;
 
 			for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext()
 					&& limit > 0; limit--) {
@@ -1567,6 +1573,7 @@ if (accounts.size()>100)
 		if (selectedDriverID!=null && selectedDriverID>0)
 		{
 			Driver driver = driverDAO.findByID(selectedDriverID);
+			selectedGroupID=driver.getGroupID();
 
 			setRFID(driver.getBarcode());
 			Person person = personDAO.findByID(driver.getPersonID());
@@ -1592,6 +1599,7 @@ if (accounts.size()>100)
 		if (selectedVehicleID!=null && selectedVehicleID>0)
 		{
 			Vehicle vehicle = vehicleDAO.findByID(selectedVehicleID);
+			selectedGroupID=vehicle.getGroupID();
 
 			setVehicleName(vehicle.getName());
 			setVIN(vehicle.getVIN());
