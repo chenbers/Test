@@ -626,8 +626,8 @@ public class DAOUtilBean implements PhaseListener {
 				
 			}
 			
-			driver.setBarcode(RFID);
 		}
+		driver.setBarcode(RFID);
 
 		if (doCreate)
 		{
@@ -716,7 +716,7 @@ public class DAOUtilBean implements PhaseListener {
 	public String editVehicleAction() {
 		reInitAction();
 		
-		Integer yearint=null;
+		Integer yearint=0;
 		
 		if (selectedAccountID == null || selectedAccountID < 0) {
 			setErrorMsg("Error: Please select a customer account");
@@ -1014,7 +1014,7 @@ public class DAOUtilBean implements PhaseListener {
 				|| (vid>0 && vid.equals(vehicle.getVehicleID()))
 				)
 				{
-					vehicleMap.put(vehicle.getVehicleID(), vehicle.getName()+vehicle.getFullName());
+					vehicleMap.put(vehicle.getVehicleID(), vehicle.getName() + " " + vehicle.getFullName());
 				}
 			}
 		}
@@ -1189,7 +1189,7 @@ if (accounts.size()>100)
 					Vehicle vehicle = viter.next();
 					if (vehicle.getStatus().equals(Status.ACTIVE))
 					{
-						vehicleMap.put(vehicle.getVehicleID(), vehicle.getName()+vehicle.getFullName());
+						vehicleMap.put(vehicle.getVehicleID(), vehicle.getName() +  " " + vehicle.getFullName());
 					}
 					
 				}			
