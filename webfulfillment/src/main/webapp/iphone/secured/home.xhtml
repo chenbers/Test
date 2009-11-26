@@ -24,6 +24,8 @@
 </ui:remove>
 </div>
 <ul id="home" title="Home" selected="true">
+<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 <li class="group">Customer</li>
 <li><a href="#chooseCustomer">#{daoUtilBean.selectedAccountName}</a></li>
 <li class="group">Team</li>

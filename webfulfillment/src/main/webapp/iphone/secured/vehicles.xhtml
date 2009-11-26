@@ -24,7 +24,8 @@
 
 <ul id="chooseVehicle" title="Choose Vehicle" selected="true">
 
-<li class="group">#{daoUtilBean.errorMsg}#{daoUtilBean.successMsg}</li>
+<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
+<h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 <li class="group">#{daoUtilBean.selectedGroupName}</li>
 
 <a4j:repeat value="#{daoUtilBean.vehicleSelectList}" var="item">
