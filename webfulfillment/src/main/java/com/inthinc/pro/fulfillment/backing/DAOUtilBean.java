@@ -629,25 +629,30 @@ public class DAOUtilBean implements PhaseListener {
 		}
 		driver.setBarcode(RFID);
 
-		if (doCreate)
-		{
-			Integer driverID = driverDAO.create(driver.getPersonID(), driver);
-			if (driverID==null || driverID<1)
+		try {
+			if (doCreate)
 			{
-				setErrorMsg("dwarn+Error creating driver");
-				return FAILURE;
+				Integer driverID = driverDAO.create(driver.getPersonID(), driver);
+				if (driverID==null || driverID<1)
+				{
+					setErrorMsg(dwarn + " Error creating driver");
+					return FAILURE;
+				}
+				setSuccessMsg(dwarn+"driverID " + driverID + " created successfully");
 			}
-			setSuccessMsg(dwarn+"driverID " + driverID + " created successfully");
-		}
-		else
-		{
-			Integer count = driverDAO.update(driver);
-			if (count==null || count<1)
+			else
 			{
-				setErrorMsg("dwarn_Error updating driver");
-				return FAILURE;
+				Integer count = driverDAO.update(driver);
+				if (count==null || count<1)
+				{
+					setErrorMsg(dwarn + " Error updating driver");
+					return FAILURE;
+				}
+				setSuccessMsg(dwarn+"driverID " + driver.getDriverID() + " updated successfully");
 			}
-			setSuccessMsg(dwarn+"driverID " + driver.getDriverID() + " updated successfully");
+		} catch (Exception e) {
+			setErrorMsg(dwarn + " Exception: " + e.getMessage());
+			return FAILURE;
 		}
 			
 		
@@ -804,28 +809,33 @@ public class DAOUtilBean implements PhaseListener {
 		vehicle.setStatus(Status.ACTIVE);
 		
 		Integer vehicleID = vehicle.getVehicleID();
-		if (doCreate)
-		{
-			vehicleID = vehicleDAO.create(selectedGroupID, vehicle);
-			if (vehicleID==null || vehicleID<1)
+		try {
+			if (doCreate)
 			{
-				setErrorMsg("Error creating vehicleID " + vehicleID);
-				return FAILURE;
+				vehicleID = vehicleDAO.create(selectedGroupID, vehicle);
+				if (vehicleID==null || vehicleID<1)
+				{
+					setErrorMsg("Error creating vehicleID " + vehicleID);
+					return FAILURE;
+				}
+				setSuccessMsg(vwarn + "VehicleID " + vehicleID + " created successfully");
 			}
-			setSuccessMsg(vwarn + "VehicleID " + vehicleID + " created successfully");
-		}
-		else
-		{
-			Integer count=vehicleDAO.update(vehicle);
-			if (count==null || count<1)
+			else
 			{
-				setErrorMsg("Error Updating vehicleID " + vehicle.getVehicleID());
-				return FAILURE;
+				Integer count=vehicleDAO.update(vehicle);
+				if (count==null || count<1)
+				{
+					setErrorMsg("Error Updating vehicleID " + vehicle.getVehicleID());
+					return FAILURE;
+				}
+				setSuccessMsg(vwarn + "VehicleID " + vehicleID + " updated successfully");
 			}
-			setSuccessMsg(vwarn + "VehicleID " + vehicleID + " updated successfully");
+			if (device!=null)
+				vehicleDAO.setVehicleDevice(vehicleID, device.getDeviceID());
+		} catch (Exception e) {
+			setErrorMsg(vwarn+ " Exception: " + e.getMessage());
+			return FAILURE;
 		}
-		if (device!=null)
-			vehicleDAO.setVehicleDevice(vehicleID, device.getDeviceID());
 
 		setVIN(null);
 		setVehicleName(null);
