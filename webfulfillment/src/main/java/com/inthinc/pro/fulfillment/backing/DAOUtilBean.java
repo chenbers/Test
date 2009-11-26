@@ -393,7 +393,8 @@ public class DAOUtilBean implements PhaseListener {
 				String barcode = "---";
 				if (vehicle.getDriverID() != null) {
 					Driver driver = driverDAO.findByID(vehicle.getDeviceID());
-					barcode = driver.getBarcode();
+					if (driver!=null)
+						barcode = driver.getBarcode();
 				}
 
 
