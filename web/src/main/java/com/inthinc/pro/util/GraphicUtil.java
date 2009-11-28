@@ -92,8 +92,8 @@ public class GraphicUtil {
 		sb.append("labelDisplay='Rotate' ");              //TESTING
 		sb.append("divLineColor=\'cfcfcf\' ");
 		sb.append("divLineIsDashed=\'1\' ");
-		sb.append("imageSaveURL=\'" + FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/FusionChartsSave.jsp\'");
-		sb.append("imageSave=\'1\'");
+		sb.append("imageSaveURL=\'" + FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/FusionChartsSave.jsp\' ");
+		sb.append("imageSave=\'1\' ");
 		if(animate)
 		{
 		    sb.append("animation=\'1\' ");
@@ -106,7 +106,7 @@ public class GraphicUtil {
 		sb.append("borderThickness=\'1\' ");
 		sb.append("showToolTips=\'1\' ");
 		sb.append("showLegend=\'0\' ");
-		sb.append("forceDecimals=\'1\' ");
+		sb.append("decimals=\'1\' forceDecimals=\'1\' ");
 		sb.append("yAxisMaxValue=\'5\' ");
 	    sb.append("decimalSeparator=\'");
         sb.append(getDecimalSeparator(locale));
@@ -139,8 +139,8 @@ public class GraphicUtil {
 		sb.append("startingAngle=\'90\' ");
 		sb.append("use3DLighting=\'1\' ");
 		sb.append("radius3D=\'30\' ");
-		sb.append("imageSaveURL=\'" + FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/FusionChartsSave.jsp\'");
-        sb.append("imageSave=\'1\'");
+		sb.append("imageSaveURL=\'" + FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/FusionChartsSave.jsp\' ");
+        sb.append("imageSave=\'1\' ");
 		sb.append("showPercentValues=\'1\' ");
 		sb.append("smartLineThickness=\'1\' ");
 		sb.append("smartLineColor=\'333333\' ");
