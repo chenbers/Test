@@ -46,7 +46,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="diagnosticsSearch" action="#{diagnosticsBean.searchAction}" oncomplete="initializeTable()"
-		            					reRender="navigation:redirectSearch,header,diagnostics-form:diagnostics,diagnostics-form:bottomScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,diagnostics-form:diagnostics,diagnostics-form:diagnostics-bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -60,7 +60,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="diagnosticsRefresh" styleClass="left"
-		           					reRender="header,diagnostics-form:diagnostics,diagnostics-form:bottomScroller"
+		           					reRender="header,diagnostics-form:diagnostics,diagnostics-form:diagnostics-bottomScroller"
 									action="#{diagnosticsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />

@@ -48,7 +48,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="safetySearch" action="#{eventsBean.searchAction}" oncomplete="initializeTable()"
-		            					reRender="navigation:redirectSearch,header,safety-form:safety,safety-form:bottomScroller" styleClass="left">
+		            					reRender="navigation:redirectSearch,header,safety-form:safety,safety-form:safety-bottomScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -62,7 +62,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton id="safetyRefresh" styleClass="left"
-									reRender="header,safety-form:safety,safety-form:bottomScroller" 
+									reRender="header,safety-form:safety,safety-form:safety-bottomScroller" 
 									action="#{eventsBean.refreshAction}" oncomplete="initializeTable()">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />

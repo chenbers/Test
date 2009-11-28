@@ -123,7 +123,7 @@
 					<f:facet name="header">
 						<a4j:commandLink id="#{context}-trendGroupSort"
 							value="#{messages.trendReport_header_divisionTeam}"
-							reRender="xypanel,bottomScroller,#{context}"
+							reRender="xypanel,#{context}-bottomScroller,#{context}"
 							action="#{trendBean.sort}" ajaxSingle="true">
 							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
 								value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}" />
@@ -145,7 +145,7 @@
 				<rich:column width="15%" styleClass="trendTableScore">
 					<f:facet name="header">
 						<a4j:commandLink id="#{context}-trendScoreSort" value="#{messages.trendReport_header_score}"
-							reRender="xypanel,bottomScroller,#{context}"
+							reRender="xypanel,#{context}-bottomScroller,#{context}"
 							action="#{trendBean.sort}" ajaxSingle="true">
 							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
 								value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}" />

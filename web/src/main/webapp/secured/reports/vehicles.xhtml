@@ -59,7 +59,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="vehiclesSearch" action="#{vehicleReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,vehicles,bottomScroller,headerVehicles" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,vehicles,vehicles-bottomScroller,headerVehicles" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -225,7 +225,7 @@
                         
                                 <div class="spacer"></div>
                                 
-                                <rich:datascroller id="bottomScroller" for="vehicles" immediate="true"
+                                <rich:datascroller id="vehicles-bottomScroller" for="vehicles" immediate="true"
                                     scrollerListener="#{vehicleReportBean.scrollerListener}"
                                     reRender="vehicles,headerVehicles"
                                     requestDelay="200" eventsQueue="pagerQueue" 

@@ -63,7 +63,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="idlingSearch" action="#{idlingReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,idlings,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,idlings,idlings-bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -239,7 +239,7 @@
                                 			</rich:dataTable>    	
                             	</div>	
                                 <div class="spacer"/>
-                                <rich:datascroller id="bottomScroller" for="idlings" immediate="true" 
+                                <rich:datascroller id="idlings-bottomScroller" for="idlings" immediate="true" 
                                           scrollerListener="#{idlingReportBean.scrollerListener}"
                                              reRender="idlings,headerIdlings"
                                              requestDelay="200" eventsQueue="pagerQueue" page="#{idlingReportBean.page}"
