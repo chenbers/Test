@@ -52,7 +52,7 @@
     </rich:column>
     <rich:column id="report" rendered="#{reportScheduleBean.tableColumns['report'].visible}" sortBy="#{messages[item.report]}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_report}" /></f:facet>
-      <h:outputText value="#{item.report.label}">
+      <h:outputText value="#{messages[item.report.messageKey]}">
       </h:outputText>
     </rich:column>
     <rich:column id="status" rendered="#{reportScheduleBean.tableColumns['status'].visible}" sortBy="#{item.status}">

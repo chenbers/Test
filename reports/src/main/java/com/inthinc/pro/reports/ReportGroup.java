@@ -120,6 +120,10 @@ public enum ReportGroup
         return groupTypes;
     }
     
+    public String getMessageKey(){
+    	
+    	return toString();
+    }
     @Override
     public String toString()
     {
