@@ -12,6 +12,8 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TrendItem;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
 
 public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 
@@ -181,5 +183,21 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	            tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
 	        }
 	}
+	public abstract ReportCriteria buildReport();
+	
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
+    }
+
+    public  void emailReport()
+    {
+        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+    }
+
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
+    }
 	
 }

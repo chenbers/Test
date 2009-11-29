@@ -113,9 +113,9 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
         this.clearItem = clearItem;
     }
 
-    public ReportCriteria buildReport(ReportType reportType)
+    public ReportCriteria buildReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(reportType, getGroupHierarchy().getTopGroup().getName(), getLocale());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SPEED, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.addParameter("ENTITY_NAME", getVehicle().getFullName());
@@ -149,20 +149,23 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
         return reportCriteria;
     }
 
-    public void exportReportToPdf()
-    {
-        getReportRenderer().exportSingleReportToPDF(buildReport(ReportType.VEHICLE_SPEED), getFacesContext());
-    }
-
-    public void emailReport()
-    {
-        getReportRenderer().exportReportToEmail(buildReport(ReportType.VEHICLE_SPEED), getEmailAddress());
-    }
-
-    public void exportReportToExcel()
-    {
-        getReportRenderer().exportReportToExcel(buildReport(ReportType.VEHICLE_SPEED), getFacesContext());
-    }
+//    @Override
+//   public void exportReportToPdf()
+//    {
+//        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
+//    }
+//
+//    @Override
+//    public void emailReport()
+//    {
+//        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+//    }
+//
+//    @Override
+//    public void exportReportToExcel()
+//    {
+//        getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
+//    }
 
     @Override
     public void sortEvents()

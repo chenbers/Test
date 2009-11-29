@@ -455,7 +455,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         return chartDataList;
     }
 
-    public List<ReportCriteria> buildReport()
+    public List<ReportCriteria> buildReportCriteria()
     {
         List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
         Integer id = getVehicle().getVehicleID();
@@ -521,12 +521,12 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public void exportReportToPdf()
     {
-        getReportRenderer().exportReportToPDF(buildReport(), getFacesContext());
+        getReportRenderer().exportReportToPDF(buildReportCriteria(), getFacesContext());
     }
 
     public void emailReport()
     {
-        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());
     }
 
     public void setVehicleSpeedBean(VehicleSpeedBean vehicleSpeedBean)

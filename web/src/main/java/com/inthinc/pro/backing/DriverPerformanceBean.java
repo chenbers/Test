@@ -482,12 +482,13 @@ public class DriverPerformanceBean extends BasePerformanceBean
     {
         this.hasLastTrip = hasLastTrip;
     }
-
+    @Override
     public void exportReportToPdf()
     {
         getReportRenderer().exportReportToPDF(buildReportCriteria(), getFacesContext());
     }
 
+    @Override
     public void emailReport()
     {
         getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());

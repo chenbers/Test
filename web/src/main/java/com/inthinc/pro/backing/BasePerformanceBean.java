@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
@@ -28,7 +30,7 @@ public abstract class BasePerformanceBean extends BaseBean
 	 */
 	private static final long serialVersionUID = -5977023073247217407L;
 
-	//private static final Logger logger = Logger.getLogger(BasePerformanceBean.class);
+	private static final Logger logger = Logger.getLogger(BasePerformanceBean.class);
     
     protected static final Integer EMPTY_SCORE_VALUE = -1;
     
@@ -148,6 +150,7 @@ public abstract class BasePerformanceBean extends BaseBean
         {
     	    Calendar cal= Calendar.getInstance();
 		    cal.add(Calendar.DAY_OF_MONTH, -29);
+		    logger.debug("calendar is "+cal.getTimeInMillis());
 		    List<ScoreableEntity> scoreList = getTrendCumulative(id, Duration.DAYS, scoreType);
 
 //            List<String> monthList = GraphicUtil.createMonthList(Duration.DAYS,MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
@@ -157,7 +160,10 @@ public abstract class BasePerformanceBean extends BaseBean
             for (ScoreableEntity se : scoreList)
             {
             	Date date = new Date(cal.getTimeInMillis());
-            	if (se.getDate().equals(date)){
+            	Calendar scoreDate = Calendar.getInstance();
+            	scoreDate.setTime(se.getDate());
+            	if (cal.get(Calendar.DAY_OF_MONTH) == scoreDate.get(Calendar.DAY_OF_MONTH)){
+//            	if (se.getDate().equals(date)){
 	                Double score = null;
 	                if (se.getScore() != null)
 	                    score = se.getScore() / 10.0D;
@@ -432,5 +438,14 @@ public abstract class BasePerformanceBean extends BaseBean
 	public void setPerformanceDataBean(PerformanceDataBean performanceDataBean) {
 		this.performanceDataBean = performanceDataBean;
 	}
+    public abstract void exportReportToPdf();
+//    {
+//        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
+//    }
+
+    public abstract void emailReport();
+//    {
+//        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+//    }
 
 }
