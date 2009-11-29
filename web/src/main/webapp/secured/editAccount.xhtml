@@ -139,7 +139,7 @@
                         <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
                         <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
                         <td>
-                          <h:selectOneMenu value="#{myAccountBean.user.person.info}" id="info" style="width:250px">
+                          <h:selectOneMenu value="#{myAccountBean.user.person.info}" id="editAccount-info" style="width:250px">
                             <f:selectItems value="#{myAccountBean.alertOptions}" />
                           </h:selectOneMenu>
                         </td>
@@ -148,7 +148,7 @@
                         <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
                         <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
                         <td>
-                          <h:selectOneMenu value="#{myAccountBean.user.person.warn}" id="warn" style="width:250px">
+                          <h:selectOneMenu value="#{myAccountBean.user.person.warn}" id="editAccount-warn" style="width:250px">
                             <f:selectItems value="#{myAccountBean.alertOptions}" />
                           </h:selectOneMenu>
                         </td>
@@ -157,7 +157,7 @@
                         <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
                         <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
                         <td>
-                          <h:selectOneMenu value="#{myAccountBean.user.person.crit}" id="crit" style="width:250px">
+                          <h:selectOneMenu value="#{myAccountBean.user.person.crit}" id="editAccount-crit" style="width:250px">
                             <f:selectItems value="#{myAccountBean.alertOptions}" />
                           </h:selectOneMenu>
                         </td>
@@ -193,16 +193,16 @@
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_priEmail}" /> <span class="required">*</span></td>
                           <td>
-                            <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="priEmail" value="#{myAccountBean.user.person.priEmail}" size="40" maxlength="62"
+                            <rich:message for="editAccount-priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-priEmail" value="#{myAccountBean.user.person.priEmail}" size="40" maxlength="62"
                               onkeyup="populateAlertText()" required="true" requiredMessage="#{messages.required}" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_secEmail}" /></td>
                           <td>
-                            <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="secEmail" value="#{myAccountBean.user.person.secEmail}" 
+                            <rich:message for="editAccount-secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-secEmail" value="#{myAccountBean.user.person.secEmail}" 
                               size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
@@ -215,8 +215,8 @@
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
                           <td>
-                            <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="priPhone" value="#{myAccountBean.user.person.priPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
+                            <rich:message for="editAccount-priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-priPhone" value="#{myAccountBean.user.person.priPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
                                   <f:validateLength  maximum="22" />
                              	  <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
 <!--                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />-->
@@ -227,8 +227,8 @@
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
                           <td>
-                            <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="secPhone" value="#{myAccountBean.user.person.secPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
+                            <rich:message for="editAccount-secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-secPhone" value="#{myAccountBean.user.person.secPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
                                   <f:validateLength  maximum="22" />
                              	  <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
 <!--                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />-->
@@ -245,8 +245,8 @@
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_priText}" /></td>
                           <td>
-                            <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
+                            <rich:message for="editAccount-priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
                               <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
                             </h:inputText>
                           </td>
@@ -254,8 +254,8 @@
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_secText}" /></td>
                           <td>
-                            <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
+                            <rich:message for="editAccount-secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
                               <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
                             </h:inputText>
                           </td>
@@ -290,19 +290,19 @@
 
     if (id == null)
     {
-      populateAlertText("my_form:info");
-      populateAlertText("my_form:warn");
-      populateAlertText("my_form:crit");
+      populateAlertText("my_form:editAccount-info");
+      populateAlertText("my_form:editAccount-warn");
+      populateAlertText("my_form:editAccount-crit");
     }
     else
     {
       var select = document.getElementById(id);
-      populateAlertOption(select.options[1], "my_form:priEmail");
-      populateAlertOption(select.options[2], "my_form:secEmail");
-      populateAlertOption(select.options[3], "my_form:priPhone");
-      populateAlertOption(select.options[4], "my_form:secPhone");
-      populateAlertOption(select.options[5], "my_form:priText");
-      populateAlertOption(select.options[6], "my_form:secText");
+      populateAlertOption(select.options[1], "my_form:editAccount-priEmail");
+      populateAlertOption(select.options[2], "my_form:editAccount-secEmail");
+      populateAlertOption(select.options[3], "my_form:editAccount-priPhone");
+      populateAlertOption(select.options[4], "my_form:editAccount-secPhone");
+      populateAlertOption(select.options[5], "my_form:editAccount-priText");
+      populateAlertOption(select.options[6], "my_form:editAccount-secText");
     }
   }
 

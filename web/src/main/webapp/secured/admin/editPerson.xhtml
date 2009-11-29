@@ -825,19 +825,19 @@
 
     if (id == null)
     {
-      populateAlertText("edit-form:info");
-      populateAlertText("edit-form:warn");
-      populateAlertText("edit-form:crit");
+      populateAlertText("edit-form:editPerson-info");
+      populateAlertText("edit-form:editPerson-warn");
+      populateAlertText("edit-form:editPerson-crit");
     }
     else
     {
       var select = document.getElementById(id);
-      populateAlertOption(select.options[1], "edit-form:priEmail");
-      populateAlertOption(select.options[2], "edit-form:secEmail");
-      populateAlertOption(select.options[3], "edit-form:priPhone");
-      populateAlertOption(select.options[4], "edit-form:secPhone");
-      populateAlertOption(select.options[5], "edit-form:priText");
-      populateAlertOption(select.options[6], "edit-form:secText");
+      populateAlertOption(select.options[1], "edit-form:editPerson-priEmail");
+      populateAlertOption(select.options[2], "edit-form:editPerson-secEmail");
+      populateAlertOption(select.options[3], "edit-form:editPerson-priPhone");
+      populateAlertOption(select.options[4], "edit-form:editPerson-secPhone");
+      populateAlertOption(select.options[5], "edit-form:editPerson-priText");
+      populateAlertOption(select.options[6], "edit-form:editPerson-secText");
     }
   }
 
@@ -858,11 +858,11 @@
     document.getElementById(id).style.display = show ? "" : "none";
   }
 
-  var isUser = document.getElementById("edit-form:isUser");
+  var isUser = document.getElementById("edit-form:editPerson-isUser");
   if (isUser)
   {
     showSection("userTable", isUser.checked);
-    showSection("driverTable", document.getElementById("edit-form:isDriver").checked);
+    showSection("driverTable", document.getElementById("edit-form:editPerson-isDriver").checked);
   }
     </script>
 
