@@ -14,7 +14,7 @@
   </context-param>
   <context-param>
     <param-name>facelets.LIBRARIES</param-name>
-    <param-value>/META-INF/security.taglib.xml</param-value>
+    <param-value>/WEB-INF/taglib/security.taglib.xml</param-value>
   </context-param>
   <!-- Spring -->
   <context-param>
