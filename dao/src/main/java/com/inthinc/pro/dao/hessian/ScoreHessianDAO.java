@@ -375,7 +375,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-        	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getCode());
+        	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getDvqCode());
             List<DVQMap> result = getMapper().convertToModelObject(list, DVQMap.class);
             List<VehicleReportItem> lVri = new ArrayList<VehicleReportItem>();
             VehicleReportItem vri = null;
@@ -422,7 +422,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
+            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getDvqCode()), DVQMap.class);
             List<DriverReportItem> driverReportItemList = new ArrayList<DriverReportItem>();
             DriverReportItem driverReportItem = null;
 
