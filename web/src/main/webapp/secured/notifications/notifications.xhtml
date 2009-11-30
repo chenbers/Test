@@ -15,6 +15,7 @@
             if (GBrowserIsCompatible()) {
               map = new GMap2(document.getElementById("address-canvas"));
               var location = new GLatLng(lat, lng)
+              map.addControl(new GLargeMapControl());
               map.setCenter(location, 15);
               map.addOverlay(new GMarker(location)); 
 

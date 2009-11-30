@@ -18,6 +18,7 @@
 		        {
 					var map = new GMap2(document.getElementById("location-canvas"));
 					var location = new GLatLng(lat, lng)
+	                map.addControl(new GLargeMapControl());
 					map.setCenter(location, 15);
 					map.addOverlay(new GMarker(location)); 
 	        	}
