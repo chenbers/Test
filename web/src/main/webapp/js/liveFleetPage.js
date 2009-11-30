@@ -161,10 +161,10 @@
    			e = event;
    			characterCode = e.keyCode;//IE's keyCode property
    			}
-
+   			
    			//if generated character code is equal to ascii 13 (if enter key)
-   			if(characterCode == 13) { 
-					processForm('addressTextBox', 'countComboBox');
+   			if(characterCode == 13) {    				
+					processForm('liveFleetAddressTextBox', 'countComboBox');
    					return false; }
    			else
    	   			{	return true;  }
