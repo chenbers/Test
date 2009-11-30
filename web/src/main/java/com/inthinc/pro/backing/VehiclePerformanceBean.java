@@ -110,8 +110,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     {
         if (violationEvents.isEmpty())
         {
-        	//test null EventMapper map item
-        	System.out.println(EventMapper.getEventType(40002));
         	List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
             types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
