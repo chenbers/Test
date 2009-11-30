@@ -38,6 +38,7 @@
 
 	    <c:if test="#{disableDecimals}">
     		#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("forceDecimals=\'1\'", "forceDecimals=\'0\'");
+    		#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("decimals=\'1\'", "decimals=\'0\'");
     	</c:if>
 
 		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   

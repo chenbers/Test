@@ -171,7 +171,7 @@ public class GraphicUtil {
         sb.append("showAlternateHGridColor=\'1\' ");
         sb.append("alternateHGridColor=\'#f0f0f0\' ");
         sb.append("alternateHGridAlpha=\'100\' ");
-        sb.append("forceDecimals=\'1\' ");
+        sb.append("decimals=\'1\' forceDecimals=\'1\' ");
         sb.append("yAxisMaxValue=\'5\' ");
         sb.append("decimalSeparator=\'");
         sb.append(getDecimalSeparator(locale));
@@ -208,7 +208,7 @@ public class GraphicUtil {
         sb.append("showAlternateHGridColor=\'1\' ");
         sb.append("alternateHGridColor=\'#f0f0f0\' ");
         sb.append("alternateHGridAlpha=\'100\' ");
-        sb.append("forceDecimals=\'1\' ");
+        sb.append("decimals=\'1\' forceDecimals=\'1\' ");
         sb.append("yAxisMaxValue=\'5\' ");
         sb.append("decimalSeparator=\'");
         sb.append(getDecimalSeparator(locale));

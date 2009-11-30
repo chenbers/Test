@@ -90,13 +90,13 @@ public class FusionMultiAreaChart implements BaseChart
         return CHART_CAT_END;
     }
 
-    public String getChartAreaDataSet(String title, String color, Object[] values, List<String> catLabels)
+    public String getChartAreaDataSet(String title, String color, Object[] values, List<String> valueTexts, List<String> catLabels)
     {
         StringBuffer buffer = new StringBuffer();
         buffer.append(MessageFormat.format(CHART_DATASET_AREA_START, new Object[] { title, color}));
         for (int i = 0; i < values.length; i++)
         {
-            String label = catLabels.get(i) + " " + title + ": " + values[i];
+            String label = catLabels.get(i) + " " + title + ": " + valueTexts.get(i);
             
             //Set Chart item to "Dashed" version if next item in array is null, see example XML output at bottom.
             if(values[i] != null && i < values.length-1 && values[i+1] == null)
@@ -108,31 +108,31 @@ public class FusionMultiAreaChart implements BaseChart
         return buffer.toString();
     }
     
-    public String getChartLineDataSet(String title, String color, Object[] values, List<String> catLabels)
-    {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(MessageFormat.format(CHART_DATASET_LINE_START, new Object[] { title, color}));
-        for (int i = 0; i < values.length; i++)
-        {
-            String label = catLabels.get(i) + " " + title + ": " + values[i];
-            
-            //Set Chart item to "Dashed" version if next item in array is null, see example XML output at bottom.
-            if(values[i] != null && i < values.length-1 && values[i+1] == null) 
-                buffer.append(getChartItemDashed(new Object[] { values[i], label}));
-            else
-                buffer.append(getChartItem(new Object[] { values[i], label}));
-        }
-        buffer.append(CHART_DATASET_END);
-        return buffer.toString();
-    }
+//    public String getChartLineDataSet(String title, String color, Object[] values,  List<String> valueTexts, List<String> catLabels)
+//    {
+//        StringBuffer buffer = new StringBuffer();
+//        buffer.append(MessageFormat.format(CHART_DATASET_LINE_START, new Object[] { title, color}));
+//        for (int i = 0; i < values.length; i++)
+//        {
+//            String label = catLabels.get(i) + " " + title + ": " + valueTexts.get(i);
+//            
+//            //Set Chart item to "Dashed" version if next item in array is null, see example XML output at bottom.
+//            if(values[i] != null && i < values.length-1 && values[i+1] == null) 
+//                buffer.append(getChartItemDashed(new Object[] { values[i], label}));
+//            else
+//                buffer.append(getChartItem(new Object[] { values[i], label}));
+//        }
+//        buffer.append(CHART_DATASET_END);
+//        return buffer.toString();
+//    }
     
-    public String getChartBarDataSet(String title, String color, Object[] values, List<String> catLabels)
+    public String getChartBarDataSet(String title, String color, Object[] values,  List<String> valueTexts, List<String> catLabels)
     {
         StringBuffer buffer = new StringBuffer();
         buffer.append(MessageFormat.format(CHART_DATASET_COLUMN_START, new Object[] { title, color}));
         for (int i = 0; i < values.length; i++)
         {
-            String label = catLabels.get(i) + " " + title  + ": " + values[i];  
+            String label = catLabels.get(i) + " " + title  + ": " + valueTexts.get(i);  
             buffer.append(getChartItem(new Object[] { values[i], label}));
         }
         buffer.append(CHART_DATASET_END);

@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +53,15 @@ public abstract class BasePerformanceBean extends BaseBean
 	protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
 
     protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
+ 
+    private String getToolText(Number value){
+    	
+	    NumberFormat format = NumberFormat.getInstance(getLocale());
+	    format.setMaximumFractionDigits(1);
+	    format.setMinimumFractionDigits(1);
+	    
+	    return format.format(value);
+    }
 
     /*
      * Create Fusion Charts Multi Line chart. Set no Drive days to dashed line. Integrated bar chart for mileage
@@ -68,7 +78,9 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> dailyList = getTrendDaily(id, Duration.DAYS, scoreType);
 
         List<String> catLabelList = GraphicUtil.createDateLabelList(dailyList, Duration.DAYS,getLocale());
-
+        List<String> cumulativeToolTips = new ArrayList<String>();
+        List<String> odometerToolTips = new ArrayList<String>();
+        
         Double cumulativeValues[] = new Double[cumulativeList.size()];
         Double odometerValues[] = new Double[dailyList.size()];
 
@@ -82,18 +94,24 @@ public abstract class BasePerformanceBean extends BaseBean
                 odometerValues[i] = MeasurementConversionUtil.convertMilesToKilometers((dailyList.get(i).getIdentifierNum().longValue()  / 100D), getPerson().getMeasurementType()).doubleValue();
 
             // Set Score to NULL on non driving days.
-            if (odometerValues[i] == null || odometerValues[i] == 0)
-                cumulativeValues[i] = null;
-            else
-                cumulativeValues[i] = cumulativeList.get(i).getScore() == null ? null : cumulativeList.get(i).getScore() / 10D;
+            if (odometerValues[i] == null || odometerValues[i] == 0){
 
+            	cumulativeValues[i] = null;
+                cumulativeToolTips.add("");
+                odometerToolTips.add("");
+            }
+            else {
+                cumulativeValues[i] = cumulativeList.get(i).getScore() == null ? null : cumulativeList.get(i).getScore() / 10D;
+	            cumulativeToolTips.add(getToolText(cumulativeValues[i]));
+	            odometerToolTips.add(getToolText(odometerValues[i]));
+            }
             sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(i)));
         }
         sb.append(multiAreaChart.getCategoriesEnd());
 
         // Not displaying daily score in chart.
-        sb.append(multiAreaChart.getChartAreaDataSet(MessageUtil.getMessageString("driver_chart_cumulative"), "#B0CB48", cumulativeValues, catLabelList));
-        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString(getMeasurementType() + "_Miles"), "#C0C0C0", odometerValues, catLabelList));
+        sb.append(multiAreaChart.getChartAreaDataSet(MessageUtil.getMessageString("driver_chart_cumulative"), "#B0CB48", cumulativeValues, cumulativeToolTips, catLabelList));
+        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString(getMeasurementType() + "_Miles"), "#C0C0C0", odometerValues, odometerToolTips, catLabelList));
         sb.append(multiAreaChart.getClose());
         return sb.toString();
     }
@@ -113,7 +131,9 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> dailyList = getTrendDaily(id, duration, scoreType);
 
         List<String> catLabelList = GraphicUtil.createDateLabelList(dailyList, duration,getLocale());
-
+        List<String> cumulativeToolTips = new ArrayList<String>();
+        List<String> odometerToolTips = new ArrayList<String>();
+         
         Double cumulativeValues[] = new Double[cumulativeList.size()];
         Double odometerValues[] = new Double[dailyList.size()];
 
@@ -127,18 +147,26 @@ public abstract class BasePerformanceBean extends BaseBean
                 odometerValues[i] = MeasurementConversionUtil.convertMilesToKilometers((dailyList.get(i).getIdentifierNum().longValue()  / 100D), getPerson().getMeasurementType()).doubleValue();
 
             // Set Score to NULL on non driving days.
-            if (odometerValues[i] == null || odometerValues[i] == 0)
+            if (odometerValues[i] == null || odometerValues[i] == 0){
+            	
                 cumulativeValues[i] = null;
-            else
+	            cumulativeToolTips.add("");
+	            odometerToolTips.add("");
+            }
+            else {
+            	
                 cumulativeValues[i] = cumulativeList.get(i).getScore() == null ? null : cumulativeList.get(i).getScore() / 10D;
-
+	        	cumulativeToolTips.add(getToolText(cumulativeValues[i]));
+	            odometerToolTips.add(getToolText(odometerValues[i]));
+            }
+	            
             sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(i)));
         }
         sb.append(multiAreaChart.getCategoriesEnd());
 
         // Not displaying daily score in chart.
-        sb.append(multiAreaChart.getChartAreaDataSet(MessageUtil.getMessageString("driver_chart_cumulative"), "#B0CB48", cumulativeValues, catLabelList));
-        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString(getMeasurementType() + "_Miles"), "#C0C0C0", odometerValues, catLabelList));
+        sb.append(multiAreaChart.getChartAreaDataSet(MessageUtil.getMessageString("driver_chart_cumulative"), "#B0CB48", cumulativeValues, cumulativeToolTips, catLabelList));
+        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString(getMeasurementType() + "_Miles"), "#C0C0C0", odometerValues, odometerToolTips, catLabelList));
         sb.append(multiAreaChart.getClose());
         return sb.toString();
     }
@@ -152,7 +180,7 @@ public abstract class BasePerformanceBean extends BaseBean
 		    cal.add(Calendar.DAY_OF_MONTH, -29);
 		    logger.debug("calendar is "+cal.getTimeInMillis());
 		    List<ScoreableEntity> scoreList = getTrendCumulative(id, Duration.DAYS, scoreType);
-
+		    
 //            List<String> monthList = GraphicUtil.createMonthList(Duration.DAYS,MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/,getLocale());
             List<String> monthList = GraphicUtil.createDateLabelList(scoreList, Duration.DAYS, MessageUtil.getMessageString("shortDateFormat"), getLocale());
             

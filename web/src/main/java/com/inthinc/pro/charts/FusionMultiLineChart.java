@@ -28,6 +28,7 @@ public class FusionMultiLineChart implements BaseChart
                                                      "showAlternateHGridColor=\'1\' " +
                                                      "alternateHGridColor=\'#f0f0f0\' " +
                                                      "alternateHGridAlpha=\'100\' " +
+                                                     "decimals=\'0\' " +
                                                      "forceDecimals=\'0\' " +
                                                      "yAxisMaxValue=\'5\' " +
                                                      "bgColor=\'#ffffff\' " +
