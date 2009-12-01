@@ -30,13 +30,13 @@
 
 		<rich:menuItem ajaxSingle="true"
 			iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
-			value="Export To PDF"
+			value="#{messages.contextMenu_export_to_pdf}" 
 			action="#{reportBean.exportReportToPdf}"
 			id="#{context}-export_menu_item">
 		</rich:menuItem>
 		<rich:menuItem ajaxSingle="true"
 			iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png"
-			value="Export To Excel"
+			value="#{messages.contextMenu_export_to_Excel}"
 			action="#{reportBean.exportReportToExcel}"
 			id="#{context}-exportExcelMEnuItem" rendered="#{exportExcel eq 'TRUE'}">
 		</rich:menuItem>
