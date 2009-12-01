@@ -171,12 +171,12 @@ public class DAOUtilBean implements PhaseListener {
 			Calendar calendar = Calendar.getInstance();
 			Date endDate = new Date();
 			calendar.setTime(endDate);
-			calendar.add(Calendar.YEAR, -1);
+			calendar.add(Calendar.MONTH, -1);
 			Date startDate = calendar.getTime();
 			List<Integer> eventTypes = new LinkedList<Integer>();
 			eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
 			List<Event> events = eventDAO.getEventsForVehicle(vehicleID,
-					startDate, endDate, eventTypes, null);
+					startDate, endDate, eventTypes, 1);
 
 			if (loc != null) {
 				messageList.add("GPS OK - Last fix " + loc.getTime() + " "
@@ -322,6 +322,7 @@ public class DAOUtilBean implements PhaseListener {
 						+ " successfully moved to account: "
 						+ shipAccount.getAcctName());
 			}
+			//TODO should we assign to a vehicle??
 		}
 		setSerialNum(null);
 	}
@@ -1067,6 +1068,13 @@ if (accounts.size()>100)
 
 	}
 
+	public List<SelectItem> getAccountSelectListWithUnselected() {
+		List<SelectItem> accountList = this.getAccountSelectList();
+		accountList.add(0, new SelectItem(-1,"--Select a Customer--"));
+		return accountList;
+	}
+
+	
 	public List<SelectItem> getAccountSelectList() {
 		List<SelectItem> accountList = new ArrayList<SelectItem>();
 
@@ -1322,13 +1330,13 @@ if (accounts.size()>100)
 
 	public String getSelectedAccountName() {
 		if (selectedAccountID == null || selectedAccountID < 0)
-			return "--Select an Customer--";
+			return "--Select a Customer--";
 		return getAccountMap().get(this.selectedAccountID);
 	}
 
 	public String getSelectedGroupName() {
 		if (selectedAccountID == null || selectedAccountID < 0)
-			return "--Select an Customer--";
+			return "--Select a Customer--";
 		if (selectedGroupID == null || selectedGroupID < 0)
 			return "--Select a Team--";
 		

@@ -21,7 +21,7 @@
 					<div id="page_top_left"><h:selectOneMenu
 						id="account-select-menu" onchange="submit()"
 						value="#{daoUtilBean.selectedAccountID}">
-						<f:selectItems value="#{daoUtilBean.accountSelectList}" />
+						<f:selectItems value="#{daoUtilBean.accountSelectListWithUnselected}" />
 					</h:selectOneMenu> <br />
 					<br />
 					Scan the Serial Number barcode or type manually:<br/>
