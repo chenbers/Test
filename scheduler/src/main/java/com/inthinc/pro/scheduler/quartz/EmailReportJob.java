@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -38,8 +37,7 @@ import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
  * 
  */
 
-public class EmailReportJob extends QuartzJobBean
-{
+public class EmailReportJob extends QuartzJobBean {
     private static final Logger logger = Logger.getLogger(EmailReportJob.class);
 
     @SuppressWarnings("unchecked")
@@ -48,61 +46,59 @@ public class EmailReportJob extends QuartzJobBean
     private ReportScheduleDAO reportScheduleDAO;
     private UserDAO userDAO;
     private AccountDAO accountDAO;
-    
+
     private String webContextPath;
     private String encryptPassword;
     private StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
 
     @Override
-    protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException
-    {
-        logger.debug("EmailReportJob: START");
+    protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
+        logger.debug("START PROCCESSING SCHEDULED REPORTS");
         processReportSchedules();
-        logger.debug("EmailReportJob: END");
+        logger.debug("END PROCESSING SCHEDULED REPORTS");
 
     }
 
-    private void processReportSchedules()
-    {
-
+    private void processReportSchedules() {
         List<Account> accounts = accountDAO.getAllAcctIDs();
         logger.debug("Account Count: " + accounts.size());
-        
+
         textEncryptor.setPassword(encryptPassword);
         textEncryptor.setStringOutputType("hexadecimal");
 
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
-        for (Account account : accounts)
-        {
+        for (Account account : accounts) {
             Account a = accountDAO.findByID(account.getAcctID());
-            if(a != null && !a.getStatus().equals(Status.DELETED))
+            if (a != null && !a.getStatus().equals(Status.DELETED))
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
             else {
-                if (a == null)
-                {
-                	logger.info("no account found for account.getAcctID()");
+                if (a == null) {
+                    logger.info("no account found for account.getAcctID()");
                 }
-                if(logger.isDebugEnabled()){
+                if (logger.isDebugEnabled()) {
                     logger.debug("Account ID Deleted: " + account.getAcctID());
                 }
             }
         }
 
-        for (ReportSchedule reportSchedule : reportSchedules)
-        {
-            logger.debug("EmailReportJob: Begin Validation: " + reportSchedule.getName());
-            if (emailReport(reportSchedule))
-            {
+        for (ReportSchedule reportSchedule : reportSchedules) {
+            logger.debug("Begin Validation: " + reportSchedule.getName());
+            if (emailReport(reportSchedule)) {
                 User user = userDAO.findByID(reportSchedule.getUserID());
-                if(user.getStatus().equals(Status.ACTIVE) && reportSchedule.getStatus().equals(Status.ACTIVE)){ //If the users status is not active, then the reports will no longer go out for that user.
+                if (user.getStatus().equals(Status.ACTIVE) && reportSchedule.getStatus().equals(Status.ACTIVE)) { // If the users status is not active, then the reports will no
+                    // longer go out for that user.
                     Calendar todaysDate = Calendar.getInstance(user.getPerson().getTimeZone());
-                    logger.debug("EmailReportJob: BEGIN PROCESSING REPORT ");
-                    logger.debug(reportSchedule.toString());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("-------BEGIN PROCESSING REPORT-------");
+                        logger.debug(reportSchedule.toString());
+                    }
                     processReportSchedule(reportSchedule);
                     reportSchedule.setLastDate(todaysDate.getTime());
                     Integer modified = reportScheduleDAO.update(reportSchedule);
-                    logger.debug("EmailReportJob: UPDATE RESULT " + modified);
-                    logger.debug("EmailReportJob: END REPORT");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("UPDATE RESULT " + modified);
+                        logger.debug("-------------END REPORT-------------");
+                    }
                 }
             }
         }
@@ -110,79 +106,75 @@ public class EmailReportJob extends QuartzJobBean
     }
 
     @SuppressWarnings("unchecked")
-    private void processReportSchedule(ReportSchedule reportSchedule)
-    {
+    private void processReportSchedule(ReportSchedule reportSchedule) {
         ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         User user = userDAO.findByID(reportSchedule.getUserID());
-        for (int i = 0; i < reportGroup.getReports().length; i++)
-        {
-        	Duration duration = reportSchedule.getReportDuration();
-        	if (duration == null) {
-        		duration = Duration.DAYS;
-        	}
-        	if (reportSchedule.getGroupID() == null)
-        	{
-        		logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
-        		continue;
-        	}
+        for (int i = 0; i < reportGroup.getReports().length; i++) {
+            Duration duration = reportSchedule.getReportDuration();
+            if (duration == null) {
+                duration = Duration.DAYS;
+            }
+            if (reportSchedule.getGroupID() == null) {
+                logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
+                continue;
+            }
             switch (reportGroup.getReports()[i]) {
-            case OVERALL_SCORE:
-                reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
-                break;
-            case TREND:
-                reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
-                break;
-            case MPG_GROUP:
-                reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
-                break;
-            case DEVICES_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
-                break;
-            case DRIVER_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
-                break;
-            case VEHICLE_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
-                break;
-            case IDLING_REPORT:
-                final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                Calendar startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                startDate.add(Calendar.DATE, -7);
-                if(logger.isDebugEnabled())
-                {
-                    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
-                    logger.debug("Start Time: " + sdf.format(startDate.getTime()));
-                    logger.debug("End Time: " + sdf.format(endDate.getTime()));
-                }
-                reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), startDate.getTime(), endDate.getTime(), user.getPerson().getLocale()));
-                break;
-            default:
-                break;
+                case OVERALL_SCORE:
+                    reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    break;
+                case TREND:
+                    reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    break;
+                case MPG_GROUP:
+                    reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    break;
+                case DEVICES_REPORT:
+                    reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
+                    break;
+                case DRIVER_REPORT:
+                    reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    break;
+                case VEHICLE_REPORT:
+                    reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    break;
+                case IDLING_REPORT:
+                    final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                    Calendar startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                    startDate.add(Calendar.DATE, -7);
+                    if (logger.isDebugEnabled()) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+                        logger.debug("Start Time: " + sdf.format(startDate.getTime()));
+                        logger.debug("End Time: " + sdf.format(endDate.getTime()));
+                    }
+                    reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), startDate.getTime(), endDate.getTime(), user.getPerson().getLocale()));
+                    break;
+                default:
+                    break;
 
             }
         }
         // Set the current date of the reports
-        for (ReportCriteria reportCriteria : reportCriteriaList)
-        {
+        for (ReportCriteria reportCriteria : reportCriteriaList) {
             reportCriteria.setReportDate(new Date(), user.getPerson().getTimeZone());
             reportCriteria.setLocale(user.getPerson().getLocale());
             reportCriteria.setUseMetric((user.getPerson().getMeasurementType() != null && user.getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
             reportCriteria.setMeasurementType(user.getPerson().getMeasurementType());
             reportCriteria.setFuelEfficiencyType(user.getPerson().getFuelEfficiencyType());
         }
-        
+
         Report report = reportCreator.getReport(reportCriteriaList);
-        for(String address : reportSchedule.getEmailTo()){
-            String subject = LocalizedMessage.getString("reportSchedule.emailSubject",user.getPerson().getLocale()) + reportSchedule.getName();
+        for (String address : reportSchedule.getEmailTo()) {
+            String subject = LocalizedMessage.getString("reportSchedule.emailSubject", user.getPerson().getLocale()) + reportSchedule.getName();
             String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
-            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", user.getPerson().getLocale(), user.getPerson().getFullName(),user.getPerson().getPriEmail(),unsubscribeURL);
+            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", user.getPerson().getLocale(), user.getPerson().getFullName(), user.getPerson().getPriEmail(),
+                    unsubscribeURL);
             report.exportReportToEmail(address, FormatType.PDF, message, subject);
         }
-        
+
     }
-    
-    private String buildUnsubscribeURL(final String emailAddress,final Integer reportScheduleID){
+
+    private String buildUnsubscribeURL(final String emailAddress, final Integer reportScheduleID) {
         StringBuilder unsubscribeURLBuilder = new StringBuilder(webContextPath);
         unsubscribeURLBuilder.append("unsubscribe/report/");
         unsubscribeURLBuilder.append(textEncryptor.encrypt(emailAddress));
@@ -194,21 +186,15 @@ public class EmailReportJob extends QuartzJobBean
     /*
      * To determine if we should send a report out the following must be met.
      * 
-     * Rule 1: Must be between the start date and end date; 
-     * Rule 2: OCCURRENCE.Weekly - Must be scheduled to run on the day of week it currently is. 
-     * Rule 3: The Schduled Time cannot be greater than the current time. 
-     * Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occurr till the next scheduled
-     * date. 
-     * Rule 5: Report Schedule must be active. 
-     * Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
+     * Rule 1: Must be between the start date and end date; Rule 2: OCCURRENCE.Weekly - Must be scheduled to run on the day of week it currently is. Rule 3: The Schduled Time
+     * cannot be greater than the current time. Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occurr till the next scheduled
+     * date. Rule 5: Report Schedule must be active. Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
      */
-    protected boolean emailReport(ReportSchedule reportSchedule)
-    {
+    protected boolean emailReport(ReportSchedule reportSchedule) {
         User user = userDAO.findByID(reportSchedule.getUserID());
-        if (user == null || user.getPerson() == null)
-        {
-        	logger.error("Unable to get Person record for userID" + reportSchedule.getUserID());
-        	return false;
+        if (user == null || user.getPerson() == null) {
+            logger.error("Unable to get Person record for userID" + reportSchedule.getUserID());
+            return false;
         }
         Calendar currentDateTime = Calendar.getInstance(user.getPerson().getTimeZone());
         int dayOfWeek = currentDateTime.get(Calendar.DAY_OF_WEEK);
@@ -218,8 +204,7 @@ public class EmailReportJob extends QuartzJobBean
         startCalendar.setTime(reportSchedule.getStartDate());
 
         Calendar endCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l)
-        {
+        if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l) {
             endCalendar.setTime(reportSchedule.getEndDate());
         }
 
@@ -230,10 +215,8 @@ public class EmailReportJob extends QuartzJobBean
         sdf2.setTimeZone(TimeZone.getTimeZone("www."));
 
         // Rule 1:
-        if (compareDates(currentDateTime, startCalendar) < 0)
-        {
-            if (logger.isDebugEnabled())
-            {
+        if (compareDates(currentDateTime, startCalendar) < 0) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Current date is before start date");
                 logger.debug("Name: " + reportSchedule.getName());
                 logger.debug("Current Date Time: " + df.format(currentDateTime.getTime()));
@@ -242,10 +225,8 @@ public class EmailReportJob extends QuartzJobBean
             return false;
         }
 
-        if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l && compareDates(currentDateTime, endCalendar) > 0)
-        {
-            if (logger.isDebugEnabled())
-            {
+        if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l && compareDates(currentDateTime, endCalendar) > 0) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Current date is after end date");
                 logger.debug("Name: " + reportSchedule.getName());
                 logger.debug("Current Date Time: " + df.format(currentDateTime.getTime()));
@@ -254,16 +235,13 @@ public class EmailReportJob extends QuartzJobBean
             return false;
         }
 
-        if (reportSchedule.getOccurrence() == null)
-        {
+        if (reportSchedule.getOccurrence() == null) {
             return false;
         }
 
         // Rule 2:
-        if (reportSchedule.getOccurrence().equals(Occurrence.WEEKLY) && !isValidDayOfWeek(reportSchedule.getDayOfWeek(), dayOfWeek))
-        {
-            if (logger.isDebugEnabled())
-            {
+        if (reportSchedule.getOccurrence().equals(Occurrence.WEEKLY) && !isValidDayOfWeek(reportSchedule.getDayOfWeek(), dayOfWeek)) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report is not scheduled to run on current day of week");
                 logger.debug("Name: " + reportSchedule.getName());
             }
@@ -274,16 +252,13 @@ public class EmailReportJob extends QuartzJobBean
         Integer currentTimeInMinutes = currentDateTime.get(Calendar.HOUR_OF_DAY) * 60;
         currentTimeInMinutes += currentDateTime.get(Calendar.MINUTE);
 
-        if (reportSchedule.getTimeOfDay() == null)
-        {
+        if (reportSchedule.getTimeOfDay() == null) {
             reportSchedule.setTimeOfDay(0);
 
         }
 
-        if (currentTimeInMinutes < reportSchedule.getTimeOfDay())
-        {
-            if (logger.isDebugEnabled())
-            {
+        if (currentTimeInMinutes < reportSchedule.getTimeOfDay()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report time is greater than current time");
                 logger.debug("Name: " + reportSchedule.getName());
                 logger.debug("Current Time: Hour " + (Integer) (currentTimeInMinutes / 60) + " Minutes " + (Integer) currentTimeInMinutes % 60);
@@ -293,10 +268,8 @@ public class EmailReportJob extends QuartzJobBean
         }
 
         // Rule 4:
-        if ((currentTimeInMinutes - 60) >= reportSchedule.getTimeOfDay())
-        {
-            if (logger.isDebugEnabled())
-            {
+        if ((currentTimeInMinutes - 60) >= reportSchedule.getTimeOfDay()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report time was more than an hour before the current time");
                 logger.debug("Name: " + reportSchedule.getName());
                 logger.debug("Current Time: Hour " + (Integer) (currentTimeInMinutes / 60) + " Minutes " + (Integer) currentTimeInMinutes % 60);
@@ -306,10 +279,8 @@ public class EmailReportJob extends QuartzJobBean
         }
 
         // Rule 5:
-        if (reportSchedule.getStatus() != null && !reportSchedule.getStatus().equals(Status.ACTIVE))
-        {
-            if (logger.isDebugEnabled())
-            {
+        if (reportSchedule.getStatus() != null && !reportSchedule.getStatus().equals(Status.ACTIVE)) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report is not active");
                 logger.debug("Name: " + reportSchedule.getName());
             }
@@ -317,10 +288,8 @@ public class EmailReportJob extends QuartzJobBean
         }
 
         // Rule 7:
-        if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY) && startCalendar.get(Calendar.DAY_OF_MONTH) != currentDateTime.get(Calendar.DAY_OF_MONTH))
-        {
-            if (logger.isDebugEnabled())
-            {
+        if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY) && startCalendar.get(Calendar.DAY_OF_MONTH) != currentDateTime.get(Calendar.DAY_OF_MONTH)) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report is not scheduled to run on current day of month");
                 logger.debug("Name: " + reportSchedule.getName());
             }
@@ -330,16 +299,12 @@ public class EmailReportJob extends QuartzJobBean
         return true;
     }
 
-    private boolean isValidDayOfWeek(List<Boolean> daysOfWeek, int dayOfWeek)
-    {
+    private boolean isValidDayOfWeek(List<Boolean> daysOfWeek, int dayOfWeek) {
         Boolean returnBoolean = false;
-        if (daysOfWeek != null)
-        {
-            for (int i = 0; i < daysOfWeek.size(); i++)
-            {
+        if (daysOfWeek != null) {
+            for (int i = 0; i < daysOfWeek.size(); i++) {
                 Boolean dayBoolean = daysOfWeek.get(i);
-                if (i == (dayOfWeek - 1) && dayBoolean)
-                {
+                if (i == (dayOfWeek - 1) && dayBoolean) {
                     returnBoolean = true;
                 }
             }
@@ -348,8 +313,7 @@ public class EmailReportJob extends QuartzJobBean
         return returnBoolean;
     }
 
-    private int compareDates(Calendar date1, Calendar date2)
-    {
+    private int compareDates(Calendar date1, Calendar date2) {
         // Grab the integer values.. These values will be based on the time zones
         int day1 = date1.get(Calendar.DATE);
         int month1 = date1.get(Calendar.MONTH);
@@ -377,53 +341,43 @@ public class EmailReportJob extends QuartzJobBean
         return cal1.compareTo(cal2);
     }
 
-    public void setReportCreator(ReportCreator reportCreator)
-    {
+    public void setReportCreator(ReportCreator reportCreator) {
         this.reportCreator = reportCreator;
     }
 
-    public ReportCreator getReportCreator()
-    {
+    public ReportCreator getReportCreator() {
         return reportCreator;
     }
 
-    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
-    {
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService) {
         this.reportCriteriaService = reportCriteriaService;
     }
 
-    public ReportCriteriaService getReportCriteriaService()
-    {
+    public ReportCriteriaService getReportCriteriaService() {
         return reportCriteriaService;
     }
 
-    public void setReportScheduleDAO(ReportScheduleDAO reportScheduleDAO)
-    {
+    public void setReportScheduleDAO(ReportScheduleDAO reportScheduleDAO) {
         this.reportScheduleDAO = reportScheduleDAO;
     }
 
-    public ReportScheduleDAO getReportScheduleDAO()
-    {
+    public ReportScheduleDAO getReportScheduleDAO() {
         return reportScheduleDAO;
     }
 
-    public void setUserDAO(UserDAO userDAO)
-    {
+    public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public UserDAO getUserDAO()
-    {
+    public UserDAO getUserDAO() {
         return userDAO;
     }
 
-    public AccountDAO getAccountDAO()
-    {
+    public AccountDAO getAccountDAO() {
         return accountDAO;
     }
 
-    public void setAccountDAO(AccountDAO accountDAO)
-    {
+    public void setAccountDAO(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
 
