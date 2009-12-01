@@ -712,7 +712,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     person.setSecEmail(null);
                 }                
             }
-            if(person.getDriver().getBarcode() == null || person.getDriver().getBarcode().isEmpty()){
+            if(person.getDriver()!= null && (person.getDriver().getBarcode() == null || person.getDriver().getBarcode().isEmpty())){
            	
             	person.getDriver().setBarcode("");
             	person.getDriver().setRfid1(0l);
