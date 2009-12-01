@@ -80,6 +80,7 @@ public class SpeedPercentageBeanTest extends BaseBeanTest {
     }
 
     @Test
+    @Ignore
     public void fusionCharts() {
         SpeedPercentageBean bean = (SpeedPercentageBean) applicationContext.getBean("speedPercentageBean");
         loginUser(UnitTestStats.UNIT_TEST_LOGIN);

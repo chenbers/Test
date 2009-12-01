@@ -101,6 +101,7 @@ public class IdlePercentageBeanTest extends BaseBeanTest {
     }
 
     @Test
+    @Ignore
     public void fusionCharts()
     {
         IdlePercentageBean bean = (IdlePercentageBean)applicationContext.getBean("idlePercentageBean");
