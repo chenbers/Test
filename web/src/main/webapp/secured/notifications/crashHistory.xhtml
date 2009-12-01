@@ -37,7 +37,7 @@
         {            
             jQuery(".clickable-map-icon").click(function(){
                 var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
-                jQuery('#mapModalHeader').text("Event Location: " + address);
+                jQuery('#mapModalHeader').text("#{messages.driver_event_location} " + address);
               });
             jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
             jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");

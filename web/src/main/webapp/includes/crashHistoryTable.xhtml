@@ -180,7 +180,7 @@
     <rich:modalPanel id="crashLocationModal" width="540" height="450" headerClass="popupHeader" 
     	onshow="initializeCrashMap(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
         <f:facet name="header">
-            <h:outputText id="mapModalHeader" value="Event Location" />
+            <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
         </f:facet>
         <f:facet name="controls">
             <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
