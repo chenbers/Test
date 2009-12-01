@@ -14,6 +14,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class IdlePercentageBean extends BaseBean {
@@ -80,6 +81,12 @@ public class IdlePercentageBean extends BaseBean {
 		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(getDurationBean().getDuration(), dateValues);
 		StringBuilder chartBuilder = new StringBuilder();
 		chartBuilder.append(bar2DMultiAxisChart.getControlParameters());
+		chartBuilder.append("decimalSeparator=\'");
+		chartBuilder.append(GraphicUtil.getDecimalSeparator(getLocale()));
+		chartBuilder.append("\' thousandSeparator=\'");
+		chartBuilder.append(GraphicUtil.getGroupingSeparator(getLocale()));
+		chartBuilder.append("\'> ");
+
 		chartBuilder.append(bar2DMultiAxisChart.getCategories(getLocale()));
 		chartBuilder.append("<dataset>");
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("idling_percentage_idling_bar_label", getLocale()), 

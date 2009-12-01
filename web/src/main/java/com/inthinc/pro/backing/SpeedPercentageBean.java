@@ -13,6 +13,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class SpeedPercentageBean extends BaseBean {
@@ -83,6 +84,11 @@ public class SpeedPercentageBean extends BaseBean {
 //				getDurationBean().getDuration());
 		StringBuilder chartBuilder = new StringBuilder();
 		chartBuilder.append(bar2DMultiAxisChart.getControlParameters());
+		chartBuilder.append("decimalSeparator=\'");
+		chartBuilder.append(GraphicUtil.getDecimalSeparator(getLocale()));
+		chartBuilder.append("\' thousandSeparator=\'");
+		chartBuilder.append(GraphicUtil.getGroupingSeparator(getLocale()));
+		chartBuilder.append("\'> ");
 		chartBuilder.append(bar2DMultiAxisChart.getCategories(getLocale()));
 		chartBuilder.append("<dataset>");
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("speeding_percentage_speeding_bar_label", getLocale()), 

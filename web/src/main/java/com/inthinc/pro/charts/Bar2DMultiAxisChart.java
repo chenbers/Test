@@ -42,7 +42,7 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
             									// chart margins
 		    "chartLeftMargin=\'3\' " +
 		    "chartRightMargin=\'3\' " +
-		    "areaOverColumns=\'0\'> ";
+		    "areaOverColumns=\'0\' ";
     
 
 
