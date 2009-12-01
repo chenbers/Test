@@ -18,7 +18,7 @@
                      <h:outputText value="#{messages.severityGraphic_extreme}"/>
                   </td>
                </h:outputText>
-               <h:outputText rendered="#{(severity lt 5) and (item.event.severity gt 2)}">
+               <h:outputText rendered="#{(severity lt 5) and (severity gt 2)}">
                   <td align="center"  style="padding: 0px;">
                      <h:outputText value="#{messages.severityGraphic_medium}"/>
                   </td>
@@ -32,7 +32,7 @@
             <tr>
                <td  style="padding: 0px" align="center">
                   <h:graphicImage rendered="#{severity gt 4}" value="/images/sev_bar_ex.png"/>
-                  <h:graphicImage rendered="#{(severity lt 5) and (item.event.severity gt 2)}" value="/images/sev_bar_med.png"/>
+                  <h:graphicImage rendered="#{(severity lt 5) and (severity gt 2)}" value="/images/sev_bar_med.png"/>
                   <h:graphicImage rendered="#{severity lt 3}" value="/images/sev_bar_low.png"/>
                </td>
             </tr>   
