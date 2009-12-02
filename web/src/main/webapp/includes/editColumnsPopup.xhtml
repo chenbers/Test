@@ -26,13 +26,13 @@
 	
     <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
     	autosized="true" resizeable="false" zindex="2000" 
-    	onshow="document.getElementById('editColForm:editGrid:0:col').focus();">
+    	onshow="document.getElementById('editColumnsForm:#{context}-editColumnsGrid:0:col').focus();">
 										 
       <f:facet name="header">
         <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>
       <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('editColumnsForm:editColumnsPopupCancel').onclick()" />
+        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('editColumnsForm:#{context}-editColumnsPopupCancel').onclick()" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
