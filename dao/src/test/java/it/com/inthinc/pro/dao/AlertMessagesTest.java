@@ -80,7 +80,6 @@ import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 
-@Ignore
 public class AlertMessagesTest {
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
