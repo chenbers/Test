@@ -60,7 +60,7 @@ import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 
-@Ignore
+//@Ignore
 public class ReportServiceTest {
     private static ReportService reportService;
     private static SiloService siloService;
@@ -179,7 +179,7 @@ public class ReportServiceTest {
                 groupData.group = group;
                 groupData.driverType = i;
                 teamGroupData.add(groupData);
-                System.out.println("Team " + i + " groupID: " + group.getGroupID());
+//                System.out.println("Team " + i + " groupID: " + group.getGroupID());
             }
             getNext(xml, User.class);
             for (int i = GOOD; i <= BAD; i++) {
@@ -187,7 +187,7 @@ public class ReportServiceTest {
                 groupData.user = getNext(xml, User.class);
                 groupData.device = getNext(xml, Device.class);
                 groupData.driver = getNext(xml, Driver.class);
-                System.out.println("driverID: " + groupData.driver.getDriverID());
+//                System.out.println("driverID: " + groupData.driver.getDriverID());
                 groupData.vehicle = getNext(xml, Vehicle.class);
             }
             startDateInSec = getNext(xml, Integer.class);
@@ -196,10 +196,10 @@ public class ReportServiceTest {
             Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
             
           totalDays = (todayInSec - startDateInSec) / DateUtil.SECONDS_IN_DAY;
-System.out.println("totalDays: " + totalDays);          
+//System.out.println("totalDays: " + totalDays);          
             if (totalDays > MAX_TOTAL_DAYS)
                 totalDays = MAX_TOTAL_DAYS;
-            System.out.println("Total Days: " + totalDays);
+//            System.out.println("Total Days: " + totalDays);
             xml.close();
             return dataExists();
         } catch (Exception ex) {
@@ -485,13 +485,13 @@ System.out.println("totalDays: " + totalDays);
 
         long fleetExpectedDailyDriveTime = DateUtil.convertMillisecondsToSeconds(3l * expectedDailyDriveTime);
         long fleetExpectedDailyIdlingTime = 6 * (ReportTestConst.LO_IDLE_TIME + ReportTestConst.HI_IDLE_TIME); // 6 idling events per day (1 - intermediate, 5 - bad)
-        System.out.println("fleetExpectedDailyDriveTime: " + fleetExpectedDailyDriveTime + " fleetExpectedDailyIdlingTime: " + fleetExpectedDailyIdlingTime);
+//        System.out.println("fleetExpectedDailyDriveTime: " + fleetExpectedDailyDriveTime + " fleetExpectedDailyIdlingTime: " + fleetExpectedDailyIdlingTime);
 
         for (IdlePercentItem item : list) {
             long driveTime = item.getDrivingTime();
             long idleTime = item.getIdlingTime();
 
-            System.out.println(item.getDate() + " driveTime: " + driveTime + " idleTime: " + idleTime);
+//            System.out.println(item.getDate() + " driveTime: " + driveTime + " idleTime: " + idleTime);
             
             assertEquals("Fleet: Unexpected drive Time ", fleetExpectedDailyDriveTime, driveTime);
             assertEquals("Fleet: Unexpected idle Time ", fleetExpectedDailyIdlingTime, idleTime);
@@ -840,7 +840,7 @@ System.out.println("totalDays: " + totalDays);
             List<IdlingReportItem> list = data.getItemList();
             assertNotNull("IdlingReportItem list", list);
             assertEquals("IdlingReportItem list size", 1, list.size());
-            IdlingReportItem item = list.get(1);
+            IdlingReportItem item = list.get(0);
             // System.out.println(" " + item.getDriveTime() + " " + item.getHighHrs() + " " + item.getLowHrs());
             assertEquals("IdlingReportItem groupID", groupID, item.getGroupID());
             assertEquals("IdlingReportItem drive time", expectDailyDriveTimeHrs, item.getDriveTime(), 0.0003);
