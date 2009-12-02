@@ -69,7 +69,7 @@ public class TripsBean extends BaseBean {
     private IdentifiableEntityBean identifiableEntityBean;
     private GroupTreeNodeImpl groupTreeNodeImpl;
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
-    private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range");
+    private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range",getLocale());
 
     public void initTrips() {
         if (trips.isEmpty()) {
@@ -529,17 +529,17 @@ public class TripsBean extends BaseBean {
         
         //  Start before end date
         if (        (this.endDate.getTime() - this.startDate.getTime()) < 0L ) {            
-            setDateStatus(MessageUtil.getMessageString("trip_end_before_start"));            
+            setDateStatus(MessageUtil.getMessageString("trip_end_before_start",getLocale()));            
             return false;
             
         // Start date more than 30 days in the past from today    
         } else if ( ((new Date()).getTime()-startDate.getTime()) > THIRTY_DAYS ) {
-            setDateStatus(MessageUtil.getMessageString("trip_start_more_than_thirty"));            
+            setDateStatus(MessageUtil.getMessageString("trip_start_more_than_thirty",getLocale()));            
             return false;
             
         // Winner!
         } else {
-            setDateStatus(MessageUtil.getMessageString("trip_valid_date_range"));            
+            setDateStatus(MessageUtil.getMessageString("trip_valid_date_range",getLocale()));            
             return true;
         }        
     }
