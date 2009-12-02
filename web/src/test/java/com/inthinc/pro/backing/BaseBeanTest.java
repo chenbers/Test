@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.test.base.AbstractJsfTestCase;
@@ -202,7 +203,7 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
 	{
 		Date[] dateList = new Date[numMonths];
 		
-        Calendar todayCal = Calendar.getInstance();
+        Calendar todayCal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         todayCal.setTime(DateUtil.getGregDate(new Date()));
         
         

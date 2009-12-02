@@ -40,6 +40,24 @@ public class DateLabels {
 		
 	}
 	
+	public String getDayLabel(Date date)
+	{
+   		if (date == null)
+   		{
+   			return " ";
+   		}
+   		return monthDayFormatter.format(date);
+		
+	}
+	public String getMonthLabel(Date date)
+	{
+   		if (date == null)
+   		{
+   			return " ";
+   		}
+   		return monthFormatter.format(date);
+		
+	}
 	
 	public List<String> createDayLabelList(List<Date> dateList)
 	{

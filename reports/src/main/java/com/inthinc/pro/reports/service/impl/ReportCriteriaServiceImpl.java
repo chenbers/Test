@@ -408,7 +408,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
        		float percent = ((distance == 0l) ? 0f : ((float)speeding /(float)distance));
 //       		logger.info(distance + " " + speeding + " " + percent);
        		barChartList.add(new CategorySeriesData(speedingSeries, monthList.get(index), speeding, speedingSeries));
-       		barChartList.add(new CategorySeriesData(distanceSeries, monthList.get(index), distance, distanceSeries));
+       		barChartList.add(new CategorySeriesData(distanceSeries, monthList.get(index), (distance-speeding), distanceSeries));
        		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));
             index++;
         }
@@ -445,7 +445,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
    		Integer totalEMUVehicles = 0;
        	for (IdlePercentItem idleItem : idlePercentItemList)
         {
-       		float driving = DateUtil.convertSecondsToHours(idleItem.getDrivingTime());
+       		long diff = idleItem.getDrivingTime() - idleItem.getIdlingTime();
+       		diff = (diff < 0l) ? 0l : diff;
+       		float driving = DateUtil.convertSecondsToHours(diff);
        		float idling = DateUtil.convertSecondsToHours(idleItem.getIdlingTime());
        		float percent = ((idleItem.getDrivingTime() == 0l) ? 0f : ((float)idleItem.getIdlingTime() /(float)idleItem.getDrivingTime()));
 //       		logger.info(driving + " " + idling + " " + percent);

@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,9 +8,11 @@ import java.util.List;
 
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
+import com.inthinc.pro.charts.DateLabels;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.dao.util.MathUtil;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -59,15 +62,31 @@ public class IdlePercentageBean extends BaseBean {
 
 		List<Float> drivingValues = new ArrayList<Float>();
 		List<Float> idlingValues = new ArrayList<Float>();
-		List<Integer> percentValues = new ArrayList<Integer>();
+		List<Float> percentValues = new ArrayList<Float>();
 		List<Date> dateValues = new ArrayList<Date>();
+		List<String> toolTipText = new ArrayList<String>();
+		
+		String toolTipTextTemplate = "{0}&lt;BR&gt;" +
+			MessageUtil.getMessageString("idling_percentage_driving_bar_label", getLocale()) +" {1} " + getTimeLabel() + "&lt;BR&gt;" + 
+			MessageUtil.getMessageString("idling_percentage_idling_bar_label", getLocale())+ " {2}" + getTimeLabel() + "&lt;BR&gt;" +
+			MessageUtil.getMessageString("idling_percentage_idling_line_label", getLocale())+ " {3}";
+
+		DateLabels dateLabels = new DateLabels(getLocale());
+		NumberFormat percentFormat = NumberFormat.getPercentInstance(getLocale());
+		percentFormat.setMinimumFractionDigits(2);
+		percentFormat.setMaximumFractionDigits(2);
+
 
 		Long totalDriving = 0l;
 		Long totalIdling = 0l;
 		for (IdlePercentItem item : idlePercentItemList) {
-			drivingValues.add(getHours(item.getDrivingTime()));
-			idlingValues.add(getHours(item.getIdlingTime()));
-			Integer percent = MathUtil.percent(item.getIdlingTime(), item.getDrivingTime());
+			Float driveTime = getHours(item.getDrivingTime());
+			Float idleTime = getHours(item.getIdlingTime());
+			Long diff = item.getDrivingTime() - item.getIdlingTime();
+			diff = (diff < 0l) ? 0 : diff;
+			drivingValues.add(getHours(diff));
+			idlingValues.add(idleTime);
+			Float percent = MathUtil.percent(item.getIdlingTime(), item.getDrivingTime()).floatValue();
 			percentValues.add(percent);
 			dateValues.add(item.getDate());
 			totalDriving += item.getDrivingTime();
@@ -76,6 +95,13 @@ public class IdlePercentageBean extends BaseBean {
 			// this ends up being the last count in the list (i.e. last item)
 			setTotalEMUVehicles(item.getNumEMUVehicles());
 			setTotalVehicles(item.getNumVehicles());
+
+			String dateLabel = (getDurationBean().getDuration().equals(Duration.DAYS)) ? dateLabels.getDayLabel(item.getDate()) : dateLabels.getMonthLabel(item.getDate()); 
+
+			toolTipText.add(MessageFormat.format(toolTipTextTemplate, dateLabel, 
+					formatDecimal(driveTime), formatDecimal(idleTime), 
+					percentFormat.format(percent.doubleValue()/100d)));
+
 		}		
 		
 		Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(getDurationBean().getDuration(), dateValues);
@@ -90,17 +116,18 @@ public class IdlePercentageBean extends BaseBean {
 		chartBuilder.append(bar2DMultiAxisChart.getCategories(getLocale()));
 		chartBuilder.append("<dataset>");
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("idling_percentage_idling_bar_label", getLocale()), 
-				IDLE_BAR_COLOR, false, idlingValues));
+				IDLE_BAR_COLOR, false, idlingValues, toolTipText));
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("idling_percentage_driving_bar_label", getLocale()),
-				DRIVING_BAR_COLOR, false, drivingValues));
+				DRIVING_BAR_COLOR, false, drivingValues, toolTipText));
 		chartBuilder.append("</dataset>");
 		chartBuilder.append(bar2DMultiAxisChart.getSeries(MessageUtil.getMessageString("idling_percentage_idling_line_label", getLocale()), 
-				IDLE_LINE_COLOR, true, percentValues));
+				IDLE_LINE_COLOR, true, percentValues, toolTipText));
 		chartBuilder.append(bar2DMultiAxisChart.getClose());
 		setChartDef(chartBuilder.toString());
+System.out.println(chartBuilder.toString());		
 		setTotalDriving(formatDecimal(getHours(totalDriving)) + " " + getTimeLabel());
 		setTotalIdling(formatDecimal(getHours(totalIdling)) + " " + getTimeLabel()
-				+ " (" + formatDecimal((totalDriving == 0l) ? 0d : (( (float)totalIdling * 100f) / (float)totalDriving)) + "%)");
+				+ " (" + percentFormat.format(MathUtil.percent(totalIdling, totalDriving).doubleValue()/100d) + ")");
 
 	}
 

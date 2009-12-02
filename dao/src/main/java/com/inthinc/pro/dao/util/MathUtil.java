@@ -14,15 +14,15 @@ public class MathUtil
         return bigDecimal.movePointLeft(decimalPlaces).floatValue();
     }
     
-    public static Integer percent(Long n, Long total)
+    public static Number percent(Number n, Number total)
     {
-    	if (total == null || total == 0l)
-    		return 0;
+    	if (total == null || total.floatValue() == 0f)
+    		return 0f;
     	
-		Integer percent = (int)(((float)n * 100f) / (float)total + .005f);
+		Float percent = ((n.floatValue() * 100f) / total.floatValue() + .0049f);
 		
 		if (percent > 100)
-			percent = 100;
+			percent = 100f;
 		
 		return percent;
 

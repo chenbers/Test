@@ -60,7 +60,7 @@
 				<reportElement key="line-5" x="651" y="258" width="4" height="1"/>
 			</line>
 			<multiAxisChart>
-				<chart isShowLegend="false">
+				<chart>
 					<reportElement x="0" y="76" width="535" height="320"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -70,7 +70,7 @@
 					<plot labelRotation="-45.0"/>
 					<axis position="rightOrBottom">
 						<lineChart>
-							<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.PercentLineChartCustomizer">
+							<chart customizerClass="com.inthinc.pro.reports.jasper.customizer.PercentLineChartCustomizer">
 								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
 								<chartTitle color="#000000"/>
 								<chartSubtitle color="#000000"/>
@@ -119,7 +119,7 @@
 					</axis>
 					<axis>
 						<stackedBarChart>
-							<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.StackedbarChartCustomizer">
+							<chart customizerClass="com.inthinc.pro.reports.jasper.customizer.StackedbarChartCustomizer">
 								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
 								<chartTitle color="#000000"/>
 								<chartSubtitle color="#000000"/>

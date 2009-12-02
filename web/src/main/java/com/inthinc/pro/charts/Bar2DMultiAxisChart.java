@@ -46,15 +46,23 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
     
 
 
-    private static final String CHART_CLOSE = "</chart>"; 
+    private static final String CHART_CLOSE = "<styles>"+
+        "<definition>" +
+            "<style name=\'toolTipFont\' type=\'font\' isHTML=\'1\'/>" +
+        "</definition>" +
+        "<application>" +
+            "<apply toObject=\'TOOLTIP\' styles=\'toolTipFont\' />" +
+        "</application>" +
+    "</styles></chart>"; 
 
     
     private static final String SERIES_START = "<dataset seriesName=''{0}'' color=''{1}'' showValues=''0''>";
     private static final String LINE_SERIES_START = "<lineset seriesName=''{0}'' color=''{1}'' showValues=''0'' >";
      
     private static final String SERIES_VALUE = " <set value=''{0}''/>";
-    private static final String SERIES_END =    "</dataset>";
-    private static final String LINE_SERIES_END =    "</lineset>";
+    private static final String SERIES_VALUE_WITH_TOOLTIP = " <set value=''{0}'' tooltext=''{1}''/>";
+    private static final String SERIES_END = "</dataset>";
+    private static final String LINE_SERIES_END = "</lineset>";
 
 
     public Bar2DMultiAxisChart(Duration duration, List<Date> dateList) {
@@ -87,10 +95,41 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
         return buffer.toString();
 
     }
+    public String getSeries(String title, String color, boolean isLine, List<?> values, List<String> tooltipText)
+    {
+        StringBuilder buffer = new StringBuilder();
+        if (isLine)
+        {
+        	buffer.append(MessageFormat.format(LINE_SERIES_START, new Object[] { title, color}));
+        }
+        else
+        {
+        	buffer.append(MessageFormat.format(SERIES_START, new Object[] { title, color}));
+        }
+        int i = 0;
+        for (Object value : values)
+        {
+            buffer.append(getChartItemWithTooltip(new Object[] { value.toString(), tooltipText.get(i++)}));
+        }
+        if (isLine)
+        {
+        	buffer.append(LINE_SERIES_END);
+        }
+        else
+        {
+        	buffer.append(SERIES_END);
+        }
+        return buffer.toString();
+
+    }
     
 	@Override
 	public String getChartItem(Object[] params) {
 		return MessageFormat.format(SERIES_VALUE, params);
+	}
+
+	public String getChartItemWithTooltip(Object[] params) {
+		return MessageFormat.format(SERIES_VALUE_WITH_TOOLTIP, params);
 	}
 
 	@Override

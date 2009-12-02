@@ -17,8 +17,8 @@ public class AggressiveDrivingEvent extends Event
     private Integer deltaX; // deltas store as Integer, divide by 10 for float value
     private Integer deltaY;
     private Integer deltaZ;
-    private Integer severity; // This number represents the severity of the event with
-                        // in the range of 0 to 100, 100 being the most extreme.
+    private Integer severity; // This number represents the severity of the event 
+                        // in the range of 1 to 5, 5 being the most extreme.
                         // This may need to be changed.
     private Integer speedLimit;
     private String eventTypeString;
