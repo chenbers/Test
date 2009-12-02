@@ -75,6 +75,7 @@ public class DAOUtilBean implements PhaseListener {
 	private Map<Integer, String> driverMap;
 	private Map<Integer, String> vehicleMap;
 	private Integer selectedAccountID;
+	private Group topGroupOfSelectedAccount;
 	private Integer selectedGroupID;
 	private Integer selectedDriverID;
 	private Integer selectedVehicleID;
@@ -364,7 +365,7 @@ public class DAOUtilBean implements PhaseListener {
 		}
 		Integer groupID=selectedGroupID;
 		if (groupID == null || groupID < 0) {
-			groupID=findTopGroup(selectedAccountID).getGroupID();
+			groupID=getTopGroupOfSelectedAccount().getGroupID();
 		}
 		
 		List<Vehicle> vehicles;
@@ -460,7 +461,7 @@ public class DAOUtilBean implements PhaseListener {
 			return;
 		}
 		
-		Driver driver = findDriver(selectedAccountID, driverID);
+		Driver driver = findDriver(driverID);
 
 		if (driver == null) {
 			setErrorMsg("Error: Driver not found " + driverID);
@@ -503,6 +504,16 @@ public class DAOUtilBean implements PhaseListener {
 			setUseFOB(false);
 		}
 	}
+	
+	public void clearVehicleCriteriaAction()
+	{
+		this.vehicleCriteria="";
+	}
+
+	public void clearDriverCriteriaAction()
+	{
+		this.driverCriteria="";
+	}
 
 	public void searchDriverAction() {
 		reInitAction();
@@ -529,7 +540,7 @@ public class DAOUtilBean implements PhaseListener {
 			setErrorMsg("Error: Please enter a valid vehicle name, license or VIN");
 			return;
 		}
-		findVehicles(selectedAccountID, vehicleCriteria);
+		findVehicles(vehicleCriteria);
 		if (vehicleMap.isEmpty())
 		{
 			setErrorMsg("Vehicle not found");
@@ -873,7 +884,7 @@ public class DAOUtilBean implements PhaseListener {
 
 	}
 	 
-	public Group findTopGroup(Integer accountID) {
+	private Group findTopGroup(Integer accountID) {
 		Group topGroup = null;
 		List<Group> groups = groupDAO.getGroupsByAcctID(accountID);
 		for (Iterator<Group> giter = groups.iterator(); giter.hasNext();) {
@@ -884,13 +895,11 @@ public class DAOUtilBean implements PhaseListener {
 		return topGroup;
 	}
 
-	public Driver findDriver(Integer accountID, String name)
+	private Driver findDriver(String name)
 	{
 		Driver driver = null;
 
-		Group topGroup = findTopGroup(accountID);
-		if (topGroup == null)
-			return null;
+		Group topGroup = getTopGroupOfSelectedAccount();
 
 		List<Person> persons = personDAO.getPeopleInGroupHierarchy(topGroup.getGroupID());
 		Person person = null;
@@ -918,12 +927,10 @@ public class DAOUtilBean implements PhaseListener {
 		return driver;
 	}
 	
-	public Vehicle findVehicle(Integer accountID, String name) {
+	private Vehicle findVehicle(Integer accountID, String name) {
 		Vehicle vehicle = null;
 
-		Group topGroup = findTopGroup(accountID);
-		if (topGroup == null)
-			return null;
+		Group topGroup = getTopGroupOfSelectedAccount();
 
 		List<Vehicle> vehicles = vehicleDAO
 				.getVehiclesInGroupHierarchy(topGroup.getGroupID());
@@ -948,7 +955,7 @@ public class DAOUtilBean implements PhaseListener {
 		return null;
 	}
 
-	public void findDrivers(Integer accountID, String name)
+	private void findDrivers(Integer accountID, String name)
 	{
 		driverMap = new Hashtable<Integer, String>();
 		vehicleMap = new Hashtable<Integer, String>();
@@ -958,9 +965,7 @@ public class DAOUtilBean implements PhaseListener {
 		if (name.length()==0)
 			return;
 
-		Group topGroup = findTopGroup(accountID);
-		if (topGroup == null)
-			return;
+		Group topGroup = getTopGroupOfSelectedAccount();
 
 		Integer did=0;
 		try {
@@ -983,7 +988,7 @@ public class DAOUtilBean implements PhaseListener {
 					|| (did>0 && did.equals(driver.getDriverID()))
 				)
 				{
-							driverMap.put(driver.getDriverID(), person.getFullNameWithId());
+					driverMap.put(driver.getDriverID(), person.getFullNameWithId());
 				}
 			}
 		}
@@ -991,7 +996,7 @@ public class DAOUtilBean implements PhaseListener {
 
 	}
 	
-	public void findVehicles(Integer accountID, String name) 
+	public void findVehicles(String name) 
 	{
 		vehicleMap = new Hashtable<Integer, String>();
 		driverMap = new Hashtable<Integer, String>();
@@ -1002,9 +1007,7 @@ public class DAOUtilBean implements PhaseListener {
 			return;
 
 		
-		Group topGroup = findTopGroup(accountID);
-		if (topGroup == null)
-			return;
+		Group topGroup = getTopGroupOfSelectedAccount();
 
 		Integer vid=0;
 		try {
@@ -1316,9 +1319,17 @@ if (accounts.size()>100)
 		return selectedAccountID;
 	}
 
+	private Group getTopGroupOfSelectedAccount()
+	{
+		if (topGroupOfSelectedAccount==null)
+			topGroupOfSelectedAccount=findTopGroup(selectedAccountID);
+		return topGroupOfSelectedAccount;
+	}
+	
 	public void setSelectedAccountID(Integer selectedAccountID) {
 		if (!selectedAccountID.equals(this.selectedAccountID)) {
 			selectedGroupID = null;
+			topGroupOfSelectedAccount = null;
 			groupMap = null;
 			driverMap=null;
 			vehicleMap=null;
