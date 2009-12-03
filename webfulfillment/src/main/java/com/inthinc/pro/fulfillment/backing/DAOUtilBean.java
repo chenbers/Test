@@ -980,7 +980,7 @@ public class DAOUtilBean implements PhaseListener {
 			Driver driver = diter.next();
 			if(driver.getStatus()==Status.ACTIVE)
 			{
-				Person person = personDAO.findByID(driver.getPersonID());
+				Person person = driver.getPerson();
 				if ((person.getEmpid()!=null && person.getEmpid().trim().toUpperCase().startsWith(name))
 					|| (person.getEmpid()!=null && person.getEmpid().trim().toUpperCase().startsWith(name))
 					|| (person.getLast()!=null && person.getLast().trim().toUpperCase().startsWith(name))
