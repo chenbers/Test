@@ -55,7 +55,6 @@
 					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
 			
 					marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}");
-//				map.addOverlay(marker);
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
 					bounds.extend(marker.getPoint());
