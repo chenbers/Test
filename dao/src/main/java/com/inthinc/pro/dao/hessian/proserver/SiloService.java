@@ -303,7 +303,9 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate, Integer includeForgiven) throws ProDAOException;
 
     
-
+    // pagination methods (TESTING)
+//    Map<String, Object> getRedFlagsCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, String> filter);
+//    List<Map<String, Object>> getRedFlagsPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams);
 
     // Methods related to the RedFlagAlert type
     Map<String, Object> deleteRedFlagAlert(Integer redFlagAlertID) throws ProDAOException;
@@ -359,6 +361,11 @@ public interface SiloService extends HessianService
     Map<String, Object> forgiveCrash(Integer groupID) throws ProDAOException;
     
     Map<String, Object> unforgiveCrash(Integer groupID) throws ProDAOException;    
+    
+    
+    // Live fleet map on executive dashboard
+    
+    List<Map <String, Object>> getDVLByGroupIDDeep(Integer groupID) throws ProDAOException;
     
    
 

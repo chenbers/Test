@@ -301,6 +301,27 @@ public class SiloServiceTest {
         assertNotNull(vloc.getLoc().getLng());
     }
 
+    @Test
+    public void lastLocationDrivers() {
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        List<DriverLocation> locList = driverDAO.getDriverLocations(TESTING_GROUP_ID);
+        assertNotNull(locList);
+        assertTrue(locList.size() > 0);
+        
+        // speed racer should be in there
+        for (DriverLocation driver : locList) {
+        	assertNotNull(driver.getDriver());
+        	assertNotNull(driver.getDriver().getPerson());
+        	if (driver.getDriver().getDriverID().equals(TESTING_DRIVER_ID)) {
+        		assertNotNull(driver.getLoc());
+        		assertNotNull(driver.getTime());
+        		
+        	}
+        }
+    }
+
+    
     /*
      * @Test public void tmpevents() { EventHessianDAO eventDAO = new EventHessianDAO(); eventDAO.setSiloService(siloService);
      * 

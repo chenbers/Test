@@ -1421,10 +1421,121 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 			Integer driverID, Long assignTime) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
-	}        
+	}
+
+	private Integer getIntValueFromFilter(String key,
+			Map<String, String> filter) {
+		
+		String value = filter.get(key);
+		if (value == null)
+			return 0;
+		
+		try
+		{
+			Integer intValue = Integer.valueOf(value);
+			return intValue;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 0;
+		}
+	}
+/*
+	List<Map<String, Object>> cacheRedFlagList = null;  
+	Integer cacheRFGroupID;
+	Long cacheRFStartDate;
+	Long  cacheRFEndDate;
+	Integer cacheRFIncludeForgiven;
+	
+	@Override
+	public Map<String, Object> getRedFlagsCount(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Map<String, String> filter) {
+		if (cacheRedFlagList != null)
+		{
+			if (cacheRFGroupID.equals(groupID) &&
+				cacheRFStartDate.equals(startDate) &&
+				cacheRFEndDate.equals(endDate) &&
+				cacheRFIncludeForgiven.equals(includeForgiven))
+			{
+				return createReturnValue("count", cacheRedFlagList.size());
+			}
+		}
+		cacheRedFlagList =  getRedFlags(groupID, startDate, endDate, includeForgiven);
+		cacheRFGroupID = groupID;
+		cacheRFStartDate = startDate;
+		cacheRFEndDate = endDate;
+		cacheRFIncludeForgiven = includeForgiven;
+		return createReturnValue("count", cacheRedFlagList.size());
+	}
+
+	@Override
+	public List<Map<String, Object>> getRedFlagsPage(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Map<String, Object> pageParams) {
+		if (cacheRedFlagList != null)
+		{
+			if (cacheRFGroupID.equals(groupID) &&
+				cacheRFStartDate.equals(startDate) &&
+				cacheRFEndDate.equals(endDate) &&
+				cacheRFIncludeForgiven.equals(includeForgiven))
+			{
+			}
+		}
+		else
+		{
+			cacheRedFlagList =  getRedFlags(groupID, startDate, endDate, includeForgiven);
+			cacheRFGroupID = groupID;
+			cacheRFStartDate = startDate;
+			cacheRFEndDate = endDate;
+			cacheRFIncludeForgiven = includeForgiven;
+		}
+		List<Map<String, Object>> returnList =  cacheRedFlagList;
+		int startRow = Integer.valueOf(pageParams.get("startRow").toString());
+		int endRow = Integer.valueOf(pageParams.get("endRow").toString());
+		logger.info("return subList " + startRow + " - " + endRow);
+        return returnList.subList(startRow, endRow);
+	}
+*/	        
     @Override
 	public List<Long> getRfidsForBarcode(String barcode) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDVLByGroupIDDeep(Integer groupID)
+			throws ProDAOException {
+        Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        List<Driver> drivers = getAllDriversInGroup(group);
+        
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+
+        int count = 0;
+        for (Driver driver : drivers)
+        {
+            DriverLocation dl = new DriverLocation();
+            
+            dl.setDriver(driver);
+            
+            dl.setTime(new Date());
+//            dl.setDriverID(driver.getDriverID());
+//            dl.setGroupID(driver.getGroupID());
+//            dl.setPriPhone(driver.getPerson().getPriPhone());
+//            dl.setSecPhone(driver.getPerson().getSecPhone());
+//            dl.setName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
+//            dl.setVehicleType(VehicleType.MEDIUM);
+            
+            SearchCriteria searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("driverID", driver.getDriverID());
+
+            LastLocation l = MockData.getInstance().retrieveObject(LastLocation.class, searchCriteria);
+            dl.setLoc(l.getLoc());
+
+            returnList.add(TempConversionUtil.createMapFromObject(dl, true));
+            count++;
+        }
+
+        return returnList;
 	}
 }

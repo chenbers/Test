@@ -20,7 +20,18 @@ public class DriverLocation
     @Column(updateable = false)
     private Integer position;
     
-    public LatLng getLoc()
+    
+    @Column(updateable = false)
+    private Group group;
+
+
+	public Group getGroup() {
+		return group;
+	}
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+	public LatLng getLoc()
     {
         return loc;
     }
@@ -84,5 +95,5 @@ public class DriverLocation
     {
         this.device = device;
     }
- 
+
 }

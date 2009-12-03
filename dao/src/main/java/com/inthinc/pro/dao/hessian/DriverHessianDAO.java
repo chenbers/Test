@@ -158,4 +158,15 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
             return null;
         }
     }
+
+	@Override
+	public List<DriverLocation> getDriverLocations(Integer groupID) {
+
+		
+        try {
+            return getMapper().convertToModelObject(this.getSiloService().getDVLByGroupIDDeep(groupID), DriverLocation.class);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+	}
 }

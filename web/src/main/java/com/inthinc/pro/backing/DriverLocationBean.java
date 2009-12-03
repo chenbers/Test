@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,8 +18,8 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 
 public class DriverLocationBean extends BaseBean {
@@ -27,20 +28,21 @@ public class DriverLocationBean extends BaseBean {
 	private VehicleDAO vehicleDAO;
 	private GroupDAO groupDAO;
     private NavigationBean navigation;
- //   private boolean pageChange = false;
     private LatLng center;
     private Integer zoom = 10;
-	private Map<Integer,DriverLastLocationBean> driverLastLocations;
 	private List<Group> childGroups;
 	private IconMap mapIconMap;
 	private List<LegendIcon> legendIcons;
 	private Map<Integer,Group> groupMap;
 	private boolean teamLevel;
-	private List<DriverLastLocationBean> driverLastLocationBeans = new ArrayList<DriverLastLocationBean>();
  	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
 	private GroupHierarchy       organizationHierarchy;
 	private Integer selectedDriverID;
 	private Integer selectedVehicleID;
+
+	private List<DriverLocation> driverLocations;
+
+	
 	public DriverLocationBean() {
 		super();
 	
@@ -54,130 +56,116 @@ public class DriverLocationBean extends BaseBean {
         zoom = organizationHierarchy.getTopGroup().getMapZoom();
 		
 	}
-	public List<DriverLastLocationBean> getDriverLastLocationBeans() 
+	
+	public List<DriverLocation> getDriverLocations()
 	{
+//		logger.info("-----getDriverLocations");		
+	    if (driverLocations != null && driverLocations.size() > 0) 
+	    	return driverLocations;
 	    
-	    if(driverLastLocationBeans.size() > 0) return driverLastLocationBeans;
+	    driverLocations = new ArrayList<DriverLocation>();
 	    
-	    int validDriverCount = 0;
-    	driverLastLocations = new HashMap<Integer,DriverLastLocationBean>();
-        driverLastLocationBeans = new ArrayList<DriverLastLocationBean>();
-        childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
+//Date traceStartTime = new Date();	    
+	    driverLocations = driverDAO.getDriverLocations(navigation.getGroupID());
 
-   		if (childGroups != null){
-        	teamLevel = false;
+	    childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
+	    
+	    teamLevel = (childGroups == null);
+   		if (!teamLevel){
         	
     		MapAndLegendIconManager malim = new MapAndLegendIconManager();
     		malim.initMapAndLegendIcons(childGroups.size());
          	
          	//Sort the groups by name so the icons appear in the same order as the trend chart
          	Collections.sort(childGroups, new GroupComparator());
- 
+
 	        for (Group group:childGroups){
 	        		         	
 	        	groupMap.put(group.getGroupID(), group);
 	        	
 	        	malim.addMapAndLegendIcon(group.getGroupID(),group.getName(),null);
-
-		        List<Driver> drivers = driverDAO.getAllDrivers(group.getGroupID());
-		        // Do something to get driverLastLocations or last trips to get location
-		        validDriverCount += locateGroupDrivers(drivers,group.getGroupID());
 	        }
         }
         else {
-        	teamLevel = true;
-	        List<Driver> drivers = driverDAO.getAllDrivers(this.navigation.getGroupID());
-	        Collections.sort(drivers, new DriverComparator());
+	        Collections.sort(driverLocations, new DriverComparator());
 	        
+    		MapAndLegendIconManager malim = new MapAndLegendIconManager();
+        	malim.initMapAndLegendIcons(driverLocations.size());
+    		for (DriverLocation driverLocation : driverLocations){
+            	
+    			if (driverLocation != null && driverLocation.getDriver() != null && driverLocation.getDriver().getPerson() != null) {
+   	           	   malim.addMapAndLegendIcon(driverLocation.getDriver().getDriverID(), driverLocation.getDriver().getPerson().getFullName(), 
+   	           			   driverLocation.getLoc());
+    			}
+            }
 
-         	// Do something to get driverLastLocations or last trips to get location
-	        validDriverCount = locateTeamDrivers(drivers);
-      	
         }
+	    driverLocations = populateAddressAndIcon();
+	    if (!teamLevel) {
+	        Collections.sort(driverLocations, new DriverLocationGroupComparator());
+	    }
 		//calculate better map center - set to location of first driver
-		if (validDriverCount == 0){
+		if (driverLocations.size() == 0){
 			
 			//Set to center for the group
 			setCenter(this.getGroupHierarchy().getTopGroup().getMapCenter());
 		}
 		else {
 
-			setCenter(driverLastLocationBeans.get(0).getLastLocation());
+			setCenter(driverLocations.get(0).getLoc());
 		}
-
-		return driverLastLocationBeans;
-	}
-	private DriverLastLocationBean locateOneDriver(Driver driver){
 		
-        LastLocation loc = null;
-        
-        if (driver.getDriverID() != null)
-            loc = driverDAO.getLastLocation(driver.getDriverID());
-        
-      
-        if (loc != null && loc.getLoc() != null)
-        {
-        	DriverLastLocationBean db = new DriverLastLocationBean();
-            db.setLastLocation(loc.getLoc());
-            db.setVehicle(vehicleDAO.findByID(loc.getVehicleID()));
-        	db.setDriver(driver);
-        	db.setDriverName(driver.getPerson().getFirst()+" "+ driver.getPerson().getLast());
-        	db.setTime(loc.getTime());
-        	db.setAddress(getAddress(loc.getLoc()));
-        	
-        	driverLastLocations.put(driver.getDriverID(),db);
-        	driverLastLocationBeans.add(db);
-        	
-        	return db;
-       }
-        else
-        {
-        	//Driver does not have a last location
-            logger.debug("last loc is null for driver: " + driver.getDriverID());                    
-            
-            return null;  //don't add to list.
-            
-            //db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
-            //db.setLastLocation(null);
-        }
+//logger.info("TOTAL TIME: " + (new Date().getTime() - traceStartTime.getTime()) + " ms");
+
+
+		return driverLocations;
 	}
-	private int locateGroupDrivers(List<Driver> drivers, int groupId){
 
-		int validDriverCount = 0;
-		
-		for (Driver driver:drivers){
-        	
-			DriverLastLocationBean db = locateOneDriver(driver);
-			if (db != null){
-				
-	               validDriverCount++;
-	               db.setIconKey(groupId);
-
-			}
-        }
-		return validDriverCount;
+	public void setDriverLocations(List<DriverLocation> driverLocations) {
+		this.driverLocations = driverLocations;
 	}
 	
-	private int locateTeamDrivers(List<Driver> drivers){
-		
-		int validDriverCount = 0;
-		
-		MapAndLegendIconManager malim = new MapAndLegendIconManager();
-    	malim.initMapAndLegendIcons(drivers.size());
-		
-		for (Driver driver:drivers){
+	private List<DriverLocation> populateAddressAndIcon() {
+		List<DriverLocation> validList = new ArrayList<DriverLocation>();
+		for (DriverLocation driverLocation : driverLocations) {
+			
+			Driver driver = driverLocation.getDriver();
+			if (driver == null || driver.getPerson() == null || driverLocation.getLoc() == null) 
+				continue;
+			
+        	driverLocation.setAddressStr(getAddress(driverLocation.getLoc()));
         	
-			DriverLastLocationBean db = locateOneDriver(driver);
-			if (db != null){
-				
-	               validDriverCount++;
-	           	   malim.addMapAndLegendIcon(driver.getDriverID(),driver.getPerson().getFullName(),db.getLastLocation());
-	               db.setIconKey(driver.getDriverID());
-			}
-        }
-		return validDriverCount;
+        	driverLocation.setPosition(getIconKey(driverLocation));
+        	validList.add(driverLocation);
+		}
+		
+		return validList;
 	}
 	
+	
+	private int getIconKey(DriverLocation driverLocation)
+	{
+		Driver driver = driverLocation.getDriver();
+		if (teamLevel)
+			return driver.getDriverID();
+		
+		int groupID = driver.getGroupID();
+		
+		GroupHierarchy hierarchy = getOrganizationHierarchy();
+		
+		while (mapIconMap.getIcons().get(groupID) == null) {
+			
+			Group parentGroup  = hierarchy.getParentGroup(hierarchy.getGroup(groupID));
+			if (parentGroup == null)
+				break;
+			
+			groupID = parentGroup.getGroupID();
+			
+		}
+		driverLocation.setGroup(hierarchy.getGroup(groupID));
+		return groupID;	
+		
+	}
 	public DriverDAO getDriverDAO() {
 		return driverDAO;
 	}
@@ -202,9 +190,6 @@ public class DriverLocationBean extends BaseBean {
 		this.center = center;
 	}
 
-	public void setDriverLastLocationBeans(List<DriverLastLocationBean> driverLastLocationBeans) {
-		this.driverLastLocationBeans = driverLastLocationBeans;
-	}
 
 	public List<Group> getChildGroups() {
 		return childGroups;
@@ -280,6 +265,12 @@ public class DriverLocationBean extends BaseBean {
     {
         this.selectedVehicleID = selectedVehicleID;
     }
+	public GroupHierarchy getOrganizationHierarchy() {
+		return organizationHierarchy;
+	}
+	public void setOrganizationHierarchy(GroupHierarchy organizationHierarchy) {
+		this.organizationHierarchy = organizationHierarchy;
+	}
     public String driverDetailAction()
     {
         //navigation.setDriver(driverLastLocations.get(new Integer(selectedDriverID)).getDriver());
@@ -291,11 +282,7 @@ public class DriverLocationBean extends BaseBean {
         navigation.setVehicle(vehicleDAO.findByID(selectedVehicleID));
         return "go_vehicle";
     }
-
-	public void setDriverLastLocationBeanList(List<DriverLastLocationBean> driverLastLocationBeanList) {
-		
-		this.driverLastLocationBeans = driverLastLocationBeanList;
-	}
+    
 	public class LegendIcon{
 		
 		private String caption;
@@ -393,52 +380,75 @@ public class DriverLocationBean extends BaseBean {
         	}
 		}
 	}
+	private class DriverLocationGroupComparator implements Comparator<DriverLocation>{
+		
+		public int compare(DriverLocation a, DriverLocation b){
+		
+			if (a == null || a.getGroup() == null)
+				return -1;
+			if (b == null || b.getGroup() == null)
+				return 1;
+	    	return a.getGroup().getName().compareTo(b.getGroup().getName());
+		}
+		public boolean equals(DriverLocation a, DriverLocation b){
+			
+			if ((a == null || a.getGroup() == null) &&
+					(b == null || b.getGroup() == null))
+				return true;
+			if (a == null || a.getGroup() == null)
+				return false;
+			if (b == null || b.getGroup() == null)
+				return false;
+	    	return a.getGroup().getName().equals(b.getGroup().getName());
+			
+		}
+	}
 	private class GroupComparator implements Comparator<Group>{
 		
 		public int compare(Group a, Group b){
-			String aName = a.getName(); if (aName==null) aName = "";
-			String bName = b.getName(); if (bName==null) bName = "";
-	    	
 	    	return a.getName().compareTo(b.getName());
 		}
 		public boolean equals(Group a, Group b){
 			
-			String aName = a.getName(); if (aName==null) aName = "";
-			String bName = b.getName(); if (bName==null) bName = "";
-	    	
 	    	return a.getName().equals(b.getName());
 			
 		}
 	}
-	private class DriverComparator implements Comparator<Driver>{
+	private class DriverComparator implements Comparator<DriverLocation>{
 		
-		public int compare(Driver a, Driver b){
-			String aLast = a.getPerson().getLast(); 	if (aLast==null)aLast = "";
-			String aFirst = a.getPerson().getLast(); 	if (aFirst==null)aFirst = "";
-			String aMiddle = a.getPerson().getMiddle();	if (aMiddle==null)aMiddle = "";
+		public int compare(DriverLocation locA, DriverLocation locB){
 			
-			String bLast = b.getPerson().getLast();		if (bLast==null)bLast = "";
-			String bFirst = b.getPerson().getLast();	if (bFirst==null)bFirst = "";
-			String bMiddle = b.getPerson().getMiddle();	if (bMiddle==null)bMiddle = "";
-			
-    		int compLast = aLast.compareTo(bLast);
-    		int compFirst = aFirst.compareTo(bFirst);
+			Driver a = locA.getDriver();
+			Driver b = locB.getDriver();
+    		int compLast = getLastName(a).compareTo(getLastName(b));
+    		int compFirst = getFirstName(a).compareTo(getFirstName(b));
+    		int compMiddle = getMiddleName(a).compareTo(getMiddleName(b));
     		
-    		return ((compLast == 0)?((compFirst==0)?aMiddle.compareTo(bMiddle):compFirst):compLast);
+    		return ((compLast == 0)?((compFirst==0)? compMiddle:compFirst):compLast);
 		}
 		
-		public boolean equals(Driver a, Driver b){
+		public boolean equals(DriverLocation locA, DriverLocation locB){
 			
-			String aLast = a.getPerson().getLast(); 	if (aLast==null)aLast = "";
-			String aFirst = a.getPerson().getLast(); 	if (aFirst==null)aFirst = "";
-			String aMiddle = a.getPerson().getMiddle();	if (aMiddle==null)aMiddle = "";
+			Driver a = locA.getDriver();
+			Driver b = locB.getDriver();
 			
-			String bLast = b.getPerson().getLast();		if (bLast==null)bLast = "";
-			String bFirst = b.getPerson().getLast();	if (bFirst==null)bFirst = "";
-			String bMiddle = b.getPerson().getMiddle();	if (bMiddle==null)bMiddle = "";
-			
-			return (aLast.equals(bLast)?(aFirst.equals(bFirst)?(aMiddle.equals(bMiddle)?true:false):false):false);
+			return (getLastName(a).equals(getLastName(b)) &&
+					getFirstName(a).equals(getFirstName(b)) &&
+					getMiddleName(a).equals(getMiddleName(b)));
 			
 		}
+		private String getLastName(Driver driver) {
+			String last = driver.getPerson().getLast();
+			return (last==null) ? "" : last;
+		}
+		private String getFirstName(Driver driver) {
+			String first = driver.getPerson().getFirst();
+			return (first==null) ? "" : first;
+		}
+		private String getMiddleName(Driver driver) {
+			String middle = driver.getPerson().getMiddle();
+			return (middle==null) ? "" : middle;
+		}
+		
 	}
 }

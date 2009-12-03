@@ -10,7 +10,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
-	<t:saveState value="#{driverLocationBean.driverLastLocationBeans}"/>
+	<t:saveState value="#{driverLocationBean.driverLocations}"/>
 	<t:saveState value="#{driverLocationBean.legendIcons}"/>
 	<t:saveState value="#{driverLocationBean.mapIconMap}"/>
 	
@@ -46,13 +46,13 @@
 			{
 				var progress = 0;
 				var progressBar = new ProgressbarControl(map);
-				progressBar.start(#{fn:length(driverLocationBean.driverLastLocationBeans)});
+				progressBar.start(#{fn:length(driverLocationBean.driverLocations)});
 				
-				<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
+				<ui:repeat value="#{driverLocationBean.driverLocations}" var="driverLocation">
 				
-					var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
-					var marker = createMarker(latlng, "#{driverLastLocationBean.driver.driverID}",
-	        		 							"#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.iconKey]}");
+					var latlng = new GLatLng(#{driverLocation.loc.lat}, #{driverLocation.loc.lng});
+					var marker = createMarker(latlng, "#{driverLocation.driver.driverID}",
+	        		 							"#{driverLocationBean.mapIconMap.icons[driverLocation.position]}");
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
 					
@@ -67,7 +67,7 @@
       	<!-- BEGIN GOOGLE MAP POPUPS -->
       	<h:form id="#{context}-liveFleetMapForm">
       	<rich:panel id="mapPopups">
-      		<ui:repeat id="popUp" value="#{driverLocationBean.driverLastLocationBeans}" var="driverLocation">		
+      		<ui:repeat id="popUp" value="#{driverLocationBean.driverLocations}" var="driverLocation">		
       			<ui:include src="../includes/driverBubble.xhtml">
       	            <ui:param name="hiddenDivID" value="#{driverLocation.driver.driverID}" />
       	            <ui:param name="driver" value="#{driverLocation.driver}" />
@@ -82,7 +82,7 @@
       	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
       	        	<ui:param name="vehicleTime" value="#{driverLocation.time}" />
       	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
-      	        	<ui:param name="vehicleAddress" value="#{driverLocation.address}" />
+      	        	<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
       			</ui:include>
       		</ui:repeat>
       	</rich:panel>

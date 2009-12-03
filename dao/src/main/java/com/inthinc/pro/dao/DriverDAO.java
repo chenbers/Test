@@ -87,5 +87,15 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return List of RFIDs or <code>null</code> if not found.
      */
     Integer getDriverIDByBarcode(String barcode);
+    
+    
+    /**
+     * Gets a list of all drivers that have a last location.
+     * 
+     * @param groupID
+     *            The groupID (deep) to retrieve.
+     * @return List of DriverLocations or empty map if none found.
+     */
+    List<DriverLocation> getDriverLocations(Integer groupID);
 
 }
