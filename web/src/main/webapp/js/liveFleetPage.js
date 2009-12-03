@@ -1,4 +1,6 @@
 		var map = null;
+		var markerManager;
+		var markers = [];
 	    var geocoder = null;
 	    var addressLatLng = null;
 	    var markerClicked = false;
@@ -24,7 +26,8 @@
 					map.addControl(new GOverviewMapControl()); 
 					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(mapDefaultLoc);
-					
+					markerManager = new GMarkerManager(map);
+
 		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());

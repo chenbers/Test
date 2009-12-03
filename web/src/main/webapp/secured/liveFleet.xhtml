@@ -3,6 +3,7 @@
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 	  			xmlns:h="http://java.sun.com/jsf/html" 
 	  			xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	  			xmlns:rich="http://richfaces.org/rich"
 	  			xmlns:a4j="http://richfaces.org/a4j"
 	  			xmlns:t="http://myfaces.apache.org/tomahawk"
@@ -16,6 +17,7 @@
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
 		<script src="#{facesContext.externalContext.request.contextPath}/js/liveFleetPage.js"  type="text/javascript"></script>
+		<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/progressbarcontrol/1.0/src/progressbarcontrol_packed.js"></script>
 		<script type="text/javascript">
 	    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
 		function bodyUnload()
@@ -45,13 +47,23 @@
 
 			function addMarkers()
 			{
+				var progress = 0;
+				var progressBar = new ProgressbarControl(map);
+				progressBar.start(#{fn:length(liveFleetBean.drivers)});
+				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
 			
-				marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}");
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
+					marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}");
+//				map.addOverlay(marker);
+					markers.push(marker);
+					progressBar.updateLoader(progress++);
+					bounds.extend(marker.getPoint());
 				</ui:repeat>
+				
+				markerManager.addMarkers(markers,5);
+				progressBar.remove();
+				markerManager.refresh();
 
 				map.setZoom(map.getBoundsZoomLevel(bounds));
 		    	map.setCenter(bounds.getCenter());

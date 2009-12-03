@@ -1,6 +1,7 @@
   	var markerClicked=false;
   	var map;
-  	var mgr;
+  	var markerManager;
+	var markers = [];
   	var bounds; 
   	var mapNeedsInit = true;
   	
@@ -19,7 +20,7 @@
 	 		map.addControl(new GMapTypeControl());
 	 		map.addControl(new GOverviewMapControl()); 
 			bounds = new GLatLngBounds();
-			//mgr = new MarkerManager(map);
+			markerManager = new GMarkerManager(map);
 			
 		}
 	}
@@ -34,12 +35,12 @@
        // to the given index.
        function createMarker(point, driverId, iconImage) {
          // Create a colored icon for this point using our icon class
-       coloredIcon = new GIcon(G_DEFAULT_ICON); 
-       coloredIcon.image = iconImage; 
-       coloredIcon.iconSize = new GSize(25, 30); 
-       coloredIcon.iconAnchor = new GPoint(9, 34); 
-       coloredIcon.infoWindowAnchor = new GPoint(9, 2); 
-       coloredIcon.infoShadowAnchor = new GPoint(18, 25);
+	       coloredIcon = new GIcon(G_DEFAULT_ICON); 
+	       coloredIcon.image = iconImage; 
+	       coloredIcon.iconSize = new GSize(25, 30); 
+	       coloredIcon.iconAnchor = new GPoint(9, 34); 
+	       coloredIcon.infoWindowAnchor = new GPoint(9, 2); 
+	       coloredIcon.infoShadowAnchor = new GPoint(18, 25);
        						
          // Set up our GMarkerOptions object
          markerOptions = { icon:coloredIcon };
