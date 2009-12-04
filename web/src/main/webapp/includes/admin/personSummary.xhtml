@@ -167,14 +167,14 @@
 						<f:convertDateTime dateStyle="long" timeZone="UTC" />
 					</h:outputText></td>
 				</tr>
-				<tr>
+				<!--<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_RFID}" /></td>
-					<td><h:outputText value="#{driver.RFID}">
+					<td><h:outputText value="#{driver.rfid1}">
                            <f:converter converterId="HexConverter" /> 
                      </h:outputText></td>
 				</tr>
-				<tr>
+				--><tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_status}" /></td>
 					<td><c:set var="status" value="status#{driver.status.code}" /><h:outputText value="#{messages[status]}" /></td>
