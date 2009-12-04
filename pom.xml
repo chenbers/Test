@@ -49,30 +49,6 @@
       <email>jhoward@inthinc.com</email>
       <url>pro.tiwi.com</url>
     </developer>
-    <developer>
-      <id>kselman</id>
-      <name>Kevin Selman</name>
-      <email>kselman@inthinc.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-      <id>mstrong</id>
-      <name>Mike Strong</name>
-      <email>mstrong@inthinc.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-      <id>dgileadi</id>
-      <name>David Gileadi</name>
-      <email>dgileadi@solutionstream.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-      <id>sbrady</id>
-      <name>Scott Brady</name>
-      <email>scottbbrady@gmail.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
   </developers>
   <modules>
     <module>dao</module>
