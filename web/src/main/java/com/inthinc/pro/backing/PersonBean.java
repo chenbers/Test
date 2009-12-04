@@ -1001,6 +1001,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                return 0;
     		return value;
     	}
-
+    	public void setLocale(Locale locale){
+    		
+    		if (locale == null) {
+    			super.setLocale(LocaleBean.getCurrentLocale());
+    		}
+    		else {
+    			super.setLocale(locale);
+    		}
+    	}
     }
 }

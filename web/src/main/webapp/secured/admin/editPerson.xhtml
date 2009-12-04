@@ -217,7 +217,7 @@
 
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isDriver" value="#{personBean.item.driverSelected}">
-                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked)" ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />
+                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked); showSection('rfidTable', this.checked);" ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />
                         </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
                       </div>
@@ -357,8 +357,8 @@
                          <div class="spacer"></div>
                         
                           <ui:fragment rendered="#{not personBean.batchEdit}">
-                         <div class="add_section_title"><h:outputText value="#{messages.editPerson_rfidInformation}" /></div>
-                         <table>
+<!--                         <div class="add_section_title"><h:outputText value="#{messages.editPerson_rfidInformation}" /></div>-->
+                         <table id="rfidTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                          <tr>
                           <td width="100" valign="top">
                            <ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -447,7 +447,7 @@
                              <td>
                                  <rich:message for="editPerson-user_locale" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                  <h:selectOneMenu id="editPerson-user_locale" value="#{personBean.item.locale}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-                                     <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
+                                      <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
                                  </h:selectOneMenu>
                              </td>
                         </tr>

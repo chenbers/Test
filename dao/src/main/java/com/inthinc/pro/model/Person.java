@@ -429,8 +429,12 @@ public class Person extends BaseEntity implements Comparable<Person> {
         int result = (this.last.toUpperCase()).compareTo(o.getLast().toUpperCase());
         if (result == 0)
             result = (this.first.toUpperCase()).compareTo(o.getFirst().toUpperCase());
-        if (result == 0)
-            result = (this.middle.toUpperCase()).compareTo(o.getMiddle().toUpperCase());
+        if (result == 0){
+        	if (this.middle == null && o.getMiddle()==null) return 0;
+        	if (this.middle == null) return -1;
+        	if (o.getMiddle() == null) return 1;
+            return this.middle.toUpperCase().compareTo(o.getMiddle().toUpperCase());
+        }
         return result;
     }
 
