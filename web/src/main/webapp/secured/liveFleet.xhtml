@@ -17,6 +17,7 @@
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
 		<script src="#{facesContext.externalContext.request.contextPath}/js/liveFleetPage.js"  type="text/javascript"></script>
+		<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/1.1/src/markermanager_packed.js"></script>
 		<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/progressbarcontrol/1.0/src/progressbarcontrol_packed.js"></script>
 		<script type="text/javascript">
 	    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
@@ -49,6 +50,8 @@
 			{
 				var progress = 0;
 				var progressBar = new ProgressbarControl(map);
+				
+				markerManager.clearMarkers();
 				progressBar.start(#{fn:length(liveFleetBean.drivers)});
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">

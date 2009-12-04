@@ -26,7 +26,7 @@
 					map.addControl(new GOverviewMapControl()); 
 					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(mapDefaultLoc);
-					markerManager = new GMarkerManager(map);
+					markerManager = new MarkerManager(map);
 
 		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
 					map.addOverlay(marker);

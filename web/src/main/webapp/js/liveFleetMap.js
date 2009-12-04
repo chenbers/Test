@@ -20,7 +20,7 @@
 	 		map.addControl(new GMapTypeControl());
 	 		map.addControl(new GOverviewMapControl()); 
 			bounds = new GLatLngBounds();
-			markerManager = new GMarkerManager(map);
+			markerManager = new MarkerManager(map);
 			
 		}
 	}
