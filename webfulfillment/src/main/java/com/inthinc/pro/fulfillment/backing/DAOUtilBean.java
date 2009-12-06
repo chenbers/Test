@@ -1,5 +1,6 @@
 package com.inthinc.pro.fulfillment.backing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -39,6 +40,9 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandStatus;
+import com.inthinc.pro.model.ForwardCommandType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
 import com.inthinc.pro.model.GroupType;
@@ -223,22 +227,32 @@ public class DAOUtilBean implements PhaseListener {
 	}
 
 	public void queryDeviceAction() {
+		
+		String DATE_FORMAT = "MM/dd/yy hh:mm:ssa";
+
+		//Create object of SimpleDateFormat and pass the desired date format.
+
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+
+		
 		reInitAction();
 		loadDevice();
 		if (device != null) {
+			
+			String msg = "";
+		
 			Account dacct = accountDAO.findByID(device.getAccountID());
 			Vehicle dv = vehicleDAO.findByID(device.getVehicleID());
+			
 			Driver dd = null;
 			Person dp = null;
 			LastLocation ll = null;
-
 			if (dv != null) {
 				ll = vehicleDAO.getLastLocation(dv.getVehicleID());
 				dd = driverDAO.findByID(dv.getDriverID());
 				if (dd != null)
 					dp = personDAO.findByID(dd.getPersonID());
 			}
-			String msg = "";
 			msg += "<BR/>ACCT: " + dacct.getAcctName();
 			msg += "<BR/>SN: " + device.getSerialNum();
 			if (dv != null)
@@ -258,13 +272,64 @@ public class DAOUtilBean implements PhaseListener {
 			msg += "<BR/>SIM: " + device.getSim();
 			msg += "<BR/>ECALL: " + device.getEphone();
 
+			msg += "<BR/>";
+			msg += "<BR/>";
+			
 			if (ll != null)
 				msg += "<BR/>LOC: "
-						+ ll.getTime()
+						+ sdf.format(ll.getTime())
 						+ " <a target=\"_blank\" href=\"http://maps.google.com/maps?q="
 						+ ll.getLoc().getLat() + "," + ll.getLoc().getLng()
 						+ "\">" + ll.getLoc().toString() + "</a>";
 
+			//TODO List forward Commands
+			List<ForwardCommand> fwdCmds = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_ALL);
+			for(Iterator<ForwardCommand> fiter = fwdCmds.iterator(); fiter.hasNext();)
+			{
+				ForwardCommand cmd = fiter.next();
+				String name = cmd.getCmd().toString();
+				if (ForwardCommandType.getForwardCommandType(cmd.getCmd())!=null)
+					name = ForwardCommandType.getForwardCommandType(cmd.getCmd()).getName();
+				
+				String status=cmd.getStatus().name().replaceAll("STATUS_", "");
+				String values = cmd.getData().toString();
+				String tim = sdf.format(cmd.getModified());
+
+				msg+= name + " " + " " + status + "<br/>&nbsp;&nbsp;" + tim + " " + values + "<br/>";
+			}
+			
+			if (dv!=null)
+			{
+				msg += "<BR/>";
+				msg += "<BR/>";
+				//TODO List events
+				Calendar calendar = Calendar.getInstance();
+				Date endDate = new Date();
+				calendar.setTime(endDate);
+				calendar.add(Calendar.HOUR, -24);
+				Date startDate = calendar.getTime();
+				List<Integer> eventTypes = new LinkedList<Integer>();
+				
+				eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
+				eventTypes.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
+				eventTypes.add(EventMapper.TIWIPRO_EVENT_IGNITION_OFF);
+				eventTypes.add(EventMapper.TIWIPRO_EVENT_IGNITION_ON);
+
+				eventTypes.add(EventMapper.TIWIPRO_EVENT_DIAGNOSTICS_REPORT);
+				
+				List<Event> events = eventDAO.getEventsForVehicle(dv.getVehicleID(), startDate,
+						endDate, eventTypes, 0);
+
+				for(Iterator<Event> eiter = events.iterator(); eiter.hasNext();)
+				{
+					Event event = eiter.next();
+					String e = EventMapper.getEventType(event.getType()) + " "	+ sdf.format(event.getTime());
+					event.toString();
+					msg+= e + "<br/>";
+				}
+				
+			}			
+			
 			if (dv != null)
 				msg += "<BR/><BR/>" + dv.toString();
 			if (dd != null)

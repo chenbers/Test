@@ -56,15 +56,15 @@
 
  <navigation-rule>
   <navigation-case>
-   <from-outcome>go_home</from-outcome>
-   <to-view-id>/iphone/secured/home.xhtml</to-view-id>
+   <from-outcome>go_vehicles</from-outcome>
+   <to-view-id>/iphone/secured/vehicles.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
 
  <navigation-rule>
   <navigation-case>
-   <from-outcome>go_vehicles</from-outcome>
-   <to-view-id>/iphone/secured/vehicles.xhtml</to-view-id>
+   <from-outcome>go_home</from-outcome>
+   <to-view-id>/iphone/secured/home.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
 
