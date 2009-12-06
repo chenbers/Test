@@ -50,7 +50,7 @@
 	</fieldset>
 	<h:commandButton class="whiteButton" value="Search" action="#{daoUtilBean.searchDriverAction}" />
 	<br/>
-	<h:commandButton class="whiteButton" value="Clear" action="#{daoUtilBean.clearDriverCriteriaAction}" />
+	<input type="button" class="whiteButton" value="Clear" onclick="document.getElementById('searchDriver:driverID').value=''" />
 	<br/>
 	<a class="whiteButton" href="#chooseDriver">Cancel</a>
 </h:form>

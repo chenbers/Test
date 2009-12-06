@@ -44,11 +44,13 @@
 </h:outputLink>
 </li>
 
+<ui:remove>
 <li>
 <h:outputLink value="assignRFID.faces" rendered="#{daoUtilBean.selectedAccountID > 0}">
 <h:outputText value="Assign RFID"/>
 </h:outputLink>
 </li>
+</ui:remove>
 
 <li class="group">Vehicle</li>
 
@@ -58,14 +60,16 @@
 </h:outputLink>
 </li>
 
+<ui:remove>
 <li>
-<h:outputLink value="assignDevice.faces" rendered="#{daoUtilBean.selectedAccountID > 0}">
+<h:outputLink value="assignDevice.faces" rendered="#{daoUtilBean.selectedAccountID > 0}" target="_self">
 <h:outputText value="Assign Device"/>
 </h:outputLink>
 </li>
+</ui:remove>
 
 <li>
-<h:outputLink value="vehicleReport.faces" rendered="#{daoUtilBean.selectedAccountID > 0}">
+<h:outputLink value="vehicleReport.faces" rendered="#{daoUtilBean.selectedAccountID > 0}" target="_self">
 <h:outputText value="Vehicle Report"/>
 </h:outputLink>
 </li>
