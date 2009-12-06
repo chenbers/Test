@@ -18,7 +18,7 @@
 
 <div class="toolbar">
 <h1 id="pageTitle"></h1>
-<a class="button leftButton" href="home.faces" target="_self">Home</a>
+<a class="button leftButton" href="home.faces" target="_self" selected="true">Home</a>
 </div>
 
 <h:form id="vehicleReport" class="panel" title="Vehicle Report" selected="true">
@@ -56,6 +56,7 @@
 		<h:outputText value="Count: #{daoUtilBean.vehicleCount}"/><br/>
  		<h:outputText value="#{daoUtilBean.vehicleGrid}" escape="false" />
  		</h:form>
+<script>document.getElementById('vehicleReport').setAttribute("selected","true");</script>
 
     </body>
 </html>

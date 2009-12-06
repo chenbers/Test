@@ -21,7 +21,7 @@
 <a class="button leftButton" href="home.faces" target="_self">Home</a>
 </div>
 
-				<h:form id="queryDevice" class="panel" title="Query Device">
+<h:form id="queryDevice" class="panel" title="Query Device" target="_self" selected="true">
 				<h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
 <fieldset>
 <div class="row">
@@ -39,5 +39,6 @@
 				<h:outputText value="#{daoUtilBean.successMsg}"
 						escape="false" />
 				</h:form>
+<script>document.getElementById('queryDevice').setAttribute("selected","true");</script>
     </body>
 </html>
