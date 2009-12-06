@@ -18,10 +18,10 @@
 
 <div class="toolbar">
 <h1 id="pageTitle"></h1>
-<a class="button leftButton" href="home.faces" target="_self" selected="true">Home</a>
+<a class="button leftButton" href="home.faces" target="_self">Home</a>
 </div>
 
-<h:form id="vehicleReport" class="panel" title="Vehicle Report" selected="true">
+<h:form id="vehicleReport" class="panel" title="Vehicle Report" target="_self" selected="true">
 <h:outputText style="color: red; font-weight:bold;" value="#{daoUtilBean.errorMsg}" escape="false" />
 <h:outputText value="#{daoUtilBean.successMsg}" escape="false" />
 <fieldset>

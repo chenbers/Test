@@ -1049,6 +1049,7 @@ public class DAOUtilBean implements PhaseListener {
 				if ((person.getEmpid()!=null && person.getEmpid().trim().toUpperCase().startsWith(name))
 					|| (person.getEmpid()!=null && person.getEmpid().trim().toUpperCase().startsWith(name))
 					|| (person.getLast()!=null && person.getLast().trim().toUpperCase().startsWith(name))
+					|| (person.getFirst()!=null && person.getFirst().trim().toUpperCase().startsWith(name))
 					|| (driver.getBarcode()!=null && driver.getBarcode().trim().toUpperCase().startsWith(name))
 					|| (did>0 && did.equals(driver.getDriverID()))
 				)
