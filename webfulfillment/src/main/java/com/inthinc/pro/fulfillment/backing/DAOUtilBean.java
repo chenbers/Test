@@ -295,7 +295,7 @@ public class DAOUtilBean implements PhaseListener {
 				String values = cmd.getData().toString();
 				String tim = sdf.format(cmd.getModified());
 
-				msg+= name + " " + " " + status + "<br/>&nbsp;&nbsp;" + tim + " " + values + "<br/>";
+				msg+= name + " " + " " + status + "<br/>--" + tim + " " + values + "<br/>";
 			}
 			
 			if (dv!=null)
