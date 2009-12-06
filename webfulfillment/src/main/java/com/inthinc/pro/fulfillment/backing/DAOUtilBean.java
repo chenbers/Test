@@ -266,8 +266,8 @@ public class DAOUtilBean implements PhaseListener {
 			}
 			msg += "<BR/>PHONE: <a target=\"_blank\" href=\"tel:"
 					+ device.getPhone() + "\">" + device.getPhone() + "</a>";
-			msg += "<BR/><a target=\"_blank\" href=\"https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&password=45Uu9i92A_8&submitRun=Run&reportId=131&msisdn="
-					+ device.getEphone() + "\">Radius Call Records</a>";
+//			msg += "<BR/><a target=\"_blank\" href=\"https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&password=45Uu9i92A_8&submitRun=Run&reportId=131&msisdn="
+//					+ device.getEphone() + "\">Radius Call Records</a>";
 			msg += "<BR/>IMEI: " + device.getImei();
 			msg += "<BR/>SIM: " + device.getSim();
 			msg += "<BR/>ECALL: " + device.getEphone();
