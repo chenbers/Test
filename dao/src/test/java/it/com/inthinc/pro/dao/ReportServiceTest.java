@@ -502,7 +502,7 @@ public class ReportServiceTest {
     }
 
     @Test
-     @Ignore
+    // @Ignore
     public void crashSummaryGroup() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
