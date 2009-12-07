@@ -25,8 +25,7 @@
                     <resource>
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
-                            <exclude>**/applicationContext-mockdao.xml</exclude>
-                            <exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
+                            <exclude>**/applicationContext-mockdao.xml</exclude>                            
                         </excludes>
                     </resource>
                 </resources>
@@ -46,7 +45,6 @@
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
                             <exclude>**/applicationContext-dao.xml</exclude>
-                            <exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
                         </excludes>
                     </resource>
                 </resources>
@@ -71,7 +69,6 @@
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
                             <exclude>**/applicationContext-mockdao.xml</exclude>
-                            <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
                         </excludes>
                     </resource>
                 </resources>
@@ -95,8 +92,7 @@
                     <resource>
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
-                            <exclude>**/applicationContext-mockdao.xml</exclude>
-                            <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
+                            <exclude>**/applicationContext-mockdao.xml</exclude>                          
                         </excludes>
                     </resource>
                 </resources>
@@ -116,7 +112,6 @@
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
                             <exclude>**/applicationContext-mockdao.xml</exclude>
-                            <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
                         </excludes>
                     </resource>
                 </resources>
