@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +27,7 @@ public class HessianTCPProxy implements InvocationHandler
 {
     private static final Log log = LogFactory.getLog(HessianTCPProxy.class);
 
+//    private static final Log profileLog = LogFactory.getLog(HessianTCPProxy.class);
 
     static class ResultInputStream extends InputStream
     {
@@ -138,6 +140,12 @@ public class HessianTCPProxy implements InvocationHandler
     {
 
         String methodName = method.getName();
+//        Date traceStartTime = null;
+//        if (profileLog.isInfoEnabled())
+//        {
+//        	traceStartTime = new Date();
+//        }
+        
         InputStream is = null;
         Socket socket = null;
 
@@ -156,6 +164,12 @@ public class HessianTCPProxy implements InvocationHandler
             if (method.getReturnType().isInstance(value))
             {
                 in.completeReply();
+
+                
+//                if (profileLog.isInfoEnabled())
+//                {
+//                	profileLog.info(method.getName() + " " + (new Date().getTime() - traceStartTime.getTime()) + " ms");
+//                }
 
                 return value;
 

@@ -396,7 +396,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 {
                     vri.setDriver(d.getDriver());
                 }
-                vri.setMilesDriven((dqm.getOdometer() == null ? 0 : dqm.getOdometer().longValue() / 100));
+                vri.setMilesDriven((dqm.getOdometer() == null ? 0d : dqm.getOdometer().doubleValue() / 100d));
                 vri.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
                 vri.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
                 vri.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE : dqm.getDrivingStyle());
@@ -444,7 +444,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 {
                     driverReportItem.setVehicle(dvq.getVehicle());
                 }
-                driverReportItem.setMilesDriven(driverQMap.getOdometer() == null ? 0 : driverQMap.getOdometer().longValue() / 100);
+                driverReportItem.setMilesDriven(driverQMap.getOdometer() == null ? 0d : driverQMap.getOdometer().doubleValue() / 100d);
                 driverReportItem.setOverallScore(driverQMap.getOverall() == null ? NO_SCORE : driverQMap.getOverall());
                 driverReportItem.setSpeedScore(driverQMap.getSpeeding() == null ? NO_SCORE : driverQMap.getSpeeding());
                 driverReportItem.setStyleScore(driverQMap.getDrivingStyle() == null ? NO_SCORE : driverQMap.getDrivingStyle());

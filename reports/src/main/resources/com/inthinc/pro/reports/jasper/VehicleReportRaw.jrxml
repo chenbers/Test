@@ -13,7 +13,7 @@
 	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
-	<field name="milesDriven" class="java.lang.Long"/>
+	<field name="milesDriven" class="java.lang.Double"/>
 	<field name="vehicle.name" class="java.lang.String"/>
 	<field name="makeModelYear" class="java.lang.String"/>
 	<field name="driver.person.last" class="java.lang.String"/>

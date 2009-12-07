@@ -792,7 +792,7 @@ public class ReportServiceTest {
             assertEquals("VehicleReportItem list size", 1, list.size());
 
             VehicleReportItem item = list.get(0);
-            assertEquals(teamType + " VehicleReportItem miles driven", (expectedDailyMileagePerGroup[teamType] * totalDays) / 100, item.getMilesDriven());
+            assertEquals(teamType + " VehicleReportItem miles driven", (expectedDailyMileagePerGroup[teamType] * totalDays) / 100, item.getMilesDriven().doubleValue(), 1.0);
             assertEquals("VehicleReportItem groupID", groupID, item.getGroupID());
             assertEquals("VehicleReportItem overallScore", expectedTeamOverall[teamType], item.getOverallScore());
         }
@@ -814,7 +814,7 @@ public class ReportServiceTest {
             DriverReportItem item = list.get(0);
             // assertEquals("DriverReportItem miles driven", Double.valueOf((expectedDailyMileagePerGroup[teamType] * totalDays)/100), item.getMilesDriven().doubleValue(),
             // MILEAGE_BUFFER);
-            assertEquals("DriverReportItem miles driven", (expectedDailyMileagePerGroup[teamType] * totalDays) / 100, item.getMilesDriven());
+            assertEquals("DriverReportItem miles driven", (expectedDailyMileagePerGroup[teamType] * totalDays) / 100, item.getMilesDriven().doubleValue(), 1.0);
             assertEquals("DriverReportItem groupID", groupID, item.getGroupID());
             assertEquals("DriverReportItem overallScore", expectedTeamOverall[teamType], item.getOverallScore());
         }

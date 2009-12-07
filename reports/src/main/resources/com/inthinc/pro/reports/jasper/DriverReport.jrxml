@@ -17,7 +17,7 @@
 	<field name="employeeID" class="java.lang.String"/>
 	<field name="employee" class="java.lang.String"/>
 	<field name="vehicle.name" class="java.lang.String"/>
-	<field name="milesDriven" class="java.lang.Long"/>
+	<field name="milesDriven" class="java.lang.Double"/>
 	<field name="group" class="java.lang.String"/>
 	<field name="overallScore" class="java.lang.Integer"/>
 	<field name="speedScore" class="java.lang.Integer"/>
