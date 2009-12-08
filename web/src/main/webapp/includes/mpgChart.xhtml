@@ -42,10 +42,11 @@
                     <div id="mpgChartDiv" align="center"></div>
                     <rich:panel>
             	        <h:inputHidden value="#{barDef}" id="mpgDataElement" />
+	<ui:param name="errorMessageListMPG" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
             	        <script type="text/javascript">
             	            var targetElement = document.getElementById("mpgDataElement");
             	              
-            	            var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
+            	            var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
             	            chart.setDataXML(targetElement.value);
             	            chart.setTransparent(true);          
             	            chart.render("mpgChartDiv");

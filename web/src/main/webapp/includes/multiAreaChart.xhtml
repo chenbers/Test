@@ -21,9 +21,10 @@
 <rich:panel style="height:#{height};width:#{width}">
 	<div id="#{ChartDivID}" ></div>
 	<h:inputHidden value="#{lineChartDef}" id="#{context}-#{hiddenFieldID}" />
+	<ui:param name="errorMessageListMAC" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
 	<script type="text/javascript">
 		var #{tartgetElementVar} = document.getElementById("#{context}-#{hiddenFieldID}");
-		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
+		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi2D.swf#{errorMessageListMAC}", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
 
 		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
 		#{chartVar}.setTransparent(true);

@@ -37,12 +37,13 @@
 									<!-- Start pie chart -->
 					  				<rich:panel id="piepanel" style="#{pieheight};#{piewidth}">
 					  					<h:inputHidden value="#{pieDef}" id="#{context}-hiddenField2"/>
+	<ui:param name="errorMessageListPC" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
 					  													  										
 										<div id="chartdiv" align="center"></div>									
 										<script type="text/javascript">
 											var targetElement1 = document.getElementById("#{context}-hiddenField2");
 							
-											var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "#{piewidth}", "#{pieheight}", "0", "0");										
+											var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListPC}", "ChartId", "#{piewidth}", "#{pieheight}", "0", "0");										
 											chart2.setDataXML(targetElement1.value);									   	   
 											
 											chart2.render("chartdiv");

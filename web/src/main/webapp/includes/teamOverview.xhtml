@@ -5,12 +5,13 @@
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
+	<ui:param name="errorMessageListTeamOverview" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
 	
 <script type="text/javascript">
 	function renderBar(barElement, barDiv, width, height)
 	{
 		var barDef = document.getElementById(barElement);
-		var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf", "ChartId", width, height, "0", "0");										
+		var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");										
 		barChart.setDataXML(barDef.value);	
 		barChart.setTransparent(true);								   	   
 		barChart.render(barDiv);
@@ -30,7 +31,7 @@
 				<ui:include src="/includes/dateLinks.xhtml" >
 					<ui:param name="ajaxForm" value="overviewDates-form"/>
 					<ui:param name="ajaxStatusID" value="overviewStatus"/>
-					<ui:param name="reRenderList" value="overviewDates-form,overview-content,teamTopTables"/>			
+					<ui:param name="reRenderList" value="overviewDates-form,overview-form,overview-content,teamTopTables"/>			
 					<ui:param name="thirtyDaysOn" value="#{teamOverviewDurationBean.styleClass30Days}"/>
 					<ui:param name="threeMonthsOn" value="#{teamOverviewDurationBean.styleClass3Months}"/>
 					<ui:param name="sixMonthsOn" value="#{teamOverviewDurationBean.styleClass6Months}"/>

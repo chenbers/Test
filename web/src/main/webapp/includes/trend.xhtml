@@ -44,9 +44,10 @@
 			<rich:panel id="xypanel" style="height:#{xyheight};width:#{xywidth}">
 				<div id="chartdivTrend" align="center"></div>
 				<h:inputHidden value="#{trendBean.lineDef}" id="#{context}-hiddenFieldTrend" />
+	<ui:param name="errorMessageListTrend" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
 				<script type="text/javascript">
 					var trendTargetElement = document.getElementById("#{context}-hiddenFieldTrend");
-        			var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");						   						   		
+        			var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");						   						   		
 					chart.setDataXML(trendTargetElement.value);
         			chart.setTransparent(true);
         			chart.render("chartdivTrend");

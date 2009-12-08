@@ -609,9 +609,10 @@
                             
                             <rich:panel id="mpg_script">
                             	<h:inputHidden value="#{driverPerformanceBean.mpgHistory}" id="hiddenField5"/>
+ 	<ui:param name="errorMessageListDP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
                             
 							<script type="text/javascript">
-								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
+								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf#{errorMessageListDP}", "ChartId", "450", "300", "0", "0");
 								var targetElement5 = document.getElementById("hiddenField5");
 				     			chart.setDataXML(targetElement5.value);
 					    		chart.setTransparent(true);

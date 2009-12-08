@@ -45,9 +45,10 @@
                 	<div style="height:#{xyheight};width:#{xywidth}">
                    	<div id="speedPercentChartdiv" align="center"/>
 		  			<h:inputHidden value="#{speedPercentageBean.chartDef}" id="#{context}-hiddenSPChartField"/>
+			<ui:param name="errorMessageListSP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
 					<script type="text/javascript">
 						var targetChartElement = document.getElementById("#{context}-hiddenSPChartField");
-						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf?", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
+						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
 						chart2.setDataXML(targetChartElement.value);	
 						chart2.setTransparent(true);								   	   
 						chart2.render("speedPercentChartdiv");

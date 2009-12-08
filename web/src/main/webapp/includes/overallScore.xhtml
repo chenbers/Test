@@ -54,9 +54,10 @@
     	                    <td rowspan="2" width="">
     	                    	<div id="chartdiv" align="center"></div>
     				  			<h:inputHidden value="#{overallScoreBean.overallPieDef}" id="#{context}-hiddenField3"/>
+	<ui:param name="errorMessageListOS" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
     							<script type="text/javascript">
     								var targetElement3 = document.getElementById("#{context}-hiddenField3");
-    								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf?", "ChartId", "320", "300", "0", "1");										
+    								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");										
     								chart2.setDataXML(targetElement3.value);	
     								chart2.setTransparent(true);								   	   
     								chart2.render("chartdiv");
