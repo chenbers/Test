@@ -8,7 +8,7 @@
         xmlns:c="http://java.sun.com/jstl/core"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:t="http://myfaces.apache.org/tomahawk"
-        xmlns:pretty="http://ocpsoft.com/prettyfaces">
+        xmlns:pretty="http://ocpsoft.com/prettyfaces">      
 	
     <h:form id="overview_header_form">
     	<a4j:region id="overview_header_region">
@@ -69,8 +69,7 @@
     <ui:include src="/includes/emailReportPopup.xhtml">	
 		<ui:param  name="reportList" value="#{dashBoardReportBean.reportList}"/>
 		<ui:param name="id" value="overview_emailPopup" />
-		<ui:param name="reportBean" value="#{dashBoardReportBean}" />
-        <ui:param name="context" value="#{context}-overviewHeader"/> 
+		<ui:param name="reportBean" value="#{dashBoardReportBean}" />        
     </ui:include>
 	
 	
