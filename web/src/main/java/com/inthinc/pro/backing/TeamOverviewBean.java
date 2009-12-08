@@ -81,7 +81,15 @@ public class TeamOverviewBean extends BaseBean {
     }
 
     public String getBarDef(Integer type) {
-        return getBarDefMap().get(durationBean.getDuration()).get(ScoreType.valueOf(type));
+    	
+//    	Map<ScoreType, Map<Duration,String>> barDefMap = getBarDefMap();
+//    	Duration duration = durationBean.getDuration();
+//    	ScoreType scoreType = ScoreType.valueOf(type);
+//    	Map<Duration,String> durationMap = barDefMap.get(scoreType);
+//    	String barDef = durationMap.get(duration);
+    	
+//    	return barDef;
+       return getBarDefMap().get(ScoreType.valueOf(type)).get(durationBean.getDuration());
     }
 
     public String createBar3DChart(ScoreType scoreType) {
