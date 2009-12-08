@@ -124,7 +124,7 @@ public class IdlePercentageBean extends BaseBean {
 				IDLE_LINE_COLOR, true, percentValues, toolTipText));
 		chartBuilder.append(bar2DMultiAxisChart.getClose());
 		setChartDef(chartBuilder.toString());
-System.out.println(chartBuilder.toString());		
+//System.out.println(chartBuilder.toString());		
 		setTotalDriving(formatDecimal(getHours(totalDriving)) + " " + getTimeLabel());
 		setTotalIdling(formatDecimal(getHours(totalIdling)) + " " + getTimeLabel()
 				+ " (" + percentFormat.format(MathUtil.percent(totalIdling, totalDriving).doubleValue()/100d) + ")");
