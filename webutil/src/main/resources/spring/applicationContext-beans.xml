@@ -23,5 +23,8 @@
 		<property name="userDAO" ref="userDAO" />
 		<property name="groupDAO" ref="groupDAO" />
 	</bean>
+    <bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session">
+		<property name="eventDAO" ref="eventDAO" />
+	</bean>
     
 </beans>

@@ -1,0 +1,80 @@
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+
+<ui:param name="panelTitle" value="Extract Data"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="util_content">
+
+<div>
+    <rich:panel id="extractData-panel">
+      <f:facet name="header">
+        <h:outputText value="Extract Data" />
+      </f:facet>
+	<h:form>
+	<h:outputText id="inst" value="This page should only be used by inthinc to extract data for scoring testing." />
+	<h:panelGrid columns="3">
+    
+        <h:outputText value="Type:" />
+        <h:selectOneMenu id="type" value="#{extractDataBean.type}">
+        	<f:selectItem itemLabel="Driver" itemValue="DRIVER"/>
+        	<f:selectItem itemLabel="Vehicle" itemValue="VEHICLE"/>
+<!--         	<f:selectItem itemLabel="Group" itemValue="GROUP"/>   -->
+		</h:selectOneMenu>
+        <rich:message for="type"/>
+	
+		<h:outputText value="ID:" />
+		<h:inputText  id="id" value="#{extractDataBean.id}" required="true" requiredMessage="ID is required."/>
+        <rich:message for="id"/>
+		
+		<h:outputText value="Days Back:" />
+		<h:inputText  id="days" value="#{extractDataBean.days}" required="true" requiredMessage="Days Back is required." >
+			<f:validateLongRange minimum="1" maximum="30"/>
+		</h:inputText>
+        <rich:message for="days"/>
+		
+		<h:outputText value="File Name (include path):" />
+		<h:inputText  id="filename" value="#{extractDataBean.fileName}" required="true" requiredMessage="File Name is required."/>
+        <rich:message for="filename"/>
+	</h:panelGrid>        
+	<h:commandButton value="Extract Data" action="#{extractDataBean.extractAction}"/>
+	<h:commandButton value="Extract Data and Calc Scores" action="#{extractDataBean.calcScoresAction}"/>
+	
+	</h:form>
+	</rich:panel>
+
+	<h:panelGroup id="statusPanel">
+		<rich:modalPanel id="errorPanel" styleClass="errorPopup" showWhenRendered="#{not empty extractDataBean.errorMsg}" width="300" height="200" zindex="2000">
+		    <f:facet name="header">
+		      <h:outputText value="Extract Data Error" />
+		    </f:facet>
+		    <p>
+		      <h:outputText value="#{extractDataBean.errorMsg}" escape="false"/>
+		    </p>
+		    <h:form>
+		    	<h:commandButton onclick="Richfaces.hideModalPanel('errorPanel')" value="OK" action="#{extractDataBean.clearErrorAction}" style="float:right"/>
+			</h:form>
+		</rich:modalPanel>    
+	
+		<rich:modalPanel id="successPanel" styleClass="successPopup" showWhenRendered="#{not empty extractDataBean.successMsg}" width="300" height="200" zindex="2000">
+		    <f:facet name="header">
+		      <h:outputText value="Extract Data Success" />
+		    </f:facet>
+		    <p>
+		      <h:outputText value="#{extractDataBean.successMsg}" escape="false"/>
+		    </p>
+		    <h:form>
+		    	<h:commandButton onclick="Richfaces.hideModalPanel('successPanel')" value="OK" action="#{extractDataBean.reInitAction}" style="float:right"/>
+			</h:form>
+		</rich:modalPanel>    
+	</h:panelGroup>
+
+</div><!-- end page -->
+<div> </div> 
+</ui:define>
+</ui:composition>
