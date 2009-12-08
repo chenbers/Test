@@ -23,8 +23,8 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class TeamOverviewBean extends BaseBean {
     private ScoreDAO scoreDAO;
-    private Map<ScoreType, String> barDefMap;
-    private Map<ScoreType, Integer> overallScoreMap;
+    private Map<ScoreType, Map<Duration,String>> barDefMap;
+    private Map<ScoreType, Map<Duration,Integer>> overallScoreMap;
     private List<TabAction> actions;
     private TabAction selectedAction;
     private NavigationBean navigation;
@@ -70,13 +70,18 @@ public class TeamOverviewBean extends BaseBean {
         TabAction action = getSelectedAction();
         ScoreType scoreType = action.getScoreType();
         if (getBarDefMap().get(scoreType) == null) {
-        	getBarDefMap().put(scoreType, createBar3DChart(scoreType));
+        	
+        	getBarDefMap().put(scoreType,  new HashMap<Duration, String>());
         }
-        return getBarDefMap().get(scoreType);
+        if (barDefMap.get(scoreType).get(durationBean.getDuration()) == null){
+        	
+        	barDefMap.get(scoreType).put(durationBean.getDuration(), createBar3DChart(scoreType));
+        }
+        return getBarDefMap().get(scoreType).get(durationBean.getDuration());
     }
 
     public String getBarDef(Integer type) {
-        return getBarDefMap().get(ScoreType.valueOf(type));
+        return getBarDefMap().get(durationBean.getDuration()).get(ScoreType.valueOf(type));
     }
 
     public String createBar3DChart(ScoreType scoreType) {
@@ -132,35 +137,42 @@ public class TeamOverviewBean extends BaseBean {
         return sb.toString();
     }
 
-    public Map<ScoreType, String> getBarDefMap() {
+    public Map<ScoreType, Map<Duration,String>> getBarDefMap() {
         if (barDefMap == null) {
-            barDefMap = new HashMap<ScoreType, String>();
+            barDefMap = new HashMap<ScoreType, Map<Duration,String>>();
         }
         return barDefMap;
     }
 
-    public void setBarDefMap(Map<ScoreType, String> barDefMap) {
+    public void setBarDefMap(Map<ScoreType, Map<Duration,String>> barDefMap) {
         this.barDefMap = barDefMap;
     }
 
-    public Map<ScoreType, Integer> getOverallScoreMap() {
+    public Map<ScoreType, Map<Duration,Integer>> getOverallScoreMap() {
         if (overallScoreMap == null) {
-            overallScoreMap = new HashMap<ScoreType, Integer>();
+            overallScoreMap = new HashMap<ScoreType, Map<Duration,Integer>>();
         }
         return overallScoreMap;
     }
 
-    public void setOverallScoreMap(Map<ScoreType, Integer> overallScoreMap) {
+    public void setOverallScoreMap(Map<ScoreType, Map<Duration,Integer>> overallScoreMap) {
         this.overallScoreMap = overallScoreMap;
     }
 
     public Integer getSelectedOverallScore() {
         TabAction action = getSelectedAction();
+        
         ScoreType scoreType = action.getScoreType();
+        
         if (getOverallScoreMap().get(scoreType) == null) {
-            overallScoreMap.put(scoreType, initOverallScore(scoreType));
+        	
+        	overallScoreMap.put(scoreType, new HashMap<Duration, Integer>());
         }
-        return getOverallScoreMap().get(scoreType);
+        if (overallScoreMap.get(scoreType).get(durationBean.getDuration()) == null){
+        	
+        	overallScoreMap.get(scoreType).put(durationBean.getDuration(), initOverallScore(scoreType));
+        }
+        return getOverallScoreMap().get(scoreType).get(durationBean.getDuration());
     }
 
     public void setActions(List<TabAction> actions) {

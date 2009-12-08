@@ -44,6 +44,7 @@ public class TeamOverviewBeanTest extends BaseBeanTest
         // make sure the spring injection worked
         assertNotNull(teamOverviewBean.getScoreDAO());
         assertNotNull(teamOverviewBean.getNavigation());
+        assertNotNull(teamOverviewBean.getDurationBean());
         
         // simulates the web page clicking on the tabs to get the various pies 
         List<TabAction> actionList = teamOverviewBean.getActions();
@@ -73,9 +74,10 @@ logger.info("time: " + (new Date().getTime()-time));
 
         
         // make sure when the duration changes the bar, score get set to null so they are reinitialized
-        teamOverviewBean.setDuration(Duration.THREE);
-        assertNotNull(teamOverviewBean.getBarDefMap());
-        assertNotNull(teamOverviewBean.getOverallScoreMap());
+        // This is not how it works in the page - the duration bean is set directly not via the teamOverviewBean.
+        teamOverviewBean.getDurationBean().setDuration(Duration.THREE);
+//        assertNotNull(teamOverviewBean.getBarDefMap());
+//        assertNotNull(teamOverviewBean.getOverallScoreMap());
         
         teamOverviewBean.setSelectedAction(null);
         assertEquals(actionList.get(0), teamOverviewBean.getSelectedAction());
