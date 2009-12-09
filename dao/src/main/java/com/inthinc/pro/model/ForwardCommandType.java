@@ -127,7 +127,18 @@ public enum ForwardCommandType
     DMM_SET_HARD_ACCEL(2091),
     DMM_SET_HARD_BRAKE(2092),
     DMM_SET_HARD_TURN(2093),
-    DMM_SET_HARD_VERT(2094);
+    DMM_SET_HARD_VERT(2094),
+    INVALID_DRIVER(2142),   // string, "rfid"
+    ASSIGN_DRIVER(2143),    // string, "driverID rfid1 rfid2"  rfids are optional
+	UNASSIGN_DRIVER(2144)  // string, "driverID"
+
+
+
+    ;
+    
+    
+    
+    
     private String name;
     private Integer code;
     private String description;
