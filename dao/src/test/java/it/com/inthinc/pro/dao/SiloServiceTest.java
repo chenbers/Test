@@ -288,6 +288,49 @@ public class SiloServiceTest {
             System.out.println("NO VEHICLES FOUND");
         }
     }
+    @Test
+    public void groupEvents() {
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
+
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+
+        // year time frame from today back
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 365);
+        List<Event> result = eventDAO.getEventsForGroup(TESTING_GROUP_ID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION),
+                EventDAO.INCLUDE_FORGIVEN);
+        assertNotNull(result);
+        if (result != null) {
+//            for (Event r : result) {
+//                System.out.println("driver id " + r.getDriverID() + " speed " + r.getSpeed() + " lat " + r.getLatitude() + " lng " + r.getLongitude());
+//            }
+            int size = result.size();
+            
+         
+            List<Driver> driverList = driverDAO.getAllDrivers(TESTING_GROUP_ID);
+            List<Event> eventList = new ArrayList<Event>();
+            for (Driver driver : driverList)
+            {
+                List<Event> driverEvents = eventDAO.getEventsForDriver(driver.getDriverID(), startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION),
+                        EventDAO.INCLUDE_FORGIVEN);
+                for (Event event : driverEvents)
+                {
+                    event.setDriver(driver);
+                    eventList.add(event);
+                }
+            }
+            
+            
+            assertEquals("group events size matches", eventList.size(), result.size());
+
+            
+        } else {
+            System.out.println("NO EVENTS FOUND FOR GROUP " + TESTING_GROUP_ID);
+        }
+    }
+
 
     @Test
     public void lastLocationVehicle() {

@@ -207,7 +207,7 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
         localeBean.getLocale();
 
         setFilteredTableData(null);
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7, RedFlagDAO.INCLUDE_FORGIVEN);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), DAYS_BACK, RedFlagDAO.INCLUDE_FORGIVEN);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         addDrivers(redFlagList);
         addVehicles(redFlagList);
@@ -389,34 +389,41 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
     }
 
     protected void addDrivers(List<RedFlag> redFlagList) {
-        Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
+//        Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
         for (RedFlag redFlag : redFlagList) {
-            if(driverMap.containsKey(redFlag.getEvent().getDriverID())) {
-                redFlag.getEvent().setDriver(driverMap.get(redFlag.getEvent().getDriverID()));
-            } else {
-                Driver driver = getDriverDAO().findByID(redFlag.getEvent().getDriverID());
-                if(driver != null) {
-                    redFlag.getEvent().setDriver(driver);
-                    driverMap.put(driver.getDriverID(), driver);
-                }
-            }
+        	Event event = redFlag.getEvent();
+        	fillInDriver(event);
+
+//            if(driverMap.containsKey(redFlag.getEvent().getDriverID())) {
+//                redFlag.getEvent().setDriver(driverMap.get(redFlag.getEvent().getDriverID()));
+//            } else {
+//                Driver driver = getDriverDAO().findByID(redFlag.getEvent().getDriverID());
+//                if(driver != null) {
+//                    redFlag.getEvent().setDriver(driver);
+//                    driverMap.put(driver.getDriverID(), driver);
+//                }
+//            }
         }
     }
 
     protected void addVehicles(List<RedFlag> redFlagList) {
         // Get the set of possible vehicles
-        Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
+//        Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
         for (RedFlag redFlag : redFlagList) {
-            redFlag.getEvent().setVehicle(vehicleMap.get(redFlag.getEvent().getVehicleID()));
-            if(vehicleMap.containsKey(redFlag.getEvent().getVehicleID())) {
-                redFlag.getEvent().setVehicle(vehicleMap.get(redFlag.getEvent().getVehicleID()));
-            } else {
-                Vehicle vehicle = getVehicleDAO().findByID(redFlag.getEvent().getVehicleID());
-                if(vehicle != null) {
-                    redFlag.getEvent().setVehicle(vehicle);
-                    vehicleMap.put(vehicle.getVehicleID(), vehicle);
-                }
-            }
+        	
+        	Event event = redFlag.getEvent();
+        	fillInVehicle(event);
+//            redFlag.getEvent().setVehicle(vehicleMap.get(redFlag.getEvent().getVehicleID()));
+//            if(vehicleMap.containsKey(redFlag.getEvent().getVehicleID())) {
+//                redFlag.getEvent().setVehicle(vehicleMap.get(redFlag.getEvent().getVehicleID()));
+//            } else {
+//                Vehicle vehicle = getVehicleDAO().findByID(redFlag.getEvent().getVehicleID());
+//                if(vehicle != null) {
+//                    redFlag.getEvent().setVehicle(vehicle);
+//                    vehicleMap.put(vehicle.getVehicleID(), vehicle);
+//                }
+//            }
+//        }
         }
     }
 	protected ReportCriteria getReportCriteria() {

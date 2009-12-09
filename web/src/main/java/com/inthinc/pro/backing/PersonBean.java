@@ -160,7 +160,17 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private FuelEfficiencyBean fuelEfficiencyBean;
     private AccountOptionsBean accountOptionsBean;
     
-    public AccountOptionsBean getAccountOptionsBean() {
+    private CacheBean cacheBean;
+    
+    public CacheBean getCacheBean() {
+		return cacheBean;
+	}
+
+	public void setCacheBean(CacheBean cacheBean) {
+		this.cacheBean = cacheBean;
+	}
+
+	public AccountOptionsBean getAccountOptionsBean() {
 		return accountOptionsBean;
 	}
 
@@ -473,7 +483,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
+        
+        // TODO: this should be refactored, but to be on the save side, just clear the cache and force a refresh when driver(s) change
+        cacheBean.setDriverMap(null);
+
+        
         notifyChangeListeners();
+        
+        
         return result;
     }
 

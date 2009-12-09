@@ -182,6 +182,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     <property name="accountOptionsBean" ref="accountOptionsBean"></property>
+    <property name="cacheBean" ref="cacheBean"></property>
     <property name="personChangeListeners">
       <list>
         <ref local="vehiclesBean" />
@@ -200,6 +201,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="deviceDAO" ref="deviceDAO"></property>
     <property name="groupDAO" ref="groupDAO"></property>
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    <property name="cacheBean" ref="cacheBean"></property>
   </bean>
 
   <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session" init-method="initBean">
@@ -419,6 +421,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    <property name="cacheBean" ref="cacheBean"></property>
   </bean>
   <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
     <property name="redFlagDAO" ref="redFlagDAO"></property>
@@ -428,6 +431,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   </bean>
   <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="request" parent="baseRedFlagsBean" abstract="true">
     <property name="eventDAO" ref="eventDAO"></property>
+<!--     
+    <property name="eventsTableDataProvider" ref="eventsTableDataProvider"></property>
+ -->    
   </bean>
   <bean id="crashHistoryBean" class="com.inthinc.pro.backing.CrashHistoryBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
     <property name="crashReportDAO" ref="crashReportDAO"></property>
@@ -514,6 +520,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   <!-- Error translator -->
   <bean id="errorTranslatorBean" class="com.inthinc.pro.backing.ErrorTranslatorBean">
   </bean>
+  
 
   <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean">
     <property name="phoneAlerts" value="${accountOptions.phoneAlerts}" />
@@ -523,4 +530,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="phoneNumber01" value="${externalConfig.phone01}" />
     <property name="phoneNumber02" value="${externalConfig.phone02}" />
   </bean>
+
+  
+    <!-- Cache Beans -->
+   <bean id="cacheBean" class="com.inthinc.pro.backing.CacheBean" scope="session" parent="baseBean">
+    <property name="driverDAO" ref="driverDAO"></property>
+    <property name="vehicleDAO" ref="vehicleDAO"></property>
+  </bean>
+  
 </beans>

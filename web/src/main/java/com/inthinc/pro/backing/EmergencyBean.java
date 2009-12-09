@@ -24,12 +24,12 @@ public class EmergencyBean extends BaseEventsBean
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-        List<Event> evtForGrp = getEventDAO().getEmergencyEventsForGroup(groupID, 7,showExcludedEvents);
+        List<Event> evtForGrp = getEventDAO().getEmergencyEventsForGroup(groupID, DAYS_BACK,showExcludedEvents);
         
         // Add the unknown driver, making sure the name is set
         Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
         List<Event> noDriverWarnings = getEventDAO().getEmergencyEventsForDriver(
-                acct.getUnkDriverID(), DateUtil.getDaysBackDate(new Date(), 7), new Date(), showExcludedEvents);    
+                acct.getUnkDriverID(), DateUtil.getDaysBackDate(new Date(), DAYS_BACK), new Date(), showExcludedEvents);    
         noDriverWarnings = this.loadUnknownDriver(noDriverWarnings);     
         
         evtForGrp.addAll(noDriverWarnings);

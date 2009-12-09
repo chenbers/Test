@@ -15,7 +15,6 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.reports.ReportCriteria;
 
 public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportItem> implements TablePrefOptions<EventReportItem>
 {
@@ -27,7 +26,6 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
 	static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
     private final static String COLUMN_LABEL_PREFIX = "notes_";
-    protected final static Integer DAYS_BACK = 7;
 
     private EventDAO                eventDAO;
     
@@ -53,6 +51,10 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
 
     }
     
+//	private EventsTableDataProvider eventsTableDataProvider;
+//	private BasePaginationTable<EventReportItem> table;
+
+    
 	@Override
 	public int getDisplaySize() {
 
@@ -65,6 +67,16 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
     {
         super.initBean();
         tablePref = new TablePref<EventReportItem>(this);
+        
+        
+//        eventsTableDataProvider.setGroupID(this.getUser().getGroupID());
+//        eventsTableDataProvider.setDaysBack(DAYS_BACK);
+//        eventsTableDataProvider.setIncludeForgiven(1);
+//		
+//		PaginationTableDataModel<EventReportItem> model = new PaginationTableDataModel<EventReportItem>(eventsTableDataProvider);
+//		table = new BasePaginationTable<EventReportItem>();
+//		table.setModel(model);
+
     }
     
     /*
@@ -407,5 +419,30 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
 	public void setFilteredTableData(List<EventReportItem> filteredTableData) {
 		this.filteredTableData = filteredTableData;
 	}
+
+
+
+/*
+	public EventsTableDataProvider getEventsTableDataProvider() {
+		return eventsTableDataProvider;
+	}
+
+
+	public void setEventsTableDataProvider(
+			EventsTableDataProvider eventsTableDataProvider) {
+		this.eventsTableDataProvider = eventsTableDataProvider;
+	}
+
+
+	public BasePaginationTable<EventReportItem> getTable() {
+		return table;
+	}
+
+
+	public void setTable(BasePaginationTable<EventReportItem> table) {
+		this.table = table;
+	}
+*/
+
 }
 

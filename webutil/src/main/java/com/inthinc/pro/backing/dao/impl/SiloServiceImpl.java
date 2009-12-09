@@ -651,8 +651,20 @@ public class SiloServiceImpl implements SiloService {
 */
 
 	@Override
-	public List<Map<String, Object>> getDVLByGroupIDDeep(Integer groupID)
+	public List<Map<String, Object>> getDVLByGroupIDDeep(@DaoParam(name = "groupID") Integer groupID)
 			throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDriverNoteByGroupIDDeep(
+			@DaoParam(name = "groupID") Integer groupID, 
+            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+            @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
+            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types") Integer[] types) 
+            throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

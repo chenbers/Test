@@ -34,14 +34,17 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 
 	protected static final Integer numRowsPerPg = 25;
 	
+//  protected final static Integer DAYS_BACK = 7;
+    protected final static Integer DAYS_BACK = 1;
+	
     private DriverDAO                driverDAO;
     private VehicleDAO               vehicleDAO;
 
     private ZoneDAO                  zoneDAO;
 	private TablePreferenceDAO       tablePreferenceDAO;
 
-    private Map<Integer, Driver>     driverMap;
-    private Map<Integer, Vehicle>    vehicleMap;
+//    private Map<Integer, Driver>     driverMap;
+//    private Map<Integer, Vehicle>    vehicleMap;
     
     private Map<EventType, String>   driverActionMap;
     private Map<EventType, String>   vehicleActionMap;
@@ -64,6 +67,18 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     private Integer end;
     private Integer maxCount;
 	private Integer page;
+	
+    private CacheBean cacheBean;
+    
+	public CacheBean getCacheBean() {
+		return cacheBean;
+	}
+
+	public void setCacheBean(CacheBean cacheBean) {
+		this.cacheBean = cacheBean;
+	}
+
+
 	
 	public T getClearItem() {
 		return clearItem;
@@ -119,8 +134,8 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 
 	public void initBean()
     {
-        driverMap = new HashMap<Integer, Driver>();
-        vehicleMap = new HashMap<Integer, Vehicle>();
+//        driverMap = new HashMap<Integer, Driver>();
+//        vehicleMap = new HashMap<Integer, Vehicle>();
         driverActionMap = new HashMap<EventType, String>();
         driverActionMap.put(EventType.HARD_ACCEL, "go_reportDriverStyle");
         driverActionMap.put(EventType.HARD_BRAKE, "go_reportDriverStyle");
@@ -163,13 +178,14 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     protected void fillInDriver(Event event)
     {
         Driver driver = event.getDriver();
+        
         if (driver == null)
         {
-            driver = driverMap.get(event.getDriverID());
+            driver = cacheBean.getDriverMap().get(event.getDriverID());
             if (driver == null)
             {
                 driver = driverDAO.findByID(event.getDriverID());
-                driverMap.put(event.getDriverID(), driver);
+                cacheBean.getDriverMap().put(event.getDriverID(), driver);
             }
             event.setDriver(driver);
         }
@@ -180,11 +196,11 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
         Vehicle vehicle = event.getVehicle();
         if (vehicle == null)
         {
-            vehicle = vehicleMap.get(event.getVehicleID());
+            vehicle = cacheBean.getVehicleMap().get(event.getVehicleID());
             if (vehicle == null)
             {
                 vehicle = vehicleDAO.findByID(event.getVehicleID());
-                vehicleMap.put(event.getVehicleID(), vehicle);
+                cacheBean.getVehicleMap().put(event.getVehicleID(), vehicle);
             }
             event.setVehicle(vehicle);
         }

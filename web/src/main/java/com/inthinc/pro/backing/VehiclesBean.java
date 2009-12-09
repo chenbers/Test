@@ -91,6 +91,17 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private DeviceDAO                             deviceDAO;
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
+    
+    private CacheBean cacheBean;
+    
+    public CacheBean getCacheBean() {
+		return cacheBean;
+	}
+
+	public void setCacheBean(CacheBean cacheBean) {
+		this.cacheBean = cacheBean;
+	}
+
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
@@ -360,6 +371,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         // if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
         // getItem().getDevice().invertSensitivities();
 
+        // TODO: this should be refactored, but to be on the save side, just clear the cache and force a refresh when vehicle(s) change
+        cacheBean.setVehicleMap(null);
         return super.save();
     }
     

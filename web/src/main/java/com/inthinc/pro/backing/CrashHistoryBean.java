@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -105,7 +106,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     @Override
     protected void filterTableDataWithoutSearch() {
     }
-
+   
     public void initTableData() {
         setFilteredTableData(null);
         // this access sets a table level parameter to conditionally render
@@ -116,17 +117,16 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         List<CrashReport> crashList = crashReportDAO.findByGroupID(user.getGroupID());
         List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
         // temporary map to hold drivers that have already been looked up. This will go away when pagination is implemented
-        Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
+//        Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
         for (CrashReport cr : crashList) {
             CrashHistoryReportItem reportItem = new CrashHistoryReportItem();
             reportItem.setCrashReportID(cr.getCrashReportID());
             reportItem.setDate(dateFormatter.format(cr.getDate()));
             reportItem.setTime(cr.getDate().getTime());
-            Driver driver = null;
-            if (driverMap.containsKey(cr.getDriverID())) {
-                driver = driverMap.get(cr.getDriverID());
-            } else {
-                driver = this.getDriverDAO().findByID(cr.getDriverID());
+            Driver driver = getCacheBean().getDriverMap().get(cr.getDriverID());
+            if (driver == null) {
+                driver = getDriverDAO().findByID(cr.getDriverID());
+                getCacheBean().getDriverMap().put(cr.getDriverID(), driver);
             }
             if (driver != null) {
                 reportItem.setDriver(driver);
@@ -134,8 +134,19 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
                 // The unknown driver has a null person
                 if (driver.getPerson() != null) {
                     reportItem.setDriverName(driver.getPerson().getFullName());
-                    reportItem.setGroup(getGroupHierarchy().getGroup(driver.getGroupID()).getName());
-                    reportItem.setGroupID(driver.getGroupID());
+                    Group group = getGroupHierarchy().getGroup(driver.getGroupID());
+                    if (group != null)
+                    {
+                    	reportItem.setGroup(group.getName());
+                    	reportItem.setGroupID(driver.getGroupID());
+                    }
+                    else {
+                    	logger.error("Group not found for driverID:" + driver.getDriverID());
+                        reportItem.setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
+                        reportItem.setGroup("");
+                        reportItem.setGroupID(null);
+                    }
+                    	
                 } else {
                     reportItem.setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
                     reportItem.setGroup("");
@@ -161,7 +172,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         setEnd(histList.size() > getNumRowsPerPg() ? getNumRowsPerPg() : histList.size());
         setPage(1);
     }
-
+    
     public CrashHistoryReportItem getClearItem() {
         return clearItem;
     }

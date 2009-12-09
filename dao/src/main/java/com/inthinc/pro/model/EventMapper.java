@@ -71,7 +71,7 @@ public class EventMapper
         typeMap.put(TIWIPRO_EVENT_BASE, Event.class);
         typeMap.put(TIWIPRO_EVENT_FULLEVENT, FullEvent.class);
         typeMap.put(TIWIPRO_EVENT_NOTEEVENT, AggressiveDrivingEvent.class);
-        typeMap.put(TIWIPRO_EVENT_SPEEDING, SpeedingEvent.class);
+//        typeMap.put(TIWIPRO_EVENT_SPEEDING, SpeedingEvent.class);
         typeMap.put(TIWIPRO_EVENT_SPEEDING_EX3, SpeedingEvent.class);
         typeMap.put(TIWIPRO_EVENT_SEATBELT, SeatBeltEvent.class);
         typeMap.put(TIWIPRO_EVENT_UNPLUGGED, TamperingEvent.class);
@@ -95,7 +95,7 @@ public class EventMapper
     {
         List<Integer> violationList = new ArrayList<Integer>();
         violationList.add(TIWIPRO_EVENT_NOTEEVENT);
-        violationList.add(TIWIPRO_EVENT_SPEEDING);
+  //      violationList.add(TIWIPRO_EVENT_SPEEDING);
         violationList.add(TIWIPRO_EVENT_SPEEDING_EX3);
         violationList.add(TIWIPRO_EVENT_SEATBELT);
         categoryMap.put(EventCategory.VIOLATION, violationList);
