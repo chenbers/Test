@@ -91,6 +91,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   <!-- Forgot username/password Beans -->
   <bean id="mailSenderBean" class="org.springframework.mail.javamail.JavaMailSenderImpl">
     <property name="host" value="${mailserver}" />
+    <property name="javaMailProperties">
+      <props>
+        <prop key="mail.debug">${mail.debug}</prop>
+      </props>
+    </property>
   </bean>
   <bean id="retrieveCredentialsBean" class="com.inthinc.pro.backing.RetrieveCredentialsBean" scope="request" parent="baseBean">
     <property name="from">
@@ -509,13 +514,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   <!-- Error translator -->
   <bean id="errorTranslatorBean" class="com.inthinc.pro.backing.ErrorTranslatorBean">
   </bean>
-  
+
   <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean">
-  		<property name="phoneAlerts" value="${accountOptions.phoneAlerts}"/>
+    <property name="phoneAlerts" value="${accountOptions.phoneAlerts}" />
   </bean>
-  
+
   <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean">
-  		<property name="phoneNumber01" value="${externalConfig.phone01}"/>
-  		<property name="phoneNumber02" value="${externalConfig.phone02}"/>
+    <property name="phoneNumber01" value="${externalConfig.phone01}" />
+    <property name="phoneNumber02" value="${externalConfig.phone02}" />
   </bean>
 </beans>
