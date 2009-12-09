@@ -5,6 +5,7 @@
 
     <!-- Backing Beans -->
     <bean id="daoUtilBean" class="com.inthinc.pro.fulfillment.backing.DAOUtilBean" init-method="init" scope="session">
+		<property name="siloServiceCreator" ref="siloServiceCreator" />
 		<property name="accountDAO" ref="accountDAO" />
 		<property name="groupDAO" ref="groupDAO" />
 		<property name="vehicleDAO" ref="vehicleDAO" />

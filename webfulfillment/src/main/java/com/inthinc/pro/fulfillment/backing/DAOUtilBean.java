@@ -34,6 +34,10 @@ import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.hessian.GenericHessianDAO;
+import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
@@ -66,6 +70,7 @@ public class DAOUtilBean implements PhaseListener {
 	private PersonDAO personDAO;
 	private DriverDAO driverDAO;
 	private AddressDAO addressDAO;
+    SiloServiceCreator siloServiceCreator;
 	
 
 	private RoleDAO roleDAO;
@@ -266,13 +271,13 @@ public class DAOUtilBean implements PhaseListener {
 			}
 			msg += "<BR/>PHONE: <a target=\"_blank\" href=\"tel:"
 					+ device.getPhone() + "\">" + device.getPhone() + "</a>";
-//			msg += "<BR/><a target=\"_blank\" href=\"https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&password=45Uu9i92A_8&submitRun=Run&reportId=131&msisdn="
-//					+ device.getEphone() + "\">Radius Call Records</a>";
+			msg += "<BR/><a target=\"_blank\" href=\"https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&password=45Uu9i92A_8&submitRun=Run&reportId=131&msisdn="
+					+ device.getEphone() + "\">Radius Call Records</a>";
 			msg += "<BR/>IMEI: " + device.getImei();
 			msg += "<BR/>SIM: " + device.getSim();
 			msg += "<BR/>ECALL: " + device.getEphone();
 
-			msg += "<BR/>";
+			msg += "<BR/>\r\n";
 			msg += "<BR/>";
 			
 			if (ll != null)
@@ -282,8 +287,18 @@ public class DAOUtilBean implements PhaseListener {
 						+ ll.getLoc().getLat() + "," + ll.getLoc().getLng()
 						+ "\">" + ll.getLoc().toString() + "</a>";
 
-			//TODO List forward Commands
+			//TODO Last Ignition On
+			//TODO Last Power On
+			//TODO EMU file, make, model year
+			//TODO Firmware Version
+			
+			
+			//List forward Commands
+			//TODO DAO needs 2134, 2143-2146
 			List<ForwardCommand> fwdCmds = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_ALL);
+
+			if (fwdCmds!=null && !fwdCmds.isEmpty())
+				msg += "<BR/><BR/><b>Foward Commands</b><br/><br/>\r\n";
 			for(Iterator<ForwardCommand> fiter = fwdCmds.iterator(); fiter.hasNext();)
 			{
 				ForwardCommand cmd = fiter.next();
@@ -300,34 +315,39 @@ public class DAOUtilBean implements PhaseListener {
 			
 			if (dv!=null)
 			{
+				msg += "<BR/>\r\n";
 				msg += "<BR/>";
-				msg += "<BR/>";
-				//TODO List events
+				//List events
 				Calendar calendar = Calendar.getInstance();
 				Date endDate = new Date();
 				calendar.setTime(endDate);
-				calendar.add(Calendar.HOUR, -24);
+				calendar.add(Calendar.HOUR, -1);
 				Date startDate = calendar.getTime();
-				List<Integer> eventTypes = new LinkedList<Integer>();
 				
-				eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
-				eventTypes.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
-				eventTypes.add(EventMapper.TIWIPRO_EVENT_IGNITION_OFF);
-				eventTypes.add(EventMapper.TIWIPRO_EVENT_IGNITION_ON);
-
-				eventTypes.add(EventMapper.TIWIPRO_EVENT_DIAGNOSTICS_REPORT);
+				Integer[] types={
+						EventMapper.TIWIPRO_EVENT_IGNITION_ON
+						, EventMapper.TIWIPRO_EVENT_IGNITION_OFF
+						, EventMapper.TIWIPRO_EVENT_UNPLUGGED
+						, EventMapper.TIWIPRO_EVENT_POWER_ON};
+				List<Map<String, Object>> notes = null;
 				
-				List<Event> events = eventDAO.getEventsForVehicle(dv.getVehicleID(), startDate,
-						endDate, eventTypes, 0);
-
-				for(Iterator<Event> eiter = events.iterator(); eiter.hasNext();)
-				{
-					Event event = eiter.next();
-					String e = EventMapper.getEventType(event.getType()) + " "	+ sdf.format(event.getTime());
-					event.toString();
-					msg+= e + "<br/>";
+				try {
+					notes = siloServiceCreator.getService().getVehicleNote(dv.getVehicleID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), new Integer(1), types);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
+				if (notes!=null && !notes.isEmpty())
+				{
+					msg += "<BR/><BR/><b>Notes</b><br/><br/>\r\n";
+					for(Iterator<Map<String, Object>> iter = notes.iterator(); iter.hasNext();)
+					{
+						Map<String, Object> note = iter.next();
+						msg+=note.toString();
+						msg+="<br/>";
+					}				
+				}
 			}			
 			
 			if (dv != null)
@@ -1759,5 +1779,15 @@ if (accounts.size()>100)
 			return "failure";
 		return "success";
 	}
+
+    public SiloServiceCreator getSiloServiceCreator()
+    {
+        return siloServiceCreator;
+    }
+
+    public void setSiloServiceCreator(SiloServiceCreator siloServiceCreator)
+    {
+        this.siloServiceCreator = siloServiceCreator;
+    }
 
 }
