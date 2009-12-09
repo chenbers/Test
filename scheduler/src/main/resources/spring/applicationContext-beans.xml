@@ -66,25 +66,25 @@
 	
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="emailReportJob"/>
-	  <property name="cronExpression" value="0 1/15 * * * ?"/>
+	  <property name="cronExpression" value="${cron.emailReport}"/>
 	</bean>
 
 	<bean id="emailMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="emailAlertJob"/>
 		<!-- run every odd minute -->
-	  <property name="cronExpression" value="0 1/2 * * * ?"/>
+	  <property name="cronExpression" value="${cron.emailAlert}"/>
 	</bean>
 			
 	<bean id="smsMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="smsAlertJob"/>
 		<!-- run every even minute -->
-	  <property name="cronExpression" value="0 0/2 * * * ?"/>
+	  <property name="cronExpression" value="${cron.smsAlert}"/>
 	</bean>
 
 	<bean id="phoneMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="phoneAlertJob"/>
 		<!-- run every odd minute - 30 seconds into it -->
-	  <property name="cronExpression" value="30 1/2 * * * ?"/>
+	  <property name="cronExpression" value="${cron.phoneAlert}"/>
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">
