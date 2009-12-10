@@ -3,11 +3,16 @@ package it.util;
 import it.com.inthinc.pro.dao.Util;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
+import it.util.DataGenForReportTesting.GroupData;
 
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -177,6 +182,12 @@ public class DataGenForStressTesting {
     };
 
     String fleetUserName;
+    
+    boolean isNewDataSet;
+    int numDays;
+    int startDateInSec;
+    List<String> imeiList;
+    
     private void createTestData()
     {
         init();
@@ -643,19 +654,74 @@ System.out.println("Waiting for imei: " + imei);
 	private void parseArguments(String[] args) {
 		// Arguments:
 		//		required
-		//			0:		full path to xml file for storage/retrieval of current IMEI data set
+		//			0:		NEW  or EVENTS
+		//			1:		full path to xml file for storeage/retrieval of current data set
+		//		optional:
+		//			2: 
 		
-		String usageErrorMsg = "Usage: DataGenForStressTesting <xml file path>";
+		String usageErrorMsg = "Usage: DataGenForStressTesting <NEW|EVENTS> <xml file path> [optional if EVENTS: <start date: MM/DD/YYYY> <num days>]";
 		
-        if (args.length < 1)
+        if (args.length < 2)
         {
         	System.out.println(usageErrorMsg);
         	System.exit(1);
         }
         
-        xmlPath = args[0];
+        if (args[0].equalsIgnoreCase("NEW"))
+        {
+        	isNewDataSet = true;
+        }
+        else if (args[0].equalsIgnoreCase("EVENTS"))
+        {
+        	isNewDataSet = false;
+        }
+        else
+        {
+        	System.out.println(usageErrorMsg);
+        	System.exit(1);
+        }
+        
+        xmlPath = args[1];
+        
+        if (args.length == 4)
+        {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    		dateFormat.setTimeZone(ReportTestConst.timeZone);
+            String dateStr = args[2];
+            String numDaysStr = args[3];
+    		try {
+    			Date eventGenStartDate = dateFormat.parse(dateStr);
+    			startDateInSec = DateUtil.getDaysBackDate((int)DateUtil.convertDateToSeconds(eventGenStartDate), 1, ReportTestConst.TIMEZONE_STR);
+    			
+    		} catch (ParseException e1) {
+            	System.out.println(usageErrorMsg);
+            	System.out.println("Command Line Args: expected day format mm/dd/yyyy");
+            	System.exit(1);
+    		}
+
+    		try
+    		{
+    			numDays = Integer.valueOf(numDaysStr);
+    			if (numDays < 1)
+    				throw new NumberFormatException("");
+    		}
+    		catch (NumberFormatException ne)
+    		{
+            	System.out.println(usageErrorMsg);
+            	System.out.println("Command Line Args: expected numDays greater than 0");
+            	System.exit(1);
+    		}
+        	
+        }
+        else
+        {
+        	// start of day today (i.e. midnight today)
+        	startDateInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 1, ReportTestConst.TIMEZONE_STR);
+        	numDays = 1;
+        }
         
 	}
+
 
 	public static void main(String[] args)
     {
@@ -667,6 +733,8 @@ System.out.println("Waiting for imei: " + imei);
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         siloService = new SiloServiceCreator(host, port).getService();
+        
+        if (testData.isNewDataSet) {
         
 	        try
 	        {
@@ -703,9 +771,78 @@ System.out.println("Waiting for imei: " + imei);
 	            e.printStackTrace();
 	            System.exit(1);
 	        }
+        }
+        else {
+            try
+            {
+                if (!testData.parseTestData())
+                {
+                	System.out.println("Parse of xml data file failed.  File: " + testData.xmlPath);
+                	System.exit(1);
+                }
+
+                HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
+                MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
+                for (String imei : testData.imeiList) {
+    	        	for (int day = 0; day < testData.numDays; day++)
+    	        	{
+    	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
+    	                Date startDate = new Date((long)dateInSec * 1000l);
+    	        		testData.generateDayData(mcmSim, startDate, imei);
+    	        	}
+                }
+             
+            }
+            catch (Exception e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        	
+        }
+        	
         System.exit(0);
     }
 
+	private boolean parseTestData() {
+		
+		imeiList = new ArrayList<String>();
+        try {
+//          InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlPath);
+          InputStream stream = new FileInputStream(xmlPath);
+          XMLDecoder xml = new XMLDecoder(new BufferedInputStream(stream));
+          String fleetUserName = getNext(xml, String.class);
+          String imei = getNext(xml, String.class);
+          while (imei != null) {
+        	  imeiList.add(imei);
+        	  imei = getNext(xml, String.class);
+          }
+          xml.close();
+          return true;
+      }
+      catch (Exception ex) {
+          System.out.println("error reading " + xmlPath);
+          ex.printStackTrace();
+          return false;
+      }
+
+	}
+
+
+    private static <T> T getNext(XMLDecoder xml, Class<T> expectedType) throws Exception {
+    	try {
+	        Object result = xml.readObject();
+	        if (expectedType.isInstance(result)) {
+	            return (T) result;
+	        }
+	        else {
+	            throw new Exception("Expected " + expectedType.getName());
+	        }
+    	} catch (ArrayIndexOutOfBoundsException ex) {
+    		// throws this at end of file
+    		return null;
+    	}
+    }
 
 
 
