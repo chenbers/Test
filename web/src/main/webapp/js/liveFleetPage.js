@@ -1,5 +1,6 @@
 		var map = null;
-		var markerManager;
+//		var markerManager;
+	  	var markerClusterer;
 		var markers = [];
 	    var geocoder = null;
 	    var addressLatLng = null;
@@ -10,7 +11,8 @@
 			baseIcon.iconSize = new GSize(25, 30);
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-
+			baseIcon.shadow=null;
+			
 		var bounds = new GLatLngBounds();
 
 		function initMap()
@@ -26,7 +28,7 @@
 					map.addControl(new GOverviewMapControl()); 
 					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(mapDefaultLoc);
-					markerManager = new MarkerManager(map);
+//					markerManager = new MarkerManager(map);
 
 		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
 					map.addOverlay(marker);
