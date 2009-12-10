@@ -414,7 +414,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
-    @XmlTransient 
+    @XmlJavaTypeAdapter(value=com.inthinc.pro.model.adapter.LocaleXmlAdapter.class)
     public Locale getLocale() {
         return locale;
     }
