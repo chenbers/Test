@@ -40,7 +40,11 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             Integer[] eventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION).toArray(new Integer[0]);
 
             //TODO Temporarily added arbitrary 10 to hopefully be able to get the eventCount of valid events back after the clean
-            return Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount+10, eventTypes), Event.class)).subList(0, eventCount);
+            List <Event> eventList = Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount+10, eventTypes), Event.class));
+            int max = eventCount;
+            if (eventList.size() < max)
+            	max = eventList.size();
+            return eventList.subList(0, max);
         }
         catch (EmptyResultSetException e)
         {
