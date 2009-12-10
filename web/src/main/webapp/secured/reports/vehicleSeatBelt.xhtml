@@ -300,7 +300,7 @@
         <div class="popupactions">
           <button id="vehicleSeatBeltNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink id="vehicleSeatBeltConfirm" action="#{vehicleSeatBeltBean.excludeEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel') initializeTable()"
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
                 			eventsQueue="eventTableForm" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
