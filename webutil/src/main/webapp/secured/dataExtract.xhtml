@@ -38,12 +38,9 @@
 		</h:inputText>
         <rich:message for="days"/>
 		
-		<h:outputText value="File Name (include path):" />
-		<h:inputText  id="filename" value="#{extractDataBean.fileName}" required="true" requiredMessage="File Name is required."/>
-        <rich:message for="filename"/>
 	</h:panelGrid>        
 	<h:commandButton value="Extract Data" action="#{extractDataBean.extractAction}"/>
-	<h:commandButton value="Extract Data and Calc Scores" action="#{extractDataBean.calcScoresAction}"/>
+	<h:commandButton value="Calc Scores" action="#{extractDataBean.calcScoresAction}"/>
 	
 	</h:form>
 	</rich:panel>

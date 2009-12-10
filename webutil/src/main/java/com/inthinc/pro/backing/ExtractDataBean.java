@@ -1,12 +1,17 @@
 package com.inthinc.pro.backing;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -18,11 +23,14 @@ import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.scoring.Calculator;
 
 public class ExtractDataBean {
+	
+	private static final Logger logger = Logger.getLogger(ExtractDataBean.class);
+	
     // gathered from UI
     private String type;
 	private String id;
     private String days;
-    private String fileName;
+    private String fileName = "extract.txt";
 	private String errorMsg;
     private String successMsg;
 
@@ -31,7 +39,7 @@ public class ExtractDataBean {
     
     private EventDAO eventDAO;
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm z");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm z");
 
     public EventDAO getEventDAO() {
 		return eventDAO;
@@ -50,17 +58,19 @@ public class ExtractDataBean {
     	
 
     	List<Event> eventList = fetchEventList();
-		
-		if (writeCSV(eventList))
+    	
+    	
+    	if (export(FacesContext.getCurrentInstance(), eventList))
 		{
         
 			setSuccessMsg("Successful Data Extraction <br/>  From: " + dateFormat.format(startDate) + " <br/>  To " + dateFormat.format(endDate) + " <br/>  File: " + fileName);
 		}
     }
 
-	private boolean writeCSV(List<Event> eventList) {
+	private boolean writeCSV(List<Event> eventList, OutputStream outStream) {
 		try {
-			PrintStream out = new PrintStream(new FileOutputStream(fileName));
+//			PrintStream out = new PrintStream(new FileOutputStream(fileName));
+			PrintStream out = new PrintStream(outStream);
 			
 			for (Event event : eventList) {
 				StringBuilder buffer = new StringBuilder();
@@ -100,11 +110,13 @@ public class ExtractDataBean {
 					buffer.append(event.getSpeed());
 					buffer.append(",,,,,"); // no distance, speed limit or delta x,y,z
 				}
+				buffer.append(",");
+				buffer.append(event.getForgiven());
 				
 				out.println(buffer.toString());
 			}
 			out.close();
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
     		setErrorMsg("File cannot be created.");
     		return false;
 		}
@@ -119,7 +131,7 @@ public class ExtractDataBean {
     	List<Event> eventList = fetchEventList();
 	
 		
-		if (writeCSV(eventList))
+//    	if (export(FacesContext.getCurrentInstance(), eventList))
 		{
         
 			StringBuilder scoreData = new StringBuilder();
@@ -162,21 +174,59 @@ public class ExtractDataBean {
     	}
 
     	endDate = new Date();
-    	startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+    	startDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.convertDateToSeconds(endDate), daysBack, "US/Mountain"));
 		List<Integer> eventTypes = new ArrayList<Integer>();
 
 		List<Event> eventList = null;
 		if (type.equals("DRIVER")) {
-			eventList = eventDAO.getEventsForDriver(idNum, startDate, endDate, eventTypes, 0);
+			eventList = eventDAO.getEventsForDriver(idNum, startDate, endDate, eventTypes, 1);
 		}
 		else if (type.equals("VEHICLE")) {
-			eventList = eventDAO.getEventsForVehicle(idNum, startDate, endDate, eventTypes, 0);
+			eventList = eventDAO.getEventsForVehicle(idNum, startDate, endDate, eventTypes, 1);
 		}
 //		else if (type.equals("GROUP")) {
 //			eventList = eventDAO. .getEventsForGroup(idNum, startDate, endDate, eventTypes, 0);
 //		}
 		return eventList;
 	}
+	
+	
+    private boolean export(FacesContext facesContext, List<Event> eventList)
+    {
+        HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
+        response.setContentType("text/plain");
+        response.addHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+        OutputStream out = null;
+        try
+        {
+            out = response.getOutputStream();
+            writeCSV(eventList, out);
+            
+            out.flush();
+            facesContext.responseComplete();
+        }
+        catch (IOException e)
+        {
+            logger.error(e);
+            return false;
+        }
+       
+        finally
+        {
+            try
+            {
+                out.close();
+            }
+            catch (IOException e)
+            {
+                logger.error(e);
+            }
+        }
+        return true;
+    }
+
+	
     public void clearErrorAction() {
         setErrorMsg(null);
         setSuccessMsg(null);
