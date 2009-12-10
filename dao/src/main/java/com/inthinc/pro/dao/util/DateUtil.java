@@ -66,7 +66,7 @@ public class DateUtil
         return DateUtil.convertTimeInSecondsToDate(sec);
     }
 
-    public static int getDaysBackDate(int nowUTCSec, int daysBack, String timeZone)
+    public static int getDaysBackDate(long nowUTCSec, int daysBack, String timeZone)
     {
 
         Date nowUTC = new Date(convertSecondsToMilliseconds(nowUTCSec));
