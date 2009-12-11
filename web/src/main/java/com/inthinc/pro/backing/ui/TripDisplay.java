@@ -29,10 +29,10 @@ public class TripDisplay implements Comparable<TripDisplay>
     Trip trip;
     TimeZone timeZone;
     boolean inProgress = false;
-    private static final int MINUTES_BUFFER = 5;    
+ //   private static final int MINUTES_BUFFER = 5;    
 	private static DateFormat dateFormatter;
     
-    public TripDisplay(Trip trip, TimeZone timeZone, String mapServerUrl)
+    public TripDisplay(Trip trip, TimeZone timeZone, AddressLookup addressLookup)
     {
         this.trip = trip;
         this.timeZone = timeZone;
@@ -53,9 +53,6 @@ public class TripDisplay implements Comparable<TripDisplay>
         
         setDistance(trip.getMileage() / 100D);
         
-        AddressLookup lookup = new AddressLookup();
-        lookup.setMapServerURLString(mapServerUrl);
-
         if(route.size() > 0)
         {
             routeLastStep = route.get(route.size()-1);
@@ -64,14 +61,14 @@ public class TripDisplay implements Comparable<TripDisplay>
             beginningPoint = route.get(0);
             beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
             try{
-            	setStartAddress(lookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
+            	setStartAddress(addressLookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
             }
             catch (NoAddressFoundException nafe){
             	
             	setStartAddress(MessageUtil.getMessageString(nafe.getMessage()));
             }
             try {
-            	setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
+            	setEndAddress(addressLookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
             }
             catch (NoAddressFoundException nafe){
             	

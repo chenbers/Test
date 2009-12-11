@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -28,7 +28,7 @@ import com.inthinc.pro.util.SecureVehicleDAO;
 
 public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDAO> implements VehicleService {
 
-    private AddressLookup addressLookup;
+    private GeonamesAddressLookup addressLookup;
 
     @Override
     public Response getAll() {
@@ -152,11 +152,11 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
         return Response.status(Status.NOT_MODIFIED).build();
     }
 
-    public AddressLookup getAddressLookup() {
+    public GeonamesAddressLookup getAddressLookup() {
         return addressLookup;
     }
 
-    public void setAddressLookup(AddressLookup addressLookup) {
+    public void setAddressLookup(GeonamesAddressLookup addressLookup) {
         this.addressLookup = addressLookup;
     }
 }

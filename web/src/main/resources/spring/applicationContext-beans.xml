@@ -36,7 +36,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
     <property name="errorBean" ref="errorBean" />
     <property name="accountDAO" ref="accountDAO" />
-    <property name="addressLookup" ref="addressLookupBean"></property>
+    <property name="addressLookup" ref="${addressLookup}"/>
   </bean>
   <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean"></bean>
   <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init"></bean>
@@ -379,6 +379,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="googleMapProperties" ref="googleMapProperties" />
     <property name="webUtil" ref="webUtil" />
   </bean>
+  
+  <bean id="googleAddressLookupBean" class="com.inthinc.pro.map.google.GoogleAddressLookup">
+  	<property name="googleMapBacking" ref="gmBean"/>
+  </bean>
 
   <!-- Web Util Beans - wraps access to servlet  -->
   <bean id="webUtil" class="com.inthinc.pro.util.WebUtil"></bean>
@@ -509,7 +513,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
   <!-- Converter Beans -->
   <bean id="latLngAddressConverter" class="com.inthinc.pro.convert.LatLngAddressConverter">
-    <property name="addressLookup" ref="addressLookupBean" />
+    <property name="addressLookup" ref="${addressLookup}" />
   </bean>
 
   <!-- UI backing beans -->

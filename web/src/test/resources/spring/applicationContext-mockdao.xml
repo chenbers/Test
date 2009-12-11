@@ -5,7 +5,7 @@
     <bean id="siloServiceCreator" class="com.inthinc.pro.dao.mock.proserver.SiloServiceCreator" />
     <bean id="reportServiceCreator" class="com.inthinc.pro.dao.mock.proserver.ReportServiceCreator" />
 
-    <bean id="addressLookupBean" class="com.inthinc.pro.map.AddressLookup">
+    <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
       <property name="mapServerURLString" value="${mapserver.url}"/>
     </bean>
 </beans>

@@ -47,7 +47,7 @@
     </bean>
     
     <!-- Address Lookup -->
-    <bean id="addressLookupBean" class="com.inthinc.pro.map.AddressLookup">
+    <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
       	<property name="mapServerURLString" value="${mapserver.url}"/>
     </bean>
 </beans>

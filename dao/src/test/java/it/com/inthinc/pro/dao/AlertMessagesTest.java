@@ -45,7 +45,7 @@ import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertMessageBuilder;
@@ -116,7 +116,7 @@ public class AlertMessagesTest {
     private static PersonHessianDAO personDAO;
     private static VehicleHessianDAO vehicleDAO;
     private static ZoneHessianDAO zoneHessianDAO;
-    private static AddressLookup addressLookup;
+    private static GeonamesAddressLookup addressLookup;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -734,7 +734,7 @@ public class AlertMessagesTest {
         personDAO = new PersonHessianDAO();
         vehicleDAO = new VehicleHessianDAO();
         zoneHessianDAO = new ZoneHessianDAO();
-        addressLookup = new AddressLookup();
+        addressLookup = new GeonamesAddressLookup();
         addressLookup.setMapServerURLString(mapServerURL);
         driverDAO.setSiloService(siloService);
         groupDAO.setSiloService(siloService);

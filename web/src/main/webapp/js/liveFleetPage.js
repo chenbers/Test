@@ -6,7 +6,8 @@
 	    var addressLatLng = null;
 	    var markerClicked = false;
 		var mapNeedsInit = true;
-
+		var overviewMapControl;
+		
 	    var baseIcon = new GIcon();
 			baseIcon.iconSize = new GSize(25, 30);
 			baseIcon.iconAnchor = new GPoint(6, 20);
@@ -25,10 +26,12 @@
 		        	geocoder = new GClientGeocoder();
 					map.addControl(new GLargeMapControl());
 					map.addControl(new GMapTypeControl());
-					map.addControl(new GOverviewMapControl()); 
+			 		overviewMapControl = new GOverviewMapControl();
+			 		map.addControl(overviewMapControl); 
 					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(mapDefaultLoc);
 //					markerManager = new MarkerManager(map);
+			 		overviewMapControl.hide();
 
 		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
 					map.addOverlay(marker);

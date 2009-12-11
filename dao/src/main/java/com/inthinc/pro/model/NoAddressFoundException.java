@@ -20,7 +20,7 @@ public class NoAddressFoundException extends Exception {
 	@Override
 	public String getMessage() {
 		// TODO Auto-generated method stub
-		return "noAddressFound";
+		return "No address found at lat "+lat+", lng "+lng;
 	}
 
 	@Override

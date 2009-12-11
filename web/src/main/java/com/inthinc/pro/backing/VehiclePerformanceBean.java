@@ -198,7 +198,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
                 hasLastTrip = true;
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup.getMapServerURLString());
+                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup);
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }

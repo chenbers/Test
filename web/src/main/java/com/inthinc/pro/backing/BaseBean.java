@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -20,8 +19,6 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;

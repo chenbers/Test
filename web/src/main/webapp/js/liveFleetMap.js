@@ -5,7 +5,7 @@
 	var markers = [];
   	var bounds; 
   	var mapNeedsInit = true;
-  	
+  	var overviewMapControl;
     var baseIcon = new GIcon();
 	baseIcon.iconSize = new GSize(25, 30);
 	baseIcon.iconAnchor = new GPoint(6, 20);
@@ -25,16 +25,15 @@
 			map.setCenter(new GLatLng(lat, lng));
 			map.addControl(new GLargeMapControl());
 	 		map.addControl(new GMapTypeControl());
-	 		map.addControl(new GOverviewMapControl()); 
+	 		overviewMapControl = new GOverviewMapControl();
+	 		map.addControl(overviewMapControl); 
 			bounds = new GLatLngBounds();
-			//markerManager = new MarkerManager(map);
-			
+		    overviewMapControl.hide();
 		}
 	}
-  	
   	function centerMap() 
   	{
-  		map.setZoom(map.getBoundsZoomLevel(bounds));
+  		map.setZoom(map.getBoundsZoomLevel(bounds)-1);
 	    map.setCenter(bounds.getCenter());
 	}
        
