@@ -30,13 +30,13 @@ public class DiagnosticsBean extends BaseEventsBean
     	List<Event> warnings = getEventDAO().getWarningEventsForGroup(groupID, DAYS_BACK,showExcludedEvents);
     	
     	// Add the unknown driver, making sure the name is set
-        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
-    	List<Event> noDriverWarnings = getEventDAO().getWarningEventsForDriver(
-    	        acct.getUnkDriverID(), DateUtil.getDaysBackDate(new Date(), DAYS_BACK), new Date(), showExcludedEvents);    
-        noDriverWarnings = this.loadUnknownDriver(noDriverWarnings);
-    	
-    	warnings.addAll(noDriverWarnings);
-    	Collections.sort(warnings);
+//        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
+//    	List<Event> noDriverWarnings = getEventDAO().getWarningEventsForDriver(
+//    	        acct.getUnkDriverID(), DateUtil.getDaysBackDate(new Date(), DAYS_BACK), new Date(), showExcludedEvents);    
+//        noDriverWarnings = this.loadUnknownDriver(noDriverWarnings);
+//    	
+//    	warnings.addAll(noDriverWarnings);
+//    	Collections.sort(warnings);
     	
         return warnings;
     }

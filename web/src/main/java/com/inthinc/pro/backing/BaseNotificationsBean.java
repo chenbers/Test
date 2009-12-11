@@ -184,14 +184,29 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
             driver = cacheBean.getDriverMap().get(event.getDriverID());
             if (driver == null)
             {
-                driver = driverDAO.findByID(event.getDriverID());
-                cacheBean.getDriverMap().put(event.getDriverID(), driver);
+            	driver = createUnknownDriverRecord();
+                cacheBean.getDriverMap().put(driver.getDriverID(), driver);
             }
             event.setDriver(driver);
         }
     }
 
-    protected void fillInVehicle(Event event)
+    private Driver createUnknownDriverRecord() {
+    	
+        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
+
+        Person p = new Person();
+        p.setFirst(MessageUtil.getMessageString("notes_general_unknown"));
+        p.setLast(MessageUtil.getMessageString("notes_general_driver"));
+        
+        Driver d = new Driver();
+        d.setDriverID(acct.getUnkDriverID());
+        d.setPerson(p);
+
+        return d;
+	}
+
+	protected void fillInVehicle(Event event)
     {
         Vehicle vehicle = event.getVehicle();
         if (vehicle == null)
@@ -395,30 +410,30 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 
 	protected abstract ReportCriteria getReportCriteria();
     
-    public List<Event> loadUnknownDriver(List<Event> warnings) {
-        List<Event> adjusted = new ArrayList<Event>();
-           
-        // Get the unknown driver from the account
-        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
-
-        // Fix the name
-        for ( Event e: warnings ) {
-            Person p = new Person();
-            p.setFirst(MessageUtil.getMessageString("notes_general_unknown"));
-            p.setLast(MessageUtil.getMessageString("notes_general_driver"));
-            
-            if ( e.getDriver() == null ) {
-                Driver d = new Driver();
-                d.setDriverID(acct.getAcctID());
-                d.setPerson(p);
-                e.setDriver(d);
-            } else {
-                e.getDriver().setPerson(p);
-            }
-            
-            adjusted.add(e);
-        }
-        
-        return adjusted;
-    }	
+//    public List<Event> loadUnknownDriver(List<Event> warnings) {
+//        List<Event> adjusted = new ArrayList<Event>();
+//           
+//        // Get the unknown driver from the account
+//        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
+//
+//        // Fix the name
+//        for ( Event e: warnings ) {
+//            Person p = new Person();
+//            p.setFirst(MessageUtil.getMessageString("notes_general_unknown"));
+//            p.setLast(MessageUtil.getMessageString("notes_general_driver"));
+//            
+//            if ( e.getDriver() == null ) {
+//                Driver d = new Driver();
+//                d.setDriverID(acct.getAcctID());
+//                d.setPerson(p);
+//                e.setDriver(d);
+//            } else {
+//                e.getDriver().setPerson(p);
+//            }
+//            
+//            adjusted.add(e);
+//        }
+//        
+//        return adjusted;
+//    }	
 }
