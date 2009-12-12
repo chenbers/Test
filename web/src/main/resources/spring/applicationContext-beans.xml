@@ -380,10 +380,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="webUtil" ref="webUtil" />
   </bean>
   
-  <bean id="googleAddressLookupBean" class="com.inthinc.pro.map.google.GoogleAddressLookup">
-  	<property name="googleMapBacking" ref="gmBean"/>
-  </bean>
-
   <!-- Web Util Beans - wraps access to servlet  -->
   <bean id="webUtil" class="com.inthinc.pro.util.WebUtil"></bean>
 

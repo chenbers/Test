@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.inthinc.pro.map.GeonamesAddressLookup;
-import com.inthinc.pro.map.google.GoogleAddressLookup;
+import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 
@@ -40,9 +40,6 @@ public class AddressLookupTest extends BaseBeanTest{
 	public void googleAddressLookupTest(){
 		
 		GoogleAddressLookup googleAddressLookup = (GoogleAddressLookup)applicationContext.getBean("googleAddressLookupBean");
-		
-		String gmKey = googleAddressLookup.getGoogleMapBacking().getKey();
-		Assert.assertNotNull("Google map key is null", gmKey);
 		
 		try{
 			

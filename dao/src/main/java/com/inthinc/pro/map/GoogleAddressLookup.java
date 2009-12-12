@@ -1,4 +1,4 @@
-package com.inthinc.pro.map.google;
+package com.inthinc.pro.map;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,14 +12,13 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.inthinc.pro.map.AddressLookup;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 
 public class GoogleAddressLookup implements AddressLookup {
 	
-	GoogleMapBacking googleMapBacking;
+//	GoogleMapBacking googleMapBacking;
 
 	@Override
 	public String getAddress(LatLng latLng, boolean returnLatLng)
@@ -29,8 +28,8 @@ public class GoogleAddressLookup implements AddressLookup {
 		request.append(latLng.getLat());
 		request.append(",");
 		request.append(latLng.getLng());
-		request.append("&output=xml&sensor=true_or_false&key=");
-		request.append(googleMapBacking.getKey());
+		request.append("&output=xml&sensor=true_or_false&key=wtf");
+//		request.append(googleMapBacking.getKey());
 		
 		String address = null;
 		try{
@@ -58,37 +57,23 @@ public class GoogleAddressLookup implements AddressLookup {
 	public String getAddress(double lat, double lng)
 			throws NoAddressFoundException {
 		
-		return getAddress(new LatLng(lat,lng));
+		return getAddress(new LatLng(lat,lng), false);
 	}
 
 	@Override
 	public String getAddress(LatLng latLng) throws NoAddressFoundException {
 		
-		StringBuilder request = new StringBuilder("http://maps.google.com/maps/geo?q=");
-		request.append(latLng.getLat());
-		request.append(",");
-		request.append(latLng.getLng());
-		request.append("&output=xml&sensor=true_or_false&key=");
-		request.append(googleMapBacking.getKey());
+		return getAddress(latLng,false);
 		
-		String address = null;
-		try{
-			address = sendRequest(new URL(request.toString()));
-			if ((address == null) || address.isEmpty()) throw new NoAddressFoundException(latLng.getLat(),latLng.getLng());
-		}
-		catch(MalformedURLException murle){
-			
-		}
-		return address;
 	}
 	
-	public GoogleMapBacking getGoogleMapBacking() {
-		return googleMapBacking;
-	}
-
-	public void setGoogleMapBacking(GoogleMapBacking googleMapBacking) {
-		this.googleMapBacking = googleMapBacking;
-	}
+//	public GoogleMapBacking getGoogleMapBacking() {
+//		return googleMapBacking;
+//	}
+//
+//	public void setGoogleMapBacking(GoogleMapBacking googleMapBacking) {
+//		this.googleMapBacking = googleMapBacking;
+//	}
     protected String sendRequest(URL mapServerURL)
     {
         URLConnection conn;
