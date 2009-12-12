@@ -18,6 +18,7 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -289,6 +290,7 @@ public class SiloServiceTest {
         }
     }
     @Test
+    @Ignore
     public void groupEvents() {
         EventHessianDAO eventDAO = new EventHessianDAO();
         eventDAO.setSiloService(siloService);
