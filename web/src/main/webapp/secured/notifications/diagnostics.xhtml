@@ -39,7 +39,7 @@
 		                  <tr>
 		                    <td>#{messages.notes_diagnostics_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:diagnosticsSearch').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{eventsSearchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:diagnosticsSearch').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
@@ -58,6 +58,12 @@
 							#{messages.button_editColumns}
 						</a4j:commandLink>
 					  </li>  
+					  <li class="l select">
+						<h:selectOneMenu value="#{diagnosticsBean.searchCoordinationBean.groupID}" id="diagnotistics_groupID"> 
+		  		            	<f:selectItem itemLabel="" />
+        					    <f:selectItems value="#{diagnosticsBean.teams}" />
+						</h:selectOneMenu>
+	  		 		 </li>
 					  <li class="l">
 						<a4j:commandButton id="diagnosticsRefresh" styleClass="left"
 		           					reRender="header,diagnostics-form:diagnostics,diagnostics-form:diagnostics-bottomScroller"

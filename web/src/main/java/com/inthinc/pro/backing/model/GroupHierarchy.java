@@ -14,7 +14,8 @@ public class GroupHierarchy implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 2855781183498326570L;
-	
+
+	public static final String GROUP_SEPERATOR = " - ";
 	List<Group> groupList;
 
     public GroupHierarchy()
@@ -73,6 +74,23 @@ public class GroupHierarchy implements Serializable
             }
         }
         return null;
+    }
+    public String getFullGroupName(Integer groupID)
+    {
+    	StringBuilder builder = new StringBuilder();
+        for (Group group : groupList)
+        {
+            if (group.getGroupID().equals(groupID))
+            {
+            	if (group.getParentID() != null && group.getParentID().intValue() != 0)
+            	{
+            		builder.append(getFullGroupName(group.getParentID()));
+            	}
+            	builder.append(group.getName());
+            	builder.append(GROUP_SEPERATOR);
+            }
+        }
+        return builder.toString();
     }
 
     public GroupLevel getGroupLevel(Group group)

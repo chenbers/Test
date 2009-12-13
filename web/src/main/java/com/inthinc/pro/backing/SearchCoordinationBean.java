@@ -9,9 +9,9 @@ import com.inthinc.pro.model.Group;
 
 public class SearchCoordinationBean {
 
-	private String searchFor = "";
+	protected String searchFor = "";
 	
-	private Group group;
+	protected Group group;
 	private int navigation;
 	private Integer groupID;
 	private GroupDAO groupDAO;

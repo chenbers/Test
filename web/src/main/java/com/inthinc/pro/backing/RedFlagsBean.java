@@ -207,7 +207,15 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
         localeBean.getLocale();
 
         setFilteredTableData(null);
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), DAYS_BACK, RedFlagDAO.INCLUDE_FORGIVEN);
+        
+//        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), DAYS_BACK, RedFlagDAO.INCLUDE_FORGIVEN);
+        List<RedFlag> redFlagList = new ArrayList<RedFlag>();
+        if (getSearchCoordinationBean().isGoodGroupId())
+        {
+
+        	redFlagList = redFlagDAO.getRedFlags(getSearchCoordinationBean().getGroup().getGroupID(), DAYS_BACK, RedFlagDAO.INCLUDE_FORGIVEN);
+        }
+        
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         addDrivers(redFlagList);
         addVehicles(redFlagList);

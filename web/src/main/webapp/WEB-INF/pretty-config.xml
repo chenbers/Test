@@ -189,19 +189,19 @@
     </url-mapping>
     <url-mapping id="safetyWithGroupID">
         <pattern>/app/notifications/safety</pattern>
-        <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param>
+        <query-param name="groupID">#{eventsSearchCoordinationBean.groupID}</query-param>
         <query-param name="eventID">#{eventsBean.eventFilterID}</query-param>
         <view-id>/secured/notifications/safety.faces</view-id>
     </url-mapping>
     <url-mapping id="emergency">
         <pattern>/app/notifications/emergency</pattern>
-        <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param>
+        <query-param name="groupID">#{eventsSearchCoordinationBean.groupID}</query-param>
         <query-param name="eventID">#{emergencyBean.eventFilterID}</query-param>
         <view-id>/secured/notifications/emergency.faces</view-id>
     </url-mapping>
     <url-mapping id="diagnostics">
         <pattern>/app/notifications/diagnostics</pattern>
-        <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param>
+        <query-param name="groupID">#{eventsSearchCoordinationBean.groupID}</query-param>
         <query-param name="eventID">#{diagnosticsBean.eventFilterID}</query-param>
         <view-id>/secured/notifications/diagnostics.faces</view-id>
     </url-mapping>

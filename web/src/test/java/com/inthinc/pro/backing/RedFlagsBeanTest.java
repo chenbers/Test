@@ -155,7 +155,7 @@ public class RedFlagsBeanTest extends BaseBeanTest
         assertNotNull(redFlagsBean);
         assertNotNull(redFlagsBean.getRedFlagDAO());
         assertNotNull(redFlagsBean.getTablePreferenceDAO());
-        
+        redFlagsBean.getSearchCoordinationBean().setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         redFlagsBean.initTableData();
         List<RedFlagReportItem> tableData = redFlagsBean.getTableData();
         assertNotNull(tableData);

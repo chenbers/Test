@@ -1,13 +1,14 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.NotificationReportItem;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.dao.DriverDAO;
@@ -18,6 +19,8 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -61,7 +64,7 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     protected T clearItem;
  
  
-	protected SearchCoordinationBean searchCoordinationBean;
+	protected EventsSearchCoordinationBean searchCoordinationBean;
 
     private Integer start;
     private Integer end;
@@ -69,7 +72,27 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 	private Integer page;
 	
     private CacheBean cacheBean;
-    
+
+    private Map<String, Integer>  teams;
+    public Map<String, Integer> getTeams() {
+    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+	    for (final Group group : getGroupHierarchy().getGroupList())
+	    	if (group.getType() == GroupType.TEAM) {
+	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
+	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+	    		}
+	    			
+	    		teams.put(fullName, group.getGroupID());
+	    	}
+	    
+	    return teams;
+    }
+
+    public void setTeams(Map<String, Integer>  teams) {
+		this.teams = teams;
+	}
+
 	public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -267,12 +290,12 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
         return reportCriteriaService;
     }
 
-    public SearchCoordinationBean getSearchCoordinationBean()
+    public EventsSearchCoordinationBean getSearchCoordinationBean()
     {
         return searchCoordinationBean;
     }
 
-    public void setSearchCoordinationBean(SearchCoordinationBean searchCoordinationBean)
+    public void setSearchCoordinationBean(EventsSearchCoordinationBean searchCoordinationBean)
     {
         this.searchCoordinationBean = searchCoordinationBean;
     }

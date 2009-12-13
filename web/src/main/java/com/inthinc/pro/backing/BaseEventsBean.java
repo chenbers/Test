@@ -53,7 +53,12 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
     
 //	private EventsTableDataProvider eventsTableDataProvider;
 //	private BasePaginationTable<EventReportItem> table;
-
+    @Override
+	public void clearData() {
+    	
+    	super.clearData();
+    	setEventFilter(null);
+    }
     
 	@Override
 	public int getDisplaySize() {
@@ -139,30 +144,39 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
         if (getEventFilter() != null)
         {    
             filteredTableData = new ArrayList<EventReportItem>();
-    
+            boolean found = false;
             for (EventReportItem item : tableData)
             {
                 if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
                 {
                     filteredTableData.add(item);
+                    found = true;
                     break;
                 }
+            }
+            if (!found) {
+            	Event event = getEventFilter();
+            	if (event != null) {
+                    fillInDriver(event);
+                    fillInVehicle(event);
+                    filteredTableData.add(new EventReportItem(event, null, getGroupHierarchy(),getMeasurementType()));
+	        	}
             }
         }
         
         //Filter if search is based on group.
-        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
-        {
-            filteredTableData = new ArrayList<EventReportItem>();
-            
-            for (EventReportItem item : tableData)
-            {
-                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
-                {
-                    filteredTableData.add(item);
-                }
-            }
-        }
+//        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+//        {
+//            filteredTableData = new ArrayList<EventReportItem>();
+//            
+//            for (EventReportItem item : tableData)
+//            {
+//                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
+//                {
+//                    filteredTableData.add(item);
+//                }
+//            }
+//        }
         
         if (searchCoordinationBean.isGoodSearch())
         {
@@ -203,30 +217,39 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
         if (getEventFilter() != null)
         {    
             filteredTableData = new ArrayList<EventReportItem>();
-    
+            boolean found = false;
             for (EventReportItem item : tableData)
             {
                 if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
                 {
                     filteredTableData.add(item);
+                    found = true;
                     break;
                 }
+            }
+            if (!found) {
+            	Event event = getEventFilter();
+            	if (event != null) {
+                    fillInDriver(event);
+                    fillInVehicle(event);
+                    filteredTableData.add(new EventReportItem(event, null, getGroupHierarchy(),getMeasurementType()));
+	        	}
             }
         }
         
         //Filter if search is based on group.
-        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
-        {
-            filteredTableData = new ArrayList<EventReportItem>();
-            
-            for (EventReportItem item : tableData)
-            {
-                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
-                {
-                    filteredTableData.add(item);
-                }
-            }
-        }
+//        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+//        {
+//            filteredTableData = new ArrayList<EventReportItem>();
+//            
+//            for (EventReportItem item : tableData)
+//            {
+//                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
+//                {
+//                    filteredTableData.add(item);
+//                }
+//            }
+//        }
         
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
@@ -238,8 +261,19 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
     {
         setFilteredTableData(null);
 
-        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
         List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
+        
+        List<Event> eventList = new ArrayList<Event>();
+        if (getSearchCoordinationBean().isGoodGroupId())
+        {
+
+        	eventList = getEventsForGroup(getSearchCoordinationBean().getGroup().getGroupID());
+        }
+
+//        if (getSelectedGroupID() != null) {
+//            eventList = getEventsForGroup(getSelectedGroupID());
+//        }
+        
         for (Event event : eventList)
         {
             fillInDriver(event);
@@ -315,6 +349,9 @@ public abstract class BaseEventsBean extends BaseNotificationsBean<EventReportIt
 //        reinit();
         this.categoryFilter = null;
         this.eventFilter = eventFilter;
+        if (eventFilter != null) {
+        	this.getSearchCoordinationBean().setSearchFor("");
+        }
     }
     
     @Override

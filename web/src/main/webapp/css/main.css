@@ -915,6 +915,16 @@ ul#grid_nav li.l {
 	float: left;
 }
 
+ul#grid_nav li.select {
+	list-style: none;
+	padding: 7px 5px 0 5px;
+	margin: 0;
+}
+
+ul#grid_nav li.select select {
+	width: 250px;
+}
+
 ul#grid_nav li a:active,ul#grid_nav li a:link,ul#grid_nav li a:hover,ul#grid_nav li a:visited
 	{
 	color: #333;

@@ -41,7 +41,7 @@
 		                  <tr>
 		                    <td>#{messages.notes_safety_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:safetySearch').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{eventsSearchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:safetySearch').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
@@ -60,6 +60,12 @@
 							#{messages.button_editColumns}
 						</a4j:commandLink>
 					  </li>  
+					  <li class="l select">
+		                <h:selectOneMenu value="#{eventsBean.searchCoordinationBean.groupID}" id="events_groupID"> 
+    		            	<f:selectItem itemLabel="" />
+        		            <f:selectItems value="#{eventsBean.teams}" />
+						</h:selectOneMenu>
+					  </li>
 					  <li class="l">
 						<a4j:commandButton id="safetyRefresh" styleClass="left"
 									reRender="header,safety-form:safety,safety-form:safety-bottomScroller" 
@@ -100,10 +106,11 @@
 						<ui:param  name="exportExcel" value="TRUE"/>
     	 				<ui:param name="context" value="safety" />
 					</ui:include>
+
+					
 		    		</a4j:form>
 		    		</a4j:region>
-		    		        
-					<div class="spacer"></div>
+
 					
 		            <h:panelGroup id="notificationsTable" layout="block" styleClass="datagrid_panel">
 						<ui:include src="/includes/notificationsTable.xhtml">	

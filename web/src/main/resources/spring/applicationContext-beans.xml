@@ -419,7 +419,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="zoneDAO" ref="zoneDAO"></property>
     <property name="reportRenderer" ref="reportRenderer"></property>
     <property name="reportCriteriaService" ref="reportCriteriaService"></property>
-    <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
+    <property name="searchCoordinationBean" ref="eventsSearchCoordinationBean"></property>
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     <property name="cacheBean" ref="cacheBean"></property>
   </bean>
@@ -506,6 +506,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   <bean id="searchCoordinationBean" class="com.inthinc.pro.backing.SearchCoordinationBean" scope="session">
     <property name="groupDAO" ref="groupDAO" />
   </bean>
+  <bean id="eventsSearchCoordinationBean" class="com.inthinc.pro.backing.EventsSearchCoordinationBean" scope="session" parent="searchCoordinationBean">
+  </bean>
 
   <!-- Converter Beans -->
   <bean id="latLngAddressConverter" class="com.inthinc.pro.convert.LatLngAddressConverter">
@@ -538,4 +540,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="vehicleDAO" ref="vehicleDAO"></property>
   </bean>
   
+  
+    <!-- Pagination Beans -->
+<!--   
+   <bean id="testRedFlagTableBean" class="com.inthinc.pro.table.test.TestRedFlagTableBean" scope="request" parent="baseBean" init-method="init">
+    <property name="redFlagsTableDataProvider" ref="redFlagsTableDataProvider"></property>
+  </bean>
+   <bean id="redFlagsTableDataProvider" class="com.inthinc.pro.table.model.RedFlagsTableDataProvider" scope="request">
+    <property name="redFlagDAO" ref="redFlagDAO"></property>
+  </bean>
+ -->  
 </beans>
