@@ -40,7 +40,7 @@ public class TablePref<T>
                 Boolean visible = false;
                 if (cnt < visibleList.size())
                     visible = visibleList.get(cnt++);
-                TableColumn tableColumn = new TableColumn(visible, MessageUtil.getMessageString(tablePrefOptions.getColumnLabelPrefix() + column,LocaleBean.getCurrentLocale()));
+                TableColumn tableColumn = new TableColumn(visible, tablePrefOptions.getColumnLabelPrefix() + column);
                 if (column.equals("clear") ||                    
                     column.equals("edit") ||
                     column.equals("details") )

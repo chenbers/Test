@@ -45,7 +45,7 @@
         <rich:dataGrid id="#{context}-editColumnsGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
            <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" id="#{context}-col" tabindex="1"/>
-           <h:outputText value="#{bean.tableColumns[col].colLabel}" />
+           <h:outputText value="#{messages[bean.tableColumns[col].colLabel]}" />
           </h:outputLabel>
     	</rich:dataGrid>
 
