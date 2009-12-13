@@ -2693,7 +2693,7 @@ input.text,select.text {
 #grid_nav_search_box {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
-	margin: 4px 0 0 0;
+	margin: 2px 0 0 0;
 }
 
 #grid_nav_search_box input.text,#grid_nav_search_box select {

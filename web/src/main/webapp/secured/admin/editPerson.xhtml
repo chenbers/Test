@@ -319,9 +319,9 @@
                        </ui:include>
                           </td>
                           <td>
-                            <rich:message for="driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <rich:message for="editPerson-driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:selectOneMenu value="#{personBean.item.driver.groupID}" 
-                              id="driver_groupID" 
+                              id="editPerson-driver_groupID" 
                               required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
                               requiredMessage="#{messages.required}"
                               onchange="checkMultiple(this)">
@@ -861,9 +861,13 @@
   }
 
 
-    showSection("userTable", document.getElementById("edit-form:editPerson-isUser").checked);
-    showSection("driverTable", document.getElementById("edit-form:editPerson-isDriver").checked);
-    showSection("rfidSection", document.getElementById("edit-form:editPerson-isDriver").checked);
+    if(document.getElementById("edit-form:editPerson-isUser"))
+    	showSection("userTable", document.getElementById("edit-form:editPerson-isUser").checked);
+	
+    if(document.getElementById("edit-form:editPerson-isDriver"){
+        showSection("driverTable", document.getElementById("edit-form:editPerson-isDriver").checked);
+    	showSection("rfidSection", document.getElementById("edit-form:editPerson-isDriver").checked);
+    }
     </script>
 
   </ui:define>
