@@ -22,6 +22,46 @@ public class RedFlag extends BaseEntity
     @Column(name="tzName",updateable=false)
     private TimeZone timezone;
     
+/*    
+    // new (for pagination)
+    private Zone zone;
+	private String driverName;
+	private String vehicleName;
+	private String group;
+    private String detail;
+    public Zone getZone() {
+		return zone;
+	}
+	public void setZone(Zone zone) {
+		this.zone = zone;
+	}
+	public String getDriverName() {
+		return driverName;
+	}
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+    public String getVehicleName() {
+		return vehicleName;
+	}
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+	public String getGroup() {
+		return group;
+	}
+	public void setGroup(String group) {
+		this.group = group;
+	}
+	public String getDetail() {
+		return detail;
+	}
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+	// END -- new for pagination
+	 * 
+*/
     public RedFlag()
     {
         

@@ -142,7 +142,9 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         person.setUser(user);
 
         // attach address if there is one
-        if (person.getAddressID() != null)
+        // cj 12/12/09 -- commented this out because we are not using the address anywhere and it was a big performance hit
+/*        
+        if (person.getAddressID() != null && person.getAddress() == null)
         {
             Address address = null;
             try
@@ -155,6 +157,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
             }
             person.setAddress(address);
         }
+*/        
     }
 
     @Override
@@ -197,10 +200,11 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         {
             return Collections.emptyList();
         }
-
+        // cj 12/12/09 -- commented this out because we are not using the address anywhere and it was a big performance hit
+/*
         for (Person person : returnPersonList)
         {
-            if (person.getAddressID() != null)
+            if (person.getAddressID() != null  && person.getAddress() == null)
             {
                 try
                 {
@@ -212,7 +216,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
                 }
             }
         }
-
+*/
         return returnPersonList;
     }
 

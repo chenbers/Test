@@ -1440,13 +1440,13 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 			return 0;
 		}
 	}
-/*
+
 	List<Map<String, Object>> cacheRedFlagList = null;  
 	Integer cacheRFGroupID;
 	Long cacheRFStartDate;
 	Long  cacheRFEndDate;
 	Integer cacheRFIncludeForgiven;
-	
+/*	
 	@Override
 	public Map<String, Object> getRedFlagsCount(Integer groupID,
 			Long startDate, Long endDate, Integer includeForgiven,
@@ -1496,7 +1496,8 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 		logger.info("return subList " + startRow + " - " + endRow);
         return returnList.subList(startRow, endRow);
 	}
-*/	        
+*/
+	
     @Override
 	public List<Long> getRfidsForBarcode(String barcode) throws ProDAOException {
 		// TODO Auto-generated method stub
@@ -1546,4 +1547,21 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 		// TODO Auto-generated method stub
 		return null;
 	}
+/*
+	@Override
+	public Map<String, Object> getNoteCountByGroup(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Integer[] types, Map<String, String> filter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getNotePageByGroup(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Integer[] types, Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+*/	
 }

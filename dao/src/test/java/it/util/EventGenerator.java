@@ -289,6 +289,11 @@ eventCount = 0;
 	            		System.out.println("Exception inserting notes: " + e.getErrorCode() + " retrying...");
 	            		
 	            	}
+	            	catch (Throwable t)
+	            	{
+	            		System.out.println("Exception inserting notes: " + t.getMessage() + " retrying...");
+	            		
+	            	}
             	}
                 noteList = new ArrayList<byte[]>();
                 System.out.print(".");

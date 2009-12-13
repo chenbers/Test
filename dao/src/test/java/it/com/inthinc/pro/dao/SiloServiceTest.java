@@ -1030,7 +1030,7 @@ public class SiloServiceTest {
             Integer changedCount = personDAO.update(person);
             assertEquals("Person update count " + person.getPersonID(), Integer.valueOf(1), changedCount);
         }
-        String ignoreFields[] = { "modified", "costPerHour" };
+        String ignoreFields[] = { "modified", "costPerHour", "address"};
         for (Person person : personList) {
             Person returnedPerson = personDAO.findByID(person.getPersonID());
             Util.compareObjects(person, returnedPerson, ignoreFields);
@@ -1038,7 +1038,7 @@ public class SiloServiceTest {
         // find all
         List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
-        String ignoreFields2[] = { "modified", "costPerHour", "user", "driver"};
+        String ignoreFields2[] = { "modified", "costPerHour", "user", "driver", "address"};
         for (Person person : personList) {
             for (Person groupPerson : groupPersonList) {
                 if (groupPerson.getPersonID().equals(person.getPersonID())) {
@@ -1456,7 +1456,7 @@ public class SiloServiceTest {
         assertNotNull("personID in user not set", person.getUser().getPersonID());
         assertNotNull("personID in driver not set", person.getDriver().getPersonID());
         Person returnPerson = personDAO.findByID(personID);
-        String[] ignoreFields = { "modified", "measurementType" };
+        String[] ignoreFields = { "modified", "measurementType", "address" };
         Util.compareObjects(person, returnPerson, ignoreFields);
         // TODO: This did not work
         // personDAO.deleteByID(personID);

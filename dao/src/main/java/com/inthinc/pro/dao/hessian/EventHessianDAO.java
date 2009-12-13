@@ -3,7 +3,6 @@ package com.inthinc.pro.dao.hessian;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
@@ -238,71 +236,17 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
         return Event.cleanEvents(getEventsForGroup(groupID, startDate, endDate, eventTypes, includeForgiven));
     }
-/*
     public List<Event> getEventsForGroup(Integer groupID, Date startDate, Date endDate, List<Integer> eventTypes, int includeForgiven)
     {
-        List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
-        List<Event> eventList = new ArrayList<Event>();
-        for (Driver driver : driverList)
-        {
-            List<Event> driverEvents = getEventsForDriver(driver.getDriverID(), startDate, endDate, eventTypes, includeForgiven);
-            for (Event event : driverEvents)
-            {
-                event.setDriver(driver);
-                eventList.add(event);
-            }
-        }
-        return Event.cleanEvents(eventList);
-    }
-*/    
-    public List<Event> getEventsForGroup(Integer groupID, Date startDate, Date endDate, List<Integer> eventTypes, int includeForgiven)
-    {
-/*    	
-        List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
-        List<Event> eventList = new ArrayList<Event>();
-        for (Driver driver : driverList)
-        {
-            List<Event> driverEvents = getEventsForDriver(driver.getDriverID(), startDate, endDate, eventTypes, includeForgiven);
-            for (Event event : driverEvents)
-            {
-                event.setDriver(driver);
-                eventList.add(event);
-            }
-        }
-        
-  */      
-//        List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
-logger.info("### getEventsForGroup");    	
-/*
-        List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
-        Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
-        for (Driver driver : driverList) {
-        	driverMap.put(driver.getDriverID(), driver);
-        }
-        List<Vehicle> vehicleList = getMapper().convertToModelObject(this.getSiloService().getVehiclesByGroupIDDeep(groupID), Vehicle.class);
-        Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
-        for (Vehicle vehicle : vehicleList) {
-        	vehicleMap.put(vehicle.getVehicleID(), vehicle);
-        }
-        
-  */      
-        logger.info("getDriverNoteByGroupIDDeep for groupID: " + groupID + "  startDate: " + DateUtil.convertDateToSeconds(startDate) + " endDate: " + DateUtil.convertDateToSeconds(endDate) +
-        			"includeForgiven: " + includeForgiven + " eventTypes: " + eventTypes);            
+//        logger.info("getDriverNoteByGroupIDDeep for groupID: " + groupID + "  startDate: " + DateUtil.convertDateToSeconds(startDate) + " endDate: " + DateUtil.convertDateToSeconds(endDate) +
+//        			"includeForgiven: " + includeForgiven + " eventTypes: " + eventTypes);            
         
         List<Map<String, Object>> returnList = this.getSiloService().getDriverNoteByGroupIDDeep(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, eventTypes.toArray(new Integer[0]));
-        logger.info("-- mapping objects  -- returnList size: " + returnList.size());
+//        logger.info("-- mapping objects  -- returnList size: " + returnList.size());
         List<Event> eventList = getMapper().convertToModelObject(returnList, Event.class);
-/*        
-        logger.info("-- setting drivers");
-        for (Event event : eventList)
-        {
-            event.setDriver(driverMap.get(event.getDriverID()));
-            event.setVehicle(vehicleMap.get(event.getVehicleID()));
-        }
-*/        
-        logger.info("-- cleaning events ");
+//        logger.info("-- cleaning events ");
         eventList =  Event.cleanEvents(eventList);
-        logger.info("### getEventsForGroup");
+//        logger.info("### getEventsForGroup");
         return eventList;
     }
 
@@ -348,20 +292,17 @@ logger.info("### getEventsForGroup");
     {
         return getMapper().convertToModelObject(this.getSiloService().getNote(id), Event.class);
     }
-/*
+    
+/*    
+
 	@Override
-	public Integer getEventCount(Integer groupID, Integer daysBack,
-			Integer includeForgiven, List<FilterField> filters) {
+	public Integer getEventCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<FilterField> filters) {
 		return Integer.valueOf(0);
 	}
 
 	@Override
-	public List<EventTableItem> getEventPage(Integer groupID, Integer daysBack,
-			Integer includeForgiven, PageParams pageParams) {
-		return new ArrayList<EventTableItem>();
+	public List<Event> getEventPage(Integer groupID, Integer daysBack, Integer includeForgiven, PageParams pageParams) {
+		return new ArrayList<Event>();
 	}
-*/    
-    
- 
-
+*/
 }
