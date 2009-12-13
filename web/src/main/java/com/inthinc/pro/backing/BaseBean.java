@@ -198,7 +198,7 @@ public class BaseBean implements Serializable {
 		}
 		catch(NoAddressFoundException nafe){
 			
-			return MessageUtil.getMessageString(nafe.getMessage());
+			return MessageUtil.getMessageString("noAddressFound");
 		}
 	}
 
