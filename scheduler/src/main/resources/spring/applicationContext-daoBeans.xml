@@ -40,9 +40,9 @@
     <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
     
     <!-- Address Lookup -->
-<!--    <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">-->
-<!--      	<property name="mapServerURLString" value="${mapserver.url}"/>-->
-<!--    </bean>-->
-<!--  	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.google.GoogleAddressLookup"></bean>-->
+    <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
+      	<property name="mapServerURLString" value="${mapserver.url}"/>
+    </bean>
+  	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.google.GoogleAddressLookup"></bean>
 
 </beans>
