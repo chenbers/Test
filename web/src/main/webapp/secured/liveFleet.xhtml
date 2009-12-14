@@ -57,9 +57,12 @@
 			          markerClusterer.clearMarkers();
 			        }
 				progressBar.start(#{fn:length(liveFleetBean.drivers)});
+
+				markers = [];
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
+
 			
 					marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}");
 					markers.push(marker);
