@@ -36,6 +36,28 @@
 					<a4j:region id="eventsearchRegion">							
 					<a4j:form id="eventsearch">							
 		            <ul id="grid_nav" style="margin: 0;">
+					  <li class="l select">
+		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
+		                  <tr>
+						  	<td>#{messages.group_team} </td>>
+					  	 	<td>
+			                	<h:selectOneMenu value="#{eventsBean.searchCoordinationBean.groupID}" id="events_groupID"> 
+	    		            		<f:selectItem itemLabel="" />
+	        		            	<f:selectItems value="#{eventsBean.teams}" />
+								</h:selectOneMenu>
+							</td>
+							</tr>
+							</table>
+					  </li>
+					  <li class="l">
+						<a4j:commandButton id="safetyRefresh" styleClass="left"
+									reRender="header,safety-form:safety,safety-form:safety-bottomScroller" 
+									action="#{eventsBean.refreshAction}" oncomplete="initializeTable()">
+		            				<span class="refresh">
+		            					<h:outputText value="#{messages.refresh}" />
+		            				</span>
+						</a4j:commandButton>
+					  </li>  
 		              <li class="l">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 		                  <tr>
@@ -59,21 +81,6 @@
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
-					  </li>  
-					  <li class="l select">
-		                <h:selectOneMenu value="#{eventsBean.searchCoordinationBean.groupID}" id="events_groupID"> 
-    		            	<f:selectItem itemLabel="" />
-        		            <f:selectItems value="#{eventsBean.teams}" />
-						</h:selectOneMenu>
-					  </li>
-					  <li class="l">
-						<a4j:commandButton id="safetyRefresh" styleClass="left"
-									reRender="header,safety-form:safety,safety-form:safety-bottomScroller" 
-									action="#{eventsBean.refreshAction}" oncomplete="initializeTable()">
-		            				<span class="refresh">
-		            					<h:outputText value="#{messages.refresh}" />
-		            				</span>
-						</a4j:commandButton>
 					  </li>  
 					  <li class="l text">
 						<a4j:status id="eventsStatus" for="eventsearchRegion">

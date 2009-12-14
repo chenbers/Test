@@ -917,12 +917,16 @@ ul#grid_nav li.l {
 
 ul#grid_nav li.select {
 	list-style: none;
-	padding: 7px 5px 0 5px;
+	padding: 0px 5px 0 5px;
 	margin: 0;
 }
 
 ul#grid_nav li.select select {
-	width: 250px;
+	width: 200px;
+}
+
+ul#grid_nav li.select2 select {
+	width: 120px;
 }
 
 ul#grid_nav li a:active,ul#grid_nav li a:link,ul#grid_nav li a:hover,ul#grid_nav li a:visited
@@ -2711,6 +2715,16 @@ input.text,select.text {
 	color: #333;
 }
 
+#grid_nav_group_box {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	margin: 2px 0 0 0;
+}
+
+#grid_nav_group_box input.text,#grid_nav_group_box select {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+}
 /* WIZARD NAVIGATION STEPS */
 .steps {
 	width: 800px;

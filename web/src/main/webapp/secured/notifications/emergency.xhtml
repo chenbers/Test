@@ -23,6 +23,24 @@
                             <a4j:region id="emergency_search_region">
                                 <a4j:form id="emergency_search">
                                     <ul id="grid_nav" style="margin: 0;">
+                                    <li class="l select">
+		                				<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
+						                  <tr>
+										  	<td>#{messages.group_team} </td>>
+					  	 					<td>
+				                					<h:selectOneMenu value="#{emergencyBean.searchCoordinationBean.groupID}" id="emergency_groupID"> 
+							    		            	<f:selectItem itemLabel="" />
+        		    								    <f:selectItems value="#{emergencyBean.teams}" />
+													</h:selectOneMenu>
+                                    		</td>
+										</tr>
+										</table>
+						  				</li>
+                                        <li class="l"><a4j:commandButton id="emergencyRefresh" styleClass="left"
+                                            reRender="header,emergency-form:emergency,emergency-form:emergency-bottomScroller"
+                                            action="#{emergencyBean.refreshAction}">
+                                            <span class="refresh"> <h:outputText value="#{messages.refresh}" /> </span>
+                                        </a4j:commandButton></li>
                                         <li class="l">
                                         <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                                             <tr>
@@ -42,17 +60,6 @@
                                             oncomplete="javascript:Richfaces.showModalPanel('editColumns')" reRender="editColumnsForm:editColumnGrid">
                             #{messages.button_editColumns}
                         </a4j:commandLink></li>
-                  					  <li class="l select">
-		                					<h:selectOneMenu value="#{emergencyBean.searchCoordinationBean.groupID}" id="emergency_groupID"> 
-					    		            	<f:selectItem itemLabel="" />
-        		    						    <f:selectItems value="#{emergencyBean.teams}" />
-											</h:selectOneMenu>
-					  					</li>
-                                        <li class="l"><a4j:commandButton id="emergencyRefresh" styleClass="left"
-                                            reRender="header,emergency-form:emergency,emergency-form:emergency-bottomScroller"
-                                            action="#{emergencyBean.refreshAction}">
-                                            <span class="refresh"> <h:outputText value="#{messages.refresh}" /> </span>
-                                        </a4j:commandButton></li>
                                         <li class="l text"><a4j:status id="emergency_status" for="emergency_search_region">
                                             <f:facet name="start">
                                                 <h:outputText>

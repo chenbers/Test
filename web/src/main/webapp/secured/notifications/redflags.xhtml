@@ -31,6 +31,29 @@
 		
 					<a4j:form id="redFlagSearch">							
 		            <ul id="grid_nav" style="margin: 0;">
+					  <li class="l select">
+		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
+		                  <tr>
+						  	<td>#{messages.group_team} </td>>
+					  	 	<td>
+		           			<h:selectOneMenu value="#{redFlagsBean.searchCoordinationBean.groupID}" id="redFlags_groupID"> 
+					           	<f:selectItem itemLabel="" />
+        		    		    <f:selectItems value="#{redFlagsBean.teams}" />
+							</h:selectOneMenu>
+							</td>
+							</tr>
+							</table>
+						  </li>
+					  <li class="l">
+						<a4j:commandButton id="redFlagsRefresh" styleClass="left"
+									reRender="header,redFlagsTableForm:redFlags,redFlagsTableForm:redFlags-bottomScroller" 
+									action="#{redFlagsBean.refreshAction}" oncomplete="initializeTable()">
+		            				<span class="refresh">
+		            					<h:outputText value="#{messages.refresh}" />
+		            				</span>
+						</a4j:commandButton>
+					  </li>  
+
 		              <li class="l">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 		                  <tr>
@@ -54,21 +77,6 @@
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
-					  </li>  
-					  <li class="l select">
-		           			<h:selectOneMenu value="#{redFlagsBean.searchCoordinationBean.groupID}" id="redFlags_groupID"> 
-					           	<f:selectItem itemLabel="" />
-        		    		    <f:selectItems value="#{redFlagsBean.teams}" />
-							</h:selectOneMenu>
-					  </li>
-					  <li class="l">
-						<a4j:commandButton id="redFlagsRefresh" styleClass="left"
-									reRender="header,redFlagsTableForm:redFlags,redFlagsTableForm:redFlags-bottomScroller" 
-									action="#{redFlagsBean.refreshAction}" oncomplete="initializeTable()">
-		            				<span class="refresh">
-		            					<h:outputText value="#{messages.refresh}" />
-		            				</span>
-						</a4j:commandButton>
 					  </li>  
 					  <li class="l text">
 						<a4j:status id="redFlagsStatus" for="redFlagSearch_region">
