@@ -4,9 +4,10 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.map.GoogleMapKeyFinder;
 import com.inthinc.pro.util.WebUtil;
 
-public class GoogleMapBacking {
+public class GoogleMapBacking implements GoogleMapKeyFinder{
     // this backing bean handles the generic google map stuff like keys
     private static Logger logger = Logger.getLogger(GoogleMapBacking.class);
 
@@ -14,6 +15,7 @@ public class GoogleMapBacking {
     private Properties googleMapProperties;
     private WebUtil webUtil;
 
+    @Override
     public String getKey() {
 
         String serverName = webUtil.getRequestServerName();
@@ -48,5 +50,10 @@ public class GoogleMapBacking {
     public void setWebUtil(WebUtil webUtil) {
         this.webUtil = webUtil;
     }
+
+	@Override
+	public void setKey(String key) {
+		//This will not be used as getKey will find it and set it
+	}
 
 }

@@ -100,8 +100,12 @@
   </bean>
   <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
     <property name="dao" ref="secureVehicleDAO" />
-    <property name="addressLookup" ref="addressLookupBean"/>
+    <property name="addressLookup" ref="${addressLookup}"/>
   </bean>
+  <bean id="googleMapFinderBean" class="com.inthinc.pro.map.SimpleGoogleMapKeyFinder">
+  		<property name="key" value="${googleMapKey}"/>
+  </bean>
+  
   <!--     
     <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">
     	<property name="mcmService" ref="mcmServiceBean"/>

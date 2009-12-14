@@ -9,55 +9,55 @@ import javax.servlet.http.HttpServletRequest;
 
 public class WebUtil
 {
-    public String getRequestServerName()
+    public static String getRequestServerName()
     {
         HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         
         return request.getServerName();
     }
 
-    public int getRequestServerPort()
+    public static int getRequestServerPort()
     {
         HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
     
         return request.getServerPort();
     }
     
-    public String getRequestContextPath()
+    public static String getRequestContextPath()
     {
         HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         
         return request.getContextPath();
     }
 
-    public Map getRequestParameterMap()
+    public static Map getRequestParameterMap()
     {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
     }
     
-    public Map getRequestMap()
+    public static Map getRequestMap()
     {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
     }
     
     
-    public Map getSessionMap()
+    public static Map getSessionMap()
     {
         return FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
     }
 
-    public Locale getLocale()
+    public static Locale getLocale()
     {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     }
 
-    public String getRealPath(String virtualPath){
+    public static String getRealPath(String virtualPath){
     	
     	ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
     	return servletContext.getRealPath(virtualPath);
     	
     }
-    public String getFullRequestContextPath(){
+    public static String getFullRequestContextPath(){
     	
 		return "http://"+getRequestServerName()+":"+String.valueOf(getRequestServerPort())+getRequestContextPath();
 

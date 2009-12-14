@@ -101,5 +101,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			
    <!--  QUARTZ  END -->
    
+   <bean id="googleMapFinderBean" class="com.inthinc.pro.map.SimpleGoogleMapKeyFinder">
+  		<property name="key" value="${googleMapKey}"/>
+  </bean>
+   
    
 </beans>

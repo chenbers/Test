@@ -64,9 +64,13 @@
   <bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" parent="abstractReportDAO" />
   <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" parent="abstractReportDAO" />
   <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" parent="abstractReportDAO" />
-  <!-- Address Lookup -->
-  <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
-    <property name="mapServerURLString" value="${mapserver.url}" />
-  </bean>
+  
+     <!-- Address Lookup -->
+    <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
+      	<property name="mapServerURLString" value="${mapserver.url}"/>
+    </bean>
+	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
+	  	<property name="googleMapKeyFinder" ref="googleMapFinderBean"/>
+	</bean>
 
 </beans>

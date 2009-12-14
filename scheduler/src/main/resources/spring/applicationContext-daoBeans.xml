@@ -17,7 +17,7 @@
     	<property name="vehicleDAO"    ref="vehicleDAO"></property>
     	<property name="eventDAO"      ref="eventDAO"></property>
     	<property name="zoneDAO"      ref="zoneDAO"></property>
-    	<property name="addressLookup" ref="addressLookupBean"></property>
+    	<property name="addressLookup" ref="${addressLookup}"></property>
     </bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
@@ -39,10 +39,12 @@
     </bean>
     <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
     
-    <!-- Address Lookup -->
-    <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
+     <!-- Address Lookup -->
+    <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
       	<property name="mapServerURLString" value="${mapserver.url}"/>
     </bean>
-  	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup"></bean>
+	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
+	  	<property name="googleMapKeyFinder" ref="googleMapFinderBean"/>
+	</bean>
 
 </beans>

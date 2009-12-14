@@ -18,8 +18,8 @@ import com.inthinc.pro.model.NoAddressFoundException;
 
 public class GoogleAddressLookup implements AddressLookup {
 	
-//	GoogleMapBacking googleMapBacking;
-
+	GoogleMapKeyFinder googleMapKeyFinder;
+	
 	@Override
 	public String getAddress(LatLng latLng, boolean returnLatLng)
 			throws NoAddressFoundException {
@@ -28,8 +28,8 @@ public class GoogleAddressLookup implements AddressLookup {
 		request.append(latLng.getLat());
 		request.append(",");
 		request.append(latLng.getLng());
-		request.append("&output=xml&sensor=true_or_false&key=wtf");
-//		request.append(googleMapBacking.getKey());
+		request.append("&output=xml&sensor=true&key=");
+		request.append(getGoogleMapKeyFinder().getKey());
 		
 		String address = null;
 		try{
@@ -160,5 +160,15 @@ public class GoogleAddressLookup implements AddressLookup {
         }
         return text;
     }
+
+
+	public GoogleMapKeyFinder getGoogleMapKeyFinder() {
+		return googleMapKeyFinder;
+	}
+
+
+	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
+		this.googleMapKeyFinder = googleMapKeyFinder;
+	}
 
 }
