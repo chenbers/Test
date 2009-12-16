@@ -77,7 +77,14 @@ public class DAOUtilBean implements PhaseListener {
 
 	private Integer shipAccountID;
 	private Integer rmaAccountID;
+	
+	
 	private Device device;
+	private Vehicle vehicle;
+	private Driver driver;
+	private Account account;
+	private LastLocation lastLocation;
+
 
 	private Map<Integer, String> accountMap;
 	private Map<Integer, String> groupMap;
@@ -120,14 +127,14 @@ public class DAOUtilBean implements PhaseListener {
 	private boolean assignedVehiclesOnly;
 	private String vehicleGrid;
 
-	private String outcome;
-	
 	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
 	
 	private static final String FAILURE = "failure";
 	private static final String SUCCESS = "success";
 	private static final String NORESULTS = "no results";
+	private static final String DATE_FORMAT = "MM/dd/yy hh:mm:ssa";
+
 
 	
 	private String jscriptOnLoad;
@@ -229,76 +236,59 @@ public class DAOUtilBean implements PhaseListener {
 		if (device == null)
 			setErrorMsg("Error: Device not found " + serialNum
 					+ ". Please enter an IMEI, Serial Number or deviceID.");
+		else
+		{
+			if (device.getVehicleID()!=null)
+				vehicle=vehicleDAO.findByID(device.getVehicleID());
+			if (vehicle!=null)
+			{
+				if (vehicle.getDriverID()!=null)
+					driver=driverDAO.findByID(vehicle.getDriverID());
+				lastLocation = vehicleDAO.getLastLocation(vehicle.getVehicleID());
+				
+			}
+			account = accountDAO.findByID(device.getAccountID());
+		}
 	}
 
 	public void queryDeviceAction() {
 		
-		String DATE_FORMAT = "MM/dd/yy hh:mm:ssa";
 
-		//Create object of SimpleDateFormat and pass the desired date format.
-
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
 		
 		reInitAction();
 		loadDevice();
 		if (device != null) {
 			
-			String msg = "";
+			setSerialNum(null);
+		}
+	}
+	
+	public String getLastLocationDisplay()
+	{
+		//Create object of SimpleDateFormat and pass the desired date format.
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		
-			Account dacct = accountDAO.findByID(device.getAccountID());
-			Vehicle dv = vehicleDAO.findByID(device.getVehicleID());
+		if (device != null) {
 			
-			Driver dd = null;
-			Person dp = null;
-			LastLocation ll = null;
-			if (dv != null) {
-				ll = vehicleDAO.getLastLocation(dv.getVehicleID());
-				dd = driverDAO.findByID(dv.getDriverID());
-				if (dd != null)
-					dp = personDAO.findByID(dd.getPersonID());
-			}
-			msg += "<BR/>ACCT: " + dacct.getAcctName();
-			msg += "<BR/>SN: " + device.getSerialNum();
-			if (dv != null)
-				msg += "<BR/>Vehicle: " + dv.getName() + " " + dv.getVIN()
-						+ " " + dv.getFullName();
-			if (dp != null)
-				msg += "<BR/>Driver: " + dp.getFullNameWithId();
-			if (dd != null) {
-				String barcode=dd.getBarcode();
-				msg += "<BR/>RFID Barcode: " + barcode;
-			}
-			msg += "<BR/>PHONE: <a target=\"_blank\" href=\"tel:"
-					+ device.getPhone() + "\">" + device.getPhone() + "</a>";
-			msg += "<BR/><a target=\"_blank\" href=\"https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&password=45Uu9i92A_8&submitRun=Run&reportId=131&msisdn="
-					+ device.getEphone() + "\">Radius Call Records</a>";
-			msg += "<BR/>IMEI: " + device.getImei();
-			msg += "<BR/>SIM: " + device.getSim();
-			msg += "<BR/>ECALL: " + device.getEphone();
-
-			msg += "<BR/>\r\n";
-			msg += "<BR/>";
-			
-			if (ll != null)
-				msg += "<BR/>LOC: "
-						+ sdf.format(ll.getTime())
+			if (lastLocation != null)
+				return sdf.format(lastLocation.getTime())
 						+ " <a target=\"_blank\" href=\"http://maps.google.com/maps?q="
-						+ ll.getLoc().getLat() + "," + ll.getLoc().getLng()
-						+ "\">" + ll.getLoc().toString() + "</a>";
+						+ lastLocation.getLoc().getLat() + "," + lastLocation.getLoc().getLng()
+						+ "\">" + lastLocation.getLoc().toString() + "</a>";
 
-			//TODO Last Ignition On
-			//TODO Last Power On
-			//TODO EMU file, make, model year
-			//TODO Firmware Version
 			
-			
-			//List forward Commands
-			//TODO DAO needs 2134, 2143-2146
-			List<ForwardCommand> fwdCmds = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_ALL);
-
-			if (fwdCmds!=null && !fwdCmds.isEmpty())
-				msg += "<BR/><BR/><b>Foward Commands</b><br/><br/>\r\n";
+		}
+		return null;
+	}
+	public List<String> getForwardCommands()
+	{
+		//Create object of SimpleDateFormat and pass the desired date format.
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		List<String> cmds = new ArrayList<String>();
+		List<ForwardCommand> fwdCmds = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_ALL);
+		if (fwdCmds!=null && !fwdCmds.isEmpty())
+		{
 			for(Iterator<ForwardCommand> fiter = fwdCmds.iterator(); fiter.hasNext();)
 			{
 				ForwardCommand cmd = fiter.next();
@@ -309,57 +299,53 @@ public class DAOUtilBean implements PhaseListener {
 				String status=cmd.getStatus().name().replaceAll("STATUS_", "");
 				String values = cmd.getData().toString();
 				String tim = sdf.format(cmd.getModified());
-
-				msg+= name + " " + " " + status + "<br/>--" + tim + " " + values + "<br/>";
-			}
-			
-			if (dv!=null)
-			{
-				msg += "<BR/>\r\n";
-				msg += "<BR/>";
-				//List events
-				Calendar calendar = Calendar.getInstance();
-				Date endDate = new Date();
-				calendar.setTime(endDate);
-				calendar.add(Calendar.HOUR, -1);
-				Date startDate = calendar.getTime();
 				
-				Integer[] types={
-						EventMapper.TIWIPRO_EVENT_IGNITION_ON
-						, EventMapper.TIWIPRO_EVENT_IGNITION_OFF
-						, EventMapper.TIWIPRO_EVENT_UNPLUGGED
-						, EventMapper.TIWIPRO_EVENT_POWER_ON};
-				List<Map<String, Object>> notes = null;
-				
-				try {
-					notes = siloServiceCreator.getService().getVehicleNote(dv.getVehicleID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), new Integer(1), types);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				if (notes!=null && !notes.isEmpty())
-				{
-					msg += "<BR/><BR/><b>Notes</b><br/><br/>\r\n";
-					for(Iterator<Map<String, Object>> iter = notes.iterator(); iter.hasNext();)
-					{
-						Map<String, Object> note = iter.next();
-						msg+=note.toString();
-						msg+="<br/>";
-					}				
-				}
+				cmds.add(0, name + " " + " " + status + "<br/>" + tim + " " + values);
 			}			
-			
-			if (dv != null)
-				msg += "<BR/><BR/>" + dv.toString();
-			if (dd != null)
-				msg += "<BR/><BR/>" + dd.toString();
-			if (dp != null)
-				msg += "<BR/><BR/>" + dp.toString();
-
-			setSuccessMsg(msg);
 		}
-		setSerialNum(null);
+
+		return cmds;
+	}
+	
+	public List<String> getVehicleNotes()
+	{
+		List<Map<String, Object>> notes = null;
+		List<String> noteList = new ArrayList<String>();
+		
+		if (vehicle!=null)
+		{
+			//List events
+			Calendar calendar = Calendar.getInstance();
+			Date endDate = new Date();
+			calendar.setTime(endDate);
+			calendar.add(Calendar.HOUR, -1);
+			Date startDate = calendar.getTime();
+			
+			//TODO Last Ignition On
+			//TODO Last Power On
+			//TODO EMU file, make, model year
+			//TODO Firmware Version
+			
+			Integer[] types={
+					EventMapper.TIWIPRO_EVENT_IGNITION_ON
+					, EventMapper.TIWIPRO_EVENT_IGNITION_OFF
+					, EventMapper.TIWIPRO_EVENT_UNPLUGGED
+					, EventMapper.TIWIPRO_EVENT_POWER_ON};
+			try {
+				notes = siloServiceCreator.getService().getVehicleNote(vehicle.getVehicleID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), new Integer(1), types);
+				for(Iterator<Map<String, Object>> iter = notes.iterator(); iter.hasNext();)
+				{
+					Map<String, Object> note = iter.next();
+					noteList.add(0, note.toString());
+				}
+					
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		
+		return noteList;
 	}
 
 	public void rmaDeviceAction() {
@@ -1341,6 +1327,9 @@ if (accounts.size()>100)
 		vehicleGrid="";
 		vehicleCount=0;
 		device=null;
+		vehicle=null;
+		driver=null;
+		account=null;
 		if (messageList != null)
 			messageList.clear();
 	}
@@ -1769,6 +1758,11 @@ if (accounts.size()>100)
 		jscriptOnLoad=null;
 		return tmp;
 	}
+	
+	public Device getDevice()
+	{
+		return device;
+	}
 
 	public void setJscriptOnLoad(String jscriptOnLoad) {
 		this.jscriptOnLoad = jscriptOnLoad;
@@ -1790,4 +1784,19 @@ if (accounts.size()>100)
         this.siloServiceCreator = siloServiceCreator;
     }
 
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	public Driver getDriver() {
+		return driver;
+	}
+	
+	public Account getAccount() {
+		return account;
+	}
+
+	public LastLocation getLastLocation() {
+		return lastLocation;
+	}
 }

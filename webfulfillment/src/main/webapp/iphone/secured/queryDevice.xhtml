@@ -3,7 +3,8 @@
     xmlns:f="http://java.sun.com/jsf/core" 
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:rich="http://richfaces.org/rich">
 
 <head>
 <title>tiwiPRO Fulfillment</title>
@@ -34,10 +35,64 @@
 						action="#{daoUtilBean.queryDeviceAction}" /> 
 		<br />
 		<br />
-					<a class="whiteButton" href="#home">Cancel</a>
+					<a class="whiteButton" href="home.faces">Cancel</a>
 					<br />
+						
+				<br/>
+						
+				<h:outputText value="ACCT: #{daoUtilBean.account.acctName}" rendered="#{not empty daoUtilBean.account}"/>
+				<br/>
+				<h:outputText value="SN: #{daoUtilBean.device.serialNum}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
+				<h:outputText value="Vehicle: #{daoUtilBean.vehicle.name} #{daoUtilBean.vehicle.VIN} #{daoUtilBean.vehicle.fullName}" rendered="#{not empty daoUtilBean.vehicle}"/>
+				<br/>
+				<h:outputText value="Driver: #{daoUtilBean.driver.person.fullNameWithId}" rendered="#{not empty daoUtilBean.driver}"/>
+				<br/>
+				<h:outputText value="Barcode: #{daoUtilBean.driver.barcode}" rendered="#{not empty daoUtilBean.driver}"/>
+				<br/>
+				<h:outputText value="Phone: #{daoUtilBean.device.phone}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
+				<h:outputText value="IMEI: #{daoUtilBean.device.imei}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
+				<h:outputText value="SIM: #{daoUtilBean.device.sim}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
+				<h:outputText value="EPhone: #{daoUtilBean.device.ephone}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
+				<h:outputText value="#{daoUtilBean.lastLocationDisplay}" rendered="#{not empty daoUtilBean.vehicle}"/>
+				<br/>
+				<br/>
+				<h:outputLink target="_blank" 
+				  rendered="#{not empty daoUtilBean.device}"
+				  value="tel:#{daoUtilBean.device.phone}">Call Tiwi #{daoUtilBean.device.phone}</h:outputLink>
+				<br/>
+				<h:outputLink target="_blank" 
+				  rendered="#{not empty daoUtilBean.device}"
+				  value="https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&amp;password=45Uu9i92A_8&amp;submitRun=Run&amp;reportId=131&amp;msisdn=#{daoUtilBean.device.phone}"
+				 >Radius Call Records</h:outputLink>
+				<br/>
+				<rich:dataList rendered="#{daoUtilBean.device != null}" value="#{daoUtilBean.forwardCommands}" id="fwdcmds" var="fwdcmd" title="Forward Commands">
+				<h:outputText value="#{fwdcmd}" escape="false"/><br/>
+				</rich:dataList>
+
+				<rich:dataList rendered="#{daoUtilBean.vehicle != null}" value="#{daoUtilBean.vehicleNotes}" id="vehiclenotes" var="note" title="Vehicle Notes">
+				<h:outputText value="#{note}" escape="false"/><br/>
+				</rich:dataList>
+
 				<h:outputText value="#{daoUtilBean.successMsg}"
 						escape="false" />
+				<br/>
+
+				<h:outputText value="#{daoUtilBean.vehicle}" rendered="#{not empty daoUtilBean.vehicle}"/>
+				<br/>
+				<h:outputText value="#{daoUtilBean.driver}" rendered="#{not empty daoUtilBean.driver}"/>
+				<br/>
+				<br/>
+				<h:outputText value="#{daoUtilBean.driver.person}" rendered="#{not empty daoUtilBean.driver.person}"/>
+				<br/>
+				<br/>
+
+
+										
 				</h:form>
 <script>document.getElementById('queryDevice').setAttribute("selected","true");</script>
     </body>
