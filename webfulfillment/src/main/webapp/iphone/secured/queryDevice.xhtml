@@ -56,6 +56,12 @@
 				<br/>
 				<h:outputText value="SIM: #{daoUtilBean.device.sim}" rendered="#{not empty daoUtilBean.device}"/>
 				<br/>
+				<h:outputText value="FW Version: #{daoUtilBean.device.firmwareVersion}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
+				<h:outputText value="Witness Ver: #{daoUtilBean.device.witnessVersion}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
+				<h:outputText value="EMUHash: #{daoUtilBean.device.emuMd5}" rendered="#{not empty daoUtilBean.device}"/>
+				<br/>
 				<h:outputText value="EPhone: #{daoUtilBean.device.ephone}" rendered="#{not empty daoUtilBean.device}"/>
 				<br/>
 				<h:outputText value="#{daoUtilBean.lastLocationDisplay}" rendered="#{not empty daoUtilBean.vehicle}"/>

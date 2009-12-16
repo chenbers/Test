@@ -325,18 +325,26 @@ public class DAOUtilBean implements PhaseListener {
 			//TODO Last Power On
 			//TODO EMU file, make, model year
 			//TODO Firmware Version
-			
+			device.getFirmwareVersion();
+
 			Integer[] types={
 					EventMapper.TIWIPRO_EVENT_IGNITION_ON
 					, EventMapper.TIWIPRO_EVENT_IGNITION_OFF
 					, EventMapper.TIWIPRO_EVENT_UNPLUGGED
 					, EventMapper.TIWIPRO_EVENT_POWER_ON};
 			try {
+				Vehicle v;
 				notes = siloServiceCreator.getService().getVehicleNote(vehicle.getVehicleID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), new Integer(1), types);
 				for(Iterator<Map<String, Object>> iter = notes.iterator(); iter.hasNext();)
 				{
 					Map<String, Object> note = iter.next();
-					noteList.add(0, note.toString());
+					String msg="";
+					msg+=" " + note.get("type");
+					msg+=" " + note.get("lat");
+					msg+=" " + note.get("lng");
+					msg+=" " + note.get("attrMap").toString();
+					msg+=" " + note.toString();
+					noteList.add(0, msg);
 				}
 					
 			} catch (Exception e) {
