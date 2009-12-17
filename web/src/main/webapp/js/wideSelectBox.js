@@ -33,12 +33,20 @@
 
   		function findSelPosY(obj) {
   			var posTop = 0;
-  			while (obj.offsetParent) {posTop += obj.offsetTop; obj = obj.offsetParent;}
+  			while (obj.offsetParent) {
+				if (!obj.className.match('rich-tabpanel-content-position'))
+					posTop += obj.offsetTop; 
+				obj = obj.offsetParent;
+			}
   			return posTop;
   		}
   		function findSelPosX(obj) {
   			var posLeft = 0;
-  			while (obj.offsetParent) {posLeft += obj.offsetLeft; obj = obj.offsetParent;}
+  			while (obj.offsetParent) {
+				if (!obj.className.match('rich-tabpanel-content-position'))
+					posLeft += obj.offsetLeft; 
+				obj = obj.offsetParent;
+			}
   			return posLeft;
   		}
   		  		
