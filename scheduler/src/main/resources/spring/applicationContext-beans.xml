@@ -16,10 +16,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
          <property name="host" value="${mailserver}" />
-	</bean>
+ 	</bean>
 
    <bean id="mailDispatcher"	class="com.inthinc.pro.scheduler.dispatch.MailDispatcher">
 		<property name="mailSender" ref="mailSender" />
+         <property name="from">
+      		<value><![CDATA[DriveAware Support <${accountOptions.noReplyEmailAddress}>]]></value>
+    	</property>
 	</bean>
 
    <bean id="phoneDispatcher"	class="com.inthinc.pro.scheduler.dispatch.PhoneDispatcher">

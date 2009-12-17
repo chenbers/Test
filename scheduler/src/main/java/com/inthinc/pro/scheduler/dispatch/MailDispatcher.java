@@ -7,9 +7,13 @@ import org.springframework.mail.SimpleMailMessage;
 public class MailDispatcher
 {
     private MailSender mailSender;
+    private String from;
+    
     private static final Logger logger = Logger.getLogger(MailDispatcher.class);
     
     public static final String LIST_DELIM = ";";
+    
+    
     public MailDispatcher()
     {
     }
@@ -25,7 +29,7 @@ public class MailDispatcher
         
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(emailAddress);
-        message.setFrom("DriveAware Support <support@tiwipro.com>");
+        message.setFrom(getFrom());
         message.setSubject(subjectText);
         message.setText(messageText);
        
@@ -39,5 +43,13 @@ public class MailDispatcher
         }
         logger.debug("sendEmail - Complete");
     }
+
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
 }
 
