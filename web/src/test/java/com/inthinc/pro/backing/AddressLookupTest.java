@@ -25,14 +25,14 @@ public class AddressLookupTest extends BaseBeanTest{
 			
 			
 		}
-		try{
-			
-			addressLookup.getAddress(null); 
-		}
-		catch(NoAddressFoundException nafe){
-			
-			Assert.assertEquals("No address found at lat ,lng ", nafe.getMessage());
-		}
+//		try{
+//			
+//			addressLookup.getAddress(null); 
+//		}
+//		catch(NoAddressFoundException nafe){
+//			
+//			Assert.assertEquals("No address found at lat ,lng ", nafe.getMessage());
+//		}
 	}
 
 	@Test
