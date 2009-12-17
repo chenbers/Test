@@ -53,5 +53,8 @@
 	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
 	  	<property name="googleMapKeyFinder" ref="gmBean"/>
 	</bean>
+	<bean id="googleClientSideAddressLookupBean" class="com.inthinc.pro.map.GoogleClientSideAddressLookup">
+	  	<property name="googleMapKeyFinder" ref="gmBean"/>
+	</bean>
 
 </beans>

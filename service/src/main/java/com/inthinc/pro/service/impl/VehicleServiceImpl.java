@@ -107,14 +107,15 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
         for (Trip trip : list) {
             try {
                 trip.setStartAddressStr(addressLookup.getAddress(trip.getStartLoc()));
-            } catch (NoAddressFoundException e) {
-                trip.setStartAddressStr("Address Not Found");
+            } catch (NoAddressFoundException nafe) {
+            	
+                trip.setStartAddressStr("Address Not Found at"+nafe.getLat()+","+nafe.getLng());
             }
 
             try {
                 trip.setEndAddressStr(addressLookup.getAddress(trip.getEndLoc()));
-            } catch (NoAddressFoundException e) {
-                trip.setStartAddressStr("Address Not Found");
+            } catch (NoAddressFoundException nafe) {
+                trip.setStartAddressStr("Address Not Found at"+nafe.getLat()+","+nafe.getLng());
             }
         }
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();

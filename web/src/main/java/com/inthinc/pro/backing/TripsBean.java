@@ -117,10 +117,10 @@ public class TripsBean extends BaseBean {
         if (violationEvents.isEmpty()) {
         	
             //Add 1 second to end time to get events, eg tampering events that occur at the end of a trip 
-            // - method uses < end time, not <= end time
+            // - method uses < end time, not <= end time.  This isn't true anymore!
             Calendar gc = new GregorianCalendar();
             gc.setTime(end);
-            gc.add(Calendar.SECOND, 1);
+ //           gc.add(Calendar.SECOND, 1);
             Date adjustedEnd = gc.getTime();
 
             List<Integer> violationEventTypeList = new ArrayList<Integer>();

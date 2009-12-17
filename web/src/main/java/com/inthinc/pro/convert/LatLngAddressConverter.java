@@ -33,7 +33,7 @@ public class LatLngAddressConverter implements Converter
             		return addressLookup.getAddress(latlng);
             	}
             	catch (NoAddressFoundException nafe){
-            		return MessageUtil.getMessageString(nafe.getMessage());
+        			return MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng());
             	}
             }
         }
@@ -48,5 +48,10 @@ public class LatLngAddressConverter implements Converter
     public void setAddressLookup(AddressLookup addressLookup)
     {
         this.addressLookup = addressLookup;
+    }
+    
+    public boolean isLink(){
+    	
+    	return addressLookup.isLink();
     }
 }

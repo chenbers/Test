@@ -68,7 +68,12 @@
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
-			<h:outputText value="#{vehicleAddress}" />
+			<ui:fragment rendered="#{addressIsLink}">
+				<a href="#{vehicleAddress}" target="_blank">#{messages.livefleet_address}</a> 
+			</ui:fragment>
+			<ui:fragment rendered="#{!addressIsLink}">
+				<h:outputText value="#{vehicleAddress}" />
+			</ui:fragment>
 			<f:facet name="footer">
                <h:outputFormat value="#{messages.vehicleBubble_distance}" rendered="#{distance ne null}">
                      <h:outputText value="#{messageDistance} "/>

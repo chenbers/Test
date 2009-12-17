@@ -20,9 +20,22 @@ public class GoogleAddressLookup implements AddressLookup {
 	
 	GoogleMapKeyFinder googleMapKeyFinder;
 	
+	LatLng latLng;
 	@Override
 	public String getAddress(LatLng latLng, boolean returnLatLng)
 			throws NoAddressFoundException {
+		
+		if ((googleMapKeyFinder == null) || (googleMapKeyFinder.getKey()==null) ||googleMapKeyFinder.getKey().isEmpty()) {
+			if (returnLatLng){
+				
+				return latLng.getLat() + ", " + latLng.getLng();
+			}
+			else {
+				
+				throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_MAP_KEY);
+			}
+		}
+		this.latLng = latLng;
 		
 		StringBuilder request = new StringBuilder("http://maps.google.com/maps/geo?q=");
 		request.append(latLng.getLat());
@@ -35,18 +48,27 @@ public class GoogleAddressLookup implements AddressLookup {
 		try{
 			address = sendRequest(new URL(request.toString()));
 			if ((address == null) || address.isEmpty()) {
-	               if(returnLatLng){
-	                    address = latLng.getLat() + ", " + latLng.getLng();
-	                }else{
-//	                    address = "No address found at location.";
-	                	//Changed to an exception because the hardcoded string needed to be replaced by a resource bundle message
-	                	//so it can be i18ned
-	                	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng());
-	                }
+				
+               if(returnLatLng){
+            	   
+                    return latLng.getLat() + ", " + latLng.getLng();
+               }
+               else{
+
+                	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
+               }
 			}
 		}
 		catch(MalformedURLException murle){
 			
+            if(returnLatLng){
+         	   
+                return latLng.getLat() + ", " + latLng.getLng();
+           }
+           else{
+
+        	   throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
+           }
 		}
 		return address;
 		
@@ -67,14 +89,7 @@ public class GoogleAddressLookup implements AddressLookup {
 		
 	}
 	
-//	public GoogleMapBacking getGoogleMapBacking() {
-//		return googleMapBacking;
-//	}
-//
-//	public void setGoogleMapBacking(GoogleMapBacking googleMapBacking) {
-//		this.googleMapBacking = googleMapBacking;
-//	}
-    protected String sendRequest(URL mapServerURL)
+    protected String sendRequest(URL mapServerURL) throws NoAddressFoundException
     {
         URLConnection conn;
         HttpURLConnection httpConn = null;
@@ -91,12 +106,13 @@ public class GoogleAddressLookup implements AddressLookup {
 	            }
 	            else {
 	            	
-	            	return null;
+	            	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
 	            }
 	        }
         }
         catch (IOException e)
         {
+        	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);       
         }
         finally
         {
@@ -106,7 +122,7 @@ public class GoogleAddressLookup implements AddressLookup {
                 httpConn = null;
             }
         }
-        return "";
+        return null;
     }
     private String parseAddress(InputStream is)
     {
@@ -169,6 +185,13 @@ public class GoogleAddressLookup implements AddressLookup {
 
 	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
 		this.googleMapKeyFinder = googleMapKeyFinder;
+	}
+
+
+	@Override
+	public boolean isLink() {
+
+		return false;
 	}
 
 }

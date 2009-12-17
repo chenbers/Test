@@ -4,46 +4,45 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.inthinc.pro.map.GeonamesAddressLookup;
-import com.inthinc.pro.map.GoogleAddressLookup;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 
 public class AddressLookupTest extends BaseBeanTest{
 	
-//	@Test
-//	public void addressLookupTest(){
-//		
-//		AddressLookup addressLookup = (AddressLookup)applicationContext.getBean("addressLookupBean");
-//
-//		try{
-//		
-//			String address = addressLookup.getAddress(new LatLng(40.618057,-111.787941));
-//			Assert.assertEquals("3800-3864 Prospector Dr, Cottonwood Heights, UT 84121, USA".toUpperCase(), address.toUpperCase());
-//			
-//		}
-//		catch(NoAddressFoundException nafe){
-//			
-//			
-//		}
-//		try{
-//			
-//			String nullAddress = addressLookup.getAddress(null); 
-//		}
-//		catch(NoAddressFoundException nafe){
-//			
-//			Assert.assertEquals("No address found at lat ,lng ", nafe.getMessage());
-//		}
-//	}
+	@Test
+	public void addressLookupTest(){
+		
+		AddressLookup addressLookup = (AddressLookup)applicationContext.getBean("addressLookupBean");
+
+		try{
+		
+			String address = addressLookup.getAddress(new LatLng(40.618057,-111.787941));
+			Assert.assertEquals("3861 Prospector Dr, Cottonwood Heights, UT 84121".toUpperCase(), address.toUpperCase());
+			
+		}
+		catch(NoAddressFoundException nafe){
+			
+			
+		}
+		try{
+			
+			addressLookup.getAddress(null); 
+		}
+		catch(NoAddressFoundException nafe){
+			
+			Assert.assertEquals("No address found at lat ,lng ", nafe.getMessage());
+		}
+	}
 
 	@Test
 	public void googleAddressLookupTest(){
 		
-		GoogleAddressLookup googleAddressLookup = (GoogleAddressLookup)applicationContext.getBean("googleAddressLookupBean");
+		AddressLookup googleAddressLookup = (AddressLookup)applicationContext.getBean("googleAddressLookupBean");
 		
 		try{
 			
-				String address = googleAddressLookup.getAddress(new LatLng(/*40.551623,-111.96658*/40.618057,-111.787941),true);
+				String address = googleAddressLookup.getAddress(new LatLng(40.618057,-111.787941),true);
 				System.out.println(address);
 				Assert.assertNotNull("Address was null", address);
 				

@@ -20,6 +20,7 @@ import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -77,7 +78,6 @@ public class BaseBean implements Serializable {
     public GroupHierarchy getGroupHierarchy() {
         return getProUser().getGroupHierarchy();
     }
-
     public Integer getAccountID() {
         return getProUser().getGroupHierarchy().getTopGroup().getAccountID();
     }
@@ -198,8 +198,11 @@ public class BaseBean implements Serializable {
 		}
 		catch(NoAddressFoundException nafe){
 			
-			return MessageUtil.getMessageString("noAddressFound");
+			return MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng());
 		}
 	}
-
+	public boolean isLink(){
+		
+		return addressLookup.isLink();
+	}
 }

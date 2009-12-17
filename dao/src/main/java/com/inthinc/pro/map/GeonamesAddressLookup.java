@@ -74,7 +74,7 @@ public class GeonamesAddressLookup implements AddressLookup
 //                    address = "No address found at location.";
                 	//Changed to an exception because the hardcoded string needed to be replaced by a resource bundle message
                 	//so it can be i18ned
-                	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng());
+                	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
                 }
                 
             }
@@ -283,4 +283,9 @@ public class GeonamesAddressLookup implements AddressLookup
             return buffer.toString();
         }
     }
+	@Override
+	public boolean isLink() {
+
+		return false;
+	}
 }

@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,12 +7,11 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.TrendItem;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
 
 public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 
@@ -199,5 +197,29 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
+	@Override
+	protected List<ScoreableEntity> getTrendCumulative(Integer id,
+			Duration duration, ScoreType scoreType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	protected List<ScoreableEntity> getTrendDaily(Integer id,
+			Duration duration, ScoreType scoreType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String getAddress(LatLng latLng) {
+		try{
+			
+			return getAddressLookup().getAddress(latLng, true);
+		}
+		catch(NoAddressFoundException nafe){
+		
+		}
+		return "";
+	}
 	
+    
 }
