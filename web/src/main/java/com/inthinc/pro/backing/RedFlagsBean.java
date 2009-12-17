@@ -228,18 +228,22 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
 //            } else if (redFlag.getEvent() instanceof ZoneArrivalEvent) {
 //                zoneID = ((ZoneArrivalEvent) redFlag.getEvent()).getZoneID();
 //            }
-            
+            logger.info(" " + redFlag.getEvent().getClass().getName());
             if (redFlag.getEvent() instanceof ZoneEvent) {
             	
             	Integer zoneID = null;
             	zoneID = ((ZoneEvent) redFlag.getEvent()).getZoneID();
             
 	            if(zoneID != null && zoneMap.containsKey(zoneID)) {
-	                item.setZone(zoneMap.get(zoneID));
+	            	Zone zone = zoneMap.get(zoneID);
+	                item.setZone(zone);
+	                ((ZoneEvent) redFlag.getEvent()).setZoneName(zone.getName());
+	                
 	            } else if (zoneID != null){
 	                Zone zone = getZoneDAO().findByID(zoneID);
 	                item.setZone(zone);
 	                zoneMap.put(zone.getZoneID(), zone);
+	                ((ZoneEvent) redFlag.getEvent()).setZoneName(zone.getName());
 	            }
             }
             redFlagReportItemList.add(item);

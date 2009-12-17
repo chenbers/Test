@@ -26,12 +26,15 @@
                                     <li class="l select">
 		                				<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
 						                  <tr>
-										  	<td>#{messages.group_team} </td>>
+										  	<td>#{messages.group_team} </td>
 					  	 					<td>
-				                					<h:selectOneMenu value="#{emergencyBean.searchCoordinationBean.groupID}" id="emergency_groupID"> 
-							    		            	<f:selectItem itemLabel="" />
-        		    								    <f:selectItems value="#{emergencyBean.teams}" />
-													</h:selectOneMenu>
+											<ui:include src="/includes/wideSelectBox.xhtml">	
+												<ui:param  name="selectValue" value="#{emergencyBean.searchCoordinationBean.groupID}"/>
+												<ui:param  name="selectList" value="#{emergencyBean.teams}"/>
+												<ui:param  name="width" value="200px"/>
+     	 										<ui:param name="context" value="emergency" />
+     	 										<ui:param name="outerContext" value="emergency_search:" />
+											</ui:include>
                                     		</td>
 										</tr>
 										</table>

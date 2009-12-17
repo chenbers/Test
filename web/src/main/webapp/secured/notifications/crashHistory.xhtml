@@ -109,15 +109,18 @@
 		
 					<a4j:form id="crashHistorySearch">							
 		            <ul id="grid_nav" style="margin: 0;">
-                      <li class="l select2">
+                      <li class="l select">
           				<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
 		                  <tr>
-						  	<td>#{messages.group_team} </td>>
+						  	<td>#{messages.group_team} </td>
 		 					<td>
-							<h:selectOneMenu value="#{crashHistoryBean.searchCoordinationBean.groupID}" id="crashHistory_groupID"> 
-		  		            	<f:selectItem itemLabel="" />
-        					    <f:selectItems value="#{crashHistoryBean.teams}" />
-							</h:selectOneMenu>
+							<ui:include src="/includes/wideSelectBox.xhtml">	
+								<ui:param  name="selectValue" value="#{crashHistoryBean.searchCoordinationBean.groupID}"/>
+								<ui:param  name="selectList" value="#{crashHistoryBean.teams}"/>
+								<ui:param  name="width" value="120px"/>
+     	 						<ui:param name="context" value="crashHistory" />
+     	 						<ui:param name="outerContext" value="crashHistorySearch:" />
+							</ui:include>
 							</td>
 							</tr>
 						</table>

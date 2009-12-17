@@ -13,9 +13,9 @@
 	<ui:param name="helpFile" value="Events.htm" />
     <ui:param name="ajaxPanels" value="notificationsTable,eventsearch"/>
     <ui:param name="context" value="safety"/>
-    
- 	<ui:define name="content">
-	
+
+		
+	<ui:define name="content">
 	
 		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
 		  <tr>
@@ -39,12 +39,16 @@
 					  <li class="l select">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
 		                  <tr>
-						  	<td>#{messages.group_team} </td>>
+						  	<td>#{messages.group_team} </td>
 					  	 	<td>
-			                	<h:selectOneMenu value="#{eventsBean.searchCoordinationBean.groupID}" id="events_groupID"> 
-	    		            		<f:selectItem itemLabel="" />
-	        		            	<f:selectItems value="#{eventsBean.teams}" />
-								</h:selectOneMenu>
+						<ui:include src="/includes/wideSelectBox.xhtml">	
+							<ui:param  name="selectValue" value="#{eventsBean.searchCoordinationBean.groupID}"/>
+							<ui:param  name="selectList" value="#{eventsBean.teams}"/>
+							<ui:param  name="width" value="200px"/>
+     	 					<ui:param name="context" value="events" />
+     	 					<ui:param name="outerContext" value="eventsearch:" />
+						</ui:include>
+								 
 							</td>
 							</tr>
 							</table>

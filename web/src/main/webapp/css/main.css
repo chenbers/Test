@@ -921,9 +921,6 @@ ul#grid_nav li.select {
 	margin: 0;
 }
 
-ul#grid_nav li.select select {
-	width: 200px;
-}
 
 ul#grid_nav li.select2 select {
 	width: 120px;

@@ -37,12 +37,15 @@
                       <li class="l select">
           				<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
 		                  <tr>
-						  	<td>#{messages.group_team} </td>>
+						  	<td>#{messages.group_team} </td>
 		 					<td>
-							<h:selectOneMenu value="#{diagnosticsBean.searchCoordinationBean.groupID}" id="diagnotistics_groupID"> 
-		  		            	<f:selectItem itemLabel="" />
-        					    <f:selectItems value="#{diagnosticsBean.teams}" />
-							</h:selectOneMenu>
+							<ui:include src="/includes/wideSelectBox.xhtml">	
+								<ui:param  name="selectValue" value="#{diagnosticsBean.searchCoordinationBean.groupID}"/>
+								<ui:param  name="selectList" value="#{diagnosticsBean.teams}"/>
+								<ui:param  name="width" value="200px"/>
+     	 						<ui:param name="context" value="diagnostics" />
+     	 						<ui:param name="outerContext" value="diagnostics_search:" />
+							</ui:include>
                        		</td>
 							</tr>
 						</table>
