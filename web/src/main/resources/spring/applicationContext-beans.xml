@@ -397,7 +397,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   </bean>
   <!-- Report beans -->
   <bean id="baseReportBean" class="com.inthinc.pro.backing.BaseReportBean" abstract="true" scope="session" parent="baseBean" init-method="initBean">
-    <property name="groupDAO" ref="groupDAO"></property>
+<!--    <property name="groupDAO" ref="groupDAO"></property>-->
     <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
   </bean>
   <bean id="driverReportBean" class="com.inthinc.pro.backing.DriverReportBean" scope="session" parent="baseReportBean">
