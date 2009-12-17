@@ -64,7 +64,7 @@
 				<br/>
 				<h:outputText value="EPhone: #{daoUtilBean.device.ephone}" rendered="#{not empty daoUtilBean.device}"/>
 				<br/>
-				<h:outputText value="#{daoUtilBean.lastLocationDisplay}" rendered="#{not empty daoUtilBean.vehicle}"/>
+				<h:outputText value="#{daoUtilBean.lastLocationDisplay}" rendered="#{not empty daoUtilBean.vehicle}" escape="false"/>
 				<br/>
 				<br/>
 				<h:outputLink target="_blank" 
@@ -76,12 +76,13 @@
 				  value="https://t3.tiwi.com:8084/openreports/executeReport.action?userName=salesuser&amp;password=45Uu9i92A_8&amp;submitRun=Run&amp;reportId=131&amp;msisdn=#{daoUtilBean.device.phone}"
 				 >Radius Call Records</h:outputLink>
 				<br/>
+				
 				<rich:dataList rendered="#{daoUtilBean.device != null}" value="#{daoUtilBean.forwardCommands}" id="fwdcmds" var="fwdcmd" title="Forward Commands">
-				<h:outputText value="#{fwdcmd}" escape="false"/><br/>
+					<h:outputText value="#{fwdcmd}" escape="false"/><br/>
 				</rich:dataList>
 
 				<rich:dataList rendered="#{daoUtilBean.vehicle != null}" value="#{daoUtilBean.vehicleNotes}" id="vehiclenotes" var="note" title="Vehicle Notes">
-				<h:outputText value="#{note}" escape="false"/><br/>
+					<h:outputText value="#{note}" escape="false"/><br/>
 				</rich:dataList>
 
 				<h:outputText value="#{daoUtilBean.successMsg}"

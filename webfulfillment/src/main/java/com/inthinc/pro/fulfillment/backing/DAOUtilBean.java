@@ -272,14 +272,17 @@ public class DAOUtilBean implements PhaseListener {
 		if (device != null) {
 			
 			if (lastLocation != null)
-				return sdf.format(lastLocation.getTime())
-						+ " <a target=\"_blank\" href=\"http://maps.google.com/maps?q="
-						+ lastLocation.getLoc().getLat() + "," + lastLocation.getLoc().getLng()
-						+ "\">" + lastLocation.getLoc().toString() + "</a>";
-
+				return sdf.format(lastLocation.getTime()) + getGoogleMapLink(lastLocation.getLoc().getLat(), lastLocation.getLoc().getLng());
 			
 		}
 		return null;
+	}
+	
+	private String getGoogleMapLink(double lat, double lng)
+	{
+		return "<a target=\"_blank\" href=\"http://maps.google.com/maps?q="
+		+ lat + "," + lng
+		+ "\">(" + lat + "," + lng + ")</a>";
 	}
 	public List<String> getForwardCommands()
 	{
@@ -311,6 +314,7 @@ public class DAOUtilBean implements PhaseListener {
 	{
 		List<Map<String, Object>> notes = null;
 		List<String> noteList = new ArrayList<String>();
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		
 		if (vehicle!=null)
 		{
@@ -339,8 +343,9 @@ public class DAOUtilBean implements PhaseListener {
 				{
 					Map<String, Object> note = iter.next();
 					String msg="";
-					msg+=" " + note.get("type");
-					msg+=" " + note.get("lat");
+					msg+=" " + sdf.format(note.get("time"));
+					msg+=" " + getNoteTypeName((Integer)note.get("type"));
+					msg+=" " + this.getGoogleMapLink((Double)note.get("lat"), (Double)note.get("lng"));
 					msg+=" " + note.get("lng");
 					msg+=" " + note.get("attrMap").toString();
 					msg+=" " + note.toString();
@@ -354,6 +359,22 @@ public class DAOUtilBean implements PhaseListener {
 		}
 		
 		return noteList;
+	}
+	
+	private static String getNoteTypeName(Integer key)
+	{
+		switch (key)
+		{
+		case EventMapper.TIWIPRO_EVENT_IGNITION_ON:
+			return "IGNITION_ON";
+		case EventMapper.TIWIPRO_EVENT_IGNITION_OFF:
+			return "IGNITION_OFF";
+		case EventMapper.TIWIPRO_EVENT_UNPLUGGED:
+			return "UNPLUGGED";
+		case EventMapper.TIWIPRO_EVENT_POWER_ON:
+			return "POWER_ON";
+		}
+		return key.toString();
 	}
 
 	public void rmaDeviceAction() {
