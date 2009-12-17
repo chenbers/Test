@@ -228,7 +228,6 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
 //            } else if (redFlag.getEvent() instanceof ZoneArrivalEvent) {
 //                zoneID = ((ZoneArrivalEvent) redFlag.getEvent()).getZoneID();
 //            }
-            logger.info(" " + redFlag.getEvent().getClass().getName());
             if (redFlag.getEvent() instanceof ZoneEvent) {
             	
             	Integer zoneID = null;
