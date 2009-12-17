@@ -21,7 +21,7 @@ public class LocalizedMessage
         else
             currentLocale = Locale.getDefault();
             
-        ResourceBundle myResources = ResourceBundle.getBundle(BUNDLE_NAME, locale);
+        ResourceBundle myResources = ResourceBundle.getBundle(BUNDLE_NAME, currentLocale);
         
         String message = null;
         if (myResources.containsKey(key))
