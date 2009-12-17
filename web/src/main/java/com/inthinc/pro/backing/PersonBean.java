@@ -27,6 +27,7 @@ import javax.faces.model.SelectItem;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
@@ -812,18 +813,42 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     public Map<String, Integer> getGroups() {
+//        final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
+//        for (final Group group : getGroupHierarchy().getGroupList())
+//            groups.put(group.getName(), group.getGroupID());
+//        return groups;
+
+    
         final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
-        for (final Group group : getGroupHierarchy().getGroupList())
-            groups.put(group.getName(), group.getGroupID());
-        return groups;
+	    for (final Group group : getGroupHierarchy().getGroupList()) {
+    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
+	    	if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+	    	}
+	    	groups.put(fullName, group.getGroupID());
+	    }
+	    return groups;
+
+    
     }
 
     public Map<String, Integer> getTeams() {
-        final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-        for (final Group group : getGroupHierarchy().getGroupList())
-            if (group.getType() == GroupType.TEAM)
-                teams.put(group.getName(), group.getGroupID());
-        return teams;
+//        final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+//        for (final Group group : getGroupHierarchy().getGroupList())
+//            if (group.getType() == GroupType.TEAM)
+//                teams.put(group.getName(), group.getGroupID());
+//        return teams;
+        
+    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+	    for (final Group group : getGroupHierarchy().getGroupList())
+	    	if (group.getType() == GroupType.TEAM) {
+	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
+	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+	    		}
+	    		teams.put(fullName, group.getGroupID());
+    	}
+	    return teams;
     }
 
     public Map<String, TimeZone> getTimeZones() {
