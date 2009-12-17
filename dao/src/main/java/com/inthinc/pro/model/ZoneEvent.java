@@ -1,8 +1,10 @@
 package com.inthinc.pro.model;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 
 public abstract class ZoneEvent extends Event {
 
@@ -45,5 +47,11 @@ public abstract class ZoneEvent extends Event {
 	public EventCategory getEventCategory() {
 	    return EventCategory.DRIVER;
 	}
+
+	@Override
+    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
+    {
+        return MessageFormat.format(formatStr, new Object[] {zoneName == null ? "" : zoneName});
+    }
 
 }
