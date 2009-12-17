@@ -63,11 +63,10 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for (VehicleReportItem vri : this.vehiclesData)
         {
-        	if (this.getGroupHierarchy().getGroup(vri.getGroupID()) == null)
+        	if (getGroupHierarchy().getGroup(vri.getGroupID()) == null)
         	{
-        		logger.info("groupID " + vri.getGroupID());
-        		logger.info("vehicleID " + vri.getVehicle().getVehicleID());
-        		logger.info("driverID " + vri.getVehicle().getDriverID());
+        		logger.info("group lookup failed -- groupID " + vri.getGroupID());
+        		vri.setGroup("");
         	}
             vri.setGroup(this.getGroupHierarchy().getGroup(vri.getGroupID()).getName());
        }

@@ -63,6 +63,11 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for (DriverReportItem dri : this.driversData)
         {
+        	if (getGroupHierarchy().getGroup(dri.getGroupID()) == null)
+        	{
+        		logger.info("group lookup failed -- groupID " + dri.getGroupID());
+        		dri.setGroup("");
+        	}
             dri.setGroup(this.getGroupHierarchy().getGroup(dri.getGroupID()).getName());
         }
 

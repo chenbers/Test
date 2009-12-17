@@ -80,6 +80,11 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 
         // Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for (IdlingReportItem iri : this.idlingsData) {
+        	if (getGroupHierarchy().getGroup(iri.getGroupID()) == null)
+        	{
+        		logger.info("group lookup failed -- groupID " + iri.getGroupID());
+        		iri.setGroup("");
+        	}
             iri.setGroup(this.getGroupHierarchy().getGroup(iri.getGroupID()).getName());
         }
     }
