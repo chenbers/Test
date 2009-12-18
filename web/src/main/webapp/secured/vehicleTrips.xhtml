@@ -295,6 +295,7 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeStartShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.startAddress}" />
+ 	            	<ui:param name="addressIsLink" value="#{vehicleTripsBean.link}"/>
    					<ui:param name="context" value="vehicleTripsStart" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
@@ -303,6 +304,7 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
+ 	            	<ui:param name="addressIsLink" value="#{vehicleTripsBean.link}"/>
     				<ui:param name="context" value="vehicleTripsEnd" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
@@ -311,6 +313,7 @@
                     <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
                     <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
+  	            	<ui:param name="addressIsLink" value="#{vehicleTripsBean.link}"/>
     				<ui:param name="context" value="vehicleTripsInProgress" />
                 </ui:include>
             </ui:repeat>
@@ -320,6 +323,7 @@
                     <ui:param name="eventType" value="#{violation.eventType}" />
                     <ui:param name="eventDateTime" value="#{violation.formattedTime}" />
                     <ui:param name="eventLocation" value="#{violation.addressStr}" />
+ 	            	<ui:param name="addressIsLink" value="#{vehicleTripsBean.link}"/>
                     <ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
                     <ui:param name="datePattern" value="null" />
                     <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
@@ -523,7 +527,13 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{messages.vehicletrip_event_address}" />
                                 </f:facet>
-                                <h:outputText value="#{item.addressStr}" />
+                               <ui:fragment rendered="#{vehicleTripsBean.link}">
+									<a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a> 
+								</ui:fragment>
+								<ui:fragment rendered="#{!vehicleTripsBean.link}">
+									<h:outputText value="#{item.addressStr}" />
+								</ui:fragment>
+                                
                             </rich:column>
 
                             <rich:column sortBy="#{item.time}" style="cursor: pointer;">
@@ -703,7 +713,12 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{messages.vehicletrip_end_address}" />
                                 </f:facet>
-                                <h:outputText value="#{item.endAddress}" />
+                                <ui:fragment rendered="#{vehicleTripsBean.link}">
+									<a href="#{item.endAddress}" target="_blank">#{messages.livefleet_address}</a> 
+								</ui:fragment>
+								<ui:fragment rendered="#{!vehicleTripsBean.link}">
+									<h:outputText value="#{item.endAddress}" />
+								</ui:fragment>
                             </rich:column>
 
                             <rich:column id="duration_column" sortBy="#{item.duration}" label="#{messages.vehicletrip_duration}" style="white-space:nowrap; cursor: pointer;">
