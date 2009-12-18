@@ -20,18 +20,8 @@ public class EventsBean extends BaseEventsBean {
 
     @Override
     protected List<Event> getEventsForGroup(Integer groupID) {
-        List<Event> safety = getEventDAO().getViolationEventsForGroup(groupID, DAYS_BACK, showExcludedEvents);
-        
-        // Add the unknown driver, making sure the name is set
-//        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
-//        List<Event> noDriverWarnings = getEventDAO().getViolationEventsForDriver(
-//                acct.getUnkDriverID(), DateUtil.getDaysBackDate(new Date(), DAYS_BACK), new Date(), showExcludedEvents);    
-//        noDriverWarnings = this.loadUnknownDriver(noDriverWarnings);
-//        
-//        safety.addAll(noDriverWarnings);  
-//        Collections.sort(safety);
-        
-        return safety;                         
+    	
+        return getEventDAO().getViolationEventsForGroup(groupID, getDaysBack(), showExcludedEvents);
     }
 
     // TablePrefOptions interface

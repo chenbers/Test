@@ -27,6 +27,11 @@
 		          	<span class="panel_links">
                     #{messages.notes_safety_description}
 		          	</span>
+						<a4j:status id="eventsStatus" for="eventsearchRegion">
+							<f:facet name="start">
+								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+							</f:facet>
+						</a4j:status>
 		           </div>
 		        </h:panelGroup>
 		
@@ -49,6 +54,18 @@
      	 					<ui:param name="outerContext" value="eventsearch:" />
 						</ui:include>
 								 
+							</td>
+							</tr>
+							</table>
+					  </li>
+					  <li class="l select">
+		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_days_box">
+		                  <tr>
+						  	<td>#{messages.daysBack} </td>
+					  	 	<td>
+					  	 	<h:selectOneMenu value="#{eventsBean.daysBack}" id="events_daysBack">
+     		            		<f:selectItems value="#{eventsBean.daysBackSel}" />
+							</h:selectOneMenu>
 							</td>
 							</tr>
 							</table>
@@ -85,13 +102,6 @@
 							reRender="editColumnsForm:editColumnGrid">
 							#{messages.button_editColumns}
 						</a4j:commandLink>
-					  </li>  
-					  <li class="l text">
-						<a4j:status id="eventsStatus" for="eventsearchRegion">
-							<f:facet name="start">
-								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-							</f:facet>
-						</a4j:status>
 					  </li>
 					  <li class="r grid_icon">
 						<h:panelGroup id="eventReportToolImageId">

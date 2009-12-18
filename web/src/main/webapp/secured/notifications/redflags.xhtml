@@ -21,6 +21,11 @@
 		          	<span class="panel_links">
                         #{messages.notes_redflags_description}
 		          	</span>
+						<a4j:status id="redFlagsStatus" for="redFlagSearch_region">
+							<f:facet name="start">
+								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+							</f:facet>
+						</a4j:status>
 		           </div>
 		        </h:panelGroup>
 		
@@ -47,6 +52,18 @@
 							</tr>
 							</table>
 						  </li>
+					  <li class="l select">
+		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_days_box">
+		                  <tr>
+						  	<td>#{messages.daysBack} </td>
+					  	 	<td>
+					  	 	<h:selectOneMenu value="#{redFlagsBean.daysBack}" id="redFlags_daysBack">
+     		            		<f:selectItems value="#{redFlagsBean.daysBackSel}" />
+							</h:selectOneMenu>
+							</td>
+							</tr>
+						</table>
+					  </li>
 					  <li class="l">
 						<a4j:commandButton id="redFlagsRefresh" styleClass="left"
 									reRender="header,redFlagsTableForm:redFlags,redFlagsTableForm:redFlags-bottomScroller" 
@@ -81,13 +98,6 @@
 							#{messages.button_editColumns}
 						</a4j:commandLink>
 					  </li>  
-					  <li class="l text">
-						<a4j:status id="redFlagsStatus" for="redFlagSearch_region">
-							<f:facet name="start">
-								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-							</f:facet>
-						</a4j:status>
-					  </li>
 					    <li class="r grid_icon">
 						<h:panelGroup id="redFlagReportToolImageId">
 							<h:graphicImage value="/images/ico_tools.png"/>

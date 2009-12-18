@@ -114,10 +114,14 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         User user = getProUser().getUser();
         setUserRole(user.getRole().getName());
         // the following will be how we access data when LIVE data is available
-        List<CrashReport> crashList = crashReportDAO.findByGroupID(user.getGroupID());
+//        List<CrashReport> crashList = crashReportDAO.findByGroupID(user.getGroupID());
+        List<CrashReport> crashList = new ArrayList<CrashReport>();
+        if (getSearchCoordinationBean().isGoodGroupId())
+        {
+        	crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID());
+        }
+
         List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
-        // temporary map to hold drivers that have already been looked up. This will go away when pagination is implemented
-//        Map<Integer, Driver> driverMap = new HashMap<Integer, Driver>();
         for (CrashReport cr : crashList) {
             CrashHistoryReportItem reportItem = new CrashHistoryReportItem();
             reportItem.setCrashReportID(cr.getCrashReportID());

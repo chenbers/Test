@@ -2718,10 +2718,24 @@ input.text,select.text {
 	margin: 2px 0 0 0;
 }
 
-#grid_nav_group_box input.text,#grid_nav_group_box select {
+#grid_nav_group_box select {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 }
+
+#grid_nav_days_box {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	margin: 2px 0 0 0;
+}
+
+#grid_nav_days_box select {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	width:35px;
+	float:none;
+}
+
 /* WIZARD NAVIGATION STEPS */
 .steps {
 	width: 800px;

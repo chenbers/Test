@@ -99,6 +99,11 @@
 		          	<span class="panel_links">
                         #{messages.notes_crashhistory_description}
 		          	</span>
+					<a4j:status id="crashHistoryStatus" for="crashHistorySearch_region">
+						<f:facet name="start">
+							<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+						</f:facet>
+					</a4j:status>
 		           </div>
 		        </h:panelGroup>
 		
@@ -117,7 +122,7 @@
 							<ui:include src="/includes/wideSelectBox.xhtml">	
 								<ui:param  name="selectValue" value="#{crashHistoryBean.searchCoordinationBean.groupID}"/>
 								<ui:param  name="selectList" value="#{crashHistoryBean.teams}"/>
-								<ui:param  name="width" value="120px"/>
+								<ui:param  name="width" value="200px"/>
      	 						<ui:param name="context" value="crashHistory" />
      	 						<ui:param name="outerContext" value="crashHistorySearch:" />
 							</ui:include>
@@ -158,13 +163,6 @@
 							#{messages.button_editColumns}
 						</a4j:commandLink>
 					  </li>  
-					  <li class="l text">
-						<a4j:status id="crashHistoryStatus" for="crashHistorySearch_region">
-							<f:facet name="start">
-								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-							</f:facet>
-						</a4j:status>
-					  </li>
 					  
 					  <security:authorize ifAnyGranted="ROLE_SUPERUSER,ROLE_INTHINC">
 					  	<li class="l text">

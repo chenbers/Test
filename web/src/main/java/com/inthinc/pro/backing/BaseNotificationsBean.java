@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +40,10 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 	
 //  protected final static Integer DAYS_BACK = 7;
     protected final static Integer DAYS_BACK = 1;
-	
-    private DriverDAO                driverDAO;
+    protected final static Integer MAX_DAYS_BACK = 7;
+    private Integer	daysBack;
+    
+	private DriverDAO                driverDAO;
     private VehicleDAO               vehicleDAO;
 
     private ZoneDAO                  zoneDAO;
@@ -77,7 +80,8 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     public Map<String, Integer> getTeams() {
     	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
 	    for (final Group group : getGroupHierarchy().getGroupList())
-	    	if (group.getType() == GroupType.TEAM) {
+//	    	if (group.getType() == GroupType.TEAM) {
+	    {
 	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
 	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
 	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
@@ -89,6 +93,19 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 	    return teams;
     }
 
+    private Map<String, Integer> daysBackSel;
+    public Map<String, Integer> getDaysBackSel() {
+    	if (daysBackSel == null) {
+	    	daysBackSel = new TreeMap<String, Integer>();
+	    	
+		    for (Integer i = 1; i <= MAX_DAYS_BACK; i++) {
+		    	daysBackSel.put(Integer.valueOf(i).toString(), i);
+		    }
+    	}
+	    return daysBackSel;
+    }
+
+    
     public void setTeams(Map<String, Integer>  teams) {
 		this.teams = teams;
 	}
@@ -431,6 +448,20 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
         return reportCriteria;
     }
 
+    
+    public Integer getDaysBack() {
+    	if (daysBack == null) {
+    		daysBack = Integer.valueOf(1);
+    	}
+		return daysBack;
+	}
+
+
+	public void setDaysBack(Integer daysBack) {
+		this.daysBack = daysBack;
+	}
+
+    
 	protected abstract ReportCriteria getReportCriteria();
     
 //    public List<Event> loadUnknownDriver(List<Event> warnings) {
