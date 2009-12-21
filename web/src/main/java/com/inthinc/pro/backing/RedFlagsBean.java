@@ -109,14 +109,14 @@ public class RedFlagsBean extends BaseNotificationsBean<RedFlagReportItem> imple
             }
         }
         // Filter if search is based on group.
-        if (!getEffectiveGroupId().equals(getUser().getGroupID())) {
-            filteredTableData = new ArrayList<RedFlagReportItem>();
-            for (RedFlagReportItem item : tableData) {
-                if (item.getRedFlag().getEvent().getGroupID().equals(getEffectiveGroupId())) {
-                    filteredTableData.add(item);
-                }
-            }
-        }
+//        if (!getEffectiveGroupId().equals(getUser().getGroupID())) {
+//            filteredTableData = new ArrayList<RedFlagReportItem>();
+//            for (RedFlagReportItem item : tableData) {
+//                if (item.getRedFlag().getEvent().getGroupID().equals(getEffectiveGroupId())) {
+//                    filteredTableData.add(item);
+//                }
+//            }
+//        }
         if (searchCoordinationBean.isGoodSearch()) {
             final ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
             searchTableData.addAll(filteredTableData);
