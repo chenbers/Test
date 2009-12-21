@@ -42,6 +42,7 @@ import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -715,6 +716,12 @@ public class AlertMessagesTest {
                             System.out.println();
                     }
                 }
+            }
+            catch (RemoteServerException re) {
+                if (re.getErrorCode() != 302 ) {
+                    errorFound = true;
+                }
+            	
             }
             catch (Exception e) {
                 e.printStackTrace();
