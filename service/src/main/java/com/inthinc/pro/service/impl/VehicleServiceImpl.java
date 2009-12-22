@@ -16,6 +16,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Trip;
@@ -128,6 +129,23 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
     }
 
+    @Override
+    public Response getEvents(Integer vehicleID, String day) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
+        DateTime startDate = formatter.parseDateTime(day).minusDays(1);
+        List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
+
+        return Response.ok(new GenericEntity<List<Event>>(list) {}).build();
+    }
+
+    @Override
+    public Response getEvents(Integer vehicleID) {
+        DateTime startDate = new DateTime().minusDays(30);
+        List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
+        return Response.ok(new GenericEntity<List<Event>>(list) {}).build();
+    }
+    
+    
     // fuel consumption for vehicle (parameter:day)"
     // @Override
     // public Response getVehicleMPG(Integer id) {

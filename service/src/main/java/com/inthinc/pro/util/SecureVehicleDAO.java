@@ -11,6 +11,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
@@ -111,6 +112,13 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
         if (isAuthorized(vehicleID))
             return vehicleDAO.getTrips(vehicleID, startDate, endDate);
+        return null;
+
+    }
+
+    public List<Event> getEvents(Integer vehicleID, Date startDate, Date endDate) {
+        if (isAuthorized(vehicleID))
+            return vehicleDAO.getEvents(vehicleID, startDate, endDate);
         return null;
 
     }

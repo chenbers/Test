@@ -52,6 +52,15 @@ public interface VehicleService {
     public Response getTrips(@PathParam("id") Integer id);
 
     @GET
+    @Path("/vehicle/{id}/events/{date}")
+    // DATE is in YYYYMMDD format
+    public Response getEvents(@PathParam("id") Integer id, @PathParam("date") String date);
+
+    @GET
+    @Path("/vehicle/{id}/events")
+    public Response getEvents(@PathParam("id") Integer id);
+
+    @GET
     @Path("/vehicle/{id}/lastlocation")
     public Response getLastLocation(@PathParam("id") Integer vehicleID);
 
