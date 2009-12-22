@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.inthinc.pro.dao.MpgDAO;
@@ -12,6 +13,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
@@ -117,8 +119,12 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
     }
 
     public List<Event> getEvents(Integer vehicleID, Date startDate, Date endDate) {
-        if (isAuthorized(vehicleID))
-            return vehicleDAO.getEvents(vehicleID, startDate, endDate);
+		if (isAuthorized(vehicleID))
+		{
+//			List<Integer> eventTypes = new LinkedList<Integer>();
+//			eventTypes.add(EventMapper.TIWIPRO_EVENT_FULLEVENT);
+        	return driverDAO.getEventDAO().getEventsForVehicle(vehicleID, startDate, endDate, null, 0);
+		}
         return null;
 
     }
