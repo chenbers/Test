@@ -3,11 +3,11 @@ package com.inthinc.pro.map;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 
-public class GoogleAjaxAddressLookup extends AddressLookup {
+public class GoogleAjaxAddressLookup implements AddressLookup {
 
 	public GoogleAjaxAddressLookup() {
 		super();
-		setPassToPage(AddressLookup.PassToPage.LATLNG);
+//		setPassToPage(AddressLookup.PassToPage.LATLNG);
 	}
 
 	private LatLng latLng;
@@ -51,5 +51,11 @@ public class GoogleAjaxAddressLookup extends AddressLookup {
 	public double getLng(){
 		
 		return latLng.getLng();
+	}
+
+	@Override
+	public boolean isLink() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
