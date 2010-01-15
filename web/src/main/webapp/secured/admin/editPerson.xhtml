@@ -14,7 +14,6 @@
   <ui:param name="title" value="#{personBean.add ? messages.adminHeader_addPerson : (personBean.batchEdit ? messages.adminHeader_editPeople : messages.adminHeader_editPerson)}"/>
   <ui:define name="scripts">
       <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
-      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/wideSelectBox.js"></script>
   </ui:define>
   
   <ui:define name="content">
@@ -320,34 +319,18 @@
                        </ui:include>
                           </td>
                           <td>
-                            <rich:message for="editPerson-driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-<!--                             
-                            <h:selectOneMenu value="#{personBean.item.driver.groupID}" 
-                              id="editPerson-driver_groupID" 
-                              required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
-                              requiredMessage="#{messages.required}"
-                              onchange="checkMultiple(this)">
-                              <f:selectItem itemLabel="" />
-                              <f:selectItems value="#{personBean.teams}" />
-                            </h:selectOneMenu>
- -->                            
-                            
-                            <input type='text' id='dummy' style='width:1px;height:1px;border:none;border-color:white;border-style:none;'/>
-	  	 					<h:selectOneMenu value="#{personBean.item.driver.groupID}" id="editPerson-driver_groupID" style="width:200px;float:none;"
-	  	 							onmousedown="dropdown_mousedown(this,document.getElementById('foo'),document.getElementById('dummy'));" 
-	  	 							onmouseup="dropdown_mouseup(this, document.getElementById('foo'));"
-                              		required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
-                              		requiredMessage="#{messages.required}"
-                              		onchange="checkMultiple(this)">
- 		            			<f:selectItem itemLabel="" />
-     		            		<f:selectItems value="#{personBean.teams}" />
-							</h:selectOneMenu>
-							<select id="foo" size="20" style="display:none;width:400px;position:absolute;" 
-									onclick="select_click(document.getElementById('edit-form:editPerson-driver_groupID'), this);" 
-									onblur="select_blur(document.getElementById('edit-form:editPerson-driver_groupID'), this)" 
-									onkeypress="select_keypress(document.getElementById('edit-form:editPerson-driver_groupID'), this, event);" 
-									disabled="disabled"> 
-							</select>
+     	                       <rich:message for="editPerson-driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+		  	 					<h:selectOneMenu value="#{personBean.item.driver.groupID}" id="editPerson-driver_groupID" style="width:200px;float:none;"
+    	                          		required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
+        	                      		requiredMessage="#{messages.required}"
+            	                  		onchange="checkMultiple(this)">
+ 		        	    			<f:selectItem itemLabel="" />
+     		        	    		<f:selectItems value="#{personBean.teams}" />
+								</h:selectOneMenu>
+					  	 	
+								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 					<ui:param name="selectBoxID" value="edit-form:editPerson-driver_groupID" />
+								</ui:include>
                             
                             
                           </td>
@@ -604,32 +587,17 @@
                           </td>
                           <td>
                             <rich:message for="editPerson-user_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-<!--                             
-                            <h:selectOneMenu value="#{personBean.item.user.groupID}" 
-                            	id="editPerson-user_groupID" disabled="#{!personBean.item.userEditable}" 
-                            	required="#{not personBean.batchEdit}" 
-                                 requiredMessage="#{messages.required}"
-                            	onchange="checkMultiple(this)">
-                              <f:selectItem itemLabel="" />
-                              <f:selectItems value="#{personBean.groups}" />
-                            </h:selectOneMenu>
- -->                            
-                            <input type='text' id='dummy1' style='width:1px;height:1px;border:none;border-color:white;border-style:none;'/>
-	  	 					<h:selectOneMenu value="#{personBean.item.user.groupID}" id="editPerson-user_groupID" style="width:200px;float:none;"
-	  	 							onmousedown="dropdown_mousedown(this,document.getElementById('foo1'),document.getElementById('dummy1'));" 
-	  	 							onmouseup="dropdown_mouseup(this, document.getElementById('foo1'));"
+	  	 					<h:selectOneMenu value="#{personBean.item.user.groupID}" id="editPerson-user_groupID" style="width:200px;"
   	                            	required="#{not personBean.batchEdit}" 
  	                                requiredMessage="#{messages.required}"
                               		onchange="checkMultiple(this)">
  		            			<f:selectItem itemLabel="" />
      		            		<f:selectItems value="#{personBean.groups}" />
 							</h:selectOneMenu>
-							<select id="foo1" size="20" style="display:none;width:400px;position:absolute;" 
-									onclick="select_click(document.getElementById('edit-form:editPerson-user_groupID'), this);" 
-									onblur="select_blur(document.getElementById('edit-form:editPerson-user_groupID'), this)" 
-									onkeypress="select_keypress(document.getElementById('edit-form:editPerson-user_groupID'), this, event);" 
-									disabled="disabled"> 
-							</select>
+								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 					<ui:param name="selectBoxID" value="edit-form:editPerson-user_groupID" />
+								</ui:include>
+							
                           </td>
                         </tr>
                         <tr>

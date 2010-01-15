@@ -41,13 +41,14 @@
 		                  <tr>
 						  	<td>#{messages.group_team} </td>
 					  	 	<td>
-						<ui:include src="/includes/wideSelectBox.xhtml">	
-							<ui:param  name="selectValue" value="#{redFlagsBean.searchCoordinationBean.groupID}"/>
-							<ui:param  name="selectList" value="#{redFlagsBean.teams}"/>
-							<ui:param  name="width" value="200px"/>
-     	 					<ui:param name="context" value="redFlags" />
-     	 					<ui:param name="outerContext" value="redFlagSearch:" />
-						</ui:include>
+					  	 		<h:selectOneMenu value="#{redFlagsBean.searchCoordinationBean.groupID}" id="redFlags_groupID" style="width:200px;size:auto;">
+  									<f:selectItem itemLabel="" />
+  									<f:selectItems value="#{redFlagsBean.teams}" />  
+								</h:selectOneMenu>
+					  	 	
+								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 					<ui:param name="selectBoxID" value="redFlagSearch:redFlags_groupID" />
+								</ui:include>
  							</td>
 							</tr>
 							</table>

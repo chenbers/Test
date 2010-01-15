@@ -160,13 +160,14 @@
 		                  <tr>
 						  	<td>#{messages.group_team} </td>
 		 					<td>
-							<ui:include src="/includes/wideSelectBox.xhtml">	
-								<ui:param  name="selectValue" value="#{crashHistoryBean.searchCoordinationBean.groupID}"/>
-								<ui:param  name="selectList" value="#{crashHistoryBean.teams}"/>
-								<ui:param  name="width" value="200px"/>
-     	 						<ui:param name="context" value="crashHistory" />
-     	 						<ui:param name="outerContext" value="crashHistorySearch:" />
+							<h:selectOneMenu value="#{crashHistoryBean.searchCoordinationBean.groupID}" id="crashHistory_groupID" style="width:200px;size:auto;">
+  								<f:selectItem itemLabel="" />
+  								<f:selectItems value="#{crashHistoryBean.teams}" />  
+							</h:selectOneMenu>
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 					<ui:param name="selectBoxID" value="crashHistorySearch:crashHistory_groupID" />
 							</ui:include>
+							
 							</td>
 							</tr>
 						</table>

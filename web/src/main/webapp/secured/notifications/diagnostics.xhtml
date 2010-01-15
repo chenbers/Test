@@ -44,13 +44,14 @@
 		                  <tr>
 						  	<td>#{messages.group_team} </td>
 		 					<td>
-							<ui:include src="/includes/wideSelectBox.xhtml">	
-								<ui:param  name="selectValue" value="#{diagnosticsBean.searchCoordinationBean.groupID}"/>
-								<ui:param  name="selectList" value="#{diagnosticsBean.teams}"/>
-								<ui:param  name="width" value="200px"/>
-     	 						<ui:param name="context" value="diagnostics" />
-     	 						<ui:param name="outerContext" value="diagnostics_search:" />
+							<h:selectOneMenu value="#{diagnosticsBean.searchCoordinationBean.groupID}" id="diagnostics_groupID" style="width:200px;size:auto;">
+  								<f:selectItem itemLabel="" />
+  								<f:selectItems value="#{diagnosticsBean.teams}" />  
+							</h:selectOneMenu>
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 					<ui:param name="selectBoxID" value="diagnostics_search:diagnostics_groupID" />
 							</ui:include>
+							
                        		</td>
 							</tr>
 						</table>

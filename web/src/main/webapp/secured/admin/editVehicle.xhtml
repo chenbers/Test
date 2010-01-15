@@ -13,7 +13,6 @@
   <ui:param name="title" value="#{vehiclesBean.add ? messages.adminHeader_addVehicle : (vehiclesBean.batchEdit ? messages.adminHeader_editVehicles : messages.adminHeader_editVehicle)}"/>
   <ui:define name="scripts">
       <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
-      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/wideSelectBox.js"></script>
   </ui:define>
   
   <ui:define name="content">
@@ -282,30 +281,18 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <rich:message for="editVehicle-groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-<!--                                   
-                                  <h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="editVehicle-groupID" 
-                                  required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}">
-                                    <a4j:support event="onchange" reRender="editVehicle-driverID,chooseDriverForm:chooseDriverTable" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" />
-                                    <f:selectItem itemLabel="" />
-                                    <f:selectItems value="#{vehiclesBean.teams}" />
-                                  </h:selectOneMenu>
- -->                                  
-                            <input type='text' id='dummy' style='width:1px;height:1px;border:none;border-color:white;border-style:none;'/>
-	  	 					<h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="editVehicle-groupID" style="width:200px;float:none;"
-	  	 							onmousedown="dropdown_mousedown(this,document.getElementById('foo'),document.getElementById('dummy'));" 
-	  	 							onmouseup="dropdown_mouseup(this, document.getElementById('foo'));"
-									required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}">
-                                <a4j:support event="onchange" reRender="editVehicle-driverID,chooseDriverForm:chooseDriverTable" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" />
- 		            			<f:selectItem itemLabel="" />
-     		            		<f:selectItems value="#{vehiclesBean.teams}" />
-							</h:selectOneMenu>
-							<select id="foo" size="20" style="display:none;width:400px;position:absolute;" 
-									onclick="select_click(document.getElementById('edit-form:editVehicle-groupID'), this);" 
-									onblur="select_blur(document.getElementById('edit-form:editVehicle-groupID'), this)" 
-									onkeypress="select_keypress(document.getElementById('edit-form:editVehicle-groupID'), this, event);" 
-									disabled="disabled"> 
-							</select>
+                                <rich:message for="editVehicle-groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+		  	 					<h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="editVehicle-groupID" style="width:200px;float:none;"
+										required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}">
+        	                        <a4j:support event="onchange" reRender="editVehicle-driverID,chooseDriverForm:chooseDriverTable" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" />
+ 		    	        			<f:selectItem itemLabel="" />
+     		    	        		<f:selectItems value="#{vehiclesBean.teams}" />
+								</h:selectOneMenu>
+								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 					<ui:param name="selectBoxID" value="edit-form:editVehicle-groupID" />
+								</ui:include>
+                            
+							
                                 </td>
                               </tr>
                               <ui:fragment rendered="#{not vehiclesBean.batchEdit}">

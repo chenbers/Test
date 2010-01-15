@@ -46,13 +46,14 @@
 		                  <tr>
 						  	<td>#{messages.group_team} </td>
 					  	 	<td>
-						<ui:include src="/includes/wideSelectBox.xhtml">	
-							<ui:param  name="selectValue" value="#{eventsBean.searchCoordinationBean.groupID}"/>
-							<ui:param  name="selectList" value="#{eventsBean.teams}"/>
-							<ui:param  name="width" value="200px"/>
-     	 					<ui:param name="context" value="events" />
-     	 					<ui:param name="outerContext" value="eventsearch:" />
-						</ui:include>
+								<h:selectOneMenu value="#{eventsBean.searchCoordinationBean.groupID}" id="events_groupID" style="width:200px;size:auto;">
+  									<f:selectItem itemLabel="" />
+  									<f:selectItems value="#{eventsBean.teams}" />  
+								</h:selectOneMenu>
+					  	 	
+								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 					<ui:param name="selectBoxID" value="eventsearch:events_groupID" />
+								</ui:include>
 								 
 							</td>
 							</tr>

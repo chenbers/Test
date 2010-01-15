@@ -1,0 +1,22 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:a4j="http://richfaces.org/a4j">
+                
+	<script>window.dhx_globalImgPath="#{facesContext.externalContext.requestContextPath}/images/dhtml/";</script>
+
+	<link rel="STYLESHEET" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/dhtml/dhtmlxcombo.css"/>
+
+    <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/dhtml/dhtmlxcommon.js"></script>
+    <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/dhtml/dhtmlxcombo.js"></script>
+    <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/dhtml/ext/dhtmlxcombo_whp.js"></script>
+                
+	
+	<script>
+		var comboBox=dhtmlXComboFromSelect("#{selectBoxID}");
+		comboBox.enableOptionAutoWidth(1);
+	</script>
+
+
+</ui:composition>

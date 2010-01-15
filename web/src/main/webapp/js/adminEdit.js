@@ -40,6 +40,8 @@ function checkMultiple(item) {
 		id = item;
 	else
 		id = item.id;
+	
+	if (!id) return;
 
 	var box;
 	var index = id.lastIndexOf(":");
