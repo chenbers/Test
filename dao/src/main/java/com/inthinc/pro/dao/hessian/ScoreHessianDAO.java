@@ -400,6 +400,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 vri.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
                 vri.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
                 vri.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE : dqm.getDrivingStyle());
+                
+                vri.setOdometer(0);
+                if ( v.getOdometer() != null ) {
+                    vri.setOdometer(v.getOdometer());
+                }
 
                 lVri.add(vri);
                 vri = null;

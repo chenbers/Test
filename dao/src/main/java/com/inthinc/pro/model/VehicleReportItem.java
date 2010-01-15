@@ -23,6 +23,7 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     private Driver driver;
     private Integer groupID;
     private String goTo;
+    private Number odometer;
     
     public String getGroup()
     {
@@ -129,6 +130,12 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
         this.goTo = goTo;
     }
             
+    public Number getOdometer() {
+        return odometer;
+    }
+    public void setOdometer(Number odometer) {
+        this.odometer = odometer;
+    }
     @Override
     public int compareTo(VehicleReportItem item)
     {

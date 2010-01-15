@@ -45,6 +45,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         AVAILABLE_COLUMNS.add("overallScore");
         AVAILABLE_COLUMNS.add("speedScore");
         AVAILABLE_COLUMNS.add("styleScore");
+        AVAILABLE_COLUMNS.add("odometer");
     }
     
     public VehicleReportBean()

@@ -65,6 +65,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("state");
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("deviceID");
+        AVAILABLE_COLUMNS.add("odometer");
 
         // years
         final Calendar cal = Calendar.getInstance();

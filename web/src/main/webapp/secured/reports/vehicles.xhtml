@@ -181,6 +181,16 @@
                                                 <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                                             </h:outputFormat>
                                         </rich:column>
+            							<rich:column id="odometer" rendered="#{vehicleReportBean.tableColumns['odometer'].visible}" 
+                                            sortBy="#{item.odometer}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_vehiclereport_odometer}"/>
+                                            </f:facet>
+                                            <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
+                                                <a4j:actionparam value="#{item.odometer}" converter="MilesToKilometersConverter"/>
+                                                <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+                                            </h:outputFormat>
+                                        </rich:column>                                        
                                         <rich:column id="overallScore" rendered="#{vehicleReportBean.tableColumns['overallScore'].visible}"
                                             sortBy="#{item.overallScore}">
                                             <f:facet name="header">

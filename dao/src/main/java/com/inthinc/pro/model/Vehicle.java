@@ -34,6 +34,8 @@ public class Vehicle extends BaseEntity
     private Integer           driverID;
     @Column(updateable = false)
     private Integer           deviceID;
+    
+    private Integer           odometer;
 
     public Vehicle()
     {
@@ -186,6 +188,14 @@ public class Vehicle extends BaseEntity
     public void setDeviceID(Integer deviceID)
     {
         this.deviceID = deviceID;
+    }
+
+    public Integer getOdometer() {
+        return odometer;
+    }
+
+    public void setOdometer(Integer odometer) {
+        this.odometer = odometer;
     }
 
     public Vehicle(Integer vehicleID, Integer groupID, Integer costPerHour, Status status, String name, String make, String model, 
