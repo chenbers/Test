@@ -111,6 +111,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
+            types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
             
             List<Event>violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, showExcludedEvents );
             violationEventsMap = new LinkedHashMap<Long,Event>();

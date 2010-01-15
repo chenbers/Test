@@ -144,6 +144,7 @@ public class TripsBean extends BaseBean {
             idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
             List<Integer> tamperEventTypeList = new ArrayList<Integer>();
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
+            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
             if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
             	
                 violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, showExcludedEvents);
