@@ -7,6 +7,7 @@
 	            xmlns:f="http://java.sun.com/jsf/core"
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
     
  	<t:saveState value="#{bean}"/>
     
@@ -18,7 +19,8 @@
     <div class="datagrid_panel" style="width:925px; overflow: auto">
         
 
-        <rich:dataTable id="#{context}" value="#{tableData}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
+        <rich:dataTable id="#{context}" value="#{tableData}" var="item" rowKeyVar="index"
+        		styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
             <!-- Data -->
             <rich:column id="mapColumn" style="text-align: center;">
@@ -28,10 +30,18 @@
                         <f:param name="lng" value="#{item.event.longitude}" />
                     </rich:componentControl>
                 </h:graphicImage>
-                <rich:toolTip id="addressToolTip" mode="ajax">
+               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1}">
                     <h:outputText id="address" value="#{item.event.latLng}" converter="#{latLngAddressConverter}" />
                 </rich:toolTip>
-            </rich:column>
+              <rich:toolTip id="baddressToolTip" mode="client" rendered="#{bean.addressFormat == 2}">
+ 				<a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a> 
+               </rich:toolTip>
+              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3}">
+				<h:inputHidden id="eventLat" value="#{item.event.latitude}"/>
+				<h:inputHidden id="eventLng" value="#{item.event.longitude}"/>
+ 				<h:outputText id="eventAddress" />
+                </rich:toolTip>
+             </rich:column>
             <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{item.event.time}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_date}" />

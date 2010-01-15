@@ -1,11 +1,11 @@
 package com.inthinc.pro.backing;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.util.CircularIterator;
 
 public class DriverLocationBean extends BaseBean {
 
@@ -40,8 +41,8 @@ public class DriverLocationBean extends BaseBean {
 	private Integer selectedDriverID;
 	private Integer selectedVehicleID;
 
-	private List<DriverLocation> driverLocations;
-
+//	private List<DriverLocation> driverLocations;
+	private Map<Integer,DriverLocation> driverLocationsMap;
 	
 	public DriverLocationBean() {
 		super();
@@ -60,47 +61,18 @@ public class DriverLocationBean extends BaseBean {
 	public List<DriverLocation> getDriverLocations()
 	{
 //		logger.info("-----getDriverLocations");		
-	    if (driverLocations != null && driverLocations.size() > 0) 
-	    	return driverLocations;
-	    
-	    driverLocations = new ArrayList<DriverLocation>();
+//	    if (driverLocationsMap != null && driverLocationsMap.size() > 0) {
+//	    	
+//	    	return new ArrayList<DriverLocation>(driverLocationsMap.values());
+//	    }
 	    
 //Date traceStartTime = new Date();	    
-	    driverLocations = driverDAO.getDriverLocations(navigation.getGroupID());
+	    List<DriverLocation>driverLocations = driverDAO.getDriverLocations(navigation.getGroupID());
 
-	    childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
+	    allocateIcons(driverLocations);
 	    
-	    teamLevel = (childGroups == null);
-   		if (!teamLevel){
-        	
-    		MapAndLegendIconManager malim = new MapAndLegendIconManager();
-    		malim.initMapAndLegendIcons(childGroups.size());
-         	
-         	//Sort the groups by name so the icons appear in the same order as the trend chart
-         	Collections.sort(childGroups, new GroupComparator());
-
-	        for (Group group:childGroups){
-	        		         	
-	        	groupMap.put(group.getGroupID(), group);
-	        	
-	        	malim.addMapAndLegendIcon(group.getGroupID(),group.getName(),null);
-	        }
-        }
-        else {
-	        Collections.sort(driverLocations, new DriverComparator());
-	        
-    		MapAndLegendIconManager malim = new MapAndLegendIconManager();
-        	malim.initMapAndLegendIcons(driverLocations.size());
-    		for (DriverLocation driverLocation : driverLocations){
-            	
-    			if (driverLocation != null && driverLocation.getDriver() != null && driverLocation.getDriver().getPerson() != null) {
-   	           	   malim.addMapAndLegendIcon(driverLocation.getDriver().getDriverID(), driverLocation.getDriver().getPerson().getFullName(), 
-   	           			   driverLocation.getLoc());
-    			}
-            }
-
-        }
-	    driverLocations = populateAddressAndIcon();
+	    driverLocations = populateAddressAndIcon(driverLocations);
+	    
 	    if (!teamLevel) {
 	        Collections.sort(driverLocations, new DriverLocationGroupComparator());
 	    }
@@ -114,18 +86,30 @@ public class DriverLocationBean extends BaseBean {
 
 			setCenter(driverLocations.get(0).getLoc());
 		}
+		driverLocationsMap = new LinkedHashMap<Integer, DriverLocation>();
+		for(DriverLocation dl:driverLocations){
+			
+			driverLocationsMap.put(dl.getDriver().getDriverID(),dl);
+		}
 		
 //logger.info("TOTAL TIME: " + (new Date().getTime() - traceStartTime.getTime()) + " ms");
+		selectedDriverID = driverLocations.size()>0?driverLocations.get(0).getDriver().getDriverID():null;
 
-
-		return driverLocations;
+		return new ArrayList<DriverLocation>(driverLocationsMap.values());
 	}
 
 	public void setDriverLocations(List<DriverLocation> driverLocations) {
-		this.driverLocations = driverLocations;
+		driverLocationsMap = new LinkedHashMap<Integer,DriverLocation>();
+		for(DriverLocation dl : driverLocations){
+			
+			driverLocationsMap.put(dl.getDriver().getDriverID(),dl);
+		}
+        selectedDriverID = driverLocations.size()>0?driverLocations.get(0).getDriver().getDriverID():null;
+
 	}
 	
-	private List<DriverLocation> populateAddressAndIcon() {
+	private List<DriverLocation> populateAddressAndIcon(List<DriverLocation> driverLocations) {
+		
 		List<DriverLocation> validList = new ArrayList<DriverLocation>();
 		for (DriverLocation driverLocation : driverLocations) {
 			
@@ -142,6 +126,42 @@ public class DriverLocationBean extends BaseBean {
 		return validList;
 	}
 	
+	private void allocateIcons(List<DriverLocation> driverLocations){
+		
+	    childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
+	    
+	    teamLevel = (childGroups == null);
+		MapAndLegendIconManager malim = new MapAndLegendIconManager();
+
+  		if (!teamLevel){
+        	
+    		malim.initMapAndLegendIcons(childGroups.size());
+         	
+         	//Sort the groups by name so the icons appear in the same order as the trend chart
+         	Collections.sort(childGroups, new GroupComparator());
+
+	        for (Group group:childGroups){
+	        		         	
+	        	groupMap.put(group.getGroupID(), group);
+	        	
+	        	malim.addMapAndLegendIcon(group.getGroupID(),group.getName(),null);
+	        }
+        }
+        else {
+	        Collections.sort(driverLocations, new DriverComparator());
+	        
+        	malim.initMapAndLegendIcons(driverLocations.size());
+    		for (DriverLocation driverLocation : driverLocations){
+            	
+    			if (driverLocation != null && driverLocation.getDriver() != null && driverLocation.getDriver().getPerson() != null) {
+   	           	   malim.addMapAndLegendIcon(driverLocation.getDriver().getDriverID(), driverLocation.getDriver().getPerson().getFullName(), 
+   	           			   driverLocation.getLoc());
+    			}
+            }
+
+        }
+
+	}
 	
 	private int getIconKey(DriverLocation driverLocation)
 	{
@@ -361,10 +381,11 @@ public class DriverLocationBean extends BaseBean {
 	      	mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, iconCount);
 
 	   		mapIconMap = new IconMap();
-         	mapIconIt = mapIcons.iterator();
+            mapIconIt = new CircularIterator<MapIcon>(mapIcons);
          	
 	      	legendMapIcons = mif.getMapIcons(MapIconFactory.IconType.MAP_LEGEND, iconCount);
-	      	legendIt = legendMapIcons.iterator();
+	      	
+            legendIt = new CircularIterator<MapIcon>(legendMapIcons);
 	      	legendIcons = new ArrayList<LegendIcon>();
 		}
 		private void addMapAndLegendIcon(Integer key, String caption, LatLng latLng){
@@ -450,5 +471,12 @@ public class DriverLocationBean extends BaseBean {
 			return (middle==null) ? "" : middle;
 		}
 		
+	}
+	public Map<Integer, DriverLocation> getDriverLocationsMap() {
+		return driverLocationsMap;
+	}
+	public void setDriverLocationsMap(
+			Map<Integer, DriverLocation> driverLocationsMap) {
+		this.driverLocationsMap = driverLocationsMap;
 	}
 }

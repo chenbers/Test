@@ -43,7 +43,7 @@
     			xmlns:pretty="http://ocpsoft.com/prettyfaces">
 				
 
-	<div id="#{hiddenDivID}" style="display:none">
+	<div id="driverBubble" style="display:none">
 		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 			<f:facet name="header">
 			    <pretty:link id="driverBubbleDriver" mappingId="driverPerformance">
@@ -67,11 +67,14 @@
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
-			<ui:fragment rendered="#{addressIsLink}">
+			<ui:fragment rendered="#{addressLookupAddressFormat == 1}"> <!--Address -->
+				<h:outputText value="#{vehicleAddress}" />
+			</ui:fragment>
+			<ui:fragment rendered="#{addressLookupAddressFormat == 2}"> <!-- Link -->
 				<a href="#{vehicleAddress}" target="_blank">#{messages.livefleet_address}</a> 
 			</ui:fragment>
-			<ui:fragment rendered="#{!addressIsLink}">
-				<h:outputText value="#{vehicleAddress}" />
+			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
+				<h:outputText id="bubbleAddress"/>
 			</ui:fragment>
 		</h:panelGrid>
 	</div>

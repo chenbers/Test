@@ -32,11 +32,14 @@
 		 Cannot get f:convert or custom converter (tiwi:dateTimeOutputConverter) to work when 
 		 timeZone property is inside current list being iterated through. kselman
 		-->
-			<ui:fragment rendered="#{addressIsLink}">
+			<ui:fragment rendered="#{addressLookupAddressFormat == 1}"> <!--Address -->
+				<h:outputText value="#{eventLocation}" />
+			</ui:fragment>
+			<ui:fragment rendered="#{addressLookupAddressFormat == 2}"> <!-- Link -->
 				<a href="#{eventLocation}" target="_blank">#{messages.livefleet_address}</a> 
 			</ui:fragment>
-			<ui:fragment rendered="#{!addressIsLink}">
-				<h:outputText value="#{eventLocation}" />
+			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
+				<h:outputText id="#{tripBubbleAddress}"/>
 			</ui:fragment>
 		
 	</h:panelGrid>

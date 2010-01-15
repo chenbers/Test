@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -69,6 +70,12 @@ public class TripsBean extends BaseBean {
     private GroupTreeNodeImpl groupTreeNodeImpl;
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
     private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range",getLocale());
+    
+    //Changes for clientside reverse geocoding
+    private Map<Long,TripDisplay> tripsMap;
+    private Long selectedTripID;
+    private Map<Long,Event> allEventsMap;
+    private Long selectedViolationID;
 
     public void initTrips() {
         if (trips.isEmpty()) {
@@ -92,6 +99,12 @@ public class TripsBean extends BaseBean {
                 setSelectedTrip(trips.get(0));
                 generateStats();
             }
+            tripsMap = new LinkedHashMap<Long,TripDisplay>();
+            
+            for(TripDisplay trip : trips){
+           	
+              tripsMap.put(trip.getTrip().getTripID(), trip);
+           }
         }
     }
 
@@ -159,6 +172,11 @@ public class TripsBean extends BaseBean {
             allEvents.addAll(tamperEvents);
             Collections.sort(allEvents);
             Collections.reverse(allEvents);
+            allEventsMap = new LinkedHashMap<Long,Event>();
+            for(Event event:allEvents){
+            	allEventsMap.put(event.getNoteID(),event);
+            }
+            selectedViolationID = allEvents.size()>0?allEvents.get(0).getNoteID():null;
         }
     }
 
@@ -385,6 +403,7 @@ public class TripsBean extends BaseBean {
             }
             // Reverse list, oldest is first
             Collections.reverse(selectedTrips);
+            
             // Load events for given list.
             this.violationEvents.clear();
             initViolations(selectedTrips.get(selectedTrips.size() - 1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());
@@ -395,7 +414,7 @@ public class TripsBean extends BaseBean {
             }
             else {
                 setSelectedTrip(selectedTrip);
-            }
+             }
         }
     }
 
@@ -450,6 +469,7 @@ public class TripsBean extends BaseBean {
 	        }
 	        // Get Violations for this Trip
 	        initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
+	        selectedTripID = selectedTrips.get(0).getTrip().getTripID();
         }
     }
 
@@ -519,6 +539,7 @@ public class TripsBean extends BaseBean {
         }
         
         trips.clear();
+        tripsMap = null;
         initTrips();
     }
     
@@ -614,4 +635,36 @@ public class TripsBean extends BaseBean {
     public void setDateStatus(String dateStatus) {
         this.dateStatus = dateStatus;
     }
+
+	public Map<Long, TripDisplay> getTripsMap() {
+		return tripsMap;
+	}
+
+	public void setTripsMap(Map<Long, TripDisplay> tripsMap) {
+		this.tripsMap = tripsMap;
+	}
+
+	public Long getSelectedTripID() {
+		return selectedTripID;
+	}
+
+	public void setSelectedTripID(Long selectedTripID) {
+		this.selectedTripID = selectedTripID;
+	}
+
+	public Map<Long, Event> getAllEventsMap() {
+		return allEventsMap;
+	}
+
+	public void setAllEventsMap(Map<Long, Event> allEventsMap) {
+		this.allEventsMap = allEventsMap;
+	}
+
+	public Long getSelectedViolationID() {
+		return selectedViolationID;
+	}
+
+	public void setSelectedViolationID(Long selectedViolationID) {
+		this.selectedViolationID = selectedViolationID;
+	}
 }

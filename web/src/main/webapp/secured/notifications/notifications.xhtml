@@ -9,7 +9,9 @@
         <script src="#{facesContext.externalContext.requestContextPath}/js/mapGeocode.js" type="text/javascript"></script>
         <script type="text/javascript">
           var map;
-        	
+          var geocoder = null;
+          var errorMessage = null;
+          
           function initializeMap(lat, lng, zonePoints, noteID) 
           {
             if (GBrowserIsCompatible()) {
@@ -18,6 +20,7 @@
               map.addControl(new GLargeMapControl());
               map.setCenter(location, 15);
               map.addOverlay(new GMarker(location)); 
+  				errorMessage = "#{messages.sbs_badLatLng}"
 
               
 		      var outline = fromOutlineString(zonePoints);
@@ -51,7 +54,7 @@
                 });
               jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-            }
+          }
 
   		/* CreateMarker(GLatLng, divID, GIcon or null)
   		 *	
@@ -88,6 +91,44 @@
           	return marker;
           }
         </script>
+          <rich:panel id="script">
+          <script type="text/javascript">
+ 		 function getAddress(index){
+			 
+	      		var address = document.getElementById("#{context}-form:#{context}:"+index+":eventAddress");
+	      		if (address.innerHTML.length==0){
+		      		
+	   				var lat = document.getElementById("#{context}-form:#{context}:"+index+":eventLat");
+	   				var lng = document.getElementById("#{context}-form:#{context}:"+index+":eventLng");
+					if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
+
+						reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address);
+					}
+					else {
+						
+						address.innerHTML ="#{messages.sbs_badLatLng}";
+					}
+								
+	      		}
+			 
+		 }
+       
+
+          function reverseGeocodeTripAddress(latlng, addressElement){
+       	   
+       		new GClientGeocoder().getLocations(latlng, 
+          			function(response){
+      			        if (!response || response.Status.code != 200) {
+      			    	  	addressElement.innerHTML = errorMessage; 	  
+
+      			        } 
+      			        else {
+   			             	addressElement.innerHTML = response.Placemark[0].address;
+      			        }
+      		    	});
+          }
+      		</script>
+          </rich:panel>
     </ui:define>
 
     <ui:define name="subnavigation">

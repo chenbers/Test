@@ -21,7 +21,9 @@
     
         <script type="text/javascript">  
         var map;
-    	
+        var geocoder = null;
+        var errorMessage = null;
+          	
         function initializeCrashMap(lat, lng) 
         {            
           if (GBrowserIsCompatible()) {
@@ -41,6 +43,9 @@
               });
             jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
             jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+            
+ //           getAddresses();
+            
           }
 
 		/* CreateMarker(GLatLng, divID, GIcon or null)
@@ -85,6 +90,42 @@
             updCrshStat(crashID);
         }
 		</script>
+          <rich:panel id="script">
+          <script language="javascript" type="text/javascript">
+		 function getAddress(index){
+			 
+	      		var address = document.getElementById("crashHistory-form:crashHistory:"+index+":eventAddress");
+	      		if (address.innerHTML.length==0){
+		      		
+      				var lat = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLat");
+      				var lng = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLng");
+					if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
+
+						reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address);
+					}
+					else {
+						
+						address.innerHTML ="#{messages.sbs_badLatLng}";
+					}
+								
+	      		}
+			 
+		 }
+          function reverseGeocodeTripAddress(latlng, addressElement){
+              
+      		new GClientGeocoder().getLocations(latlng, 
+          			function(response){
+      			        if (!response || response.Status.code != 200) {
+      			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
+
+      			        } 
+      			        else {
+   			             	addressElement.innerHTML = response.Placemark[0].address;
+      			        }
+      		    	});
+          }
+      		</script>
+          </rich:panel>
     </ui:define>    
 
 	<ui:define name="content">

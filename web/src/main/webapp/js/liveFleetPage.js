@@ -2,9 +2,7 @@
 //		var markerManager;
 	  	var markerClusterer;
 		var markers = [];
-	    var geocoder = null;
 	    var addressLatLng = null;
-	    var markerClicked = false;
 		var mapNeedsInit = true;
 		var overviewMapControl;
 		
@@ -14,7 +12,6 @@
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 			baseIcon.shadow=null;
 			
-		var bounds = new GLatLngBounds();
 
 		function initMap()
 		{
@@ -30,8 +27,8 @@
 			 		map.addControl(overviewMapControl); 
 					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(mapDefaultLoc);
-//					markerManager = new MarkerManager(map);
 			 		overviewMapControl.hide();
+					bounds = new GLatLngBounds();
 
 		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
 					map.addOverlay(marker);
@@ -44,63 +41,6 @@
 		            mapNeedsInit = false;
 		        }
         	}
-		}
-		/* CreateMarker(GLatLng, divID, GIcon or null)
-		 *	
-		 * Creates a marker using specified GIcon or
-		 * default icon if null is passed for iconImage.
-		 * divID is the id of a DIV you want displayed in the info window. 
-		 */
-        function createMarker(point, divID, iconImage) 
-        {
-        	var markerIcon;
-        	var marker;
-
-			//Use passed in image.
-        	if(iconImage != null)
-        	{
-				markerIcon = new GIcon(baseIcon);
-	       	    markerIcon.image = iconImage;
-	       	 	markerOptions = { icon:markerIcon };
-	       	 	marker = new GMarker(point, markerOptions);
-        	}
-        	//Use default GoogleMap marker image.
-        	else
-        	{
-		      	markerIcon = new GIcon();
-				marker = new GMarker(point);
-        	}
-       
-       		GEvent.addListener(marker, "click", function() {
-					var node = document.getElementById(divID).cloneNode(true);
-          			node.style.display = 'block';
-		            marker.openInfoWindow(node);
-		 			});
-
-        	return marker;
-        }
-
-		function showDriver(lat, lng, divId)
-		{
-			// TODO Find existing marker and Show it.  This code creates a new one.
-			var point = new GLatLng(lat, lng);
-			var node = document.getElementById(divId).cloneNode(true);
-  				node.style.display = 'block';
-			
-
-			var markerIcon = new GIcon(baseIcon);
-	       		markerIcon.image = "";  //TODO: lookup existing marker and show it.
-
-		    var markerOptions = { icon:markerIcon };
-			var marker = new GMarker(point, markerOptions);
-
-			GEvent.addListener(marker, "click", function() {
-		    	     	marker.openInfoWindowHtml(node);  });
-			 
-			map.addOverlay(marker);
-			
-			//Immediately display info window.
-			marker.openInfoWindow(node);
 		}
 
 		function refresh()
@@ -177,3 +117,56 @@
    			else
    	   			{	return true;  }
    		}
+   		// Stuff from liveFleetMap.js
+//   	    function reverseGeocodeCurrentMarkerAddress(){
+//   	    	
+//   	    	geocoder.getLocations(currentMarker.getPoint(), function(response){
+//   													         if (!response || response.Status.code != 200) {
+//   													        	  
+//   													        	  setUnableToGeocodeError();
+//   													          } 
+//   													          else {
+//   													              
+//   													        	  addAddressToBubbleForMarker(response.Placemark[0].address);
+//   													          }
+//   													    	});
+//   	    }
+//   	    function addAddressToBubbleForMarker(address){
+//   	    	
+//   	    	document.getElementById("liveFleetVehicleBubbles:bubbleAddress").innerHTML = address;
+//   	    	displayCurrentMarkerWindow();
+//   	    }
+//   	    function displayCurrentMarkerWindow(){
+//   	    	
+//   			var node = document.getElementById("vehicleBubble").cloneNode(true);
+//   				
+//   			node.style.display = 'block';
+//   			currentMarker.openInfoWindow(node);
+//   	  }
+//   	    function reverseGeocodeAddress(latlng){
+//   	    	
+//   	    	geocoder.getLocations(latlng, function(response){
+//   													         if (!response || response.Status.code != 200) {
+//   													        	  
+//   													        	  setUnableToGeocodeError();
+//   													          } 
+//   													          else {
+//   													              
+//   													        	  addAddressToBubbleForMap(latlng,response.Placemark[0].address);
+//   													          }
+//   													    	});
+//   	    }
+//   	    function addAddressToBubbleForMap(latlng,address){
+//   	    	
+//   	    	document.getElementById("liveFleetVehicleBubbles:bubbleAddress").innerHTML = address;
+//   			var node = document.getElementById("vehicleBubble").cloneNode(true);
+//   			
+//   			node.style.display = 'block';
+//   			map.openInfoWindow(latlng, node);
+//   	    }
+//
+//   		function setUnableToGeocodeError(){
+//   			
+//   		  	document.getElementById("liveFleetVehicleBubbles:bubbleAddress").innerHTML = '#{messages.sbs_badLatLng}'; 	  
+//   		  		
+//   		}	

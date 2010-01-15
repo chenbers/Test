@@ -20,7 +20,6 @@ import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.FuelEfficiencyType;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -201,8 +200,10 @@ public class BaseBean implements Serializable {
 			return MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng());
 		}
 	}
-	public boolean isLink(){
+
+	public int getAddressFormat() {
 		
-		return addressLookup.isLink();
+		return addressLookup.getAddressFormat().getCode();
 	}
+	
 }

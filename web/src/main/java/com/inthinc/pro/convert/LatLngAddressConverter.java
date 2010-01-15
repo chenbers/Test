@@ -50,8 +50,8 @@ public class LatLngAddressConverter implements Converter
         this.addressLookup = addressLookup;
     }
     
-    public boolean isLink(){
+    public int getAddressFormat(){
     	
-    	return addressLookup.isLink();
+    	return addressLookup.getAddressFormat().getCode();
     }
 }

@@ -12,6 +12,7 @@
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
 	    <script type="text/javascript">
+	    var geocoder;
 	      function initialize(lat, lng) 
 	      {
 	        if (GBrowserIsCompatible())
@@ -21,13 +22,59 @@
 		            map.addControl(new GLargeMapControl());
 					map.setCenter(location, 14);
 					map.addOverlay(new GMarker(location)); 
+		    		geocoder = new GClientGeocoder();
 	        	}
 	      }
           function initializeTable()
           {
               jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+    		  getAddresses();
             }
+          function getAddresses()
+          {
+              if (#{vehicleSeatBeltBean.addressFormat == 3}){
+
+              	jQuery('td[id$="address_column"]').each(function(n){
+
+      	      		var address = jQuery(this).find('*[id$="eventAddress"]');
+      	      		
+      	      		if (address[0].innerHTML.length==0){
+      		      		
+      	        		var lat = jQuery(this).find('*[id$="eventLat"]');
+      	        		var lng = jQuery(this).find('*[id$="eventLng"]');
+      	
+      	        		if( lat[0].value &gt;= -90 &amp;&amp; lat[0].value &lt;= 90 &amp;&amp;  lng[0].value &gt;= -180 &amp;&amp;  lng[0].value &lt;= 180){
+      							
+      	        			reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0], null);
+      					}
+      					else {
+      						
+      						address[0].innerHTML ="#{messages.sbs_badLatLng} "+lat[0]+", "+lng[0];
+      					}
+      	      		}
+                    		
+          		});
+              }
+              
+          }
+          function reverseGeocodeTripAddress(latlng, addressElement){
+              
+              if (geocoder == null) geocoder = new GClientGeocoder();
+              
+           	geocoder.getLocations(latlng, 
+          			function(response){
+      			        if (!response || response.Status.code != 200) {
+          			        
+      			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng} "+latlng.lat+", "+latlng.lng; 	  
+
+      			        } 
+      			        else {
+
+      		             	addressElement.innerHTML = response.Placemark[0].address;
+      			        }
+      		    	});
+          }
     	</script>
 	</ui:define>
 
@@ -84,6 +131,7 @@
 							<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
    							<ui:param name="ajaxForm" value="seatBeltForm"/>
    							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,overall_script,eventsPanel"/>			
+							<ui:param name="oncomplete" value="initializeTable();"/>			
    							<ui:param name="thirtyDaysOn" value="#{(vehicleSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"/>
    							<ui:param name="threeMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"/>
    							<ui:param name="sixMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -195,7 +243,7 @@
 							width="100%"> 
 						<!-- Data -->
 						
-							<rich:column>
+							<rich:column id="address_column">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_location}" />
 								</f:facet>
@@ -205,7 +253,17 @@
 						                  <f:param name="lat" value="#{item.event.latitude}"/>
 						                  <f:param name="lng" value="#{item.event.longitude}"/>
 						                </rich:componentControl>
-						                		#{item.event.addressStr}<br />
+ 			<ui:fragment rendered="#{vehicleSeatBeltBean.addressFormat == 1}"> <!--Address -->
+				<h:outputText value="#{item.event.addressStr}" />
+			</ui:fragment>
+			<ui:fragment rendered="#{vehicleSeatBeltBean.addressFormat == 2}"> <!-- Link -->
+				<a href="#{item.event.addressStr}" target="_blank">#{messages.livefleet_address}</a> 
+			</ui:fragment>
+			<ui:fragment rendered="#{vehicleSeatBeltBean.addressFormat == 3}"> <!--LatLng -->
+				<h:inputHidden id="eventLat" value="#{item.event.latitude}"/>
+				<h:inputHidden id="eventLng" value="#{item.event.longitude}"/>
+ 				<h:outputText id="eventAddress" />
+			</ui:fragment>
 					              </a4j:commandLink>
 				              	</div>
 				            </rich:column>

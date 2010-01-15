@@ -13,14 +13,18 @@
 	<t:saveState value="#{driverLocationBean.driverLocations}"/>
 	<t:saveState value="#{driverLocationBean.legendIcons}"/>
 	<t:saveState value="#{driverLocationBean.mapIconMap}"/>
+	<t:saveState value="#{driverLocationBean.driverLocationsMap}"/>
+	<t:saveState value="#{driverLocationBean.selectedDriverID}"/>
 	
     <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
     <ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}"/>
+     
 <!--	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/1.1/src/markermanager_packed.js"></script>-->
 	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markerclusterer/1.0/src/markerclusterer_packed.js"></script>	
 	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/progressbarcontrol/1.0/src/progressbarcontrol_packed.js"></script>
   
 	<script src="#{facesContext.externalContext.request.contextPath}/js/liveFleetMap.js"  type="text/javascript"></script>
+	<script src="#{facesContext.externalContext.request.contextPath}/js/mapBubble.js"  type="text/javascript"></script>
 	<script type="text/javascript">
 		function bodyUnload()
 		{
@@ -32,6 +36,10 @@
 			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
  			addMarkers();
 	    	centerMap();
+	    	defaultAddressElement = "liveFleetMapForm:bubbleAddress";
+			bubbleElement = "driverBubble";
+			errorMessage = "#{messages.sbs_badLatLng}"
+			addressLookupAddressFormat = #{driverLocationBean.addressFormat};	    	
 		}
 		function refreshMap()
 		{
@@ -56,8 +64,9 @@
 				<ui:repeat value="#{driverLocationBean.driverLocations}" var="driverLocation">
 				
 					var latlng = new GLatLng(#{driverLocation.loc.lat}, #{driverLocation.loc.lng});
-					var marker = createMarker(latlng, "#{driverLocation.driver.driverID}",
-	        		 							"#{driverLocationBean.mapIconMap.icons[driverLocation.position]}");
+					var marker = createMarker(	latlng, "#{driverLocation.driver.driverID}", null,
+	        		 							"#{driverLocationBean.mapIconMap.icons[driverLocation.position]}",
+	        		 							fillBubbleMarker);
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
 					
@@ -68,27 +77,26 @@
 		</script>
 		
       	<!-- BEGIN GOOGLE MAP POPUPS -->
-      	<h:form id="#{context}-liveFleetMapForm">
+      	<h:form id="liveFleetMapForm">
       	<rich:panel id="mapPopups">
-      		<ui:repeat id="popUp" value="#{driverLocationBean.driverLocations}" var="driverLocation">		
+			<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}"/>
       			<ui:include src="../includes/driverBubble.xhtml">
-      	            <ui:param name="hiddenDivID" value="#{driverLocation.driver.driverID}" />
+      	            <ui:param name="hiddenDivID" value="bubble" />
       	            <ui:param name="driver" value="#{driverLocation.driver}" />
       	        	<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
       	        	<ui:param name="bean" value="#{driverLocationBean}" />
-      	        	<ui:param name="targetDriverID" value="#{driverLocationBean.selectedDriverID}" />
+      	        	<ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
       	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
       	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
       	        	<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
-      	        	<ui:param name="targetVehicleID" value="#{driverLocationBean.selectedVehicleID}" />
+      	        	<ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
       	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
       	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
       	        	<ui:param name="vehicleTime" value="#{driverLocation.time}" />
       	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
       	        	<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
-      	        	<ui:param name="addressIsLink" value="#{driverLocationBean.link}"/>
+      	        	<ui:param name="addressLookupAddressFormat" value="#{driverLocationBean.addressFormat}"/>
       			</ui:include>
-      		</ui:repeat>
       	</rich:panel>
       	</h:form>
       	<!-- END GOOGLE MAP POPUPS -->
@@ -151,7 +159,7 @@
       		  <rich:dataGrid value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
       		  			rendered="#{driverLocationBean.teamLevel}" columns="3" border="0" cellpadding="5" cellspacing="5">
       		  			
-      			  	<div onclick="showInfoWindow('#{icon.entityID}', new GLatLng(#{icon.lat},#{icon.lng}))" style="cursor: pointer;">
+      			  	<div onclick="fillBubbleMap(#{icon.entityID})" style="cursor: pointer;">
       				  	<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
       				  	<h:outputText value="#{icon.caption}" style="margin-left:5px" /></div>
       			  	
@@ -169,5 +177,17 @@
       		<div class="panel_statusbar"></div>
       	</div>
    </div>
+	<a4j:form id="bubbleForm">
+		<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+			<a4j:actionparam name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
+			<a4j:actionparam name="subId" />
+		</a4j:jsFunction>
+		<a4j:jsFunction name="fillBubbleMap" reRender="mapPopups" 
+			oncomplete="getAddressForPosition(#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lat},
+								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng})">
+			<a4j:actionparam name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
+		</a4j:jsFunction>
+		
+	</a4j:form>	
 			
 </ui:composition>	

@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
@@ -49,7 +50,7 @@ public abstract class BasePerformanceBean extends BaseBean
     protected Map<String, String> trendMap;
     
     protected PerformanceDataBean performanceDataBean;
-    
+
 	protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
 
     protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
@@ -467,13 +468,7 @@ public abstract class BasePerformanceBean extends BaseBean
 		this.performanceDataBean = performanceDataBean;
 	}
     public abstract void exportReportToPdf();
-//    {
-//        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
-//    }
 
     public abstract void emailReport();
-//    {
-//        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
-//    }
 
 }

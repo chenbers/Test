@@ -231,4 +231,16 @@ public class TripDisplay implements Comparable<TripDisplay>
 	public void setInProgress(boolean inProgress) {
 		this.inProgress = inProgress;
 	}
+	public void setEndPointLat(double endPointLat){
+		
+	}
+	public void setEndPointLng(double endPointLng){
+		
+	}
+	public double getEndPointLat() {
+		return route.get(route.size()-1).getLat();
+	}
+	public double getEndPointLng() {
+		return route.get(route.size()-1).getLng();
+	}
 }

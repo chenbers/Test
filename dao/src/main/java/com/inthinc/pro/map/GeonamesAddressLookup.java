@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
-public class GeonamesAddressLookup implements AddressLookup
+public class GeonamesAddressLookup extends AddressLookup
 {
     public static Logger logger = Logger.getLogger(GeonamesAddressLookup.class);
     private String mapServerURLString;
@@ -26,6 +26,7 @@ public class GeonamesAddressLookup implements AddressLookup
     
     public GeonamesAddressLookup()
     {
+    	setAddressFormat(AddressLookup.AddressFormat.ADDRESS);
     }
 
     public String getMapServerURLString()
@@ -283,9 +284,4 @@ public class GeonamesAddressLookup implements AddressLookup
             return buffer.toString();
         }
     }
-	@Override
-	public boolean isLink() {
-
-		return false;
-	}
 }

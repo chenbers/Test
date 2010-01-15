@@ -2,8 +2,12 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
+
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -14,6 +18,7 @@ import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.util.CircularIterator;
 
 public class LiveFleetBean extends BaseBean
 {
@@ -28,7 +33,8 @@ public class LiveFleetBean extends BaseBean
     private Integer              addressZoom;
     private Integer              maxCount;
     private Integer              numRecords;
-    private List<DriverLocation> drivers;
+//    private List<DriverLocation> drivers;
+    private Map<Integer, DriverLocation> driverLocationsMap;
     private IconMap              mapIconMap;
     private IconMap              legendIconMap;
     private GroupHierarchy       organizationHierarchy;
@@ -50,22 +56,22 @@ public class LiveFleetBean extends BaseBean
         // Get drivers
         Group fleetGroup = organizationHierarchy.getTopGroup();
         setDrivers(vehicleDAO.getVehiclesNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng()));
-        setNumRecords(drivers.size());
+        setNumRecords(driverLocationsMap.size());
 
         // Get colored map icons.
         MapIconFactory mif = new MapIconFactory();
         List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 24);
         List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.MAP_LEGEND, 24);
 
-        Iterator<MapIcon> mapIconIt = mapIcons.iterator();
-        Iterator<MapIcon> legendIconIt = legendIcons.iterator();
+        Iterator<MapIcon> mapIconIt = new CircularIterator<MapIcon>(mapIcons);
+        Iterator<MapIcon> legendIconIt = new CircularIterator<MapIcon>(legendIcons);
 
         mapIconMap = new IconMap();
         legendIconMap = new IconMap();
         displayedGroups = new ArrayList<Group>();
 
         Integer count = 1;
-        for (DriverLocation driver : drivers)
+        for (DriverLocation driver : driverLocationsMap.values())
         {
             driver.setPosition((count++));
             driver.setAddressStr(getAddress(driver.getLoc()));
@@ -94,14 +100,19 @@ public class LiveFleetBean extends BaseBean
     // DRIVER LAST LOCATION PROPERTIES
     public List<DriverLocation> getDrivers()
     {
-        if (drivers == null || drivers.isEmpty())
+//        if (driverLocationsMap == null || driverLocationsMap.isEmpty())
             populateDriverLocations();
-        return drivers;
+        return new ArrayList<DriverLocation>(driverLocationsMap.values());
     }
 
     public void setDrivers(List<DriverLocation> drivers)
     {
-        this.drivers = drivers;
+        driverLocationsMap = new LinkedHashMap<Integer, DriverLocation>();
+        for(DriverLocation dl:drivers){
+        	
+        	driverLocationsMap.put(dl.getVehicle().getVehicleID(), dl);
+        }
+        selectedVehicleID = drivers.size()>0?drivers.get(0).getVehicle().getVehicleID():null;
     }
 
     public List<Group> getDisplayedGroups()
@@ -256,4 +267,16 @@ public class LiveFleetBean extends BaseBean
         navigation.setDriver(driverDAO.findByID(selectedDriverID));
         return "go_driver";
     }
+
+	public Map<Integer, DriverLocation> getDriverLocationsMap() {
+		return driverLocationsMap;
+	}
+
+	public void setDriverLocationsMap(
+			Map<Integer, DriverLocation> driverLocationsMap) {
+		this.driverLocationsMap = driverLocationsMap;
+	}
+
+
+
 }

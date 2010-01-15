@@ -1,10 +1,10 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -59,7 +59,6 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private CrashSummary	 	crashSummary;
 
 	private TripDisplay         lastTrip;
-    private List<Event>         violationEvents = new ArrayList<Event>();
     private List<Event>			tamperEvents;
     private Integer             overallScore;
     private String              overallScoreHistory;
@@ -68,6 +67,10 @@ public class DriverPerformanceBean extends BasePerformanceBean
     private String              coachingHistory;
     private Boolean             hasLastTrip;
     private Boolean 			tripMayExist;
+
+	protected Long selectedViolationID;
+
+	protected Map<Long,Event> violationEventsMap;
     
     private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";    
     
@@ -100,7 +103,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     // INIT VIOLATIONS
     public void initViolations(Date start, Date end)
     {
-        if (violationEvents.isEmpty())
+        if ((violationEventsMap == null) ||violationEventsMap.isEmpty())
         {
             List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
@@ -109,15 +112,10 @@ public class DriverPerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             
-            //Add 1 second to end time to get events, eg tampering events that occur at the end of a trip 
-            // - method uses < end time, not <= end time.  This isn't true anymore!
-            Calendar gc = new GregorianCalendar();
-            gc.setTime(end);
-//            gc.add(Calendar.SECOND, 1);
-             
-            violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, gc.getTime(), types, showExcludedEvents );
+            List<Event>violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, showExcludedEvents );
+            violationEventsMap = new LinkedHashMap<Long,Event>();
 
-            // Lookup Addresses for events
+            // Lookup Addresses for events and add to map
             for (Event event : violationEvents)
             {
             	String address = "";
@@ -129,7 +127,10 @@ public class DriverPerformanceBean extends BasePerformanceBean
             		address = MessageUtil.getMessageString(nafe.getMessage());
             	}
                 event.setAddressStr(address);
+                
+                violationEventsMap.put(event.getNoteID(), event);
             }
+            selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
         }
     }
     
@@ -157,7 +158,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
 
     public String getOverallScoreHistory()
     {
-    	if (durationBean.getDuration() ==Duration.DAYS){
+    	if (durationBean.getDuration() == Duration.DAYS){
     		
             setOverallScoreHistory(createFusionMultiLineDefDays(getDriver().getDriverID(), ScoreType.SCORE_OVERALL));   		
     	}
@@ -231,17 +232,6 @@ public class DriverPerformanceBean extends BasePerformanceBean
     public void setLastTrip(TripDisplay lastTrip)
     {
         this.lastTrip = lastTrip;
-    }
-
-    // VIOLATIONS PROPERTIES
-    public List<Event> getViolationEvents()
-    {
-        return violationEvents;
-    }
-
-    public void setViolationEvents(List<Event> violationEvents)
-    {
-        this.violationEvents = violationEvents;
     }
 
     // DAO PROPERTIES
@@ -542,5 +532,46 @@ public class DriverPerformanceBean extends BasePerformanceBean
 	public void setCrashSummary(CrashSummary crashSummary) {
 		this.crashSummary = crashSummary;
 	}
-    
+
+	public List<Event> getViolationEvents() {
+		if ((violationEventsMap == null) || violationEventsMap.isEmpty()){
+			getLastTrip();
+		}
+	    return new ArrayList<Event>(violationEventsMap.values());
+	}
+
+	public void setViolationEvents(List<Event> violationEvents) {
+		
+		violationEventsMap = new LinkedHashMap<Long,Event>();
+			for (Event event : violationEvents)
+	        {
+	            violationEventsMap.put(event.getNoteID(), event);
+	        }
+	        selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
+		}
+	//
+	//	public Event getSelectedViolation() {
+	//		return selectedViolation;
+	//	}
+	//
+	//	public void setSelectedViolation(Event selectedViolation) {
+	//		this.selectedViolation = selectedViolation;
+	//	}
+
+	public Long getSelectedViolationID() {
+		return selectedViolationID;
+	}
+
+	public void setSelectedViolationID(Long selectedViolationID) {
+		this.selectedViolationID = selectedViolationID;
+	}
+
+	public Map<Long, Event> getViolationEventsMap() {
+		return violationEventsMap;
+	}
+
+	public void setViolationEventsMap(Map<Long, Event> violationEventsMap) {
+		this.violationEventsMap = violationEventsMap;
+	}
+
 }

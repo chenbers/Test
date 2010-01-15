@@ -16,11 +16,19 @@ import javax.xml.stream.XMLStreamReader;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 
-public class GoogleAddressLookup implements AddressLookup {
+public class GoogleAddressLookup extends AddressLookup {
 	
-	GoogleMapKeyFinder googleMapKeyFinder;
+	private GoogleMapKeyFinder googleMapKeyFinder;
 	
-	LatLng latLng;
+	private LatLng latLng;
+	
+	
+	public GoogleAddressLookup() {
+		super();
+		setAddressFormat(AddressLookup.AddressFormat.ADDRESS);
+	}
+
+
 	@Override
 	public String getAddress(LatLng latLng, boolean returnLatLng)
 			throws NoAddressFoundException {
@@ -185,13 +193,6 @@ public class GoogleAddressLookup implements AddressLookup {
 
 	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
 		this.googleMapKeyFinder = googleMapKeyFinder;
-	}
-
-
-	@Override
-	public boolean isLink() {
-
-		return false;
 	}
 
 }

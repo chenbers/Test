@@ -12,6 +12,7 @@
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
 	    <script type="text/javascript">
+	    var geocoder;
 	      function initialize(lat, lng) 
 	      {
 	        if (GBrowserIsCompatible())
@@ -21,12 +22,58 @@
 		            map.addControl(new GLargeMapControl());
 					map.setCenter(location, 15);
 					map.addOverlay(new GMarker(location)); 
+		    		geocoder = new GClientGeocoder();
 	        	}
 	      }
           function initializeTable()
           {
               jQuery('.dr-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.dr-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+    		  getAddresses();
+    		}
+          function getAddresses()
+          {
+              if (#{driverStyleBean.addressFormat == 3}){
+
+              	jQuery('td[id$="address_column"]').each(function(n){
+
+      	      		var address = jQuery(this).find('*[id$="eventAddress"]');
+      	      		
+      	      		if (address[0].innerHTML.length==0){
+      		      		
+      	        		var lat = jQuery(this).find('*[id$="eventLat"]');
+      	        		var lng = jQuery(this).find('*[id$="eventLng"]');
+      	
+      	        		if( lat[0].value &gt;= -90 &amp;&amp; lat[0].value &lt;= 90 &amp;&amp;  lng[0].value &gt;= -180 &amp;&amp;  lng[0].value &lt;= 180){
+      							
+      	        			reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0], null);
+      					}
+      					else {
+      						
+      						address[0].innerHTML ="#{messages.sbs_badLatLng} "+lat[0]+", "+lng[0];
+      					}
+      	      		}
+                    		
+          		});
+              }
+              
+          }
+          function reverseGeocodeTripAddress(latlng, addressElement){
+              
+              if (geocoder == null) geocoder = new GClientGeocoder();
+               
+           	geocoder.getLocations(latlng, 
+          			function(response){
+      			        if (!response || response.Status.code != 200) {
+          			        
+      			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng} "+latlng.lat+", "+latlng.lng; 	  
+
+      			        } 
+      			        else {
+
+      		             	addressElement.innerHTML = response.Placemark[0].address;
+      			        }
+      		    	});
           }
     	</script>
 	</ui:define>
@@ -137,6 +184,7 @@ var firstLoad = new Boolean(true);
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
 							<ui:param name="reRenderList" value="styleForm,overallScoreBox,breakdownPanel,selectScript,eventsPanel"/>			
+							<ui:param name="oncomplete" value="initializeTable();"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverStyleBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverStyleBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverStyleBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -225,7 +273,7 @@ var firstLoad = new Boolean(true);
 						  <div class="tiny_title">
 						  <h:form id="driverStyleOverallForm">
 						  	  <a4j:commandLink id="driverStyleOverall" onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
-						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
 						  	  		<a4j:actionparam name="eventType" value="OVERALL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
@@ -261,7 +309,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleBrakeForm">
 						  	  <a4j:commandLink  id="driverStyleBrake" onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
 						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}"/>
 						  	  </a4j:commandLink>
@@ -297,7 +345,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleAccelerateForm">
 						  	  <a4j:commandLink  id="driverStyleAccelerate" onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
 						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}"/>
 						  	  </a4j:commandLink>
@@ -335,7 +383,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleTurnForm">
 						  	  <a4j:commandLink  id="driverStyleTurn" onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
 						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_TURN}"/>
 						  	  </a4j:commandLink>
@@ -373,7 +421,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleBumpForm">
 						  	  <a4j:commandLink  id="driverStyleBump"  onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
 						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}"/>
 						  	  </a4j:commandLink>
@@ -469,7 +517,7 @@ var firstLoad = new Boolean(true);
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
 						rows="#{driverStyleBean.tableStatsBean.tableRowCount}" width="100%">
 						
-							<rich:column>
+							<rich:column id="address_column">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_location}" />
 								</f:facet>
@@ -479,7 +527,17 @@ var firstLoad = new Boolean(true);
 						                  <f:param name="lat" value="#{item.event.latitude}"/>
 						                  <f:param name="lng" value="#{item.event.longitude}"/>
 						                </rich:componentControl>
-						                		#{item.event.addressStr}<br />
+ 			<ui:fragment rendered="#{driverStyleBean.addressFormat == 1}"> <!--Address -->
+				<h:outputText value="#{item.event.addressStr}" />
+			</ui:fragment>
+			<ui:fragment rendered="#{driverStyleBean.addressFormat == 2}"> <!-- Link -->
+				<a href="#{item.event.addressStr}" target="_blank">#{messages.livefleet_address}</a> 
+			</ui:fragment>
+			<ui:fragment rendered="#{driverStyleBean.addressFormat == 3}"> <!--LatLng -->
+				<h:inputHidden id="eventLat" value="#{item.event.latitude}"/>
+				<h:inputHidden id="eventLng" value="#{item.event.longitude}"/>
+ 				<h:outputText id="eventAddress" />
+			</ui:fragment>
 					              </a4j:commandLink>
 				              	</div>
 				            </rich:column>

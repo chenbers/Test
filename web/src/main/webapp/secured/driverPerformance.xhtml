@@ -11,6 +11,7 @@
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
+		<script src="#{facesContext.externalContext.request.contextPath}/js/mapBubble.js"  type="text/javascript"></script>
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
 	  	<script	 type="text/javascript">
 	  		var baseIcon = new GIcon();
@@ -18,7 +19,6 @@
 				baseIcon.iconAnchor = new GPoint(6, 20);
 				baseIcon.infoWindowAnchor = new GPoint(5, 1);
 	
-			var bounds = new GLatLngBounds();
 	  		var map;
 	  		function initMap(lat,lng,zoom){
 	  		
@@ -30,12 +30,17 @@
       					map.addControl(new GOverviewMapControl()); 
 						map.setCenter(new GLatLng(lat, lng), zoom);
 						map.setMapType(G_NORMAL_MAP);
+			    		geocoder = new GClientGeocoder();
+						errorMessage = "#{messages.sbs_badLatLng}"
+							addressLookupAddressFormat = #{driverPerformanceBean.addressFormat};
+						bounds = new GLatLngBounds();
+									
 					}
 			}
-			
+	  				
 			function drawTrip()
 			{
-				<h:outputText rendered="#{driverPerformanceBean.hasLastTrip}">
+				<ui:fragment rendered="#{driverPerformanceBean.hasLastTrip}">
 					var polyline = new GPolyline([
 										<ui:repeat value="#{driverPerformanceBean.lastTrip.route}" var="route">
 											new GLatLng(#{route.lat}, #{route.lng}),
@@ -52,7 +57,7 @@
 		
 					//Start of trip marker
 					var startlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.beginningPoint.lat}, #{driverPerformanceBean.lastTrip.beginningPoint.lng});
-					marker = createMarker(startlatlng, "tripStartBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+					marker = createMarker(startlatlng,null, 0, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble);
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 		
@@ -60,11 +65,11 @@
 					var endlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng});
 					if ("#{driverPerformanceBean.lastTrip.inProgress}" == "true")
 					{
-						marker = createMarker(endlatlng, "tripInProgressBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png");
+						marker = createMarker(endlatlng, null,1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble);
 					}
 					else
 					{
-						marker = createMarker(endlatlng, "tripEndBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+						marker = createMarker(endlatlng, null,2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble);
 					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -74,7 +79,7 @@
 					<ui:repeat value="#{driverPerformanceBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
 
-						marker = createMarker(violation, "#{violation.noteID}", "#{eventTypeIcons.iconMap[violation.eventType]}");
+						marker = createMarker(violation, "#{violation.noteID}", null, "#{eventTypeIcons.iconMap[violation.eventType]}",fillEventBubble);
 						map.addOverlay(marker);
 						bounds.extend(marker.getPoint());
 					</ui:repeat>
@@ -82,38 +87,9 @@
 					//Zoom and Center on trip.
 					map.setZoom(map.getBoundsZoomLevel(bounds));
 				    map.setCenter(bounds.getCenter());
-			    </h:outputText>
+			    </ui:fragment>
 			}
-
-		    function createMarker(point, divID, iconImage) 
-		        {
-		        	var markerIcon;
-		        	var marker;
-
-					//Use passed in image.
-		        	if(iconImage != null)
-		        	{
-						markerIcon = new GIcon(baseIcon);
-			       	    markerIcon.image = iconImage;
-			       	 	markerOptions = { icon:markerIcon };
-			       	 	marker = new GMarker(point, markerOptions);
-		        	}
-		        	//Use default GoogleMap marker image.
-		        	else
-		        	{
-				      	markerIcon = new GIcon();
-						marker = new GMarker(point);
-		        	}
-		       
-		       		GEvent.addListener(marker, "click", function() {
-							var node = document.getElementById(divID).cloneNode(true);
-		          			node.style.display = 'block';
-				            marker.openInfoWindow(node);
-				 			});
-
-		        	return marker;
-		        }
-
+				
 			function bodyUnload()
 			{
 				GUnload();
@@ -126,6 +102,7 @@
 					initMap(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng}, 14);
 					drawTrip();
 		 		</h:outputText>
+		 		
 			}
 		</script>
 	</ui:define>
@@ -136,14 +113,19 @@
 	<ui:define name="content">
     <t:saveState value="#{driverPerformanceBean}"/>
 <!-- BEGIN GOOGLE BUBBLES -->
+	<rich:panel id="mapPopups">
+
+      	<h:form id="tripsMapForm">
+
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
             <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.startTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.startAddress}" />
- 	        <ui:param name="addressIsLink" value="#{driverPerformanceBean.link}"/>
+ 	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+            <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  			<ui:param name="context" value="driverPerformanceStart" />
 	</ui:include>
 	
@@ -152,9 +134,10 @@
             <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
- 	        <ui:param name="addressIsLink" value="#{driverPerformanceBean.link}"/>
+ 	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+            <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
  			<ui:param name="context" value="driverPerformanceEnd" />
 	</ui:include>
 	<ui:include src="/includes/tripBubble.xhtml">
@@ -162,19 +145,20 @@
             <ui:param name="bubbleTitle" value="#{messages.TRIP_INPROGRESS}" />
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
- 	        <ui:param name="addressIsLink" value="#{driverPerformanceBean.link}"/>
+ 	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+            <ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
  			<ui:param name="context" value="driverPerformanceInProgress" />
 	</ui:include>
 	
-	<ui:repeat value="#{driverPerformanceBean.violationEvents}" var="violation">
-		<ui:include src="/includes/eventBubble.xhtml">
+			<ui:param name="violation" value="#{driverPerformanceBean.violationEventsMap[driverPerformanceBean.selectedViolationID]}"/>
+			<ui:include src="/includes/eventBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
 	            <ui:param name="eventType" value="#{violation.eventType}" />
 	            <ui:param name="eventDateTime" value="#{violation.time}" />
 	            <ui:param name="eventLocation" value="#{violation.addressStr}" />
-	            <ui:param name="addressIsLink" value="#{driverPerformanceBean.link}"/>
+	            <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
 	            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
 	            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	            <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
@@ -187,8 +171,9 @@
 	            <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
  				<ui:param name="context" value="driverPerformance" />
 		</ui:include>
-	</ui:repeat>
 <!-- END GOOGLE BUBBLES -->
+</h:form>
+</rich:panel>
 <div id="wrapper">
 
 <h:form id="breadcrumbForm">
@@ -684,7 +669,17 @@
   </tr>
 </table>
 </div>
-
+	<a4j:form id="bubbleForm">
+		<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+			<a4j:actionparam name="eventId" assignTo="#{driverPerformanceBean.selectedViolationID}"/>
+		</a4j:jsFunction>
+		<ui:fragment rendered="#{driverPerformanceBean.selectedViolationID ne null}">
+		<a4j:jsFunction name="fillBubbleMap" reRender="mapPopups" 
+		oncomplete="getAddressForPosition(#{driverPerformanceBean.violationEventsMap[driverPerformanceBean.selectedViolationID].latitude},#{driverPerformanceBean.violationEventsMap[driverPerformanceBean.selectedViolationID].longitude})">
+			<a4j:actionparam name="eventId" assignTo="#{driverPerformanceBean.selectedViolationID}"/>
+		</a4j:jsFunction>
+		</ui:fragment>		
+	</a4j:form>	
 
 </ui:define>
 </ui:composition>

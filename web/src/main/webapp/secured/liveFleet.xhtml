@@ -17,6 +17,7 @@
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
 		<script src="#{facesContext.externalContext.request.contextPath}/js/liveFleetPage.js"  type="text/javascript"></script>
+		<script src="#{facesContext.externalContext.request.contextPath}/js/mapBubble.js"  type="text/javascript"></script>
 <!--		<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/1.1/src/markermanager_packed.js"></script>-->
 	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markerclusterer/1.0/src/markerclusterer_packed.js"></script>	
 		<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/progressbarcontrol/1.0/src/progressbarcontrol_packed.js"></script>
@@ -31,6 +32,10 @@
 		{
 			initMap();
 			addMarkers();
+			defaultAddressElement = "liveFleetVehicleBubbles:bubbleAddress";
+			bubbleElement = "vehicleBubble";
+			errorMessage = "#{messages.sbs_badLatLng}"
+			addressLookupAddressFormat = #{liveFleetBean.addressFormat};
 		}
 
 	</script>	
@@ -42,17 +47,17 @@
 	
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form id="liveFleetVehicleBubbles">
-	<rich:panel id="mapPopups">
+			<rich:panel id="mapMarkers">
 		<script type="text/javascript">
 			var marker;
 			var driverLoc;
-
+			var bounds;
+			
 			function addMarkers()
 			{
 				var progress = 0;
 				var progressBar = new ProgressbarControl(map);
 				
-//				markerManager.clearMarkers();
 				if (markerClusterer != null) {
 			          markerClusterer.clearMarkers();
 			        }
@@ -61,49 +66,51 @@
 				markers = [];
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
-
 			
-					marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}");
+					marker = createMarker(	new GLatLng(#{driver.loc.lat}, #{driver.loc.lng}), 
+											#{driver.vehicle.vehicleID}, null,
+											"#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}",
+											fillBubbleMarker);
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
 					bounds.extend(marker.getPoint());
+					
 				</ui:repeat>
 				
 				markerClusterer = new MarkerClusterer(map,markers);
 				
-//				markerManager.addMarkers(markers,5);
 				progressBar.remove();
-//				markerManager.refresh();
 
 				map.setZoom(map.getBoundsZoomLevel(bounds));
 		    	map.setCenter(bounds.getCenter());
 			}
+			
 		</script>
-		<ui:repeat id="vehicleBubble" value="#{liveFleetBean.drivers}" var="driverLoc">
+		</rich:panel>
+			<rich:panel id="mapPopups">
+		
+			<ui:param name="driverLocation" value="#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID]}"/>
 			<ui:include src="../includes/vehicleBubble.xhtml">
-	            <ui:param name="hiddenDivID" value="#{driverLoc.driver.driverID}_#{driverLoc.vehicle.vehicleID}" />
-	            <ui:param name="driver" value="#{driverLoc.driver}" />
-	        	<ui:param name="vehicle" value="#{driverLoc.vehicle}" />
-	        	<ui:param name="device" value="#{driverLoc.device}" />
+	            <ui:param name="driver" value="#{driverLocation.driver}" />
+	        	<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
+	        	<ui:param name="device" value="#{driverLocation.device}" />
 	        	<ui:param name="bean" value="#{liveFleetBean}" />
-	        	<ui:param name="targetDriverID" value="#{liveFleetBean.selectedDriverID}" />
+	        	<ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
 	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
 	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
 	        	<ui:param name="messageDriver" value="#{messages.livefleet_driver}" />
-	        	<ui:param name="targetVehicleID" value="#{liveFleetBean.selectedVehicleID}" />
+	        	<ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
 	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
 	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
-	        	<ui:param name="vehicleTime" value="#{driverLoc.time}" />
+	        	<ui:param name="vehicleTime" value="#{driverLocation.time}" />
 	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
-	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
-     	        <ui:param name="addressIsLink" value="#{liveFleetBean.link}"/>
-	        	<ui:param name="distance" value="#{driverLoc.dist}" />
+	        	<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
+     	        <ui:param name="addressLookupAddressFormat" value="#{liveFleetBean.addressFormat}"/>
+	        	<ui:param name="distance" value="#{driverLocation.dist}" />
 	        	<ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
 	        	<ui:param name="messageDevicePhone" value="#{messages.livefleet_devicePhone}" /> 
  		 		<ui:param name="context" value="liveFleet" />
 			</ui:include>
-		</ui:repeat>
 	</rich:panel>
 	</h:form>
 	<!-- END GOOGLE MAP POPUPS -->
@@ -171,7 +178,7 @@
 									<f:facet name="header">
 									
 									</f:facet>
-									<a href="#" id="showGroup" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, '#{item.driver.driverID}_#{item.vehicle.vehicleID}');">
+									<a href="#" id="showGroup" onclick="fillBubbleMap(#{item.vehicle.vehicleID});">
 										<img src="#{liveFleetBean.legendIconMap.icons[item.vehicle.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>
@@ -191,49 +198,6 @@
 						<div class="panel_statusbar"></div>
 					</div>
 				</div>
-		<div class="spacer"></div>		
-				<div class="">
-					<div class="panel_nw">
-						<div class="panel_title">
-							<span class="legend">#{messages.livefleetmap_legend}</span>
-							<span class="panel_links"></span>
-						</div>
-					</div>	
-	 				<div class="panel_w">
-						<div class="panel_content">
-						   <rich:dataGrid id="liveFleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="carlegend" 
-      		  											columns="3" border="0" cellpadding="5" cellspacing="5">
-      		  			
-                               <pretty:link id="liveFleetsDashboard1" mappingId="dashboard">
-                                  <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>
-                                  <f:param value="#{group.groupID}"/>
-                               </pretty:link>
-                               <h:outputText value=" "/>
-                               <pretty:link id="liveFleetsDashboard2" mappingId="dashboard">
-                                  <h:outputText value="#{group.name}"/>
-                                  <f:param value="#{group.groupID}"/>
-                               </pretty:link>
-     			  	
-      					</rich:dataGrid>
-						
-<!--							<rich:dataList id="fleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="legend">-->
-<!--                               <pretty:link mappingId="dashboard">-->
-<!--                                  <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>-->
-<!--                                  <f:param value="#{group.groupID}"/>-->
-<!--                               </pretty:link>-->
-<!--                               <pretty:link mappingId="dashboard">-->
-<!--                                  <h:outputText value="#{group.name}"/>-->
-<!--                                  <f:param value="#{group.groupID}"/>-->
-<!--                               </pretty:link>-->
-<!--							</rich:dataList>-->
-						</div>
-						<div style="clear:both"/>
-	  					
-					<div class="panel_sw">
-						<div class="panel_statusbar"></div>
-					</div>
-					</div>
-					</div>
 				</td>
 				
 	<!-- END DISPATCH PANEL -->
@@ -306,13 +270,23 @@
 			    	
 			    </div>
 				</h:form>
+				
 				<a4j:region id="jsFormRegion">
 					<a4j:form id="jsForm">
-						<a4j:jsFunction reRender="driversDataTable,mapPopups,driverScroller,liveFleetLegend" name="notifyBean" oncomplete="bodyLoad()">				
+						<a4j:jsFunction reRender="driversDataTable,mapMarkers,mapPopups,driverScroller,liveFleetLegend" name="notifyBean" oncomplete="bodyLoad()">				
 							<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
 							<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
 							<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	
 						</a4j:jsFunction>
+						<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
+							<a4j:actionparam name="subId" />
+						</a4j:jsFunction>
+						<a4j:jsFunction name="fillBubbleMap" reRender="mapPopups"
+								 oncomplete="getAddressForPosition(#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lat},#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lng})">
+							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
+						</a4j:jsFunction>
+		
 					</a4j:form>
 				</a4j:region>
 				</div>
@@ -321,6 +295,39 @@
 				<div class="panel_statusbar"></div>
 				</div>
 				</div>
+		<div class="spacer"></div>		
+				<div class="">
+					<div class="panel_nw">
+						<div class="panel_title">
+							<span class="legend">#{messages.livefleetmap_legend}</span>
+							<span class="panel_links"></span>
+						</div>
+					</div>	
+	 				<div class="panel_w">
+						<div class="panel_content">
+						   <rich:dataGrid id="liveFleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="carlegend" 
+      		  											columns="3" border="0" cellpadding="5" cellspacing="5">
+      		  			
+                               <pretty:link id="liveFleetsDashboard1" mappingId="dashboard">
+                                  <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>
+                                  <f:param value="#{group.groupID}"/>
+                               </pretty:link>
+                               <h:outputText value=" "/>
+                               <pretty:link id="liveFleetsDashboard2" mappingId="dashboard">
+                                  <h:outputText value="#{group.name}"/>
+                                  <f:param value="#{group.groupID}"/>
+                               </pretty:link>
+     			  	
+      					</rich:dataGrid>
+						
+						</div>
+<!--						<div style="clear:both"/>-->
+	  					
+					</div>
+					<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+					</div>
+					</div>
 
 				<!-- END PANEL -->
 				</td>

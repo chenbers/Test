@@ -1,10 +1,10 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -60,7 +60,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private DurationBean        seatBeltDurationBean;
 
     private TripDisplay         lastTrip;
-    private List<Event>         violationEvents = new ArrayList<Event>();
     private List<Event>			tamperEvents;
     private Integer             overallScore;
     private String              overallScoreHistory;
@@ -74,6 +73,10 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private VehicleSeatBeltBean vehicleSeatBeltBean;
     private CrashSummary 		crashSummary;
     private Boolean 			tripMayExist;
+
+	protected Long selectedViolationID;
+
+	protected Map<Long,Event> violationEventsMap;
     
     private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";   
     
@@ -108,7 +111,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public void initViolations(Date start, Date end)
     {
-        if (violationEvents.isEmpty())
+        if ((violationEventsMap == null) ||violationEventsMap.isEmpty())
         {
         	List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
@@ -117,20 +120,17 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             
-            //Add 1 second to end time to get events, eg tampering events that occur at the end of a trip 
-            // - method uses < end time, not <= end time.  This isn't true anymore!
-            Calendar gc = new GregorianCalendar();
-            gc.setTime(end);
-//            gc.add(Calendar.SECOND, 1);            
-
-            violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, gc.getTime(), types,showExcludedEvents);
+            List<Event> violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types,showExcludedEvents);
+            violationEventsMap = new LinkedHashMap<Long,Event>();
 
             // Lookup Addresses for events
 
             for (Event event : violationEvents)
             {
                 event.setAddressStr(getAddress(event.getLatLng()));
+                violationEventsMap.put(event.getNoteID(), event);
             }
+            selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
        }
     }
 
@@ -244,16 +244,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     public void setTimeZone(TimeZone timeZone)
     {
         this.timeZone = timeZone;
-    }
-
-    public List<Event> getViolationEvents()
-    {
-        return violationEvents;
-    }
-
-    public void setViolationEvents(List<Event> violationEvents)
-    {
-        this.violationEvents = violationEvents;
     }
 
     public ScoreDAO getScoreDAO()
@@ -580,6 +570,46 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
 	public void setTamperEvents(List<Event> tamperEvents) {
 		this.tamperEvents = tamperEvents;
+	}
+
+	public List<Event> getViolationEvents() {
+		if ((violationEventsMap == null) || violationEventsMap.isEmpty()){
+			getLastTrip();
+		}
+	    return new ArrayList<Event>(violationEventsMap.values());
+	}
+
+	public void setViolationEvents(List<Event> violationEvents) {
+	
+			for (Event event : violationEvents)
+	        {
+	            violationEventsMap.put(event.getNoteID(), event);
+	        }
+	        selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
+		}
+	//
+	//	public Event getSelectedViolation() {
+	//		return selectedViolation;
+	//	}
+	//
+	//	public void setSelectedViolation(Event selectedViolation) {
+	//		this.selectedViolation = selectedViolation;
+	//	}
+
+	public Long getSelectedViolationID() {
+		return selectedViolationID;
+	}
+
+	public void setSelectedViolationID(Long selectedViolationID) {
+		this.selectedViolationID = selectedViolationID;
+	}
+
+	public Map<Long, Event> getViolationEventsMap() {
+		return violationEventsMap;
+	}
+
+	public void setViolationEventsMap(Map<Long, Event> violationEventsMap) {
+		this.violationEventsMap = violationEventsMap;
 	}
 
 

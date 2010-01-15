@@ -21,7 +21,7 @@
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:f="http://java.sun.com/jsf/core">
 
-<div id="#{hiddenDivID}" style="display:none">
+<div id="eventBubble" style="display:none">
 	<h:panelGrid columns="1" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 		<f:facet name="header">
 			<h:outputText value="#{messages[eventType]}" />
@@ -31,11 +31,14 @@
 			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
 		</h:outputText>
 		<h:outputText value="#{eventDateTime}" rendered="#{datePattern eq 'null'}"/>
-			<ui:fragment rendered="#{addressIsLink}">
+			<ui:fragment rendered="#{addressLookupAddressFormat == 1}"> <!--Address -->
+				<h:outputText value="#{eventLocation}" />
+			</ui:fragment>
+			<ui:fragment rendered="#{addressLookupAddressFormat == 2}"> <!-- Link -->
 				<a href="#{eventLocation}" target="_blank">#{messages.livefleet_address}</a> 
 			</ui:fragment>
-			<ui:fragment rendered="#{!addressIsLink}">
-				<h:outputText value="#{eventLocation}" />
+			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
+				<h:outputText id="bubbleAddress"/>
 			</ui:fragment>
 		
 		 <!-- SPEEDING EVENT -->

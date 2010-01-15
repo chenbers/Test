@@ -8,9 +8,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
-//import com.inthinc.pro.backing.listener.SearchChangeListener;
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
@@ -32,6 +34,10 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     private NavigationBean navigation;
     private SearchCoordinationBean searchCoordinationBean;
+    
+    private GroupDAO groupDAO;
+    
+    private boolean refreshRequired=true;
 
     public NavigationBean getNavigation()
     {
@@ -127,19 +133,24 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     }
     public void loadAll(){
     	
-        final List<T> matchedItems = new ArrayList<T>();
-        
-      	searchCoordinationBean.clearSearchFor();
-      
-        loadDBData();
-        
-        matchedItems.addAll(getDBData());
-
-        filterResults(matchedItems);
-        loadResults(matchedItems);
-        maxCount = getDisplayData().size();
-        resetCounts();
-  	
+    	if(isRefreshRequired()){
+    		
+	        final List<T> matchedItems = new ArrayList<T>();
+	        
+	      	searchCoordinationBean.clearSearchFor();
+	      
+	        loadDBData();
+	        
+	        matchedItems.addAll(getDBData());
+	
+	        filterResults(matchedItems);
+	        loadResults(matchedItems);
+	        maxCount = getDisplayData().size();
+	        resetCounts();
+	        
+	        setRefreshRequired(false);
+     	}
+ 	
     }
     public void loadGroup(){
     	
@@ -153,7 +164,8 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         loadResults(matchedItems);
         maxCount = getDisplayData().size();
         resetCounts();
-  	
+        setRefreshRequired(false);
+ 	
     }
    public void search()
     {
@@ -175,7 +187,8 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
  //     maxCount = getDisplayData().size();
  
         resetCounts();
-        
+        setRefreshRequired(false);
+      
     }
     
     public abstract String getMappingId();
@@ -338,5 +351,27 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         return page;
     }
+
+	public GroupDAO getGroupDAO() {
+		return groupDAO;
+	}
+
+	public void setGroupDAO(GroupDAO groupDAO) {
+		this.groupDAO = groupDAO;
+	}
+	
+    public void refreshGroupHierarchy(){
+    	
+        List<Group> groupList = groupDAO.getGroupHierarchy(getProUser().getGroupHierarchy().getTopGroup().getAccountID(), getProUser().getUser().getGroupID());                  
+        getProUser().setGroupHierarchy(new GroupHierarchy(groupList));
+    }
+
+	public boolean isRefreshRequired() {
+		return refreshRequired;
+	}
+
+	public void setRefreshRequired(boolean refreshRequired) {
+		this.refreshRequired = refreshRequired;
+	}
 
 }

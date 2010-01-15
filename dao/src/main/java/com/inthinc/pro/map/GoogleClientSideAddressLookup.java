@@ -3,10 +3,16 @@ package com.inthinc.pro.map;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 
-public class GoogleClientSideAddressLookup implements AddressLookup {
+public class GoogleClientSideAddressLookup extends AddressLookup {
+
 
 	GoogleMapKeyFinder googleMapKeyFinder;
 
+	public GoogleClientSideAddressLookup() {
+		super();
+		setAddressFormat(AddressLookup.AddressFormat.LINK);
+	}
+	
 	@Override
 	public String getAddress(LatLng latLng, boolean returnLatLng)
 			throws NoAddressFoundException {
@@ -24,7 +30,6 @@ public class GoogleClientSideAddressLookup implements AddressLookup {
 			request.append(getGoogleMapKeyFinder().getKey());
 			
 			return request.toString();
-//			throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.CLIENTSIDE);
 		}
 	}
 
@@ -47,11 +52,6 @@ public class GoogleClientSideAddressLookup implements AddressLookup {
 
 	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
 		this.googleMapKeyFinder = googleMapKeyFinder;
-	}
-	@Override
-	public boolean isLink() {
-
-		return true;
 	}
 
 }

@@ -10,7 +10,7 @@
 	            
  	<t:saveState value="#{bean}"/>
 	            
-     <h:form id="redFlagsTableForm">
+     <h:form id="redFlags-form">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
     <a4j:queue requestDelay="500"/>
     <div class="datagrid_panel" style="width:925px; overflow: auto">
@@ -27,11 +27,22 @@
                   		<f:param name="noteID" value="#{item.redFlag.event.noteID}" />
                     </rich:componentControl>
                 </h:graphicImage>
-                <rich:toolTip id="addressToolTip" mode="ajax">
+                <rich:toolTip id="addressToolTip" mode="client" rendered="#{item.zone ne null}">
+ 	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
+                 </rich:toolTip>
+                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1 and item.zone eq null}">
                 	<div id="address">
-	                    <h:outputText rendered="#{item.zone eq null}" value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+	                    <h:outputText value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
 	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
                     </div>
+                </rich:toolTip>
+               <rich:toolTip id="baddressToolTip" mode="client" rendered="#{bean.addressFormat == 2 and item.zone eq null}">
+ 				<a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a> 
+               </rich:toolTip>
+              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3 and item.zone eq null}">
+				<h:inputHidden id="eventLat" value="#{item.redFlag.event.latitude}"/>
+				<h:inputHidden id="eventLng" value="#{item.redFlag.event.longitude}"/>
+ 				<h:outputText id="eventAddress" />
                 </rich:toolTip>
                 
                 	<div id="#{item.redFlag.event.noteID}" style="display: none;">
@@ -174,7 +185,7 @@
                 value="#{messages.button_no}" /></span></button>
             <a4j:commandButton id="redFlags-yes" action="#{redFlagsBean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel'); initializeTable()"
                 onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
-                eventsQueue="redFlagsTableForm" >
+                eventsQueue="redFlags-form" >
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
             </a4j:commandButton></div>
 
