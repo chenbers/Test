@@ -76,6 +76,7 @@ public class EventMapper
         typeMap.put(TIWIPRO_EVENT_SPEEDING_EX3, SpeedingEvent.class);
         typeMap.put(TIWIPRO_EVENT_SEATBELT, SeatBeltEvent.class);
         typeMap.put(TIWIPRO_EVENT_UNPLUGGED, TamperingEvent.class);
+        typeMap.put(TIWIPRO_EVENT_UNPLUGGED_ASLEEP, TamperingEvent.class);
         typeMap.put(TIWIPRO_EVENT_WSZONES_ARRIVAL_EX, ZoneArrivalEvent.class);
         typeMap.put(TIWIPRO_EVENT_WSZONES_DEPARTURE_EX, ZoneDepartureEvent.class);
         typeMap.put(TIWIPRO_EVENT_ZONE_ENTER_ALERTED, ZoneArrivalEvent.class);
@@ -106,6 +107,7 @@ public class EventMapper
         warningList.add(TIWIPRO_EVENT_LOW_TIWI_BATTERY);
         warningList.add(TIWIPRO_EVENT_UNPLUGGED);
         warningList.add(TIWIPRO_EVENT_IDLE);
+        warningList.add(TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
         categoryMap.put(EventCategory.WARNING, warningList);
 
         List<Integer> driverCatList = new ArrayList<Integer>();
