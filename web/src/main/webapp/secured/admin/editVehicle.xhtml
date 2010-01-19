@@ -206,20 +206,16 @@
                               <!-- Odometer -->
                               <tr>
                                 <td width="100" valign="top">
-                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="FALSE"/>
-										<ui:param name="for" value="editVehicle-odometer"/>
-										<ui:param name="fieldName" value="odometer"/>
-										<ui:param name="editBean" value="#{vehiclesBean}"/>
-										<ui:param name="label" value="#{messages.editVehicle_odometer}"/>
-										<ui:param name="context" value="editVehicleOdometer"/>
-								  </ui:include>
+                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-odometer" value="#{vehiclesBean.updateField['odometer']}" />
+                                  <h:outputText value="editVehicle_odometer" converter="MeasurementTextConverter"/>
                                 </td>
                                 
-                                <td>
+                                <td>                                       
                                   <rich:message for="editVehicle-odometer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.odometer}" id="editVehicle-odometer" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
+                                  <h:inputText value="#{vehiclesBean.item.odometer}" id="editVehicle-odometer" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22"
+                                    converterMessage="#{messages.editVehicle_odometerFormat}" validatorMessage="#{messages.editVehicle_odometerFormat}">
+                                    <f:converter converterId="MilesToKilometersConverter"/>
+                                  </h:inputText>
                                 </td>
                               </tr>
                               
