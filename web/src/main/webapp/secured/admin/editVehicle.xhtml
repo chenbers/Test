@@ -212,8 +212,9 @@
                                 
                                 <td>                                       
                                   <rich:message for="editVehicle-odometer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.odometer}" id="editVehicle-odometer" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22"
+                                  <h:inputText value="#{vehiclesBean.item.odometer}" id="editVehicle-odometer" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="8"
                                     converterMessage="#{messages.editVehicle_odometerFormat}" validatorMessage="#{messages.editVehicle_odometerFormat}">
+                                    <f:validateLongRange minimum="1"  />
                                     <f:converter converterId="MilesToKilometersConverter"/>
                                   </h:inputText>
                                 </td>
