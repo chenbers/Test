@@ -67,6 +67,7 @@
 					var marker = createMarker(	latlng, "#{driverLocation.driver.driverID}", null,
 	        		 							"#{driverLocationBean.mapIconMap.icons[driverLocation.position]}",
 	        		 							fillBubbleMarker);
+				    bounds.extend(marker.getPoint());
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
 					
@@ -78,7 +79,7 @@
 		
       	<!-- BEGIN GOOGLE MAP POPUPS -->
       	<h:form id="liveFleetMapForm">
-      	<rich:panel id="mapPopups">
+      	<rich:panel id="mapPopups" rendered="#{driverLocationBean.selectedDriverID != null}">
 			<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}"/>
       			<ui:include src="../includes/driverBubble.xhtml">
       	            <ui:param name="hiddenDivID" value="bubble" />
