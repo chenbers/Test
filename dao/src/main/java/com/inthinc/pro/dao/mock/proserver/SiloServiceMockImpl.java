@@ -168,14 +168,18 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> deletePerson(Integer personID) throws ProDAOException
     {
+    	MockData.getInstance().deleteObject(Person.class, "personID", personID);
         return createReturnValue("count", 0);
     }
 
     @Override
     public Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException
     {
-        // TODO: actually store the object to the mock data
-        return createReturnValue("personID", (int) (Math.random() * Integer.MAX_VALUE));
+        AbstractMapper mapper = new AbstractMapper(){};
+        Person person = mapper.convertToModelObject(personMap, Person.class);
+        person.setPersonID((int) (Math.random() * Integer.MAX_VALUE));
+        MockData.getInstance().storeObject(person);
+        return createReturnValue("personID", person.getPersonID());
     }
 
     @Override
