@@ -79,7 +79,10 @@
     </rich:column>
     <rich:column id="odometer" rendered="#{vehiclesBean.tableColumns['odometer'].visible}" sortBy="#{item.odometer}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_odometer}" /></f:facet>
-       <h:outputText value="#{item.odometer}" />
+      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.odometer ne null}">
+         <a4j:actionparam value="#{item.odometer}" converter="MilesToKilometersConverterInput"/>
+         <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+      </h:outputFormat>
     </rich:column>    
   </ui:define>
 

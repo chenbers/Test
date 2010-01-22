@@ -215,7 +215,7 @@
                                   <h:inputText value="#{vehiclesBean.item.odometer}" id="editVehicle-odometer" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="8"
                                     converterMessage="#{messages.editVehicle_odometerFormat}" validatorMessage="#{messages.editVehicle_odometerFormat}">
                                     <f:validateLongRange minimum="1"  />
-                                    <f:converter converterId="MilesToKilometersConverter"/>
+                                    <f:converter converterId="MilesToKilometersConverterInput"/>
                                   </h:inputText>
                                 </td>
                               </tr>
