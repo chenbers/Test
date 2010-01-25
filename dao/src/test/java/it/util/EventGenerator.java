@@ -75,7 +75,8 @@ public class EventGenerator
         new LatLng(33.0127,-117.1122),
         new LatLng(33.0139,-117.1122),
         new LatLng(33.0152,-117.1119),
-        new LatLng(33.0164,-117.1115),
+        
+        new LatLng(33.0164,-117.1115),	/* 10 */
         new LatLng(33.0172,-117.1124),
         new LatLng(33.0183,-117.1151), 
         new LatLng(33.0187,-117.1177),
@@ -85,6 +86,7 @@ public class EventGenerator
         new LatLng(33.0218,-117.1252),
         new LatLng(33.0219,-117.1271),
         new LatLng(33.0219,-117.1285),
+        
         new LatLng(33.0219,-117.1310),
         new LatLng(33.0219,-117.1332),
         new LatLng(33.0219,-117.1356),
@@ -95,6 +97,7 @@ public class EventGenerator
         new LatLng(33.0205,-117.1461),
         new LatLng(33.0195,-117.1475),
         new LatLng(33.0187,-117.1481),
+        
         new LatLng(33.0175,-117.1486),
         new LatLng(33.0159,-117.1487),
         new LatLng(33.0147,-117.1482),
@@ -105,6 +108,7 @@ public class EventGenerator
         new LatLng(33.0066,-117.1451),
         new LatLng(33.0054,-117.1456),
         new LatLng(33.0042,-117.1468),
+        
         new LatLng(33.0025,-117.1486),
         new LatLng(33.0012,-117.1506),
         new LatLng(33.0004,-117.1522),
@@ -115,6 +119,7 @@ public class EventGenerator
         new LatLng(32.9919,-117.1590),
         new LatLng(32.9903,-117.1595),
         new LatLng(32.9882,-117.1602),
+
         new LatLng(32.9866,-117.1607),
         new LatLng(32.9846,-117.1608),
         new LatLng(32.9833,-117.1604),
@@ -125,7 +130,8 @@ public class EventGenerator
         new LatLng(32.9790,-117.1499),
         new LatLng(32.9777,-117.1482),
         new LatLng(32.9763,-117.1466),  /* 59 */
-        new LatLng(32.9755,-117.1475),
+        
+        new LatLng(32.9755,-117.1475),	/* 60 */
         new LatLng(32.9743,-117.1489),
         new LatLng(32.9728,-117.1508),
         new LatLng(32.9717,-117.1526),
@@ -135,18 +141,20 @@ public class EventGenerator
         new LatLng(32.9700,-117.1649),
         new LatLng(32.9701,-117.1674),
         new LatLng(32.9703,-117.1699),
-        new LatLng(32.9703,-117.1721),
+        
+        new LatLng(32.9703,-117.1721),	/* 70 */
         new LatLng(32.9702,-117.1750),
         new LatLng(32.9691,-117.1769),
         new LatLng(32.9682,-117.1783),
         new LatLng(32.9672,-117.1810),
         new LatLng(32.9663,-117.1832),
         new LatLng(32.9652,-117.1862),
-        new LatLng(32.9643,-117.1891),
+        new LatLng(32.9643,-117.1891), 
         new LatLng(32.9628,-117.1910),
         new LatLng(32.9611,-117.1923),
-        new LatLng(32.9615,-117.1940),
-        new LatLng(32.9617,-117.1957),
+        
+        new LatLng(32.9615,-117.1940),	/* 80 */
+        new LatLng(32.9617,-117.1957),	
         new LatLng(32.9613,-117.1981),
         new LatLng(32.9615,-117.2009),
         new LatLng(32.9621,-117.2037),
@@ -155,12 +163,12 @@ public class EventGenerator
         new LatLng(32.9593,-117.2095),
         new LatLng(32.9595,-117.2101),
         new LatLng(32.9598,-117.2108),
-        new LatLng(32.9601,-117.2103),
-        new LatLng(32.9603,-117.2102),
-                                            // warnings
-        new LatLng(32.9603,-117.2102),      // low tiwi battery  (92)
-        new LatLng(32.9603,-117.2102),      // low battery
-        new LatLng(32.9603,-117.2102),      // tampering
+        
+        new LatLng(32.9601,-117.2103),	/* 90 */
+        new LatLng(32.9603,-117.2104),
+        new LatLng(32.9603,-117.2105),
+        new LatLng(32.9603,-117.2106),
+        new LatLng(32.9603,-117.2107),
 
     };
 
@@ -168,13 +176,22 @@ public class EventGenerator
     {
     }
 static int eventCount;    
-
-    // used for report testing
+	public void generateTripExt(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, Integer zoneID ) throws Exception
+	{
+		generateTrip(imeiID, service, startTime, data, true, zoneID);
+	}
+//boolean tampering = false;
     public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data ) throws Exception
+    {
+		generateTrip(imeiID, service, startTime, data, false, 0);
+    	
+    }
+
+    public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, boolean includeExtraEvents, Integer zoneID ) throws Exception
     {
     	System.out.println("generate trip for imei" + imeiID + " Date: " + startTime);
     	
-    	data.initIndexes(locations.length);
+    	data.initIndexes(ReportTestConst.EVENTS_PER_DAY, includeExtraEvents);
         Date eventTime = startTime;
         Event event = null;
         
@@ -183,12 +200,38 @@ static int eventCount;
         Integer locCnt = ReportTestConst.EVENTS_PER_DAY;
 eventCount = 0;
 //boolean tampering = false;
+		boolean ignitionOn = false;
         for (int i = 0; i < locCnt; i++)
         {
-        	if (i == 0)
+        	if (includeExtraEvents && isExtraEventIndex(i)) {
+        		switch (i) {
+	        		case ReportTestConst.TAMPER_EVENT_IDX:
+	        			event = new TamperingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_UNPLUGGED, eventTime, 0, odometer, 
+	        					locations[i].getLat(), locations[i].getLng());
+	        			break;
+					case ReportTestConst.TAMPER2_EVENT_IDX:
+	        			event = new TamperingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP, eventTime, 0, odometer, 
+	        					locations[i].getLat(), locations[i].getLng());
+	        			break;
+					case ReportTestConst.LOW_BATTERY_EVENT_IDX:
+	        			event = new LowBatteryEvent(0l, 0, EventMapper.TIWIPRO_EVENT_LOW_BATTERY, eventTime, 0, odometer, 
+	        					locations[i].getLat(), locations[i].getLng());
+	        			break;
+					case ReportTestConst.ZONE_ENTER_EVENT_IDX:
+	        			event = new ZoneArrivalEvent(0l, 0, EventMapper.TIWIPRO_EVENT_WSZONES_ARRIVAL_EX, eventTime, 0, odometer, 
+	        					locations[i].getLat(), locations[i].getLng(), zoneID);
+	        			break;
+					case ReportTestConst.ZONE_EXIT_EVENT_IDX:
+	        			event = new ZoneArrivalEvent(0l, 0, EventMapper.TIWIPRO_EVENT_WSZONES_DEPARTURE_EX, eventTime, 0, odometer, 
+	        					locations[i].getLat(), locations[i].getLng(), zoneID);
+	        			break;
+        		}
+        	}
+        	else if (!ignitionOn)
         	{
                 event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_IGNITION_ON,
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
+                ignitionOn = true;
         		
         	}
         	else if (i == (locCnt-1))
@@ -305,7 +348,13 @@ eventCount = 0;
     }
 
 
-    int randomInt(int min, int max) {
+    private boolean isExtraEventIndex(int idx) {
+    		for (int cnt = 0; cnt < ReportTestConst.extraEventIndexes.length; cnt++)
+    			if (idx == ReportTestConst.extraEventIndexes[cnt])
+    				return true;
+		return false;
+	}
+	int randomInt(int min, int max) {
         return (int) (Math.random() * ((max - min) + 1)) + min;
     }
 

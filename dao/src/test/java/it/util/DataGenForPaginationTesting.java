@@ -1,87 +1,46 @@
 package it.util;
 
-import it.com.inthinc.pro.dao.Util;
+import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
-import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
-import com.inthinc.pro.dao.hessian.AccountHessianDAO;
-import com.inthinc.pro.dao.hessian.AddressHessianDAO;
-import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
-import com.inthinc.pro.dao.hessian.DriverHessianDAO;
-import com.inthinc.pro.dao.hessian.GroupHessianDAO;
-import com.inthinc.pro.dao.hessian.PersonHessianDAO;
-import com.inthinc.pro.dao.hessian.RoleHessianDAO;
-import com.inthinc.pro.dao.hessian.StateHessianDAO;
-import com.inthinc.pro.dao.hessian.UserHessianDAO;
-import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
-import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.FuelEfficiencyType;
-import com.inthinc.pro.model.Gender;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupType;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleType;
-import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.Roles;
-import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 
-public class DataGenForReportTesting extends DataGenForTesting {
+public class DataGenForPaginationTesting extends DataGenForTesting {
+	
 	public String xmlPath;
 	public boolean isNewDataSet;
 	public Integer startDateInSec;
 	public Integer numDays;
-
-    public static Integer NUM_EVENT_DAYS = 31;
-
+	
+    public static Integer NUM_EVENT_DAYS = 7;
+    
     
     @Override
     protected void createTestData() {
     	
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
-        itData.createTestData(siloService, xml, assignmentDate, false);
+        itData.createTestData(siloService, xml, assignmentDate, true);
     }
 
-	private void parseArguments(String[] args) {
+	protected void parseArguments(String[] args) {
 		// Arguments:
 		//		required
 		//			0:		NEW  or EVENTS
 		//			1:		full path to xml file for storeage/retrieval of current data set
 		//		optional:
-		//			2: 
+		//			2: 		start day for event gen MM/dd/yyyy
+		//			3:		number of days
 		
 		String usageErrorMsg = "Usage: DataGenForReportTesting <NEW|EVENTS> <xml file path> [optional if EVENTS: <start date: MM/DD/YYYY> <num days>]";
 		
@@ -146,19 +105,42 @@ public class DataGenForReportTesting extends DataGenForTesting {
         
 	}
 
+	@Override
+	protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType) throws Exception 
+	{
+		for (GroupData groupData : itData.teamGroupData)
+		{
+			if (groupData.driverType.equals(driverType))
+			{
+				
+				EventGenerator eventGenerator = new EventGenerator();
+				switch (driverType.intValue()) {
+				case 0:			// good
+					eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0));
+					break;
+				case 1:			// intermediate
+					eventGenerator.generateTripExt(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50), itData.zone.getZoneID());
+				break;
+				case 2:			// bad
+					eventGenerator.generateTripExt(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100), itData.zone.getZoneID());
+				break;
+				
+				}
+			}		
+		}
+	}
+	
     public static void main(String[] args)
     {
         
-        DataGenForReportTesting  testData = new DataGenForReportTesting();
+        DataGenForPaginationTesting  testData = new DataGenForPaginationTesting();
         testData.parseArguments(args);
-    	
-
 
         IntegrationConfig config = new IntegrationConfig();
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         siloService = new SiloServiceCreator(host, port).getService();
-
+        
         if (testData.isNewDataSet)
         {
 	        try
@@ -208,7 +190,7 @@ public class DataGenForReportTesting extends DataGenForTesting {
         {
             try
             {
-                if (!testData.itData.parseTestData(testData.xmlPath, siloService, false))
+                if (!testData.itData.parseTestData(testData.xmlPath, siloService, true))
                 {
                 	System.out.println("Parse of xml data file failed.  File: " + testData.xmlPath);
                 	System.exit(1);

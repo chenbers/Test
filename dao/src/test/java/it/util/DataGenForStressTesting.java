@@ -3,7 +3,6 @@ package it.util;
 import it.com.inthinc.pro.dao.Util;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
-import it.util.DataGenForReportTesting.GroupData;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
