@@ -35,6 +35,7 @@ var formElements = [ "text", "checkbox", "radio", "select-one",
 		"select-multiple", "textarea" ];
 
 function checkMultiple(item) {
+//	alert("checkmultiple");
 	var id;
 	if (typeof (item) == "string")
 		id = item;
@@ -72,4 +73,44 @@ function checkMultiple(item) {
 	if (span) {
 		span.style.display = "inline";
 	}
+}
+
+function adminSetCheckbox(item,formType,formContext,formIndex) {
+//	alert("adminSetCheckbox: formContext " + formContext + " formType: " + formType + " formIndex: " + formIndex);
+//	This function is similar to the above but is a substitute that should work
+//		better relative to the unique id requirement for automation
+	var id;
+	if (typeof (item) == "string") {
+		id = item;
+	} else {
+		id = item.id;
+	}
+	
+	if (!id) return;
+
+//	Find index 	
+	var index = id.lastIndexOf(":");
+	if (index > 0){		
+		relativeId = id.substring(index + 1,id.length);		
+	}	
+	
+//	Construct element name, find element, and set 
+	var formElement = "edit-form:";	
+	if (		formType == "speed") {
+		formElement += formContext + relativeId;
+		
+	} else if (	formType == "redflag" ) {
+		formElement += formContext + relativeId + "Selected";
+		
+	} else {
+		formElement += "sensitivity:" + formIndex + ":" + formContext + "-update";
+	}
+//	alert("formElement " + formElement)
+	if (index > 0){
+		box = document.getElementById(formElement);	
+	}
+	
+	if (box) {
+		box.checked = true;
+	}	
 }

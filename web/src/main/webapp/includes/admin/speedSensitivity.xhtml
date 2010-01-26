@@ -64,7 +64,7 @@
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
-                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id)" />
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
@@ -75,17 +75,22 @@
                                 <tr class="tableEven">
                                   <td colspan="3" align="right" style="border-bottom: 1px solid #8BAD37">
                                     <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
-                                    <a href="#" id="#{context}-plus" onclick="bumpSpeeds(true); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
-                                    <a href="#" id="#{context}-minus" onclick="bumpSpeeds(false); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                    <a href="#" id="#{context}-plus" onclick="bumpSpeeds(true,'#{context}-update_',#{batchEdit}); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                    <a href="#" id="#{context}-minus" onclick="bumpSpeeds(false,'#{context}-update_',#{batchEdit}); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
                                   </td>
                                 </tr>
                               </ui:fragment>
                             </table>
                             <script type="text/javascript">
-                              function bumpSpeeds(up)
+                              function bumpSpeeds(up,checkboxPrefix,checkboxSet)
                               {
                                 for (var i = 0; i &lt; 15; i++)
                                 {
+                                  if ( checkboxSet ) {
+                                  	var check = document.getElementById("#{formName}:" + checkboxPrefix + "speed" + i);                                 
+                                  	check.checked = true;
+                                  }
+                                  
                                   var input = document.getElementById("#{formName}:speed" + i).component;
                                   if (up)
                                     input.setValue(Number(input.input.value) + 1);
@@ -145,7 +150,7 @@
                                  </tr>
                                  <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update#{index}" value="#{updateField[sensitivityItem]}" />
                                        <h:outputText value="#{messages[sensitivityType]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -159,8 +164,8 @@
                                              handleSelectedClass="handleSelected"
                                              showInput="false" minValue="1" maxValue="#{sensitivityType.settingsCount}" 
                                              barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{sensitivityType.settingsCount}.png')"
-                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting})"
-                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting})" />
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
                                     </td>
                                     <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                           <h:outputText value="#{messages.editDevice_sensitivity5}" />
