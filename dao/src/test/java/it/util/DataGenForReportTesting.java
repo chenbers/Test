@@ -70,9 +70,20 @@ public class DataGenForReportTesting extends DataGenForTesting {
     
     @Override
     protected void createTestData() {
-    	
+    	itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
         itData.createTestData(siloService, xml, assignmentDate, false);
+    }
+    @Override
+    protected boolean parseTestData() {
+    	itData = new ITData();
+        if (!itData.parseTestData(xmlPath, siloService, false))
+        {
+        	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
+        	return false;
+        }
+        
+        return true;
     }
 
 	private void parseArguments(String[] args) {
@@ -208,12 +219,11 @@ public class DataGenForReportTesting extends DataGenForTesting {
         {
             try
             {
-                if (!testData.itData.parseTestData(testData.xmlPath, siloService, false))
-                {
-                	System.out.println("Parse of xml data file failed.  File: " + testData.xmlPath);
-                	System.exit(1);
-                }
-
+            	if (!testData.parseTestData())
+            	{
+            		System.exit(1);
+            	}
+    	
                 HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
                 MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
                 for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)

@@ -20,8 +20,9 @@ public abstract class DataGenForTesting  {
     public static SiloService siloService;
 
     
-    public ITData itData = new ITData();
+    public ITData itData;
 
+    protected abstract boolean parseTestData();
     protected abstract void createTestData();
 
 	protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType) throws Exception 

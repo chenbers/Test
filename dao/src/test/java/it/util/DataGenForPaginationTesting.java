@@ -28,10 +28,23 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
     
     @Override
     protected void createTestData() {
-    	
+    	itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
         itData.createTestData(siloService, xml, assignmentDate, true);
     }
+    
+    @Override
+    protected boolean parseTestData(){
+    	itData = new ITData();
+        if (!itData.parseTestData(xmlPath, siloService, true))
+        {
+        	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
+        	return false;
+        }
+
+    	return true;
+    }
+
 
 	protected void parseArguments(String[] args) {
 		// Arguments:
@@ -190,9 +203,8 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
         {
             try
             {
-                if (!testData.itData.parseTestData(testData.xmlPath, siloService, true))
+                if (!testData.parseTestData())
                 {
-                	System.out.println("Parse of xml data file failed.  File: " + testData.xmlPath);
                 	System.exit(1);
                 }
 

@@ -7,6 +7,7 @@ import it.config.ReportTestConst;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -479,42 +480,42 @@ public class ITData {
 
 	public boolean parseTestData(String xmlPath, SiloService siloService, boolean includeZonesAndAlerts) {
         try {
-            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlPath);
-            // InputStream stream = new FileInputStream(xmlPath);
-            XMLDecoder xml = new XMLDecoder(new BufferedInputStream(stream));
-            account = getNext(xml, Account.class);
-            getNext(xml, Address.class);
-            fleetGroup = getNext(xml, Group.class);
-            districtGroup = getNext(xml, Group.class);
+            //InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlPath);
+            InputStream stream = new FileInputStream(xmlPath);
+            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(stream));
+            account = getNext(xmlDecoder, Account.class);
+            getNext(xmlDecoder, Address.class);
+            fleetGroup = getNext(xmlDecoder, Group.class);
+            districtGroup = getNext(xmlDecoder, Group.class);
             teamGroupData = new ArrayList<GroupData>();
             for (int i = GOOD; i <= BAD; i++) {
-                Group group = getNext(xml, Group.class);
+                Group group = getNext(xmlDecoder, Group.class);
                 GroupData groupData = new GroupData();
                 groupData.group = group;
                 groupData.driverType = i;
                 teamGroupData.add(groupData);
             }
-            getNext(xml, User.class);
+            getNext(xmlDecoder, User.class);
             for (int i = GOOD; i <= BAD; i++) {
                 GroupData groupData = teamGroupData.get(i);
-                groupData.user = getNext(xml, User.class);
-                groupData.device = getNext(xml, Device.class);
-                groupData.driver = getNext(xml, Driver.class);
-                groupData.vehicle = getNext(xml, Vehicle.class);
+                groupData.user = getNext(xmlDecoder, User.class);
+                groupData.device = getNext(xmlDecoder, Device.class);
+                groupData.driver = getNext(xmlDecoder, Driver.class);
+                groupData.vehicle = getNext(xmlDecoder, Vehicle.class);
             }
             
             if (includeZonesAndAlerts) {
-            	zone = getNext(xml, Zone.class);
-            	getNext(xml, ZoneAlert.class);
+            	zone = getNext(xmlDecoder, Zone.class);
+            	getNext(xmlDecoder, ZoneAlert.class);
             	for (int i = 0; i < 6; i++) {
-            		getNext(xml, RedFlagAlert.class);
+            		getNext(xmlDecoder, RedFlagAlert.class);
             	}
             }
-        	startDateInSec = getNext(xml, Integer.class);
+        	startDateInSec = getNext(xmlDecoder, Integer.class);
         	Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
         
         	totalDays = (todayInSec - startDateInSec) / DateUtil.SECONDS_IN_DAY;
-            xml.close();
+            xmlDecoder.close();
             return dataExists(siloService);
         } catch (Exception ex) {
             System.out.println("error reading " + xmlPath);
@@ -523,12 +524,9 @@ public class ITData {
         }
     }
 
-	private Object getNext(XMLDecoder xml) {
-		return xml.readObject();
-	}
 
-    private <T> T getNext(XMLDecoder xml, Class<T> expectedType) throws Exception {
-        Object result = xml.readObject();
+    private <T> T getNext(XMLDecoder xmlDecoder, Class<T> expectedType) throws Exception {
+        Object result = xmlDecoder.readObject();
         if (expectedType.isInstance(result)) {
             return (T) result;
         } else {
