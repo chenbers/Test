@@ -480,8 +480,6 @@ public class ITData {
 
 	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeZonesAndAlerts) {
         try {
-            //InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlPath);
-//            InputStream stream = new FileInputStream(xmlPath);
             XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(stream));
             account = getNext(xmlDecoder, Account.class);
             getNext(xmlDecoder, Address.class);
@@ -518,7 +516,6 @@ public class ITData {
             xmlDecoder.close();
             return dataExists(siloService);
         } catch (Exception ex) {
-            System.out.println("error reading " + xmlPath);
             ex.printStackTrace();
             return false;
         }
