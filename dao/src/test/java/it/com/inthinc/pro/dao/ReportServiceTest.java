@@ -7,6 +7,7 @@ import it.com.inthinc.pro.dao.model.ITData;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -150,8 +151,11 @@ public class ReportServiceTest {
 
         initApp();
         itData = new ITData();
+        
+        
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(REPORT_BASE_DATA_XML);
 
-        if (!itData.parseTestData(REPORT_BASE_DATA_XML, siloService, false)) {
+        if (!itData.parseTestData(stream, siloService, false)) {
             throw new Exception("Error parsing Test data xml file");
         }
 

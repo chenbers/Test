@@ -478,10 +478,10 @@ public class ITData {
 		return notifyPersonIDList;
 	}
 
-	public boolean parseTestData(String xmlPath, SiloService siloService, boolean includeZonesAndAlerts) {
+	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeZonesAndAlerts) {
         try {
             //InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlPath);
-            InputStream stream = new FileInputStream(xmlPath);
+//            InputStream stream = new FileInputStream(xmlPath);
             XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(stream));
             account = getNext(xmlDecoder, Account.class);
             getNext(xmlDecoder, Address.class);

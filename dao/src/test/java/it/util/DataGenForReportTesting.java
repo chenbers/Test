@@ -10,6 +10,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -77,7 +78,14 @@ public class DataGenForReportTesting extends DataGenForTesting {
     @Override
     protected boolean parseTestData() {
     	itData = new ITData();
-        if (!itData.parseTestData(xmlPath, siloService, false))
+        InputStream stream;
+		try {
+			stream = new FileInputStream(xmlPath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+        	return false;
+		}
+        if (!itData.parseTestData(stream, siloService, false))
         {
         	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
         	return false;

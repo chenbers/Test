@@ -7,7 +7,10 @@ import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +39,14 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
     @Override
     protected boolean parseTestData(){
     	itData = new ITData();
-        if (!itData.parseTestData(xmlPath, siloService, true))
+        InputStream stream;
+		try {
+			stream = new FileInputStream(xmlPath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+        	return false;
+		}
+        if (!itData.parseTestData(stream, siloService, true))
         {
         	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
         	return false;
