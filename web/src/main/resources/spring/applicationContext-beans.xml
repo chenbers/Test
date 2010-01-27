@@ -527,7 +527,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
   <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean">
     <property name="phoneAlerts" value="${accountOptions.phoneAlerts}" />
+    <property name="mapServerConfiguration" ref="mapServerConfigurationBean"/>
   </bean>
+
+<bean id="mapServerConfigurationBean" class="com.inthinc.pro.backing.MapServerConfiguration" scope="session">
+    <property name="host" value="${map.mapServerHost}" />
+    <property name="port" value="${map.mapServerPort}" />
+    <property name="proxy" value="${map.cgiProxy}" />
+    <property name="url" value="${map.url}" />
+    <property name="layers" value="${map.layers}" />
+    <property name="wmsLayer" value="${map.WMSLayer}"/>
+</bean>
 
   <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean">
     <property name="phoneNumber01" value="${externalConfig.phone01}" />

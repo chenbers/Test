@@ -61,9 +61,9 @@
                      <h:outputText value="#{vehicle.name}"/>
                      <f:param value="#{vehicle.vehicleID}"/>
                 </pretty:link>
-							
+			<ui:param name="vehicleType" value="VehicleType.#{vehicle.vtype}"/>		
 			<h:outputText value="#{messageVehicleType}:"/>
-			<h:outputText value="#{messages[vehicle.vtype]}" />
+			<h:outputText value="#{messages[vehicleType]}" />
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>

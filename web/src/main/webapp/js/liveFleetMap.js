@@ -8,7 +8,9 @@
 	baseIcon.iconAnchor = new GPoint(6, 20);
 	baseIcon.infoWindowAnchor = new GPoint(5, 1);
 	baseIcon.shadow=null;
-  	
+// poi 
+
+//poi end
   	function initMap(lat,lng,zoom)
   	{
 		if (GBrowserIsCompatible()) {
@@ -18,10 +20,17 @@
 		 		map = new GMap2(document.getElementById("map-canvas"));
 		 		mapNeedsInit = false;
 			}
-			map.setMapType(G_NORMAL_MAP);
+		    addLayers();
+
+		    map.addControl(new GLargeMapControl());
+		    map.addControl(new GScaleControl());
+		    map.addControl(new GMenuMapTypeControl(true));
+
 			map.setCenter(new GLatLng(lat, lng));
-			map.addControl(new GLargeMapControl());
-	 		map.addControl(new GMapTypeControl());
+		    map.enableScrollWheelZoom();
+
+			addListeners();
+			
 	 		overviewMapControl = new GOverviewMapControl();
 	 		map.addControl(overviewMapControl); 
 			bounds = new GLatLngBounds();

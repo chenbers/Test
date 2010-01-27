@@ -1,0 +1,63 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"  
+	
+>
+	<script type="text/javascript">
+	var respondToClick = false;
+	<ui:fragment rendered="#{(accountOptionsBean.mapServerConfiguration.host ne null) and (fn:length(accountOptionsBean.mapServerConfiguration.host) gt 0)}">
+		//Assumes map is defined elsewhere
+		var host = "#{accountOptionsBean.mapServerConfiguration.host}";
+		var port = "#{accountOptionsBean.mapServerConfiguration.port}";
+		var url = "#{accountOptionsBean.mapServerConfiguration.url}";
+		var proxy = "#{accountOptionsBean.mapServerConfiguration.proxy}";
+		var wmsLayer = "#{accountOptionsBean.mapServerConfiguration.wmsLayer}";
+		var queryableLayers = [];
+		
+		function addLayers(){
+
+			<ui:repeat value="#{accountOptionsBean.mapServerConfiguration.layersList}" var="layer">
+			
+				// Street Map
+				var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
+					streetsHyb.myLayers="#{layer.layer}";
+					streetsHyb.myFormat="image/png";
+					streetsHyb.myBaseURL="http://" + host +":"+port+url;
+					streetsHyb.getTileUrl=CustomGetTileUrl;
+
+				var layer1=[G_NORMAL_MAP.getTileLayers()[0],streetsHyb];
+
+				var custommap1 = new GMapType(layer1, G_NORMAL_MAP.getProjection(), "#{layer.name} Map", G_SATELLITE_MAP);
+				map.addMapType(custommap1);
+
+				if (isQueryable()){
+					
+					queryableLayers.push(custommap1);
+				}
+
+				// Satellite map
+				var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
+					streetsHyb.myLayers="#{layer.layer}";
+					streetsHyb.myFormat="image/png";
+					streetsHyb.myBaseURL="http://" + host +":"+port+url;
+					streetsHyb.getTileUrl=CustomGetTileUrl;
+
+				var layer1=[G_SATELLITE_MAP.getTileLayers()[0],streetsHyb];
+
+				var custommap1 = new GMapType(layer1, G_NORMAL_MAP.getProjection(), "#{layer.name} Sat", G_SATELLITE_MAP);
+				map.addMapType(custommap1);
+				
+				if (isQueryable()){
+					
+					queryableLayers.push(custommap1);
+				}
+				
+			</ui:repeat>
+
+		}
+		</ui:fragment>
+		<ui:fragment rendered="#{(accountOptionsBean.mapServerConfiguration.host eq null) or (fn:length(accountOptionsBean.mapServerConfiguration.host) == 0)}">
+			function addLayers(){};
+		</ui:fragment>
+	</script>
+</ui:composition>

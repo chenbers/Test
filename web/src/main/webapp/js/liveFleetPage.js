@@ -1,5 +1,4 @@
 		var map = null;
-//		var markerManager;
 	  	var markerClusterer;
 		var markers = [];
 	    var addressLatLng = null;
@@ -11,37 +10,71 @@
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 			baseIcon.shadow=null;
+
+	    function initMap() {
+	       		
+	      if (GBrowserIsCompatible()) {
+	    	  
+	       	map = new GMap2(document.getElementById("map-canvas"));
+
+	        addLayers();
+
+	        map.addControl(new GLargeMapControl());
+	        map.addControl(new GScaleControl());
+	        map.addControl(new GMenuMapTypeControl(true));
+	        map.setCenter(new GLatLng(-3.842, 32.617), 13);
+//			map.setCenter(mapDefaultLoc);
+	        map.enableScrollWheelZoom();
+
+			addListeners();
 			
-
-		function initMap()
-		{
-	        if (GBrowserIsCompatible())
-	        {
-		        if(mapNeedsInit == true)
-		        {
-		        	map = new GMap2(document.getElementById("map-canvas"));
-		        	geocoder = new GClientGeocoder();
-					map.addControl(new GLargeMapControl());
-					map.addControl(new GMapTypeControl());
-			 		overviewMapControl = new GOverviewMapControl();
-			 		map.addControl(overviewMapControl); 
-					map.setMapType(G_NORMAL_MAP);
-					map.setCenter(mapDefaultLoc);
-			 		overviewMapControl.hide();
-					bounds = new GLatLngBounds();
-
-		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
+			bounds = new GLatLngBounds();
+		    var marker = createMarker(new GLatLng(-3.842, 32.617), "defaultMessage", null, null, null);
+//		    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
+			map.addOverlay(marker);
+			bounds.extend(marker.getPoint());
 		
-					var node = document.getElementById("defaultMessage").cloneNode(true);
-		  			node.style.display = 'block';
-		            marker.openInfoWindow(node);
+			var node = document.getElementById("defaultMessage").cloneNode(true);
+			node.style.display = 'block';
+		    marker.openInfoWindow(node);
 		
-		            mapNeedsInit = false;
-		        }
-        	}
+		    mapNeedsInit = false;
+
+
+	      }
 		}
+		
+
+
+//		function initMap()
+//		{
+//	        if (GBrowserIsCompatible())
+//	        {
+//		        if(mapNeedsInit == true)
+//		        {
+//		        	map = new GMap2(document.getElementById("map-canvas"));
+//		        	geocoder = new GClientGeocoder();
+//					map.addControl(new GLargeMapControl());
+//					map.addControl(new GMapTypeControl());
+	//			 		overviewMapControl = new GOverviewMapControl();
+	//			 		map.addControl(overviewMapControl); 
+	//					map.setMapType(G_NORMAL_MAP);
+	//					map.setCenter(mapDefaultLoc);
+	//			 		overviewMapControl.hide();
+	//					bounds = new GLatLngBounds();
+
+	//		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
+	//					map.addOverlay(marker);
+	//					bounds.extend(marker.getPoint());
+	//		
+	//					var node = document.getElementById("defaultMessage").cloneNode(true);
+	//		  			node.style.display = 'block';
+	//		            marker.openInfoWindow(node);
+		
+	//		            mapNeedsInit = false;
+	//		        }
+	//        	}
+	//		}
 
 		function refresh()
 		{
@@ -117,56 +150,3 @@
    			else
    	   			{	return true;  }
    		}
-   		// Stuff from liveFleetMap.js
-//   	    function reverseGeocodeCurrentMarkerAddress(){
-//   	    	
-//   	    	geocoder.getLocations(currentMarker.getPoint(), function(response){
-//   													         if (!response || response.Status.code != 200) {
-//   													        	  
-//   													        	  setUnableToGeocodeError();
-//   													          } 
-//   													          else {
-//   													              
-//   													        	  addAddressToBubbleForMarker(response.Placemark[0].address);
-//   													          }
-//   													    	});
-//   	    }
-//   	    function addAddressToBubbleForMarker(address){
-//   	    	
-//   	    	document.getElementById("liveFleetVehicleBubbles:bubbleAddress").innerHTML = address;
-//   	    	displayCurrentMarkerWindow();
-//   	    }
-//   	    function displayCurrentMarkerWindow(){
-//   	    	
-//   			var node = document.getElementById("vehicleBubble").cloneNode(true);
-//   				
-//   			node.style.display = 'block';
-//   			currentMarker.openInfoWindow(node);
-//   	  }
-//   	    function reverseGeocodeAddress(latlng){
-//   	    	
-//   	    	geocoder.getLocations(latlng, function(response){
-//   													         if (!response || response.Status.code != 200) {
-//   													        	  
-//   													        	  setUnableToGeocodeError();
-//   													          } 
-//   													          else {
-//   													              
-//   													        	  addAddressToBubbleForMap(latlng,response.Placemark[0].address);
-//   													          }
-//   													    	});
-//   	    }
-//   	    function addAddressToBubbleForMap(latlng,address){
-//   	    	
-//   	    	document.getElementById("liveFleetVehicleBubbles:bubbleAddress").innerHTML = address;
-//   			var node = document.getElementById("vehicleBubble").cloneNode(true);
-//   			
-//   			node.style.display = 'block';
-//   			map.openInfoWindow(latlng, node);
-//   	    }
-//
-//   		function setUnableToGeocodeError(){
-//   			
-//   		  	document.getElementById("liveFleetVehicleBubbles:bubbleAddress").innerHTML = '#{messages.sbs_badLatLng}'; 	  
-//   		  		
-//   		}	

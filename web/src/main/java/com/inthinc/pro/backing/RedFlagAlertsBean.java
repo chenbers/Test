@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView> {
+public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView> implements Serializable{
 
     /**
 	 * 
