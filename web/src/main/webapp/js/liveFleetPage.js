@@ -22,15 +22,13 @@
 	        map.addControl(new GLargeMapControl());
 	        map.addControl(new GScaleControl());
 	        map.addControl(new GMenuMapTypeControl(true));
-	        map.setCenter(new GLatLng(-3.842, 32.617), 13);
-//			map.setCenter(mapDefaultLoc);
+			map.setCenter(mapDefaultLoc);
 	        map.enableScrollWheelZoom();
 
 			addListeners();
 			
 			bounds = new GLatLngBounds();
-		    var marker = createMarker(new GLatLng(-3.842, 32.617), "defaultMessage", null, null, null);
-//		    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
+		    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
 			map.addOverlay(marker);
 			bounds.extend(marker.getPoint());
 		
