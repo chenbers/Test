@@ -1,0 +1,207 @@
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<ui:param name="context" value="team" />
+	
+    <ui:define name="scripts">
+       <style>
+			.datagrid th {			
+				text-align: center;
+				white-space: normal;
+			}
+			.datagrid > tbody > tr > td {
+				text-align: center;
+			}
+			
+		</style>
+        <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
+        
+	    <script language="javascript" type="text/javascript">
+        	function initMap() {
+				
+				if (GBrowserIsCompatible()) {					
+					GUnload();
+					//var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
+					map = new GMap2(document.getElementById("map-canvas"));						
+					map.addControl(new GLargeMapControl());
+					map.addControl(new GMapTypeControl());
+					map.addControl(new GOverviewMapControl()); 
+					map.setMapType(G_NORMAL_MAP);
+					map.setCenter(new GLatLng(40.557078,-111.964102), 14);
+				}
+        	}
+			function bodyLoad() {
+				initMap();
+			}
+			function bodyUnload() {
+				GUnload();
+			}
+		</script>
+    </ui:define>
+	<ui:define name="content">
+	<!-- Team Header -->
+    <h:form id="team_header_form">
+    	<a4j:region id="team_header_region">
+    		<ul id="grid_nav">
+    				<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
+    				<li class="l grid_title">Team</li>
+    				<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
+    				<li class="l">
+    					<ui:include src="/includes/breadcrumb.xhtml">
+    						<ui:param name="groupTreeNode"
+    							value="#{navigationBean.groupTreeNode}" />
+                    		<ui:param name="context" value="#{context}_header"/> 
+    					</ui:include>
+    				</li>
+    				
+    				<li class="r grid_icon">
+    				<h:outputLink value="#{helpBean.path}#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">
+    					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
+    				</h:outputLink></li>
+    				<h:outputText rendered="#{showContextMenu eq 'true'}">
+    				<li class="r grid_icon">
+    					<h:panelGroup id="overview_tools_icon">
+    						<h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" title="#{messages.tool_menu}"/>
+    					</h:panelGroup>
+    				</li>
+    				</h:outputText>
+    				<li class="r grid_icon">
+    					<a4j:status	id="team_ajax_status">
+    						<f:facet name="start">
+    							 <h:graphicImage value="/images/progress2.gif"/>
+    						</f:facet>
+    					</a4j:status>
+    				</li>
+    				<li class="r divider"><img src="#{request.contextPath}/images/grid_nav_divider.png" /></li>
+    			</ul>
+    		
+        </a4j:region>
+	</h:form>	
+	<!-- End Team Header -->
+	<!-- Driver Statistics Table -->
+	<div>
+	    <div class="panel_nw">    
+	       <div class="panel_title">
+	       	 <h:graphicImage value="/images/ico_line.png" />What Happened...
+	       </div>
+	    </div>
+	    <div class="panel_w">
+	       <div class="panel_content">
+	       <rich:dataTable	value="#{teamBean.driverStatistics}" 
+	       		id="drivers" 
+	       		var="item"
+				styleClass="datagrid" 
+				rowClasses="tableOdd,tableEven" 
+				rows="10">				
+				<rich:column>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Driver
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Score
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Vehicle
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Trips
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Stops
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Miles Driven
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Drive Time
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Idle Time
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Low Idle
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						High Idle
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Idle %
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						MPG
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Crashes
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						Flags
+					</f:facet>
+				</rich:column>
+				<rich:column>
+				</rich:column>
+			</rich:dataTable>
+			</div>
+	    </div>
+	    <div class="panel_sw">
+	       <div class="panel_statusbar"/>
+	   	</div>
+   	</div>
+    <!-- End Driver Statistics Table -->
+    
+   	<!-- Trips Map -->
+   	<div>
+	    <div class="panel_nw">    
+	       <div class="panel_title">
+	       <h:graphicImage value="/images/ico_line.png" />Trips
+	       </div>
+	    </div>
+	    <div class="panel_w">
+	       <div class="panel_content">	       
+			 <div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
+	       </div>
+	    </div>
+	    <div class="panel_sw">
+	       <div class="panel_statusbar"/>
+	   	</div>
+   	</div>
+    <!-- End Trips Map -->
+	
+	</ui:define>
+
+</ui:composition>

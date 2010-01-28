@@ -73,6 +73,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="overallScoreBean" ref="overallScoreBean" />
     <property name="trendBeanState" ref="trendBeanState"></property>
   </bean>
+  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean"/>
 
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">
