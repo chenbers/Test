@@ -36,8 +36,9 @@
 	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
                     </div>
                 </rich:toolTip>
-               <rich:toolTip id="baddressToolTip" mode="client" rendered="#{bean.addressFormat == 2 and item.zone eq null}">
- 				<a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a> 
+               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2 and item.zone eq null}">
+               	<h:inputHidden id="linkText" value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+  				<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
                </rich:toolTip>
               <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3 and item.zone eq null}">
 				<h:inputHidden id="eventLat" value="#{item.redFlag.event.latitude}"/>
