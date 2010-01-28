@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.TableFilterField;
 
 public interface EventDAO extends GenericDAO<Event, Integer>
 {
@@ -72,11 +74,8 @@ public interface EventDAO extends GenericDAO<Event, Integer>
 
     Event findByID(Long id);
 
-/*    
     // pagination methods
-    
-	Integer  getEventCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<FilterField> filters);
+	Integer  getEventCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<Integer> eventTypes, List<TableFilterField> filters);
 
-	List<Event> getEventPage(Integer groupID, Integer daysBack, Integer includeForgiven, PageParams pageParams);
-*/	
+	List<Event> getEventPage(Integer groupID, Integer daysBack, Integer includeForgiven, List<Integer> eventTypes, PageParams pageParams);
 }

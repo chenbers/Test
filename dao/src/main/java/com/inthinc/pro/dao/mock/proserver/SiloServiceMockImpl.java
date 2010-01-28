@@ -1567,5 +1567,37 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 		// TODO Auto-generated method stub
 		return null;
 	}
-*/	
+*/
+
+	@Override
+	public List<Map<String, Object>> getDriverEventPage(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Map<String, Object> pageParams, Integer[] types) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getDriverEventTotalCount(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			List<Map<String, Object>> filterList, Integer[] types) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getRedFlagsPage(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getRedFlagsTotalCount(Integer groupID,
+			Long startDate, Long endDate, Integer includeForgiven,
+			List<Map<String, Object>> filterList) {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 }

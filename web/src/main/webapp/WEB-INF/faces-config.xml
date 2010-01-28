@@ -61,6 +61,10 @@
 	      <property-class>java.lang.String</property-class>
    	  </property>
 	</converter>
+	<converter>
+	  <converter-id>DateTimeTZConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.DateTimeTZConverter</converter-class>
+	</converter>
     <converter>
         <converter-id>MeasurementTextConverter</converter-id>
         <converter-class>com.inthinc.pro.convert.MeasurementTextConverter</converter-class>
@@ -101,6 +105,10 @@
         <converter-id>MphToKphLabelConverter</converter-id>
         <converter-class>com.inthinc.pro.convert.MphToKphLabelConverter</converter-class>
     </converter>
+	<converter>
+	  <converter-id>EventDetailsConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.EventDetailsConverter</converter-class>
+	</converter>
 	
 	<!-- Components -->
 	<component>

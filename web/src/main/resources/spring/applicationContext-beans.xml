@@ -553,12 +553,32 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   
   
     <!-- Pagination Beans -->
-<!--   
-   <bean id="testRedFlagTableBean" class="com.inthinc.pro.table.test.TestRedFlagTableBean" scope="request" parent="baseBean" init-method="init">
-    <property name="redFlagsTableDataProvider" ref="redFlagsTableDataProvider"></property>
-  </bean>
-   <bean id="redFlagsTableDataProvider" class="com.inthinc.pro.table.model.RedFlagsTableDataProvider" scope="request">
-    <property name="redFlagDAO" ref="redFlagDAO"></property>
-  </bean>
- -->  
+    <bean id="basePagingNotificationsBean" class="com.inthinc.pro.backing.paging.BasePagingNotificationsBean" scope="request" init-method="init" parent="baseBean">
+	    <property name="reportRenderer" ref="reportRenderer" />
+    	<property name="reportCriteriaService" ref="reportCriteriaService" />
+    </bean>
+
+    <bean id="basePagingEventsBean" class="com.inthinc.pro.backing.paging.BasePagingEventsBean" scope="request" init-method="init"  parent="basePagingNotificationsBean">
+		  <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>   
+    </bean>
+    
+    <bean id="pagingEventsBean" class="com.inthinc.pro.backing.paging.PagingEventsBean" scope="request" init-method="init" parent="basePagingEventsBean">
+	    <property name="tableDataProvider" ref="eventPaginationTableDataProvider"></property>
+		<property name="eventDAO" ref="eventDAO"></property>   
+    </bean>
+
+    <bean id="pagingSafetyEventsBean" class="com.inthinc.pro.backing.paging.PagingSafetyEventsBean" scope="request" parent="pagingEventsBean">
+    </bean>
+
+    <bean id="pagingDiagnosticEventsBean" class="com.inthinc.pro.backing.paging.PagingDiagnosticsEventsBean" scope="request" parent="pagingEventsBean">
+    </bean>
+
+    <bean id="pagingEmergencyEventsBean" class="com.inthinc.pro.backing.paging.PagingEmergencyEventsBean" scope="request" parent="pagingEventsBean">
+    </bean>
+    
+   	<bean id="eventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider" scope="request">
+	  <property name="eventDAO" ref="eventDAO"></property>   
+  	</bean>
+     
+    
 </beans>

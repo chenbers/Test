@@ -187,6 +187,12 @@
         <pattern>/app/notifications/safety</pattern>
         <view-id>/secured/notifications/safety.faces</view-id>
     </url-mapping>
+<!--     
+    <url-mapping id="safety">
+        <pattern>/app/notifications/safety</pattern>
+        <view-id>/secured/pagingnotifications/safety.faces</view-id>
+    </url-mapping>
+ -->    
     <url-mapping id="safetyWithGroupID">
         <pattern>/app/notifications/safety</pattern>
         <query-param name="groupID">#{eventsSearchCoordinationBean.groupID}</query-param>

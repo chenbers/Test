@@ -185,10 +185,10 @@ public interface SiloService extends HessianService
     
     List<Map<String, Object>> getVehicleNoteByMiles(Integer vehicleID, Integer milesBack, Integer types[]);
 
-    // pagination methods (TESTING)
-//    Map<String, Object> getNoteCountByGroup(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Integer types[], Map<String, String> filter);
-//  
-//    List<Map<String, Object>> getNotePageByGroup(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Integer types[], Map<String, Object> pageParams);
+    // pagination methods
+    Map<String, Object> getDriverEventTotalCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList, Integer types[]);
+
+    List<Map<String, Object>> getDriverEventPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams, Integer types[]);
 
     
     
@@ -312,10 +312,10 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate, Integer includeForgiven) throws ProDAOException;
 
     
-    // pagination methods (TESTING)
-//    Map<String, Object> getRedFlagsCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, String> filter);
-//
-//    List<Map<String, Object>> getRedFlagsPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams);
+    // pagination methods
+    Map<String, Object> getRedFlagsTotalCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList);
+
+    List<Map<String, Object>> getRedFlagsPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams);
 
     // Methods related to the RedFlagAlert type
     Map<String, Object> deleteRedFlagAlert(Integer redFlagAlertID) throws ProDAOException;

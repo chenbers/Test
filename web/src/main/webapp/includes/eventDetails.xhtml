@@ -1,0 +1,19 @@
+<!-- 
+	To use:
+		<ui:include src="/includes/eventDetails.xhtml">
+	            <ui:param name="event" value="#{eventObj}" />
+		</ui:include>
+-->
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:c="http://java.sun.com/jstl/core"
+				xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<c:set var="detailsFormat" value="redflags_details#{event.eventType}"/> 
+    <h:outputText value="#{messages[detailsFormat]}">
+    	<f:converter converterId="EventDetailsConverter"/>
+		<f:attribute name="event" value="#{event}"/>
+	</h:outputText>
+</ui:composition>

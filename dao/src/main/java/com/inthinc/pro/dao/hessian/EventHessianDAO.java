@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +19,8 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.TableFilterField;
 
 public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
@@ -292,17 +295,128 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         return getMapper().convertToModelObject(this.getSiloService().getNote(id), Event.class);
     }
-    
-/*    
 
 	@Override
-	public Integer getEventCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<FilterField> filters) {
-		return Integer.valueOf(0);
+	public Integer getEventCount(Integer groupID, Integer daysBack,
+			Integer includeForgiven, List<Integer> eventTypes,
+			List<TableFilterField> filters) {
+		
+/*		
+ * real implementation
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+
+        try
+        {
+        	//EventMapper.getEventTypesInCategory(eventCategory)
+        	return getChangedCount(getSiloService().getDriverEventTotalCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
+									includeForgiven, getMapper().convertList(filters), 
+									eventTypes.toArray(new Integer[0])));
+        }
+        catch (ProxyException ex) {
+        	
+        	if (ex.getErrorCode() == 422)
+        	{
+        		logger.error("getDriverEventTotalCount not implemented on backend ");
+        		return 0;
+        	}
+        	
+        }
+        return 0;
+*/        
+/*
+ * mock implementation
+		return 100;
+*/		
+// implementation using existing methods
+		
+		List<Event> eventList = getEventsForGroup(groupID, daysBack, eventTypes, includeForgiven);
+		return eventList.size();
+		
 	}
 
 	@Override
-	public List<Event> getEventPage(Integer groupID, Integer daysBack, Integer includeForgiven, PageParams pageParams) {
+	public List<Event> getEventPage(Integer groupID, Integer daysBack,
+			Integer includeForgiven, List<Integer> eventTypes,
+			PageParams pageParams) {
+/*	
+ * real implementation	
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+        
+        try
+        {
+        	return getMapper().convertToModelObject(getSiloService().getDriverEventPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
+									includeForgiven, getMapper().convertToMap(pageParams), 
+									eventTypes.toArray(new Integer[0])), Event.class);
+        }
+        catch (ProxyException ex) {
+        	
+        	if (ex.getErrorCode() == 422)
+        	{
+        		logger.error("getDriverEventPage not implemented on backend ");
+        		return new ArrayList<Event>();
+        	}
+        	
+        }
 		return new ArrayList<Event>();
-	}
 */
+		
+/*	
+ * mock implementation	
+		TimeZone timeZone[] = {
+				TimeZone.getTimeZone("US/Mountain"),
+				TimeZone.getTimeZone("US/Pacific"),
+		};
+		List<Event> eventList = new ArrayList<Event>();
+		int typeCnt = 0;
+		for (int i = 0; i < getEventCount(groupID, daysBack, includeForgiven, eventTypes, pageParams.getFilterList()); i++)
+		{
+			
+			if (typeCnt >= eventTypes.size())
+				typeCnt=0;
+			
+			Event event = null;
+			Class<?> eventClass = EventMapper.getEventType(eventTypes.get(typeCnt));
+            if (eventClass != null) {
+                try {
+					event = (Event) eventClass.newInstance();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            else {
+            	event = new Event();
+            }
+			
+			event.setNoteID(i+1000l);
+			event.setDriverFullName(i + " driver Name");
+			event.setDriverID(i);
+			event.setVehicleName(i + " vehicle Name");
+			event.setVehicleID(i);
+			event.setGroupName((i/10) + " group Name");
+			event.setGroupID((i/10));
+			event.setTime(new Date());
+			event.setDriverTimeZone(timeZone[i % 2]);
+			event.setLatitude(32.96453094482422d);
+			event.setLongitude(-117.12944793701172d);
+			event.setType(eventTypes.get(typeCnt));
+			eventList.add(event);
+			
+			typeCnt++;
+		}
+		
+		return eventList.subList(pageParams.getStartRow(), pageParams.getEndRow());
+*/
+		
+// implementation using existing methods
+		
+		List<Event> eventList = getEventsForGroup(groupID, daysBack, eventTypes, includeForgiven);
+		return eventList.subList(pageParams.getStartRow(), pageParams.getEndRow());
+		
+	}
 }

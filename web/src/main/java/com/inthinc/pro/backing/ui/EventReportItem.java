@@ -23,6 +23,35 @@ public class EventReportItem extends NotificationReportItem<EventReportItem>
     private boolean alert;
     
     private long noteID;
+
+    /* added for pagination (JASPER) -- may be able to remove others */
+    public EventReportItem(Event event, MeasurementType measurementType)
+    {
+        this.event = event;
+        this.level = RedFlagLevel.INFO;
+        
+        if (event.getDriverTimeZone() != null) {
+        	dateFormatter.setTimeZone(event.getDriverTimeZone());
+        }
+        setDate(dateFormatter.format(event.getTime()));
+        setGroup(event.getGroupName());
+        setGroupID(event.getGroupID());
+            
+        setDriverName(event.getDriverFullName() == null ? "" : event.getDriverFullName());
+        setVehicleName(event.getVehicleName() == null ? "" : event.getVehicleName());
+
+        String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
+        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
+        
+        String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()),measurementType,mphString));
+        setNoteID(event.getNoteID());
+    }
+    /* END - added for pagination -- may be able to remove others */
+    
+
+    
+    
     
     public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy,MeasurementType measurementType)
     {

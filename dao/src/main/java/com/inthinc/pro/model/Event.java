@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -56,8 +57,16 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer sats;
     
     private String formattedTime;
+    
+    
+    // new fields added for pagination
+    private String driverFullName;
+    private String vehicleName;
+    private String groupName;
+    @Column(name="driverTzName")
+    private TimeZone driverTimeZone;
 
-    public Event()
+	public Event()
     {
         super();
     }
@@ -363,5 +372,37 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     public void setFormattedTime(String formattedTime) {
         this.formattedTime = formattedTime;
     }
+    public String getDriverFullName() {
+		return driverFullName;
+	}
+
+	public void setDriverFullName(String driverFullName) {
+		this.driverFullName = driverFullName;
+	}
+
+	public String getVehicleName() {
+		return vehicleName;
+	}
+
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public TimeZone getDriverTimeZone() {
+		return driverTimeZone;
+	}
+
+	public void setDriverTimeZone(TimeZone driverTimeZone) {
+		this.driverTimeZone = driverTimeZone;
+	}
+
 
 }

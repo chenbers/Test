@@ -1,0 +1,221 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+    
+ 	<t:saveState value="#{bean}"/>
+    
+    <h:form id="#{context}-form">
+    
+    	<div align="right" style="width: 100%"> 
+        	<h:outputFormat id="header" value="#{messages.notes_safety_recordCountHeader}">
+				<a4j:actionparam value="#{bean.table.pageData.pageStartRow}"/>
+				<a4j:actionparam value="#{bean.table.pageData.pageEndRow}"/>
+				<a4j:actionparam value="#{bean.table.pageData.totalRows}"/>
+			</h:outputFormat>
+        </div>
+    
+    
+    	<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+        
+    	<a4j:queue requestDelay="500"/>
+        
+    	<div class="datagrid_panel" style="width:925px; overflow: auto">
+        
+        <rich:dataTable id="#{context}" value="#{bean.table.model}" var="event" rowKeyVar="index"
+        		styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
+
+            <!-- Data -->
+            <rich:column id="mapColumn" style="text-align: center;">
+                <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
+                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+                        <f:param name="lat" value="#{event.latitude}" />
+                        <f:param name="lng" value="#{event.longitude}" />
+                    </rich:componentControl>
+                </h:graphicImage>
+               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1}">
+                    <h:outputText id="address" value="#{event.latLng}" converter="#{latLngAddressConverter}" />
+                </rich:toolTip>
+              <rich:toolTip id="baddressToolTip" mode="client" rendered="#{bean.addressFormat == 2}">
+ 				<a href="#{event.addressStr}" target="_blank">#{messages.livefleet_address}</a> 
+               </rich:toolTip>
+              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3}">
+				<h:inputHidden id="eventLat" value="#{event.latitude}"/>
+				<h:inputHidden id="eventLng" value="#{event.longitude}"/>
+ 				<h:outputText id="eventAddress" />
+                </rich:toolTip>
+            </rich:column>
+             
+            <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{event.time}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_date}" />
+                </f:facet>
+                <h:outputText value="#{event.time}">
+                	<f:converter converterId="DateTimeTZConverter"/>
+					<f:attribute name="timeZone" value="#{event.driverTimeZone}"/>
+                	<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{event.groupName}" filterBy="#{event.groupName}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_group}" />
+                </f:facet>
+               <pretty:link id="#{context}-dashboard" mappingId="dashboard" rendered="#{event.groupID ne null}">
+                   <h:outputText value="#{event.groupName}"/>
+                   <f:param value="#{event.groupID}"/>
+               </pretty:link>  
+               <h:outputText value="#{event.groupName}" rendered="#{event.groupID eq null}"/>                                                                              
+            </rich:column>
+            <rich:column id="driver" rendered="#{tableColumns['driver'].visible}" sortBy="#{event.driverFullName}" filterBy="#{event.driverFullName}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_driver}" />
+                </f:facet>
+                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance"  rendered="#{event.driverFullName != messages.unknown_driver}">
+                    <f:param value="#{event.driverID}"/>
+                    #{event.driverFullName}
+                </pretty:link>
+                <h:outputText rendered="#{event.driverFullName == messages.unknown_driver}" value="#{event.driverFullName}">
+                </h:outputText>
+            </rich:column>
+            <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{event.vehicleName}" filterBy="#{event.vehicleName}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_vehicle}" />
+                </f:facet>
+                <pretty:link id="#{context}-vehiclePerformance" mappingId="vehiclePerformance" rendered="#{event.vehicleName != messages.reports_none_assigned}">
+                    <f:param value="#{event.vehicleID}"/>
+                    #{event.vehicleName}
+                </pretty:link>
+                <h:outputText rendered="#{event.vehicleName == messages.reports_none_assigned}" value="#{event.vehicleName}">
+                </h:outputText>
+            </rich:column>
+            <rich:column id="category" rendered="#{tableColumns['category'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_category}" />
+                </f:facet>
+				<c:set var="cat" value="redflags_cat#{event.eventCategory}"/> 
+                <h:outputFormat value="#{messages[cat]}" >
+                	<f:param value="#{messages[event.eventType]}"/>
+                </h:outputFormat>
+            </rich:column>
+            <rich:column id="detail" rendered="#{tableColumns['detail'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_detail}" />
+                </f:facet>
+                <ui:include src="/includes/eventDetails.xhtml">
+	            	<ui:param name="event" value="#{event}" />
+				</ui:include>
+<!--                 
+				<c:set var="detailsFormat" value="redflags_details#{event.eventType}"/> 
+                <h:outputText value="#{messages[detailsFormat]}">
+                	<f:converter converterId="EventDetailsConverter"/>
+					<f:attribute name="event" value="#{event}"/>
+                </h:outputText>
+ -->                
+            </rich:column>
+            
+            <rich:column id="exclude" rendered="#{tableColumns['clear'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="" />
+                </f:facet>
+				<a4j:commandLink id="clear" rendered="#{event.forgiven == 0}" 
+						title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" 
+						reRender="#{context}-clearItemForm:clearItem" >
+					<h:outputText value="#{messages.notes_clear}" />
+					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{event}" />
+				</a4j:commandLink>
+				<a4j:commandLink id="excluded" rendered="#{event.forgiven == 1}" 
+						title="#{messages.driverReports_exclude}" action="#{bean.includeEventAction}" 
+						reRender="#{clearRerender}"
+						 oncomplete="initializeTable()">
+					<h:outputText value="#{messages.driverReports_include}" />
+					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{event}" />
+				</a4j:commandLink>
+            </rich:column>
+        </rich:dataTable>
+    </div>
+    
+    <rich:datascroller id="#{context}-bottomScroller" for="#{context}" 
+            immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
+            reRender="#{context},#{context}-form:header,#{context}pageHeader" oncomplete="initializeTable();" 
+            page="#{bean.table.pageData.currentPage}" styleClass="dataScroller" renderIfSinglePage="false"/>
+            
+    </h:form>
+
+    <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
+        onshow="document.getElementById('#{context}-clearItemForm:yes').focus();">
+        <f:facet name="header">
+            <h:outputText value="#{clearTitle}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearEventPanel')" />
+        </f:facet>
+
+        <h:panelGroup layout="block" styleClass="popupsubtitle">
+            <h:outputText value="#{clearInst}" />
+        </h:panelGroup>
+
+        <a4j:form id="#{context}-clearItemForm">
+            <h:panelGroup layout="block" styleClass="popupcontent" id="clearItem">
+<!--             
+				<c:set var="detailsFormat" value="redflags_details#{bean.clearItem.eventType}"/>
+                <h:outputText value="#{messages[detailsFormat]}">
+                	<f:converter converterId="EventDetailsConverter"/>
+					<f:attribute name="event" value="#{bean.clearItem}"/>
+                </h:outputText>
+ -->                
+                <ui:include src="/includes/eventDetails.xhtml">
+	            	<ui:param name="event" value="#{bean.clearItem}" />
+				</ui:include>
+                <br />
+                <h:outputText value="#{bean.clearItem.time}">
+                	<f:converter converterId="DateTimeTZConverter"/>
+					<f:attribute name="timeZone" value="#{bean.clearItem.driverTimeZone}"/>
+                	<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
+                </h:outputText>
+            </h:panelGroup>
+
+            <div class="popupactions">
+            <button id="no" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText
+                value="#{messages.button_no}" /></span></button>
+            <a4j:commandButton id="yes" action="#{bean.clearItemAction}" oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
+                onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
+                               eventsQueue="#{formId}" >
+                <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
+            </a4j:commandButton></div>
+
+        </a4j:form>
+
+    </rich:modalPanel>
+
+    <!-- START LOCATION MODAL -->
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+        <f:facet name="header">
+            <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+        </f:facet>
+
+        <div class="eventmap-border">
+        <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+        </div>
+
+		<h:form>
+        <div class="popupactions">
+        	<a4j:commandButton id="close" type="button" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+            	<span class="edit"> 
+            		<h:outputText value="#{messages.button_close}" /> 
+            	</span>
+        	</a4j:commandButton>
+        </div>
+        </h:form>
+    </rich:modalPanel>
+    <!-- END LOCATION MODAL -->
+
+</ui:composition>
