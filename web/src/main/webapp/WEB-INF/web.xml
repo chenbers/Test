@@ -138,7 +138,7 @@
   </servlet-mapping>
 
     <!-- The servlet and mappings for the CGI Gateway servlet -->
-    
+<!-- 
     <servlet>
         <servlet-name>cgi</servlet-name>
         <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
@@ -158,7 +158,7 @@
         <servlet-name>cgi</servlet-name>
         <url-pattern>/cgi-bin/*</url-pattern>
     </servlet-mapping>
-
+ -->    
 
   <!-- Welcome files -->
   <welcome-file-list>
