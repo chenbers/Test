@@ -92,6 +92,16 @@
 		</script>
           <rich:panel id="script">
           <script language="javascript" type="text/javascript">
+          
+   		 function getLink(index){
+			 
+       		var link = document.getElementById("link_"+index);
+       		var linkText = document.getElementById("crashHistory-form:crashHistory:"+index+":linkText").value;
+       		if (link.href.length==0){
+ 	      		
+ 				link.href = linkText;
+ 			}
+ 		 }
 		 function getAddress(index){
 			 
 	      		var address = document.getElementById("crashHistory-form:crashHistory:"+index+":eventAddress");
