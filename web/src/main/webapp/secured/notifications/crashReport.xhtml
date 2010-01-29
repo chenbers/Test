@@ -241,7 +241,7 @@
 			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 			<ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
 			<ui:param name="eventLocation" value="#{trip.startAddress}" />
- 	        <ui:param name="addressIsLink" value="#{driverTripsBean.link}"/>
+ 	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
 			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
              <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
     	 	<ui:param name="context" value="crashReportStart" />
@@ -251,7 +251,7 @@
 			<ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
 			<ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
 			<ui:param name="eventLocation" value="#{trip.endAddress}" />
- 	        <ui:param name="addressIsLink" value="#{driverTripsBean.link}"/>
+ 	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
 			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
            <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
