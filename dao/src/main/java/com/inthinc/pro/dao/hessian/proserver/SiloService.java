@@ -186,7 +186,7 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getVehicleNoteByMiles(Integer vehicleID, Integer milesBack, Integer types[]);
 
     // pagination methods
-    Map<String, Object> getDriverEventTotalCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList, Integer types[]);
+    Map<String, Object> getDriverEventCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList, Integer types[]);
 
     List<Map<String, Object>> getDriverEventPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams, Integer types[]);
 
@@ -313,7 +313,7 @@ public interface SiloService extends HessianService
 
     
     // pagination methods
-    Map<String, Object> getRedFlagsTotalCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList);
+    Map<String, Object> getRedFlagsCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList);
 
     List<Map<String, Object>> getRedFlagsPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams);
 

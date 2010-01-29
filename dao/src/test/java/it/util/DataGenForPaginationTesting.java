@@ -33,7 +33,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
     protected void createTestData() {
     	itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
-        itData.createTestData(siloService, xml, assignmentDate, true);
+        itData.createTestData(siloService, xml, assignmentDate, true, true);
     }
     
     @Override
@@ -46,7 +46,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 			e.printStackTrace();
         	return false;
 		}
-        if (!itData.parseTestData(stream, siloService, true))
+        if (!itData.parseTestData(stream, siloService, true, true))
         {
         	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
         	return false;
@@ -152,6 +152,13 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 			}		
 		}
 	}
+//	@Override
+	protected void generateUnknownDriverDayData(MCMSimulator mcmSim, Date date) throws Exception 
+	{
+		EventGenerator eventGenerator = new EventGenerator();
+		eventGenerator.generateTripExt(itData.noDriverDevice.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50), itData.zone.getZoneID());
+	}
+	
 	
     public static void main(String[] args)
     {
@@ -191,9 +198,12 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 	                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 	                    Date startDate = new Date((long)dateInSec * 1000l);
 	            		testData.generateDayData(mcmSim, startDate, teamType);
+	            		
+	            		if (teamType == ITData.INTERMEDIATE) {
+	            			 testData.generateUnknownDriverDayData(mcmSim, startDate);
+	            		}
 	            	}
 	            }
-	         
 	            // save date of 1st event
 	            xml.writeObject(new Integer(DateUtil.getDaysBackDate(todayInSec, numDays, ReportTestConst.TIMEZONE_STR)));
 	            if (xml != null)
@@ -227,6 +237,9 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                Date startDate = new Date((long)dateInSec * 1000l);
     	        		testData.generateDayData(mcmSim, startDate, teamType);
+	            		if (teamType == ITData.INTERMEDIATE) {
+	            			 testData.generateUnknownDriverDayData(mcmSim, startDate);
+	            		}
     	        	}
                 }
              

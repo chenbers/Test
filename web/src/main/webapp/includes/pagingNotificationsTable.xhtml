@@ -76,11 +76,11 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_driver}" />
                 </f:facet>
-                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance"  rendered="#{event.driverFullName != messages.unknown_driver}">
+                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance"  rendered="#{event.driverFullName != null}">
                     <f:param value="#{event.driverID}"/>
                     #{event.driverFullName}
                 </pretty:link>
-                <h:outputText rendered="#{event.driverFullName == messages.unknown_driver}" value="#{event.driverFullName}">
+                <h:outputText rendered="#{event.driverFullName == null}" value="#{messages.unknown_driver}">
                 </h:outputText>
             </rich:column>
             <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{event.vehicleName}" filterBy="#{event.vehicleName}">
@@ -110,13 +110,6 @@
                 <ui:include src="/includes/eventDetails.xhtml">
 	            	<ui:param name="event" value="#{event}" />
 				</ui:include>
-<!--                 
-				<c:set var="detailsFormat" value="redflags_details#{event.eventType}"/> 
-                <h:outputText value="#{messages[detailsFormat]}">
-                	<f:converter converterId="EventDetailsConverter"/>
-					<f:attribute name="event" value="#{event}"/>
-                </h:outputText>
- -->                
             </rich:column>
             
             <rich:column id="exclude" rendered="#{tableColumns['clear'].visible}">
@@ -162,13 +155,6 @@
 
         <a4j:form id="#{context}-clearItemForm">
             <h:panelGroup layout="block" styleClass="popupcontent" id="clearItem">
-<!--             
-				<c:set var="detailsFormat" value="redflags_details#{bean.clearItem.eventType}"/>
-                <h:outputText value="#{messages[detailsFormat]}">
-                	<f:converter converterId="EventDetailsConverter"/>
-					<f:attribute name="event" value="#{bean.clearItem}"/>
-                </h:outputText>
- -->                
                 <ui:include src="/includes/eventDetails.xhtml">
 	            	<ui:param name="event" value="#{bean.clearItem}" />
 				</ui:include>

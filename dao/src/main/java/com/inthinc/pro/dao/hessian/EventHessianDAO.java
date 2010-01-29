@@ -245,11 +245,8 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 //        			"includeForgiven: " + includeForgiven + " eventTypes: " + eventTypes);            
         
         List<Map<String, Object>> returnList = this.getSiloService().getDriverNoteByGroupIDDeep(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, eventTypes.toArray(new Integer[0]));
-//        logger.info("-- mapping objects  -- returnList size: " + returnList.size());
         List<Event> eventList = getMapper().convertToModelObject(returnList, Event.class);
-//        logger.info("-- cleaning events ");
         eventList =  Event.cleanEvents(eventList);
-//        logger.info("### getEventsForGroup");
         return eventList;
     }
 
@@ -309,7 +306,10 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         try
         {
         	//EventMapper.getEventTypesInCategory(eventCategory)
-        	return getChangedCount(getSiloService().getDriverEventTotalCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
+			if (filters == null)
+            	filters = new ArrayList<TableFilterField>();
+
+        	return getChangedCount(getSiloService().getDriverEventCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
 									includeForgiven, getMapper().convertList(filters), 
 									eventTypes.toArray(new Integer[0])));
         }
@@ -416,6 +416,17 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 // implementation using existing methods
 		
 		List<Event> eventList = getEventsForGroup(groupID, daysBack, eventTypes, includeForgiven);
+		for (Event event : eventList) {
+			
+			// unknown driver id for test account (temporary)
+			if (!event.getDriverID().equals(Integer.valueOf(5690))) {
+					event.setDriverFullName("Driver" + event.getDriverID());
+					event.setGroupName("Group" + event.getGroupID());
+					event.setDriverTimeZone(TimeZone.getTimeZone("US/Mountain"));
+			}
+			event.setVehicleName("Vehicle" + event.getVehicleID());
+			
+		}
 		return eventList.subList(pageParams.getStartRow(), pageParams.getEndRow());
 		
 	}

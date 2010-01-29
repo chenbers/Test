@@ -20,6 +20,9 @@ public class PageParams {
 		this.filterList = filterList;
 	}
 
+	public PageParams() {
+	}
+
 	public Integer getStartRow() {
 		return startRow;
 	}

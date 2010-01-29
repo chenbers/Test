@@ -53,7 +53,8 @@ public class DateTimeTZConverter extends BaseConverter
 		  sdf = new SimpleDateFormat(pattern);
 	  }
 	  if (timeZone == null) {
-		  sdf.setTimeZone(getTimeZone());
+//		  sdf.setTimeZone(getTimeZone());
+		  sdf.setTimeZone(TimeZone.getDefault());
 	  }
 	  else {
 		  sdf.setTimeZone(timeZone);

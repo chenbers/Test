@@ -7,7 +7,6 @@ import it.config.ReportTestConst;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,6 +65,8 @@ public class ITData {
 	public Integer startDateInSec;
 	public int totalDays;
 	public Zone zone;
+	public Device noDriverDevice;
+	public Vehicle noDriverVehicle;
 
     public static int GOOD = 0;
     public static int INTERMEDIATE = 1;
@@ -83,7 +84,7 @@ public class ITData {
 	private Date assignmentDate;
 
     
-    public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeZonesAndAlerts)
+    public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeUnknown, boolean includeZonesAndAlerts)
     {
     	this.siloService = siloService;
     	this.xml = xml;
@@ -125,6 +126,15 @@ public class ITData {
             writeObject(team.vehicle);
             
         }
+        if (includeUnknown) {
+	        // no Driver device/vehicle
+	        Group noDriverGroup = teamGroupData.get(0).group;
+	        noDriverDevice = createDevice(noDriverGroup);
+	        writeObject(noDriverDevice);
+	        noDriverVehicle = createVehicle(noDriverGroup, noDriverDevice.getDeviceID(), null);
+	        writeObject(noDriverVehicle);
+        }
+        
         if (includeZonesAndAlerts) {
         	// zone
         	createZone();
@@ -203,7 +213,8 @@ public class ITData {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
 
-        Vehicle vehicle = new Vehicle(0, group.getGroupID(), 10, Status.ACTIVE, "Vehicle" + group.getName(), "Make", "Model", 2000, "Red", 
+        String name = "Vehicle" + (driverID == null ? "NO_DRIVER" : group.getName());
+        Vehicle vehicle = new Vehicle(0, group.getGroupID(), 10, Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
                     VehicleType.LIGHT, "VIN_" + deviceID, 1000, "UT " + group.getGroupID(), 
                     States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
@@ -214,7 +225,8 @@ public class ITData {
         vehicleDAO.setDeviceDAO(deviceDAO);
 
         vehicleDAO.setVehicleDevice(vehicleID, deviceID);
-        vehicleDAO.setVehicleDriver(vehicleID, driverID, assignmentDate);
+        if (driverID != null) 
+        	vehicleDAO.setVehicleDriver(vehicleID, driverID, assignmentDate);
 
         return vehicle;
     }
@@ -478,7 +490,7 @@ public class ITData {
 		return notifyPersonIDList;
 	}
 
-	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeZonesAndAlerts) {
+	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts) {
         try {
             XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(stream));
             account = getNext(xmlDecoder, Account.class);
@@ -501,7 +513,10 @@ public class ITData {
                 groupData.driver = getNext(xmlDecoder, Driver.class);
                 groupData.vehicle = getNext(xmlDecoder, Vehicle.class);
             }
-            
+            if (includeUnknown) {
+	            noDriverDevice = getNext(xmlDecoder, Device.class);
+	            noDriverVehicle = getNext(xmlDecoder, Vehicle.class);
+            }
             if (includeZonesAndAlerts) {
             	zone = getNext(xmlDecoder, Zone.class);
             	getNext(xmlDecoder, ZoneAlert.class);

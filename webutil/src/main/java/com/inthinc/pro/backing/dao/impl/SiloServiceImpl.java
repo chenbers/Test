@@ -678,7 +678,7 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-	public Map<String, Object> getDriverEventTotalCount(Integer groupID,
+	public Map<String, Object> getDriverEventCount(Integer groupID,
 			Long startDate, Long endDate, Integer includeForgiven,
 			List<Map<String, Object>> filterList, Integer[] types) {
 		// TODO Auto-generated method stub
@@ -694,7 +694,7 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-	public Map<String, Object> getRedFlagsTotalCount(Integer groupID,
+	public Map<String, Object> getRedFlagsCount(Integer groupID,
 			Long startDate, Long endDate, Integer includeForgiven,
 			List<Map<String, Object>> filterList) {
 		// TODO Auto-generated method stub

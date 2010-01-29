@@ -1,13 +1,10 @@
 package it.util;
 
-import it.com.inthinc.pro.dao.Util;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
-import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,50 +12,11 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
-import com.inthinc.pro.dao.hessian.AccountHessianDAO;
-import com.inthinc.pro.dao.hessian.AddressHessianDAO;
-import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
-import com.inthinc.pro.dao.hessian.DriverHessianDAO;
-import com.inthinc.pro.dao.hessian.GroupHessianDAO;
-import com.inthinc.pro.dao.hessian.PersonHessianDAO;
-import com.inthinc.pro.dao.hessian.RoleHessianDAO;
-import com.inthinc.pro.dao.hessian.StateHessianDAO;
-import com.inthinc.pro.dao.hessian.UserHessianDAO;
-import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
-import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.FuelEfficiencyType;
-import com.inthinc.pro.model.Gender;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupType;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleType;
-import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.Roles;
-import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 
 public class DataGenForReportTesting extends DataGenForTesting {
 	public String xmlPath;
@@ -73,7 +31,7 @@ public class DataGenForReportTesting extends DataGenForTesting {
     protected void createTestData() {
     	itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
-        itData.createTestData(siloService, xml, assignmentDate, false);
+        itData.createTestData(siloService, xml, assignmentDate, false, false);
     }
     @Override
     protected boolean parseTestData() {
@@ -85,7 +43,7 @@ public class DataGenForReportTesting extends DataGenForTesting {
 			e.printStackTrace();
         	return false;
 		}
-        if (!itData.parseTestData(stream, siloService, false))
+        if (!itData.parseTestData(stream, siloService, false, false))
         {
         	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
         	return false;

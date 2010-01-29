@@ -155,7 +155,7 @@ public class ReportServiceTest {
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(REPORT_BASE_DATA_XML);
 
-        if (!itData.parseTestData(stream, siloService, false)) {
+        if (!itData.parseTestData(stream, siloService, false, false)) {
             throw new Exception("Error parsing Test data xml file");
         }
 

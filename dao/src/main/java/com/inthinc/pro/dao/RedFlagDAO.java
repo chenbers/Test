@@ -2,6 +2,7 @@ package com.inthinc.pro.dao;
 
 import java.util.List;
 
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
@@ -27,7 +28,7 @@ public interface RedFlagDAO extends GenericDAO<RedFlag, Integer>
      * @param groupID
      * @return
      */
-//     Integer getRedFlagsCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<TableFilterField> filterList);
+     Integer getRedFlagCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<TableFilterField> filterList);
 
 
     /**
@@ -37,6 +38,8 @@ public interface RedFlagDAO extends GenericDAO<RedFlag, Integer>
      * @param groupID
      * @return
      */
-//     List<RedFlag> getRedFlagPage(Integer groupID, Integer daysBack, Integer includeForgiven, PageParams pageParams);
+     List<RedFlag> getRedFlagPage(Integer groupID, Integer daysBack, Integer includeForgiven, PageParams pageParams);
+
+
 
 }

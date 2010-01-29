@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -8,9 +9,13 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.RedFlagHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.TableFilterField;
 
 public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> implements RedFlagDAO
 {
@@ -40,8 +45,6 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         }
     }
 
-//TESTING FOR PAGINATION
-/*    
 	@Override
 	public List<RedFlag> getRedFlagPage(Integer groupID, Integer daysBack,
 			Integer includeForgiven, PageParams pageParams) {
@@ -56,7 +59,7 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         {
             return Collections.emptyList();
         }
-        catch (GenericHessianException e)
+        catch (ProxyException e)
         {
         	if (e.getErrorCode() == 422)
         	{
@@ -67,29 +70,22 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         }
 	}
 	@Override
-	public Integer getRedFlagsCount(Integer groupID, Integer daysBack,
-			Integer includeForgiven, List<FilterField> filterList) {
+	public Integer getRedFlagCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<TableFilterField> filterList) {
+		
         try
         {
-// TODO: SHOULD FILTER AND SORT JUST BE MAPs?        	
             Date endDate = new Date();
             Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
-            Map<String, String> filterMap = new HashMap<String, String>();
-            if (filterList != null)
-            {
-	            for (FilterField filterField : filterList)
-	            {
-	            	filterMap.put(filterField.getField(), filterField.getFilter());
-	            }
-            }
-            return getChangedCount(getSiloService().getRedFlagsCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, filterMap));
+            if (filterList == null)
+            	filterList = new ArrayList<TableFilterField>();
+            return getChangedCount(getSiloService().getRedFlagsCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, getMapper().convertList(filterList)));
             
         }
         catch (EmptyResultSetException e)
         {
             return 0;
         }
-        catch (GenericHessianException e)
+        catch (ProxyException e)
         {
         	if (e.getErrorCode() == 422)
         	{
@@ -99,5 +95,4 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         	throw e;
         }
 	}
-*/
 }
