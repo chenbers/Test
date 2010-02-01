@@ -19,10 +19,12 @@ import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportItem> implements TablePrefOptions<CrashHistoryReportItem> {
     /**

@@ -22,12 +22,14 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>> extends BaseBean 
 {
@@ -64,8 +66,7 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     protected List<T> tableData;
     protected List<T> filteredTableData;
 
-    protected T clearItem;
- 
+    protected T clearItem;    
  
 	protected EventsSearchCoordinationBean searchCoordinationBean;
 
@@ -73,6 +74,11 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     private Integer end;
     private Integer maxCount;
 	private Integer page;
+	
+    private double zoneLat;
+    private double zoneLng;
+    private int    elemIndex;
+    private String zoneName;	
 	
     private CacheBean cacheBean;
 
@@ -490,4 +496,52 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 //        
 //        return adjusted;
 //    }	
+
+    public double getZoneLat() {
+        return zoneLat;
+    }
+
+    public void setZoneLat(double zoneLat) {
+        this.zoneLat = zoneLat;
+    }
+
+    public double getZoneLng() {
+        return zoneLng;
+    }
+
+    public void setZoneLng(double zoneLng) {
+        this.zoneLng = zoneLng;
+    }
+
+    public int getElemIndex() {
+        return elemIndex;
+    }
+
+
+    public void setElemIndex(int elemIndex) {
+        this.elemIndex = elemIndex;
+    }
+
+
+    public String getZoneName() {
+        return zoneName;
+    }
+
+    public void setZoneName(String zoneName) {
+        this.zoneName = zoneName;
+    }
+
+    public void lookForZone() {
+        LatLng latLng = new LatLng();
+        
+        latLng.setLat(zoneLat);
+        latLng.setLng(zoneLng);
+        
+        zoneName = MiscUtil.findZoneName(this.getProUser().getZones(), latLng);
+        if ( zoneName != null ) {
+            zoneName += "," + new String(String.valueOf(elemIndex));
+        } else {
+            zoneName = MessageUtil.getMessageString("sbs_badLatLng");
+        }
+    }	
 }
