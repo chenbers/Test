@@ -1,5 +1,7 @@
 package com.inthinc.pro.convert;
 
+import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -10,8 +12,10 @@ import org.apache.commons.lang.NotImplementedException;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.util.MessageUtil;
-public class LatLngAddressConverter implements Converter
+import com.inthinc.pro.util.MiscUtil;
+public class LatLngAddressConverter extends BaseConverter
 {
     private AddressLookup addressLookup;
 
@@ -25,15 +29,24 @@ public class LatLngAddressConverter implements Converter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        if (LatLng.class.isInstance(value))
+        List<Zone> zoneList = this.getUser().getZones();
+        
+        if (LatLng.class.isInstance(value))            
         {
             LatLng latlng = LatLng.class.cast(value);
+                               
             if ((latlng.getLat() < -0.0001 || latlng.getLat() > 0.0001) && (latlng.getLng() < -0.0001 || latlng.getLng() > 0.0001)){
             	try{
             		return addressLookup.getAddress(latlng);
             	}
             	catch (NoAddressFoundException nafe){
-        			return MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng());
+            	    
+//  Failed on lookup, try finding a zone name instead
+            	    String addr = (MiscUtil.findZoneName(zoneList, latlng) == null) ?
+                            MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng()) :
+            	            MiscUtil.findZoneName(zoneList, latlng);
+
+            	    return addr;
             	}
             }
         }
