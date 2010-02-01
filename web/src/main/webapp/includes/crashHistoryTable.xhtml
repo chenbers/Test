@@ -216,5 +216,13 @@
 			<a4j:actionparam name="selectedCrash" assignTo="#{crashHistoryBean.selectedCrash}"/>
 		</a4j:jsFunction>
 	</a4j:form>	    
+	
+	<a4j:form id="lookForZone">
+		<a4j:jsFunction name="lkFrZn" action="#{bean.lookForZone}" oncomplete="checkForZoneName('#{bean.zoneName}')">
+			<a4j:actionparam name="latitude" assignTo="#{bean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{bean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{bean.elemIndex}"/>			
+		</a4j:jsFunction>
+	</a4j:form>   
 
 </ui:composition>

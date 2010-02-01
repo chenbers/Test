@@ -105,35 +105,42 @@
 		 function getAddress(index){
 			 
 	      		var address = document.getElementById("crashHistory-form:crashHistory:"+index+":eventAddress");
+  				var lat = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLat");
+  				var lng = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLng");
+	      		
 	      		if (address.innerHTML.length==0){
-		      		
-      				var lat = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLat");
-      				var lng = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLng");
+		      		      				
 					if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-
 						reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address);
 					}
 					else {
-						
-						address.innerHTML ="#{messages.sbs_badLatLng}";
+						lkFrZn(lat.value,lng.value,index);						
 					}
 								
 	      		}
 			 
 		 }
-          function reverseGeocodeTripAddress(latlng, addressElement){
+          function reverseGeocodeTripAddress(latlng,addressElement,index){
               
       		new GClientGeocoder().getLocations(latlng, 
           			function(response){
-      			        if (!response || response.Status.code != 200) {
-      			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
-
+      			        if (!response || response.Status.code != 200) { 	  
+							lkFrZn(latlng.lat(),latlng.lng(),index);
       			        } 
       			        else {
    			             	addressElement.innerHTML = response.Placemark[0].address;
       			        }
       		    	});
           }
+
+          function checkForZoneName(zoneName) {             
+              var nameAndIndex = zoneName.split(",");
+              var name = nameAndIndex[0];
+              var indx = nameAndIndex[1];
+              
+        	  var addressEl = document.getElementById("crashHistory-form:crashHistory:"+indx+":eventAddress");                        
+ 			  addressEl.innerHTML = name;
+          }            
       		</script>
           </rich:panel>
     </ui:define>    

@@ -538,10 +538,9 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
         latLng.setLng(zoneLng);
         
         zoneName = MiscUtil.findZoneName(this.getProUser().getZones(), latLng);
-        if ( zoneName != null ) {
-            zoneName += "," + new String(String.valueOf(elemIndex));
-        } else {
+        if ( zoneName == null ) {
             zoneName = MessageUtil.getMessageString("sbs_badLatLng");
         }
+        zoneName += "," + new String(String.valueOf(elemIndex));
     }	
 }
