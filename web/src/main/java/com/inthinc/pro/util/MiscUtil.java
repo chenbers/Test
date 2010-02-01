@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Zone;
+
 public class MiscUtil
 {
     static public int randomInt(int min, int max)
@@ -48,5 +51,39 @@ public class MiscUtil
         if (phone == null)
             return null;
         return phone.replaceAll("\\D", "");
+    }
+    
+    public static String findZoneName(List<Zone> zoneList,LatLng latLng) {
+        String zoneName = null;
+        
+//  Point in a polygon algorithm, converted from javascript  
+//
+//      Article: Check if a polygon contains a coordinate in Google Maps        
+//      http://dawsdesign.com/drupal/google_maps_point_in_polygon        
+        for ( Zone z: zoneList ) {
+            int numPoints = z.getPoints().size();
+            boolean inPoly = false;            
+            int j = numPoints-1;
+            
+            for(int i=0; i < numPoints; i++) { 
+                LatLng vertex1 = z.getPoints().get(i);
+                LatLng vertex2 = z.getPoints().get(j);
+
+                if (    vertex1.getLng() < latLng.getLng() && 
+                        vertex2.getLng() >= latLng.getLng() || 
+                        vertex2.getLng() < latLng.getLng() && 
+                        vertex1.getLng() >= latLng.getLng() )  {
+                    
+                    if (vertex1.getLat() + (latLng.getLng() - vertex1.getLng()) / (vertex2.getLng() - vertex1.getLng()) * (vertex2.getLat() - vertex1.getLat()) < latLng.getLat()) {
+                        inPoly = !inPoly;
+                        zoneName = z.getName();
+                    }
+                }
+
+                j = i;
+            }
+        }
+        
+        return zoneName;
     }
 }
