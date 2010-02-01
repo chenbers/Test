@@ -60,11 +60,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     
     
     // new fields added for pagination
-    private String driverFullName;
+    private String driverName;
     private String vehicleName;
     private String groupName;
     @Column(name="driverTzName")
     private TimeZone driverTimeZone;
+    private String zoneName;
+    private String zonePoints;
 
 	public Event()
     {
@@ -372,12 +374,12 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     public void setFormattedTime(String formattedTime) {
         this.formattedTime = formattedTime;
     }
-    public String getDriverFullName() {
-		return driverFullName;
+    public String getDriverName() {
+		return driverName;
 	}
 
-	public void setDriverFullName(String driverFullName) {
-		this.driverFullName = driverFullName;
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
 	}
 
 	public String getVehicleName() {
@@ -402,6 +404,22 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 
 	public void setDriverTimeZone(TimeZone driverTimeZone) {
 		this.driverTimeZone = driverTimeZone;
+	}
+
+	public String getZoneName() {
+		return zoneName;
+	}
+
+	public void setZoneName(String zoneName) {
+		this.zoneName = zoneName;
+	}
+
+	public String getZonePoints() {
+		return zonePoints;
+	}
+
+	public void setZonePoints(String zonePoints) {
+		this.zonePoints = zonePoints;
 	}
 
 

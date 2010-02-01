@@ -1,7 +1,5 @@
 package com.inthinc.pro.backing.paging;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +8,7 @@ import java.util.TreeMap;
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.EventReportItem;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -26,21 +25,17 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean
     protected final static Integer DAYS_BACK = 1;
     protected final static Integer MAX_DAYS_BACK = 7;
     
-    
-//    private Map<EventType, String>   driverActionMap;
-//    private Map<EventType, String>   vehicleActionMap;
 
     private ReportRenderer           reportRenderer;
     private ReportCriteriaService    reportCriteriaService;
 
-    protected T clearItem;
+    protected Event clearItem;
+    
+    private EventDAO eventDAO;
  
- 
-    public Map<String, Integer> getTeams() {
+	public Map<String, Integer> getTeams() {
     	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-	    for (final Group group : getGroupHierarchy().getGroupList())
-//	    	if (group.getType() == GroupType.TEAM) {
-	    {
+	    for (final Group group : getGroupHierarchy().getGroupList()) {
 	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
 	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
 	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
@@ -64,76 +59,37 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean
 	    return daysBackSel;
     }
 	
-	public T getClearItem() {
+	public Event getClearItem() {
 		return clearItem;
 	}
-	public void setClearItem(T clearItem) {
+	public void setClearItem(Event clearItem) {
 		this.clearItem = clearItem;
 	}
+	
+    public void excludeEventAction() {
+    	
+    	if(clearItem != null && clearItem.getForgiven().intValue()==0){
+	        if (eventDAO.forgive(clearItem.getDriverID(), clearItem.getNoteID()) >= 1){
+	        	refreshPage();
+	        }
+    	}
+    }
+    
+    public void includeEventAction() {
+    	
+    	if(clearItem != null && clearItem.getForgiven().intValue()==1){
+	    	if (eventDAO.unforgive(clearItem.getDriverID(), clearItem.getNoteID())>= 1){
+	    		refreshPage();
+	        }
+    	}
+    }
+    
+
+	public abstract void refreshPage();
+
 	public void init()
     {
-//        driverActionMap = new HashMap<EventType, String>();
-//        driverActionMap.put(EventType.HARD_ACCEL, "go_reportDriverStyle");
-//        driverActionMap.put(EventType.HARD_BRAKE, "go_reportDriverStyle");
-//        driverActionMap.put(EventType.HARD_TURN, "go_reportDriverStyle");
-//        driverActionMap.put(EventType.HARD_VERT, "go_reportDriverStyle");
-//        driverActionMap.put(EventType.SPEEDING, "go_reportDriverSpeed");
-//        driverActionMap.put(EventType.SEATBELT, "go_reportDriverSeatBelt");
-//        driverActionMap.put(EventType.IDLING, "go_driverTrips");
-//        vehicleActionMap = new HashMap<EventType, String>();
-//        vehicleActionMap.put(EventType.HARD_ACCEL, "go_reportVehicleStyle");
-//        vehicleActionMap.put(EventType.HARD_BRAKE, "go_reportVehicleStyle");
-//        vehicleActionMap.put(EventType.HARD_TURN, "go_reportVehicleStyle");
-//        vehicleActionMap.put(EventType.HARD_VERT, "go_reportVehicleStyle");
-//        vehicleActionMap.put(EventType.SPEEDING, "go_reportVehicleSpeed");
-//        vehicleActionMap.put(EventType.SEATBELT, "go_reportVehicleSeatBelt");
-//        vehicleActionMap.put(EventType.IDLING, "go_vehicleTrips");
-
     }
-
-/*	
-    private Driver createUnknownDriverRecord() {
-    	
-        Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());      
-
-        Person p = new Person();
-        p.setFirst(MessageUtil.getMessageString("notes_general_unknown"));
-        p.setLast(MessageUtil.getMessageString("notes_general_driver"));
-        
-        Driver d = new Driver();
-        d.setDriverID(acct.getUnkDriverID());
-        d.setPerson(p);
-
-        return d;
-	}
-*/
-/*
-    public String driverAction()
-    {
-        String action = driverActionMap.get(selectedEvent.getEventType());
-        if (action == null)
-            return "go_driver";
-        return action;
-    }
-
-    public String vehicleAction()
-    {
-        String action = vehicleActionMap.get(selectedEvent.getEventType());
-        if (action == null)
-            return "go_vehicle";
-        return action;
-    }
-
-    public Event getSelectedEvent()
-    {
-        return selectedEvent;
-    }
-
-    public void setSelectedEvent(Event selectedEvent)
-    {
-        this.selectedEvent = selectedEvent;
-    }
-*/
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
         this.reportRenderer = reportRenderer;
@@ -174,8 +130,17 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean
         return reportCriteria;
     }
     
-    protected abstract List<EventReportItem> getReportTableData();
+    protected abstract List<?> getReportTableData();
 
     protected abstract ReportCriteria getReportCriteria();
+    
+    public EventDAO getEventDAO() {
+		return eventDAO;
+	}
+
+	public void setEventDAO(EventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+
     
 }

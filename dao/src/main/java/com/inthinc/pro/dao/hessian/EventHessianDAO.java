@@ -155,6 +155,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         }
     }
 
+    
     @Override
     public List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
     {
@@ -249,7 +250,6 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         eventList =  Event.cleanEvents(eventList);
         return eventList;
     }
-
 	@Override
 	public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<Integer> eventTypes, Integer daysBack) {
 
@@ -330,7 +330,10 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 */		
 // implementation using existing methods
 		
-		List<Event> eventList = getEventsForGroup(groupID, daysBack, eventTypes, includeForgiven);
+		Date endDate = new Date();
+	   	Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+	    List<Map<String, Object>> returnList = this.getSiloService().getDriverNoteByGroupIDDeep(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, eventTypes.toArray(new Integer[0]));
+        List<Event> eventList = getMapper().convertToModelObject(returnList, Event.class);
 		return eventList.size();
 		
 	}
@@ -351,7 +354,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 									eventTypes.toArray(new Integer[0])), Event.class);
         }
         catch (ProxyException ex) {
-        	
+        			
         	if (ex.getErrorCode() == 422)
         	{
         		logger.error("getDriverEventPage not implemented on backend ");
@@ -394,7 +397,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             }
 			
 			event.setNoteID(i+1000l);
-			event.setDriverFullName(i + " driver Name");
+			event.setDriverName(i + " driver Name");
 			event.setDriverID(i);
 			event.setVehicleName(i + " vehicle Name");
 			event.setVehicleID(i);
@@ -414,13 +417,16 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 */
 		
 // implementation using existing methods
-		
-		List<Event> eventList = getEventsForGroup(groupID, daysBack, eventTypes, includeForgiven);
+		Date endDate = new Date();
+	   	Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+	    List<Map<String, Object>> returnList = this.getSiloService().getDriverNoteByGroupIDDeep(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, eventTypes.toArray(new Integer[0]));
+        List<Event> eventList = getMapper().convertToModelObject(returnList, Event.class);
+//		List<Event> eventList = getEventsForGroup(groupID, daysBack, eventTypes, includeForgiven);
 		for (Event event : eventList) {
 			
 			// unknown driver id for test account (temporary)
 			if (!event.getDriverID().equals(Integer.valueOf(5690))) {
-					event.setDriverFullName("Driver" + event.getDriverID());
+					event.setDriverName("Driver" + event.getDriverID());
 					event.setGroupName("Group" + event.getGroupID());
 					event.setDriverTimeZone(TimeZone.getTimeZone("US/Mountain"));
 			}
@@ -428,6 +434,5 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 			
 		}
 		return eventList.subList(pageParams.getStartRow(), pageParams.getEndRow());
-		
 	}
 }

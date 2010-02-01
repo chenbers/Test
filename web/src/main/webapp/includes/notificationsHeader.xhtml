@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:h="http://java.sun.com/jsf/html" 
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j"
+  	xmlns:rich="http://richfaces.org/rich"
+  	xmlns:security="http://pro.tiwi.com/jsf/security"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">  	
+
+	<a4j:region id="#{context}_searchRegion">							
+		<a4j:form id="#{context}_search">							
+            <ul id="grid_nav" style="margin: 0;">
+			  <li class="l select">
+                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
+                  <tr>
+				  	<td>#{messages.group_team} </td>
+			  	 	<td>
+						<h:selectOneMenu value="#{bean.tableDataProvider.groupID}" id="#{context}_groupID" style="width:200px;size:auto;">
+							<f:selectItem itemLabel="" />
+							<f:selectItems value="#{bean.teams}" />  
+						</h:selectOneMenu>
+			  	 	
+						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 				<ui:param name="selectBoxID" value="#{context}_search:#{context}_groupID" />
+						</ui:include>
+					</td>
+					</tr>
+					</table>
+			  </li>
+			  <li class="l select">
+                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_days_box">
+                  <tr>
+				  	<td>#{messages.daysBack} </td>
+			  	 	<td>
+			  	 	<h:selectOneMenu value="#{bean.tableDataProvider.daysBack}" id="#{context}_daysBack">
+   		            		<f:selectItems value="#{bean.daysBackSel}" />
+					</h:selectOneMenu>
+					</td>
+					</tr>
+					</table>
+			  </li>
+			  <li class="l">
+				<a4j:commandButton id="#{context}_refresh" styleClass="left"
+					reRender="#{context}_form:header,#{context}_form:#{context},#{context}_form:#{context}_bottomScroller" 
+							action="#{bean.refreshAction}" oncomplete="initializeTable()">
+            				<span class="refresh">
+            					<h:outputText value="#{messages.refresh}" />
+            				</span>
+				</a4j:commandButton>
+			  </li>  
+			  <li class="l text">
+				<a4j:commandLink id="#{context}_editColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+					reRender="editColumnsForm:editColumnGrid">
+					#{messages.button_editColumns}
+				</a4j:commandLink>
+			  </li>
+			  <li class="r grid_icon">
+				<h:panelGroup id="#{context}_reportToolImageId">
+					<h:graphicImage value="/images/ico_tools.png"/>
+				</h:panelGroup>
+			  </li>
+			  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+			  </li>          							
+            </ul>
+
+            <ui:include src="/includes/reportsContextMenu.xhtml">	
+				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+				<ui:param  name="reportBean" value="#{bean}"/>
+				<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+				<ui:param  name="exportExcel" value="TRUE"/>
+				<ui:param name="context" value="#{context}" />
+			</ui:include>
+
+			
+    	</a4j:form>
+	</a4j:region>
+ 	  	
+</ui:composition>

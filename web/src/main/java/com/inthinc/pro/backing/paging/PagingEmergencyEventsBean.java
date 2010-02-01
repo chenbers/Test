@@ -10,6 +10,10 @@ public class PagingEmergencyEventsBean extends PagingEventsBean {
 	 * 
 	 */
 	private static final long serialVersionUID = -1191715134502069867L;
+	
+	public PagingEmergencyEventsBean()
+	{
+	}
 
 	@Override
     public TableType getTableType()

@@ -289,6 +289,7 @@ public class SiloServiceTest {
             System.out.println("NO VEHICLES FOUND");
         }
     }
+/*    
     @Test
     @Ignore
     public void groupEvents() {
@@ -332,7 +333,7 @@ public class SiloServiceTest {
             System.out.println("NO EVENTS FOUND FOR GROUP " + TESTING_GROUP_ID);
         }
     }
-
+*/
 
     @Test
     public void lastLocationVehicle() {

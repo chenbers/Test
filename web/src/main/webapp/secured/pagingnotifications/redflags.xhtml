@@ -1,0 +1,75 @@
+<ui:composition template="/secured/notifications/notifications.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+  			xmlns:f="http://java.sun.com/jsf/core">
+	<ui:param name="customSubSelected" value="current" />
+	<ui:param name="helpFile" value="RedFlags.htm" />
+    <ui:param name="context" value="redFlags"/>
+    <ui:param name="ajaxPanels" value="#{context}_table,#{context}_search"/>
+    
+
+	<ui:define name="content">
+		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
+		  <tr>
+		    <td valign="top">
+		      <!-- START PANEL -->
+		      <h:panelGroup layout="block" styleClass="">
+		        
+		        <ui:include src="/includes/notificationsHeaderTitle.xhtml">	
+	           		<ui:param name="title" value="#{messages.notes_redflags_title}"/>
+	           		<ui:param name="description" value="#{messages.notes_redflags_description}"/>
+  					<ui:param name="context" value="#{context}" />
+  					<ui:param name="style" value="redflag" />
+	   			</ui:include>  
+		        
+		
+		        <h:panelGroup layout="block" styleClass="panel_w">
+		          <h:panelGroup layout="block" styleClass="panel_content">
+					<ui:include src="/includes/notificationsHeader.xhtml">	
+		    			<ui:param name="bean" value="#{pagingRedFlagsBean}"/>
+	  	 				<ui:param name="context" value="#{context}" />
+		    		</ui:include>    							
+
+					<div class="spacer"></div>
+					
+		            <h:panelGroup id="redFlagsTable" layout="block" styleClass="datagrid_panel">
+						<ui:include src="/includes/pagingRedFlagsTable.xhtml">	
+		            		<ui:param name="tableColumns" value="#{pagingRedFlagsBean.tableColumns}"/>
+		    				<ui:param name="bean" value="#{pagingRedFlagsBean}"/>
+		             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}_form:#{context}"/>
+		    			</ui:include>    							
+ 		    										
+		            </h:panelGroup>
+		            
+		          </h:panelGroup>
+				</h:panelGroup>
+		
+				<ui:include src="/includes/editColumnsPopup.xhtml">
+					<ui:param name="bean" value="#{redFlagsBean}"/>	
+					<ui:param name="reRender" value="redFlags_form:redFlags" />
+    	 			<ui:param name="context" value="#{context}" />
+				</ui:include>    
+				
+		        <h:panelGroup layout="block" styleClass="panel_sw">
+		          <h:panelGroup layout="block" styleClass="panel_statusbar"/>
+				</h:panelGroup>
+		
+		      </h:panelGroup>
+		      <!-- END PANEL -->
+		    </td>
+		  </tr>
+		</table>
+	<h:outputText id="redflag_email_modalPanel">
+		<ui:include src="/includes/emailReportPopup.xhtml">	
+			<ui:param  name="id" value="redflagsReportEmailModal" />
+			<ui:param  name="reportBean" value="#{redFlagsBean}"/>
+    	 	<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</h:outputText>
+	
+	</ui:define>
+
+</ui:composition>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -13,6 +14,7 @@ import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.RedFlagHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
@@ -48,6 +50,7 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
 	@Override
 	public List<RedFlag> getRedFlagPage(Integer groupID, Integer daysBack,
 			Integer includeForgiven, PageParams pageParams) {
+/* REAL IMPL		
         try
         {
             Date endDate = new Date();
@@ -68,10 +71,31 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         	}
         	throw e;
         }
+*/
+		
+		/* TEMPORORARY */
+		List<RedFlag> redFlagList = getRedFlags(groupID, daysBack, includeForgiven);
+		for (RedFlag redFlag : redFlagList) {
+			
+			// unknown driver id for test account (temporary)
+			if (!redFlag.getEvent().getDriverID().equals(Integer.valueOf(5690))) {
+				redFlag.getEvent().setDriverName("Driver" + redFlag.getEvent().getDriverID());
+				redFlag.getEvent().setGroupName("Group" + redFlag.getEvent().getGroupID());
+				redFlag.getEvent().setDriverTimeZone(TimeZone.getTimeZone("US/Mountain"));
+			}
+			redFlag.getEvent().setVehicleName("Vehicle" + redFlag.getEvent().getVehicleID());
+			
+		}
+
+		
+		return redFlagList.subList(pageParams.getStartRow(), pageParams.getEndRow());
+		
+		
 	}
 	@Override
 	public Integer getRedFlagCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<TableFilterField> filterList) {
 		
+/* REAL IMPL		
         try
         {
             Date endDate = new Date();
@@ -94,5 +118,9 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         	}
         	throw e;
         }
+*/
+		
+		/* TEMPORORARY */
+	    return getRedFlags(groupID, daysBack, includeForgiven).size();
 	}
 }

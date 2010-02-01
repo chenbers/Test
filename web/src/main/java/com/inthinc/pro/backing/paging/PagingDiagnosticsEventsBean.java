@@ -4,13 +4,17 @@ import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
-public class PagingDiagnositicsEventsBean extends PagingEventsBean {
+public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -3951907220194370268L;
 
+	public PagingDiagnosticsEventsBean()
+	{
+	}
+	
 	@Override
     public TableType getTableType()
     {

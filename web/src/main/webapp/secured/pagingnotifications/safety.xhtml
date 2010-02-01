@@ -11,8 +11,8 @@
 
 	<ui:param name="safetySubSelected" value="current" />
 	<ui:param name="helpFile" value="Events.htm" />
-    <ui:param name="ajaxPanels" value="notificationsTable,eventsearch"/>
     <ui:param name="context" value="safety"/>
+    <ui:param name="ajaxPanels" value="#{context}_table,#{context}_search"/>
 
 		
 	<ui:define name="content">
@@ -22,108 +22,37 @@
 		    <td valign="top">
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
-		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div class="panel_title"> <span class="event">#{messages.notes_safety_title}</span>
-		          	<span class="panel_links">
-                    #{messages.notes_safety_description}
-		          	</span>
-						<a4j:status id="eventsStatus" for="eventsearchRegion">
-							<f:facet name="start">
-								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-							</f:facet>
-						</a4j:status>
-		           </div>
-		        </h:panelGroup>
-		
-		        <h:panelGroup layout="block" styleClass="panel_w">
-		          <h:panelGroup layout="block" styleClass="panel_content">
-		
-					<a4j:region id="eventsearchRegion">							
-					<a4j:form id="eventsearch">							
-		            <ul id="grid_nav" style="margin: 0;">
-					  <li class="l select">
-		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
-		                  <tr>
-						  	<td>#{messages.group_team} </td>
-					  	 	<td>
-								<h:selectOneMenu value="#{pagingSafetyEventsBean.tableDataProvider.groupID}" id="events_groupID" style="width:200px;size:auto;">
-  									<f:selectItem itemLabel="" />
-  									<f:selectItems value="#{eventsBean.teams}" />  
-								</h:selectOneMenu>
-					  	 	
-								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-     			 					<ui:param name="selectBoxID" value="eventsearch:events_groupID" />
-								</ui:include>
-								 
-							</td>
-							</tr>
-							</table>
-					  </li>
-					  <li class="l select">
-		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_days_box">
-		                  <tr>
-						  	<td>#{messages.daysBack} </td>
-					  	 	<td>
-					  	 	<h:selectOneMenu value="#{pagingSafetyEventsBean.tableDataProvider.daysBack}" id="events_daysBack">
-     		            		<f:selectItems value="#{eventsBean.daysBackSel}" />
-							</h:selectOneMenu>
-							</td>
-							</tr>
-							</table>
-					  </li>
-					  <li class="l">
-						<a4j:commandButton id="safetyRefresh" styleClass="left"
-									reRender="safety-form:header,safety-form:safety,safety-form:safety-bottomScroller" 
-									action="#{pagingSafetyEventsBean.refreshAction}" oncomplete="initializeTable()">
-		            				<span class="refresh">
-		            					<h:outputText value="#{messages.refresh}" />
-		            				</span>
-						</a4j:commandButton>
-					  </li>  
-					  <li class="l text">
-						<a4j:commandLink id="safetyEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
-							reRender="editColumnsForm:editColumnGrid">
-							#{messages.button_editColumns}
-						</a4j:commandLink>
-					  </li>
-					  <li class="r grid_icon">
-						<h:panelGroup id="eventReportToolImageId">
-							<h:graphicImage value="/images/ico_tools.png"/>
-						</h:panelGroup>
-					  </li>
-					  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-					  </li>          							
-		            </ul>
 
-		            <ui:include src="/includes/reportsContextMenu.xhtml">	
-						<ui:param  name="emailModalPanelID" value="eventsReportEmailModal" />
-						<ui:param  name="reportBean" value="#{pagingSafetyEventsBean}"/>
-						<ui:param  name="attachTo" value="eventReportToolImageId"/>
-						<ui:param  name="exportExcel" value="TRUE"/>
-    	 				<ui:param name="context" value="safety" />
-					</ui:include>
+				<ui:include src="/includes/notificationsHeaderTitle.xhtml">	
+	           		<ui:param name="title" value="#{messages.notes_safety_title}"/>
+	           		<ui:param name="description" value="#{messages.notes_safety_description}"/>
+  					<ui:param name="context" value="safety" />
+  					<ui:param name="style" value="event" />
+	   			</ui:include>  
 
-					
-		    		</a4j:form>
-		    		</a4j:region>
-
-		            <h:panelGroup id="notificationsTable" layout="block" styleClass="datagrid_panel">
-						<ui:include src="/includes/pagingNotificationsTable.xhtml">	
-		             		<ui:param name="tableColumns" value="#{pagingSafetyEventsBean.tableColumns}"/>
+				<h:panelGroup layout="block" styleClass="panel_w">
+		   			<h:panelGroup layout="block" styleClass="panel_content">
+						<ui:include src="/includes/notificationsHeader.xhtml">	
 		    				<ui:param name="bean" value="#{pagingSafetyEventsBean}"/>
-		             		<ui:param name="clearTitle" value="#{messages.notes_safety_clearTitle}"/>
-		             		<ui:param name="clearInst" value="#{messages.notes_safety_clearInst}"/>
-		             		<ui:param name="clearRerender" value="eventsearch:header,safety-form:safety"/>
-    	 					<ui:param name="context" value="safety" />
+	  	 					<ui:param name="context" value="safety" />
 		    			</ui:include>    							
-		            </h:panelGroup>
-		            
-		          </h:panelGroup>
+	
+			            <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
+							<ui:include src="/includes/pagingNotificationsTable.xhtml">	
+			             		<ui:param name="tableColumns" value="#{pagingSafetyEventsBean.tableColumns}"/>
+			    				<ui:param name="bean" value="#{pagingSafetyEventsBean}"/>
+			             		<ui:param name="clearTitle" value="#{messages.notes_safety_clearTitle}"/>
+			             		<ui:param name="clearInst" value="#{messages.notes_safety_clearInst}"/>
+			             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}_form:#{context}"/>
+	    	 					<ui:param name="context" value="safety" />
+			    			</ui:include>    							
+			            </h:panelGroup>
+					</h:panelGroup>
 				</h:panelGroup>
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{pagingSafetyEventsBean}"/>	
-					<ui:param name="reRender" value="safety-form:safety" />
+					<ui:param name="reRender" value="#{context}_form:#{context}" />
     	 			<ui:param name="context" value="safety" />
 				</ui:include>    
 				
@@ -137,9 +66,9 @@
 		  </tr>
 		</table>
 		
-		<h:outputText id="event_email_modalPanel">
+		<h:outputText id="#{context}_emailModalPanel">
 			<ui:include src="/includes/emailReportPopup.xhtml">	
-				<ui:param  name="id" value="eventsReportEmailModal" />
+				<ui:param  name="id" value="#{context}_reportEmailModal" />
 				<ui:param  name="reportBean" value="#{pagingSafetyEventsBean}"/>
     	 		<ui:param name="context" value="safety" />
 			</ui:include>

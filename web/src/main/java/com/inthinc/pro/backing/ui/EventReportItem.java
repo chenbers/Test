@@ -37,7 +37,7 @@ public class EventReportItem extends NotificationReportItem<EventReportItem>
         setGroup(event.getGroupName());
         setGroupID(event.getGroupID());
             
-        setDriverName(event.getDriverFullName() == null ? MessageUtil.getMessageString("unknown_driver") : event.getDriverFullName());
+        setDriverName(event.getDriverName() == null ? MessageUtil.getMessageString("unknown_driver") : event.getDriverName());
         setVehicleName(event.getVehicleName() == null ? MessageUtil.getMessageString("unassigned") : event.getVehicleName());
 
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());

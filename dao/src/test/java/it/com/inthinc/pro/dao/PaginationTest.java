@@ -141,13 +141,13 @@ public class PaginationTest {
 	    			if (teamIdx == ITData.GOOD) {
 		    			// all events are UNKNOWN DRIVER
 	    				assertNull("unknown driver timezone", event.getDriverTimeZone());
-	    				assertNull("unknown driver name", event.getDriverFullName());
+	    				assertNull("unknown driver name", event.getDriverName());
 		    			assertNull("unknown driver group Name", event.getGroupName());
 	    			}
 	    			else {
 		    			assertEquals("driver timezone", ReportTestConst.timeZone, event.getDriverTimeZone());
 		    			String expectedDriverName = "Driver"+team.group.getName();
-		    			assertEquals("driver fullName", expectedDriverName, event.getDriverFullName());
+		    			assertEquals("driver Name", expectedDriverName, event.getDriverName());
 		    			String expectedGroupName = team.group.getName();
 		    			assertEquals("group Name", expectedGroupName, event.getGroupName());
 	    			}
@@ -245,13 +245,13 @@ public class PaginationTest {
 		    		String lastDriver = null;
 		    		for (Event event : eventList) {
 		    			if (lastDriver == null) {
-		    				lastDriver = event.getDriverFullName();
+		    				lastDriver = event.getDriverName();
 		    				continue;
 		    			}
 		    			assertTrue("sort " + sortOrder + " driver failed ", 
-		    					((sortOrder.equals(SortOrder.ASCENDING) && lastDriver.compareToIgnoreCase(event.getDriverFullName()) <= 0) ||
-		    					 (sortOrder.equals(SortOrder.DESCENDING) && lastDriver.compareToIgnoreCase(event.getDriverFullName()) >= 0)) );
-	    				lastDriver = event.getDriverFullName();
+		    					((sortOrder.equals(SortOrder.ASCENDING) && lastDriver.compareToIgnoreCase(event.getDriverName()) <= 0) ||
+		    					 (sortOrder.equals(SortOrder.DESCENDING) && lastDriver.compareToIgnoreCase(event.getDriverName()) >= 0)) );
+	    				lastDriver = event.getDriverName();
 		    		}
 	    		}
 		    }
@@ -303,12 +303,12 @@ public class PaginationTest {
 	    		}
 
 	    		filterList.clear();
-	    		filterList.add(new TableFilterField("driverFullName", ITData.TEAM_GROUP_NAME[teamIdx]));
+	    		filterList.add(new TableFilterField("driverName", ITData.TEAM_GROUP_NAME[teamIdx]));
 	    		pageParams.setFilterList(filterList);
 	    		eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 	    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 	    		for (Event event : eventList) {
-	    			assertTrue("filter group failed ", event.getDriverFullName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
+	    			assertTrue("filter group failed ", event.getDriverName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
 	    		}
 
 	    	}
@@ -340,13 +340,13 @@ public class PaginationTest {
     			if (teamIdx == ITData.GOOD) {
 	    			// all events are UNKNOWN DRIVER
     				assertNull("unknown driver timezone", redFlag.getEvent().getDriverTimeZone());
-    				assertNull("unknown driver name", redFlag.getEvent().getDriverFullName());
+    				assertNull("unknown driver name", redFlag.getEvent().getDriverName());
 	    			assertNull("unknown driver group Name", redFlag.getEvent().getGroupName());
     			}
     			else {
 	    			assertEquals("driver timezone", ReportTestConst.timeZone, redFlag.getEvent().getDriverTimeZone());
 	    			String expectedDriverName = "Driver"+team.group.getName();
-	    			assertEquals("driver fullName", expectedDriverName, redFlag.getEvent().getDriverFullName());
+	    			assertEquals("driver Name", expectedDriverName, redFlag.getEvent().getDriverName());
 	    			String expectedGroupName = team.group.getName();
 	    			assertEquals("group Name", expectedGroupName, redFlag.getEvent().getGroupName());
     			}
@@ -440,13 +440,13 @@ public class PaginationTest {
 	    		String lastDriver = null;
 	    		for (RedFlag redFlag : redFlagList) {
 	    			if (lastDriver == null) {
-	    				lastDriver = redFlag.getEvent().getDriverFullName();
+	    				lastDriver = redFlag.getEvent().getDriverName();
 	    				continue;
 	    			}
 	    			assertTrue("sort " + sortOrder + " driver failed ", 
-	    					((sortOrder.equals(SortOrder.ASCENDING) && lastDriver.compareToIgnoreCase(redFlag.getEvent().getDriverFullName()) <= 0) ||
-	    					 (sortOrder.equals(SortOrder.DESCENDING) && lastDriver.compareToIgnoreCase(redFlag.getEvent().getDriverFullName()) >= 0)) );
-    				lastDriver = redFlag.getEvent().getDriverFullName();
+	    					((sortOrder.equals(SortOrder.ASCENDING) && lastDriver.compareToIgnoreCase(redFlag.getEvent().getDriverName()) <= 0) ||
+	    					 (sortOrder.equals(SortOrder.DESCENDING) && lastDriver.compareToIgnoreCase(redFlag.getEvent().getDriverName()) >= 0)) );
+    				lastDriver = redFlag.getEvent().getDriverName();
 	    		}
     		}
 	    }
@@ -496,12 +496,12 @@ public class PaginationTest {
     		}
 
     		filterList.clear();
-    		filterList.add(new TableFilterField("driverFullName", ITData.TEAM_GROUP_NAME[teamIdx]));
+    		filterList.add(new TableFilterField("driverName", ITData.TEAM_GROUP_NAME[teamIdx]));
     		pageParams.setFilterList(filterList);
     		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
     		assertEquals("Unexpected redFlag list count", EXPECTED_RED_FLAG_COUNTS[teamIdx], Integer.valueOf(redFlagList.size()));
     		for (RedFlag redFlag : redFlagList) {
-    			assertTrue("filter group failed ", redFlag.getEvent().getDriverFullName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
+    			assertTrue("filter group failed ", redFlag.getEvent().getDriverName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
     		}
 
     	}

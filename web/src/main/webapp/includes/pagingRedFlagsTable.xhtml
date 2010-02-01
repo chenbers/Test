@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	            
+ 	<t:saveState value="#{bean}"/>
+	            
+    <h:form id="redFlags_form">
+       	<div align="right" style="width: 100%"> 
+        	<h:outputFormat id="header" value="#{messages.notes_redflags_recordCountHeader}">
+				<a4j:actionparam value="#{bean.table.pageData.pageStartRow}"/>
+				<a4j:actionparam value="#{bean.table.pageData.pageEndRow}"/>
+				<a4j:actionparam value="#{bean.table.pageData.totalRows}"/>
+			</h:outputFormat>
+        </div>
+    
+    
+    	<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+    	
+    	<a4j:queue requestDelay="500"/>
+    	
+    	<div class="datagrid_panel" style="width:925px; overflow: auto">
+    	
+        <rich:dataTable value="#{bean.table.model}" id="redFlags" var="redFlag" rowKeyVar="index" styleClass="datagrid" 
+        				rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
+
+            <!-- Data -->
+            <rich:column id="mapColumn">
+                <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon" >
+                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+                        <f:param name="lat" value="#{redFlag.event.latitude}" />
+                        <f:param name="lng" value="#{redFlag.event.longitude}" />
+                  		<f:param name="zonePoints" value="#{redFlag.event.zonePoints}" />
+                  		<f:param name="noteID" value="#{redFlag.event.noteID}" />
+                    </rich:componentControl>
+                </h:graphicImage>
+<!--
+TODO                 
+                <rich:toolTip id="addressToolTip" mode="client" rendered="#{item.zone ne null}">
+ 	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
+                 </rich:toolTip>
+                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1 and item.zone eq null}">
+                	<div id="address">
+	                    <h:outputText value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
+                    </div>
+                </rich:toolTip>
+               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2 and item.zone eq null}">
+               	<h:inputHidden id="linkText" value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+  				<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
+               </rich:toolTip>
+              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3 and item.zone eq null}">
+				<h:inputHidden id="eventLat" value="#{item.redFlag.event.latitude}"/>
+				<h:inputHidden id="eventLng" value="#{item.redFlag.event.longitude}"/>
+ 				<h:outputText id="eventAddress" />
+                </rich:toolTip>
+ -->                
+                
+                	<div id="#{redFlag.event.noteID}" style="display: none;">
+                	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
+						<f:facet name="header">
+                            <pretty:link id="redFlagsDriverPerformance" mappingId="driverPerformance">
+                                <f:param value="#{redFlag.event.driverID}"/>
+                                #{redFlag.event.driverName}
+                            </pretty:link>
+						</f:facet>
+						<h:outputText rendered="#{redFlag.event.zoneName ne null}" value="#{messages.zones_zone}"/>
+						<h:outputText rendered="#{redFlag.event.zoneName ne null}" value="#{redFlag.event.zoneName}" />
+						
+						<h:outputText value="#{messages.notes_redflags_date}"/>
+						<h:outputText value="#{redFlag.event.time}">
+		                	<f:converter converterId="DateTimeTZConverter"/>
+							<f:attribute name="timeZone" value="#{redFlag.event.driverTimeZone}"/>
+                			<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
+                		</h:outputText>
+						
+                		
+                		<h:outputText value="#{messages.notes_redflags_detail}"/>
+						<ui:include src="/includes/eventDetails.xhtml">
+	            			<ui:param name="event" value="#{redFlag.event}" />
+						</ui:include>
+						
+                	</h:panelGrid>
+                	</div>
+                	
+              
+            </rich:column>
+            <rich:column id="level" rendered="#{tableColumns['level'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_level}" />
+                </f:facet>
+                <ui:param name="descriptionKey" value="#{redFlag.level}"/>
+                <h:outputText styleClass="ls_tab_#{redFlag.level}" value="#{messages[descriptionKey]}" />
+            </rich:column>
+            <rich:column id="alerts" rendered="#{tableColumns['alerts'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_alerts}" />
+                </f:facet>
+                <h:outputText value="#{(redFlag.alert) ? messages.yes : messages.no }" />
+            </rich:column>
+            <rich:column id="time" rendered="#{tableColumns['date'].visible}" sortBy="#{redFlag.event.time}" sortOrder="DESCENDING">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_date}" />
+                </f:facet>
+				<h:outputText value="#{redFlag.event.time}">
+                	<f:converter converterId="DateTimeTZConverter"/>
+					<f:attribute name="timeZone" value="#{redFlag.event.driverTimeZone}"/>
+          			<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
+          		</h:outputText>
+            </rich:column>
+            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{redFlag.event.groupName}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_group}" />
+                </f:facet>
+                <pretty:link id="redFlagsDashboard" mappingId="dashboard" rendered="#{redFlag.event.groupID ne null}">
+                   <h:outputText value="#{redFlag.event.groupName}"/>
+                   <f:param value="#{redFlag.event.groupID}"/>
+               </pretty:link>   
+            </rich:column>
+            <rich:column id="driver" rendered="#{tableColumns['driver'].visible}" sortBy="#{redFlag.event.driverName}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_driver}" />
+                </f:facet>
+                <pretty:link id="redFlags_driverPerformance" mappingId="driverPerformance"  rendered="#{redFlag.event.driverName != null}">
+                    <f:param value="#{redFlag.event.driverID}"/>
+                    #{redFlag.event.driverName}
+                </pretty:link>
+                <h:outputText rendered="#{redFlag.event.driverName == null}" value="#{messages.unknown_driver}">
+                </h:outputText>
+            </rich:column>
+            <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{redFlag.event.vehicleName}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_vehicle}" />
+                </f:facet>
+                <pretty:link id="redFlagsVehiclePerformance" mappingId="vehiclePerformance">
+                    <f:param value="#{redFlag.event.vehicleID}"/>
+                    #{redFlag.event.vehicleName}
+                </pretty:link>
+            </rich:column>
+            <rich:column id="category" rendered="#{tableColumns['category'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_category}" />
+                </f:facet>
+                <c:set var="cat" value="redflags_cat#{redFlag.event.eventCategory}"/> 
+                <h:outputFormat value="#{messages[cat]}" >
+                	<f:param value="#{messages[redFlag.event.eventType]}"/>
+                </h:outputFormat>
+            </rich:column>
+            <rich:column id="detail" rendered="#{tableColumns['detail'].visible}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_detail}" />
+                </f:facet>
+				<ui:include src="/includes/eventDetails.xhtml">
+	            	<ui:param name="event" value="#{redFlag.event}" />
+				</ui:include>
+            </rich:column>
+            <rich:column id="clear" rendered="#{tableColumns['clear'].visible}" >
+                <f:facet name="header">
+                    <h:outputText value="" />
+                </f:facet>
+				<a4j:commandLink id="redFlags-clear" rendered="#{redFlag.event.forgiven == 0}" 
+						title="#{messages.notes_redflags_clear}" 
+						oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagsPanel');" 
+						reRender="RedFlags_clearItemForm:clearItem" >
+					<h:outputText value="#{messages.notes_redflags_clear}" />
+					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{redFlag.event}" />
+				</a4j:commandLink>
+				<a4j:commandLink id="redFlags-excluded" rendered="#{redFlag.event.forgiven == 1}" 
+								title="#{messages.driverReports_include}" 
+								action="#{bean.includeEventAction}" 
+								reRender="#{clearRerender}" oncomplete="initializeTable()">
+					<h:outputText value="#{messages.driverReports_include}" />
+					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{redFlag.event}"/>
+				</a4j:commandLink>
+			</rich:column>
+        </rich:dataTable>
+    </div>
+    
+    <rich:datascroller id="redFlags_bottomScroller" for="redFlags" 
+            immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
+            reRender="redFlags,redFlags_form:header, redFlags_pageHeader" oncomplete="initializeTable();" 
+            page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
+            
+    </h:form>
+
+	<ui:include src="/includes/excludeEventPopup.xhtml">
+	   	<ui:param name="bean" value="#{bean}" />
+	   	<ui:param name="context" value="RedFlags" />
+	   	<ui:param name="title" value="#{messages.notes_redflags_clearTitle}" />
+	   	<ui:param name="inst" value="#{messages.notes_redflags_clearInst}" />
+	</ui:include>
+	
+	
+
+    <!-- START LOCATION MODAL -->
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng, event.parameters.zonePoints, event.parameters.noteID);" onhide="GUnload()">
+        <f:facet name="header">
+            <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage id="redFlags-eventLocation" value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+        </f:facet>
+
+        <div class="eventmap-border">
+        	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+        </div>
+
+        <div class="popupactions"><a4j:commandButton id="redFlags-close" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+            <span class="edit"> <h:outputText value="#{messages.button_close}" /></span>
+        </a4j:commandButton></div>
+    </rich:modalPanel>
+    <!-- END LOCATION MODAL -->
+
+</ui:composition>

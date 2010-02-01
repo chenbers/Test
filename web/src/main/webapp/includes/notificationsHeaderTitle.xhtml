@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:h="http://java.sun.com/jsf/html" 
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j">
+
+	<h:panelGroup layout="block" styleClass="panel_nw">
+		<div class="panel_title"> <span class="#{style}">#{title}</span>
+    		<span class="panel_links">
+             			#{description}
+    		</span>
+			<a4j:status id="#{context}_status" for="#{context}_searchRegion">
+				<f:facet name="start">
+					<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+				</f:facet>
+			</a4j:status>
+		</div>
+	</h:panelGroup>
+
+
+</ui:composition>

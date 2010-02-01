@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:h="http://java.sun.com/jsf/html" 
+  	xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:rich="http://richfaces.org/rich"
+  	xmlns:a4j="http://richfaces.org/a4j">
+ 	
+	<rich:modalPanel id="clear#{context}Panel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
+        onshow="document.getElementById('#{context}_clearItemForm:#{context}_Yes').focus();">
+        <f:facet name="header">
+            <h:outputText value="#{title}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clear#{context}Panel')" />
+        </f:facet>
+
+        <h:panelGroup layout="block" styleClass="popupsubtitle">
+            <h:outputText value="#{inst}" />
+        </h:panelGroup>
+
+        <a4j:form id="#{context}_clearItemForm">
+            <h:panelGroup layout="block" styleClass="popupcontent" id="clearItem">
+                <ui:include src="/includes/eventDetails.xhtml">
+	            	<ui:param name="event" value="#{bean.clearItem}" />
+				</ui:include>
+                <br />
+                <h:outputText value="#{bean.clearItem.time}">
+                	<f:converter converterId="DateTimeTZConverter"/>
+					<f:attribute name="timeZone" value="#{bean.clearItem.driverTimeZone}"/>
+                	<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
+                </h:outputText>
+                
+            </h:panelGroup>
+
+            <div class="popupactions">
+            <button id="#{context}_no" type="submit" class="left" onclick="Richfaces.hideModalPanel('clear#{context}Panel'); return false;"><span class="no"><h:outputText
+                value="#{messages.button_no}" /></span></button>
+            <a4j:commandButton id="#{context}_yes" action="#{bean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clear#{context}Panel'); initializeTable()"
+                onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
+                eventsQueue="#{context}_form" >
+                <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
+            </a4j:commandButton></div>
+
+        </a4j:form>
+
+    </rich:modalPanel>
+  	
+</ui:composition>
