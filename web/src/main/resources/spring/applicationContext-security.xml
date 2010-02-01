@@ -53,6 +53,7 @@
     <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
         <beans:property name="userDAO" ref="userDAO" />
         <beans:property name="groupDAO" ref="groupDAO"/>
+        <beans:property name="zoneDAO" ref="zoneDAO"/>
     </beans:bean>
 
     <!--  Password encryption  -->
