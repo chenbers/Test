@@ -516,6 +516,8 @@ default-autowire="byName" default-init-method="init">
   <bean id="latLngAddressConverter" class="com.inthinc.pro.convert.LatLngAddressConverter">
     <property name="addressLookup" ref="${addressLookup}" />
   </bean>
+  <bean id="addressBean" class="com.inthinc.pro.backing.AddressBean" scope="session" parent="baseBean">
+  </bean>  
 
   <!-- UI backing beans -->
   <bean id="eventTypeIcons" class="com.inthinc.pro.backing.ui.EventTypeIcons" scope="session" init-method="init" parent="baseBean">
