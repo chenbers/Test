@@ -3,6 +3,8 @@ package com.inthinc.pro.dao.hessian.report;
 import java.util.Collections;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Duration;
@@ -14,11 +16,19 @@ import com.inthinc.pro.model.aggregation.Score;
 
 public class GroupReportHessianDAO extends AbstractReportHessianDAO implements GroupReportDAO {
 
-
     @Override
     public Score getAggregateDriverScore(Integer groupID, Duration duration) {
         try {
             return mapper.convertToModelObject(reportService.getGDScoreByGT(groupID, duration.getCode()), Score.class);
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Score getAggregateDriverScore(Integer groupID, DateTime startTime, DateTime endTime) {
+        try {
+            return mapper.convertToModelObject(reportService.getGDScoreByGSE(groupID, startTime.getMillis(), endTime.getMillis()), Score.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
@@ -32,7 +42,6 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
             return null;
         }
     }
-    
 
     @Override
     public List<GroupScoreWrapper> getSubGroupsAggregateDriverScores(Integer groupID, Duration duration) {
@@ -53,6 +62,15 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
         try {
             return mapper.convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DriverVehicleScoreWrapper.class);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime) {
+        try {
+            return mapper.convertToModelObject(reportService.getDVScoresByGSE(groupID, startTime.getMillis(), endTime.getMillis()), DriverVehicleScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }

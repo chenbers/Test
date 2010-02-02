@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+default-autowire="byName" default-init-method="init">
   <!-- Message Bundles -->
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="com.inthinc.pro.resources.Messages" />
@@ -73,7 +74,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="overallScoreBean" ref="overallScoreBean" />
     <property name="trendBeanState" ref="trendBeanState"></property>
   </bean>
-  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean"/>
+  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean" autowire="byName"/>
 
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">

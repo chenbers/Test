@@ -2,6 +2,8 @@ package com.inthinc.pro.dao.report;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
@@ -13,7 +15,11 @@ public interface GroupReportDAO {
 
     Score getAggregateDriverScore(Integer groupID, Duration duration);
 
+    Score getAggregateDriverScore(Integer groupID, DateTime startTime, DateTime endTime);
+
     List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration);
+
+    List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime);
 
     List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration);
 
