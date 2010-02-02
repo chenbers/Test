@@ -174,6 +174,9 @@ public class ZonesBean extends BaseBean
 
         editing = false;
         helpFile = "Zones.htm";
+        
+        // reload the zones for the account that are carried by proUser
+        getProUser().setZones(zones);
     }
 
     /**
