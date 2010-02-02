@@ -180,10 +180,10 @@
     <!-- END LOCATION MODAL -->
 	
 	<a4j:form id="lookForZone">
-		<a4j:jsFunction name="lkFrZn" action="#{bean.lookForZone}" oncomplete="checkForZoneName('#{bean.zoneName}')">
-			<a4j:actionparam name="latitude" assignTo="#{bean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{bean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{bean.elemIndex}"/>
+		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="checkForZoneName('#{addressBean.zoneName}')">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
 		</a4j:jsFunction>
 	</a4j:form>   
 
