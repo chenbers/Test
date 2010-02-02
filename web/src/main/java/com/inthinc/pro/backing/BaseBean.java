@@ -25,8 +25,10 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.security.userdetails.ProUser;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 public class BaseBean implements Serializable {
     private static final Logger logger = Logger.getLogger(BaseBean.class);
@@ -196,8 +198,12 @@ public class BaseBean implements Serializable {
 			return addressLookup.getAddress(latLng);
 		}
 		catch(NoAddressFoundException nafe){
-			
-			return MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng());
+			// Couldn't find it, look for zone?
+		    List<Zone> zoneList = getProUser().getZones();
+            return (MiscUtil.findZoneName(zoneList, latLng) == null) ?
+                    MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng()) :
+                    MiscUtil.findZoneName(zoneList, latLng);		    
+//			return MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng());
 		}
 	}
 
