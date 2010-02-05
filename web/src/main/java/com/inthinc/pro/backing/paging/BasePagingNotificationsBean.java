@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
-import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
@@ -24,7 +23,6 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean
 
     protected final static Integer DAYS_BACK = 1;
     protected final static Integer MAX_DAYS_BACK = 7;
-    
 
     private ReportRenderer           reportRenderer;
     private ReportCriteriaService    reportCriteriaService;

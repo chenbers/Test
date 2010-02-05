@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
@@ -14,8 +15,12 @@ public abstract class ZoneEvent extends Event {
 	private static final long serialVersionUID = -221662750228535423L;
 	
 	protected Integer zoneID;
+	
 	@Column(updateable = false)
-	private transient String zoneName;
+	private String zoneName;
+	
+	private List<LatLng> zonePoints;
+	
 
 	public ZoneEvent() {
 		super();
@@ -36,6 +41,7 @@ public abstract class ZoneEvent extends Event {
 	    this.zoneID = zoneID;
 	}
 
+	@Override
 	public String getZoneName() {
 	    return zoneName;
 	}
@@ -53,5 +59,28 @@ public abstract class ZoneEvent extends Event {
     {
         return MessageFormat.format(formatStr, new Object[] {zoneName == null ? "" : zoneName});
     }
+
+	public List<LatLng> getZonePoints() {
+		return zonePoints;
+	}
+
+	public void setZonePoints(List<LatLng> zonePoints) {
+		this.zonePoints = zonePoints;
+	}
+
+	
+	@Override
+	public String getZonePointsStr() {
+        StringBuilder sb = new StringBuilder();
+        if (zonePoints != null)
+            for (final LatLng point : zonePoints)
+            {
+                if (sb.length() > 0)
+                    sb.append(';');
+                sb.append(point);
+            }
+        return sb.toString();
+
+	}
 
 }

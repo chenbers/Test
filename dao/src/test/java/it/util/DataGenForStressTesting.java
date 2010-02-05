@@ -1,6 +1,8 @@
 package it.util;
 
+import static org.junit.Assert.assertNotNull;
 import it.com.inthinc.pro.dao.Util;
+import it.com.inthinc.pro.dao.model.GroupData;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
@@ -98,6 +100,9 @@ public class DataGenForStressTesting {
     	List<Vehicle> vehicleList = new ArrayList<Vehicle>();
     }
     List<GroupData> teamGroupData;
+    Zone zone;
+    Integer zoneID;
+    User fleetUser;
     
     String names[][] = {  // first, last
     		{"James","Miller"},
@@ -202,7 +207,7 @@ public class DataGenForStressTesting {
         createGroupHierarchy(account.getAcctID());
 
         // User at fleet level
-        User fleetUser = createUser(account.getAcctID(), fleetGroup);
+        fleetUser = createUser(account.getAcctID(), fleetGroup);
         System.out.println("Fleet Level User " + fleetUser.getUsername());
         fleetUserName = fleetUser.getUsername();
 
@@ -225,12 +230,157 @@ public class DataGenForStressTesting {
         	}
             redFlagAlert(account.getAcctID(), team.group.getGroupID());
         }
+        
+    	// zone
+    	createZone();
+    	
+    	// zone alert preferences
+    	createZoneAlert();
+    	
+    	// red flag alert preferences
+    	createRedFlagAlerts();
+
     }
+    
+    private void createRedFlagAlerts() {
+        RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
+        redFlagAlertDAO.setSiloService(siloService);
+
+        // speeding alert (5 mph over any speed, WARNING level)
+        RedFlagAlert redFlagAlert = initRedFlagAlert("Speeding");
+        redFlagAlert.setSpeedSettings(new Integer[] {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,});
+        redFlagAlert.setSpeedLevels(new RedFlagLevel[] {RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,
+        							RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,
+        							RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,}); 
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
+        // aggressive driving all  (level 1)  CRITICAL
+        redFlagAlert = initRedFlagAlert("Aggressive Driving");
+        redFlagAlert.setHardAcceleration(Integer.valueOf(1));
+        redFlagAlert.setHardAccelerationLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setHardBrake(Integer.valueOf(1));
+        redFlagAlert.setHardBrakeLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setHardTurn(Integer.valueOf(1));
+        redFlagAlert.setHardTurnLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setHardVertical(Integer.valueOf(1));
+        redFlagAlert.setHardVerticalLevel(RedFlagLevel.CRITICAL);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
+        // seat belt INFO
+        redFlagAlert = initRedFlagAlert("Seat belt");
+        redFlagAlert.setSeatBeltLevel(RedFlagLevel.INFO);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
+        // crash CRITICAL
+        redFlagAlert = initRedFlagAlert("Crash");
+        redFlagAlert.setCrashLevel(RedFlagLevel.CRITICAL);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+        
+        // tampering INFO
+        redFlagAlert = initRedFlagAlert("Tampering");
+        redFlagAlert.setTamperingLevel(RedFlagLevel.INFO);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+        
+        // low battery INFO
+        redFlagAlert = initRedFlagAlert("Low Battery");
+        redFlagAlert.setLowBatteryLevel(RedFlagLevel.INFO);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+    }
+
+
+    private RedFlagAlert initRedFlagAlert(String typeStr) {
+        List<String> emailList = new ArrayList<String>();
+        emailList.add("cjennings@inthinc.com");
+    	RedFlagAlert redFlagAlert = new RedFlagAlert(account.getAcctID(), typeStr + " Red Flag", typeStr + " Red Flag Description", 0,
+            1439, // start/end time
+            anyDay(), 
+            anyTeam(),
+            null, // driverIDs
+            null, // vehicleIDs
+            null, // vehicleTypeIDs
+            notifyPersonList(),
+            null, // emailTo
+            null, null,
+            null, null, null, null,
+            RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
+            RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+    	return redFlagAlert;
+    }
+	private void addRedFlagAlert(RedFlagAlert redFlagAlert,
+			RedFlagAlertHessianDAO redFlagAlertDAO) {
+		
+        Integer redFlagAlertID = redFlagAlertDAO.create(account.getAcctID(), redFlagAlert);
+        assertNotNull(redFlagAlertID);
+        redFlagAlert.setRedFlagAlertID(redFlagAlertID);
+	}
+
+
+	private void createZoneAlert() {
+		// zone alert pref for enter/leave zone any time, any day, both teams
+        ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
+        zoneAlertDAO.setSiloService(siloService);
+        ZoneAlert zoneAlert = new ZoneAlert(account.getAcctID(), "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
+                anyDay(), anyTeam(), null, // driverIDs
+                null, // vehicleIDs
+                null, // vehicleTypeIDs
+                notifyPersonList(), // notifyPersonIDs
+                null, // emailTo
+                0, zone.getZoneID(), true, true);
+        Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
+        assertNotNull(zoneAlertID);
+        zoneAlert.setZoneAlertID(zoneAlertID);
+
+	}
+
+
+
+	private void createZone() {
+        ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
+        zoneDAO.setSiloService(siloService);
+
+        // create a zone to use
+        zone = new Zone(0, account.getAcctID(), Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", fleetGroup.getGroupID());
+        List<LatLng> points = new ArrayList<LatLng>();
+        zone.setName("Zone " + account.getAcctID());
+        points.add(new LatLng(32.96453094482422f, -117.12944793701172f ));
+        points.add(new LatLng(32.96453094482422f, -117.12352752685547f));
+        points.add(new LatLng(32.96186447143555f, -117.12352752685547f));
+        points.add(new LatLng(32.96186447143555f, -117.12944793701172f));
+        points.add(new LatLng(32.96453094482422f, -117.12944793701172f));
+        zone.setPoints(points);
+        zoneID = zoneDAO.create(account.getAcctID(), zone);
+        zone.setZoneID(zoneID);
+
+	}
+
+	private List<Integer> anyTeam() {
+		List<Integer> groupIDList = new ArrayList<Integer>();
+        for (GroupData groupData : teamGroupData) {
+        	groupIDList.add(groupData.group.getGroupID());
+        }
+		return groupIDList;
+	}
+
+
+	private List<Boolean> anyDay() {
+		List<Boolean> dayOfWeek = new ArrayList<Boolean>();
+        for (int i = 0; i < 7; i++)
+            dayOfWeek.add(true);
+		return dayOfWeek;
+	}
+
+	private List<Integer> notifyPersonList() {
+		List<Integer> notifyPersonIDList = new ArrayList<Integer>();
+        notifyPersonIDList.add(fleetUser.getPersonID());
+		return notifyPersonIDList;
+	}
+
     
 	private void writeTestDataToXML() throws FileNotFoundException {
 		XMLEncoder xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(xmlPath)));
 		
 		xml.writeObject(fleetUserName);
+		xml.writeObject(zoneID);
 		
         for (GroupData team : teamGroupData) {
         	
@@ -618,16 +768,18 @@ System.out.println("Waiting for imei: " + imei);
 			}
 		}
 	}
-	private void generateDayData(MCMSimulator mcmSim, Date date, String imei) throws Exception 
+	private void generateDayData(MCMSimulator mcmSim, Date date, String imei, Integer zoneID) throws Exception 
 	{
 		EventGenerator eventGenerator = new EventGenerator();
 		EventGeneratorData data = getEventGeneratorData();
-		eventGenerator.generateTrip(imei, mcmSim, date, data);
+		eventGenerator.generateTripExt(imei, mcmSim, date, data, zoneID);
+
 	}
     private EventGeneratorData getEventGeneratorData() {
     	EventGeneratorData data = null;
 		boolean includeCrash = (Util.randomInt(0, 100) < 10);
 		int cnt = Util.randomInt(0, 100);
+
 		
 	    if (cnt < 10)
 	    {
@@ -759,7 +911,7 @@ System.out.println("Waiting for imei: " + imei);
 		                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 		                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 		                    Date startDate = new Date((long)dateInSec * 1000l);
-		            		testData.generateDayData(mcmSim, startDate, device.getImei());
+		            		testData.generateDayData(mcmSim, startDate, device.getImei(), testData.zoneID);
 		            	}
 		            }
 	    		}
@@ -787,7 +939,7 @@ System.out.println("Waiting for imei: " + imei);
     	        	{
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                Date startDate = new Date((long)dateInSec * 1000l);
-    	        		testData.generateDayData(mcmSim, startDate, imei);
+    	        		testData.generateDayData(mcmSim, startDate, imei, testData.zoneID);
     	        	}
                 }
              
@@ -811,6 +963,7 @@ System.out.println("Waiting for imei: " + imei);
           InputStream stream = new FileInputStream(xmlPath);
           XMLDecoder xml = new XMLDecoder(new BufferedInputStream(stream));
           String fleetUserName = getNext(xml, String.class);
+          zoneID = getNext(xml, Integer.class);
           String imei = getNext(xml, String.class);
           while (imei != null) {
         	  imeiList.add(imei);

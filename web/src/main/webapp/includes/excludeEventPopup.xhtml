@@ -37,7 +37,7 @@
                 value="#{messages.button_no}" /></span></button>
             <a4j:commandButton id="#{context}_yes" action="#{bean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clear#{context}Panel'); initializeTable()"
                 onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
-                eventsQueue="#{context}_form" >
+                eventsQueue="#{context}-form" >
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
             </a4j:commandButton></div>
 

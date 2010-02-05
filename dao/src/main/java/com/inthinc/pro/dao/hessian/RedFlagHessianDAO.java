@@ -48,13 +48,10 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
     }
 
 	@Override
-	public List<RedFlag> getRedFlagPage(Integer groupID, Integer daysBack,
+	public List<RedFlag> getRedFlagPage(Integer groupID, Date startDate, Date endDate,
 			Integer includeForgiven, PageParams pageParams) {
-/* REAL IMPL		
         try
         {
-            Date endDate = new Date();
-            Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
             List<RedFlag> redFlagList = getMapper().convertToModelObject(getSiloService().getRedFlagsPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, getMapper().convertToMap(pageParams)), RedFlag.class);
             return redFlagList;
         }
@@ -62,44 +59,14 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         {
             return Collections.emptyList();
         }
-        catch (ProxyException e)
-        {
-        	if (e.getErrorCode() == 422)
-        	{
-        		// not implemented
-        		return new ArrayList<RedFlag>();
-        	}
-        	throw e;
-        }
-*/
-		
-		/* TEMPORORARY */
-		List<RedFlag> redFlagList = getRedFlags(groupID, daysBack, includeForgiven);
-		for (RedFlag redFlag : redFlagList) {
-			
-			// unknown driver id for test account (temporary)
-			if (!redFlag.getEvent().getDriverID().equals(Integer.valueOf(5690))) {
-				redFlag.getEvent().setDriverName("Driver" + redFlag.getEvent().getDriverID());
-				redFlag.getEvent().setGroupName("Group" + redFlag.getEvent().getGroupID());
-				redFlag.getEvent().setDriverTimeZone(TimeZone.getTimeZone("US/Mountain"));
-			}
-			redFlag.getEvent().setVehicleName("Vehicle" + redFlag.getEvent().getVehicleID());
-			
-		}
-
-		
-		return redFlagList.subList(pageParams.getStartRow(), pageParams.getEndRow());
 		
 		
 	}
 	@Override
-	public Integer getRedFlagCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<TableFilterField> filterList) {
+	public Integer getRedFlagCount(Integer groupID, Date startDate, Date endDate, Integer includeForgiven, List<TableFilterField> filterList) {
 		
-/* REAL IMPL		
         try
         {
-            Date endDate = new Date();
-            Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
             if (filterList == null)
             	filterList = new ArrayList<TableFilterField>();
             return getChangedCount(getSiloService().getRedFlagsCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, getMapper().convertList(filterList)));
@@ -109,18 +76,6 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         {
             return 0;
         }
-        catch (ProxyException e)
-        {
-        	if (e.getErrorCode() == 422)
-        	{
-        		// not implemented
-        		return 0;
-        	}
-        	throw e;
-        }
-*/
-		
-		/* TEMPORORARY */
-	    return getRedFlags(groupID, daysBack, includeForgiven).size();
 	}
+
 }

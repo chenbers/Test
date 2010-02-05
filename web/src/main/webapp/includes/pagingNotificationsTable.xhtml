@@ -11,7 +11,7 @@
     
  	<t:saveState value="#{bean}"/>
     
-    <h:form id="#{context}_form">
+    <h:form id="#{context}-form">
     
     	<div align="right" style="width: 100%"> 
         	<h:outputFormat id="header" value="#{messages.notes_safety_recordCountHeader}">
@@ -22,14 +22,15 @@
         </div>
     
     
-    	<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+    	<rich:jQuery selector="document" query="ready(function(){initializeTable();initializeTableFilterCols();})" />
         
     	<a4j:queue requestDelay="500"/>
         
     	<div class="datagrid_panel" style="width:925px; overflow: auto">
         
-        <rich:dataTable id="#{context}" value="#{bean.table.model}" var="event" rowKeyVar="index"
-        		styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
+        <rich:dataTable id="#{context}" value="#{bean.table.model}" var="event" rowKeyVar="index" 
+        		reRender="#{context}-form:header,#{context}-form:#{context}_bottomScroller"
+        		styleClass="datagrid filterabledatagrid"  rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
 
             <!-- Data -->
             <rich:column id="mapColumn" style="text-align: center;">
@@ -42,9 +43,11 @@
                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1}">
                     <h:outputText id="address" value="#{event.latLng}" converter="#{latLngAddressConverter}" />
                 </rich:toolTip>
-              <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2}">
-	               	<h:inputHidden id="linkText" value="#{event.latLng}" converter="#{latLngAddressConverter}" />
+               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2}">
+	               	<h:inputHidden id="linkText" value="#{item.event.latLng}" converter="#{latLngAddressConverter}" />
+  					<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
                </rich:toolTip>
+               
               <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3}">
 				<h:inputHidden id="eventLat" value="#{event.latitude}"/>
 				<h:inputHidden id="eventLng" value="#{event.longitude}"/>
@@ -52,7 +55,7 @@
                 </rich:toolTip>
             </rich:column>
              
-            <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{event.time}">
+            <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{event.time}"  sortOrder="DESCENDING">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_date}" />
                 </f:facet>
@@ -62,7 +65,7 @@
                 	<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
                 </h:outputText>
             </rich:column>
-            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{event.groupName}" filterBy="#{event.groupName}">
+            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{event.groupName}" filterBy="#{event.groupName}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_group}" />
                 </f:facet>
@@ -125,7 +128,7 @@
 				<a4j:commandLink id="excluded" rendered="#{event.forgiven == 1}" 
 						title="#{messages.driverReports_exclude}" action="#{bean.includeEventAction}" 
 						reRender="#{clearRerender}"
-						 oncomplete="initializeTable()">
+						 oncomplete="initializeTable();initializeTableFilterCols();">
 					<h:outputText value="#{messages.driverReports_include}" />
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{event}" />
 				</a4j:commandLink>
@@ -135,7 +138,7 @@
     
     <rich:datascroller id="#{context}_bottomScroller" for="#{context}" 
             immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
-            reRender="#{context},#{context}_form:header,#{context}_pageHeader" oncomplete="initializeTable();" 
+            reRender="#{context},#{context}-form:header,#{context}_pageHeader" oncomplete="initializeTable();;initializeTableFilterCols();" 
             page="#{bean.table.pageData.currentPage}" styleClass="dataScroller" renderIfSinglePage="false"/>
             
     </h:form>
@@ -173,5 +176,14 @@
         </h:form>
     </rich:modalPanel>
     <!-- END LOCATION MODAL -->
+    
+    <a4j:form id="lookForZone">
+		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="checkForZoneName('#{addressBean.zoneName}')">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
+		</a4j:jsFunction>
+	</a4j:form>   
+    
 
 </ui:composition>

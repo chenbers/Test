@@ -37,7 +37,7 @@
                                     <ui:param name="bean" value="#{pagingEmergencyEventsBean}" />
                                     <ui:param name="clearTitle" value="#{messages.notes_emergency_clearTitle}" />
                                     <ui:param name="clearInst" value="#{messages.notes_emergency_clearInst}" />
-                                    <ui:param name="clearRerender" value="#{context}_search:header,#{context}_form:#{context}" />
+                                    <ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}" />
      	 							<ui:param name="context" value="emergency" />
                                 </ui:include>
                             </h:panelGroup>
@@ -47,7 +47,7 @@
 
                     <ui:include src="/includes/editColumnsPopup.xhtml">
                         <ui:param name="bean" value="#{pagingEmergencyEventsBean}" />
-                        <ui:param name="reRender" value="#{context}_form:#{context}" />
+                        <ui:param name="reRender" value="#{context}-form:#{context}" />
       	 				<ui:param name="context" value="#{context}" />
                     </ui:include>
 

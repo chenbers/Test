@@ -43,7 +43,7 @@
 			    				<ui:param name="bean" value="#{pagingSafetyEventsBean}"/>
 			             		<ui:param name="clearTitle" value="#{messages.notes_safety_clearTitle}"/>
 			             		<ui:param name="clearInst" value="#{messages.notes_safety_clearInst}"/>
-			             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}_form:#{context}"/>
+			             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
 	    	 					<ui:param name="context" value="safety" />
 			    			</ui:include>    							
 			            </h:panelGroup>
@@ -52,7 +52,7 @@
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{pagingSafetyEventsBean}"/>	
-					<ui:param name="reRender" value="#{context}_form:#{context}" />
+					<ui:param name="reRender" value="#{context}-form:#{context}" />
     	 			<ui:param name="context" value="safety" />
 				</ui:include>    
 				

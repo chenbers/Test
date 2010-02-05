@@ -1,10 +1,13 @@
 package com.inthinc.pro.table.model.provider;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.RedFlagDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.pagination.PageParams;
 
@@ -20,7 +23,9 @@ public class RedFlagPaginationTableDataProvider   extends GenericPaginationTable
 	private RedFlagDAO              redFlagDAO;
 	private Integer 				groupID;
 	private Integer					daysBack;
-	
+    private Date endDate;
+    private Date startDate;
+
 
 	public RedFlagPaginationTableDataProvider() {
 	    
@@ -30,14 +35,28 @@ public class RedFlagPaginationTableDataProvider   extends GenericPaginationTable
 	@Override
 	public List<RedFlag> getItemsByRange(int firstRow, int endRow) {
 		
+		if (endRow < 0)
+			return new ArrayList<RedFlag>();
+		
+		if (endDate == null || startDate == null) {
+			initStartEndDates();
+		}
+	
 		PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
-		return redFlagDAO.getRedFlagPage(groupID, getDaysBack(), RedFlagDAO.INCLUDE_FORGIVEN, pageParams);
+		return redFlagDAO.getRedFlagPage(groupID, startDate, endDate, RedFlagDAO.INCLUDE_FORGIVEN, pageParams);
 	}
 
 	@Override
 	public int getRowCount() {
+		if (groupID == null)
+			return 0;
 
-		return redFlagDAO.getRedFlagCount(groupID, getDaysBack(), RedFlagDAO.INCLUDE_FORGIVEN, getFilters());
+		initStartEndDates();
+		return redFlagDAO.getRedFlagCount(groupID, startDate, endDate, RedFlagDAO.INCLUDE_FORGIVEN, getFilters());
+	}
+	private void initStartEndDates() {
+	    endDate = new Date();
+	    startDate = DateUtil.getDaysBackDate(endDate, getDaysBack());
 	}
 
 
@@ -51,12 +70,14 @@ public class RedFlagPaginationTableDataProvider   extends GenericPaginationTable
 
 	public Integer getDaysBack() {
 		if (daysBack == null)
-			return Integer.valueOf(0);
+			return Integer.valueOf(1);
 		return daysBack;
 	}
 
 	public void setDaysBack(Integer daysBack) {
 		this.daysBack = daysBack;
+		this.startDate = null;
+		this.endDate = null;
 	}
 
 	public RedFlagDAO getRedFlagDAO() {

@@ -23,9 +23,9 @@ import org.richfaces.model.Modifiable;
 import org.richfaces.model.Ordering;
 import org.richfaces.model.SortField2;
 
+import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
-import com.inthinc.pro.model.pagination.TableSortField.SortOrder;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.table.model.provider.PaginationDataProvider;
 
@@ -46,7 +46,6 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 
 	
 	public PaginationTableDataModel(PaginationDataProvider<T> dataProvider) {
-System.out.println("PaginationTableDataModel - constructor");		
 		this.dataProvider = dataProvider;
 	}
 	/**
@@ -76,10 +75,7 @@ System.out.println("PaginationTableDataModel - constructor");
 	 */
 	@Override
 	public void walk(FacesContext context, DataVisitor visitor, Range range, Object argument) throws IOException {
-System.out.println("walk  start: " + ((SequenceRange) range).getFirstRow() + " row cnt:" + ((SequenceRange) range).getRows());		
-//		appendSorts(context);
-//		appendFilters(context);
-		
+
 		int rowC = getRowCount();
 		int firstRow = ((SequenceRange) range).getFirstRow();
 		int numberOfRows = ((SequenceRange) range).getRows();
@@ -99,14 +95,15 @@ System.out.println("walk  start: " + ((SequenceRange) range).getFirstRow() + " r
 		} else { // if not serialized, than we request data from data provider
 			wrappedKeys = new ArrayList<Object>();
 			int endRow = firstRow + numberOfRows;
-			if (endRow > rowC){
-				endRow = rowC; 
+			if (endRow >= rowC){
+				endRow = rowC-1; 
 			}
-	
+			Integer rowIndex = firstRow;
 			for (T item : loadData(firstRow, endRow)) {
-				Object key = getKey(item);
+				Object key = rowIndex;
 				wrappedKeys.add(key);
 				wrappedData.put(key, item);
+				rowIndex++;
 				visitor.process(context, key, argument);
 			}
 		}
@@ -114,7 +111,7 @@ System.out.println("walk  start: " + ((SequenceRange) range).getFirstRow() + " r
 
 	/**
 	 * Load range of data items from the source.
-	 * Starting from startRow, and up to but excluding endRow
+	 * Starting from startRow, and up to and including endRow
 	 * @param startRow
 	 * @param endRow
 	 * @return list of ordered data
@@ -124,8 +121,8 @@ System.out.println("walk  start: " + ((SequenceRange) range).getFirstRow() + " r
 			startRow = 0;
 		}
 		int rowCount = getRowCount();
-		if (endRow > rowCount){
-			endRow = rowCount;
+		if (endRow >= rowCount){
+			endRow = rowCount-1;
 		}
 		//load all from provider and get sublist
 		return dataProvider.getItemsByRange(startRow, endRow);
@@ -141,9 +138,7 @@ System.out.println("walk  start: " + ((SequenceRange) range).getFirstRow() + " r
 
 	@Override
 	public int getRowCount() {
-//		Integer actualRowCount = dataProvider.getRowCount();
 		if (tableRowCount == null) { // || !rowCount.equals(actualRowCount)) {
-System.out.println("PaginationTableDataModel - updateRowCount");		
 			Integer actualRowCount = dataProvider.getRowCount();
 			tableRowCount = actualRowCount;
 			if (pageData != null) {
@@ -173,12 +168,7 @@ System.out.println("PaginationTableDataModel - updateRowCount");
 	}
 
 	public T getObjectByKey(Object key) {
-		T t = wrappedData.get(key);
-		if (t == null){
-			t = dataProvider.getItemByKey(key);
-			wrappedData.put(key, t);
-		}
-		return t;
+		return wrappedData.get(key);
 	}
 
 	private Integer rowIndex;
@@ -190,8 +180,6 @@ System.out.println("PaginationTableDataModel - updateRowCount");
 	 */
 	@Override
 	public int getRowIndex() {
-		//throw new UnsupportedOperationException();
-System.out.println("**** getRowIndex");		
 		return rowIndex.intValue();
 	}
 
@@ -202,8 +190,6 @@ System.out.println("**** getRowIndex");
 	 */
 	@Override
 	public void setRowIndex(int rowIndex) {
-System.out.println("**** setRowIndex");		
-		//throw new UnsupportedOperationException();
 		this.rowIndex = rowIndex;
 	}
 
@@ -265,13 +251,11 @@ System.out.println("**** setRowIndex");
 	public void modify(List<FilterField> mFilterFields, List<SortField2> mSortFields) {
 		
 		if (filtersChanged(mFilterFields)) {
-System.out.println("modify - filter's changed");		
 			this.filterFields = mFilterFields;
 			appendFilters();
 			reset();
 		}
 		if (sortsChanged(mSortFields)) {
-System.out.println("modify - sort's changed");		
 			this.sortFields = mSortFields;
 			appendSorts();
 			resetPage();
@@ -299,6 +283,9 @@ System.out.println("modify - sort's changed");
 						!ordering.equals(mOrdering))
 						return true;
 				}
+				else {
+					return true;
+				}
 				
 			}
 		}
@@ -315,7 +302,7 @@ System.out.println("modify - sort's changed");
 				String mPropertyName = getPropertyName(mFilterField.getExpression());
 				if (propertyName.equals(mPropertyName)) {
 					String mFilterValue = ((ExtendedFilterField) mFilterField).getFilterValue();
-					if (filterValue == null && mFilterValue == null )
+					if (filterValue == null && (mFilterValue == null || mFilterValue.isEmpty()))
 						continue;
 					if ((filterValue == null && mFilterValue != null ) ||
 						(filterValue != null && mFilterValue == null ) ||
@@ -353,7 +340,7 @@ System.out.println("modify - sort's changed");
 	private String getPropertyName(Expression expression) {
 		try {
 			// not sure if this is correct way to do this,
-			// trying to get the name of the field to sort on from something like #{item.field}
+			// trying to get the name of the field to sort on from something like #{item.field}, just need field
 			if (expression.getExpressionString() == null)
 				return "";
 			
@@ -363,24 +350,9 @@ System.out.println("modify - sort's changed");
 			if (propName.endsWith("}"))
 				propName = propName.substring(0, propName.length()-1);
 			
-			return propName;
-			
-		} catch (ELException e) {
-			throw new FacesException(e.getMessage(), e);
-		}
-	}
-	private String getPropertyName(FacesContext facesContext, Expression expression) {
-		try {
-			// not sure if this is correct way to do this,
-			// trying to get the name of the field to sort on from something like #{item.field}
-			if (expression.getExpressionString() == null)
-				return "";
-			
-			String propName = expression.getExpressionString().trim();
-			if (propName.startsWith("#{"))
-				propName = propName.substring(2);
-			if (propName.endsWith("}"))
-				propName = propName.substring(0, propName.length()-1);
+			int fieldIdx = propName.lastIndexOf(".");
+			if (fieldIdx != -1)
+				propName = propName.substring(fieldIdx+1);
 			
 			return propName;
 			
@@ -388,14 +360,10 @@ System.out.println("modify - sort's changed");
 			throw new FacesException(e.getMessage(), e);
 		}
 	}
-
 	public PageData getPageData() {
 		return pageData;
 	}
 	public void setPageData(PageData pageData) {
 		this.pageData = pageData;
 	}
-
-	
-	
 }

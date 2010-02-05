@@ -63,10 +63,8 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private String driverName;
     private String vehicleName;
     private String groupName;
-    @Column(name="driverTzName")
+    @Column(name="tzName")
     private TimeZone driverTimeZone;
-    private String zoneName;
-    private String zonePoints;
 
 	public Event()
     {
@@ -375,6 +373,8 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         this.formattedTime = formattedTime;
     }
     public String getDriverName() {
+    	if (driverName == null || driverName.isEmpty())
+    		return null;
 		return driverName;
 	}
 
@@ -406,21 +406,11 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 		this.driverTimeZone = driverTimeZone;
 	}
 
+	
 	public String getZoneName() {
-		return zoneName;
+		return null;
 	}
-
-	public void setZoneName(String zoneName) {
-		this.zoneName = zoneName;
+	public String getZonePointsStr() {
+		return null;
 	}
-
-	public String getZonePoints() {
-		return zonePoints;
-	}
-
-	public void setZonePoints(String zonePoints) {
-		this.zonePoints = zonePoints;
-	}
-
-
 }

@@ -5,7 +5,10 @@
   	xmlns:a4j="http://richfaces.org/a4j"
   	xmlns:rich="http://richfaces.org/rich"
   	xmlns:security="http://pro.tiwi.com/jsf/security"
+  	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">  	
+
+	<t:saveState value="#{bean}"/>
 
 	<a4j:region id="#{context}_searchRegion">							
 		<a4j:form id="#{context}_search">							
@@ -41,8 +44,8 @@
 			  </li>
 			  <li class="l">
 				<a4j:commandButton id="#{context}_refresh" styleClass="left"
-					reRender="#{context}_form:header,#{context}_form:#{context},#{context}_form:#{context}_bottomScroller" 
-							action="#{bean.refreshAction}" oncomplete="initializeTable()">
+					reRender="#{context}-form:header,#{context}-form:#{context},#{context}-form:#{context}_bottomScroller" 
+							action="#{bean.refreshAction}" oncomplete="initializeTable();initializeTableFilterCols();">
             				<span class="refresh">
             					<h:outputText value="#{messages.refresh}" />
             				</span>

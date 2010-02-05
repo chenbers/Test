@@ -17,8 +17,8 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagReportItem;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
-import com.inthinc.pro.model.pagination.TableSortField.SortOrder;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.table.BasePaginationTable;
 import com.inthinc.pro.table.model.provider.RedFlagPaginationTableDataProvider;
@@ -55,7 +55,6 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
 	private RedFlagPaginationTableDataProvider tableDataProvider;
 	private BasePaginationTable<RedFlag> table;
 	
-
 	@Override
 	public void init()
 	{

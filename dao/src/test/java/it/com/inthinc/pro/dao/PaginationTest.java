@@ -33,13 +33,14 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.ZoneEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
-import com.inthinc.pro.model.pagination.TableSortField.SortOrder;
 
 
 public class PaginationTest {
@@ -48,7 +49,8 @@ public class PaginationTest {
     private static SiloService siloService;
     private static ITData itData;
     
-    private static final String PAGINATION_BASE_DATA_XML = "PageTest.xml";
+//    private static final String PAGINATION_BASE_DATA_XML = "PageTest.xml";
+    private static final String PAGINATION_BASE_DATA_XML = "PageTest34.xml";
     private static final int FLEET_IDX = 3;    
     // the expected counts come from the events generated daily by DataGenForPaginationTesting
     // that process is run via a cron job in Hudson daily
@@ -114,8 +116,7 @@ public class PaginationTest {
         mapping.init();
 
     }
-    
-    @Ignore
+
     @Test
     public void events() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
@@ -125,15 +126,18 @@ public class PaginationTest {
     	for (EventCategory category : EXPECTED_EVENT_COUNTS.keySet()) {
 	    	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
 	    		int daysBack = 1;
+	    	    Date endDate = new Date();
+	    	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+
 	    		GroupData team = itData.teamGroupData.get(teamIdx);
-	    		Integer eventCount = eventDAO.getEventCount(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), null);
+	    		Integer eventCount = eventDAO.getEventCount(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), null);
 	    		assertEquals("Unexpected event count for team " + teamIdx + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], eventCount);
 
 	    		// get all
 	    		PageParams pageParams = new PageParams();
 	    		pageParams.setStartRow(0);
-	    		pageParams.setEndRow(eventCount);
-	    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+	    		pageParams.setEndRow(eventCount-1);
+	    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 	    		assertEquals("Unexpected event list count for team " + teamIdx + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 	    		
 	    		// check some of the field values
@@ -141,32 +145,33 @@ public class PaginationTest {
 	    			if (teamIdx == ITData.GOOD) {
 		    			// all events are UNKNOWN DRIVER
 	    				assertNull("unknown driver timezone", event.getDriverTimeZone());
-	    				assertNull("unknown driver name", event.getDriverName());
-		    			assertNull("unknown driver group Name", event.getGroupName());
+	    				assertTrue("unknown driver name", event.getDriverName() == null || event.getDriverName().isEmpty());
+		    			assertEquals("unknown driver group Name should match vehicles group", team.group.getName(), event.getGroupName());
+		    			String expectedVehicleName = "VehicleNO_DRIVER";
+		    			assertEquals("vehicle Name", expectedVehicleName, event.getVehicleName());
 	    			}
 	    			else {
 		    			assertEquals("driver timezone", ReportTestConst.timeZone, event.getDriverTimeZone());
-		    			String expectedDriverName = "Driver"+team.group.getName();
+		    			String expectedDriverName = "Driver"+team.group.getName() + " m Last" +team.group.getGroupID()+ " jr";
 		    			assertEquals("driver Name", expectedDriverName, event.getDriverName());
 		    			String expectedGroupName = team.group.getName();
 		    			assertEquals("group Name", expectedGroupName, event.getGroupName());
+		    			String expectedVehicleName = "Vehicle"+ team.group.getName();
+		    			assertEquals("vehicle Name", expectedVehicleName, event.getVehicleName());
 	    			}
-	    			String expectedVehicleName = "Vehicle"+team.group.getName();
-	    			assertEquals("vehicle Name", expectedVehicleName, event.getVehicleName());
 	    		}
 	    		
 	    		// get some
 	    		if (eventCount > 3) {
 		    		pageParams.setStartRow(1);
 		    		pageParams.setEndRow(3);
-		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
-		    		assertEquals("Unexpected partial event list count for team " + teamIdx + " category " + category, 2, eventList.size());
+		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+		    		assertEquals("Unexpected partial event list count for team " + teamIdx + " category " + category,3, eventList.size());
 	    		}
 	    	}
     	}
     }
     
-    @Ignore
     @Test
     public void eventsSorts() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
@@ -176,19 +181,21 @@ public class PaginationTest {
     	for (EventCategory category : EXPECTED_EVENT_COUNTS.keySet()) {
 	    	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
 	    		int daysBack = 1;
+	    	    Date endDate = new Date();
+	    	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
 	    		GroupData team = itData.teamGroupData.get(teamIdx);
-	    		Integer eventCount = eventDAO.getEventCount(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), null);
+	    		Integer eventCount = eventDAO.getEventCount(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), null);
 	    		assertEquals("Unexpected event count for team " + teamIdx + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], eventCount);
 	
 	    		// get all
 	    		PageParams pageParams = new PageParams();
 	    		pageParams.setStartRow(0);
-	    		pageParams.setEndRow(eventCount);
+	    		pageParams.setEndRow(eventCount-1);
 	    		
 	    		for (SortOrder sortOrder : SortOrder.values()) {
 	        		// sort by time
 		    		pageParams.setSort(new TableSortField(sortOrder, "time"));
-		    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+		    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 		    		assertEquals("Unexpected event list count for team " + teamIdx + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 		    		
 		    		Date lastTime = null;
@@ -205,7 +212,7 @@ public class PaginationTest {
 	
 		    		// sort by groupName
 		    		pageParams.setSort(new TableSortField(sortOrder, "groupName"));
-		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 		    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 		    		
 		    		String lastGroup = null;
@@ -222,7 +229,7 @@ public class PaginationTest {
 
 		    		// sort by vehicleName
 		    		pageParams.setSort(new TableSortField(sortOrder, "vehicleName"));
-		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 		    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 		    		
 		    		String lastVehicle = null;
@@ -239,7 +246,7 @@ public class PaginationTest {
 
 		    		// sort by driverName
 		    		pageParams.setSort(new TableSortField(sortOrder, "driverName"));
-		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+		    		eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 		    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 		    		
 		    		String lastDriver = null;
@@ -258,7 +265,6 @@ public class PaginationTest {
 		}
     }
 
-    @Ignore
     @Test
     public void eventsFilters() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
@@ -267,7 +273,9 @@ public class PaginationTest {
     	for (EventCategory category : EXPECTED_EVENT_COUNTS.keySet()) {
     		
     		int daysBack = 1;
-    		Integer allEventCount = eventDAO.getEventCount(itData.fleetGroup.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), null);
+    	    Date endDate = new Date();
+    	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+    		Integer allEventCount = eventDAO.getEventCount(itData.fleetGroup.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), null);
     		assertEquals("Unexpected event count for fleet  category " + category, EXPECTED_EVENT_COUNTS.get(category)[FLEET_IDX], allEventCount);
     		
 	    	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
@@ -277,16 +285,16 @@ public class PaginationTest {
 	    		List<TableFilterField> filterList = new ArrayList<TableFilterField>();
 	    		filterList.add(new TableFilterField("groupName", ITData.TEAM_GROUP_NAME[teamIdx]));
 	    		
-	    		Integer eventCount = eventDAO.getEventCount(itData.fleetGroup.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), filterList);
+	    		Integer eventCount = eventDAO.getEventCount(itData.fleetGroup.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), filterList);
 	    		assertEquals("Unexpected event count for fleet category " + category + " group filter " + ITData.TEAM_GROUP_NAME[teamIdx], EXPECTED_EVENT_COUNTS.get(category)[teamIdx], eventCount);
 	    		
 	    		PageParams pageParams = new PageParams();
 	    		pageParams.setStartRow(0);
-	    		pageParams.setEndRow(eventCount);
+	    		pageParams.setEndRow(eventCount-1);
 	    		pageParams.setSort(null);
 
 	    		pageParams.setFilterList(filterList);
-	    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+	    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 	    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 	    		for (Event event : eventList) {
 	    			assertTrue("filter group failed ", event.getGroupName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
@@ -294,18 +302,24 @@ public class PaginationTest {
 
 	    		// in generated data driver/vehicle name has group name in it
 	    		filterList.clear();
-	    		filterList.add(new TableFilterField("vehicleName", ITData.TEAM_GROUP_NAME[teamIdx]));
+	    		String vehicleNameFilter = ITData.TEAM_GROUP_NAME[teamIdx];
+	    		if (teamIdx == ITData.GOOD)
+	    			vehicleNameFilter = "NO_DRIVER";
+	    		filterList.add(new TableFilterField("vehicleName", vehicleNameFilter));
 	    		pageParams.setFilterList(filterList);
-	    		eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+	    		eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 	    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 	    		for (Event event : eventList) {
-	    			assertTrue("filter group failed ", event.getVehicleName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
+	    			assertTrue("filter vehicle failed ", event.getVehicleName().contains(vehicleNameFilter)); 
 	    		}
 
+	    		// unknown driver
+	    		if (teamIdx == ITData.GOOD)
+	    			continue;
 	    		filterList.clear();
 	    		filterList.add(new TableFilterField("driverName", ITData.TEAM_GROUP_NAME[teamIdx]));
 	    		pageParams.setFilterList(filterList);
-	    		eventList = eventDAO.getEventPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+	    		eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
 	    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 	    		for (Event event : eventList) {
 	    			assertTrue("filter group failed ", event.getDriverName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
@@ -313,9 +327,44 @@ public class PaginationTest {
 
 	    	}
 		}
+    }    	
+    
+    @Test
+    public void eventsFilterByNoteID() {
+       	EventHessianDAO eventDAO = new EventHessianDAO();
+       	eventDAO.setSiloService(siloService);
+    	
+    	// filter by noteID
+   		int daysBack = 7;
+   	    Date endDate = new Date();
+   	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+   		Integer allEventCount = eventDAO.getEventCount(itData.fleetGroup.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), null);
+		PageParams pageParams = new PageParams();
+		pageParams.setStartRow(0);
+		pageParams.setEndRow(allEventCount-1);
+		pageParams.setSort(null);
+		pageParams.setFilterList(null);
+   		List<Event> eventList = eventDAO.getEventPage(itData.fleetGroup.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), pageParams);
+   		
+    	Long filterNoteID = eventList.get(0).getNoteID();
+		List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+		filterList.add(new TableFilterField("noteID", filterNoteID));
+		pageParams.setFilterList(filterList);
+		
+
+   		Integer filteredEventCount = eventDAO.getEventCount(itData.fleetGroup.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), filterList);
+   		assertEquals("expected 1 note back on filter by noteID", 1, filteredEventCount.intValue());
+		pageParams.setEndRow(filteredEventCount-1);
+
+		List<Event> filteredEventList = eventDAO.getEventPage(itData.fleetGroup.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), pageParams);
+   		assertEquals("expected 1 note back on filter by noteID", 1, filteredEventList.size());
+		
+   		assertEquals("filter by noteID", eventList.get(0), filteredEventList.get(0));
+		
+    	
+   		
     }
 
-    @Ignore
     @Test
     public void redFlags() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
@@ -324,15 +373,17 @@ public class PaginationTest {
     	// no filters
     	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
     		int daysBack = 1;
+    	    Date endDate = new Date();
+    	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
     		GroupData team = itData.teamGroupData.get(teamIdx);
-    		Integer redFlagCount = redFlagDAO.getRedFlagCount(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, null);
+    		Integer redFlagCount = redFlagDAO.getRedFlagCount(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, null);
     		assertEquals("Unexpected redFlag count for team " + teamIdx, EXPECTED_RED_FLAG_COUNTS[teamIdx], redFlagCount);
 
     		// get all
     		PageParams pageParams = new PageParams();
     		pageParams.setStartRow(0);
-    		pageParams.setEndRow(redFlagCount);
-    		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+    		pageParams.setEndRow(redFlagCount-1);
+    		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
     		assertEquals("Unexpected redFlag list count for team " + teamIdx, EXPECTED_RED_FLAG_COUNTS[teamIdx], Integer.valueOf(redFlagList.size()));
     		
     		// check some of the field values
@@ -340,32 +391,35 @@ public class PaginationTest {
     			if (teamIdx == ITData.GOOD) {
 	    			// all events are UNKNOWN DRIVER
     				assertNull("unknown driver timezone", redFlag.getEvent().getDriverTimeZone());
-    				assertNull("unknown driver name", redFlag.getEvent().getDriverName());
-	    			assertNull("unknown driver group Name", redFlag.getEvent().getGroupName());
+    				assertTrue("unknown driver name", redFlag.getEvent().getDriverName() == null || redFlag.getEvent().getDriverName().isEmpty());
+	    			assertEquals("unknown driver group Name should match vehicles group", team.group.getName(), redFlag.getEvent().getGroupName());
+	    			String expectedVehicleName = "VehicleNO_DRIVER";
+	    			assertEquals("vehicle Name", expectedVehicleName, redFlag.getEvent().getVehicleName());
     			}
     			else {
 	    			assertEquals("driver timezone", ReportTestConst.timeZone, redFlag.getEvent().getDriverTimeZone());
-	    			String expectedDriverName = "Driver"+team.group.getName();
+	    			String expectedDriverName = "Driver"+team.group.getName() + " m Last" +team.group.getGroupID()+ " jr";
 	    			assertEquals("driver Name", expectedDriverName, redFlag.getEvent().getDriverName());
 	    			String expectedGroupName = team.group.getName();
 	    			assertEquals("group Name", expectedGroupName, redFlag.getEvent().getGroupName());
+	    			String expectedVehicleName = "Vehicle"+team.group.getName();
+	    			assertEquals("vehicle Name", expectedVehicleName, redFlag.getEvent().getVehicleName());
     			}
-    			String expectedVehicleName = "Vehicle"+team.group.getName();
-    			assertEquals("vehicle Name", expectedVehicleName, redFlag.getEvent().getVehicleName());
+    			if (redFlag.getLevel() == null) {
+    				assertNotNull("Unexpected null Level for red flag with note ID " + redFlag.getEvent().getNoteID(), redFlag.getLevel());
+    			}
     		}
     		
     		// get some
     		if (redFlagCount > 3) {
 	    		pageParams.setStartRow(1);
 	    		pageParams.setEndRow(3);
-	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
-	    		assertEquals("Unexpected partial event list count for team " + teamIdx, 2, redFlagList.size());
+	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
+	    		assertEquals("Unexpected partial event list count for team " + teamIdx, 3, redFlagList.size());
     		}
     	}
 	}
 
-
-    @Ignore
     @Test
     public void redFlagSorts() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
@@ -375,19 +429,21 @@ public class PaginationTest {
     	// no filters
     	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
     		int daysBack = 1;
+    	    Date endDate = new Date();
+    	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
     		GroupData team = itData.teamGroupData.get(teamIdx);
-    		Integer redFlagCount = redFlagDAO.getRedFlagCount(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, null);
+    		Integer redFlagCount = redFlagDAO.getRedFlagCount(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, null);
     		assertEquals("Unexpected redFlag count for team " + teamIdx, EXPECTED_RED_FLAG_COUNTS[teamIdx], redFlagCount);
 
     		// get all
     		PageParams pageParams = new PageParams();
     		pageParams.setStartRow(0);
-    		pageParams.setEndRow(redFlagCount);
+    		pageParams.setEndRow(redFlagCount-1);
     		
     		for (SortOrder sortOrder : SortOrder.values()) {
         		// sort by time
 	    		pageParams.setSort(new TableSortField(sortOrder, "time"));
-	    		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+	    		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
 	    		
 	    		Date lastTime = null;
 	    		for (RedFlag redFlag : redFlagList) {
@@ -403,7 +459,7 @@ public class PaginationTest {
 
 	    		// sort by groupName
 	    		pageParams.setSort(new TableSortField(sortOrder, "groupName"));
-	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
 	    		
 	    		String lastGroup = null;
 	    		for (RedFlag redFlag : redFlagList) {
@@ -419,7 +475,7 @@ public class PaginationTest {
 
 	    		// sort by vehicleName
 	    		pageParams.setSort(new TableSortField(sortOrder, "vehicleName"));
-	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
 	    		
 	    		String lastVehicle = null;
 	    		for (RedFlag redFlag : redFlagList) {
@@ -435,7 +491,7 @@ public class PaginationTest {
 
 	    		// sort by driverName
 	    		pageParams.setSort(new TableSortField(sortOrder, "driverName"));
-	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+	    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
 	    		
 	    		String lastDriver = null;
 	    		for (RedFlag redFlag : redFlagList) {
@@ -452,7 +508,6 @@ public class PaginationTest {
 	    }
     }
 
-    @Ignore
     @Test
     public void redFlagFilters() {
 
@@ -460,7 +515,9 @@ public class PaginationTest {
     	redFlagDAO.setSiloService(siloService);
     		
 		int daysBack = 1;
-		Integer allRedFlagCount = redFlagDAO.getRedFlagCount(itData.fleetGroup.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, null);
+	    Date endDate = new Date();
+	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+		Integer allRedFlagCount = redFlagDAO.getRedFlagCount(itData.fleetGroup.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, null);
 		assertEquals("Unexpected redFlag count for fleet", EXPECTED_RED_FLAG_COUNTS[FLEET_IDX], allRedFlagCount);
 		
     	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
@@ -470,16 +527,16 @@ public class PaginationTest {
     		List<TableFilterField> filterList = new ArrayList<TableFilterField>();
     		filterList.add(new TableFilterField("groupName", ITData.TEAM_GROUP_NAME[teamIdx]));
     		
-    		Integer redFlagCount = redFlagDAO.getRedFlagCount(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, filterList);
+    		Integer redFlagCount = redFlagDAO.getRedFlagCount(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, filterList);
     		assertEquals("Unexpected event count for fleet group filter " + ITData.TEAM_GROUP_NAME[teamIdx], EXPECTED_RED_FLAG_COUNTS[teamIdx], redFlagCount);
     		
     		PageParams pageParams = new PageParams();
     		pageParams.setStartRow(0);
-    		pageParams.setEndRow(redFlagCount);
+    		pageParams.setEndRow(redFlagCount-1);
     		pageParams.setSort(null);
 
     		pageParams.setFilterList(filterList);
-    		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+    		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
     		assertEquals("Unexpected redFlag list count", EXPECTED_RED_FLAG_COUNTS[teamIdx], Integer.valueOf(redFlagList.size()));
     		for (RedFlag redFlag : redFlagList) {
     			assertTrue("filter group failed ", redFlag.getEvent().getGroupName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
@@ -487,18 +544,23 @@ public class PaginationTest {
 
     		// in generated data driver/vehicle name has group name in it
     		filterList.clear();
-    		filterList.add(new TableFilterField("vehicleName", ITData.TEAM_GROUP_NAME[teamIdx]));
+    		String vehicleNameFilter = ITData.TEAM_GROUP_NAME[teamIdx];
+    		if (teamIdx == ITData.GOOD)
+    			vehicleNameFilter = "NO_DRIVER";
+    		filterList.add(new TableFilterField("vehicleName", vehicleNameFilter));
     		pageParams.setFilterList(filterList);
-    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
     		assertEquals("Unexpected redFlag list count", EXPECTED_RED_FLAG_COUNTS[teamIdx], Integer.valueOf(redFlagList.size()));
     		for (RedFlag redFlag : redFlagList) {
-    			assertTrue("filter group failed ", redFlag.getEvent().getVehicleName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
+    			assertTrue("filter group failed ", redFlag.getEvent().getVehicleName().contains(vehicleNameFilter)); 
     		}
 
+    		if (teamIdx == ITData.GOOD)
+    			continue;
     		filterList.clear();
     		filterList.add(new TableFilterField("driverName", ITData.TEAM_GROUP_NAME[teamIdx]));
     		pageParams.setFilterList(filterList);
-    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), daysBack, EventDAO.INCLUDE_FORGIVEN, pageParams);
+    		redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
     		assertEquals("Unexpected redFlag list count", EXPECTED_RED_FLAG_COUNTS[teamIdx], Integer.valueOf(redFlagList.size()));
     		for (RedFlag redFlag : redFlagList) {
     			assertTrue("filter group failed ", redFlag.getEvent().getDriverName().contains(ITData.TEAM_GROUP_NAME[teamIdx])); 
@@ -506,5 +568,38 @@ public class PaginationTest {
 
     	}
     }
+
+    @Test
+    public void redFlagZones() {
+    	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
+    	redFlagDAO.setSiloService(siloService);
+    	
+    	// no filters
+    	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
+    		int daysBack = 1;
+    	    Date endDate = new Date();
+    	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+    		GroupData team = itData.teamGroupData.get(teamIdx);
+    		Integer redFlagCount = redFlagDAO.getRedFlagCount(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, null);
+    		//assertEquals("Unexpected redFlag count for team " + teamIdx, EXPECTED_RED_FLAG_COUNTS[teamIdx], redFlagCount);
+
+    		// get all
+    		PageParams pageParams = new PageParams();
+    		pageParams.setStartRow(0);
+    		pageParams.setEndRow(redFlagCount-1);
+    		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, pageParams);
+    		assertEquals("Unexpected redFlag list count for team " + teamIdx, EXPECTED_RED_FLAG_COUNTS[teamIdx], Integer.valueOf(redFlagList.size()));
+    		
+    		// check some of the field values
+    		for (RedFlag redFlag : redFlagList) {
+    			if (redFlag.getEvent() instanceof ZoneEvent) {
+    				ZoneEvent zoneEvent = (ZoneEvent)redFlag.getEvent();
+    				assertNotNull("zone name", zoneEvent.getZoneName());
+    				assertNotNull("zone points", zoneEvent.getZonePoints());
+    			}
+    		}
+    		
+    	}
+	}
 
 }

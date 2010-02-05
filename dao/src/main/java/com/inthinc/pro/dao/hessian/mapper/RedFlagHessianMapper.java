@@ -18,4 +18,15 @@ public class RedFlagHessianMapper extends AbstractMapper
             redFlag.setEvent(eventMapper.convertToModelObject((Map<String, Object>)value, Event.class));
         }
     }
+
+    @ConvertColumnToField(columnName = "event")
+    public void eventToModel(RedFlag redFlag, Object value)
+    {
+        
+        if (value != null && value instanceof Map)
+        {
+            EventHessianMapper eventMapper = new EventHessianMapper();
+            redFlag.setEvent(eventMapper.convertToModelObject((Map<String, Object>)value, Event.class));
+        }
+    }
 }

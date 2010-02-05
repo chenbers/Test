@@ -41,7 +41,7 @@
 		             		<ui:param name="bean" value="#{pagingDiagnosticsEventsBean}"/>
 		             		<ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
-		             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}_form:#{context}"/>
+		             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
     	 					<ui:param name="context" value="#{context}" />
 		    			</ui:include>    							
 		            </h:panelGroup>
@@ -51,7 +51,7 @@
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{pagingDiagnosticsEventsBean}"/>	
-					<ui:param name="reRender" value="#{context}_form:#{context}" />
+					<ui:param name="reRender" value="#{context}-form:#{context}" />
     	 			<ui:param name="context" value="#{context}" />
 				</ui:include>    
 				

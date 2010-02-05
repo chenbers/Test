@@ -18,8 +18,9 @@ import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventReportItem;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.pagination.SortOrder;
+import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
-import com.inthinc.pro.model.pagination.TableSortField.SortOrder;
 import com.inthinc.pro.table.BasePaginationTable;
 import com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
@@ -34,9 +35,13 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
     private static final Logger logger = Logger.getLogger(PagingEventsBean.class);
 	private EventPaginationTableDataProvider tableDataProvider;
 	private BasePaginationTable<Event> table;
+
+	private Long eventFilterID;
+    private final static String SINGLE_NOTE_FILTER_FIELD = "noteID";
+    
 	
-	
-    private final static String COLUMN_LABEL_PREFIX = "notes_";
+
+	private final static String COLUMN_LABEL_PREFIX = "notes_";
 	private TablePreferenceDAO       tablePreferenceDAO;
     private TablePref<Event> tablePref;
 
@@ -170,8 +175,31 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
         return eventReportItemList;
     }
 
+    // called from links on team page
+	public void allAction(){
+		this.tableDataProvider.setDaysBack(MAX_DAYS_BACK);
+		if (getEventFilterID() != null)
+		{
+		//	logger.debug("setting noteID filter " + getEventFilterID());
+			tableDataProvider.addFilterField(new TableFilterField(SINGLE_NOTE_FILTER_FIELD, getEventFilterID()));
+		}
+		table.reset();
+    }
 
 	public void refreshAction(){
+		if (tableDataProvider.getFilters() != null) {
+			TableFilterField singleNoteFilter = null;
+			for (TableFilterField filterField : tableDataProvider.getFilters())
+				if (filterField.getField().equals(SINGLE_NOTE_FILTER_FIELD)) {
+					singleNoteFilter = filterField;
+					break;
+				}
+			
+			if (singleNoteFilter != null)
+				tableDataProvider.getFilters().remove(singleNoteFilter);
+		}
+		
+		
 		table.reset();
     }
 	
@@ -206,4 +234,12 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
 	}
 
     protected abstract EventCategory getEventCategory();
+
+    public Long getEventFilterID() {
+		return eventFilterID;
+	}
+
+	public void setEventFilterID(Long eventFilterID) {
+		this.eventFilterID = eventFilterID;
+	}
 }

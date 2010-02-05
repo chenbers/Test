@@ -43,7 +43,6 @@ public class BasePaginationTable<T> {
     public void scrollerListener(DataScrollerEvent se)
     {
     	Integer pageNum = se.getPage();
-    	System.out.println("#### scrollerListener: " + pageNum);
     	model.resetPage();
     	pageData.initPage(pageNum, model.getRowCount());
     }

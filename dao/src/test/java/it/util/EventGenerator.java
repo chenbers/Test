@@ -201,6 +201,7 @@ static int eventCount;
 eventCount = 0;
 //boolean tampering = false;
 		boolean ignitionOn = false;
+		boolean badSpeeding = false;
         for (int i = 0; i < locCnt; i++)
         {
         	if (includeExtraEvents && isExtraEventIndex(i)) {
@@ -286,18 +287,17 @@ eventCount = 0;
             }
             else
             {
-//                if (eventCount > 50 && !tampering)
-//                {
-//                    event = new TamperingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_UNPLUGGED, eventTime, 0, odometer, 
-//                    		locations[i].getLat(), locations[i].getLng());
-//                    tampering= true;
-//                    System.out.println("generated a tampering");
-//                }
-//                else
-//                {
-                	event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_LOCATION,
+            	if (includeExtraEvents && !badSpeeding) {
+            		// speed limit is 0 ( should be filtered out)
+                    event = new SpeedingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3,
+                            eventTime, 80, odometer,  locations[i].getLat(), locations[i].getLng(),
+                            0, 0, 0, ReportTestConst.MILES_PER_EVENT, 10);
+            		badSpeeding = true;
+            	}
+            	else {
+            		event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_LOCATION,
                                     eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
-//                }
+            	}
             }
             event.setSats(7);
             byte[] eventBytes = createDataBytesFromEvent(event);

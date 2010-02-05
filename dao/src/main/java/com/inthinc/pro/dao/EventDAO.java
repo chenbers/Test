@@ -75,7 +75,8 @@ public interface EventDAO extends GenericDAO<Event, Integer>
     Event findByID(Long id);
 
     // pagination methods
-	Integer  getEventCount(Integer groupID, Integer daysBack, Integer includeForgiven, List<Integer> eventTypes, List<TableFilterField> filters);
+	Integer  getEventCount(Integer groupID, Date startDate, Date endDate, Integer includeForgiven, List<Integer> eventTypes, List<TableFilterField> filters);
 
-	List<Event> getEventPage(Integer groupID, Integer daysBack, Integer includeForgiven, List<Integer> eventTypes, PageParams pageParams);
+	List<Event> getEventPage(Integer groupID, Date startDate, Date endDate, Integer includeForgiven, List<Integer> eventTypes, PageParams pageParams);
+
 }

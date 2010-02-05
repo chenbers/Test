@@ -2325,6 +2325,14 @@ ul#pagination {
 	vertical-align: middle;
 }
 
+.filterabledatagrid th {
+	background: #8EAF3C url(../images/bg_header_filterable.jpg) no-repeat;
+	vertical-align: top;
+}
+
+
+
+
 .datagrid td.total {
 	border-top: 0;
 	border-left: 0;
@@ -3490,4 +3498,13 @@ td.middle select {
 	width: 95px;
 	margin-top:0;
 	margin-left:5px;
+}
+
+.colnone {
+}
+
+.colfilter {
+	margin: 0;
+	padding: 0 2px 0 10px;	
+	font: normal 8px Verdana, Tahoma, Arial, sans-serif;
 }

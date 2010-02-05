@@ -1,10 +1,13 @@
 package com.inthinc.pro.table.model.provider;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
@@ -23,6 +26,9 @@ public class EventPaginationTableDataProvider  extends GenericPaginationTableDat
 	private Integer 				groupID;
 	private Integer					daysBack;
 	private EventCategory			eventCategory;
+    private Date endDate;
+    private Date startDate;
+
 	
 
 	public EventPaginationTableDataProvider() {
@@ -33,16 +39,32 @@ public class EventPaginationTableDataProvider  extends GenericPaginationTableDat
 	@Override
 	public List<Event> getItemsByRange(int firstRow, int endRow) {
 		
+		if (endRow < 0) {
+			return new ArrayList<Event>();
+		}
+		if (endDate == null || startDate == null) {
+			initStartEndDates();
+		}
+		
 		PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
-		return eventDAO.getEventPage(groupID, getDaysBack(), EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(eventCategory), pageParams);
+		return eventDAO.getEventPage(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(eventCategory), pageParams);
 	}
 
 	@Override
 	public int getRowCount() {
+		
+		if (groupID == null)
+			return 0;
 
-		return eventDAO.getEventCount(groupID, getDaysBack(), EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(eventCategory), getFilters());
+		initStartEndDates();
+		return eventDAO.getEventCount(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(eventCategory), getFilters());
 	}
 
+	private void initStartEndDates() {
+	    endDate = new Date();
+	    startDate = DateUtil.getDaysBackDate(endDate, getDaysBack());
+	}
+	
 	public EventDAO getEventDAO() {
 		return eventDAO;
 	}
@@ -61,12 +83,14 @@ public class EventPaginationTableDataProvider  extends GenericPaginationTableDat
 
 	public Integer getDaysBack() {
 		if (daysBack == null)
-			return Integer.valueOf(0);
+			return Integer.valueOf(1);
 		return daysBack;
 	}
 
 	public void setDaysBack(Integer daysBack) {
 		this.daysBack = daysBack;
+		this.startDate = null;
+		this.endDate = null;
 	}
 
 	public EventCategory getEventCategory() {

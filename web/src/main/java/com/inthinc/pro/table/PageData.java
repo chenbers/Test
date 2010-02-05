@@ -14,7 +14,7 @@ public class PageData {
 	public void initPage(int rowCount) {
         currentPage = (rowCount > 0) ? 1 : 0;
         numPages = (rowCount + getRowsPerPage()-1) / getRowsPerPage();
-        pageStartRow = 0;
+        pageStartRow = (rowCount > 0) ? 1 : 0;
         pageEndRow = (getRowsPerPage() > rowCount) ? rowCount : getRowsPerPage();
         setTotalRows(rowCount);
 	}

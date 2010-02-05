@@ -12,7 +12,6 @@ public abstract class GenericPaginationTableDataProvider<T> implements Paginatio
 	 * 
 	 */
 	private static final long serialVersionUID = -7139790279034588222L;
-//	private PaginationDAOService<T> paginationDAOService;
 	private List<TableFilterField> filters;
 	private TableSortField sort;
 
@@ -31,7 +30,8 @@ public abstract class GenericPaginationTableDataProvider<T> implements Paginatio
 
 	@Override
 	public Object getKey(T rec) {
-		return rec;
+		//return rec;
+		return null;
 	}
 	
 	@Override
@@ -73,14 +73,6 @@ public abstract class GenericPaginationTableDataProvider<T> implements Paginatio
 	public void setSort(TableSortField sort) {
 		this.sort = sort;
 	}
-
-//	public PaginationDAOService<T> getPaginationDAOService() {
-//		return paginationDAOService;
-//	}
-//
-//	public void setPaginationDAOService(PaginationDAOService<T> paginationDAOService) {
-//		this.paginationDAOService = paginationDAOService;
-//	}
 
 
 }

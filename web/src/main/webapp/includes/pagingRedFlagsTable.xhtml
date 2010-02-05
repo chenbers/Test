@@ -10,7 +10,7 @@
 	            
  	<t:saveState value="#{bean}"/>
 	            
-    <h:form id="redFlags_form">
+    <h:form id="redFlags-form">
        	<div align="right" style="width: 100%"> 
         	<h:outputFormat id="header" value="#{messages.notes_redflags_recordCountHeader}">
 				<a4j:actionparam value="#{bean.table.pageData.pageStartRow}"/>
@@ -20,14 +20,16 @@
         </div>
     
     
-    	<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+    	<rich:jQuery selector="document" query="ready(function(){initializeTable();initializeTableFilterCols();})" />
     	
     	<a4j:queue requestDelay="500"/>
     	
     	<div class="datagrid_panel" style="width:925px; overflow: auto">
     	
-        <rich:dataTable value="#{bean.table.model}" id="redFlags" var="redFlag" rowKeyVar="index" styleClass="datagrid" 
-        				rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
+    	
+        <rich:dataTable value="#{bean.table.model}" id="redFlags" var="redFlag" rowKeyVar="index" styleClass="datagrid filterabledatagrid" 
+        				reRender="redFlags-form:header,redFlags-form:redFlags_bottomScroller" columnClasses="colnone,colnone,colnone,colnone,colfilter,colfilter,colfilter"
+        				rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%"> 
 
             <!-- Data -->
             <rich:column id="mapColumn">
@@ -35,33 +37,29 @@
                     <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
                         <f:param name="lat" value="#{redFlag.event.latitude}" />
                         <f:param name="lng" value="#{redFlag.event.longitude}" />
-                  		<f:param name="zonePoints" value="#{redFlag.event.zonePoints}" />
+                  		<f:param name="zonePoints" value="#{redFlag.event.zonePointsStr}" />
                   		<f:param name="noteID" value="#{redFlag.event.noteID}" />
                     </rich:componentControl>
                 </h:graphicImage>
-<!--
-TODO                 
-                <rich:toolTip id="addressToolTip" mode="client" rendered="#{item.zone ne null}">
- 	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
-                 </rich:toolTip>
-                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1 and item.zone eq null}">
+				<rich:toolTip id="addressToolTip" mode="client" rendered="#{redFlag.event.zoneName ne null}">
+ 	                    <h:outputText rendered="#{redFlag.event.zoneName ne null}" value="#{redFlag.event.zoneName}" />
+				</rich:toolTip>
+                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1 and redFlag.event.zoneName eq null}">
                 	<div id="address">
-	                    <h:outputText value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
-	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
+	                    <h:outputText value="#{redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+	                    <h:outputText rendered="#{redFlag.event.zoneName ne null}" value="#{redFlag.event.zoneName}" />
                     </div>
                 </rich:toolTip>
-               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2 and item.zone eq null}">
-               	<h:inputHidden id="linkText" value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
-  				<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
-               </rich:toolTip>
-              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3 and item.zone eq null}">
-				<h:inputHidden id="eventLat" value="#{item.redFlag.event.latitude}"/>
-				<h:inputHidden id="eventLng" value="#{item.redFlag.event.longitude}"/>
- 				<h:outputText id="eventAddress" />
+				<rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2 and redFlag.event.zoneName eq null}">
+               		<h:inputHidden id="linkText" value="#{redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+  					<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a>
+				</rich:toolTip>
+				<rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3 and redFlag.event.zoneName eq null}">
+					<h:inputHidden id="eventLat" value="#{redFlag.event.latitude}"/>
+					<h:inputHidden id="eventLng" value="#{redFlag.event.longitude}"/>
+ 					<h:outputText id="eventAddress" />
                 </rich:toolTip>
- -->                
-                
-                	<div id="#{redFlag.event.noteID}" style="display: none;">
+				<div id="#{redFlag.event.noteID}" style="display: none;">
                 	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 						<f:facet name="header">
                             <pretty:link id="redFlagsDriverPerformance" mappingId="driverPerformance">
@@ -78,17 +76,13 @@ TODO
 							<f:attribute name="timeZone" value="#{redFlag.event.driverTimeZone}"/>
                 			<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
                 		</h:outputText>
-						
                 		
                 		<h:outputText value="#{messages.notes_redflags_detail}"/>
 						<ui:include src="/includes/eventDetails.xhtml">
 	            			<ui:param name="event" value="#{redFlag.event}" />
 						</ui:include>
-						
                 	</h:panelGrid>
-                	</div>
-                	
-              
+				</div>
             </rich:column>
             <rich:column id="level" rendered="#{tableColumns['level'].visible}">
                 <f:facet name="header">
@@ -113,7 +107,7 @@ TODO
           			<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
           		</h:outputText>
             </rich:column>
-            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{redFlag.event.groupName}">
+            <rich:column id="group" rendered="#{tableColumns['group'].visible}" sortBy="#{redFlag.event.groupName}"  filterBy="#{redFlag.event.groupName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_group}" />
                 </f:facet>
@@ -122,7 +116,7 @@ TODO
                    <f:param value="#{redFlag.event.groupID}"/>
                </pretty:link>   
             </rich:column>
-            <rich:column id="driver" rendered="#{tableColumns['driver'].visible}" sortBy="#{redFlag.event.driverName}">
+            <rich:column id="driver" rendered="#{tableColumns['driver'].visible}" sortBy="#{redFlag.event.driverName}" filterBy="#{redFlag.event.driverName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_driver}" />
                 </f:facet>
@@ -133,7 +127,7 @@ TODO
                 <h:outputText rendered="#{redFlag.event.driverName == null}" value="#{messages.unknown_driver}">
                 </h:outputText>
             </rich:column>
-            <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{redFlag.event.vehicleName}">
+            <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{redFlag.event.vehicleName}" filterBy="#{redFlag.event.vehicleName}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_vehicle}" />
                 </f:facet>
@@ -173,7 +167,7 @@ TODO
 				<a4j:commandLink id="redFlags-excluded" rendered="#{redFlag.event.forgiven == 1}" 
 								title="#{messages.driverReports_include}" 
 								action="#{bean.includeEventAction}" 
-								reRender="#{clearRerender}" oncomplete="initializeTable()">
+								reRender="#{clearRerender}" oncomplete="initializeTable();initializeTableFilterCols();">
 					<h:outputText value="#{messages.driverReports_include}" />
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{redFlag.event}"/>
 				</a4j:commandLink>
@@ -183,7 +177,7 @@ TODO
     
     <rich:datascroller id="redFlags_bottomScroller" for="redFlags" 
             immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
-            reRender="redFlags,redFlags_form:header, redFlags_pageHeader" oncomplete="initializeTable();" 
+            reRender="redFlags,redFlags-form:header, redFlags_pageHeader" oncomplete="initializeTable();initializeTableFilterCols();" 
             page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
             
     </h:form>
@@ -215,5 +209,13 @@ TODO
         </a4j:commandButton></div>
     </rich:modalPanel>
     <!-- END LOCATION MODAL -->
+
+    <a4j:form id="lookForZone">
+		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="checkForZoneName('#{addressBean.zoneName}')">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
+		</a4j:jsFunction>
+	</a4j:form>   
 
 </ui:composition>
