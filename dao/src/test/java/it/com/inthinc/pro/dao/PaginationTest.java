@@ -49,8 +49,8 @@ public class PaginationTest {
     private static SiloService siloService;
     private static ITData itData;
     
-//    private static final String PAGINATION_BASE_DATA_XML = "PageTest.xml";
-    private static final String PAGINATION_BASE_DATA_XML = "PageTest34.xml";
+    private static final String PAGINATION_BASE_DATA_XML = "PageTest.xml";
+//    private static final String PAGINATION_BASE_DATA_XML = "PageTest34.xml";
     private static final int FLEET_IDX = 3;    
     // the expected counts come from the events generated daily by DataGenForPaginationTesting
     // that process is run via a cron job in Hudson daily
