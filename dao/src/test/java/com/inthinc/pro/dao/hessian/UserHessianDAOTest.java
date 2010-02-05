@@ -13,7 +13,6 @@ import org.junit.Test;
 import com.inthinc.pro.dao.mock.data.MockRoles;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 
 public class UserHessianDAOTest
@@ -44,12 +43,12 @@ public class UserHessianDAOTest
         states.setStateDAO(stateDAO);
         states.init();
 
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(new SiloServiceCreator().getService());
-
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
+//        RoleHessianDAO roleDAO = new RoleHessianDAO();
+//        roleDAO.setSiloService(new SiloServiceCreator().getService());
+//
+//        Roles roles = new Roles();
+//        roles.setRoleDAO(roleDAO);
+//        roles.init();
     }
     
 
@@ -66,7 +65,7 @@ public class UserHessianDAOTest
         assertEquals("custom101", user.getUsername());
         assertEquals("custom101@email.com", user.getPerson().getPriEmail());
         assertEquals(new Integer(101), user.getGroupID());
-        assertEquals(MockRoles.getCustomUser(), user.getRole());
+        assertEquals(MockRoles.getAdminUser(), user.getRoles().get(0));
     }
     
     @Test

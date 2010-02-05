@@ -290,6 +290,21 @@
 		<action onPostback="false">#{personBean.resetList}</action>
 	</url-mapping>
     
+     <url-mapping id="adminCustomRoles">
+        <pattern>/app/admin/customRoles</pattern>
+        <view-id>/secured/admin/customRoles.faces</view-id>
+        <action onPostback="false">#{customRolesBean.resetList}</action>
+    </url-mapping>
+	<url-mapping id="adminEditCustomRole">
+		<pattern>/app/admin/editCustomRole</pattern>
+		<view-id>/secured/admin/editCustomRole.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminCustomRole">
+		<pattern>/app/admin/person/#{customRoleBean.itemID}</pattern>
+		<view-id>/secured/admin/customRole.faces</view-id>
+		<action>#{customRoleBean.view}</action>
+	</url-mapping>
+ 
     <url-mapping id="adminPeople">
         <pattern>/app/admin/people</pattern>
         <view-id>/secured/admin/people.faces</view-id>

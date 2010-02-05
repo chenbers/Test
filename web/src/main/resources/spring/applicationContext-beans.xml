@@ -19,9 +19,9 @@ default-autowire="byName">
   </bean>
 
   <!-- Global Application Context (singleton scoped) beans -->
-  <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">
-    <property name="roleDAO" ref="roleDAO"></property>
-  </bean>
+<!--  <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">-->
+<!--    <property name="roleDAO" ref="roleDAO"></property>-->
+<!--  </bean>-->
   <bean id="states" class="com.inthinc.pro.model.app.States" init-method="init">
     <property name="stateDAO" ref="stateDAO"></property>
   </bean>
@@ -31,7 +31,10 @@ default-autowire="byName">
   <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
     <property name="deviceDAO" ref="deviceDAO"></property>
   </bean>
-
+  <bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init">
+ 	<property name="roleDAO" ref="roleDAO"></property>
+  </bean>
+    
   <!-- Backing Beans -->
   <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean"></bean>
   <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
@@ -181,6 +184,7 @@ default-autowire="byName">
     <property name="userDAO" ref="userDAO"></property>
     <property name="driverDAO" ref="driverDAO"></property>
     <property name="groupDAO" ref="groupDAO"></property>
+    <property name="roleDAO" ref="roleDAO"></property>
     <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     <property name="accountOptionsBean" ref="accountOptionsBean"></property>
@@ -254,6 +258,10 @@ default-autowire="byName">
     <property name="personDAO" ref="personDAO"></property>
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     <property name="vehiclesBean" ref="vehiclesBean"></property>
+  </bean>
+
+  <bean id="customRolesBean" class="com.inthinc.pro.backing.CustomRolesBean" scope="session" init-method="init">
+    <property name="roleDAO" ref="roleDAO"></property>
   </bean>
 
   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="session" parent="baseBean">
@@ -588,5 +596,6 @@ default-autowire="byName">
    	<bean id="redFlagPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.RedFlagPaginationTableDataProvider" scope="request">
 	  <property name="redFlagDAO" ref="redFlagDAO"></property>   
   	</bean>
+  	
     
 </beans>

@@ -26,8 +26,9 @@ public enum TableType implements BaseEnum
     REPORT_SCHEDULES(14,"REPORT_SCHEDULES"),
     EMERGENCY(15, "EMERGENCY"),
     ZONE_ALERTS(15, "ZONE_ALERTS"),
-    CRASH_HISTORY(17, "CRASH_HISTORY");
-
+    CRASH_HISTORY(17, "CRASH_HISTORY"),
+    ADMIN_CUSTOMROLE(18, "ADMIN_CUSTOMROLE");
+    
     private String description;
     private int    code;
 

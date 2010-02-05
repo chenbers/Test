@@ -30,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -41,14 +42,14 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.model.security.Roles;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -155,12 +156,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private PersonDAO personDAO;
     private UserDAO userDAO;
     private DriverDAO driverDAO;
+    private RoleDAO roleDAO;
     private PasswordEncryptor passwordEncryptor;
     private List<PersonChangeListener> changeListeners;
 
     private FuelEfficiencyBean fuelEfficiencyBean;
     private AccountOptionsBean accountOptionsBean;
-    
+    private Roles accountRoles;
     private CacheBean cacheBean;
     
     public CacheBean getCacheBean() {
@@ -375,7 +377,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
-        person.getUser().setRole(Role.valueOf(2)); // normal user
+        List<Integer> roles = new ArrayList<Integer>();
+        roles.add(accountRoles.getRoleByName("Normal").getRoleID());
+        person.getUser().setRoles(roles); // normal user
         person.getUser().setPerson(person);
         Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
         if (LocaleBean.supportedLocale(locale))
@@ -614,7 +618,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 context.addMessage("edit-form:editPerson-user_groupID", message);
             }
             // required user role
-            if (person.getUser().getRole() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role")))) {
+            if (person.getUser().getRoles().isEmpty() && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role")))) {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:editPerson-user_role", message);
@@ -857,10 +861,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     public List<SelectItem> getRoles() {
         //TODO: improve detection of roles that are selectable by users
-        Role inthincRole = Roles.getRoleByName("inthinc");
+//        Role inthincRole = Roles.getRoleByName("inthinc");
         List<SelectItem> roleList = new ArrayList<SelectItem>();
-        for (Role role : Roles.getRoleList()) {
-            if (inthincRole == null || !role.getRoleID().equals(inthincRole.getRoleID()))
+        accountRoles = new Roles();
+        accountRoles.setRoleDAO(roleDAO);
+        accountRoles.init(getAccountID());
+        for (Role role : accountRoles.getRoleList()) {
+//            if (inthincRole == null || !role.getRoleID().equals(inthincRole.getRoleID()))
                 roleList.add(new SelectItem(role, role.getName()));
         }
         roleList.add(0, new SelectItem(null, ""));
@@ -1053,4 +1060,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     		}
     	}
     }
+
+	public RoleDAO getRoleDAO() {
+		return roleDAO;
+	}
+
+	public void setRoleDAO(RoleDAO roleDAO) {
+		this.roleDAO = roleDAO;
+	}
 }

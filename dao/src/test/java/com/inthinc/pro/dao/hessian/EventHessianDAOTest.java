@@ -1,7 +1,9 @@
 package com.inthinc.pro.dao.hessian;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
@@ -18,8 +20,8 @@ import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.security.Roles;
 
 public class EventHessianDAOTest
 {
@@ -49,12 +51,12 @@ public class EventHessianDAOTest
         states.setStateDAO(stateDAO);
         states.init();
 
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(new SiloServiceCreator().getService());
-
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
+//        RoleHessianDAO roleDAO = new RoleHessianDAO();
+//        roleDAO.setSiloService(new SiloServiceCreator().getService());
+//
+//        Roles roles = new Roles();
+//        roles.setRoleDAO(roleDAO);
+//        roles.init();
     }
 
     @Test

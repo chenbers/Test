@@ -56,7 +56,7 @@ import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
@@ -308,24 +308,29 @@ public class MockData {
 
     private void addUsersToGroup(Integer accountID, Integer groupID) {
         Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_USERS_IN_GROUP;
+   		List<Integer> normalRoles = new ArrayList<Integer>();
+   		normalRoles.add(MockRoles.getNormalUser().getRoleID());
+   		List<Integer> adminRoles = new ArrayList<Integer>();
+   		adminRoles.add(MockRoles.getAdminUser().getRoleID());
         User[] users = {
                 /*
                  * TODO: roles stuff isn't complete -- deal with it when we add permissions allRoles.put(key, new Role(key++, "readOnly")); allRoles.put(key, new Role(key++,
                  * "normalUser")); allRoles.put(key, new Role(key++, "supervisor")); allRoles.put(key, new Role(key++, "customUser")); allRoles.put(key, new Role(key++,
                  * "superUser"));
                  */
-                createUser(idOffset + 1, accountID, groupID, "expired" + groupID, PASSWORD, randomPhone(), randomPhone(), "expired" + groupID + "@email.com", MockRoles
-                        .getNormalUser(), Boolean.FALSE),
-                createUser(idOffset + 2, accountID, groupID, "custom" + groupID, PASSWORD, randomPhone(), randomPhone(), "custom" + groupID + "@email.com", MockRoles
-                        .getCustomUser(), Boolean.TRUE),
-                createUser(idOffset + 3, accountID, groupID, "normal" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal" + groupID + "@email.com", MockRoles
-                        .getNormalUser(), Boolean.TRUE),
-                createUser(idOffset + 4, accountID, groupID, "readonly" + groupID, PASSWORD, randomPhone(), randomPhone(), "readonly" + groupID + "@email.com", MockRoles
-                        .getReadOnlyUser(), Boolean.TRUE),
-                createUser(idOffset + 5, accountID, groupID, "superuser" + groupID, PASSWORD, randomPhone(), randomPhone(), "superuser" + groupID + "@email.com", MockRoles
-                        .getSuperUser(), Boolean.TRUE),
-                createUser(idOffset + 6, accountID, groupID, "supervisor" + groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor" + groupID + "@email.com", MockRoles
-                        .getSupervisor(), Boolean.TRUE) };
+                 createUser(idOffset + 1, accountID, groupID, "expired" + groupID, PASSWORD, randomPhone(), randomPhone(), "expired" + groupID + "@email.com", normalRoles,
+                         Boolean.FALSE),
+                createUser(idOffset + 2, accountID, groupID, "custom" + groupID, PASSWORD, randomPhone(), randomPhone(), "custom" + groupID + "@email.com", adminRoles,
+                         Boolean.TRUE),
+//                createUser(idOffset + 3, accountID, groupID, "normal" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal" + groupID + "@email.com", MockRoles
+//                        .getNormalUser(), Boolean.TRUE),
+//                createUser(idOffset + 4, accountID, groupID, "readonly" + groupID, PASSWORD, randomPhone(), randomPhone(), "readonly" + groupID + "@email.com", MockRoles
+//                        .getReadOnlyUser(), Boolean.TRUE),
+//                createUser(idOffset + 5, accountID, groupID, "superuser" + groupID, PASSWORD, randomPhone(), randomPhone(), "superuser" + groupID + "@email.com", MockRoles
+//                        .getSuperUser(), Boolean.TRUE),
+//                createUser(idOffset + 6, accountID, groupID, "supervisor" + groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor" + groupID + "@email.com", MockRoles
+//                        .getSupervisor(), Boolean.TRUE) 
+        };
         for (int userCnt = 0; userCnt < users.length; userCnt++) {
             storeObject(users[userCnt]);
             storeObject(users[userCnt].getPerson());
@@ -333,14 +338,14 @@ public class MockData {
         }
     }
 
-    private User createUser(Integer id, Integer accountID, Integer groupID, String username, String password, String priPhone, String secPhone, String email, Role role,
+    private User createUser(Integer id, Integer accountID, Integer groupID, String username, String password, String priPhone, String secPhone, String email, List<Integer> roles,
             Boolean active) {
         User user = new User();
         user.setUserID(id);
         user.setGroupID(groupID);
         user.setUsername(username);
         user.setPassword(password);
-        user.setRole(role);
+        user.setRoles(roles);
         user.setStatus(Status.ACTIVE);
         user.setPerson(new Person());
         user.getPerson().setAcctID(accountID);
@@ -1379,7 +1384,7 @@ public class MockData {
         logger.debug(indent + topGroup.getName() + " (ID: " + topGroup.getGroupID() + ")");
         List<User> userList = lookupObjectList(User.class, new User(), "groupID", topGroup.getGroupID());
         for (User user : userList) {
-            logger.debug(indent + " " + user.getUsername() + " (ID: " + user.getUserID() + ", ROLE: " + user.getRole().toString() + ")");
+            logger.debug(indent + " " + user.getUsername() + " (ID: " + user.getUserID() + ", ROLE: " + user.getRoles().toString() + ")");
         }
         for (Group group : lookupObjectList(Group.class, new Group())) {
             if (group.getParentID().equals(topGroup.getGroupID())) {

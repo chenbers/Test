@@ -273,7 +273,22 @@ public interface SiloService extends HessianService
     
     Map<String, Object> getNextSilo();
     
-    List<Map<String, Object>> getRoles();
+//    List<Map<String, Object>> getRoles();
+    
+    List<Map<String, Object>> getRolesByAcctID(Integer acctID) throws ProDAOException;
+    
+    Map<String,Object> createRole(Integer acctID,Map<String, Object> roleMap) throws ProDAOException;
+
+    Map<String,Object> getRole(Integer roleID) throws ProDAOException;
+
+
+    Map<String,Object> updateRole(Integer roleID,Map<String, Object> roleMap) throws ProDAOException;
+
+    Map<String,Object> deleteRole(Integer roleID) throws ProDAOException;
+
+    List<Map<String,Object>> getSiteAccessPts();
+    
+    List<Map<String,Object>> getUsersAccessPts(Integer userID);
     
     List<Map<String, Object>> getSensitivityMaps();
     

@@ -1,5 +1,6 @@
 package com.inthinc.pro.security.userdetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,25 +26,25 @@ public class ProUser extends org.springframework.security.userdetails.User
     private GroupHierarchy groupHierarchy;
     private List<Zone>     zones;
     
-    public ProUser(User user, String roleName)
+    public ProUser(User user, List<String> roles)
     {
-        this(   user.getUsername(),
+        super(  user.getUsername(),
                 user.getPassword(),
                 user.getStatus().equals(Status.ACTIVE), // boolean enabled,
                 true, // boolean accountNonExpired,
                 true, // boolean credentialsNonExpired
                 true, // boolean accountNonLocked,
-                new GrantedAuthority[] { new GrantedAuthorityImpl(roleName) });
+                getAuthorities(roles));
         
         this.user = user;
     }
 
-    public ProUser(String username, String password, boolean enabled, boolean accountNonExpired,
-            boolean credentialsNonExpired, boolean accountNonLocked, GrantedAuthority[] authorities)
-            throws IllegalArgumentException
-    {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-    }
+//    public ProUser(String username, String password, boolean enabled, boolean accountNonExpired,
+//            boolean credentialsNonExpired, boolean accountNonLocked, GrantedAuthority[] authorities)
+//            throws IllegalArgumentException
+//    {
+//        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+//    }
 
     public User getUser()
     {
@@ -64,7 +65,15 @@ public class ProUser extends org.springframework.security.userdetails.User
     {
         this.groupHierarchy = groupHierarchy;
     }
-
+    private static GrantedAuthority[] getAuthorities(List<String> roles){
+		List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();
+	 	for (String role:roles){
+	 		
+	 		grantedAuthoritiesList.add(new GrantedAuthorityImpl(role));
+	 	}
+	 	GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[grantedAuthoritiesList.size()];
+	 	return grantedAuthoritiesList.toArray(grantedAuthorities);
+    }
     public List<Zone> getZones() {
         return zones;
     }

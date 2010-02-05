@@ -243,7 +243,7 @@
 			<ui:param name="eventLocation" value="#{trip.startAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
 			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
-             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
+            <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
     	 	<ui:param name="context" value="crashReportStart" />
 		</ui:include>
 		<ui:include src="/includes/tripBubble.xhtml">
@@ -254,7 +254,7 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
 			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
-           <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
+            <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
     	 	<ui:param name="context" value="crashReportEnd" />
 		</ui:include>
 
@@ -270,7 +270,7 @@
 					<h:form>
 						<ul id="grid_nav" style="margin: 0;">
 							 <li class="l text"><a4j:htmlCommandLink id="crashReportBack" action="pretty:crashHistory" value="#{messages.crashReport_backToCrashHistory}" /></li>
-		                   	 <security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
+		                   	 <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
 			                   	 <li class="r">
 			                      	<h:outputText value=" " />
 			                      

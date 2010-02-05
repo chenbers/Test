@@ -54,7 +54,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         AVAILABLE_COLUMNS.add("edit");
         AVAILABLE_COLUMNS.add("clear");
     }
-    private String userRole;
+//    private String userRole;
     private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
     private final static String UNKNOWN_DRIVER = "unknown_driver";
 
@@ -113,8 +113,8 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         setFilteredTableData(null);
         // this access sets a table level parameter to conditionally render
         // certain columns
-        User user = getProUser().getUser();
-        setUserRole(user.getRole().getName());
+//        User user = getProUser().getUser();
+//        setUserRole(user.getRolesStrings());
         // the following will be how we access data when LIVE data is available
 //        List<CrashReport> crashList = crashReportDAO.findByGroupID(user.getGroupID());
         List<CrashReport> crashList = new ArrayList<CrashReport>();
@@ -286,13 +286,13 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         this.crashReportDAO = crashReportDAO;
     }
 
-    public String getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
-    }
+//    public String getUserRole() {
+//        return userRole;
+//    }
+//
+//    public void setUserRole(String userRole) {
+//        this.userRole = userRole;
+//    }
 
     public String getSelectedCrash() {
         return selectedCrash;

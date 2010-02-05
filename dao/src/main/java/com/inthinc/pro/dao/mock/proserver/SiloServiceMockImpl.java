@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
@@ -32,20 +33,16 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
-import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.SensitivityForwardCommandMapping;
-import com.inthinc.pro.model.SensitivityType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 
@@ -1106,17 +1103,17 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 
-    @Override
-    public List<Map<String, Object>> getRoles()
-    {
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
-        for (Object obj : MockRoles.getAll())
-        {
-            returnList.add(TempConversionUtil.createMapFromObject(obj, true));
-        }
-        
-        return returnList;
-    }
+//    @Override
+//    public List<Map<String, Object>> getRoles()
+//    {
+//        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+//        for (Object obj : MockRoles.getAll())
+//        {
+//            returnList.add(TempConversionUtil.createMapFromObject(obj, true));
+//        }
+//        
+//        return returnList;
+//    }
 
     @Override
     public List<Map<String, Object>> getSensitivityMaps()
@@ -1570,6 +1567,103 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 */
 
 	@Override
+	public List<Map<String, Object>> getSiteAccessPts() {
+
+		List<Map<String, Object>> accessPoints = new ArrayList<Map<String, Object>>();
+		
+		Map<String, Object> accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(1));
+		accessPoint.put("msgKey", "rolesAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(2));
+		accessPoint.put("msgKey", "usersAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(3));
+		accessPoint.put("msgKey", "vehiclesAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(4));
+		accessPoint.put("msgKey", "devicesAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(5));
+		accessPoint.put("msgKey", "zonesAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(6));
+		accessPoint.put("msgKey", "zoneAlertsAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(7));
+		accessPoint.put("msgKey", "redFlagsAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(8));
+		accessPoint.put("msgKey", "reportsAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(9));
+		accessPoint.put("msgKey", "organizationAccess");
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("accessPtID", new Integer(10));
+		accessPoint.put("msgKey", "speedByStreetAccess");
+		accessPoints.add(accessPoint);
+		
+		return accessPoints;
+	}
+
+	@Override
+	public List<Map<String, Object>> getRolesByAcctID(Integer acctID) {
+
+      List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+      for (Object obj : MockRoles.getAll())
+      {
+          returnList.add(TempConversionUtil.createMapFromObject(obj, true));
+      }
+      
+      return returnList;
+	}
+
+	@Override
+	public Map<String, Object> createRole(Integer acctID,
+			Map<String, Object> roleMap) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> deleteRole(Integer roleID)
+			throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getRole(Integer roleID) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> updateRole(Integer roleID,
+			Map<String, Object> roleMap) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}	
+
+	@Override
 	public List<Map<String, Object>> getDriverEventPage(Integer groupID,
 			Long startDate, Long endDate, Integer includeForgiven,
 			Map<String, Object> pageParams, Integer[] types) {
@@ -1599,5 +1693,32 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 			List<Map<String, Object>> filterList) {
 		// TODO Auto-generated method stub
 		return null;
-	}	
-}
+	}
+
+	@Override
+	public List<Map<String, Object>> getUsersAccessPts(Integer userID) {
+		
+		List<Map<String, Object>> accessPoints = new ArrayList<Map<String, Object>>();
+		
+		Map<String, Object> accessPoint = new HashMap<String, Object>();
+		accessPoint.put("siteAccessPtID", new Integer(1));
+		accessPoint.put("mode", new Integer(15));
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("siteAccessPtID", new Integer(2));
+		accessPoint.put("mode", new Integer(15));
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("siteAccessPtID", new Integer(3));
+		accessPoint.put("mode", new Integer(15));
+		accessPoints.add(accessPoint);
+		
+		accessPoint = new HashMap<String, Object>();
+		accessPoint.put("siteAccessPtID", new Integer(4));
+		accessPoint.put("mode", new Integer(15));
+		accessPoints.add(accessPoint);
+		
+		return accessPoints;
+	}}

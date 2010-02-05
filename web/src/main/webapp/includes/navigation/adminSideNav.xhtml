@@ -27,6 +27,32 @@
       <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
         <tr>
           <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_driver.png"/>
+               <ui:param name="mappingId" value="adminCustomRoles"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminCustomRoles') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminCustomRoles}"/>
+                   <ui:param name="context" value="#{context}-vlt-customRoles"/>
+           </ui:include>
+          </td>
+        </tr>
+        <ui:fragment rendered="#{parentAction == 'go_adminCustomRoles'}">
+          <tr>
+            <td valign="top" class="sub_wrapper">
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_add_driver.png"/>
+                  <ui:param name="actionBean" value="#{customRolesBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddCustomRole') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddCustomRole}"/>
+<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct2"/>-->
+                  <ui:param name="context" value="#{context}-vlst-customRoles"/>
+              </ui:include>
+            </td>
+          </tr>
+        </ui:fragment>
+        <tr>
+          <td valign="top">
                <ui:include src="verticalLeftTab.xhtml">
                   <ui:param name="iconFileName" value="ico_driver.png"/>
                   <ui:param name="mappingId" value="adminPeople"/>

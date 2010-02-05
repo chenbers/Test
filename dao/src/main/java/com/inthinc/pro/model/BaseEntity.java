@@ -2,7 +2,6 @@ package com.inthinc.pro.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

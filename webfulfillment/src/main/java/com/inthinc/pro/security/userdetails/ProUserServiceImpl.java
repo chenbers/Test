@@ -32,7 +32,7 @@ public class ProUserServiceImpl implements UserDetailsService
             {
                 throw new UsernameNotFoundException("Username could not be found");
             }    
-            ProUser proUser = new ProUser(user, user.getRole().toString());
+            ProUser proUser = new ProUser(user, user.getRoles().toString());
             return proUser;
         }
         catch (EmptyResultSetException ex)

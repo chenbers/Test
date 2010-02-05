@@ -283,6 +283,26 @@
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
+			<from-outcome>go_adminCustomRoles</from-outcome>
+			<to-view-id>/secured/admin/customRoles.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminCustomRole</from-outcome>
+        <to-view-id>/secured/admin/customRole.xhtml</to-view-id>
+        <redirect />
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminAddCustomRole</from-outcome>
+        <to-view-id>/secured/admin/editCustomRole.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+	<navigation-rule>
+		<navigation-case>
 			<from-outcome>go_adminPeople</from-outcome>
 			<to-view-id>/secured/admin/people.xhtml</to-view-id>
 			<redirect />

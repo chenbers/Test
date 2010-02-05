@@ -1,10 +1,13 @@
 package com.inthinc.pro.model;
 
-import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.dao.annotations.ID;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.model.security.AccessPoint;
 
 @XmlRootElement
 public class User extends BaseEntity {
@@ -17,18 +20,18 @@ public class User extends BaseEntity {
     private Integer personID;
     @Column(updateable = false)
     private Person person;
-    @Column(name = "roleID")
-    private Role role;
+    private List<Integer> roles;
+    private List<AccessPoint> accessPoints;
     private Status status;
     private String username;
     private String password;
     private Integer groupID;
 
-    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID) {
+    public User(Integer userID, Integer personID, List<Integer> roles, Status status, String username, String password, Integer groupID) {
         super();
         this.userID = userID;
         this.personID = personID;
-        this.role = role;
+        this.roles = roles;
         this.status = status;
         this.username = username;
         this.password = password;
@@ -72,13 +75,17 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+//    public Integer getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(Integer roleID) {
+//    	if (roles == null) {
+//    		roles = new ArrayList<Integer>();
+//    	}
+//    	roles.add(roleID);
+//        this.role = role;
+//    }
 
     public Status getStatus() {
         return status;
@@ -109,7 +116,23 @@ public class User extends BaseEntity {
 
     @Override
     public String toString() {
-        return "User [groupID=" + groupID + ", password=" + password + ", personID=" + personID + ", role=" + role + ", status=" + status + ", userID=" + userID + ", username="
+        return "User [groupID=" + groupID + ", password=" + password + ", personID=" + personID + ", role=" + roles.toString() + ", status=" + status + ", userID=" + userID + ", username="
                 + username + "]";
     }
+
+	public List<Integer> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Integer> roles) {
+		this.roles = roles;
+	}
+
+	public List<AccessPoint> getAccessPoints() {
+		return accessPoints;
+	}
+
+	public void setAccessPoints(List<AccessPoint> accessPoints) {
+		this.accessPoints = accessPoints;
+	}
 }

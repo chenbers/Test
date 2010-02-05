@@ -1,0 +1,27 @@
+<ui:composition template="adminTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="recordCount" value="#{customRolesBean.itemCount}" />
+  <ui:param name="items" value="#{customRolesBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{customRolesBean.filterValue}" />
+  <ui:param name="page" value="#{customRolesBean.page}" />
+  <ui:param name="editorBean" value="#{customRolesBean}" />
+  <ui:param name="context" value="customRolesTable"/>		
+
+  <ui:define name="columns">
+    <rich:column id="name" rendered="#{customRolesBean.tableColumns['roleName'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+      <f:facet name="header"><h:outputText value="#{messages.customRoleHeader_roleName}" /></f:facet>
+      <a4j:htmlCommandLink id="customRolesTableName" action="#{customRolesBean.display}" value="#{item.name}">
+        <f:param name="displayID" value="#{item.id}" />
+      </a4j:htmlCommandLink>
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

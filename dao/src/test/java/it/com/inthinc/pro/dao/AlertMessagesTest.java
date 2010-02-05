@@ -24,7 +24,6 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -46,6 +45,7 @@ import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.mock.data.MockRoles;
 import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
@@ -66,9 +66,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
-import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.SeatBeltEvent;
-import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
@@ -78,8 +76,10 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.model.security.Roles;
 
 public class AlertMessagesTest {
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
@@ -152,9 +152,14 @@ public class AlertMessagesTest {
         
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
-        Roles roles = new Roles();
+        Roles roles = new Roles(1);
         roles.setRoleDAO(roleDAO);
-        roles.init();
+        roles.init(1);
+        
+        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
+        siteAccessPoints.setRoleDAO(roleDAO);
+        siteAccessPoints.init();
+        
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
@@ -370,7 +375,9 @@ public class AlertMessagesTest {
         Date expired = Util.genDate(2010, 8, 30);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
         Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
-        User user = new User(0, 0, superuserRole(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
+   		List<Integer> adminRoles = new ArrayList<Integer>();
+   		adminRoles.add(MockRoles.getAdminUser().getRoleID());
+        User user = new User(0, 0, adminRoles, MockRoles.getAllAccessPoints(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
         person = new Person(0, acctID, TimeZone.getTimeZone("US/Mountain"), null, address.getAddrID(), "email" + groupID + "@email.com", "secEmail@test.com", "8015551111", "8015552222",
                 "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, "emp" + groupID, null, "title" + groupID, "dept" + groupID, "first" + groupID, "m" + groupID, "last"
@@ -814,11 +821,13 @@ public class AlertMessagesTest {
         return null;
     }
 
-    private static Role superuserRole() {
-        for (Role role : Roles.getRoleMap().values()) {
-            if (role.getRoleID().intValue() == 5)	// superuser
-                return role;
-        }
-        return null;
+    private static Role adminRole() {
+    	
+    	return Roles.getRoleMapById().get(2);
+//        for (Role role : Roles.getRoleMap().values()) {
+//            if (role.getRoleID().intValue() == 5)	// superuser
+//                return role;
+//        }
+//        return null;
     }
 }

@@ -12,22 +12,23 @@
 		<p style="font-size:20px;text-align:center;">Admin Page</p>	
 		<p>User name: <security:authentication operation="username"/></p>
 		<p>Roles:
-		ROLE_READONLY,ROLE_NORMAL_USER,ROLE_SUPERVISOR,ROLE_CUSTOM_USER,ROLE_SUPER_USER
-		<security:authorize ifAnyGranted="ROLE_NORMAL_USER">
-			ROLE_NORMAL_USER
+		ROLE_ADMIN, ROLE_NORMAL
+<!--		,ROLE_READONLY,ROLE_NORMAL_USER,ROLE_SUPERVISOR,ROLE_CUSTOM_USER,ROLE_SUPER_USER-->
+		<security:authorize ifAnyGranted="ROLE_NORMAL_USER,ROLE_NORMAL,ROLE_READONLY">
+			ROLE_NORMAL
 		</security:authorize>	
-		<security:authorize ifAnyGranted="ROLE_READONLY">
-			ROLE_READONLY
+<!--		<security:authorize ifAnyGranted="ROLE_READONLY, ROLE_NORMAL">-->
+<!--			ROLE_READONLY-->
+<!--		</security:authorize>	-->
+		<security:authorize ifAnyGranted="ROLE_SUPERVISOR, ROLE_SUPER_USER, ROLE_CUSTOM_USER, ROLE_ADMIN">
+			ROLE_ADMIN
 		</security:authorize>	
-		<security:authorize ifAnyGranted="ROLE_SUPERVISOR">
-			ROLE_SUPERVISOR
-		</security:authorize>	
-		<security:authorize ifAnyGranted="ROLE_CUSTOM_USER">
-			ROLE_CUSTOM_USER
-		</security:authorize>	
-		<security:authorize ifAnyGranted="ROLE_SUPER_USER">
-			ROLE_SUPER_USER
-		</security:authorize>	
+<!--		<security:authorize ifAnyGranted="ROLE_CUSTOM_USER">-->
+<!--			ROLE_CUSTOM_USER-->
+<!--		</security:authorize>	-->
+<!--		<security:authorize ifAnyGranted="ROLE_SUPER_USER">-->
+<!--			ROLE_SUPER_USER-->
+<!--		</security:authorize>	-->
 		</p>
 		<h:form>
 			<h:commandButton id="adminSample" action="#{testBean.errorAction}" value="Sample Error Dialog" immediate="true"/>

@@ -29,12 +29,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.app.SiteAccessPoints;
+import com.inthinc.pro.model.security.AccessPoint;
+import com.inthinc.pro.model.security.Roles;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -126,8 +130,12 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
     protected ProUser loginUser(String username)
     {
         User user = getUserDAO().findByUserName(username);
-        String roleName = user.getRole().toString();
-        ProUser proUser = new ProUser(user,roleName);
+        Roles roles = new Roles();
+        roles.setRoleDAO(getRoleDAO());
+        roles.init(user.getPerson().getAcctID());
+
+ //       String roleName = user.getRolesString();
+        ProUser proUser = new ProUser(user,getGrantedAuthorities(user));
         mockLogin(proUser);
         // TODO: this is a bit of a kludge -- probably can include our authentication provider in the list when logging in here
         initGroupHierarchy();
@@ -175,6 +183,10 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
     {
         return (UserDAO)applicationContext.getBean("userDAO");
     }
+    protected RoleDAO getRoleDAO()
+    {
+        return (RoleDAO)applicationContext.getBean("roleDAO");
+    }
 
     @Test
     public void dummy()
@@ -218,6 +230,39 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
 
 
 		return dateList;
+	}
+	private List<String> getGrantedAuthorities(User user){
+		
+        Roles roles = new Roles();
+        roles.setRoleDAO(getRoleDAO());
+        roles.init(user.getPerson().getAcctID());
+
+		List<String> grantedAuthorities = new ArrayList<String>();
+		
+		List<Integer> userRoles = user.getRoles();
+		boolean hasAdmin=false;
+		for(Integer id:userRoles){
+			if (roles.getRoleById(id).getName().equals("Admin")){
+				hasAdmin=true;
+				break;
+			}
+		}
+		// this will take into account the site access points instead of the original roles as follows
+		if(hasAdmin){
+			//add all the access points
+			grantedAuthorities.add("ROLE_ADMIN");
+		}
+		else{
+			
+			for(AccessPoint ap:user.getAccessPoints()){
+				
+				grantedAuthorities.add(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString());
+			}
+		}
+		grantedAuthorities.add("ROLE_NORMAL");
+		
+		return grantedAuthorities;
+	
 	}
 
 }

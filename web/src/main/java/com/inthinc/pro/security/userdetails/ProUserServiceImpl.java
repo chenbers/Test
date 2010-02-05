@@ -2,6 +2,7 @@ package com.inthinc.pro.security.userdetails;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.security.userdetails.UsernameNotFoundException;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
@@ -19,6 +21,9 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.app.SiteAccessPoints;
+import com.inthinc.pro.model.security.AccessPoint;
+import com.inthinc.pro.model.security.Roles;
 
 
 public class ProUserServiceImpl implements UserDetailsService
@@ -28,6 +33,7 @@ public class ProUserServiceImpl implements UserDetailsService
     private UserDAO userDAO;
     private GroupDAO groupDAO;
     private ZoneDAO zoneDAO;
+    private RoleDAO roleDAO;
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
@@ -40,7 +46,8 @@ public class ProUserServiceImpl implements UserDetailsService
             {
                 throw new UsernameNotFoundException("Username could not be found");
             }    
-            ProUser proUser = new ProUser(user, user.getRole().toString());
+            
+            ProUser proUser = new ProUser(user, getGrantedAuthorities(user));
             
             Group topGroup = groupDAO.findByID(user.getGroupID());
             List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), user.getGroupID());                  
@@ -61,7 +68,9 @@ public class ProUserServiceImpl implements UserDetailsService
     {
         logger.debug("lookup: " + username);
         
-        return userDAO.findByUserName(username);
+        User user = userDAO.findByUserName(username);
+        user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
+        return user;
     }
 
     public UserDAO getUserDAO()
@@ -92,4 +101,51 @@ public class ProUserServiceImpl implements UserDetailsService
     public void setZoneDAO(ZoneDAO zoneDAO) {
         this.zoneDAO = zoneDAO;
     }
+
+	public RoleDAO getRoleDAO(){ 
+		return roleDAO;
+	}
+
+	public void setRoleDAO(RoleDAO roleDAO) {
+		this.roleDAO = roleDAO;
+	}
+	private List<String> getGrantedAuthorities(User user){
+		
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init(user.getPerson().getAcctID());
+        
+		List<String> grantedAuthorities = new ArrayList<String>();
+		
+//		for(Integer roleID:user.getRoles()){
+//			
+//			grantedAuthorities.add(roles.getRoleById(roleID).toString());
+//		}
+
+		//TODO put this somewhere else
+		List<Integer> userRoles = user.getRoles();
+		boolean hasAdmin=false;
+		for(Integer id:userRoles){
+			if (roles.getRoleById(id).getName().equals("Admin")){
+				hasAdmin=true;
+				break;
+			}
+		}
+		// this will take into account the site access points instead of the original roles as follows
+		if(hasAdmin){
+			//add all the access points
+			grantedAuthorities.add("ROLE_ADMIN");
+		}
+		else{
+			
+			for(AccessPoint ap:user.getAccessPoints()){
+				
+				grantedAuthorities.add(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString());
+			}
+		}
+		grantedAuthorities.add("ROLE_NORMAL");
+		
+		return grantedAuthorities;
+		
+	}
 }

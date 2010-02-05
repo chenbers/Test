@@ -18,12 +18,11 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
+import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -72,7 +71,6 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
 import com.inthinc.pro.model.SensitivityType;
 import com.inthinc.pro.model.State;
@@ -86,9 +84,10 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.security.Roles;
 
 public class SiloServiceTest {
     private static final Logger logger = Logger.getLogger(SiloServiceTest.class);
@@ -175,8 +174,18 @@ public class SiloServiceTest {
         roleDAO.setSiloService(siloService);
         Roles roles = new Roles();
         roles.setRoleDAO(roleDAO);
-        roles.init();
-        assertTrue(Roles.getRoleMap().size() > 0);
+        roles.init(account.getAcctID());
+        assertTrue(roles.getRoleMapById().size() > 0);
+    }
+
+    @Test
+    public void accessPoints() {
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+        SiteAccessPoints accessPoints = new SiteAccessPoints();
+        accessPoints.setRoleDAO(roleDAO);
+        accessPoints.init();
+        assertTrue(SiteAccessPoints.getAccessPointMap().size() > 0);
     }
 
     @Test
@@ -1000,7 +1009,8 @@ public class SiloServiceTest {
             Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), email, null, "555555555" + i, "555555555" + i, null, null, null, null, null,
                     "emp" + i, null, "title" + i, "dept" + i, "first" + i, "m" + i, "last" + i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH,
                     FuelEfficiencyType.MPG_US, Locale.getDefault());
-            User user = new User(0, 0, randomRole(), Status.ACTIVE, "user" + groupID + "_" + i, PASSWORD, groupID);
+            List<Integer> roles = randomRole();
+            User user = new User(0, 0, roles, Status.ACTIVE, "user" + groupID + "_" + i, PASSWORD, groupID);
             person.setUser(user);
             Integer personID = personDAO.create(acctID, person);
             assertNotNull(personID);
@@ -1008,8 +1018,8 @@ public class SiloServiceTest {
             person.setAddress(address);
             personList.add(person);
             // update
-            Role newRole = randomRole();
-            user.setRole(newRole);
+            List<Integer> newRoles = randomRole();
+            user.setRoles(newRoles);
             Integer changedCount = userDAO.update(user);
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
             // find user by ID
@@ -1521,13 +1531,22 @@ public class SiloServiceTest {
         return null;
     }
 
-    private Role randomRole() {
-        int idx = Util.randomInt(0, Roles.getRoleMap().size() - 1);
-        int cnt = 0;
-        for (Role role : Roles.getRoleMap().values()) {
-            if (cnt++ == idx)
-                return role;
-        }
-        return null;
+    private List<Integer> randomRole() {
+//        int idx = Util.randomInt(0, Roles.getRoleMap().size() - 1);
+//        int cnt = 0;
+//        for (Role role : Roles.getRoleMap().values()) {
+//            if (cnt++ == idx)
+//                return role;
+//        }
+    	RoleDAO roleDAO = new RoleHessianDAO();
+        Roles accountRoles = new Roles();
+        accountRoles.setRoleDAO(roleDAO);
+        accountRoles.init(account.getAcctID());
+    	int index = Util.randomInt(0,accountRoles.getRoleList().size() - 1);
+    	List<Integer> roles = new ArrayList<Integer>();
+    	roles.add(accountRoles.getRoleList().get(index).getRoleID());
+    	
+    	return roles;
     }
+    
 }
