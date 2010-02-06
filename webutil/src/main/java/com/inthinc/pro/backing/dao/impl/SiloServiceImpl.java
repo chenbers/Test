@@ -296,20 +296,6 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Fetches notes from this group(deep) that have been 'flagged', within the specified timeframe (start, stop). Returns a list of redFlagMap, or an Integer error.")
-    public List<Map<String, Object>> getRedFlags(@DaoParam(name = "groupID") Integer groupID,
-            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
-            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
-            @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven) throws ProDAOException {
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> getRoles() {
-        return null;
-    }
-
-    @Override
     public List<Map<String, Object>> getSensitivityMaps() {
         return null;
     }
@@ -686,9 +672,12 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getRedFlagsPage(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
-			Map<String, Object> pageParams) {
+    @MethodDescription(description = "Fetches notes from this group(deep) that have been 'flagged', within the specified timeframe (start, stop). Returns a list of redFlagMap, or an Integer error.")
+	public List<Map<String, Object>> getRedFlagsPage(@DaoParam(name = "groupID")Integer groupID,
+            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+            @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
+			Map<String, Object> pageParams) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -697,6 +686,52 @@ public class SiloServiceImpl implements SiloService {
 	public Map<String, Object> getRedFlagsCount(Integer groupID,
 			Long startDate, Long endDate, Integer includeForgiven,
 			List<Map<String, Object>> filterList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> createRole(Integer acctID,
+			Map<String, Object> roleMap) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> deleteRole(Integer roleID)
+			throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getRole(Integer roleID) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getRolesByAcctID(Integer acctID)
+			throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getSiteAccessPts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getUsersAccessPts(Integer userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> updateRole(Integer roleID,
+			Map<String, Object> roleMap) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
