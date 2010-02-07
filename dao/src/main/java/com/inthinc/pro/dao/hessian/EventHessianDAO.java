@@ -190,65 +190,6 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         return getChangedCount(getSiloService().unforgive(driverID, noteID));
     }
-
-    @Override
-    public List<Event> getViolationEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven)
-    {
-        return Event.cleanEvents(getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), includeForgiven));
-    }
-
-    @Override
-    public List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven)
-    {
-        return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.WARNING), includeForgiven);
-    }
-
-    @Override
-    public List<Event> getEmergencyEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven)
-    {
-        return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY), includeForgiven);
-    }
-
-    @Override
-    public List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven)
-    {
-        return Event.cleanEvents(getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), includeForgiven));
-    }
-    
-    @Override
-    public List<Event> getZoneAlertsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven)
-    {
-        return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.DRIVER), includeForgiven);
-    }
-
-    @Override
-    public List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven)
-    {
-        return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.WARNING), includeForgiven);
-    }
-
-    @Override
-    public List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven)
-    {
-        return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY), includeForgiven);
-    }
-
-    public List<Event> getEventsForGroup(Integer groupID, Integer daysBack, List<Integer> eventTypes, Integer includeForgiven)
-    {
-        Date endDate = new Date();
-        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
-        return Event.cleanEvents(getEventsForGroup(groupID, startDate, endDate, eventTypes, includeForgiven));
-    }
-    public List<Event> getEventsForGroup(Integer groupID, Date startDate, Date endDate, List<Integer> eventTypes, int includeForgiven)
-    {
-//        logger.info("getDriverNoteByGroupIDDeep for groupID: " + groupID + "  startDate: " + DateUtil.convertDateToSeconds(startDate) + " endDate: " + DateUtil.convertDateToSeconds(endDate) +
-//        			"includeForgiven: " + includeForgiven + " eventTypes: " + eventTypes);            
-        
-        List<Map<String, Object>> returnList = this.getSiloService().getDriverNoteByGroupIDDeep(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, eventTypes.toArray(new Integer[0]));
-        List<Event> eventList = getMapper().convertToModelObject(returnList, Event.class);
-        eventList =  Event.cleanEvents(eventList);
-        return eventList;
-    }
 	@Override
 	public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<Integer> eventTypes, Integer daysBack) {
 
@@ -297,7 +238,6 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 			List<TableFilterField> filters) {
 		
 
-       	//EventMapper.getEventTypesInCategory(eventCategory)
 		if (filters == null)
            	filters = new ArrayList<TableFilterField>();
 

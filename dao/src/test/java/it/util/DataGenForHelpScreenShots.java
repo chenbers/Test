@@ -52,8 +52,8 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.security.Role;
 
 public class DataGenForHelpScreenShots {
     public static SiloService siloService;
@@ -279,7 +279,7 @@ public class DataGenForHelpScreenShots {
                 emailList, // emailTo
                 null, null, null, null, null, null,
                 RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
-                RedFlagLevel.CRITICAL, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+                RedFlagLevel.CRITICAL, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);
@@ -308,10 +308,6 @@ public class DataGenForHelpScreenShots {
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
 
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
-        
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
@@ -428,7 +424,7 @@ public class DataGenForHelpScreenShots {
 
         String username = new String(first.substring(0,1) + last + Util.randomInt(0, 1000)).toLowerCase();
         
-        User user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, team.getGroupID());
+        User user = new User(0, person.getPersonID(), getAccountDefaultRoles(acctID), Status.ACTIVE, username, PASSWORD, team.getGroupID());
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
      
@@ -437,6 +433,19 @@ public class DataGenForHelpScreenShots {
         return user;
         
     }
+    
+    private List<Integer> getAccountDefaultRoles(Integer acctID)
+    {
+		RoleHessianDAO roleDAO = new RoleHessianDAO();
+		roleDAO.setSiloService(siloService);
+		List<Role> roles = roleDAO.getRoles(acctID);
+		List<Integer> roleIDs = new ArrayList<Integer>();
+		for (Role role : roles)
+			roleIDs.add(role.getRoleID());
+		return roleIDs;
+	
+    }
+
 
     private String getLastName() {
     	if (localeStr.equals("ro"))

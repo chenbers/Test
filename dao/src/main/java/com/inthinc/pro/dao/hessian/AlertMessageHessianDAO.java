@@ -29,6 +29,7 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.NoAddressFoundException;
+import com.inthinc.pro.model.NoDriverEvent;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
@@ -149,6 +150,9 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
             case ALERT_TYPE_HARD_BUMP:
             case ALERT_TYPE_HARD_TURN:
                 event = eventDAO.getEventByType(alertMessage.getNoteID(), AggressiveDrivingEvent.class);
+                break;
+            case ALERT_TYPE_NO_DRIVER:
+                event = eventDAO.getEventByType(alertMessage.getNoteID(), NoDriverEvent.class);
                 break;
         }
         AlertMessageBuilder alertMessageBuilder = createAlertMessageBuilder(alertMessage, event);

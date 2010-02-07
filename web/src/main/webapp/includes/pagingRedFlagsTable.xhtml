@@ -84,6 +84,19 @@
                 	</h:panelGrid>
 				</div>
             </rich:column>
+<!--             
+            <rich:column id="level" rendered="#{tableColumns['level'].visible}" filterExpression="#{redFlag.level eq bean.filterLevel}">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_level}" />
+                    <h:selectOneMenu value="#{bean.filterLevel}">
+                        <f:selectItems value="#{bean.filterLevels}" />
+                        <a4j:support event="onchange" reRender="redFlags,redFlags-form:header, redFlags_pageHeader" />
+                    </h:selectOneMenu>
+                </f:facet>
+                <ui:param name="descriptionKey" value="#{redFlag.level}"/>
+                <h:outputText styleClass="ls_tab_#{redFlag.level}" value="#{messages[descriptionKey]}" />
+            </rich:column>
+ -->            
             <rich:column id="level" rendered="#{tableColumns['level'].visible}">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_level}" />

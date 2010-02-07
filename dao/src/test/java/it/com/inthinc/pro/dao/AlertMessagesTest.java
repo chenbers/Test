@@ -45,7 +45,7 @@ import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.mock.data.MockRoles;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
@@ -76,10 +76,9 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.security.Role;
-import com.inthinc.pro.model.security.Roles;
 
 public class AlertMessagesTest {
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
@@ -149,16 +148,6 @@ public class AlertMessagesTest {
         States states = new States();
         states.setStateDAO(stateDAO);
         states.init();
-        
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(siloService);
-        Roles roles = new Roles(1);
-        roles.setRoleDAO(roleDAO);
-        roles.init(1);
-        
-        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
-        siteAccessPoints.setRoleDAO(roleDAO);
-        siteAccessPoints.init();
         
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
@@ -375,9 +364,7 @@ public class AlertMessagesTest {
         Date expired = Util.genDate(2010, 8, 30);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
         Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
-   		List<Integer> adminRoles = new ArrayList<Integer>();
-   		adminRoles.add(MockRoles.getAdminUser().getRoleID());
-        User user = new User(0, 0, adminRoles, MockRoles.getAllAccessPoints(), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
+        User user = new User(0, 0, getAccountDefaultRoles(acctID), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
         person = new Person(0, acctID, TimeZone.getTimeZone("US/Mountain"), null, address.getAddrID(), "email" + groupID + "@email.com", "secEmail@test.com", "8015551111", "8015552222",
                 "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, "emp" + groupID, null, "title" + groupID, "dept" + groupID, "first" + groupID, "m" + groupID, "last"
@@ -431,6 +418,18 @@ public class AlertMessagesTest {
         zoneAlert(acctID, team1Group.getGroupID(), personID);
         redFlagAlert(acctID, team1Group.getGroupID());
     }
+    private static List<Integer> getAccountDefaultRoles(Integer acctID)
+    {
+		RoleHessianDAO roleDAO = new RoleHessianDAO();
+		roleDAO.setSiloService(siloService);
+		List<Role> roles = roleDAO.getRoles(acctID);
+		List<Integer> roleIDs = new ArrayList<Integer>();
+		for (Role role : roles)
+			roleIDs.add(role.getRoleID());
+		return roleIDs;
+	
+    }
+
 
     private static String genNumericID(Integer acctID, Integer len) {
         String id = "999" + acctID.toString();
@@ -662,7 +661,7 @@ public class AlertMessagesTest {
                 emailList, // emailTo
                 null, null, null, null, null, null,
                 RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
-                RedFlagLevel.CRITICAL, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+                RedFlagLevel.CRITICAL, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
@@ -803,7 +802,13 @@ public class AlertMessagesTest {
     private void checkRedFlags() {
         RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
         redFlagDAO.setSiloService(siloService);
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(team1Group.getGroupID(), 1, 0);
+        
+	    Date endDate = new Date();
+	    Date startDate = DateUtil.getDaysBackDate(endDate, 2);
+
+        Integer count = redFlagDAO.getRedFlagCount(team1Group.getGroupID(), startDate, endDate, 1, null);
+        PageParams pageParams = new PageParams(0, count-1, null, null);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(team1Group.getGroupID(), startDate, endDate, 1, pageParams);
         assertNotNull(redFlagList);
         assertTrue("Red flags should be found", (redFlagList.size() > 0));
         for (RedFlag redflag : redFlagList) {
@@ -821,13 +826,4 @@ public class AlertMessagesTest {
         return null;
     }
 
-    private static Role adminRole() {
-    	
-    	return Roles.getRoleMapById().get(2);
-//        for (Role role : Roles.getRoleMap().values()) {
-//            if (role.getRoleID().intValue() == 5)	// superuser
-//                return role;
-//        }
-//        return null;
-    }
 }

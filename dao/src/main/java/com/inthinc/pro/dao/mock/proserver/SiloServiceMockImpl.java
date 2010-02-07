@@ -782,7 +782,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     {
         return createReturnValue("count", 0);
     }
-
+/*
     @Override
     public List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate, Integer includeForgiven) throws ProDAOException
     {
@@ -800,7 +800,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
         return returnList;
     }
-
+*/
     @Override
     public List<Map<String, Object>> getTablePrefsByUserID(Integer userID) throws ProDAOException
     {

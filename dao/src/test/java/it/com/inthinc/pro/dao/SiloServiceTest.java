@@ -538,7 +538,7 @@ public class SiloServiceTest {
                 notifyPersonIDs,
                 null, // emailTo
                 speedSettings, speedLevels, 10, 10, 10, 10, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING,
-                RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING);
+                RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.NONE);
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);

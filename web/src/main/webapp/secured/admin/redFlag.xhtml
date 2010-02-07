@@ -288,6 +288,21 @@
 
                         </h:panelGroup>
 
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'noDriver'}">
+
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                            <tr>
+                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
+                            </tr>
+                            <tr class="tableEven">
+                              <td><h:outputText value="#{messages.editRedFlag_noDriver}" /></td>
+                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.noDriverLevel]}" /></td>
+                            </tr>
+                          </table>
+
+                        </h:panelGroup>
+
                       </td>
                     </tr>
                   </table>

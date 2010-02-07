@@ -7,7 +7,9 @@ import it.config.IntegrationConfig;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -41,8 +43,8 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
-import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.security.Role;
 
 // class to generate test data
 //  
@@ -130,10 +132,6 @@ public class DataGenerator
 
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
-
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
         
     }
     
@@ -207,13 +205,25 @@ public class DataGenerator
 
 
         String username = "user_"+person.getPersonID();
-        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID);
+        user = new User(0, person.getPersonID(), getAccountDefaultRoles(acctID),  Status.ACTIVE, username, PASSWORD, groupID);
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
         
         System.out.println(groupID + " LOGIN NAME: " + username);
         
     }
+    private List<Integer> getAccountDefaultRoles(Integer acctID)
+    {
+		RoleHessianDAO roleDAO = new RoleHessianDAO();
+		roleDAO.setSiloService(siloService);
+		List<Role> roles = roleDAO.getRoles(acctID);
+		List<Integer> roleIDs = new ArrayList<Integer>();
+		for (Role role : roles)
+			roleIDs.add(role.getRoleID());
+		return roleIDs;
+	
+    }
+
 
     private void createGroupHierarchy(Integer acctID)
     {

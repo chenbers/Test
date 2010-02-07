@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -28,24 +29,6 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         super.setMapper(new RedFlagHessianMapper());
     }
 
-
-    @Override
-    public List<RedFlag> getRedFlags(Integer groupID, Integer daysBack, Integer includeForgiven)
-    {
-        try
-        {
-            Date endDate = new Date();
-            Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
-//logger.info("getRedFlags for groupID: " + groupID);            
-
-            List<RedFlag> redFlagList = getMapper().convertToModelObject(getSiloService().getRedFlags(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven), RedFlag.class);
-            return redFlagList;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-    }
 
 	@Override
 	public List<RedFlag> getRedFlagPage(Integer groupID, Date startDate, Date endDate,

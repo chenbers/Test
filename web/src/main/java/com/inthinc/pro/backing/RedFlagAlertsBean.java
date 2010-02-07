@@ -180,6 +180,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setCrashLevel(RedFlagLevel.NONE);
             getItem().setTamperingLevel(RedFlagLevel.NONE);
             getItem().setLowBatteryLevel(RedFlagLevel.NONE);
+            getItem().setNoDriverLevel(RedFlagLevel.NONE);
             if (!getItem().isHardAccelerationSelected())
                 getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
             if (!getItem().isHardBrakeSelected())
@@ -204,6 +205,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setCrashLevel(RedFlagLevel.NONE);
             getItem().setTamperingLevel(RedFlagLevel.NONE);
             getItem().setLowBatteryLevel(RedFlagLevel.NONE);
+            getItem().setNoDriverLevel(RedFlagLevel.NONE);
         }
         else if (getItem().getType().equals("crash")) {
             getItem().setSpeedSettings(null);
@@ -220,6 +222,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
             getItem().setTamperingLevel(RedFlagLevel.NONE);
             getItem().setLowBatteryLevel(RedFlagLevel.NONE);
+            getItem().setNoDriverLevel(RedFlagLevel.NONE);
         }
         else if (getItem().getType().equals("tampering")) {
             getItem().setSpeedSettings(null);
@@ -236,8 +239,9 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
             getItem().setCrashLevel(RedFlagLevel.NONE);
             getItem().setLowBatteryLevel(RedFlagLevel.NONE);
+            getItem().setNoDriverLevel(RedFlagLevel.NONE);
         }
-        else if (getItem().getType().equals("tampering")) {
+        else if (getItem().getType().equals("lowBattery")) {
             getItem().setSpeedSettings(null);
             getItem().setSpeedLevels(null);
             getItem().setSpeedSelected(null);
@@ -252,6 +256,24 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
             getItem().setCrashLevel(RedFlagLevel.NONE);
             getItem().setTamperingLevel(RedFlagLevel.NONE);
+            getItem().setNoDriverLevel(RedFlagLevel.NONE);
+        }
+        else if (getItem().getType().equals("noDriver")) {
+            getItem().setSpeedSettings(null);
+            getItem().setSpeedLevels(null);
+            getItem().setSpeedSelected(null);
+            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
+            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
+            getItem().setHardTurnLevel(RedFlagLevel.NONE);
+            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
+            getItem().setHardAccelerationSelected(false);
+            getItem().setHardBrakeSelected(false);
+            getItem().setHardTurnSelected(false);
+            getItem().setHardVerticalSelected(false);
+            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
+            getItem().setCrashLevel(RedFlagLevel.NONE);
+            getItem().setTamperingLevel(RedFlagLevel.NONE);
+            getItem().setLowBatteryLevel(RedFlagLevel.NONE);
         }
         return super.save();
     }
@@ -434,6 +456,8 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                     type = "tampering";
                 else if (getLowBatteryLevel() != null && getLowBatteryLevel() != RedFlagLevel.NONE)
                     type = "lowBattery";
+                else if (getNoDriverLevel() != null && getNoDriverLevel() != RedFlagLevel.NONE)
+                    type = "noDriver";
                 else
                     type = "speed";
             }

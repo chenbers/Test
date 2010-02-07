@@ -51,21 +51,7 @@ public interface EventDAO extends GenericDAO<Event, Integer>
     Integer forgive(Integer driverID, Long noteID);
 
     Integer unforgive(Integer driverID, Long noteID);
-/*  TODO:  REMOVE THESE */
-    List<Event> getViolationEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
 
-    List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
-
-    List<Event> getEmergencyEventsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
-
-    List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven);
-    
-    List<Event> getZoneAlertsForGroup(Integer groupID, Integer daysBack, Integer includeForgiven);
-
-    List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven);
-
-    List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate, Integer includeForgiven); 
-/*  TODO:  END REMOVE THESE */
     List<Event> getEventsForGroupFromVehicles(Integer groupID, List<Integer> eventTypes, Integer daysBack);
     
     Event getEventNearLocation(Integer driverID,Double latitude,Double longitude,Date startDate,Date endDate);

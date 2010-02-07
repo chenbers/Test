@@ -297,19 +297,22 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 		
 		for (FilterField filterField : filterFields) {
 			String propertyName = getPropertyName(filterField.getExpression());
-			String filterValue = ((ExtendedFilterField) filterField).getFilterValue();
-			for (FilterField mFilterField : mFilterFields) {
-				String mPropertyName = getPropertyName(mFilterField.getExpression());
-				if (propertyName.equals(mPropertyName)) {
-					String mFilterValue = ((ExtendedFilterField) mFilterField).getFilterValue();
-					if (filterValue == null && (mFilterValue == null || mFilterValue.isEmpty()))
-						continue;
-					if ((filterValue == null && mFilterValue != null ) ||
-						(filterValue != null && mFilterValue == null ) ||
-						!filterValue.equals(mFilterValue))
-						return true;
+			if (filterField instanceof ExtendedFilterField) {
+				String filterValue = ((ExtendedFilterField) filterField).getFilterValue();
+				for (FilterField mFilterField : mFilterFields) {
+					String mPropertyName = getPropertyName(mFilterField.getExpression());
+					if (propertyName.equals(mPropertyName)) {
+						if (filterField instanceof ExtendedFilterField) {
+							String mFilterValue = ((ExtendedFilterField) mFilterField).getFilterValue();
+							if (filterValue == null && (mFilterValue == null || mFilterValue.isEmpty()))
+								continue;
+							if ((filterValue == null && mFilterValue != null ) ||
+								(filterValue != null && mFilterValue == null ) ||
+								!filterValue.equals(mFilterValue))
+								return true;
+						}
+					}
 				}
-				
 			}
 		}
 		return false;
@@ -318,8 +321,10 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 		if (filterFields != null) {
 			for (FilterField filterField : filterFields) {
 				String propertyName = getPropertyName(filterField.getExpression());
-				String filterValue = ((ExtendedFilterField) filterField).getFilterValue();
-				dataProvider.addFilterField(new TableFilterField(propertyName, filterValue));
+				if (filterField instanceof ExtendedFilterField) {
+					String filterValue = ((ExtendedFilterField) filterField).getFilterValue();
+					dataProvider.addFilterField(new TableFilterField(propertyName, filterValue));
+				}
 			}
 		}
 	}

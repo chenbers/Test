@@ -2,19 +2,24 @@ package com.inthinc.pro.backing.paging;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.backing.TablePref;
 import com.inthinc.pro.backing.TablePrefOptions;
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -54,6 +59,32 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
     }
 	private RedFlagPaginationTableDataProvider tableDataProvider;
 	private BasePaginationTable<RedFlag> table;
+	
+	private Integer filterLevel;
+	
+	public Integer getFilterLevel() {
+		return filterLevel;
+	}
+
+	public void setFilterLevel(Integer filterLevel) {
+		this.filterLevel = filterLevel;
+	}
+
+	public boolean filterLevelMethod(Object obj)
+	{
+		
+		return true;
+	}
+	
+	public Map<String, Integer> getFilterLevels() {
+    	final TreeMap<String, Integer> filterLevels = new TreeMap<String, Integer>();
+        for (RedFlagLevel p : EnumSet.allOf(RedFlagLevel.class)) {
+	    		filterLevels.put(p.toString(), p.getCode());
+	    	}
+	    
+	    return filterLevels;
+    }
+
 	
 	@Override
 	public void init()

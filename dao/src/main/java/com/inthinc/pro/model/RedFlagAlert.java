@@ -31,13 +31,14 @@ public class RedFlagAlert extends BaseAlert {
     @Column(name = "vert")
     private Integer hardVertical;
     private RedFlagLevel hardAccelerationLevel;
-    private RedFlagLevel hardBrakeLevel;
+	private RedFlagLevel hardBrakeLevel;
     private RedFlagLevel hardTurnLevel;
     private RedFlagLevel hardVerticalLevel;
     private RedFlagLevel seatBeltLevel;
     private RedFlagLevel crashLevel;
     private RedFlagLevel tamperingLevel;
     private RedFlagLevel lowBatteryLevel;
+    private RedFlagLevel noDriverLevel;
 
     public RedFlagAlert() {
     }
@@ -46,7 +47,7 @@ public class RedFlagAlert extends BaseAlert {
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo, Integer[] speedSettings,
             RedFlagLevel[] speedLevels, Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel hardAccelerationLevel,
             RedFlagLevel hardBrakeLevel, RedFlagLevel hardTurnLevel, RedFlagLevel hardVerticalLevel, RedFlagLevel seatBeltLevel, RedFlagLevel crashLevel,RedFlagLevel tamperingLevel,
-            RedFlagLevel lowBatteryLevel) {
+            RedFlagLevel lowBatteryLevel, RedFlagLevel noDriverLevel) {
         super(accountID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo);
         this.speedSettings = speedSettings;
         this.speedLevels = speedLevels;
@@ -62,6 +63,7 @@ public class RedFlagAlert extends BaseAlert {
         this.crashLevel = crashLevel;
         this.lowBatteryLevel = lowBatteryLevel;
         this.tamperingLevel = tamperingLevel;
+        this.noDriverLevel = noDriverLevel;
     }
 
     public Integer getRedFlagAlertID() {
@@ -201,4 +203,12 @@ public class RedFlagAlert extends BaseAlert {
     public RedFlagLevel getLowBatteryLevel() {
         return lowBatteryLevel;
     }
+
+    public RedFlagLevel getNoDriverLevel() {
+		return noDriverLevel;
+	}
+
+	public void setNoDriverLevel(RedFlagLevel noDriverLevel) {
+		this.noDriverLevel = noDriverLevel;
+	}
 }

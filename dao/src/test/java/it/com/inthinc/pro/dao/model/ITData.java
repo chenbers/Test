@@ -51,8 +51,8 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.security.Role;
 
 public class ITData {
 
@@ -173,12 +173,6 @@ public class ITData {
         states.setStateDAO(stateDAO);
         states.init();
 
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(siloService);
-
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
         
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
@@ -280,19 +274,34 @@ public class ITData {
     {
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
+        
+        
+        List<Integer> roleIDs =getAccountDefaultRoles(acctID);
 
         // create a person
         Person person = createPerson(acctID, team.getGroupID(), "Person"+team.getName(), "Last"+team.getGroupID()); 
 
 
         String username = "TEST_"+person.getPersonID();
-        User user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, team.getGroupID());
+        User user = new User(0, person.getPersonID(), roleIDs, Status.ACTIVE, username, PASSWORD, team.getGroupID());
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
      
         System.out.println(team.getGroupID() + " LOGIN NAME: " + username);
         return user;
         
+    }
+    
+    private List<Integer> getAccountDefaultRoles(Integer acctID)
+    {
+		RoleHessianDAO roleDAO = new RoleHessianDAO();
+		roleDAO.setSiloService(siloService);
+		List<Role> roles = roleDAO.getRoles(acctID);
+		List<Integer> roleIDs = new ArrayList<Integer>();
+		for (Role role : roles)
+			roleIDs.add(role.getRoleID());
+		return roleIDs;
+	
     }
 
     private void createGroupHierarchy(Integer acctID)
@@ -397,6 +406,13 @@ public class ITData {
         redFlagAlert = initRedFlagAlert("Low Battery");
         redFlagAlert.setLowBatteryLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
+        // no Driver INFO
+        redFlagAlert = initRedFlagAlert("No Driver");
+        redFlagAlert.setNoDriverLevel(RedFlagLevel.INFO);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+
+    
     }
 
 
@@ -415,7 +431,7 @@ public class ITData {
             null, null,
             null, null, null, null,
             RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
-            RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+            RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
     	return redFlagAlert;
     }
 	private void addRedFlagAlert(RedFlagAlert redFlagAlert,
@@ -520,7 +536,7 @@ public class ITData {
             if (includeZonesAndAlerts) {
             	zone = getNext(xmlDecoder, Zone.class);
             	getNext(xmlDecoder, ZoneAlert.class);
-            	for (int i = 0; i < 6; i++) {
+            	for (int i = 0; i < 7; i++) {
             		getNext(xmlDecoder, RedFlagAlert.class);
             	}
             }

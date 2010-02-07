@@ -326,10 +326,6 @@ public interface SiloService extends HessianService
      * @return
      * @throws ProDAOException
      */
-// TODO: REMOVE    
-    List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate, Integer includeForgiven) throws ProDAOException;
-
-    
     // pagination methods
     Map<String, Object> getRedFlagsCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList);
 
