@@ -114,15 +114,6 @@ public class NewAccountBean {
 	
     }
 
-//    private Role getSuperUserRole() {
-//        Map<Integer, Role> roles = Roles.getRoleMap();
-//        for (Role role : roles.values()) {
-//            if (role.getName().toUpperCase().startsWith("SUPERUSER"))
-//                return role;
-//        }
-//        return null;
-//    }
-
     public String getAccountName() {
         return accountName;
     }

@@ -295,6 +295,7 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
+
     @Override
     public List<Map<String, Object>> getSensitivityMaps() {
         return null;
@@ -656,6 +657,17 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
+	public List<Map<String, Object>> getSiteAccessPts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getRolesByAcctID(Integer acctID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
 	public List<Map<String, Object>> getDriverEventPage(Integer groupID,
 			Long startDate, Long endDate, Integer includeForgiven,
 			Map<String, Object> pageParams, Integer[] types) {
@@ -711,27 +723,14 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getRolesByAcctID(Integer acctID)
-			throws ProDAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> getSiteAccessPts() {
+	public Map<String, Object> updateRole(Integer roleID,
+			Map<String, Object> roleMap) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Map<String, Object>> getUsersAccessPts(Integer userID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Object> updateRole(Integer roleID,
-			Map<String, Object> roleMap) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

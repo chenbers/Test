@@ -1,11 +1,14 @@
 package com.inthinc.pro.security.userdetails;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Zone;
 
 public class ProUser extends org.springframework.security.userdetails.User
 {
@@ -18,6 +21,7 @@ public class ProUser extends org.springframework.security.userdetails.User
     private static final Logger logger = Logger.getLogger(ProUser.class);
 
     private User user;
+    private List<Zone>     zones;
     
     public ProUser(User user, GrantedAuthority[] grantedAuthorities)
     {
