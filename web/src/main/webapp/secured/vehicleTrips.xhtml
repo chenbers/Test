@@ -27,6 +27,7 @@
 		var bounds = new GLatLngBounds();
 		var mapNeedsInit = true;
 		var showTamperMarkers = true;
+		var ajaxCount = 0;
 		
 		function initMap(lat,lng,zoom)
 		{
@@ -264,7 +265,7 @@
         }
 
         function reverseGeocodeTripAddress(latlng, addressElement){
-            
+            ajaxCount++;
          	geocoder.getLocations(latlng, 
         			function(response){
     			        if (!response || response.Status.code != 200) {
@@ -276,6 +277,7 @@
 //  			             document.getElementById(addressElement).innerHTML = response.Placemark[0].address;
   			             	addressElement.innerHTML = response.Placemark[0].address;
     			        }
+    			        ajaxCount--;
     		    	});
         }
   			    
