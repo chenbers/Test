@@ -139,9 +139,12 @@
 		}
 		function onReRenderWithSelection()
 		{	
-			isReady = true;
-			dynamicTableStyles();
-            getAddresses();
+			if (ajaxCount == 0){
+				
+				isReady = true;
+				dynamicTableStyles();
+	            getAddresses();
+			}
 		}
 		</script>
 
