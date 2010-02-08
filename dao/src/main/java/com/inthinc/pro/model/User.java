@@ -75,18 +75,6 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-//    public Integer getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Integer roleID) {
-//    	if (roles == null) {
-//    		roles = new ArrayList<Integer>();
-//    	}
-//    	roles.add(roleID);
-//        this.role = role;
-//    }
-
     public Status getStatus() {
         return status;
     }
