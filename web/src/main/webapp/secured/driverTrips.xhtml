@@ -27,7 +27,7 @@
 			baseIcon.iconSize = new GSize(21, 20);
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-		
+		var ajaxCount = 0;
 		function initMap(lat,lng,zoom)
 		{
    			if (GBrowserIsCompatible()) 
@@ -130,7 +130,7 @@
 		}
 		function onReRender()
 		{
-//			alert("onrerender");
+			alert("onrerender");
 			isReady = true;
 			dynamicTableStyles();
             jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
@@ -138,10 +138,14 @@
 		}
 		function onReRenderWithSelection()
 		{	
-//			alert("onReRenderWithSelection");
-			isReady = true;
-			dynamicTableStyles();
-	        getAddresses();
+			if (ajaxCount == 0){
+				alert("onReRenderWithSelection");
+				
+				isReady = true;
+				dynamicTableStyles();
+	            jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
+		        getAddresses();
+			}
 		}
   	  	  
 		</script>
@@ -249,7 +253,7 @@
 	        		var address = jQuery(this).find('*[id$="address"]');
 						
 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);
-	
+					
 	    		});	
 	    		jQuery('td[id$="address_column"]').each(function(n){
 	
@@ -265,7 +269,7 @@
         }
 
         function reverseGeocodeTripAddress(latlng, addressElement){
-            
+            ajaxCount++;
          	geocoder.getLocations(latlng, 
         			function(response){
     			        if (!response || response.Status.code != 200) {
@@ -277,6 +281,7 @@
 
 			             	addressElement.innerHTML = response.Placemark[0].address;
     			        }
+    			        ajaxCount--;
     		    	});
         }
 		
