@@ -76,7 +76,9 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
+import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
+
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.security.Role;
 
@@ -117,7 +119,8 @@ public class AlertMessagesTest {
     private static VehicleHessianDAO vehicleDAO;
     private static ZoneHessianDAO zoneHessianDAO;
     private static GeonamesAddressLookup addressLookup;
-
+//    private static RoleHessianDAO roleDAO;
+    
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         IntegrationConfig config = new IntegrationConfig();
@@ -148,6 +151,13 @@ public class AlertMessagesTest {
         States states = new States();
         states.setStateDAO(stateDAO);
         states.init();
+        
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+        
+        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
+        siteAccessPoints.setRoleDAO(roleDAO);
+        siteAccessPoints.init();
         
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
@@ -429,7 +439,6 @@ public class AlertMessagesTest {
 		return roleIDs;
 	
     }
-
 
     private static String genNumericID(Integer acctID, Integer len) {
         String id = "999" + acctID.toString();
@@ -747,6 +756,7 @@ public class AlertMessagesTest {
         personDAO = new PersonHessianDAO();
         vehicleDAO = new VehicleHessianDAO();
         zoneHessianDAO = new ZoneHessianDAO();
+        
         addressLookup = new GeonamesAddressLookup();
         addressLookup.setMapServerURLString(mapServerURL);
         driverDAO.setSiloService(siloService);
@@ -755,6 +765,7 @@ public class AlertMessagesTest {
         personDAO.setSiloService(siloService);
         vehicleDAO.setSiloService(siloService);
         zoneHessianDAO.setSiloService(siloService);
+
         alertMessageDAO.setDriverDAO(driverDAO);
         alertMessageDAO.setVehicleDAO(vehicleDAO);
         alertMessageDAO.setEventDAO(eventDAO);
@@ -825,5 +836,4 @@ public class AlertMessagesTest {
         }
         return null;
     }
-
 }
