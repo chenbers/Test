@@ -43,12 +43,6 @@ public class UserHessianDAOTest
         states.setStateDAO(stateDAO);
         states.init();
 
-//        RoleHessianDAO roleDAO = new RoleHessianDAO();
-//        roleDAO.setSiloService(new SiloServiceCreator().getService());
-//
-//        Roles roles = new Roles();
-//        roles.setRoleDAO(roleDAO);
-//        roles.init();
     }
     
 
@@ -65,7 +59,7 @@ public class UserHessianDAOTest
         assertEquals("custom101", user.getUsername());
         assertEquals("custom101@email.com", user.getPerson().getPriEmail());
         assertEquals(new Integer(101), user.getGroupID());
-        assertEquals(MockRoles.getAdminUser(), user.getRoles().get(0));
+        assertEquals(MockRoles.getAdminUser().getRoleID(), user.getRoles().get(0));
     }
     
     @Test
