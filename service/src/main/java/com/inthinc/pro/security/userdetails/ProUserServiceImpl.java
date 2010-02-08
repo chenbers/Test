@@ -86,16 +86,8 @@ public class ProUserServiceImpl implements UserDetailsService
         
         List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();		
 
-		List<Integer> userRoles = user.getRoles();
-		boolean hasAdmin=false;
-		for(Integer id:userRoles){
-			if (roles.getRoleById(id).getName().equals("Admin")){
-				hasAdmin=true;
-				break;
-			}
-		}
 		// this will take into account the site access points instead of the original roles as follows
-		if(hasAdmin){
+		if(userIsAdmin(user)){
 			//add all the access points
 			grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
 		}
@@ -111,6 +103,23 @@ public class ProUserServiceImpl implements UserDetailsService
 	 	GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[grantedAuthoritiesList.size()];
 		
 		return grantedAuthoritiesList.toArray(grantedAuthorities);
+	}
+	private boolean userIsAdmin(User user){
+		
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init(user.getPerson().getAcctID());
+
+		List<Integer> userRoles = user.getRoles();
+
+		for(Integer id:userRoles){
+			
+			if (roles.getRoleById(id).getName().equals("Admin")){
+				
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public RoleDAO getRoleDAO() {
