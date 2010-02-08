@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.MpgHessianDAO;
+import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
@@ -46,6 +47,7 @@ import com.inthinc.pro.model.TrendItem;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.security.Roles;
 
 //@Ignore
 public class ReportServiceTest {
@@ -172,6 +174,13 @@ public class ReportServiceTest {
         States states = new States();
         states.setStateDAO(stateDAO);
         states.init();
+
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+
+//        Roles roles = new Roles();
+//        roles.setRoleDAO(roleDAO);
+//        roles.init();
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);

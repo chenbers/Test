@@ -1,10 +1,24 @@
 package com.inthinc.pro.security.userdetails;
 
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import it.config.IntegrationConfig;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.userdetails.UsernameNotFoundException;
+
+import com.inthinc.pro.dao.hessian.GroupHessianDAO;
+import com.inthinc.pro.dao.hessian.RoleHessianDAO;
+import com.inthinc.pro.dao.hessian.UserHessianDAO;
+import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
+import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 
 public class ProUserServiceImplTest
 {
@@ -24,14 +38,14 @@ public class ProUserServiceImplTest
     {
         // TODO: This test is totally bogus -- but just trying to get the unit testing ball rolling.
         
-        ProUserServiceImpl impl = new ProUserServiceImpl();
+        ProUserServiceImpl pusi = new ProUserServiceImpl();
         
         UserDetails proUserDetails = null;
         Exception exception = null;
         
         try
         {
-            proUserDetails = impl.loadUserByUsername("expired");
+            proUserDetails = pusi.loadUserByUsername("expired");
         }
         catch (Exception e)
         {
@@ -41,6 +55,48 @@ public class ProUserServiceImplTest
         //assertEquals("Expected no User Details.", "expired", proUserDetails.getUsername() );
 //        assertTrue("Expected an expired account.", (exception instanceof AccountExpiredException) );
         
+        //set up all the DAOs
+        IntegrationConfig config = new IntegrationConfig();
+        String host = config.get(IntegrationConfig.SILO_HOST).toString();
+        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
+        SiloService siloService = new SiloServiceCreator(host, port).getService();
+        
+        GroupHessianDAO groupDAO = new GroupHessianDAO();
+        groupDAO.setSiloService(siloService);
+        pusi.setGroupDAO(groupDAO);
+        
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+        pusi.setRoleDAO(roleDAO);
+        
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        pusi.setUserDAO(userDAO);
+        
+        ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
+        zoneDAO.setSiloService(siloService);
+        pusi.setZoneDAO(zoneDAO);
+        
+        UserDetails userDetails = null;
+        //Try loading jhoward
+        try{
+        	
+        	userDetails = pusi.loadUserByUsername("jhoward");
+        	assertTrue("No user was found", userDetails != null);
+            assertTrue("No user named jhoward was found", userDetails.getUsername().equals("jhoward"));
+            
+            GrantedAuthority[] gas = userDetails.getAuthorities();
+            assertTrue("Default role not Admin", gas[0].toString().equals("ROLE_ADMIN"));
+        }
+        catch (UsernameNotFoundException unfe){
+        	
+        	assertNull("No user found",userDetails);
+        }
+        catch (DataAccessException dae){
+        	
+        	assertNull("Data Access problem",userDetails);
+       	
+        }
         
     }
 

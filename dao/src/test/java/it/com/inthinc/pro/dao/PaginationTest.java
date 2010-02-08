@@ -1,6 +1,13 @@
 package it.com.inthinc.pro.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import it.com.inthinc.pro.dao.model.GroupData;
+import it.com.inthinc.pro.dao.model.ITData;
+import it.config.IntegrationConfig;
+import it.config.ReportTestConst;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,12 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-import it.com.inthinc.pro.dao.model.GroupData;
-import it.com.inthinc.pro.dao.model.ITData;
-import it.config.IntegrationConfig;
-import it.config.ReportTestConst;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
@@ -24,6 +25,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagHessianDAO;
+import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -34,6 +36,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ZoneEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
+import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -55,7 +58,7 @@ public class PaginationTest {
     private static Map<EventCategory, Integer[]> EXPECTED_EVENT_COUNTS;
     static {
     	EXPECTED_EVENT_COUNTS = new HashMap<EventCategory, Integer[]> ();
-    	// events in team 0 (GOOD) are from the unknown driver 
+    	// events in team 0 (GOOD) are from the unknown driver
     	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(15), Integer.valueOf(24)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(4), Integer.valueOf(4), Integer.valueOf(8), Integer.valueOf(16)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(1)});
@@ -98,6 +101,18 @@ public class PaginationTest {
         States states = new States();
         states.setStateDAO(stateDAO);
         states.init();
+
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+
+        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
+        siteAccessPoints.setRoleDAO(roleDAO);
+        siteAccessPoints.init();
+        
+
+//        Roles roles = new Roles();
+//        roles.setRoleDAO(roleDAO);
+//        roles.init();
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);

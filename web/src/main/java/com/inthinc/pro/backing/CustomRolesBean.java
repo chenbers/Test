@@ -19,7 +19,7 @@ import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.security.Role;
-import com.inthinc.pro.reports.util.MessageUtil;
+import com.inthinc.pro.util.MessageUtil;
 /**
  * @author David Gileadi
  */
@@ -150,9 +150,9 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final CustomRoleView customRole : saveItems) {
 
-//            final String summary = MessageUtil.formatMessageString(create ? "customRole_added" : "customRole_updated", customRole.getName());
-//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
-//            context.addMessage(null, message);
+            final String summary = MessageUtil.formatMessageString(create ? "customRole_added" : "customRole_updated", customRole.getName());
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+            context.addMessage(null, message);
         }
     }
 

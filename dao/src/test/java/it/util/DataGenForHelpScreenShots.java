@@ -3,6 +3,7 @@ package it.util;
 import it.com.inthinc.pro.dao.Util;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -308,6 +309,10 @@ public class DataGenForHelpScreenShots {
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
 
+//        Roles roles = new Roles();
+//        roles.setRoleDAO(roleDAO);
+//        roles.init();
+//        
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
@@ -423,7 +428,6 @@ public class DataGenForHelpScreenShots {
 
 
         String username = new String(first.substring(0,1) + last + Util.randomInt(0, 1000)).toLowerCase();
-        
         User user = new User(0, person.getPersonID(), getAccountDefaultRoles(acctID), Status.ACTIVE, username, PASSWORD, team.getGroupID());
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);

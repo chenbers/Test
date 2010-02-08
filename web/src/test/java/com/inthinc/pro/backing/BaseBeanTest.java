@@ -18,6 +18,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.context.SecurityContextImpl;
@@ -231,14 +233,15 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
 
 		return dateList;
 	}
-	private List<String> getGrantedAuthorities(User user){
+	private GrantedAuthority[] getGrantedAuthorities(User user){
 		
         Roles roles = new Roles();
         roles.setRoleDAO(getRoleDAO());
         roles.init(user.getPerson().getAcctID());
+        
+        List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();		
 
-		List<String> grantedAuthorities = new ArrayList<String>();
-		
+		//TODO put this somewhere else
 		List<Integer> userRoles = user.getRoles();
 		boolean hasAdmin=false;
 		for(Integer id:userRoles){
@@ -250,19 +253,20 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
 		// this will take into account the site access points instead of the original roles as follows
 		if(hasAdmin){
 			//add all the access points
-			grantedAuthorities.add("ROLE_ADMIN");
+			grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
 		}
 		else{
 			
 			for(AccessPoint ap:user.getAccessPoints()){
 				
-				grantedAuthorities.add(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString());
+				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString()));
 			}
 		}
-		grantedAuthorities.add("ROLE_NORMAL");
+		grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_NORMAL"));
 		
-		return grantedAuthorities;
-	
+	 	GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[grantedAuthoritiesList.size()];
+		
+		return grantedAuthoritiesList.toArray(grantedAuthorities);
 	}
 
 }

@@ -45,6 +45,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.model.security.Roles;
 
 // class to generate test data
 //  
@@ -65,6 +66,7 @@ public class DataGenerator
     Device device;
     Vehicle vehicle;
     Driver driver;
+    Roles roles;
     
     private void createTestData()
     {
@@ -132,6 +134,10 @@ public class DataGenerator
 
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
+
+        roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init(teamGroup.getAccountID());
         
     }
     
@@ -205,6 +211,7 @@ public class DataGenerator
 
 
         String username = "user_"+person.getPersonID();
+        
         user = new User(0, person.getPersonID(), getAccountDefaultRoles(acctID),  Status.ACTIVE, username, PASSWORD, groupID);
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);

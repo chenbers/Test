@@ -12,10 +12,6 @@ import com.inthinc.pro.model.BaseEntity;
 @XmlRootElement
 public class Role extends BaseEntity implements Comparable<Role>{
 	
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@ID

@@ -7,12 +7,12 @@ import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.SiteAccessPoint;
 
+@SuppressWarnings("serial")
 public class RoleHessianDAO extends GenericHessianDAO<Role, Integer> implements RoleDAO
 {
-
+	
 	@Override
 	public List<Role> getRoles(Integer acctID) {
-	//TODO swap to roles by account id
 		
         return getMapper().convertToModelObject(getSiloService().getRolesByAcctID(acctID), Role.class);	
         

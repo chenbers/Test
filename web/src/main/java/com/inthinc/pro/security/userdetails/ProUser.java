@@ -26,7 +26,7 @@ public class ProUser extends org.springframework.security.userdetails.User
     private GroupHierarchy groupHierarchy;
     private List<Zone>     zones;
     
-    public ProUser(User user, List<String> roles)
+    public ProUser(User user, GrantedAuthority[] grantedAuthorities)
     {
         super(  user.getUsername(),
                 user.getPassword(),
@@ -34,7 +34,7 @@ public class ProUser extends org.springframework.security.userdetails.User
                 true, // boolean accountNonExpired,
                 true, // boolean credentialsNonExpired
                 true, // boolean accountNonLocked,
-                getAuthorities(roles));
+                grantedAuthorities);
         
         this.user = user;
     }
@@ -64,15 +64,6 @@ public class ProUser extends org.springframework.security.userdetails.User
     public void setGroupHierarchy(GroupHierarchy groupHierarchy)
     {
         this.groupHierarchy = groupHierarchy;
-    }
-    private static GrantedAuthority[] getAuthorities(List<String> roles){
-		List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();
-	 	for (String role:roles){
-	 		
-	 		grantedAuthoritiesList.add(new GrantedAuthorityImpl(role));
-	 	}
-	 	GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[grantedAuthoritiesList.size()];
-	 	return grantedAuthoritiesList.toArray(grantedAuthorities);
     }
     public List<Zone> getZones() {
         return zones;

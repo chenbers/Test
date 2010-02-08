@@ -1,11 +1,16 @@
 package com.inthinc.pro.security.userdetails;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.security.Role;
 
 public class ProUser extends org.springframework.security.userdetails.User
 {
@@ -19,7 +24,7 @@ public class ProUser extends org.springframework.security.userdetails.User
 
     private User user;
     
-    public ProUser(User user, String roleName)
+    public ProUser(User user, GrantedAuthority[] authorities)
     {
         this(   user.getUsername(),
                 user.getPassword(),
@@ -27,7 +32,7 @@ public class ProUser extends org.springframework.security.userdetails.User
                 true, // boolean accountNonExpired,
                 true, // boolean credentialsNonExpired
                 true, // boolean accountNonLocked,
-                new GrantedAuthority[] { new GrantedAuthorityImpl(roleName) });
+                authorities);
         
         this.user = user;
     }
@@ -48,4 +53,5 @@ public class ProUser extends org.springframework.security.userdetails.User
     {
         this.user = user;
     }
+    
 }

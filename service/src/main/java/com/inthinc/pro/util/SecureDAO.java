@@ -5,14 +5,12 @@ import java.util.List;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 public abstract class SecureDAO<T> {
 
-    protected static final Role inthincRole = Roles.getRoleByName("inthinc");
+//    protected static final Role inthincRole = new Role(1,0,"inthinc");
 	
     public ProUser getProUser() {
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -35,7 +33,8 @@ public abstract class SecureDAO<T> {
     }
     
     public boolean isInthincUser() {
-        return getUser().getRole().equals(inthincRole);
+    	return getUser().getRoles().contains(0);
+//        return getUser().getRoles().(inthincRole);
     }
     
     public abstract List<T> getAll();

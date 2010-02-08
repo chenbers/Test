@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
@@ -45,8 +47,10 @@ public class ProUserServiceImpl implements UserDetailsService
             if (user == null || !user.getStatus().equals(Status.ACTIVE))
             {
                 throw new UsernameNotFoundException("Username could not be found");
-            }    
+            } 
             
+            user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
+
             ProUser proUser = new ProUser(user, getGrantedAuthorities(user));
             
             Group topGroup = groupDAO.findByID(user.getGroupID());
@@ -69,7 +73,6 @@ public class ProUserServiceImpl implements UserDetailsService
         logger.debug("lookup: " + username);
         
         User user = userDAO.findByUserName(username);
-        user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
         return user;
     }
 
@@ -109,43 +112,46 @@ public class ProUserServiceImpl implements UserDetailsService
 	public void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
 	}
-	private List<String> getGrantedAuthorities(User user){
+	private GrantedAuthority[] getGrantedAuthorities(User user){
 		
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init(user.getPerson().getAcctID());
         
-		List<String> grantedAuthorities = new ArrayList<String>();
-		
-//		for(Integer roleID:user.getRoles()){
-//			
-//			grantedAuthorities.add(roles.getRoleById(roleID).toString());
-//		}
+        List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();		
 
-		//TODO put this somewhere else
-		List<Integer> userRoles = user.getRoles();
-		boolean hasAdmin=false;
-		for(Integer id:userRoles){
-			if (roles.getRoleById(id).getName().equals("Admin")){
-				hasAdmin=true;
-				break;
-			}
-		}
 		// this will take into account the site access points instead of the original roles as follows
-		if(hasAdmin){
-			//add all the access points
-			grantedAuthorities.add("ROLE_ADMIN");
+		if(userIsAdmin(user)){
+			
+			//Will cover all access points
+			grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
 		}
 		else{
 			
 			for(AccessPoint ap:user.getAccessPoints()){
 				
-				grantedAuthorities.add(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString());
+				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString()));
 			}
 		}
-		grantedAuthorities.add("ROLE_NORMAL");
+		grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_NORMAL"));
 		
-		return grantedAuthorities;
+	 	GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[grantedAuthoritiesList.size()];
 		
+		return grantedAuthoritiesList.toArray(grantedAuthorities);
+	}
+
+	private boolean userIsAdmin(User user){
+		
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init(user.getPerson().getAcctID());
+
+		List<Integer> userRoles = user.getRoles();
+
+		for(Integer id:userRoles){
+			
+			if (roles.getRoleById(id).getName().equals("Admin")){
+				
+				return true;
+			}
+		}
+		return false;
 	}
 }

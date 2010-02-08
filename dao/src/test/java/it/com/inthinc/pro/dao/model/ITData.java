@@ -51,6 +51,7 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
+import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.security.Role;
 
@@ -173,6 +174,12 @@ public class ITData {
         states.setStateDAO(stateDAO);
         states.init();
 
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+
+        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
+        siteAccessPoints.setRoleDAO(roleDAO);
+        siteAccessPoints.init();
         
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
@@ -267,7 +274,6 @@ public class ITData {
         
         return id;
     }
-
 
 
     private User createUser(Integer acctID, Group team)

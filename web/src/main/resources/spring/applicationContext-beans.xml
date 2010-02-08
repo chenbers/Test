@@ -260,7 +260,7 @@ default-autowire="byName">
     <property name="vehiclesBean" ref="vehiclesBean"></property>
   </bean>
 
-  <bean id="customRolesBean" class="com.inthinc.pro.backing.CustomRolesBean" scope="session" init-method="init">
+  <bean id="customRolesBean" class="com.inthinc.pro.backing.CustomRolesBean" scope="session" init-method="initBean">
     <property name="roleDAO" ref="roleDAO"></property>
   </bean>
 

@@ -2,7 +2,6 @@ package it.util;
 
 import static org.junit.Assert.assertNotNull;
 import it.com.inthinc.pro.dao.Util;
-import it.com.inthinc.pro.dao.model.GroupData;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
@@ -487,6 +486,9 @@ public class DataGenForStressTesting {
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
 
+//        Roles roles = new Roles();
+//        roles.setRoleDAO(roleDAO);
+//        roles.init();
         
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
