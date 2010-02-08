@@ -5,7 +5,7 @@
     <http auto-config="false" session-fixation-protection="newSession" access-denied-page="/accessDenied.faces" entry-point-ref="authenticationProcessingFilterEntryPoint">
         <!--  error if user logs in concurrently (only one login allowed at a time)  -->
         <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
-        <intercept-url pattern="/secured/**" access="ROLE_SUPERUSER,ROLE_INTHINC" />
+        <intercept-url pattern="/secured/**" access="ROLE_SUPERUSER,ROLE_INTHINC,ROLE_ADMIN" />
         <logout logout-success-url="/login.faces" />
     </http>
 
@@ -43,6 +43,7 @@
     </authentication-provider>
     <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
         <beans:property name="userDAO" ref="userDAO" />
+        <beans:property name="roleDAO" ref="roleDAO" />
     </beans:bean>
 
     <!--  Password encryption  -->

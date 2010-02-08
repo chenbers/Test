@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -10,6 +12,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateUsernameException;
 import com.inthinc.pro.model.Account;
@@ -21,10 +24,10 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.SiteAccessPoints;
+import com.inthinc.pro.model.security.Role;
 
 public class NewAccountBean {
     // gathered from UI
@@ -41,9 +44,9 @@ public class NewAccountBean {
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
     public void init() {
-        Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
+        SiteAccessPoints accessPoints = new SiteAccessPoints();
+        accessPoints.setRoleDAO(roleDAO);
+        accessPoints.init();
     }
 
     public void createAction() {
@@ -71,7 +74,8 @@ public class NewAccountBean {
             return;
         }
         // create the superuser
-        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID);
+        // TODO: not sure if this is correct for roles, but added to get it to compile
+        User user = new User(0, person.getPersonID(), getAccountDefaultRoles(acctID),/*getSuperUserRole(), */Status.ACTIVE, getUsername(), PASSWORD, groupID);
         Integer userID = null;
         try {
             userID = userDAO.create(personID, user);
@@ -100,15 +104,24 @@ public class NewAccountBean {
         setUsername(null);
         setEmail(null);
     }
-
-    private Role getSuperUserRole() {
-        Map<Integer, Role> roles = Roles.getRoleMap();
-        for (Role role : roles.values()) {
-            if (role.getName().toUpperCase().startsWith("SUPERUSER"))
-                return role;
-        }
-        return null;
+    private List<Integer> getAccountDefaultRoles(Integer acctID)
+    {
+		List<Role> roles = roleDAO.getRoles(acctID);
+		List<Integer> roleIDs = new ArrayList<Integer>();
+		for (Role role : roles)
+			roleIDs.add(role.getRoleID());
+		return roleIDs;
+	
     }
+
+//    private Role getSuperUserRole() {
+//        Map<Integer, Role> roles = Roles.getRoleMap();
+//        for (Role role : roles.values()) {
+//            if (role.getName().toUpperCase().startsWith("SUPERUSER"))
+//                return role;
+//        }
+//        return null;
+//    }
 
     public String getAccountName() {
         return accountName;
