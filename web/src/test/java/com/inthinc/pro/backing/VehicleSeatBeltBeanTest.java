@@ -25,7 +25,7 @@ public class VehicleSeatBeltBeanTest extends BaseBeanTest
     {
         // just test the bean successfully creates all of the required pies
         // team level login
-        loginUser("normal101");
+        loginUser("custom101");
         
         // get the bean from the applicationContext (initialized by Spring injection)
         VehicleSeatBeltBean vehicleSeatBeltBean = (VehicleSeatBeltBean)applicationContext.getBean("vehicleSeatBeltBean");

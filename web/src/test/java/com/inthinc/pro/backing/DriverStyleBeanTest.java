@@ -45,7 +45,7 @@ public class DriverStyleBeanTest extends BaseBeanTest
     public void bean()
     {
         // team level login
-        loginUser("normal101");
+        loginUser("custom101");
         
         // get the bean from the applicationContext (initialized by Spring injection)
         DriverStyleBean driverStyleBean = (DriverStyleBean)applicationContext.getBean("driverStyleBean");

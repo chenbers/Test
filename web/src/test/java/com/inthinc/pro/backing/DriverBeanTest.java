@@ -25,7 +25,7 @@ public class DriverBeanTest extends BaseBeanTest
         // just test the bean successfully creates all of the required pies
         
         // team level login
-        loginUser("normal101");
+        loginUser("custom101");
         
         // get the bean from the applicationContext (initialized by Spring injection)
         DriverPerformanceBean driverBean = (DriverPerformanceBean)applicationContext.getBean("driverPerformanceBean");
