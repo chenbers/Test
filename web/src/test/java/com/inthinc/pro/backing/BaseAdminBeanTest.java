@@ -48,7 +48,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     public void list()
     {
         // login
-        loginUser("superuser101");
+        loginUser("custom101");
 
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
@@ -129,7 +129,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     public void display()
     {
         // login
-        loginUser("superuser101");
+        loginUser("custom101");
 
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
@@ -156,7 +156,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     public void add()
     {
         // login
-        loginUser("superuser101");
+        loginUser("custom101");
 
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
@@ -195,7 +195,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     public void edit()
     {
         // login
-        loginUser("superuser101");
+        loginUser("custom101");
 
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
@@ -236,7 +236,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
     {
         // login
-        loginUser("superuser101");
+        loginUser("custom101");
 
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
@@ -290,7 +290,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     public void delete()
     {
         // login
-        loginUser("superuser101");
+        loginUser("custom101");
 
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();

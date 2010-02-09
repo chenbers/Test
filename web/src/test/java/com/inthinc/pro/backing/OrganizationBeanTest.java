@@ -37,7 +37,7 @@ public class OrganizationBeanTest extends BaseBeanTest
 
     private void setup()
     {
-        loginUser("superuser101");
+        loginUser("custom101");
         organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
     }
 

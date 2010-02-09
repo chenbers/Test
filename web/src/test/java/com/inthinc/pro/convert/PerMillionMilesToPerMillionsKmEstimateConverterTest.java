@@ -27,7 +27,7 @@ public class PerMillionMilesToPerMillionsKmEstimateConverterTest extends BaseBea
     public void getAsString()
     {
     	
-    	ProUser user = loginUser("superuser101");
+    	ProUser user = loginUser("custom101");
     	LocaleBean localeBean = new LocaleBean();
     	localeBean.getLocale();
     
