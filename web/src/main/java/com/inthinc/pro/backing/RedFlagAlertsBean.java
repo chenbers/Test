@@ -150,6 +150,9 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             updateField.put("hardVertical", updateType);
             updateField.put("seatBeltLevel", updateType);
             updateField.put("crashLevel", updateType);
+            updateField.put("lowBatteryLevel", updateType);
+            updateField.put("tamperingLevel", updateType);
+            updateField.put("noDriverLevel", updateType);
             if (updateField.get("anytime")) {
                 updateField.put("startTOD", true);
                 updateField.put("stopTOD", true);
