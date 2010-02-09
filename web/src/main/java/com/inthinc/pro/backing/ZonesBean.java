@@ -198,6 +198,9 @@ public class ZonesBean extends BaseBean
         zones.remove(item);
         zoneIDs = null;
         item = null;
+        
+        // reload the zones for the account that are carried by proUser
+        getProUser().setZones(zones);        
     }
 
     public Integer getItemID()
