@@ -322,14 +322,14 @@ public class MockData {
                          Boolean.FALSE),
                 createUser(idOffset + 2, accountID, groupID, "custom" + groupID, PASSWORD, randomPhone(), randomPhone(), "custom" + groupID + "@email.com", adminRoles,
                          Boolean.TRUE),
-//                createUser(idOffset + 3, accountID, groupID, "normal" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal" + groupID + "@email.com", MockRoles
-//                        .getNormalUser(), Boolean.TRUE),
-//                createUser(idOffset + 4, accountID, groupID, "readonly" + groupID, PASSWORD, randomPhone(), randomPhone(), "readonly" + groupID + "@email.com", MockRoles
-//                        .getReadOnlyUser(), Boolean.TRUE),
-//                createUser(idOffset + 5, accountID, groupID, "superuser" + groupID, PASSWORD, randomPhone(), randomPhone(), "superuser" + groupID + "@email.com", MockRoles
-//                        .getSuperUser(), Boolean.TRUE),
-//                createUser(idOffset + 6, accountID, groupID, "supervisor" + groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor" + groupID + "@email.com", MockRoles
-//                        .getSupervisor(), Boolean.TRUE) 
+                createUser(idOffset + 3, accountID, groupID, "normal" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal" + groupID + "@email.com", normalRoles,
+                         Boolean.TRUE),
+                createUser(idOffset + 4, accountID, groupID, "readonly" + groupID, PASSWORD, randomPhone(), randomPhone(), "readonly" + groupID + "@email.com", normalRoles,
+                         Boolean.TRUE),
+                createUser(idOffset + 5, accountID, groupID, "superuser" + groupID, PASSWORD, randomPhone(), randomPhone(), "superuser" + groupID + "@email.com", adminRoles,
+                         Boolean.TRUE),
+                createUser(idOffset + 6, accountID, groupID, "supervisor" + groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor" + groupID + "@email.com", adminRoles,
+                         Boolean.TRUE) 
         };
         for (int userCnt = 0; userCnt < users.length; userCnt++) {
             storeObject(users[userCnt]);
