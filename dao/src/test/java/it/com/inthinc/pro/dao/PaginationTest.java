@@ -25,7 +25,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagHessianDAO;
-import com.inthinc.pro.dao.hessian.RoleHessianDAO;
+//import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -36,7 +36,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ZoneEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.SiteAccessPoints;
+//import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -102,12 +102,12 @@ public class PaginationTest {
         states.setStateDAO(stateDAO);
         states.init();
 
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(siloService);
-
-        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
-        siteAccessPoints.setRoleDAO(roleDAO);
-        siteAccessPoints.init();
+//        RoleHessianDAO roleDAO = new RoleHessianDAO();
+//        roleDAO.setSiloService(siloService);
+//
+//        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
+//        siteAccessPoints.setRoleDAO(roleDAO);
+//        siteAccessPoints.init();
         
 
 //        Roles roles = new Roles();

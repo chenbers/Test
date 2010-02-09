@@ -289,6 +289,10 @@ eventCount = 0;
             {
             	if (includeExtraEvents && !badSpeeding) {
             		// speed limit is 0 ( should be filtered out)
+//            	    	SpeedingEvent(Long noteID, Integer vehicleID, Integer type, 
+//            	    		Date time, Integer speed, Integer odometer, Double latitude, Double longitude, 
+//            	    		Integer topSpeed,
+//            	            Integer avgSpeed, Integer speedLimit, Integer distance, Integer avgRPM)
                     event = new SpeedingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3,
                             eventTime, 80, odometer,  locations[i].getLat(), locations[i].getLng(),
                             0, 0, 0, ReportTestConst.MILES_PER_EVENT, 10);

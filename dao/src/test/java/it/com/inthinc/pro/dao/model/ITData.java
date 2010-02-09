@@ -286,8 +286,9 @@ public class ITData {
 
         // create a person
         Person person = createPerson(acctID, team.getGroupID(), "Person"+team.getName(), "Last"+team.getGroupID()); 
-
-
+        person.setCrit(1);
+        person.setWarn(1);
+        person.setInfo(1);
         String username = "TEST_"+person.getPersonID();
         User user = new User(0, person.getPersonID(), roleIDs, Status.ACTIVE, username, PASSWORD, team.getGroupID());
         Integer userID = userDAO.create(person.getPersonID(), user);
@@ -527,7 +528,7 @@ public class ITData {
                 groupData.driverType = i;
                 teamGroupData.add(groupData);
             }
-            getNext(xmlDecoder, User.class);
+            fleetUser = getNext(xmlDecoder, User.class);
             for (int i = GOOD; i <= BAD; i++) {
                 GroupData groupData = teamGroupData.get(i);
                 groupData.user = getNext(xmlDecoder, User.class);

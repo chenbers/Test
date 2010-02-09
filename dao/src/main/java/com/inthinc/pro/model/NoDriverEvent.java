@@ -1,6 +1,6 @@
 package com.inthinc.pro.model;
 
-import java.text.MessageFormat;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -12,6 +12,12 @@ public class NoDriverEvent extends Event{
 	public NoDriverEvent() {
 		super();
 	}
+	
+    public NoDriverEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    {
+        super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
+    }
+
     public EventType getEventType()
     {
         return EventType.NO_DRIVER;

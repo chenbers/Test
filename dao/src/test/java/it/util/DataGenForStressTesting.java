@@ -543,6 +543,9 @@ public class DataGenForStressTesting {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         vehicleDAO.setDeviceDAO(deviceDAO);
+        
+System.out.println("vehicleID: " + vehicleID);
+System.out.println("deviceID: " + deviceID);
 
         vehicleDAO.setVehicleDevice(vehicleID, deviceID);
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
@@ -597,6 +600,8 @@ public class DataGenForStressTesting {
 
 
         String username = new String(first.substring(0,1) + mi + last + Util.randomInt(0, 1000)).toLowerCase();
+        if (team.getGroupID().equals(fleetGroup.getGroupID()))
+        	username = "stress" + Util.randomInt(0, 10000);
         
         User user = new User(0, person.getPersonID(), getAccountDefaultRoles(acctID), Status.ACTIVE, username, PASSWORD, team.getGroupID());
         Integer userID = userDAO.create(person.getPersonID(), user);
