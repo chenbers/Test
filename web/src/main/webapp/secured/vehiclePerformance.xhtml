@@ -668,6 +668,9 @@
   </tr>
 </table>
 </div>
+					<a4j:form id="dispatchForm">
+								<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>					
+					</a4j:form>
 	<a4j:form id="bubbleForm">
 		<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
 			<a4j:actionparam name="eventId" assignTo="#{vehiclePerformanceBean.selectedViolationID}"/>
@@ -677,6 +680,12 @@
 			<a4j:actionparam name="eventId" assignTo="#{vehiclePerformanceBean.selectedViolationID}"/>
 		</a4j:jsFunction>
 		</ui:fragment>		
+						<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">
+							<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+							<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+							<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
+						</a4j:jsFunction>	   					
+		
 	</a4j:form>	
  	
 

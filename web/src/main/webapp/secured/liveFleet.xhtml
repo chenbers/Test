@@ -44,6 +44,10 @@
 			addressLookupAddressFormat = #{liveFleetBean.addressFormat};
 		}
 
+		function setZoneName(zoneName) {	
+			document.getByElementId('dispatchForm:foundZoneName').value = zoneName;
+		}
+
 	</script>	
 
 	</ui:define>
@@ -135,6 +139,8 @@
 							<rich:panel	id="driversDataTablePanel">
 								<a4j:form id="dispatchForm">
 								
+								<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>
+								
 								<rich:dataTable value="#{liveFleetBean.drivers}" 
 									id="driversDataTable" var="item" styleClass="datagrid" sortMode="single"
 									rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">
@@ -183,7 +189,7 @@
 									<f:facet name="header">
 									
 									</f:facet>
-									<a href="#" id="showGroup" onclick="fillBubbleMap(#{item.vehicle.vehicleID});">
+									<a href="#" id="showGroup" onclick="lkFrZn(#{item.loc.lat},#{item.loc.lng},0);fillBubbleMap(#{item.vehicle.vehicleID});">
 										<img src="#{liveFleetBean.legendIconMap.icons[item.vehicle.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>
@@ -291,7 +297,11 @@
 								 oncomplete="getAddressForPosition(#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lat},#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lng})">
 							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
 						</a4j:jsFunction>
-		
+						<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">
+							<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+							<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+							<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
+						</a4j:jsFunction>	   					
 					</a4j:form>
 				</a4j:region>
 				</div>
@@ -338,5 +348,6 @@
 				</td>
 			</tr>
 		</table>
+			
 	</ui:define>
 </ui:composition>
