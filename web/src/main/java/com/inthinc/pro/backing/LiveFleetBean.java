@@ -19,6 +19,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
+import com.inthinc.pro.util.MiscUtil;
 
 public class LiveFleetBean extends BaseBean
 {
@@ -109,7 +110,6 @@ public class LiveFleetBean extends BaseBean
     {
         driverLocationsMap = new LinkedHashMap<Integer, DriverLocation>();
         for(DriverLocation dl:drivers){
-        	
         	driverLocationsMap.put(dl.getVehicle().getVehicleID(), dl);
         }
         selectedVehicleID = drivers.size()>0?drivers.get(0).getVehicle().getVehicleID():null;
