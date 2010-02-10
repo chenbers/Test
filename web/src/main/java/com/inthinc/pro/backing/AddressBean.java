@@ -1,6 +1,9 @@
 package com.inthinc.pro.backing;
 
+import java.util.List;
+
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
@@ -9,10 +12,12 @@ public class AddressBean extends BaseBean {
     private double zoneLat;
     private double zoneLng;
     private int    elemIndex;
-    private String zoneName;   
+    private String zoneName;  
+    private List<Zone> zones;
     
     public AddressBean() {
         super();
+        zones = this.getProUser().getZones();
     }
     
     
@@ -49,6 +54,16 @@ public class AddressBean extends BaseBean {
     public void setZoneName(String zoneName) {
         this.zoneName = zoneName;
     }
+
+    public List<Zone> getZones() {
+        return zones;
+    }
+
+
+    public void setZones(List<Zone> zones) {
+        this.zones = zones;
+    }
+
 
     public void lookForZone() {
         LatLng latLng = new LatLng();
