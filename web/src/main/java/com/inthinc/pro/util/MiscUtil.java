@@ -55,35 +55,46 @@ public class MiscUtil
     
     public static String findZoneName(List<Zone> zoneList,LatLng latLng) {
         String zoneName = null;
-        
-//  Point in a polygon algorithm, converted from javascript  
-//
-//      Article: Check if a polygon contains a coordinate in Google Maps        
-//      http://dawsdesign.com/drupal/google_maps_point_in_polygon        
+
         for ( Zone z: zoneList ) {
-            int numPoints = z.getPoints().size();
-            boolean inPoly = false;            
-            int j = numPoints-1;
-            
-            for(int i=0; i < numPoints; i++) { 
-                LatLng vertex1 = z.getPoints().get(i);
-                LatLng vertex2 = z.getPoints().get(j);
-
-                if (    vertex1.getLng() < latLng.getLng() && 
-                        vertex2.getLng() >= latLng.getLng() || 
-                        vertex2.getLng() < latLng.getLng() && 
-                        vertex1.getLng() >= latLng.getLng() )  {
-                    
-                    if (vertex1.getLat() + (latLng.getLng() - vertex1.getLng()) / (vertex2.getLng() - vertex1.getLng()) * (vertex2.getLat() - vertex1.getLat()) < latLng.getLat()) {
-                        inPoly = !inPoly;
-                        zoneName = z.getName();
-                    }
-                }
-
-                j = i;
+            if ( inPolygon(z,latLng) ) {
+                return z.getName();
             }
         }
         
         return zoneName;
+    }
+    
+    private static boolean inPolygon(Zone z,LatLng latLng) {
+        
+//  Point in a polygon algorithm, converted from javascript  
+//
+//      Article: Check if a polygon contains a coordinate in Google Maps        
+//      http://dawsdesign.com/drupal/google_maps_point_in_polygon      
+        
+        boolean inPoly = false; 
+        
+        //  We save the first point TWICE, at 0 and at the end, therefore, subtract 1 to get the unique points
+        int numPoints = z.getPoints().size() - 1;           
+        int j = numPoints-1;
+        
+        for(int i=0; i < numPoints; i++) { 
+            LatLng vertex1 = z.getPoints().get(i);
+            LatLng vertex2 = z.getPoints().get(j);                        
+
+            if (    vertex1.getLng() < latLng.getLng() && 
+                    vertex2.getLng() >= latLng.getLng() || 
+                    vertex2.getLng() < latLng.getLng() && 
+                    vertex1.getLng() >= latLng.getLng() )                                  
+            {                                       
+                               
+                if (vertex1.getLat() + (latLng.getLng() - vertex1.getLng()) / (vertex2.getLng() - vertex1.getLng()) * (vertex2.getLat() - vertex1.getLat()) < latLng.getLat()) {               
+                    inPoly = !inPoly;                    
+                }
+            }
+
+            j = i;
+        }   
+        return inPoly;
     }
 }
