@@ -41,7 +41,10 @@ function orderOfCreation(marker,b)
     	if (call != null){
     		
 	   		GEvent.addListener(marker, "click", function() {
-	   			
+	   			var latlng = marker.getLatLng();
+
+	   			// Check for a zone that this point may be in
+	   			lkFrZn(latlng.lat(),latlng.lng(),0);
 	     	 	currentMarker = marker;
 	 			call(itemID,subID);
 	
@@ -57,20 +60,17 @@ function orderOfCreation(marker,b)
     	return marker;
     }
 
-    function addAddressToBubbleForMarker(latlng,addressElement, address){
-    	
+    function addAddressToBubbleForMarker(latlng,addressElement, address){ 
     	document.getElementById(addressElement).innerHTML = address;
     	displayCurrentMarkerWindow();
     }
-    function displayCurrentMarkerWindow(){
-    	
+    function displayCurrentMarkerWindow(){  
 		var node = document.getElementById(bubbleElement).cloneNode(true);
 			
 		node.style.display = 'block';
 		currentMarker.openInfoWindow(node);
     }
     function addAddressToBubbleForMap(latlng,addressElement, address){
-    	
     	document.getElementById(addressElement).innerHTML = address;
 		var node = document.getElementById(bubbleElement).cloneNode(true);
 		
@@ -78,24 +78,19 @@ function orderOfCreation(marker,b)
 		map.openInfoWindow(latlng, node);
     }
 
-	function setUnableToGeocodeError(addressElement){
-		
+	function setUnableToGeocodeError(addressElement){		
 	  	document.getElementById(addressElement).innerHTML = errorMessage; 	  
 	  		
 	}	
-	function getAddressForCurrentMarker(){
-		
+	function getAddressForCurrentMarker(){	
  	 	if((addressLookupAddressFormat == 1)||(addressLookupAddressFormat == 2)){
-
  	 		displayCurrentMarkerWindow()
    	 	}
- 	 	else if (addressLookupAddressFormat == 3){
- 	 		
+ 	 	else if (addressLookupAddressFormat == 3){ 	 		
  	 		reverseGeocodeAddress(currentMarker.getPoint(),defaultAddressElement,addAddressToBubbleForMarker);
  	 	}
 	}
 	function getAddressForPosition(lat,lng){
-		
  	 	if((addressLookupAddressFormat == 1)||(addressLookupAddressFormat == 2)){
 
   			var node = document.getElementById(bubbleElement).cloneNode(true);
@@ -103,13 +98,11 @@ function orderOfCreation(marker,b)
   			node.style.display = 'block';
   			map.openInfoWindow(new GLatLng(lat,lng),node);
  	 	}
- 	 	else if (addressLookupAddressFormat == 3){
- 	 		
+ 	 	else if (addressLookupAddressFormat == 3){ 	 	
  	 		reverseGeocodeAddress(new GLatLng(lat,lng),defaultAddressElement,addAddressToBubbleForMap);
  	 	}
 	}
 	function getAddressForEvent(){
-		
  	 	if((addressLookupAddressFormat == 1)||(addressLookupAddressFormat == 2)){
 
   			var node = document.getElementById(bubbleElement).cloneNode(true);
@@ -123,22 +116,30 @@ function orderOfCreation(marker,b)
  	 	}
 	}
 	
-	function reverseGeocodeAddress(latlng, addressElement, callback){
-		
+	function reverseGeocodeAddress(latlng, addressElement, callback){		
 		if (geocoder == null) geocoder = new GClientGeocoder();
-		
+
     	geocoder.getLocations(latlng, function(response){
-	         if (!response || response.Status.code != 200) {
-	        	  
-	        	  setUnableToGeocodeError(addressElement);
+	         if (!response || response.Status.code != 200) {	        	         
+	        	  var zoneHid = document.getElementById("dispatchForm:foundZoneName");
+	        	
+	              var nameAndIndex = zoneHid.value.split(",");
+	              var name = nameAndIndex[0];
+	              var indx = nameAndIndex[1];
+  
+//	              if (callback != null){
+	            	  callback(latlng, addressElement, name);
+//	              } else if ( addressElement != null ) {
+//		              addressElement.innerHTML = name;
+//	              }	            	  
+	              document.getElementById("dispatchForm:foundZoneName").value = "";
+//	        	  setUnableToGeocodeError(addressElement);
 	          } 
 	          else {
-	              if (callback != null){
-	            	  
+	              if (callback != null){	            	 
 	            	  callback(latlng, addressElement, response.Placemark[0].address);
 	              }
-	              else if (addressElement != null){
-	            	  
+	              else if (addressElement != null){	            	  
 		              addressElement.innerHTML = response.Placemark[0].address;
 	              }
 	          }
@@ -147,7 +148,6 @@ function orderOfCreation(marker,b)
 	}
 	function fillTripBubble(itemID, subID){
 
-	 	 	
 	 	var addressElement = null;
 	 	
 		if (subID == 0){
