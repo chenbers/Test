@@ -5,6 +5,7 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,10 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.app.SiteAccessPoints;
+import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.model.security.SiteAccessPoint;
 import com.inthinc.pro.util.MessageUtil;
 /**
  * @author David Gileadi
@@ -32,8 +36,11 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("roleName");
+        
+        siteAccessPoints = SiteAccessPoints.getSiteAccessPoints();
     }
     private RoleDAO roleDAO;
+    private static List<SiteAccessPoint> siteAccessPoints;
     
     @Override
     protected List<CustomRoleView> loadItems() {
@@ -64,6 +71,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         BeanUtils.copyProperties(role, customRoleView);
          if (logger.isTraceEnabled())
             logger.trace("createCustomRoleView: END " + customRoleView);
+         customRoleView.setSelectAllAccessPoints();
         return customRoleView;
     }
 
@@ -107,6 +115,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         final CustomRoleView customRole = new CustomRoleView();
         customRole.bean = this;
         customRole.setAcctID(getAccountID());
+        customRole.setSelectAllAccessPoints();
         return customRole;
     }
 
@@ -196,6 +205,8 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         private CustomRolesBean bean;
         @Column(updateable = false)
         private boolean selected;
+        private List<AccessPoint> accessPointSelection;
+        private boolean allAccessPointsSelected = false;
 		@Override
 		public Integer getId() {
 			return getRoleID();
@@ -208,11 +219,66 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 		public void setSelected(boolean selected) {
 			this.selected = selected;
 		}
-
+		public void setSelectAllAccessPoints(){
+			
+			accessPointSelection = SiteAccessPoints.getAccessPoints();
+			for (AccessPoint ap: getAccessPoints()){
+				
+				if (!ap.getPermissions().containsAll(AccessPoint.getAllModes())) {
+					
+					allAccessPointsSelected = false;
+					return;
+				}
+			}
+			allAccessPointsSelected = true;
+		}
+		public void doSelectAllAccessPoints(){
+			
+			EnumSet<AccessPoint.Mode> permissions = isAllAccessPointsSelected()?AccessPoint.getAllModes():EnumSet.noneOf(AccessPoint.Mode.class);
+			
+			for (AccessPoint ap: accessPointSelection){
+				
+				ap.setPermissions(permissions);
+			}
+		}
+		public List<AccessPoint> getAccessPoints() {
+			return accessPointSelection;
+		}
+		public void setAccessPoints(List<AccessPoint> accessPoints) {
+			this.accessPointSelection = accessPoints;
+		}
+		public boolean isAllAccessPointsSelected() {
+			
+			return allAccessPointsSelected;
+		}
+		public void setAllAccessPointsSelected(boolean allAccessPointsSelected) {
+			this.allAccessPointsSelected = allAccessPointsSelected;
+		}
+		public void checkAllSelected(){
+			
+			for (AccessPoint ap: accessPointSelection){
+				
+				if (!ap.getPermissions().containsAll(AccessPoint.getAllModes())) {
+					
+					allAccessPointsSelected = false;
+					return;
+				}
+			}
+			allAccessPointsSelected = true;
+			
+		}
 	}
 	@Override
 	protected void doDelete(List<CustomRoleView> deleteItems) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public List<SiteAccessPoint> getSiteAccessPoints() {
+		return siteAccessPoints;
+	}
+
+	public static void setSiteAccessPoints(List<SiteAccessPoint> siteAccessPoints) {
+		CustomRolesBean.siteAccessPoints = siteAccessPoints;
 	}
 }

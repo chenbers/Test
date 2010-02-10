@@ -17,20 +17,20 @@
       <tr>
         <td valign="top" width="130">
           <ui:include src="/includes/navigation/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="go_adminVehicles" />
-            <ui:param name="parentAction" value="go_adminVehicles" />
-             <ui:param name="context" value="vehicle"/>
+            <ui:param name="selectedAction" value="go_adminCustomRoles" />
+            <ui:param name="parentAction" value="go_adminCustomRoles" />
+             <ui:param name="context" value="role"/>
           </ui:include>
         </td>
         <td valign="top">
         <!-- START PANEL -->
 
-          <a4j:form id="vehicleForm">
+          <a4j:form id="roleForm">
 
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="admin"><h:outputFormat value="#{messages.adminHeader_vehicleDetails}"><f:param value="#{vehiclesBean.item.name}" /></h:outputFormat></span>
+                  <span class="admin"><h:outputFormat value="#{messages.adminHeader_roleDetails}"><f:param value="#{customRolesBean.item.name}" /></h:outputFormat></span>
                   <span class="panel_links"></span>
                 </div>
               </div>
@@ -44,10 +44,10 @@
                     <rich:tab id="details" label="#{messages.device_details}">
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="l text"><a4j:htmlCommandLink id="vehicleCancel1" action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
+                        <li class="l text"><a4j:htmlCommandLink id="roleCancel1" action="#{customRolesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
                         <li class="r">
-                          <a4j:commandButton id="vehicleDelete1"  styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                          <h:outputText value=" " /><h:commandButton id="vehicleEdit1" action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                          <a4j:commandButton id="roleDelete1"  styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="roleEdit1" action="#{customRolesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                         </li>
                       </ul>
 
@@ -57,129 +57,23 @@
                         <tr>
                           <td width="390" valign="top">
                     
-                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleInformation}" /></div>
+                            <div class="add_section_title"><h:outputText value="#{messages.editRole_roleInformation}" /></div>
                       
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.VIN}" /></td>
+                                <td width="100"><h:outputText value="#{messages.editRole_name}" /></td>
+                                <td><h:outputText value="#{customRolesBean.item.name}" /></td>
                               </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_make}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.make}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_model}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.model}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_year}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.year}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_color}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.color}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.vtype.description}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100">
-                                <h:outputText value="editVehicle_weight" converter="MeasurementTextConverter" />
-                                </td>
-                                <td><h:outputText value="#{vehiclesBean.item.weight}" converter="LbsToKgConverter"></h:outputText></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.license}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_state}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.state.name}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_odometer}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.odometer}" /></td>
-                              </tr>                              
-                            </table>
-
-                          </td>
-                          <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-                          <td width="390" valign="top">
-
-                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleProfile}" /></div>
-
-                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_name}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.name}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_status}" /></td>
-                                <td><c:set var="status" value="status#{vehiclesBean.item.status.code}" /><h:outputText value="#{messages[status]}" /></td>
-                              </tr>
-                            </table>
-
-                            <div class="spacer"></div>
-
-                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleAssignment}" /></div>
-
-                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_groupID}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.group.name}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
-                                <td>
-                                  <h:panelGroup rendered="#{not empty vehiclesBean.item.deviceID}" id="driverID">
-                                    <h:outputText value="#{vehiclesBean.item.driver.person.fullName}" /><h:outputText value=" " />
-                                    <!--   <a href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a> -->
-                                  </h:panelGroup>
-                                  <h:outputText rendered="#{empty vehiclesBean.item.deviceID}" value="#{messages.vehicle_assignDevice}" />
-                                </td>
-                              </tr>
-                            </table>
+                             </table>
 
                           </td>
                         </tr>
                       </table>
 
                     </rich:tab>
+                    </rich:tabPanel>
 
-                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}" ontabenter="reRenderTab()" ontableave="reRenderTab()">
-                      <a4j:region>
-                         <a4j:jsFunction name="reRenderTab" reRender="speeedSettingsPanel"></a4j:jsFunction>
-                         <ul id="grid_nav" style="margin: 0;">
-                           <li class="l text"><a4j:htmlCommandLink id="vehicleCancel2" action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
-                           <li class="r">
-                             <a4j:commandButton id="vehicleDelete2" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                             <h:outputText value=" " /><h:commandButton id="vehicleEdit2" action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
-                           </li>
-                         </ul>
-   
-                         <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
-   
-                         <ui:fragment rendered="#{empty vehiclesBean.item.device}">
-                           <div class="msg" >
-                             <p class="warning"><h:outputText value="#{messages.vehicle_noDevice}" /></p>
-                           </div>
-                         </ui:fragment>
-                         <h:panelGroup id="speeedSettingsPanel">
-                            <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
-                              <ui:include src="../../includes/admin/speedSensitivity.xhtml">
-                                <ui:param name="device" value="#{vehiclesBean.item.device}" />
-                                <ui:param name="disabled" value="true" />
-                              <ui:param name="context" value="vehicle" />
-                              </ui:include>
-                            </ui:fragment>
-                         </h:panelGroup>
-                      </a4j:region>
-                    </rich:tab>
-
-                  </rich:tabPanel>
-
+ 
                 </div>
               </div>
 
@@ -195,17 +89,11 @@
       </tr>
     </table>
 
-    <ui:include src="../../includes/admin/chooseDriver.xhtml">
-      <ui:param name="editorBean" value="#{vehiclesBean}" />
-      <ui:param name="reRender" value="vehicleForm:driverID" />
-      <ui:param name="immediate" value="true" />
-      <ui:param name="context" value="vehicle" />
-    </ui:include>
     <ui:include src="../../includes/confirmDelete.xhtml">
-      <ui:param name="deleteBean" value="#{vehiclesBean}" />
-      <ui:param name="explanation" value="#{messages.vehicle_confirmDelete}" />
+      <ui:param name="deleteBean" value="#{customRolesBean}" />
+      <ui:param name="explanation" value="#{messages.role_confirmDelete}" />
       <ui:param name="supportRedirect" value="#{true}" />
-       <ui:param name="context" value="vehicle" />
+       <ui:param name="context" value="role" />
     </ui:include>
 
   </ui:define>

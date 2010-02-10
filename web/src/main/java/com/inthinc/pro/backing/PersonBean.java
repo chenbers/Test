@@ -378,6 +378,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
         List<Integer> roles = new ArrayList<Integer>();
+        getAccountRoles();
         roles.add(accountRoles.getRoleByName("Normal").getRoleID());
         person.getUser().setRoles(roles); // normal user
         person.getUser().setPerson(person);
@@ -863,9 +864,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         //TODO: improve detection of roles that are selectable by users
 //        Role inthincRole = Roles.getRoleByName("inthinc");
         List<SelectItem> roleList = new ArrayList<SelectItem>();
-        accountRoles = new Roles();
-        accountRoles.setRoleDAO(roleDAO);
-        accountRoles.init(getAccountID());
+        getAccountRoles();
+
         for (Role role : accountRoles.getRoleList()) {
 //            if (inthincRole == null || !role.getRoleID().equals(inthincRole.getRoleID()))
                 roleList.add(new SelectItem(role, role.getName()));
@@ -1059,6 +1059,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     			super.setLocale(locale);
     		}
     	}
+    	public String getRoleName(){
+    		
+    		if((getUser() == null)|| (getUser().getRole()==null)) return "";
+    		
+    		return bean.getAccountRoles().getRoleById(getUser().getRole()).getName();
+     	}
+
     }
 
 	public RoleDAO getRoleDAO() {
@@ -1067,5 +1074,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
 	public void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
+	}
+	public Roles getAccountRoles(){
+		
+		if (accountRoles == null){
+			
+	        accountRoles = new Roles();
+	        accountRoles.setRoleDAO(roleDAO);
+	        accountRoles.init(getAccountID());
+
+		}
+		return accountRoles;
 	}
 }

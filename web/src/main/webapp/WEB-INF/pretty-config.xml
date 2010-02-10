@@ -300,9 +300,9 @@
 		<view-id>/secured/admin/editCustomRole.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminCustomRole">
-		<pattern>/app/admin/person/#{customRoleBean.itemID}</pattern>
+		<pattern>/app/admin/person/#{customRolesBean.itemID}</pattern>
 		<view-id>/secured/admin/customRole.faces</view-id>
-		<action>#{customRoleBean.view}</action>
+		<action>#{customRolesBean.view}</action>
 	</url-mapping>
  
     <url-mapping id="adminPeople">

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.RoleDAO;
+import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.SiteAccessPoint;
 
 public class SiteAccessPoints implements BaseAppEntity{
@@ -84,6 +85,21 @@ public class SiteAccessPoints implements BaseAppEntity{
 				allStrings.add(sap.toString());
 			}
 			return allStrings;
+		}
+		
+		public static List<AccessPoint> getAccessPoints(){
+			
+			List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
+			
+			for (SiteAccessPoint sap:accessPointList){
+				
+				accessPoints.add(new AccessPoint(sap.getAccessPtID(), 0));
+			}
+			return accessPoints;
+		}
+		public static List<SiteAccessPoint> getSiteAccessPoints(){
+			
+			return accessPointList;
 		}
 
 }

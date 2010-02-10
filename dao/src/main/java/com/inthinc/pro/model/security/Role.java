@@ -1,6 +1,9 @@
 package com.inthinc.pro.model.security;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,6 +22,7 @@ public class Role extends BaseEntity implements Comparable<Role>{
 	private Integer acctID;
 	private String name;
 	private List<AccessPoint> accessPoints;
+	private Map<Integer,AccessPoint> accessPointsMap;
 	
 	public Role(Integer acctID, Integer roleID, String name) {
 		super();
@@ -61,7 +65,18 @@ public class Role extends BaseEntity implements Comparable<Role>{
 	}
 
 	public void setAccessPoints(List<AccessPoint> accessPoints) {
+		
 		this.accessPoints = accessPoints;
+		if (accessPoints == null){
+			
+			accessPoints = new ArrayList<AccessPoint>();
+		}
+		accessPointsMap = new HashMap<Integer,AccessPoint>();
+		
+		for (AccessPoint ap: accessPoints){
+			
+			accessPointsMap.put(ap.getSiteAccessPointID(),ap);
+		}
 	}
     public String toString()
     {

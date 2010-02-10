@@ -605,7 +605,7 @@
                           	<ui:include src="../../includes/admin/inputLabel.xhtml">
 								<ui:param name="required" value="TRUE"/>
 								<ui:param name="for" value="editPerson-user_role"/>
-								<ui:param name="fieldName" value="user.role"/>
+								<ui:param name="fieldName" value="user.roles"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_role}"/>
         					<ui:param name="context" value="editPersonRole" />
@@ -613,7 +613,7 @@
                           </td>
                           <td>
                             <rich:message for="editPerson-user_role" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.user.role}" id="editPerson-user_role" 
+                            <h:selectOneMenu value="#{personBean.item.user.roles[0]}" id="editPerson-user_role" 
                             		converter="SimpleBeanConverter"
                             		disabled="#{!personBean.item.userEditable}" 
                                     required="#{not personBean.batchEdit}" 

@@ -123,4 +123,14 @@ public class User extends BaseEntity {
 	public void setAccessPoints(List<AccessPoint> accessPoints) {
 		this.accessPoints = accessPoints;
 	}
+	
+	//temporary work around to select single role until list fully implemented
+	public Integer getRole(){
+		
+		return roles.size()>0?roles.get(0):1;
+	}
+	public void setRole(Integer role){
+		
+		roles.add(0,role);
+	}
 }

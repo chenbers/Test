@@ -2,16 +2,11 @@ package com.inthinc.pro.model.security;
 
 import java.util.EnumSet;
 
+import com.inthinc.pro.model.app.SiteAccessPoints;
+
 public class AccessPoint {
 	
-	public AccessPoint(Integer siteAccessPointID, Integer mode ) {
-		super();
-		
-		setMode(mode);
-		this.siteAccessPointID = siteAccessPointID;
-	}
-
-	private enum Mode {READ(1),WRITE(2),UPDATE(4),DELETE(8);
+	public enum Mode {READ(1),WRITE(2),UPDATE(4),DELETE(8);
 		
 		private Integer code;
 		Mode(Integer code){
@@ -22,10 +17,19 @@ public class AccessPoint {
 			return code;
 		}
 	}
+	
 	private EnumSet<Mode> permissions;
 	
 	private Integer siteAccessPointID;
 	
+	
+	public AccessPoint(Integer siteAccessPointID, Integer mode ) {
+		super();
+		
+		setMode(mode);
+		this.siteAccessPointID = siteAccessPointID;
+	}
+
 	public Integer getSiteAccessPointID() {
 		return siteAccessPointID;
 	}
@@ -61,5 +65,21 @@ public class AccessPoint {
 			mode+=m.getCode();
 		}
 		return mode;
+	}
+	public boolean isSelected(){
+		
+		return getMode().intValue() != 0;
+	}
+	public void setSelected(boolean selected){
+		
+		setMode(selected?15:0);
+	}
+	public String getMsgKey(){
+		
+		return SiteAccessPoints.getAccessPointById(siteAccessPointID).getMsgKey();
+	}
+	public static EnumSet<Mode> getAllModes(){
+		
+		return EnumSet.allOf(Mode.class);
 	}
 }
