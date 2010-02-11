@@ -338,7 +338,8 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> implements Duration
     
     private TrendBeanItem createSummaryItem() {
     	TrendBeanItem summaryTrendBeanItem = new TrendBeanItem();
-    	ScoreableEntity score = getScoreDAO().getTrendSummaryScore(trendBeanState.getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
+//    	ScoreableEntity score = getScoreDAO().getTrendSummaryScore(trendBeanState.getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
+    	ScoreableEntity score = getScoreDAO().getSummaryScore(trendBeanState.getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
     	if (score == null)
     	{
     		return null;

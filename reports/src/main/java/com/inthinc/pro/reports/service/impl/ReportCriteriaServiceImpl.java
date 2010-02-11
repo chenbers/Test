@@ -162,7 +162,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
         List<ScoreableEntity> s = getScores(groupID, duration);
     	Group group = groupDAO.findByID(groupID);
-        ScoreableEntity summaryScore = scoreDAO.getTrendSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL);
+//        ScoreableEntity summaryScore = scoreDAO.getTrendSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL);
+        ScoreableEntity summaryScore = scoreDAO.getSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL);
         if (summaryScore != null)
         {
         	String summaryTitle = MessageUtil.formatMessageString("report.trend.summary", (getLocale() == null) ? Locale.getDefault() : getLocale(), group.getName());

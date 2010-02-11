@@ -104,31 +104,58 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     @Override
+    public ScoreableEntity getSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
+    {
+      	Integer binSize = duration.getAggregationBinSize();
+    	if (duration.equals(Duration.DAYS)) {
+    		binSize = 1;
+    	}
+        List<Map<String, Object>> topGroupMap = reportService.getGDTrendByGTC(groupID, binSize, 1);
+        List<DriveQMap> topGroupList = getMapper().convertToModelObject(topGroupMap, DriveQMap.class);
+        
+        // should only be one item in the list
+        for (DriveQMap driveQMap : topGroupList)
+        {
+            ScoreableEntity entity = new ScoreableEntity();
+            entity.setEntityID(groupID);
+            entity.setEntityType(EntityType.ENTITY_GROUP);
+            entity.setScore(driveQMap.getOverall() == null ? NO_SCORE : driveQMap.getOverall());
+            entity.setScoreType(ScoreType.SCORE_OVERALL);
+            entity.setDate(driveQMap.getEndingDate());
+            return entity;
+        }
+        return null;
+    }
+    @Override
     public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
     {
         try
         {
-            // groupID = 16777218;
-            List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getCode());
-
-            List<GQMap> gqMapList = getMapper().convertToModelObject(returnMapList, GQMap.class);
-
+        	Integer binSize = Duration.BINSIZE_1_MONTH;
+        	if (duration.equals(Duration.DAYS)) {
+        		binSize = Duration.BINSIZE_7_DAY;
+        	}
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, binSize, 1);
+            List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-            for (GQMap gqMap : gqMapList)
-            {
-
-                ScoreableEntity scoreableEntity = new ScoreableEntity();
-                scoreableEntity.setEntityID(gqMap.getGroup().getGroupID());
-                scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
-                scoreableEntity.setIdentifier(gqMap.getGroup().getName() == null ? "unknown" : gqMap.getGroup().getName());
-                scoreableEntity.setScoreType(scoreType);
-                scoreableEntity.setDate(gqMap.getDriveQ().getEndingDate());
-                Integer score = gqMap.getDriveQ().getScoreMap().get(scoreType);
-                scoreableEntity.setScore((score == null) ? NO_SCORE : score);
-                scoreList.add(scoreableEntity);
-
+            for (GQVMap gqv : gqvList) {
+	
+	            	if (gqv.getDriveQV().size() == 0)
+	            		continue;
+	            	
+	            	DriveQMap driveQ = gqv.getDriveQV().get(0);
+	
+	                ScoreableEntity scoreableEntity = new ScoreableEntity();
+	                scoreableEntity.setEntityID(gqv.getGroup().getGroupID());
+	                scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
+	                scoreableEntity.setIdentifier(gqv.getGroup().getName() == null ? "unknown" : gqv.getGroup().getName());
+	                scoreableEntity.setScoreType(scoreType);
+	                scoreableEntity.setDate(driveQ.getEndingDate());
+	                Integer score = driveQ.getScoreMap().get(scoreType);
+	                scoreableEntity.setScore((score == null) ? NO_SCORE : score);
+	                scoreList.add(scoreableEntity);
+	
             }
-
             return scoreList;
 
         }
@@ -151,8 +178,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
         	// subgroups
-//            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
-            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
+        	Integer binSize = Duration.BINSIZE_1_MONTH;
+        	if (duration.equals(Duration.DAYS)) 
+        		binSize = Duration.BINSIZE_7_DAY;
+
+        	List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, binSize, duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
             
             
@@ -187,7 +217,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
       private List<ScoreableEntity> getTopGroupScoreList(Integer topGroupID, Duration duration) {
         
         
-        List<Map<String, Object>> topGroupMap = reportService.getGDTrendByGTC(topGroupID, duration.getCode(), duration.getDvqCount());
+      	Integer binSize = Duration.BINSIZE_1_MONTH;
+    	if (duration.equals(Duration.DAYS)) 
+    		binSize = Duration.BINSIZE_7_DAY;
+        List<Map<String, Object>> topGroupMap = reportService.getGDTrendByGTC(topGroupID, binSize, duration.getDvqCount());
         List<DriveQMap> topGroupList = getMapper().convertToModelObject(topGroupMap, DriveQMap.class);
         
         List<ScoreableEntity> topGroupScoreList = new ArrayList<ScoreableEntity>();
@@ -238,19 +271,24 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 	
+	
 	@Override
     public List<TrendItem> getTrendCumulative(Integer id, EntityType entityType, Duration duration)
     {
         try
         {
-            List<Map<String, Object>> cumulativList = null;
+        	Integer binSize = Duration.BINSIZE_1_MONTH;
+        	if (duration.equals(Duration.DAYS)) 
+        		binSize = Duration.BINSIZE_7_DAY;
+
+        	List<Map<String, Object>> cumulativList = null;
             if (entityType.equals(EntityType.ENTITY_DRIVER))
             {
-            	cumulativList = reportService.getDTrendByDTC(id, duration.getCode(), duration.getDvqCount());
+            	cumulativList = reportService.getDTrendByDTC(id, binSize, duration.getDvqCount());
             }
             else
             {
-            	cumulativList = reportService.getVTrendByVTC(id, duration.getCode(), duration.getDvqCount());
+            	cumulativList = reportService.getVTrendByVTC(id, binSize, duration.getDvqCount());
             }
             List<DriveQMap> driveQList = getMapper().convertToModelObject(cumulativList, DriveQMap.class);
             
@@ -294,7 +332,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 //    		System.out.println(key + " = " + map.get(key));
 //    	}
 //	}
-
+	
 	@Override
     public List<TrendItem> getTrendScores(Integer id, EntityType entityType, Duration duration)
     {
@@ -512,7 +550,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	                }
 	
 	                iri.setDriveTime((dqm.getEmuRpmDriveTime().floatValue() / SECONDS_TO_HOURS));
-	                
 	                //Total idling            
 	                Float tot = iri.getLowHrs() + iri.getHighHrs();
 	                iri.setTotalHrs(tot);

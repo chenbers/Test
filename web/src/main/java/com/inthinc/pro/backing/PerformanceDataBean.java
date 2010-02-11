@@ -30,7 +30,7 @@ public class PerformanceDataBean extends BaseBean {
     EntityType cachedEntityType;
     
     
-    
+    // used for line graphs (uses the 7 day and 1 month bins
     public List<ScoreableEntity> getTrendCumulative(Integer id, EntityType entityType, Duration duration, ScoreType scoreType)
     {
     	
@@ -61,6 +61,7 @@ public class PerformanceDataBean extends BaseBean {
 		return list;
     }
 
+    // used for mileage bar graphs (uses the 1 day and 1 month bins)
     public List<ScoreableEntity> getTrendDaily(Integer id, EntityType entityType, Duration duration, ScoreType scoreType)
     {
     	checkReInitCache(id, entityType);
@@ -147,7 +148,7 @@ public class PerformanceDataBean extends BaseBean {
     		}
     	}
     	return null;
-
+    	
     }
     
     

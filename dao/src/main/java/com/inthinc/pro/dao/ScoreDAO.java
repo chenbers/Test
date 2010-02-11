@@ -38,6 +38,8 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @return
      */
     ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration,  ScoreType st);
+
+    ScoreableEntity getSummaryScore(Integer groupID, Duration duration,  ScoreType st);
     
     
     /**
@@ -191,7 +193,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * 			duration (30 days, 3 m, 6 m, 12 m
      * @return
      */
-    List<TrendItem> getTrendCumulative(Integer id, EntityType entityType, Duration duration);
+     List<TrendItem> getTrendCumulative(Integer id, EntityType entityType, Duration duration);
     
     
     /**

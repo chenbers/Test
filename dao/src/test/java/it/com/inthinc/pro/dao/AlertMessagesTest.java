@@ -29,7 +29,6 @@ import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
-import com.inthinc.pro.dao.hessian.RedFlagHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
@@ -39,7 +38,6 @@ import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessageBuilder;
@@ -48,10 +46,8 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.FullEvent;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.NoDriverEvent;
-import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.SeatBeltEvent;
@@ -63,7 +59,6 @@ import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.model.pagination.PageParams;
 
 public class AlertMessagesTest {
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
@@ -221,7 +216,7 @@ public class AlertMessagesTest {
 	        String IMEI = groupData.device.getImei();
 	        if (eventType.equals(EventType.NO_DRIVER))
 	        	IMEI = itData.noDriverDevice.getImei();
-
+	        
 	        // generate zone arrival/departure event
 	        if (!genEvent(IMEI, eventType))
 	            fail("Unable to generate event of type " + eventType);
@@ -259,7 +254,6 @@ public class AlertMessagesTest {
 	        assertTrue("No Red Flag Alerts were generated for eventType " + eventType, anyAlertsFound);
 //System.out.println("anyAlertsFound: " + anyAlertsFound);	        
 
-	        checkRedFlags(groupData.group);
     	}
     }
 
@@ -597,7 +591,6 @@ public class AlertMessagesTest {
     }
     
     private boolean pollForMessages(String description) {
-//        System.out.print("Poll for message: " + description);
         int secondsToWait = 10;
         for (int i = 0; i < secondsToWait; i++) {
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
@@ -622,29 +615,12 @@ public class AlertMessagesTest {
                 assertNotNull(description, msg);
                 assertNotNull(description, msg.getAddress());
                 assertNotNull(description, msg.getParamterList());
-                System.out.println(description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList());
+//                System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
                 // logger.debug(description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList());
                 return true;
             }
         }
         
         return false;
-    }
-
-    private void checkRedFlags(Group group) {
-        RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
-        redFlagDAO.setSiloService(siloService);
-        
-	    Date endDate = new Date();
-	    Date startDate = DateUtil.getDaysBackDate(endDate, 2);
-
-        Integer count = redFlagDAO.getRedFlagCount(group.getGroupID(), startDate, endDate, 1, null);
-        PageParams pageParams = new PageParams(0, count-1, null, null);
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(group.getGroupID(), startDate, endDate, 1, pageParams);
-        assertNotNull(redFlagList);
-        assertTrue("Red flags should be found", (redFlagList.size() > 0));
-        for (RedFlag redflag : redFlagList) {
-            logger.debug("redFlag: level" + redflag.getLevel() + " event type: " + redflag.getEvent().getEventType());
-        }
     }
 }
