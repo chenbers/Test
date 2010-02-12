@@ -3508,3 +3508,7 @@ td.middle select {
 	padding: 0 2px 0 10px;	
 	font: normal 8px Verdana, Tahoma, Arial, sans-serif;
 }
+
+.infoWindow p {
+	margin: 3px;	
+}

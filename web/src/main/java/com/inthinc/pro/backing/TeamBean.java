@@ -2,6 +2,9 @@ package com.inthinc.pro.backing;
 
 import java.util.List;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
@@ -26,7 +29,10 @@ public class TeamBean extends BaseBean {
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
-        if(this.driverStatistics == null)
+        DateMidnight endTime = new DateTime().minusDays(1).toDateMidnight();
+        DateMidnight startTime = new DateTime().minusDays(20).toDateMidnight();
+
+        if (this.driverStatistics == null)
             driverStatistics = groupReportDAO.getDriverScores(getGroupID(), Duration.DAYS);
         return driverStatistics;
     }
