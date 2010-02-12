@@ -39,7 +39,7 @@ function orderOfCreation(marker,b)
 			marker = new GMarker(point);
     	}
     	if (call != null){
-    		
+
 	   		GEvent.addListener(marker, "click", function() {
 	   			var latlng = marker.getLatLng();
 
@@ -127,13 +127,8 @@ function orderOfCreation(marker,b)
 	              var name = nameAndIndex[0];
 	              var indx = nameAndIndex[1];
   
-//	              if (callback != null){
-	            	  callback(latlng, addressElement, name);
-//	              } else if ( addressElement != null ) {
-//		              addressElement.innerHTML = name;
-//	              }	            	  
+            	  callback(latlng, addressElement, name);            	  
 	              document.getElementById("dispatchForm:foundZoneName").value = "";
-//	        	  setUnableToGeocodeError(addressElement);
 	          } 
 	          else {
 	              if (callback != null){	            	 
@@ -171,7 +166,7 @@ function orderOfCreation(marker,b)
 	 		displayCurrentMarkerWindow()
 	 	}
 	 	else if (addressLookupAddressFormat == 3){
-	 		
+
 			reverseGeocodeAddress(currentMarker.getPoint(),addressElement,addAddressToBubbleForMarker);
  	 	}
 	}

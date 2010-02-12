@@ -28,6 +28,7 @@
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 		var ajaxCount = 0;
+		
 		function initMap(lat,lng,zoom)
 		{
    			if (GBrowserIsCompatible()) 
@@ -50,8 +51,9 @@
 	    		geocoder = new GClientGeocoder();
 				errorMessage = "#{messages.sbs_badLatLng}"
 				addressLookupAddressFormat = #{driverTripsBean.addressFormat};
+
 				defaultAddressElement = "tripsMapForm:bubbleAddress";
-				
+			
 			}
 		}	
 
@@ -130,7 +132,6 @@
 		}
 		function onReRender()
 		{
-			alert("onrerender");
 			isReady = true;
 			dynamicTableStyles();
             jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
@@ -138,16 +139,29 @@
 		}
 		function onReRenderWithSelection()
 		{	
-			if (ajaxCount == 0){
-				alert("onReRenderWithSelection");
-				
+			if (ajaxCount == 0) {
 				isReady = true;
 				dynamicTableStyles();
-	            jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
-		        getAddresses();
+	            jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();							
+	        	getAddresses();
 			}
 		}
-  	  	  
+
+		function setZoneName(zoneName) {			
+			jQuery('#dispatchForm\\:foundZoneName').val(zoneName);			
+		}  	
+
+//		function pauseBetweenCalls(numberMillis) {			
+//			var now = new Date();
+//			var exitTime = now.getTime() + numberMillis;
+//			while (true) 
+//			{
+//				now = new Date();
+//				if (now.getTime() > exitTime)
+//				return;
+//			}
+
+//		}  	  
 		</script>
 
    <rich:panel id="script">
@@ -162,6 +176,7 @@
 	    // This is called on pageLoad 
 		function bodyLoad()
 		{
+			initLkFrZn();
 			if ( #{driverTripsBean.selectedTrips[0] ne null} ) {
 				initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}0, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}0, 14);
 		   		showTrips();
@@ -184,11 +199,11 @@
    				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
 
 					polyline = new GPolyline([
-					<ui:repeat value="#{trip.route}" var="rt">
-							new GLatLng(#{rt.lat}, #{rt.lng}),
-					</ui:repeat>
-			  				new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
-					], "#0000ff", 6);
+							<ui:repeat value="#{trip.route}" var="rt">
+									new GLatLng(#{rt.lat}, #{rt.lng}),
+							</ui:repeat>
+			  						new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
+											], "#0000ff", 6);
 					map.addOverlay(polyline);
 
 					<ui:repeat value="#{trip.route}" var="rt2">
@@ -253,38 +268,62 @@
 	        		var address = jQuery(this).find('*[id$="address"]');
 						
 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);
-					
+//					pauseBetweenCalls(250);
 	    		});	
 	    		jQuery('td[id$="address_column"]').each(function(n){
-	
+
 	        		var lat = jQuery(this).find('*[id$="eventLat"]');
 	        		var lng = jQuery(this).find('*[id$="eventLng"]');
 	        		var address = jQuery(this).find('*[id$="eventAddress"]');
 						
 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);
-	              		
+//	              	pauseBetweenCalls(250);	
 	    		});
             }
             
         }
+
+        function getEventAddresses()
+        {
+            if (#{driverTripsBean.addressFormat == 3}){
+	    		geocoder = new GClientGeocoder();
+
+	    		jQuery('td[id$="address_column"]').each(function(n){
+
+	        		var lat = jQuery(this).find('*[id$="eventLat"]');
+	        		var lng = jQuery(this).find('*[id$="eventLng"]');
+	        		var address = jQuery(this).find('*[id$="eventAddress"]');
+						
+					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);
+//	              	pauseBetweenCalls(250);	
+	    		});
+            }
+            
+        }        
 
         function reverseGeocodeTripAddress(latlng, addressElement){
             ajaxCount++;
          	geocoder.getLocations(latlng, 
         			function(response){
     			        if (!response || response.Status.code != 200) {
-        			        
-    			    	  	addressElement.innerHTML = errorMessage; 	  
+        			        if ( response.Status.code == 620 ) {
+//            			        alert("code 620");
+        			        }						
+        			        lkFrZn(latlng.lat(),latlng.lng(),0);  
+        			        var zoneHid = jQuery('#dispatchForm\\:foundZoneName').val();
+        		              var nameAndIndex = zoneHid.split(",");
+        		              var name = nameAndIndex[0];
+        		              var indx = nameAndIndex[1];  
+  			         	  	addressElement.innerHTML = name;
 
     			        } 
-    			        else {
-
+    			        else {						
 			             	addressElement.innerHTML = response.Placemark[0].address;
     			        }
     			        ajaxCount--;
     		    	});
-        }
-		
+	        }
+	
 		</script>
         </rich:panel>
 
@@ -451,7 +490,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" align="center"><a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
-                                            reRender="dateError,script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap,selectedTripTable" immediate="false" styleClass="left"
+                                            reRender="dateError,script,statsPanel,tripsPanel,tripBubbles,selectedTrip,selectedTripMap,selectedTripTable" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();getAddresses()">
                                             <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
                                         </a4j:commandButton></td>                                      
@@ -556,16 +595,16 @@
                 <rich:panel id="selectedEvents">
                     <a4j:form id="selectedEventsForm">
                         <rich:dataTable value="#{driverTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datatable" rowClasses="tableOdd,tableEven"
-                            rows="5" width="100%" onRowClick="fillEventBubbleFromList(#{item.noteID}, #{item.latitude}, #{item.longitude});">
+                            rows="5" width="100%" onRowClick="lkFrZn(#{item.latitude}, #{item.longitude},0);fillEventBubbleFromList(#{item.noteID}, #{item.latitude}, #{item.longitude});">
 
                             <!-- Data -->
-                            <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
+                            <rich:column  style="cursor: pointer;">
                                 <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" title="#{messages[item.eventType]}" />
                                 <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 202}" title="#{messages[item.eventType]}" />
                                 <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208 and item.type ne 202}" title="#{messages[item.eventType]}" />
                             </rich:column>
 
-                            <rich:column id="address_column" sortBy="#{item.addressStr}" style="cursor: pointer;">
+                            <rich:column id="address_column" style="cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="#{messages.drivertrip_event_address}" />
                                 </f:facet>
@@ -597,7 +636,8 @@
                      
                         <table align="center"><tr><td>
                         <rich:datascroller align="center" for="selectedTripTable" id="eventScroller"  maxPages="5"
-                        				   reRender="selectedTripTable"  styleClass="dataScrollerSmall" renderIfSinglePage="false"/>
+                        	oncomplete="getEventAddresses();"                                             	                      	                     	
+                    		reRender="selectedTripTable"  styleClass="dataScrollerSmall" renderIfSinglePage="false"/>
                         </td></tr></table>
                     </a4j:form>
                 </rich:panel> <!-- End Trip table --></div>
@@ -630,7 +670,7 @@
                                 </a4j:status></td>
                                 <td width="20"><a4j:form id="showLastTenForm">
                                     <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showLastTenTrips}">
-                                        <a4j:support event="onclick" reRender="script,bubbles,selectedEvents" 
+                                        <a4j:support event="onclick" reRender="script,tripBubbles,selectedEvents" 
                                         oncomplete="bodyLoad();getAddresses();" />
                                     </h:selectBooleanCheckbox>
                                 </a4j:form></td>
@@ -725,11 +765,11 @@
                         <rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
                         <!-- Start Trip table -->
                             <rich:dataTable value="#{driverTripsBean.trips}" id="tripsTable" var="item"
-                            styleClass="datatable" rowClasses="tableOdd,tableEven" rows="4" width="100%">
+                            	styleClass="datatable" rowClasses="tableOdd,tableEven" rows="4" width="100%">
                                 
     
-                                <a4j:support event="onRowClick" reRender="script,bubbles,selectedEvents,showLastTenForm,selectVehicleForm" 
-                                oncomplete="bodyLoad();getAddresses();">
+                                <a4j:support event="onRowClick" reRender="script,tripBubbles,selectedEvents,showLastTenForm,selectVehicleForm" 
+                                	oncomplete="bodyLoad();getEventAddresses();">
                                     <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
                                 </a4j:support>
     
@@ -781,7 +821,8 @@
                                 </rich:column>
                             </rich:dataTable>
                           <rich:datascroller align="center" for="tripsTable" id="scroller" styleClass="dataScrollerSmall"
-                          renderIfSinglePage="false"/>
+                          	oncomplete="onReRender()" reRender="tripsTable"
+                          	renderIfSinglePage="false"/>
                         
                         <rich:jQuery selector="document" query="ready(function(){onReRender()})" />
                         <!-- End Trip table -->
@@ -837,6 +878,9 @@
             </tr>
         </table>
         </div>
+					<a4j:form id="dispatchForm">
+							<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>						
+					</a4j:form>        
 	<a4j:form id="bubbleForm">
 			<a4j:jsFunction name="fillTripBubbleMarker"  reRender="tripBubbles" oncomplete="getAddressForCurrentMarker()">
 			<a4j:actionparam name="tripId" assignTo="#{driverTripsBean.selectedTripID}"/>
@@ -849,6 +893,14 @@
 			<a4j:actionparam name="eventId" assignTo="#{driverTripsBean.selectedViolationID}"/>
 		</a4j:jsFunction>
 <!--		</ui:fragment>		-->
+						<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">
+							<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+							<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+							<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
+						</a4j:jsFunction>	 
+						<a4j:jsFunction name="initLkFrZn" action="#{addressBean.initZoneName}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">					
+						</a4j:jsFunction>							  					
+
 	</a4j:form>	
     </ui:define>
 
