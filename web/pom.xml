@@ -395,7 +395,7 @@
     <dependency>
       <groupId>com.ocpsoft</groupId>
       <artifactId>ocpsoft-pretty-faces</artifactId>
-      <version>1.2.5_GA</version>
+      <version>1.2.6</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

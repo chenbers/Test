@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
-default-autowire="byName">
+<beans xmlns="http://www.springframework.org/schema/beans" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+  default-autowire="byName">
+<!-- <context:component-scan base-package="com.inthinc.pro"/> -->
+  <bean id="junkBean" class="com.inthinc.pro.backing.JunkBean" scope="request"/>
   <!-- Message Bundles -->
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="com.inthinc.pro.resources.Messages" />
@@ -77,7 +86,7 @@ default-autowire="byName">
     <property name="overallScoreBean" ref="overallScoreBean" />
     <property name="trendBeanState" ref="trendBeanState"></property>
   </bean>
-  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean" autowire="byName"/>
+  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean"/>
 
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">
@@ -387,7 +396,6 @@ default-autowire="byName">
   <util:properties id="googleMapProperties" location="classpath:googleMapKeys.properties" />
   <bean id="gmBean" class="com.inthinc.pro.map.google.GoogleMapBacking">
     <property name="googleMapProperties" ref="googleMapProperties" />
-    <property name="webUtil" ref="webUtil" />
   </bean>
   
   <!-- Web Util Beans - wraps access to servlet  -->

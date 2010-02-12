@@ -13,13 +13,12 @@ public class GoogleMapBacking implements GoogleMapKeyFinder{
 
     // private GoogleMapKeys googleMapKeys;
     private Properties googleMapProperties;
-    private WebUtil webUtil;
 
     @Override
     public String getKey() {
 
-        String serverName = webUtil.getRequestServerName();
-        int serverPort = webUtil.getRequestServerPort();
+        String serverName = WebUtil.getRequestServerName();
+        int serverPort = WebUtil.getRequestServerPort();
         String googleMapsKey = googleMapProperties.getProperty(serverName);
         if (serverPort != 80 && googleMapProperties.getProperty(serverName + ":" + serverPort) != null) {
             googleMapsKey = googleMapProperties.getProperty(serverName + ":" + serverPort);
@@ -41,14 +40,6 @@ public class GoogleMapBacking implements GoogleMapKeyFinder{
 
     public void setGoogleMapProperties(Properties googleMapProperties) {
         this.googleMapProperties = googleMapProperties;
-    }
-
-    public WebUtil getWebUtil() {
-        return webUtil;
-    }
-
-    public void setWebUtil(WebUtil webUtil) {
-        this.webUtil = webUtil;
     }
 
 	@Override
