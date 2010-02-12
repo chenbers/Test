@@ -43,6 +43,7 @@
     </authentication-provider>
     <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
         <beans:property name="userDAO" ref="userDAO" />
+        <beans:property name="roleDAO" ref="roleDAO" />
     </beans:bean>
 
     <!--  Password encryption  -->
