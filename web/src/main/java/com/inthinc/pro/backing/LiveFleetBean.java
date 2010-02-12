@@ -19,7 +19,6 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
-import com.inthinc.pro.util.MiscUtil;
 
 public class LiveFleetBean extends BaseBean
 {
@@ -101,7 +100,7 @@ public class LiveFleetBean extends BaseBean
     // DRIVER LAST LOCATION PROPERTIES
     public List<DriverLocation> getDrivers()
     {
-//        if (driverLocationsMap == null || driverLocationsMap.isEmpty())
+        if (driverLocationsMap == null || driverLocationsMap.isEmpty())
             populateDriverLocations();
         return new ArrayList<DriverLocation>(driverLocationsMap.values());
     }
@@ -227,7 +226,6 @@ public class LiveFleetBean extends BaseBean
 
     public void setMaxCount(Integer maxCount)
     {
-        logger.debug("setting count. to " + maxCount.toString());
         this.maxCount = maxCount;
         populateDriverLocations();
     }

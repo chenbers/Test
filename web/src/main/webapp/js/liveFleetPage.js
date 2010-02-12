@@ -15,30 +15,33 @@
 	       		
 	      if (GBrowserIsCompatible()) {
 	    	  
-	       	map = new GMap2(document.getElementById("map-canvas"));
-
-	        addLayers();
-
-	        map.addControl(new GLargeMapControl());
-	        map.addControl(new GScaleControl());
-	        map.addControl(new GMenuMapTypeControl(true));
-			map.setCenter(mapDefaultLoc);
-	        map.enableScrollWheelZoom();
-
-			addListeners();
+	    	  if (mapNeedsInit) {
+	    	  
+		       	map = new GMap2(document.getElementById("map-canvas"));
+	        	geocoder = new GClientGeocoder();
+	
+		        addLayers();
+	
+		        map.addControl(new GLargeMapControl());
+		        map.addControl(new GScaleControl());
+		        map.addControl(new GMenuMapTypeControl(true));
+				map.setCenter(mapDefaultLoc);
+		        map.enableScrollWheelZoom();
+	
+				addListeners();
+				
+				bounds = new GLatLngBounds();
+			    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
 			
-			bounds = new GLatLngBounds();
-		    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
-			map.addOverlay(marker);
-			bounds.extend(marker.getPoint());
-		
-			var node = document.getElementById("defaultMessage").cloneNode(true);
-			node.style.display = 'block';
-		    marker.openInfoWindow(node);
-		
-		    mapNeedsInit = false;
+				var node = document.getElementById("defaultMessage").cloneNode(true);
+				node.style.display = 'block';
+			    marker.openInfoWindow(node);
+			
+			    mapNeedsInit = false;
 
-
+	    	  }
 	      }
 		}
 		
@@ -100,29 +103,28 @@
 	   	        geocoder.getLatLng(
 	   	          address,
 	   	          function(point) {
-	   	            if (!point) {
-	   	              alert(address + " not found");
-	   	         } else {
+	   	        	  if (!point) {
+	   	        		  alert(address + " not found");
+	   	        	  } else {
 	  	     
-	   				 //Create Marker
-					 var marker = new GMarker(point);
-					 GEvent.addListener(marker, "click", function() {
-				         	marker.openInfoWindowHtml("<b>" + address + "</b>");  });
-					 
-					 map.addOverlay(marker);
-					 bounds.extend(marker.getPoint());
-					
-					 //Immediately display info window.
-					 marker.openInfoWindow("<b>" + address + "</b>");
-					         	  
-					 //Pass Geocode lookup LatLng and max count to Bean.
-					 var loc = marker.getLatLng();
-					 notifyBean(loc.lat(), loc.lng(), count);
-					 
+		   				 //Create Marker
+						 var marker = new GMarker(point);
+						 GEvent.addListener(marker, "click", function() {
+					         	marker.openInfoWindowHtml("<b>" + address + "</b>");  });
+						 
+						 map.addOverlay(marker);
+						 bounds.extend(marker.getPoint());
+						
+						 //Immediately display info window.
+						 marker.openInfoWindow("<b>" + address + "</b>");
+						         	  
+						 //Pass Geocode lookup LatLng and max count to Bean.
+						 var loc = marker.getLatLng();
+						 notifyBean(loc.lat(), loc.lng(), count);
 	    	         }
 	   	          }
 	   	        );
-	   	      }
+	   	    }
    	    }
 
 		/* Check if Enter pressed in form.

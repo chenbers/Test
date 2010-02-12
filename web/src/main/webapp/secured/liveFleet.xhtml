@@ -28,7 +28,6 @@
 		
 	<script type="text/javascript">
 	    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
-	    
 		function bodyUnload()
 		{
 			GUnload();
@@ -74,6 +73,8 @@
 				progressBar.start(#{fn:length(liveFleetBean.drivers)});
 
 				markers = [];
+
+				bounds.extend(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 			
@@ -92,7 +93,7 @@
 				progressBar.remove();
 
 				map.setZoom(map.getBoundsZoomLevel(bounds));
-		    	map.setCenter(bounds.getCenter());
+	    		map.setCenter(bounds.getCenter());
 			}
 		</script>
 		</rich:panel>
