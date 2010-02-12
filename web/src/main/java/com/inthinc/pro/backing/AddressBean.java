@@ -76,5 +76,10 @@ public class AddressBean extends BaseBean {
             zoneName = MessageUtil.getMessageString("sbs_badLatLng");
         }
         zoneName += "," + new String(String.valueOf(elemIndex));
-    }       
+        System.out.println("Found zone name: " + zoneName);
+    }    
+    
+    public void initZoneName() {
+    	zoneName = "";    
+    }
 }
