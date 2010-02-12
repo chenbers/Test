@@ -33,7 +33,7 @@ public class PageData {
 		currentPage = (currentPage == null) ? numPages+1 : currentPage;
         if (currentPage > numPages) {
         	currentPage = (rowCount > 0) ? 1 : 0;
-            pageStartRow = 0;
+            pageStartRow = (rowCount > 0) ? 1 : 0;
         }
 	    pageEndRow = currentPage * getRowsPerPage();
 	    if (pageEndRow > rowCount)  {
