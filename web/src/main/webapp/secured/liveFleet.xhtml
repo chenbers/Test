@@ -43,9 +43,11 @@
 			addressLookupAddressFormat = #{liveFleetBean.addressFormat};
 		}
 
-		function setZoneName(zoneName) {	
-			document.getByElementId('dispatchForm:foundZoneName').value = zoneName;
-		}
+
+		function setZoneNameSync(obj) {
+			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
+			fillBubbleMap(obj.noteID);	
+		}  
 
 	</script>	
 
@@ -190,7 +192,7 @@
 									<f:facet name="header">
 									
 									</f:facet>
-									<a href="#" id="showGroup" onclick="lkFrZn(#{item.loc.lat},#{item.loc.lng},0);fillBubbleMap(#{item.vehicle.vehicleID});">
+									<a href="#" id="showGroup" onclick="lkFrZnEvtTbl(#{item.loc.lat},#{item.loc.lng},0,#{item.vehicle.vehicleID});">
 										<img src="#{liveFleetBean.legendIconMap.icons[item.vehicle.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>
@@ -298,11 +300,13 @@
 								 oncomplete="getAddressForPosition(#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lat},#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lng})">
 							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
 						</a4j:jsFunction>
-						<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">
-							<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-							<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-							<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
-						</a4j:jsFunction>	   					
+		<a4j:jsFunction name="lkFrZnEvtTbl" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="setZoneNameSync(data);" 
+			reRender="dispatchForm:foundZoneName">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
+			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>
+		</a4j:jsFunction>    					
 					</a4j:form>
 				</a4j:region>
 				</div>
