@@ -102,9 +102,11 @@
 			map.clearOverlays();
 			addMarkers();
 		}
-		function setZoneName(zoneName) {	
-			document.getByElementId('dispatchForm:foundZoneName').value = zoneName;
+
+		function setZoneName(zoneName) {
+			jQuery('#dispatchForm\\:foundZoneName').val(zoneName);
 		}
+
 	</script>
 	<rich:panel id="scripts">
 		<script type="text/javascript">
@@ -249,7 +251,12 @@
 								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng})">
 			<a4j:actionparam name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
 		</a4j:jsFunction>
-		
+		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}');" 
+			reRender="dispatchForm:foundZoneName">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>		
+		</a4j:jsFunction> 		
 	</a4j:form>	
 			
 </ui:composition>	
