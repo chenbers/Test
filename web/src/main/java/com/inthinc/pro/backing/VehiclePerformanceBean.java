@@ -211,7 +211,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
                             trip.getBeginningPoint()));
                 }
                 if ( trip.getEndAddress() == null ) {
-                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
+                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
                             new LatLng(trip.getEndPointLat(),trip.getEndPointLng())));
                 }                
                 setLastTrip(trip);
