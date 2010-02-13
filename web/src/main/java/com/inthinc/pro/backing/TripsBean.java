@@ -469,6 +469,13 @@ public class TripsBean extends BaseBean {
     }
 
     public void setSelectedTrip(TripDisplay selectedTrip) {
+    	
+    	// TODO: refactor
+    	if (selectedTrip != null && this.selectedTrip != null) {
+    		if (selectedTrip.equals(this.selectedTrip)) {
+    			return;
+    		}
+    	}
         this.selectedTrip = selectedTrip;
         // Add this trip to the list of selected trips.
         selectedTrips.clear();
