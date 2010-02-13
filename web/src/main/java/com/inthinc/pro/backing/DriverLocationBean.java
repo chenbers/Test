@@ -22,6 +22,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
+import com.inthinc.pro.util.MiscUtil;
 
 public class DriverLocationBean extends BaseBean {
 
@@ -118,6 +119,12 @@ public class DriverLocationBean extends BaseBean {
 				continue;
 			
         	driverLocation.setAddressStr(getAddress(driverLocation.getLoc()));
+        	// TODO Refactor. Will look for a zone name if no address found
+        	if ( driverLocation.getAddressStr() == null ) {
+        	    driverLocation.setAddressStr(
+        	            MiscUtil.findZoneName(this.getProUser().getZones(), 
+        	                    new LatLng(driverLocation.getLoc().getLat(),driverLocation.getLoc().getLng())));
+        	}
         	
         	driverLocation.setPosition(getIconKey(driverLocation));
         	validList.add(driverLocation);

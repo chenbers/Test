@@ -30,6 +30,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 public class TripsBean extends BaseBean {
 
@@ -88,7 +89,19 @@ public class TripsBean extends BaseBean {
             }
             
             for (Trip trip : tempTrips) {
-                trips.add(new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup));
+                TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup);
+                // If starting or ending address is null, try to set a zone name
+                if ( td.getStartAddress() == null ) {
+                    LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
+                    td.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
+                }                
+                if ( td.getEndAddress() == null ) {
+                    LatLng latLng = new LatLng(td.getEndPointLat(),td.getEndPointLng());
+                    td.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
+                }
+                trips.add(td);
+                
+
             }
             Collections.sort(trips);
             Collections.reverse(trips);
@@ -189,6 +202,10 @@ public class TripsBean extends BaseBean {
                 event.setLongitude(lastValidLatLng.getLng());
             }
             event.setAddressStr(getAddress(event.getLatLng()));
+            // TODO: Refactor. Will set to a zone name if null back from retrieval, or could not find
+            if ( event.getAddressStr() == null ) {
+                event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(), event.getLatLng()));
+            }
             lastValidLatLng = event.getLatLng();
         }
     }

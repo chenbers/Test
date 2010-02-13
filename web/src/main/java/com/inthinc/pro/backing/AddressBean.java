@@ -1,6 +1,11 @@
 package com.inthinc.pro.backing;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jdt.core.dom.ThisExpression;
+import org.richfaces.json.JSONObject;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Zone;
@@ -14,6 +19,8 @@ public class AddressBean extends BaseBean {
     private int    elemIndex;
     private String zoneName;  
     private List<Zone> zones;
+    private String noteID;
+    private Map<String,String> zoneData;
     
     public AddressBean() {
         super();
@@ -59,9 +66,16 @@ public class AddressBean extends BaseBean {
         return zones;
     }
 
-
     public void setZones(List<Zone> zones) {
         this.zones = zones;
+    }
+
+    public String getNoteID() {
+        return noteID;
+    }
+
+    public void setNoteID(String noteID) {
+        this.noteID = noteID;
     }
 
 
@@ -77,8 +91,20 @@ public class AddressBean extends BaseBean {
         }
         zoneName += "," + new String(String.valueOf(elemIndex));
     }    
-    
-    public void initZoneName() {
-    	zoneName = "";    
+
+    public Map<String,String> getZoneData() {
+//        JSONObject jSonObject = new JSONObject();
+        Map<String,String> jSonObject = new HashMap<String,String>();
+        
+        try {
+            jSonObject.put("lat", String.valueOf(this.getZoneLat()));
+            jSonObject.put("lng", String.valueOf(this.getZoneLng()));
+            jSonObject.put("name", this.getZoneName());
+            jSonObject.put("noteID", this.getNoteID());
+        } catch (Exception e) {
+            return null;
+        }
+        
+        return jSonObject;
     }
 }

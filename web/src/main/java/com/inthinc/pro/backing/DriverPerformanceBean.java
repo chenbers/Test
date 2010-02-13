@@ -19,6 +19,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -31,6 +32,7 @@ import com.inthinc.pro.reports.map.MapLookup;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 public class DriverPerformanceBean extends BasePerformanceBean
 {
@@ -121,13 +123,17 @@ public class DriverPerformanceBean extends BasePerformanceBean
             {
             	String address = "";
             	try {
-            		address = addressLookup.getAddress(event.getLatitude(), event.getLongitude());
+            		address = addressLookup.getAddress(event.getLatitude(), event.getLongitude());            		
             	}
             	catch (NoAddressFoundException nafe){
             	
             		address = MessageUtil.getMessageString(nafe.getMessage());
             	}
                 event.setAddressStr(address);
+                if ( event.getAddressStr() == null ) {
+                    event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(),
+                            new LatLng(event.getLatitude(),event.getLongitude())));
+                }
                 
                 violationEventsMap.put(event.getNoteID(), event);
             }
@@ -217,6 +223,14 @@ public class DriverPerformanceBean extends BasePerformanceBean
             {
                 hasLastTrip = true;
                 TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), addressLookup);
+                if ( trip.getStartAddress() == null ) {
+                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
+                            trip.getBeginningPoint()));
+                }
+                if ( trip.getEndAddress() == null ) {
+                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
+                            new LatLng(trip.getEndPointLat(),trip.getEndPointLng())));
+                }                
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }

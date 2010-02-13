@@ -25,6 +25,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -36,6 +37,7 @@ import com.inthinc.pro.reports.map.MapLookup;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 public class VehiclePerformanceBean extends BasePerformanceBean
 {
@@ -129,6 +131,10 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             for (Event event : violationEvents)
             {
                 event.setAddressStr(getAddress(event.getLatLng()));
+                if ( event.getAddressStr() == null ) {
+                    event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(),
+                            event.getLatLng()));
+                }
                 violationEventsMap.put(event.getNoteID(), event);
             }
             selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
@@ -200,6 +206,14 @@ public class VehiclePerformanceBean extends BasePerformanceBean
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
                 TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup);
+                if ( trip.getStartAddress() == null ) {
+                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
+                            trip.getBeginningPoint()));
+                }
+                if ( trip.getEndAddress() == null ) {
+                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
+                            new LatLng(trip.getEndPointLat(),trip.getEndPointLng())));
+                }                
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }

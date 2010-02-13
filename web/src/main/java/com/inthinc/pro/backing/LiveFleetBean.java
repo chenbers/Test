@@ -19,6 +19,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
+import com.inthinc.pro.util.MiscUtil;
 
 public class LiveFleetBean extends BaseBean
 {
@@ -75,6 +76,10 @@ public class LiveFleetBean extends BaseBean
         {
             driver.setPosition((count++));
             driver.setAddressStr(getAddress(driver.getLoc()));
+            if ( driver.getAddressStr() == null ) {
+                driver.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(), 
+                        driver.getLoc()));
+            }
             driver.setDevice(deviceDAO.findByID(driver.getVehicle().getDeviceID()));  // ADD TO return map for getVehiclesNearLoc()
             
             // Add groups to Group map for Legend
