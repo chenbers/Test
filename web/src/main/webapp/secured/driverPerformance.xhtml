@@ -682,11 +682,6 @@
 			<a4j:actionparam name="eventId" assignTo="#{driverPerformanceBean.selectedViolationID}"/>
 		</a4j:jsFunction>
 		</ui:fragment>		
-						<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">
-							<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-							<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-							<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
-						</a4j:jsFunction>	   					
 		
 	</a4j:form>	
 
