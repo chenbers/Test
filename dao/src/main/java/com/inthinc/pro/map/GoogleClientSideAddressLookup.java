@@ -6,7 +6,8 @@ import com.inthinc.pro.model.NoAddressFoundException;
 public class GoogleClientSideAddressLookup extends AddressLookup {
 
 
-	GoogleMapKeyFinder googleMapKeyFinder;
+//	GoogleMapKeyFinder googleMapKeyFinder;
+    private String googleMapGeoUrl;
 
 	public GoogleClientSideAddressLookup() {
 		super();
@@ -22,12 +23,18 @@ public class GoogleClientSideAddressLookup extends AddressLookup {
 			return latLng.getLat() + ", " + latLng.getLng();
 		}
 		else {
-			StringBuilder request = new StringBuilder("http://maps.google.com/maps/geo?q=");
-			request.append(latLng.getLat());
-			request.append(",");
-			request.append(latLng.getLng());
-			request.append("&output=csv&sensor=true&key=");
-			request.append(getGoogleMapKeyFinder().getKey());
+//			StringBuilder request = new StringBuilder("http://maps.google.com/maps/geo?q=");
+//			request.append(latLng.getLat());
+//			request.append(",");
+//			request.append(latLng.getLng());
+//			request.append("&output=csv&sensor=true&key=");
+//			request.append(getGoogleMapKeyFinder().getKey());
+			
+		     StringBuilder request = new StringBuilder(googleMapGeoUrl)
+	            .append(latLng.getLat())
+	            .append(",")
+	            .append(latLng.getLng())
+	            .append("&output=csv");
 			
 			return request.toString();
 		}
@@ -46,12 +53,20 @@ public class GoogleClientSideAddressLookup extends AddressLookup {
 		return getAddress(latLng,false);
 	}
 
-	public GoogleMapKeyFinder getGoogleMapKeyFinder() {
-		return googleMapKeyFinder;
-	}
+    public String getGoogleMapGeoUrl() {
+        return googleMapGeoUrl;
+    }
 
-	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
-		this.googleMapKeyFinder = googleMapKeyFinder;
-	}
+    public void setGoogleMapGeoUrl(String googleMapGeoUrl) {
+        this.googleMapGeoUrl = googleMapGeoUrl;
+    }
+
+//	public GoogleMapKeyFinder getGoogleMapKeyFinder() {
+//		return googleMapKeyFinder;
+//	}
+//
+//	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
+//		this.googleMapKeyFinder = googleMapKeyFinder;
+//	}
 
 }

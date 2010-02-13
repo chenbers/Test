@@ -18,7 +18,8 @@ import com.inthinc.pro.model.NoAddressFoundException;
 
 public class GoogleAddressLookup extends AddressLookup {
 	
-	private GoogleMapKeyFinder googleMapKeyFinder;
+//	private GoogleMapKeyFinder googleMapKeyFinder;
+    private String googleMapGeoUrl;
 	
 	private LatLng latLng;
 	
@@ -33,24 +34,30 @@ public class GoogleAddressLookup extends AddressLookup {
 	public String getAddress(LatLng latLng, boolean returnLatLng)
 			throws NoAddressFoundException {
 		
-		if ((googleMapKeyFinder == null) || (googleMapKeyFinder.getKey()==null) ||googleMapKeyFinder.getKey().isEmpty()) {
+//		if ((googleMapKeyFinder == null) || (googleMapKeyFinder.getKey()==null) ||googleMapKeyFinder.getKey().isEmpty()) {
 			if (returnLatLng){
 				
 				return latLng.getLat() + ", " + latLng.getLng();
 			}
-			else {
-				
-				throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_MAP_KEY);
-			}
-		}
+//			else {
+//				
+//				throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_MAP_KEY);
+//			}
+//		}
 		this.latLng = latLng;
 		
-		StringBuilder request = new StringBuilder("http://maps.google.com/maps/geo?q=");
-		request.append(latLng.getLat());
-		request.append(",");
-		request.append(latLng.getLng());
-		request.append("&output=xml&sensor=true&key=");
-		request.append(getGoogleMapKeyFinder().getKey());
+//		StringBuilder request = new StringBuilder("http://maps.google.com/maps/geo?q=");
+//		request.append(latLng.getLat());
+//		request.append(",");
+//		request.append(latLng.getLng());
+//		request.append("&output=xml&sensor=true&key=");
+//		request.append(getGoogleMapKeyFinder().getKey());
+		
+		StringBuilder request = new StringBuilder(googleMapGeoUrl)
+		    .append(latLng.getLat())
+		    .append(",")
+		    .append(latLng.getLng())
+		    .append("&output=xml");
 		
 		String address = null;
 		try{
@@ -186,13 +193,23 @@ public class GoogleAddressLookup extends AddressLookup {
     }
 
 
-	public GoogleMapKeyFinder getGoogleMapKeyFinder() {
-		return googleMapKeyFinder;
-	}
+    public String getGoogleMapGeoUrl() {
+        return googleMapGeoUrl;
+    }
 
 
-	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
-		this.googleMapKeyFinder = googleMapKeyFinder;
-	}
+    public void setGoogleMapGeoUrl(String googleMapGeoUrl) {
+        this.googleMapGeoUrl = googleMapGeoUrl;
+    }
+
+
+//	public GoogleMapKeyFinder getGoogleMapKeyFinder() {
+//		return googleMapKeyFinder;
+//	}
+//
+//
+//	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
+//		this.googleMapKeyFinder = googleMapKeyFinder;
+//	}
 
 }

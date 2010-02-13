@@ -397,6 +397,10 @@
   <bean id="gmBean" class="com.inthinc.pro.map.google.GoogleMapBacking">
     <property name="googleMapProperties" ref="googleMapProperties" />
   </bean>
+  <bean id="googleMapURLBean" class="com.inthinc.pro.backing.GoogleMapURLBean">
+    <property name="mapUrl" value="${google.map.url}"/>
+    <property name="mapGeoUrl" value="${google.map.geo.url}"/>
+  </bean>
   
   <!-- Web Util Beans - wraps access to servlet  -->
   <bean id="webUtil" class="com.inthinc.pro.util.WebUtil"></bean>
