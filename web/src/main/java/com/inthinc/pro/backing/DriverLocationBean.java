@@ -61,11 +61,12 @@ public class DriverLocationBean extends BaseBean {
 	
 	public List<DriverLocation> getDriverLocations()
 	{
-//		logger.info("-----getDriverLocations");		
-//	    if (driverLocationsMap != null && driverLocationsMap.size() > 0) {
-//	    	
-//	    	return new ArrayList<DriverLocation>(driverLocationsMap.values());
-//	    }
+//		logger.info("-----getDriverLocations groupid: " + navigation.getGroupID());	
+		// cj 2/13/10 -- this was commented out, but put it back in because this method gets called several times and getDVLByGroupId is expensive
+	    if (driverLocationsMap != null && driverLocationsMap.size() > 0) {
+	    	
+	    	return new ArrayList<DriverLocation>(driverLocationsMap.values());
+	    }
 	    
 //Date traceStartTime = new Date();	    
 	    List<DriverLocation>driverLocations = driverDAO.getDriverLocations(navigation.getGroupID());

@@ -527,7 +527,7 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
     @Override
-    public List<Long> getRfidsForBarcode(String barcode) throws ProDAOException{
+    public List<Long> getRfidsForBarcode(@DaoParam(name = "barcode") String barcode) throws ProDAOException{
     	
     	return null;
     }
@@ -572,17 +572,18 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    public Map<String, Object> createCrash(Integer acctID, Map<String, Object> crashReportMap) throws ProDAOException {
+    public Map<String, Object> createCrash(@DaoParam(name = "accountID") Integer acctID, 
+    		@DaoParam(name = "CrashReport", type = com.inthinc.pro.model.CrashReport.class) Map<String, Object> crashReportMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    public Map<String, Object> deleteCrash(Integer crashReportID) throws ProDAOException {
+    public Map<String, Object> deleteCrash(@DaoParam(name = "crashReportID") Integer crashReportID) throws ProDAOException {
         return null;
     }
 
     @Override
-    public Map<String, Object> getCrash(Integer crashReportID) throws ProDAOException {
+    public Map<String, Object> getCrash(@DaoParam(name = "crashReportID") Integer crashReportID) throws ProDAOException {
         return null;
     }
 
@@ -619,23 +620,6 @@ public class SiloServiceImpl implements SiloService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-/*
-	@Override
-	public Map<String, Object> getRedFlagsCount(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
-			Map<String, String> filter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> getRedFlagsPage(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
-			Map<String, Object> pageParams) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
 
 	@Override
 	public List<Map<String, Object>> getDVLByGroupIDDeep(@DaoParam(name = "groupID") Integer groupID)
@@ -644,17 +628,6 @@ public class SiloServiceImpl implements SiloService {
 		return null;
 	}
 
-	@Override
-	public List<Map<String, Object>> getDriverNoteByGroupIDDeep(
-			@DaoParam(name = "groupID") Integer groupID, 
-            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
-            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
-            @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
-            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types") Integer[] types) 
-            throws ProDAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Map<String, Object>> getSiteAccessPts() {
@@ -663,22 +636,30 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getRolesByAcctID(Integer acctID) {
+	public List<Map<String, Object>> getRolesByAcctID(@DaoParam(name = "accountID") Integer acctID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public List<Map<String, Object>> getDriverEventPage(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
-			Map<String, Object> pageParams, Integer[] types) {
+	public List<Map<String, Object>> getDriverEventPage(
+			@DaoParam(name = "groupID") Integer groupID, 
+            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+            @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
+            @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams,
+            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types") Integer[] types) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> getDriverEventCount(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
-			List<Map<String, Object>> filterList, Integer[] types) {
+	public Map<String, Object> getDriverEventCount(
+			@DaoParam(name = "groupID") Integer groupID, 
+            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+            @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
+			List<Map<String, Object>> filterList, 
+            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types") Integer[] types) { 
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -689,48 +670,48 @@ public class SiloServiceImpl implements SiloService {
             @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
             @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
             @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
-			Map<String, Object> pageParams) throws ProDAOException {
-		// TODO Auto-generated method stub
+            @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) throws ProDAOException {
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> getRedFlagsCount(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
+	public Map<String, Object> getRedFlagsCount(
+			@DaoParam(name = "groupID") Integer groupID, 
+            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+            @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
 			List<Map<String, Object>> filterList) {
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> createRole(@DaoParam(name = "accountID") Integer acctID,
+			@DaoParam(name = "Role", type = com.inthinc.pro.model.security.Role.class) Map<String, Object> roleMap) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> createRole(Integer acctID,
-			Map<String, Object> roleMap) throws ProDAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Object> deleteRole(Integer roleID)
+	public Map<String, Object> deleteRole(@DaoParam(name = "roleID") Integer roleID)
 			throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> getRole(Integer roleID) throws ProDAOException {
+	public Map<String, Object> getRole(@DaoParam(name = "roleID") Integer roleID) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> updateRole(Integer roleID,
-			Map<String, Object> roleMap) throws ProDAOException {
-		// TODO Auto-generated method stub
+	public Map<String, Object> updateRole(@DaoParam(name = "roleID") Integer roleID,
+			@DaoParam(name = "Role", type = com.inthinc.pro.model.security.Role.class) Map<String, Object> roleMap) throws ProDAOException {
 		return null;
 	}
 
 	@Override
-	public List<Map<String, Object>> getUsersAccessPts(Integer userID) {
+	public List<Map<String, Object>> getUsersAccessPts(@DaoParam(name = "userID") Integer userID) {
 		// TODO Auto-generated method stub
 		return null;
 	}

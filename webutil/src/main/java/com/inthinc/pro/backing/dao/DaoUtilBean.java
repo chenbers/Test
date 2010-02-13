@@ -9,8 +9,10 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 import javax.faces.model.SelectItem;
@@ -164,30 +166,39 @@ public class DaoUtilBean
 				                    if (!column.name().isEmpty())
 				                        mname = column.name();
 				                }
+				                Class fieldType = field.getType();
+				                if (Boolean.class.isAssignableFrom(fieldType) || 
+				                		Number.class.isAssignableFrom(fieldType) || 
+				                		String.class.isAssignableFrom(fieldType) || 
+				                		Character.class.isAssignableFrom(fieldType) || 
+				                		Date.class.isAssignableFrom(fieldType) || 
+				                		TimeZone.class.isAssignableFrom(fieldType)|| fieldType.isEnum()) {
 
-			                    Param param = new Param();
-			                    
-								System.out.println(mname + " " + field.getType().getName());
-	                            param.setParamName(mname);
-	                        	
-	                            param.setParamInputDesc("");
-	                            param.setParamConvert(com.inthinc.pro.convert.BaseConvert.class);
-	                            param.setParamType(field.getType());
-	                            param.setDateType(field.getType().getSimpleName().equals("Date"));
-	                            param.setParamValue(null);
-	                            param.setParentType(webParm.type());
-	                            if (field.getType().getSimpleName().equals("Date"))
-	                            {
-		                            param.setParamConvert(com.inthinc.pro.convert.DateConvert.class);
-		                            param.setParamInputDesc("MM/dd/yyyy hh:mm");
-	                            }
-	                            
-		                        paramList.add(param);
+				                    Param param = new Param();
+				                    
+									System.out.println(mname + " " + field.getType().getName());
+		                            param.setParamName(mname);
+		                        	
+		                            param.setParamInputDesc("");
+		                            param.setParamConvert(com.inthinc.pro.convert.BaseConvert.class);
+		                            param.setParamType(field.getType());
+		                            param.setDateType(field.getType().getSimpleName().equals("Date"));
+		                            param.setParamValue(null);
+		                            param.setParentType(webParm.type());
+		                            if (field.getType().getSimpleName().equals("Date"))
+		                            {
+			                            param.setParamConvert(com.inthinc.pro.convert.DateConvert.class);
+			                            param.setParamInputDesc("MM/dd/yyyy hh:mm");
+		                            }
+		                            
+			                        paramList.add(param);
+				                }
 							}
                         }
                     }
                     else
                     {
+//		                if (List.class.isAssignableFrom(fieldType) || 
                         Param param = new Param();
                         if (webParm != null)
                         {

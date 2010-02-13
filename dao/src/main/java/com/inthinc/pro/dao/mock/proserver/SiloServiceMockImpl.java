@@ -1541,30 +1541,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return returnList;
 	}
 
-	@Override
-	public List<Map<String, Object>> getDriverNoteByGroupIDDeep(
-			Integer groupID, Long startDate, Long endDate,
-			Integer includeForgiven, Integer[] types) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-/*
-	@Override
-	public Map<String, Object> getNoteCountByGroup(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
-			Integer[] types, Map<String, String> filter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> getNotePageByGroup(Integer groupID,
-			Long startDate, Long endDate, Integer includeForgiven,
-			Integer[] types, Map<String, Object> pageParams) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
 
 	@Override
 	public List<Map<String, Object>> getSiteAccessPts() {

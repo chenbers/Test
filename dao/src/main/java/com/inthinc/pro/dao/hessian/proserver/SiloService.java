@@ -176,10 +176,6 @@ public interface SiloService extends HessianService
     Map<String, Object> getNote(Long noteID);
     
     List<Map<String, Object>> getDriverNote(Integer driverID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);
-
-    
-// TODO: REMOVE    
-    List<Map<String, Object>> getDriverNoteByGroupIDDeep(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);
     
     List<Map<String, Object>> getVehicleNote(Integer vehicleID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);
     
