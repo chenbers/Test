@@ -96,7 +96,7 @@ public class ProUserServiceImpl implements UserDetailsService
 			
 			for(AccessPoint ap:user.getAccessPoints()){
 				
-				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString()));
+				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
 			}
 		}
 		grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_NORMAL"));
