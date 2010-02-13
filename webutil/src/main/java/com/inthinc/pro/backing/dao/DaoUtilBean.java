@@ -198,7 +198,6 @@ public class DaoUtilBean
                     }
                     else
                     {
-//		                if (List.class.isAssignableFrom(fieldType) || 
                         Param param = new Param();
                         if (webParm != null)
                         {
@@ -302,6 +301,10 @@ public class DaoUtilBean
                     if (param.getParamType().isArray())
                     {
                         args[cnt++] = param.getParamValueObjectArray();
+                    }
+                    else if (List.class.isAssignableFrom(param.getParamType()))
+                    {
+                    	args[cnt++] = new ArrayList();
                     }
                     else
                     {

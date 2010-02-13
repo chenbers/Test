@@ -647,7 +647,7 @@ public class SiloServiceImpl implements SiloService {
             @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
             @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
             @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams,
-            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types") Integer[] types) {
+            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types valid types are (1,2,3,22,93,117,118,202,207,209,213)") Integer[] types) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -658,8 +658,8 @@ public class SiloServiceImpl implements SiloService {
             @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
             @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
             @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
-			List<Map<String, Object>> filterList, 
-            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types") Integer[] types) { 
+            @DaoParam(name = "filterList", inputDesc = "Not Implemented -- enter any value") List<Map<String, Object>> filterList, 
+            @DaoParam(name = "types[]", inputDesc = "comma sep list of event types valid types are (1,2,3,22,93,117,118,202,207,209,213)") Integer[] types) { 
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -680,7 +680,7 @@ public class SiloServiceImpl implements SiloService {
             @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
             @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
             @DaoParam(name = "includeForgiven", inputDesc = "1 - include forgiven, 0 - exclude forgiven") Integer includeForgiven,
-			List<Map<String, Object>> filterList) {
+            @DaoParam(name = "filterList", inputDesc = "Not Implemented -- enter any value") List<Map<String, Object>> filterList) {
 		return null;
 	}
 
