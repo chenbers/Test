@@ -64,6 +64,17 @@ public class Roles {
         this.roleDAO = roleDAO;
     }
     
-
+    public void removeUneditableRoles(){
+    	
+    	Role admin = getRoleByName("Admin");
+    	roleMapByName.remove("Admin");
+    	roleMapById.remove(admin.getRoleID());
+    	roleList.remove(admin);
+    	
+       	Role normal = getRoleByName("Normal");
+    	roleMapByName.remove("Normal");
+    	roleMapById.remove(normal.getRoleID());
+    	roleList.remove(normal);
+   }
 
 }

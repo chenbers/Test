@@ -41,7 +41,9 @@ public class ProUserServiceImpl implements UserDetailsService
             if (user == null)
             {
                 throw new UsernameNotFoundException("Username could not be found");
-            }    
+            }  
+            user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
+
             ProUser proUser = new ProUser(user, getGrantedAuthorities(user));            
             return proUser;
         }
@@ -95,7 +97,7 @@ public class ProUserServiceImpl implements UserDetailsService
 			
 			for(AccessPoint ap:user.getAccessPoints()){
 				
-				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getSiteAccessPointID()).toString()));
+				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
 			}
 		}
 		grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_NORMAL"));

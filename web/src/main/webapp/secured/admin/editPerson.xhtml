@@ -8,6 +8,23 @@
 	xmlns:security="http://pro.tiwi.com/jsf/security"
      xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
      xmlns:t="http://myfaces.apache.org/tomahawk">
+    <style>
+        .panelc {
+            width:25%;
+            vertical-align:top;         
+        }
+        
+        .dropTargetPanel {
+            width: 90%;
+            vertical-align:top;
+        }
+
+        .footerClass {
+            text-align: center;
+            padding-top: 5px;
+        }
+
+    </style>
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Admin_Add_User.htm" />
@@ -28,6 +45,7 @@
       </td>
       <td valign="top">
           <!-- START PANEL -->
+   		<rich:dragIndicator id="indicator" />
 
         <a4j:form id="edit-form">
 
@@ -613,14 +631,56 @@
                           </td>
                           <td>
                             <rich:message for="editPerson-user_role" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.user.roles[0]}" id="editPerson-user_role" 
-                            		converter="SimpleBeanConverter"
-                            		disabled="#{!personBean.item.userEditable}" 
-                                    required="#{not personBean.batchEdit}" 
-                                    requiredMessage="#{messages.required}"
-                            		onchange="checkMultiple(this)">
-                              	<f:selectItems value="#{personBean.roles}" />
-                            </h:selectOneMenu>
+<!--                            <h:selectOneMenu value="#{personBean.item.user.roles[0]}" id="editPerson-user_role" -->
+<!--                            		converter="SimpleBeanConverter"-->
+<!--                            		disabled="#{!personBean.item.userEditable}" -->
+<!--                                    required="#{not personBean.batchEdit}" -->
+<!--                                    requiredMessage="#{messages.required}"-->
+<!--                            		onchange="checkMultiple(this)">-->
+<!--                              	<f:selectItems value="#{personBean.roles}" />-->
+<!--                            </h:selectOneMenu>-->
+  <h:panelGrid id="editPerson-user_role" columnClasses="panelc" columns="2" width="100%">
+
+            <rich:panel style="width:133px;border:1px"> 
+                <f:facet name="header">
+                    <h:outputText value="Choose Roles" />
+                </f:facet>
+                <h:dataTable id="src" columns="1" value="#{personBean.item.rolesSource}"
+                    var="role" footerClass="footerClass">
+
+                    <h:column>
+                        <a4j:outputPanel style="width:100px;border:1px solid gray;padding:2px"
+                            layout="block">
+                            <rich:dragSupport dragIndicator=":indicator"
+                                dragType="role" dragValue="#{role}">
+                                <rich:dndParam name="label" value="#{role.name}" />
+                            </rich:dragSupport>
+                            <h:outputText value="#{role.name}"></h:outputText>
+                        </a4j:outputPanel>
+                    </h:column>
+                    <f:facet name="footer">
+                        <a4j:commandButton value="Start Over" reRender="src,selectedRoletable"/>
+                    </f:facet>
+                </h:dataTable>
+            </rich:panel>
+
+            <rich:panel styleClass="dropTargetPanel">
+                <f:facet name="header">
+                    <h:outputText value="Selected Roles" />
+                </f:facet>
+                <rich:dropSupport id="roleDrop" acceptedTypes="role" dropValue="role" ajaxSingle="true"
+                    			 dropListener="#{personBean.item.dropEventBean.processDrop}" reRender="roleDrop, src, selectedRoletable">
+                </rich:dropSupport>
+
+                <h:dataTable id="selectedRoletable" columns="1" value="#{personBean.item.user.actualRoles}" var="role">
+                    <h:column>
+                        <h:outputText value="#{role.name}"></h:outputText>
+                    </h:column>
+                </h:dataTable>
+
+
+            </rich:panel>
+            </h:panelGrid>
                           </td>
                         </tr>
                         <tr>

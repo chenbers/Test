@@ -4,6 +4,7 @@
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+   				xmlns:security="http://pro.tiwi.com/jsf/security"
                 xmlns:pretty="http://ocpsoft.com/prettyfaces"
                 xmlns:tiwipro="http://pro.tiwi.com/jsf">
 
@@ -25,35 +26,10 @@
     <h:form id="side-nav-form">
       
       <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_USERSACCESS">
         <tr>
           <td valign="top">
-            <ui:include src="verticalLeftTab.xhtml">
-               <ui:param name="iconFileName" value="ico_driver.png"/>
-               <ui:param name="mappingId" value="adminCustomRoles"/>
-               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminCustomRoles') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="#{messages.adminSideNav_go_adminCustomRoles}"/>
-                   <ui:param name="context" value="#{context}-vlt-customRoles"/>
-           </ui:include>
-          </td>
-        </tr>
-        <ui:fragment rendered="#{parentAction == 'go_adminCustomRoles'}">
-          <tr>
-            <td valign="top" class="sub_wrapper">
-              <ui:include src="verticalLeftSubTab.xhtml">
-                  <ui:param name="iconFileName" value="ico_add_driver.png"/>
-                  <ui:param name="actionBean" value="#{customRolesBean}"/>
-                  <ui:param name="action" value="add"/>
-                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddCustomRole') ? 'true' : 'false'}"/>
-                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddCustomRole}"/>
-<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct2"/>-->
-                  <ui:param name="context" value="#{context}-vlst-customRoles"/>
-              </ui:include>
-            </td>
-          </tr>
-        </ui:fragment>
-        <tr>
-          <td valign="top">
-               <ui:include src="verticalLeftTab.xhtml">
+                <ui:include src="verticalLeftTab.xhtml">
                   <ui:param name="iconFileName" value="ico_driver.png"/>
                   <ui:param name="mappingId" value="adminPeople"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminPeople') ? 'true' : 'false'}"/>
@@ -65,7 +41,7 @@
         <ui:fragment rendered="#{parentAction == 'go_adminPeople'}">
           <tr>
             <td valign="top" class="sub_wrapper">
-              <ui:include src="verticalLeftSubTab.xhtml">
+               <ui:include src="verticalLeftSubTab.xhtml">
                   <ui:param name="iconFileName" value="ico_add_driver.png"/>
                   <ui:param name="actionBean" value="#{personBean}"/>
                   <ui:param name="action" value="add"/>
@@ -77,6 +53,8 @@
             </td>
           </tr>
         </ui:fragment>
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_VEHICLESACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -103,6 +81,9 @@
             </td>
           </tr>
         </ui:fragment>
+        </security:authorize>
+       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_DEVICESACCESS">
+        
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -127,6 +108,8 @@
 <!--            </td>-->
 <!--          </tr>-->
 <!--        </ui:fragment>-->
+        </security:authorize>
+     	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ZONESACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -138,6 +121,8 @@
             </ui:include>
           </td>
         </tr>
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ZONEALERTSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -165,6 +150,8 @@
             </td>
           </tr>
         </ui:fragment>
+        </security:authorize>
+       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_REDFLAGSSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -192,6 +179,8 @@
             </td>
           </tr>
         </ui:fragment>
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_REPORTSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -219,6 +208,8 @@
             </td>
           </tr>
         </ui:fragment>
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ORGANIZATIONACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -230,6 +221,37 @@
             </ui:include>
           </td>
         </tr>
+      </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ROLESACCESS">
+        <tr>
+          <td valign="top">
+          
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_key.png"/>
+               <ui:param name="mappingId" value="adminCustomRoles"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminCustomRoles') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminCustomRoles}"/>
+                   <ui:param name="context" value="#{context}-vlt-customRoles"/>
+           </ui:include>
+          </td>
+        </tr>
+        <ui:fragment rendered="#{parentAction == 'go_adminCustomRoles'}">
+           <tr>
+            <td valign="top" class="sub_wrapper">
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_key.png"/>
+                  <ui:param name="actionBean" value="#{customRolesBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddCustomRole') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddCustomRole}"/>
+<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct2"/>-->
+                  <ui:param name="context" value="#{context}-vlst-customRoles"/>
+              </ui:include>
+            </td>
+          </tr>
+        </ui:fragment>
+ 		</security:authorize>       
+      <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_SPEEDBYSTREETACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -241,6 +263,7 @@
             </ui:include>
           </td>
         </tr>
+        </security:authorize>
        </table>
 
     </h:form>

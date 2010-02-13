@@ -30,7 +30,7 @@
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="admin"><h:outputFormat value="#{messages.adminHeader_roleDetails}"><f:param value="#{customRolesBean.item.name}" /></h:outputFormat></span>
+                  <span class="admin"><h:outputFormat value="#{messages.adminHeader_customRoleDetails}"><f:param value="#{customRolesBean.item.name}" /></h:outputFormat></span>
                   <span class="panel_links"></span>
                 </div>
               </div>
@@ -39,12 +39,8 @@
 
                 <div class="panel_content">
 
-                  <rich:tabPanel switchType="client">
-
-                    <rich:tab id="details" label="#{messages.device_details}">
-
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="l text"><a4j:htmlCommandLink id="roleCancel1" action="#{customRolesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
+                        <li class="l text"><a4j:htmlCommandLink id="roleCancel1" action="#{customRolesBean.cancelDisplay}" value="#{messages.customRoles_backToCustomRoles}" /></li>
                         <li class="r">
                           <a4j:commandButton id="roleDelete1"  styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
                           <h:outputText value=" " /><h:commandButton id="roleEdit1" action="#{customRolesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
@@ -57,12 +53,22 @@
                         <tr>
                           <td width="390" valign="top">
                     
-                            <div class="add_section_title"><h:outputText value="#{messages.editRole_roleInformation}" /></div>
-                      
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.editRole_name}" /></td>
+                                <td width="100"><h:outputText value="#{messages.editCustomRole_name}" /></td>
                                 <td><h:outputText value="#{customRolesBean.item.name}" /></td>
+                              </tr>
+                              <tr>
+                              <td><h:outputText value="#{messages.editCustomRole_accessPoints}" /></td>
+                              <td>
+                               <rich:dataList var="accessPoint" value="#{customRolesBean.item.accessPts}" rows="20" type="disc" title="Car Store">
+
+									<ui:param name="accessPointID" value="#{accessPoint.accessPtID}"/>
+									<ui:param name="msgKey" value="#{customRolesBean.accessPointMap[accessPointID].msgKey}"/>
+                					<h:outputText value="#{messages[msgKey]}"/><br/>
+ 
+        					   </rich:dataList>
+        					   </td>
                               </tr>
                              </table>
 
@@ -70,8 +76,6 @@
                         </tr>
                       </table>
 
-                    </rich:tab>
-                    </rich:tabPanel>
 
  
                 </div>

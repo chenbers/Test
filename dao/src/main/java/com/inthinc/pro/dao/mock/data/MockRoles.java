@@ -16,24 +16,25 @@ public class MockRoles
     static
     {
         Integer key = 1;
+        allAccessPoints.put(key, new AccessPoint(key++,15));
+        allAccessPoints.put(key, new AccessPoint(key++,15));
+        allAccessPoints.put(key, new AccessPoint(key++,15));
+        allAccessPoints.put(key, new AccessPoint(key++,15));
+        allAccessPoints.put(key, new AccessPoint(key++,15));
+        allAccessPoints.put(key, new AccessPoint(key++,15));
+ 
+        key = 1;
 
 //        allRoles.put(key, new Role(1, key++, "readOnly"));
 //        allRoles.put(key, new Role(1, key++, "normalUser"));
 //        allRoles.put(key, new Role(1, key++, "supervisor"));
 //        allRoles.put(key, new Role(1, key++, "customUser"));
 //        allRoles.put(key, new Role(1, key++, "superUser"));
-        allRoles.put(key, new Role(1, key++, "Admin"));
-        allRoles.put(key, new Role(1, key++, "Normal"));
+        allRoles.put(key, new Role(1, key++, "Admin",new ArrayList<AccessPoint>(allAccessPoints.values())));
+        allRoles.put(key, new Role(1, key++, "Normal",new ArrayList<AccessPoint>(allAccessPoints.values())));
         
-        key = 1;
         
-        allAccessPoints.put(key, new AccessPoint(key++,15));
-        allAccessPoints.put(key, new AccessPoint(key++,15));
-        allAccessPoints.put(key, new AccessPoint(key++,15));
-        allAccessPoints.put(key, new AccessPoint(key++,15));
-        allAccessPoints.put(key, new AccessPoint(key++,15));
-        allAccessPoints.put(key, new AccessPoint(key++,15));
-    }
+   }
     
     public static List<Role> getAll()
     {

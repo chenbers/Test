@@ -249,7 +249,14 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_role}" /></td>
-                            <td><h:outputText value="#{personBean.item.user.role.name}" /></td>
+                            <td>
+                               <rich:dataList var="role" value="#{personBean.item.roleNames}" rows="20" type="disc" title="Roles">
+
+                					<h:outputText value="#{role}"/><br/>
+ 
+        					   </rich:dataList>
+                            </td>
+<!--                            <h:outputText value="#{personBean.item.user.role.name}" /></td>-->
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_status}" /></td>

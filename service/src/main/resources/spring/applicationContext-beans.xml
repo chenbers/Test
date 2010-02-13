@@ -21,9 +21,9 @@
   
   
    <!-- Global Application Context (singleton scoped) beans -->
-   <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">
-    <property name="roleDAO" ref="roleDAO"></property>
-   </bean>
+<!--   <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">-->
+<!--    <property name="roleDAO" ref="roleDAO"></property>-->
+<!--   </bean>-->
    <bean id="states" class="com.inthinc.pro.model.app.States" init-method="init">
     <property name="stateDAO" ref="stateDAO"></property>
    </bean>

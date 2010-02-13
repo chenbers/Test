@@ -806,16 +806,21 @@ public class SiloServiceTest {
 		accessPoints.add(new AccessPoint(2,15));
 		accessPoints.add(new AccessPoint(3,15));
 		
-		newRole.setAccessPoints(accessPoints);
+		newRole.setAccessPts(accessPoints);
 		newRole.setName("TestUserAccess");
 		
 		RoleHessianDAO roleHessianDAO = new RoleHessianDAO();
 		roleHessianDAO.setSiloService(siloService);
 		
-		roleHessianDAO.create(acctID, newRole);
-		
+		Integer roleID = roleHessianDAO.create(acctID, newRole);
+		newRole.setRoleID(roleID);
 	    List<Role> roleList = roleHessianDAO.getRoles(acctID);
 	    assertTrue("No  new roles were found", roleList.size() > 2);
+	    
+	    newRole.setName("RenamedRole");
+	    Integer changedCount = roleHessianDAO.update(newRole);
+        assertEquals("Role update count " + newRole.getName(), Integer.valueOf(1), changedCount);
+        
     }
     private void devices(Integer acctID) {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();

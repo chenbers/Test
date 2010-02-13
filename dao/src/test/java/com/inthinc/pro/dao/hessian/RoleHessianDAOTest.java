@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.model.security.Roles;
 import com.inthinc.pro.model.security.SiteAccessPoint;
 
 public class RoleHessianDAOTest {
@@ -41,6 +42,11 @@ public class RoleHessianDAOTest {
     {
         List<Role> roleList = roleHessianDAO.getRoles(MockData.NUM_ACCOUNTS);
         assertTrue("No roles were found", roleList.size() > 0);
+        
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleHessianDAO);
+        roles.init(MockData.NUM_ACCOUNTS);
+        assertTrue("Still no roles found",roles.getRoleList().size()>0);
     }
     
     @Test

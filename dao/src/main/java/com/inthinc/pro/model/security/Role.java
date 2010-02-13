@@ -9,26 +9,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.BaseEntity;
 
 @XmlRootElement
 public class Role extends BaseEntity implements Comparable<Role>{
 	
-	private static final long serialVersionUID = 1L;
+//	private static final long serialVersionUID = 1L;
 	
 	@ID
 	private Integer roleID;
 	private Integer acctID;
 	private String name;
-	private List<AccessPoint> accessPoints;
+	private List<AccessPoint> accessPts;
+	@Column(updateable = false)
 	private Map<Integer,AccessPoint> accessPointsMap;
 	
-	public Role(Integer acctID, Integer roleID, String name) {
+	public Role(Integer acctID, Integer roleID, String name, List<AccessPoint> accessPoints) {
 		super();
 		this.roleID = roleID;
 		this.acctID = acctID;
 		this.name = name;
+		this.accessPts = accessPoints;
 	}
 
 	public Role() {
@@ -60,13 +63,13 @@ public class Role extends BaseEntity implements Comparable<Role>{
 		this.name = name;
 	}
 
-	public List<AccessPoint> getAccessPoints() {
-		return accessPoints;
+	public List<AccessPoint> getAccessPts() {
+		return accessPts;
 	}
 
-	public void setAccessPoints(List<AccessPoint> accessPoints) {
+	public void setAccessPts(List<AccessPoint> accessPoints) {
 		
-		this.accessPoints = accessPoints;
+		this.accessPts = accessPoints;
 		if (accessPoints == null){
 			
 			accessPoints = new ArrayList<AccessPoint>();
@@ -75,7 +78,7 @@ public class Role extends BaseEntity implements Comparable<Role>{
 		
 		for (AccessPoint ap: accessPoints){
 			
-			accessPointsMap.put(ap.getSiteAccessPointID(),ap);
+			accessPointsMap.put(ap.getAccessPtID(),ap);
 		}
 	}
     public String toString()

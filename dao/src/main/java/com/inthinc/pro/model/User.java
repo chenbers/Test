@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.security.AccessPoint;
+import com.inthinc.pro.model.security.Role;
 
 @XmlRootElement
 public class User extends BaseEntity {
@@ -21,6 +23,8 @@ public class User extends BaseEntity {
     @Column(updateable = false)
     private Person person;
     private List<Integer> roles;
+    @Column(updateable = false)
+    private List<Role> actualRoles;
     private List<AccessPoint> accessPoints;
     private Status status;
     private String username;
@@ -124,13 +128,31 @@ public class User extends BaseEntity {
 		this.accessPoints = accessPoints;
 	}
 	
-	//temporary work around to select single role until list fully implemented
-	public Integer getRole(){
-		
-		return roles.size()>0?roles.get(0):1;
+//	//temporary work around to select single role until list fully implemented
+//	public Integer getRole(){
+//		
+//		return roles.size()>0?roles.get(0):1;
+//	}
+//	public void setRole(Integer role){
+//		
+//		roles.add(0,role);
+//	}
+
+	public List<Role> getActualRoles() {
+		return actualRoles;
 	}
-	public void setRole(Integer role){
-		
-		roles.add(0,role);
+
+	public void setActualRoles(List<Role> actualRoles) {
+		this.actualRoles = actualRoles;
+		if(actualRoles != null){
+			
+			List<Integer> roleIDs = new ArrayList<Integer>();
+			
+			for(Role role:actualRoles){
+				
+				roleIDs.add(role.getRoleID());
+			}
+			roles = roleIDs;
+		}
 	}
 }

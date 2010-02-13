@@ -43,9 +43,9 @@ public class SiteAccessPoints implements BaseAppEntity{
 	    
 	    public static SiteAccessPoint getAccessPointById(Integer id)
 	    {
-	        return getAccessPointMap().get(id);
+	        return accessPointMap.get(id);
 	    }
-	    public static SiteAccessPoint getAccessPointByName(String  name)
+	    public  SiteAccessPoint getAccessPointByName(String  name)
 	    {
 	        for (SiteAccessPoint accessPoint : getAccessPointMap().values())
 	        {
@@ -101,5 +101,11 @@ public class SiteAccessPoints implements BaseAppEntity{
 			
 			return accessPointList;
 		}
-
+		
+		public String getAccessPointMessageKey(Integer accessPtID){
+			
+			if(getAccessPointMap().get(accessPtID) == null) return null;
+			
+			return getAccessPointMap().get(accessPtID).getMsgKey();
+		}
 }

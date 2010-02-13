@@ -25,6 +25,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.jasypt.util.password.PasswordEncryptor;
+import org.richfaces.component.Dropzone;
+import org.richfaces.event.DropEvent;
+import org.richfaces.event.DropListener;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -253,8 +256,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setUserSelected(person.getUser() != null);
         personView.setDriverSelected(person.getDriver() != null);
         personView.setSelected(false);
-        if (person.getUser() != null)
+        if (person.getUser() != null) {
             personView.getUser().setPerson(personView);
+            prepareRoles(personView);
+        }
 //        if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 1))
 //            person.getDriver().setRFID(null);
         if (logger.isTraceEnabled())
@@ -340,6 +345,22 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         else if (column.equals("fuelEfficiencyType")) {
             return MessageUtil.getMessageString(getFuelEfficiencyType().toString(), getLocale());
         }
+        else if (column.equals("user_role")){
+        	if (person.getUser() != null){
+        		
+                getAccountRoles();
+                List<Integer> roleIDs = person.getUser().getRoles();
+                StringBuffer rolesbuffer = new StringBuffer();
+                for (Integer id:roleIDs){
+                	
+                	rolesbuffer.append(accountRoles.getRoleById(id).getName());
+                	rolesbuffer.append(", ");
+                }
+                rolesbuffer.setLength(rolesbuffer.length()-2);
+        		return rolesbuffer.toString();
+        	}
+        	else return null;
+        }
         else
             return super.fieldValue(person, column);
     }
@@ -377,10 +398,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
-        List<Integer> roles = new ArrayList<Integer>();
-        getAccountRoles();
-        roles.add(accountRoles.getRoleByName("Normal").getRoleID());
-        person.getUser().setRoles(roles); // normal user
+        prepareRoles(person);
         person.getUser().setPerson(person);
         Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
         if (LocaleBean.supportedLocale(locale))
@@ -395,6 +413,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setAcctID(getAccountID());
         return person;
     }
+
+    private void prepareRoles(PersonView person){
+    	
+         getAccountRoles();
+         List<Role> targetRoles = new ArrayList<Role>();
+         Role normal = accountRoles.getRoleByName("Normal");
+         targetRoles.add(normal);
+         person.getUser().setActualRoles(targetRoles); // normal user
+         List<Role> sourceRoles = new ArrayList<Role>(accountRoles.getRoleList());
+         sourceRoles.remove(normal);
+         person.setRolesSource(sourceRoles);
+         person.setDropEventBean(new EventBean(person));
+    }
+    
 
     @Override
     public PersonView getItem() {
@@ -708,6 +740,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     userDAO.deleteByID(person.getUser().getUserID());
                 person.setUser(null);
             }
+            if(person.getUser() != null){
+	            //copy roleIDs to roleID list
+	            List<Role> actualRoles =  person.getUser().getActualRoles();
+	            List<Integer> roleIDs = new ArrayList<Integer>();
+	            for(Role role:actualRoles){
+	            	
+	            	roleIDs.add(role.getRoleID());
+	            }
+	            person.getUser().setRoles(roleIDs);
+            }
             if (!person.isDriverSelected() && (person.getDriver() != null)) {
                 if (person.getDriver().getDriverID() != null)
                     driverDAO.deleteByID(person.getDriver().getDriverID());
@@ -860,19 +902,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return TIMEZONES;
     }
 
-    public List<SelectItem> getRoles() {
-        //TODO: improve detection of roles that are selectable by users
-//        Role inthincRole = Roles.getRoleByName("inthinc");
-        List<SelectItem> roleList = new ArrayList<SelectItem>();
-        getAccountRoles();
-
-        for (Role role : accountRoles.getRoleList()) {
-//            if (inthincRole == null || !role.getRoleID().equals(inthincRole.getRoleID()))
-                roleList.add(new SelectItem(role, role.getName()));
-        }
-        roleList.add(0, new SelectItem(null, ""));
-        return roleList;
-    }
+//    public List<SelectItem> getRoles() {
+//        //TODO: improve detection of roles that are selectable by users
+////        Role inthincRole = Roles.getRoleByName("inthinc");
+//        List<SelectItem> roleList = new ArrayList<SelectItem>();
+//        getAccountRoles();
+//
+//        for (Role role : accountRoles.getRoleList()) {
+////            if (inthincRole == null || !role.getRoleID().equals(inthincRole.getRoleID()))
+//                roleList.add(new SelectItem(role, role.getName()));
+//        }
+//        roleList.add(0, new SelectItem(null, ""));
+//        return roleList;
+//    }
 
     public Map<String, String> getLicenseClasses() {
         return LICENSE_CLASSES;
@@ -911,7 +953,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         private boolean driverSelected;
         @Column(updateable = false)
         private boolean selected;
-
+        @Column(updateable = false)
+        private List<Role> rolesSource;
+        @Column(updateable = false)
+        private EventBean dropEventBean;
+        
         public Integer getId() {
             return getPersonID();
         }
@@ -1059,22 +1105,95 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     			super.setLocale(locale);
     		}
     	}
-    	public String getRoleName(){
+    	public List<String> getRoleNames(){
+    		List<String> roleNames = new ArrayList<String>();
+    		List<Integer> roleIDs = getUser().getRoles();
     		
-    		if((getUser() == null)|| (getUser().getRole()==null)) return "";
-    		
-    		return bean.getAccountRoles().getRoleById(getUser().getRole()).getName();
-     	}
+    		for(Integer id:roleIDs){
+    			
+    			roleNames.add(bean.getAccountRoles().getRoleById(id).getName());
+    		}
+    		return roleNames;
+    	}
+    	public String getRolesString(){
+    		if (getUser() != null){
+        		
+               	Roles roles =  bean.getAccountRoles();
+                List<Integer> roleIDs = getUser().getRoles();
+                StringBuffer rolesbuffer = new StringBuffer();
+                for (Integer id:roleIDs){
+                	
+                	rolesbuffer.append(roles.getRoleById(id).getName());
+                	rolesbuffer.append(", ");
+                }
+                rolesbuffer.setLength(rolesbuffer.length()-2);
+        		return rolesbuffer.toString();
+    		}
+    		return "";
+    	}
+//    	public String getRoleName(){
+//    		
+//    		if((getUser() == null)|| (getUser().getRoles()==null)) return "";
+//    		
+//    		return bean.getAccountRoles().getRoleById(getUser().getRole()).getName();
+//     	}
+
+		public List<Role> getRolesSource() {
+			return rolesSource;
+		}
+
+		public void setRolesSource(List<Role> rolesSource) {
+			this.rolesSource = rolesSource;
+		}
+		public void moveRole(Object fm, Object family) {
+			
+			if("role".equals(family)){
+				int roleIndex = rolesSource.indexOf(fm);
+				getUser().getActualRoles().add(rolesSource.get(roleIndex));
+				rolesSource.remove(roleIndex);
+			}
+			
+		}
+		public void resetRoles(){
+			
+			bean.prepareRoles(this);
+		}
+		public EventBean getDropEventBean() {
+			return dropEventBean;
+		}
+
+		public void setDropEventBean(EventBean dropEventBean) {
+			this.dropEventBean = dropEventBean;
+		}
 
     }
+		
+		
+	public class EventBean implements DropListener {
+		private PersonView dndBean;
 
-	public RoleDAO getRoleDAO() {
-		return roleDAO;
-	}
+		public EventBean(PersonView dndBean) {
+			super();
+			this.dndBean = dndBean;
+		}
+		@Override
+		public void processDrop(DropEvent dropEvent) {
+			
+			Dropzone dropzone = (Dropzone) dropEvent.getComponent();
+			dndBean.moveRole(dropEvent.getDragValue(), dropzone.getDropValue());
+		}
+		public void reset(){
+			dndBean.resetRoles();
+		}
+		public PersonView getDndBean() {
+			return dndBean;
+		}
 
-	public void setRoleDAO(RoleDAO roleDAO) {
-		this.roleDAO = roleDAO;
+		public void setDndBean(PersonView dndBean) {
+			this.dndBean = dndBean;
+		}
 	}
+	
 	public Roles getAccountRoles(){
 		
 		if (accountRoles == null){
@@ -1085,5 +1204,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
 		}
 		return accountRoles;
+	}
+	public RoleDAO getRoleDAO() {
+		return roleDAO;
+	}
+
+	public void setRoleDAO(RoleDAO roleDAO) {
+		this.roleDAO = roleDAO;
 	}
 }

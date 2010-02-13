@@ -10,10 +10,11 @@
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="" />
-  <ui:param name="title" value="#{vehiclesBean.add ? messages.adminHeader_addVehicle : (vehiclesBean.batchEdit ? messages.adminHeader_editVehicles : messages.adminHeader_editVehicle)}"/>
+  <ui:param name="title" value="#{customRolesBean.add ? messages.adminHeader_addCustomRole : (customRolesBean.batchEdit ? messages.adminHeader_editCustomRoles : messages.adminHeader_editCustomRole)}"/>
   <ui:define name="scripts">
-      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
-  </ui:define>
+<!--      <script type="text/javascript" src="#{request.contextPath}/js/adminEdit.js"></script>-->
+      <script type="text/javascript" src="#{request.contextPath}/js/jquery-1.3.2.js"></script>
+    </ui:define>
   
   <ui:define name="content">
 	
@@ -73,32 +74,29 @@
                                 <td width="100" valign="top">
                                   <h:outputText value="#{messages.editCustomRole_name}" />
                                   <span class="required">*</span>
-                            <h:inputText value="#{customRolesBean.item.name}" id="editCustomRole-name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{customRolesBean.item.name}" id="editCustomRole-name"  styleClass="text" size="30"
                               maxlength="20" required="true" requiredMessage="#{messages.required}" />
                                 </td>
  							  </tr> 
  							  <tr>
  							  <td>
- 							  <rich:dataTable value="#{customRolesBean.item.accessPoints}" var="accessPoint" rows="20"
+ 							  
+ 							  <rich:dataTable value="#{customRolesBean.item.accessPointSelection}" var="accessPoint" rows="20"
  							  		id="accessPoints" rowKeyVar="index" styleClass="datagrid" 
         							rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
 
               <rich:column>
                 <f:facet name="header">
-                  <h:selectBooleanCheckbox value="#{customRolesBean.item.allAccessPointsSelected}" id="selectAllCustomRoles">
-                    <a4j:support event="onclick" action="#{customRolesBean.item.doSelectAllAccessPoints}" ajaxSingle="true" reRender="accessPoints" limitToList="true" />
-                  </h:selectBooleanCheckbox>
+                  <h:selectBooleanCheckbox id="selectAllCustomRoles" />
                 </f:facet>
-                <h:selectBooleanCheckbox id="select" value="#{accessPoint.selected}">
-                  <a4j:support event="onclick" action="#{customRolesBean.item.checkAllSelected}" ajaxSingle="true" reRender="accessPoints" limitToList="true" />
-                </h:selectBooleanCheckbox>
+                <h:selectBooleanCheckbox id="select" value="#{accessPoint.selected}"/>
               </rich:column>
   
         <rich:column>
 
-                <f:facet name="header">Site Access Points</f:facet>
-				<ui:param name="accessPoint" value="#{accessPoint.msgKey}"/>
-                <h:outputText value="#{messages[accessPoint]}"/>
+                <f:facet name="header">#{messages.editCustomRole_accessPoints}</f:facet>
+				<ui:param name="accessPointMessage" value="#{accessPoint.msgKey}"/>
+                <h:outputText value="#{messages[accessPointMessage]}"/>
 
 
         </rich:column>
@@ -115,8 +113,8 @@
  
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandButton id="editCustomRoleSave4" action="#{customRolesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                          <h:outputText value=" " /><h:commandButton id="editCustomRoleCancel4" action="#{customRolesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                          <h:commandButton id="editCustomRoleSave2" action="#{customRolesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editCustomRoleCancel2" action="#{customRolesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
                        
@@ -139,23 +137,35 @@
 
 
     <script type="text/javascript">
-  var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
+  //<![CDATA[
+    var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
 
   function bodyLoad()
   {
 //    document.getElementById("edit-form:details_shifted").onclick();
 
     var elements = document.getElementById("edit-form").elements;
-    for (var i = 0; i &lt; elements.length; i++)
-      for (var j = 0; j &lt; formElements.length; j++)
+    for (var i = 0; i < elements.length; i++)
+      for (var j = 0; j< formElements.length; j++)
         if (elements[i].getAttribute("type") == formElements[j])
         {
           elements[i].focus();
           return;
         }
   }
+	jQuery("#edit-form\\:accessPoints\\:selectAllCustomRoles").click(function(){
+		
+			jQuery('input[id$=select]:checkbox').attr('checked', this.checked);
+		});
+	
+	jQuery("[id$=select]").click(function(){
 
-  
+			var checked = jQuery('[id$=select]:checkbox:not(:checked)').length == 0;
+			jQuery('#edit-form\\:accessPoints\\:selectAllCustomRoles:checkbox').attr('checked', checked);
+		
+		});
+
+   //]]>
     </script>
 
   </ui:define>
