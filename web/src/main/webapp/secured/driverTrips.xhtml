@@ -28,6 +28,7 @@
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 		var ajaxCount = 0;
+		var currentElement;
 		
 		function initMap(lat,lng,zoom)
 		{
@@ -147,21 +148,11 @@
 			}
 		}
 
-		function setZoneName(zoneName) {			
-			jQuery('#dispatchForm\\:foundZoneName').val(zoneName);			
+		function setZoneNameSync(obj) {
+			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
+			fillEventBubbleFromList(obj.noteID,obj.lat,obj.lng);		
 		}  	
-
-//		function pauseBetweenCalls(numberMillis) {			
-//			var now = new Date();
-//			var exitTime = now.getTime() + numberMillis;
-//			while (true) 
-//			{
-//				now = new Date();
-//				if (now.getTime() > exitTime)
-//				return;
-//			}
-
-//		}  	  
+ 
 		</script>
 
    <rich:panel id="script">
@@ -176,7 +167,6 @@
 	    // This is called on pageLoad 
 		function bodyLoad()
 		{
-			initLkFrZn();
 			if ( #{driverTripsBean.selectedTrips[0] ne null} ) {
 				initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}0, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}0, 14);
 		   		showTrips();
@@ -212,18 +202,18 @@
 					
 					//Start of trip marker
 					startlatlng = new GLatLng(#{trip.beginningPoint.lat}, #{trip.beginningPoint.lng});
-					marker = createMarker(startlatlng, #{trip.trip.tripID}, 0,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble);
+					marker = createMarker(startlatlng, #{trip.trip.tripID}, 0,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,"#{trip.startAddress}");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 					//End of trip marker
 					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
 					if ("#{trip.inProgress}" == "true")
 					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble);
+						marker = createMarker(endlatlng, #{trip.trip.tripID},1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,"#{trip.endAddress}");
 					}
 					else
 					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble);
+						marker = createMarker(endlatlng, #{trip.trip.tripID},2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,"#{trip.endAddress}");
 					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -234,7 +224,7 @@
 	  				var violation;
 					<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						map.addOverlay(createMarker(violation, "#{violation.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png",fillEventBubble));
+						map.addOverlay(createMarker(violation, "#{violation.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png",fillEventBubble,"#{violation.addressStr}"));
 					</ui:repeat>
 				}
 
@@ -244,7 +234,7 @@
 					var idle;
 					<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
 						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
-						map.addOverlay(createMarker(idle, "#{idle.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",fillEventBubble));
+						map.addOverlay(createMarker(idle, "#{idle.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",fillEventBubble,"#{idle.addressStr}"));
 					</ui:repeat>
 				}	
 
@@ -253,7 +243,7 @@
 					var tamper;
 					<ui:repeat value="#{driverTripsBean.tamperEvents}" var="tamperEvent">
 						tamper = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
-						map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",fillEventBubble));
+						map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",fillEventBubble,"#{tamperEvent.addressStr}"));
 					</ui:repeat>
 				}	
 			}
@@ -266,8 +256,9 @@
 	         		var lat = jQuery(this).find('*[id$="lat"]');
 	        		var lng = jQuery(this).find('*[id$="lng"]');
 	        		var address = jQuery(this).find('*[id$="address"]');
-						
-					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);
+	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');
+	
+					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
 //					pauseBetweenCalls(250);
 	    		});	
 	    		jQuery('td[id$="address_column"]').each(function(n){
@@ -275,8 +266,9 @@
 	        		var lat = jQuery(this).find('*[id$="eventLat"]');
 	        		var lng = jQuery(this).find('*[id$="eventLng"]');
 	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-						
-					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);
+	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        		
+				
+					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
 //	              	pauseBetweenCalls(250);	
 	    		});
             }
@@ -293,28 +285,23 @@
 	        		var lat = jQuery(this).find('*[id$="eventLat"]');
 	        		var lng = jQuery(this).find('*[id$="eventLng"]');
 	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-						
-					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);
+	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        			        		
+	
+					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);					
 //	              	pauseBetweenCalls(250);	
 	    		});
             }
             
         }        
 
-        function reverseGeocodeTripAddress(latlng, addressElement){
+        function reverseGeocodeTripAddress(latlng, addressElement, zoneAddress){
             ajaxCount++;
          	geocoder.getLocations(latlng, 
         			function(response){
     			        if (!response || response.Status.code != 200) {
-        			        if ( response.Status.code == 620 ) {
-//            			        alert("code 620");
-        			        }						
-        			        lkFrZn(latlng.lat(),latlng.lng(),0);  
-        			        var zoneHid = jQuery('#dispatchForm\\:foundZoneName').val();
-        		              var nameAndIndex = zoneHid.split(",");
-        		              var name = nameAndIndex[0];
-        		              var indx = nameAndIndex[1];  
-  			         	  	addressElement.innerHTML = name;
+	        			        				 
+							// Couldn't find one, use the one we calculated on the server
+  			         	  	addressElement.innerHTML = zoneAddress;
 
     			        } 
     			        else {						
@@ -595,7 +582,7 @@
                 <rich:panel id="selectedEvents">
                     <a4j:form id="selectedEventsForm">
                         <rich:dataTable value="#{driverTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datatable" rowClasses="tableOdd,tableEven"
-                            rows="5" width="100%" onRowClick="lkFrZn(#{item.latitude}, #{item.longitude},0);fillEventBubbleFromList(#{item.noteID}, #{item.latitude}, #{item.longitude});">
+                            rows="5" width="100%" onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,#{item.noteID});">
 
                             <!-- Data -->
                             <rich:column  style="cursor: pointer;">
@@ -618,6 +605,7 @@
 				<h:inputHidden id="eventLat" value="#{item.latitude}"/>
 				<h:inputHidden id="eventLng" value="#{item.longitude}"/>
  				<h:outputText id="eventAddress" />
+ 				<h:inputHidden id="zoneName" value="#{item.addressStr}"/> 				
 			</ui:fragment>
                                 
                             </rich:column>
@@ -810,6 +798,7 @@
 				<h:inputHidden id="lat" value="#{item.endPointLat}"/>
 				<h:inputHidden id="lng" value="#{item.endPointLng}"/>
  				<h:outputText id="address" />
+ 				<h:inputHidden id="zoneName" value="#{item.endAddress}"/>
 			</ui:fragment>
                                 </rich:column>
     
@@ -882,7 +871,7 @@
 							<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>						
 					</a4j:form>        
 	<a4j:form id="bubbleForm">
-			<a4j:jsFunction name="fillTripBubbleMarker"  reRender="tripBubbles" oncomplete="getAddressForCurrentMarker()">
+		<a4j:jsFunction name="fillTripBubbleMarker"  reRender="tripBubbles" oncomplete="getAddressForCurrentMarker()">
 			<a4j:actionparam name="tripId" assignTo="#{driverTripsBean.selectedTripID}"/>
 		</a4j:jsFunction>
 		<a4j:jsFunction name="fillBubbleMarker" reRender="eventBubbles" oncomplete="getAddressForCurrentMarker()">
@@ -892,14 +881,16 @@
 		<a4j:jsFunction name="fillBubbleMap" reRender="eventBubbles" oncomplete="getAddressForEvent()">
 			<a4j:actionparam name="eventId" assignTo="#{driverTripsBean.selectedViolationID}"/>
 		</a4j:jsFunction>
-<!--		</ui:fragment>		-->
-						<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">
-							<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-							<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-							<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
-						</a4j:jsFunction>	 
-						<a4j:jsFunction name="initLkFrZn" action="#{addressBean.initZoneName}" oncomplete="setZoneName('#{addressBean.zoneName}')" reRender="dispatchForm:foundZoneName">					
-						</a4j:jsFunction>							  					
+<!--		</ui:fragment>		-->	 
+
+		<a4j:jsFunction name="lkFrZnEvtTbl" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="setZoneNameSync(data);" 
+			reRender="dispatchForm:foundZoneName">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
+			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>
+		</a4j:jsFunction> 
+							  					
 
 	</a4j:form>	
     </ui:define>

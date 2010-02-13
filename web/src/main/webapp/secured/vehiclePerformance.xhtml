@@ -55,7 +55,7 @@
 				
 					//Start of trip marker
 					var startlatlng = new GLatLng(#{vehiclePerformanceBean.lastTrip.route[0].lat}, #{vehiclePerformanceBean.lastTrip.route[0].lng});
-					marker = createMarker(startlatlng, null,0, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble);
+					marker = createMarker(startlatlng, null,0, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,"#{vehiclePerformance.lastTrip.startAddress}");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 		
@@ -63,11 +63,11 @@
 					var endlatlng = new GLatLng(#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}, #{vehiclePerformanceBean.lastTrip.routeLastStep.lng});
 					if ("#{vehiclePerformanceBean.lastTrip.inProgress}" == "true")
 					{
-						marker = createMarker(endlatlng,null, 1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble);
+						marker = createMarker(endlatlng,null, 1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,"#{vehiclePerformance.lastTrip.startAddress}");
 					}
 					else
 					{
-						marker = createMarker(endlatlng,null, 2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble);
+						marker = createMarker(endlatlng,null, 2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,"#{vehiclePerformance.lastTrip.startAddress}");
 					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -76,7 +76,7 @@
 					var violation;
 					<ui:repeat value="#{vehiclePerformanceBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						marker = createMarker(violation, "#{violation.noteID}", null, "#{eventTypeIcons.iconMap[violation.eventType]}",fillEventBubble);
+						marker = createMarker(violation, "#{violation.noteID}", null, "#{eventTypeIcons.iconMap[violation.eventType]}",fillEventBubble,"#{violation.addressStr}");
 						map.addOverlay(marker);
 						bounds.extend(marker.getPoint());
 					</ui:repeat>

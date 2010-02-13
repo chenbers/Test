@@ -7,6 +7,7 @@ var bounds = null;
 var markerClicked=false;
 var geocoder = null;
 var mapLatLng = null;
+var currentAddress = null;
 
 function orderOfCreation(marker,b) 
 {
@@ -19,7 +20,7 @@ function orderOfCreation(marker,b)
 	 * itemID is how you will locate the item from a map of items (Collection-type map not geographic-type map.) 
 	 * fillBubbleMarker is a context specific a4j:jsfunction that will set up the bubble data and oncomplete will initiate the reverse geocode 
 	 */
-    function createMarker(point, itemID, subID, iconImage, call) 
+    function createMarker(point, itemID, subID, iconImage, call, zoneAddress) 
     {
     	var markerIcon;
     	var marker;
@@ -43,8 +44,7 @@ function orderOfCreation(marker,b)
 	   		GEvent.addListener(marker, "click", function() {
 	   			var latlng = marker.getLatLng();
 
-	   			// Check for a zone that this point may be in
-	   			lkFrZn(latlng.lat(),latlng.lng(),0);
+	   			currentAddress = zoneAddress;
 	     	 	currentMarker = marker;
 	 			call(itemID,subID);
 	
@@ -120,15 +120,9 @@ function orderOfCreation(marker,b)
 		if (geocoder == null) geocoder = new GClientGeocoder();
 
     	geocoder.getLocations(latlng, function(response){
-	         if (!response || response.Status.code != 200) {	        	         
-	        	  var zoneHid = document.getElementById("dispatchForm:foundZoneName");
-	        	
-	              var nameAndIndex = zoneHid.value.split(",");
-	              var name = nameAndIndex[0];
-	              var indx = nameAndIndex[1];
+	         if (!response || response.Status.code != 200) {	 	       
   
-            	  callback(latlng, addressElement, name);            	  
-	              document.getElementById("dispatchForm:foundZoneName").value = "";
+            	  callback(latlng, addressElement, currentAddress);            	  
 	          } 
 	          else {
 	              if (callback != null){	            	 

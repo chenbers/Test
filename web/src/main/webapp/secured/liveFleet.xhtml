@@ -81,7 +81,7 @@
 					marker = createMarker(	new GLatLng(#{driver.loc.lat}, #{driver.loc.lng}), 
 											#{driver.vehicle.vehicleID}, null,
 											"#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}",
-											fillBubbleMarker);
+											fillBubbleMarker,"#{driver.addressStr}");
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
 					bounds.extend(marker.getPoint());
