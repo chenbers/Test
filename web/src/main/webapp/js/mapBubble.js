@@ -7,7 +7,6 @@ var bounds = null;
 var markerClicked=false;
 var geocoder = null;
 var mapLatLng = null;
-var currentAddress = null;
 
 function orderOfCreation(marker,b) 
 {
@@ -37,14 +36,15 @@ function orderOfCreation(marker,b)
     	else
     	{
 	      	markerIcon = new GIcon();
-			marker = new GMarker(point);
+	      	markerOptions = { icon:markerIcon }
+			marker = new GMarker(point,markerOptions);
     	}
     	if (call != null){
 
 	   		GEvent.addListener(marker, "click", function() {
 	   			var latlng = marker.getLatLng();
-
-	   			currentAddress = zoneAddress;
+	   			
+	   			lkFrZn(latlng.lat(),latlng.lng(),0);
 	     	 	currentMarker = marker;
 	 			call(itemID,subID);
 	
@@ -121,8 +121,10 @@ function orderOfCreation(marker,b)
 
     	geocoder.getLocations(latlng, function(response){
 	         if (!response || response.Status.code != 200) {	 	       
-  
-            	  callback(latlng, addressElement, currentAddress);            	  
+	 			var currentAddress = jQuery('#dispatchForm\\:foundZoneName').val();	
+	 			var dat = currentAddress.split(",");
+	 			var name = dat[0];
+            	  callback(latlng, addressElement, name);            	  
 	          } 
 	          else {
 	              if (callback != null){	            	 
