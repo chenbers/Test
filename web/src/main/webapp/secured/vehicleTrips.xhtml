@@ -377,7 +377,8 @@
    				<ui:param name="context" value="vehicleTripsInProgress" />
                 </ui:include>
 		</rich:panel>
-		<rich:panel id="eventBubbles" rendered="#{vehicleTripsBean.selectedViolationID != null}">
+		<rich:panel id="eventBubbles">		
+<!-- 		<rich:panel id="eventBubbles" rendered="#{vehicleTripsBean.selectedViolationID != null}">-->
 				<ui:param name="violation" value="#{vehicleTripsBean.allEventsMap[vehicleTripsBean.selectedViolationID]}"/>
                 <ui:include src="/includes/eventBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{violation.noteID}" />
