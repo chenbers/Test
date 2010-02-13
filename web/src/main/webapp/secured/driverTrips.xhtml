@@ -152,7 +152,10 @@
 			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
 			fillEventBubbleFromList(obj.noteID,obj.lat,obj.lng);		
 		}  	
- 
+
+		function setZoneName(zoneName) {
+			jQuery('#dispatchForm\\:foundZoneName').val(zoneName);
+		} 
 		</script>
 
    <rich:panel id="script">
@@ -891,7 +894,12 @@
 			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
 			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>
 		</a4j:jsFunction> 
-							  					
+		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}');" 
+			reRender="dispatchForm:foundZoneName">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>		
+		</a4j:jsFunction> 							  					
 
 	</a4j:form>	
     </ui:define>
