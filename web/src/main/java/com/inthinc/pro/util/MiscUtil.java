@@ -62,6 +62,9 @@ public class MiscUtil
             }
         }
         
+        if ( zoneName == null ) {
+            zoneName = MessageUtil.getMessageString("sbs_badLatLng");
+        }
         return zoneName;
     }
     
