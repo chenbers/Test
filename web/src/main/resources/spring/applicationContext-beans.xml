@@ -11,7 +11,6 @@
     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
   default-autowire="byName">
 <!-- <context:component-scan base-package="com.inthinc.pro"/> -->
-  <bean id="junkBean" class="com.inthinc.pro.backing.JunkBean" scope="request"/>
   <!-- Message Bundles -->
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="com.inthinc.pro.resources.Messages" />
@@ -552,16 +551,13 @@
 
   <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean">
     <property name="phoneAlerts" value="${accountOptions.phoneAlerts}" />
-    <property name="mapServerConfiguration" ref="mapServerConfigurationBean"/>
   </bean>
 
-<bean id="mapServerConfigurationBean" class="com.inthinc.pro.backing.MapServerConfiguration" scope="session">
-    <property name="host" value="${map.mapServerHost}" />
-    <property name="port" value="${map.mapServerPort}" />
-    <property name="proxy" value="${map.cgiProxy}" />
-    <property name="url" value="${map.url}" />
-    <property name="layers" value="${map.layers}" />
-    <property name="wmsLayer" value="${map.WMSLayer}"/>
+<bean id="wmsConfigurationBean" class="com.inthinc.pro.backing.WMSConfigurationBean" scope="session">
+    <property name="url" value="${wms.url}" />
+    <property name="query" value="${wms.query}"/>
+    <property name="layers" value="${wms.layers}" />
+    <property name="layerQueryParam" value="${wms.layer.queryparam}"/>
 </bean>
 
   <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean">

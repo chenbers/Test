@@ -2,37 +2,28 @@ package com.inthinc.pro.backing;
 
 public class AccountOptionsBean extends BaseBean {
 
-	
-	// TODO: change this to populate from the back end, not tiwiPro.properties
-	String phoneAlerts;
-	Boolean enablePhoneAlerts;
-	MapServerConfiguration mapServerConfiguration;
-	
-	public Boolean getEnablePhoneAlerts() {
-		if (enablePhoneAlerts == null)
-			return Boolean.FALSE;
-		return enablePhoneAlerts;
-	}
+    private static final long serialVersionUID = 1L;
+    // TODO: change this to populate from the back end, not tiwiPro.properties
+    String phoneAlerts;
+    Boolean enablePhoneAlerts;
 
-	public void setEnablePhoneAlerts(Boolean enablePhoneAlerts) {
-		this.enablePhoneAlerts = enablePhoneAlerts;
-	}
+    public Boolean getEnablePhoneAlerts() {
+        if (enablePhoneAlerts == null)
+            return Boolean.FALSE;
+        return enablePhoneAlerts;
+    }
 
-	public String getPhoneAlerts() {
-		return phoneAlerts;
-	}
+    public void setEnablePhoneAlerts(Boolean enablePhoneAlerts) {
+        this.enablePhoneAlerts = enablePhoneAlerts;
+    }
 
-	public void setPhoneAlerts(String phoneAlerts) {
-		this.phoneAlerts = phoneAlerts;
-		setEnablePhoneAlerts(new Boolean(phoneAlerts));
-	}
+    public String getPhoneAlerts() {
+        return phoneAlerts;
+    }
 
-	public MapServerConfiguration getMapServerConfiguration() {
-		return mapServerConfiguration;
-	}
+    public void setPhoneAlerts(String phoneAlerts) {
+        this.phoneAlerts = phoneAlerts;
+        setEnablePhoneAlerts(new Boolean(phoneAlerts));
+    }
 
-	public void setMapServerConfiguration(
-			MapServerConfiguration mapServerConfiguration) {
-		this.mapServerConfiguration = mapServerConfiguration;
-	}
 }

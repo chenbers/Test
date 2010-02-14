@@ -12,10 +12,9 @@
               
     
 	<ui:define name="scripts">
-		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />				
-	<script src="#{facesContext.externalContext.request.contextPath}/js/speedByStreet.js"  type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.request.contextPath}/js/gzoom.js" type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.request.contextPath}/js/wms236.js" type="text/javascript"></script>
+	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
+	<a4j:loadScript src="/js/speedByStreet.js" />			
+	<a4j:loadScript src="/js/gzoom.js" />				
 	<script type="text/javascript">
 		function bodyLoad(){
 			if (GBrowserIsCompatible()) {

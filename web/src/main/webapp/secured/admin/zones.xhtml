@@ -15,10 +15,9 @@
   
   <ui:define name="scripts">
     <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-    <script src="#{facesContext.externalContext.requestContextPath}/js/mapGeocode.js" type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.requestContextPath}/js/drawZone.js" type="text/javascript"></script>
-   	<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/wms236.js"></script>
-    <script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/wmsMapLayers.js"></script>
+    <a4j:loadScript src="/js/mapGeocode.js" />
+    <a4j:loadScript src="/js/drawZone.js" />
+    
 	<ui:include src="/includes/WMSMapLayers.xhtml"/>	
     <script type="text/javascript">    
        var map;

@@ -41,7 +41,7 @@
     
      <!-- Address Lookup -->
     <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
-      	<property name="mapServerURLString" value="${mapserver.url}"/>
+      	<property name="mapServerURLString" value="${mapserver.geonames.url}"/>
     </bean>
 	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
 	  	<property name="googleMapKeyFinder" ref="googleMapFinderBean"/>

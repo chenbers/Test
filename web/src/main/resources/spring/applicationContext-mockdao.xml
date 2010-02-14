@@ -8,6 +8,6 @@ default-autowire="byName">
     <bean id="reportServiceCreator" class="com.inthinc.pro.dao.mock.proserver.ReportServiceCreator" />
 
     <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
-      <property name="mapServerURLString" value="${mapserver.url}"/>
+      <property name="mapServerURLString" value="${mapserver.geonames.url}"/>
     </bean>
 </beans>

@@ -53,11 +53,11 @@
 
 		//alert(lBbox);
 		
-	    var featureInfoURL =  "http://"+host+":"+port+url+"&service=WMS&version=1.1.0&request=GetFeatureInfo&layers=";
-	    featureInfoURL +=wmsLayer;
-	    featureInfoURL +="&query_layers=";
-	    featureInfoURL +=wmsLayer;
-	    featureInfoURL +="&styles="
+	    var featureInfoURL =  url + "&service=WMS&version=1.1.0&request=GetFeatureInfo&layers=";
+	    featureInfoURL += wmsLayerQueryParam;
+	    featureInfoURL += "&query_layers=";
+	    featureInfoURL += wmsLayerQueryParam;
+	    featureInfoURL += "&styles="
 
 		featureInfoURL += '&bbox=' + lBbox;
 		featureInfoURL += '&srs=EPSG%3A4326';
@@ -90,33 +90,30 @@
 
 	function isQueryable(){
 		
-		return 	wmsLayer && (wmsLayer.length != 0);
+		return 	wmsLayerQueryParam && (wmsLayerQueryParam.length != 0);
 	}
 
 
 	//]]>
 	var respondToClick = false;
-	 <ui:fragment rendered="#{(accountOptionsBean.mapServerConfiguration.host ne null) and (fn:length(accountOptionsBean.mapServerConfiguration.host) gt 0)}">
+	 <ui:fragment rendered="#{(wmsConfigurationBean.url ne null) and (fn:length(wmsConfigurationBean.url) gt 0)}">
 		//Assumes map is defined elsewhere
-		var host = "#{accountOptionsBean.mapServerConfiguration.host}";
-		var port = "#{accountOptionsBean.mapServerConfiguration.port}";
-		var url = "#{accountOptionsBean.mapServerConfiguration.url}";
-		var proxy = "#{accountOptionsBean.mapServerConfiguration.proxy}";
-		var wmsLayer = "#{accountOptionsBean.mapServerConfiguration.wmsLayer}";
+		var url = "#{wmsConfigurationBean.url}" + "#{wmsConfigurationBean.query}";
+		var wmsLayerQueryParam = "#{wmsConfigurationBean.layerQueryParam}";
 		var queryableLayers = [];
 
 		
 		function addLayers(){
 
-			<ui:repeat value="#{accountOptionsBean.mapServerConfiguration.layersList}" var="layer">
+			<ui:repeat value="#{wmsConfigurationBean.layersList}" var="layer">
 
 			//<![CDATA[
 				// Street Map
 				var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
-					streetsHyb.myLayers="#{layer.layer}";
-					streetsHyb.myFormat="image/png";
-					streetsHyb.myBaseURL="http://" + host +":"+port+url;
-					streetsHyb.getTileUrl=CustomGetTileUrl;
+					streetsHyb.myLayers = "#{layer.layer}";
+					streetsHyb.myFormat = "image/png";
+					streetsHyb.myBaseURL = url;
+					streetsHyb.getTileUrl = CustomGetTileUrl;
 
 				var layer1=[G_NORMAL_MAP.getTileLayers()[0],streetsHyb];
 
@@ -132,7 +129,7 @@
 				var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
 					streetsHyb.myLayers="#{layer.layer}";
 					streetsHyb.myFormat="image/png";
-					streetsHyb.myBaseURL="http://" + host +":"+port+url;
+					streetsHyb.myBaseURL=url;
 					streetsHyb.getTileUrl=CustomGetTileUrl;
 
 				var layer1=[G_SATELLITE_MAP.getTileLayers()[0],streetsHyb];
@@ -149,7 +146,7 @@
 
 		}		
 		</ui:fragment>
-		<ui:fragment rendered="#{(accountOptionsBean.mapServerConfiguration.host eq null) or (fn:length(accountOptionsBean.mapServerConfiguration.host) == 0)}">
+		<ui:fragment rendered="#{(wmsConfigurationBean.url eq null) or (fn:length(wmsConfigurationBean.url) == 0)}">
 			function addLayers(){};
 		</ui:fragment>
 		
