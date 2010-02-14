@@ -24,7 +24,7 @@ public class SiteAccessPoint {
 	@Override
 	public String toString() {
 
-		return "ROLE_"+msgKey.toUpperCase(null);
+		return "ROLE_"+msgKey.toUpperCase();
 	}
 
 }

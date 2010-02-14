@@ -102,6 +102,10 @@ public class SiteAccessPoints implements BaseAppEntity{
 			return accessPointList;
 		}
 		
+		public  List<SiteAccessPoint> getAccessPointsList(){
+			
+			return accessPointList;
+		}
 		public String getAccessPointMessageKey(Integer accessPtID){
 			
 			if(getAccessPointMap().get(accessPtID) == null) return null;

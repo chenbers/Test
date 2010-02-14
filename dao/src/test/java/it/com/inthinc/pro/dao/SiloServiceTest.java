@@ -1038,6 +1038,7 @@ public class SiloServiceTest {
                     "emp" + i, null, "title" + i, "dept" + i, "first" + i, "m" + i, "last" + i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH,
                     FuelEfficiencyType.MPG_US, Locale.getDefault());
             List<Integer> roles = new ArrayList<Integer>();
+            roles.add(1);
             roles.add(2); //default normal user
             User user = new User(0, 0, roles, Status.ACTIVE, "user" + groupID + "_" + i, PASSWORD, groupID);
             person.setUser(user);
@@ -1054,6 +1055,8 @@ public class SiloServiceTest {
             // update
             List<Integer> newRoles = new ArrayList<Integer>();
             newRoles.add(1);// default admin role
+            newRoles.add(2);
+            
             user.setRoles(newRoles);
             Integer changedCount = userDAO.update(user);
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);

@@ -23,14 +23,21 @@
 			<li class="#{notificationsSelected}">
                 <pretty:link id="#{context}-navigationNotifications" mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
 			</li>
-			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
+			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC">
     			<li class="#{liveFleetSelected}">
                     <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
     			</li>
 			</security:authorize>
-			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
+			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC">
 				<li class="#{adminSelected}">
                     <pretty:link id="#{context}-navigationAdmin" mappingId="admin"><span>#{messages.navigation_admin}</span></pretty:link>
+				</li>
+			</security:authorize>
+			<security:authorize ifAnyGranted="ROLE_ADMIN_SUBSET">
+			<ui:param name="firstAccessPoint" value="#{myAccountBean.user.accessPoints[0].accessPtID}"/>
+			<ui:param name="defaultPage" value="#{siteAccessPoints.accessPointsList[firstAccessPoint].msgKey}"/>
+				<li class="#{adminSelected}">
+                    <pretty:link id="#{context}-navigationAdminSubset" mappingId="admin#{defaultPage}"><span>#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
 			<li style="float:right">
