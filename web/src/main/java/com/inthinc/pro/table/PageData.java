@@ -31,7 +31,7 @@ public class PageData {
 	public void updatePage(int rowCount) {
         numPages = (rowCount + getRowsPerPage()-1) / getRowsPerPage();
 		currentPage = (currentPage == null) ? numPages+1 : currentPage;
-        if (currentPage > numPages) {
+        if (currentPage > numPages || currentPage == 0) {
         	currentPage = (rowCount > 0) ? 1 : 0;
             pageStartRow = (rowCount > 0) ? 1 : 0;
         }
