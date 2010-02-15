@@ -19,7 +19,7 @@ function orderOfCreation(marker,b)
 	 * itemID is how you will locate the item from a map of items (Collection-type map not geographic-type map.) 
 	 * fillBubbleMarker is a context specific a4j:jsfunction that will set up the bubble data and oncomplete will initiate the reverse geocode 
 	 */
-    function createMarker(point, itemID, subID, iconImage, call, zoneAddress) 
+    function createMarker(point, itemID, subID, iconImage, call, callFuncID ) 
     {
     	var markerIcon;
     	var marker;
@@ -42,11 +42,13 @@ function orderOfCreation(marker,b)
 
 	   		GEvent.addListener(marker, "click", function() {
 	   			var latlng = marker.getLatLng();
-	   			
-	   			lkFrZn(latlng.lat(),latlng.lng(),0);
-	     	 	currentMarker = marker;
-	 			call(itemID,subID);
-	
+	     	 	currentMarker = marker;	
+		     	 
+	     	 	// Server side call, do the bubble AFTER
+	     	 	if ( subID == null ) {
+	     	 		subID = -1;
+	     	 	}
+	   			lkFrZnBubble(latlng.lat(),latlng.lng(),0,0,itemID,subID,callFuncID);	
 		 		});
     	}
         GEvent.addListener(marker, "infowindowclose", function() {

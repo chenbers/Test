@@ -103,9 +103,13 @@
 			addMarkers();
 		}
 
-		function setZoneName(zoneName) {
-			jQuery('#dispatchForm\\:foundZoneName').val(zoneName);
-		}
+		function funcToCall(obj) {
+			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
+
+			if ( obj.callFuncID == 0 ) {
+				fillBubbleMarker(obj.itemID,obj.subID);
+			}		
+		}  	
 
 	</script>
 	<rich:panel id="scripts">
@@ -123,10 +127,10 @@
 				progressBar.start(#{fn:length(driverLocationBean.driverLocations)});
 				<ui:repeat value="#{driverLocationBean.driverLocations}" var="driverLocation">
 				
-					var latlng = new GLatLng(#{driverLocation.loc.lat}, #{driverLocation.loc.lng});
+					var latlng = new GLatLng(#{driverLocation.loc.lat}, #{driverLocation.loc.lng});									
 					var marker = createMarker(	latlng, "#{driverLocation.driver.driverID}", null,
 	        		 							"#{driverLocationBean.mapIconMap.icons[driverLocation.position]}",
-	        		 							fillBubbleMarker,"#{driverLocation.addressStr}");
+	        		 							fillBubbleMarker,0);
 				    bounds.extend(marker.getPoint());
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
@@ -251,11 +255,16 @@
 								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng})">
 			<a4j:actionparam name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
 		</a4j:jsFunction>
-		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}');">
+		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
 			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
 			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>		
-		</a4j:jsFunction> 		
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
+			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
+			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
+			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
+			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
+		</a4j:jsFunction> 	
+
 	</a4j:form>	
 			
 </ui:composition>	
