@@ -15,6 +15,11 @@
   <ui:param name="title" value="#{personBean.add ? messages.adminHeader_addPerson : (personBean.batchEdit ? messages.adminHeader_editPeople : messages.adminHeader_editPerson)}"/>
   <ui:define name="scripts">
       <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+	  <style type="text/css">
+		.role-panel {margin: auto;}
+		.role-panel td {vertical-align: top;}
+		.dnd-panel {width:100px;border:1px solid gray;padding:2px;display: block;}
+	  </style>
   </ui:define>
   
   <ui:define name="content">
@@ -625,21 +630,21 @@
 <!--                              	<f:selectItems value="#{personBean.roles}" />-->
 <!--                            </h:selectOneMenu>-->
 	<rich:panel style="vertical-align:top;border:1">
-  <h:panelGrid id="editPerson-user_role" columnClasses="panelc" columns="2" width="100%">
+  <h:panelGrid id="editPerson-user_role" styleClass="role-panel" columns="2" width="100%">
 
-            <rich:panel style="width:133px;border:1px"> 
+            <rich:panel> 
                 <f:facet name="header">
                     <h:outputText value="Choose Roles" />
                 </f:facet>
+                
 		        <rich:dropSupport id="roleThrowAway" acceptedTypes="role" dropValue="role" ajaxSingle="true"
 		            			 dropListener="#{personBean.item.throwAwayEventBean.processDrop}" reRender="roleDrop, src, selectedRoletable">
 		        </rich:dropSupport>
                 <h:dataTable id="src" columns="1" value="#{personBean.item.rolesSource}"
-                    var="role" footerClass="footerClass">
+                    var="role">
 
                     <h:column>
-                        <a4j:outputPanel style="width:100px;border:1px solid gray;padding:2px"
-                            layout="block">
+                        <a4j:outputPanel styleClass="dnd-panel">
                             <rich:dragSupport dragIndicator=":indicator"
                                 dragType="role" dragValue="#{role}">
                                 <rich:dndParam name="label" value="#{role.name}" />
@@ -647,13 +652,10 @@
                             <h:outputText value="#{role.name}"></h:outputText>
                         </a4j:outputPanel>
                     </h:column>
-                    <f:facet name="footer">
-                        <a4j:commandButton value="Start Over" reRender="src,selectedRoletable"/>
-                    </f:facet>
                 </h:dataTable>
             </rich:panel>
 
-            <rich:panel styleClass="dropTargetPanel">
+            <rich:panel>
                 <f:facet name="header">
                     <h:outputText value="Selected Roles" />
                 </f:facet>
@@ -663,8 +665,7 @@
 
                 <h:dataTable id="selectedRoletable" columns="1" value="#{personBean.item.rolesTarget}" var="role">
                     <h:column>
-                        <a4j:outputPanel style="width:100px;border:1px solid gray;padding:2px"
-                            layout="block">
+                        <a4j:outputPanel styleClass="dnd-panel">
                             <rich:dragSupport dragIndicator=":indicator"
                                 dragType="role" dragValue="#{role}"
                                 oncomplete="checkMultiple(this);">
@@ -677,6 +678,7 @@
 
 
             </rich:panel>
+            
             </h:panelGrid>
             </rich:panel>
                           </td>
