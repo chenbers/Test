@@ -1145,8 +1145,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 			
 			if("role".equals(acceptType)){
 				int roleIndex = rolesSource.indexOf(role);
-				rolesTarget.add(rolesSource.get(roleIndex));
-				rolesSource.remove(roleIndex);
+				if (roleIndex >= 0){
+					
+					rolesTarget.add(rolesSource.get(roleIndex));
+					rolesSource.remove(roleIndex);
+				}
 			}
 			
 		}
