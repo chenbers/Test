@@ -76,7 +76,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     @Override
     public void personListChanged()
     {
-        search();
+        setRefreshRequired(true);
     }
 
     public List<DriverReportItem> getDriverData()

@@ -96,7 +96,9 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 
     @Override
     public void personListChanged() {
-        loadDBData();
+    	// removed because it does this everytime you hit the page anyway (i.e. not cached)
+//        loadDBData();
+    	
     }
 
     /**

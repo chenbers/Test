@@ -496,6 +496,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 //            getUpdateField().put("user.role.name", role);
 //        }
         // see if we're partially editing one of the batch items
+    	boolean driverChange = getItem().isDriverSelected();
         boolean partialEdit = isBatchEdit() && getItem().isUserEditable();
         if (partialEdit) {
             partialEdit = false;
@@ -515,13 +516,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
         
-        // TODO: this should be refactored, but to be on the save side, just clear the cache and force a refresh when driver(s) change
-        cacheBean.setDriverMap(null);
-
-        
-        notifyChangeListeners();
-        
-        
+        if (driverChange) {
+	        cacheBean.setDriverMap(null);
+	        notifyChangeListeners();
+        }
         return result;
     }
 

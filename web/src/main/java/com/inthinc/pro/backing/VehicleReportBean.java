@@ -76,8 +76,8 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     @Override
     public void personListChanged()
     {
-        loadDBData();
-        search();
+//        search();
+    	setRefreshRequired(true);
     }
  
     
