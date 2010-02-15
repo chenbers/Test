@@ -369,7 +369,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         for (final CustomRoleView role : deleteItems) {
             roleDAO.deleteByID(role.getId());
             // add a message
-            final String summary = MessageUtil.formatMessageString("role_deleted", role.getName());
+            final String summary = MessageUtil.formatMessageString("customRole_deleted", role.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
