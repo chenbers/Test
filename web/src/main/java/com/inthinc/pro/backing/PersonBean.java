@@ -422,7 +422,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (item.getUser() == null) {
             item.setUser(new User());
             item.getUser().setPerson(item);
-            item.prepareRolesForDragnDrop();
+ //           item.prepareRolesForDragnDrop();
 
         }
         if (item.getDriver() == null) {
@@ -1097,6 +1097,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     		}
     	}
     	public List<String> getRoleNames(){
+    		
+    		if(bean.getAccountRoles() == null){
+    			
+    			bean.initAccountRoles();
+    		}
     		List<String> roleNames = new ArrayList<String>();
     		List<Integer> roleIDs = getUser().getRoles();
     		
@@ -1107,8 +1112,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     		return roleNames;
     	}
     	public String getRolesString(){
+    		
     		if ((getUser() != null) && (getUser().getRoles().size()>0)){
-        		
+    			
+        		if(bean.getAccountRoles() == null){
+        			
+        			bean.initAccountRoles();
+        		}
+
                	Roles roles =  bean.getAccountRoles();
                 List<Integer> roleIDs = getUser().getRoles();
                 StringBuffer rolesbuffer = new StringBuffer();
@@ -1172,6 +1183,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 		}
 	    private void prepareRolesForDragnDrop(){
 	    	
+	    	bean.initAccountRoles();
 	         setUpTargetRoles();
 	         setUpSourceRoles();
 	         dropEventBean = new EventBean(this);
@@ -1288,19 +1300,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 		}
    }
 		
-		
-	
 	public Roles getAccountRoles(){
 		
-		if (accountRoles == null){
-			
-	        accountRoles = new Roles();
-	        accountRoles.setRoleDAO(roleDAO);
-	        accountRoles.init(getAccountID());
-
-		}
 		return accountRoles;
 	}
+	
+	public void initAccountRoles(){
+		
+        accountRoles = new Roles();
+        accountRoles.setRoleDAO(roleDAO);
+        accountRoles.init(getAccountID());
+	}
+	
 	public RoleDAO getRoleDAO() {
 		return roleDAO;
 	}
