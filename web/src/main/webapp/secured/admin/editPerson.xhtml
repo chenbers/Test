@@ -631,7 +631,11 @@
 <!--                            </h:selectOneMenu>-->
 	<rich:panel style="vertical-align:top;border:1">
   <h:panelGrid id="editPerson-user_role" styleClass="role-panel" columns="2" width="100%">
-
+  
+	<f:facet name="footer">
+       <h:commandButton id="roleReset" styleClass="left"><span class="refresh"><h:outputText value="Reset" /></span></h:commandButton>
+    </f:facet>
+  
             <rich:panel> 
                 <f:facet name="header">
                     <h:outputText value="Choose Roles" />
