@@ -102,9 +102,9 @@ public class SiteAccessPoints implements BaseAppEntity{
 			return accessPointList;
 		}
 		
-		public  List<SiteAccessPoint> getAccessPointsList(){
+		public  Map<Integer,SiteAccessPoint> getAccessPointsMap(){
 			
-			return accessPointList;
+			return accessPointMap;
 		}
 		public String getAccessPointMessageKey(Integer accessPtID){
 			
