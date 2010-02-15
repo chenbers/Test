@@ -21,6 +21,9 @@ public class AddressBean extends BaseBean {
     private List<Zone> zones;
     private String noteID;
     private Map<String,String> zoneData;
+    private String  itemID;
+    private String  subID;
+    private int     callFuncID;
     
     public AddressBean() {
         super();
@@ -79,6 +82,36 @@ public class AddressBean extends BaseBean {
     }
 
 
+    public String getItemID() {
+        return itemID;
+    }
+
+
+    public void setItemID(String itemID) {
+        this.itemID = itemID;
+    }
+
+
+    public String getSubID() {
+        return subID;
+    }
+
+
+    public void setSubID(String subID) {
+        this.subID = subID;
+    }
+
+
+    public int getCallFuncID() {
+        return callFuncID;
+    }
+
+
+    public void setCallFuncID(int callFuncID) {
+        this.callFuncID = callFuncID;
+    }
+
+
     public void lookForZone() {
         LatLng latLng = new LatLng();
         
@@ -101,6 +134,9 @@ public class AddressBean extends BaseBean {
             jSonObject.put("lng", String.valueOf(this.getZoneLng()));
             jSonObject.put("name", this.getZoneName());
             jSonObject.put("noteID", this.getNoteID());
+            jSonObject.put("itemID", this.itemID);
+            jSonObject.put("subID", this.subID);
+            jSonObject.put("callFuncID", String.valueOf(this.callFuncID));
         } catch (Exception e) {
             return null;
         }
