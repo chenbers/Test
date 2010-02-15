@@ -193,7 +193,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Override
     public String toString() {
         return "Driver [barcode=" + barcode + ", certifications=" + certifications + ", dot=" + dot + ", driverID=" + driverID + ", expiration=" + expiration + ", groupID=" + groupID + ", license="
-                + license + ", licenseClass=" + licenseClass + ", person=" + person + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status
+                + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status
                 + "]";
     }
 

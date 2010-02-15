@@ -441,10 +441,10 @@ public class Person extends BaseEntity implements Comparable<Person> {
     @Override
     public String toString() {
         return "Person [acctID=" + acctID + ", address=" + address + ", addressID=" + addressID + ", costPerHour=" + costPerHour + ", crit=" + crit + ", dept=" + dept + ", dob="
-                + dob + ", driver=" + driver + ", empid=" + empid + ", first=" + first + ", fuelEfficiencyType=" + fuelEfficiencyType + ", gender=" + gender + ", height=" + height
+                + dob + ", empid=" + empid + ", first=" + first + ", fuelEfficiencyType=" + fuelEfficiencyType + ", gender=" + gender + ", height=" + height
                 + ", info=" + info + ", last=" + last + ", locale=" + locale + ", measurementType=" + measurementType + ", middle=" + middle + ", personID=" + personID
                 + ", priEmail=" + priEmail + ", priPhone=" + priPhone + ", priText=" + priText + ", reportsTo=" + reportsTo + ", secEmail=" + secEmail + ", secPhone=" + secPhone
-                + ", secText=" + secText + ", status=" + status + ", suffix=" + suffix + ", timeZone=" + timeZone + ", title=" + title + ", user=" + user + ", warn=" + warn
+                + ", secText=" + secText + ", status=" + status + ", suffix=" + suffix + ", timeZone=" + timeZone + ", title=" + title + ", warn=" + warn
                 + ", weight=" + weight + "]";
     }
 
