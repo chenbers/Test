@@ -1103,8 +1103,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     			bean.initAccountRoles();
     		}
     		List<String> roleNames = new ArrayList<String>();
-    		List<Integer> roleIDs = getUser().getRoles();
     		
+    		if (getUser() == null) return null;
+    		
+    		List<Integer> roleIDs = getUser().getRoles();
+    		if (roleIDs == null){
+    			
+    			roleIDs = new ArrayList<Integer>();
+    		}
+    		if (roleIDs.isEmpty()){
+    			
+    			roleIDs.add(bean.getAccountRoles().getRoleByName("Normal").getRoleID());
+    		}
     		for(Integer id:roleIDs){
     			
     			roleNames.add(bean.getAccountRoles().getRoleById(id).getName());
