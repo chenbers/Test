@@ -754,7 +754,7 @@
                         <rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datatable" rowClasses="tableOdd,tableEven" rows="4" width="100%">
 
                             <a4j:support event="onRowClick" reRender="script,tripBubbles,selectedEvents,showLastTenForm,selectDriverForm" 
-                            	oncomplete="bodyLoad();getEventAddresses();">
+                            	oncomplete="bodyLoad();getAddresses();">
                                 <f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
                             </a4j:support>
 
@@ -875,15 +875,13 @@
 			<a4j:actionparam name="eventId" assignTo="#{vehicleTripsBean.selectedViolationID}"/>
 		</a4j:jsFunction>
 <!--		</ui:fragment>		-->
-		<a4j:jsFunction name="lkFrZnEvtTbl" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="setZoneNameSync(data);" 
-			reRender="dispatchForm:foundZoneName">
+		<a4j:jsFunction name="lkFrZnEvtTbl" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="setZoneNameSync(data);">
 			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
 			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
 			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
 			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>
 		</a4j:jsFunction> 
-		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}');" 
-			reRender="dispatchForm:foundZoneName">
+		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}');">
 			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
 			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
 			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>		
