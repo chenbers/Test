@@ -16,6 +16,11 @@
 
 	//<![CDATA[
 	var currentLatLng;
+	function initWMSLayers(){
+	    addLayers();
+		addListeners();
+	}
+	
 	function showFeatureInfo(data) {
 		var infoWindowHtml = "<div class='infoWindow'><table class='google_popup'>";
 		jQuery.each(data.items[0], function(name, value) {
@@ -93,6 +98,42 @@
 		return 	wmsLayerQueryParam && (wmsLayerQueryParam.length != 0);
 	}
 
+	function addWMSLayer(layer, layerName) {
+		// Street Map
+		var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
+			streetsHyb.myLayers = layer;
+			streetsHyb.myFormat = "image/png";
+			streetsHyb.myBaseURL = url;
+			streetsHyb.getTileUrl = CustomGetTileUrl;
+
+		var layer1=[G_NORMAL_MAP.getTileLayers()[0],streetsHyb];
+
+		var custommap1 = new GMapType(layer1, G_NORMAL_MAP.getProjection(), layerName + " Map", G_SATELLITE_MAP);
+		map.addMapType(custommap1);
+
+		if (isQueryable()){
+			
+			queryableLayers.push(custommap1);
+		}
+
+		// Satellite map
+		var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
+			streetsHyb.myLayers = layer;
+			streetsHyb.myFormat = "image/png";
+			streetsHyb.myBaseURL = url;
+			streetsHyb.getTileUrl = CustomGetTileUrl;
+
+		var layer1=[G_SATELLITE_MAP.getTileLayers()[0],streetsHyb];
+
+		var custommap1 = new GMapType(layer1, G_NORMAL_MAP.getProjection(), layerName + " Sat", G_SATELLITE_MAP);
+		map.addMapType(custommap1);
+		
+		if (isQueryable()){
+			
+			queryableLayers.push(custommap1);
+		}
+	}
+
 
 	//]]>
 	var respondToClick = false;
@@ -104,46 +145,9 @@
 
 		
 		function addLayers(){
-
 			<ui:repeat value="#{wmsConfigurationBean.layersList}" var="layer">
-
-			//<![CDATA[
-				// Street Map
-				var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
-					streetsHyb.myLayers = "#{layer.layer}";
-					streetsHyb.myFormat = "image/png";
-					streetsHyb.myBaseURL = url;
-					streetsHyb.getTileUrl = CustomGetTileUrl;
-
-				var layer1=[G_NORMAL_MAP.getTileLayers()[0],streetsHyb];
-
-				var custommap1 = new GMapType(layer1, G_NORMAL_MAP.getProjection(), "#{layer.name} Map", G_SATELLITE_MAP);
-				map.addMapType(custommap1);
-
-				if (isQueryable()){
-					
-					queryableLayers.push(custommap1);
-				}
-
-				// Satellite map
-				var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
-					streetsHyb.myLayers="#{layer.layer}";
-					streetsHyb.myFormat="image/png";
-					streetsHyb.myBaseURL=url;
-					streetsHyb.getTileUrl=CustomGetTileUrl;
-
-				var layer1=[G_SATELLITE_MAP.getTileLayers()[0],streetsHyb];
-
-				var custommap1 = new GMapType(layer1, G_NORMAL_MAP.getProjection(), "#{layer.name} Sat", G_SATELLITE_MAP);
-				map.addMapType(custommap1);
-				
-				if (isQueryable()){
-					
-					queryableLayers.push(custommap1);
-				}
-				//]]>
+				addWMSLayer("#{layer.layer}", "#{layer.name}");
 			</ui:repeat>
-
 		}		
 		</ui:fragment>
 		<ui:fragment rendered="#{(wmsConfigurationBean.url eq null) or (fn:length(wmsConfigurationBean.url) == 0)}">

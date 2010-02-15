@@ -36,8 +36,7 @@ function orderOfCreation(marker,b)
     	else
     	{
 	      	markerIcon = new GIcon();
-	      	markerOptions = { icon:markerIcon }
-			marker = new GMarker(point,markerOptions);
+			marker = new GMarker(point);
     	}
     	if (call != null){
 
