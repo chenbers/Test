@@ -357,7 +357,10 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 				
 				if(ap.getMode() == 15) {
 					
-					accessPointSelection.get(ap.getAccessPtID()).setMode(15);
+					if(accessPointSelection.get(ap.getAccessPtID()) != null){
+						
+						accessPointSelection.get(ap.getAccessPtID()).setMode(15);
+					}
 				}
 			}
 		}

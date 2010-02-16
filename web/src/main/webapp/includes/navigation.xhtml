@@ -23,7 +23,7 @@
 			<li class="#{notificationsSelected}">
                 <pretty:link id="#{context}-navigationNotifications" mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
 			</li>
-			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC">
+			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_LIVEFLEETACCESS">
     			<li class="#{liveFleetSelected}">
                     <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
     			</li>

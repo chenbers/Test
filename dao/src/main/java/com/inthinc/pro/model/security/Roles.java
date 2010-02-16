@@ -71,10 +71,15 @@ public class Roles {
     	roleMapById.remove(admin.getRoleID());
     	roleList.remove(admin);
     	
-       	Role normal = getRoleByName("Normal");
+       	removeDefaultRoles();
+   }
+   public void removeDefaultRoles(){
+	   
+      	Role normal = getRoleByName("Normal");
     	roleMapByName.remove("Normal");
     	roleMapById.remove(normal.getRoleID());
     	roleList.remove(normal);
+ 	   
    }
 
 }

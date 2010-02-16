@@ -151,7 +151,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
-       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_REDFLAGSACCESS">
+       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_REDFLAGSSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -222,7 +222,7 @@
           </td>
         </tr>
       </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ROLESACCESS">
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC">
         <tr>
           <td valign="top">
           

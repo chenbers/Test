@@ -10,11 +10,13 @@
 	<ul id="grid_nav_dark">
 		<li class="l">
 		</li>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_USERSACCESS">
 		<li class="r text">
 		<h:commandLink  id="#{context}-personSummaryEdit" action="#{personBean.edit}"
 			value="#{messages.adminTable_edit}">
 			<f:param name="editID" value="#{person.personID}" />
 		</h:commandLink></li>
+		</security:authorize>
 	</ul>
 
 	<div style="padding-left: 11px; padding-bottom: 10px">

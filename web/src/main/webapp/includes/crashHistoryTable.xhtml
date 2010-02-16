@@ -155,6 +155,8 @@
             			<h:outputText value="#{messages.button_cancel}" />
                 	</span>
             	</button>
+           	
+             	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_FORGIVEACCESS">
             	<a4j:commandButton id="forgiveButton" action="#{bean.forgiveItemAction}" 
             		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
                 	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 
@@ -162,7 +164,9 @@
                 	<span class="yes"> 
                 		<h:outputText value="#{messages.button_forgive}" /> 
                 	</span>
-            	</a4j:commandButton>            	
+            	</a4j:commandButton>   
+            	</security:authorize> 
+            	        	
             	<a4j:commandButton id="confirmButton" action="#{bean.confirmItemAction}" 
             		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
                 	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 

@@ -6,7 +6,8 @@
   				xmlns:a4j="http://richfaces.org/a4j"
   				xmlns:f="http://java.sun.com/jsf/core"
   				xmlns:t="http://myfaces.apache.org/tomahawk"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:security="http://pro.tiwi.com/jsf/security>
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -302,6 +303,7 @@
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
+                            <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_FORGIVEACCESS">
 								<a4j:commandLink id="vehicleSeatBeltIncluded" rendered="#{item.event.forgiven == 0}" title="#{messages.vehicleReports_exclude}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.vehicleReports_exclude}" />
 									<f:setPropertyActionListener target="#{vehicleSeatBeltBean.clearItem}" value="#{item}" />
@@ -311,6 +313,11 @@
 									<h:outputText value="#{messages.vehicleReports_include}" />
 									<f:setPropertyActionListener target="#{vehicleSeatBeltBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
+  							</security:authorize>
+                            <security:authorize ifNotGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_FORGIVEACCESS">
+ 									<h:outputText value="#{messages.notes_clear}" rendered="#{item.event.forgiven == 0}" />
+ 									<h:outputText value="#{messages.driverReports_include}" rendered="#{item.event.forgiven == 1}"/>
+ 							</security:authorize>
    						</rich:column>
 						</rich:dataTable>
 						

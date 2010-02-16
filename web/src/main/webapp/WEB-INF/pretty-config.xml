@@ -290,11 +290,11 @@
 		<action onPostback="false">#{personBean.resetList}</action>
 	</url-mapping>
 	
-     <url-mapping id="adminrolesAccess">
-        <pattern>/app/admin/customRoles</pattern>
-        <view-id>/secured/admin/customRoles.faces</view-id>
-        <action onPostback="false">#{customRolesBean.resetList}</action>
-    </url-mapping>
+<!--     <url-mapping id="adminrolesAccess">-->
+<!--        <pattern>/app/admin/customRoles</pattern>-->
+<!--        <view-id>/secured/admin/customRoles.faces</view-id>-->
+<!--        <action onPostback="false">#{customRolesBean.resetList}</action>-->
+<!--    </url-mapping>-->
     
      <url-mapping id="adminCustomRoles">
         <pattern>/app/admin/customRoles</pattern>

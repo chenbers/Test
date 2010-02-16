@@ -270,7 +270,7 @@
 					<h:form>
 						<ul id="grid_nav" style="margin: 0;">
 							 <li class="l text"><a4j:htmlCommandLink id="crashReportBack" action="pretty:crashHistory" value="#{messages.crashReport_backToCrashHistory}" /></li>
-		                   	 <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC">
+		                   	 <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_CRASHREPORTACCESS">
 			                   	 <li class="r">
 			                      	<h:outputText value=" " />
 			                      

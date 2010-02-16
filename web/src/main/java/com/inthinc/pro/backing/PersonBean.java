@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -30,6 +31,7 @@ import org.richfaces.event.DropListener;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RoleDAO;
@@ -258,10 +260,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (person.getUser() != null) {
             personView.getUser().setPerson(personView);
         }
-//        personView.prepareRolesForDragnDrop();
-
-//        if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 1))
-//            person.getDriver().setRFID(null);
         if (logger.isTraceEnabled())
             logger.trace("createPersonView: END " + personView);
         return personView;
@@ -348,16 +346,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         else if (column.equals("user_role")){
         	if (person.getUser() != null){
         		return person.getRolesString();
-//                getAccountRoles();
-//                List<Integer> roleIDs = person.getUser().getRoles();
-//                StringBuffer rolesbuffer = new StringBuffer();
-//                for (Integer id:roleIDs){
-//                	
-//                	rolesbuffer.append(accountRoles.getRoleById(id).getName());
-//                	rolesbuffer.append(", ");
-//                }
-//                rolesbuffer.setLength(rolesbuffer.length()-2);
-//        		return rolesbuffer.toString();
         	}
         	else return null;
         }
@@ -398,7 +386,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
-        person.prepareRolesForDragnDrop();
+//        person.prepareRolesForDragnDrop();
         person.getUser().setPerson(person);
         Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
         if (LocaleBean.supportedLocale(locale))
@@ -465,7 +453,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID())) {
             item = revertItem(getItem());
         }
-        item.prepareRolesForDragnDrop();
+//        item.prepareRolesForDragnDrop();
 
         return redirect;
     }
@@ -483,7 +471,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (item != null) {
             item.setUserSelected(true);
             item.setDriverSelected(true);
-            item.prepareRolesForDragnDrop();
+ //           item.prepareRolesForDragnDrop();
         }
         return returnValue;
     }
@@ -506,6 +494,17 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     break;
                 }
         }
+        if(item.getUser()!= null){
+        	
+ 	        List<Integer> roleIDs = new ArrayList<Integer>();
+	        for (final SelectItem item : getItem().getRolePicker().getPicked())
+	        {
+	          	Integer id = getAccountRoles().getRoleByName(item.getValue().toString()).getRoleID();
+	          	roleIDs.add(id);
+	        }
+	        roleIDs.add(getAccountRoles().getRoleByName("Normal").getRoleID());
+    	}
+
          final String result = super.save();
        // revert partial-edit changes if user editable
         if ((result != null) && partialEdit) {
@@ -643,11 +642,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
             // required user role
 //            if (person.getUser().getRoles().isEmpty() && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.roles")))) {
-                if (person.getRolesTarget().isEmpty() && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.roles")))) {
-               valid = false;
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:editPerson-user_role", message);
-            }
+            //TODO put this backin
+//                if (person.getRolesTarget().isEmpty() && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.roles")))) {
+//               valid = false;
+//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+//                context.addMessage("edit-form:editPerson-user_role", message);
+//            }
             // required user status
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status")))) {
                 valid = false;
@@ -733,7 +733,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setUser(null);
             }
             if(person.getUser() != null){
-            	person.setUsersRolesFromTargetRoles();
+//TODO            	person.setUsersRolesFromTargetRoles();
             }
             if (!person.isDriverSelected() && (person.getDriver() != null)) {
                 if (person.getDriver().getDriverID() != null)
@@ -938,15 +938,54 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         private boolean driverSelected;
         @Column(updateable = false)
         private boolean selected;
+//        @Column(updateable = false)
+//        private List<Role> rolesSource;
+//        @Column(updateable = false)
+//        private List<Role> rolesTarget;
+//        @Column(updateable = false)
+//        private EventBean dropEventBean;
+//        @Column(updateable = false)
+//        private ThrowAwayEventBean throwAwayEventBean;
         @Column(updateable = false)
-        private List<Role> rolesSource;
-        @Column(updateable = false)
-        private List<Role> rolesTarget;
-        @Column(updateable = false)
-        private EventBean dropEventBean;
-        @Column(updateable = false)
-        private ThrowAwayEventBean throwAwayEventBean;
-        
+        private ListPicker         rolePicker;
+
+        public ListPicker getRolePicker()
+        {
+            if (rolePicker == null)
+            	rolePicker = new ListPicker(getPickFrom(), getPicked());
+            return rolePicker;
+        }
+
+        private List<SelectItem> getPickFrom()
+        {
+        	bean.initAccountRoles();
+            final LinkedList<SelectItem> pickFrom = new LinkedList<SelectItem>();
+            for (final Role role:bean.getAccountRoles().getRoleList()){
+            	
+            		if(!role.getName().equals("Normal")){
+            			
+            			pickFrom.add(new SelectItem(role.getName()));
+            		}
+            }
+            
+            return pickFrom;
+       }
+        private List<SelectItem> getPicked()
+        {
+            final LinkedList<SelectItem> picked = new LinkedList<SelectItem>();
+            if(getUser()!=null){
+            	
+               for (Integer id:getUser().getRoles()){
+    	    		
+            	   if(!bean.getAccountRoles().getRoleById(id).getName().equals("Normal")){
+            		   
+            		   picked.add(new SelectItem(bean.getAccountRoles().getRoleById(id).getName()));
+            	   }
+    	    	}
+            }
+            return picked;
+        }
+
         public Integer getId() {
             return getPersonID();
         }
@@ -1133,8 +1172,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 StringBuffer rolesbuffer = new StringBuffer();
                 for (Integer id:roleIDs){
                 	
-                	rolesbuffer.append(roles.getRoleById(id).getName());
-                	rolesbuffer.append(", ");
+                	if(roles.getRoleById(id) != null){
+	                	rolesbuffer.append(roles.getRoleById(id).getName());
+	                	rolesbuffer.append(", ");
+                	}
                 }
                 rolesbuffer.setLength(rolesbuffer.length()-2);
         		return rolesbuffer.toString();
@@ -1142,173 +1183,174 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     		return "";
     	}
 
-		public List<Role> getRolesSource() {
-			return rolesSource;
-		}
 
-		public void setRolesSource(List<Role> rolesSource) {
-			this.rolesSource = rolesSource;
-		}
-		public void moveRole(Object role, Object acceptType) {
-			
-			if("role".equals(acceptType)){
-				int roleIndex = rolesSource.indexOf(role);
-				if (roleIndex >= 0){
-					
-					rolesTarget.add(rolesSource.get(roleIndex));
-					rolesSource.remove(roleIndex);
-				}
-			}
-			
-		}
-		public void restockRole(Object role, Object acceptType) {
-			
-			if("role".equals(acceptType)){
-				int roleIndex = rolesTarget.indexOf(role);
-				if(roleIndex >= 0){
-					
-					rolesSource.add(rolesTarget.get(roleIndex));
-					rolesTarget.remove(roleIndex);
-				}
-			}
-			
-		}
-		public void resetRoles(){
-			
-			prepareRolesForDragnDrop();
-		}
-		public EventBean getDropEventBean() {
-			return dropEventBean;
-		}
-
-		public void setDropEventBean(EventBean dropEventBean) {
-			this.dropEventBean = dropEventBean;
-		}
-
-		public List<Role> getRolesTarget() {
-			return rolesTarget;
-		}
-
-		public void setRolesTarget(List<Role> rolesTarget) {
-			this.rolesTarget = rolesTarget;
-		}
-	    private void prepareRolesForDragnDrop(){
-	    	
-	    	bean.initAccountRoles();
-	         setUpTargetRoles();
-	         setUpSourceRoles();
-	         dropEventBean = new EventBean(this);
-	         throwAwayEventBean = new ThrowAwayEventBean(this);
-	    }
-	    private void setUpTargetRoles(){
-	    	
-	        rolesTarget = new ArrayList<Role>();
-	        
-	    	if ((getUser()== null) || (getUser().getRoles() == null) || getUser().getRoles().isEmpty()) {
-	    		
-	    		rolesTarget.add(bean.getAccountRoles().getRoleByName("Normal"));
-	    		return;
-	    	}
-	    	
-	    	for (Integer id:getUser().getRoles()){
-	    		
-	    		rolesTarget.add(bean.getAccountRoles().getRoleById(id));
-	    	}
-	    }
-	    private void setUpSourceRoles(){
-	    	
-	         rolesSource = new ArrayList<Role>(bean.getAccountRoles().getRoleList());
-	         
-	         for(Role role :rolesTarget){
-	        	 
-	        	 removeRoleFromSource(role);
-	         }
-	    }
-	    private void removeRoleFromSource(Role role){
-	    	
-			int roleIndex = rolesSource.indexOf(role);
-			rolesSource.remove(roleIndex);
-
-	    }
-	    private void setUsersRolesFromTargetRoles(){
-	    	
-            List<Integer> roleIDs = new ArrayList<Integer>();
-            for(Role role:rolesTarget){
-            	
-            	roleIDs.add(role.getRoleID());
-            }
-            getUser().setRoles(roleIDs);
-
-	    }
-		public class EventBean implements DropListener {
-			private PersonView dndBean;
-	
-			public EventBean(){
-				
-			}
-			public EventBean(PersonView dndBean) {
-				super();
-				this.dndBean = dndBean;
-			}
-			public void init(PersonView dndBean){
-				
-				this.dndBean = dndBean;
-			}
-			@Override
-			public void processDrop(DropEvent dropEvent) {
-				
-				Dropzone dropzone = (Dropzone) dropEvent.getComponent();
-				dndBean.moveRole(dropEvent.getDragValue(), dropzone.getDropValue());
-			}
-			public void reset(){
-				dndBean.resetRoles();
-			}
-			public PersonView getDndBean() {
-				return dndBean;
-			}
-	
-			public void setDndBean(PersonView dndBean) {
-				this.dndBean = dndBean;
-			}
-		}
-		public class ThrowAwayEventBean implements DropListener {
-			private PersonView dndBean;
-	
-			public ThrowAwayEventBean(){
-				
-			}
-			public ThrowAwayEventBean(PersonView dndBean) {
-				super();
-				this.dndBean = dndBean;
-			}
-			public void init(PersonView dndBean){
-				
-				this.dndBean = dndBean;
-			}
-			@Override
-			public void processDrop(DropEvent dropEvent) {
-				
-				Dropzone dropzone = (Dropzone) dropEvent.getComponent();
-				dndBean.restockRole(dropEvent.getDragValue(), dropzone.getDropValue());
-			}
+//		public List<Role> getRolesSource() {
+//			return rolesSource;
+//		}
+//
+//		public void setRolesSource(List<Role> rolesSource) {
+//			this.rolesSource = rolesSource;
+//		}
+//		public void moveRole(Object role, Object acceptType) {
+//			
+//			if("role".equals(acceptType)){
+//				int roleIndex = rolesSource.indexOf(role);
+//				if (roleIndex >= 0){
+//					
+//					rolesTarget.add(rolesSource.get(roleIndex));
+//					rolesSource.remove(roleIndex);
+//				}
+//			}
+//			
+//		}
+//		public void restockRole(Object role, Object acceptType) {
+//			
+//			if("role".equals(acceptType)){
+//				int roleIndex = rolesTarget.indexOf(role);
+//				if(roleIndex >= 0){
+//					
+//					rolesSource.add(rolesTarget.get(roleIndex));
+//					rolesTarget.remove(roleIndex);
+//				}
+//			}
+//			
+//		}
+//		public void resetRoles(){
+//			
+//			prepareRolesForDragnDrop();
+//		}
+//		public EventBean getDropEventBean() {
+//			return dropEventBean;
+//		}
+//
+//		public void setDropEventBean(EventBean dropEventBean) {
+//			this.dropEventBean = dropEventBean;
+//		}
+//
+//		public List<Role> getRolesTarget() {
+//			return rolesTarget;
+//		}
+//
+//		public void setRolesTarget(List<Role> rolesTarget) {
+//			this.rolesTarget = rolesTarget;
+//		}
+//	    private void prepareRolesForDragnDrop(){
+//	    	
+//	    	bean.initAccountRoles();
+//	         setUpTargetRoles();
+//	         setUpSourceRoles();
+//	         dropEventBean = new EventBean(this);
+//	         throwAwayEventBean = new ThrowAwayEventBean(this);
+//	    }
+//	    private void setUpTargetRoles(){
+//	    	
+//	        rolesTarget = new ArrayList<Role>();
+//	        
+//	    	if ((getUser()== null) || (getUser().getRoles() == null) || getUser().getRoles().isEmpty()) {
+//	    		
+//	    		rolesTarget.add(bean.getAccountRoles().getRoleByName("Normal"));
+//	    		return;
+//	    	}
+//	    	
+//	    	for (Integer id:getUser().getRoles()){
+//	    		
+//	    		rolesTarget.add(bean.getAccountRoles().getRoleById(id));
+//	    	}
+//	    }
+//	    private void setUpSourceRoles(){
+//	    	
+//	         rolesSource = new ArrayList<Role>(bean.getAccountRoles().getRoleList());
+//	         
+//	         for(Role role :rolesTarget){
+//	        	 
+//	        	 removeRoleFromSource(role);
+//	         }
+//	    }
+//	    private void removeRoleFromSource(Role role){
+//	    	
+//			int roleIndex = rolesSource.indexOf(role);
+//			rolesSource.remove(roleIndex);
+//
+//	    }
+//	    private void setUsersRolesFromTargetRoles(){
+//	    	
+//            List<Integer> roleIDs = new ArrayList<Integer>();
+//            for(Role role:rolesTarget){
+//            	
+//            	roleIDs.add(role.getRoleID());
+//            }
+//            getUser().setRoles(roleIDs);
+//
+//	    }
+//		public class EventBean implements DropListener {
+//			private PersonView dndBean;
+//	
+//			public EventBean(){
+//				
+//			}
+//			public EventBean(PersonView dndBean) {
+//				super();
+//				this.dndBean = dndBean;
+//			}
+//			public void init(PersonView dndBean){
+//				
+//				this.dndBean = dndBean;
+//			}
+//			@Override
+//			public void processDrop(DropEvent dropEvent) {
+//				
+//				Dropzone dropzone = (Dropzone) dropEvent.getComponent();
+//				dndBean.moveRole(dropEvent.getDragValue(), dropzone.getDropValue());
+//			}
 //			public void reset(){
 //				dndBean.resetRoles();
 //			}
-			public PersonView getDndBean() {
-				return dndBean;
-			}
-	
-			public void setDndBean(PersonView dndBean) {
-				this.dndBean = dndBean;
-			}
-		}
-		public ThrowAwayEventBean getThrowAwayEventBean() {
-			return throwAwayEventBean;
-		}
-
-		public void setThrowAwayEventBean(ThrowAwayEventBean throwAwayEventBean) {
-			this.throwAwayEventBean = throwAwayEventBean;
-		}
+//			public PersonView getDndBean() {
+//				return dndBean;
+//			}
+//	
+//			public void setDndBean(PersonView dndBean) {
+//				this.dndBean = dndBean;
+//			}
+//		}
+//		public class ThrowAwayEventBean implements DropListener {
+//			private PersonView dndBean;
+//	
+//			public ThrowAwayEventBean(){
+//				
+//			}
+//			public ThrowAwayEventBean(PersonView dndBean) {
+//				super();
+//				this.dndBean = dndBean;
+//			}
+//			public void init(PersonView dndBean){
+//				
+//				this.dndBean = dndBean;
+//			}
+//			@Override
+//			public void processDrop(DropEvent dropEvent) {
+//				
+//				Dropzone dropzone = (Dropzone) dropEvent.getComponent();
+//				dndBean.restockRole(dropEvent.getDragValue(), dropzone.getDropValue());
+//			}
+////			public void reset(){
+////				dndBean.resetRoles();
+////			}
+//			public PersonView getDndBean() {
+//				return dndBean;
+//			}
+//	
+//			public void setDndBean(PersonView dndBean) {
+//				this.dndBean = dndBean;
+//			}
+//		}
+//		public ThrowAwayEventBean getThrowAwayEventBean() {
+//			return throwAwayEventBean;
+//		}
+//
+//		public void setThrowAwayEventBean(ThrowAwayEventBean throwAwayEventBean) {
+//			this.throwAwayEventBean = throwAwayEventBean;
+//		}
    }
 		
 	public Roles getAccountRoles(){
@@ -1321,6 +1363,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         accountRoles = new Roles();
         accountRoles.setRoleDAO(roleDAO);
         accountRoles.init(getAccountID());
+//        accountRoles.removeDefaultRoles();
 	}
 	
 	public RoleDAO getRoleDAO() {

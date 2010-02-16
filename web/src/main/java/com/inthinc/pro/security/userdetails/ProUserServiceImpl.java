@@ -3,6 +3,7 @@ package com.inthinc.pro.security.userdetails;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -114,6 +115,18 @@ public class ProUserServiceImpl implements UserDetailsService
 	}
 	private GrantedAuthority[] getGrantedAuthorities(User user){
 		
+		String adminAccessPointsArray[]
+		  = {"usersAccess",
+			"vehiclesAccess",
+			"devicesAccess",
+			"zonesAccess",
+			"zoneAlertsAccess",
+			"redFlagsAccess",
+			"reportsAccess",
+			"organizationAccess",
+			"speedByStreetAccess"};
+		List<String> adminPoints = new ArrayList<String>();
+		adminPoints.addAll(Arrays.asList(adminAccessPointsArray));
         
         List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();		
 
@@ -125,11 +138,20 @@ public class ProUserServiceImpl implements UserDetailsService
 		}
 		else{
 			
+			boolean isAdminSubset = false;
 			for(AccessPoint ap:user.getAccessPoints()){
 				
-				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
+				if(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()) != null){
+					
+					if (adminPoints.contains(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).getMsgKey())){
+						
+						isAdminSubset = true;
+					}
+				
+					grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
+				}
 			}
-			if(grantedAuthoritiesList.size()>0){
+			if(isAdminSubset){
 				
 				grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN_SUBSET"));
 			}

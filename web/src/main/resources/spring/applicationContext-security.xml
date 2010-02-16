@@ -12,8 +12,8 @@
 <!--        <intercept-url pattern="/secured/**" access="ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN, ROLE_NORMAL" />-->
 <!--        <intercept-url pattern="/app/**" access="ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN, ROLE_NORMAL" />-->
         <intercept-url pattern="/app/admin/**" access="ROLE_INTHINC, ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
-        <intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_INTHINC, ROLE_ADMIN" />
-       	<intercept-url pattern="/app/liveFleet" access="ROLE_INTHINC, ROLE_ADMIN" />                
+        <intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_INTHINC, ROLE_ADMIN, ROLE_CRASHREPORTACCESS" />
+       	<intercept-url pattern="/app/liveFleet" access="ROLE_INTHINC, ROLE_ADMIN, ROLE_LIVEFLEETACCESS" />                
         <intercept-url pattern="/secured/admin/**" access="ROLE_INTHINC, ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
         <intercept-url pattern="/secured/**" access="ROLE_INTHINC, ROLE_ADMIN, ROLE_NORMAL" />
         <intercept-url pattern="/app/**" access="ROLE_INTHINC, ROLE_ADMIN, ROLE_NORMAL" />

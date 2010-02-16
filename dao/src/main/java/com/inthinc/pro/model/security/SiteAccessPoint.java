@@ -6,7 +6,7 @@ public class SiteAccessPoint {
 	
 	@ID
 	private Integer accessPtID;
-	
+	private Integer sortValue;
 	private String msgKey;
 	
 	public Integer getAccessPtID() {
@@ -25,6 +25,12 @@ public class SiteAccessPoint {
 	public String toString() {
 
 		return "ROLE_"+msgKey.toUpperCase();
+	}
+	public Integer getSortValue() {
+		return sortValue;
+	}
+	public void setSortValue(Integer sortValue) {
+		this.sortValue = sortValue;
 	}
 
 }

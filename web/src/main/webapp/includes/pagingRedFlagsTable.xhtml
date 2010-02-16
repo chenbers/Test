@@ -6,7 +6,8 @@
 	            xmlns:c="http://java.sun.com/jstl/core"
 	            xmlns:f="http://java.sun.com/jsf/core"
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
-	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:security="http://pro.tiwi.com/jsf/security">
 	            
  	<t:saveState value="#{bean}"/>
 	            
@@ -170,7 +171,8 @@
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-				<a4j:commandLink id="redFlags-clear" rendered="#{redFlag.event.forgiven == 0}" 
+                           <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_FORGIVEACCESS">
+ 				<a4j:commandLink id="redFlags-clear" rendered="#{redFlag.event.forgiven == 0}" 
 						title="#{messages.notes_redflags_clear}" 
 						oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagsPanel');" 
 						reRender="RedFlags_clearItemForm:clearItem" >
@@ -184,6 +186,11 @@
 					<h:outputText value="#{messages.driverReports_include}" />
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{redFlag.event}"/>
 				</a4j:commandLink>
+							</security:authorize>
+                            <security:authorize ifNotGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_FORGIVEACCESS">
+ 									<h:outputText value="#{messages.notes_clear}" rendered="#{redFlag.event.forgiven == 0}" />
+ 									<h:outputText value="#{messages.driverReports_include}" rendered="#{redFlag.event.forgiven == 1}"/>
+ 							</security:authorize>
 			</rich:column>
         </rich:dataTable>
     </div>
