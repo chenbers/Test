@@ -57,7 +57,7 @@
 		
 					//Start of trip marker
 					var startlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.beginningPoint.lat}, #{driverPerformanceBean.lastTrip.beginningPoint.lng});
-					marker = createMarker(startlatlng,null, 0, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,"#{driverPerformance.lastTrip.startAddress}");
+					marker = createMarker(startlatlng,null, 0, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,1);
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 		
@@ -65,11 +65,11 @@
 					var endlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng});
 					if ("#{driverPerformanceBean.lastTrip.inProgress}" == "true")
 					{
-						marker = createMarker(endlatlng, null,1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,"#{driverPerformance.lastTrip.endAddress}");
+						marker = createMarker(endlatlng, null,1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,1);
 					}
 					else
 					{
-						marker = createMarker(endlatlng, null,2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,"#{driverPerformance.lastTrip.endAddress}");
+						marker = createMarker(endlatlng, null,2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,1);
 					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -79,7 +79,7 @@
 					<ui:repeat value="#{driverPerformanceBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
 
-						marker = createMarker(violation, "#{violation.noteID}", null, "#{eventTypeIcons.iconMap[violation.eventType]}",fillEventBubble,"#{violation.addressStr}");
+						marker = createMarker(violation, "#{violation.noteID}", null, "#{eventTypeIcons.iconMap[violation.eventType]}",fillEventBubble,2);
 						map.addOverlay(marker);
 						bounds.extend(marker.getPoint());
 					</ui:repeat>
@@ -105,9 +105,20 @@
 		 		
 			}
 
-			function setZoneName(zoneName) {
-				jQuery('#dispatchForm\\:foundZoneName').val(zoneName);
-			}			
+
+			function funcToCall(obj) {
+				jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
+
+				if (		obj.callFuncID == 0 ) {
+					fillBubbleMarker(obj.itemID,obj.subID);
+					
+				} else if ( obj.callFuncID == 1 ) {
+					fillTripBubble(obj.itemID,obj.subID);
+					
+				} else if ( obj.callFuncID == 2 ) {
+					fillEventBubble(obj.itemID,obj.subID);
+				}	
+			} 			
 		</script>
 	</ui:define>
 
@@ -686,12 +697,15 @@
 			<a4j:actionparam name="eventId" assignTo="#{driverPerformanceBean.selectedViolationID}"/>
 		</a4j:jsFunction>
 		</ui:fragment>		
-		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}');" 
-			reRender="dispatchForm:foundZoneName">
+		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
 			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
 			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>		
-		</a4j:jsFunction> 		
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
+			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
+			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
+			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
+			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
+		</a4j:jsFunction> 	
 	</a4j:form>	
 
 </ui:define>
