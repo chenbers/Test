@@ -40,7 +40,6 @@
 								</div>
 									<div class="panel_w">
 									<div class="panel_content">	
-									
 									<a4j:form id="outerIdlingReport">	
 									
 <!--										<h:inputHidden value="#{idlingReportBean.secret}"/>									-->
@@ -63,7 +62,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="idlingSearch" action="#{idlingReportBean.doSearch}" 
-            										reRender="navigation:redirectSearch,headerRedCount,idlings,idlings-bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
+            										reRender="navigation:redirectSearch,headerRedCount,outerIdlingReport:idlings,outerIdlingReport:idlings-bottomScroller,outerIdlingReport:headerIdlings,outerIdlingReport:startCalendar,outerIdlingReport:endCalendar,outerIdlingReport:errMsg" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
@@ -144,14 +143,6 @@
                                        </td>
                                     </tr>
                                  </table>             
-                                    
-<!--                                 <rich:datascroller id="topScroller" for="items" immediate="true" -->
-<!--                                    scrollerListener="#{idlingReportBean.scrollerListener}"-->
-<!--                                    reRender="bottomScroller,items,headerIdlings"-->
-<!--                                    requestDelay="200" eventsQueue="pagerQueue" -->
-<!--                                    page="#{idlingReportBean.page}"-->
-<!--                                    styleClass="datascroller">-->
-<!--                                 </rich:datascroller>																																-->
                             	 <div class="datagrid_panel" style="width: 925px;">		        						
                             				<rich:dataTable value="#{idlingReportBean.idlingData}" id="idlings"
                             					var="item" styleClass="datagrid" 

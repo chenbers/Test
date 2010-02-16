@@ -69,7 +69,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         checkDates();
 //Date internalStartDate = startOfDay(this.startDate);
 //Date internalEndDate = endOfDay(this.endDate);
-//System.out.println("IDLING DATE RANGE: " + internalStartDate + "(" + internalStartDate.getTime() + ") - " + internalEndDate + "(" + internalEndDate.getTime() + ")");        
+//System.out.println("IDLING DATE RANGE: " + internalStartDate + "(" + internalStartDate.getTime() + ") - " + internalEndDate + "(" + internalEndDate.getTime() + ")");
+        
         IdlingReportData data = scoreDAO.getIdlingReportData(getEffectiveGroupId(), 
         							startOfDay(this.startDate), 
         							endOfDay(this.endDate));
@@ -187,6 +188,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     }
 
     public void setStartDate(Date startDate) {
+    	if (!this.startDate.equals(startDate))
+    		setRefreshRequired(true);
         this.startDate = startDate;
     }
 
@@ -195,6 +198,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     }
 
     public void setEndDate(Date endDate) {
+    	if (!this.endDate.equals(endDate))
+    		setRefreshRequired(true);
         this.endDate = endDate;
     }
 
