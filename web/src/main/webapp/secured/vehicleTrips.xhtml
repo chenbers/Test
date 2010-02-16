@@ -152,10 +152,20 @@
 			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
 			fillEventBubbleFromList(obj.noteID,obj.lat,obj.lng);		
 		}  
+		
+		function funcToCall(obj) {
+			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
 
-		function setZoneName(zoneName) {
-			jQuery('#dispatchForm\\:foundZoneName').val(zoneName);
-		} 		
+			if (		obj.callFuncID == 0 ) {
+				fillBubbleMarker(obj.itemID,obj.subID);
+				
+			} else if ( obj.callFuncID == 1 ) {
+				fillTripBubble(obj.itemID,obj.subID);
+				
+			} else if ( obj.callFuncID == 2 ) {
+				fillEventBubble(obj.itemID,obj.subID);
+			}	
+		} 		 		
 		</script>
 
     <rich:panel id="script">
@@ -205,7 +215,7 @@
 
 					//Start of trip marker
 					startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
-					marker = createMarker(startlatlng, #{trip.trip.tripID}, 0,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,"#{trip.startAddress}");
+					marker = createMarker(startlatlng, #{trip.trip.tripID}, 0,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,1);
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 
@@ -213,11 +223,11 @@
 					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
 					if ("#{trip.inProgress}" == "true")
 					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,"#{trip.endAddress}");
+						marker = createMarker(endlatlng, #{trip.trip.tripID},1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,1);
 					}
 					else
 					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,"#{trip.endAddress}");
+						marker = createMarker(endlatlng, #{trip.trip.tripID},2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,1);
 					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -228,7 +238,7 @@
 	  				var violation;
 					<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						map.addOverlay(createMarker(violation, "#{violation.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png",fillEventBubble,"#{violation.addressStr}"));
+						map.addOverlay(createMarker(violation, "#{violation.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png",fillEventBubble,2));
 					</ui:repeat>
 				}
 
@@ -238,7 +248,7 @@
 					var idle;
 					<ui:repeat value="#{vehicleTripsBean.idleEvents}" var="idle">
 						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
-						map.addOverlay(createMarker(idle, "#{idle.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",fillEventBubble,"#{idle.addressStr}"));
+						map.addOverlay(createMarker(idle, "#{idle.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",fillEventBubble,2));
 					</ui:repeat>
 				}	
 
@@ -247,7 +257,7 @@
 					var tamper;
 					<ui:repeat value="#{vehicleTripsBean.tamperEvents}" var="tamperEvent">
 						tamper = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
-						map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",fillEventBubble,"#{tamperEvent.addressStr}"));
+						map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",fillEventBubble,2));
 					</ui:repeat>
 				}	
 			}
@@ -881,11 +891,15 @@
 			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
 			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>
 		</a4j:jsFunction> 
-		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="setZoneName('#{addressBean.zoneName}');">
+		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
 			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
 			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>		
-		</a4j:jsFunction> 		
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
+			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
+			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
+			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
+			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
+		</a4j:jsFunction> 			
 		
 	</a4j:form>	
     </ui:define>
