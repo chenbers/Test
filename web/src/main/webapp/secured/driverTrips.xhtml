@@ -138,7 +138,7 @@
             getAddresses();
 		}
 		function onReRenderWithSelection()
-		{	
+		{
 			if (ajaxCount == 0) {
 				isReady = true;
 				dynamicTableStyles();
@@ -283,6 +283,8 @@
 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
 //	              	pauseBetweenCalls(250);	
 	    		});
+            } else {
+                ajaxCount++;
             }
             
         }
