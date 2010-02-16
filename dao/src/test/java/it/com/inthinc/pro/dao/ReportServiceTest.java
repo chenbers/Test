@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -47,7 +48,7 @@ import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
 
-//@Ignore
+@Ignore
 public class ReportServiceTest {
     private static ReportService reportService;
     private static SiloService siloService;
