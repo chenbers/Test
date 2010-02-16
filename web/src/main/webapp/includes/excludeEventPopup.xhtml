@@ -35,7 +35,7 @@
             <div class="popupactions">
             <button id="#{context}_no" type="submit" class="left" onclick="Richfaces.hideModalPanel('clear#{context}Panel'); return false;"><span class="no"><h:outputText
                 value="#{messages.button_no}" /></span></button>
-            <a4j:commandButton id="#{context}_yes" action="#{bean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clear#{context}Panel'); initializeTable()"
+            <a4j:commandButton id="#{context}_yes" action="#{bean.excludeEventAction}" oncomplete="Richfaces.hideModalPanel('clear#{context}Panel'); initializeTable(); initializeTableFilterCols();"
                 onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left"
                 eventsQueue="#{context}-form" >
                 <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
