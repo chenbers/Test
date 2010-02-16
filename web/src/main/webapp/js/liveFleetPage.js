@@ -31,7 +31,7 @@
 				addListeners();
 				
 				bounds = new GLatLngBounds();
-			    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
+			    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null, 3);
 				map.addOverlay(marker);
 				bounds.extend(marker.getPoint());
 			
