@@ -162,10 +162,23 @@
 			}
 	
 	
-			function setZoneNameSync(obj) {
+			function funcToCall(obj) {
 				jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-				fillBubbleMap(obj.noteID);	
-			}  
+
+				if (		obj.callFuncID == 0 ) {
+					fillBubbleMarker(obj.itemID,obj.subID);
+					
+				} else if ( obj.callFuncID == 1 ) {
+					fillTripBubble(obj.itemID,obj.subID);
+					
+				} else if ( obj.callFuncID == 2 ) {
+					fillEventBubble(obj.itemID,obj.subID);
+					
+				} else if ( obj.callFuncID == 4 ) {
+					fillBubbleMap(obj.noteID);
+				}	
+			} 		 
+ 
 
 	   		//]]>
 		</script>	
@@ -202,7 +215,7 @@
 					marker = createMarker(	new GLatLng(#{driver.loc.lat}, #{driver.loc.lng}), 
 											#{driver.vehicle.vehicleID}, null,
 											"#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}",
-											fillBubbleMarker,"#{driver.addressStr}");
+											fillBubbleMarker,0);
 					markers.push(marker);
 					progressBar.updateLoader(progress++);
 					bounds.extend(marker.getPoint());
@@ -311,7 +324,7 @@
 									<f:facet name="header">
 									
 									</f:facet>
-									<a href="#" id="showGroup" onclick="lkFrZnEvtTbl(#{item.loc.lat},#{item.loc.lng},0,#{item.vehicle.vehicleID});">
+									<a href="#" id="showGroup" onclick="lkFrZnBubble(#{item.loc.lat},#{item.loc.lng},0,#{item.vehicle.vehicleID},null,null,4);">
 										<img src="#{liveFleetBean.legendIconMap.icons[item.vehicle.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>
@@ -419,13 +432,16 @@
 								 oncomplete="getAddressForPosition(#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lat},#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lng})">
 							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
 						</a4j:jsFunction>
-		<a4j:jsFunction name="lkFrZnEvtTbl" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="setZoneNameSync(data);" 
-			reRender="dispatchForm:foundZoneName">
+		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
 			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
 			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
-			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>
-		</a4j:jsFunction>    					
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
+			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
+			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
+			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
+			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
+		</a4j:jsFunction> 	 					
+					
 					</a4j:form>
 				</a4j:region>
 				</div>
