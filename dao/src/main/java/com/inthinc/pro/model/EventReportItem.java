@@ -16,6 +16,7 @@ public class EventReportItem implements Comparable<EventReportItem> {
 	
 	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String mphString)
 	{
+	    //TODO: at some point we need to look at using JODA time instead of DateFormat for performance reasons.
 		DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
 		dateFormatter.setTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone());
 		setDate(dateFormatter.format(event.getTime()));
