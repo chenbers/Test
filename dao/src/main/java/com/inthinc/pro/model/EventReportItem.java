@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 
 public class EventReportItem implements Comparable<EventReportItem> {
@@ -16,7 +17,7 @@ public class EventReportItem implements Comparable<EventReportItem> {
 	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String mphString)
 	{
 		DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
-		dateFormatter.setTimeZone(event.getDriverTimeZone());
+		dateFormatter.setTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone());
 		setDate(dateFormatter.format(event.getTime()));
 		setGroup(event.getGroupName());
 		setDriverName(event.getDriverName());
