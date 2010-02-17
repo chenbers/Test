@@ -168,7 +168,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private AccountOptionsBean accountOptionsBean;
     private Roles accountRoles;
     private CacheBean cacheBean;
-    
+    private ListPicker         rolePicker;
+
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -217,6 +218,42 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (changeListeners != null)
             for (final PersonChangeListener listener : changeListeners)
                 listener.personListChanged();
+    }
+    public ListPicker getRolePicker()
+    {
+        if (rolePicker == null)
+        	rolePicker = new ListPicker(getPickFrom(), getPicked());
+        return rolePicker;
+    }
+
+    private List<SelectItem> getPickFrom()
+    {
+    	initAccountRoles();
+        final LinkedList<SelectItem> pickFrom = new LinkedList<SelectItem>();
+        for (final Role role:getAccountRoles().getRoleList()){
+        	
+        		if(!role.getName().equals("Normal")){
+        			
+        			pickFrom.add(new SelectItem(role.getName()));
+        		}
+        }
+        
+        return pickFrom;
+   }
+    private List<SelectItem> getPicked()
+    {
+        final LinkedList<SelectItem> picked = new LinkedList<SelectItem>();
+        if(item.getUser()!=null){
+        	
+           for (Integer id:item.getUser().getRoles()){
+	    		
+        	   if(!getAccountRoles().getRoleById(id).getName().equals("Normal")){
+        		   
+        		   picked.add(new SelectItem(getAccountRoles().getRoleById(id).getName()));
+        	   }
+	    	}
+        }
+        return picked;
     }
 
     @Override
@@ -386,6 +423,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
+//        person.getRolePicker();
 //        person.prepareRolesForDragnDrop();
         person.getUser().setPerson(person);
         Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
@@ -497,12 +535,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if(item.getUser()!= null){
         	
  	        List<Integer> roleIDs = new ArrayList<Integer>();
-	        for (final SelectItem item : getItem().getRolePicker().getPicked())
+	        for (final SelectItem item : getRolePicker().getPicked())
 	        {
 	          	Integer id = getAccountRoles().getRoleByName(item.getValue().toString()).getRoleID();
 	          	roleIDs.add(id);
 	        }
 	        roleIDs.add(getAccountRoles().getRoleByName("Normal").getRoleID());
+	        item.getUser().setRoles(roleIDs);
+	        rolePicker = null;
     	}
 
          final String result = super.save();
@@ -946,45 +986,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 //        private EventBean dropEventBean;
 //        @Column(updateable = false)
 //        private ThrowAwayEventBean throwAwayEventBean;
-        @Column(updateable = false)
-        private ListPicker         rolePicker;
 
-        public ListPicker getRolePicker()
-        {
-            if (rolePicker == null)
-            	rolePicker = new ListPicker(getPickFrom(), getPicked());
-            return rolePicker;
-        }
-
-        private List<SelectItem> getPickFrom()
-        {
-        	bean.initAccountRoles();
-            final LinkedList<SelectItem> pickFrom = new LinkedList<SelectItem>();
-            for (final Role role:bean.getAccountRoles().getRoleList()){
-            	
-            		if(!role.getName().equals("Normal")){
-            			
-            			pickFrom.add(new SelectItem(role.getName()));
-            		}
-            }
-            
-            return pickFrom;
-       }
-        private List<SelectItem> getPicked()
-        {
-            final LinkedList<SelectItem> picked = new LinkedList<SelectItem>();
-            if(getUser()!=null){
-            	
-               for (Integer id:getUser().getRoles()){
-    	    		
-            	   if(!bean.getAccountRoles().getRoleById(id).getName().equals("Normal")){
-            		   
-            		   picked.add(new SelectItem(bean.getAccountRoles().getRoleById(id).getName()));
-            	   }
-    	    	}
-            }
-            return picked;
-        }
 
         public Integer getId() {
             return getPersonID();

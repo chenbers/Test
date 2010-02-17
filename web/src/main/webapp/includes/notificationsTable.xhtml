@@ -115,8 +115,8 @@
 								</a4j:commandLink>
 							</security:authorize>
                             <security:authorize ifNotGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_FORGIVEACCESS">
- 									<h:outputText value="#{messages.notes_clear}" rendered="#{item.event.forgiven == 0}" />
- 									<h:outputText value="#{messages.driverReports_include}" rendered="#{item.event.forgiven == 1}"/>
+<!-- 									<h:outputText id="excluded" value="#{messages.excluded}" rendered="#{item.event.forgiven == 0}" />-->
+ 									<h:outputText value="#{messages.excluded}" rendered="#{item.event.forgiven == 1}"/>
  							</security:authorize>
  							
             </rich:column>

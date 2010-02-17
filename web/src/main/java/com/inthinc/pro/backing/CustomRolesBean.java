@@ -122,8 +122,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         customRole.bean = this;
         customRole.setAcctID(getAccountID());
         customRole.initializeAccessPoints();
-//        customRole.setSelectedAccessPointsFromRoleAccessPoints();
-//        customRole.setSelectAllAccessPoints();
+
         return customRole;
     }
 
@@ -143,17 +142,10 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         if (result != null) {
             items = null;
             getItems();
-            final String summary = MessageUtil.getMessageString("editCustomRoles");
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-        
-//        // TODO: this should be refactored, but to be on the save side, just clear the cache and force a refresh when driver(s) change
-//        cacheBean.setDriverMap(null);
-//
-//        
-//        notifyChangeListeners();
-        
+//            final String summary = MessageUtil.getMessageString("editCustomRoles");
+//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
+//            FacesContext.getCurrentInstance().addMessage(null, message);
+        }               
         
         return result;
     }
@@ -315,9 +307,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 		public List<AccessPointView> getAccessPointSelection() {
 			return new ArrayList<AccessPointView>(accessPointSelection.values());
 		}
-//		public void setAccessPointSelection(List<AccessPoint> accessPoints) {
-//			this.accessPointSelection = accessPoints;
-//		}
+
 		public boolean isAllAccessPointsSelected() {
 			
 			return allAccessPointsSelected;
@@ -379,16 +369,16 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 		
 	}
 
-	public SiteAccessPoints getSiteAccessPoints() {
-		return siteAccessPoints;
-	}
-
-	public void setSiteAccessPoints(SiteAccessPoints siteAccessPoints) {
-		this.siteAccessPoints = siteAccessPoints;
-	}
+//	public SiteAccessPoints getSiteAccessPoints() {
+//		return siteAccessPoints;
+//	}
+//
+//	public void setSiteAccessPoints(SiteAccessPoints siteAccessPoints) {
+//		this.siteAccessPoints = siteAccessPoints;
+//	}
 	
 	public Map<Integer,SiteAccessPoint> getAccessPointMap(){
 		
-		return siteAccessPoints.getAccessPointMap();
+		return SiteAccessPoints.getAccessPointMap();
 	}
 }

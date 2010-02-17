@@ -463,8 +463,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                 if (!updateField.get(key))
                     ignoreFields.add(key);
             
-            ignoreFields.add("dropEventBean");
-            ignoreFields.add("throwAwayEventBean");
+            ignoreFields.add("rolePicker");
             
             //we need to validate the item before we copy the properties. 
             if(!validateBatchEdit(item))

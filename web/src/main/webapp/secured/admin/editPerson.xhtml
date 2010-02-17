@@ -37,7 +37,6 @@
    		<rich:dragIndicator id="indicator" />
 
         <a4j:form id="edit-form">
-		<rich:panel id="throwawaydrop">
 		
           <div class="">
             <div class="panel_nw">
@@ -623,7 +622,7 @@
                           <td>
                             <rich:message for="editPerson-user_role" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 						    <ui:include src="../../includes/admin/listPicker.xhtml">
-						      <ui:param name="bean" value="#{personBean.item.rolePicker}" />
+						      <ui:param name="bean" value="#{personBean .rolePicker}" />
 						      <ui:param name="id" value="rolesAssign" />
 						      <ui:param name="formName" value="edit-form" />
 						      <ui:param name="context" value="editPerson" />
@@ -632,58 +631,6 @@
 						</tr>
 						</security:authorize>
 	
-<!--  <h:panelGrid id="editPerson-user_role" styleClass="role-panel" columns="2" width="100%">-->
-<!--            <rich:panel> -->
-<!--                <f:facet name="header">-->
-<!--                    <h:outputText value="Choose Roles" />-->
-<!--                </f:facet>-->
-<!--                -->
-<!--		        <rich:dropSupport id="roleThrowAway" acceptedTypes="role" dropValue="role" ajaxSingle="true"-->
-<!--		            			 dropListener="#{personBean.item.throwAwayEventBean.processDrop}" reRender="roleDrop, src, selectedRoletable">-->
-<!--		        </rich:dropSupport>-->
-<!--                <h:dataTable id="src" columns="1" value="#{personBean.item.rolesSource}"-->
-<!--                    var="role">-->
-<!---->
-<!--                    <h:column>-->
-<!--                        <a4j:outputPanel styleClass="dnd-panel">-->
-<!--                            <rich:dragSupport dragIndicator=":indicator"-->
-<!--                                dragType="role" dragValue="#{role}">-->
-<!--                                <rich:dndParam name="label" value="#{role.name}" />-->
-<!--                            </rich:dragSupport>-->
-<!--                            <h:outputText value="#{role.name}"></h:outputText>-->
-<!--                        </a4j:outputPanel>-->
-<!--                    </h:column>-->
-<!--                </h:dataTable>-->
-<!--            </rich:panel>-->
-<!---->
-<!--            <rich:panel>-->
-<!--                <f:facet name="header">-->
-<!--                    <h:outputText value="Selected Roles" />-->
-<!--                </f:facet>-->
-<!-- 	                <rich:dropSupport id="roleDrop" acceptedTypes="role" dropValue="role" ajaxSingle="true"-->
-<!--	                    			 dropListener="#{personBean.item.dropEventBean.processDrop}" reRender="roleDrop, src, selectedRoletable">-->
-<!--	                </rich:dropSupport>-->
-<!---->
-<!--                <h:dataTable id="selectedRoletable" columns="1" value="#{personBean.item.rolesTarget}" var="role">-->
-<!--                    <h:column>-->
-<!--                        <a4j:outputPanel styleClass="dnd-panel">-->
-<!--                            <rich:dragSupport dragIndicator=":indicator"-->
-<!--                                dragType="role" dragValue="#{role}"-->
-<!--                                oncomplete="checkMultiple(this);">-->
-<!--                                <rich:dndParam name="label" value="#{role.name}" />-->
-<!--                            </rich:dragSupport>-->
-<!--                            <h:outputText value="#{role.name}"></h:outputText>-->
-<!--                        </a4j:outputPanel>-->
-<!--                    </h:column>-->
-<!--                </h:dataTable>-->
-<!---->
-<!---->
-<!--            </rich:panel>-->
-<!--            -->
-<!--            </h:panelGrid>-->
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--           </security:authorize>-->
                         <tr>
                           <td width="100" valign="top">
                           	<ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -864,7 +811,7 @@
               <div class="panel_statusbar"></div>
             </div>
           </div>
-</rich:panel>
+
           </a4j:form>
           <!-- END PANEL -->
         </td>

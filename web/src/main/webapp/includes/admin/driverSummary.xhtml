@@ -12,10 +12,13 @@
 	
 
 		</li>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_USERSACCESS">
+		
 		<li class="r text"><h:commandLink id="#{context}-driverSummaryEdit" action="#{personBean.edit}"
 			value="#{messages.adminTable_edit}">
 			<f:param name="editID" value="#{driver.person.personID}" />
 		</h:commandLink></li>
+		</security:authorize>
 	</ul>
 
 	<div style="padding-left: 11px; padding-bottom: 10px">
