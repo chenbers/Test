@@ -34,8 +34,6 @@ import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.hessian.GenericHessianDAO;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
@@ -55,7 +53,6 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 public class DAOUtilBean implements PhaseListener {
@@ -76,7 +73,6 @@ public class DAOUtilBean implements PhaseListener {
 	private RoleDAO roleDAO;
 
 	private Integer shipAccountID;
-	private Integer rmaAccountID;
 	
 	
 	private Device device;
@@ -121,13 +117,11 @@ public class DAOUtilBean implements PhaseListener {
 	private String errorMsg;
 	private String successMsg;
 	private List<String> messageList;
-	private Account rmaAccount;
 	private Account shipAccount;
 
 	private boolean assignedVehiclesOnly;
 	private String vehicleGrid;
 
-	private static final String rmausername = "RMA";
 	private static final String shipusername = "TiwiInstallation";
 	
 	private static final String FAILURE = "failure";
@@ -149,20 +143,13 @@ public class DAOUtilBean implements PhaseListener {
 		if (shipuser == null)
 			throw new Exception("Fulfillment user not found:" + shipusername);
 
-		User rmauser = userDAO.findByUserName(rmausername);
-		if (rmauser == null)
-			throw new Exception("RMA user not found:" + rmausername);
-
 		shipAccountID = shipuser.getPerson().getAcctID();
-		rmaAccountID = rmauser.getPerson().getAcctID();
 
 		shipAccount = accountDAO.findByID(shipAccountID);
-		rmaAccount = accountDAO.findByID(rmaAccountID);
 
 		Integer userAccountID = getProUser().getUser().getPerson().getAcctID();
-		if (!shipAccountID.equals(userAccountID)
-				&& !rmaAccountID.equals(userAccountID))
-			throw new Exception("Logged in User not in ship or rma account");
+		if (!shipAccountID.equals(userAccountID))
+			throw new Exception("Logged in User not in ship account");
 
 		messageList = new ArrayList<String>();
 
@@ -391,30 +378,6 @@ public class DAOUtilBean implements PhaseListener {
 						+ assignedAccount.getAcctName());
 			} else {
 				deviceDAO.deleteByID(device.getDeviceID());
-				device.setAccountID(rmaAccountID);
-
-				device.setEphone(null);
-				deviceDAO.create(rmaAccountID, device);
-				setSuccessMsg("Device " + serialNum
-						+ " successfully moved to account: "
-						+ rmaAccount.getAcctName());
-			}
-		}
-		setSerialNum(null);
-	}
-
-	public void reworkDeviceAction() {
-		reInitAction();
-		loadDevice();
-		if (device != null) {
-			if (!device.getAccountID().equals(rmaAccount.getAcctID())) {
-				Account assignedAccount = accountDAO.findByID(device
-						.getAccountID());
-				setErrorMsg("Error - Device " + serialNum
-						+ " assigned to account "
-						+ assignedAccount.getAcctName());
-			} else {
-				deviceDAO.deleteByID(device.getDeviceID());
 				device.setAccountID(shipAccountID);
 
 				device.setEphone(null);
@@ -423,7 +386,6 @@ public class DAOUtilBean implements PhaseListener {
 						+ " successfully moved to account: "
 						+ shipAccount.getAcctName());
 			}
-			//TODO should we assign to a vehicle??
 		}
 		setSerialNum(null);
 	}
@@ -856,7 +818,16 @@ public class DAOUtilBean implements PhaseListener {
 		if (serialNum!=null && serialNum.trim().length()>0) {
 			loadDevice();
 			if (device==null)
+			{
+				setErrorMsg("Error: Device not found:" + serialNum);
 				return FAILURE;
+			}
+			if (!device.getAccountID().equals(selectedAccountID))
+			{
+				Account assigned=accountDAO.findByID(device.getAccountID());
+				setErrorMsg("Error: Device in account:" + assigned.getAcctName());
+				return FAILURE;
+			}
 		}
 	
 		Vehicle vehicle = new Vehicle();
@@ -1197,7 +1168,7 @@ if (accounts.size()>100)
 			Map.Entry e = (Map.Entry) itr.next();
 			id = (Integer) e.getKey();
 			name = ((String) e.getValue());
-			if (!id.equals(this.shipAccountID) && !id.equals(this.rmaAccountID))
+			if (!id.equals(this.shipAccountID))
 				accountList.add(new SelectItem(id, name));
 		}
 		return accountList;
