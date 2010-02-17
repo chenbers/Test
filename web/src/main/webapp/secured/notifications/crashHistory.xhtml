@@ -17,7 +17,7 @@
     <ui:param name="context" value="crashHistory"/>
     
     <ui:define name="scripts">
-        <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
+		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
     
         <script type="text/javascript">  
         var map;
