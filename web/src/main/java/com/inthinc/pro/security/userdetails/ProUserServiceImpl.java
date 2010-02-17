@@ -151,21 +151,9 @@ public class ProUserServiceImpl implements UserDetailsService
 						
 						isAdminSubset = true;
 					}
+					grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
 				}
-				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
 			}
-//			for(AccessPoint ap:user.getAccessPoints()){
-//				
-//				if(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()) != null){
-//					
-//					if (adminPoints.contains(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).getMsgKey())){
-//						
-//						isAdminSubset = true;
-//					}
-//					grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
-//					
-//				}
-//			}
 			if(isAdminSubset){
 				
 				grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN_SUBSET"));

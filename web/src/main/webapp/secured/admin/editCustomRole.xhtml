@@ -74,8 +74,13 @@
                                 <td width="100" valign="top">
                                   <h:outputText value="#{messages.editCustomRole_name}" />
                                   <span class="required">*</span>
-                            <h:inputText value="#{customRolesBean.item.name}" id="editCustomRole-name"  styleClass="text" size="30"
-                              maxlength="20" required="true" requiredMessage="#{messages.required}" />
+                                   <h:message for="editCustomRole-name" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
+                            		<h:inputText value="#{customRolesBean.item.name}" id="editCustomRole-name"  styleClass="text" size="30"
+                             				 maxlength="20" required="true" requiredMessage="#{messages.required}" >
+	                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+	                                    <f:attribute name="regex" value="[a-zA-Z0-9 ]+" />
+                                    </h:inputText>
+                              
                                 </td>
  							  </tr> 
  							  <tr>
