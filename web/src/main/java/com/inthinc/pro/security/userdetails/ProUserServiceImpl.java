@@ -27,6 +27,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Roles;
+import com.inthinc.pro.model.security.SiteAccessPoint;
 
 
 public class ProUserServiceImpl implements UserDetailsService
@@ -115,6 +116,8 @@ public class ProUserServiceImpl implements UserDetailsService
 	}
 	private GrantedAuthority[] getGrantedAuthorities(User user){
 		
+		//TODO make an enum for all role related things
+		
 		String adminAccessPointsArray[]
 		  = {"usersAccess",
 			"vehiclesAccess",
@@ -136,21 +139,33 @@ public class ProUserServiceImpl implements UserDetailsService
 			//Will cover all access points
 			grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
 		}
-		else{
+		else if (!user.getAccessPoints().isEmpty()){
 			
 			boolean isAdminSubset = false;
-			for(AccessPoint ap:user.getAccessPoints()){
+			
+			for(AccessPoint ap: SiteAccessPoints.getAccessPoints()){
 				
-				if(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()) != null){
+				if(user.getAccessPoints().contains(ap)){
 					
 					if (adminPoints.contains(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).getMsgKey())){
 						
 						isAdminSubset = true;
 					}
-				
-					grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
 				}
+				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
 			}
+//			for(AccessPoint ap:user.getAccessPoints()){
+//				
+//				if(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()) != null){
+//					
+//					if (adminPoints.contains(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).getMsgKey())){
+//						
+//						isAdminSubset = true;
+//					}
+//					grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
+//					
+//				}
+//			}
 			if(isAdminSubset){
 				
 				grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN_SUBSET"));

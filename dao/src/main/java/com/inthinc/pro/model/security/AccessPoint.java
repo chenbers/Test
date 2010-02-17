@@ -35,5 +35,10 @@ public class AccessPoint {
 	public void setAccessPtID(Integer accessPtID) {
 		this.accessPtID = accessPtID;
 	}
+	@Override
+	public boolean equals(Object obj) {
+
+		return (accessPtID.intValue() == ((AccessPoint)obj).accessPtID.intValue());
+	}
 	
 }
