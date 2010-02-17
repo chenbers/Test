@@ -67,17 +67,14 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
 	}
 
 	public void setFilterLevel(Integer filterLevel) {
-		this.filterLevel = filterLevel;
+//		this.filterLevel = filterLevel;
+		
+		this.filterLevel = 2;
 	}
 
-	public boolean filterLevelMethod(Object obj)
-	{
-		
-		return true;
-	}
 	
 	public Map<String, Integer> getFilterLevels() {
-    	final TreeMap<String, Integer> filterLevels = new TreeMap<String, Integer>();
+    	TreeMap<String, Integer> filterLevels = new TreeMap<String, Integer>();
         for (RedFlagLevel p : EnumSet.allOf(RedFlagLevel.class)) {
 	    		filterLevels.put(p.toString(), p.getCode());
 	    	}
@@ -201,6 +198,9 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
         for (RedFlag redFlag : redFlagList)
         {
             String detailsFormatStr = MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType());
+            if (redFlag.getEvent().getDriverName() == null || redFlag.getEvent().getDriverName().isEmpty()) {
+            	redFlag.getEvent().setDriverName(MessageUtil.getMessageString("unknown_driver"));
+            }
 
             redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, mphString));
         }

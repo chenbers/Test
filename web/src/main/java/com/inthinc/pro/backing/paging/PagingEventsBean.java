@@ -166,6 +166,9 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
         for (Event event : eventList)
         {
             String detailsFormatStr = MessageUtil.getMessageString("redflags_details" + event.getEventType());
+            if (event.getDriverName() == null || event.getDriverName().isEmpty()) {
+            	event.setDriverName(MessageUtil.getMessageString("unknown_driver"));
+            }
 
             eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, mphString));
         }
