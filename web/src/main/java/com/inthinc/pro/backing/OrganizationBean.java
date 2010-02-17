@@ -102,7 +102,8 @@ public class OrganizationBean extends BaseBean
     {
         if (rootGroupNode == null)
         {
-            organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getTopGroup().getGroupID()));
+//            organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getTopGroup().getGroupID()));
+            organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID()));
             final Group topLevelGroup = organizationHierarchy.getTopGroup();
             rootGroupNode = createNewGroupNode(topLevelGroup);
             // UnassignedDevicesTreeNodeImpl devicesTreeNodeImpl = new UnassignedDevicesTreeNodeImpl(getAccountID());
@@ -415,7 +416,8 @@ public class OrganizationBean extends BaseBean
 
     private void updateUsersGroupHeirarchy()
     {
-        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
+//        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
+        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID()));
         getProUser().setGroupHierarchy(organizationHierarchy);
     }
 
