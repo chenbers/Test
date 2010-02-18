@@ -156,7 +156,7 @@
                 	</span>
             	</button>
            	
-             	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_FORGIVEACCESS">
+             	<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_FORGIVEACCESS">
             	<a4j:commandButton id="forgiveButton" action="#{bean.forgiveItemAction}" 
             		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
                 	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 

@@ -423,7 +423,7 @@
 					<br/>
 						<h2>#{messages.livefleet}</h2>
 				    			#{messages.livefleet_default_view}.
-				    			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ORGANIZATIONACCESS">
+				    			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ORGANIZATIONACCESS">
 				    				[<h:commandLink id="liveFleetGo" action="go_adminOrganization" value="#{messages.livefleet_change}" />]
 				    			</security:authorize>
 			    	

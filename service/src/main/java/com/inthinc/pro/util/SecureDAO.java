@@ -10,7 +10,6 @@ import com.inthinc.pro.security.userdetails.ProUser;
 
 public abstract class SecureDAO<T> {
 
-//    protected static final Role inthincRole = new Role(1,0,"inthinc");
 	
     public ProUser getProUser() {
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -33,8 +32,8 @@ public abstract class SecureDAO<T> {
     }
     
     public boolean isInthincUser() {
-    	return getUser().getRoles().contains(0);
-//        return getUser().getRoles().(inthincRole);
+        //TODO: for now, don't allow inthinc role, need to determine how to allow for an inthinc role at a later time
+        return false;
     }
     
     public abstract List<T> getAll();

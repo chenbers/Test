@@ -26,7 +26,7 @@
     <h:form id="side-nav-form">
       
       <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_USERSACCESS">
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERSACCESS">
         <tr>
           <td valign="top">
                 <ui:include src="verticalLeftTab.xhtml">
@@ -54,7 +54,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_VEHICLESACCESS">
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VEHICLESACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -82,7 +82,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
-       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_DEVICESACCESS">
+       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICESACCESS">
         
         <tr>
           <td valign="top">
@@ -109,7 +109,7 @@
 <!--          </tr>-->
 <!--        </ui:fragment>-->
         </security:authorize>
-     	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ZONESACCESS">
+     	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ZONESACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -122,7 +122,7 @@
           </td>
         </tr>
         </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ZONEALERTSACCESS">
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ZONEALERTSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -151,7 +151,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
-       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_REDFLAGSACCESS">
+       	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REDFLAGSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -180,7 +180,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_REPORTSACCESS">
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REPORTSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -209,7 +209,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_ORGANIZATIONACCESS">
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ORGANIZATIONACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -222,7 +222,7 @@
           </td>
         </tr>
       </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC">
+        <security:authorize ifAnyGranted="ROLE_ADMIN">
         <tr>
           <td valign="top">
           
@@ -251,7 +251,7 @@
           </tr>
         </ui:fragment>
  		</security:authorize>       
-      <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC,ROLE_SPEEDBYSTREETACCESS">
+      <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SPEEDBYSTREETACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">

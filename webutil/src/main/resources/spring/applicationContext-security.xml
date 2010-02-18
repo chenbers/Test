@@ -5,7 +5,7 @@
     <http auto-config="false" session-fixation-protection="newSession" access-denied-page="/accessDenied.faces" entry-point-ref="authenticationProcessingFilterEntryPoint">
         <!--  error if user logs in concurrently (only one login allowed at a time)  -->
         <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
-        <intercept-url pattern="/secured/**" access="ROLE_SUPERUSER,ROLE_INTHINC,ROLE_ADMIN" />
+        <intercept-url pattern="/secured/**" access="ROLE_ADMIN" />
         <logout logout-success-url="/login.faces" />
     </http>
 

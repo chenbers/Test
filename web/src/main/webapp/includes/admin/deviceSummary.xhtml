@@ -10,7 +10,7 @@
    <ul id="grid_nav_dark">
       <li class="l">
       </li>
-      <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_DEVICESACCESS">
+      <security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_DEVICESACCESS">
       
       <li class="r text"><h:commandLink id="#{context}-deviceSummaryEdit" action="#{devicesBean.edit}"
          value="#{messages.adminTable_edit}">

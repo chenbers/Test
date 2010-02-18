@@ -8,7 +8,7 @@
 	xmlns:security="http://pro.tiwi.com/jsf/security">
 
 		<ul id="grid_nav_dark">
-				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_VEHICLESACCESS">
+				<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_VEHICLESACCESS">
 		
 			<li class="r text">											 
 				<h:commandLink  id="#{context}-vehicleSummaryEdit" action="#{vehiclesBean.edit}" value="#{messages.adminTable_edit}">

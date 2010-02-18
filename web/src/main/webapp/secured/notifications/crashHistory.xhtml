@@ -223,7 +223,7 @@
 						</a4j:commandLink>
 					  </li>  
 					  
-					  <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_CRASHREPORTACCESS">
+					  <security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_CRASHREPORTACCESS">
 					  	<li class="l text">
 							<pretty:link id="crashHistoryAdd" mappingId="addCrashReport" styleClass="ls_tab_add_crash">
 								#{messages.notes_crashhistory_addnew}

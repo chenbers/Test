@@ -12,7 +12,7 @@
 	
 
 		</li>
-		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_INTHINC, ROLE_USERSACCESS">
+		<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_USERSACCESS">
 		
 		<li class="r text"><h:commandLink id="#{context}-driverSummaryEdit" action="#{personBean.edit}"
 			value="#{messages.adminTable_edit}">
