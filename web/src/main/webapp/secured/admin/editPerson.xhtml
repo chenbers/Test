@@ -695,7 +695,10 @@
                             <rich:message for="editPerson-priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.priText}" id="editPerson-priText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                                  <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+	                              <f:attribute name="regex" value="#{messages.smsTextRegex}" />
+                              	  <f:attribute name="regexErrorMessage" value="#{messages.editPerson_textMessageFormat}" />
+                              
                             </h:inputText>
                           </td>
                         </tr>
@@ -704,8 +707,10 @@
                           <td>
                             <rich:message for="editPerson-secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.secText}" id="editPerson-secText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                              maxlength="62">
+                                  <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+	                              <f:attribute name="regex" value="#{messages.smsTextRegex}" />
+                              	  <f:attribute name="regexErrorMessage" value="#{messages.editPerson_textMessageFormat}" />
                             </h:inputText>
                           </td>
                         </tr>

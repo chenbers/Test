@@ -246,8 +246,10 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_priText}" /></td>
                           <td>
                             <rich:message for="editAccount-priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
-                              <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
+                            <h:inputText id="editAccount-priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onkeyup="populateAlertText()" >
+       	                          <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+	                              <f:attribute name="regex" value="#{messages.smsTextRegex}" />
+                              	  <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
                             </h:inputText>
                           </td>
                         </tr>
@@ -256,7 +258,9 @@
                           <td>
                             <rich:message for="editAccount-secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
-                              <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
+       	                          <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+	                              <f:attribute name="regex" value="#{messages.smsTextRegex}" />
+                              	  <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
                             </h:inputText>
                           </td>
                         </tr>
