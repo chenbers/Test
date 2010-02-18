@@ -43,7 +43,6 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 
-@Ignore
 public class PaginationTest {
 	
     private static final Logger logger = Logger.getLogger(PaginationTest.class);
@@ -59,7 +58,7 @@ public class PaginationTest {
     static {
     	EXPECTED_EVENT_COUNTS = new HashMap<EventCategory, Integer[]> ();
     	// events in team 0 (GOOD) are from the unknown driver
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(15), Integer.valueOf(24)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(15), Integer.valueOf(21)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(4), Integer.valueOf(4), Integer.valueOf(8), Integer.valueOf(16)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(1)});
     	
@@ -102,18 +101,6 @@ public class PaginationTest {
         states.setStateDAO(stateDAO);
         states.init();
 
-//        RoleHessianDAO roleDAO = new RoleHessianDAO();
-//        roleDAO.setSiloService(siloService);
-//
-//        SiteAccessPoints siteAccessPoints = new SiteAccessPoints();
-//        siteAccessPoints.setRoleDAO(roleDAO);
-//        siteAccessPoints.init();
-        
-
-//        Roles roles = new Roles();
-//        roles.setRoleDAO(roleDAO);
-//        roles.init();
-
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
 
@@ -123,8 +110,6 @@ public class PaginationTest {
 
     }
 
-    //-- VIOLATION events include a speeding event that should be filtered out on back end (not working)
-    @Ignore
     @Test
     public void events() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
@@ -180,8 +165,6 @@ public class PaginationTest {
     	}
     }
     
-    //-- VIOLATION events include a speeding event that should be filtered out on back end (not working)
-    @Ignore
     @Test
     public void eventsSorts() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
@@ -275,8 +258,6 @@ public class PaginationTest {
 		}
     }
 
-    //-- VIOLATION events include a speeding event that should be filtered out on back end (not working)
-    @Ignore
     @Test
     public void eventsFilters() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
