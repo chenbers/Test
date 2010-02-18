@@ -100,7 +100,7 @@
   </bean>
   <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
     <property name="dao" ref="secureVehicleDAO" />
-    <property name="addressLookup" ref="${addressLookup2}"/>
+    <property name="addressLookup" ref="geonamesAddressLookupBean"/>
   </bean>  
   <!--     
     <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">

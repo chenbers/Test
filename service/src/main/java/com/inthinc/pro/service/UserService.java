@@ -30,12 +30,12 @@ public interface UserService extends GenericService<User> {
     public Response get(@PathParam("userID") Integer userID);
 
     @GET
-    @Path("/user/{userName:[A-Za-z]+}")
+    @Path("/user/{userName}")
     public Response get(@PathParam("userName") String userName);
 
     //This method is specifically for Petrom. They need a way to login the user through their software.
     @GET
-    @Path("/login/{userName:[A-Za-z]+}/{password}")
+    @Path("/login/{userName}/{password}")
     public Response login(@PathParam("userName") String userName, @PathParam("password") String password);
     
     @POST
