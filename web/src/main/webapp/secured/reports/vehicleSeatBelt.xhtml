@@ -1,13 +1,15 @@
 <ui:composition template="/layout/layout.xhtml" 
 				xmlns="http://www.w3.org/1999/xhtml" 
 				xmlns:ui="http://java.sun.com/jsf/facelets"
-  				xmlns:h="http://java.sun.com/jsf/html" 
-  				xmlns:rich="http://richfaces.org/rich"
-  				xmlns:a4j="http://richfaces.org/a4j"
-  				xmlns:f="http://java.sun.com/jsf/core"
-  				xmlns:t="http://myfaces.apache.org/tomahawk"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces"
-                xmlns:security="http://pro.tiwi.com/jsf/security>
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j"
+	  			xmlns:t="http://myfaces.apache.org/tomahawk"
+	  			xmlns:security="http://pro.tiwi.com/jsf/security"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:define name="scripts">
         <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
