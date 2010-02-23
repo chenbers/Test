@@ -85,9 +85,7 @@
     <property name="overallScoreBean" ref="overallScoreBean" />
     <property name="trendBeanState" ref="trendBeanState"></property>
   </bean>
-  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean">
-      <property name="navigationBean" ref="navigationBean" />
-  </bean>      
+  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean"></bean>      
 
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">

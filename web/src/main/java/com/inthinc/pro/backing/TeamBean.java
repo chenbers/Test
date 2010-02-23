@@ -21,7 +21,6 @@ public class TeamBean extends BaseBean {
     private Group group;
 
     private GroupReportDAO groupReportDAO;    
-    private NavigationBean navigationBean;
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -29,14 +28,6 @@ public class TeamBean extends BaseBean {
 
     public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
         this.groupReportDAO = groupReportDAO;
-    }
-
-    public NavigationBean getNavigationBean() {
-        return navigationBean;
-    }
-
-    public void setNavigationBean(NavigationBean navigationBean) {
-        this.navigationBean = navigationBean;
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
@@ -53,9 +44,6 @@ public class TeamBean extends BaseBean {
     }
 
     public Integer getGroupID() {
-        if ( groupID == null ) {
-            groupID = this.navigationBean.getGroupID();
-        }
         return groupID;
     }
 
