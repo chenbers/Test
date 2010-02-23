@@ -12,13 +12,16 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 
 public class TeamBean extends BaseBean {
 
+//  Request scope bean for new team page
+    
     private static final long serialVersionUID = 1L;
 
     private List<DriverVehicleScoreWrapper> driverStatistics;
     private Integer groupID;
     private Group group;
 
-    private GroupReportDAO groupReportDAO;
+    private GroupReportDAO groupReportDAO;    
+    private NavigationBean navigationBean;
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -26,6 +29,14 @@ public class TeamBean extends BaseBean {
 
     public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
         this.groupReportDAO = groupReportDAO;
+    }
+
+    public NavigationBean getNavigationBean() {
+        return navigationBean;
+    }
+
+    public void setNavigationBean(NavigationBean navigationBean) {
+        this.navigationBean = navigationBean;
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
@@ -42,11 +53,14 @@ public class TeamBean extends BaseBean {
     }
 
     public Integer getGroupID() {
+        if ( groupID == null ) {
+            groupID = this.navigationBean.getGroupID();
+        }
         return groupID;
     }
 
     public void setGroupID(Integer groupID) {
-        // TODO: probably need some checks here on groupID and the group object
+        // TODO: probably need some checks here on groupID and the group object        
         group = getGroupHierarchy().getGroup(groupID);
         this.groupID = groupID;
     }
