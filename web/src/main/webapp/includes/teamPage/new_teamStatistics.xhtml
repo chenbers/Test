@@ -1,0 +1,130 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<rich:tab label="Driver Statistics">
+	<!-- Driver Statistics Table -->
+	<div class="section">
+	    <div class="panel_nw">    
+	       <div class="panel_title">
+	       	 <h:graphicImage value="/images/ico_line.png" />What Happened...
+	       </div>
+	    </div>
+	    <div class="panel_w">
+	       <div class="panel_content">
+	       <rich:dataTable	value="#{teamBean.driverStatistics}" 
+	       		id="drivers" 
+	       		var="item"
+				styleClass="datagrid" 
+				rowClasses="tableOdd,tableEven"
+				rows="10">				
+				<rich:column>
+				</rich:column>
+				<rich:column>
+					<f:facet name="driver">
+						Driver
+					</f:facet>
+					#{item.driver.person.fullName}
+				</rich:column>
+				<rich:column>
+					<f:facet name="score">
+						Score
+					</f:facet>     
+                    <ui:include src="/includes/scoreBox.xhtml">
+	                    <ui:param name="score" value="#{item.score.overall}" />
+	                    <ui:param name="scoreStyle" value="score_sm_1" /> 
+	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
+	                    <ui:param name="scoreMappingId" value="driverPerformance"/>
+						<ui:param name="context" value="driversOverall" />
+                    </ui:include> 
+				</rich:column>
+				<rich:column>
+					<f:facet name="vehicle">
+						Vehicle
+					</f:facet>
+					#{item.vehicle.name}
+				</rich:column>
+				<rich:column>
+					<f:facet name="trips">
+						Trips
+					</f:facet>
+					#{item.score.trips}
+				</rich:column>
+				<rich:column>
+					<f:facet name="stops">
+						Stops
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="miles">
+						Miles Driven
+					</f:facet>
+					#{item.score.endingOdometer - item.score.startingOdometer}
+				</rich:column>
+				<rich:column>
+					<f:facet name="driveTime">
+						Drive Time
+					</f:facet>
+					#{item.score.driveTime}
+				</rich:column>
+				<rich:column>
+					<f:facet name="idleTime">
+						Idle Time
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="lowIdle">
+						Low Idle
+					</f:facet>
+					#{item.score.idleLo}
+				</rich:column>
+				<rich:column>
+					<f:facet name="highIdle">
+						High Idle
+					</f:facet>
+					#{item.score.idleHi}
+				</rich:column>
+				<rich:column>
+					<f:facet name="idlep">
+						Idle %
+					</f:facet>
+				</rich:column>
+				<rich:column>
+					<f:facet name="mpg">
+						MPG
+					</f:facet>
+					#{item.score.mpgLight}
+				</rich:column>
+				<rich:column>
+					<f:facet name="crashes">
+						Crashes
+					</f:facet>
+					#{item.score.crashTotal}
+				</rich:column>
+				<rich:column>
+					<f:facet name="flags">
+						Flags
+					</f:facet>
+					#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}
+				</rich:column>
+				<rich:column>
+				</rich:column>
+			</rich:dataTable>
+			</div>
+	    </div>
+	    
+	    <div class="panel_sw">
+	       <div class="panel_statusbar"/>
+	   	</div>
+   	</div>
+    <!-- End Driver Statistics Table -->
+    </rich:tab>
+
+</ui:composition>

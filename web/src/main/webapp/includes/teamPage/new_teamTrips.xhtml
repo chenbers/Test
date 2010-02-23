@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+    <rich:tab label="Team Trips">
+   	<!-- Trips Map -->
+   	<div class="section">
+	    <div class="panel_nw">    
+	       <div class="panel_title">
+	       <h:graphicImage value="/images/ico_line.png" />Trips
+	       </div>
+	    </div>
+	    <div class="panel_w">
+	       <div class="panel_content">	       
+			 <div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
+	       </div>
+	    </div>
+	    <div class="panel_sw">
+	       <div class="panel_statusbar"/>
+	   	</div>
+   	</div>
+    <!-- End Trips Map -->
+    </rich:tab>
+ 
+</ui:composition>
