@@ -28,13 +28,13 @@
 				<rich:column>
 				</rich:column>
 				<rich:column>
-					<f:facet name="driver">
+					<f:facet name="header">
 						Driver
 					</f:facet>
 					#{item.driver.person.fullName}
 				</rich:column>
 				<rich:column>
-					<f:facet name="score">
+					<f:facet name="header">
 						Score
 					</f:facet>     
                     <ui:include src="/includes/scoreBox.xhtml">
@@ -46,70 +46,70 @@
                     </ui:include> 
 				</rich:column>
 				<rich:column>
-					<f:facet name="vehicle">
+					<f:facet name="header">
 						Vehicle
 					</f:facet>
 					#{item.vehicle.name}
 				</rich:column>
 				<rich:column>
-					<f:facet name="trips">
+					<f:facet name="header">
 						Trips
 					</f:facet>
 					#{item.score.trips}
 				</rich:column>
 				<rich:column>
-					<f:facet name="stops">
+					<f:facet name="header">
 						Stops
 					</f:facet>
 				</rich:column>
 				<rich:column>
-					<f:facet name="miles">
+					<f:facet name="header">
 						Miles Driven
 					</f:facet>
 					#{item.score.endingOdometer - item.score.startingOdometer}
 				</rich:column>
 				<rich:column>
-					<f:facet name="driveTime">
+					<f:facet name="header">
 						Drive Time
 					</f:facet>
 					#{item.score.driveTime}
 				</rich:column>
 				<rich:column>
-					<f:facet name="idleTime">
+					<f:facet name="header">
 						Idle Time
 					</f:facet>
 				</rich:column>
 				<rich:column>
-					<f:facet name="lowIdle">
+					<f:facet name="header">
 						Low Idle
 					</f:facet>
 					#{item.score.idleLo}
 				</rich:column>
 				<rich:column>
-					<f:facet name="highIdle">
+					<f:facet name="header">
 						High Idle
 					</f:facet>
 					#{item.score.idleHi}
 				</rich:column>
 				<rich:column>
-					<f:facet name="idlep">
+					<f:facet name="header">
 						Idle %
 					</f:facet>
 				</rich:column>
 				<rich:column>
-					<f:facet name="mpg">
+					<f:facet name="header">
 						MPG
 					</f:facet>
 					#{item.score.mpgLight}
 				</rich:column>
 				<rich:column>
-					<f:facet name="crashes">
+					<f:facet name="header">
 						Crashes
 					</f:facet>
 					#{item.score.crashTotal}
 				</rich:column>
 				<rich:column>
-					<f:facet name="flags">
+					<f:facet name="header">
 						Flags
 					</f:facet>
 					#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}
