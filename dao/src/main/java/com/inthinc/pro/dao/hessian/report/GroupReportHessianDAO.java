@@ -2,11 +2,13 @@ package com.inthinc.pro.dao.hessian.report;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
@@ -68,9 +70,10 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     }
 
     @Override
-    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime) {
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime) {           
         try {
-            return mapper.convertToModelObject(reportService.getDVScoresByGSE(groupID, startTime.getMillis(), endTime.getMillis()), DriverVehicleScoreWrapper.class);
+            return mapper.convertToModelObject(reportService.getDVScoresByGSE(groupID, DateUtil.convertDateToSeconds(startTime.toDate()), 
+                    DateUtil.convertDateToSeconds(endTime.toDate())), DriverVehicleScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
