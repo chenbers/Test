@@ -10,13 +10,12 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<rich:tab label="Driver Statistics">
+	
 	<!-- Driver Statistics Table -->
+	<a4j:outputPanel id="teamStatisticsOutputPanel">	
+	
 	<div class="section">
-	    <div class="panel_nw">    
-	       <div class="panel_title">
-	       	 <h:graphicImage value="/images/ico_line.png" />Team Statistics
-	       </div>
-	    </div>
+
 	    <div class="panel_w">
 	       <div class="panel_content">
 	       <rich:dataTable	value="#{teamBean.driverStatistics}" 
@@ -61,6 +60,7 @@
 					<f:facet name="header">
 						Stops
 					</f:facet>
+					#{item.score.idleHiEvents + item.score.idleLoEvents + item.score.trips}
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
@@ -78,6 +78,7 @@
 					<f:facet name="header">
 						Idle Time
 					</f:facet>
+					#{item.score.idleLo + item.score.idleHi}
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
@@ -124,6 +125,8 @@
 	       <div class="panel_statusbar"/>
 	   	</div>
    	</div>
+   	</a4j:outputPanel>
+   	
     <!-- End Driver Statistics Table -->
     </rich:tab>
 
