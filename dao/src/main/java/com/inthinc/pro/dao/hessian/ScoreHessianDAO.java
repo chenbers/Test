@@ -110,7 +110,14 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     	if (duration.equals(Duration.DAYS)) {
     		binSize = 1;
     	}
-        List<Map<String, Object>> topGroupMap = reportService.getGDTrendByGTC(groupID, binSize, 1);
+        List<Map<String, Object>> topGroupMap = null;
+        try {
+        	topGroupMap = reportService.getGDTrendByGTC(groupID, binSize, 1);
+        }
+        catch (EmptyResultSetException e) {
+        	return null;
+        }
+        
         List<DriveQMap> topGroupList = getMapper().convertToModelObject(topGroupMap, DriveQMap.class);
         
         // should only be one item in the list
@@ -220,7 +227,15 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
       	Integer binSize = Duration.BINSIZE_1_MONTH;
     	if (duration.equals(Duration.DAYS)) 
     		binSize = Duration.BINSIZE_7_DAY;
-        List<Map<String, Object>> topGroupMap = reportService.getGDTrendByGTC(topGroupID, binSize, duration.getDvqCount());
+        
+        List<Map<String, Object>> topGroupMap = null;
+        try {
+        	topGroupMap = reportService.getGDTrendByGTC(topGroupID, binSize, duration.getDvqCount());
+        }
+        catch (EmptyResultSetException e) {
+        	return new ArrayList<ScoreableEntity>();
+        }
+
         List<DriveQMap> topGroupList = getMapper().convertToModelObject(topGroupMap, DriveQMap.class);
         
         List<ScoreableEntity> topGroupScoreList = new ArrayList<ScoreableEntity>();
