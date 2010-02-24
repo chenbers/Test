@@ -20,7 +20,8 @@ public class TeamBean extends BaseBean {
     private Integer groupID;
     private Group group;
 
-    private GroupReportDAO groupReportDAO;    
+    private GroupReportDAO groupReportDAO;  
+    private DurationBean durationBean;
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -30,12 +31,23 @@ public class TeamBean extends BaseBean {
         this.groupReportDAO = groupReportDAO;
     }
 
+    public DurationBean getDurationBean() {
+        return durationBean;
+    }
+
+    public void setDurationBean(DurationBean durationBean) {
+        this.durationBean = durationBean;
+    }
+
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
         DateMidnight endTime = new DateTime().minusDays(1).toDateMidnight();
-        DateMidnight startTime = new DateTime().minusDays(20).toDateMidnight();
-
-        if (this.driverStatistics == null)
-            driverStatistics = groupReportDAO.getDriverScores(getGroupID(), Duration.DAYS);
+//        DateMidnight startTime = new DateTime().minusDays(20).toDateMidnight();
+        DateMidnight startTime = getReportStartTime();
+        
+//        if (this.driverStatistics == null) {
+//            driverStatistics = groupReportDAO.getDriverScores(getGroupID(), Duration.DAYS);
+            driverStatistics = groupReportDAO.getDriverScores(groupID, startTime.toDateTime(), endTime.toDateTime());
+//        }
         return driverStatistics;
     }
 
@@ -61,4 +73,20 @@ public class TeamBean extends BaseBean {
         this.group = group;
     }
 
+    private DateMidnight getReportStartTime() {
+        DateMidnight local = new DateTime().minusDays(30).toDateMidnight();
+        
+        if (            durationBean.getDuration().equals(Duration.THREE) ) {
+            return new DateTime().minusDays(Duration.THREE.getNumberOfDays()).toDateMidnight();
+            
+        } else if (     durationBean.getDuration().equals(Duration.SIX) ) {
+            return new DateTime().minusDays(Duration.SIX.getNumberOfDays()).toDateMidnight();
+            
+        } else if (     durationBean.getDuration().equals(Duration.TWELVE) ) {
+            return new DateTime().minusDays(Duration.TWELVE.getNumberOfDays()).toDateMidnight();
+        }
+        
+        
+        return local;
+    }
 }
