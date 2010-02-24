@@ -15,24 +15,23 @@ public class MapIconFactory {
 	private static final String ICON_MARKERS_DIRECTORY = "/googleMapIcons/";
 	private static final String ICON_LEGENDS_DIRECTORY = "/legendIcons/";
 	private static final String ICON_MAP_LEGEND_DIRECTORY = "/mapLegendIcons/";
+	private static final String TEAM_LEGEND_DIRECTORY="/teamLegend/";
 	
 	public enum IconType {
 								MARKER(ICON_MARKERS_DIRECTORY),
 								LEGEND(ICON_LEGENDS_DIRECTORY),
-								MAP_LEGEND(ICON_MAP_LEGEND_DIRECTORY);
+								MAP_LEGEND(ICON_MAP_LEGEND_DIRECTORY),
+								TEAM_LEGEND(TEAM_LEGEND_DIRECTORY);
 								
 		private final String url;
 		private int count;
 		private List<MapIcon> iconList;
 		
 		private IconType(String folder){
-			
-			WebUtil webUtil = new WebUtil();
-			
-			
-			StringBuffer urlBuffer = new StringBuffer(webUtil.getRequestContextPath());
+						
+			StringBuffer urlBuffer = new StringBuffer(WebUtil.getRequestContextPath());
 			urlBuffer.append("/images"+folder);
-			StringBuffer pathBuffer = new StringBuffer(webUtil.getRealPath(""));
+			StringBuffer pathBuffer = new StringBuffer(WebUtil.getRealPath(""));
 			pathBuffer.append("/images"+folder);
 			
 			url=urlBuffer.toString();

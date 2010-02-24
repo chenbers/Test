@@ -65,7 +65,7 @@
         <view-id>/secured/dashboard/team.faces</view-id>
     </url-mapping>  
     <url-mapping id="newteam">
-        <pattern>/app/newteam/#{teamBean.groupID}</pattern>
+        <pattern>/app/newteam/#{teamBean.groupID}/#{teamTripsBean.groupID}</pattern>
         <view-id>/secured/dashboard/new_team.faces</view-id>
     </url-mapping>   
 	<url-mapping id="groupOverview">

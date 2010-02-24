@@ -8,7 +8,15 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
+ <script>
+ function getTrip(number){
+	 
+	 alert("hello"+number);
+ }
+ </script>
 
+	<t:saveState  value="#{teamTripsBean}"/>
+	
     <rich:tab label="Team Trips">
    	<!-- Trips Map -->
    	<div class="section">
@@ -18,8 +26,32 @@
 	       </div>
 	    </div>
 	    <div class="panel_w">
-	       <div class="panel_content">	       
-			 <div id="map-canvas" style="width: 100%; height: 500px; border: 0"></div>
+	       <div class="panel_content">
+	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0">
+	         	<rich:dataTable	value="#{teamTripsBean.drivers}" 
+					       		id="driversTrips" 
+					       		var="driver"
+					       		rowKeyVar="index"
+								styleClass="datagrid" 
+								rowClasses="tableOdd,tableEven"
+								rows="15"
+								onRowClick="getTrip(#{index%15})">				
+				<rich:column>
+					<f:facet name="header">
+						#{messages.teamPage_driverHeader}
+					</f:facet>
+					#{driver.person.fullName}
+				</rich:column>
+				<rich:column>
+				<f:facet name="header">
+				</f:facet>
+				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
+				</rich:column>
+				</rich:dataTable>
+	         
+	         </div>     
+			 <div id="map-canvas" style="float:left; width: 75%; height: 500px; border: 0"></div>
+			 <div style="clear:both"></div>
 	       </div>
 	    </div>
 	    <div class="panel_sw">
@@ -28,5 +60,4 @@
    	</div>
     <!-- End Trips Map -->
     </rich:tab>
- 
 </ui:composition>
