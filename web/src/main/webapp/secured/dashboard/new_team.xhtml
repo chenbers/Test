@@ -51,6 +51,7 @@
 			}
 		</script>
     </ui:define>
+    
 	<ui:define name="content">
 	<t:saveState value="#{teamBean.driverStatistics}"/>
 	<!-- Team Header -->
@@ -91,12 +92,86 @@
     		
         </a4j:region>
 	</h:form>	
-	<!-- End Team Header -->
-	<rich:tabPanel>
-                    <ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
-                    <ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
-	</rich:tabPanel>
-	
+	<div class="">
+    	<div class="panel_nw">    
+			<div class="panel_title">
+	    		<h:graphicImage value="/images/ico_line.png" />What Happened... 
+                <table class="panel_links" cellpadding="0" cellspacing="0"> 
+                    <tr>
+                        <td>
+
+                            <h:form id="teamDurationForm" style="display: inline;">
+                                <a4j:region id="linkLine">
+                                    <a4j:status>
+                                        <f:facet name="start">                    
+                                            <h:graphicImage styleClass="ajax_status" value="/images/progress2.gif"/>
+                                        </f:facet>
+                                    </a4j:status>                                     
+                                    <a4j:commandLink id="teamDurationPanelHeaderDays" 
+                                        title="#{messages.duration_days}" 
+                                        immediate="true" 
+                                        styleClass="#{teamBean.durationBean.duration eq 'DAYS' ? 'selected_duration' : ''}" 
+                                        reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
+                                        value="#{messages.duration_days}">
+                                        <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="DAYS" />
+                                    </a4j:commandLink>
+                                    <rich:spacer width="5"/>
+                                    <a4j:commandLink id="teamDurationPanelHeaderThreeMonths" 
+                                        title="#{messages.duration_three}" 
+                                        immediate="true" 
+                                        styleClass="#{teamBean.durationBean.duration eq 'THREE' ? 'selected_duration' : ''}" 
+                                        reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
+                                        value="#{messages.duration_three}">
+                                        <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="THREE" />
+                                    </a4j:commandLink> 
+                                    <rich:spacer width="5"/>
+                                    <a4j:commandLink id="teamDurationPanelHeaderSixMonths" 
+                                        title="#{messages.duration_six}" 
+                                        immediate="true" 
+                                        styleClass="#{teamBean.durationBean.duration eq 'SIX' ? 'selected_duration' : ''}" 
+                                        reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
+                                        value="#{messages.duration_six}">
+                                        <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="SIX" />
+                                    </a4j:commandLink> 
+                                    <rich:spacer width="5"/>
+                                    <a4j:commandLink id="teamDurationPanelHeaderTwelveMonths"  
+                                        title="#{messages.duration_twelve}" 
+                                        immediate="true" 
+                                        styleClass="#{teamBean.durationBean.duration eq 'TWELVE' ? 'selected_duration' : ''}" 
+                                        reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
+                                        value="#{messages.duration_twelve}">
+                                        <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="TWELVE" />
+                                    </a4j:commandLink> 
+                                </a4j:region>
+                    		</h:form>
+                		</td>
+            		</tr>
+            		
+       			
+            			
+				</table>		  	
+     	 	</div>
+		</div>     	 	
+	    
+	        <a4j:outputPanel id="overallTeamPanel" styleClass="panel_content">    							
+               	<table cellpadding="0" cellspacing="0"> 
+           			<tr>
+           				<td>
+           					<rich:tabPanel>
+                   				<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
+                   				<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
+							</rich:tabPanel>
+           				</td>
+           			</tr>
+				</table>
+    		</a4j:outputPanel>	     	    
+	    	    
+
+    	<div class="panel_sw">
+    		<div class="panel_statusbar"></div>
+    	</div>	
+	</div>
+
 	</ui:define>
 
 </ui:composition>
