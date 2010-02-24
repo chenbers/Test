@@ -85,7 +85,9 @@
     <property name="overallScoreBean" ref="overallScoreBean" />
     <property name="trendBeanState" ref="trendBeanState"></property>
   </bean>
-  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean"></bean>      
+  <bean id="teamBean" class="com.inthinc.pro.backing.TeamBean" scope="request" parent="baseBean">
+      <property name="durationBean" ref="overallScoreDurationBean" />
+  </bean>      
 
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">
@@ -521,6 +523,7 @@
   <bean id="vehicleStyleDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session" />
   <bean id="vehicleCoachingDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session" />
   <bean id="vehicleMpgDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session" />
+  <bean id="teamDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session" />
 
   <!-- State Beans -->
   <bean id="trendBeanState" class="com.inthinc.pro.backing.TrendBeanState" scope="session" />
