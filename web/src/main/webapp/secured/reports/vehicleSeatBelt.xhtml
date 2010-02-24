@@ -324,6 +324,7 @@
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="notificationsTable" id="scrollerBottom" page="#{vehicleSeatBeltBean.tableStatsBean.page}"
+						oncomplete="initializeTable()"
 						reRender="notificationsTable,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"
 						renderIfSinglePage="false"/>
 					</h:form> 

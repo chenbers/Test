@@ -600,7 +600,8 @@ var firstLoad = new Boolean(true);
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="notificationsTable" immediate="true" id="scrollerBottom" page="#{driverStyleBean.tableStatsBean.page}"
-						reRender="notificationsTable,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" 
+						reRender="notificationsTable,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"
+						oncomplete="initializeTable();" 
 						renderIfSinglePage="false"/>
 					</h:form> 
 				<!-- End Event table -->
