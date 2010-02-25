@@ -8,6 +8,8 @@ import java.util.List;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
@@ -54,6 +56,7 @@ public class TeamStatisticsBean extends BaseBean {
 //        if (this.driverStatistics == null) {
 //            driverStatistics = groupReportDAO.getDriverScores(getGroupID(), Duration.DAYS);
             driverStatistics = groupReportDAO.getDriverScores(groupID, startTime.toDateTime(), endTime.toDateTime());
+            loadScoreStyles();
 //        }
         return driverStatistics;
     }
@@ -149,5 +152,13 @@ public class TeamStatisticsBean extends BaseBean {
         
         
         return local;
+    }
+    
+    private void loadScoreStyles() {
+        for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
+            Integer anotherNumber = dvsw.getScore().getOverall().intValue();
+            dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
+                    anotherNumber, ScoreBoxSizes.SMALL));
+        }
     }
 }

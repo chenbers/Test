@@ -37,7 +37,7 @@
 					</f:facet>     
                     <ui:include src="/includes/scoreBox.xhtml">
 	                    <ui:param name="score" value="#{item.score.overall}" />
-	                    <ui:param name="scoreStyle" value="score_sm_1" /> 
+	                    <ui:param name="scoreStyle" value="#{item.scoreStyle}" /> 
 	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
 	                    <ui:param name="scoreMappingId" value="driverPerformance"/>
 						<ui:param name="context" value="driversOverall" />
