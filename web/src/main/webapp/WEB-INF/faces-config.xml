@@ -109,7 +109,10 @@
 	  <converter-id>EventDetailsConverter</converter-id>
 	  <converter-class>com.inthinc.pro.convert.EventDetailsConverter</converter-class>
 	</converter>
-	
+	<converter>
+	  <converter-id>TimeToStringConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.TimeToStringConverter</converter-class>
+	</converter>	
 	<!-- Components -->
 	<component>
 		<component-type>conditionalCSS</component-type>
