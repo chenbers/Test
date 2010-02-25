@@ -50,6 +50,10 @@
 	  <converter-class>com.inthinc.pro.convert.FloatConverter</converter-class>
 	</converter>
 	<converter>
+	  <converter-id>DoubleConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.DoubleConverter</converter-class>
+	</converter>	
+	<converter>
 	  <converter-id>DateTimeConverter</converter-id>
 	  <converter-class>com.inthinc.pro.convert.DateTimeConverter</converter-class>
 	  <property>
