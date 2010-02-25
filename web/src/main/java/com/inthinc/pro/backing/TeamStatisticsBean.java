@@ -30,7 +30,7 @@ public class TeamStatisticsBean extends BaseBean {
     private HashMap<String,String> dayLabels = new HashMap<String,String>();
 
     private GroupReportDAO groupReportDAO;  
-    private DurationBean durationBean;
+    private TeamCommonBean teamCommonBean;    
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -40,12 +40,12 @@ public class TeamStatisticsBean extends BaseBean {
         this.groupReportDAO = groupReportDAO;
     }
 
-    public DurationBean getDurationBean() {
-        return durationBean;
+    public TeamCommonBean getTeamCommonBean() {
+        return teamCommonBean;
     }
 
-    public void setDurationBean(DurationBean durationBean) {
-        this.durationBean = durationBean;        
+    public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
+        this.teamCommonBean = teamCommonBean;
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
@@ -55,7 +55,7 @@ public class TeamStatisticsBean extends BaseBean {
         
 //        if (this.driverStatistics == null) {
 //            driverStatistics = groupReportDAO.getDriverScores(getGroupID(), Duration.DAYS);
-            driverStatistics = groupReportDAO.getDriverScores(groupID, startTime.toDateTime(), endTime.toDateTime());
+            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), startTime.toDateTime(), endTime.toDateTime());
             loadScoreStyles();
 //        }
         return driverStatistics;
@@ -66,7 +66,7 @@ public class TeamStatisticsBean extends BaseBean {
     }
 
     public Integer getGroupID() {
-        return groupID;
+        return teamCommonBean.getGroupID();
     }
 
     public void setGroupID(Integer groupID) {
@@ -115,38 +115,38 @@ public class TeamStatisticsBean extends BaseBean {
 
     private DateMidnight getReportStartTime() {
         DateMidnight local = new DateTime().minusDays(30).toDateMidnight();
-        
-        if (            durationBean.getDuration().equals(Duration.ONEDAY) ) {
+      
+        if (            teamCommonBean.getDurationBean().getDuration().equals(Duration.ONEDAY) ) {
             return new DateTime().minusDays(Duration.ONEDAY.getNumberOfDays()).toDateMidnight();
             
-        } else if (     durationBean.getDuration().equals(Duration.TWODAY) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.TWODAY) ) {
             return new DateTime().minusDays(Duration.TWODAY.getNumberOfDays()).toDateMidnight();
                 
-        } else if (     durationBean.getDuration().equals(Duration.THREEDAY) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.THREEDAY) ) {
             return new DateTime().minusDays(Duration.THREEDAY.getNumberOfDays()).toDateMidnight();
             
-        } else if (     durationBean.getDuration().equals(Duration.FOURDAY) ) {            
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.FOURDAY) ) {            
             return new DateTime().minusDays(Duration.FOURDAY.getNumberOfDays()).toDateMidnight();
             
-        } else if (     durationBean.getDuration().equals(Duration.FIVEDAY) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.FIVEDAY) ) {
             return new DateTime().minusDays(Duration.FIVEDAY.getNumberOfDays()).toDateMidnight();
             
-        } else if (     durationBean.getDuration().equals(Duration.SIXDAY) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.SIXDAY) ) {
             return new DateTime().minusDays(Duration.SIXDAY.getNumberOfDays()).toDateMidnight(); 
             
-        } else if (     durationBean.getDuration().equals(Duration.SEVENDAY) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.SEVENDAY) ) {
             return new DateTime().minusDays(Duration.SEVENDAY.getNumberOfDays()).toDateMidnight();                  
             
-        } else if (     durationBean.getDuration().equals(Duration.DAYS) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.DAYS) ) {
             return new DateTime().minusDays(Duration.DAYS.getNumberOfDays()).toDateMidnight();
             
-        } else if (     durationBean.getDuration().equals(Duration.THREE) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.THREE) ) {
             return new DateTime().minusDays(Duration.THREE.getNumberOfDays()).toDateMidnight();
             
-        } else if (     durationBean.getDuration().equals(Duration.SIX) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.SIX) ) {
             return new DateTime().minusDays(Duration.SIX.getNumberOfDays()).toDateMidnight();
             
-        } else if (     durationBean.getDuration().equals(Duration.TWELVE) ) {
+        } else if (     teamCommonBean.getDurationBean().getDuration().equals(Duration.TWELVE) ) {
             return new DateTime().minusDays(Duration.TWELVE.getNumberOfDays()).toDateMidnight();
         }
         

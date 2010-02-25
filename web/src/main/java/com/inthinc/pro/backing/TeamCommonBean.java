@@ -12,6 +12,8 @@ public class TeamCommonBean extends BaseBean {
 	private Integer groupID;
     private Group group;
     
+    private DurationBean durationBean;
+    
 	public Integer getGroupID() {
 		return groupID;
 	}
@@ -30,5 +32,11 @@ public class TeamCommonBean extends BaseBean {
 	public void setGroup(Group group) {
 		this.group = group;
 	}
+    public DurationBean getDurationBean() {
+        return durationBean;
+    }
+    public void setDurationBean(DurationBean durationBean) {
+        this.durationBean = durationBean;
+    }
 
 }
