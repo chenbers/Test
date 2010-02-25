@@ -102,28 +102,6 @@
 				map.setZoom(map.getBoundsZoomLevel(bounds));
 				map.setCenter(bounds.getCenter());
 		}
-//	function dynamicTableStyles()
-//	{
-		
-		jQuery('#tripsTableForm\\:driversTrips tr').click(function(){
-            			jQuery('#tripsTableForm\\:driversTrips tr').each(function() {
-							jQuery(this).removeClass('selected-row');
-							jQuery(this).children().removeClass('selected-row');
-							
-						});
-						jQuery(this).addClass('selected-row');
-						jQuery(this).children().addClass('selected-row');
-		});
-		
-//	}
-	function onReRender()
-	{
-//		isReady = true;
-		dynamicTableStyles();
-//        jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
-//        getAddresses();
-	}
-
  </script>
 </rich:panel>
 	
@@ -138,8 +116,9 @@
 	    <div class="panel_w">
 	       <div class="panel_content">
 	       
-	         <div id="driverTable" 	style="float:left; width:24%;height: 500px; border: 0;">
+	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0;">
 	        	<a4j:form id="tripsTableForm">
+	        	<a4j:region id="teamTripsRegion">
 	         	<rich:dataTable	value="#{teamTripsBean.drivers}" 
 					       		id="driversTrips" 
 					       		var="driver"
@@ -147,9 +126,10 @@
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
 								rows="15"
-								columnsWidth="90%,10%"
+								columnsWidth="85%,15%"
 								width="100%">
-					<a4j:support event="onRowClick" reRender="drawTeamTrips" action="#{teamTripsBean.loadTrips}" oncomplete="drawTrips()">
+					<a4j:support event="onRowClick" reRender="drawTeamTrips" action="#{teamTripsBean.loadTrips}" 
+										 oncomplete="drawTrips()">
                          <f:setPropertyActionListener value="#{driver}" target="#{teamTripsBean.selectedDriver}" />
                     </a4j:support>
 												
@@ -161,13 +141,22 @@
 				</rich:column>
 				<rich:column>
 				<f:facet name="header">
+				  <a4j:status>
+                	<f:facet name="start">
+                    	<h:graphicImage  value="/images/progress2.gif"/>
+                	</f:facet>
+            	</a4j:status>
+				
 				</f:facet>
 				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
 				</rich:column>
 				</rich:dataTable>
 				<rich:datascroller align="left" for="driversTrips" 
             		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"/>
- 				</a4j:form>	         
+            		 
+				 </a4j:region>
+ 				</a4j:form>	
+ 				         
 	         </div>  
 	            
 			 <div id="map-canvas" style="float:right; width: 74%; height: 500px; border: 0"></div>
@@ -180,4 +169,15 @@
    	</div>
     <!-- End Trips Map -->
     </rich:tab>
+    <script>
+    		jQuery('#tripsTableForm\\:driversTrips tr').click(function(){
+            			jQuery('#tripsTableForm\\:driversTrips tr').each(function() {
+							jQuery(this).removeClass('selected-row');
+							jQuery(this).children().removeClass('selected-row');
+							
+						});
+						jQuery(this).addClass('selected-row');
+						jQuery(this).children().addClass('selected-row');
+		});
+    </script>
 </ui:composition>
