@@ -107,6 +107,8 @@
 					<f:facet name="header">
 						Idle %
 					</f:facet>
+					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{(item.score.idleHi+item.score.idleLo)*100/item.score.driveTime}" converter="DoubleConverter"/>
+					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" value="0.00"/>																				
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
