@@ -108,65 +108,65 @@
                                         </f:facet>
                                     </a4j:status> 
                                     <a4j:commandLink id="teamDurationPanelHeaderOneDay" 
-                                        title="One Day" 
+                                        title="#{teamBean.dayLabels['0']}" 
                                         immediate="true" 
                                         styleClass="#{teamBean.durationBean.duration eq 'ONEDAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderOneDay,teamDurationForm:teamDurationPanelHeaderTwoDay,teamDurationForm:teamDurationPanelHeaderThreeDay,teamDurationForm:teamDurationPanelHeaderFourDay,teamDurationForm:teamDurationPanelHeaderFiveDay,teamDurationForm:teamDurationPanelHeaderSixDay,teamDurationForm:teamDurationPanelHeaderSevenDay,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
-                                        value="One Day">
+                                        value="#{teamBean.dayLabels['0']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="ONEDAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>   
                                     <a4j:commandLink id="teamDurationPanelHeaderTwoDay" 
-                                        title="Two Day" 
+                                        title="#{teamBean.dayLabels['1']}" 
                                         immediate="true" 
                                         styleClass="#{teamBean.durationBean.duration eq 'TWODAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderOneDay,teamDurationForm:teamDurationPanelHeaderTwoDay,teamDurationForm:teamDurationPanelHeaderThreeDay,teamDurationForm:teamDurationPanelHeaderFourDay,teamDurationForm:teamDurationPanelHeaderFiveDay,teamDurationForm:teamDurationPanelHeaderSixDay,teamDurationForm:teamDurationPanelHeaderSevenDay,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
-                                        value="Two Day">
+                                        value="#{teamBean.dayLabels['1']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="TWODAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderThreeeDay" 
-                                        title="Three Day" 
+                                        title="#{teamBean.dayLabels['2']}" 
                                         immediate="true" 
                                         styleClass="#{teamBean.durationBean.duration eq 'THREEDAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderOneDay,teamDurationForm:teamDurationPanelHeaderTwoDay,teamDurationForm:teamDurationPanelHeaderThreeDay,teamDurationForm:teamDurationPanelHeaderFourDay,teamDurationForm:teamDurationPanelHeaderFiveDay,teamDurationForm:teamDurationPanelHeaderSixDay,teamDurationForm:teamDurationPanelHeaderSevenDay,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
-                                        value="Three Day">
+                                        value="#{teamBean.dayLabels['2']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="THREEDAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderFourDay" 
-                                        title="Four Day" 
+                                        title="#{teamBean.dayLabels['3']}" 
                                         immediate="true" 
                                         styleClass="#{teamBean.durationBean.duration eq 'FOURDAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderOneDay,teamDurationForm:teamDurationPanelHeaderTwoDay,teamDurationForm:teamDurationPanelHeaderThreeDay,teamDurationForm:teamDurationPanelHeaderFourDay,teamDurationForm:teamDurationPanelHeaderFiveDay,teamDurationForm:teamDurationPanelHeaderSixDay,teamDurationForm:teamDurationPanelHeaderSevenDay,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
-                                        value="Four Day">
+                                        value="#{teamBean.dayLabels['3']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="FOURDAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderFiveDay" 
-                                        title="Five Day" 
+                                        title="#{teamBean.dayLabels['4']}" 
                                         immediate="true" 
                                         styleClass="#{teamBean.durationBean.duration eq 'FIVEDAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderOneDay,teamDurationForm:teamDurationPanelHeaderTwoDay,teamDurationForm:teamDurationPanelHeaderThreeDay,teamDurationForm:teamDurationPanelHeaderFourDay,teamDurationForm:teamDurationPanelHeaderFiveDay,teamDurationForm:teamDurationPanelHeaderSixDay,teamDurationForm:teamDurationPanelHeaderSevenDay,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
-                                        value="Five Day">
+                                        value="#{teamBean.dayLabels['4']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="FIVEDAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>
                                     <a4j:commandLink id="teamDurationPanelHeaderSixDay" 
-                                        title="Six Day" 
+                                        title="#{teamBean.dayLabels['5']}" 
                                         immediate="true" 
                                         styleClass="#{teamBean.durationBean.duration eq 'SIXDAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderOneDay,teamDurationForm:teamDurationPanelHeaderTwoDay,teamDurationForm:teamDurationPanelHeaderThreeDay,teamDurationForm:teamDurationPanelHeaderFourDay,teamDurationForm:teamDurationPanelHeaderFiveDay,teamDurationForm:teamDurationPanelHeaderSixDay,teamDurationForm:teamDurationPanelHeaderSevenDay,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
-                                        value="Six Day">
+                                        value="#{teamBean.dayLabels['5']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="SIXDAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderSevenDay" 
-                                        title="Seven Day" 
+                                        title="#{teamBean.dayLabels['6']}" 
                                         immediate="true" 
                                         styleClass="#{teamBean.durationBean.duration eq 'SEVENDAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,teamDurationForm:teamDurationPanelHeaderOneDay,teamDurationForm:teamDurationPanelHeaderTwoDay,teamDurationForm:teamDurationPanelHeaderThreeDay,teamDurationForm:teamDurationPanelHeaderFourDay,teamDurationForm:teamDurationPanelHeaderFiveDay,teamDurationForm:teamDurationPanelHeaderSixDay,teamDurationForm:teamDurationPanelHeaderSevenDay,teamDurationForm:teamDurationPanelHeaderDays,teamDurationForm:teamDurationPanelHeaderThreeMonths,teamDurationForm:teamDurationPanelHeaderSixMonths,teamDurationForm:teamDurationPanelHeaderTwelveMonths" 
-                                        value="Seven Day">
+                                        value="#{teamBean.dayLabels['6']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="SEVENDAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>                                                                                
@@ -206,6 +206,7 @@
                                         <a4j:actionparam name="duration" assignTo="#{teamBean.durationBean.duration}" value="TWELVE" />
                                     </a4j:commandLink> 
                                 </a4j:region>
+                                
                     		</h:form>
                 		</td>
             		</tr>
