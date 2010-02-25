@@ -8,26 +8,138 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
- <script>
- function getTrip(number){
-	 
-	 alert("hello"+number);
- }
- </script>
-
+	
 	<t:saveState  value="#{teamTripsBean}"/>
+	<script type="text/javascript">
+	function orderOfCreation(marker,b) 
+	{
+	      return 1;
+	}	
+	
+    function createMarker(point, iconImage) 
+    {
+    	var markerIcon;
+    	var marker;
+    	var baseIcon = new GIcon();
+    	baseIcon.iconSize = new GSize(21, 20);
+    	baseIcon.iconAnchor = new GPoint(6, 20);
+    	baseIcon.infoWindowAnchor = new GPoint(5, 1);
+
+		//Use passed in image.
+    	if(iconImage != null)
+    	{
+			markerIcon = new GIcon(baseIcon);
+       	    markerIcon.image = iconImage;
+       	 	markerOptions = { icon:markerIcon,zIndexProcess:orderOfCreation  };
+       	 	marker = new GMarker(point, markerOptions);
+    	}
+    	//Use default GoogleMap marker image.
+    	else
+    	{
+	      	markerIcon = new GIcon();
+			marker = new GMarker(point);
+    	}
+
+        bounds.extend(marker.getPoint());
+
+    	return marker;
+    }
+	
+	</script>
+	
+	<rich:panel id="drawTeamTrips">
+ <script type="text/javascript">
+  
+ function drawTrips(){
+		bounds = new GLatLngBounds();
+		
+	 var polyline;
+			var marker;
+			var startlatlng;
+			var endlatlng;
+
+			if ( map == null ) {
+				return;
+			}
+			if (#{teamTripsBean.selectedDriverTrips eq null}){
+				return;
+			}
+			map.clearOverlays();
+			
+				<ui:repeat value="#{teamTripsBean.selectedDriverTrips}" var="trip">
+
+				polyline = new GPolyline([
+						<ui:repeat value="#{trip.route}" var="rt">
+								new GLatLng(#{rt.lat}, #{rt.lng}),
+						</ui:repeat>
+		  						new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
+										], "#0000ff", 6);
+				map.addOverlay(polyline);
+				
+
+				<ui:repeat value="#{trip.route}" var="rt2">
+					bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+				</ui:repeat>
+				
+				//Start of trip marker
+				startlatlng = new GLatLng(#{trip.beginningPoint.lat}, #{trip.beginningPoint.lng});
+				marker = createMarker(startlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
+				//End of trip marker
+				endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
+				if ("#{trip.inProgress}" == "true")
+				{
+					marker = createMarker(endlatlng, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png");
+				}
+				else
+				{
+					marker = createMarker(endlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+				}
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
+				</ui:repeat>
+				map.setZoom(map.getBoundsZoomLevel(bounds));
+				map.setCenter(bounds.getCenter());
+		}
+//	function dynamicTableStyles()
+//	{
+		
+		jQuery('#tripsTableForm\\:driversTrips tr').click(function(){
+            			jQuery('#tripsTableForm\\:driversTrips tr').each(function() {
+							jQuery(this).removeClass('selected-row');
+							jQuery(this).children().removeClass('selected-row');
+							
+						});
+						jQuery(this).addClass('selected-row');
+						jQuery(this).children().addClass('selected-row');
+		});
+		
+//	}
+	function onReRender()
+	{
+//		isReady = true;
+		dynamicTableStyles();
+//        jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
+//        getAddresses();
+	}
+
+ </script>
+</rich:panel>
 	
     <rich:tab label="Team Trips">
    	<!-- Trips Map -->
    	<div class="section">
 	    <div class="panel_nw">    
 	       <div class="panel_title">
-	       <h:graphicImage value="/images/ico_line.png" />Trips
+	       <h:graphicImage value="/images/ico_map.png" />Trips
 	       </div>
 	    </div>
 	    <div class="panel_w">
 	       <div class="panel_content">
-	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0">
+	       
+	         <div id="driverTable" 	style="float:left; width:24%;height: 500px; border: 0;">
+	        	<a4j:form id="tripsTableForm">
 	         	<rich:dataTable	value="#{teamTripsBean.drivers}" 
 					       		id="driversTrips" 
 					       		var="driver"
@@ -35,7 +147,12 @@
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
 								rows="15"
-								onRowClick="getTrip(#{index%15})">				
+								columnsWidth="90%,10%"
+								width="100%">
+					<a4j:support event="onRowClick" reRender="drawTeamTrips" action="#{teamTripsBean.loadTrips}" oncomplete="drawTrips()">
+                         <f:setPropertyActionListener value="#{driver}" target="#{teamTripsBean.selectedDriver}" />
+                    </a4j:support>
+												
 				<rich:column>
 					<f:facet name="header">
 						#{messages.teamPage_driverHeader}
@@ -48,9 +165,12 @@
 				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
 				</rich:column>
 				</rich:dataTable>
-	         
-	         </div>     
-			 <div id="map-canvas" style="float:left; width: 75%; height: 500px; border: 0"></div>
+				<rich:datascroller align="left" for="driversTrips" 
+            		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"/>
+ 				</a4j:form>	         
+	         </div>  
+	            
+			 <div id="map-canvas" style="float:right; width: 74%; height: 500px; border: 0"></div>
 			 <div style="clear:both"></div>
 	       </div>
 	    </div>
