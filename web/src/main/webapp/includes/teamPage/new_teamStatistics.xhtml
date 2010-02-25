@@ -66,31 +66,42 @@
 					<f:facet name="header">
 						Miles Driven
 					</f:facet>
-					#{item.score.endingOdometer - item.score.startingOdometer}
+                    <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
+                    	<a4j:actionparam value="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
+                    	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+                    </h:outputFormat>										
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
 						Drive Time
 					</f:facet>
-					#{item.score.driveTime}
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{item.score.driveTime/100}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
 						Idle Time
 					</f:facet>
-					#{item.score.idleLo + item.score.idleHi}
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{(item.score.idleLo + item.score.idleHi)/100}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
 						Low Idle
 					</f:facet>
-					#{item.score.idleLo}
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{item.score.idleLo/100}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>					
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
 						High Idle
 					</f:facet>
-					#{item.score.idleHi}
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{item.score.idleHi/100}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
@@ -101,7 +112,7 @@
 					<f:facet name="header">
 						MPG
 					</f:facet>
-					#{item.score.mpgLight}
+					#{item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy}
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
