@@ -18,6 +18,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 public enum Duration implements BaseEnum
 {
+    // Teen page values. The -1 indicates not relevant
+    SEVENDAY(-7,"7 days", 7, "dd", -1, -1, -1),
+    SIXDAY(-6,"6 days", 6, "dd", -1, -1, -1),
+    FIVEDAY(-5,"5 days", 5, "dd", -1, -1, -1),
+    FOURDAY(-4,"4 days", 5, "dd", -1, -1, -1),
+    THREEDAY(-3,"3 days", 4, "dd", -1, -1, -1),
+    TWODAY(-2,"2 days", 2, "dd", -1, -1, -1),
+    ONEDAY(-1,"1 days", 1, "dd", -1, -1, -1),
+    
+    
+    // Other widget values
     DAYS(1, "30 days", 30, "dd", 0, 30, 6), 
     THREE(/*3*/ 2, "3 months", 90, "MMM", 2, 3, 3), 
     SIX(/*4*/ 3, "6 months", 180, "MMM", 2, 6, 4), 
