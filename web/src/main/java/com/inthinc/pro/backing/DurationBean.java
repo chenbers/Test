@@ -94,4 +94,5 @@ public class DurationBean
         durationChangeListenerList.add(durationChangeListener);
         
     }
+    
 }

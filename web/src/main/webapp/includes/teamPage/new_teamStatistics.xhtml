@@ -8,8 +8,10 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
+	
+	<t:saveState value="#{teamStatisticsBean}"/>
 
-	<rich:tab label="Driver Statistics">
+	<rich:tab label="Driver Statistics" id="stats" >
 	
 	<!-- Driver Statistics Table -->
 	<a4j:outputPanel id="teamStatisticsOutputPanel">	

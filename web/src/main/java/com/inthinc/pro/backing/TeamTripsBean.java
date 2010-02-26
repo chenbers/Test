@@ -1,22 +1,20 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
+
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.util.MiscUtil;
 
-public class TeamTripsBean extends BaseBean {
+public class TeamTripsBean extends BaseBean{
 
 	/**
 	 * 
@@ -44,26 +42,22 @@ public class TeamTripsBean extends BaseBean {
 	}
 	public void loadTrips(){
 		
-		Date endDate = new Date();
-		Date startDate = new Date();
-        Calendar gc = new GregorianCalendar();
-        gc.setTime(startDate);
-        gc.add(Calendar.HOUR, -(24*30));
-        startDate = gc.getTime();
+        DateMidnight endTime = new DateTime().minusDays(0).toDateMidnight();
+        DateMidnight startTime = teamCommonBean.getReportStartTime();
 
-		List<Trip> trips = driverDAO.getTrips(selectedDriver.getDriverID(), startDate, endDate);
+		List<Trip> trips = driverDAO.getTrips(selectedDriver.getDriverID(), startTime.toDate(), endTime.toDate());
 		selectedDriverTrips = new ArrayList<TripDisplay>();
         for (Trip trip : trips) {
             TripDisplay td = new TripDisplay(trip, selectedDriver.getPerson().getTimeZone(), addressLookup);
             // If starting or ending address is null, try to set a zone name
-            if ( td.getStartAddress() == null ) {
-                LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
-                td.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
-            }                
-            if ( td.getEndAddress() == null ) {
-                LatLng latLng = new LatLng(td.getEndPointLat(),td.getEndPointLng());
-                td.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
-            }
+//            if ( td.getStartAddress() == null ) {
+//                LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
+//                td.setStartAddress(MiscUtil.findZoneName(getProUser().getZones(), latLng));
+//            }                
+//            if ( td.getEndAddress() == null ) {
+//                LatLng latLng = new LatLng(td.getEndPointLat(),td.getEndPointLng());
+//                td.setEndAddress(MiscUtil.findZoneName(getProUser().getZones(), latLng));
+//            }
             selectedDriverTrips.add(td);
             
 
