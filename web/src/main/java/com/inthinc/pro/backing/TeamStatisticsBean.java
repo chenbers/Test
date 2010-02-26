@@ -52,7 +52,7 @@ public class TeamStatisticsBean extends BaseBean {
         // Get the data, set the styles, compute and load the summary info
         driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), startTime.toDateTime(), endTime.toDateTime());
         loadScoreStyles();
-        DriverVehicleScoreWrapper summary = this.getDriverTotals();
+        DriverVehicleScoreWrapper summary = getDriverTotals();
         driverStatistics.add(summary);
 
         return driverStatistics;
@@ -65,21 +65,6 @@ public class TeamStatisticsBean extends BaseBean {
     public Integer getGroupID() {
         return teamCommonBean.getGroupID();
     }
-
-//    public void setGroupID(Integer groupID) {
-//        // TODO: probably need some checks here on groupID and the group object        
-//        group = getGroupHierarchy().getGroup(groupID);
-//        this.groupID = groupID;
-//    }
-//
-//    public Group getGroup() {
-//        return group;
-//    }
-//
-//    public void setGroup(Group group) {
-//        this.group = group;
-//    }
-
     
     private void loadScoreStyles() {
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
@@ -185,13 +170,13 @@ public class TeamStatisticsBean extends BaseBean {
         
         // Driver
         Driver drv = new Driver();
+        drv.setDriverID(0);
         Person prs = new Person();
         prs.setFirst("Total");
         prs.setLast("");
         drv.setPerson(prs);
         dvsw.setDriver(drv);
-        
-        // Add to list
+ 
         driverTotals = dvsw;
         
         return driverTotals;
