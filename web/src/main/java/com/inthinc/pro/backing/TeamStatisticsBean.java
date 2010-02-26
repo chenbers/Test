@@ -10,7 +10,9 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 
@@ -21,8 +23,8 @@ public class TeamStatisticsBean extends BaseBean {
     
 
     private List<DriverVehicleScoreWrapper> driverStatistics;
-//    private List<DriverVehicleScoreWrapper> driverTotals;    
-    private DriverVehicleScoreWrapper driverTotals;    
+    private List<DriverVehicleScoreWrapper> driverTotals;    
+//    private DriverVehicleScoreWrapper driverTotals;    
 //    private Integer groupID;
 //    private Group group;
 
@@ -49,11 +51,11 @@ public class TeamStatisticsBean extends BaseBean {
         DateMidnight endTime = new DateTime().minusDays(0).toDateMidnight();
         DateMidnight startTime = teamCommonBean.getReportStartTime();
 
-        // Get the data, set the styles, compute and load the summary info
+        // Get the data, set the styles
         driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), startTime.toDateTime(), endTime.toDateTime());
         loadScoreStyles();
-        DriverVehicleScoreWrapper summary = getDriverTotals();
-        driverStatistics.add(summary);
+//        DriverVehicleScoreWrapper summary = getDriverTotals();
+//        driverStatistics.add(summary);
 
         return driverStatistics;
     }
@@ -82,14 +84,18 @@ public class TeamStatisticsBean extends BaseBean {
         }
     }
     
-    public DriverVehicleScoreWrapper getDriverTotals() {
-        driverTotals = new DriverVehicleScoreWrapper();
+    public List<DriverVehicleScoreWrapper> getDriverTotals() {
+        driverTotals = new ArrayList<DriverVehicleScoreWrapper>();
+//        driverTotals = new DriverVehicleScoreWrapper();
+        
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
         
         // Score
         int totTrips = 0;
         int totIdleHi = 0;
         int totIdleLo = 0;
+        int totIdleHiEvt = 0;
+        int totIdleLoEvt = 0;
         int totMilesDriven = 0;
         int totDriveTime = 0;
         int totMpg = 0;
@@ -111,6 +117,12 @@ public class TeamStatisticsBean extends BaseBean {
             }
             if ( dvsc.getScore().getIdleLo() != null ) {
                 totIdleLo += dvsc.getScore().getIdleLo().intValue();
+            }             
+            if ( dvsc.getScore().getIdleHiEvents() != null ) {
+                totIdleHiEvt += dvsc.getScore().getIdleHiEvents().intValue();
+            }
+            if ( dvsc.getScore().getIdleLoEvents() != null ) {
+                totIdleLoEvt += dvsc.getScore().getIdleLoEvents().intValue();
             }            
             if ( dvsc.getScore().getEndingOdometer() != null && dvsc.getScore().getStartingOdometer() != null ) {
                 totMilesDriven += ( dvsc.getScore().getEndingOdometer().intValue() - dvsc.getScore().getStartingOdometer().intValue() );
@@ -153,11 +165,20 @@ public class TeamStatisticsBean extends BaseBean {
             }
         }
         
+        // The total miles are determined by setting ending to the total
+        //  and starting to 0. 
         Score tmp = new Score();
         tmp.setTrips(totTrips);
         tmp.setIdleHi(totIdleHi);
         tmp.setIdleLo(totIdleLo);
+        tmp.setIdleHiEvents(totIdleHiEvt);
+        tmp.setIdleLoEvents(totIdleLoEvt);
         tmp.setDriveTime(totDriveTime);
+        tmp.setEndingOdometer(totMilesDriven);
+        tmp.setStartingOdometer(0);
+        tmp.setMpgHeavy(totMpg/driverStatistics.size());
+        tmp.setMpgMedium(0);
+        tmp.setMpgLight(0);
         tmp.setCrashTotal(totCrash);
         tmp.setSeatbelt(totSeatBeltEvt);
         tmp.setSpeedEvents(totSpeedEvt);
@@ -171,18 +192,22 @@ public class TeamStatisticsBean extends BaseBean {
         // Driver
         Driver drv = new Driver();
         drv.setDriverID(0);
+        Vehicle veh = new Vehicle();
+        veh.setName("");
         Person prs = new Person();
-        prs.setFirst("Total");
+        Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
+        prs.setFirst(grp.getName());
         prs.setLast("");
         drv.setPerson(prs);
         dvsw.setDriver(drv);
  
-        driverTotals = dvsw;
+//        driverTotals = dvsw;
+        driverTotals.add(dvsw);        
         
         return driverTotals;
     }
 
-    public void setDriverTotals(DriverVehicleScoreWrapper driverTotals) {
+    public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
         this.driverTotals = driverTotals;
     }
     
