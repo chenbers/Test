@@ -10,6 +10,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
@@ -24,9 +25,6 @@ public class TeamStatisticsBean extends BaseBean {
 
     private List<DriverVehicleScoreWrapper> driverStatistics;
     private List<DriverVehicleScoreWrapper> driverTotals;    
-//    private DriverVehicleScoreWrapper driverTotals;    
-//    private Integer groupID;
-//    private Group group;
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;    
@@ -48,20 +46,36 @@ public class TeamStatisticsBean extends BaseBean {
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
-        DateMidnight endTime = new DateTime().minusDays(0).toDateMidnight();
-        DateMidnight startTime = teamCommonBean.getReportStartTime();
 
-        // Get the data, set the styles
-        driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), startTime.toDateTime(), endTime.toDateTime());
+        // Get the data
+        boolean useDaily = whichMethodToUse();
+        
+        if ( useDaily ) {
+            DateMidnight endTime = new DateTime().minusDays(0).toDateMidnight();
+            DateMidnight startTime = teamCommonBean.getReportStartTime();
+            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), startTime.toDateTime(), endTime.toDateTime());
+            
+        } else {
+            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getDurationBean().getDuration());
+        }
+        
+        // Set the styles for the color-coded box
         loadScoreStyles();
-//        DriverVehicleScoreWrapper summary = getDriverTotals();
-//        driverStatistics.add(summary);
 
         return driverStatistics;
     }
 
     public void setDriverStatistics(List<DriverVehicleScoreWrapper> driverStatistics) {
         this.driverStatistics = driverStatistics;
+    }
+    
+    private boolean whichMethodToUse() {      
+        
+        if ( this.teamCommonBean.getDurationBean().getDuration().equals(Duration.TWELVE) ) {
+            return false;
+        }
+    
+        return true;
     }
 
     public Integer getGroupID() {

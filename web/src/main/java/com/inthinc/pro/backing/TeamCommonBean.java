@@ -27,6 +27,10 @@ public class TeamCommonBean extends BaseBean {
     
     private DurationBean durationBean;
     
+    public void init() {
+        this.durationBean.setDuration(Duration.TWODAY);
+    }
+    
 	public Integer getGroupID() {
 		return groupID;
 	}
@@ -104,15 +108,6 @@ public class TeamCommonBean extends BaseBean {
             
         } else if (     getDurationBean().getDuration().equals(Duration.SEVENDAY) ) {
             return new DateTime().minusDays(Duration.SEVENDAY.getNumberOfDays()).toDateMidnight();                  
-            
-        } else if (     getDurationBean().getDuration().equals(Duration.DAYS) ) {
-            return new DateTime().minusDays(Duration.DAYS.getNumberOfDays()).toDateMidnight();
-            
-        } else if (     getDurationBean().getDuration().equals(Duration.THREE) ) {
-            return new DateTime().minusDays(Duration.THREE.getNumberOfDays()).toDateMidnight();
-            
-        } else if (     getDurationBean().getDuration().equals(Duration.SIX) ) {
-            return new DateTime().minusDays(Duration.SIX.getNumberOfDays()).toDateMidnight();
             
         } else if (     getDurationBean().getDuration().equals(Duration.TWELVE) ) {
             return new DateTime().minusDays(Duration.TWELVE.getNumberOfDays()).toDateMidnight();

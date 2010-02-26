@@ -93,7 +93,7 @@
     <property name="driverDAO" ref="driverDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean>        
-  <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean">
+  <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean" init-method="init">
     <property name="durationBean" ref="teamDurationBean" />
   </bean>
  

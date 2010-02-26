@@ -14,13 +14,12 @@
 	<rich:tab label="Driver Statistics" id="stats" >
 	
 	<!-- Driver Statistics -->
-	<a4j:outputPanel id="teamStatisticsOutputPanel">	
 	
 	<div class="section">
 
 	    <div class="panel_w">
 	       <div class="panel_content">
-	       
+	       <a4j:outputPanel id="teamStatisticsOutputPanel">
 	       <!-- Table -->
 	       <h:form id="driverForm">
 	       <rich:dataTable	value="#{teamStatisticsBean.driverStatistics}" 
@@ -150,7 +149,7 @@
 
 				<rich:column width="8%">
 					<f:facet name="header">
-					Team	
+						Team	
 					</f:facet>
 					#{item.driver.person.fullName}
 				</rich:column>
@@ -224,7 +223,7 @@
 					<f:facet name="header">
 						MPG
 					</f:facet>
-					#{item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy}
+					#{item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy}                  					
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
@@ -239,7 +238,8 @@
 					#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}
 				</rich:column>
 
-			</rich:dataTable>			
+			</rich:dataTable>	
+			</a4j:outputPanel>		
 			</div>
 	    </div>
 	    
@@ -247,7 +247,6 @@
 	       <div class="panel_statusbar"/>
 	   	</div>
    	</div>
-   	</a4j:outputPanel>
    	
     <!-- End Driver Statistics Table -->
     </rich:tab>
