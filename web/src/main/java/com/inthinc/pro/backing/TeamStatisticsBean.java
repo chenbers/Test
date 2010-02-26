@@ -189,15 +189,21 @@ public class TeamStatisticsBean extends BaseBean {
         tmp.setAggressiveRightEvents(totAggRightEvt);
         dvsw.setScore(tmp);
         
-        // Driver
+        // Driver/Vehicle
         Driver drv = new Driver();
         drv.setDriverID(0);
         Vehicle veh = new Vehicle();
         veh.setName("");
         Person prs = new Person();
         Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
-        prs.setFirst(grp.getName());
+        
+        // Group check, may be driven by bad data
+        prs.setFirst("");
+        if ( (grp != null) && (grp.getName()!= null) ) {
+            prs.setFirst(grp.getName());
+        }        
         prs.setLast("");
+        
         drv.setPerson(prs);
         dvsw.setDriver(drv);
  
