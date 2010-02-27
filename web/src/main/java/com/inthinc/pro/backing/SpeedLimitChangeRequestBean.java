@@ -308,17 +308,18 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		//Check for valid mandatory fields
 		if (speedLimitBean.isGood()){
 			
-			com.iwi.teenserver.model.User user = teenServerDAO.getUserById(getSbsUserId());
-			if (user != null){
-				
+//			com.iwi.teenserver.model.User user = teenServerDAO.getUserById(getSbsUserId());
+//			if (user != null){
+				com.iwi.teenserver.model.User user = new com.iwi.teenserver.model.User();
+				user.setId(getSbsUserId());
 				teenServerDAO.saveSpeedLimitChangeRequest(user, changeRequest);
 					
 				sendEmailToUser(speedLimitBean);
-			}
-			else {
-				logger.debug("saveRequest: User not found.");
-				message =MessageUtil.getMessageString("sbs_caption_error");
-			}
+//			}
+//			else {
+//				logger.debug("saveRequest: User not found.");
+//				message =MessageUtil.getMessageString("sbs_caption_error");
+//			}
 				
 		}
 		else {
