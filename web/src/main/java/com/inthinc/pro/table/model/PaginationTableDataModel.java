@@ -24,8 +24,10 @@ import org.richfaces.model.Ordering;
 import org.richfaces.model.SortField2;
 
 import com.inthinc.pro.model.pagination.SortOrder;
+import com.inthinc.pro.model.pagination.TableFilterFactory;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
+import com.inthinc.pro.table.CustomFilterField;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.table.model.provider.PaginationDataProvider;
 
@@ -321,6 +323,17 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 		if (filterFields != null) {
 			for (FilterField filterField : filterFields) {
 				String propertyName = getPropertyName(filterField.getExpression());
+
+				if (filterField instanceof CustomFilterField) {
+					Object filterObject = ((CustomFilterField) filterField).getFilterObject();
+					if (filterObject instanceof TableFilterFactory) {
+						List<TableFilterField> tableFilterFieldList = ((TableFilterFactory)filterObject).getFilters();
+						for (TableFilterField tableFilterField : tableFilterFieldList) {
+							dataProvider.addFilterField(tableFilterField);
+						}
+						return;
+					}
+				}
 				if (filterField instanceof ExtendedFilterField) {
 					String filterValue = ((ExtendedFilterField) filterField).getFilterValue();
 					dataProvider.addFilterField(new TableFilterField(propertyName, filterValue));

@@ -23,7 +23,7 @@
         </div>
     
     
-    	<rich:jQuery selector="document" query="ready(function(){initializeTable();initializeTableFilterCols();})" />
+    	<rich:jQuery selector="document" query="ready(function(){initializeTable();})" />
         
     	<a4j:queue requestDelay="500"/>
         
@@ -130,7 +130,7 @@
 							<a4j:commandLink id="excluded" rendered="#{event.forgiven == 1}" 
 									title="#{messages.driverReports_exclude}" action="#{bean.includeEventAction}" 
 									reRender="#{clearRerender}"
-									 oncomplete="initializeTable();initializeTableFilterCols();">
+									 oncomplete="initializeTable();">
 								<h:outputText value="#{messages.driverReports_include}" />
 								<f:setPropertyActionListener target="#{bean.clearItem}" value="#{event}" />
 							</a4j:commandLink>
@@ -145,7 +145,7 @@
     
     <rich:datascroller id="#{context}_bottomScroller" for="#{context}" 
             immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
-            reRender="#{context},#{context}-form:header,#{context}_pageHeader" oncomplete="initializeTable();;initializeTableFilterCols();" 
+            reRender="#{context},#{context}-form:header,#{context}_pageHeader" oncomplete="initializeTable();" 
             page="#{bean.table.pageData.currentPage}" styleClass="dataScroller" renderIfSinglePage="false"/>
             
     </h:form>

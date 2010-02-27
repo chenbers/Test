@@ -1,9 +1,14 @@
 package com.inthinc.pro.backing.paging;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -30,17 +35,34 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean
     protected Event clearItem;
     
     private EventDAO eventDAO;
+    
+    protected final static String BLANK_SELECTION = "&#160;";
+	protected static void sort(List<SelectItem> selectItemList) {
+	        Collections.sort(selectItemList, new Comparator<SelectItem>() {
+	            @Override
+				public int compare(SelectItem o1, SelectItem o2) {
+					return o1.getLabel().toLowerCase().compareTo(o2.getLabel().toLowerCase());
+				}
+	        });
+	}
+			
+
  
-	public Map<String, Integer> getTeams() {
-    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+	public List<SelectItem> getTeams() {
+    	final List<SelectItem> teams = new ArrayList<SelectItem>();
+		SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
+		blankItem.setEscape(false);
+		teams.add(blankItem);
 	    for (final Group group : getGroupHierarchy().getGroupList()) {
 	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
 	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
 	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
 	    		}
 	    			
-	    		teams.put(fullName, group.getGroupID());
-	    	}
+	    		teams.add(new SelectItem(group.getGroupID(), fullName));
+	    		
+	    }
+	    sort(teams);
 	    
 	    return teams;
     }

@@ -154,6 +154,10 @@
 		<component-type>javax.faces.HtmlCommandButton</component-type>
 		<component-class>com.inthinc.pro.backing.ui.CommandButton</component-class>
 	</component>
+	<component>
+		<component-type>org.richfaces.Column</component-type>
+		<component-class>com.inthinc.pro.table.UIFilterColumn</component-class>
+	</component>
 
 	<!-- managed beans -->
 	

@@ -21,7 +21,7 @@
         </div>
     
     
-    	<rich:jQuery selector="document" query="ready(function(){initializeTable();initializeTableFilterCols();})" />
+    	<rich:jQuery selector="document" query="ready(function(){initializeTable();})" />
     	
     	<a4j:queue requestDelay="500"/>
     	
@@ -29,7 +29,7 @@
     	
     	
         <rich:dataTable value="#{bean.table.model}" id="redFlags" var="redFlag" rowKeyVar="index" styleClass="datagrid filterabledatagrid" 
-        				reRender="redFlags-form:header,redFlags-form:redFlags_bottomScroller" columnClasses="colnone,colnone,colnone,colnone,colfilter,colfilter,colfilter"
+        				reRender="redFlags-form:header,redFlags-form:redFlags_bottomScroller" 
         				rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%"> 
 
             <!-- Data -->
@@ -85,29 +85,37 @@
                 	</h:panelGrid>
 				</div>
             </rich:column>
-<!--             
-            <rich:column id="level" rendered="#{tableColumns['level'].visible}" filterExpression="#{redFlag.level eq bean.filterLevel}">
+            
+             <rich:column id="level" rendered="#{tableColumns['level'].visible}" custFilterBy="#{redFlag.level}" filterValue="#{bean.filterLevel}">
                 <f:facet name="header">
-                    <h:outputText value="#{messages.notes_redflags_level}" />
-                    <h:selectOneMenu value="#{bean.filterLevel}">
-                        <f:selectItems value="#{bean.filterLevels}" />
-                        <a4j:support event="onchange" reRender="redFlags,redFlags-form:header, redFlags_pageHeader" />
-                    </h:selectOneMenu>
+	                <h:panelGroup>
+	                    <h:outputText value="#{messages.notes_redflags_level}" />
+    	                <h:selectOneMenu id="levelFilter" value="#{bean.filterLevel}" label="#{messages.notes_redflags_level}"  style="width:80px;size:auto;margin-top:3px;">
+        	                <f:selectItems value="#{bean.filterLevels}" />
+            	            <a4j:support event="onchange" reRender="redFlags,redFlags-form:header, redFlags_pageHeader,redFlags-form:redFlags_bottomScroller" />
+                	    </h:selectOneMenu>
+						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 				<ui:param name="selectBoxID" value="redFlags-form:redFlags:levelFilter" />
+						</ui:include>
+                    </h:panelGroup>
                 </f:facet>
+                
                 <ui:param name="descriptionKey" value="#{redFlag.level}"/>
                 <h:outputText styleClass="ls_tab_#{redFlag.level}" value="#{messages[descriptionKey]}" />
             </rich:column>
- -->            
-            <rich:column id="level" rendered="#{tableColumns['level'].visible}">
+          
+            <rich:column id="alerts" rendered="#{tableColumns['alerts'].visible}"  custFilterBy="#{redFlag.sent}" filterValue="#{bean.filterAlert}">
                 <f:facet name="header">
-                    <h:outputText value="#{messages.notes_redflags_level}" />
-                </f:facet>
-                <ui:param name="descriptionKey" value="#{redFlag.level}"/>
-                <h:outputText styleClass="ls_tab_#{redFlag.level}" value="#{messages[descriptionKey]}" />
-            </rich:column>
-            <rich:column id="alerts" rendered="#{tableColumns['alerts'].visible}">
-                <f:facet name="header">
-                    <h:outputText value="#{messages.notes_redflags_alerts}" />
+	                <h:panelGroup>
+	                    <h:outputText value="#{messages.notes_redflags_alerts}" />
+    	                <h:selectOneMenu id="alertFilter" value="#{bean.filterAlert}" label="#{messages.notes_redflags_alerts}"   style="width:50px;size:auto;margin-top:3px;">
+        	                <f:selectItems value="#{bean.filterAlerts}" />
+            	            <a4j:support event="onchange" reRender="redFlags,redFlags-form:header, redFlags_pageHeader,redFlags-form:redFlags_bottomScroller" />
+                	    </h:selectOneMenu>
+						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 				<ui:param name="selectBoxID" value="redFlags-form:redFlags:alertFilter" />
+						</ui:include>
+                    </h:panelGroup>
                 </f:facet>
                 <h:outputText value="#{(redFlag.alert) ? messages.yes : messages.no }" />
             </rich:column>
@@ -150,9 +158,19 @@
                     #{redFlag.event.vehicleName}
                 </pretty:link>
             </rich:column>
-            <rich:column id="category" rendered="#{tableColumns['category'].visible}">
+            <rich:column id="category" rendered="#{tableColumns['category'].visible}"  custFilterBy="#{redFlag.type}" custFilterValue="#{bean.filterCategory}">
                 <f:facet name="header">
-                    <h:outputText value="#{messages.notes_redflags_category}" />
+                	<h:panelGroup>
+                    	<h:outputText value="#{messages.notes_redflags_category}" />
+                    	<h:selectOneMenu id="catFilter" value="#{bean.filterCategoryKey}" label="#{messages.notes_redflags_category}" style="width:120px;size:auto;margin-top:3px;">
+                        	<f:selectItems value="#{bean.filterCategories}" />
+                        	<a4j:support event="onchange" 
+                        		reRender="redFlags,redFlags-form:header, redFlags_pageHeader,redFlags-form:redFlags_bottomScroller" />
+                    	</h:selectOneMenu>
+						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 				<ui:param name="selectBoxID" value="redFlags-form:redFlags:catFilter" />
+						</ui:include>
+                    </h:panelGroup>
                 </f:facet>
                 <c:set var="cat" value="redflags_cat#{redFlag.event.eventCategory}"/> 
                 <h:outputFormat value="#{messages[cat]}" >
@@ -182,7 +200,7 @@
 				<a4j:commandLink id="redFlags-excluded" rendered="#{redFlag.event.forgiven == 1}" 
 								title="#{messages.driverReports_include}" 
 								action="#{bean.includeEventAction}" 
-								reRender="#{clearRerender}" oncomplete="initializeTable();initializeTableFilterCols();">
+								reRender="#{clearRerender}" oncomplete="initializeTable();">
 					<h:outputText value="#{messages.driverReports_include}" />
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{redFlag.event}"/>
 				</a4j:commandLink>
@@ -197,7 +215,7 @@
     
     <rich:datascroller id="redFlags_bottomScroller" for="redFlags" 
             immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
-            reRender="redFlags,redFlags-form:header, redFlags_pageHeader" oncomplete="initializeTable();initializeTableFilterCols();" 
+            reRender="redFlags,redFlags-form:header, redFlags_pageHeader" oncomplete="initializeTable();" 
             page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
             
     </h:form>

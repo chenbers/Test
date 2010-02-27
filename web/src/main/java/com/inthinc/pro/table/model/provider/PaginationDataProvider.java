@@ -9,7 +9,7 @@ import com.inthinc.pro.model.pagination.TableSortField;
 public interface PaginationDataProvider<T> extends DataProvider<T> {
 
 	public void addSortField(TableSortField sortField);
-	public void addFilterField(TableFilterField sortField);
+	public void addFilterField(TableFilterField filterField);
 
 
 }

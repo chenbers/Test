@@ -1,27 +1,33 @@
 package com.inthinc.pro.backing.paging;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.faces.model.SelectItem;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.backing.TablePref;
 import com.inthinc.pro.backing.TablePrefOptions;
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagReportItem;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.pagination.EventCategoryFilter;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -37,7 +43,6 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
 	private static final long serialVersionUID = 3166689931697428969L;
 	private static final Logger logger = Logger.getLogger(PagingRedFlagsBean.class);
     private final static String COLUMN_LABEL_PREFIX = "notes_redflags_";
-
     private TablePreferenceDAO       tablePreferenceDAO;
     
     private TablePref<RedFlag> tablePref;
@@ -60,29 +65,121 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
 	private RedFlagPaginationTableDataProvider tableDataProvider;
 	private BasePaginationTable<RedFlag> table;
 	
-	private Integer filterLevel;
+	static final List<EventCategory> CATEGORIES;
+	static {
+		CATEGORIES = new ArrayList<EventCategory>();
+		CATEGORIES.add(EventCategory.NONE);
+		CATEGORIES.add(EventCategory.VIOLATION);
+		CATEGORIES.add(EventCategory.EMERGENCY);
+		CATEGORIES.add(EventCategory.DRIVER);
+		CATEGORIES.add(EventCategory.WARNING);
+	}
+
+	private String filterLevel;
+	private String filterAlert;
+	private EventCategoryFilter filterCategory;
+	private Integer filterCategoryKey;
 	
-	public Integer getFilterLevel() {
+	
+	public Integer getFilterCategoryKey() {
+		return filterCategoryKey;
+	}
+
+	public void setFilterCategoryKey(Integer filterCategoryKey) {
+		if (filterCategoryKey != null && eventCategoryMap != null) {
+			setFilterCategory(eventCategoryMap.get(filterCategoryKey));
+		}
+		else {
+			setFilterCategory(null);
+		}
+		this.filterCategoryKey = filterCategoryKey;
+	}
+
+	public EventCategoryFilter getFilterCategory() {
+		return filterCategory;
+	}
+
+	public void setFilterCategory(EventCategoryFilter filterCategory) {
+logger.info("setFilterCatagory " + ((filterCategory == null) ? "" : filterCategory.getKey()));		
+		this.filterCategory = filterCategory;
+	}
+
+	public String getFilterAlert() {
+		return filterAlert;
+	}
+
+	public void setFilterAlert(String filterAlert) {
+logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));		
+		this.filterAlert = filterAlert;
+	}
+
+	public String getFilterLevel() {
 		return filterLevel;
 	}
 
-	public void setFilterLevel(Integer filterLevel) {
-//		this.filterLevel = filterLevel;
-		
-		this.filterLevel = 2;
+	public void setFilterLevel(String filterLevel) {
+		this.filterLevel = filterLevel;
 	}
 
-	
-	public Map<String, Integer> getFilterLevels() {
-    	TreeMap<String, Integer> filterLevels = new TreeMap<String, Integer>();
-        for (RedFlagLevel p : EnumSet.allOf(RedFlagLevel.class)) {
-	    		filterLevels.put(p.toString(), p.getCode());
+    private List<SelectItem> filterLevels;
+	public List<SelectItem>  getFilterLevels() {
+		if (filterLevels == null) {
+	    	filterLevels = new ArrayList<SelectItem> ();
+			SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
+			blankItem.setEscape(false);
+    		filterLevels.add(blankItem);
+	        for (RedFlagLevel p : EnumSet.allOf(RedFlagLevel.class)) {
+	        	if (p.equals(RedFlagLevel.NONE))
+	        		continue;
+	    		filterLevels.add(new SelectItem(p.getCode().toString(), MessageUtil.getMessageString(p.toString(), getLocale())));
 	    	}
+		}
 	    
 	    return filterLevels;
     }
 
-	
+    private List<SelectItem> filterAlerts;
+	public List<SelectItem> getFilterAlerts() {
+		if (filterAlerts == null) {
+			filterAlerts = new ArrayList<SelectItem>();
+			SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
+			blankItem.setEscape(false);
+			filterAlerts.add(blankItem);
+        	filterAlerts.add(new SelectItem("1", MessageUtil.getMessageString("yes", getLocale())));
+        	filterAlerts.add(new SelectItem("0", MessageUtil.getMessageString("no", getLocale())));
+		}
+	    
+	    return filterAlerts;
+    }
+    private List<SelectItem> filterCategories;
+    private Map<Integer, EventCategoryFilter> eventCategoryMap;
+	public List<SelectItem> getFilterCategories() {
+		if (filterCategories == null) {
+			eventCategoryMap = new HashMap<Integer, EventCategoryFilter>();
+			filterCategories = new ArrayList<SelectItem>();
+	        for (EventCategory category : CATEGORIES) {
+	        	String categoryFormatStr = MessageUtil.getMessageString("redflags_cat"+category.toString(), getLocale());
+				List<EventCategoryFilter> eventCategoryFilterList = EventMapper.getEventCategoryFilter(category); 
+				for (EventCategoryFilter eventCategoryFilter : eventCategoryFilterList) {
+					SelectItem item = null;
+	        		if (eventCategoryFilter.getKey().equals(EventType.UNKNOWN)) {
+		        		item = new SelectItem(eventCategoryFilter.getKey().getCode(), BLANK_SELECTION);
+		        		item.setEscape(false);
+	        		}
+	        		else {
+	        			String eventTypeStr = MessageFormat.format(categoryFormatStr, new Object[] {MessageUtil.getMessageString(eventCategoryFilter.getKey().toString(), getLocale())});
+	        			item = new SelectItem(eventCategoryFilter.getKey().getCode(), eventTypeStr);
+	        		}
+	        		filterCategories.add(item);
+	        		eventCategoryMap.put(eventCategoryFilter.getKey().getCode(), eventCategoryFilter);
+				}
+	    	}
+	        
+	        sort(filterCategories); 
+ 		}
+	    return filterCategories;
+    }
+
 	@Override
 	public void init()
 	{
@@ -253,5 +350,5 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
 		this.table = table;
 	}
 
-
+	
 }

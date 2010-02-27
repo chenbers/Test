@@ -3500,15 +3500,6 @@ td.middle select {
 	margin-left:5px;
 }
 
-.colnone {
-}
-
-.colfilter {
-	margin: 0;
-	padding: 0 2px 0 10px;	
-	font: normal 8px Verdana, Tahoma, Arial, sans-serif;
-}
-
 .infoWindow p {
 	margin: 3px;	
 }
@@ -3527,5 +3518,7 @@ td.middle select {
     padding-top: 5px;
 }
 
+.rich-filter-input {
+	width : 80px;
+}
 
- 

@@ -42,7 +42,7 @@ import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
-@Ignore
+
 public class PaginationTest {
 	
     private static final Logger logger = Logger.getLogger(PaginationTest.class);
@@ -322,6 +322,40 @@ public class PaginationTest {
 		}
     }    	
     
+    @Test
+    public void eventTypeFilters() {
+    	EventHessianDAO eventDAO = new EventHessianDAO();
+    	eventDAO.setSiloService(siloService);
+
+    	for (EventCategory category : EXPECTED_EVENT_COUNTS.keySet()) {
+    		
+    		int daysBack = 1;
+    	    Date endDate = new Date();
+    	    Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+    		
+	    	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
+	    		
+	    		// filter by groupName
+	    		GroupData team = itData.teamGroupData.get(teamIdx);
+	    		List<TableFilterField> filterList = new ArrayList<TableFilterField>();
+	    		filterList.add(new TableFilterField("type", EventMapper.getEventTypesInCategory(category)));  
+	    		
+	    		Integer eventCount = eventDAO.getEventCount(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), filterList);
+	    		assertEquals("Unexpected event count for fleet category " + category + " group filter " + ITData.TEAM_GROUP_NAME[teamIdx], EXPECTED_EVENT_COUNTS.get(category)[teamIdx], eventCount);
+	    		
+	    		PageParams pageParams = new PageParams();
+	    		pageParams.setStartRow(0);
+	    		pageParams.setEndRow(eventCount-1);
+	    		pageParams.setSort(null);
+
+	    		pageParams.setFilterList(filterList);
+	    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate,  EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
+	    		assertEquals("Unexpected event list count category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
+
+	    	}
+		}
+    }    	
+
     @Test
     public void eventsFilterByNoteID() {
        	EventHessianDAO eventDAO = new EventHessianDAO();

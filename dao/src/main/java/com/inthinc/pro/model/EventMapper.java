@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.log4j.Logger;
 
-
-import javax.xml.bind.annotation.XmlRootElement;
+import com.inthinc.pro.model.pagination.EventCategoryFilter;
 
 @XmlRootElement
 public class EventMapper
@@ -65,14 +66,12 @@ public class EventMapper
     public static final int TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE = 254;
     
     
-    @SuppressWarnings("unchecked")
-    private static final Map<Integer, Class> typeMap = new HashMap<Integer, Class> (); 
+    private static final Map<Integer, Class<?>> typeMap = new HashMap<Integer, Class<?>> (); 
     static
     {
         typeMap.put(TIWIPRO_EVENT_BASE, Event.class);
         typeMap.put(TIWIPRO_EVENT_FULLEVENT, FullEvent.class);
         typeMap.put(TIWIPRO_EVENT_NOTEEVENT, AggressiveDrivingEvent.class);
-//        typeMap.put(TIWIPRO_EVENT_SPEEDING, SpeedingEvent.class);
         typeMap.put(TIWIPRO_EVENT_SPEEDING_EX3, SpeedingEvent.class);
         typeMap.put(TIWIPRO_EVENT_SEATBELT, SeatBeltEvent.class);
         typeMap.put(TIWIPRO_EVENT_UNPLUGGED, TamperingEvent.class);
@@ -85,19 +84,17 @@ public class EventMapper
         typeMap.put(TIWIPRO_EVENT_LOW_BATTERY, LowBatteryEvent.class);
         typeMap.put(TIWIPRO_EVENT_LOW_TIWI_BATTERY, DeviceLowBatteryEvent.class);
         typeMap.put(TIWIPRO_EVENT_IDLE, IdleEvent.class);
-//        typeMap.put(TIWIPRO_EVENT_ROLLOVER, RollOverEvent.class);
         typeMap.put(TIWIPRO_EVENT_ROLLOVER, FullEvent.class);
         typeMap.put(TIWIPRO_EVENT_POWER_ON, PowerOnEvent.class);
         typeMap.put(TIWIPRO_EVENT_NO_DRIVER, NoDriverEvent.class);
         
     }
-    @SuppressWarnings("unchecked")
+
     private static final Map<EventCategory, List<Integer>> categoryMap = new HashMap<EventCategory, List<Integer>> (); 
     static
     {
         List<Integer> violationList = new ArrayList<Integer>();
         violationList.add(TIWIPRO_EVENT_NOTEEVENT);
-  //      violationList.add(TIWIPRO_EVENT_SPEEDING);
         violationList.add(TIWIPRO_EVENT_SPEEDING_EX3);
         violationList.add(TIWIPRO_EVENT_SEATBELT);
         categoryMap.put(EventCategory.VIOLATION, violationList);
@@ -126,11 +123,45 @@ public class EventMapper
         zoneAlertList.add(TIWIPRO_EVENT_WSZONES_ARRIVAL_EX);
         zoneAlertList.add(TIWIPRO_EVENT_WSZONES_DEPARTURE_EX);
         categoryMap.put(EventCategory.ZONE_ALERT, zoneAlertList);
-        
-        
     }
     
-    
+	private static final Map<EventCategory, List<EventCategoryFilter>> categoryFilterMap = new HashMap<EventCategory, List<EventCategoryFilter>>();
+    static {
+    	List<EventCategoryFilter> eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.SEATBELT, new Integer[] {EventMapper.TIWIPRO_EVENT_SEATBELT}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.SPEEDING, new Integer[] {EventMapper.TIWIPRO_EVENT_SPEEDING_EX3}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.HARD_BRAKE, new Integer[] {EventMapper.TIWIPRO_EVENT_NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_BRAKE.getCode()}));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.HARD_ACCEL, new Integer[] {EventMapper.TIWIPRO_EVENT_NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_ACCEL.getCode()}));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.HARD_VERT, new Integer[] {EventMapper.TIWIPRO_EVENT_NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_VERT.getCode()}));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.HARD_TURN, new Integer[] {EventMapper.TIWIPRO_EVENT_NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_TURN.getCode()}));
+    	categoryFilterMap.put(EventCategory.VIOLATION, eventCategoryFilterList);
+
+    	
+    	eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.TAMPERING, new Integer[] {EventMapper.TIWIPRO_EVENT_UNPLUGGED, EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.LOW_BATTERY, new Integer[] {EventMapper.TIWIPRO_EVENT_LOW_BATTERY}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.DEVICE_LOW_BATTERY, new Integer[] {EventMapper.TIWIPRO_EVENT_LOW_TIWI_BATTERY}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.IDLING, new Integer[] {EventMapper.TIWIPRO_EVENT_IDLE}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.NO_DRIVER, new Integer[] {EventMapper.TIWIPRO_EVENT_NO_DRIVER}, null));
+    	categoryFilterMap.put(EventCategory.WARNING, eventCategoryFilterList);
+
+    	
+    	eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.CRASH, new Integer[] {EventMapper.TIWIPRO_EVENT_FULLEVENT}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.ROLLOVER, new Integer[] {EventMapper.TIWIPRO_EVENT_ROLLOVER}, null));
+    	categoryFilterMap.put(EventCategory.EMERGENCY, eventCategoryFilterList);
+
+    	
+    	eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.ZONES_ARRIVAL, new Integer[] {EventMapper.TIWIPRO_EVENT_WSZONES_ARRIVAL_EX, EventMapper.TIWIPRO_EVENT_ZONE_ENTER_ALERTED}, null));
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.ZONES_DEPARTURE, new Integer[] {EventMapper.TIWIPRO_EVENT_WSZONES_DEPARTURE_EX, EventMapper.TIWIPRO_EVENT_ZONE_EXIT_ALERTED}, null));
+    	categoryFilterMap.put(EventCategory.DRIVER, eventCategoryFilterList);
+
+    	eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.UNKNOWN, (List<Integer>)null, null));
+    	categoryFilterMap.put(EventCategory.NONE, eventCategoryFilterList);
+
+    }
     
     @SuppressWarnings("unchecked")
     public static Class getEventType(Integer proEventType)
@@ -144,9 +175,13 @@ public class EventMapper
         return typeMap.get(proEventType);
     }
 
-
     public static List<Integer> getEventTypesInCategory(EventCategory category)
     {
         return categoryMap.get(category);
+    }
+
+    public static List<EventCategoryFilter> getEventCategoryFilter(EventCategory category)
+    {
+        return categoryFilterMap.get(category);
     }
 }
