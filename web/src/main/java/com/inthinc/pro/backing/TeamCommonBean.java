@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +26,18 @@ public class TeamCommonBean extends BaseBean {
 	private Integer groupID;
     private Group group;
     
+    private Date startTime;
+    private Date endTime;
+    
     private DurationBean durationBean;
     
     public void init() {
+    	
         this.durationBean.setDuration(Duration.TWODAY);
+
+        this.startTime = getReportStartTime().toDate();
+        this.endTime = new DateTime().minusDays(0).toDateMidnight().toDate();
+        
     }
     
 	public Integer getGroupID() {
@@ -116,5 +125,21 @@ public class TeamCommonBean extends BaseBean {
         
         return local;
     }
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
 }

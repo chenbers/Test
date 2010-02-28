@@ -11,6 +11,7 @@
 	
 	<t:saveState  value="#{teamTripsBean}"/>
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+	<script src="#{facesContext.externalContext.request.contextPath}/js/arrowedPolyline.js" type="text/javascript"></script>	
 	
 	<script type="text/javascript">
 	function orderOfCreation(marker,b) 
@@ -52,10 +53,11 @@
 	<rich:panel id="drawTeamTrips">
  <script type="text/javascript">
   
- function drawTrips(){
+ function drawTrips(index){
 		bounds = new GLatLngBounds();
+		var colors= ["#820f00","#ff4a12","#943bc5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
+					 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
 		
-	 var polyline;
 			var marker;
 			var startlatlng;
 			var endlatlng;
@@ -63,46 +65,73 @@
 			if ( map == null ) {
 				return;
 			}
-			if (#{teamTripsBean.selectedDriverTrips eq null}){
-				return;
-			}
 			map.clearOverlays();
 			
-				<ui:repeat value="#{teamTripsBean.selectedDriverTrips}" var="trip">
-
-				polyline = new GPolyline([
+			if (#{(teamTripsBean.selectedDriversTrips eq null) || (teamTripsBean.selectedDriversTrips[0] eq null )}){
+				return;
+			}
+			<ui:repeat value="#{teamTripsBean.selectedDriversTrips}" var="driversTripsBounds" >
+				<ui:repeat value="#{driversTripsBounds}" var="tripbounds">
+					<ui:repeat value="#{tripbounds.route}" var="rt2">
+						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+					</ui:repeat>
+				</ui:repeat>
+			</ui:repeat>
+			map.setZoom(map.getBoundsZoomLevel(bounds));
+			<ui:repeat value="#{teamTripsBean.selectedDriversTrips}" var="driversTrips" >
+				<ui:repeat value="#{driversTrips}" var="trip">
+// BDCCArrowedPolyline(points, color, weight, opacity, opts, gapPx, headLength, headColor, headWeight, headOpacity)
+					var arrowPolyline = new BDCCArrowedPolyline([
 						<ui:repeat value="#{trip.route}" var="rt">
 								new GLatLng(#{rt.lat}, #{rt.lng}),
 						</ui:repeat>
 		  						new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
-										], "#0000ff", 6);
-				map.addOverlay(polyline);
+										],colors[index], 4, 0.9,{geodesic:true}, 100, 16,colors[index],1,0.9);
+					map.addOverlay(arrowPolyline);
 				
+					//Start of trip marker
+					startlatlng = new GLatLng(#{trip.beginningPoint.lat}, #{trip.beginningPoint.lng});
+					marker = createMarker(startlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+					map.addOverlay(marker);
+					bounds.extend(marker.getPoint());
+					//End of trip marker
+					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
+					if ("#{trip.inProgress}" == "true")
+					{
+						marker = createMarker(endlatlng, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png");
+					}
+					else
+					{
+						marker = createMarker(endlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					}
+					map.addOverlay(marker);
+					bounds.extend(marker.getPoint());
+				</ui:repeat>
+			</ui:repeat>
 
-				<ui:repeat value="#{trip.route}" var="rt2">
-					bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
-				</ui:repeat>
-				
-				//Start of trip marker
-				startlatlng = new GLatLng(#{trip.beginningPoint.lat}, #{trip.beginningPoint.lng});
-				marker = createMarker(startlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-				//End of trip marker
-				endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-				if ("#{trip.inProgress}" == "true")
-				{
-					marker = createMarker(endlatlng, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png");
-				}
-				else
-				{
-					marker = createMarker(endlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
-				}
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-				</ui:repeat>
-				map.setZoom(map.getBoundsZoomLevel(bounds));
+//				map.setZoom(map.getBoundsZoomLevel(bounds));
 				map.setCenter(bounds.getCenter());
+
+	  				var violation;
+					<ui:repeat value="#{teamTripsBean.violationEvents}" var="violation">
+						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+						map.addOverlay(createMarker(violation,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+					</ui:repeat>
+
+				var idleMarker;
+					var idle;
+					<ui:repeat value="#{teamTripsBean.idleEvents}" var="idle">
+						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
+						map.addOverlay(createMarker(idle, "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+					</ui:repeat>
+
+
+					var tamper;
+					<ui:repeat value="#{teamTripsBean.tamperEvents}" var="tamperEvent">
+						tamper = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
+						map.addOverlay(createMarker(tamper, "#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png"));
+					</ui:repeat>
+				
 		}
  </script>
 </rich:panel>
@@ -130,8 +159,8 @@
 								rows="15"
 								columnsWidth="85%,15%"
 								width="100%">
-					<a4j:support event="onRowClick" reRender="drawTeamTrips" action="#{teamTripsBean.loadTrips}" 
-										 oncomplete="drawTrips()" limitToList="true">
+					<a4j:support event="onRowClick" reRender="drawTeamTrips"  
+										 oncomplete="drawTrips(#{index%15})" limitToList="true">
                          <f:setPropertyActionListener value="#{driver}" target="#{teamTripsBean.selectedDriver}" />
                     </a4j:support>
 												
@@ -153,8 +182,9 @@
 				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
 				</rich:column>
 				</rich:dataTable>
-				<rich:datascroller align="left" for="driversTrips" 
-            		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"/>
+				<rich:datascroller align="left" for="driversTrips" action="#{teamTripsBean.clearTrips}" oncomplete="map.clearOverlays();" 
+            		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
+            		  limitToList="true"/>
             		 
 				 </a4j:region>
  				</a4j:form>	
@@ -173,13 +203,17 @@
     </rich:tab>
     <script>
     		jQuery('#tripsTableForm\\:driversTrips tr').click(function(){
-            			jQuery('#tripsTableForm\\:driversTrips tr').each(function() {
+
+    			if(jQuery(this).hasClass('selected-row')){
+							
 							jQuery(this).removeClass('selected-row');
 							jQuery(this).children().removeClass('selected-row');
-							
-						});
-						jQuery(this).addClass('selected-row');
-						jQuery(this).children().addClass('selected-row');
+						}
+						else {
+								
+							jQuery(this).addClass('selected-row');
+							jQuery(this).children().addClass('selected-row');
+						}
 		});
     </script>
 </ui:composition>
