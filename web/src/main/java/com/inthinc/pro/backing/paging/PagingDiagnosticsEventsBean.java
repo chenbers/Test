@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing.paging;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -10,6 +13,19 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 	 * 
 	 */
 	private static final long serialVersionUID = -3951907220194370268L;
+
+	static final List<EventCategory> CATEGORIES;
+	static {
+		CATEGORIES = new ArrayList<EventCategory>();
+		CATEGORIES.add(EventCategory.NONE);
+		CATEGORIES.add(EventCategory.WARNING);
+	}
+
+	@Override
+	protected List<EventCategory> getCategories() {
+		return CATEGORIES;
+	}
+	
 
 	public PagingDiagnosticsEventsBean()
 	{

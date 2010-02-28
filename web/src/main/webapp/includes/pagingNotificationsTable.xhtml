@@ -98,11 +98,22 @@
                 <h:outputText rendered="#{event.vehicleName == messages.reports_none_assigned}" value="#{event.vehicleName}">
                 </h:outputText>
             </rich:column>
-            <rich:column id="category" rendered="#{tableColumns['category'].visible}">
+            <rich:column id="category" rendered="#{tableColumns['category'].visible}"  custFilterBy="#{event.type}" custFilterValue="#{bean.filterCategory}">
                 <f:facet name="header">
-                    <h:outputText value="#{messages.notes_category}" />
+                	<h:panelGroup>
+                    	<h:outputText value="#{messages.notes_category}" />
+                    	<rich:spacer style="display:block" height="2"/>
+                    	<h:selectOneMenu id="catFilter" value="#{bean.filterCategoryKey}" label="#{messages.notes_category}" style="width:120px;size:auto;margin-top:3px;">
+                        	<f:selectItems value="#{bean.filterCategories}" />
+                        	<a4j:support event="onchange" 
+                        		reRender="#{context},#{context}-form:header, #{context}_pageHeader,#{context}-form:#{context}_bottomScroller" />
+                    	</h:selectOneMenu>
+						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 				<ui:param name="selectBoxID" value="#{context}-form:#{context}:catFilter" />
+						</ui:include>
+                    </h:panelGroup>
                 </f:facet>
-				<c:set var="cat" value="redflags_cat#{event.eventCategory}"/> 
+                <c:set var="cat" value="redflags_cat#{event.eventCategory}"/> 
                 <h:outputFormat value="#{messages[cat]}" >
                 	<f:param value="#{messages[event.eventType]}"/>
                 </h:outputFormat>

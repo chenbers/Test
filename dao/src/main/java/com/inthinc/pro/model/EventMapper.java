@@ -105,6 +105,7 @@ public class EventMapper
         warningList.add(TIWIPRO_EVENT_UNPLUGGED);
         warningList.add(TIWIPRO_EVENT_IDLE);
         warningList.add(TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
+        warningList.add(TIWIPRO_EVENT_NO_DRIVER);
         categoryMap.put(EventCategory.WARNING, warningList);
 
         List<Integer> driverCatList = new ArrayList<Integer>();
