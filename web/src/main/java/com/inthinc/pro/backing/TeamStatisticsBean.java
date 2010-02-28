@@ -71,7 +71,9 @@ public class TeamStatisticsBean extends BaseBean {
     
     private boolean whichMethodToUse() {      
         
-        if ( this.teamCommonBean.getDurationBean().getDuration().equals(Duration.TWELVE) ) {
+        if (    this.teamCommonBean.getDurationBean().getDuration().equals(Duration.DAYS) ||
+                this.teamCommonBean.getDurationBean().getDuration().equals(Duration.THREE) ||
+                this.teamCommonBean.getDurationBean().getDuration().equals(Duration.YEAR) ) {
             return false;
         }
     
