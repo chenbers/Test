@@ -182,7 +182,7 @@
 				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
 				</rich:column>
 				</rich:dataTable>
-				<rich:datascroller align="left" for="driversTrips" action="#{teamTripsBean.clearTrips}" oncomplete="map.clearOverlays();" 
+				<rich:datascroller align="left" for="driversTrips" action="#{teamTripsBean.clearTrips}" oncomplete="map.clearOverlays();colorRows();" 
             		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
             		  limitToList="true"/>
             		 
@@ -202,6 +202,7 @@
     <!-- End Trips Map -->
     </rich:tab>
     <script>
+    function colorRows(){
     		jQuery('#tripsTableForm\\:driversTrips tr').click(function(){
 
     			if(jQuery(this).hasClass('selected-row')){
@@ -215,5 +216,6 @@
 							jQuery(this).children().addClass('selected-row');
 						}
 		});
+    }
     </script>
 </ui:composition>
