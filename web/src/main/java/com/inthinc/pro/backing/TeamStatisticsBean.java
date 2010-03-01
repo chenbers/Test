@@ -61,10 +61,10 @@ public class TeamStatisticsBean extends BaseBean {
         }
         
         // Set the styles for the color-coded box and get the summary totals
+        getDriverTotals();        
         loadScoreStyles();
-        getDriverTotals();
 
-        // Stick the total line in every page number
+        // Stick the total line in every page 
         ArrayList<DriverVehicleScoreWrapper> tmp = new ArrayList<DriverVehicleScoreWrapper>();
         int count = 0;
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {            
@@ -106,7 +106,7 @@ public class TeamStatisticsBean extends BaseBean {
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
         	
         	if(dvsw.getScore().getOverall()== null){
-        		
+        		dvsw.getScore().setOverall(-1);        	    
                 dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
                         -1, ScoreBoxSizes.SMALL));
         	}
