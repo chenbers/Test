@@ -18,7 +18,7 @@ public class TeamCommonBean extends BaseBean {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-    private static final String[] DAZE = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    private static final String[] DAZE = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static final String TODAY = "Today";
     private static final String YESTERDAY = "Yesterday";
     private Map<String,String> dayLabels = new HashMap<String,String>();
@@ -72,21 +72,16 @@ public class TeamCommonBean extends BaseBean {
                         
             GregorianCalendar today = new GregorianCalendar();
             
-            // Gets the day of the week, adds one then add five entries from there (It starts with sunday as 1)
-            int day = today.get(Calendar.DAY_OF_WEEK);
-            day--;
-            for ( int i = 2; i < 7; i++ ) {           
+            // Gets the day of the week, adds seven then get five entries going 
+            //  backward in the array from there (It starts with sunday as 1)
+            int day = today.get(Calendar.DAY_OF_WEEK);   
+            day += 7;
+            for ( int i = 0; i < 5; i++ ) {                         
+                dayLabels.put(Integer.toString(i+2),DAZE[day-2]);   
                 day--;
-                
-                // Check if resetting
-                if ( day == 0 ) {
-                    day = 7;
-                }                
-                
-                dayLabels.put(Integer.toString(i),DAZE[day]);                 
-            }
-            
+            }            
         }
+
         return dayLabels;
     }
 
