@@ -37,7 +37,7 @@
 
 					#{item.driver.person.fullName}
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" rendered="#{item.driver.driverID ne 0}">
 					<f:facet name="header">
 						Score
 					</f:facet>     
@@ -46,9 +46,21 @@
 	                    <ui:param name="scoreStyle" value="#{item.scoreStyle}" /> 
 	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
 	                    <ui:param name="scoreMappingId" value="driverPerformance"/>
-						<ui:param name="context" value="driversOverall" />
+						<ui:param name="context" value="driversOverallAvailable" />
                     </ui:include> 
 				</rich:column>
+				<rich:column width="7%" rendered="#{item.driver.driverID eq 0}">
+					<f:facet name="header">
+						Score
+					</f:facet>     
+                    <ui:include src="/includes/scoreBox.xhtml">
+	                    <ui:param name="score" value="#{item.score.overall}" />
+	                    <ui:param name="scoreStyle" value="#{item.scoreStyle}" /> 
+	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
+	                    <ui:param name="scoreMappingId" value=""/>
+						<ui:param name="context" value="driversOverallNotAvailable" />
+                    </ui:include> 
+				</rich:column>				
 				<rich:column width="8%">
 					<f:facet name="header">
 						Vehicle
