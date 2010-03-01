@@ -113,9 +113,7 @@ public class TeamCommonBean extends BaseBean {
         } else if (     getDurationBean().getDuration().equals(Duration.SEVENDAY) ) {
             return new DateTime().minusDays(Duration.SEVENDAY.getNumberOfDays()).toDateMidnight();                  
             
-        } else if (     getDurationBean().getDuration().equals(Duration.TWELVE) ) {
-            return new DateTime().minusDays(Duration.TWELVE.getNumberOfDays()).toDateMidnight();
-        }
+        } 
         
         
         return local;
