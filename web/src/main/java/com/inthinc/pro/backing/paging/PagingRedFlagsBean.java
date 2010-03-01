@@ -72,6 +72,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
 		CATEGORIES.add(EventCategory.VIOLATION);
 		CATEGORIES.add(EventCategory.EMERGENCY);
 		CATEGORIES.add(EventCategory.DRIVER);
+		CATEGORIES.add(EventCategory.NO_DRIVER);
 		CATEGORIES.add(EventCategory.WARNING);
 	}
 

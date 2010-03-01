@@ -24,7 +24,7 @@ public class NoDriverEvent extends Event{
     }
     public EventCategory getEventCategory()
     {
-        return EventCategory.WARNING;
+        return EventCategory.NO_DRIVER;
     }
 
 }

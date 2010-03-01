@@ -105,7 +105,6 @@ public class EventMapper
         warningList.add(TIWIPRO_EVENT_UNPLUGGED);
         warningList.add(TIWIPRO_EVENT_IDLE);
         warningList.add(TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
-        warningList.add(TIWIPRO_EVENT_NO_DRIVER);
         categoryMap.put(EventCategory.WARNING, warningList);
 
         List<Integer> driverCatList = new ArrayList<Integer>();
@@ -124,6 +123,10 @@ public class EventMapper
         zoneAlertList.add(TIWIPRO_EVENT_WSZONES_ARRIVAL_EX);
         zoneAlertList.add(TIWIPRO_EVENT_WSZONES_DEPARTURE_EX);
         categoryMap.put(EventCategory.ZONE_ALERT, zoneAlertList);
+
+        List<Integer> nodriverCatList = new ArrayList<Integer>();
+        nodriverCatList.add(TIWIPRO_EVENT_NO_DRIVER);
+        categoryMap.put(EventCategory.NO_DRIVER, nodriverCatList);
     }
     
 	private static final Map<EventCategory, List<EventCategoryFilter>> categoryFilterMap = new HashMap<EventCategory, List<EventCategoryFilter>>();
@@ -143,7 +146,6 @@ public class EventMapper
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.LOW_BATTERY, new Integer[] {EventMapper.TIWIPRO_EVENT_LOW_BATTERY}, null));
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.DEVICE_LOW_BATTERY, new Integer[] {EventMapper.TIWIPRO_EVENT_LOW_TIWI_BATTERY}, null));
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.IDLING, new Integer[] {EventMapper.TIWIPRO_EVENT_IDLE}, null));
-    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.NO_DRIVER, new Integer[] {EventMapper.TIWIPRO_EVENT_NO_DRIVER}, null));
     	categoryFilterMap.put(EventCategory.WARNING, eventCategoryFilterList);
 
     	
@@ -157,6 +159,10 @@ public class EventMapper
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.ZONES_ARRIVAL, new Integer[] {EventMapper.TIWIPRO_EVENT_WSZONES_ARRIVAL_EX, EventMapper.TIWIPRO_EVENT_ZONE_ENTER_ALERTED}, null));
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.ZONES_DEPARTURE, new Integer[] {EventMapper.TIWIPRO_EVENT_WSZONES_DEPARTURE_EX, EventMapper.TIWIPRO_EVENT_ZONE_EXIT_ALERTED}, null));
     	categoryFilterMap.put(EventCategory.DRIVER, eventCategoryFilterList);
+
+    	eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
+    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.NO_DRIVER, new Integer[] {EventMapper.TIWIPRO_EVENT_NO_DRIVER}, null));
+    	categoryFilterMap.put(EventCategory.NO_DRIVER, eventCategoryFilterList);
 
     	eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.UNKNOWN, (List<Integer>)null, null));
