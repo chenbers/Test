@@ -7,6 +7,7 @@
 	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
 	<t:saveState value="#{teamStatisticsBean}"/>
@@ -52,7 +53,11 @@
 					<f:facet name="header">
 						Vehicle
 					</f:facet>
-					#{item.vehicle.name}
+                    <pretty:link id="driversVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle ne null}">
+                    	<h:outputText value="#{item.vehicle.name}"/>
+                        <f:param value="#{item.vehicle.vehicleID}"/>
+                    </pretty:link>					
+					<h:outputText id="noDriversVehiclePerformance" value="#{item.vehicle.name}" rendered="#{item.vehicle eq null}"></h:outputText>
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
