@@ -5,9 +5,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
@@ -26,17 +28,17 @@ public class TeamCommonBean extends BaseBean {
 	private Integer groupID;
     private Group group;
     
-    private Date startTime;
-    private Date endTime;
+    private DateMidnight startTime;
+    private DateMidnight endTime;
     
     private DurationBean durationBean;
     
     public void init() {
     	
-        this.durationBean.setDuration(Duration.TWODAY);
-
-        this.startTime = getReportStartTime().toDate();
-        this.endTime = new DateTime().minusDays(0).toDateMidnight().toDate();
+        if ( this.durationBean.getDuration().equals(Duration.DAYS) ) {
+            this.durationBean.setDuration(Duration.TWODAY);
+        }
+        getReportTimes();
         
     }
     
@@ -89,49 +91,58 @@ public class TeamCommonBean extends BaseBean {
         this.dayLabels = dayLabels;
     }
 
-    public DateMidnight getReportStartTime() {
-        DateMidnight local = new DateTime().minusDays(30).toDateMidnight();
-      
+    public void getReportTimes() {      
+        DateTimeZone dtz = DateTimeZone.getDefault();
+        TimeZone user = this.getProUser().getUser().getPerson().getTimeZone();
+        if ( user != null ) {
+            dtz.forTimeZone(user);
+        }
+     
         if (            getDurationBean().getDuration().equals(Duration.ONEDAY) ) {
-            return new DateTime().minusDays(Duration.ONEDAY.getNumberOfDays()).toDateMidnight();
+            this.setStartTime((new DateMidnight().plusDays(0)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().plusDays(1)).withZoneRetainFields(dtz));
             
         } else if (     getDurationBean().getDuration().equals(Duration.TWODAY) ) {
-            return new DateTime().minusDays(Duration.TWODAY.getNumberOfDays()).toDateMidnight();
-                
+            this.setStartTime((new DateMidnight().minusDays(2)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().minusDays(1)).withZoneRetainFields(dtz));
+            
         } else if (     getDurationBean().getDuration().equals(Duration.THREEDAY) ) {
-            return new DateTime().minusDays(Duration.THREEDAY.getNumberOfDays()).toDateMidnight();
+            this.setStartTime((new DateMidnight().minusDays(3)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().minusDays(2)).withZoneRetainFields(dtz));
             
         } else if (     getDurationBean().getDuration().equals(Duration.FOURDAY) ) {            
-            return new DateTime().minusDays(Duration.FOURDAY.getNumberOfDays()).toDateMidnight();
+            this.setStartTime((new DateMidnight().minusDays(4)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().minusDays(3)).withZoneRetainFields(dtz));
             
         } else if (     getDurationBean().getDuration().equals(Duration.FIVEDAY) ) {
-            return new DateTime().minusDays(Duration.FIVEDAY.getNumberOfDays()).toDateMidnight();
+            this.setStartTime((new DateMidnight().minusDays(5)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().minusDays(4)).withZoneRetainFields(dtz));
             
         } else if (     getDurationBean().getDuration().equals(Duration.SIXDAY) ) {
-            return new DateTime().minusDays(Duration.SIXDAY.getNumberOfDays()).toDateMidnight(); 
+            this.setStartTime((new DateMidnight().minusDays(6)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().minusDays(5)).withZoneRetainFields(dtz));
             
         } else if (     getDurationBean().getDuration().equals(Duration.SEVENDAY) ) {
-            return new DateTime().minusDays(Duration.SEVENDAY.getNumberOfDays()).toDateMidnight();                  
+            this.setStartTime((new DateMidnight().minusDays(7)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().minusDays(6)).withZoneRetainFields(dtz));
             
         } 
-        
-        
-        return local;
+      
     }
 
-	public Date getStartTime() {
+	public DateMidnight getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(DateMidnight startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public DateMidnight getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(DateMidnight endTime) {
 		this.endTime = endTime;
 	}
 

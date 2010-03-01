@@ -136,7 +136,7 @@ public class TeamTripsBean extends BaseBean{
 			
 			if((trips == null)||trips.isEmpty()){
 				
-			   List<Trip> tripsList = driverDAO.getTrips(driver.getDriverID(), teamCommonBean.getStartTime(), teamCommonBean.getEndTime());
+			   List<Trip> tripsList = driverDAO.getTrips(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate());
 		       trips = new ArrayList<TeamTrip>();
 
 		       for (Trip trip : tripsList) {
@@ -188,9 +188,9 @@ public class TeamTripsBean extends BaseBean{
 	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
 	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
 
-                violationEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime(), teamCommonBean.getEndTime(), violationEventTypeList, showExcludedEvents);
-                idleEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime(), teamCommonBean.getEndTime(), idleTypes, showExcludedEvents);
-                tamperEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime(), teamCommonBean.getEndTime(), tamperEventTypeList, showExcludedEvents);
+                violationEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
+                idleEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
+                tamperEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
 	            
 	        }
 	    }

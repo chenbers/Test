@@ -25,7 +25,6 @@ public class TeamStatisticsBean extends BaseBean {
     private int numRowsPerPg = 3;
     private List<DriverVehicleScoreWrapper> driverStatistics;
     private DriverVehicleScoreWrapper driverTotals;        
-//    private List<DriverVehicleScoreWrapper> driverTotals;    
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;    
@@ -52,8 +51,9 @@ public class TeamStatisticsBean extends BaseBean {
         boolean useDaily = whichMethodToUse();
         
         if ( useDaily ) {
-            DateMidnight endTime = new DateTime().minusDays(0).toDateMidnight();
-            DateMidnight startTime = teamCommonBean.getReportStartTime();
+            teamCommonBean.getReportTimes();
+            DateMidnight endTime = teamCommonBean.getEndTime();
+            DateMidnight startTime = teamCommonBean.getStartTime();
             driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), startTime.toDateTime(), endTime.toDateTime());
             
         } else {
@@ -77,7 +77,7 @@ public class TeamStatisticsBean extends BaseBean {
         }
         
         // Should count be less than numRowsPerPg-1, add total
-        if ( count < numRowsPerPg-1 ) {
+        if ( (count < numRowsPerPg-1) && (count != 0) ) {
             tmp.add(driverTotals);
         }
         return tmp;
@@ -105,6 +105,7 @@ public class TeamStatisticsBean extends BaseBean {
     private void loadScoreStyles() {
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
         	
+            // -1 to get the N/A to show
         	if(dvsw.getScore().getOverall()== null){
         		dvsw.getScore().setOverall(-1);        	    
                 dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
@@ -119,8 +120,6 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     public DriverVehicleScoreWrapper getDriverTotals() {
-//    public List<DriverVehicleScoreWrapper> getDriverTotals() {        
-//        driverTotals = new ArrayList<DriverVehicleScoreWrapper>();
         driverTotals = new DriverVehicleScoreWrapper();
         
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
@@ -237,6 +236,7 @@ public class TeamStatisticsBean extends BaseBean {
         Vehicle veh = new Vehicle();
         veh.setName("");
         Person prs = new Person();
+//  Commented-out code for display of team name in table        
 //        Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
         
         // Group check, may be driven by bad data
@@ -251,12 +251,10 @@ public class TeamStatisticsBean extends BaseBean {
         dvsw.setDriver(drv);
  
         driverTotals = dvsw;
-//        driverTotals.add(dvsw);        
         
         return driverTotals;
     }
 
-//    public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {    
     public void setDriverTotals(DriverVehicleScoreWrapper driverTotals) {
         this.driverTotals = driverTotals;
     }
