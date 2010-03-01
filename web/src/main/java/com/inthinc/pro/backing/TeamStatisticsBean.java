@@ -22,9 +22,10 @@ public class TeamStatisticsBean extends BaseBean {
 //  Request scope bean for new team page    
     private static final long serialVersionUID = 1L;
     
-
+    private int numRowsPerPg = 3;
     private List<DriverVehicleScoreWrapper> driverStatistics;
-    private List<DriverVehicleScoreWrapper> driverTotals;    
+    private DriverVehicleScoreWrapper driverTotals;        
+//    private List<DriverVehicleScoreWrapper> driverTotals;    
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;    
@@ -59,10 +60,27 @@ public class TeamStatisticsBean extends BaseBean {
             driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getDurationBean().getDuration());
         }
         
-        // Set the styles for the color-coded box
+        // Set the styles for the color-coded box and get the summary totals
         loadScoreStyles();
+        getDriverTotals();
 
-        return driverStatistics;
+        // Stick the total line in every page number
+        ArrayList<DriverVehicleScoreWrapper> tmp = new ArrayList<DriverVehicleScoreWrapper>();
+        int count = 0;
+        for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {            
+            tmp.add(dvsw);
+            count++;
+            if ( count == (numRowsPerPg-1) ) {
+                tmp.add(driverTotals);
+                count = 0;            
+            }
+        }
+        
+        // Should count be less than numRowsPerPg-1, add total
+        if ( count < numRowsPerPg-1 ) {
+            tmp.add(driverTotals);
+        }
+        return tmp;
     }
 
     public void setDriverStatistics(List<DriverVehicleScoreWrapper> driverStatistics) {
@@ -100,9 +118,10 @@ public class TeamStatisticsBean extends BaseBean {
         }
     }
     
-    public List<DriverVehicleScoreWrapper> getDriverTotals() {
-        driverTotals = new ArrayList<DriverVehicleScoreWrapper>();
-//        driverTotals = new DriverVehicleScoreWrapper();
+    public DriverVehicleScoreWrapper getDriverTotals() {
+//    public List<DriverVehicleScoreWrapper> getDriverTotals() {        
+//        driverTotals = new ArrayList<DriverVehicleScoreWrapper>();
+        driverTotals = new DriverVehicleScoreWrapper();
         
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
         
@@ -223,14 +242,23 @@ public class TeamStatisticsBean extends BaseBean {
         drv.setPerson(prs);
         dvsw.setDriver(drv);
  
-//        driverTotals = dvsw;
-        driverTotals.add(dvsw);        
+        driverTotals = dvsw;
+//        driverTotals.add(dvsw);        
         
         return driverTotals;
     }
 
-    public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
+//    public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {    
+    public void setDriverTotals(DriverVehicleScoreWrapper driverTotals) {
         this.driverTotals = driverTotals;
+    }
+
+    public int getNumRowsPerPg() {
+        return numRowsPerPg;
+    }
+
+    public void setNumRowsPerPg(int numRowsPerPg) {
+        this.numRowsPerPg = numRowsPerPg;
     }
     
 }
