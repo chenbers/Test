@@ -91,43 +91,49 @@ public class TeamCommonBean extends BaseBean {
         this.dayLabels = dayLabels;
     }
 
-    public void getReportTimes() {      
+    public void getReportTimes() {   
+        
+        // Get the time zone info
         DateTimeZone dtz = DateTimeZone.getDefault();
         TimeZone user = this.getProUser().getUser().getPerson().getTimeZone();
         if ( user != null ) {
             dtz.forTimeZone(user);
         }
-     
+
+        // Find the time zone adjusted date
         if (            getDurationBean().getDuration().equals(Duration.ONEDAY) ) {
             this.setStartTime((new DateMidnight().plusDays(0)).withZoneRetainFields(dtz));
             this.setEndTime((new DateMidnight().plusDays(1)).withZoneRetainFields(dtz));
             
         } else if (     getDurationBean().getDuration().equals(Duration.TWODAY) ) {
+            this.setStartTime((new DateMidnight().minusDays(1)).withZoneRetainFields(dtz));
+            this.setEndTime((new DateMidnight().plusDays(0)).withZoneRetainFields(dtz));            
+            
+        } else if (     getDurationBean().getDuration().equals(Duration.THREEDAY) ) {
             this.setStartTime((new DateMidnight().minusDays(2)).withZoneRetainFields(dtz));
             this.setEndTime((new DateMidnight().minusDays(1)).withZoneRetainFields(dtz));
             
-        } else if (     getDurationBean().getDuration().equals(Duration.THREEDAY) ) {
+        } else if (     getDurationBean().getDuration().equals(Duration.FOURDAY) ) {            
             this.setStartTime((new DateMidnight().minusDays(3)).withZoneRetainFields(dtz));
             this.setEndTime((new DateMidnight().minusDays(2)).withZoneRetainFields(dtz));
-            
-        } else if (     getDurationBean().getDuration().equals(Duration.FOURDAY) ) {            
+           
+        } else if (     getDurationBean().getDuration().equals(Duration.FIVEDAY) ) {
             this.setStartTime((new DateMidnight().minusDays(4)).withZoneRetainFields(dtz));
             this.setEndTime((new DateMidnight().minusDays(3)).withZoneRetainFields(dtz));
             
-        } else if (     getDurationBean().getDuration().equals(Duration.FIVEDAY) ) {
+        } else if (     getDurationBean().getDuration().equals(Duration.SIXDAY) ) {
             this.setStartTime((new DateMidnight().minusDays(5)).withZoneRetainFields(dtz));
             this.setEndTime((new DateMidnight().minusDays(4)).withZoneRetainFields(dtz));
             
-        } else if (     getDurationBean().getDuration().equals(Duration.SIXDAY) ) {
+        } else if (     getDurationBean().getDuration().equals(Duration.SEVENDAY) ) {
             this.setStartTime((new DateMidnight().minusDays(6)).withZoneRetainFields(dtz));
             this.setEndTime((new DateMidnight().minusDays(5)).withZoneRetainFields(dtz));
             
-        } else if (     getDurationBean().getDuration().equals(Duration.SEVENDAY) ) {
-            this.setStartTime((new DateMidnight().minusDays(7)).withZoneRetainFields(dtz));
-            this.setEndTime((new DateMidnight().minusDays(6)).withZoneRetainFields(dtz));
-            
         } 
       
+        // Back to GMT
+        this.startTime = new DateMidnight(this.getStartTime().getMillis(),DateTimeZone.forID("UTC"));
+        this.endTime = new DateMidnight(this.getEndTime().getMillis(),DateTimeZone.forID("UTC"));
     }
 
 	public DateMidnight getStartTime() {
