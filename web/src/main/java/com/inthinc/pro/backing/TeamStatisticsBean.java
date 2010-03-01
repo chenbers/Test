@@ -108,7 +108,7 @@ public class TeamStatisticsBean extends BaseBean {
         	if(dvsw.getScore().getOverall()== null){
         		
                 dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
-                        0, ScoreBoxSizes.SMALL));
+                        -1, ScoreBoxSizes.SMALL));
         	}
         	else{
         		
@@ -126,6 +126,7 @@ public class TeamStatisticsBean extends BaseBean {
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
         
         // Score
+        int totScore = 0;
         int totTrips = 0;
         int totIdleHi = 0;
         int totIdleLo = 0;
@@ -143,7 +144,10 @@ public class TeamStatisticsBean extends BaseBean {
         int totAggLeftEvt = 0;
         int totAggRightEvt = 0;        
         
-        for ( DriverVehicleScoreWrapper dvsc: driverStatistics ) {            
+        for ( DriverVehicleScoreWrapper dvsc: driverStatistics ) { 
+            if ( dvsc.getScore().getOverall() != null ) {
+                totScore += dvsc.getScore().getOverall().intValue();
+            }
             if ( dvsc.getScore().getTrips() != null ) {
                 totTrips += dvsc.getScore().getTrips().intValue();
             }
@@ -203,6 +207,9 @@ public class TeamStatisticsBean extends BaseBean {
         // The total miles are determined by setting ending to the total
         //  and starting to 0. 
         Score tmp = new Score();
+        tmp.setOverall(totScore/driverStatistics.size());
+        dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
+                        tmp.getOverall().intValue(), ScoreBoxSizes.SMALL));
         tmp.setTrips(totTrips);
         tmp.setIdleHi(totIdleHi);
         tmp.setIdleLo(totIdleLo);
@@ -230,13 +237,14 @@ public class TeamStatisticsBean extends BaseBean {
         Vehicle veh = new Vehicle();
         veh.setName("");
         Person prs = new Person();
-        Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
+//        Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
         
         // Group check, may be driven by bad data
-        prs.setFirst("");
-        if ( (grp != null) && (grp.getName()!= null) ) {
-            prs.setFirst(grp.getName());
-        }        
+        prs.setFirst("Total");
+//        prs.setFirst("");
+//        if ( (grp != null) && (grp.getName()!= null) ) {
+//            prs.setFirst(grp.getName());
+//        }        
         prs.setLast("");
         
         drv.setPerson(prs);
