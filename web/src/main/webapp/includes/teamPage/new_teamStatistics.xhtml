@@ -100,9 +100,10 @@
 						#{messages.team_drive_time}
 					</f:facet>
 
-                    <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{item.score.driveTime/100}" converter="TimeToStringConverter"/>                    
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.driveTime != null}">
+                    	<a4j:actionparam value="#{item.score.driveTime}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
+                    <h:outputText value="00:00:00" rendered="#{item.score.driveTime == null}"/>
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
@@ -110,7 +111,7 @@
 					</f:facet>
 				
                     <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{(item.score.idleLo + item.score.idleHi)/100}" converter="TimeToStringConverter"/>                    
+                    	<a4j:actionparam value="#{(item.score.idleLo + item.score.idleHi)}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
 				</rich:column>
 				<rich:column width="7%">
@@ -118,25 +119,27 @@
 						#{messages.team_low_idle}
 					</f:facet>
 				
-                    <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{item.score.idleLo/100}" converter="TimeToStringConverter"/>                    
-                    </h:outputFormat>					
+                    <h:outputFormat value="#{messages.reports_time}"  rendered="#{item.score.idleLo != null}">
+                    	<a4j:actionparam value="#{item.score.idleLo}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>	
+                    <h:outputText value="00:00:00" rendered="#{item.score.idleLo == null}"/>					
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
 						#{messages.team_high_idle}
 					</f:facet>
 				
-                    <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{item.score.idleHi/100}" converter="TimeToStringConverter"/>                    
-                    </h:outputFormat>										
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.idleHi != null}">
+                    	<a4j:actionparam value="#{item.score.idleHi}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>	
+                    <h:outputText value="00:00:00" rendered="#{item.score.idleHi == null}"/>								
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
 						#{messages.team_idle_percentage}
 					</f:facet>
 				
-					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{(item.score.idleHi+item.score.idleLo)*100/item.score.driveTime}" converter="DoubleConverter"/>
+					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" converter="DoubleConverter"/>
 					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" value="0.00"/>																				
 				</rich:column>
 				<rich:column width="7%">
