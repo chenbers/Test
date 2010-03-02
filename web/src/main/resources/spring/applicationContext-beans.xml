@@ -40,9 +40,9 @@
   <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
     <property name="deviceDAO" ref="deviceDAO"></property>
   </bean>
-<!--  <bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init">-->
-<!-- 	<property name="roleDAO" ref="roleDAO"></property>-->
-<!--  </bean>-->
+  <bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init">
+ 	<property name="roleDAO" ref="roleDAO"></property>
+  </bean>
     
   <!-- Backing Beans -->
   <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean"></bean>
