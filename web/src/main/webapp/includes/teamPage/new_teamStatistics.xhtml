@@ -32,14 +32,14 @@
 
 				<rich:column width="8%">
 					<f:facet name="header">
-						Driver
+						#{messages.team_driver}
 					</f:facet>
 
 					#{item.driver.person.fullName}
 				</rich:column>
 				<rich:column width="7%" rendered="#{item.driver.driverID ne 0}">
 					<f:facet name="header">
-						Score
+						#{messages.team_score}
 					</f:facet>     
                     <ui:include src="/includes/scoreBox.xhtml">
 	                    <ui:param name="score" value="#{item.score.overall}" />
@@ -51,7 +51,7 @@
 				</rich:column>
 				<rich:column width="7%" rendered="#{item.driver.driverID eq 0}">
 					<f:facet name="header">
-						Score
+						#{messages.team_score}
 					</f:facet>     
                     <ui:include src="/includes/scoreBox.xhtml">
 	                    <ui:param name="score" value="#{item.score.overall}" />
@@ -63,7 +63,7 @@
 				</rich:column>				
 				<rich:column width="8%">
 					<f:facet name="header">
-						Vehicle
+						#{messages.team_vehicle}
 					</f:facet>
                     <pretty:link id="driversVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle ne null}">
                     	<h:outputText value="#{item.vehicle.name}"/>
@@ -73,21 +73,21 @@
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Trips
+						#{messages.team_trips}
 					</f:facet>
 
 					#{item.score.trips}
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Stops
+						#{messages.team_stops}
 					</f:facet>
 
 					#{item.score.idleHiEvents + item.score.idleLoEvents + item.score.trips}
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Miles Driven
+						#{messages.team_miles_driven}
 					</f:facet>
 				
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
@@ -97,7 +97,7 @@
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Drive Time
+						#{messages.team_drive_time}
 					</f:facet>
 
                     <h:outputFormat value="#{messages.reports_time}" >
@@ -106,7 +106,7 @@
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Idle Time
+						#{messages.team_idle_time}
 					</f:facet>
 				
                     <h:outputFormat value="#{messages.reports_time}" >
@@ -115,7 +115,7 @@
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Low Idle
+						#{messages.team_low_idle}
 					</f:facet>
 				
                     <h:outputFormat value="#{messages.reports_time}" >
@@ -124,7 +124,7 @@
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						High Idle
+						#{messages.team_high_idle}
 					</f:facet>
 				
                     <h:outputFormat value="#{messages.reports_time}" >
@@ -133,7 +133,7 @@
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Idle %
+						#{messages.team_idle_percentage}
 					</f:facet>
 				
 					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{(item.score.idleHi+item.score.idleLo)*100/item.score.driveTime}" converter="DoubleConverter"/>
@@ -141,21 +141,21 @@
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						MPG
+						#{messages.team_mpg}
 					</f:facet>
 		
 					#{item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy}
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Crashes
+						#{messages.team_crashes}
 					</f:facet>
 				
 					#{item.score.crashTotal}
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
-						Flags
+						#{messages.team_flags}
 					</f:facet>
 				
 					#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}
