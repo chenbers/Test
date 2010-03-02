@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.joda.time.DateMidnight;
@@ -24,7 +25,8 @@ public class TeamStatisticsBean extends BaseBean {
     
     private int numRowsPerPg = 3;
     private List<DriverVehicleScoreWrapper> driverStatistics;
-    private DriverVehicleScoreWrapper driverTotals;        
+    private DriverVehicleScoreWrapper driverTotals;   
+    private HashMap<String,List> cachedResults = new HashMap<String,List>();
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;    
@@ -46,6 +48,12 @@ public class TeamStatisticsBean extends BaseBean {
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
+        
+        // Have this cached?
+        String key = teamCommonBean.getDurationBean().getDuration().name();
+        if (cachedResults.containsKey(key)) {
+            return cachedResults.get(key);
+        }
 
         // Get the data
         boolean useDaily = whichMethodToUse();
@@ -80,6 +88,10 @@ public class TeamStatisticsBean extends BaseBean {
         if ( (count < numRowsPerPg-1) && (count != 0) ) {
             tmp.add(driverTotals);
         }
+        
+        // All set, save so we don't grab the data again
+        cachedResults.put(key, tmp);
+        
         return tmp;
     }
 

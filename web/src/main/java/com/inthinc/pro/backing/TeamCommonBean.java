@@ -35,9 +35,18 @@ public class TeamCommonBean extends BaseBean {
     
     public void init() {
     	
+        // Check if initializing new team
         if ( this.durationBean.getDuration().equals(Duration.DAYS) ) {
             this.durationBean.setDuration(Duration.TWODAY);
         }
+        
+        // Don't get times if the duration is one of the following
+        if (    this.durationBean.getDuration().equals(Duration.DAYS) ||
+                this.durationBean.getDuration().equals(Duration.THREE) ||
+                this.durationBean.getDuration().equals(Duration.YEAR) ) {
+            return;
+        }
+        
         getReportTimes();
         
     }
