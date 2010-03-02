@@ -2,13 +2,14 @@ package com.inthinc.pro.dao.hessian.report;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.AggregationDuration;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
@@ -61,22 +62,37 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     }
 
     @Override
-    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, int aggregationDurationCode) {
         try {
-            return mapper.convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DriverVehicleScoreWrapper.class);
+            return mapper.convertToModelObject(reportService.getDVScoresByGT(groupID, aggregationDurationCode), DriverVehicleScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
     }
 
     @Override
-    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime) {           
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime) {
         try {
-            return mapper.convertToModelObject(reportService.getDVScoresByGSE(groupID, DateUtil.convertDateToSeconds(startTime.toDate()), 
-                    DateUtil.convertDateToSeconds(endTime.toDate())), DriverVehicleScoreWrapper.class);
+            return mapper.convertToModelObject(reportService.getDVScoresByGSE(groupID, DateUtil.convertDateToSeconds(startTime.toDate()), DateUtil.convertDateToSeconds(endTime.toDate())),
+                    DriverVehicleScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, AggregationDuration aggregationDuration) {
+        return getDriverScores(groupID, aggregationDuration.getCode());
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
+        return getDriverScores(groupID, duration.getDvqCode());
+    }
+
+    @Override
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
+        return getDriverScores(groupID, interval.getStart(), interval.getEnd());
     }
 
     @Override

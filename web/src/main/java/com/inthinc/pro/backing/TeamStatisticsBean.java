@@ -14,6 +14,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
@@ -59,13 +60,10 @@ public class TeamStatisticsBean extends BaseBean {
         boolean useDaily = whichMethodToUse();
         
         if ( useDaily ) {
-            teamCommonBean.getReportTimes();
-            DateMidnight endTime = teamCommonBean.getEndTime();
-            DateMidnight startTime = teamCommonBean.getStartTime();
-            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), startTime.toDateTime(), endTime.toDateTime());
+            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval());
             
         } else {
-            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getDurationBean().getDuration());
+            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration());
         }
         
         // Set the styles for the color-coded box and get the summary totals
@@ -101,9 +99,9 @@ public class TeamStatisticsBean extends BaseBean {
     
     private boolean whichMethodToUse() {      
         
-        if (    this.teamCommonBean.getDurationBean().getDuration().equals(Duration.DAYS) ||
-                this.teamCommonBean.getDurationBean().getDuration().equals(Duration.THREE) ||
-                this.teamCommonBean.getDurationBean().getDuration().equals(Duration.YEAR) ) {
+        if (    this.teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) ||
+                this.teamCommonBean.getTimeFrame().equals(TimeFrame.THREE_MONTHS) ||
+                this.teamCommonBean.getTimeFrame().equals(TimeFrame.YEAR) ) {
             return false;
         }
     

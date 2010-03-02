@@ -18,7 +18,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 public enum Duration implements BaseEnum
 {
-    // Teen page values. The -1 indicates not relevant
+    
+    
+    // Team page values. The -1 indicates not relevant
     SEVENDAY(-7,"7 days", 7, "dd", 0, 30, 6),
     SIXDAY(-6,"6 days", 6, "dd", 0, 30, 6),
     FIVEDAY(-5,"5 days", 5, "dd", 0, 30, 6),
@@ -45,6 +47,17 @@ public enum Duration implements BaseEnum
 	    5 - 12 month bins
 	    6 - 30 day bins
     */
+    
+//    typedef enum
+//    {
+//        DriveQDuration1Day    = 0,
+//        DriveQDuration7Day    = 1,
+//        DriveQDuration1Month  = 2,
+//        DriveQDuration3Month  = 3,
+//        DriveQDuration6Month  = 4,
+//        DriveQDuration12Month = 5,
+//        DriveQDuration30Day    = 6
+//    } DriveQDuration;
     
 	public static final int BINSIZE_1_DAY = 0;
 	public static final int BINSIZE_7_DAY = 1;
@@ -125,10 +138,10 @@ public enum Duration implements BaseEnum
         return codeLookup.get(code);
     }
        
-    public String getDatePattern()
-    {
-        return this.datePattern;
-    }
+//    public String getDatePattern()
+//    {
+//        return this.datePattern;
+//    }
 
     public Integer getAggregationBinSize()
     {

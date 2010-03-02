@@ -25,6 +25,7 @@
       </list>
     </property>
   </bean>
+  
 
   <!-- Global Application Context (singleton scoped) beans -->
 <!--  <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">-->
@@ -86,6 +87,7 @@
     <property name="trendBeanState" ref="trendBeanState"></property>
   </bean>
   
+  <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean"/>
   <bean id="teamStatisticsBean" class="com.inthinc.pro.backing.TeamStatisticsBean" scope="request" parent="baseBean">
     <property name="teamCommonBean" ref="teamCommonBean"></property>  
   </bean>        
@@ -94,9 +96,6 @@
     <property name="eventDAO" ref="eventDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean>        
-  <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean" init-method="init">
-    <property name="durationBean" ref="teamDurationBean" />
-  </bean>
  
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">
