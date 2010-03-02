@@ -8,6 +8,7 @@ import java.util.Map;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TimeFrame;
@@ -65,6 +66,7 @@ public class TeamStatisticsBean extends BaseBean {
         // Set the styles for the color-coded box and get the summary totals
         getDriverTotals();        
         loadScoreStyles();
+        convertMPGData();
 
         // Stick the total line in every page 
         ArrayList<DriverVehicleScoreWrapper> tmp = new ArrayList<DriverVehicleScoreWrapper>();
@@ -123,6 +125,23 @@ public class TeamStatisticsBean extends BaseBean {
         				dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL));
         	}
         }
+    }
+    
+    private void convertMPGData() {
+        for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
+                        
+            dvsw.getScore().setMpgHeavy(
+                    dvsw.getScore().getMpgHeavy() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
+                            dvsw.getScore().getMpgHeavy(), getMeasurementType(), getFuelEfficiencyType()) : 0);
+            
+            dvsw.getScore().setMpgLight(
+                    dvsw.getScore().getMpgLight() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
+                            dvsw.getScore().getMpgLight(), getMeasurementType(), getFuelEfficiencyType()) : 0);            
+            
+            dvsw.getScore().setMpgMedium(
+                    dvsw.getScore().getMpgMedium() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
+                            dvsw.getScore().getMpgMedium(), getMeasurementType(), getFuelEfficiencyType()) : 0);
+        }        
     }
     
     public DriverVehicleScoreWrapper getDriverTotals() {
@@ -222,8 +241,10 @@ public class TeamStatisticsBean extends BaseBean {
         tmp.setIdleLoEvents(totIdleLoEvt);
         tmp.setDriveTime(totDriveTime);
         tmp.setEndingOdometer(totMilesDriven);
-        tmp.setStartingOdometer(0);
-        tmp.setMpgHeavy(totMpg/driverStatistics.size());
+        tmp.setStartingOdometer(0); 
+        Number mpg = totMpg/driverStatistics.size();        
+        tmp.setMpgHeavy(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
+                mpg, getMeasurementType(), getFuelEfficiencyType()));
         tmp.setMpgMedium(0);
         tmp.setMpgLight(0);
         tmp.setCrashTotal(totCrash);

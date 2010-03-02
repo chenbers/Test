@@ -143,8 +143,9 @@
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
-		
-					#{item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy}
+					<h:outputFormat value="#{messages.reports_time}">
+						<a4j:actionparam value="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" converter="DoubleConverter"/>
+					</h:outputFormat>
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
