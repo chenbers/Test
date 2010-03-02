@@ -19,10 +19,9 @@ public class TeamCommonBean extends BaseBean {
     private Integer groupID;
     private Group group;
 
-    private TimeFrame timeFrame = TimeFrame.ONE_DAY_AGO;
+    private TimeFrame timeFrame = TimeFrame.TWO_DAYS_AGO;
 
     public void init() {
-
     }
 
     public Integer getGroupID() {
