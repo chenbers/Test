@@ -3,12 +3,12 @@
     <parent>
         <artifactId>root</artifactId>
         <groupId>com.inthinc.pro</groupId>
-        <version>1.1.29</version>
+        <version>1.1.30-SNAPSHOT</version>
     </parent>
 	 <groupId>com.inthinc.pro.webtest</groupId>
   <artifactId>webtest</artifactId>
   <packaging>war</packaging>
-  <version>1.1.29</version>
+  <version>1.1.30-SNAPSHOT</version>
   <name>Pro Portal - Web Test App</name>
   <url>http://maven.apache.org</url>
   <dependencies>
