@@ -112,7 +112,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'TODAY' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,linkLine" 
-                                        value="Today">
+                                        value="#{messages.team_today}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="TODAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>   
@@ -120,7 +120,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,linkLine" 
-                                        value="Yesterday">
+                                        value="#{messages.team_yesterday}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="ONE_DAY_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
@@ -168,7 +168,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'WEEK' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,linkLine" 
-                                        value="Past Week">
+                                        value="#{messages.team_past_week}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="WEEK" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>                                     
@@ -176,7 +176,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'THREE_MONTHS' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,linkLine" 
-                                        value="Past Month">
+                                        value="#{messages.team_past_month}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="THREE_MONTHS" />
                                     </a4j:commandLink> 
                                     <rich:spacer width="5"/>                                 
@@ -184,7 +184,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'YEAR' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,linkLine" 
-                                        value="Past Year">
+                                        value="#{messages.team_past_year}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="YEAR" />
                                     </a4j:commandLink> 
                                 </a4j:outputPanel>
