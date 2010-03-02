@@ -20,7 +20,7 @@ public class TeamTripsBean extends BaseBean{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<DriverWrapper> drivers;
+	private List<DriverTripWrapper> driversTrips;
     private DriverDAO driverDAO;
     private EventDAO eventDAO;
     private List<MapIcon> icons;
@@ -34,33 +34,34 @@ public class TeamTripsBean extends BaseBean{
     private void initDrivers(){
     	
 		List<Driver> driversList = driverDAO.getDrivers(teamCommonBean.getGroupID());
-		drivers = new ArrayList<DriverWrapper>();
-		for (Driver d:driversList){
+		driversTrips = new ArrayList<DriverTripWrapper>();
+		for (Driver driver:driversList){
 			
-			DriverWrapper dw = new DriverWrapper();
-			dw.setDriver(d);
+			DriverTripWrapper dw = new DriverTripWrapper();
+			dw.setDriverID(driver.getDriverID());
+			dw.setFullName(driver.getPerson().getFullName());
 			dw.setSelected(false);
-			drivers.add(dw);
+			driversTrips.add(dw);
 		}
     }
     public void reset(){
     	
-    	for(DriverWrapper dw:drivers){
+    	for(DriverTripWrapper dw:driversTrips){
     		
     		dw.setSelected(false);
-    		dw.clearTrips();
+ //   		dw.clearTrips();
     	}
     }
- 	public List<DriverWrapper> getDrivers() {
+ 	public List<DriverTripWrapper> getDrivers() {
 		
-		return drivers;
+		return driversTrips;
 	}
-	public void setDrivers(List<DriverWrapper> drivers) {
-		this.drivers = drivers;
+	public void setDrivers(List<DriverTripWrapper> drivers) {
+		this.driversTrips = drivers;
 	}
 	public void clearTrips(){
 		
-    	for(DriverWrapper dw:drivers){
+    	for(DriverTripWrapper dw:driversTrips){
     		
     		dw.clearTrips();
     	}		
@@ -93,33 +94,30 @@ public class TeamTripsBean extends BaseBean{
 		this.eventDAO = eventDAO;
 	}
 
-	public class DriverWrapper {
+	public class DriverTripWrapper {
 		
-		private Driver driver;
+		private Integer driverID;
+		private String fullName;
 		private List<TeamTrip> trips;
 	    private List<Event> violationEvents = new ArrayList<Event>();
 	    private List<Event> idleEvents = new ArrayList<Event>();
-	    private List<Event> allEvents = new ArrayList<Event>();
 	    private List<Event> tamperEvents = new ArrayList<Event>();
 
 		boolean selected;
 		
-		public Driver getDriver() {
-			return driver;
-		}
-		public void setDriver(Driver driver) {
-			this.driver = driver;
-			driver.getPerson().setTimeZone(null);
-		}
 		public boolean isSelected() {
 			return selected;
 		}
 		public void setSelected(boolean selected) {
+			
 			this.selected = selected;
+			
 			if (selected) {
-				loadTrips();
+				
+				loadTripsAndEvents();
 			}
 			else {
+				
 				clearTrips();
 			}
 		}
@@ -130,23 +128,19 @@ public class TeamTripsBean extends BaseBean{
 			this.trips = trips;
 		}
 		public void clearTrips(){
-			if (trips != null) trips.clear();
-		}
-		public void loadTrips(){
-			
-			if((trips == null)||trips.isEmpty()){
+			if (trips != null) {
 				
-			   List<Trip> tripsList = driverDAO.getTrips(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate());
-		       trips = new ArrayList<TeamTrip>();
-
-		       for (Trip trip : tripsList) {
-		        	
-		    	   TeamTrip td = new TeamTrip(trip, addressLookup);
-		    	   trips.add(td);
-		 
-		        }
-		        Collections.sort(trips);
-		        Collections.reverse(trips);
+				trips.clear();
+				violationEvents.clear();
+				idleEvents.clear();
+				tamperEvents.clear();
+			}
+		}
+		private void loadTripsAndEvents(){
+			
+			if(trips == null){
+				
+				loadTrips();
 		        loadViolations();
 			}
 		}
@@ -162,20 +156,29 @@ public class TeamTripsBean extends BaseBean{
 		public void setIdleEvents(List<Event> idleEvents) {
 			this.idleEvents = idleEvents;
 		}
-		public List<Event> getAllEvents() {
-			return allEvents;
-		}
-		public void setAllEvents(List<Event> allEvents) {
-			this.allEvents = allEvents;
-		}
 		public List<Event> getTamperEvents() {
 			return tamperEvents;
 		}
 		public void setTamperEvents(List<Event> tamperEvents) {
 			this.tamperEvents = tamperEvents;
 		}
+		
+		private void loadTrips(){
+			
+		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate());
+	       trips = new ArrayList<TeamTrip>();
 
-	   public void loadViolations( ) {
+	       for (Trip trip : tripsList) {
+	        	
+	    	   TeamTrip td = new TeamTrip(trip, addressLookup);
+	    	   trips.add(td);
+	 
+	        }
+	        Collections.sort(trips);
+	        Collections.reverse(trips);
+			
+		}
+		private void loadViolations( ) {
 	        if (violationEvents.isEmpty()) {
 	        	
 	            List<Integer> violationEventTypeList = new ArrayList<Integer>();
@@ -188,12 +191,24 @@ public class TeamTripsBean extends BaseBean{
 	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
 	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
 
-                violationEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
-                idleEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
-                tamperEvents = eventDAO.getEventsForDriver(driver.getDriverID(), teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
+                violationEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
+                idleEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
+                tamperEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
 	            
 	        }
 	    }
+		public Integer getDriverID() {
+			return driverID;
+		}
+		public void setDriverID(Integer driverID) {
+			this.driverID = driverID;
+		}
+		public String getFullName() {
+			return fullName;
+		}
+		public void setFullName(String driverFullName) {
+			this.fullName = driverFullName;
+		}
 	}
 
 }

@@ -14,7 +14,66 @@
 	<script src="#{facesContext.externalContext.request.contextPath}/js/arrowedPolyline.js" type="text/javascript"></script>	
 	
 	<script type="text/javascript">
-	var tripMap = new Object();
+	//<![CDATA[
+	var driverTripsArray = new Array();
+	var tripsSelected = new Array();
+	var overlaysArray = new Array();
+	var boundsArray = new Array();
+	var colorArray = new Array();
+	
+	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
+				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
+
+	function findDriver(driverID){
+
+		for(i=0; i<driverTripsArray.length;i++){
+
+			if(driverTripsArray[i].driverID == driverID) return i;
+		}
+		return -1;
+	}
+
+	function driverSelected(driverID){
+		
+		var i = findDriver(driverID);
+		if (i > -1) return tripsSelected[i];
+		return false;
+	}
+
+	function getOverlays(driverID){
+		
+		var i = findDriver(driverID);
+		if (i > -1) return overlays[i];
+		return null;
+	}
+
+	function getBounds(driverID){
+		
+		var i = findDriver(driverID);
+		if(i >-1) return boundsArray[i];
+		return null;
+	}
+	function removeOverlays(driverID){
+		
+		var i = findDriver(driverID);
+		if(i < 0) return;
+		
+		var overlays = overlaysArray[i];
+
+		for (var j=0; j<overlays.length; j++){
+			
+			map.removeOverlay(overlays[j]);
+		}
+	}
+
+	function removeAllOverlays(){
+		resetTrips();
+		for(var i = 0; i< overlaysArray.length; i++){
+			
+			overlaysArray[i] = new Array();
+		}
+	}
+
 	function orderOfCreation(marker,b) 
 	{
 	      return 1;
@@ -48,55 +107,134 @@
 
     	return marker;
     }
-	
-	</script>
-	
-	<rich:panel id="drawTeamTrips">
- <script type="text/javascript">
- function drawTrips(colorIndex,driver){
-		bounds = map.getBounds();
-		var colors= ["#820f00","#ff4a12","#943bc5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
-					 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
-			var marker;
-			var startlatlng;
-			var endlatlng;
 
-			if ( map == null ) {
-				return;
-			}
-//			map.clearOverlays();
+	 function resetTrips(){
+	
+		 map.clearOverlays();
+		 
+	 }
+	 function clearDownTrips(){
+
+		resetTrips();
+		driverTripsArray = new Array();
+		tripsSelected = new Array();
+		trips = new Array();
+		boundsArray = new Array();
+				 
+	 }	
+	 function calculateBounds(trips){
+
+		if (trips.length == 0){
+
+			boundsArray.push(null);
+		}
+		else{ 
 			
-				for(var j=0;j&lt;driver.trips.length; j++){
-					var tripRoute = driver.trips[j].route;
-					for(var k=0; k&lt;tripRoute.length; k++){
-						bounds.extend(new GLatLng(tripRoute[k].lat,tripRoute[k].lng));
-					}
+			bounds = new GLatLngBounds();
+			 
+			for(var j=0;j<trips.length; j++){
+				var tripRoute = trips[j].route;
+				for(var k=0; k<tripRoute.length; k++){
+					
+					bounds.extend(new GLatLng(tripRoute[k].lat,tripRoute[k].lng));
 				}
-//			}
-			map.setZoom(map.getBoundsZoomLevel(bounds));
-//			for(var i=0; i&lt;driversTrips.length; i++){
-//				var trip = driversTrips[i];
-				for(var j=0;j&lt;driver.trips.length; j++){
-// BDCCArrowedPolyline(points, color, weight, opacity, opts, gapPx, headLength, headColor, headWeight, headOpacity)
-					var tripRoute = driver.trips[j].route;
+			}
+			boundsArray.push(bounds);
+		}
+	 }
+	 
+	 function recalculateBounds(){
+		 
+		 var boundsPoints = new Array();
+		 for(var i=0; i<boundsArray.length; i++){
+
+			if(boundsArray[i] != null){
+				 
+				boundsPoints.push(boundsArray[i].getSouthWest());
+				boundsPoints.push(boundsArray[i].getNorthEast());
+			}
+		 }
+		 if (boundsPoints.length > 1){
+			 var bounds = new GLatLngBounds(boundsPoints[0], boundsPoints[1]);
+
+			 for(var i=2; i < boundsPoints.length-1;i++){
+
+				 bounds.extend(boundsPoints[i]);
+			 }
+			 map.setZoom(map.getBoundsZoomLevel(bounds));
+			 map.setCenter(bounds.getCenter());
+		 }
+	 }
+	 
+	 function addTrips(colorIndex, driverTrips){
+
+		 var i = findDriver(driverTrips.driverID);
+		 
+		 //add data if it's not already here
+		 if (i == -1) {
+
+			 driverTripsArray.push(driverTrips);
+			 tripsSelected.push(true);
+			 colorArray.push(colorIndex);
+			 overlaysArray.push(new Array()); //just a placeholder for now
+			 calculateBounds(driverTrips.trips);
+			 recalculateBounds();
+		 }
+		 else {
+
+			setDriverSelected(driverTrips.driverID, true);
+		 }	
+		 removeAllOverlays();
+		 redrawTrips();
+		 
+	 }
+	 function unselectDriver(driverID){
+
+		 removeOverlays(driverID);
+		 setDriverSelected(driverID,false);
+	 }
+			 
+	 function setDriverSelected(driverID, selected){
+		 
+		 var i = findDriver(driverID);
+		 if(i > -1) tripsSelected[i] = selected;
+	 }
+	 function redrawTrips(){
+		 
+		// build the overlay arrays for everyone and add the markers to the map
+		for(var i=0; i< driverTripsArray.length; i++){
+			
+			var overlays = overlaysArray[i];
+
+			if(tripsSelected[i]){
+				
+				var driverTrips = driverTripsArray[i];
+							
+				for(var j=0;j<driverTrips.trips.length; j++){
+					
+					// BDCCArrowedPolyline(points, color, weight, opacity, opts, gapPx, headLength, headColor, headWeight, headOpacity)
+					var tripRoute = driverTrips.trips[j].route;
 					var latLngArray = new Array();
-					for(var k=0; k&lt;tripRoute.length; k++){
+					for(var k=0; k<tripRoute.length; k++){
+						
 						latLngArray.push(new GLatLng(tripRoute[k].lat,tripRoute[k].lng));
 					}
-					var endlatlng = new GLatLng(driver.trips[j].routeLastStep.lat, driver.trips[j].routeLastStep.lng);
+					var endlatlng = new GLatLng(driverTrips.trips[j].routeLastStep.lat, driverTrips.trips[j].routeLastStep.lng);
 					latLngArray.push(endlatlng);
 					
-					var arrowPolyline = new BDCCArrowedPolyline(latLngArray,colors[colorIndex], 4, 0.9,{geodesic:true}, 
-							100, 16,colors[colorIndex],1,0.9);
+					var arrowPolyline = new BDCCArrowedPolyline(latLngArray,colors[colorArray[i]], 4, 0.9,{geodesic:true}, 
+							100, 16,colors[colorArray[i]],1,0.9);
+					
 					map.addOverlay(arrowPolyline);
-				
+					overlays.push(arrowPolyline);
 					//Start of trip marker
-					startlatlng = new GLatLng(driver.trips[j].beginningPoint.lat, driver.trips[j].beginningPoint.lng);
+					startlatlng = new GLatLng(driverTrips.trips[j].beginningPoint.lat, driverTrips.trips[j].beginningPoint.lng);
 					marker = createMarker(startlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 					map.addOverlay(marker);
+					overlays.push(marker);
 					//End of trip marker
-
-					if (driver.trips[j].inProgress)
+			
+					if (driverTrips.trips[j].inProgress)
 					{
 						marker = createMarker(endlatlng, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png");
 					}
@@ -105,28 +243,44 @@
 						marker = createMarker(endlatlng,"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
 					}
 					map.addOverlay(marker);
+					overlays.push(marker);
 				}
-//			}
-				map.setCenter(bounds.getCenter());
-
-					for(var k=0; k&lt;driver.violationEvents.length; k++){
-						var violation = new GLatLng(driver.violationEvents[k].latitude, driver.violationEvents[k].longitude);
-						map.addOverlay(createMarker(violation,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-					}
-					for(var k=0; k&lt;driver.idleEvents.length; k++){
-						var idle = new GLatLng(driver.idleEvents[k].latitude,driver.idleEvents[k].longitude);
-						map.addOverlay(createMarker(idle, "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
-					}
-					for(var k=0; k&lt;driver.tamperEvents.length; k++){
-						var tamper = new GLatLng(driver.tamperEvents[k].latitude,driver.tamperEvents[k].longitude);
-						map.addOverlay(createMarker(tamper, "#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png"));
-					}
-				
+			
+				for(var k=0; k<driverTrips.violationEvents.length; k++){
+					var violation = new GLatLng(driverTrips.violationEvents[k].latitude, driverTrips.violationEvents[k].longitude);
+					var marker = createMarker(violation,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png");
+					map.addOverlay(marker);
+					overlays.push(marker);
+				}
+				for(var k=0; k<driverTrips.idleEvents.length; k++){
+					var idle = new GLatLng(driverTrips.idleEvents[k].latitude,driverTrips.idleEvents[k].longitude);
+					var marker = createMarker(idle, "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png");
+					map.addOverlay(marker);
+					overlays.push(marker);
+				}
+				for(var k=0; k<driverTrips.tamperEvents.length; k++){
+					var tamper = new GLatLng(driverTrips.tamperEvents[k].latitude,driverTrips.tamperEvents[k].longitude);
+					var marker = createMarker(tamper, "#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png");
+					map.addOverlay(marker);
+					overlays.push(marker);
+				}
+			}
 		}
+	}
+	function processTrips(colorIndex, driverTrips){
+		if (driverTrips.selected){
+			
+			addTrips(colorIndex,driverTrips);
+		}
+		else{
+			
+			unselectDriver(driverTrips.driverID);
+		}
+	}
+//]]>
  </script>
-</rich:panel>
 	
-    <rich:tab label="Trips" onClick="alert('trips')">
+    <rich:tab label="Trips" oncomplete="redrawTrips()">
    	<!-- Trips Map -->
    	<div class="section">
 	    <div class="panel_nw">    
@@ -146,16 +300,16 @@
 					       		rowKeyVar="index"
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
-								rows="1"
+								rows="15"
 								columnsWidth="5%,85%,10%"
 								width="100%">
 				<rich:column>
 				<f:facet name="header">
-				     #{messages.teamPage_hideShow}
+				     <h:outputText value="#{messages.teamPage_hideShow}"/>
                 </f:facet>
                 <h:selectBooleanCheckbox id="select" value="#{driver.selected}">
                   <a4j:support event="onclick" data="#{driver}"
-                  				oncomplete="drawTrips(#{index},data)" limitToList="true" >
+                  				oncomplete="processTrips(#{index},data)" >
                    </a4j:support>
                   				
                 </h:selectBooleanCheckbox>
@@ -163,9 +317,9 @@
 												
 				<rich:column>
 					<f:facet name="header">
-						#{messages.teamPage_driverHeader}
+						<h:outputText value="#{messages.teamPage_driverHeader}"/>
 					</f:facet>
-					#{driver.driver.person.fullName}
+					<h:outputText value="#{driver.fullName}"/>
 				</rich:column>
 				<rich:column>
 				<f:facet name="header">
@@ -179,9 +333,8 @@
 				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
 				</rich:column>
 				</rich:dataTable>
-				<rich:datascroller align="left" for="driversTrips" action="#{teamTripsBean.reset}" oncomplete="map.clearOverlays();" 
-            		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
-            		  limitToList="true"/>
+				<rich:datascroller align="left" for="driversTrips" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 
+            		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"/>
             		 
 				 </a4j:region>
  				</a4j:form>	
