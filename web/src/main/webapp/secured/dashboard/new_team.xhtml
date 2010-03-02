@@ -112,7 +112,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,linkLine" 
-                                        value="#{teamCommonBean.dayLabels['0']}">
+                                        value="Today">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="ONE_DAY_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>   
@@ -120,7 +120,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="teamStatisticsOutputPanel,linkLine" 
-                                        value="#{teamCommonBean.dayLabels['1']}">
+                                        value="Yesterday">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="TWO_DAYS_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
