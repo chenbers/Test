@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Interval;
 
@@ -58,6 +59,14 @@ public class TeamCommonBean extends BaseBean {
         return dayLabels;
     }
 
+    public DateTime getStartTime() {
+        return timeFrame.getInterval().getStart();
+    }
+    
+    public DateTime getEndTime() {
+        return timeFrame.getInterval().getEnd();
+    }
+    
     public TimeFrame getTimeFrame() {
         return timeFrame;
     }
