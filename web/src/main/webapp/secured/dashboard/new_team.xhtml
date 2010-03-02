@@ -11,6 +11,7 @@
 	
 
 	<ui:param name="context" value="team" />
+	<ui:param name="title" value="#{messages.team_team} - #{teamCommonBean.group.name}"/>
 	
     <ui:define name="scripts">
        <style>
@@ -70,10 +71,6 @@
     					</ui:include>
     				</li>
     				
-    				<li class="r grid_icon">
-    				<h:outputLink value="#{helpBean.path}#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">
-    					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
-    				</h:outputLink></li>
     				<h:outputText rendered="#{showContextMenu eq 'true'}">
     				<li class="r grid_icon">
     					<h:panelGroup id="overview_tools_icon">
