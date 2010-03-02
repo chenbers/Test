@@ -144,7 +144,6 @@ public class EventMapper
     	eventCategoryFilterList = new ArrayList<EventCategoryFilter>();
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.TAMPERING, new Integer[] {EventMapper.TIWIPRO_EVENT_UNPLUGGED, EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP}, null));
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.LOW_BATTERY, new Integer[] {EventMapper.TIWIPRO_EVENT_LOW_BATTERY}, null));
-    	eventCategoryFilterList.add(new EventCategoryFilter(EventType.DEVICE_LOW_BATTERY, new Integer[] {EventMapper.TIWIPRO_EVENT_LOW_TIWI_BATTERY}, null));
     	eventCategoryFilterList.add(new EventCategoryFilter(EventType.IDLING, new Integer[] {EventMapper.TIWIPRO_EVENT_IDLE}, null));
     	categoryFilterMap.put(EventCategory.WARNING, eventCategoryFilterList);
 
