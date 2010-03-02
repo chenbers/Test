@@ -484,6 +484,7 @@ a.ls_tab_mile {
 
 .datagrid td {
    border-bottom: 1px solid #8BAD37; 
+   padding: 8px;
 }
 
 /* LEFT Tabs for radio button list */
