@@ -3,16 +3,12 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
+import java.util.Map;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
@@ -27,7 +23,7 @@ public class TeamStatisticsBean extends BaseBean {
     private int numRowsPerPg = 3;
     private List<DriverVehicleScoreWrapper> driverStatistics;
     private DriverVehicleScoreWrapper driverTotals;   
-    private HashMap<String,List> cachedResults = new HashMap<String,List>();
+    private Map<String,List> cachedResults = new HashMap<String,List>();
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;    
@@ -51,7 +47,7 @@ public class TeamStatisticsBean extends BaseBean {
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
         
         // Have this cached?
-        String key = teamCommonBean.getDurationBean().getDuration().name();
+        String key = teamCommonBean.getTimeFrame().name();
         if (cachedResults.containsKey(key)) {
             return cachedResults.get(key);
         }
