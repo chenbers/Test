@@ -111,6 +111,10 @@ public class TripsBean extends BaseBean {
                 // Generate Stats on selected
                 setSelectedTrip(trips.get(0));
                 generateStats();
+            } else {
+                milesDriven = 0;
+                totalDriveSeconds = 0;
+                idleSeconds = 0;
             }
             tripsMap = new LinkedHashMap<Long,TripDisplay>();
             
