@@ -92,7 +92,7 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
 
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
-        return getDriverScores(groupID, interval.getStart(), interval.getEnd());
+        return getDriverScores(groupID, interval.getStart(), interval.getStart());
     }
 
     @Override
