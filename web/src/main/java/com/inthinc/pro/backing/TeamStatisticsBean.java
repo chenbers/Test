@@ -10,6 +10,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
@@ -23,7 +24,7 @@ public class TeamStatisticsBean extends BaseBean {
     
     private int numRowsPerPg = 3;
     private List<DriverVehicleScoreWrapper> driverStatistics;
-    private DriverVehicleScoreWrapper driverTotals;   
+    private List<DriverVehicleScoreWrapper> driverTotals;   
     private Map<String,List> cachedResults = new HashMap<String,List>();
 
     private GroupReportDAO groupReportDAO;  
@@ -63,32 +64,14 @@ public class TeamStatisticsBean extends BaseBean {
             driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration());
         }
         
-        // Set the styles for the color-coded box and get the summary totals
-        getDriverTotals();        
+        // Set the styles for the color-coded box and convert the mpg data               
         loadScoreStyles();
         convertMPGData();
 
-        // Stick the total line in every page 
-        ArrayList<DriverVehicleScoreWrapper> tmp = new ArrayList<DriverVehicleScoreWrapper>();
-        int count = 0;
-        for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {            
-            tmp.add(dvsw);
-            count++;
-            if ( count == (numRowsPerPg-1) ) {
-                tmp.add(driverTotals);
-                count = 0;            
-            }
-        }
-        
-        // Should count be less than numRowsPerPg-1, add total
-        if ( (count < numRowsPerPg-1) && (count != 0) ) {
-            tmp.add(driverTotals);
-        }
-        
         // All set, save so we don't grab the data again
-        cachedResults.put(key, tmp);
+        cachedResults.put(key, driverStatistics);
         
-        return tmp;
+        return driverStatistics;
     }
 
     public void setDriverStatistics(List<DriverVehicleScoreWrapper> driverStatistics) {
@@ -144,8 +127,8 @@ public class TeamStatisticsBean extends BaseBean {
         }        
     }
     
-    public DriverVehicleScoreWrapper getDriverTotals() {
-        driverTotals = new DriverVehicleScoreWrapper();
+    public List<DriverVehicleScoreWrapper> getDriverTotals() {
+        driverTotals = new ArrayList<DriverVehicleScoreWrapper>();
         
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
         
@@ -202,8 +185,8 @@ public class TeamStatisticsBean extends BaseBean {
             if ( dvsc.getScore().getMpgMedium() != null ) {
                 totMpg += dvsc.getScore().getMpgMedium().intValue();                
             }
-            if ( dvsc.getScore().getCrashTotal() != null ) {
-                totCrash += dvsc.getScore().getCrashTotal().intValue();
+            if ( dvsc.getScore().getCrashEvents() != null ) {
+                totCrash += dvsc.getScore().getCrashEvents().intValue();
             }
             if ( dvsc.getScore().getSeatbeltEvents() != null ) {
                 totSeatBeltEvt += dvsc.getScore().getSeatbeltEvents().intValue();
@@ -263,26 +246,24 @@ public class TeamStatisticsBean extends BaseBean {
         Vehicle veh = new Vehicle();
         veh.setName("");
         Person prs = new Person();
-//  Commented-out code for display of team name in table        
-//        Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
+       
+        Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
         
-        // Group check, may be driven by bad data
-        prs.setFirst("Total");
-//        prs.setFirst("");
-//        if ( (grp != null) && (grp.getName()!= null) ) {
-//            prs.setFirst(grp.getName());
-//        }        
-        prs.setLast("");
+        // Group check, may be driven by bad data        
+        prs.setFirst("");
+        if ( (grp != null) && (grp.getName()!= null) ) {
+            prs.setFirst(grp.getName());
+        }        
         
         drv.setPerson(prs);
         dvsw.setDriver(drv);
  
-        driverTotals = dvsw;
+        driverTotals.add(dvsw);
         
         return driverTotals;
     }
 
-    public void setDriverTotals(DriverVehicleScoreWrapper driverTotals) {
+    public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
         this.driverTotals = driverTotals;
     }
 
