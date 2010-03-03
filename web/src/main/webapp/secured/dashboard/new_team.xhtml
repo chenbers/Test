@@ -42,7 +42,7 @@
 					map.addControl(new GMapTypeControl());
 					map.addControl(new GOverviewMapControl()); 
 					map.setMapType(G_NORMAL_MAP);
-					map.setCenter(new GLatLng(40.557078,-111.964102), 14);					
+					map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});					
 				}
         	}
 			function bodyLoad() {
