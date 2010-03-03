@@ -99,7 +99,7 @@
 						#{teamStatisticsBean.driverTotals.score.idleHiEvents + teamStatisticsBean.driverTotals.score.idleLoEvents + teamStatisticsBean.driverTotals.score.trips}
 					</f:facet>
 					-->
-					#{item.score.idleHiEvents + item.score.idleLoEvents + item.score.trips}
+					#{item.score.idleHiEvents + item.score.trips}
 				</rich:column>
 				<rich:column width="7%" sortBy="#{(item.score.endingOdometer - item.score.startingOdometer)/100}">
 					<f:facet name="header">
