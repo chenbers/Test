@@ -194,10 +194,10 @@
                                     <rich:spacer width="5"/>                                     
                                     <a4j:commandLink id="teamDurationPanelHeaderThreeMonths"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'THREE_MONTHS' ? 'selected_duration' : ''}" 
+                                        styleClass="#{teamCommonBean.timeFrame eq 'MONTH' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{messages.team_past_month}">
-                                        <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="THREE_MONTHS" />
+                                        <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="MONTH" />
                                     </a4j:commandLink> 
                                     <rich:spacer width="5"/>                                 
                                     <a4j:commandLink id="teamDurationPanelHeaderTwelveMonths"                                          

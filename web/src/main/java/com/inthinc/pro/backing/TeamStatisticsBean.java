@@ -17,7 +17,6 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.util.MessageUtil;
-import com.sun.org.apache.xml.internal.serializer.utils.Messages;
 
 public class TeamStatisticsBean extends BaseBean {
 
@@ -84,7 +83,7 @@ public class TeamStatisticsBean extends BaseBean {
     private boolean whichMethodToUse() {      
         
         if (    this.teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) ||
-                this.teamCommonBean.getTimeFrame().equals(TimeFrame.THREE_MONTHS) ||
+                this.teamCommonBean.getTimeFrame().equals(TimeFrame.MONTH) ||
                 this.teamCommonBean.getTimeFrame().equals(TimeFrame.YEAR) ) {
             return false;
         }
