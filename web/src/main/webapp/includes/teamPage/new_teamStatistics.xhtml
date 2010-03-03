@@ -11,14 +11,17 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
 
-	<rich:tab label="Driver Statistics" id="stats" >
+	<rich:tab id="statisticsTab" >
+	 <f:facet name="label">
+	 	<h:panelGroup>
+	 		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"/>Driver Statistics
+	 	</h:panelGroup>
+	 </f:facet>
 	
 	<!-- Driver Statistics -->
-	<a4j:outputPanel id="statisticsTab">
 	<div class="section">
 
-	    <div class="panel_w">
-	       <div class="datagrid_panel" style="width: 900px;">
+	       <div class="datagrid_panel" style="width: 880px;">
 	      
 
 	       <!-- Table -->
@@ -39,7 +42,10 @@
 						#{teamStatisticsBean.driverTotals.driver.person.fullName}
 					</f:facet>
 					-->
-					#{item.driver.person.fullName}
+                        <pretty:link mappingId="driverPerformance">
+							  #{item.driver.person.fullName}
+                              <f:param value="#{item.driver.driverID}"/>
+                        </pretty:link>
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
@@ -348,13 +354,7 @@
 
 				
 			</div>
-	    </div>
-	    
-	    <div class="panel_sw">
-	       <div class="panel_statusbar"/>
-	   	</div>
    	</div>
-   	</a4j:outputPanel>
     <!-- End Driver Statistics Table -->
     </rich:tab>
 

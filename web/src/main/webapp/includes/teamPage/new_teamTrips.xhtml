@@ -280,16 +280,15 @@
 //]]>
  </script>
 	
-    <rich:tab label="Trips" oncomplete="redrawTrips()">
+    <rich:tab oncomplete="redrawTrips()">
+    
+	 <f:facet name="label">
+	 	<h:panelGroup>
+	 		<h:graphicImage value="/images/ico_map.png" /><rich:spacer width="10"/>Trips
+	 	</h:panelGroup>
+	 </f:facet>
    	<!-- Trips Map -->
    	<div class="section">
-	    <div class="panel_nw">    
-	       <div class="panel_title">
-	       <h:graphicImage value="/images/ico_map.png" />Trips
-	       </div>
-	    </div>
-	    <div class="panel_w">
-	       <div class="panel_content">
 	       
 	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0;">
 	        	<a4j:form id="tripsTableForm">
@@ -343,11 +342,6 @@
 	            
 			 <div id="map-canvas" style="float:right; width: 74%; height: 500px; border: 0"></div>
 			 <div style="clear:both"></div>
-	       </div>
-	    </div>
-	    <div class="panel_sw">
-	       <div class="panel_statusbar"/>
-	   	</div>
    	</div>
     <!-- End Trips Map -->
     </rich:tab>
