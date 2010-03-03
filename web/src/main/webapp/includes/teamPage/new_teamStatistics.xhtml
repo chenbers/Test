@@ -184,7 +184,7 @@
                     </h:outputFormat>	
                     <h:outputText value="00:00:00" rendered="#{item.score.idleHi == null}"/>								
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}">
 					<f:facet name="header">
 						#{messages.team_idle_percentage}
 					</f:facet>
