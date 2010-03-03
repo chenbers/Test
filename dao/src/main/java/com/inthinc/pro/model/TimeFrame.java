@@ -11,12 +11,12 @@ public enum TimeFrame {
 
     TODAY(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime(), DateTimeZone.UTC), new DateMidnight(new DateTime().plusDays(1), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime(), DateTimeZone.UTC), new DateMidnight(new DateTime(), DateTimeZone.UTC));
         }
     },
     DAY(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime(), DateTimeZone.UTC), new DateMidnight(new DateTime().plusDays(1), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime(), DateTimeZone.UTC), new DateMidnight(new DateTime(), DateTimeZone.UTC));
         }
     },
     ONE_DAY_AGO(AggregationDuration.ONE_DAY) {
