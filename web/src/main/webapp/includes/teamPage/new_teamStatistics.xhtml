@@ -11,7 +11,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
 
-	<rich:tab id="statisticsTab" >
+	<rich:tab>
 	 <f:facet name="label">
 	 	<h:panelGroup>
 	 		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"/>Driver Statistics
@@ -19,7 +19,7 @@
 	 </f:facet>
 	
 	<!-- Driver Statistics -->
-	<div class="section">
+	<a4j:outputPanel id="statisticsTab" styleClass="section" layout="block">
 
 	       <div class="datagrid_panel" style="width: 880px;">
 	      
@@ -352,9 +352,9 @@
 			
 			</h:form>
 
-				
+			
 			</div>
-   	</div>
+			</a4j:outputPanel>
     <!-- End Driver Statistics Table -->
     </rich:tab>
 
