@@ -16,6 +16,8 @@ import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.util.MessageUtil;
+import com.sun.org.apache.xml.internal.serializer.utils.Messages;
 
 public class TeamStatisticsBean extends BaseBean {
 
@@ -67,6 +69,7 @@ public class TeamStatisticsBean extends BaseBean {
         // Set the styles for the color-coded box and convert the mpg data               
         loadScoreStyles();
         convertMPGData();
+        cleanData();
 
         // All set, save so we don't grab the data again
         cachedResults.put(key, driverStatistics);
@@ -102,7 +105,7 @@ public class TeamStatisticsBean extends BaseBean {
                 dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
                         -1, ScoreBoxSizes.SMALL));
         	}
-        	else{
+         	else{
         		
         		dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
         				dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL));
@@ -111,7 +114,7 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     private void convertMPGData() {
-        for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
+        for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {
                         
             dvsw.getScore().setMpgHeavy(
                     dvsw.getScore().getMpgHeavy() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
@@ -125,6 +128,27 @@ public class TeamStatisticsBean extends BaseBean {
                     dvsw.getScore().getMpgMedium() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
                             dvsw.getScore().getMpgMedium(), getMeasurementType(), getFuelEfficiencyType()) : 0);
         }        
+    }
+    
+    public void cleanData() {
+        
+        // A place to facilitate sorting and other good things
+        for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {
+            
+            if ( dvsw.getScore().getTrips() == null ) {
+                dvsw.getScore().setTrips(0);
+            }
+            
+            if ( dvsw.getScore().getCrashEvents() == null ) {
+                dvsw.getScore().setCrashEvents(0);
+            }
+            
+            if ( dvsw.getVehicle() == null ) {
+                Vehicle v = new Vehicle();
+                v.setName(MessageUtil.getMessageString("reports_none_assigned"));
+                dvsw.setVehicle(v);
+            }
+        }
     }
     
     public List<DriverVehicleScoreWrapper> getDriverTotals() {

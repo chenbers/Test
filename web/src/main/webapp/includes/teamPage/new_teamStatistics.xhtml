@@ -33,7 +33,7 @@
 				rowClasses="tableOdd,tableEven"
 				rows="#{teamStatisticsBean.numRowsPerPg}">				
 
-				<rich:column width="8%">
+				<rich:column width="8%" sortBy="#{item.driver.person.first}">
 					<f:facet name="header">
 						#{messages.team_driver}
 					</f:facet>
@@ -47,7 +47,7 @@
                               <f:param value="#{item.driver.driverID}"/>
                         </pretty:link>
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.overall}">
 					<f:facet name="header">
 						#{messages.team_score}
 					</f:facet>
@@ -64,7 +64,7 @@
 						<ui:param name="context" value="driversOverallAvailable" />
                     </ui:include> 
 				</rich:column>			
-				<rich:column width="8%">
+				<rich:column width="8%" sortBy="#{item.vehicle.name}">
 					<f:facet name="header">
 						#{messages.team_vehicle}
 					</f:facet>
@@ -73,13 +73,13 @@
 					
 					</f:facet>
 					-->
-                    <pretty:link id="driversVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle ne null}">
+                    <pretty:link id="driversVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle.name ne messages.reports_none_assigned}">
                     	<h:outputText value="#{item.vehicle.name}"/>
                         <f:param value="#{item.vehicle.vehicleID}"/>
                     </pretty:link>					
-					<h:outputText id="noDriversVehiclePerformance" value="#{item.vehicle.name}" rendered="#{item.vehicle eq null}"></h:outputText>
+					<h:outputText id="noDriversVehiclePerformance" value="#{item.vehicle.name}" rendered="#{item.vehicle.name eq messages.reports_none_assigned}"></h:outputText>
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.trips}">
 					<f:facet name="header">
 						#{messages.team_trips}
 					</f:facet>
@@ -90,7 +90,7 @@
 					-->
 					#{item.score.trips}
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.idleHiEvents+item.score.idleLoEvents+item.score.trips}">
 					<f:facet name="header">
 						#{messages.team_stops}
 					</f:facet>
@@ -101,7 +101,7 @@
 					-->
 					#{item.score.idleHiEvents + item.score.idleLoEvents + item.score.trips}
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{(item.score.endingOdometer - item.score.startingOdometer)/100}">
 					<f:facet name="header">
 						#{messages.team_miles_driven}
 					</f:facet>
@@ -118,7 +118,7 @@
                     	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                     </h:outputFormat>										
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.driveTime}">
 					<f:facet name="header">
 						#{messages.team_drive_time}
 					</f:facet>
@@ -135,7 +135,7 @@
                     </h:outputFormat>										
                     <h:outputText value="00:00:00" rendered="#{item.score.driveTime == null}"/>
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{(item.score.idleLo + item.score.idleHi)}">
 					<f:facet name="header">
 						#{messages.team_idle_time}
 					</f:facet>
@@ -150,7 +150,7 @@
                     	<a4j:actionparam value="#{(item.score.idleLo + item.score.idleHi)}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.idleLo}">
 					<f:facet name="header">
 						#{messages.team_low_idle}
 					</f:facet>
@@ -167,7 +167,7 @@
                     </h:outputFormat>	
                     <h:outputText value="00:00:00" rendered="#{item.score.idleLo == null}"/>					
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.idleHi}">
 					<f:facet name="header">
 						#{messages.team_high_idle}
 					</f:facet>
@@ -197,7 +197,7 @@
 					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" converter="DoubleConverter"/>
 					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" value="0.00"/>																				
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}">
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
@@ -212,18 +212,18 @@
 						<a4j:actionparam value="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" converter="DoubleConverter"/>
 					</h:outputFormat>
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.crashEvents}">
 					<f:facet name="header">
 						#{messages.team_crashes}
 					</f:facet>
 					<!-- 
 					<f:facet name="footer">
-						#{teamStatisticsBean.driverTotals.score.crashTotal}
+						#{teamStatisticsBean.driverTotals.score.crashEvents}
 					</f:facet>
 					-->				
 					#{item.score.crashEvents}
 				</rich:column>
-				<rich:column width="7%">
+				<rich:column width="7%" sortBy="#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}">
 					<f:facet name="header">
 						#{messages.team_flags}
 					</f:facet>
