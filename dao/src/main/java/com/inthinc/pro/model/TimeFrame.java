@@ -11,47 +11,47 @@ public enum TimeFrame {
 
     TODAY(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(1), DateTimeZone.UTC), new DateMidnight(new DateTime(), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime(), DateTimeZone.UTC), new DateMidnight(new DateTime().plusDays(1), DateTimeZone.UTC));
         }
     },
     DAY(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(1), DateTimeZone.UTC), new DateMidnight(new DateTime(), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime(), DateTimeZone.UTC), new DateMidnight(new DateTime().plusDays(1), DateTimeZone.UTC));
         }
     },
     ONE_DAY_AGO(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(2), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(1), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime().minusDays(1), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(1), DateTimeZone.UTC));
         }
     },
     TWO_DAYS_AGO(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(3), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(2), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime().minusDays(2), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(2), DateTimeZone.UTC));
         }
     },
     THREE_DAYS_AGO(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(4), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(3), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime().minusDays(3), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(3), DateTimeZone.UTC));
         }
     },
     FOUR_DAYS_AGO(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(5), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(4), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime().minusDays(4), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(4), DateTimeZone.UTC));
         }
     },
     FIVE_DAYS_AGO(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(6), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(5), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime().minusDays(5), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(5), DateTimeZone.UTC));
         }
     },
     SIX_DAYS_AGO(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(7), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(6), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime().minusDays(6), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(6), DateTimeZone.UTC));
         }
     },
     SEVEN_DAYS_AGO(AggregationDuration.ONE_DAY) {
         public Interval getInterval() {
-            return new Interval(new DateMidnight(new DateTime().minusDays(8), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(7), DateTimeZone.UTC));
+            return new Interval(new DateMidnight(new DateTime().minusDays(7), DateTimeZone.UTC), new DateMidnight(new DateTime().minusDays(7), DateTimeZone.UTC));
         }
     },
     WEEK(AggregationDuration.SEVEN_DAY) {
