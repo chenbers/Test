@@ -90,7 +90,7 @@
 					-->
 					#{item.score.trips}
 				</rich:column>
-				<rich:column width="7%" sortBy="#{item.score.idleHiEvents+item.score.idleLoEvents+item.score.trips}">
+				<rich:column width="7%" sortBy="#{item.score.idleHiEvents+item.score.trips}">
 					<f:facet name="header">
 						#{messages.team_stops}
 					</f:facet>
@@ -280,7 +280,7 @@
 					<f:facet name="header">
 						#{messages.team_stops}
 					</f:facet>
-					#{item.score.idleHiEvents + item.score.idleLoEvents + item.score.trips}
+					#{item.score.idleHiEvents + item.score.trips}
 				</rich:column>
 				<rich:column width="7%">
 					<f:facet name="header">
