@@ -234,10 +234,12 @@
 					-->
 					#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}
 				</rich:column>
+				<f:facet name="footer">
+				
+			<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" renderIfSinglePage="true" />
+				</f:facet>
 			</rich:dataTable>
 			
-			<br></br>
-			<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" renderIfSinglePage="true" />
 			<br></br>
 			
 	       <!-- Summary -->
