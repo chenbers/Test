@@ -254,14 +254,16 @@ public class TeamStatisticsBean extends BaseBean {
                 mpg, getMeasurementType(), getFuelEfficiencyType()));
         tmp.setMpgMedium(0);
         tmp.setMpgLight(0);
-        tmp.setCrashTotal(totCrash);
-        tmp.setSeatbelt(totSeatBeltEvt);
+        
+        tmp.setCrashEvents(totCrash);       
+        tmp.setSeatbeltEvents(totSeatBeltEvt);        
         tmp.setSpeedEvents(totSpeedEvt);
         tmp.setAggressiveAccelEvents(totAggAccelEvt);
         tmp.setAggressiveBrakeEvents(totAggBrakeEvt);
         tmp.setAggressiveBumpEvents(totAggBumpEvt);
         tmp.setAggressiveLeftEvents(totAggLeftEvt);
         tmp.setAggressiveRightEvents(totAggRightEvt);
+        
         dvsw.setScore(tmp);
         
         // Driver/Vehicle
