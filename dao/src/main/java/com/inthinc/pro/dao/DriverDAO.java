@@ -3,13 +3,14 @@ package com.inthinc.pro.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.Interval;
+
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 
-public interface DriverDAO extends GenericDAO<Driver, Integer>
-{
+public interface DriverDAO extends GenericDAO<Driver, Integer> {
 
     /**
      * Gets all drivers in the specified group complete hierarchy
@@ -27,7 +28,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      */
     List<Driver> getDrivers(Integer groupID);
 
-     /**
+    /**
      * Gets the specified drivers LastLocation.
      * 
      * @param driverID
@@ -44,6 +45,15 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return
      */
     List<Trip> getTrips(Integer driverID, Date startDate, Date endDate);
+
+    /**
+     * Get all driver trips between start and end dates.
+     * 
+     * @param driverID
+     * @param interval
+     * @return
+     */
+    List<Trip> getTrips(Integer driverID, Interval interval);
 
     /**
      * Get driver last trip by DriverID
@@ -69,7 +79,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return The driver ID or <code>null</code> if not found.
      */
     Integer getDriverIDForRFID(Long rfid);
-    
+
     /**
      * Find a RFIDs for a barcode.
      * 
@@ -78,7 +88,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return List of RFIDs or <code>null</code> if not found.
      */
     List<Long> getRfidsByBarcode(String barcode);
-    
+
     /**
      * Find a driver for a barcode.
      * 
@@ -87,8 +97,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return List of RFIDs or <code>null</code> if not found.
      */
     Integer getDriverIDByBarcode(String barcode);
-    
-    
+
     /**
      * Gets a list of all drivers that have a last location.
      * 

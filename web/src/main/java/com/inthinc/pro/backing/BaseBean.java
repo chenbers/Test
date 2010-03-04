@@ -10,6 +10,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTimeZone;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
@@ -123,6 +124,10 @@ public class BaseBean implements Serializable {
             return getPerson().getLocale();
         else
             return Locale.US;
+    }
+    
+    public DateTimeZone getDateTimeZone() {
+        return DateTimeZone.forTimeZone(getPerson().getTimeZone());
     }
     
     public void setLocale(Locale locale) {

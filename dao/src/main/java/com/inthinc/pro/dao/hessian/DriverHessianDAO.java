@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
@@ -103,6 +104,11 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public List<Trip> getTrips(Integer driverID, Interval interval) {
+        return getTrips(driverID, interval.getStart().toDate(), interval.getEnd().toDate());
     }
 
     @Override

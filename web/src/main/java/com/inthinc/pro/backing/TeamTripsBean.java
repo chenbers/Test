@@ -177,7 +177,7 @@ public class TeamTripsBean extends BaseBean{
 		
 		private void loadTrips(){
 			
-		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate());
+		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getTimeFrame().getInterval());
 	       trips = new ArrayList<TeamTrip>();
 
 	       for (Trip trip : tripsList) {

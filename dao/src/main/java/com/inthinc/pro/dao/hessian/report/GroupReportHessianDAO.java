@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
@@ -92,7 +93,9 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
 
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
-        return getDriverScores(groupID, interval.getStart(), interval.getStart());
+        //a big fucking mess of conversion to get it just right for the backend.
+        DateTime fuckedUpInterval = interval.getStart().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+        return getDriverScores(groupID, fuckedUpInterval, fuckedUpInterval);
     }
 
     @Override

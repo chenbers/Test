@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
@@ -59,7 +62,7 @@ public class TeamStatisticsBean extends BaseBean {
         boolean useDaily = whichMethodToUse();
         
         if ( useDaily ) {
-            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval());
+            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
             
         } else {
             driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration());
