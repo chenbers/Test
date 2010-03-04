@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -108,7 +109,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
 
     @Override
     public List<Trip> getTrips(Integer driverID, Interval interval) {
-        return getTrips(driverID, interval.getStart().toDate(), interval.getEnd().toDate());
+        return getTrips(driverID, interval.getStart().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime().toDate(), interval.getEnd().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime().toDate());
     }
 
     @Override

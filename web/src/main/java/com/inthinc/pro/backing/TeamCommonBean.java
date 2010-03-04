@@ -7,6 +7,7 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Interval;
+import org.joda.time.Months;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TimeFrame;
@@ -58,6 +59,11 @@ public class TeamCommonBean extends BaseBean {
         }
 
         return dayLabels;
+    }
+    
+    public String getMonthLabel(){
+        //just need the current month, easier ways to get it. but this will do for now.
+        return new DateTime().monthOfYear().getAsText(getLocale());
     }
 
     public DateTime getStartTime() {

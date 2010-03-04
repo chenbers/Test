@@ -10,7 +10,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-	<script src="#{facesContext.externalContext.request.contextPath}/js/arrowedPolyline.js" type="text/javascript"></script>
+	<a4j:loadScript src="/js/arrowedPolyline.js" type="text/javascript"/>
 	
 	<script type="text/javascript">
 	//<![CDATA[
@@ -309,7 +309,7 @@
 	    
 	 <f:facet name="label">
 	 	<h:panelGroup>
-	 		<h:graphicImage value="/images/ico_map.png" /><rich:spacer width="10"/>Trips
+	 		<h:graphicImage value="/images/ico_map.png" onclick="alert('hello')"/><rich:spacer width="10"/>Trips
 	 	</h:panelGroup>
 	 </f:facet>
 	

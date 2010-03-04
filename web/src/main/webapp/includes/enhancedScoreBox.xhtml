@@ -1,0 +1,39 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+<!-- 
+	Score Styles - specifies which color to use for the box.
+    ==============
+	score_lg_1
+	score_lg_2
+	score_lg_3
+	score_lg_4
+	score_lg_5
+	
+	To use:
+	==============
+	<ui:include src="/includes/scoreBox.xhtml">
+            <ui:param name="score" value="#{yourBean.Score}" />
+            <ui:param name="scoreStyle" value="#{yourBean.ScoreCSSStyle}" /> 
+            <ui:param name="context" value="#{context}-pageName"/> 
+	</ui:include>
+    
+    
+	
+ -->
+
+    <h:panelGrid columns="1" styleClass="#{scoreStyle} score" cellpadding="0" cellspacing="0"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link id="#{context}-score" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
+</ui:composition>
