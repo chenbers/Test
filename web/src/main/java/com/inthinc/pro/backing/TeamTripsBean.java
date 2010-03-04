@@ -49,7 +49,6 @@ public class TeamTripsBean extends BaseBean{
     	for(DriverTripWrapper dw:driversTrips){
     		
     		dw.setSelected(false);
- //   		dw.clearTrips();
     	}
     }
  	public List<DriverTripWrapper> getDrivers() {
@@ -59,10 +58,17 @@ public class TeamTripsBean extends BaseBean{
 	public void setDrivers(List<DriverTripWrapper> drivers) {
 		this.driversTrips = drivers;
 	}
+	public void reloadTrips(){
+		
+    	for(DriverTripWrapper dw:driversTrips){
+    		dw.reloadTrips();
+    	}
+	}
 	public void clearTrips(){
 		
     	for(DriverTripWrapper dw:driversTrips){
     		
+    		dw.setSelected(false);
     		dw.clearTrips();
     	}		
 	}
@@ -118,7 +124,7 @@ public class TeamTripsBean extends BaseBean{
 			}
 			else {
 				
-				clearTrips();
+//				clearTrips();
 			}
 		}
 		public List<TeamTrip> getTrips() {
@@ -127,10 +133,16 @@ public class TeamTripsBean extends BaseBean{
 		public void setTrips(List<TeamTrip> trips) {
 			this.trips = trips;
 		}
+		public void reloadTrips(){
+			
+			clearTrips();
+			if (selected) loadTripsAndEvents();
+		}
 		public void clearTrips(){
 			if (trips != null) {
 				
 				trips.clear();
+				trips = null;
 				violationEvents.clear();
 				idleEvents.clear();
 				tamperEvents.clear();

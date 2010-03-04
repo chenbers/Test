@@ -26,7 +26,7 @@ public class TeamStatisticsBean extends BaseBean {
     private int numRowsPerPg = 25;
     private List<DriverVehicleScoreWrapper> driverStatistics;
     private List<DriverVehicleScoreWrapper> driverTotals;   
-    private Map<String,List> cachedResults = new HashMap<String,List>();
+    private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = new HashMap<String,List<DriverVehicleScoreWrapper>>();
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;    
@@ -173,6 +173,8 @@ public class TeamStatisticsBean extends BaseBean {
         int totAggBumpEvt = 0;
         int totAggLeftEvt = 0;
         int totAggRightEvt = 0;        
+        
+        if (driverStatistics==null) return null;
         
         for ( DriverVehicleScoreWrapper dvsc: driverStatistics ) { 
             if ( dvsc.getScore().getOverall() != null ) {

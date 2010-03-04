@@ -20,8 +20,10 @@ public class TeamCommonBean extends BaseBean {
     private Group group;
 
     private TimeFrame timeFrame = TimeFrame.ONE_DAY_AGO;
+    private String selectedTab;
 
     public void init() {
+    	selectedTab="teamStats";
     }
 
     public Integer getGroupID() {
@@ -73,5 +75,13 @@ public class TeamCommonBean extends BaseBean {
     public void setTimeFrame(TimeFrame timeFrame) {
         this.timeFrame = timeFrame;
     }
+
+	public String getSelectedTab() {
+		return selectedTab;
+	}
+
+	public void setSelectedTab(String selectedTab) {
+		this.selectedTab = selectedTab;
+	}
 
 }
