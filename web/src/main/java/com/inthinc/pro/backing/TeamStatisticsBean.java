@@ -150,7 +150,7 @@ public class TeamStatisticsBean extends BaseBean {
             dvsw.getScore().setMpgLight(0);
             dvsw.getScore().setMpgMedium(0);
             if ( driverVehicleTypeCount != 0 ) {
-                dvsw.getScore().setMpgHeavy(driverMpgTotal/driverVehicleTypeCount);
+                dvsw.getScore().setMpgHeavy((float)driverMpgTotal/(float)driverVehicleTypeCount);
             }
                             
             // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
@@ -206,7 +206,7 @@ public class TeamStatisticsBean extends BaseBean {
         int totIdleLoEvt = 0;
         int totMilesDriven = 0;
         int totDriveTime = 0;
-        int totMpg = 0;
+        float totMpg = 0;
         int totCrash = 0;
         int totSeatBeltEvt = 0;
         int totSpeedEvt = 0;
@@ -250,7 +250,7 @@ public class TeamStatisticsBean extends BaseBean {
             //  in a period
             if ( (dvsc.getScore().getMpgHeavy() != null) && 
                     (dvsc.getScore().getMpgHeavy().intValue() != 0) ) {                
-                totMpg += dvsc.getScore().getMpgHeavy().intValue();
+                totMpg += dvsc.getScore().getMpgHeavy().floatValue();
                 totActiveDrivers++;
             }
             if ( dvsc.getScore().getMpgLight() != null ) {
@@ -299,7 +299,7 @@ public class TeamStatisticsBean extends BaseBean {
         tmp.setDriveTime(totDriveTime);
         tmp.setEndingOdometer(totMilesDriven);
         tmp.setStartingOdometer(0); 
-        float floatTotMpg = (float)totMpg;
+        float floatTotMpg = totMpg;
         float floatTotDrv = (float)totActiveDrivers;
 //        float floatTotDrv = (float)driverStatistics.size();        
         Number mpg = floatTotMpg/floatTotDrv;              
