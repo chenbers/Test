@@ -69,15 +69,16 @@ public class TeamOverviewBean extends BaseBean {
     public String getSelectedBarDef() {
         TabAction action = getSelectedAction();
         ScoreType scoreType = action.getScoreType();
+        Duration duration = durationBean.getDuration();
         if (getBarDefMap().get(scoreType) == null) {
         	
         	getBarDefMap().put(scoreType,  new HashMap<Duration, String>());
         }
-        if (barDefMap.get(scoreType).get(durationBean.getDuration()) == null){
+        if (barDefMap.get(scoreType).get(duration) == null){
         	
-        	barDefMap.get(scoreType).put(durationBean.getDuration(), createBar3DChart(scoreType));
+        	barDefMap.get(scoreType).put(duration, createBar3DChart(scoreType));
         }
-        return getBarDefMap().get(scoreType).get(durationBean.getDuration());
+        return getBarDefMap().get(scoreType).get(duration);
     }
 
     public String getBarDef(Integer type) {
@@ -229,18 +230,17 @@ public class TeamOverviewBean extends BaseBean {
     }
 
     public Integer getGroupID() {
-        setGroupID(navigation.getGroupID());
-        if (groupID == null) {
-            setGroupID(getUser().getGroupID());
-        }
+        setGroupID(navigation.getGroupID() == null ? getUser().getGroupID() : navigation.getGroupID());
         return groupID;
     }
 
     public void setGroupID(Integer groupID) {
         if (this.groupID != null && !this.groupID.equals(groupID)) {
-            logger.debug("TeamOverviewBean new groupID " + groupID);
+            logger.info("TeamOverviewBean groupID changed " + groupID);
             setDuration(Duration.DAYS);
             setSelectedAction(null);
+    		setOverallScoreMap(null);
+    		setBarDefMap(null);
         }
         this.groupID = groupID;
     }
@@ -248,9 +248,11 @@ public class TeamOverviewBean extends BaseBean {
     public void setDuration(Duration duration) {
     	if (durationBean.getDuration() == null || !durationBean.getDuration().equals(duration))
     	{
+            logger.info("TeamOverviewBean duration changed " + duration);
     		durationBean.setDuration(duration);
     		setOverallScoreMap(null);
     		setBarDefMap(null);
+    	
     	}
     }
 
