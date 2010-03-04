@@ -23,7 +23,7 @@ public class TeamStatisticsBean extends BaseBean {
 //  Request scope bean for new team page    
     private static final long serialVersionUID = 1L;
     
-    private int numRowsPerPg = 3;
+    private int numRowsPerPg = 25;
     private List<DriverVehicleScoreWrapper> driverStatistics;
     private List<DriverVehicleScoreWrapper> driverTotals;   
     private Map<String,List> cachedResults = new HashMap<String,List>();
