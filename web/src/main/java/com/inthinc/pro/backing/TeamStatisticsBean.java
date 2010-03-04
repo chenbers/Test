@@ -253,7 +253,9 @@ public class TeamStatisticsBean extends BaseBean {
         tmp.setDriveTime(totDriveTime);
         tmp.setEndingOdometer(totMilesDriven);
         tmp.setStartingOdometer(0); 
-        Number mpg = totMpg/driverStatistics.size();        
+        float floatTotMpg = (float)totMpg;
+        float floatTotDrv = (float)driverStatistics.size();
+        Number mpg = floatTotMpg/floatTotDrv;              
         tmp.setMpgHeavy(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
                 mpg, getMeasurementType(), getFuelEfficiencyType()));
         tmp.setMpgMedium(0);
