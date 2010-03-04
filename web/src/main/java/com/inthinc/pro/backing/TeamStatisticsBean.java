@@ -117,18 +117,57 @@ public class TeamStatisticsBean extends BaseBean {
     
     private void convertMPGData() {
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {
-                        
+            
+            
+            // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
+            //  in a period            
+            
+            // Compute an average value for mpg data based on non-zero values for the
+            //  three mpg vehicle types.            
+            int driverVehicleTypeCount = 0;
+            int driverMpgTotal = 0;
+            
+            if ( (dvsw.getScore().getMpgHeavy() != null) && 
+                    (dvsw.getScore().getMpgHeavy() != (Number)0) ) {
+                driverVehicleTypeCount++;
+                driverMpgTotal += dvsw.getScore().getMpgHeavy().intValue();
+            }
+            
+            if ( (dvsw.getScore().getMpgLight() != null) && 
+                    (dvsw.getScore().getMpgLight() != (Number)0) ) {
+                driverVehicleTypeCount++;
+                driverMpgTotal += dvsw.getScore().getMpgLight().intValue();
+            }
+            
+            if ( (dvsw.getScore().getMpgMedium() != null) && 
+                    (dvsw.getScore().getMpgMedium() != (Number)0) ) {
+                driverVehicleTypeCount++;
+                driverMpgTotal += dvsw.getScore().getMpgMedium().intValue();
+            }
+            
+            // For now, only set the heavy value
+            dvsw.getScore().setMpgHeavy(0);
+            dvsw.getScore().setMpgLight(0);
+            dvsw.getScore().setMpgMedium(0);
+            if ( driverVehicleTypeCount != 0 ) {
+                dvsw.getScore().setMpgHeavy(driverMpgTotal/driverVehicleTypeCount);
+            }
+                            
+            // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
+            //  in a period
+            
+            // Now do units conversion
             dvsw.getScore().setMpgHeavy(
                     dvsw.getScore().getMpgHeavy() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
                             dvsw.getScore().getMpgHeavy(), getMeasurementType(), getFuelEfficiencyType()) : 0);
             
-            dvsw.getScore().setMpgLight(
-                    dvsw.getScore().getMpgLight() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-                            dvsw.getScore().getMpgLight(), getMeasurementType(), getFuelEfficiencyType()) : 0);            
-            
-            dvsw.getScore().setMpgMedium(
-                    dvsw.getScore().getMpgMedium() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-                            dvsw.getScore().getMpgMedium(), getMeasurementType(), getFuelEfficiencyType()) : 0);
+//            dvsw.getScore().setMpgLight(
+//                    dvsw.getScore().getMpgLight() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
+//                            dvsw.getScore().getMpgLight(), getMeasurementType(), getFuelEfficiencyType()) : 0);            
+//            
+//            dvsw.getScore().setMpgMedium(
+//                    dvsw.getScore().getMpgMedium() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
+//                            dvsw.getScore().getMpgMedium(), getMeasurementType(), getFuelEfficiencyType()) : 0);
         }        
     }
     
@@ -175,7 +214,9 @@ public class TeamStatisticsBean extends BaseBean {
         int totAggBrakeEvt = 0;
         int totAggBumpEvt = 0;
         int totAggLeftEvt = 0;
-        int totAggRightEvt = 0;        
+        int totAggRightEvt = 0;   
+        
+        int totActiveDrivers = 0;
         
         if (driverStatistics==null) return null;
         
@@ -204,8 +245,13 @@ public class TeamStatisticsBean extends BaseBean {
             if ( dvsc.getScore().getDriveTime() != null ) {
                 totDriveTime += dvsc.getScore().getDriveTime().intValue();
             }            
-            if ( dvsc.getScore().getMpgHeavy() != null ) {
+            
+            // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
+            //  in a period
+            if ( (dvsc.getScore().getMpgHeavy() != null) && 
+                    (dvsc.getScore().getMpgHeavy().intValue() != 0) ) {                
                 totMpg += dvsc.getScore().getMpgHeavy().intValue();
+                totActiveDrivers++;
             }
             if ( dvsc.getScore().getMpgLight() != null ) {
                 totMpg += dvsc.getScore().getMpgLight().intValue();                
@@ -254,7 +300,8 @@ public class TeamStatisticsBean extends BaseBean {
         tmp.setEndingOdometer(totMilesDriven);
         tmp.setStartingOdometer(0); 
         float floatTotMpg = (float)totMpg;
-        float floatTotDrv = (float)driverStatistics.size();
+        float floatTotDrv = (float)totActiveDrivers;
+//        float floatTotDrv = (float)driverStatistics.size();        
         Number mpg = floatTotMpg/floatTotDrv;              
         tmp.setMpgHeavy(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
                 mpg, getMeasurementType(), getFuelEfficiencyType()));
