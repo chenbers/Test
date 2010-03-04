@@ -145,8 +145,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'TODAY' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}" 
-                                        value="#{messages.team_today}"
-                                       onclick="reloadAllTrips();">
+                                        value="#{messages.team_today}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="TODAY" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>   
@@ -154,8 +153,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
-                                        value="#{messages.team_yesterday}"
-                                         onclick="reloadAllTrips();">
+                                        value="#{messages.team_yesterday}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="ONE_DAY_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
@@ -163,8 +161,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
-                                        value="#{teamCommonBean.dayLabels['2']}"
-                                        onclick="reloadAllTrips();">
+                                        value="#{teamCommonBean.dayLabels['2']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="TWO_DAYS_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
@@ -172,8 +169,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'THREE_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
-                                        value="#{teamCommonBean.dayLabels['3']}"
-                                        onclick="reloadAllTrips();">
+                                        value="#{teamCommonBean.dayLabels['3']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="THREE_DAYS_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
@@ -181,8 +177,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'FOUR_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
-                                        value="#{teamCommonBean.dayLabels['4']}"
-                                       onclick="reloadAllTrips();">
+                                        value="#{teamCommonBean.dayLabels['4']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="FOUR_DAYS_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>
@@ -190,8 +185,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'FIVE_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
-                                        value="#{teamCommonBean.dayLabels['5']}"
-                                        onclick="reloadAllTrips();">
+                                        value="#{teamCommonBean.dayLabels['5']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="FIVE_DAYS_AGO" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>    
@@ -199,8 +193,7 @@
                                         immediate="true" 
                                         styleClass="#{teamCommonBean.timeFrame eq 'SIX_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
-                                        value="#{teamCommonBean.dayLabels['6']}"
-                                        onclick="reloadAllTrips();">
+                                        value="#{teamCommonBean.dayLabels['6']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="SIX_DAYS_AGO" />
                                     </a4j:commandLink>
                                      <rich:spacer width="40"/>                                                                                                                    
