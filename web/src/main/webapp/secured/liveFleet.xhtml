@@ -310,10 +310,13 @@
 											</h:panelGroup>
 										</h:panelGroup>
 									</f:facet>
-                                    <pretty:link id="liveFleetsDriverPerformance" mappingId="driverPerformance">
-                                       <h:outputText value="#{item.driver.person.fullName}"/>
-                                       <f:param value="#{item.driver.driverID}"/>
-                                    </pretty:link>
+                                    <ui:include src="/includes/driverLink.xhtml">
+				   						<ui:param name="context" value="liveFleet" />
+				   						<ui:param name="driverID" value="#{item.driver.driverID}" />
+				   						<ui:param name="unknownDriverID" value="#{liveFleetBean.unknownDriverID}" />
+				   						<ui:param name="driverName" value="#{item.driver.person.fullName}" />
+									</ui:include>
+                                    
 								</rich:column>
 	
 								<rich:column id="vehicle" sortBy="#{item.vehicle.name}" width="40%">

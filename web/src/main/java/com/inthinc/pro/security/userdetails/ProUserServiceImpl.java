@@ -15,11 +15,15 @@ import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
@@ -27,7 +31,6 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Roles;
-import com.inthinc.pro.model.security.SiteAccessPoint;
 
 
 public class ProUserServiceImpl implements UserDetailsService
@@ -38,8 +41,10 @@ public class ProUserServiceImpl implements UserDetailsService
     private GroupDAO groupDAO;
     private ZoneDAO zoneDAO;
     private RoleDAO roleDAO;
+    private AccountDAO accountDAO;
+    private DriverDAO driverDAO;
     
-    @Override
+	@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
     {
         logger.debug("ProUserServiceImpl:loadUserByUsername " + username);
@@ -61,6 +66,11 @@ public class ProUserServiceImpl implements UserDetailsService
             
             List<Zone> zoneList = zoneDAO.getZones(user.getPerson().getAcctID());
             proUser.setZones(zoneList);
+            
+            Account account = accountDAO.findByID(user.getPerson().getAcctID());
+            
+            Driver unknownDriver = driverDAO.findByID(account.getUnkDriverID());
+            proUser.setUnknownDriver(unknownDriver);
             
             return proUser;
         }
@@ -103,7 +113,15 @@ public class ProUserServiceImpl implements UserDetailsService
         return zoneDAO;
     }
 
-    public void setZoneDAO(ZoneDAO zoneDAO) {
+    public AccountDAO getAccountDAO() {
+		return accountDAO;
+	}
+
+	public void setAccountDAO(AccountDAO accountDAO) {
+		this.accountDAO = accountDAO;
+	}
+
+	public void setZoneDAO(ZoneDAO zoneDAO) {
         this.zoneDAO = zoneDAO;
     }
 
@@ -114,6 +132,14 @@ public class ProUserServiceImpl implements UserDetailsService
 	public void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
 	}
+    public DriverDAO getDriverDAO() {
+		return driverDAO;
+	}
+
+	public void setDriverDAO(DriverDAO driverDAO) {
+		this.driverDAO = driverDAO;
+	}
+
 	private GrantedAuthority[] getGrantedAuthorities(User user){
 		
 		//TODO make an enum for all role related things

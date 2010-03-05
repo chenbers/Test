@@ -61,13 +61,13 @@
             <rich:column id="driverName" rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_driver}" />
-                </f:facet>                
-                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance" rendered="#{item.driverName ne messages.unknown_driver}">
-                    <f:param value="#{item.driver == null ? 0 : item.driver.driverID}"/>
-                    #{item.driverName}
-                </pretty:link>
-                <h:outputText value="#{messages.unknown_driver}" 
-                	rendered="#{item.driverName eq messages.unknown_driver}"/>
+                </f:facet>
+			 	<ui:include src="/includes/driverLink.xhtml">
+				   	<ui:param name="context" value="#{context}" />
+				   	<ui:param name="driverID" value="#{item.driver.driverID}" />
+				   	<ui:param name="unknownDriverID" value="#{bean.unknownDriverID}" />
+				   	<ui:param name="driverName" value="#{item.driverName}" />
+				</ui:include>
             </rich:column>
             
             <rich:column id="vehiclename" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" >

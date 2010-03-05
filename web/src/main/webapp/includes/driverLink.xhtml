@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:security="http://pro.tiwi.com/jsf/security">
+     <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance"  rendered="#{driverID != unknownDriverID}">
+         <f:param value="#{driverID}"/>
+         #{driverName}
+     </pretty:link>
+     <h:outputText  value="#{driverName}" rendered="#{driverID == unknownDriverID}"/>
+</ui:composition>

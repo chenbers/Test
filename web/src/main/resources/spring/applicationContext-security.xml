@@ -61,6 +61,8 @@
         <beans:property name="groupDAO" ref="groupDAO"/>
         <beans:property name="zoneDAO" ref="zoneDAO"/>
         <beans:property name="roleDAO" ref="roleDAO"/>
+        <beans:property name="accountDAO" ref="accountDAO"/>
+        <beans:property name="driverDAO" ref="driverDAO"/>
     </beans:bean>
 
     <!--  Password encryption  -->

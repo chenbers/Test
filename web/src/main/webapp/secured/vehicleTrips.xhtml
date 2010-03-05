@@ -842,12 +842,12 @@
                 <h:form id="selectDriverForm">
                     <span class="map">
 	                    <h:outputText value="">#{messages.vehicletrip_driver}</h:outputText><rich:spacer width="5" />
-                        <c:if test="#{vehicleTripsBean.selectedDriver ne null}">
-                           <pretty:link id="vehicleTripsDriverPerformance" mappingId="driverPerformance">
-                              <h:outputText value="#{vehicleTripsBean.selectedDriver.person.fullName}"/>
-                              <f:param value="#{vehicleTripsBean.selectedDriver.driverID}"/>
-                           </pretty:link>
-                        </c:if>
+					 	<ui:include src="/includes/driverLink.xhtml">
+						   	<ui:param name="context" value="vehicleTrips" />
+						   	<ui:param name="driverID" value="#{vehicleTripsBean.selectedDriver.driverID}" />
+				   			<ui:param name="unknownDriverID" value="#{vehicleTripsBean.unknownDriverID}" />
+				   			<ui:param name="driverName" value="#{vehicleTripsBean.selectedDriver.person.fullName}" />
+						</ui:include>
                     </span>
                     <span class="panel_links"></span>
                 </h:form></div>

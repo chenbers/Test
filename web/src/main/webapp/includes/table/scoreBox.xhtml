@@ -1,0 +1,92 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+<!-- 
+	Score Styles - specifies which color to use for the box.
+    ==============
+	score_sm_na
+	score_sm_1
+	score_sm_2
+	score_sm_3
+	score_sm_4
+	score_sm_5
+	
+	To use:
+	==============
+	<ui:include src="/includes/scoreBox.xhtml">
+            <ui:param name="score" value="#{yourBean.Score}" />
+            <ui:param name="scoreStyle" value="#{yourBean.ScoreCSSStyle}" /> 
+            <ui:param name="context" value="#{context}-pageName"/> 
+	</ui:include>
+    
+    
+	
+ --> 
+    <h:panelGrid columns="1" styleClass="score_sm_na score" cellpadding="0" cellspacing="0" rendered="#{score eq null}"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link id="#{context}-score0" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
+
+    <h:panelGrid columns="1" styleClass="score_sm_1 score" cellpadding="0" cellspacing="0" rendered="#{score ge 0 and score le 10 }"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link id="#{context}-score1" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
+
+    <h:panelGrid columns="1" styleClass="score_sm_2 score" cellpadding="0" cellspacing="0" rendered="#{score gt 10 and score le 20 }"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link id="#{context}-score2" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
+
+    <h:panelGrid columns="1" styleClass="score_sm_3 score" cellpadding="0" cellspacing="0" rendered="#{score gt 20 and score le 30 }"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link id="#{context}-score3" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
+
+    <h:panelGrid columns="1" styleClass="score_sm_4 score" cellpadding="0" cellspacing="0" rendered="#{score gt 30 and score le 40 }"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link id="#{context}-score4" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
+
+    <h:panelGrid columns="1" styleClass="score_sm_5 score" cellpadding="0" cellspacing="0" rendered="#{score gt 40 and score le 50 }"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link id="#{context}-score5" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
+
+</ui:composition>

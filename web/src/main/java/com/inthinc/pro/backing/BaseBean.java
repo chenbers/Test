@@ -217,4 +217,8 @@ public class BaseBean implements Serializable {
 		return addressLookup.getAddressFormat().getCode();
 	}
 	
+	public Integer getUnknownDriverID() {
+		return getProUser().getUnknownDriver().getDriverID();
+	}
+	
 }

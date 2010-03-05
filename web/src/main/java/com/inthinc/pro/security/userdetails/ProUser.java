@@ -8,6 +8,7 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Zone;
@@ -25,8 +26,9 @@ public class ProUser extends org.springframework.security.userdetails.User
     private User user;
     private GroupHierarchy groupHierarchy;
     private List<Zone>     zones;
+    private Driver	unknownDriver;
     
-    public ProUser(User user, GrantedAuthority[] grantedAuthorities)
+	public ProUser(User user, GrantedAuthority[] grantedAuthorities)
     {
         super(  user.getUsername(),
                 user.getPassword(),
@@ -72,5 +74,14 @@ public class ProUser extends org.springframework.security.userdetails.User
     public void setZones(List<Zone> zones) {
         this.zones = zones;
     }
+
+    public Driver getUnknownDriver() {
+		return unknownDriver;
+	}
+
+	public void setUnknownDriver(Driver unknownDriver) {
+		this.unknownDriver = unknownDriver;
+	}
+
 
 }

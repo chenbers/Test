@@ -12,6 +12,7 @@
  	<t:saveState value="#{bean}"/>
 	            
     <h:form id="redFlags-form">
+    <!-- 
        	<div align="right" style="width: 100%"> 
         	<h:outputFormat id="header" value="#{messages.notes_redflags_recordCountHeader}">
 				<a4j:actionparam value="#{bean.table.pageData.pageStartRow}"/>
@@ -19,7 +20,11 @@
 				<a4j:actionparam value="#{bean.table.pageData.totalRows}"/>
 			</h:outputFormat>
         </div>
-    
+     -->
+		<ui:include src="/includes/table/statsHeader.xhtml">	
+   			<ui:param name="title" value="#{messages.notes_redflags_recordCountHeader}" />
+   			<ui:param name="pageData" value="#{bean.table.pageData}" />
+		</ui:include>
     
     	<rich:jQuery selector="document" query="ready(function(){initializeTable();})" />
     	
@@ -144,12 +149,12 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_driver}" />
                 </f:facet>
-                <pretty:link id="redFlags_driverPerformance" mappingId="driverPerformance"  rendered="#{redFlag.event.driverName != null}">
-                    <f:param value="#{redFlag.event.driverID}"/>
-                    #{redFlag.event.driverName}
-                </pretty:link>
-                <h:outputText rendered="#{redFlag.event.driverName == null}" value="#{messages.unknown_driver}">
-                </h:outputText>
+			 	<ui:include src="/includes/driverLink.xhtml">
+				   	<ui:param name="context" value="redFlags" />
+				   	<ui:param name="driverID" value="#{redFlag.event.driverID}" />
+				   	<ui:param name="unknownDriverID" value="#{bean.unknownDriverID}" />
+				   	<ui:param name="driverName" value="#{redFlag.event.driverName}" />
+				</ui:include>
             </rich:column>
             <rich:column id="vehicle" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{redFlag.event.vehicleName}" filterBy="#{redFlag.event.vehicleName}">
                 <f:facet name="header">

@@ -64,11 +64,13 @@
 			<h:outputText value="#{driver.person.priPhone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageSecPhone}:"/>
 			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
-			<h:outputText value="#{messageDriver}:"/>	
-                <pretty:link id="#{context}-driverPerformance" mappingId="driverPerformance">
-                   <h:outputText value="#{driver.person.fullName}"/>
-                   <f:param value="#{driver.driverID}"/>
-                </pretty:link>
+			<h:outputText value="#{messageDriver}:"/>
+		 	<ui:include src="/includes/driverLink.xhtml">
+			   	<ui:param name="context" value="#{context}" />
+			   	<ui:param name="driverID" value="#{driver.driverID}" />
+	   			<ui:param name="unknownDriverID" value="#{bean.unknownDriverID}" />
+	   			<ui:param name="driverName" value="#{driver.person.fullName}" />
+			</ui:include>
 			<h:outputText value="#{messageDevicePhone}:"/>
 			<h:outputText value="#{device.phone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageLastUpdated}:" />
