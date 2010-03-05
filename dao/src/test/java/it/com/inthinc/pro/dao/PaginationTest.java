@@ -137,8 +137,8 @@ public class PaginationTest {
 	    		for (Event event : eventList) {
 	    			if (teamIdx == ITData.GOOD) {
 		    			// all events are UNKNOWN DRIVER
-	    				assertNull("unknown driver timezone", event.getDriverTimeZone());
-	    				assertTrue("unknown driver name", event.getDriverName() == null || event.getDriverName().isEmpty());
+	    				assertNotNull("unknown driver timezone", event.getDriverTimeZone());
+	    				assertEquals("unknown driver name", "Unknown Driver", event.getDriverName());
 		    			assertEquals("unknown driver group Name should match vehicles group", team.group.getName(), event.getGroupName());
 		    			String expectedVehicleName = "VehicleNO_DRIVER";
 		    			assertEquals("vehicle Name", expectedVehicleName, event.getVehicleName());
@@ -417,8 +417,9 @@ public class PaginationTest {
     		for (RedFlag redFlag : redFlagList) {
     			if (teamIdx == ITData.GOOD) {
 	    			// all events are UNKNOWN DRIVER
-    				assertNull("unknown driver timezone", redFlag.getEvent().getDriverTimeZone());
-    				assertTrue("unknown driver name", redFlag.getEvent().getDriverName() == null || redFlag.getEvent().getDriverName().isEmpty());
+    				assertNotNull("unknown driver timezone", redFlag.getEvent().getDriverTimeZone());
+    				assertEquals("unknown driver name", "Unknown Driver", redFlag.getEvent().getDriverName());
+
 	    			assertEquals("unknown driver group Name should match vehicles group", team.group.getName(), redFlag.getEvent().getGroupName());
 	    			String expectedVehicleName = "VehicleNO_DRIVER";
 	    			assertEquals("vehicle Name", expectedVehicleName, redFlag.getEvent().getVehicleName());
