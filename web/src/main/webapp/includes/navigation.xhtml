@@ -34,8 +34,12 @@
 				</li>
 			</security:authorize>
 			<security:authorize ifAnyGranted="ROLE_ADMIN_SUBSET">
-<!--			<ui:param name="firstAccessPoint" value="#{myAccountBean.user.accessPoints[0].siteAccessPoint}"/>-->
+<!--			<ui:param name="firstAccessPoint" value="#{myAccountBean.user.accessPoints[0].siteAccessPoint}"/>
 			<ui:param name="defaultPage" value="#{myAccountBean.user.accessPoints[0].siteAccessPoint.messageKey}"/>
+-->			
+			<ui:param name="firstAccessPoint" value="#{myAccountBean.user.accessPoints[0].accessPtID}"/>
+			<ui:param name="defaultPage" value="#{siteAccessPoints.accessPointsMap[firstAccessPoint].msgKey}"/>
+			
 				<li class="#{adminSelected}">
                     <pretty:link id="#{context}-navigationAdminSubset" mappingId="admin#{defaultPage}"><span>#{messages.navigation_admin}</span></pretty:link>
 				</li>
