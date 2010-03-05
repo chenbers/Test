@@ -17,25 +17,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 public enum Duration implements BaseEnum
-{
-    
-    
-    // Team page values. The -1 indicates not relevant
-    SEVENDAY(-7,"7 days", 7, "dd", 0, 30, 6),
-    SIXDAY(-6,"6 days", 6, "dd", 0, 30, 6),
-    FIVEDAY(-5,"5 days", 5, "dd", 0, 30, 6),
-    FOURDAY(-4,"4 days", 4, "dd", 0, 30, 6),
-    THREEDAY(-3,"3 days", 3, "dd", 0, 30, 6),
-    TWODAY(-2,"2 days", 2, "dd", 0, 30, 6),
-    ONEDAY(-1,"1 days", 1, "dd", 0, 30, 6),
-    
+{    
     
     // Other widget values
     DAYS(1, "30 days", 30, "dd", 0, 30, 6), 
     THREE(/*3*/ 2, "3 months", 90, "MMM", 2, 3, 3), 
     SIX(/*4*/ 3, "6 months", 180, "MMM", 2, 6, 4), 
-    TWELVE(/*5*/ 4, "12 months", 360, "MMM", 2, 12, 5),
-    YEAR(5,"year",360,"yy",-1,-1,-1);
+    TWELVE(/*5*/ 4, "12 months", 360, "MMM", 2, 12, 5);
     
     /*
      * dvqCode
