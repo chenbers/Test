@@ -715,4 +715,58 @@ public class SiloServiceImpl implements SiloService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Map<String, Object> getDeviceReportCount(@DaoParam(name = "groupID") Integer groupID,
+			@DaoParam(name = "filterList", inputDesc = "Not Implemented -- enter any value") List<Map<String, Object>> filterList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDeviceReportPage(@DaoParam(name = "groupID") Integer groupID,
+			@DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getDriverReportCount(@DaoParam(name = "groupID") Integer groupID,
+			@DaoParam(name = "filterList", inputDesc = "Not Implemented -- enter any value") List<Map<String, Object>> filterList) {
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDriverReportPage(@DaoParam(name = "groupID") Integer groupID,
+			@DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) {
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getIdlingReportCount(@DaoParam(name = "groupID") Integer groupID,
+            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+			@DaoParam(name = "filterList", inputDesc = "Not Implemented -- enter any value") List<Map<String, Object>> filterList) {
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getIdlingReportPage(@DaoParam(name = "groupID") Integer groupID,
+            @DaoParam(name = "startDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", isDate = true, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+			@DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) {
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getVehicleReportCount(@DaoParam(name = "groupID") Integer groupID,
+			@DaoParam(name = "filterList", inputDesc = "Not Implemented -- enter any value") List<Map<String, Object>> filterList) {
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getVehicleReportPage(@DaoParam(name = "groupID") Integer groupID,
+			@DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) {
+		return null;
+	}
 }
