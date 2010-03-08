@@ -2,7 +2,6 @@ package it.com.inthinc.pro.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
@@ -18,14 +17,12 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagHessianDAO;
-//import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -36,7 +33,6 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ZoneEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-//import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;

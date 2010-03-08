@@ -4,6 +4,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 
 public class EventReportItem implements Comparable<EventReportItem> {
 
@@ -17,9 +22,15 @@ public class EventReportItem implements Comparable<EventReportItem> {
 	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String mphString)
 	{
 	    //TODO: at some point we need to look at using JODA time instead of DateFormat for performance reasons.
-		DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
-		dateFormatter.setTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone());
-		setDate(dateFormatter.format(event.getTime()));
+//		DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+//		dateFormatter.setTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone());
+//		setDate(dateFormatter.format(event.getTime()));
+
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(dateFormat);
+		DateTime dateTime = new DateTime(event.getTime(), DateTimeZone.forTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone()));
+ 	    setDate(fmt.print(dateTime));
+
+		
 		setGroup(event.getGroupName());
 		setDriverName(event.getDriverName());
 		setVehicleName(event.getVehicleName());

@@ -110,6 +110,7 @@ public class SiloServiceTest {
     private static final Integer PERSON_COUNT = 3;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     private static final String SPEEDRACER = "speedracer";
+    private static final String SPEEDRACER_RFID = "speedRacerRFID";
     private static Integer TESTING_DRIVER_ID; // speedracer
     private static Integer TESTING_VEHICLE_ID = 1; // speedracer
     private static Integer TESTING_GROUP_ID; // speedracer
@@ -194,9 +195,9 @@ public class SiloServiceTest {
     	DriverHessianDAO driverDAO = new DriverHessianDAO();
     	driverDAO.setSiloService(siloService);
     	
-    	List<Long> rfids = driverDAO.getRfidsByBarcode("0000055");
-    	assertEquals(rfids.get(0).longValue(),-2303872684320581800l);
-    	assertEquals(rfids.get(1).longValue(),-2303872684320581797l);
+    	List<Long> rfids = driverDAO.getRfidsByBarcode("speedRacerRFID");
+    	assertEquals(1000000001l, rfids.get(0).longValue());
+    	assertEquals(1000000002l, rfids.get(1).longValue());
     }
     @Test
     public void sensitivityForwardCommandMapping() {
@@ -289,52 +290,6 @@ public class SiloServiceTest {
             System.out.println("NO VEHICLES FOUND");
         }
     }
-/*    
-    @Test
-    @Ignore
-    public void groupEvents() {
-        EventHessianDAO eventDAO = new EventHessianDAO();
-        eventDAO.setSiloService(siloService);
-
-        DriverHessianDAO driverDAO = new DriverHessianDAO();
-        driverDAO.setSiloService(siloService);
-
-        // year time frame from today back
-        Date endDate = new Date();
-        Date startDate = DateUtil.getDaysBackDate(endDate, 365);
-        List<Event> result = eventDAO.getEventsForGroup(TESTING_GROUP_ID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION),
-                EventDAO.INCLUDE_FORGIVEN);
-        assertNotNull(result);
-        if (result != null) {
-//            for (Event r : result) {
-//                System.out.println("driver id " + r.getDriverID() + " speed " + r.getSpeed() + " lat " + r.getLatitude() + " lng " + r.getLongitude());
-//            }
-            int size = result.size();
-            
-         
-            List<Driver> driverList = driverDAO.getAllDrivers(TESTING_GROUP_ID);
-            List<Event> eventList = new ArrayList<Event>();
-            for (Driver driver : driverList)
-            {
-                List<Event> driverEvents = eventDAO.getEventsForDriver(driver.getDriverID(), startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION),
-                        EventDAO.INCLUDE_FORGIVEN);
-                for (Event event : driverEvents)
-                {
-                    event.setDriver(driver);
-                    eventList.add(event);
-                }
-            }
-            
-            
-            assertEquals("group events size matches", eventList.size(), result.size());
-
-            
-        } else {
-            System.out.println("NO EVENTS FOUND FOR GROUP " + TESTING_GROUP_ID);
-        }
-    }
-*/
-
     @Test
     public void lastLocationVehicle() {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
@@ -368,19 +323,6 @@ public class SiloServiceTest {
     }
 
     
-    /*
-     * @Test public void tmpevents() { EventHessianDAO eventDAO = new EventHessianDAO(); eventDAO.setSiloService(siloService);
-     * 
-     * List<Event> recentEventsList = eventDAO.getMostRecentEvents(1105, 5); assertEquals(5, recentEventsList.size());
-     * validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), recentEventsList);
-     * 
-     * 
-     * List<Event> recentWarningsList = eventDAO.getMostRecentWarnings(1105, 5); assertEquals(3, recentWarningsList.size());
-     * validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), recentWarningsList);
-     * 
-     * 
-     * }
-     */
     @Test
     public void events() {
         EventHessianDAO eventDAO = new EventHessianDAO();
@@ -466,6 +408,8 @@ public class SiloServiceTest {
         // test all create, find, update and any other methods (not delete yet though)
         account();
         Integer acctID = account.getAcctID();
+        unknownDriver(acctID);
+        
         groupHierarchy(acctID);
         
         roles(acctID);
@@ -719,6 +663,26 @@ public class SiloServiceTest {
         Util.compareObjects(account, savedAccount, ignoreFields);
         List<Account> accountList = accountDAO.getAllAcctIDs();
         assertTrue(!accountList.isEmpty());
+        
+        
+    }
+    private void unknownDriver(Integer acctID) {
+        AccountHessianDAO accountDAO = new AccountHessianDAO();
+        accountDAO.setSiloService(siloService);
+        PersonHessianDAO personDAO = new PersonHessianDAO();
+        personDAO.setSiloService(siloService);
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+    	
+        Account savedAccount = accountDAO.findByID(acctID);
+        assertNotNull("unknown driver should be set for account "+acctID, savedAccount.getUnkDriverID());
+        
+        Driver unknownDriver = driverDAO.findByID(savedAccount.getUnkDriverID());
+        assertNotNull("unknown driver should exist for account "+acctID, unknownDriver);
+        assertNotNull("unknown driver should have person ID set", unknownDriver.getPersonID());
+        assertNotNull("unknown driver should have person set", unknownDriver.getPerson());
+        
+        
     }
 
     private Address address(Integer acctID) {
@@ -740,7 +704,6 @@ public class SiloServiceTest {
         Util.compareObjects(address, savedAddress);
         return address;
     }
-
     private void groupHierarchy(Integer acctID) {
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloService);

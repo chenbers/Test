@@ -1697,4 +1697,60 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 		accessPoints.add(accessPoint);
 		
 		return accessPoints;
+	}
+
+	@Override
+	public Map<String, Object> getDeviceReportCount(Integer groupID,
+			List<Map<String, Object>> filterList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDeviceReportPage(Integer groupID,
+			Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getDriverReportCount(Integer groupID,
+			List<Map<String, Object>> filterList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDriverReportPage(Integer groupID,
+			Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getIdlingReportCount(Integer groupID,
+			Long startDate, Long endDate, List<Map<String, Object>> filterList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getIdlingReportPage(Integer groupID,
+			Long startDate, Long endDate, Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getVehicleReportCount(Integer groupID,
+			List<Map<String, Object>> filterList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getVehicleReportPage(Integer groupID,
+			Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
 	}}

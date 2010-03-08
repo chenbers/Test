@@ -12,8 +12,6 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private Integer groupID;
     private Driver driver;
     private Vehicle vehicle;
-    private Float driveTime;
-//    private Number milesDriven;
     private Float lowHrs;
     private Float highHrs;
     private Float totalHrs;
@@ -23,7 +21,46 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private Float totalPerSort;
     private Float driveTimeSort;
     
-    public String getGroup()
+    
+    // new pagination
+    private String groupName;
+    private String driverName;
+    private Integer driverID;
+    private Number driveTime;		// changed to float from number
+    private Number lowIdleTime;
+    private Number highIdleTime;
+    
+    public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getDriverName() {
+		return driverName;
+	}
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+	public Integer getDriverID() {
+		return driverID;
+	}
+	public void setDriverID(Integer driverID) {
+		this.driverID = driverID;
+	}
+	public Number getLowIdleTime() {
+		return lowIdleTime;
+	}
+	public void setLowIdleTime(Number lowIdleTime) {
+		this.lowIdleTime = lowIdleTime;
+	}
+	public Number getHighIdleTime() {
+		return highIdleTime;
+	}
+	public void setHighIdleTime(Number highIdleTime) {
+		this.highIdleTime = highIdleTime;
+	}
+	public String getGroup()
     {
         return group;
     }
@@ -55,22 +92,14 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     {
         this.vehicle = vehicle;
     }
-    public Float getDriveTime()
+    public Number getDriveTime()
     {
-        return (driveTime == null) ? 0f : driveTime;
+        return (driveTime == null) ? 0 : driveTime;
     }
-    public void setDriveTime(Float driveTime)
+    public void setDriveTime(Number driveTime)
     {
         this.driveTime = driveTime;
     }
-//    public Number getMilesDriven()
-//    {
-//        return milesDriven;
-//    }
-//    public void setMilesDriven(Number milesDriven)
-//    {
-//        this.milesDriven = milesDriven;
-//    }
     public Float getLowHrs()
     {
         return (lowHrs == null) ? 0f : lowHrs;
@@ -162,7 +191,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
 	}
     private Float getTotalHours(){
     	
-    	return new Float(getDriveTime() + getLowHrs()+getHighHrs());
+    	return new Float(getDriveTime().floatValue() + getLowHrs()+getHighHrs());
     }
     @Override
     public int compareTo(IdlingReportItem item)

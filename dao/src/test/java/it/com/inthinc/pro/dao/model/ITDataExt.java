@@ -27,12 +27,11 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 
-public class ITData extends BaseITData{
+public class ITDataExt extends BaseITData {
+	public List<GroupListData> teamGroupListData;
 
-	public List<GroupData> teamGroupData;
-
-    
-    public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeUnknown, boolean includeZonesAndAlerts)
+	
+    public void createTestDataExt(SiloService siloService, XMLEncoder xml, Date assignmentDate, int driverVehicleDeviceCount)
     {
     	this.siloService = siloService;
     	this.xml = xml;
@@ -52,7 +51,7 @@ public class ITData extends BaseITData{
         createGroupHierarchy(account.getAcctID());
         writeObject(fleetGroup);
         writeObject(districtGroup);
-        for (GroupData team : teamGroupData)
+        for (GroupListData team : teamGroupListData)
         	writeObject(team.group);
 
         // User at fleet level
@@ -62,37 +61,34 @@ public class ITData extends BaseITData{
 
         // User at team level
         System.out.println("Team Level");
-        for (GroupData team : teamGroupData)
+        for (GroupListData team : teamGroupListData)
         {
         	team.user = createUser(account.getAcctID(), team.group);
-            team.device = createDevice(team.group);
-            team.driver = createDriver(team.group);
-            team.vehicle = createVehicle(team.group, team.device.getDeviceID(), team.driver.getDriverID());
         	writeObject(team.user);
-            writeObject(team.device);
-            writeObject(team.driver);
-            writeObject(team.vehicle);
+        	
+        	team.deviceList = new ArrayList<Device>();
+        	team.driverList = new ArrayList<Driver>();
+        	team.vehicleList = new ArrayList<Vehicle>();
+
+        	for (int i = 0; i < driverVehicleDeviceCount; i++) {
+	        	Device device = createDevice(team.group);
+	            Driver driver = createDriver(team.group, Integer.valueOf(i));
+	            Vehicle vehicle = createVehicle(team.group, device.getDeviceID(), driver.getDriverID(), Integer.valueOf(i));
+	            writeObject(device);
+	            writeObject(driver);
+	            writeObject(vehicle);
+	            team.deviceList.add(device);
+	            team.driverList.add(driver);
+	            team.vehicleList.add(vehicle);
+        	}
             
         }
-        if (includeUnknown) {
-	        // no Driver device/vehicle
-	        Group noDriverGroup = teamGroupData.get(0).group;
-	        noDriverDevice = createDevice(noDriverGroup);
-	        writeObject(noDriverDevice);
-	        noDriverVehicle = createVehicle(noDriverGroup, noDriverDevice.getDeviceID(), null);
-	        writeObject(noDriverVehicle);
-        }
-        
-        if (includeZonesAndAlerts) {
-        	// zone
-        	createZone();
-        	
-        	// zone alert preferences
-        	createZoneAlert();
-        	
-        	// red flag alert preferences
-        	createRedFlagAlerts();
-        }
+        // no Driver device/vehicle
+        Group noDriverGroup = teamGroupListData.get(0).group;
+        noDriverDevice = createDevice(noDriverGroup);
+        writeObject(noDriverDevice);
+        noDriverVehicle = createVehicle(noDriverGroup, noDriverDevice.getDeviceID(), null);
+        writeObject(noDriverVehicle);
         
     }
 
@@ -112,65 +108,62 @@ public class ITData extends BaseITData{
         groupID = groupDAO.create(acctID, districtGroup);
         districtGroup.setGroupID(groupID);
         
-        teamGroupData = new ArrayList<GroupData>();
+        teamGroupListData = new ArrayList<GroupListData>();
         
         // team
         for (int i = GOOD; i <= BAD; i++)
         {
-        	GroupData data = new GroupData();
+        	GroupListData data = new GroupListData();
         	data.driverType = i;
         	data.group = new Group(0, acctID, TEAM_GROUP_NAME[i], districtGroup.getGroupID(), GroupType.TEAM,  null, TEAM_GROUP_NAME[i], 5, new LatLng(0.0, 0.0));
         	groupID = groupDAO.create(acctID, data.group);
         	data.group.setGroupID(groupID);
-        	teamGroupData.add(data);
+        	teamGroupListData.add(data);
         }
         
     }
     
+
     @Override
     protected List<Integer> anyTeam() {
 		List<Integer> groupIDList = new ArrayList<Integer>();
-        for (GroupData groupData : teamGroupData) {
+        for (GroupListData groupData : teamGroupListData) {
         	groupIDList.add(groupData.group.getGroupID());
         }
 		return groupIDList;
 	}
 
 
-	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts) {
+	public boolean parseTestDataExt(InputStream stream, SiloService siloService, int driverVehicleDeviceCount) {
         try {
             XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(stream));
             account = getNext(xmlDecoder, Account.class);
             getNext(xmlDecoder, Address.class);
             fleetGroup = getNext(xmlDecoder, Group.class);
             districtGroup = getNext(xmlDecoder, Group.class);
-            teamGroupData = new ArrayList<GroupData>();
+            teamGroupListData = new ArrayList<GroupListData>();
             for (int i = GOOD; i <= BAD; i++) {
                 Group group = getNext(xmlDecoder, Group.class);
-                GroupData groupData = new GroupData();
+                GroupListData groupData = new GroupListData();
                 groupData.group = group;
                 groupData.driverType = i;
-                teamGroupData.add(groupData);
+                teamGroupListData.add(groupData);
             }
             fleetUser = getNext(xmlDecoder, User.class);
             for (int i = GOOD; i <= BAD; i++) {
-                GroupData groupData = teamGroupData.get(i);
+                GroupListData groupData = teamGroupListData.get(i);
                 groupData.user = getNext(xmlDecoder, User.class);
-                groupData.device = getNext(xmlDecoder, Device.class);
-                groupData.driver = getNext(xmlDecoder, Driver.class);
-                groupData.vehicle = getNext(xmlDecoder, Vehicle.class);
+            	groupData.deviceList = new ArrayList<Device>();
+            	groupData.driverList = new ArrayList<Driver>();
+            	groupData.vehicleList = new ArrayList<Vehicle>();
+                for (int cnt = 0; cnt < driverVehicleDeviceCount; cnt++) {
+                	groupData.deviceList.add(getNext(xmlDecoder, Device.class));
+                	groupData.driverList.add(getNext(xmlDecoder, Driver.class));
+                	groupData.vehicleList.add(getNext(xmlDecoder, Vehicle.class));
+                }
             }
-            if (includeUnknown) {
-	            noDriverDevice = getNext(xmlDecoder, Device.class);
-	            noDriverVehicle = getNext(xmlDecoder, Vehicle.class);
-            }
-            if (includeZonesAndAlerts) {
-            	zone = getNext(xmlDecoder, Zone.class);
-            	getNext(xmlDecoder, ZoneAlert.class);
-            	for (int i = 0; i < 7; i++) {
-            		getNext(xmlDecoder, RedFlagAlert.class);
-            	}
-            }
+            noDriverDevice = getNext(xmlDecoder, Device.class);
+            noDriverVehicle = getNext(xmlDecoder, Vehicle.class);
         	startDateInSec = getNext(xmlDecoder, Integer.class);
         	Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
         
@@ -183,7 +176,6 @@ public class ITData extends BaseITData{
         }
     }
 
-
     private boolean dataExists(SiloService siloService) {
         // just spot check that account and team exist (this could be more comprehensive)
         AccountHessianDAO accountDAO = new AccountHessianDAO();
@@ -193,7 +185,7 @@ public class ITData extends BaseITData{
         if (dataExists) {
             GroupHessianDAO groupDAO = new GroupHessianDAO();
             groupDAO.setSiloService(siloService);
-            Group existingTeam = groupDAO.findByID(teamGroupData.get(0).group.getGroupID());
+            Group existingTeam = groupDAO.findByID(teamGroupListData.get(0).group.getGroupID());
             dataExists = (existingTeam != null && existingTeam.getType().equals(GroupType.TEAM));
         }
         if (!dataExists) {
@@ -201,6 +193,6 @@ public class ITData extends BaseITData{
         }
         return dataExists;
     }
-
+  
 
 }

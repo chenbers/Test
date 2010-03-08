@@ -47,7 +47,7 @@ import com.inthinc.pro.model.TrendItem;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
-@Ignore
+
 public class ReportServiceTest {
     private static ReportService reportService;
     private static SiloService siloService;
@@ -442,9 +442,10 @@ public class ReportServiceTest {
         }
     }
 
+    // TODO:
     // this is currently not working because of the way the back end is determining if a device has an emu that supports idle time 
     @Test
-    // @Ignore
+    @Ignore
     public void idlePercent() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -789,8 +790,9 @@ public class ReportServiceTest {
         }
     }
 
+    // TODO: not working
     @Test
-    // @Ignore
+    @Ignore
     public void getIdlingReportData() {
         // getDVScoresByGSE
 
@@ -817,7 +819,7 @@ public class ReportServiceTest {
             IdlingReportItem item = list.get(0);
 //            System.out.println(teamType + ": " + item.getDriveTime() + " " + item.getHighHrs() + " " + item.getLowHrs());
             assertEquals("IdlingReportItem groupID", groupID, item.getGroupID());
-            assertEquals("IdlingReportItem drive time team " + teamType, expectDailyDriveTimeHrs, item.getDriveTime(), 0.0003);
+            assertEquals("IdlingReportItem drive time team " + teamType, expectDailyDriveTimeHrs, item.getDriveTime().floatValue(), 0.0003);
 //            float expectDailyLoIdleHrs = (float) (expectedDailyLoIdle[teamType] * (daysBack - 1)) / 3600f;
 //            float expectDailyHiIdleHrs = (float) (expectedDailyHiIdle[teamType] * (daysBack - 1)) / 3600f;
             float expectDailyLoIdleHrs = (float) (expectedDailyLoIdle[teamType] * daysBack) / 3600f;

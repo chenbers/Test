@@ -1,7 +1,8 @@
 package it.util;
 
-import it.com.inthinc.pro.dao.model.GroupData;
+import it.com.inthinc.pro.dao.model.GroupListData;
 import it.com.inthinc.pro.dao.model.ITData;
+import it.com.inthinc.pro.dao.model.ITDataExt;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
@@ -19,8 +20,11 @@ import java.util.List;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventMapper;
 
-public class DataGenForPaginationTesting extends DataGenForTesting {
+public class DataGenForReportPaginationTesting extends DataGenForTesting {
 	
 	public String xmlPath;
 	public boolean isNewDataSet;
@@ -28,18 +32,19 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 	public Integer numDays;
 	
     public static Integer NUM_EVENT_DAYS = 7;
+    public static Integer NUM_DRIVERS_VEHICLES_DEVICES = 40;//100;
     
     
     @Override
     protected void createTestData() {
-    	itData = new ITData();
+    	itData = new ITDataExt();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
-        ((ITData)itData).createTestData(siloService, xml, assignmentDate, true, true);
+        ((ITDataExt)itData).createTestDataExt(siloService, xml, assignmentDate, NUM_DRIVERS_VEHICLES_DEVICES);
     }
     
     @Override
     protected boolean parseTestData(){
-    	itData = new ITData();
+    	itData = new ITDataExt();
         InputStream stream;
 		try {
 			stream = new FileInputStream(xmlPath);
@@ -47,7 +52,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 			e.printStackTrace();
         	return false;
 		}
-        if (!((ITData)itData).parseTestData(stream, siloService, true, true))
+        if (!((ITDataExt)itData).parseTestDataExt(stream, siloService, NUM_DRIVERS_VEHICLES_DEVICES))
         {
         	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
         	return false;
@@ -129,26 +134,26 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
         
 	}
 
-	@Override
-	protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
+	protected void generateDayDataExt(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupListData> teamGroupData) throws Exception 
 	{
-		for (GroupData groupData : teamGroupData)
+		for (GroupListData groupData : teamGroupData)
 		{
 			if (groupData.driverType.equals(driverType))
 			{
 				
 				EventGenerator eventGenerator = new EventGenerator();
-				switch (driverType.intValue()) {
-				case 0:			// good
-					eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0));
+				for (Device device : groupData.deviceList) {
+					switch (driverType.intValue()) {
+					case 0:			// good
+						eventGenerator.generateTrip(device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0));
+						break;
+					case 1:			// intermediate
+						eventGenerator.generateTrip(device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50));
 					break;
-				case 1:			// intermediate
-					eventGenerator.generateTripExt(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50), itData.zone.getZoneID());
-				break;
-				case 2:			// bad
-					eventGenerator.generateTripExt(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100), itData.zone.getZoneID());
-				break;
-				
+					case 2:			// bad
+						eventGenerator.generateTrip(device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100));
+					break;
+					}
 				}
 			}		
 		}
@@ -157,14 +162,30 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 	protected void generateUnknownDriverDayData(MCMSimulator mcmSim, Date date) throws Exception 
 	{
 		EventGenerator eventGenerator = new EventGenerator();
-		eventGenerator.generateTripExt(itData.noDriverDevice.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50), itData.zone.getZoneID());
+		eventGenerator.generateTrip(itData.noDriverDevice.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50));
 	}
 	
-	
+	protected void waitForIMEIsExt(MCMSimulator mcmSim, int eventDateSec, List<GroupListData> teamGroupData) {
+		
+		for (GroupListData data : teamGroupData)
+		{
+
+			Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_FIRMWARE_UP_TO_DATE,
+                    new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
+			for (Device device : data.deviceList) {
+				if (!genTestEvent(mcmSim, testEvent, device.getImei()))
+				{
+					System.out.println("Error: imei has not moved to central server");
+					System.exit(1);
+				}
+			}
+		}
+	}
+
     public static void main(String[] args)
     {
         
-        DataGenForPaginationTesting  testData = new DataGenForPaginationTesting();
+        DataGenForReportPaginationTesting  testData = new DataGenForReportPaginationTesting();
         testData.parseArguments(args);
 
         IntegrationConfig config = new IntegrationConfig();
@@ -187,10 +208,17 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 	            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
 
 	            int todayInSec = DateUtil.getTodaysDate();
-	            testData.waitForIMEIs(mcmSim, DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60, ((ITData)testData.itData).teamGroupData);
 	            
 	            int numDays = NUM_EVENT_DAYS;
 //numDays = 5;	            
+	            // save date of 1st event
+	            xml.writeObject(new Integer(DateUtil.getDaysBackDate(todayInSec, numDays, ReportTestConst.TIMEZONE_STR)));
+	            if (xml != null)
+	            {
+	                xml.close();
+	            }
+	            
+	            testData.waitForIMEIsExt(mcmSim, DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60, ((ITDataExt)testData.itData).teamGroupListData);
 	            for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
 	            {
 	            	for (int day = numDays; day > 0; day--)
@@ -198,18 +226,12 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 	                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 	                    Date startDate = new Date((long)dateInSec * 1000l);
-	            		testData.generateDayData(mcmSim, startDate, teamType, ((ITData)testData.itData).teamGroupData);
+	            		testData.generateDayDataExt(mcmSim, startDate, teamType, ((ITDataExt)testData.itData).teamGroupListData);
 	            		
 	            		if (teamType == ITData.INTERMEDIATE) {
 	            			 testData.generateUnknownDriverDayData(mcmSim, startDate);
 	            		}
 	            	}
-	            }
-	            // save date of 1st event
-	            xml.writeObject(new Integer(DateUtil.getDaysBackDate(todayInSec, numDays, ReportTestConst.TIMEZONE_STR)));
-	            if (xml != null)
-	            {
-	                xml.close();
 	            }
 	            
 	            System.out.println(" -- test data generation complete -- ");
@@ -237,7 +259,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
     	        	{
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                Date startDate = new Date((long)dateInSec * 1000l);
-    	        		testData.generateDayData(mcmSim, startDate, teamType, ((ITData)testData.itData).teamGroupData);
+    	        		testData.generateDayDataExt(mcmSim, startDate, teamType, ((ITDataExt)testData.itData).teamGroupListData);
 	            		if (teamType == ITData.INTERMEDIATE) {
 	            			 testData.generateUnknownDriverDayData(mcmSim, startDate);
 	            		}

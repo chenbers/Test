@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.joda.time.DateTime;
+
 public class DateUtil
 {
 	public static int SECONDS_IN_DAY = 86400;
@@ -20,12 +22,15 @@ public class DateUtil
 
     public static final String[] dayOfWeek = { "TODAY", "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", };
 
-    private static String DOB_SEPARATOR = "-";
-    private static final NumberFormat twoDigitFormat = new DecimalFormat("00");
 
     public static long convertDateToSeconds(Date date)
     {
         return (date.getTime() / 1000l);
+    }
+
+    public static long convertDateToSeconds(DateTime dateTime)
+    {
+        return (dateTime.getMillis() / 1000l);
     }
 
     public static Date convertTimeInSecondsToDate(long sec)

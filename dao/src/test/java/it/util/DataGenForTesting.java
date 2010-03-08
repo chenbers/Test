@@ -1,7 +1,7 @@
 package it.util;
 
+import it.com.inthinc.pro.dao.model.BaseITData;
 import it.com.inthinc.pro.dao.model.GroupData;
-import it.com.inthinc.pro.dao.model.ITData;
 
 import java.beans.XMLEncoder;
 import java.util.ArrayList;
@@ -18,16 +18,16 @@ public abstract class DataGenForTesting  {
 
 	public static XMLEncoder xml;
     public static SiloService siloService;
-
     
-    public ITData itData;
+    public BaseITData itData;
 
     protected abstract boolean parseTestData();
     protected abstract void createTestData();
 
-	protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType) throws Exception 
+
+	protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
 	{
-		for (GroupData groupData : itData.teamGroupData)
+		for (GroupData groupData : teamGroupData)
 		{
 			if (groupData.driverType.equals(driverType))
 			{
@@ -51,7 +51,7 @@ public abstract class DataGenForTesting  {
 		
 	}
 	
-    private boolean genTestEvent(MCMSimulator mcmSim, Event event, String imei) {
+    protected boolean genTestEvent(MCMSimulator mcmSim, Event event, String imei) {
         List<byte[]> noteList = new ArrayList<byte[]>();
 
         byte[] eventBytes = EventGenerator.createDataBytesFromEvent(event);
@@ -101,13 +101,12 @@ public abstract class DataGenForTesting  {
         return !errorFound;
     }
 
-	protected void waitForIMEIs(MCMSimulator mcmSim, int eventDateSec) {
+	protected void waitForIMEIs(MCMSimulator mcmSim, int eventDateSec, List<GroupData> teamGroupData) {
 		
-		for (GroupData data : itData.teamGroupData)
+		for (GroupData data : teamGroupData)
 		{
-//	        Date eventDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
 
-			Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_FIRMWARE_UP_TO_DATE,//EventMapper.TIWIPRO_EVENT_LOCATION,
+			Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_FIRMWARE_UP_TO_DATE,
                     new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 			if (!genTestEvent(mcmSim, testEvent, data.device.getImei()))
 			{

@@ -6,15 +6,9 @@ import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 
@@ -26,7 +20,7 @@ public class DataGenForAlertMessageTesting  extends DataGenForTesting {
     protected void createTestData() {
     	itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 2, ReportTestConst.TIMEZONE_STR));
-        itData.createTestData(siloService, xml, assignmentDate, true, true);
+        ((ITData)itData).createTestData(siloService, xml, assignmentDate, true, true);
     }
 
     @Override

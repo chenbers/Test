@@ -395,6 +395,10 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
     {
         return (Integer) map.get("count");
     }
+    protected Integer getCount(Map<String, Object> map)
+    {
+        return (Integer) map.get("count");
+    }
     protected Integer getCentralId(Map<String, Object> map)
     {
         return (Integer) map.get("id");

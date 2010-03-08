@@ -387,6 +387,18 @@ public interface SiloService extends HessianService
     
     List<Map <String, Object>> getDVLByGroupIDDeep(Integer groupID) throws ProDAOException;
     
-   
+    // Reports -- pagination methods
+    Map<String, Object> getDriverReportCount(Integer groupID, List<Map<String, Object>> filterList);
+    List<Map<String, Object>> getDriverReportPage(Integer groupID, Map<String, Object> pageParams);
+    
+    Map<String, Object> getVehicleReportCount(Integer groupID, List<Map<String, Object>> filterList);
+    List<Map<String, Object>> getVehicleReportPage(Integer groupID, Map<String, Object> pageParams);
+
+    Map<String, Object> getDeviceReportCount(Integer groupID, List<Map<String, Object>> filterList);
+    List<Map<String, Object>> getDeviceReportPage(Integer groupID, Map<String, Object> pageParams);
+    
+    Map<String, Object> getIdlingReportCount(Integer groupID, Long startDate, Long endDate, List<Map<String, Object>> filterList);
+    List<Map<String, Object>> getIdlingReportPage(Integer groupID, Long startDate, Long endDate, Map<String, Object> pageParams);
+
 
 }

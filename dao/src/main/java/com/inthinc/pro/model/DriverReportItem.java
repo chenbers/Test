@@ -11,23 +11,45 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
      */
     private static final long serialVersionUID = 6797365101619066450L;
         
-    private String group;
-    private String employeeID;
-    private String employee;
+    
+
+    // not sure if these belong here
+    private String styleOverall;
+	private String styleSpeed;
+    private String styleStyle;
+    private String styleSeatBelt;
+    
+    // not used
     private Vehicle vehicle;
+    private String group;
+    private Driver driver;   
+    private String employee;
+    private Integer seatBeltScore;
+    
+    
+    // used with pagination
+    private Integer groupID;
+    private String employeeID;
     private Number milesDriven;
     private Integer overallScore;
     private Integer speedScore;
     private Integer styleScore;
-    private Integer seatBeltScore;
-    private String styleOverall;
-    private String styleSpeed;
-    private String styleStyle;
-    private String styleSeatBelt;
-    private Driver driver;   
-    private Integer groupID;
     
-    public String getGroup()
+    // new with pagination
+    private String groupName;
+    private String driverName;
+    private Integer driverID;
+    private String vehicleName;
+    private Integer vehicleID;
+    private Integer seatbeltScore;
+    
+    public Integer getSeatbeltScore() {
+		return seatbeltScore;
+	}
+	public void setSeatbeltScore(Integer seatbeltScore) {
+		this.seatbeltScore = seatbeltScore;
+	}
+	public String getGroup()
     {
         return group;
     }
@@ -147,10 +169,42 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
     {
         this.groupID = groupID;
     }
-       
+    public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getDriverName() {
+		return driverName;
+	}
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+	public Integer getDriverID() {
+		return driverID;
+	}
+	public void setDriverID(Integer driverID) {
+		this.driverID = driverID;
+	}
+	public String getVehicleName() {
+		return vehicleName;
+	}
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+	public Integer getVehicleID() {
+		return vehicleID;
+	}
+	public void setVehicleID(Integer vehicleID) {
+		this.vehicleID = vehicleID;
+	}
+
     @Override
     public int compareTo(DriverReportItem o)
     {
+    	if (driverName != null && o.driverName != null)
+            return getDriverName().toLowerCase().compareTo(o.getDriverName().toLowerCase());
         return getEmployee().toLowerCase().compareTo(o.getEmployee().toLowerCase());
     }
 }
