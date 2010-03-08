@@ -110,7 +110,7 @@ public class ReportPaginationTest {
     		new TestFilterParams("devicePhone", "XXX", 0),
     		new TestFilterParams("devicePhone", ""+goodGroupID, countPerGroup+1),
     		new TestFilterParams("deviceEPhone", "XXX", 0),
-    		new TestFilterParams("deviceEPhone", ""+goodGroupID, countPerGroup+1),
+    		new TestFilterParams("deviceEPhone", "9876", countPerGroup+1),
     		new TestFilterParams("deviceStatus", DeviceStatus.INACTIVE.getCode(), 0),
     		new TestFilterParams("deviceStatus", DeviceStatus.ACTIVE.getCode(), countPerGroup+1),
     };
