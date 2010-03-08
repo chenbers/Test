@@ -173,7 +173,7 @@ public class MessagesTest {
 				continue;
 			else if (nonTranslatedMap_ro.containsKey(key))
 				continue;
-			else if (langValue.trim().equalsIgnoreCase(value.trim())) { 
+			else if (langValue.trim().equalsIgnoreCase(value.trim()) || langValue.contains("(ro)")) { 
 				System.out.println("NOT TRANSLATED: " + key + " en: " + value + " ro: " + langValue);
 				errorCount++;
 			}
