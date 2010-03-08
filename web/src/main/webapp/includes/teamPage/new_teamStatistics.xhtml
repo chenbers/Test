@@ -142,7 +142,7 @@
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
-
+					<!-- The following formula will need to change once we get mileage per vehicle type -->
 					<h:outputFormat value="#{messages.reports_time}">
 						<a4j:actionparam value="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" converter="DoubleConverter"/>
 					</h:outputFormat>
@@ -261,6 +261,7 @@
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
+					<!-- The following formula will need to change once we get mileage per vehicle type -->
 					<h:outputText id="summaryMpg" value="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" converter="DoubleConverter"/>                  					
 				</rich:column>
 				<rich:column width="7%">
