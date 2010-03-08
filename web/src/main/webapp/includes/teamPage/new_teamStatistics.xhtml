@@ -14,7 +14,7 @@
 	<rich:tab>
 	 <f:facet name="label">
 	 	<h:panelGroup>
-	 		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"/>Driver Statistics
+	 		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"/>#{messages.team_driver_statistics}
 	 	</h:panelGroup>
 	 </f:facet>
 	
@@ -37,11 +37,7 @@
 					<f:facet name="header">
 						#{messages.team_driver}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						#{teamStatisticsBean.driverTotals.driver.person.fullName}
-					</f:facet>
-					-->
+
                         <pretty:link mappingId="driverPerformance">
 							  #{item.driver.person.fullName}
                               <f:param value="#{item.driver.driverID}"/>
@@ -51,11 +47,7 @@
 					<f:facet name="header">
 						#{messages.team_score}
 					</f:facet>
-					<!--    
-					<f:facet name="footer">
-						
-					</f:facet>
-					-->  
+
                     <ui:include src="/includes/scoreBox.xhtml">
 	                    <ui:param name="score" value="#{item.score.overall}" />
 	                    <ui:param name="scoreStyle" value="#{item.scoreStyle}" /> 
@@ -68,11 +60,7 @@
 					<f:facet name="header">
 						#{messages.team_vehicle}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-					
-					</f:facet>
-					-->
+
                     <pretty:link id="driversVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle.name ne messages.reports_none_assigned}">
                     	<h:outputText value="#{item.vehicle.name}"/>
                         <f:param value="#{item.vehicle.vehicleID}"/>
@@ -83,36 +71,21 @@
 					<f:facet name="header">
 						#{messages.team_trips}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						#{teamStatisticsBean.driverTotals.score.trips}
-					</f:facet>
-					-->
+
 					#{item.score.trips}
 				</rich:column>
 				<rich:column width="7%" sortBy="#{item.score.idleHiEvents+item.score.trips}">
 					<f:facet name="header">
 						#{messages.team_stops}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						#{teamStatisticsBean.driverTotals.score.idleHiEvents + teamStatisticsBean.driverTotals.score.idleLoEvents + teamStatisticsBean.driverTotals.score.trips}
-					</f:facet>
-					-->
+
 					#{item.score.idleHiEvents + item.score.trips}
 				</rich:column>
 				<rich:column width="7%" sortBy="#{(item.score.endingOdometer - item.score.startingOdometer)/100}">
 					<f:facet name="header">
 						#{messages.team_miles_driven}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						<h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
-                    		<a4j:actionparam value="#{(teamStatisticsBean.driverTotals.score.endingOdometer - teamStatisticsBean.driverTotals.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
-                    		<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
-                    	</h:outputFormat>
-					</f:facet>
-					-->
+
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
                     	<a4j:actionparam value="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
                     	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
@@ -122,14 +95,7 @@
 					<f:facet name="header">
 						#{messages.team_drive_time}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						<h:outputFormat value="#{messages.reports_time}" rendered="#{teamStatisticsBean.driverTotals.score.driveTime != null}">
-                    		<a4j:actionparam value="#{teamStatisticsBean.driverTotals.score.driveTime}" converter="TimeToStringConverter"/>                    
-                    	</h:outputFormat>										
-                    	<h:outputText value="00:00:00" rendered="#{teamStatisticsBean.driverTotals.score.driveTime == null}"/>
-					</f:facet>
-					-->
+
                     <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.driveTime != null}">
                     	<a4j:actionparam value="#{item.score.driveTime}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
@@ -139,13 +105,7 @@
 					<f:facet name="header">
 						#{messages.team_idle_time}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						<h:outputFormat value="#{messages.reports_time}" >
-                    		<a4j:actionparam value="#{(teamStatisticsBean.driverTotals.score.idleLo + teamStatisticsBean.driverTotals.score.idleHi)}" converter="TimeToStringConverter"/>                    
-                    	</h:outputFormat>	
-					</f:facet>
-					-->
+
                     <h:outputFormat value="#{messages.reports_time}" >
                     	<a4j:actionparam value="#{(item.score.idleLo + item.score.idleHi)}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
@@ -154,14 +114,7 @@
 					<f:facet name="header">
 						#{messages.team_low_idle}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						<h:outputFormat value="#{messages.reports_time}"  rendered="#{teamStatisticsBean.driverTotals.score.idleLo != null}">
-                    		<a4j:actionparam value="#{teamStatisticsBean.driverTotals.score.idleLo}" converter="TimeToStringConverter"/>                    
-                    	</h:outputFormat>	
-                    	<h:outputText value="00:00:00" rendered="#{teamStatisticsBean.driverTotals.score.idleLo == null}"/>				
-					</f:facet>
-					-->
+
                     <h:outputFormat value="#{messages.reports_time}"  rendered="#{item.score.idleLo != null}">
                     	<a4j:actionparam value="#{item.score.idleLo}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>	
@@ -171,14 +124,7 @@
 					<f:facet name="header">
 						#{messages.team_high_idle}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-					    <h:outputFormat value="#{messages.reports_time}" rendered="#{teamStatisticsBean.driverTotals.score.idleHi != null}">
-                    		<a4j:actionparam value="#{teamStatisticsBean.riverTotals.score.idleHi}" converter="TimeToStringConverter"/>                    
-                    	</h:outputFormat>	
-                    	<h:outputText value="00:00:00" rendered="#{teamStatisticsBean.driverTotals.score.idleHi == null}"/>		
-					</f:facet>
-					-->
+
                     <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.idleHi != null}">
                     	<a4j:actionparam value="#{item.score.idleHi}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>	
@@ -188,12 +134,7 @@
 					<f:facet name="header">
 						#{messages.team_idle_percentage}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						<h:outputText id="idlePercentageNonZeroFooter" rendered="#{teamStatisticsBean.driverTotals.score.driveTime != 0 and teamStatisticsBean.driverTotals.score.driveTime != null}" value="#{((teamStatisticsBean.driverTotals.score.idleHi+teamStatisticsBean.driverTotals.score.idleLo)*100)/(teamStatisticsBean.driverTotals.score.driveTime)}" converter="DoubleConverter"/>
-						<h:outputText id="idlePercentageZeroFooter" rendered="#{teamStatisticsBean.driverTotals.score.driveTime == 0 or teamStatisticsBean.driverTotals.score.driveTime == null}" value="0.00"/>																									
-					</f:facet>
-					-->
+
 					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" converter="DoubleConverter"/>
 					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" value="0.00"/>																				
 				</rich:column>
@@ -201,13 +142,7 @@
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						<h:outputFormat value="#{messages.reports_time}">
-							<a4j:actionparam value="#{(teamStatisticsBean.driverTotals.score.mpgLight + teamStatisticsBean.driverTotals.score.mpgMedium + teamStatisticsBean.driverTotals.score.mpgHeavy)/1}" converter="DoubleConverter"/>
-						</h:outputFormat>
-					</f:facet>
-					-->
+
 					<h:outputFormat value="#{messages.reports_time}">
 						<a4j:actionparam value="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" converter="DoubleConverter"/>
 					</h:outputFormat>
@@ -216,22 +151,14 @@
 					<f:facet name="header">
 						#{messages.team_crashes}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						#{teamStatisticsBean.driverTotals.score.crashEvents}
-					</f:facet>
-					-->				
+		
 					#{item.score.crashEvents}
 				</rich:column>
 				<rich:column width="7%" sortBy="#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}">
 					<f:facet name="header">
 						#{messages.team_flags}
 					</f:facet>
-					<!-- 
-					<f:facet name="footer">
-						#{teamStatisticsBean.driverTotals.score.seatbeltEvents + teamStatisticsBean.driverTotals.score.speedEvents + teamStatisticsBean.driverTotals.score.aggressiveAccelEvents + teamStatisticsBean.driverTotals.score.aggressiveBrakeEvents + teamStatisticsBean.driverTotals.score.aggressiveBumpEvents + teamStatisticsBean.driverTotals.score.aggressiveLeftEvents + teamStatisticsBean.driverTotals.score.aggressiveRightEvents}						
-					</f:facet>
-					-->
+
 					#{item.score.seatbeltEvents + item.score.speedEvents + item.score.aggressiveAccelEvents + item.score.aggressiveBrakeEvents + item.score.aggressiveBumpEvents + item.score.aggressiveLeftEvents + item.score.aggressiveRightEvents}
 				</rich:column>
 				<f:facet name="footer">
