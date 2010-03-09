@@ -58,6 +58,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
 
+    // TODO: OLD implementation (non-pagination)
     @Override
     public ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration, Locale locale)
     {
@@ -75,6 +76,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
         return reportCriteria;
     }
+    @Override
+    public ReportCriteria getDriverReportCriteria(Integer groupID, Locale locale)
+    {
+    	this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName(), locale);
+        return reportCriteria;
+    }
+
 
     @Override
     public ReportCriteria getMpgReportCriteria(Integer groupID, Duration duration, Locale locale)

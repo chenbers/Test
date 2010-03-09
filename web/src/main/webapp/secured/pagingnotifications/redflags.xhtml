@@ -65,7 +65,7 @@
 	<h:outputText id="redflag_email_modalPanel">
 		<ui:include src="/includes/emailReportPopup.xhtml">	
 			<ui:param  name="id" value="redflagsReportEmailModal" />
-			<ui:param  name="reportBean" value="#{redFlagsBean}"/>
+			<ui:param  name="reportBean" value="#{pagingRedFlagsBean}"/>
     	 	<ui:param name="context" value="#{context}" />
 		</ui:include>
 	</h:outputText>

@@ -45,5 +45,8 @@ default-autowire="byName">
   </bean>
   <bean id="googleAjaxAddressLookupBean" class="com.inthinc.pro.map.GoogleAjaxAddressLookup">
   </bean>
+
+	
+  <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"/>
    
 </beans>

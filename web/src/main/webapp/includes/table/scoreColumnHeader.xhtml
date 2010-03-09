@@ -1,0 +1,29 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	
+
+	<f:facet name="header">
+		<h:panelGroup>
+			<c:set var="msgId" value="reports_#{type}"/> 
+			<h:outputText value="#{messages[msgId]}" />
+			<h:panelGroup style="float:right;">
+				<rich:spacer style="display:block" height="2"/>
+				<h:selectOneMenu id="#{type}ScoreFilter" value="#{bean.scoreFilterMap[type]}" label="#{messages[msgId]}" style="width:80px;size:auto;margin-top:3px;">
+					<f:selectItems value="#{bean.scoreRanges}" />
+					<a4j:support event="onchange" reRender="#{context},#{context}-form:header,#{context}-form:#{context}-bottomScroller" />
+				</h:selectOneMenu>
+				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+					<ui:param name="selectBoxID" value="#{context}-form:#{context}:#{type}ScoreFilter" />
+				</ui:include>
+			</h:panelGroup>
+		</h:panelGroup>
+    </f:facet>   
+
+</ui:composition>

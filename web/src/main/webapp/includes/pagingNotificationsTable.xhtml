@@ -13,21 +13,10 @@
  	<t:saveState value="#{bean}"/>
     
     <h:form id="#{context}-form">
-<!--     
-    	<div align="right" style="width: 100%"> 
-        	<h:outputFormat id="header" value="#{messages.notes_safety_recordCountHeader}">
-				<a4j:actionparam value="#{bean.table.pageData.pageStartRow}"/>
-				<a4j:actionparam value="#{bean.table.pageData.pageEndRow}"/>
-				<a4j:actionparam value="#{bean.table.pageData.totalRows}"/>
-			</h:outputFormat>
-        </div>
- -->
-         
   		<ui:include src="/includes/table/statsHeader.xhtml">	
    			<ui:param name="title" value="#{messages.notes_safety_recordCountHeader}" />
    			<ui:param name="pageData" value="#{bean.table.pageData}" />
 		</ui:include>
-    
     
     	<rich:jQuery selector="document" query="ready(function(){initializeTable();})" />
         

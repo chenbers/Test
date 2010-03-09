@@ -65,7 +65,7 @@ public class EventCategoryFilter implements TableFilterFactory{
 		this.aggTypeList = aggTypeList;
 	}
 	@Override
-	public List<TableFilterField> getFilters() {
+	public List<TableFilterField> getFilters(String propertyName) {
 		
 		List<TableFilterField>  tableFilterList = new ArrayList<TableFilterField>();
 		tableFilterList.add(new TableFilterField("type", typeList));

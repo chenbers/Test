@@ -1,6 +1,9 @@
 package com.inthinc.pro.model.pagination;
 
-public class Range {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Range implements TableFilterFactory {
 
 	private Number min;
 	private Number max;
@@ -25,6 +28,13 @@ public class Range {
 	}
 	public void setMax(Number max) {
 		this.max = max;
+	}
+
+	@Override
+	public List<TableFilterField> getFilters(String propertyName) {
+		List<TableFilterField>  tableFilterList = new ArrayList<TableFilterField>();
+		tableFilterList.add(new TableFilterField(propertyName, this));
+		return tableFilterList;
 	}
 	
 }

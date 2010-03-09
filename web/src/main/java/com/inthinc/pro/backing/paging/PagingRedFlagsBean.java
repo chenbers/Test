@@ -1,14 +1,11 @@
 package com.inthinc.pro.backing.paging;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.faces.model.SelectItem;
 
@@ -20,14 +17,11 @@ import com.inthinc.pro.backing.TablePrefOptions;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagReportItem;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.pagination.EventCategoryFilter;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -135,7 +129,7 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
 	{
 		super.init();
 		
-		logger.debug("PagingRedFlagsBean - init");
+		logger.info("PagingRedFlagsBean - init");
         tablePref = new TablePref<RedFlag>(this);
 		
         

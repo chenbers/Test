@@ -326,8 +326,10 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 
 				if (filterField instanceof CustomFilterField) {
 					Object filterObject = ((CustomFilterField) filterField).getFilterObject();
+					if (filterObject == null)
+						return;
 					if (filterObject instanceof TableFilterFactory) {
-						List<TableFilterField> tableFilterFieldList = ((TableFilterFactory)filterObject).getFilters();
+						List<TableFilterField> tableFilterFieldList = ((TableFilterFactory)filterObject).getFilters(propertyName);
 						for (TableFilterField tableFilterField : tableFilterFieldList) {
 							dataProvider.addFilterField(tableFilterField);
 						}

@@ -115,6 +115,7 @@
 	</url-mapping>
 	
     <!-- Reports Section -->
+<!--     
     <url-mapping id="reports">
         <pattern>/app/reports/</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
@@ -137,6 +138,31 @@
         <view-id>/secured/reports/drivers.faces</view-id>
         <action  onPostback="false">#{driverReportBean.search}</action>
     </url-mapping>
+ -->    
+    <url-mapping id="reports">
+        <pattern>/app/reports/</pattern>
+        <view-id>/secured/pagingreports/drivers.faces</view-id>
+<!--        <action onPostback="false">#{pagingDriverReportBean.allAction}</action> -->
+    </url-mapping>
+    <url-mapping id="driversReport">
+        <pattern>/app/reports/driversReport</pattern>
+<!--    <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param> -->
+        <view-id>/secured/pagingreports/drivers.faces</view-id>
+<!--        <action onPostback="false">#{pagingDriverReportBean.allAction}</action>-->
+    </url-mapping>
+    <url-mapping id="driversReportWithGroup">
+        <pattern>/app/reports/driversReport/group/#{searchCoordinationBean.groupID}</pattern>
+        <view-id>/secured/pagingreports/drivers.faces</view-id>
+        <action onPostback="false">#{pagingDriverReportBean.allAction}</action>
+    </url-mapping>
+    <url-mapping id="driversReportWithCriteria">
+        <pattern>/app/reports/driversReport/</pattern>
+        <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
+        <view-id>/secured/pagingreports/drivers.faces</view-id>
+        <action onPostback="false">#{pagingDriverReportBean.searchAction}</action>
+    </url-mapping>
+    
+    
     <url-mapping id="vehiclesReport">
         <pattern>/app/reports/vehiclesReport</pattern>
         <view-id>/secured/reports/vehicles.faces</view-id>
@@ -172,45 +198,6 @@
     </url-mapping>
     
     <!-- Notifications Section -->
-<!--     
-    <url-mapping id="notifications">
-        <pattern>/app/notifications/</pattern>
-        <view-id>/secured/notifications/redflags.faces</view-id>
-          <action onPostback="false">#{redFlagsBean.showAllAction}</action>
-    </url-mapping>
-    <url-mapping id="redFlags">
-        <pattern>/app/notifications/redflags</pattern>
-        <view-id>/secured/notifications/redflags.faces</view-id>
-         <action onPostback="false">#{redFlagsBean.showAllAction}</action>
-    </url-mapping>
-    <url-mapping id="redFlagsWithCriteria">
-        <pattern>/app/notifications/redflags/search/</pattern>
-        <view-id>/secured/notifications/redflags.faces</view-id>
-        <action onPostback="false">#{redFlagsBean.searchAction}</action>
-    </url-mapping>
-    <url-mapping id="safety">
-        <pattern>/app/notifications/safety</pattern>
-        <view-id>/secured/notifications/safety.faces</view-id>
-    </url-mapping>
-    <url-mapping id="safetyWithGroupID">
-        <pattern>/app/notifications/safety</pattern>
-        <query-param name="groupID">#{eventsSearchCoordinationBean.groupID}</query-param>
-        <query-param name="eventID">#{eventsBean.eventFilterID}</query-param>
-        <view-id>/secured/notifications/safety.faces</view-id>
-    </url-mapping>
-    <url-mapping id="emergency">
-        <pattern>/app/notifications/emergency</pattern>
-        <query-param name="groupID">#{eventsSearchCoordinationBean.groupID}</query-param>
-        <query-param name="eventID">#{emergencyBean.eventFilterID}</query-param>
-        <view-id>/secured/notifications/emergency.faces</view-id>
-    </url-mapping>
-    <url-mapping id="diagnostics">
-        <pattern>/app/notifications/diagnostics</pattern>
-        <query-param name="groupID">#{eventsSearchCoordinationBean.groupID}</query-param>
-        <query-param name="eventID">#{diagnosticsBean.eventFilterID}</query-param>
-        <view-id>/secured/notifications/diagnostics.faces</view-id>
-    </url-mapping>
--->    
     <url-mapping id="notifications">
         <pattern>/app/notifications/</pattern>
         <view-id>/secured/pagingnotifications/redflags.faces</view-id>

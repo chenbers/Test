@@ -42,6 +42,11 @@ public class MeasurementConverter {
             return nf.format( MathUtil.round(distance, 2));
         }
     }
+    public static String convertDistance100th(Number distance, Boolean convertToMetric, Locale locale) {
+    	if (distance == null)
+    		distance = 0;
+    	return convertDistance(distance.doubleValue()/100d, convertToMetric, locale);
+    }
 
     /**
      * 

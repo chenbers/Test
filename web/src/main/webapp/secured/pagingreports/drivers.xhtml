@@ -1,0 +1,225 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:t="http://myfaces.apache.org/tomahawk"
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	 
+              
+	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="driversSelected" value="current" />
+	<ui:param name="helpFile" value="Drivers.htm" />
+    
+    
+    <ui:param name="context" value="drivers" />
+
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml" >
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+		
+	</ui:define>
+	
+	<ui:define name="content">
+		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+			<tr>
+				<td valign="top">
+					<div class="">
+						<div class="panel_nw">
+							<div class="panel_title">
+								<span class="driver">#{messages.reports_driverreporttitle}</span>
+								<span class="panel_links">#{messages.reports_driverreport_note}</span>
+							</div>
+						</div>
+						<div class="panel_w">
+							<div class="panel_content">		
+								<h:form id="#{context}-form">	
+									<ui:include src="/includes/redFlagsCount.xhtml" >
+										<ui:param name="context" value="drivers" />
+									</ui:include>	
+									<ul id="grid_nav" style="margin: 0;">            							
+           								<li class="l text">
+           									<a4j:commandLink 
+            										id="#{context}EditColumns" 
+            										reRender="editColumnsForm:editColumnGrid"
+            										action="#"
+            									 	styleClass="ls_tab_edit_columns"
+            										onclick="Richfaces.showModalPanel('editColumns');">            									
+            										<h:outputText value="#{messages.button_editColumns}" />
+           									</a4j:commandLink>
+           								</li> 
+           								<li class="r grid_icon">
+           									<h:panelGroup id="#{context}_reportToolImageId">
+												<h:graphicImage value="/images/ico_tools.png"/>
+											</h:panelGroup>
+										</li>
+										<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+										</li> 
+      								</ul>		
+									<ui:include src="/includes/table/statsHeader.xhtml">	
+   										<ui:param name="title" value="#{messages.notes_safety_recordCountHeader}" />
+   										<ui:param name="pageData" value="#{pagingDriverReportBean.table.pageData}" />
+									</ui:include>
+     
+									<ui:include src="/includes/reportsContextMenu.xhtml">	
+										<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+										<ui:param  name="reportBean" value="#{pagingDriverReportBean}"/>
+										<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+										<ui:param  name="exportExcel" value="TRUE"/>
+										<ui:param name="context" value="#{context}" />
+									</ui:include>
+	                                <div class="spacer"></div>
+    	                            <div class="datagrid_panel" style="width: 925px;">
+	<t:saveState value="#{pagingDriverReportBean}"/>
+    	                            
+                                    <rich:dataTable id="#{context}" value="#{pagingDriverReportBean.table.model}" var="item" 
+                                         styleClass="datagrid filterabledatagrid" 
+							        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"
+                                         rowClasses="tableOdd,tableEven" 
+ 										 cellspacing="1" rows="#{pagingDriverReportBean.table.pageData.rowsPerPage}" width="100%">
+                                        <rich:column id="group" rendered="#{pagingDriverReportBean.tableColumns['group'].visible}" 
+                                        				sortBy="#{item.groupName}" filterBy="#{item.groupName}"> 
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_group}" />
+                                            </f:facet>
+                                            <pretty:link id="driversDashboard" mappingId="dashboard">
+                                                <h:outputText value="#{item.groupName}"/>
+                                                <f:param value="#{item.groupID}"/>
+                                            </pretty:link> 
+                                        </rich:column>
+                                        <rich:column id="empid" rendered="#{pagingDriverReportBean.tableColumns['driver_person_empid'].visible}" sortBy="#{item.employeeID}" filterBy="#{item.employeeID}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_empID}" />
+                                            </f:facet>
+                                            <h:outputText value="#{item.employeeID}" />
+                                        </rich:column>
+                                        <rich:column id="fullName" rendered="#{pagingDriverReportBean.tableColumns['driver_person_fullName'].visible}"  
+                                        			sortBy="#{item.driverName}" sortOrder="ASCENDING" filterBy="#{item.driverName}" 
+                                        			filterValue="#{searchCoordinationBean.searchFor}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_driver}" />
+                                            </f:facet>
+                                            <pretty:link id="driversDriverPerformance" mappingId="driverPerformance">
+                                                <h:outputText value="#{item.driverName}"/>
+                                                <f:param value="#{item.driverID}"/>
+                                            </pretty:link>
+                                        
+                                        </rich:column>
+                                        <rich:column id="vehiclename" rendered="#{pagingDriverReportBean.tableColumns['vehicle_name'].visible}" sortBy="#{item.vehicleName}" filterBy="#{item.vehicleName}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_vehicle}" />
+                                            </f:facet>
+                                            <pretty:link id="driversVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicleID ne null}">
+                                                <h:outputText value="#{item.vehicleName}"/>
+                                                <f:param value="#{item.vehicleID}"/>
+                                            </pretty:link>
+                                            
+                                            <h:outputText rendered="#{item.vehicleID eq null}" value="#{messages.reports_none_assigned}" />
+                                        </rich:column>
+                                        <rich:column id="distance" rendered="#{pagingDriverReportBean.tableColumns['distanceDriven'].visible}" sortBy="#{item.milesDriven}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_distanceDriven}"/>
+                                            </f:facet>
+                                            <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
+                                                <a4j:actionparam value="#{item.milesDriven}" converter="HundrethMilesToKilometersConverter"/>
+                                                <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+                                            </h:outputFormat>
+                                        </rich:column>
+                                        <rich:column id="overallScore" rendered="#{pagingDriverReportBean.tableColumns['overallScore'].visible}" sortBy="#{item.overallScore}"
+                                         					custFilterBy="#{item.overallScore}" custFilterValue="#{pagingDriverReportBean.overallScoreFilter}">
+                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
+												<ui:param name="context" value="#{context}" />
+												<ui:param name="bean" value="#{pagingDriverReportBean}" />
+												<ui:param name="type" value="overall" />
+											</ui:include>
+                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.overallScore}" />
+                                                    <ui:param name="item" value="#{item.driverID}" /> 
+                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
+													<ui:param name="context" value="driversOverall" />
+                                            </ui:include> 
+                                        </rich:column>
+                                        <rich:column id="speedScore" rendered="#{pagingDriverReportBean.tableColumns['speedScore'].visible}" sortBy="#{item.speedScore}"
+                                         					custFilterBy="#{item.speedScore}" custFilterValue="#{pagingDriverReportBean.speedScoreFilter}">
+                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
+												<ui:param name="context" value="#{context}" />
+												<ui:param name="bean" value="#{pagingDriverReportBean}" />
+												<ui:param name="type" value="speed" />
+											</ui:include>
+                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.speedScore}" />
+                                                    <ui:param name="item" value="#{item.driverID}" /> 
+                                                    <ui:param name="scoreMappingId" value="driverPerformanceSpeed"/>
+													<ui:param name="context" value="driversSpeed" />
+                                            </ui:include> 
+                                        </rich:column>
+                                        <rich:column id="styleScore" rendered="#{pagingDriverReportBean.tableColumns['styleScore'].visible}" sortBy="#{item.styleScore}"
+                                         					custFilterBy="#{item.styleScore}" custFilterValue="#{pagingDriverReportBean.styleScoreFilter}">
+                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
+												<ui:param name="context" value="#{context}" />
+												<ui:param name="bean" value="#{pagingDriverReportBean}" />
+												<ui:param name="type" value="style" />
+											</ui:include>
+                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.styleScore}" />
+                                                    <ui:param name="item" value="#{item.driverID}" />  
+                                                    <ui:param name="scoreMappingId" value="driverPerformanceStyle"/>
+													<ui:param name="context" value="driversStyle" />
+                                            </ui:include> 
+                                        </rich:column>
+                                        <rich:column id="seatbeltScore" rendered="#{pagingDriverReportBean.tableColumns['seatBeltScore'].visible}" sortBy="#{item.seatbeltScore}"
+                                         					custFilterBy="#{item.seatbeltScore}" custFilterValue="#{pagingDriverReportBean.seatbeltScoreFilter}">
+                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
+												<ui:param name="context" value="#{context}" />
+												<ui:param name="bean" value="#{pagingDriverReportBean}" />
+												<ui:param name="type" value="seatbelt" />
+											</ui:include>
+                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.seatbeltScore}" />
+                                                    <ui:param name="item" value="#{item.driverID}" /> 
+                                                    <ui:param name="scoreMappingId" value="driverPerformanceSeatBelt"/>
+													<ui:param name="context" value="driversSeatBelt" />
+                                            </ui:include> 
+                                        </rich:column>
+                                    </rich:dataTable> 
+        	                        </div>
+            	                    <div class="spacer"></div>
+                	                <rich:datascroller id="#{context}-bottomScroller" 
+                                          for="#{context}" immediate="true" 
+                                          scrollerListener="#{pagingDriverReportBean.table.scrollerListener}" 
+                                          reRender="#{context}"
+                                          requestDelay="200" eventsQueue="pagerQueue" 
+                                          page="#{pagingDriverReportBean.table.pageData.currentPage}" renderIfSinglePage="false"/>
+                   			</h:form>
+							<ui:include src="/includes/editColumnsPopup.xhtml">
+								<ui:param name="bean" value="#{pagingDriverReportBean}"/>	
+								<ui:param name="reRender" value="#{context}-form:#{context}" />
+								<ui:param name="context" value="#{context}" />
+							</ui:include>
+						</div>
+					</div>
+			    	<div class="panel_sw">
+						<div class="panel_statusbar"></div>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+		
+	<h:outputText id="driver_email_modalPanel">
+		<ui:include src="/includes/emailReportPopup.xhtml">	
+			<ui:param  name="id" value="#{context}_reportEmailModal" />
+			<ui:param  name="reportBean" value="#{pagingDriverReportBean}"/>
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</h:outputText>
+		
+
+	</ui:define>
+	
+</ui:composition>

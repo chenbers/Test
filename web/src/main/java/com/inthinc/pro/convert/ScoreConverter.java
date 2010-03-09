@@ -22,19 +22,16 @@ public class ScoreConverter extends BaseConverter
     
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-
-        if ((value == null) || !Integer.class.isInstance(value) || Integer.class.cast(value).intValue() < 0)
-        	
+        if ((value == null) || !Integer.class.isInstance(value) || Integer.class.cast(value).intValue() < 0) {
             return MessageUtil.getMessageString("NotApplicable",getLocale());
-        
-        else {
-        	
-	        NumberFormat format = NumberFormat.getNumberInstance(getLocale());
-	        format.setMaximumFractionDigits(1);
-	        format.setMinimumFractionDigits(1);
-       	
-            return format.format(Integer.class.cast(value).doubleValue()/10.0d);
         }
+        
+        	
+        NumberFormat format = NumberFormat.getNumberInstance(getLocale());
+        format.setMaximumFractionDigits(1);
+        format.setMinimumFractionDigits(1);
+   	
+        return format.format(Integer.class.cast(value).doubleValue()/10.0d);
 
     }
 

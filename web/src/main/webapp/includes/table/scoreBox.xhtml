@@ -9,20 +9,9 @@
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 <!-- 
-	Score Styles - specifies which color to use for the box.
-    ==============
-	score_sm_na
-	score_sm_1
-	score_sm_2
-	score_sm_3
-	score_sm_4
-	score_sm_5
-	
-	To use:
-	==============
-	<ui:include src="/includes/scoreBox.xhtml">
+	<ui:include src="/includes/table/scoreBox.xhtml">
             <ui:param name="score" value="#{yourBean.Score}" />
-            <ui:param name="scoreStyle" value="#{yourBean.ScoreCSSStyle}" /> 
+            <ui:param name="scoreMappingID" value="prettyMappingID" />
             <ui:param name="context" value="#{context}-pageName"/> 
 	</ui:include>
     
@@ -31,9 +20,9 @@
  --> 
     <h:panelGrid columns="1" styleClass="score_sm_na score" cellpadding="0" cellspacing="0" rendered="#{score eq null}"> 
         <h:panelGroup>
-            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <h:outputText value="-1" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
             <pretty:link id="#{context}-score0" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
-                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <h:outputText value="-1" converter="ScoreConverter" />
                 <f:param value="#{item}" />
             </pretty:link>
         </h:panelGroup> 

@@ -12,6 +12,7 @@ public interface ReportCriteriaService
     ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale);
     ReportCriteria getMpgReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getDriverReportCriteria(Integer groupID,Duration duration, Locale locale);
+    ReportCriteria getDriverReportCriteria(Integer groupID,Locale locale);
     ReportCriteria getVehicleReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getIdlingReportCriteria(Integer groupID,Date startDate,Date endDate, Locale locale);
     ReportCriteria getDevicesReportCriteria(Integer groupID, Locale locale);
