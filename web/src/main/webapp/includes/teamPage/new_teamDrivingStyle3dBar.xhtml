@@ -1,0 +1,50 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<rich:tab actionListener="#{teamOverviewBean.setDrivingStyle}">
+	
+		<f:facet name="label">
+	 		<h:panelGroup>
+	 			<h:graphicImage value="/images/ico_line.png" />
+	 			<rich:spacer width="10"/>Driving Style
+	 		</h:panelGroup>
+	 	</f:facet>
+		 				
+		<table width="900" border="0" cellspacing="0" cellpadding="0" align="center">
+			<tr>
+    			<td colspan="2" align="right" valign="top"> </td>
+			</tr>
+			<tr>
+				<td width="120" align="center" valign="middle">
+  			      	<ui:include src="/includes/overallScoreBox.xhtml">	
+						<ui:param name="overallScoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />									
+      		    		<ui:param name="overallScore" value="#{teamOverviewBean.selectedOverallScore}" />             						
+      		        	<ui:param name="context" value="#{context}-driving"/> 
+    				</ui:include>    							
+					<ui:include src="/includes/scoreBoxLegend.xhtml">
+              			<ui:param name="context" value="#{context}-driving"/> 
+            		</ui:include>
+				</td>
+        		<td width="">
+					<div id="tab_drivingDiv" align="center"></div>
+		  			<input type="hidden" id="tab_drivingDef" value="#{teamOverviewBean.selectedBarDef}"/>
+					<script type="text/javascript">
+						renderTypeBar("driving", "720", "500");
+					</script>
+				</td>
+			</tr>
+		</table>   
+      			
+	 
+	</rich:tab>
+	
+</ui:composition>	

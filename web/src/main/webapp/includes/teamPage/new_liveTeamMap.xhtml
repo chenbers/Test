@@ -1,0 +1,42 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+	
+        
+    <ui:define name="scripts">
+       	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+    </ui:define>  		
+
+
+	<rich:tab>
+	
+		<f:facet name="label">
+	 		<h:panelGroup>
+	 			<h:graphicImage value="/images/ico_line.png" />
+	 			<rich:spacer width="10"/>#{messages.livefleet}
+	 		</h:panelGroup>
+	 	</f:facet>
+		 				
+		<!-- START FLEET MAP PANEL -->
+		<!-- leave reRenderList alone -->	
+		<ui:include src="/includes/liveFleetMap.xhtml">
+			<ui:param name="mapheight" value="height:580px"/>
+			<ui:param name="mapwidth" value="width:900px"/>
+			<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
+			<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
+			<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
+			<ui:param name="flyOutImage" value="" />       		
+		</ui:include>
+		<!-- END PANEL -->             			
+	 
+	</rich:tab>
+	
+</ui:composition>	
