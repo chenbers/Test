@@ -365,6 +365,7 @@
   <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="navigation" ref="navigationBean"></property>
+    <property name="teamCommonBean" ref="teamCommonBean"></property>
     <property name="durationBean" ref="teamOverviewDurationBean" />
   </bean>
   <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
