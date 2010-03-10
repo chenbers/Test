@@ -155,7 +155,6 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
     protected ReportCriteria buildReportCriteria()
     {
         ReportCriteria reportCriteria = getReportCriteria();
-        reportCriteria.setMainDataset(getReportTableData());
         reportCriteria.setDuration(Duration.TWELVE);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
@@ -165,16 +164,9 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
         return reportCriteria;
     }
     
-	protected abstract List<?> getReportTableData();
-
 	protected abstract ReportCriteria getReportCriteria();
-    
-/*    
-    public abstract String getMappingId();
-    public abstract String getMappingIdWithCriteria();
-    
-*/
-    public void setReportRenderer(ReportRenderer reportRenderer)
+
+	public void setReportRenderer(ReportRenderer reportRenderer)
     {
         this.reportRenderer = reportRenderer;
     }
@@ -194,10 +186,6 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
         return reportCriteriaService;
     }
 
-
-    
-    
-    
     // search stuff (from search in header) -- need to look at this
     public SearchCoordinationBean getSearchCoordinationBean()
     {

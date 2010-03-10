@@ -209,7 +209,6 @@
         <ref local="zoneAlertsBean" />
         <ref local="redFlagAlertsBean" />
         <ref local="idlingReportBean" />
-        <ref local="driverReportBean" />
         <ref local="vehicleReportBean" />
       </list>
     </property>
@@ -426,12 +425,6 @@
   <bean id="baseReportBean" class="com.inthinc.pro.backing.BaseReportBean" abstract="true" scope="session" parent="baseBean" init-method="initBean">
 <!--    <property name="groupDAO" ref="groupDAO"></property>-->
     <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
-  </bean>
-  <bean id="driverReportBean" class="com.inthinc.pro.backing.DriverReportBean" scope="session" parent="baseReportBean">
-    <property name="scoreDAO" ref="scoreDAO"></property>
-    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-    <property name="reportRenderer" ref="reportRenderer"></property>
-    <property name="reportCriteriaService" ref="reportCriteriaService"></property>
   </bean>
   <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" scope="session"></bean>
   <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" scope="session" parent="baseReportBean">

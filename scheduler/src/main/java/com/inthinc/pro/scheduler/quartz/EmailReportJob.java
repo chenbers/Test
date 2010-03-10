@@ -133,7 +133,7 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                     break;
                 case DRIVER_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                     break;
                 case VEHICLE_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));

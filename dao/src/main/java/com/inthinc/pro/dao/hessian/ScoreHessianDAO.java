@@ -474,7 +474,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-
+/*
     @Override
     public List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration)
     {
@@ -523,7 +523,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-
+*/
     @Override
     public IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end)
     {

@@ -15,6 +15,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
+import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -34,6 +35,7 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
+import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.CategorySeriesData;
@@ -53,11 +55,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private RedFlagDAO redFlagDAO;
 
     private DeviceDAO deviceDAO;
+    private ReportDAO reportDAO;
     
-    private Locale locale;
+	private Locale locale;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
-
+/*
     // TODO: OLD implementation (non-pagination)
     @Override
     public ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration, Locale locale)
@@ -76,12 +79,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
         return reportCriteria;
     }
+*/    
     @Override
     public ReportCriteria getDriverReportCriteria(Integer groupID, Locale locale)
     {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName(), locale);
+        
+		Integer rowCount = reportDAO.getDriverReportCount(groupID, null);
+		PageParams pageParams = new PageParams(0, rowCount, null, null);
+		reportCriteria.setMainDataset(reportDAO.getDriverReportPage(groupID, pageParams));
+
+
         return reportCriteria;
     }
 
@@ -548,6 +558,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return redFlagDAO;
     }
+    public ReportDAO getReportDAO() {
+		return reportDAO;
+	}
+
+    public void setReportDAO(ReportDAO reportDAO) {
+		this.reportDAO = reportDAO;
+	}
 
     public void setLocale(Locale locale)
     {

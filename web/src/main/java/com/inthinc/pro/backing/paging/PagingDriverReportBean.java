@@ -105,38 +105,11 @@ public class PagingDriverReportBean extends BasePagingReportBean<DriverReportIte
 	}
 
     @Override
-	protected List<DriverReportItem> getReportTableData()
-	{
-		int totalCount = getTableDataProvider().getRowCount();
-		if (totalCount == 0)
-			return new ArrayList<DriverReportItem>();
-		
-		return getTableDataProvider().getItemsByRange(0, totalCount);
-
-	}
-
-    @Override
 	protected ReportCriteria getReportCriteria()
     {
     	return getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), getLocale());
     }
 
-
-/*
-    
-    @Override
-    public String getMappingId()
-    {
-      
-        return "pretty:driversReport";
-    }
-    
-    @Override
-    public String getMappingIdWithCriteria()
-    {
-        return "pretty:driversReportWithCriteria";
-    }
-*/
 
     // TablePrefOptions overrides
     @Override

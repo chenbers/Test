@@ -768,8 +768,8 @@ public class ReportServiceTest {
         }
     }
 
-    @Test
-    // @Ignore
+    
+/*    
     public void getDriverReportData() {
         // getDVScoresByGT
 
@@ -789,7 +789,7 @@ public class ReportServiceTest {
             assertEquals("DriverReportItem overallScore", expectedTeamOverall[teamType], item.getOverallScore());
         }
     }
-
+*/
     // TODO: not working
     @Test
     @Ignore

@@ -153,7 +153,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-    List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration);
+//    List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration);
 
     
     /**
