@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.event.ActionEvent;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -23,18 +25,22 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class TeamOverviewBean extends BaseBean {
     private ScoreDAO scoreDAO;
+    
     private Map<ScoreType, Map<Duration,String>> barDefMap;
     private Map<ScoreType, Map<Duration,Integer>> overallScoreMap;
     private List<TabAction> actions;
     private TabAction selectedAction;
+    
     private NavigationBean navigation;
     private DurationBean durationBean;
+    private TeamCommonBean teamCommonBean;
+    
     private Integer groupID;
     private String ping;
     private static final Logger logger = Logger.getLogger(TeamOverviewBean.class);
 
     public TeamOverviewBean() {
-        logger.debug("TeamOverviewBean - constructor");
+        logger.debug("TeamOverviewBean - constructor");        
     }
 
     public String getPing() {
@@ -229,8 +235,21 @@ public class TeamOverviewBean extends BaseBean {
         this.durationBean = durationBean;
     }
 
+    public TeamCommonBean getTeamCommonBean() {
+        return teamCommonBean;
+    }
+
+    public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
+        this.teamCommonBean = teamCommonBean;
+        this.groupID = teamCommonBean.getGroupID();
+    }
+
     public Integer getGroupID() {
-        setGroupID(navigation.getGroupID() == null ? getUser().getGroupID() : navigation.getGroupID());
+        // The teamCommonBean may have set this value, if not, fall back to 
+        //  evil navigation bean, which is needed for current team page
+        if ( groupID == null ) {
+            setGroupID(navigation.getGroupID() == null ? getUser().getGroupID() : navigation.getGroupID());
+        }
         return groupID;
     }
 
@@ -258,6 +277,31 @@ public class TeamOverviewBean extends BaseBean {
 
     public String exportToPDF() {
         // TODO Auto-generated method stub
+        return null;
+    }
+        
+    public void setOverall(ActionEvent ae) {
+        this.selectedAction = findTab("overall");
+    }
+    
+    public void setSpeed(ActionEvent ae) {
+        this.selectedAction = findTab("speed");
+    }
+    
+    public void setDrivingStyle(ActionEvent ae) {
+        this.selectedAction = findTab("driving");
+    }    
+    
+    public void setSeatbelt(ActionEvent ae) {
+        this.selectedAction = findTab("seatbelt");
+    }    
+    
+    private TabAction findTab(String key) {
+        for ( TabAction ta: getActions() ) {
+            if ( ta.getKey().equalsIgnoreCase(key) ) {
+                return ta;
+            }
+        }
         return null;
     }
 }
