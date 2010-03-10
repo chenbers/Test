@@ -17,6 +17,7 @@ import com.inthinc.pro.backing.TablePref;
 import com.inthinc.pro.backing.TablePrefOptions;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TableType;
@@ -24,6 +25,7 @@ import com.inthinc.pro.model.pagination.Range;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.table.BasePaginationTable;
 
 public abstract class BasePagingReportBean<T> extends BaseBean implements TablePrefOptions<T>
 {
@@ -43,6 +45,11 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
     private ReportCriteriaService reportCriteriaService;
     
     private SearchCoordinationBean searchCoordinationBean;
+    private String searchFor;
+    
+	private BasePaginationTable<T> table;
+
+    
 	protected final static String BLANK_SELECTION = "&#160;";
     
 	protected Map<String, String> scoreFilterMap;
@@ -99,8 +106,17 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
         setTablePref(new TablePref<T>(this));
 		initScoreRanges();
         setScoreFilterMap(new HashMap<String, String>());
+		table = new BasePaginationTable<T>();
     }
 
+
+	public BasePaginationTable<T> getTable() {
+		return table;
+	}
+
+	public void setTable(BasePaginationTable<T> table) {
+		this.table = table;
+	}
 
     public Map<String, String> getScoreFilterMap() {
 		return scoreFilterMap;
@@ -196,6 +212,27 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
     {
         this.searchCoordinationBean = searchCoordinationBean;
     }
+
+    public String getSearchFor() {
+		return searchFor;
+	}
+
+	public void setSearchFor(String searchFor) {
+		this.searchFor = searchFor;
+	}
+
+    public void allAction()
+    {
+		table.reset();
+    }
+    
+    public void searchAction()
+    {
+    	setSearchFor(getSearchCoordinationBean().getSearchFor());
+		table.reset();
+		getSearchCoordinationBean().setSearchFor("");
+    }
+    
 
     // TablePrefOptions implementation
     @Override

@@ -145,7 +145,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-    List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration);
+//    List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration);
 
     /**
      * Retrieve the individual lines in the Driver Report.

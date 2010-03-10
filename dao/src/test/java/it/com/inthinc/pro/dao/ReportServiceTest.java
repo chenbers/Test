@@ -744,7 +744,7 @@ public class ReportServiceTest {
             }
         }
     }
-
+/*
     @Test
     // @Ignore
     public void getVehicleReportData() {
@@ -768,7 +768,7 @@ public class ReportServiceTest {
         }
     }
 
-    
+*/    
 /*    
     public void getDriverReportData() {
         // getDVScoresByGT

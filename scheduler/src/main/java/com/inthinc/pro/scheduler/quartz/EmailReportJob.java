@@ -136,7 +136,7 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                     break;
                 case VEHICLE_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                     break;
                 case IDLING_REPORT:
                     final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

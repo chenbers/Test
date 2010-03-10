@@ -247,7 +247,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.setRecordsPerReportParameters(8, "identifier", "seriesID");
         return reportCriteria;
     }
-
+/*
     @Override
     public ReportCriteria getVehicleReportCriteria(Integer groupID, Duration duration, Locale locale)
     {
@@ -263,6 +263,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName(), locale);
         reportCriteria.setMainDataset(vehicleReportItems);
         reportCriteria.setDuration(duration);
+        return reportCriteria;
+    }
+*/    
+    @Override
+    public ReportCriteria getVehicleReportCriteria(Integer groupID, Locale locale)
+    {
+    	this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName(), locale);
+        
+		Integer rowCount = reportDAO.getVehicleReportCount(groupID, null);
+		PageParams pageParams = new PageParams(0, rowCount, null, null);
+		reportCriteria.setMainDataset(reportDAO.getVehicleReportPage(groupID, pageParams));
+
+
         return reportCriteria;
     }
 

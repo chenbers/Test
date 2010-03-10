@@ -14,12 +14,11 @@
 	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="DURATION" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
-	<field name="milesDriven" class="java.lang.Double"/>
-	<field name="vehicle.name" class="java.lang.String"/>
-	<field name="makeModelYear" class="java.lang.String"/>
-	<field name="driver.person.last" class="java.lang.String"/>
-	<field name="driver.person.first" class="java.lang.String"/>
-	<field name="group" class="java.lang.String"/>
+	<field name="milesDriven" class="java.lang.Number"/>
+	<field name="vehicleName" class="java.lang.String"/>
+	<field name="vehicleYMM" class="java.lang.String"/>
+	<field name="driverName" class="java.lang.String"/>
+	<field name="groupName" class="java.lang.String"/>
 	<field name="overallScore" class="java.lang.Integer"/>
 	<field name="speedScore" class="java.lang.Integer"/>
 	<field name="styleScore" class="java.lang.Integer"/>
@@ -119,27 +118,27 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-1" x="143" y="3" width="132" height="17"/>
 				<textElement rotation="None"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-2" x="275" y="3" width="161" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{makeModelYear}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleYMM}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-9" x="436" y="3" width="133" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driver.person.first} != null ? $F{driver.person.first}  + " " + $F{driver.person.last} : $R{report.none.assigned}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName} != null ? $F{driverName} : $R{report.none.assigned}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-10" x="572" y="3" width="67" height="17"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField" x="5" y="3" width="138" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{group}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-5" x="685" y="3" width="46" height="17"/>

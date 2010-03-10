@@ -209,7 +209,6 @@
         <ref local="zoneAlertsBean" />
         <ref local="redFlagAlertsBean" />
         <ref local="idlingReportBean" />
-        <ref local="vehicleReportBean" />
       </list>
     </property>
   </bean>
@@ -426,14 +425,6 @@
 <!--    <property name="groupDAO" ref="groupDAO"></property>-->
     <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
   </bean>
-  <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" scope="session"></bean>
-  <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" scope="session" parent="baseReportBean">
-    <property name="scoreDAO" ref="scoreDAO"></property>
-    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-    <property name="reportRenderer" ref="reportRenderer"></property>
-    <property name="reportCriteriaService" ref="reportCriteriaService"></property>
-  </bean>
-  <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
   <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseNotificationsBean" scope="session" parent="baseBean" abstract="true">
     <property name="driverDAO" ref="driverDAO" />
     <property name="vehicleDAO" ref="vehicleDAO" />
@@ -451,19 +442,10 @@
   </bean>
   <bean id="redFlagsCountBean" class="com.inthinc.pro.backing.RedFlagsCountBean" scope="session" parent="redFlagsBean" init-method="initBean">
   </bean>
-  <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="request" parent="baseRedFlagsBean" abstract="true">
-    <property name="eventDAO" ref="eventDAO"></property>
-  </bean>
  -->    
   <bean id="crashHistoryBean" class="com.inthinc.pro.backing.CrashHistoryBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
     <property name="crashReportDAO" ref="crashReportDAO"></property>
   </bean>
-<!-- 
-  <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="request" parent="baseEventsBean" init-method="initBean" />
-  <bean id="diagnosticsBean" class="com.inthinc.pro.backing.DiagnosticsBean" scope="request" parent="baseEventsBean" init-method="initBean" />
-  <bean id="emergencyBean" class="com.inthinc.pro.backing.EmergencyBean" scope="request" parent="baseEventsBean" init-method="initBean" />
-  <bean id="zoneAlertEventsBean" class="com.inthinc.pro.backing.ZoneAlertEventsBean" scope="request" parent="baseEventsBean" init-method="initBean" />
--->
   <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseReportBean">
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     <property name="scoreDAO" ref="scoreDAO"></property>
@@ -622,4 +604,11 @@
 	  <property name="reportDAO" ref="reportDAO"></property>   
   	</bean>
     
+    <bean id="pagingVehicleReportBean" class="com.inthinc.pro.backing.paging.PagingVehicleReportBean" scope="request" init-method="init" parent="basePagingReportBean">
+		<property name="tableDataProvider" ref="vehicleReportPaginationTableDataProvider"></property>
+    </bean>
+
+   	<bean id="vehicleReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.VehicleReportPaginationTableDataProvider" scope="request">
+	  <property name="reportDAO" ref="reportDAO"></property>   
+  	</bean>
 </beans>

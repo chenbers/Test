@@ -2,8 +2,6 @@ package com.inthinc.pro.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.inthinc.pro.dao.annotations.Column;
-
 @XmlRootElement
 public class VehicleReportItem extends BaseEntity implements Comparable<VehicleReportItem>
 {
@@ -12,66 +10,19 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
      */
     private static final long serialVersionUID = -199959826868545534L;
 
-    // not sure
-    private String styleOverall;
-    private String styleSpeed;
-    private String styleStyle;
-    private String goTo;
-
-    // not needed (replaced in pagination)
-    private String group;
-	private Vehicle vehicle;
-	private Driver driver;
-    private String makeModelYear;
-
-    private Integer groupID;
-    private Integer overallScore;
-    private Integer speedScore;
-    private Integer styleScore;
-    private Number milesDriven;
-    private Number odometer;
-
-    
-    // new with pagination
     private String groupName;
+    private Integer groupID;
     private String driverName;
     private Integer driverID;
     private String vehicleName;
     private Integer vehicleID;
     private String vehicleYMM;
+    private Number milesDriven;
+    private Number odometer;
+    private Integer overallScore;
+    private Integer speedScore;
+    private Integer styleScore;
     
-    public String getGroup()
-    {
-        return group;
-    }
-    public void setGroup(String group)
-    {
-        this.group = group;
-    }
-    public Vehicle getVehicle()
-    {
-        return vehicle;
-    }
-    public void setVehicle(Vehicle vehicle)
-    {
-        this.vehicle = vehicle;
-    }
-    public String getMakeModelYear()
-    {
-        return makeModelYear;
-    }
-    public void setMakeModelYear(String makeModelYear)
-    {
-        this.makeModelYear = makeModelYear;
-    }
-    public Driver getDriver()
-    {
-        return driver;
-    }
-    public void setDriver(Driver driver)
-    {
-        this.driver = driver;
-    }
     public Number getMilesDriven()
     {
         return milesDriven;
@@ -104,30 +55,6 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     {
         this.styleScore = styleScore;
     }
-    public String getStyleOverall()
-    {
-        return styleOverall;
-    }
-    public void setStyleOverall(String styleOverall)
-    {
-        this.styleOverall = styleOverall;
-    }
-    public String getStyleSpeed()
-    {
-        return styleSpeed;
-    }
-    public void setStyleSpeed(String styleSpeed)
-    {
-        this.styleSpeed = styleSpeed;
-    }
-    public String getStyleStyle()
-    {
-        return styleStyle;
-    }
-    public void setStyleStyle(String styleStyle)
-    {
-        this.styleStyle = styleStyle;
-    }
     public Integer getGroupID()
     {
         return groupID;
@@ -136,15 +63,6 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     {
         this.groupID = groupID;
     }
-    public String getGoTo()
-    {
-        return goTo;
-    }
-    public void setGoTo(String goTo)
-    {
-        this.goTo = goTo;
-    }
-            
     public Number getOdometer() {
         return odometer;
     }
@@ -192,7 +110,8 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     {
     	if (vehicleName != null && item.getVehicleName() != null)
             return vehicleName.toLowerCase().compareTo(item.getVehicleName().toLowerCase());
-        return this.getVehicle().getName().toLowerCase().compareTo(item.getVehicle().getName().toLowerCase());
+    	return 0;
     }
+    	
 
 }

@@ -22,7 +22,6 @@
 		<ui:include src="/includes/reports/subNavigation.xhtml" >
 			<ui:param name="context" value="#{context}" />
 		</ui:include>
-		
 	</ui:define>
 	
 	<ui:define name="content">
@@ -75,7 +74,7 @@
 									</ui:include>
 	                                <div class="spacer"></div>
     	                            <div class="datagrid_panel" style="width: 925px;">
-	<t:saveState value="#{pagingDriverReportBean}"/>
+									<t:saveState value="#{pagingDriverReportBean}"/>
     	                            
                                     <rich:dataTable id="#{context}" value="#{pagingDriverReportBean.table.model}" var="item" 
                                          styleClass="datagrid filterabledatagrid" 
@@ -100,7 +99,7 @@
                                         </rich:column>
                                         <rich:column id="fullName" rendered="#{pagingDriverReportBean.tableColumns['driver_person_fullName'].visible}"  
                                         			sortBy="#{item.driverName}" sortOrder="ASCENDING" filterBy="#{item.driverName}" 
-                                        			filterValue="#{searchCoordinationBean.searchFor}">
+                                        			filterValue="#{pagingDriverReportBean.searchFor}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_driver}" />
                                             </f:facet>
@@ -218,8 +217,5 @@
 			<ui:param name="context" value="#{context}" />
 		</ui:include>
 	</h:outputText>
-		
-
 	</ui:define>
-	
 </ui:composition>
