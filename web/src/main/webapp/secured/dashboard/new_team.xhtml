@@ -95,6 +95,25 @@
 			});
 					
 		</script>
+		
+   		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript">
+   		</script>		
+		
+		<script type="text/javascript">
+			function renderBar(barElement, barDiv, width, height)
+			{
+				var barDef = document.getElementById(barElement);
+				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");										
+				barChart.setDataXML(barDef.value);	
+				barChart.setTransparent(true);								   	   
+				barChart.render(barDiv);
+			}
+			function renderTypeBar(type, width, height)
+			{
+				renderBar('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+			}
+		</script>
+						
     </ui:define>
     
 	<ui:define name="content">	
@@ -237,6 +256,11 @@
 				<rich:tabPanel id="teamTabPanel" switchType="ajax">
                		<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
+                	<!-- <ui:include src="/includes/teamPage/new_liveTeamMap.xhtml"/> -->
+                	<ui:include src="/includes/teamPage/new_teamOverall3dBar.xhtml"/>
+                	<ui:include src="/includes/teamPage/new_teamDrivingStyle3dBar.xhtml"/>
+                	<ui:include src="/includes/teamPage/new_teamSpeed3dBar.xhtml"/>
+                	<ui:include src="/includes/teamPage/new_teamSeatbelt3dBar.xhtml"/>                	
 				</rich:tabPanel>
     		</a4j:outputPanel>	     	    
 	    	    
