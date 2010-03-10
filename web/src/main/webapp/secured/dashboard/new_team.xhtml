@@ -11,7 +11,7 @@
 	
 
 	<ui:param name="context" value="team" />
-	<ui:param name="timeFrameRerenderList" value="timeFramePanel,statisticsTab"/>
+	<ui:param name="timeFrameRerenderList" value="statisticsTab"/>
 	<ui:param name="title" value="#{messages.team_team} - #{teamCommonBean.group.name}"/>
 	
     <ui:define name="scripts">
@@ -64,29 +64,36 @@
 			 	background-color: #EBFFCA;
 			 	border: 1px;
 			}
+			.disable {
+				color: #cccccc !important;
+			}
 		</style>
         
 	    <script language="javascript" type="text/javascript">
-		var selectedTab="stats";
-		
-        	function initMap() {
-				
-				if (GBrowserIsCompatible()) {					
-					GUnload();
-					map = new GMap2(document.getElementById("map-canvas"));						
-					map.addControl(new GLargeMapControl());
-					map.addControl(new GMapTypeControl());
-					map.addControl(new GOverviewMapControl()); 
-					map.setMapType(G_NORMAL_MAP);
-					map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});					
-				}
-        	}
+	    		
 			function bodyLoad() {
-				initMap();
 			}
 			function bodyUnload() {
-				GUnload();
 			}
+			jQuery(function() {
+
+				jQuery('#teamDurationForm\\:teamDurationPanelHeaderTwoDay').addClass('selected_duration');
+				
+				jQuery('[id*=teamDurationPanelHeader]').click(function(){
+					
+					jQuery('.selected_duration').removeClass('selected_duration');
+					jQuery(this).addClass('selected_duration');
+				});
+				jQuery('#teamTrips_shifted').live('click', function(){
+					jQuery('#longDurations').children().addClass('disable');
+				});
+				jQuery('#teamStatistics_shifted').live('click', function(){
+					jQuery('#longDurations').children().removeClass('disable')
+				});
+				
+						
+			});
+					
 		</script>
     </ui:define>
     
@@ -143,7 +150,6 @@
                                     </a4j:status> 
                                     <a4j:commandLink id="teamDurationPanelHeaderOneDay"                                        
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'TODAY' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}" 
                                         value="#{messages.team_today}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="TODAY" />
@@ -151,7 +157,6 @@
                                     <rich:spacer width="5"/>   
                                     <a4j:commandLink id="teamDurationPanelHeaderTwoDay"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{messages.team_yesterday}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="ONE_DAY_AGO" />
@@ -159,7 +164,6 @@
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderThreeDay"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{teamCommonBean.dayLabels['2']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="TWO_DAYS_AGO" />
@@ -167,7 +171,6 @@
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderFourDay"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'THREE_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{teamCommonBean.dayLabels['3']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="THREE_DAYS_AGO" />
@@ -175,7 +178,6 @@
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderFiveDay"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'FOUR_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{teamCommonBean.dayLabels['4']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="FOUR_DAYS_AGO" />
@@ -183,7 +185,6 @@
                                     <rich:spacer width="5"/>
                                     <a4j:commandLink id="teamDurationPanelHeaderSixDay"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'FIVE_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{teamCommonBean.dayLabels['5']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="FIVE_DAYS_AGO" />
@@ -191,16 +192,14 @@
                                     <rich:spacer width="5"/>    
                                     <a4j:commandLink id="teamDurationPanelHeaderSevenDay"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'SIX_DAYS_AGO' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{teamCommonBean.dayLabels['6']}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="SIX_DAYS_AGO" />
                                     </a4j:commandLink>
-                                     <rich:spacer width="40"/>                                                                                                                    
-                                   <ui:fragment id="longDurations" rendered="#{teamCommonBean.selectedTab ne 'teamTrips'}">
+                                     <rich:spacer width="40"/> 
+                                     <span id="longDurations">                                                                                                                   
                                     <a4j:commandLink id="teamDurationPanelHeaderDays"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'WEEK' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{messages.team_7_days}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="WEEK" />
@@ -208,7 +207,6 @@
                                     <rich:spacer width="5"/>                                     
                                     <a4j:commandLink id="teamDurationPanelHeaderThreeMonths"                                         
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'MONTH' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{teamCommonBean.monthLabel}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="MONTH" />
@@ -216,12 +214,11 @@
                                     <rich:spacer width="5"/>                                 
                                     <a4j:commandLink id="teamDurationPanelHeaderTwelveMonths"                                          
                                         immediate="true" 
-                                        styleClass="#{teamCommonBean.timeFrame eq 'YEAR' ? 'selected_duration' : ''}" 
                                         reRender="#{timeFrameRerenderList}"  
                                         value="#{messages.team_365_days}">
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="YEAR" />
-                                    </a4j:commandLink> 
-                                    </ui:fragment>
+                                    </a4j:commandLink>
+                                    </span>
                                 </a4j:outputPanel>
                                 
                     		</h:form>
@@ -237,7 +234,7 @@
 	       <div class="panel_content">   	 
 	    
 	        <a4j:outputPanel id="overallTeamPanel" styleClass="panel_content">    							
-				<rich:tabPanel id="teamTabPanel">
+				<rich:tabPanel id="teamTabPanel" switchType="ajax">
                		<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
 				</rich:tabPanel>
@@ -251,8 +248,8 @@
     	</div>	
 	</div>
     <h:form>
-    <a4j:jsFunction name="setSelectedTab" reRender="teamDurationForm:longDurations">
-    			<a4j:actionparam name="selectedTab" assignTo="#{teamCommonBean.selectedTab}"/>
+    <a4j:jsFunction name="setSelectedTab">
+    		<a4j:actionparam name="selectedTab" assignTo="#{teamCommonBean.selectedTab}"/>
      </a4j:jsFunction>
     </h:form>
 

@@ -1,9 +1,9 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import com.inthinc.pro.backing.listener.TimeFrameChangeListener;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.MapIcon;
@@ -11,65 +11,86 @@ import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.TripStatus;
 
-public class TeamTripsBean extends BaseBean{
+public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<DriverTripWrapper> driversTrips;
+	private List<DriverTrips> driversTrips;
     private DriverDAO driverDAO;
     private EventDAO eventDAO;
     private List<MapIcon> icons;
     private TeamCommonBean teamCommonBean;
+    
+	private boolean timeFrameChanged;
 	
     public void init(){
     	
 		icons = MapIconFactory.IconType.TEAM_LEGEND.getIconList(15);
+		teamCommonBean.addTimeFrameChangeListener(this);
+		timeFrameChanged = false;
+		
 		initDrivers();
+		
     }
     private void initDrivers(){
     	
 		List<Driver> driversList = driverDAO.getDrivers(teamCommonBean.getGroupID());
-		driversTrips = new ArrayList<DriverTripWrapper>();
+		driversTrips = new ArrayList<DriverTrips>();
 		for (Driver driver:driversList){
 			
-			DriverTripWrapper dw = new DriverTripWrapper();
-			dw.setDriverID(driver.getDriverID());
-			dw.setFullName(driver.getPerson().getFullName());
-			dw.setSelected(false);
+			DriverTrips dw = new DriverTrips(driver.getDriverID(),driver.getPerson().getFullName());
 			driversTrips.add(dw);
 		}
     }
     public void reset(){
     	
-    	for(DriverTripWrapper dw:driversTrips){
+    	for(DriverTrips dw:driversTrips){
     		
     		dw.setSelected(false);
     	}
     }
- 	public List<DriverTripWrapper> getDrivers() {
+ 	public List<DriverTrips> getDrivers() {
 		
 		return driversTrips;
 	}
-	public void setDrivers(List<DriverTripWrapper> drivers) {
+ 	public List<DriverTrips> getSelectedDrivers(){
+ 		
+ 		List<DriverTrips> selectedDrivers = new ArrayList<DriverTrips>();
+ 		
+ 		if (timeFrameChanged){
+ 			
+	 	   	for(DriverTrips dw:driversTrips){
+	 	   		
+	 	   		if ( dw.isSelected()){
+	 	   			
+	 	   			selectedDrivers.add(dw);
+	 	   		}
+	 	   	}
+ 		}
+ 	   	return selectedDrivers;
+ 	}
+	public void setDrivers(List<DriverTrips> drivers) {
 		this.driversTrips = drivers;
 	}
 	public void reloadTrips(){
 		
-    	for(DriverTripWrapper dw:driversTrips){
-    		dw.reloadTrips();
+    	for(DriverTrips dt:driversTrips){
+    		
+    		dt.reloadTrips(timeFrameChanged);
     	}
 	}
 	public void clearTrips(){
 		
-    	for(DriverTripWrapper dw:driversTrips){
+    	for(DriverTrips dt:driversTrips){
     		
-    		dw.setSelected(false);
-    		dw.clearTrips();
+    		dt.clearTrips();
     	}		
 	}
 	public DriverDAO getDriverDAO() {
@@ -99,18 +120,104 @@ public class TeamTripsBean extends BaseBean{
 	public void setEventDAO(EventDAO eventDAO) {
 		this.eventDAO = eventDAO;
 	}
+	
+	@Override
+	public void onTimeFrameChange() {
+		
+		clearTrips();
+		timeFrameChanged = true;
+	}
+	public boolean isTimeFrameChanged() {
+		
+		return timeFrameChanged;
+	}
 
-	public class DriverTripWrapper {
+/*
+ * 
+ * TeamTrip inner class
+ * 
+ */
+	public class TeamTrip {
+
+	    List<LatLng> route;
+	    LatLng routeLastStep;
+	    LatLng beginningPoint;
+	    boolean inProgress;
+	    
+	    public TeamTrip(Trip trip)
+	    {
+	         
+	        route = trip.getRoute();
+	        inProgress = trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);        
+	        if(route.size() > 0)
+	        {
+	            routeLastStep = route.get(route.size()-1);
+	            routeLastStep.setLat(routeLastStep.getLat() + 0.00001);
+	            
+	            beginningPoint = route.get(0);
+	            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
+	        }
+	    }
+	 
+	    public List<LatLng> getRoute()
+	    {
+	        return route;
+	    }
+
+	    public void setRoute(List<LatLng> route)
+	    {
+	        this.route = route;
+	    }
+
+	    public LatLng getRouteLastStep()
+	    {
+	        return routeLastStep;
+	    }
+
+	    public void setRouteLastStep(LatLng routeLastStep)
+	    {
+	        this.routeLastStep = routeLastStep;
+	    }
+	        
+	    public LatLng getBeginningPoint()
+	    {
+	        return beginningPoint;
+	    }
+	    
+	    public void setBeginningPoint(LatLng beginningPoint)
+	    {
+	        this.beginningPoint = beginningPoint;
+	    }
+	    
+	    public boolean isInProgress() {
+	    	return inProgress;
+		}
+		public void setInProgress(boolean inProgress) {
+			this.inProgress = inProgress;
+		}
+	}
+/*
+ * 
+ * Driver Trips inner class
+ * 
+ */
+	public class DriverTrips {
 		
 		private Integer driverID;
 		private String fullName;
 		private List<TeamTrip> trips;
-	    private List<Event> violationEvents = new ArrayList<Event>();
-	    private List<Event> idleEvents = new ArrayList<Event>();
-	    private List<Event> tamperEvents = new ArrayList<Event>();
+	    private List<LatLng> violations = new ArrayList<LatLng>();
+	    private List<LatLng> idles = new ArrayList<LatLng>();
+	    private List<LatLng> tampers = new ArrayList<LatLng>();
 
 		boolean selected;
 		
+		public DriverTrips(Integer driverID, String fullName) {
+			super();
+			this.driverID = driverID;
+			this.fullName = fullName;
+			this.selected = false;
+		}
 		public boolean isSelected() {
 			return selected;
 		}
@@ -124,7 +231,7 @@ public class TeamTripsBean extends BaseBean{
 			}
 			else {
 				
-//				clearTrips();
+				clearTrips();
 			}
 		}
 		public List<TeamTrip> getTrips() {
@@ -133,19 +240,18 @@ public class TeamTripsBean extends BaseBean{
 		public void setTrips(List<TeamTrip> trips) {
 			this.trips = trips;
 		}
-		public void reloadTrips(){
+		public void reloadTrips(boolean timeFrameChanged){
 			
-			clearTrips();
-			if (selected) loadTripsAndEvents();
+			if (selected && timeFrameChanged) loadTripsAndEvents();
 		}
 		public void clearTrips(){
 			if (trips != null) {
 				
 				trips.clear();
 				trips = null;
-				violationEvents.clear();
-				idleEvents.clear();
-				tamperEvents.clear();
+				violations.clear();
+				idles.clear();
+				tampers.clear();
 			}
 		}
 		private void loadTripsAndEvents(){
@@ -156,23 +262,23 @@ public class TeamTripsBean extends BaseBean{
 		        loadViolations();
 			}
 		}
-		public List<Event> getViolationEvents() {
-			return violationEvents;
+		public List<LatLng> getViolations() {
+			return violations;
 		}
-		public void setViolationEvents(List<Event> violationEvents) {
-			this.violationEvents = violationEvents;
+		public void setViolations(List<LatLng> violationEvents) {
+			this.violations = violationEvents;
 		}
-		public List<Event> getIdleEvents() {
-			return idleEvents;
+		public List<LatLng> getIdles() {
+			return idles;
 		}
-		public void setIdleEvents(List<Event> idleEvents) {
-			this.idleEvents = idleEvents;
+		public void setIdles(List<LatLng> idles) {
+			this.idles = idles;
 		}
-		public List<Event> getTamperEvents() {
-			return tamperEvents;
+		public List<LatLng> getTampers() {
+			return tampers;
 		}
-		public void setTamperEvents(List<Event> tamperEvents) {
-			this.tamperEvents = tamperEvents;
+		public void setTampers(List<LatLng> tampers) {
+			this.tampers = tampers;
 		}
 		
 		private void loadTrips(){
@@ -182,16 +288,13 @@ public class TeamTripsBean extends BaseBean{
 
 	       for (Trip trip : tripsList) {
 	        	
-	    	   TeamTrip td = new TeamTrip(trip, addressLookup);
+	    	   TeamTrip td = new TeamTrip(trip);
 	    	   trips.add(td);
 	 
 	        }
-	        Collections.sort(trips);
-	        Collections.reverse(trips);
-			
 		}
 		private void loadViolations( ) {
-	        if (violationEvents.isEmpty()) {
+	        if (violations.isEmpty()) {
 	        	
 	            List<Integer> violationEventTypeList = new ArrayList<Integer>();
 	            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
@@ -203,10 +306,19 @@ public class TeamTripsBean extends BaseBean{
 	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
 	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
 
-                violationEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
-                idleEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
-                tamperEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
+                List<Event>violationEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
+                List<Event>idleEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
+                List<Event>tamperEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
 	            
+                for (Event e:violationEvents){
+                	violations.add(e.getLatLng());
+                }
+                for (Event e:idleEvents){
+                	idles.add(e.getLatLng());
+                }
+                for (Event e:tamperEvents){
+                	tampers.add(e.getLatLng());
+                }
 	        }
 	    }
 		public Integer getDriverID() {

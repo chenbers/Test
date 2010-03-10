@@ -11,9 +11,14 @@ import org.joda.time.Months;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.backing.listener.TimeFrameChangeListener;
 
 public class TeamCommonBean extends BaseBean {
-
+	
+//	public enum TeamPageTabs {
+//			STATISTICS,
+//			TRIPS
+//	}
     private static final long serialVersionUID = 1L;
     private List<String> dayLabels = new ArrayList<String>();
 
@@ -22,9 +27,12 @@ public class TeamCommonBean extends BaseBean {
 
     private TimeFrame timeFrame = TimeFrame.ONE_DAY_AGO;
     private String selectedTab;
+    
+    private List<TimeFrameChangeListener> timeFrameChangeListeners;
 
     public void init() {
-    	selectedTab="teamStats";
+    	selectedTab="statistics";
+    	timeFrameChangeListeners = new ArrayList<TimeFrameChangeListener>();
     }
 
     public Integer getGroupID() {
@@ -80,7 +88,25 @@ public class TeamCommonBean extends BaseBean {
 
     public void setTimeFrame(TimeFrame timeFrame) {
         this.timeFrame = timeFrame;
+        
+        notifyTimeFrameChangeListeners();
     }
+	
+	public void addTimeFrameChangeListener(TimeFrameChangeListener timeFrameChangeListener){
+		
+		timeFrameChangeListeners.add(timeFrameChangeListener);
+	}
+	public void removeTimeFrameChangeListener(TimeFrameChangeListener timeFrameChangeListener){
+		
+		timeFrameChangeListeners.remove(timeFrameChangeListener);
+	}
+	public void notifyTimeFrameChangeListeners(){
+		
+		for (TimeFrameChangeListener tfcl:timeFrameChangeListeners){
+			
+			tfcl.onTimeFrameChange();
+		}
+	}
 
 	public String getSelectedTab() {
 		return selectedTab;
