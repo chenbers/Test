@@ -12,11 +12,11 @@
 	
         
     <ui:define name="scripts">
-       	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+       	<a4j:loadScript id="googleURL" src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
     </ui:define>  		
 
 
-	<rich:tab>
+	<rich:tab id="liveTeam" switchType="server">
 	
 		<f:facet name="label">
 	 		<h:panelGroup>
@@ -25,16 +25,17 @@
 	 		</h:panelGroup>
 	 	</f:facet>
 		 				
-		<!-- START FLEET MAP PANEL -->
+		<!-- START FLEET MAP PANEL -->		
 		<!-- leave reRenderList alone -->	
-		<ui:include src="/includes/liveFleetMap.xhtml">
-			<ui:param name="mapheight" value="height:580px"/>
-			<ui:param name="mapwidth" value="width:900px"/>
-			<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
-			<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
-			<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
-			<ui:param name="flyOutImage" value="" />       		
-		</ui:include>
+ 				<ui:include src="/includes/liveFleetMap.xhtml">
+					<ui:param name="mapheight" value="height:580px"/>
+					<ui:param name="mapwidth" value="width:900px"/>
+					<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
+					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
+					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
+					<ui:param name="flyOutImage" value="" />  
+     	 			<ui:param name="context" value="team" />
+				</ui:include>
 		<!-- END PANEL -->             			
 	 
 	</rich:tab>

@@ -19,26 +19,33 @@ import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
 import com.inthinc.pro.util.MiscUtil;
 
-public class DriverLocationBean extends BaseBean {
+public class DriverLocationBean extends BaseBean {    
+    private static final Logger logger = Logger.getLogger(DriverLocationBean.class);    
 
 	private DriverDAO driverDAO;
 	private VehicleDAO vehicleDAO;
 	private GroupDAO groupDAO;
+	
     private NavigationBean navigation;
+    private TeamCommonBean teamCommonBean;
+    
     private LatLng center;
     private Integer zoom = 10;
 	private List<Group> childGroups;
 	private IconMap mapIconMap;
 	private List<LegendIcon> legendIcons;
+	
 	private Map<Integer,Group> groupMap;
 	private boolean teamLevel;
- 	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
-	private GroupHierarchy       organizationHierarchy;
+	private GroupHierarchy organizationHierarchy;
+	private Integer groupID;
+	
 	private Integer selectedDriverID;
 	private Integer selectedVehicleID;
 
@@ -69,7 +76,8 @@ public class DriverLocationBean extends BaseBean {
 	    }
 	    
 //Date traceStartTime = new Date();	    
-	    List<DriverLocation>driverLocations = driverDAO.getDriverLocations(navigation.getGroupID());
+	    List<DriverLocation>driverLocations = driverDAO.getDriverLocations(getGroupID());
+//        List<DriverLocation>driverLocations = driverDAO.getDriverLocations(navigation.getGroupID());	    
 
 	    allocateIcons(driverLocations);
 	    
@@ -109,6 +117,23 @@ public class DriverLocationBean extends BaseBean {
         selectedDriverID = driverLocations.size()>0?driverLocations.get(0).getDriver().getDriverID():null;
 
 	}
+	
+    public Integer getGroupID() {        
+        // The teamCommonBean may have set this value, if not, fall back to 
+        //  evil navigation bean, which is needed for current team page
+        if ( groupID == null ) {
+            setGroupID(navigation.getGroupID() == null ? getUser().getGroupID() : navigation.getGroupID());
+        }
+        return groupID;
+    }	
+    
+
+    public void setGroupID(Integer groupID) {
+        if (this.groupID != null && !this.groupID.equals(groupID)) {
+            logger.info("TeamOverviewBean groupID changed " + groupID);
+        }
+        this.groupID = groupID;
+    }    
 	
 	private List<DriverLocation> populateAddressAndIcon(List<DriverLocation> driverLocations) {
 		
@@ -210,7 +235,16 @@ public class DriverLocationBean extends BaseBean {
 		this.navigation = navigation;
 	}
 
-	public LatLng getCenter() {
+	public TeamCommonBean getTeamCommonBean() {
+        return teamCommonBean;
+    }
+	
+    public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
+        this.teamCommonBean = teamCommonBean;
+        this.groupID = teamCommonBean.getGroupID();
+    }
+    
+    public LatLng getCenter() {
 		return center;
 	}
 

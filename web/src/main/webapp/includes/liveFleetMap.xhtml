@@ -10,17 +10,17 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
-	<t:saveState value="#{driverLocationBean.driverLocations}"/>
-	<t:saveState value="#{driverLocationBean.legendIcons}"/>
+ 	<t:saveState value="#{driverLocationBean.driverLocations}"/>
+ 	<t:saveState value="#{driverLocationBean.legendIcons}"/>
 	<t:saveState value="#{driverLocationBean.mapIconMap}"/>
 	<t:saveState value="#{driverLocationBean.driverLocationsMap}"/>
 	<t:saveState value="#{driverLocationBean.selectedDriverID}"/>
-	
+
     <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
     <ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}"/>
      
-	<a4j:loadScript src="/js/markerclusterer_packed.js"/>
-	<a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
+	<a4j:loadScript id="markclust" src="/js/markerclusterer_packed.js"/>
+	<a4j:loadScript id="progbar" src="/js/progressbarcontrol_packed.js"/>
     
  	<ui:include src="/includes/WMSMapLayers.xhtml"/>	
   
@@ -110,6 +110,9 @@
 		}  	
 
 	</script>
+ 	
+	<a4j:region id="main">
+	
 	<rich:panel id="scripts">
 		<script type="text/javascript">
 
@@ -154,8 +157,8 @@
 			}
 		</script>
 		
-      	<!-- BEGIN GOOGLE MAP POPUPS -->
-      	<h:form id="liveFleetMapForm">
+      
+       	<h:form id="liveFleetMapForm">
       	<rich:panel id="mapPopups" rendered="#{driverLocationBean.selectedDriverID != null}">
 			<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}"/>
       			<ui:include src="../includes/driverBubble.xhtml">
@@ -177,7 +180,7 @@
       			</ui:include>
       	</rich:panel>
       	</h:form>
-      	<!-- END GOOGLE MAP POPUPS -->
+      	
 	</rich:panel>
 	<div class="">
 			<div class="panel_nw">
@@ -185,7 +188,7 @@
 					<span class="map">#{messages.livefleet}</span>
 					<span class="panel_links">
 					<a4j:form id="refresh">
-                        <a4j:status id="refresh_ajax_status">
+                        <a4j:status id="refresh_ajax_status" for="main">
                            <f:facet name="start">
                               <h:outputText>
                                           <img
@@ -198,7 +201,7 @@
    							value="#{messages.refresh}">
    						</a4j:commandButton>
                      
-                         <!-- If the details parameter is not there, do not show the details image link -->
+                         
                          <ui:fragment rendered="#{detailLink ne null}">
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputLink id="#{context}-liveFleetMapRestore" value="#{detailLink}" title="#{detailTitle}" >
@@ -237,15 +240,17 @@
       	<div class="panel_w">
       		<div class="panel_content">
       		  
-      		  <rich:dataGrid value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
+      		  <rich:dataGrid id="icos1" 
+      		  			value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
       		  			rendered="#{driverLocationBean.teamLevel}" columns="3" border="0" cellpadding="5" cellspacing="5">
       		  			
       			  	<div onclick="fillBubbleMap(#{icon.entityID})" style="cursor: pointer;">
       				  	<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
       				  	<h:outputText value="#{icon.caption}" style="margin-left:5px" /></div>
       			  	
-      		</rich:dataGrid>
-      		  <rich:dataGrid value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
+      		  </rich:dataGrid>
+      		  <rich:dataGrid id="icos2"
+      		  		value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
       		  		rendered="#{!driverLocationBean.teamLevel}"  columns="3" border="0" cellpadding="5" cellspacing="5">
       		  		<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
       			  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
@@ -258,24 +263,27 @@
       		<div class="panel_statusbar"></div>
       	</div>
    </div>
+   
+   </a4j:region>
+       
 	<a4j:form id="bubbleForm">
-		<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
-			<a4j:actionparam name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
-			<a4j:actionparam name="subId" />
+		<a4j:jsFunction id="filBubMark" name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+			<a4j:actionparam id="drvId" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
+			<a4j:actionparam id="sub" name="subId" />
 		</a4j:jsFunction>
-		<a4j:jsFunction name="fillBubbleMap" reRender="mapPopups" 
+		<a4j:jsFunction id="filBubMap" name="fillBubbleMap" reRender="mapPopups" 
 			oncomplete="getAddressForPosition(#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lat},
 								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng})">
-			<a4j:actionparam name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
+			<a4j:actionparam id="drvId1" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
 		</a4j:jsFunction>
-		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
-			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
-			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
-			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
-			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
+		<a4j:jsFunction id="zoneFix" name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
+			<a4j:actionparam id="lat" name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam id="lng" name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam id="elmIndx" name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
+			<a4j:actionparam id="ntID" name="noteID" assignTo="#{addressBean.noteID}"/>	
+			<a4j:actionparam id="itmID" name="itemID" assignTo="#{addressBean.itemID}"/>
+			<a4j:actionparam id="subID1" name="subID" assignTo="#{addressBean.subID}"/>
+			<a4j:actionparam id="calFncID" name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
 		</a4j:jsFunction> 	
 
 	</a4j:form>	
