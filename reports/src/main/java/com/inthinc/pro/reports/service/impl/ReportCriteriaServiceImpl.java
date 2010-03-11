@@ -60,26 +60,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	private Locale locale;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
-/*
-    // TODO: OLD implementation (non-pagination)
-    @Override
-    public ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration, Locale locale)
-    {
-    	this.locale = locale;
-        Group group = groupDAO.findByID(groupID);
-        List<DriverReportItem> driverReportItems = scoreDAO.getDriverReportData(groupID, duration);
-        for (DriverReportItem driverReportItem : driverReportItems)
-        {
-            Group tmpGroup = groupDAO.findByID(driverReportItem.getGroupID());
-            driverReportItem.setGroup(tmpGroup.getName()); 
-        }
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName(), locale);
-        reportCriteria.setDuration(duration);
-        reportCriteria.setMainDataset(driverReportItems);
-
-        return reportCriteria;
-    }
-*/    
     @Override
     public ReportCriteria getDriverReportCriteria(Integer groupID, Locale locale)
     {
@@ -247,25 +227,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.setRecordsPerReportParameters(8, "identifier", "seriesID");
         return reportCriteria;
     }
-/*
-    @Override
-    public ReportCriteria getVehicleReportCriteria(Integer groupID, Duration duration, Locale locale)
-    {
-    	this.locale = locale;
-        Group group = groupDAO.findByID(groupID);
-        List<VehicleReportItem> vehicleReportItems = scoreDAO.getVehicleReportData(groupID, duration);
-
-        for (VehicleReportItem vehicleReportItem : vehicleReportItems)
-        {
-            Group tmpGroup = groupDAO.findByID(vehicleReportItem.getGroupID());
-            vehicleReportItem.setGroup(tmpGroup.getName());
-        }
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName(), locale);
-        reportCriteria.setMainDataset(vehicleReportItems);
-        reportCriteria.setDuration(duration);
-        return reportCriteria;
-    }
-*/    
     @Override
     public ReportCriteria getVehicleReportCriteria(Integer groupID, Locale locale)
     {
@@ -301,27 +262,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
-        List<Vehicle> vehicList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
-        List<DeviceReportItem> deviceReportItems = new ArrayList<DeviceReportItem>();
-        for (Vehicle v : vehicList)
-        {
-            if (v.getDeviceID() != null)
-            {
-                Device dev = deviceDAO.findByID(v.getDeviceID());
 
-                DeviceReportItem deviceReportItem = new DeviceReportItem();
-
-                deviceReportItem.setDevice(dev);
-                deviceReportItem.getDevice().setEphone(PhoneNumberUtil.formatPhone(deviceReportItem.getDevice().getEphone(), "({0}) {1}-{2}"));
-                deviceReportItem.getDevice().setPhone(PhoneNumberUtil.formatPhone(deviceReportItem.getDevice().getPhone(), "({0}) {1}-{2}"));
-                deviceReportItem.setVehicle(v);
-
-                deviceReportItems.add(deviceReportItem);
-            }
-        }
-        
+        Integer rowCount = reportDAO.getDeviceReportCount(groupID, null);
+		PageParams pageParams = new PageParams(0, rowCount, null, null);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, group.getName(), locale);
-        reportCriteria.setMainDataset(deviceReportItems);
+		reportCriteria.setMainDataset(reportDAO.getDeviceReportPage(groupID, pageParams));
         return reportCriteria;
     }
 

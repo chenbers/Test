@@ -133,7 +133,8 @@
                                             	</h:outputFormat>
                                         	</rich:column>                                        
                                         	<rich:column id="overallScore" rendered="#{pagingVehicleReportBean.tableColumns['overallScore'].visible}"
-                                            		sortBy="#{item.overallScore}" custFilterBy="#{item.overallScore}" custFilterValue="#{pagingVehicleReportBean.overallScoreFilter}">
+                                            		sortBy="#{item.overallScore}" width="10%" 
+                                            		custFilterBy="#{item.overallScore}" custFilterValue="#{pagingVehicleReportBean.overallScoreFilter}">
 	                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 													<ui:param name="context" value="#{context}" />
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
@@ -147,7 +148,8 @@
 	                                            </ui:include> 
                                         	</rich:column>
 	                                        <rich:column id="speedScore" rendered="#{pagingVehicleReportBean.tableColumns['speedScore'].visible}"
-    	                                        sortBy="#{item.speedScore}" custFilterBy="#{item.speedScore}" custFilterValue="#{pagingVehicleReportBean.speedScoreFilter}">
+    	                                        sortBy="#{item.speedScore}"  width="10%"
+    	                                        custFilterBy="#{item.speedScore}" custFilterValue="#{pagingVehicleReportBean.speedScoreFilter}">
 	                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 													<ui:param name="context" value="#{context}" />
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
@@ -161,7 +163,8 @@
 	                                            </ui:include> 
 	                                        </rich:column>
 	                                        <rich:column id="styleScore" rendered="#{pagingVehicleReportBean.tableColumns['styleScore'].visible}"
-    	                                        sortBy="#{item.styleScore}" custFilterBy="#{item.styleScore}" custFilterValue="#{pagingVehicleReportBean.styleScoreFilter}">
+    	                                        sortBy="#{item.styleScore}"  width="10%"
+    	                                        custFilterBy="#{item.styleScore}" custFilterValue="#{pagingVehicleReportBean.styleScoreFilter}">
 	                                            <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 													<ui:param name="context" value="#{context}" />
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />

@@ -9,13 +9,9 @@
               xmlns:security="http://pro.tiwi.com/jsf/security"
               xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-	 
-              
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="driversSelected" value="current" />
 	<ui:param name="helpFile" value="Drivers.htm" />
-    
-    
     <ui:param name="context" value="drivers" />
 
 	<ui:define name="subnavigation">
@@ -61,7 +57,7 @@
 										</li> 
       								</ul>		
 									<ui:include src="/includes/table/statsHeader.xhtml">	
-   										<ui:param name="title" value="#{messages.notes_safety_recordCountHeader}" />
+   										<ui:param name="title" value="#{messages.recordCountHeader}" />
    										<ui:param name="pageData" value="#{pagingDriverReportBean.table.pageData}" />
 									</ui:include>
      
@@ -75,7 +71,6 @@
 	                                <div class="spacer"></div>
     	                            <div class="datagrid_panel" style="width: 925px;">
 									<t:saveState value="#{pagingDriverReportBean}"/>
-    	                            
                                     <rich:dataTable id="#{context}" value="#{pagingDriverReportBean.table.model}" var="item" 
                                          styleClass="datagrid filterabledatagrid" 
 							        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"
@@ -129,8 +124,9 @@
                                                 <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                                             </h:outputFormat>
                                         </rich:column>
-                                        <rich:column id="overallScore" rendered="#{pagingDriverReportBean.tableColumns['overallScore'].visible}" sortBy="#{item.overallScore}"
-                                         					custFilterBy="#{item.overallScore}" custFilterValue="#{pagingDriverReportBean.overallScoreFilter}">
+                                        <rich:column id="overallScore" rendered="#{pagingDriverReportBean.tableColumns['overallScore'].visible}" 
+                                        				sortBy="#{item.overallScore}" width="10%"
+                                         				custFilterBy="#{item.overallScore}" custFilterValue="#{pagingDriverReportBean.overallScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 												<ui:param name="context" value="#{context}" />
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
@@ -143,7 +139,8 @@
 													<ui:param name="context" value="driversOverall" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column id="speedScore" rendered="#{pagingDriverReportBean.tableColumns['speedScore'].visible}" sortBy="#{item.speedScore}"
+                                        <rich:column id="speedScore" rendered="#{pagingDriverReportBean.tableColumns['speedScore'].visible}" 
+                                        					sortBy="#{item.speedScore}" width="10%" 
                                          					custFilterBy="#{item.speedScore}" custFilterValue="#{pagingDriverReportBean.speedScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 												<ui:param name="context" value="#{context}" />
@@ -157,7 +154,8 @@
 													<ui:param name="context" value="driversSpeed" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column id="styleScore" rendered="#{pagingDriverReportBean.tableColumns['styleScore'].visible}" sortBy="#{item.styleScore}"
+                                        <rich:column id="styleScore" rendered="#{pagingDriverReportBean.tableColumns['styleScore'].visible}" 
+                                        					sortBy="#{item.styleScore}" width="10%"
                                          					custFilterBy="#{item.styleScore}" custFilterValue="#{pagingDriverReportBean.styleScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 												<ui:param name="context" value="#{context}" />
@@ -171,7 +169,8 @@
 													<ui:param name="context" value="driversStyle" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column id="seatbeltScore" rendered="#{pagingDriverReportBean.tableColumns['seatBeltScore'].visible}" sortBy="#{item.seatbeltScore}"
+                                        <rich:column id="seatbeltScore" rendered="#{pagingDriverReportBean.tableColumns['seatBeltScore'].visible}" 
+                                        					sortBy="#{item.seatbeltScore}" width="10%"
                                          					custFilterBy="#{item.seatbeltScore}" custFilterValue="#{pagingDriverReportBean.seatbeltScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 												<ui:param name="context" value="#{context}" />

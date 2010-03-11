@@ -164,14 +164,13 @@
     </url-mapping>
     <url-mapping id="devicesReport">
         <pattern>/app/reports/devicesReport</pattern>
-        <view-id>/secured/reports/devices.faces</view-id>
-        <action onPostback="false">#{deviceReportBean.loadAll}</action>
+        <view-id>/secured/pagingreports/devices.faces</view-id>
+        <action onPostback="false">#{pagingDeviceReportBean.allAction}</action>
     </url-mapping>
     <url-mapping id="devicesReportWithCriteria">
         <pattern>/app/reports/devicesReport/</pattern>
-         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
-        <view-id>/secured/reports/devices.faces</view-id>
-        <action onPostback="false">#{deviceReportBean.search}</action>
+        <view-id>/secured/pagingreports/devices.faces</view-id>
+        <action onPostback="false">#{pagingDeviceReportBean.searchAction}</action>
     </url-mapping>
     
     <!-- Notifications Section -->

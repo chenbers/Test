@@ -612,4 +612,12 @@
    	<bean id="vehicleReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.VehicleReportPaginationTableDataProvider" scope="request">
 	  <property name="reportDAO" ref="reportDAO"></property>   
   	</bean>
+
+    <bean id="pagingDeviceReportBean" class="com.inthinc.pro.backing.paging.PagingDeviceReportBean" scope="request" init-method="init" parent="basePagingReportBean">
+		<property name="tableDataProvider" ref="deviceReportPaginationTableDataProvider"></property>
+    </bean>
+
+   	<bean id="deviceReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DeviceReportPaginationTableDataProvider" scope="request">
+	  <property name="reportDAO" ref="reportDAO"></property>   
+  	</bean>
 </beans>

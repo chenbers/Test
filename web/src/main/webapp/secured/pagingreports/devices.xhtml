@@ -1,0 +1,170 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:t="http://myfaces.apache.org/tomahawk"
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="devicesSelected" value="current" />
+	<ui:param name="helpFile" value="Devices.htm" />
+    <ui:param name="context" value="devices" />
+	<ui:param name="bean" value="#{pagingDeviceReportBean}"/>
+	
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml" >
+		   <ui:param name="context" value="#{context}" />
+		</ui:include>
+	</ui:define>
+
+	<ui:define name="content">
+			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+				<tr>
+					<td valign="top">
+						<div class="">
+							<div class="panel_nw">
+								<div class="panel_title">
+									<span class="driver">#{messages.reports_devicereporttitle}</span>
+									<span class="panel_links"></span>
+								</div>
+							</div>
+							<div class="panel_w">
+								<div class="panel_content">	
+									<h:form id="#{context}-form">	
+										<ui:include src="/includes/redFlagsCount.xhtml" >
+											<ui:param name="context" value="devices" />
+										</ui:include>																
+										<ul id="grid_nav" style="margin: 0;">            							
+	            							<li class="l text">
+    	        								<a4j:commandLink 
+        	    									id="#{context}EditColumns" 
+            										action="#"
+            									 	styleClass="ls_tab_edit_columns"
+            										onclick="Richfaces.showModalPanel('editColumns');"
+            										reRender="editColumnsForm:editColumnGrid">        									
+            										<h:outputText value="#{messages.button_editColumns}" />
+            									</a4j:commandLink>
+            								</li>  
+            								<li class="r grid_icon">
+            									<h:panelGroup id="#{context}_reportToolImageId">
+													<h:graphicImage value="/images/ico_tools.png"/>
+												</h:panelGroup>
+											</li>
+											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+											</li>          							
+          								</ul>
+										<ui:include src="/includes/table/statsHeader.xhtml">	
+   											<ui:param name="title" value="#{messages.notes_safety_recordCountHeader}" />
+   											<ui:param name="pageData" value="#{bean.table.pageData}" />
+										</ui:include>
+										<ui:include src="/includes/reportsContextMenu.xhtml">	
+											<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+											<ui:param  name="reportBean" value="#{bean}"/>
+											<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+											<ui:param  name="exportExcel" value="TRUE"/>
+											<ui:param name="context" value="#{context}" />
+										</ui:include>
+	                                    <div class="spacer"></div>      
+                                		<div class="datagrid_panel" style="width: 925px;">		        						
+										<t:saveState value="#{bean}"/>
+	                                    <rich:dataTable id="#{context}" value="#{bean.table.model}" var="item" 
+    	                                     styleClass="datagrid filterabledatagrid" 
+								        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"
+            	                             rowClasses="tableOdd,tableEven" 
+ 											 cellspacing="1" rows="#{pagingDeviceReportBean.table.pageData.rowsPerPage}" width="100%">
+                               					<rich:column id="deviceName" rendered="#{bean.tableColumns['device_name'].visible}" 
+                                						sortBy="#{item.deviceName}" sortOrder="ASCENDING" filterBy="#{item.deviceName}"
+                                						filterValue="#{bean.searchFor}">
+                               						<f:facet name="header">
+                               							<h:outputText value="#{messages.reports_deviceid}" />
+                               						</f:facet>							
+                               						<h:outputText value="#{item.deviceName}"/>										
+                                   				</rich:column>
+                                   				<rich:column id="vehicleName" rendered="#{bean.tableColumns['vehicle_name'].visible}" 
+                                    					sortBy="#{item.vehicleName}" filterBy="#{item.vehicleName}">
+                                      					<f:facet name="header">
+                                      						<h:outputText value="#{messages.reports_assignedvehicle}" />
+                                      					</f:facet>
+                                                        <pretty:link id="vehiclePerformance" mappingId="vehiclePerformance">
+                                                            <h:outputText value="#{item.vehicleName}"/>
+                                                            <f:param value="#{item.vehicleID}"/>
+                                                        </pretty:link>      
+                                    				</rich:column>
+                                    				<rich:column id="imei" rendered="#{bean.tableColumns['device_imei'].visible}" 
+                                    					sortBy="#{item.deviceIMEI}" filterBy="#{item.deviceIMEI}">    					
+                                      					<f:facet name="header">
+                                      						<h:outputText value="#{messages.reports_imei}" />
+                                      					</f:facet>
+                                      					<h:outputText value="#{item.deviceIMEI}" />    					     					
+                                    				</rich:column>
+                                    				<rich:column id="phone" rendered="#{bean.tableColumns['device_phone'].visible}" 
+                                    					sortBy="#{item.devicePhone}" filterBy="#{item.devicePhone}">
+                                      					<f:facet name="header">
+                                      						<h:outputText value="#{messages.reports_devicephonenbr}" />
+                                      					</f:facet>
+                                      					<h:outputText value="#{item.devicePhone}" />   
+                                    				</rich:column>
+                                    				<rich:column id="status" rendered="#{bean.tableColumns['device_status'].visible}" 
+                                    								custFilterBy="#{item.deviceStatus}" filterValue="#{bean.filterStatus}">
+                                      					<f:facet name="header">
+															<h:panelGroup>
+                                      							<h:outputText value="#{messages.reports_status}" />
+                    											<rich:spacer style="display:block" height="2"/>
+    	                										<h:selectOneMenu id="statusFilter" value="#{bean.filterStatus}" label="#{messages.reports_status}"  style="width:80px;size:auto;margin-top:3px;">
+        	                										<f:selectItems value="#{bean.deviceStatuses}" />
+            	            										<a4j:support event="onchange" reRender="#{context},#{context}-form:header,#{context}-form:#{context}-bottomScroller" />
+                	    										</h:selectOneMenu>
+																<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 														<ui:param name="selectBoxID" value="#{context}-form:#{context}:statusFilter" />
+																</ui:include>
+                    										</h:panelGroup>
+                                      					</f:facet>
+      													<ui:param name="status" value="status#{item.deviceStatus.code}" />
+      													<h:outputText value="#{messages[status]}" />
+                                    				</rich:column>  
+                                    				<rich:column id="ephone" rendered="#{bean.tableColumns['device_ephone'].visible}" 
+                                    					sortBy="#{item.deviceEPhone}" filterBy="#{item.deviceEPhone}">
+                                      					<f:facet name="header">
+                                      						<h:outputText value="#{messages.reports_ecallphonenbr}" />
+                                      					</f:facet>
+                                      					<h:outputText value="#{item.deviceEPhone}" />
+                                    				</rich:column>   		
+                                    			</rich:dataTable>    	
+                                			</div>
+            	                    <div class="spacer"></div>
+                	                <rich:datascroller id="#{context}-bottomScroller" 
+                                          for="#{context}" immediate="true" 
+                                          scrollerListener="#{bean.table.scrollerListener}" 
+                                          reRender="#{context}"
+                                          requestDelay="200" eventsQueue="pagerQueue" 
+                                          page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
+                   			</h:form>
+							<ui:include src="/includes/editColumnsPopup.xhtml">
+								<ui:param name="bean" value="#{bean}"/>	
+								<ui:param name="reRender" value="#{context}-form:#{context}" />
+	   							<ui:param name="context" value="#{context}" />
+							</ui:include>    
+						</div>
+					</div>
+			    	<div class="panel_sw">
+						<div class="panel_statusbar"></div>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<h:outputText id="device_email_modalPanel">
+		<ui:include src="/includes/emailReportPopup.xhtml">	
+			<ui:param  name="id" value="#{context}_reportEmailModal" />
+			<ui:param  name="reportBean" value="#{bean}"/>
+		    <ui:param  name="context" value="#{context}" />
+		</ui:include>
+	</h:outputText>
+	</ui:define>
+
+</ui:composition>
