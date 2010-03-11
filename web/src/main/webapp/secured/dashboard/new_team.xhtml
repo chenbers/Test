@@ -84,12 +84,6 @@
 					jQuery('.selected_duration').removeClass('selected_duration');
 					jQuery(this).addClass('selected_duration');
 				});
-				jQuery('#teamTrips_shifted').live('click', function(){
-					jQuery('#longDurations').children().addClass('disable');
-				});
-				jQuery('#teamStatistics_shifted').live('click', function(){
-					jQuery('#longDurations').children().removeClass('disable')
-				});
 				
 						
 			});
@@ -253,7 +247,7 @@
 	       <div class="panel_content">   	 
 	    
 	        <a4j:outputPanel id="overallTeamPanel">    							
-				<rich:tabPanel id="teamTabPanel" switchType="ajax">
+				<rich:tabPanel id="teamTabPanel" binding="#{teamCommonBean.teamTabPanel}" switchType="ajax">
                		<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
                 	<!-- <ui:include src="/includes/teamPage/new_liveTeamMap.xhtml"/> -->
@@ -271,11 +265,6 @@
     		<div class="panel_statusbar"></div>
     	</div>	
 	</div>
-    <h:form>
-    <a4j:jsFunction name="setSelectedTab">
-    		<a4j:actionparam name="selectedTab" assignTo="#{teamCommonBean.selectedTab}"/>
-     </a4j:jsFunction>
-    </h:form>
 
 	</ui:define>
 

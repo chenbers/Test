@@ -3,7 +3,6 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.backing.listener.TimeFrameChangeListener;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.MapIcon;
@@ -12,10 +11,11 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 
-public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
+public class TeamTripsBean extends BaseBean {
 
 	/**
 	 * 
@@ -28,14 +28,12 @@ public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
     private List<MapIcon> icons;
     private TeamCommonBean teamCommonBean;
     
-	private boolean timeFrameChanged;
+	private TimeFrame myTimeFrame;
 	
     public void init(){
     	
 		icons = MapIconFactory.IconType.TEAM_LEGEND.getIconList(15);
-		teamCommonBean.addTimeFrameChangeListener(this);
-		timeFrameChanged = false;
-		
+		myTimeFrame =teamCommonBean.getTimeFrame();
 		initDrivers();
 		
     }
@@ -60,19 +58,21 @@ public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
 		
 		return driversTrips;
 	}
- 	public List<DriverTrips> getSelectedDrivers(){
+ 	public List<DriverTrips> getSelectedDriversTrips(){
  		
  		List<DriverTrips> selectedDrivers = new ArrayList<DriverTrips>();
  		
- 		if (timeFrameChanged){
+ 		if (!myTimeFrame.equals(teamCommonBean.getTimeFrame())){
  			
-	 	   	for(DriverTrips dw:driversTrips){
+	 	   	for(DriverTrips dt:driversTrips){
 	 	   		
-	 	   		if ( dw.isSelected()){
+	 	   		if ( dt.isSelected()){
 	 	   			
-	 	   			selectedDrivers.add(dw);
+	 	   			dt.reloadTrips();
+	 	   			selectedDrivers.add(dt);
 	 	   		}
 	 	   	}
+	 	   	myTimeFrame = teamCommonBean.getTimeFrame();
  		}
  	   	return selectedDrivers;
  	}
@@ -83,7 +83,7 @@ public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
 		
     	for(DriverTrips dt:driversTrips){
     		
-    		dt.reloadTrips(timeFrameChanged);
+    		dt.reloadTrips();
     	}
 	}
 	public void clearTrips(){
@@ -121,17 +121,6 @@ public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
 		this.eventDAO = eventDAO;
 	}
 	
-	@Override
-	public void onTimeFrameChange() {
-		
-		clearTrips();
-		timeFrameChanged = true;
-	}
-	public boolean isTimeFrameChanged() {
-		
-		return timeFrameChanged;
-	}
-
 /*
  * 
  * TeamTrip inner class
@@ -240,9 +229,9 @@ public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
 		public void setTrips(List<TeamTrip> trips) {
 			this.trips = trips;
 		}
-		public void reloadTrips(boolean timeFrameChanged){
+		public void reloadTrips(){
 			
-			if (selected && timeFrameChanged) loadTripsAndEvents();
+			if (selected) reloadTripsAndEvents();
 		}
 		public void clearTrips(){
 			if (trips != null) {
@@ -253,6 +242,11 @@ public class TeamTripsBean extends BaseBean implements TimeFrameChangeListener{
 				idles.clear();
 				tampers.clear();
 			}
+		}
+		private void reloadTripsAndEvents(){
+				clearTrips();
+				loadTrips();
+		        loadViolations();
 		}
 		private void loadTripsAndEvents(){
 			

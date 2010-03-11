@@ -352,8 +352,9 @@
 
 	 }	
 
-	function redisplayAllTrips(drivers, timeFrameChanged){
-		if (!timeFrameChanged){
+	function redisplayAllTrips(drivers){
+		//if no data has been returned then just redraw what we have
+		if (drivers.length == 0){
 			
 			redrawAllSelectedDriversTrips();
 		}
@@ -373,6 +374,6 @@
     function resetTripsForSelectedDrivers(){
     	
        	clearDownTrips();
-       	ifTimeFrameChangedReloadAllTrips();
+       	getLatestTrips();
     }
 

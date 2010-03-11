@@ -39,23 +39,33 @@
 //			readdOverlays=true;				
 		}
 	}
+	var dayClickFunction = function(event){
+	   	resetTripsForSelectedDrivers();
+	};
+	var longDurationClickFunction = function(event){
+			event.preventDefault();
+		};
+		
 	function onTabSelectionComplete(){
 		
-		setSelectedTab('trips');
 		initMap();
-		ifTimeFrameChangedReloadAllTrips();
+		getLatestTrips();
 		
-  	   	jQuery("[id$='Day']").click(function() {
-	  	   	
-  	   		resetTripsForSelectedDrivers();
-       	});
-
+  	   	jQuery("[id$='Day']").bind('click',dayClickFunction);
+		jQuery('#longDurations').children().addClass('disable');
+		jQuery('#longDurations').children().click(longDurationClickFunction);
+	}
+	function onTabLeave(){
+		GUnload();
+ 	   	jQuery("[id$='Day']").unbind('click',dayClickFunction);
+		jQuery('#longDurations').children().removeClass('disable');
+		jQuery('#longDurations').children().unbind('click',longDurationClickFunction);
 	}
 //]]>
  </script>
  	<t:saveState  value="#{teamTripsBean}"/>
  
-   <rich:tab id="teamTrips" ontableave="GUnload();"  oncomplete="onTabSelectionComplete()" >
+   <rich:tab id="teamTrips" ontableave="onTabLeave();"  oncomplete="onTabSelectionComplete()" >
 	    
 	 <f:facet name="label">
 	 	<h:panelGroup>
@@ -124,7 +134,8 @@
 	       </div>
     <!-- End Trips Map -->
     <h:form>
-    	<a4j:jsFunction name="ifTimeFrameChangedReloadAllTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDrivers}" oncomplete="redisplayAllTrips(data,#{teamTripsBean.timeFrameChanged})"/>
+    	<a4j:jsFunction name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
+    						oncomplete="redisplayAllTrips(data)"/>
     </h:form>
     </rich:tab>
  </ui:composition>
