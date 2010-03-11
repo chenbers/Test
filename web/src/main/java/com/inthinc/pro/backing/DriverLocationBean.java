@@ -161,7 +161,8 @@ public class DriverLocationBean extends BaseBean {
 	
 	private void allocateIcons(List<DriverLocation> driverLocations){
 		
-	    childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
+//	    childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
+        childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(getGroupID()));	    
 	    
 	    teamLevel = (childGroups == null);
 		MapAndLegendIconManager malim = new MapAndLegendIconManager();
