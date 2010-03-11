@@ -14,10 +14,6 @@ import com.inthinc.pro.model.TimeFrame;
 
 public class TeamCommonBean extends BaseBean {
 	
-//	public enum TeamPageTabs {
-//			STATISTICS,
-//			TRIPS
-//	}
     private static final long serialVersionUID = 1L;
     private List<String> dayLabels = new ArrayList<String>();
 
