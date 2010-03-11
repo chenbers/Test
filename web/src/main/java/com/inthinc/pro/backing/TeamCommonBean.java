@@ -7,11 +7,10 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Interval;
-import org.joda.time.Months;
+import org.richfaces.component.UITabPanel;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TimeFrame;
-import com.inthinc.pro.backing.listener.TimeFrameChangeListener;
 
 public class TeamCommonBean extends BaseBean {
 	
@@ -26,13 +25,10 @@ public class TeamCommonBean extends BaseBean {
     private Group group;
 
     private TimeFrame timeFrame = TimeFrame.ONE_DAY_AGO;
-    private String selectedTab;
+    private UITabPanel teamTabPanel;
     
-    private List<TimeFrameChangeListener> timeFrameChangeListeners;
-
     public void init() {
-    	selectedTab="statistics";
-    	timeFrameChangeListeners = new ArrayList<TimeFrameChangeListener>();
+
     }
 
     public Integer getGroupID() {
@@ -88,32 +84,17 @@ public class TeamCommonBean extends BaseBean {
 
     public void setTimeFrame(TimeFrame timeFrame) {
         this.timeFrame = timeFrame;
-        
-        notifyTimeFrameChangeListeners();
     }
-	
-	public void addTimeFrameChangeListener(TimeFrameChangeListener timeFrameChangeListener){
-		
-		timeFrameChangeListeners.add(timeFrameChangeListener);
-	}
-	public void removeTimeFrameChangeListener(TimeFrameChangeListener timeFrameChangeListener){
-		
-		timeFrameChangeListeners.remove(timeFrameChangeListener);
-	}
-	public void notifyTimeFrameChangeListeners(){
-		
-		for (TimeFrameChangeListener tfcl:timeFrameChangeListeners){
-			
-			tfcl.onTimeFrameChange();
-		}
+
+	public UITabPanel getTeamTabPanel() {
+		return teamTabPanel;
 	}
 
-	public String getSelectedTab() {
-		return selectedTab;
+	public void setTeamTabPanel(UITabPanel teamTabPanel) {
+		this.teamTabPanel = teamTabPanel;
 	}
 
-	public void setSelectedTab(String selectedTab) {
-		this.selectedTab = selectedTab;
+	public Object getSelectedTab() {
+		return teamTabPanel.getSelectedTab();
 	}
-
 }
