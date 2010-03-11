@@ -379,6 +379,7 @@
     <property name="driverDAO" ref="driverDAO"></property>
     <property name="vehicleDAO" ref="vehicleDAO"></property>
     <property name="navigation" ref="navigationBean"></property>
+    <property name="teamCommonBean" ref="teamCommonBean"></property>
     <property name="groupDAO" ref="groupDAO"></property>
 
   </bean>
