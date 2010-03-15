@@ -85,6 +85,32 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
            	filters = new ArrayList<TableFilterField>();
 
 		try {
+			Map<String, Object> map = getSiloService().getIdlingReportCount(groupID, DateUtil.convertDateToSeconds(interval.getStart()), DateUtil.convertDateToSeconds(interval.getEnd()), 
+							getMapper().convertList(fixIdlingReportFilters(filters))); 
+			return getCount(map);
+		}
+        catch (EmptyResultSetException e)
+        {
+            return 0;
+        }
+        
+	}
+
+
+	private List<TableFilterField> fixIdlingReportFilters(List<TableFilterField> filters) {
+		List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
+		for (TableFilterField filter : filters) 
+			reportFilters.add(filter);
+		reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+		return reportFilters;
+	}
+	
+	@Override
+	public Integer getIdlingReportTotalCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
+		if (filters == null)
+           	filters = new ArrayList<TableFilterField>();
+		
+		try {
 			Map<String, Object> map = getSiloService().getIdlingReportCount(groupID, DateUtil.convertDateToSeconds(interval.getStart()), DateUtil.convertDateToSeconds(interval.getEnd()), getMapper().convertList(filters)); 
 			return getCount(map);
 		}
@@ -98,6 +124,7 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
 
 	@Override
 	public List<IdlingReportItem> getIdlingReportPage(Integer groupID, Interval interval, PageParams pageParams) {
+		pageParams.setFilterList(fixIdlingReportFilters(pageParams.getFilterList()));
 		try {
 			return getMapper().convertToModelObject(getSiloService().getIdlingReportPage(groupID, DateUtil.convertDateToSeconds(interval.getStart()), DateUtil.convertDateToSeconds(interval.getEnd()), getMapper().convertToMap(pageParams)), IdlingReportItem.class);
 		}

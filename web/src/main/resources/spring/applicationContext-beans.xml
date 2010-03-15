@@ -208,7 +208,6 @@
         <ref local="vehiclesBean" />
         <ref local="zoneAlertsBean" />
         <ref local="redFlagAlertsBean" />
-        <ref local="idlingReportBean" />
       </list>
     </property>
   </bean>
@@ -448,20 +447,6 @@
   <bean id="crashHistoryBean" class="com.inthinc.pro.backing.CrashHistoryBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
     <property name="crashReportDAO" ref="crashReportDAO"></property>
   </bean>
-  <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseReportBean">
-    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-    <property name="scoreDAO" ref="scoreDAO"></property>
-    <property name="reportRenderer" ref="reportRenderer"></property>
-    <property name="reportCriteriaService" ref="reportCriteriaService"></property>
-  </bean>
-  <bean id="idlingReportTable" class="com.inthinc.pro.backing.ui.IdlingReportTable" scope="session"></bean>
-  <bean id="deviceReportBean" class="com.inthinc.pro.backing.DeviceReportBean" scope="session" parent="baseReportBean">
-    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-    <property name="vehicleDAO" ref="vehicleDAO" />
-    <property name="deviceDAO" ref="deviceDAO" />
-    <property name="reportRenderer" ref="reportRenderer"></property>
-    <property name="reportCriteriaService" ref="reportCriteriaService"></property>
-  </bean>
 
   <bean id="tableStatsBean" class="com.inthinc.pro.backing.TableStatsBean" scope="request" />
 
@@ -621,4 +606,13 @@
    	<bean id="deviceReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DeviceReportPaginationTableDataProvider" scope="request">
 	  <property name="reportDAO" ref="reportDAO"></property>   
   	</bean>
+
+    <bean id="pagingIdlingReportBean" class="com.inthinc.pro.backing.paging.PagingIdlingReportBean" scope="request" init-method="init" parent="basePagingReportBean">
+		<property name="tableDataProvider" ref="idlingReportPaginationTableDataProvider"></property>
+    </bean>
+
+   	<bean id="idlingReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.IdlingReportPaginationTableDataProvider" scope="request">
+	  <property name="reportDAO" ref="reportDAO"></property>   
+  	</bean>
+
 </beans>

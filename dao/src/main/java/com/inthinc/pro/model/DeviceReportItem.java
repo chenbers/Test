@@ -5,20 +5,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DeviceReportItem extends BaseEntity
 {
-	// not used with pagination
-    private Device device;
-    private Vehicle vehicle;
-    
-    // new with pagination
-    String deviceName;
-    String vehicleName;
-    Integer vehicleID;
-    String deviceIMEI;
-    String devicePhone;
-    String deviceEPhone;
-    DeviceStatus deviceStatus;
-    
-    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -627734795756981820L;
+	private String deviceName;
+    private String vehicleName;
+    private Integer vehicleID;
+    private String deviceIMEI;
+    private String devicePhone;
+    private String deviceEPhone;
+    private DeviceStatus deviceStatus;
 
     public String getDeviceName() {
 		return deviceName;
@@ -75,24 +72,4 @@ public class DeviceReportItem extends BaseEntity
 	public void setDeviceStatus(DeviceStatus deviceStatus) {
 		this.deviceStatus = deviceStatus;
 	}
-
-	public Device getDevice()
-    {
-        return device;
-    }
-
-    public void setDevice(Device device)
-    {
-        this.device = device;
-    }
-
-    public Vehicle getVehicle()
-    {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle)
-    {
-        this.vehicle = vehicle;
-    }
 }

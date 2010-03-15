@@ -9,6 +9,10 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -50,6 +54,10 @@ public class EmailReportJob extends QuartzJobBean {
     private String webContextPath;
     private String encryptPassword;
     private StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
+
+    private static final long ONE_MINUTE = 60000L;
+    private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT"));
+
 
     @Override
     protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
@@ -139,15 +147,8 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                     break;
                 case IDLING_REPORT:
-                    final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                    Calendar startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                    startDate.add(Calendar.DATE, -7);
-                    if (logger.isDebugEnabled()) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
-                        logger.debug("Start Time: " + sdf.format(startDate.getTime()));
-                        logger.debug("End Time: " + sdf.format(endDate.getTime()));
-                    }
-                    reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), startDate.getTime(), endDate.getTime(), user.getPerson().getLocale()));
+                    Interval interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
+                    reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), interval, user.getPerson().getLocale()));
                     break;
                 default:
                     break;

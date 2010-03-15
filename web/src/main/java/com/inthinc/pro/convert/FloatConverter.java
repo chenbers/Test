@@ -20,13 +20,15 @@ public class FloatConverter extends BaseConverter
     
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        Float floatValue = (Float)value;
-        NumberFormat format = NumberFormat.getNumberInstance(getLocale());
-        format.setMaximumFractionDigits(2);
-        format.setMinimumFractionDigits(2);
-
-        return format.format(floatValue);
-
+    	if (value instanceof Number) {
+	        Float floatValue = ((Number)value).floatValue();
+	        NumberFormat format = NumberFormat.getNumberInstance(getLocale());
+	        format.setMaximumFractionDigits(2);
+	        format.setMinimumFractionDigits(2);
+	
+	        return format.format(floatValue);
+    	}
+    	return "0.0";
     }
 
 }

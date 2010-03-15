@@ -162,7 +162,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-    IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end);    
+//    IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end);    
 
     CrashSummary getGroupCrashSummaryData(Integer groupID);
     CrashSummary getDriverCrashSummaryData(Integer driverID);

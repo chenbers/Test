@@ -13,20 +13,14 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.IdlePercentItem;
-import com.inthinc.pro.model.IdlingReportData;
-import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
@@ -34,13 +28,10 @@ import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.TrendItem;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleReportItem;
 
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
 {
     private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
-    private static final float SECONDS_TO_HOURS = 3600.0f;
     private static final Integer NO_SCORE = -1;
 
     private ReportService reportService;
@@ -524,7 +515,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-*/
+
     @Override
     public IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end)
     {
@@ -585,6 +576,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
+*/    
 	@Override
     public List<ScoreItem> getAverageScores(Integer id, EntityType entityType, Duration duration)
     {

@@ -14,7 +14,6 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.table.BasePaginationTable;
 import com.inthinc.pro.table.model.provider.DriverReportPaginationTableDataProvider;
 
 public class PagingDriverReportBean extends BasePagingReportBean<DriverReportItem>

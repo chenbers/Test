@@ -789,7 +789,6 @@ public class ReportServiceTest {
             assertEquals("DriverReportItem overallScore", expectedTeamOverall[teamType], item.getOverallScore());
         }
     }
-*/
     // TODO: not working
     @Test
     @Ignore
@@ -829,6 +828,7 @@ public class ReportServiceTest {
             assertEquals("IdlingReportItem drive time", expectDailyHiIdleHrs, item.getHighHrs(), 0.0003);
         }
     }
+*/
 
     @Test
     // @Ignore

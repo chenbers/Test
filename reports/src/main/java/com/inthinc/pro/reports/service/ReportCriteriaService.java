@@ -1,7 +1,8 @@
 package com.inthinc.pro.reports.service;
 
-import java.util.Date;
 import java.util.Locale;
+
+import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -13,7 +14,8 @@ public interface ReportCriteriaService
     ReportCriteria getMpgReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getDriverReportCriteria(Integer groupID,Locale locale);
     ReportCriteria getVehicleReportCriteria(Integer groupID,Locale locale);
-    ReportCriteria getIdlingReportCriteria(Integer groupID,Date startDate,Date endDate, Locale locale);
+//    ReportCriteria getIdlingReportCriteria(Integer groupID,Date startDate,Date endDate, Locale locale);
+    ReportCriteria getIdlingReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getDevicesReportCriteria(Integer groupID, Locale locale);
     ReportCriteria getEventsReportCriteria(Integer groupID, Locale locale);
     ReportCriteria getRedFlagsReportCriteria(Integer groupID, Locale locale);

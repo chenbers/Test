@@ -14,16 +14,15 @@
 	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="BEGIN_DATE" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="END_DATE" class="java.lang.String" isForPrompting="false"/>
-	<field name="group" class="java.lang.String"/>
-	<field name="driver.person.fullName" class="java.lang.String"/>
-	<field name="vehicle.name" class="java.lang.String"/>
-	<field name="lowPercent" class="java.lang.Float"/>
-	<field name="highPercent" class="java.lang.Float"/>
-	<field name="totalPercent" class="java.lang.Float"/>
-	<field name="lowHrs" class="java.lang.Float"/>
-	<field name="highHrs" class="java.lang.Float"/>
-	<field name="totalHrs" class="java.lang.Float"/>
-	<field name="driveTime" class="java.lang.Float"/>
+	<field name="groupName" class="java.lang.String"/>
+	<field name="driverName" class="java.lang.String"/>
+	<field name="lowIdlePercent" class="java.lang.Number"/>
+	<field name="highIdlePercent" class="java.lang.Number"/>
+	<field name="totalIdlePercent" class="java.lang.Number"/>
+	<field name="lowIdleTime" class="java.lang.Number"/>
+	<field name="highIdleTime" class="java.lang.Number"/>
+	<field name="totalIdleTime" class="java.lang.Number"/>
+	<field name="driveTime" class="java.lang.Number"/>
 	<background>
 		<band/>
 	</background>
@@ -125,57 +124,53 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-1" x="4" y="3" width="93" height="17"/>
 				<textElement rotation="None"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{group}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-2" x="97" y="3" width="249" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driver.person.fullName}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-4" x="442" y="3" width="65" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{lowHrs}==null?
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lowIdleTime}==null?
     $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format(0f):
-    $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{lowHrs}.floatValue())]]></textFieldExpression>
+    $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{lowIdleTime}.doubleValue()/3600.0d)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-5" x="508" y="3" width="27" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{lowPercent}.floatValue())
-]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{lowIdlePercent}.floatValue())]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-6" x="533" y="3" width="71" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{highHrs}==null?
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{highIdleTime}==null?
     $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format(0f):
-    $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{highHrs}.floatValue())]]></textFieldExpression>
+    $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{highIdleTime}.doubleValue()/3600.0d)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-7" x="605" y="3" width="27" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{highPercent}.floatValue())
-]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{highIdlePercent}.floatValue())]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-10" x="352" y="3" width="85" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{driveTime}.floatValue())
-]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{driveTime}.doubleValue()/3600.0d)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-11" x="633" y="3" width="70" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalHrs}==null?
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalIdleTime}==null?
     $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format(0f):
-    $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{totalHrs}.floatValue())]]></textFieldExpression>
+    $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{totalIdleTime}.doubleValue()/3600.0d)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-12" x="704" y="3" width="29" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{totalPercent}.floatValue())
-]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{totalIdlePercent}.floatValue())]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

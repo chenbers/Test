@@ -98,6 +98,17 @@ public interface ReportDAO extends GenericDAO<Object, Integer> {
      */
 	Integer getIdlingReportCount(Integer groupID, Interval interval, List<TableFilterField> filters);
 
+    /**
+     * Gets a total count of idling report items for the specified group and filters (includes drivers that
+     * have not driven a vehicle that supports idle stats).
+     * 
+     * @param groupID
+     *            	The groupID (deep) to retrieve.
+     * @param filters
+     * 				Filters for data set            
+     * @return Count of idling report items in group that meet filtering criteria.
+     */
+	Integer getIdlingReportTotalCount(Integer groupID, Interval interval, List<TableFilterField> filters);
 
     /**
      * Gets a count of idling report items for the specified group and filters

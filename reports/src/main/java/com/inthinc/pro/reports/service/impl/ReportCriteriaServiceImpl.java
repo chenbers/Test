@@ -1,14 +1,15 @@
 package com.inthinc.pro.reports.service.impl;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.EventDAO;
@@ -19,22 +20,14 @@ import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.dao.util.PhoneNumberUtil;
 import com.inthinc.pro.model.CrashSummary;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceReportItem;
-import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
-import com.inthinc.pro.model.IdlingReportData;
-import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -269,7 +262,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		reportCriteria.setMainDataset(reportDAO.getDeviceReportPage(groupID, pageParams));
         return reportCriteria;
     }
-
+/*
     @Override
     public ReportCriteria getIdlingReportCriteria(Integer groupID, Date startDate, Date endDate, Locale locale)
     {
@@ -296,7 +289,28 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
         return reportCriteria;
     }
+*/
+    @Override
+    public ReportCriteria getIdlingReportCriteria(Integer groupID, Interval interval, Locale locale)
+    {
+    	this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
 
+        Integer rowCount = reportDAO.getIdlingReportCount(groupID, interval, null);
+		PageParams pageParams = new PageParams(0, rowCount, null, null);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);
+		reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
+
+//        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat", getLocale()));
+//        reportCriteria.addParameter("BEGIN_DATE", sdf.format(startDate));
+//        reportCriteria.addParameter("END_DATE", sdf.format(endDate));
+        
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(MessageUtil.getMessageString("dateFormat", getLocale()));
+        reportCriteria.addParameter("BEGIN_DATE", fmt.print(interval.getStart()));
+        reportCriteria.addParameter("END_DATE", fmt.print(interval.getEnd()));
+
+        return reportCriteria;
+    }
     @Override
     public ReportCriteria getEventsReportCriteria(Integer groupID, Locale locale)
     {
