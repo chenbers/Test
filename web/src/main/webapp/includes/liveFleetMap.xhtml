@@ -198,7 +198,7 @@
                         </a4j:status>
    						<a4j:commandButton id="#{context}-liveFleetMapRefresh" image="/images/ico_refresh.png" immediate="true"
    							reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"  alt="#{messages.refresh}"
-   							value="#{messages.refresh}">
+   							value="#{messages.refresh}" action="#{driverLocationBean.resetMap}">
    						</a4j:commandButton>
                      
                          

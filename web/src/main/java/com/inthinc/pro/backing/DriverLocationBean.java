@@ -107,6 +107,10 @@ public class DriverLocationBean extends BaseBean {
 
 		return new ArrayList<DriverLocation>(driverLocationsMap.values());
 	}
+	
+	public void resetMap() {
+	    driverLocationsMap = null;
+	}
 
 	public void setDriverLocations(List<DriverLocation> driverLocations) {
 		driverLocationsMap = new LinkedHashMap<Integer,DriverLocation>();
