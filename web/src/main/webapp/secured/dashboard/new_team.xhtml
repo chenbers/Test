@@ -86,7 +86,8 @@
 			function renderBar(barElement, barDiv, width, height)
 			{
 				var barDef = document.getElementById(barElement);
-				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");										
+//				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");
+				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
 				barChart.setDataXML(barDef.value);	
 				barChart.setTransparent(true);								   	   
 				barChart.render(barDiv);
@@ -240,10 +241,10 @@
                		<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_liveTeamMap.xhtml"/>
-                	<ui:include src="/includes/teamPage/new_teamOverall3dBar.xhtml"/>
-                	<ui:include src="/includes/teamPage/new_teamDrivingStyle3dBar.xhtml"/>
-                	<ui:include src="/includes/teamPage/new_teamSpeed3dBar.xhtml"/>
-                	<ui:include src="/includes/teamPage/new_teamSeatbelt3dBar.xhtml"/>                	
+                	<ui:include src="/includes/teamPage/new_teamOverallPieChart.xhtml"/>
+<!--                 	<ui:include src="/includes/teamPage/new_teamDrivingStyle3dBar.xhtml"/> -->
+<!--                 	<ui:include src="/includes/teamPage/new_teamSpeed3dBar.xhtml"/> -->
+<!--                  	<ui:include src="/includes/teamPage/new_teamSeatbelt3dBar.xhtml"/> --> 
 				</rich:tabPanel>
     		</a4j:outputPanel>	     	    
 	    	    
