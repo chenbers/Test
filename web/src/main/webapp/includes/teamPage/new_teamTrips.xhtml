@@ -9,20 +9,44 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
+	<style>
+	.clear: after {
+	  content: ". ";
+	  display: block;
+	  height: 0;
+	  font-size: 0;
+	  clear: both;
+	  visibility: hidden;
+	}
+	.clear {
+	  zoom: 1;
+	}			
+	
+	.trips_markerLabel  {
+	  color: black;
+	  text-align: center;
+	  font-size:12px
+	}
+	
+	</style>
+	
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 	<a4j:loadScript src="/js/arrowedPolyline.js"/>
+	<a4j:loadScript src="/js/labeledMarker.js"/>
 	<a4j:loadScript src="/js/teamTrips.js"/>
+	<a4j:loadScript src="/js/markerClustererWithStackedMarkers.js"/>
 	
 	
 	<script type="text/javascript">
 	//<![CDATA[
 	
-	var icons = [	"#{facesContext.externalContext.request.contextPath}/images/ico_start.png",
-					"#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", 
-					"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", 
+	var icons = [	"#{facesContext.externalContext.request.contextPath}/images/green_circle.png",
+					"#{facesContext.externalContext.request.contextPath}/images/yellow_circle.png", 
+					"#{facesContext.externalContext.request.contextPath}/images/red_circle.png", 
 					"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png", 
-					"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",
-					"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png"
+					"#{facesContext.externalContext.request.contextPath}/images/teamIdle2.png",
+					"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",
+					"#{facesContext.externalContext.request.contextPath}/images/x.gif"
 				];
 	 
 	function initMap() {
@@ -34,9 +58,11 @@
 			map.addControl(new GMapTypeControl());
 			map.addControl(new GOverviewMapControl()); 
 			map.setMapType(G_NORMAL_MAP);
-			map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});	
+			map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
+//			GEvent.addListener(map, "zoomend", function(oldZoom,newZoom) {
+//				checkMarkerMode(oldZoom,newZoom);
+//			});	
 			tripIcons = icons;
-//			readdOverlays=true;				
 		}
 	}
 	var dayClickFunction = function(event){
@@ -52,12 +78,14 @@
 		getLatestTrips();
 		
   	   	jQuery("[id$='Day']").bind('click',dayClickFunction);
+  	   	jQuery("[id$='teamDurationPanelHeaderDays']").bind('click',dayClickFunction);
 		jQuery('#longDurations').children().addClass('disable');
 		jQuery('#longDurations').children().click(longDurationClickFunction);
 	}
 	function onTabLeave(){
 		GUnload();
  	   	jQuery("[id$='Day']").unbind('click',dayClickFunction);
+ 	   	jQuery("[id$='teamDurationPanelHeaderDays']").unbind('click',dayClickFunction);
 		jQuery('#longDurations').children().removeClass('disable');
 		jQuery('#longDurations').children().unbind('click',longDurationClickFunction);
 	}
@@ -66,7 +94,8 @@
  	<t:saveState  value="#{teamTripsBean}"/>
  
    <rich:tab id="teamTrips" ontableave="onTabLeave();"  oncomplete="onTabSelectionComplete()" >
-	    
+	 
+	<a4j:queue name="tripsQueue"/>     
 	 <f:facet name="label">
 	 	<h:panelGroup>
 	 		<h:graphicImage value="/images/ico_map.png" /><rich:spacer width="10"/>Trips
@@ -95,12 +124,11 @@
 				     <h:outputText value="#{messages.teamPage_hideShow}"/>
                 </f:facet>
                 <h:selectBooleanCheckbox id="select" value="#{driver.selected}">
-                  <a4j:support event="onclick" data="#{driver}"
+                  <a4j:support event="onclick" eventsQueue="tripsQueue" data="#{driver}" 
                   				oncomplete="processDriverTrips(#{index},data)" >
                    </a4j:support>
                   				
                 </h:selectBooleanCheckbox>
- 
               </rich:column>
 												
 				<rich:column>
@@ -121,8 +149,9 @@
 				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
 				</rich:column>
 				</rich:dataTable>
-				<rich:datascroller align="left" for="driversTrips" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 
-            		 styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"/>
+				<rich:datascroller 	align="left" for="driversTrips" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 
+            		 				styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
+            		 				eventsQueue="tripsQueue"/>
             		 
 				 </a4j:region>
  				</h:form>	
@@ -135,7 +164,7 @@
     <!-- End Trips Map -->
     <h:form>
     	<a4j:jsFunction name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
-    						oncomplete="redisplayAllTrips(data)"/>
+    						eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(data)"/>
     </h:form>
     </rich:tab>
  </ui:composition>

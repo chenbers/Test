@@ -1336,7 +1336,7 @@ dl.vl_tab_on a {
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
-}
+}http://jigsaw.w3.org/css-validator/nullui.html#propdef-cursor
 
 dl.vl_tab_off a {
 	color: #000000;
@@ -1352,7 +1352,7 @@ dl.vl_tab_off a {
 div.ls_tab_sub_on {
 	-x-system-font: none;
 	background: #EBFFCA;
-	color: #black;
+	color: black;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	font-size-adjust: none;
@@ -2177,7 +2177,7 @@ ul#pagination {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	padding: 10px 5px 17px 35px;
 	background: none;
-	color: none;
+/*	color: none;*/
 }
 
 .msg li {
@@ -2189,7 +2189,7 @@ ul#pagination {
 .msg dt {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	padding: 10px 5px 17px 35px;
-	color: none;
+/*	color: none;*/
 	list-style: none;
 }
 
@@ -2601,7 +2601,7 @@ ul.fdtablePaginater li a,ul.fdtablePaginater li div {
 }
 
 ul.fdtablePaginater li div {
-	cursor: normal;
+	cursor: default;
 	opacity: .5;
 	filter: alpha(opacity =       50);
 }
@@ -2615,6 +2615,7 @@ ul.fdtablePaginater li a span,ul.fdtablePaginater li div span {
 
 ul.fdtablePaginater li a {
 	cursor: pointer;
+	cursor: hand;
 }
 
 ul.fdtablePaginater li a:focus {
@@ -2636,7 +2637,7 @@ ul.fdtablePaginater li .next-page span,ul.fdtablePaginater li .previous-page spa
 
 #visibleTotal {
 	text-align: center;
-	letter-spacing: auto;
+	letter-spacing: normal;
 }
 
 * html ul.fdtablePaginater li div span,* html ul.fdtablePaginater li div span

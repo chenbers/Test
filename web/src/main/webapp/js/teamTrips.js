@@ -3,15 +3,25 @@
 	var driverIDArray = new Array();
 	var tripsSelected = new Array();
 	var overlaysArray = new Array();
+	var markerClusterers = new Array();
 	var markersArray = new Array();
 	var boundsArray = new Array();
 	var colorArray = new Array();
-	var readdOverlays = false;
-	var loadNow = false;
+	var markerClustererMaxZoom = 12;
 	
 	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
 				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
-	 
+	var labels=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"];
+	
+	function findColorIndex(indexOnPage){
+		
+		for(i=0; i<colorArray.length;i++){
+
+			if(colorArray[i] == indexOnPage) return i;
+		}
+		return -1;
+
+	}
 	function findDriver(driverID){
 
 		for(i=0; i<driverIDArray.length;i++){
@@ -33,21 +43,16 @@
 			
 			overlaysArray[driverIndex][j].hide();
 		}
-		for (var k=0; k<markersArray[driverIndex].length;k++){
+		if (markerClusterers[driverIndex]!=null) {
 			
-			markersArray[driverIndex][k].hide();
+			markerClusterers[driverIndex].clearMarkers();
 		}
-
 	}
 	function showOverlays(driverIndex){
 				
 		for (var j=0; j<overlaysArray[driverIndex].length; j++){
 						
 			overlaysArray[driverIndex][j].show();
-		}
-		for (var k=0; k<markersArray[driverIndex].length;k++){
-			
-			markersArray[driverIndex][k].show();
 		}
 	}
 
@@ -59,12 +64,35 @@
 				overlaysArray[i][j].hide();
 			}
 		}
-		for (var i=0; i<markersArray.length;i++){
-			for (var j=0; j<markersArray[i].length;j++){
+		for (var i=0; i<markerClusterers.length;i++){
 				
-				markersArray[i][j].hide();
+			if (markerClusterers[i]!=null){
+				
+				markerClusterers[i].clearMarkers();
 			}
 		}
+	}
+	function createMarkers(index){
+		
+    	var icon = new GIcon();
+    	icon.image = tripIcons[6];
+    	icon.iconSize = new GSize(48, 24);
+    	icon.iconAnchor = new GPoint(0, 0);
+    	icon.infoWindowAnchor = new GPoint(25, 12);
+
+    	var clusterOpts = { 
+          	  "icon": icon,
+          	  "clickable": true,
+          	  "labelText": getClusteredLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]]),
+          	  "labelOffset": new GSize(0, 0),
+          	  "labelClass":"trips_markerLabel"
+          	};
+
+		markerClusterers[index] = new MarkerClustererWithStackedMarkers(map,
+				markersArray[index],
+				clusterOpts,
+				{maxZoom:14});
+
 	}
 	function showAllOverlays(){
 		 
@@ -74,13 +102,9 @@
 				
 				for (var j=0; j<overlaysArray[i].length;j++){
 					
-//					overlaysArray[i][j].recalc();
 					overlaysArray[i][j].show();
 				}
-				for (var j=0; j<markersArray[i].length;j++){
-					
-					markersArray[i][j].show();
-				}
+				createMarkers(i);
 			}
 		}
 	}
@@ -90,36 +114,79 @@
 		 setDriverSelected(driverID,false);
 	 }
 	 
-		function orderOfCreation(marker,b) 
-		{
-		      return 1;
-		}	
+	function orderOfCreation(marker,b) 
+	{
+	      return 1;
+	}
+	function getSingleLabeledMarkerLabel(letter,colorIndex, tripNumber, tripIcon){
 		
-	    function createMarker(point, iconImage) 
-	    {
-	    	var markerIcon;
-	    	var marker;
-	    	var baseIcon = new GIcon();
-	    	baseIcon.iconSize = new GSize(21, 20);
-	    	baseIcon.iconAnchor = new GPoint(6, 20);
-	    	baseIcon.infoWindowAnchor = new GPoint(5, 1);
+    	return '<div style="position: relative; line-height: 1.5em; background-color:white; border: 1px solid black; width: 48px;">'+ 
+    	'<div style="height: 16px; width: 16px; background-color: ' + colorIndex + ';vertical-align:middle">'+letter+'</div>'+ 
+    	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 48px; height:16px;top: 0; left: 0;'+
+    	'background: transparent url('+tripIcon+') no-repeat center right;">' + 
+    			tripNumber + '</div></div>'; 
 
-			//Use passed in image.
-	    	if(iconImage != null)
-	    	{
-				markerIcon = new GIcon(baseIcon);
-	       	    markerIcon.image = iconImage;
-	       	 	markerOptions = { icon:markerIcon,zIndexProcess:orderOfCreation  };
-	       	 	marker = new GMarker(point, markerOptions);
-	    	}
-	    	//Use default GoogleMap marker image.
-	    	else
-	    	{
-		      	markerIcon = new GIcon();
-				marker = new GMarker(point);
-	    	}
-	    	return marker;
-	    }
+	}
+	function getClusteredLabeledMarkerLabel(letter, colorIndex){
+    	return '<div style="position: relative; line-height: 2.0em; background-color:white; border: 1px solid black; width: 48px;">'+ 
+    	'<div style="height: 24px; width: 24px; background-color: ' + colorIndex + ';vertical-align:middle">'+letter+'</div>'+ 
+    	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 24px; height:24px;top: 0; left: 24px;">***</div></div>'; 
+		
+	}
+    function createLabeledMarker(point, iconImage, label) 
+    {
+    	//
+    	var icon = new GIcon();
+    	icon.image = iconImage;
+    	icon.iconSize = new GSize(48, 16);
+    	icon.iconAnchor = new GPoint(0, 0);
+    	icon.infoWindowAnchor = new GPoint(25, 7);
+
+    		
+    	opts = { 
+    	  "icon": icon,
+    	  "clickable": true,
+    	  "labelText": label,
+    	  "labelOffset": new GSize(0, 0),
+    	  "labelClass":"trips_markerLabel",
+    	};
+    	var marker = new LabeledMarker(point, opts);
+    	
+    	GEvent.addListener(marker, "click", function() {
+      	  marker.openInfoWindowHtml("I'm a Labeled Marker!");
+      	});
+    	
+    	return marker;
+
+
+     	//
+    }
+	
+    function createTripMarker(point, iconImage) 
+    {
+    	var markerIcon;
+    	var marker;
+    	var baseIcon = new GIcon();
+    	baseIcon.iconSize = new GSize(21, 20);
+    	baseIcon.iconAnchor = new GPoint(6, 20);
+    	baseIcon.infoWindowAnchor = new GPoint(5, 1);
+
+		//Use passed in image.
+    	if(iconImage != null)
+    	{
+			markerIcon = new GIcon(baseIcon);
+       	    markerIcon.image = iconImage;
+       	 	markerOptions = { icon:markerIcon,zIndexProcess:orderOfCreation  };
+       	 	marker = new GMarker(point, markerOptions);
+    	}
+    	//Use default GoogleMap marker image.
+    	else
+    	{
+	      	markerIcon = new GIcon();
+			marker = new GMarker(point);
+    	}
+    	return marker;
+    }
 
 	 function createTripOverlays(driverTrips,index){
 		 
@@ -129,7 +196,7 @@
 			if(tripsSelected[index]){
 											
 				for(var j=0;j<driverTrips.trips.length; j++){
-					
+					var tripNumber = j+1;
 					// BDCCArrowedPolyline(points, color, weight, opacity, opts, gapPx, headLength, headColor, headWeight, headOpacity, headPointiness)
 					var tripRoute = driverTrips.trips[j].route;
 					var latLngArray = new Array();
@@ -142,40 +209,45 @@
 					
 					var arrowPolyline = new BDCCArrowedPolyline(latLngArray,colors[colorArray[index]], 4, 0.9,{geodesic:true}, 
 														200, 20,"#000000",1,0.9,8);
-						//new GPolyline(latLngArray,colors[colorArray[index]], 4, 0.9,{geodesic:true});
 					
 					overlays.push(arrowPolyline);
 					//Start of trip marker
 					startlatlng = new GLatLng(driverTrips.trips[j].beginningPoint.lat, driverTrips.trips[j].beginningPoint.lng);
-					marker = createMarker(startlatlng,tripIcons[0]);
-					markers.push(marker);
+					marker = createLabeledMarker(startlatlng,tripIcons[6],
+								getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[0]));
+							markers.push(marker);
 					//End of trip marker
 			
 					if (driverTrips.trips[j].inProgress)
 					{
-						marker = createMarker(endlatlng, tripIcons[1]);
+						marker = createLabeledMarker(endlatlng,tripIcons[6],
+									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[1]));
 					}
 					else
 					{
-						marker = createMarker(endlatlng,tripIcons[2]);
+						marker = createLabeledMarker(endlatlng,tripIcons[6],
+									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[2]));
 					}
 					markers.push(marker);
-				}
 			
-				for(var k=0; k<driverTrips.violations.length; k++){
-					var violation = new GLatLng(driverTrips.violations[k].lat, driverTrips.violations[k].lng);
-					var marker = createMarker(violation,tripIcons[3]);
-					markers.push(marker);
-				}
-				for(var k=0; k<driverTrips.idles.length; k++){
-					var idle = new GLatLng(driverTrips.idles[k].lat,driverTrips.idles[k].lng);
-					var marker = createMarker(idle, tripIcons[4]);
-					markers.push(marker);
-				}
-				for(var k=0; k<driverTrips.tampers.length; k++){
-					var tamper = new GLatLng(driverTrips.tampers[k].lat,driverTrips.tampers[k].lng);
-					var marker = createMarker(tamper, tripIcons[5]);
-					markers.push(marker);
+					for(var k=0; k<driverTrips.trips[j].violations.length; k++){
+						var violation = new GLatLng(driverTrips.trips[j].violations[k].lat, driverTrips.trips[j].violations[k].lng);
+						marker = createLabeledMarker(violation,tripIcons[6],
+									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[3]));
+						markers.push(marker);
+					}
+					for(var k=0; k<driverTrips.trips[j].idles.length; k++){
+						var idle = new GLatLng(driverTrips.trips[j].idles[k].lat,driverTrips.trips[j].idles[k].lng);
+						marker = createLabeledMarker(idle,tripIcons[6],
+									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[4]));
+						markers.push(marker);
+					}
+					for(var k=0; k<driverTrips.trips[j].tampers.length; k++){
+						var tamper = new GLatLng(driverTrips.trips[j].tampers[k].lat,driverTrips.trips[j].tampers[k].lng);
+						marker = createLabeledMarker(tamper,tripIcons[6],
+									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[5]));
+						markers.push(marker);
+					}
 				}
 			}
 			 
@@ -205,13 +277,6 @@
 			 
 			 map.addOverlay(overlays[j]);
 		 }
-		 var markers = markersArray[index];
-		 
-		 for(var k=0;k<markers.length; k++){
-			 
-			 map.addOverlay(markers[k]);
-		 }
-
 	 }
 	 function setupMap(){
 		 
@@ -239,10 +304,11 @@
 		 hideAllOverlays();
 		 addTripOverlaysAndMarkersToMap(i);
 		 bounds = setupMap();
+		 var zoom = map.getZoom();
 		 map.setZoom(map.getBoundsZoomLevel(bounds));
 		 map.setCenter(bounds.getCenter());
 
-		 showAllOverlays();
+		 showAllOverlays(zoom!=map.getZoom());
 	 }
 			 
 	 function setDriverSelected(driverIndex, selected){
@@ -273,6 +339,7 @@
 			 colorArray.push(colorIndex);
 			 overlaysArray.push(new Array()); 	//just a place holder for now
 			 markersArray.push(new Array());
+			 markerClusterers.push(null);
 			 createTripOverlays(driverTrips,i);
 			 boundsArray.push(calculateBounds(overlaysArray[i]));
 			 showNewTrips(i);
@@ -282,33 +349,42 @@
 			 
 			 overlaysArray[i]=new Array(); 	//just a place holder for now
 			 markersArray[i]=new Array();
+			 tripsSelected[i] = true;
 			 createTripOverlays(driverTrips,i);
 			 boundsArray[i]=calculateBounds(overlaysArray[i]);
 			 showNewTrips(i);
 			 
 		}
-		//data is already there and just needs to be redisplayed
-		else{
-
-			hideAllOverlays();
-			setDriverSelected(i, true);
-			 bounds = setupMap();
-			 map.setZoom(map.getBoundsZoomLevel(bounds));
-			 map.setCenter(bounds.getCenter());
-			showAllOverlays();
-
-		 }			 
 	 }
+	function showExistingDriverTrips(index){
+		
+		hideAllOverlays();
+		setDriverSelected(index, true);
+		 bounds = setupMap();
+		 var zoom = map.getZoom();
+		 map.setZoom(map.getBoundsZoomLevel(bounds));
+		 map.setCenter(bounds.getCenter());
+		showAllOverlays(zoom!=map.getZoom());
 
+	}
 	function processDriverTrips(colorIndex, driverTrips){
 		
-		if (driverTrips.selected){
+		var i = findColorIndex(colorIndex);
+		
+		if ((i>-1) && driverIDArray[i] && (overlaysArray[i].length != 0)){
 			
-			addDriverTrips(colorIndex,driverTrips);
+			if (tripsSelected[i]){
+				
+				unselectDriver(i);
+			}
+			else {
+				
+				showExistingDriverTrips(i);
+			}
 		}
 		else{
 			
-			unselectDriver(findDriver(driverTrips.driverID));
+			addDriverTrips(colorIndex,driverTrips);
 		}
 	}
 	function redrawAllSelectedDriversTrips(){
@@ -317,13 +393,13 @@
 		for(var i=0;i<driverIDArray.length;i++){
 			
 			if (tripsSelected[i]){
-				
-				addTripOverlaysAndMarkersToMap(i);
+				showNewTrips(i);
+//				addTripOverlaysAndMarkersToMap(i);
 			}
 		}
-		 bounds = setupMap();
-		 map.setZoom(map.getBoundsZoomLevel(bounds));
-		 map.setCenter(bounds.getCenter());
+//		 bounds = setupMap();
+//		 map.setZoom(map.getBoundsZoomLevel(bounds));
+//		 map.setCenter(bounds.getCenter());
 	}
 	function clearOverlays(){
 		
@@ -332,10 +408,17 @@
 				
 				map.removeOverlay(overlaysArray[i][j]);
 			}
+			overlaysArray[i] = new Array();
+			
+			if(markerClusterers[i] != null) {
+				
+				markerClusterers[i].clearMarkers();
+			}
 			for (var j=0; j< markersArray[i].length; j++){
 				
 				map.removeOverlay(markersArray[i][j]);
 			}
+			markersArray[i] = new Array();
 		}
 	}
 	 function clearDownTrips(){
@@ -344,12 +427,6 @@
 			
 			clearOverlays();
 		}
-		for(var i=0; i< overlaysArray.length;i++){
-			
-			overlaysArray[i] = new Array();
-			markersArray[i] = new Array();
-		}
-
 	 }	
 
 	function redisplayAllTrips(drivers){
@@ -377,3 +454,66 @@
        	getLatestTrips();
     }
 
+    //displacing code for markers with same lat/lngs
+    function displaceCoincidentMarkers(markers){
+	    var nLat;
+	    var nLng;
+	    var i;
+	    for (i = 0; i < markers.length; i++) {
+	            nLat = markers[i].getLatLng().lat();
+	            nLng = markers[i].getLatLng().lng();
+	
+	            var nCoMarkers = sMarkerCoincident(markers,i,nLat,nLng);
+	            if (nCoMarkers>0) {
+	                    switch(nCoMarkers)      {
+	                            case 1:
+	                                    nLat = nLat + 0.0002;
+	                                    nLng = nLng + 0.0002;
+	                                    break;
+	                            case 2:
+	                                    nLat = nLat - 0.0002;
+	                                    nLng = nLng + 0.0002;
+	                                    break;
+	                            case 3:
+	                                    nLat = nLat + 0.0002;
+	                                    nLng = nLng - 0.0002;
+	                                    break;
+	                            case 4:
+	                                    nLat = nLat - 0.0002;
+	                                    nLng = nLng - 0.0002;
+	                                    break;
+	                            case 5:
+	                                    nLng = nLng + 0.0003;
+	                                    break;
+	                            case 6:
+	                                    nLng = nLng - 0.0003;
+	                                    break;
+	                            }
+	                var latLng = new GLatLng(nLat,nLng);
+	                markers[i].setLatLng(latLng);
+	            }
+	
+	    }
+    }
+
+    function sMarkerCoincident(markers,currindex,nlat,nlong) {
+
+	    var nResult=0;
+	    var nLat;
+	    var nLng;
+	    var nLatDiff;
+	    var nLngDiff;
+	    var i;
+	    for (i = 0; i < currindex; i++) {
+	            nLat = markers[i].getLatLng().lat();
+	            nLng = markers[i].getLatLng().lng();
+	            nLatDiff = Math.abs(nLat - nlat);
+	            nLngDiff = Math.abs(nLng - nlong);
+	            if ((nLatDiff < 0.00015) && (nLngDiff < 0.00015)) {
+	                    nResult = nResult + 1;
+	            }
+	     }
+	    return nResult;
+    }
+
+//end of displacing code

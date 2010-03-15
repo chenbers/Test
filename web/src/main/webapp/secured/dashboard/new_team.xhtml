@@ -48,17 +48,6 @@
 				padding: 0px;
 			}
 			
-			.clear: after {
-			  content: ". ";
-			  display: block;
-			  height: 0;
-			  font-size: 0;
-			  clear: both;
-			  visibility: hidden;
-			}
-			.clear {
-			  zoom: 1;
-			}			
 			
 			.rich-table-footercell {
 			 	background-color: #EBFFCA;
@@ -210,7 +199,6 @@
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="SIX_DAYS_AGO" />
                                     </a4j:commandLink>
                                      <rich:spacer width="40"/> 
-                                     <span id="longDurations">                                                                                                                   
                                     <a4j:commandLink id="teamDurationPanelHeaderDays"                                         
                                         immediate="true" 
                                         reRender="#{timeFrameRerenderList}"  
@@ -218,6 +206,7 @@
                                         <a4j:actionparam name="duration" assignTo="#{teamCommonBean.timeFrame}" value="WEEK" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>                                     
+                                    <span id="longDurations">                                                                                                                   
                                     <a4j:commandLink id="teamDurationPanelHeaderThreeMonths"                                         
                                         immediate="true" 
                                         reRender="#{timeFrameRerenderList}"  

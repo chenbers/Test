@@ -84,12 +84,13 @@ BDCCArrowedPolyline.prototype.removeHeads = function() {
 }
 
 BDCCArrowedPolyline.prototype.hide = function() {
-	isHidden = true;
+	this.isHidden = true;
     try{
         if (this.line)
             this.line.hide();
-        for(var i=0; i<this.heads.length; i++)
-            this.heads[i].hide();
+//        for(var i=0; i<this.heads.length; i++)
+//            this.heads[i].hide();
+        this.removeHeads();
     }
     catch(ex)
     {
@@ -97,12 +98,13 @@ BDCCArrowedPolyline.prototype.hide = function() {
     }
 }
 BDCCArrowedPolyline.prototype.show = function() {
-	isHidden = false;
+	this.isHidden = false;
     try{
         if (this.line)
             this.line.show();
-        for(var i=0; i<this.heads.length; i++)
-            this.heads[i].show();
+//        for(var i=0; i<this.heads.length; i++)
+//            this.heads[i].show();
+        this.recalc();
     }
     catch(ex)
     {
@@ -139,6 +141,7 @@ BDCCArrowedPolyline.prototype.copy = function(map) {
 
 BDCCArrowedPolyline.prototype.recalc = function() {
 //	alert("recalc line is " +this.line.getVertexCount());
+	if(this.isHidden) return;
    var zoom = this.map.getZoom();
  //  this.remove();
 

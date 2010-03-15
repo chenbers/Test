@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -132,11 +133,18 @@ public class TeamTripsBean extends BaseBean {
 	    LatLng routeLastStep;
 	    LatLng beginningPoint;
 	    boolean inProgress;
+	    private List<LatLng> violations;
+	    private List<LatLng> idles;
+	    private List<LatLng> tampers;
 	    
-	    public TeamTrip(Trip trip)
+	    public TeamTrip(Trip trip, 
+	    				List<LatLng> violations,
+	    				List<LatLng> idles,
+	    				List<LatLng> tampers,
+	    				int compressionFactor)
 	    {
 	         
-	        route = trip.getRoute();
+	        route = compressRoute(trip.getRoute(), compressionFactor);
 	        inProgress = trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);        
 	        if(route.size() > 0)
 	        {
@@ -146,8 +154,21 @@ public class TeamTripsBean extends BaseBean {
 	            beginningPoint = route.get(0);
 	            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
 	        }
+	        this.violations=violations;
+	        this.idles = idles;
+	        this.tampers = tampers;
 	    }
-	 
+	    private List<LatLng> compressRoute(List<LatLng> route, int compressionFactor){
+	    	
+	    	List<LatLng> compressedRoute = new ArrayList<LatLng>();
+	    	compressedRoute.add(route.get(0));
+	    	for (int i=compressionFactor; i< route.size();i+=compressionFactor){
+	    		
+	    		compressedRoute.add(route.get(i));
+	    	}
+	    	compressedRoute.add(route.get(route.size()-1));
+	    	return compressedRoute;
+	    }
 	    public List<LatLng> getRoute()
 	    {
 	        return route;
@@ -184,6 +205,24 @@ public class TeamTripsBean extends BaseBean {
 		public void setInProgress(boolean inProgress) {
 			this.inProgress = inProgress;
 		}
+		public List<LatLng> getViolations() {
+			return violations;
+		}
+		public void setViolations(List<LatLng> violations) {
+			this.violations = violations;
+		}
+		public List<LatLng> getIdles() {
+			return idles;
+		}
+		public void setIdles(List<LatLng> idles) {
+			this.idles = idles;
+		}
+		public List<LatLng> getTampers() {
+			return tampers;
+		}
+		public void setTampers(List<LatLng> tampers) {
+			this.tampers = tampers;
+		}
 	}
 /*
  * 
@@ -195,9 +234,6 @@ public class TeamTripsBean extends BaseBean {
 		private Integer driverID;
 		private String fullName;
 		private List<TeamTrip> trips;
-	    private List<LatLng> violations = new ArrayList<LatLng>();
-	    private List<LatLng> idles = new ArrayList<LatLng>();
-	    private List<LatLng> tampers = new ArrayList<LatLng>();
 
 		boolean selected;
 		
@@ -224,6 +260,7 @@ public class TeamTripsBean extends BaseBean {
 			}
 		}
 		public List<TeamTrip> getTrips() {
+			
 			return trips;
 		}
 		public void setTrips(List<TeamTrip> trips) {
@@ -238,83 +275,109 @@ public class TeamTripsBean extends BaseBean {
 				
 				trips.clear();
 				trips = null;
-				violations.clear();
-				idles.clear();
-				tampers.clear();
 			}
 		}
 		private void reloadTripsAndEvents(){
+			
 				clearTrips();
 				loadTrips();
-		        loadViolations();
 		}
 		private void loadTripsAndEvents(){
 			
 			if(trips == null){
 				
 				loadTrips();
-		        loadViolations();
 			}
-		}
-		public List<LatLng> getViolations() {
-			return violations;
-		}
-		public void setViolations(List<LatLng> violationEvents) {
-			this.violations = violationEvents;
-		}
-		public List<LatLng> getIdles() {
-			return idles;
-		}
-		public void setIdles(List<LatLng> idles) {
-			this.idles = idles;
-		}
-		public List<LatLng> getTampers() {
-			return tampers;
-		}
-		public void setTampers(List<LatLng> tampers) {
-			this.tampers = tampers;
 		}
 		
 		private void loadTrips(){
-			
+			//Load all the violations for the time interval and then calculate which belong to which trips
+	       List<Event> violations = loadViolations();
+	       List<Event> idles = loadIdles();
+	       List<Event> tampers = loadTampers();
+	       
 		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getTimeFrame().getInterval());
 	       trips = new ArrayList<TeamTrip>();
-
+	
 	       for (Trip trip : tripsList) {
-	        	
-	    	   TeamTrip td = new TeamTrip(trip);
+	    	   
+	    	   TeamTrip td = new TeamTrip(trip,
+			   						getTripViolations(violations,trip.getStartTime(),trip.getEndTime()),
+			   						getTripIdles(idles,trip.getStartTime(),trip.getEndTime()),
+			   						getTripTampers(tampers,trip.getStartTime(),trip.getEndTime()),
+			   						1);
 	    	   trips.add(td);
 	 
 	        }
 		}
-		private void loadViolations( ) {
-	        if (violations.isEmpty()) {
-	        	
-	            List<Integer> violationEventTypeList = new ArrayList<Integer>();
-	            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
-	            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-	            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-	            List<Integer> idleTypes = new ArrayList<Integer>();
-	            idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-	            List<Integer> tamperEventTypeList = new ArrayList<Integer>();
-	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
-	            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
+		private List<LatLng> getTripViolations(List<Event> violations,Date startTime, Date endTime){
+			
+			List<LatLng> tripViolations = new ArrayList<LatLng>();
+			
+			for (Event event:violations){
+				
+				if ((event.getTime().after(startTime) && event.getTime().before(endTime))||
+						event.getTime().equals(startTime) || event.getTime().equals(endTime)){
 
-                List<Event>violationEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
-                List<Event>idleEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
-                List<Event>tamperEvents = eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
-	            
-                for (Event e:violationEvents){
-                	violations.add(e.getLatLng());
-                }
-                for (Event e:idleEvents){
-                	idles.add(e.getLatLng());
-                }
-                for (Event e:tamperEvents){
-                	tampers.add(e.getLatLng());
-                }
-	        }
-	    }
+					tripViolations.add(event.getLatLng());
+				}
+			}
+			return tripViolations;
+		}
+		private List<LatLng> getTripIdles(List<Event> idles, Date startTime, Date endTime){
+			
+			List<LatLng> tripIdles = new ArrayList<LatLng>();
+			
+			for (Event event:idles){
+				
+				if ((event.getTime().after(startTime) && event.getTime().before(endTime))||
+						event.getTime().equals(startTime) || event.getTime().equals(endTime)){
+
+					tripIdles.add(event.getLatLng());
+				}
+			}
+			return tripIdles;
+		}
+		private List<LatLng> getTripTampers(List<Event> tampers, Date startTime, Date endTime){
+			
+			List<LatLng> tripTampers = new ArrayList<LatLng>();
+			
+			for (Event event:tampers){
+				
+				if ((event.getTime().after(startTime) && event.getTime().before(endTime))||
+						event.getTime().equals(startTime) || event.getTime().equals(endTime)){
+
+					tripTampers.add(event.getLatLng());
+				}
+			}
+			return tripTampers;
+		}
+		private List<Event> loadViolations( ) {
+	        	
+            List<Integer> violationEventTypeList = new ArrayList<Integer>();
+            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+
+            return eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
+		}
+		private List<Event> loadIdles( ) {
+
+            List<Integer> idleTypes = new ArrayList<Integer>();
+            idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+            
+            return eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
+
+		}
+		private List<Event> loadTampers( ) {
+			
+            List<Integer> tamperEventTypeList = new ArrayList<Integer>();
+            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
+            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
+
+            return eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
+            
+ 	    }
 		public Integer getDriverID() {
 			return driverID;
 		}
