@@ -288,7 +288,7 @@ public class TeamStatisticsBean extends BaseBean {
         // The total miles are determined by setting ending to the total
         //  and starting to 0. 
         Score tmp = new Score();
-        tmp.setOverall(totScore/totScoringDrivers);
+        tmp.setOverall((totScoringDrivers != 0)?totScore/totScoringDrivers:0);
 //        tmp.setOverall(totScore/driverStatistics.size());        
         dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
                         tmp.getOverall().intValue(), ScoreBoxSizes.SMALL));
