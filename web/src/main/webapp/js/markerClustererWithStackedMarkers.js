@@ -416,6 +416,7 @@ function LabeledCluster(markerClusterer) {
   var markerClusterer_ = markerClusterer;
   var map_ = markerClusterer.getMap_();
   var labeledMarker_ = null;
+  var linedUpMarkers_ = null;
 //  var label_ = markerClusterer.getLabel_();
 //  var iconImage_ =  markerClusterer.getIconImage_();
   var zoom_ = map_.getZoom();
@@ -520,7 +521,51 @@ function LabeledCluster(markerClusterer) {
   this.getCurrentZoom = function () {
     return zoom_;
   };
-
+  
+  this.hideLinedUpMarkers = function(){
+	  if(linedUpMarkers_ !== null){
+		  
+		  for(var i=0;i<linedUpMarkers_.length;i++){
+			  
+			  linedUpMarkers_[i].hide();
+		  }
+	  }
+  }
+  this.showLinedUpMarkers = function(){
+	  if(linedUpMarkers_ !== null){
+		  
+		  for(var i=0;i<linedUpMarkers_.length;i++){
+			  
+		     if (linedUpMarkers_[i].isHidden()) {
+		    	 linedUpMarkers_[i].show();
+		     }
+		     linedUpMarkers_[i].redraw(true);
+		  }
+	  }
+  }
+  this.makeLinedUpMarker = function(marker, latLng){
+	  
+  	var icon = new GIcon();
+	icon.image = marker.getIcon().image;
+	icon.iconSize = new GSize(48, 16);
+	icon.iconAnchor = new GPoint(0, 0);
+	icon.infoWindowAnchor = new GPoint(25, 7);
+  
+  	var thisOpts = { 
+        	  "icon": icon,
+        	  "clickable": true,
+        	  "labelText": marker.labelText_,
+        	  "labelOffset": marker.labelOffset_,
+        	  "labelClass":marker.labelClass_
+        	};
+	var linedUpMarker_ = new LabeledMarker(latLng, thisOpts);
+	
+	GEvent.addListener(linedUpMarker_, "click", function() {
+		//determine which item in the list was clicked on
+		linedUpMarker_.openInfoWindowHtml(linedUpMarker_.labelText_);
+	});
+	return linedUpMarker_;
+  }
   /**
    * Redraw a cluster.
    * @private
@@ -539,7 +584,7 @@ function LabeledCluster(markerClusterer) {
     if (mz === null) {
       mz = map_.getCurrentMapType().getMaximumResolution();
     }
-    if (zoom_ >= mz || this.getTotalMarkers() === 1) {
+    if (/*zoom_ >= mz || */this.getTotalMarkers() === 1) {
 
       // If current zoom level is beyond the max zoom level or the cluster
       // have only one marker, the marker(s) in cluster will be showed on map.
@@ -556,6 +601,8 @@ function LabeledCluster(markerClusterer) {
       if (labeledMarker_ !== null) {
         labeledMarker_.hide();
       }
+      this.hideLinedUpMarkers();
+      
     } else {
       // Else add a cluster marker on map to show the number of markers in
       // this cluster.
@@ -564,36 +611,59 @@ function LabeledCluster(markerClusterer) {
           markers_[i].marker.hide();
         }
       }
-      if (labeledMarker_ === null) {
+      if ((labeledMarker_ === null)&&(linedUpMarkers_=== null)){
 //        clusterMarker_ = new ClusterMarker_(center_, this.getTotalMarkers(), markerClusterer_.getStyles_(), markerClusterer_.getGridSize_());
-      	 var count = new String(""+this.getTotalMarkers());
-      	 var countLabel = label_.replace("***",count);
+    	  
+    	  if (zoom_ < 8 || this.getTotalMarkers() > 6){
+    		  
+    		  var count = new String(""+this.getTotalMarkers());
+    		  var countLabel = label_.replace("***",count);
  
-    	var thisOpts = { 
-          	  "icon": opts_.icon,
-          	  "clickable": opts_.click,
-          	  "labelText": countLabel,
-          	  "labelOffset": opts_.labelOffset,
-          	  "labelClass":opts_.labelClass
-          	};
-      	labeledMarker_ = new LabeledMarker(center_, thisOpts);
-		var clickListener = GEvent.addListener(labeledMarker_, "click", function() {
-			//format all the markers into a list
-			var windowHtml = "<ul>";
-			for (var i=0;i<markers_.length;i++){
-				windowHtml +="<li>";
-				windowHtml += markers_[i].marker.labelText_;
-				windowHtml +="</li>";
-			}
-			windowHtml+="</ul>";
-			labeledMarker_.openInfoWindowHtml(windowHtml);
-	});	
-    	 map_.addOverlay(labeledMarker_);
-      } else {
+	    	var thisOpts = { 
+	          	  "icon": opts_.icon,
+	          	  "clickable": opts_.click,
+	          	  "labelText": countLabel,
+	          	  "labelOffset": opts_.labelOffset,
+	          	  "labelClass":opts_.labelClass
+	          	};
+	      	labeledMarker_ = new LabeledMarker(center_, thisOpts);
+	      	
+			var clickListener = GEvent.addListener(labeledMarker_, "click", function() {
+				//format all the markers into a list
+				var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
+				for (var i=0;i<markers_.length;i++){
+					windowHtml +="<li>";
+					windowHtml += markers_[i].marker.labelText_;
+					windowHtml +="</li>";
+				}
+				windowHtml+="</ul>";
+				labeledMarker_.openInfoWindowHtml(windowHtml);
+			});
+
+			map_.addOverlay(labeledMarker_);
+    	  }
+    	  else{
+    		  //copy and reposition to stack one on top of the other
+    		  linedUpMarkers_ = new Array();
+    		  
+				var nextPoint = map_.fromLatLngToDivPixel(markers_[0].marker.getLatLng());
+				for (var i=0;i<markers_.length;i++){
+					
+			    	var linedUpMarker_ = this.makeLinedUpMarker(markers_[i].marker,map_.fromDivPixelToLatLng(nextPoint));
+			    	linedUpMarkers_.push(linedUpMarker_);
+					map_.addOverlay(linedUpMarker_);
+					nextPoint = new GPoint(nextPoint.x, nextPoint.y+20);
+				}
+   	  }
+      } else if(labeledMarker_!== null) {
         if (labeledMarker_.isHidden()) {
           labeledMarker_.show();
         }
         labeledMarker_.redraw(true);
+      }
+      else if(linedUpMarkers_ != null){
+    	  
+    	 this.showLinedUpMarkers(); 
       }
     }
   };
@@ -611,6 +681,14 @@ function LabeledCluster(markerClusterer) {
       }
     }
     markers_ = [];
+	if(linedUpMarkers_ !== null){
+		  
+		for(var i=0;i<linedUpMarkers_.length;i++){
+			  
+			map_.removeOverlay(linedUpMarkers_[i]);
+		}
+	}
+
   };
 
   /**

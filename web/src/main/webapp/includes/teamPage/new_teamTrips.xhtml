@@ -59,9 +59,6 @@
 			map.addControl(new GOverviewMapControl()); 
 			map.setMapType(G_NORMAL_MAP);
 			map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
-//			GEvent.addListener(map, "zoomend", function(oldZoom,newZoom) {
-//				checkMarkerMode(oldZoom,newZoom);
-//			});	
 			tripIcons = icons;
 		}
 	}

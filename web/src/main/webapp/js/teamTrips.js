@@ -8,6 +8,7 @@
 	var boundsArray = new Array();
 	var colorArray = new Array();
 	var markerClustererMaxZoom = 12;
+	var clickLatLng = null;
 	
 	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
 				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
@@ -90,8 +91,7 @@
 
 		markerClusterers[index] = new MarkerClustererWithStackedMarkers(map,
 				markersArray[index],
-				clusterOpts,
-				{maxZoom:14});
+				clusterOpts);
 
 	}
 	function showAllOverlays(){
@@ -121,7 +121,7 @@
 	function getSingleLabeledMarkerLabel(letter,colorIndex, tripNumber, tripIcon){
 		
     	return '<div style="position: relative; line-height: 1.5em; background-color:white; border: 1px solid black; width: 48px;">'+ 
-    	'<div style="height: 16px; width: 16px; background-color: ' + colorIndex + ';vertical-align:middle">'+letter+'</div>'+ 
+    	'<div style="height: 16px; width: 16px; background-color: ' + colorIndex + ';vertical-align:middle;text-align: center;">'+letter+'</div>'+ 
     	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 48px; height:16px;top: 0; left: 0;'+
     	'background: transparent url('+tripIcon+') no-repeat center right;">' + 
     			tripNumber + '</div></div>'; 
@@ -148,14 +148,17 @@
     	  "clickable": true,
     	  "labelText": label,
     	  "labelOffset": new GSize(0, 0),
-    	  "labelClass":"trips_markerLabel",
+    	  "labelClass":"trips_markerLabel"
     	};
     	var marker = new LabeledMarker(point, opts);
     	
     	GEvent.addListener(marker, "click", function() {
       	  marker.openInfoWindowHtml("I'm a Labeled Marker!");
       	});
-    	
+//    	GEvent.addListener(marker, "mouseover", function() {
+//        	  marker.showMapBlowup({zoomLevel:20});
+//        	});
+
     	return marker;
 
 
