@@ -32,7 +32,7 @@ public class TeamPieChartBean extends BaseBean {
     private ScoreDAO scoreDAO;
     
     private Map<ScoreType, Map<String,String>> barDefMap;
-    private Map<ScoreType, Map<Duration,Integer>> overallScoreMap;
+    private Map<ScoreType, Map<String,Integer>> overallScoreMap;
     private List<TabAction> actions;
     private TabAction selectedAction;
     
@@ -59,8 +59,7 @@ public class TeamPieChartBean extends BaseBean {
     }
 
     private Integer initOverallScore(ScoreType scoreType) {
-        ScoreableEntity scoreableEntity = null;
-//        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), durationBean.getDuration(), scoreType);        
+        ScoreableEntity scoreableEntity = getScoreableEntityNumber();               
         if (scoreableEntity == null || scoreableEntity.getScore() == null)
             return -1;
         return scoreableEntity.getScore();
@@ -103,7 +102,7 @@ public class TeamPieChartBean extends BaseBean {
         try {
             logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);
 //            scoreDataList = scoreDAO.getScoreBreakdown(getGroupID(), durationBean.getDuration(), scoreType);  
-            scoreDataList = getScoreableEntities();                 
+            scoreDataList = getScoreableEntitiesPie();                 
         }
         catch (Exception e) {
             scoreDataList = new ArrayList<ScoreableEntity>();
@@ -157,31 +156,31 @@ public class TeamPieChartBean extends BaseBean {
         this.barDefMap = barDefMap;
     }
 
-    public Map<ScoreType, Map<Duration,Integer>> getOverallScoreMap() {
+    public Map<ScoreType, Map<String,Integer>> getOverallScoreMap() {
         if (overallScoreMap == null) {
-            overallScoreMap = new HashMap<ScoreType, Map<Duration,Integer>>();
+            overallScoreMap = new HashMap<ScoreType, Map<String,Integer>>();
         }
         return overallScoreMap;
     }
 
-    public void setOverallScoreMap(Map<ScoreType, Map<Duration,Integer>> overallScoreMap) {
+    public void setOverallScoreMap(Map<ScoreType, Map<String,Integer>> overallScoreMap) {
         this.overallScoreMap = overallScoreMap;
     }
 
     public Integer getSelectedOverallScore() {
-        TabAction action = getSelectedAction();
-        
+        TabAction action = getSelectedAction();        
         ScoreType scoreType = action.getScoreType();
+        TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getOverallScoreMap().get(scoreType) == null) {
             
-            overallScoreMap.put(scoreType, new HashMap<Duration, Integer>());
+            overallScoreMap.put(scoreType, new HashMap<String, Integer>());
         }
-        if (overallScoreMap.get(scoreType).get(teamCommonBean.getTimeFrame().getDuration()) == null){
+        if (overallScoreMap.get(scoreType).get(timeFrame.name()) == null){
             
-            overallScoreMap.get(scoreType).put(teamCommonBean.getTimeFrame().getDuration(), initOverallScore(scoreType));
+            overallScoreMap.get(scoreType).put(timeFrame.name(), initOverallScore(scoreType));
         }
-        return getOverallScoreMap().get(scoreType).get(teamCommonBean.getTimeFrame().getDuration());
+        return getOverallScoreMap().get(scoreType).get(timeFrame.name());
     }
 
     public void setActions(List<TabAction> actions) {
@@ -316,7 +315,7 @@ public class TeamPieChartBean extends BaseBean {
         return overallTotals;
     }
     
-    private List<ScoreableEntity> getScoreableEntities() {
+    private List<ScoreableEntity> getScoreableEntitiesPie() {
         List<ScoreableEntity> local = new ArrayList<ScoreableEntity>();
         
         List<HashMap> observations = getOverallTotals();
@@ -356,6 +355,28 @@ public class TeamPieChartBean extends BaseBean {
         local.add(se);
         
         return local;
+    }
+    
+    private ScoreableEntity getScoreableEntityNumber() {
+        ScoreableEntity se = new ScoreableEntity();
+        
+        List<DriverVehicleScoreWrapper> local = 
+            teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
+        
+        int totScoreableDrivers = 0;
+        int totalScores = 0;
+
+        for ( DriverVehicleScoreWrapper dvsw: local ) {
+            if ( (dvsw.getScore().getOverall() != null) && 
+                 (dvsw.getScore().getOverall().intValue() >= 0) ) {
+                totScoreableDrivers++;
+                totalScores += dvsw.getScore().getOverall().intValue();
+            }
+        }
+        
+        se.setScore( (totScoreableDrivers != 0)? totalScores/totScoreableDrivers:0);
+        
+        return se;
     }
 }
 

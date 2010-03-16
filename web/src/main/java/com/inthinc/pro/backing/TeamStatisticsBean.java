@@ -214,12 +214,15 @@ public class TeamStatisticsBean extends BaseBean {
         int totAggRightEvt = 0;   
         
         int totActiveDrivers = 0;
+        int totScoringDrivers = 0;
         
         if (driverStatistics==null) return null;
         
         for ( DriverVehicleScoreWrapper dvsc: driverStatistics ) { 
-            if ( dvsc.getScore().getOverall() != null ) {
+            if ( (dvsc.getScore().getOverall() != null) && 
+                 (dvsc.getScore().getOverall().intValue() >= 0) ) {
                 totScore += dvsc.getScore().getOverall().intValue();
+                totScoringDrivers++;
             }
             if ( dvsc.getScore().getTrips() != null ) {
                 totTrips += dvsc.getScore().getTrips().intValue();
@@ -285,7 +288,8 @@ public class TeamStatisticsBean extends BaseBean {
         // The total miles are determined by setting ending to the total
         //  and starting to 0. 
         Score tmp = new Score();
-        tmp.setOverall(totScore/driverStatistics.size());
+        tmp.setOverall(totScore/totScoringDrivers);
+//        tmp.setOverall(totScore/driverStatistics.size());        
         dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
                         tmp.getOverall().intValue(), ScoreBoxSizes.SMALL));
         tmp.setTrips(totTrips);
