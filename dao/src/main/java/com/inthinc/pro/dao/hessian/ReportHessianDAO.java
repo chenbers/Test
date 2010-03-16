@@ -98,6 +98,8 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
 
 
 	private List<TableFilterField> fixIdlingReportFilters(List<TableFilterField> filters) {
+		if (filters == null)
+           	filters = new ArrayList<TableFilterField>();
 		List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
 		for (TableFilterField filter : filters) 
 			reportFilters.add(filter);
