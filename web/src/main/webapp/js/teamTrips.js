@@ -211,7 +211,7 @@
 					latLngArray.push(endlatlng);
 					
 					var arrowPolyline = new BDCCArrowedPolyline(latLngArray,colors[colorArray[index]], 4, 0.9,{geodesic:true}, 
-														200, 20,"#000000",1,0.9,8);
+														-1, 20,"#000000",1,0.9,8);
 					
 					overlays.push(arrowPolyline);
 					//Start of trip marker
@@ -456,67 +456,4 @@
        	clearDownTrips();
        	getLatestTrips();
     }
-
-    //displacing code for markers with same lat/lngs
-    function displaceCoincidentMarkers(markers){
-	    var nLat;
-	    var nLng;
-	    var i;
-	    for (i = 0; i < markers.length; i++) {
-	            nLat = markers[i].getLatLng().lat();
-	            nLng = markers[i].getLatLng().lng();
-	
-	            var nCoMarkers = sMarkerCoincident(markers,i,nLat,nLng);
-	            if (nCoMarkers>0) {
-	                    switch(nCoMarkers)      {
-	                            case 1:
-	                                    nLat = nLat + 0.0002;
-	                                    nLng = nLng + 0.0002;
-	                                    break;
-	                            case 2:
-	                                    nLat = nLat - 0.0002;
-	                                    nLng = nLng + 0.0002;
-	                                    break;
-	                            case 3:
-	                                    nLat = nLat + 0.0002;
-	                                    nLng = nLng - 0.0002;
-	                                    break;
-	                            case 4:
-	                                    nLat = nLat - 0.0002;
-	                                    nLng = nLng - 0.0002;
-	                                    break;
-	                            case 5:
-	                                    nLng = nLng + 0.0003;
-	                                    break;
-	                            case 6:
-	                                    nLng = nLng - 0.0003;
-	                                    break;
-	                            }
-	                var latLng = new GLatLng(nLat,nLng);
-	                markers[i].setLatLng(latLng);
-	            }
-	
-	    }
-    }
-
-    function sMarkerCoincident(markers,currindex,nlat,nlong) {
-
-	    var nResult=0;
-	    var nLat;
-	    var nLng;
-	    var nLatDiff;
-	    var nLngDiff;
-	    var i;
-	    for (i = 0; i < currindex; i++) {
-	            nLat = markers[i].getLatLng().lat();
-	            nLng = markers[i].getLatLng().lng();
-	            nLatDiff = Math.abs(nLat - nlat);
-	            nLngDiff = Math.abs(nLng - nlong);
-	            if ((nLatDiff < 0.00015) && (nLngDiff < 0.00015)) {
-	                    nResult = nResult + 1;
-	            }
-	     }
-	    return nResult;
-    }
-
-//end of displacing code
+    

@@ -643,10 +643,11 @@ function LabeledCluster(markerClusterer) {
 			map_.addOverlay(labeledMarker_);
     	  }
     	  else{
-    		  //copy and reposition to stack one on top of the other
-    		  linedUpMarkers_ = new Array();
-    		  
-				var nextPoint = map_.fromLatLngToDivPixel(markers_[0].marker.getLatLng());
+    		  //copy and reposition to stack one on top of the other center on center_
+        		linedUpMarkers_ = new Array();
+        		var nextPoint = map_.fromLatLngToDivPixel(center_);
+        		nextPoint = new GPoint(nextPoint.x-(10 * markers_.length), nextPoint.y-24);
+//				var nextPoint = map_.fromLatLngToDivPixel(markers_[0].marker.getLatLng());
 				for (var i=0;i<markers_.length;i++){
 					
 			    	var linedUpMarker_ = this.makeLinedUpMarker(markers_[i].marker,map_.fromDivPixelToLatLng(nextPoint));

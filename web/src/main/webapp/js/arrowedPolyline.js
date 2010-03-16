@@ -163,6 +163,24 @@ BDCCArrowedPolyline.prototype.recalc = function() {
    
    var segmentsLength = 0; // Accumulate segments until they are >= gapPx and then add an arrow
    
+   var adjustedGapPx = this.gapPx;
+   
+   if (this.gapPx == -1){
+	   	//space depending on zoom level
+	   	if (zoom < 5){
+	   		//don't draw any arrows
+	   		return;
+	   	}
+	   	else if((zoom >=5) && (zoom <=14)) {
+	   		//Draw every 200
+	   		adjustedGapPx = 200;
+	   	}
+	   	else if (zoom >=14) {
+	   		//Draw every 500
+	   		adjustedGapPx = 500;
+	   	}
+   }
+
    for (var i=1; i<this.points.length; i++){
 
 	  p1 = this.prj.fromLatLngToPixel(this.points[i-1],  zoom);
@@ -188,11 +206,11 @@ BDCCArrowedPolyline.prototype.recalc = function() {
         //iterate along the line segment placing arrow markers
         //don't put an arrow within gapPx of the beginning or end of the segment
         	
-        	if (sl < this.gapPx){
+        	if (sl < adjustedGapPx){
         		
         		segmentsLength += sl;
         		
-        		if (segmentsLength >= this.gapPx){
+        		if (segmentsLength >= adjustedGapPx){
         			
                     var x = p1.x + ((sl/2) * Math.cos(theta));
                     var y = p1.y - ((sl/2) * Math.sin(theta));
@@ -203,13 +221,13 @@ BDCCArrowedPolyline.prototype.recalc = function() {
         	}
         	else {
         		
-        		ta = this.gapPx;
+        		ta = adjustedGapPx;
         		while(ta < sl){
             	  
 	                var x = p1.x + (ta * Math.cos(theta));
 	                var y = p1.y - (ta * Math.sin(theta));
 	                this.addHead(x,y,theta,zoom);
-	                ta += this.gapPx;  
+	                ta += adjustedGapPx;  
 	                segmentsLength = 0;
         		}
         	}
