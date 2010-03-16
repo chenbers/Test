@@ -26,7 +26,6 @@ public class TeamStatisticsBean extends BaseBean {
     private int numRowsPerPg = 25;
     private List<DriverVehicleScoreWrapper> driverStatistics;
     private List<DriverVehicleScoreWrapper> driverTotals;   
-    private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = new HashMap<String,List<DriverVehicleScoreWrapper>>();
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;    
@@ -51,8 +50,9 @@ public class TeamStatisticsBean extends BaseBean {
         
         // Have this cached?
         String key = teamCommonBean.getTimeFrame().name();
-        if (cachedResults.containsKey(key)) {
-            return cachedResults.get(key);
+        if (teamCommonBean.getCachedResults().containsKey(key)) {
+            driverStatistics = teamCommonBean.getCachedResults().get(key);
+            return driverStatistics;
         }
 
         // Get the data
@@ -71,7 +71,7 @@ public class TeamStatisticsBean extends BaseBean {
         cleanData();
 
         // All set, save so we don't grab the data again
-        cachedResults.put(key, driverStatistics);
+        teamCommonBean.getCachedResults().put(key, driverStatistics);
         
         return driverStatistics;
     }

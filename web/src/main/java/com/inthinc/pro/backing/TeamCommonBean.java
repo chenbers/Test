@@ -1,7 +1,9 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -11,6 +13,7 @@ import org.richfaces.component.UITabPanel;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 
 public class TeamCommonBean extends BaseBean {
 	
@@ -22,6 +25,8 @@ public class TeamCommonBean extends BaseBean {
 
     private TimeFrame timeFrame = TimeFrame.ONE_DAY_AGO;
     private UITabPanel teamTabPanel;
+    
+    private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = new HashMap<String,List<DriverVehicleScoreWrapper>>();
     
     public void init() {
 
@@ -93,4 +98,12 @@ public class TeamCommonBean extends BaseBean {
 	public Object getSelectedTab() {
 		return teamTabPanel.getSelectedTab();
 	}
+
+    public Map<String, List<DriverVehicleScoreWrapper>> getCachedResults() {
+        return cachedResults;
+    }
+
+    public void setCachedResults(Map<String, List<DriverVehicleScoreWrapper>> cachedResults) {
+        this.cachedResults = cachedResults;
+    }
 }
