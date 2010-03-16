@@ -10,9 +10,16 @@ import it.config.ReportTestConst;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.PeriodType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -156,11 +163,15 @@ public class ReportServiceTest {
         if (!itData.parseTestData(stream, siloService, false, false)) {
             throw new Exception("Error parsing Test data xml file");
         }
-
+        
+        TimeZone timeZone = TimeZone.getTimeZone(ReportTestConst.TIMEZONE_STR);
+        DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
         Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
         
-        totalDays = (todayInSec - itData.startDateInSec) / DateUtil.SECONDS_IN_DAY;
-//System.out.println("totalDays: " + totalDays);          
+        DateMidnight start = new DateMidnight(new DateTime(((long)itData.startDateInSec * 1000l), dateTimeZone), dateTimeZone);
+		DateTime end = new DateMidnight(((long)todayInSec * 1000l), dateTimeZone).toDateTime().plusDays(1).minus(6000);
+        Interval interval  = new Interval(start, end);
+        totalDays = interval.toPeriod(PeriodType.days()).getDays();
           if (totalDays > MAX_TOTAL_DAYS)
               totalDays = MAX_TOTAL_DAYS;
   }
@@ -175,10 +186,6 @@ public class ReportServiceTest {
 
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
-
-//        Roles roles = new Roles();
-//        roles.setRoleDAO(roleDAO);
-//        roles.init();
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
@@ -475,7 +482,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+    // // @Ignore
     public void crashSummaryGroup() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -483,10 +490,8 @@ public class ReportServiceTest {
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
             Integer groupID = getTeamGroupID(teamType);
 
-            // System.out.println("CrashSummary GROUP: " + groupID);
             CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(groupID);
-// TODO: This is sometimes one day off -- need to ask Dave how he handles timezone for this one            
-//            assertEquals(teamType + " DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(), crashSummary.getDaysSinceLastCrash());
+            assertEquals(teamType + " DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(), crashSummary.getDaysSinceLastCrash());
             assertEquals("TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(), crashSummary.getTotalCrashes());
             assertEquals("CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(), crashSummary.getCrashesInTimePeriod());
             assertEquals("TotalMiles: ", (expectedCrashSummary[teamType].getTotalMiles().floatValue() / 100f), crashSummary.getTotalMiles().floatValue(), 1.0);
@@ -744,92 +749,6 @@ public class ReportServiceTest {
             }
         }
     }
-/*
-    @Test
-    // @Ignore
-    public void getVehicleReportData() {
-        // getVDScoresByGT
-        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
-        scoreDAO.setReportService(reportService);
-        Duration duration = Duration.TWELVE;
-        for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
-        // int teamType = 1;
-        {
-            Integer groupID = getTeamGroupID(teamType);
-            List<VehicleReportItem> list = scoreDAO.getVehicleReportData(groupID, duration);
-
-            assertNotNull("VehicleReportItem list", list);
-            assertEquals("VehicleReportItem list size", 1, list.size());
-
-            VehicleReportItem item = list.get(0);
-            assertEquals(teamType + " VehicleReportItem miles driven", (expectedDailyMileagePerGroup[teamType] * totalDays) / 100, item.getMilesDriven().doubleValue(), 1.0);
-            assertEquals("VehicleReportItem groupID", groupID, item.getGroupID());
-            assertEquals("VehicleReportItem overallScore", expectedTeamOverall[teamType], item.getOverallScore());
-        }
-    }
-
-*/    
-/*    
-    public void getDriverReportData() {
-        // getDVScoresByGT
-
-        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
-        scoreDAO.setReportService(reportService);
-        Duration duration = Duration.TWELVE;
-        for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
-            Integer groupID = getTeamGroupID(teamType);
-            List<DriverReportItem> list = scoreDAO.getDriverReportData(groupID, duration);
-            assertNotNull("DriverReportItem list", list);
-            assertEquals("DriverReportItem list size", 1, list.size());
-            DriverReportItem item = list.get(0);
-            // assertEquals("DriverReportItem miles driven", Double.valueOf((expectedDailyMileagePerGroup[teamType] * totalDays)/100), item.getMilesDriven().doubleValue(),
-            // MILEAGE_BUFFER);
-            assertEquals("DriverReportItem miles driven", (expectedDailyMileagePerGroup[teamType] * totalDays) / 100, item.getMilesDriven().doubleValue(), 1.0);
-            assertEquals("DriverReportItem groupID", groupID, item.getGroupID());
-            assertEquals("DriverReportItem overallScore", expectedTeamOverall[teamType], item.getOverallScore());
-        }
-    }
-    // TODO: not working
-    @Test
-    @Ignore
-    public void getIdlingReportData() {
-        // getDVScoresByGSE
-
-        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
-        scoreDAO.setReportService(reportService);
-
-        // TODO: there might be a time zone issue here, see lines that are commented out
-        // might need to subtract 1 day from expected totals at GMT midnight?
-        
-        int daysBack = 7;
-//        float expectDailyDriveTimeHrs = (float) (expectedDailyDriveTime * (daysBack-1) ) / 3600000f;
-        float expectDailyDriveTimeHrs = (float) (expectedDailyDriveTime * daysBack ) / 3600000f;
-//        System.out.println("expected hours: " + expectDailyDriveTimeHrs);
-        int endDate = DateUtil.getTodaysDate();
-        int startDate = DateUtil.getDaysBackDate(endDate, daysBack, ReportTestConst.TIMEZONE_STR);
-
-        for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
-            Integer groupID = getTeamGroupID(teamType);
-
-            IdlingReportData data = scoreDAO.getIdlingReportData(groupID, DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
-            List<IdlingReportItem> list = data.getItemList();
-            assertNotNull("IdlingReportItem list", list);
-            assertEquals("IdlingReportItem list size", 1, list.size());
-            IdlingReportItem item = list.get(0);
-//            System.out.println(teamType + ": " + item.getDriveTime() + " " + item.getHighHrs() + " " + item.getLowHrs());
-            assertEquals("IdlingReportItem groupID", groupID, item.getGroupID());
-            assertEquals("IdlingReportItem drive time team " + teamType, expectDailyDriveTimeHrs, item.getDriveTime().floatValue(), 0.0003);
-//            float expectDailyLoIdleHrs = (float) (expectedDailyLoIdle[teamType] * (daysBack - 1)) / 3600f;
-//            float expectDailyHiIdleHrs = (float) (expectedDailyHiIdle[teamType] * (daysBack - 1)) / 3600f;
-            float expectDailyLoIdleHrs = (float) (expectedDailyLoIdle[teamType] * daysBack) / 3600f;
-            float expectDailyHiIdleHrs = (float) (expectedDailyHiIdle[teamType] * daysBack) / 3600f;
-//            System.out.println("expectDailyLoIdleHrs: " + expectDailyLoIdleHrs + " expectDailyHiIdleHrs:" + expectDailyHiIdleHrs);
-            assertEquals("IdlingReportItem drive time", expectDailyLoIdleHrs, item.getLowHrs(), 0.0003);
-            assertEquals("IdlingReportItem drive time", expectDailyHiIdleHrs, item.getHighHrs(), 0.0003);
-        }
-    }
-*/
-
     @Test
     // @Ignore
     public void getVehicleTrendDaily() {
