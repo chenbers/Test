@@ -24,6 +24,7 @@
 	 		</h:panelGroup>
 	 	</f:facet>
 	 			
+		<a4j:outputPanel id="overallTab" styleClass="section" layout="block">
 		 				 				
 		<table width="900" border="0" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -48,9 +49,58 @@
 					</script>
 				</td>
 			</tr>
+			<tr>
+				<td>
+					<h:outputText id="fillerText"></h:outputText>
+				</td>
+				<td align="center">
+					<div class="datagrid_panel" style="width: 700px;">
+						<rich:dataTable id="summaryOverallStats" value="#{teamPieChartBean.overallTotals}" var="item"
+							styleClass="datagrid" 
+							rowClasses="tableOdd,tableEven">
+							<rich:column width="17%">
+								<f:facet name="header">
+									N/A
+								</f:facet>
+								#{item['nA']}                        		
+							</rich:column>							
+							<rich:column width="17%">
+								<f:facet name="header">
+									0.0 to 1.0
+								</f:facet>
+								#{item['zeroToOne']}                        		
+							</rich:column>
+							<rich:column width="17%">
+								<f:facet name="header">
+									1.1 to 2.0
+								</f:facet>
+								#{item['oneToTwo']}                         		
+							</rich:column>
+							<rich:column width="17%">
+								<f:facet name="header">
+									2.1 to 3.0
+								</f:facet>
+								#{item['twoToThree']}                         		
+							</rich:column>
+							<rich:column width="16%">																					
+								<f:facet name="header">
+									3.1 to 4.0
+								</f:facet>
+								#{item['threeToFour']}                         		
+							</rich:column>
+							<rich:column width="16%">
+								<f:facet name="header">
+									4.1 to 5.0
+								</f:facet>
+								#{item['fourToFive']}                         		
+							</rich:column>							
+						</rich:dataTable>
+					</div>
+				</td>
+			</tr>
 		</table>   
 
-      			
+      	</a4j:outputPanel>		
 	 
 	</rich:tab>
 	
