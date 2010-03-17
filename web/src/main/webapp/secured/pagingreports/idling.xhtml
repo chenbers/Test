@@ -137,14 +137,14 @@
 											<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_drivetime}" />
                                   			</f:facet>
-                                  			<h:outputText value="#{item.driveTime}" converter="SecondsToHoursConverter"/>        					
+                                  			<h:outputText value="#{item.driveTime}" converter="TimeToStringConverter"/>        					
                                 		</rich:column>    				
                                 		<rich:column id="lowHours" rendered="#{bean.tableColumns['lowHrs'].visible}" 
                                 					sortBy="#{item.lowIdleTime}">
                                   			<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_lowidlehrs}" />
                                   			</f:facet>
-                                  			<h:outputText value="#{item.lowIdleTime}" converter="SecondsToHoursConverter"/>
+                                  			<h:outputText value="#{item.lowIdleTime}" converter="TimeToStringConverter"/>
                                 		</rich:column>
                                 		<rich:column rendered="#{bean.tableColumns['lowPercent'].visible}">    					
                                   			<f:facet name="header">
@@ -157,7 +157,7 @@
                                   			<f:facet name="header">
                                   					<h:outputText value="#{messages.reports_highidlehrs}" />
                                   			</f:facet>
-                                  			<h:outputText value="#{item.highIdleTime}" converter="SecondsToHoursConverter"/> 
+                                  			<h:outputText value="#{item.highIdleTime}" converter="TimeToStringConverter"/> 
                                 		</rich:column>
                                 		<rich:column rendered="#{bean.tableColumns['highPercent'].visible}">
                                   			<f:facet name="header">
@@ -170,7 +170,7 @@
                                   			<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_totalidlehrs}" />
                                   			</f:facet>      					
-                                  			<h:outputText value="#{item.totalIdleTime}" converter="SecondsToHoursConverter"/> 
+                                  			<h:outputText value="#{item.totalIdleTime}" converter="TimeToStringConverter"/> 
                                 		</rich:column>
                           				<rich:column rendered="#{bean.tableColumns['totalPercent'].visible}">    					
                            					<f:facet name="header">
