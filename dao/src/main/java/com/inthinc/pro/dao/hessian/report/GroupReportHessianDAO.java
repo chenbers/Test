@@ -93,9 +93,9 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
 
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
-        //a big fucking mess of conversion to get it just right for the backend.
-        DateTime fuckedUpInterval = interval.getStart().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
-        return getDriverScores(groupID, fuckedUpInterval, fuckedUpInterval);
+        //a mess of conversion to get it just right for the backend.
+        DateTime intervalToUse = interval.getStart().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+        return getDriverScores(groupID, intervalToUse, intervalToUse);
     }
 
     @Override
