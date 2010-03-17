@@ -1,17 +1,15 @@
 package com.inthinc.pro.table.model.provider;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.RedFlagDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.pagination.PageParams;
 
-public class RedFlagPaginationTableDataProvider   extends GenericPaginationTableDataProvider<RedFlag> {
+public class RedFlagPaginationTableDataProvider   extends BaseNotificationPaginationDataProvider<RedFlag> {
 
 	/**
 	 * 
@@ -22,14 +20,11 @@ public class RedFlagPaginationTableDataProvider   extends GenericPaginationTable
     
 	private RedFlagDAO              redFlagDAO;
 	private Integer 				groupID;
-	private Integer					daysBack;
-    private Date endDate;
-    private Date startDate;
 
 
 	public RedFlagPaginationTableDataProvider() {
 	    
-		logger.info("RedFlagPaginationTableDataProvider");
+//		logger.info("RedFlagPaginationTableDataProvider");
 	}
 
 	@Override
@@ -54,11 +49,6 @@ public class RedFlagPaginationTableDataProvider   extends GenericPaginationTable
 		initStartEndDates();
 		return redFlagDAO.getRedFlagCount(groupID, startDate, endDate, RedFlagDAO.INCLUDE_FORGIVEN, getFilters());
 	}
-	private void initStartEndDates() {
-	    endDate = new Date();
-	    startDate = DateUtil.getDaysBackDate(endDate, getDaysBack());
-	}
-
 
 	public Integer getGroupID() {
 		return groupID;
@@ -66,18 +56,6 @@ public class RedFlagPaginationTableDataProvider   extends GenericPaginationTable
 
 	public void setGroupID(Integer groupID) {
 		this.groupID = groupID;
-	}
-
-	public Integer getDaysBack() {
-		if (daysBack == null)
-			return Integer.valueOf(1);
-		return daysBack;
-	}
-
-	public void setDaysBack(Integer daysBack) {
-		this.daysBack = daysBack;
-		this.startDate = null;
-		this.endDate = null;
 	}
 
 	public RedFlagDAO getRedFlagDAO() {

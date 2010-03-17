@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.backing.TablePref;
@@ -133,6 +134,7 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
         tablePref = new TablePref<RedFlag>(this);
 		
         
+		tableDataProvider.setDateTimeZone(DateTimeZone.forTimeZone(getUser().getPerson().getTimeZone()));
         tableDataProvider.setSort(new TableSortField(SortOrder.DESCENDING, "time"));
 		
 		table = new BasePaginationTable<RedFlag>();

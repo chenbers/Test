@@ -181,9 +181,17 @@
         <view-id>/secured/pagingnotifications/safety.faces</view-id>
     </url-mapping>
     <url-mapping id="safetyLink">
-        <pattern>/app/notifications/safetyLink</pattern>
-        <query-param name="groupID">#{pagingSafetyEventsBean.tableDataProvider.groupID}</query-param>
-		<query-param name="eventID">#{pagingSafetyEventsBean.eventFilterID}</query-param>
+        <pattern>/app/notifications/safetyLink/#{pagingSafetyEventsBean.tableDataProvider.groupID}/#{pagingSafetyEventsBean.tableDataProvider.timeFrameBean.timeFrame}/#{pagingSafetyEventsBean.linkFilters.noteID}</pattern>
+        <view-id>/secured/pagingnotifications/safety.faces</view-id>
+		<action onPostback="false">#{pagingSafetyEventsBean.allAction}</action>
+    </url-mapping>
+    <url-mapping id="safetyDriverLink">
+        <pattern>/app/notifications/safetyDriverLink/#{pagingSafetyEventsBean.tableDataProvider.groupID}/#{pagingSafetyEventsBean.tableDataProvider.timeFrameBean.timeFrame}/#{pagingSafetyEventsBean.linkFilters.driverID}</pattern>
+        <view-id>/secured/pagingnotifications/safety.faces</view-id>
+		<action onPostback="false">#{pagingSafetyEventsBean.allAction}</action>
+    </url-mapping>
+    <url-mapping id="safetyGroupLink">
+        <pattern>/app/notifications/safetyGroupLink/#{pagingSafetyEventsBean.tableDataProvider.groupID}/#{pagingSafetyEventsBean.tableDataProvider.timeFrameBean.timeFrame}</pattern>
         <view-id>/secured/pagingnotifications/safety.faces</view-id>
 		<action onPostback="false">#{pagingSafetyEventsBean.allAction}</action>
     </url-mapping>
@@ -192,9 +200,12 @@
         <view-id>/secured/pagingnotifications/emergency.faces</view-id>
     </url-mapping>
     <url-mapping id="emergencyLink">
-        <pattern>/app/notifications/emergencyLink</pattern>
-        <query-param name="groupID">#{pagingEmergencyEventsBean.tableDataProvider.groupID}</query-param>
-		<query-param name="eventID">#{pagingEmergencyEventsBean.eventFilterID}</query-param>     
+        <pattern>/app/notifications/emergencyLink/#{pagingEmergencyEventsBean.tableDataProvider.groupID}/#{pagingSafetyEventsBean.linkFilters.noteID}</pattern>
+        <view-id>/secured/pagingnotifications/emergency.faces</view-id>
+        <action onPostback="false">#{pagingEmergencyEventsBean.allAction}</action>
+    </url-mapping>
+    <url-mapping id="emergencyGroupLink">
+        <pattern>/app/notifications/emergencyLink/#{pagingEmergencyEventsBean.tableDataProvider.groupID}</pattern>
         <view-id>/secured/pagingnotifications/emergency.faces</view-id>
         <action onPostback="false">#{pagingEmergencyEventsBean.allAction}</action>
     </url-mapping>
@@ -203,9 +214,12 @@
         <view-id>/secured/pagingnotifications/diagnostics.faces</view-id>
     </url-mapping>
     <url-mapping id="diagnosticsLink">
-        <pattern>/app/notifications/diagnosticsLink</pattern>
-        <query-param name="groupID">#{pagingDiagnosticsEventsBean.tableDataProvider.groupID}</query-param>
-		<query-param name="eventID">#{pagingDiagnosticsEventsBean.eventFilterID}</query-param>     
+        <pattern>/app/notifications/diagnosticsLink/#{pagingDiagnosticsEventsBean.tableDataProvider.groupID}/#{pagingSafetyEventsBean.linkFilters.noteID}</pattern>
+        <view-id>/secured/pagingnotifications/diagnostics.faces</view-id>
+        <action onPostback="false">#{pagingDiagnosticsEventsBean.allAction}</action>
+    </url-mapping>
+    <url-mapping id="diagnosticsGroupLink">
+        <pattern>/app/notifications/diagnosticsLink/#{pagingDiagnosticsEventsBean.tableDataProvider.groupID}</pattern>
         <view-id>/secured/pagingnotifications/diagnostics.faces</view-id>
         <action onPostback="false">#{pagingDiagnosticsEventsBean.allAction}</action>
     </url-mapping>

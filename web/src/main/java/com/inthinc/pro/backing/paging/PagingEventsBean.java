@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.backing.TablePref;
@@ -26,7 +27,6 @@ import com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
 
 public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event> implements TablePrefOptions<Event> {
-
 	/**
 	 * 
 	 */
@@ -36,10 +36,12 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
 	private EventPaginationTableDataProvider tableDataProvider;
 	private BasePaginationTable<Event> table;
 
-	private Long eventFilterID;
-    private final static String SINGLE_NOTE_FILTER_FIELD = "noteID";
+	private final static String linkFilterKeys[] = {
+		"noteID",
+		"driverID" 
+	};
+	private Map<String, Object> linkFilters;
     
-	
 
 	private final static String COLUMN_LABEL_PREFIX = "notes_";
 	private TablePreferenceDAO       tablePreferenceDAO;
@@ -66,11 +68,13 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
     {
         super.init();
         tablePref = new TablePref<Event>(this);
+        linkFilters = new HashMap<String, Object>();
     		
 		logger.debug("PagingEventsBean - constructor");
 		
 		
 		table = new BasePaginationTable<Event>();
+		tableDataProvider.setDateTimeZone(DateTimeZone.forTimeZone(getUser().getPerson().getTimeZone()));
 		tableDataProvider.setEventCategory(getEventCategory());
         tableDataProvider.setSort(new TableSortField(SortOrder.DESCENDING, "time"));
 		table.initModel(tableDataProvider);
@@ -180,28 +184,32 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
 
     // called from links on team page
 	public void allAction(){
-		this.tableDataProvider.setDaysBack(MAX_DAYS_BACK);
-		if (getEventFilterID() != null)
-		{
-		//	logger.debug("setting noteID filter " + getEventFilterID());
-			tableDataProvider.addFilterField(new TableFilterField(SINGLE_NOTE_FILTER_FIELD, getEventFilterID()));
+		for (String filterKey : linkFilterKeys) {
+			if (linkFilters.get(filterKey) != null)
+			{
+				tableDataProvider.addFilterField(new TableFilterField(filterKey, linkFilters.get(filterKey)));
+			}
 		}
 		table.reset();
-    }
+	}
 
 	public void refreshAction(){
 		if (tableDataProvider.getFilters() != null) {
-			TableFilterField singleNoteFilter = null;
-			for (TableFilterField filterField : tableDataProvider.getFilters())
-				if (filterField.getField().equals(SINGLE_NOTE_FILTER_FIELD)) {
-					singleNoteFilter = filterField;
-					break;
+			for (String filterKey : linkFilterKeys) {
+				TableFilterField linkFilter = null;
+				for (TableFilterField filterField : tableDataProvider.getFilters())
+					if (filterField.getField().equals(filterKey)) {
+						linkFilter = filterField;
+						break;
+					}
+				
+				if (linkFilter != null) {
+					tableDataProvider.getFilters().remove(linkFilter);
+					linkFilter = null;
 				}
-			
-			if (singleNoteFilter != null)
-				tableDataProvider.getFilters().remove(singleNoteFilter);
+				
+			}
 		}
-		
 		
 		table.reset();
     }
@@ -236,13 +244,16 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
 		return getTableDataProvider().getItemsByRange(0, totalCount);
 	}
 
+
+	public Map<String, Object> getLinkFilters() {
+		return linkFilters;
+	}
+
+	public void setLinkFilters(Map<String, Object> linkFilters) {
+		this.linkFilters = linkFilters;
+	}
+
     protected abstract EventCategory getEventCategory();
 
-    public Long getEventFilterID() {
-		return eventFilterID;
-	}
 
-	public void setEventFilterID(Long eventFilterID) {
-		this.eventFilterID = eventFilterID;
-	}
 }

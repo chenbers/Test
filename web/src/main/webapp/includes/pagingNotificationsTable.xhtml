@@ -143,7 +143,6 @@
 							</a4j:commandLink>
 							</security:authorize>
                             <security:authorize ifNotGranted="ROLE_ADMIN, ROLE_FORGIVEACCESS">
-<!-- 									<h:outputText value="#{messages.excluded}" rendered="#{event.forgiven == 0}" />-->
  									<h:outputText value="#{messages.excluded}" rendered="#{event.forgiven == 1}"/>
  							</security:authorize>
             </rich:column>
@@ -154,7 +153,6 @@
             immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
             reRender="#{context},#{context}-form:header,#{context}_pageHeader" oncomplete="initializeTable();" 
             page="#{bean.table.pageData.currentPage}" styleClass="dataScroller" renderIfSinglePage="false"/>
-            
     </h:form>
     
     

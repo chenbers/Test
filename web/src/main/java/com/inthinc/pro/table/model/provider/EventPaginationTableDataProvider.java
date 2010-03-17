@@ -1,19 +1,17 @@
 package com.inthinc.pro.table.model.provider;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.pagination.PageParams;
 
-public class EventPaginationTableDataProvider  extends GenericPaginationTableDataProvider<Event> {
+public class EventPaginationTableDataProvider  extends BaseNotificationPaginationDataProvider<Event> {
 	
     /**
 	 * 
@@ -24,16 +22,11 @@ public class EventPaginationTableDataProvider  extends GenericPaginationTableDat
     
 	private EventDAO                eventDAO;
 	private Integer 				groupID;
-	private Integer					daysBack;
 	private EventCategory			eventCategory;
-    private Date endDate;
-    private Date startDate;
-
-	
 
 	public EventPaginationTableDataProvider() {
 	    
-		logger.info("EventPaginationTableDataProvider:constructor");
+//		logger.info("EventPaginationTableDataProvider:constructor");
 	}
 
 	@Override
@@ -53,17 +46,13 @@ public class EventPaginationTableDataProvider  extends GenericPaginationTableDat
 	@Override
 	public int getRowCount() {
 		
-		if (groupID == null)
+		if (groupID == null) {
 			return 0;
-
+		}
 		initStartEndDates();
 		return eventDAO.getEventCount(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(eventCategory), getFilters());
 	}
 
-	private void initStartEndDates() {
-	    endDate = new Date();
-	    startDate = DateUtil.getDaysBackDate(endDate, getDaysBack());
-	}
 	
 	public EventDAO getEventDAO() {
 		return eventDAO;
@@ -79,18 +68,6 @@ public class EventPaginationTableDataProvider  extends GenericPaginationTableDat
 
 	public void setGroupID(Integer groupID) {
 		this.groupID = groupID;
-	}
-
-	public Integer getDaysBack() {
-		if (daysBack == null)
-			return Integer.valueOf(1);
-		return daysBack;
-	}
-
-	public void setDaysBack(Integer daysBack) {
-		this.daysBack = daysBack;
-		this.startDate = null;
-		this.endDate = null;
 	}
 
 	public EventCategory getEventCategory() {

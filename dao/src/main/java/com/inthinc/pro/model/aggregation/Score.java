@@ -673,6 +673,17 @@ public class Score {
     public void setTrips(Number trips) {
         this.trips = trips;
     }
+    
+    public Number getSafetyTotal() {
+//System.out.println(toString());    	
+    	return seatbeltEvents.longValue() + 
+    	speedEvents.longValue() + 
+    	aggressiveAccelEvents.longValue() + 
+    	aggressiveBrakeEvents.longValue() + 
+    	aggressiveBumpEvents.longValue() + 
+    	aggressiveLeftEvents.longValue() + 
+    	aggressiveRightEvents.longValue();
+    }
 
     @Override
     public String toString() {

@@ -16,6 +16,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventType;
+import com.inthinc.pro.model.TimeFrame;
 
 public class TeamRecentEventsBean extends BaseBean
 {
@@ -167,6 +168,9 @@ public class TeamRecentEventsBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+    public TimeFrame getTimeFrame() {
+    	return TimeFrame.YEAR;
     }
 
 

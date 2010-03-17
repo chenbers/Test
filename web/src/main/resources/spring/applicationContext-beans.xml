@@ -546,8 +546,11 @@
     <property name="vehicleDAO" ref="vehicleDAO"></property>
   </bean>
   
+   <bean id="timeFrameBean" class="com.inthinc.pro.backing.TimeFrameBean" scope="request" parent="baseBean">
+  </bean>
   
     <!-- Pagination Beans -->
+	
     <bean id="basePagingNotificationsBean" class="com.inthinc.pro.backing.paging.BasePagingNotificationsBean" scope="request" init-method="init" parent="baseBean">
 	    <property name="reportRenderer" ref="reportRenderer" />
     	<property name="reportCriteriaService" ref="reportCriteriaService" />
@@ -556,7 +559,7 @@
 
     <bean id="pagingEventsBean" class="com.inthinc.pro.backing.paging.PagingEventsBean" scope="request" init-method="init" parent="basePagingNotificationsBean">
 	    <property name="tableDataProvider" ref="eventPaginationTableDataProvider"></property>
-		  <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>   
+	  <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>   
     </bean>
 
     <bean id="pagingSafetyEventsBean" class="com.inthinc.pro.backing.paging.PagingSafetyEventsBean" scope="request" parent="pagingEventsBean">
@@ -570,6 +573,7 @@
     
    	<bean id="eventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider" scope="request">
 	  <property name="eventDAO" ref="eventDAO"></property>   
+	  <property name="timeFrameBean" ref="timeFrameBean" />
   	</bean>
      
     <bean id="pagingRedFlagsBean" class="com.inthinc.pro.backing.paging.PagingRedFlagsBean" scope="request" init-method="init" parent="basePagingNotificationsBean">
@@ -578,6 +582,7 @@
     </bean>
    	<bean id="redFlagPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.RedFlagPaginationTableDataProvider" scope="request">
 	  <property name="redFlagDAO" ref="redFlagDAO"></property>   
+		<property name="timeFrameBean" ref="timeFrameBean" />
   	</bean>
 
     <!-- Report Pagination Beans -->
@@ -593,7 +598,7 @@
     </bean>
 
    	<bean id="driverReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DriverReportPaginationTableDataProvider" scope="request">
-	  <property name="reportDAO" ref="reportDAO"></property>   
+		<property name="reportDAO" ref="reportDAO"></property>   
   	</bean>
     
     <bean id="pagingVehicleReportBean" class="com.inthinc.pro.backing.paging.PagingVehicleReportBean" scope="request" init-method="init" parent="basePagingReportBean">

@@ -8,6 +8,27 @@
   	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">  	
 
+	    <script language="javascript" type="text/javascript">
+	    		
+			function bodyLoad() {
+			}
+			function bodyUnload() {
+			}
+			jQuery(function() {
+
+				jQuery('##{context}_search\\:#{context}PanelHeaderTwoDay').addClass('selected_duration');
+				
+				jQuery('[id*=#{context}PanelHeader]').click(function(){
+					
+					jQuery('.selected_duration').removeClass('selected_duration');
+					jQuery(this).addClass('selected_duration');
+				});
+				
+						
+			});
+					
+		</script>
+
 	<t:saveState value="#{bean}"/>
 
 	<a4j:region id="#{context}_searchRegion">							
@@ -29,6 +50,7 @@
 					</tr>
 					</table>
 			  </li>
+<!-- 			  
 			  <li class="l select">
                 <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_days_box">
                   <tr>
@@ -40,6 +62,26 @@
 					</td>
 					</tr>
 					</table>
+			  </li>
+			  <li class="l select">
+	            <ui:include src="/includes/timeFrame.xhtml">	
+					<ui:param  name="bean" value="#{bean.tableDataProvider.timeFrameBean}"/>
+					<ui:param name="context" value="#{context}" />
+					<ui:param name="timeFrameRerenderList" value="#{context}-form:header,#{context}-form:#{context},#{context}-form:#{context}_bottomScroller" />
+				</ui:include>
+			  </li>
+ -->			  
+			  <li class="l select">
+                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_timeframe_box">
+                  <tr>
+				  	<td>#{messages.timeFrame} </td>
+			  	 	<td>
+			  	 	<h:selectOneMenu value="#{bean.tableDataProvider.timeFrameBean.timeFrameKey}" id="#{context}_timeframe">
+						<f:selectItems value="#{bean.tableDataProvider.timeFrameBean.selectItems}" />
+					</h:selectOneMenu>
+					</td>
+				  </tr>
+				</table>
 			  </li>
 			  <li class="l">
 				<a4j:commandButton id="#{context}_refresh" styleClass="left"

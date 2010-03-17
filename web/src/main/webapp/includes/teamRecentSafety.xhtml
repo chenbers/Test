@@ -15,8 +15,9 @@
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="event">#{messages.team_safetyEvents}</span>
 			<span class="panel_links">
-            <pretty:link id="#{context}-teamRecentSafetyWithGroupId" mappingId="safetyLink">
-                <f:param name="groupID" value="#{navigationBean.groupID}"/>
+            <pretty:link id="#{context}-teamRecentSafetyWithGroupId" mappingId="safetyGroupLink">
+                <f:param value="#{navigationBean.groupID}"/>
+                <f:param value="#{teamRecentEventsBean.timeFrame}"/>
                 #{messages.team_safetyEventsShowAll}
             </pretty:link>
 			</span>
@@ -57,8 +58,9 @@
 						</f:facet>
                         <pretty:link id="#{context}-teamRecentSafetySpeedOrStyle" mappingId="safetyLink">
                             #{messages.team_safetyEventsDetails}
-				             <f:param name="groupID" value="#{navigationBean.groupID}"/>
-                             <f:param name="eventID" value="#{event.event.noteID}"/>
+				             <f:param value="#{navigationBean.groupID}"/>
+                             <f:param value="#{teamRecentEventsBean.timeFrame}"/>
+                             <f:param value="#{event.event.noteID}"/>
                         </pretty:link>
 					</rich:column>
 			</rich:dataTable>
