@@ -17,6 +17,7 @@
 			<span class="panel_links">
             <pretty:link id="#{context}-teamRecentEmergencyTitle" mappingId="emergencyGroupLink">
                 <f:param value="#{navigationBean.groupID}"/>
+                <f:param value="#{teamRecentEventsBean.timeFrame}"/>
                 #{messages.team_emergencyShowAll}
             </pretty:link>
 			</span>
@@ -68,6 +69,7 @@
                         <pretty:link id="#{context}-teamRecentEmergencyEmergency" mappingId="emergencyLink">
                             #{messages.team_emergencyDetails}
 				             <f:param value="#{navigationBean.groupID}"/>
+				             <f:param value="#{teamRecentEventsBean.timeFrame}"/>
                              <f:param value="#{event.event.noteID}"/>
                         </pretty:link>
 					</rich:column>

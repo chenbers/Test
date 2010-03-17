@@ -200,12 +200,12 @@
         <view-id>/secured/pagingnotifications/emergency.faces</view-id>
     </url-mapping>
     <url-mapping id="emergencyLink">
-        <pattern>/app/notifications/emergencyLink/#{pagingEmergencyEventsBean.tableDataProvider.groupID}/#{pagingSafetyEventsBean.linkFilters.noteID}</pattern>
+        <pattern>/app/notifications/emergencyLink/#{pagingEmergencyEventsBean.tableDataProvider.groupID}/#{pagingEmergencyEventsBean.tableDataProvider.timeFrameBean.timeFrame}/#{pagingEmergencyEventsBean.linkFilters.noteID}</pattern>
         <view-id>/secured/pagingnotifications/emergency.faces</view-id>
         <action onPostback="false">#{pagingEmergencyEventsBean.allAction}</action>
     </url-mapping>
     <url-mapping id="emergencyGroupLink">
-        <pattern>/app/notifications/emergencyLink/#{pagingEmergencyEventsBean.tableDataProvider.groupID}</pattern>
+        <pattern>/app/notifications/emergencyLink/#{pagingEmergencyEventsBean.tableDataProvider.groupID}/#{pagingEmergencyEventsBean.tableDataProvider.timeFrameBean.timeFrame}</pattern>
         <view-id>/secured/pagingnotifications/emergency.faces</view-id>
         <action onPostback="false">#{pagingEmergencyEventsBean.allAction}</action>
     </url-mapping>
@@ -214,12 +214,12 @@
         <view-id>/secured/pagingnotifications/diagnostics.faces</view-id>
     </url-mapping>
     <url-mapping id="diagnosticsLink">
-        <pattern>/app/notifications/diagnosticsLink/#{pagingDiagnosticsEventsBean.tableDataProvider.groupID}/#{pagingSafetyEventsBean.linkFilters.noteID}</pattern>
+        <pattern>/app/notifications/diagnosticsLink/#{pagingDiagnosticsEventsBean.tableDataProvider.groupID}/#{pagingDiagnosticsEventsBean.tableDataProvider.timeFrameBean.timeFrame}/#{pagingDiagnosticsEventsBean.linkFilters.noteID}</pattern>
         <view-id>/secured/pagingnotifications/diagnostics.faces</view-id>
         <action onPostback="false">#{pagingDiagnosticsEventsBean.allAction}</action>
     </url-mapping>
     <url-mapping id="diagnosticsGroupLink">
-        <pattern>/app/notifications/diagnosticsLink/#{pagingDiagnosticsEventsBean.tableDataProvider.groupID}</pattern>
+        <pattern>/app/notifications/diagnosticsLink/#{pagingDiagnosticsEventsBean.tableDataProvider.groupID}/#{pagingDiagnosticsEventsBean.tableDataProvider.timeFrameBean.timeFrame}</pattern>
         <view-id>/secured/pagingnotifications/diagnostics.faces</view-id>
         <action onPostback="false">#{pagingDiagnosticsEventsBean.allAction}</action>
     </url-mapping>

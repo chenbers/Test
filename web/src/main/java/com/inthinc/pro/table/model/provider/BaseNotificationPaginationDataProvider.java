@@ -39,7 +39,7 @@ public abstract class BaseNotificationPaginationDataProvider<T> extends GenericP
 	protected void initStartEndDates() {
 	    endDate = timeFrameBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDate();
 	    startDate = timeFrameBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDate();
-	    logger.info("date range: " + startDate + " to " + endDate);	    
+	    logger.debug("date range: " + startDate + " to " + endDate);	    
 	}
 	
 }
