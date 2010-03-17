@@ -614,7 +614,7 @@ function LabeledCluster(markerClusterer) {
       if ((labeledMarker_ === null)&&(linedUpMarkers_=== null)){
 //        clusterMarker_ = new ClusterMarker_(center_, this.getTotalMarkers(), markerClusterer_.getStyles_(), markerClusterer_.getGridSize_());
     	  
-    	  if (zoom_ < 8 || this.getTotalMarkers() > 6){
+    	  if (zoom_ < 8 || this.getTotalMarkers() > 3){
     		  
     		  var count = new String(""+this.getTotalMarkers());
     		  var countLabel = label_.replace("***",count);

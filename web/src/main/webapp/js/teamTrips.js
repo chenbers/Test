@@ -211,7 +211,7 @@
 					latLngArray.push(endlatlng);
 					
 					var arrowPolyline = new BDCCArrowedPolyline(latLngArray,colors[colorArray[index]], 4, 0.9,{geodesic:true}, 
-														-1, 20,"#000000",1,0.9,8);
+														-1, 15,"#000000",1,0.9,8);
 					
 					overlays.push(arrowPolyline);
 					//Start of trip marker
