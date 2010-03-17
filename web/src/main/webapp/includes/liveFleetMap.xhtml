@@ -86,7 +86,7 @@
 		
 		function bodyLoad()
 		{
-			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
+			initMap(#{mapxcenter},#{mapycenter},#{mapzoom});
  			addMarkers();
 	    	centerMap();
 	    	defaultAddressElement = "liveFleetMapForm:bubbleAddress";

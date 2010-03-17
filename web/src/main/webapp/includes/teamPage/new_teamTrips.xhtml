@@ -33,12 +33,11 @@
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 	<a4j:loadScript src="/js/arrowedPolyline.js"/>
 	<a4j:loadScript src="/js/labeledMarker.js"/>
-	<a4j:loadScript src="/js/teamTrips.js"/>
 	<a4j:loadScript src="/js/markerClustererWithStackedMarkers.js"/>
+	<a4j:loadScript src="/js/teamTrips.js"/>
 	
 	
 	<script type="text/javascript">
-	//<![CDATA[
 	
 	var icons = [	"#{facesContext.externalContext.request.contextPath}/images/green_circle.png",
 					"#{facesContext.externalContext.request.contextPath}/images/yellow_circle.png", 
@@ -49,7 +48,7 @@
 					"#{facesContext.externalContext.request.contextPath}/images/x.gif"
 				];
 	 
-	function initMap() {
+	function initTeamTripsMap() {
 		
 		if (GBrowserIsCompatible()) {					
 			GUnload();
@@ -71,7 +70,7 @@
 		
 	function onTabSelectionComplete(){
 		
-		initMap();
+		initTeamTripsMap();
 		getLatestTrips();
 		
   	   	jQuery("[id$='Day']").bind('click',dayClickFunction);
@@ -86,8 +85,9 @@
 		jQuery('#longDurations').children().removeClass('disable');
 		jQuery('#longDurations').children().unbind('click',longDurationClickFunction);
 	}
-//]]>
+
  </script>
+
  	<t:saveState  value="#{teamTripsBean}"/>
  
    <rich:tab id="teamTrips" ontableave="onTabLeave();"  oncomplete="onTabSelectionComplete()" >
