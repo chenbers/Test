@@ -13,18 +13,17 @@
    		<a4j:loadScript src="/js/FusionCharts.js"/>
 		
 		<script type="text/javascript">
-			function renderBar(barElement, barDiv, width, height)
+			function render(pieElement, pieDiv, width, height)
 			{
-				var barDef = document.getElementById(barElement);
-//				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");
-				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
-				barChart.setDataXML(barDef.value);	
-				barChart.setTransparent(true);								   	   
-				barChart.render(barDiv);
+				var pieDef = document.getElementById(pieElement);
+				var pieChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
+				pieChart.setDataXML(pieDef.value);	
+				pieChart.setTransparent(true);								   	   
+				pieChart.render(pieDiv);
 			}
-			function renderTypeBar(type, width, height)
+			function renderPie(type, width, height)
 			{
-				renderBar('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+				render('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
 			}
 		</script>	
 
@@ -58,7 +57,7 @@
 					<div id="tab_overallDiv" align="center"></div>
 		  			<input type="hidden" id="tab_overallDef" value="#{teamPieChartBean.selectedBarDef}"/>
 					<script type="text/javascript">
-						renderTypeBar("overall", "720", "500");
+						renderPie("overall", "720", "500");
 					</script>
 				</td>
 			</tr>
