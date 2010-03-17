@@ -59,10 +59,16 @@ public enum TimeFrame {
             return new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));
         }
     },
+    LAST_THIRTY_DAYS(AggregationDuration.ONE_MONTH) {
+        public Interval getInterval(DateTimeZone dateTimeZone) {
+            return new Interval(new DateMidnight(new DateTime().minusDays(30), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));
+        }
+    },
     MONTH(AggregationDuration.ONE_MONTH) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(new DateTime().minusMonths(1), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(new DateTime().monthOfYear().toInterval().getStart(), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));
         }
+        
     },
     THREE_MONTHS(AggregationDuration.THREE_MONTH) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
