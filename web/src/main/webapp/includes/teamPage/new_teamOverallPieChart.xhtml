@@ -10,10 +10,23 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
-	
-	<ui:define name="scripts">
-  	
-	</ui:define>		
+   		<a4j:loadScript src="/js/FusionCharts.js"/>
+		
+		<script type="text/javascript">
+			function renderBar(barElement, barDiv, width, height)
+			{
+				var barDef = document.getElementById(barElement);
+//				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");
+				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
+				barChart.setDataXML(barDef.value);	
+				barChart.setTransparent(true);								   	   
+				barChart.render(barDiv);
+			}
+			function renderTypeBar(type, width, height)
+			{
+				renderBar('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+			}
+		</script>	
 
 	<rich:tab actionListener="#{teamPieChartBean.setOverall}">
 	
@@ -24,7 +37,7 @@
 	 		</h:panelGroup>
 	 	</f:facet>
 	 			
-		<a4j:outputPanel id="overallTab" styleClass="section" layout="block">
+		<a4j:outputPanel id="overallTab" ajaxRendered="true" styleClass="section" layout="block">
 		 				 				
 		<table width="900" border="0" cellspacing="0" cellpadding="0" align="center">
 			<tr>
