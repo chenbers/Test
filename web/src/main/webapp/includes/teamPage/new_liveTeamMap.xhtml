@@ -15,13 +15,35 @@
        	<a4j:loadScript id="googleURL" src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
     </ui:define>  		
 
+	<script type="text/javascript">
+	//<![CDATA[
 
-	<rich:tab id="liveTeam" switchType="server">
+//	var dayClickFunction = function(event){
+//	   	resetTripsForSelectedDrivers();
+//	};
+	var durationClickFunction = function(event){
+			event.preventDefault();
+		};
+		
+	function onCompleteLiveTeam(){
+		alert("Finished");
+		jQuery('#longDurations').children().addClass('disable');
+		jQuery('#longDurations').children().click(durationClickFunction);
+	}
+	function onLeaveLiveTeam(){
+		alert("Leaving");
+		jQuery('#longDurations').children().removeClass('disable');
+		jQuery('#longDurations').children().unbind('click',durationClickFunction);
+	}
+//]]>
+ </script>
+
+	<rich:tab id="liveTeam" switchType="server" ontableave="onLeaveLiveTeam();"  onlabelclick="onCompleteLiveTeam();">
 	
 		<f:facet name="label">
 	 		<h:panelGroup>
 	 			<h:graphicImage value="/images/ico_line.png" />
-	 			<rich:spacer width="10"/>#{messages.livefleet}
+	 			<rich:spacer width="10"/>#{messages.liveTeamTitle}
 	 		</h:panelGroup>
 	 	</f:facet>
 		 				
@@ -35,6 +57,8 @@
 					<ui:param name="mapzoom" value="#{teamCommonBean.group.mapZoom}"/>
 					<ui:param name="flyOutImage" value="" />  
      	 			<ui:param name="context" value="team" />
+     	 			<ui:param name="title" value="#{messages.liveTeamTitle}"/>
+     	 			<ui:param name="legend" value="#{messages.liveTeamLegend}"/>
 				</ui:include>
 		<!-- END PANEL -->             			
 	 
