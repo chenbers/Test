@@ -9,6 +9,23 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
+	
+   		<a4j:loadScript src="/js/FusionCharts.js"/>
+		
+		<script type="text/javascript">
+			function renderBarChart(barElement, barDiv, width, height)
+			{
+				var barDef = document.getElementById(barElement);
+				var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListOS}", "ChartId", width, height, "0", "1");														
+				barChart.setDataXML(barDef.value);	
+				barChart.setTransparent(true);								   	   
+				barChart.render(barDiv);
+			}
+			function renderBar(type, width, height)
+			{
+				renderBarChart('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+			}
+		</script>		
 
 	<rich:tab actionListener="#{teamOverviewBean.setDrivingStyle}">
 	
@@ -38,7 +55,7 @@
 					<div id="tab_drivingDiv" align="center"></div>
 		  			<input type="hidden" id="tab_drivingDef" value="#{teamOverviewBean.selectedBarDef}"/>
 					<script type="text/javascript">
-						renderTypeBar("driving", "720", "500");
+						renderBar("driving", "720", "500");
 					</script>
 				</td>
 			</tr>

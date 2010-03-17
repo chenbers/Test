@@ -13,7 +13,7 @@
    		<a4j:loadScript src="/js/FusionCharts.js"/>
 		
 		<script type="text/javascript">
-			function render(pieElement, pieDiv, width, height)
+			function renderPieChart(pieElement, pieDiv, width, height)
 			{
 				var pieDef = document.getElementById(pieElement);
 				var pieChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
@@ -23,7 +23,7 @@
 			}
 			function renderPie(type, width, height)
 			{
-				render('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+				renderPieChart('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
 			}
 		</script>	
 

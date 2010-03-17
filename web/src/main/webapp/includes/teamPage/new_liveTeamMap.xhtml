@@ -18,27 +18,32 @@
 	<script type="text/javascript">
 	//<![CDATA[
 
-//	var dayClickFunction = function(event){
-//	   	resetTripsForSelectedDrivers();
-//	};
 	var durationClickFunction = function(event){
 			event.preventDefault();
 		};
 		
 	function onCompleteLiveTeam(){
-		alert("Finished");
+//		alert("Finished");
+		jQuery('#allDurations').children().removeClass('selected_duration');
+		jQuery('#longDurations').children().removeClass('selected_duration');
+
+		jQuery('#allDurations').children().addClass('disable');
+		jQuery('#allDurations').children().click(durationClickFunction);
 		jQuery('#longDurations').children().addClass('disable');
-		jQuery('#longDurations').children().click(durationClickFunction);
+		jQuery('#longDurations').children().click(durationClickFunction);		
 	}
 	function onLeaveLiveTeam(){
-		alert("Leaving");
+//		alert("Leaving");
+		jQuery('#allDurations').children().removeClass('disable');
+		jQuery('#allDurations').children().unbind('click',durationClickFunction);
 		jQuery('#longDurations').children().removeClass('disable');
-		jQuery('#longDurations').children().unbind('click',durationClickFunction);
+		jQuery('#longDurations').children().unbind('click',durationClickFunction);		
 	}
 //]]>
  </script>
 
-	<rich:tab id="liveTeam" switchType="server" ontableave="onLeaveLiveTeam();"  onlabelclick="onCompleteLiveTeam();">
+	<rich:tab id="liveTeam" switchType="server" 
+		ontableave="onLeaveLiveTeam();"  onlabelclick="onCompleteLiveTeam();">
 	
 		<f:facet name="label">
 	 		<h:panelGroup>

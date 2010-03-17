@@ -114,12 +114,13 @@
 			<div class="panel_title">
 	    		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"></rich:spacer>#{messages.team_what_happened} 
                 <a4j:outputPanel ajaxRendered="true" layout="block" styleClass="panel_links">
-	                <h:form id="timeFrameForm" style="display: inline;">
+	                <h:form id="timeFrameForm" style="display: inline;">	                	
 	                        <a4j:status>
 	                            <f:facet name="start">                    
 	                                <h:graphicImage styleClass="ajax_status" value="/images/progress2.gif"/>
 	                            </f:facet>
 	                        </a4j:status> 
+						<span id="allDurations">	                        
 	                        <a4j:commandLink id="teamDurationPanelHeaderOneDay"                                        
 	                            immediate="true" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'TODAY' ? 'selected_duration' : ''}"
@@ -175,6 +176,7 @@
 	                            value="#{messages.team_7_days}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="WEEK" />
 	                        </a4j:commandLink>
+	                        </span>
 	                        <rich:spacer width="5"/>                                     
 	                        <span id="longDurations">                                                                                                                   
 	                        <a4j:commandLink id="teamDurationPanelHeaderThreeMonths"                                         
@@ -190,7 +192,7 @@
 	                            value="#{messages.team_365_days}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="YEAR" />
 	                        </a4j:commandLink>
-	                        </span>                
+	                        </span> 	                     
 	        		</h:form>
 				</a4j:outputPanel>		  	
      	 	</div>
@@ -204,7 +206,7 @@
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_liveTeamMap.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamOverallPieChart.xhtml"/>
-<!--                 	<ui:include src="/includes/teamPage/new_teamDrivingStyle3dBar.xhtml"/> -->
+                 	<ui:include src="/includes/teamPage/new_teamDrivingStyle3dBar.xhtml"/>
 <!--                 	<ui:include src="/includes/teamPage/new_teamSpeed3dBar.xhtml"/> -->
 <!--                  	<ui:include src="/includes/teamPage/new_teamSeatbelt3dBar.xhtml"/> --> 
 				</rich:tabPanel>
