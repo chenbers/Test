@@ -56,6 +56,8 @@ public class PagingDeviceReportBean extends BasePagingReportBean<DeviceReportIte
 			blankItem.setEscape(false);
 			deviceStatuses.add(blankItem);
 	        for (DeviceStatus deviceStatus : EnumSet.allOf(DeviceStatus.class)) {
+	        	if (deviceStatus.equals(DeviceStatus.DELETED))	// we don't show deleted ones
+	        		continue;
 	        	deviceStatuses.add(new SelectItem(deviceStatus.getCode().toString(), MessageUtil.getMessageString("status"+deviceStatus.getCode(), getLocale())));
 	    	}
 		}
