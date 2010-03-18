@@ -676,13 +676,13 @@ public class Score {
     
     public Number getSafetyTotal() {
 //System.out.println(toString());    	
-    	return seatbeltEvents.longValue() + 
-    	speedEvents.longValue() + 
-    	aggressiveAccelEvents.longValue() + 
-    	aggressiveBrakeEvents.longValue() + 
-    	aggressiveBumpEvents.longValue() + 
-    	aggressiveLeftEvents.longValue() + 
-    	aggressiveRightEvents.longValue();
+    	return ((seatbeltEvents == null) ? 0 : seatbeltEvents.longValue()) + 
+    			((speedEvents == null) ? 0 : speedEvents.longValue()) + 
+    			((aggressiveAccelEvents == null) ? 0 : aggressiveAccelEvents.longValue()) + 
+    			((aggressiveBrakeEvents == null) ? 0 : aggressiveBrakeEvents.longValue()) + 
+    			((aggressiveBumpEvents == null) ? 0 : aggressiveBumpEvents.longValue()) + 
+    			((aggressiveLeftEvents == null) ? 0 : aggressiveLeftEvents.longValue()) + 
+    			((aggressiveRightEvents == null) ? 0 : aggressiveRightEvents.longValue());
     }
 
     @Override
