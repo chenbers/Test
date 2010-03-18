@@ -56,9 +56,7 @@ public class TeamStatisticsBean extends BaseBean {
         }
 
         // Get the data
-        boolean useDaily = whichMethodToUse();
-        
-        if ( useDaily ) {
+        if ( whichMethodToUse() ) {
             driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
             
         } else {
