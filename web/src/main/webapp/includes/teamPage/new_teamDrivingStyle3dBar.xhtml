@@ -27,7 +27,7 @@
 			}
 		</script>		
 
-	<rich:tab actionListener="#{teamOverviewBean.setDrivingStyle}">
+	<rich:tab actionListener="#{teamStyleBean.setDrivingStyle}">
 	
 		<f:facet name="label">
 	 		<h:panelGroup>
@@ -35,6 +35,8 @@
 	 			<rich:spacer width="10"/>Driving Style
 	 		</h:panelGroup>
 	 	</f:facet>
+	 	
+		<a4j:outputPanel id="styleTab" ajaxRendered="true" styleClass="section" layout="block">	 	
 		 				
 		<table width="900" border="0" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -43,8 +45,8 @@
 			<tr>
 				<td width="120" align="center" valign="middle">
   			      	<ui:include src="/includes/overallScoreBox.xhtml">	
-						<ui:param name="overallScoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />									
-      		    		<ui:param name="overallScore" value="#{teamOverviewBean.selectedOverallScore}" />             						
+						<ui:param name="overallScoreStyle" value="#{teamStyleBean.overallScoreStyle}" />									
+      		    		<ui:param name="overallScore" value="#{teamStyleBean.selectedOverallScore}" />             						
       		        	<ui:param name="context" value="#{context}-driving"/> 
     				</ui:include>    							
 					<ui:include src="/includes/scoreBoxLegend.xhtml">
@@ -53,7 +55,7 @@
 				</td>
         		<td width="">
 					<div id="tab_drivingDiv" align="center"></div>
-		  			<input type="hidden" id="tab_drivingDef" value="#{teamOverviewBean.selectedBarDef}"/>
+		  			<input type="hidden" id="tab_drivingDef" value="#{teamStyleBean.selectedBarDef}"/>
 					<script type="text/javascript">
 						renderBar("driving", "720", "500");
 					</script>
@@ -61,6 +63,7 @@
 			</tr>
 		</table>   
       			
+      	</a4j:outputPanel>		 
 	 
 	</rich:tab>
 	
