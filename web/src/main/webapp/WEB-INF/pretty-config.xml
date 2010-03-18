@@ -430,4 +430,15 @@
 		<view-id>/secured/admin/speedByStreetChangeRequest.faces</view-id>
 	</url-mapping>
 
+
+	<url-mapping id="adminEditUnknownDriver">
+		<pattern>/app/admin/editUnknownDriver</pattern>
+		<view-id>/secured/admin/editUnknownDriver.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminUnknownDriver">
+		<pattern>/app/admin/unknownDriver</pattern>
+		<view-id>/secured/admin/unknownDriver.faces</view-id>
+		<action>#{unknownDriverBean.view}</action>
+	</url-mapping>
+
 </pretty-config>

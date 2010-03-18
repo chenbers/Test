@@ -1,0 +1,92 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+  <ui:param name="title" value="#{messages.adminHeader_unknownDriver}"/>
+  
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminUnknownDriver" />
+            <ui:param name="parentAction" value="go_adminUnknownDriver" />
+            <ui:param name="context" value="unknownDriver"/>
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+
+          <a4j:form id="display-form">
+
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{messages.adminHeader_unknownDriverDetails}"/></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+
+              <div class="panel_w">
+
+                <div class="panel_content">
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="r">
+                      <h:commandButton id="unknownDriverEdit" action="#{unknownDriverBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                    </li>
+                  </ul>
+
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+              
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+                
+                        <div class="add_section_title"><h:outputText value="#{messages.editUnknownDriver_information}" /></div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editUnknownDriver_first}" /></td>
+                            <td><h:outputText value="#{unknownDriverBean.item.first}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editUnknownDriver_last}" /></td>
+                            <td><h:outputText value="#{unknownDriverBean.item.last}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editUnknownDriver_timeZone}" /></td>
+                            <td><h:outputText value="#{unknownDriverBean.item.timeZone.ID}" /></td>
+                          </tr>
+                          </table>
+                      </td>
+                    </tr>
+                  </table>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+
+          </a4j:form>
+
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+
+
+  </ui:define>
+
+</ui:composition>

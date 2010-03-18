@@ -261,6 +261,12 @@ eventCount = 0;
             }
         	else if (data.isAggressiveDrivingIndex(i))
             {
+// 	from Jason        		
+//        		accel: 50..225  (positive deltaVX)
+//        		brake: 70..225  (negative deltaVX)
+//        		turn: 60..225   (deltaVY)
+//        		vert: 50..300   (deltaVZ)
+        		
         		int adType = randomInt(0, 1);
                 if (adType == 0) // hard vert
                     event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT,

@@ -275,6 +275,12 @@
     <property name="roleDAO" ref="roleDAO"></property>
    </bean>
 
+
+  <bean id="unknownDriverBean" class="com.inthinc.pro.backing.UnknownDriverBean" scope="session" init-method="initBean">
+    <property name="personDAO" ref="personDAO"></property>
+  </bean>
+
+
   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="session" parent="baseBean">
     <property name="vehicleDAO" ref="vehicleDAO" />
   </bean>

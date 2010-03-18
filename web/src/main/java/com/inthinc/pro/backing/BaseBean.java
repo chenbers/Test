@@ -20,6 +20,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
@@ -219,6 +220,10 @@ public class BaseBean implements Serializable {
 	
 	public Integer getUnknownDriverID() {
 		return getProUser().getUnknownDriver().getDriverID();
+	}
+	
+	public Driver getUnknownDriver() {
+		return getProUser().getUnknownDriver();
 	}
 	
 }

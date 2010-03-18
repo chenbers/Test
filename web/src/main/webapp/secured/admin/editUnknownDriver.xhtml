@@ -1,0 +1,161 @@
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+ 
+ 
+  <ui:param name="adminSelected" value="current" />
+  <ui:param name="title" value="#{messages.adminHeader_editUnknownDriver}"/>
+  <ui:define name="scripts">
+      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+	  <style type="text/css">
+		.role-panel {margin: auto;}
+		.role-panel td {vertical-align: top;}
+		.dnd-panel {width:100px;border:1px solid gray;padding:2px;display: block;}
+	  </style>
+  </ui:define>
+  
+  <ui:define name="content">
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+      <td valign="top" width="130">
+        <ui:include src="/includes/navigation/adminSideNav.xhtml">
+          <ui:param name="context" value="editUnknownDriver"/>
+        </ui:include>
+      </td>
+      <td valign="top">
+          <!-- START PANEL -->
+   		<rich:dragIndicator id="indicator" />
+
+        <a4j:form id="edit-form">
+		
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="admin"><h:outputText value="#{messages.adminHeader_editUnknownDriver}" /></span>
+                <span class="panel_links"></span>
+              </div>
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
+
+                <ul id="grid_nav" style="margin: 0;">
+                  <li class="r">
+                    <h:commandButton id="editUnknownDriverSave1" action="#{unknownDriverBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                    <h:outputText value=" " /><h:commandButton id="editUnknownDriverCancel1" action="#{unknownDriverBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                  </li>
+                </ul>
+                
+                <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+                  <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                     <dt class="error">
+                        <h:outputFormat value="#{messages.error_validationMsg}">
+                           <f:param value="${tiwiprofn:getMessageCount()}"/>
+                        </h:outputFormat>
+                     </dt>
+                  </dl>
+                </ui:fragment>
+                
+                <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg"/>
+
+                <div class="spacer"></div>
+
+                <table width="790" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td width="390" valign="top">
+
+                      <div class="add_section_title"><h:outputText value="#{messages.editUnknownDriver_information}" /></div>
+
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:outputText value="#{messages.editUnknownDriver_first}" />
+                            <span class="required">*</span>
+                          </td>
+                          <td>
+                            <rich:message for="editUnknownDriver-first" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{unknownDriverBean.item.first}" id="editUnknownDriver-first" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="20" required="true" requiredMessage="#{messages.required}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:outputText value="#{messages.editUnknownDriver_last}" />
+                            <span class="required">*</span>
+                          </td>
+                          <td>
+                            <rich:message for="editUnknownDriver-last" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{unknownDriverBean.item.last}" id="editUnknownDriver-last" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="20" required="true" requiredMessage="#{messages.required}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="160" valign="top">
+                          	<ui:include src="../../includes/admin/inputLabel.xhtml">
+								<ui:param name="required" value="TRUE"/>
+								<ui:param name="for" value="editUnknownDriver-timeZone"/>
+								<ui:param name="fieldName" value="timeZone"/>
+								<ui:param name="editBean" value="#{unknownDriverBean}"/>
+								<ui:param name="label" value="#{messages.editUnknownDriver_timeZone}"/>
+        					<ui:param name="context" value="editUnknownDriverTimeZone" />
+							</ui:include>
+                          </td>
+                          <td>
+                            <rich:message for="editUnknownDriver-timeZone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu value="#{unknownDriverBean.item.timeZone}" 
+                                    id="editUnknownDriver-timeZone"  
+                                    onchange="checkMultiple(this)"
+                                    required="true" 
+                                    requiredMessage="#{messages.required}" 
+                                    style="width:200px">
+                              <f:selectItem itemLabel="" />
+                              <f:converter  converterId="TimeZoneConverter" />
+                              <f:selectItems value="#{unknownDriverBean.timeZones}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
+                     </table>
+					</td>
+                   </tr>
+				</table>
+
+                <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+
+                <div class="spacer"></div>
+
+                <ul id="grid_nav" style="margin: 0;">
+                  <li class="r">
+                    <h:commandButton id="unknownDriverSave2" action="#{unknownDriverBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                    <h:outputText value=" " /><h:commandButton id="unknownDriverCancel2"  action="#{unknownDriverBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                  </li>
+                </ul>
+
+              </div>
+            </div>
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+          </div>
+
+          </a4j:form>
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+    
+    <script type="text/javascript">
+	  	function bodyLoad()
+  		{
+	    	document.getElementById("edit-form:editUnknownDriver-first").focus;
+  		}
+    </script>
+
+  </ui:define>
+
+</ui:composition>

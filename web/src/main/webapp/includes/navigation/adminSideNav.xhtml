@@ -264,6 +264,19 @@
           </td>
         </tr>
         </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN">
+        <tr>
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_driver.png"/>
+               <ui:param name="mappingId" value="adminUnknownDriver"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminUnknownDriver') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminUnknownDriver}"/>
+               <ui:param name="context" value="#{context}-vlt-unknownDriver"/>
+           </ui:include>
+          </td>
+        </tr>
+ 		</security:authorize>       
        </table>
 
     </h:form>
