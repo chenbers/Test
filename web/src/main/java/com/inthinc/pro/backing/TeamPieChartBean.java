@@ -41,21 +41,10 @@ public class TeamPieChartBean extends BaseBean {
     private List<HashMap> overallTotals;
     
     private Integer groupID;
-    private String ping;
     private static final Logger logger = Logger.getLogger(TeamOverviewBean.class);
 
     public TeamPieChartBean() {
         logger.debug("TeamPieChartBean - constructor");        
-    }
-
-    public String getPing() {
-        getGroupID();
-        return ping;
-    }
-
-    public void setPing(String ping) {
-        getGroupID();
-        this.ping = ping;
     }
 
     private Integer initOverallScore(ScoreType scoreType) {
