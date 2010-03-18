@@ -193,7 +193,7 @@
                	                <rich:datascroller id="#{context}-bottomScroller" 
                                           for="#{context}" immediate="true" 
                                           scrollerListener="#{bean.table.scrollerListener}" 
-                                          reRender="#{context}"
+                                          reRender="#{context},#{context}-form:header"
                                           requestDelay="200" eventsQueue="pagerQueue" 
                                           page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
 						</div>

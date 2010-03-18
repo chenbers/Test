@@ -190,7 +190,7 @@
                 	                <rich:datascroller id="#{context}-bottomScroller" 
                                           for="#{context}" immediate="true" 
                                           scrollerListener="#{pagingDriverReportBean.table.scrollerListener}" 
-                                          reRender="#{context}"
+                                          reRender="#{context},#{context}-form:header"
                                           requestDelay="200" eventsQueue="pagerQueue" 
                                           page="#{pagingDriverReportBean.table.pageData.currentPage}" renderIfSinglePage="false"/>
                    			</h:form>
