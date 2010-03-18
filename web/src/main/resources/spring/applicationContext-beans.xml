@@ -364,13 +364,16 @@
   <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="navigation" ref="navigationBean"></property>
-    <property name="teamCommonBean" ref="teamCommonBean"></property>
     <property name="durationBean" ref="teamOverviewDurationBean" />
   </bean>
   <bean id="teamPieChartBean" class="com.inthinc.pro.backing.TeamPieChartBean" scope="session" parent="baseBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean> 
+  <bean id="teamStyleBean" class="com.inthinc.pro.backing.TeamStyleBean" scope="session" parent="baseBean">
+    <property name="scoreDAO" ref="scoreDAO"></property>
+    <property name="teamCommonBean" ref="teamCommonBean"></property>
+  </bean>  
     
   <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
   <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>

@@ -33,7 +33,6 @@ public class TeamOverviewBean extends BaseBean {
     
     private NavigationBean navigation;
     private DurationBean durationBean;
-    private TeamCommonBean teamCommonBean;
     
     private Integer groupID;
     private String ping;
@@ -235,21 +234,8 @@ public class TeamOverviewBean extends BaseBean {
         this.durationBean = durationBean;
     }
 
-    public TeamCommonBean getTeamCommonBean() {
-        return teamCommonBean;
-    }
-
-    public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
-        this.teamCommonBean = teamCommonBean;
-        this.groupID = teamCommonBean.getGroupID();
-    }
-
     public Integer getGroupID() {
-        // The teamCommonBean may have set this value, if not, fall back to 
-        //  evil navigation bean, which is needed for current team page
-        if ( groupID == null ) {
-            setGroupID(navigation.getGroupID() == null ? getUser().getGroupID() : navigation.getGroupID());
-        }
+        setGroupID(navigation.getGroupID() == null ? getUser().getGroupID() : navigation.getGroupID());       
         return groupID;
     }
 
@@ -279,29 +265,5 @@ public class TeamOverviewBean extends BaseBean {
         // TODO Auto-generated method stub
         return null;
     }
-        
-    public void setOverall(ActionEvent ae) {
-        this.selectedAction = findTab("overall");
-    }
-    
-    public void setSpeed(ActionEvent ae) {
-        this.selectedAction = findTab("speed");
-    }
-    
-    public void setDrivingStyle(ActionEvent ae) {
-        this.selectedAction = findTab("driving");
-    }    
-    
-    public void setSeatbelt(ActionEvent ae) {
-        this.selectedAction = findTab("seatbelt");
-    }    
-    
-    private TabAction findTab(String key) {
-        for ( TabAction ta: getActions() ) {
-            if ( ta.getKey().equalsIgnoreCase(key) ) {
-                return ta;
-            }
-        }
-        return null;
-    }
+
 }
