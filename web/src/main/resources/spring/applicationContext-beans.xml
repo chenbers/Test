@@ -379,7 +379,11 @@
   <bean id="teamStyleBean" class="com.inthinc.pro.backing.TeamStyleBean" scope="session" parent="baseBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
-  </bean>  
+  </bean> 
+  <bean id="teamSpeedBean" class="com.inthinc.pro.backing.TeamSpeedBean" scope="session" parent="baseBean">
+    <property name="scoreDAO" ref="scoreDAO"></property>
+    <property name="teamCommonBean" ref="teamCommonBean"></property>
+  </bean>
     
   <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
   <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
