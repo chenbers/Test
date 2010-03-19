@@ -34,6 +34,14 @@ ul.fdtablePaginater {text-align:center;}
     overflow-x: auto;
     overflow-y: hidden;
     min-height: 50px;	
+	position:relative;
+    
+}
+
+.datagrid th div {
+    overflow-x: auto;
+    overflow-y: hidden;
+	position:relative;
 }
 
 .datagrid {

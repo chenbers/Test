@@ -76,6 +76,7 @@
 							        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"
                                          rowClasses="tableOdd,tableEven" 
  										 cellspacing="1" rows="#{pagingDriverReportBean.table.pageData.rowsPerPage}" width="100%">
+ 										<rich:column/>
                                         <rich:column id="group" rendered="#{pagingDriverReportBean.tableColumns['group'].visible}" 
                                         				sortBy="#{item.groupName}" filterBy="#{item.groupName}"> 
                                             <f:facet name="header">
