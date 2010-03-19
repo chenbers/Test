@@ -1,0 +1,141 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+	
+   		<a4j:loadScript src="/js/FusionCharts.js"/>
+		
+		<script type="text/javascript">
+			function renderSpeedBarChart(speedElement, speedDiv, width, height)
+			{
+				var speedDef = document.getElementById(speedElement);
+				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/StackedColumn2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
+				speedChart.setDataXML(speedDef.value);	
+				speedChart.setTransparent(true);								   	   
+				speedChart.render(speedDiv);
+			}
+			function renderSpeedBar(type, width, height)
+			{
+				renderSpeedBarChart('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+			}
+			function renderSpeedPieChart(speedElement, speedDiv, width, height)
+			{
+				var speedDef = document.getElementById(speedElement);
+				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
+				speedChart.setDataXML(speedDef.value);	
+				speedChart.setTransparent(true);								   	   
+				speedChart.render(speedDiv);
+			}
+			function renderSpeedPie(type, width, height)
+			{
+				renderSpeedPieChart('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+			}			
+		</script>	
+
+	<rich:tab actionListener="#{teamSpeedBean.setSpeed}">
+	
+		<f:facet name="label">
+	 		<h:panelGroup>
+	 			<h:graphicImage value="/images/ico_line.png" />
+	 			<rich:spacer width="10"/>#{messages.team_speed}
+	 		</h:panelGroup>
+	 	</f:facet>
+	 			
+		<a4j:outputPanel id="speedingTab" ajaxRendered="true" styleClass="section" layout="block">
+		 				 				
+		<table width="900" border="0" cellspacing="0" cellpadding="0" align="center">
+			<tr>
+    			<td colspan="2" align="right" valign="top"> </td>
+			</tr>
+			<tr>
+				<td width="120" align="center" valign="middle">
+  			      	<ui:include src="/includes/overallScoreBox.xhtml">	
+						<ui:param name="overallScoreStyle" value="#{teamSpeedBean.overallScoreStyle}" />									
+      		    		<ui:param name="overallScore" value="#{teamSpeedBean.selectedOverallScore}" />             						
+      		        	<ui:param name="context" value="#{context}-speed"/> 
+    				</ui:include>    							
+					<ui:include src="/includes/scoreBoxLegend.xhtml">
+              			<ui:param name="context" value="#{context}-speed"/> 
+            		</ui:include>
+				</td>
+				<td align="center">
+					<div id="tab_speedBarDiv" align="center"></div>
+		  			<input type="hidden" id="tab_speedBarDef" value="#{teamSpeedBean.selectedNewBarDef}"/>
+					<script type="text/javascript">
+						renderSpeedBar("speedBar", "350", "500");
+					</script>
+				</td>
+        		<td width="" align="center">
+					<div id="tab_speedPieDiv" align="center"></div>
+		  			<input type="hidden" id="tab_speedPieDef" value="#{teamSpeedBean.selectedBarDef}"/>
+					<script type="text/javascript">
+						renderSpeedPie("speedPie", "350", "500");
+					</script>
+				
+					<table>
+						<tr>
+							<td align="center">
+					<div class="datagrid_panel" style="width: 350px;">
+						<rich:dataTable id="summarySpeedStats" value="#{teamSpeedBean.speedTotals}" var="item"
+							styleClass="datagrid" 
+							rowClasses="tableOdd,tableEven">
+						
+							<rich:column width="17%">
+								<f:facet name="header">
+									0 to 30
+								</f:facet>
+								<h:outputText id="zeroToThirty" value="#{item['zeroToThirty']}" style="color:#FF0101;font-style:bold;"/>                        		
+							</rich:column>
+							<rich:column width="17%">
+								<f:facet name="header">
+									31 to 40
+								</f:facet>
+								<h:outputText id="thirtyoneToFourty" value="#{item['thirtyoneToFourty']}" style="color:FF6601;font-style:bold;"/>                      		
+							</rich:column>
+							<rich:column width="17%">
+								<f:facet name="header">
+									41 to 50
+								</f:facet>
+								<h:outputText id="fourtyoneToFifty" value="#{item['fourtyoneToFifty']}" style="color:F6B305;font-style:bold;"/>                       		
+							</rich:column>
+							<rich:column width="16%">																					
+								<f:facet name="header">
+									51 to 64
+								</f:facet>
+								<h:outputText id="fiftyoneToSixtyFour" value="#{item['fiftyoneToSixtyFour']}" style="color:1E88C8;font-style:bold;"/>                    		
+							</rich:column>
+							<rich:column width="16%">
+								<f:facet name="header">
+									65 and up
+								</f:facet>
+								<h:outputText id="sixtyFiveAndUp" value="#{item['sixtyFiveAndUp']}" style="color:6B9D1B;font-style:bold;"/>                    		
+							</rich:column>	
+							<rich:column width="16%">
+								<f:facet name="header">
+									Total
+								</f:facet>
+								#{item['zeroToThirty'] + item['thirtyoneToFourty'] + item['fourtyoneToFifty'] + item['fiftyoneToSixtyFour'] + item['sixtyFiveAndUp']}                         		
+							</rich:column>														
+						</rich:dataTable>
+					</div>
+					Statistics reflect #{teamSpeedBean.totDriversSpeeding} of #{teamSpeedBean.totDrivers} drivers with speed violations.
+							</td>					
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+		</table>   
+
+      	</a4j:outputPanel>		
+	 
+	</rich:tab>
+	
+</ui:composition>	

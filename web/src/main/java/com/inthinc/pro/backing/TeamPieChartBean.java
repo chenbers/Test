@@ -41,7 +41,7 @@ public class TeamPieChartBean extends BaseBean {
     private List<HashMap> overallTotals;
     
     private Integer groupID;
-    private static final Logger logger = Logger.getLogger(TeamOverviewBean.class);
+    private static final Logger logger = Logger.getLogger(TeamSpeedBean.class);
 
     public TeamPieChartBean() {
         logger.debug("TeamPieChartBean - constructor");        
