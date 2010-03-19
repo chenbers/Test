@@ -73,33 +73,23 @@
 		getLatestTrips();
 		initTripTimeFrameChangeListener();
 	}
-	function onTabLeave(){
-		GUnload();
- 	   	jQuery("[id$='Day']").unbind('click',dayClickFunction);
- 	   	jQuery("[id$='teamDurationPanelHeaderDays']").unbind('click',dayClickFunction);
-		jQuery('#longDurations').children().removeClass('disable');
-		jQuery('#longDurations').children().unbind('click',longDurationClickFunction);
-	}
 
 	function initTripTimeFrameChangeListener() {		
-		disableLinks();
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
 		Team.getSelectedTab()
 		.bind('timeFrameChange', function(){
 			resetTripsForSelectedDrivers();
-			disableLinks();
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
 		});
-	}
-
-	function disableLinks() {
-		Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
-		Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
 	}
 		
  </script>
 
  	<t:saveState  value="#{teamTripsBean}"/>
  
-   <rich:tab id="teamTrips" ontableave="onTabLeave();"  oncomplete="onTabSelectionComplete();" >
+   <rich:tab id="teamTrips" ontableave=""  oncomplete="onTabSelectionComplete();" >
 	   	
 	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">
