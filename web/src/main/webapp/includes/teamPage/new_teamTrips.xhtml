@@ -68,15 +68,10 @@
 			event.preventDefault();
 		};
 		
-	function onTabSelectionComplete(){
-		
+	function onTabSelectionComplete(){		
 		initTeamTripsMap();
 		getLatestTrips();
-		
-  	   	jQuery("[id$='Day']").bind('click',dayClickFunction);
-  	   	jQuery("[id$='teamDurationPanelHeaderDays']").bind('click',dayClickFunction);
-		jQuery('#longDurations').children().addClass('disable');
-		jQuery('#longDurations').children().click(longDurationClickFunction);
+		initTripTimeFrameChangeListener();
 	}
 	function onTabLeave(){
 		GUnload();
@@ -86,27 +81,40 @@
 		jQuery('#longDurations').children().unbind('click',longDurationClickFunction);
 	}
 
+	function initTripTimeFrameChangeListener() {		
+		disableLinks();
+		Team.getSelectedTab()
+		.bind('timeFrameChange', function(){
+			resetTripsForSelectedDrivers();
+			disableLinks();
+		});
+	}
+
+	function disableLinks() {
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
+	}
+		
  </script>
 
  	<t:saveState  value="#{teamTripsBean}"/>
  
-   <rich:tab id="teamTrips" ontableave="onTabLeave();"  oncomplete="onTabSelectionComplete()" >
-	 
-	<a4j:queue name="tripsQueue"/>     
+   <rich:tab id="teamTrips" ontableave="onTabLeave();"  oncomplete="onTabSelectionComplete();" >
+	   	
+	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">
 	 	<h:panelGroup>
 	 		<h:graphicImage value="/images/ico_map.png" /><rich:spacer width="10"/>Trips
 	 	</h:panelGroup>
 	 </f:facet>
-	
-	
+ 
 	
    	<!-- Trips Map -->
    	<div class="section">
 	       
 	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0;">
 	        	<h:form id="tripsTableForm">
-	        	<a4j:region id="teamTripsRegion">
+	        	<a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
 	         	<rich:dataTable	value="#{teamTripsBean.drivers}" 
 					       		id="driversTrips" 
 					       		var="driver"
@@ -150,6 +158,8 @@
             		 				styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
             		 				eventsQueue="tripsQueue"/>
             		 
+    				<a4j:jsFunction ajaxSingle="true" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
+    						eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(data)"/>
 				 </a4j:region>
  				</h:form>	
  				         
@@ -159,9 +169,5 @@
 			 <div style="clear:both"></div>
 	       </div>
     <!-- End Trips Map -->
-    <h:form>
-    	<a4j:jsFunction name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
-    						eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(data)"/>
-    </h:form>
     </rich:tab>
  </ui:composition>

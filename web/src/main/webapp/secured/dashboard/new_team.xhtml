@@ -18,7 +18,7 @@
        		.section {
        			padding: 4px 8px;
        		}
-			.whathappened-panel {
+			.whathappened_panel {
 				width: 940px;
 				margin: auto;
 				padding-top: 8px;
@@ -54,19 +54,49 @@
 			}
 			.disable {
 				color: #cccccc !important;
+    			cursor: default;
+			}		
+			.timeframe-link{}
+			.timeframe-selected {
+			    color: #6B9D1B !important;
+			    font-weight: bold !important;
+			    text-decoration: none !important;
+			    cursor: default;
+			}	
+			.timeframe-disabled {
+				color: #cccccc !important;
+    			cursor: default;
 			}
 		</style>
         
 	    <script language="javascript" type="text/javascript">
-	    		
-			function bodyLoad() {
-			}
-			function bodyUnload() {
+	    	window.Team = {};
+			function bodyLoad() {}
+			function bodyUnload() {}
+			//function reloadAjaxPanels() {}
+
+			Team.getSelectedTab = function() {
+				return jQuery('.rich-tab-active');
+			}			
+			
+			Team.getSelectedTabId = function() {
+				return jQuery('.rich-tab-active').attr('id');
 			}
 
-			function getSelectedTabId() {
-				jQuery('.rich-tab-active').attr('id');
+			Team.disableTimeFrame = function(timeFrameId) {
+				jQuery(timeFrameId)
+				.attr("onclick", "return false;")
+				.removeClass('timeframe-link')
+				.addClass('timeframe-disabled');
 			}
+
+			Team.timeFrameChange = function() {
+				Team.getSelectedTab().triggerHandler('timeFrameChange');
+			}
+			
+			jQuery().ready(function(){
+				//jQuery("#timeFrameForm > a.timeframe-link").live('click', Team.timeFrameChange);
+			});
 
 					
 		</script>	
@@ -109,7 +139,7 @@
     		
         </a4j:region>
 	</h:form>	
-	<div class="whathappened-panel">
+	<div class="whathappened_panel">
     	<div class="panel_nw">    
 			<div class="panel_title">
 	    		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"></rich:spacer>#{messages.team_what_happened} 
@@ -119,80 +149,96 @@
 	                            <f:facet name="start">                    
 	                                <h:graphicImage styleClass="ajax_status" value="/images/progress2.gif"/>
 	                            </f:facet>
-	                        </a4j:status> 
-						<span id="allDurations">	                        
-	                        <a4j:commandLink id="teamDurationPanelHeaderOneDay"                                        
+	                        </a4j:status>                         
+	                        <a4j:commandLink id="timeFrameToday"     
+	                        	oncomplete="Team.timeFrameChange()"                                   
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'TODAY' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'TODAY'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'TODAY' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{messages.team_today}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="TODAY" />
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>   
-	                        <a4j:commandLink id="teamDurationPanelHeaderTwoDay"                                         
+	                        <a4j:commandLink id="timeFrameOneDay"  
+	                        	oncomplete="Team.timeFrameChange()"                                             
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{messages.team_yesterday}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="ONE_DAY_AGO" />
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
-	                        <a4j:commandLink id="teamDurationPanelHeaderThreeDay"                                         
+	                        <a4j:commandLink id="timeFrameTwoDay"    
+	                        	oncomplete="Team.timeFrameChange()"                                            
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{teamCommonBean.dayLabels['2']}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="TWO_DAYS_AGO" />
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
-	                        <a4j:commandLink id="teamDurationPanelHeaderFourDay"                                         
+	                        <a4j:commandLink id="timeFrameThreeDay"    
+	                        	oncomplete="Team.timeFrameChange()"                                            
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'THREE_DAYS_AGO' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'THREE_DAYS_AGO'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'THREE_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{teamCommonBean.dayLabels['3']}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="THREE_DAYS_AGO" />
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
-	                        <a4j:commandLink id="teamDurationPanelHeaderFiveDay"                                         
+	                        <a4j:commandLink id="timeFrameFourDay"     
+	                        	oncomplete="Team.timeFrameChange()"                                           
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'FOUR_DAYS_AGO' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'FOUR_DAYS_AGO'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'FOUR_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{teamCommonBean.dayLabels['4']}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="FOUR_DAYS_AGO" />
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>
-	                        <a4j:commandLink id="teamDurationPanelHeaderSixDay"                                         
+	                        <a4j:commandLink id="timeFrameFiveDay"       
+	                        	oncomplete="Team.timeFrameChange()"                                         
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'FIVE_DAYS_AGO' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'FIVE_DAYS_AGO'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'FIVE_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{teamCommonBean.dayLabels['5']}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="FIVE_DAYS_AGO" />
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
-	                        <a4j:commandLink id="teamDurationPanelHeaderSevenDay"                                         
+	                        <a4j:commandLink id="timeFrameSixDay"     
+	                        	oncomplete="Team.timeFrameChange()"                                           
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'SIX_DAYS_AGO' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'SIX_DAYS_AGO'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'SIX_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{teamCommonBean.dayLabels['6']}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="SIX_DAYS_AGO" />
 	                        </a4j:commandLink>
 	                         <rich:spacer width="40"/> 
-	                        <a4j:commandLink id="teamDurationPanelHeaderDays"                                         
+	                        <a4j:commandLink id="timeFrameWeek"       
+	                        	oncomplete="Team.timeFrameChange()"                                         
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'WEEK' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'WEEK'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'WEEK' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{messages.team_7_days}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="WEEK" />
 	                        </a4j:commandLink>
-	                        </span>
-	                        <rich:spacer width="5"/>                                     
-	                        <span id="longDurations">                                                                                                                   
-	                        <a4j:commandLink id="teamDurationPanelHeaderThreeMonths"                                         
+	                        <rich:spacer width="5"/>                                                                                                                    
+	                        <a4j:commandLink id="timeFrameMonth"      
+	                        	oncomplete="Team.timeFrameChange()"                                          
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'MONTH' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'MONTH'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'MONTH' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{teamCommonBean.monthLabel}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="MONTH" />
 	                        </a4j:commandLink> 
 	                        <rich:spacer width="5"/>                                 
-	                        <a4j:commandLink id="teamDurationPanelHeaderTwelveMonths"                                          
+	                        <a4j:commandLink id="timeFrameYear"      
+	                        	oncomplete="Team.timeFrameChange()"                                           
 	                            immediate="true" 
-	                            styleClass="#{teamCommonBean.timeFrame eq 'YEAR' ? 'selected_duration' : ''}"
+	                            disabled="#{teamCommonBean.timeFrame eq 'YEAR'}" 
+	                            styleClass="#{teamCommonBean.timeFrame eq 'YEAR' ? 'timeframe-selected' : 'timeframe-link'}"
 	                            value="#{messages.team_365_days}">
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="YEAR" />
-	                        </a4j:commandLink>
-	                        </span> 	                     
+	                        </a4j:commandLink>                     
 	        		</h:form>
 				</a4j:outputPanel>		  	
      	 	</div>
