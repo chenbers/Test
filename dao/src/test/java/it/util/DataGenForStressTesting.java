@@ -850,8 +850,14 @@ System.out.println("Waiting for imei: " + imei);
         }
         
         xmlPath = args[1];
-        
-        if (args.length >= 4)
+        if (args.length == 3)
+        {
+        	configFile = args[2];
+        	// start of day today (i.e. midnight today)
+        	startDateInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 1, ReportTestConst.TIMEZONE_STR);
+        	numDays = 1;
+        }
+        else if (args.length >= 4)
         {
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     		dateFormat.setTimeZone(ReportTestConst.timeZone);
