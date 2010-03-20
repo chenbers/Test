@@ -22,9 +22,13 @@ public class IntegrationConfig extends Properties
 
     public IntegrationConfig()
     {
+    	this(CONFIG_PROPERTIES_FILENAME);
+    }
+    public IntegrationConfig(String propFileName)
+    {
         try
         {
-            load(Thread.currentThread().getContextClassLoader().getResourceAsStream(CONFIG_PROPERTIES_FILENAME));
+            load(Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName));
         }
         catch (Exception e)
         {

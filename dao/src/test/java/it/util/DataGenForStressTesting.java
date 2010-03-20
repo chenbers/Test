@@ -73,6 +73,7 @@ public class DataGenForStressTesting {
     private static final String alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private String xmlPath;
+    private static String configFile;
     
     public static Integer NUM_EVENT_DAYS = 8;
 
@@ -826,7 +827,7 @@ System.out.println("Waiting for imei: " + imei);
 		//		optional:
 		//			2: 
 		
-		String usageErrorMsg = "Usage: DataGenForStressTesting <NEW|EVENTS> <xml file path> [optional if EVENTS: <start date: MM/DD/YYYY> <num days>]";
+		String usageErrorMsg = "Usage: DataGenForStressTesting <NEW|EVENTS> <xml file path> [optional if EVENTS: <start date: MM/DD/YYYY> <num days> <config file> ]";
 		
         if (args.length < 2)
         {
@@ -850,7 +851,7 @@ System.out.println("Waiting for imei: " + imei);
         
         xmlPath = args[1];
         
-        if (args.length == 4)
+        if (args.length >= 4)
         {
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     		dateFormat.setTimeZone(ReportTestConst.timeZone);
@@ -878,6 +879,9 @@ System.out.println("Waiting for imei: " + imei);
             	System.out.println("Command Line Args: expected numDays greater than 0");
             	System.exit(1);
     		}
+            if (args.length == 5) {
+            	configFile = args[4];
+            }
         	
         }
         else
@@ -896,7 +900,7 @@ System.out.println("Waiting for imei: " + imei);
         DataGenForStressTesting  testData = new DataGenForStressTesting();
         testData.parseArguments(args);
 
-        IntegrationConfig config = new IntegrationConfig();
+        IntegrationConfig config = new IntegrationConfig(configFile);
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         siloService = new SiloServiceCreator(host, port).getService();
