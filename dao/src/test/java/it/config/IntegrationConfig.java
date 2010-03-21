@@ -28,7 +28,8 @@ public class IntegrationConfig extends Properties
     {
         try
         {
-            load(Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName));
+        	
+            load(Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName == null ? CONFIG_PROPERTIES_FILENAME : propFileName));
         }
         catch (Exception e)
         {
