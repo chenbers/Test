@@ -1,6 +1,5 @@
 package com.inthinc.pro.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.Interval;
@@ -100,7 +99,7 @@ public interface ReportDAO extends GenericDAO<Object, Integer> {
 
     /**
      * Gets a total count of idling report items for the specified group and filters (includes drivers that
-     * have not driven a vehicle that supports idle stats).
+     * have driven a vehicle that supports idle stats).
      * 
      * @param groupID
      *            	The groupID (deep) to retrieve.
@@ -108,7 +107,7 @@ public interface ReportDAO extends GenericDAO<Object, Integer> {
      * 				Filters for data set            
      * @return Count of idling report items in group that meet filtering criteria.
      */
-	Integer getIdlingReportTotalCount(Integer groupID, Interval interval, List<TableFilterField> filters);
+	Integer getIdlingReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters);
 
     /**
      * Gets a count of idling report items for the specified group and filters

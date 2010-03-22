@@ -17,7 +17,14 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private Number driveTime;		// changed to float from number
     private Number lowIdleTime;
     private Number highIdleTime;
+    private Integer hasRPM;
 
+	public Integer getHasRPM() {
+		return hasRPM;
+	}
+	public void setHasRPM(Integer hasRPM) {
+		this.hasRPM = hasRPM;
+	}
 	public Integer getGroupID() {
 		return groupID;
 	}

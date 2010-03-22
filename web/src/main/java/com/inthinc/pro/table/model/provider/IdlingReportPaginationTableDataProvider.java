@@ -34,9 +34,10 @@ public class IdlingReportPaginationTableDataProvider extends GenericPaginationTa
 		if (groupID == null)
 			return 0;
 
+		int idleRowCount =  reportDAO.getIdlingReportSupportsIdleStatsCount(groupID, interval, getFilters());
+		setTotalDriversWithIdleStats(idleRowCount);
 		int rowCount =  reportDAO.getIdlingReportCount(groupID, interval, getFilters());
-		setTotalDriversWithIdleStats(rowCount);
-		setTotalDrivers(reportDAO.getIdlingReportTotalCount(groupID, interval, getFilters()));
+		setTotalDrivers(rowCount);
 		
 		return rowCount;
 	}

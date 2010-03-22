@@ -132,6 +132,13 @@
                                                 <f:param value="#{item.driverID}"/>
                                             </pretty:link>
                                 		</rich:column>
+										<rich:column id="idleSupport" rendered="#{bean.tableColumns['hasRPM'].visible}" 
+                                					sortBy="#{item.hasRPM}">    					
+											<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_idle_support}" />
+                                  			</f:facet>
+                                  			<h:outputText value="#{item.hasRPM == 1 ? messages.yes : messages.no}"/>        					
+                                		</rich:column>    				
 										<rich:column id="driveTime" rendered="#{bean.tableColumns['driveTime'].visible}" 
                                 					sortBy="#{item.driveTime}">    					
 											<f:facet name="header">
