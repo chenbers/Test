@@ -129,7 +129,7 @@
                                                 	<h:outputText value="#{messages.reports_vehiclereport_odometer}"/>
                                             	</f:facet>
                                             	<h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
-                                                	<a4j:actionparam value="#{item.odometer}" converter="MilesToKilometersConverter"/>
+                                                	<a4j:actionparam value="#{item.odometer}" converter="HundrethMilesToKilometersConverter"/>
                                                 	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                                             	</h:outputFormat>
                                         	</rich:column>                                        
