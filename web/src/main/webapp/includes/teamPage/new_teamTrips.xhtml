@@ -68,7 +68,7 @@
 			event.preventDefault();
 		};
 		
-	function onTabSelectionComplete(){		
+	function onTripTabSelectionComplete(){		
 		initTeamTripsMap();
 		getLatestTrips();
 		initTripTimeFrameChangeListener();
@@ -89,7 +89,7 @@
 
  	<t:saveState  value="#{teamTripsBean}"/>
  
-   <rich:tab id="teamTrips" ontableave=""  oncomplete="onTabSelectionComplete();" >
+   <rich:tab id="teamTrips" ontableave=""  oncomplete="onTripTabSelectionComplete();" >
 	   	
 	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">
