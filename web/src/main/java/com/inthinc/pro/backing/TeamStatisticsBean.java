@@ -369,10 +369,7 @@ public class TeamStatisticsBean extends BaseBean {
         // Set the styles for the color-coded box and convert the mpg data               
         loadScoreStyles();
         convertMPGData();
-        cleanData();
-
-        // All set, save so we don't grab the data again
-        teamCommonBean.getCachedResults().put(AggregationDuration.TWELVE_MONTH.name(), driverStatistics);        
+        cleanData();     
         
         // Find the totals
         List<DriverVehicleScoreWrapper> local = getDriverTotals();
