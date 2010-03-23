@@ -49,7 +49,9 @@
 	 	</f:facet>
 	 			
 		<a4j:outputPanel id="speedingTab" ajaxRendered="true" styleClass="section" layout="block">
-		 				 				
+		
+		<div class="datagrid_panel">
+		 				 									       
 		<table width="900" border="0" cellspacing="0" cellpadding="0" align="center">
 			<tr>
     			<td colspan="2" align="right" valign="top"> </td>
@@ -71,25 +73,33 @@
 					<script type="text/javascript">
 						renderSpeedBar("speedBar", "350", "500");
 					</script>
+<!-- 					
+					<div id="tab_speedOverBarDiv" align="center"></div>
+		  			<input type="hidden" id="tab_speedOverBarDef" value="#{teamSpeedBean.selectedSpeedOverBarDef}"/>
+					<script type="text/javascript">
+						renderSpeedBar("speedOverBar", "350", "500");
+					</script>  -->					
 				</td>
         		<td width="" align="center">
 					<div id="tab_speedPieDiv" align="center"></div>
 		  			<input type="hidden" id="tab_speedPieDef" value="#{teamSpeedBean.selectedBarDef}"/>
 					<script type="text/javascript">
 						renderSpeedPie("speedPie", "350", "500");
-					</script>
+					</script>				
 				
 					<table>
 						<tr>
-							<td align="center">
-					<div class="datagrid_panel" style="width: 350px;">
-						<rich:dataTable id="summarySpeedStats" value="#{teamSpeedBean.speedTotals}" var="item"
+							<td align="center" width="350">
+					
+						<rich:dataTable id="summarySpeedStats" 
+							value="#{teamSpeedBean.speedTotals}" 
+							var="item"
 							styleClass="datagrid" 
 							rowClasses="tableOdd,tableEven">
 						
 							<rich:column width="17%">
 								<f:facet name="header">
-									0 to 30
+									1 to 30
 								</f:facet>
 								<h:outputText id="zeroToThirty" value="#{item['zeroToThirty']}" style="color:#FF0101;font-style:bold;"/>                        		
 							</rich:column>
@@ -97,25 +107,25 @@
 								<f:facet name="header">
 									31 to 40
 								</f:facet>
-								<h:outputText id="thirtyoneToFourty" value="#{item['thirtyoneToFourty']}" style="color:FF6601;font-style:bold;"/>                      		
+								<h:outputText id="thirtyoneToFourty" value="#{item['thirtyoneToFourty']}" style="color:#FF6601;font-style:bold;"/>                      		
 							</rich:column>
 							<rich:column width="17%">
 								<f:facet name="header">
 									41 to 50
 								</f:facet>
-								<h:outputText id="fourtyoneToFifty" value="#{item['fourtyoneToFifty']}" style="color:F6B305;font-style:bold;"/>                       		
+								<h:outputText id="fourtyoneToFifty" value="#{item['fourtyoneToFifty']}" style="color:#F6B305;font-style:bold;"/>                       		
 							</rich:column>
 							<rich:column width="16%">																					
 								<f:facet name="header">
 									51 to 64
 								</f:facet>
-								<h:outputText id="fiftyoneToSixtyFour" value="#{item['fiftyoneToSixtyFour']}" style="color:1E88C8;font-style:bold;"/>                    		
+								<h:outputText id="fiftyoneToSixtyFour" value="#{item['fiftyoneToSixtyFour']}" style="color:#1E88C8;font-style:bold;"/>                    		
 							</rich:column>
 							<rich:column width="16%">
 								<f:facet name="header">
 									65 and up
 								</f:facet>
-								<h:outputText id="sixtyFiveAndUp" value="#{item['sixtyFiveAndUp']}" style="color:6B9D1B;font-style:bold;"/>                    		
+								<h:outputText id="sixtyFiveAndUp" value="#{item['sixtyFiveAndUp']}" style="color:#6B9D1B;font-style:bold;"/>                    		
 							</rich:column>	
 							<rich:column width="16%">
 								<f:facet name="header">
@@ -124,16 +134,21 @@
 								#{item['zeroToThirty'] + item['thirtyoneToFourty'] + item['fourtyoneToFifty'] + item['fiftyoneToSixtyFour'] + item['sixtyFiveAndUp']}                         		
 							</rich:column>														
 						</rich:dataTable>
-					</div>
+					
 					Statistics reflect #{teamSpeedBean.totDriversSpeeding} of #{teamSpeedBean.totDrivers} drivers with speed violations.
 							</td>					
 						</tr>
 					</table>
+					
+				
+					
 				</td>
 			</tr>
 
-		</table>   
-
+		</table>
+		   
+		</div>
+		
       	</a4j:outputPanel>		
 	 
 	</rich:tab>

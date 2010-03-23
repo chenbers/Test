@@ -372,15 +372,15 @@
     <property name="navigation" ref="navigationBean"></property>
     <property name="durationBean" ref="teamOverviewDurationBean" />
   </bean>
-  <bean id="teamPieChartBean" class="com.inthinc.pro.backing.TeamPieChartBean" scope="session" parent="baseBean">
+  <bean id="teamPieChartBean" class="com.inthinc.pro.backing.TeamPieChartBean" scope="request" parent="baseBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean> 
-  <bean id="teamStyleBean" class="com.inthinc.pro.backing.TeamStyleBean" scope="session" parent="baseBean">
+  <bean id="teamStyleBean" class="com.inthinc.pro.backing.TeamStyleBean" scope="request" parent="baseBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean> 
-  <bean id="teamSpeedBean" class="com.inthinc.pro.backing.TeamSpeedBean" scope="session" parent="baseBean">
+  <bean id="teamSpeedBean" class="com.inthinc.pro.backing.TeamSpeedBean" scope="request" parent="baseBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean>

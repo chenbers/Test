@@ -63,7 +63,7 @@ public class TeamStyleBean extends BaseBean {
     }
 
     public String getSelectedBarDef() {
-        TabAction action = getSelectedAction();
+        TabAction action = findTab("driving");
         ScoreType scoreType = action.getScoreType();
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
 
@@ -158,7 +158,7 @@ public class TeamStyleBean extends BaseBean {
     }
 
     public Integer getSelectedOverallScore() {
-        TabAction action = getSelectedAction();        
+        TabAction action = findTab("driving");       
         ScoreType scoreType = action.getScoreType();
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
@@ -286,7 +286,7 @@ public class TeamStyleBean extends BaseBean {
         // Data to sift through
         List<DriverVehicleScoreWrapper> local = 
             teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
-               
+        
         // Run through all the subtypes of style
         for (ScoreType subType : scoreType.getSubTypes()) {
             int nA = 0;

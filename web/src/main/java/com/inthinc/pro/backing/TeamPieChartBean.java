@@ -67,7 +67,7 @@ public class TeamPieChartBean extends BaseBean {
     }
 
     public String getSelectedBarDef() {
-        TabAction action = getSelectedAction();
+        TabAction action = findTab("overall");
         ScoreType scoreType = action.getScoreType();
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
@@ -157,7 +157,7 @@ public class TeamPieChartBean extends BaseBean {
     }
 
     public Integer getSelectedOverallScore() {
-        TabAction action = getSelectedAction();        
+        TabAction action = findTab("overall");        
         ScoreType scoreType = action.getScoreType();
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
