@@ -19,14 +19,15 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.ReportHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.DriverReportItem;
@@ -78,25 +79,25 @@ public class ReportPaginationTest {
 
     TestFilterParams[] vehicleFilterTestList = {
     		new TestFilterParams("groupID", "XXX", 0),
-    		new TestFilterParams("groupID", goodGroupID.toString(), countPerGroup),
+    		new TestFilterParams("groupID", goodGroupID.toString(), countPerGroup+1),
     		new TestFilterParams("groupName", "XXX", 0),
-    		new TestFilterParams("groupName", goodGroupName, countPerGroup),
+    		new TestFilterParams("groupName", goodGroupName, countPerGroup+1),
     		new TestFilterParams("driverName", "XXX", 0),
     		new TestFilterParams("driverName", goodGroupName, countPerGroup),
     		new TestFilterParams("vehicleName", "XXX", 0),
     		new TestFilterParams("vehicleName", goodGroupName, countPerGroup),
     		new TestFilterParams("vehicleYMM", "XXX", 0),
-    		new TestFilterParams("vehicleYMM", "Make", countPerGroup),
+    		new TestFilterParams("vehicleYMM", "Make", countPerGroup+1),
     		new TestFilterParams("overallScore", new Range(100,200), 0),
-    		new TestFilterParams("overallScore", new Range(0,51), countPerGroup),
+    		new TestFilterParams("overallScore", new Range(0,51), countPerGroup+1),
     		new TestFilterParams("speedScore", new Range(100,200), 0),
-    		new TestFilterParams("speedScore", new Range(0,51), countPerGroup),
+    		new TestFilterParams("speedScore", new Range(0,51), countPerGroup+1),
     		new TestFilterParams("styleScore", new Range(100,200), 0),
-    		new TestFilterParams("styleScore", new Range(0,51), countPerGroup),
+    		new TestFilterParams("styleScore", new Range(0,51), countPerGroup+1),
     		new TestFilterParams("milesDriven", new Range(0,0), 0),
-    		new TestFilterParams("milesDriven", new Range(0,Long.MAX_VALUE), countPerGroup),
+    		new TestFilterParams("milesDriven", new Range(0,Long.MAX_VALUE), countPerGroup+1),
     		new TestFilterParams("odometer", new Range(100,200), 0),
-    		new TestFilterParams("odometer", new Range(0,Long.MAX_VALUE), countPerGroup),
+    		new TestFilterParams("odometer", new Range(0,Long.MAX_VALUE), countPerGroup+1),
     };
 
     TestFilterParams[] deviceFilterTestList = {
@@ -146,6 +147,13 @@ public class ReportPaginationTest {
         if (!itData.parseTestDataExt(stream, siloService, countPerGroup)) {
             throw new Exception("Error parsing Test data xml file");
         }
+
+        AccountHessianDAO accountDAO = new AccountHessianDAO();
+        accountDAO.setSiloService(siloService);
+        Account account = accountDAO.findByID(itData.account.getAcctID());
+        itData.account.setUnkDriverID(account.getUnkDriverID());
+
+
         goodGroupID = itData.teamGroupListData.get(ITData.GOOD).group.getGroupID();
         goodGroupName = itData.teamGroupListData.get(ITData.GOOD).group.getName();
         badGroupName = itData.teamGroupListData.get(ITData.BAD).group.getName();
@@ -267,17 +275,23 @@ public class ReportPaginationTest {
 
     		GroupListData team = itData.teamGroupListData.get(teamIdx);
     		Integer vehicleCount = reportDAO.getVehicleReportCount(team.group.getGroupID(), null);
-    		assertEquals("Unexpected vehicle count for team " + teamIdx, countPerGroup, vehicleCount);
+    		Integer expectedCount = countPerGroup + (teamIdx == ITData.GOOD ? 1 : 0);  // add one for unknown driver vehicle
+    		assertEquals("Unexpected vehicle count for team " + teamIdx, expectedCount, vehicleCount);
 
     		// get all
     		PageParams pageParams = new PageParams();
     		pageParams.setStartRow(0);
     		pageParams.setEndRow(vehicleCount-1);
     		List<VehicleReportItem> vehicleList = reportDAO.getVehicleReportPage(team.group.getGroupID(), pageParams);
-    		assertEquals("Unexpected vehicle count for team " + teamIdx, countPerGroup, Integer.valueOf(vehicleList.size()));
+    		assertEquals("Unexpected vehicle count for team " + teamIdx, expectedCount, Integer.valueOf(vehicleList.size()));
     		// check some of the field values
     		for (VehicleReportItem item : vehicleList) {
+    			if (item.getDriverID().equals(itData.account.getUnkDriverID())) {
+    				// skip unknown driver
+    				continue;
+    			}
     			String expectedDriverName = "Driver"+team.group.getName() + " m Last" +team.group.getGroupID()+ " jr";
+    			
     			assertEquals("driver Name", expectedDriverName, getItemBaseName(item.getDriverName(), "Driver"));
     			String expectedGroupName = team.group.getName();
     			assertEquals("group Name", expectedGroupName, item.getGroupName());
