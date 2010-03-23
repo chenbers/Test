@@ -88,7 +88,7 @@
   </bean>
   
   <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean" init-method="init"/>
-  <bean id="teamStatisticsBean" class="com.inthinc.pro.backing.TeamStatisticsBean" scope="request" parent="baseBean">
+  <bean id="teamStatisticsBean" class="com.inthinc.pro.backing.TeamStatisticsBean" scope="request" parent="baseBean" init-method="init">
     <property name="teamCommonBean" ref="teamCommonBean"></property>  
   </bean>        
   <bean id="teamTripsBean" class="com.inthinc.pro.backing.TeamTripsBean" scope="request" parent="baseBean" init-method="init"/>         

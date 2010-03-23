@@ -9,6 +9,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.AggregationDuration;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -28,7 +29,10 @@ public class TeamStatisticsBean extends BaseBean {
     private List<DriverVehicleScoreWrapper> driverTotals;   
 
     private GroupReportDAO groupReportDAO;  
-    private TeamCommonBean teamCommonBean;    
+    private TeamCommonBean teamCommonBean;   
+    
+    private Integer teamOverallScore;
+    private String teamOverallScoreStyle;
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -44,6 +48,10 @@ public class TeamStatisticsBean extends BaseBean {
 
     public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
         this.teamCommonBean = teamCommonBean;
+    }
+    
+    public void init() {
+        setOverallData();
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
@@ -351,6 +359,43 @@ public class TeamStatisticsBean extends BaseBean {
 
     public void setNumRowsPerPg(int numRowsPerPg) {
         this.numRowsPerPg = numRowsPerPg;
+    }
+    
+    private void setOverallData() {        
+        // Get stats for one year for this group
+        driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                AggregationDuration.TWELVE_MONTH);
+        
+        // Set the styles for the color-coded box and convert the mpg data               
+        loadScoreStyles();
+        convertMPGData();
+        cleanData();
+
+        // All set, save so we don't grab the data again
+        teamCommonBean.getCachedResults().put(AggregationDuration.TWELVE_MONTH.name(), driverStatistics);        
+        
+        // Find the totals
+        List<DriverVehicleScoreWrapper> local = getDriverTotals();
+        
+        // Set the score and style
+        teamOverallScore = local.get(0).getScore().getOverall().intValue();
+        teamOverallScoreStyle = local.get(0).getScoreStyle();        
+    }
+
+    public Integer getTeamOverallScore() {       
+        return teamOverallScore;
+    }
+
+    public void setTeamOverallScore(Integer teamOverallScore) {
+        this.teamOverallScore = teamOverallScore;
+    }
+
+    public String getTeamOverallScoreStyle() {
+        return teamOverallScoreStyle;
+    }
+
+    public void setTeamOverallScoreStyle(String teamOverallScoreStyle) {
+        this.teamOverallScoreStyle = teamOverallScoreStyle;
     }
     
 }
