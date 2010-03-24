@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.ajax4jsf.model.KeepAlive;
+
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.MapIcon;
@@ -16,6 +18,7 @@ import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 
+@KeepAlive
 public class TeamTripsBean extends BaseBean {
 
 	/**

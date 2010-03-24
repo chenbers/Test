@@ -33,7 +33,7 @@
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 	<a4j:loadScript src="/js/arrowedPolyline.js"/>
 	<a4j:loadScript src="/js/labeledMarker.js"/>
-	<a4j:loadScript src="/js/markerClustererWithStackedMarkers.js"/>
+	<a4j:loadScript src="/js/markerClustererWithMergedMarkerSets.js"/>
 	<a4j:loadScript src="/js/teamTrips.js"/>
 	
 	
@@ -59,6 +59,24 @@
 			map.setMapType(G_NORMAL_MAP);
 			map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
 			tripIcons = icons;
+
+	    	var icon = new GIcon();
+	    	icon.image = tripIcons[6];
+	    	icon.iconSize = new GSize(48, 24);
+	    	icon.iconAnchor = new GPoint(0, 0);
+	    	icon.infoWindowAnchor = new GPoint(25, 12);
+				
+			var markerClustererOptions = {'maxStacked':3,
+										  'customClusters':true};
+			var customClusterOptions ={ 
+		          	  "icon": icon,
+		          	  "clickable": true,
+		          	  "labelText": getClusterMarkerLabel(),
+		          	  "labelOffset": new GSize(0, 0),
+		          	  "labelClass":"trips_markerLabel"
+		          	};
+					  
+			superMarkerClusterer = new MarkerClustererWithMergedMarkerSets(map,markerClustererOptions, customClusterOptions);
 		}
 	}
 	var dayClickFunction = function(event){
@@ -86,11 +104,9 @@
 	}
 		
  </script>
-
- 	<t:saveState  value="#{teamTripsBean}"/>
  
    <rich:tab id="teamTrips" ontableave=""  oncomplete="onTripTabSelectionComplete();" >
-	   	
+   	
 	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">
 	 	<h:panelGroup>

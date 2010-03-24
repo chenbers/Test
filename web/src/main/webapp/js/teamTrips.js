@@ -8,7 +8,8 @@
 	var boundsArray = new Array();
 	var colorArray = new Array();
 	var markerClustererMaxZoom = 12;
-	var clickLatLng = null;
+	var superMarkerClusterer;
+//	var clickLatLng = null;
 	
 	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
 				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
@@ -44,9 +45,10 @@
 			
 			overlaysArray[driverIndex][j].hide();
 		}
-		if (markerClusterers[driverIndex]!=null) {
+		// hide individual clusters in the superMarkerClusterer
+		if (superMarkerClusterer!=null) {
 			
-			markerClusterers[driverIndex].clearMarkers();
+			superMarkerClusterer.hideMarkers(driverIndex);
 		}
 	}
 	function showOverlays(driverIndex){
@@ -54,6 +56,11 @@
 		for (var j=0; j<overlaysArray[driverIndex].length; j++){
 						
 			overlaysArray[driverIndex][j].show();
+		}
+		// show individual clusters in the superMarkerClusterer
+		if (superMarkerClusterer!=null) {
+			
+			superMarkerClusterer.showMarkers(driverIndex);
 		}
 	}
 
@@ -65,35 +72,34 @@
 				overlaysArray[i][j].hide();
 			}
 		}
-		for (var i=0; i<markerClusterers.length;i++){
-				
-			if (markerClusterers[i]!=null){
-				
-				markerClusterers[i].clearMarkers();
-			}
-		}
+		if (superMarkerClusterer !== null) superMarkerClusterer.clearAllMarkers();
+//		for (var i=0; i<markerClusterers.length;i++){
+//				
+//			if (markerClusterers[i]!=null){
+//				
+//				markerClusterers[i].clearMarkers();
+//			}
+//		}
 	}
-	function createMarkers(index){
-		
-    	var icon = new GIcon();
-    	icon.image = tripIcons[6];
-    	icon.iconSize = new GSize(48, 24);
-    	icon.iconAnchor = new GPoint(0, 0);
-    	icon.infoWindowAnchor = new GPoint(25, 12);
-
-    	var clusterOpts = { 
-          	  "icon": icon,
-          	  "clickable": true,
-          	  "labelText": getClusteredLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]]),
-          	  "labelOffset": new GSize(0, 0),
-          	  "labelClass":"trips_markerLabel"
-          	};
-
-		markerClusterers[index] = new MarkerClustererWithStackedMarkers(map,
-				markersArray[index],
-				clusterOpts);
-
-	}
+//	function createMarkers(index){
+//		
+//    	var icon = new GIcon();
+//    	icon.image = tripIcons[6];
+//    	icon.iconSize = new GSize(48, 24);
+//    	icon.iconAnchor = new GPoint(0, 0);
+//    	icon.infoWindowAnchor = new GPoint(25, 12);
+//
+//    	var clusterOpts = { 
+//          	  "icon": icon,
+//          	  "clickable": true,
+//          	  "labelText": getClusteredLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]]),
+//          	  "labelOffset": new GSize(0, 0),
+//          	  "labelClass":"trips_markerLabel"
+//          	};
+//
+//    	superMarkerClusterer.addMarkerSet(markersArray[index]);
+//
+//	}
 	function showAllOverlays(){
 		 
 		for (var i=0; i<overlaysArray.length;i++){
@@ -104,7 +110,7 @@
 					
 					overlaysArray[i][j].show();
 				}
-				createMarkers(i);
+			   	superMarkerClusterer.addMarkerSet(markersArray[i]);
 			}
 		}
 	}
@@ -133,6 +139,12 @@
     	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 24px; height:24px;top: 0; left: 24px;">***</div></div>'; 
 		
 	}
+	function getClusterMarkerLabel(){
+    	return '<div style="position: relative; line-height: 2.0em; background-color:white; border: 1px solid black; width: 48px;">'+ 
+    	'<div style="height: 24px; width: 24px; background-color: #888888;vertical-align:middle">All</div>'+ 
+    	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 24px; height:24px;top: 0; left: 24px;">***</div></div>'; 
+		
+	}
     function createLabeledMarker(point, iconImage, label) 
     {
     	//
@@ -155,9 +167,6 @@
     	GEvent.addListener(marker, "click", function() {
       	  marker.openInfoWindowHtml("I'm a Labeled Marker!");
       	});
-//    	GEvent.addListener(marker, "mouseover", function() {
-//        	  marker.showMapBlowup({zoomLevel:20});
-//        	});
 
     	return marker;
 
@@ -321,7 +330,7 @@
 		 tripsSelected[driverIndex] = selected;
 		 if(selected){
 			 
-			 showOverlays(driverIndex);
+//			 showOverlays(driverIndex);
 		 }
 		 else{
 			 
@@ -397,12 +406,8 @@
 			
 			if (tripsSelected[i]){
 				showNewTrips(i);
-//				addTripOverlaysAndMarkersToMap(i);
 			}
 		}
-//		 bounds = setupMap();
-//		 map.setZoom(map.getBoundsZoomLevel(bounds));
-//		 map.setCenter(bounds.getCenter());
 	}
 	function clearOverlays(){
 		
@@ -413,10 +418,12 @@
 			}
 			overlaysArray[i] = new Array();
 			
-			if(markerClusterers[i] != null) {
-				
-				markerClusterers[i].clearMarkers();
-			}
+			if (superMarkerClusterer !== null) superMarkerClusterer.clearAllMarkers();
+			
+//			if(markerClusterers[i] != null) {
+//				
+//				markerClusterers[i].clearMarkers();
+//			}
 			for (var j=0; j< markersArray[i].length; j++){
 				
 				map.removeOverlay(markersArray[i][j]);
