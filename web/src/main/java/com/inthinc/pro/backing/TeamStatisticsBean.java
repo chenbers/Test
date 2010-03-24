@@ -10,6 +10,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.AggregationDuration;
+import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -34,6 +35,8 @@ public class TeamStatisticsBean extends BaseBean {
     private Integer teamOverallScore;
     private String teamOverallScoreStyle;
 
+    private CrashSummary crashSummary;
+
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
     }
@@ -51,24 +54,22 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     public void init() {
-        setOverallData();
-    }
-
-    public List<DriverVehicleScoreWrapper> getDriverStatistics() {
         
         // Have this cached?
         String key = teamCommonBean.getTimeFrame().name();
         if (teamCommonBean.getCachedResults().containsKey(key)) {
             driverStatistics = teamCommonBean.getCachedResults().get(key);
-            return driverStatistics;
-        }
-
-        // Get the data
-        if ( whichMethodToUse() ) {
-            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
             
+        // Not there, grab it
         } else {
-            driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration());
+
+            // Get the data
+            if ( whichMethodToUse() ) {
+                driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+            
+            } else {
+                driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration());
+            }
         }
         
         // Set the styles for the color-coded box and convert the mpg data               
@@ -78,7 +79,16 @@ public class TeamStatisticsBean extends BaseBean {
 
         // All set, save so we don't grab the data again
         teamCommonBean.getCachedResults().put(key, driverStatistics);
+
+        // Find the totals
+        driverTotals = getDriverTotals(); 
         
+        // Set the score and style for the top of the containing page
+        teamOverallScore = driverTotals.get(0).getScore().getOverall().intValue();
+        teamOverallScoreStyle = driverTotals.get(0).getScoreStyle();              
+    }
+
+    public List<DriverVehicleScoreWrapper> getDriverStatistics() {
         return driverStatistics;
     }
 
@@ -196,7 +206,7 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     public List<DriverVehicleScoreWrapper> getDriverTotals() {
-        driverTotals = new ArrayList<DriverVehicleScoreWrapper>();
+        List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
         
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
         
@@ -221,6 +231,11 @@ public class TeamStatisticsBean extends BaseBean {
         
         int totActiveDrivers = 0;
         int totScoringDrivers = 0;
+        
+        // Crash related
+        int totCrashes = 0;
+        int milesSinceLastCrash = 1000000;
+        int daysSinceLastCrash = 1000000;
         
         if (driverStatistics==null) return null;
         
@@ -289,6 +304,21 @@ public class TeamStatisticsBean extends BaseBean {
             if ( dvsc.getScore().getAggressiveRightEvents() != null ) {
                 totAggRightEvt += dvsc.getScore().getAggressiveRightEvents().intValue();
             }
+            
+            // Crash stuff, do days or miles define the most recent? (Use both for now)
+            if ( dvsc.getScore().getCrashTotal() != null ) {
+                totCrashes += dvsc.getScore().getCrashTotal().intValue();
+            }
+            if ( dvsc.getScore().getCrashDays() != null ) {
+                if ( dvsc.getScore().getCrashDays().intValue() < daysSinceLastCrash ) {
+                    daysSinceLastCrash = dvsc.getScore().getCrashDays().intValue();
+                }
+            }
+            if ( dvsc.getScore().getCrashOdometer() != null ) {
+                if ( dvsc.getScore().getCrashOdometer().intValue() < milesSinceLastCrash ) {
+                    milesSinceLastCrash = dvsc.getScore().getCrashOdometer().intValue();
+                }
+            }
         }
         
         // The total miles are determined by setting ending to the total
@@ -326,6 +356,14 @@ public class TeamStatisticsBean extends BaseBean {
         
         dvsw.setScore(tmp);
         
+        // Crash data
+//        crashSummary = new CrashSummary(
+//                crashData.getCrashEvents() == null ? 0 : crashData.getCrashEvents().intValue(), 
+//                crashData.getCrashTotal() == null ? 0 : crashData.getCrashTotal().intValue(), 
+//                crashData.getCrashDays() == null ? 0 : crashData.getCrashDays().intValue(),
+//                crashData.getOdometer() == null ? 0 : crashData.getOdometer().doubleValue()/100.0, 
+//                crashData.getCrashOdometer() == null ? 0 : crashData.getCrashOdometer().doubleValue()/100.0);        
+        
         // Driver/Vehicle
         Driver drv = new Driver();
         drv.setDriverID(0);
@@ -344,9 +382,9 @@ public class TeamStatisticsBean extends BaseBean {
         drv.setPerson(prs);
         dvsw.setDriver(drv);
  
-        driverTotals.add(dvsw);
+        local.add(dvsw);
         
-        return driverTotals;
+        return local;
     }
 
     public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
@@ -359,24 +397,6 @@ public class TeamStatisticsBean extends BaseBean {
 
     public void setNumRowsPerPg(int numRowsPerPg) {
         this.numRowsPerPg = numRowsPerPg;
-    }
-    
-    private void setOverallData() {        
-        // Get stats for one year for this group
-        driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                AggregationDuration.TWELVE_MONTH);
-        
-        // Set the styles for the color-coded box and convert the mpg data               
-        loadScoreStyles();
-        convertMPGData();
-        cleanData();     
-        
-        // Find the totals
-        List<DriverVehicleScoreWrapper> local = getDriverTotals();
-        
-        // Set the score and style
-        teamOverallScore = local.get(0).getScore().getOverall().intValue();
-        teamOverallScoreStyle = local.get(0).getScoreStyle();        
     }
 
     public Integer getTeamOverallScore() {       

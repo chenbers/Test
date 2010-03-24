@@ -15,9 +15,11 @@ import com.inthinc.pro.model.aggregation.Score;
 
 public interface GroupReportDAO {
 
-    Score getAggregateDriverScore(Integer groupID, Duration duration);
+    Score getAggregateDriverScore(Integer groupID, AggregationDuration duration);
 
-    Score getAggregateDriverScore(Integer groupID, DateTime startTime, DateTime endTime);
+    Score getAggregateDriverScore(Integer groupID, Interval interval);
+    
+    Score getAggregateDriverScore(Integer groupID, DateTime startTime, DateTime endTime);    
 
     List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, int aggregationDurationCode);
 

@@ -384,6 +384,10 @@
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean>
+  <bean id="teamCrashSummaryBean" class="com.inthinc.pro.backing.TeamCrashSummaryBean" scope="request" parent="baseBean" init-method="init">
+    <property name="groupReportDAO" ref="groupReportDAO"></property>
+    <property name="teamCommonBean" ref="teamCommonBean"></property>
+  </bean>  
     
   <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
   <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>

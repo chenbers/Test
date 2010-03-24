@@ -21,7 +21,7 @@ import com.inthinc.pro.model.aggregation.Score;
 public class GroupReportHessianDAO extends AbstractReportHessianDAO implements GroupReportDAO {
 
     @Override
-    public Score getAggregateDriverScore(Integer groupID, Duration duration) {
+    public Score getAggregateDriverScore(Integer groupID, AggregationDuration duration) {
         try {
             return mapper.convertToModelObject(reportService.getGDScoreByGT(groupID, duration.getCode()), Score.class);
         } catch (EmptyResultSetException e) {
@@ -30,13 +30,25 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     }
 
     @Override
-    public Score getAggregateDriverScore(Integer groupID, DateTime startTime, DateTime endTime) {
+    public Score getAggregateDriverScore(Integer groupID, Interval interval) {
         try {
-            return mapper.convertToModelObject(reportService.getGDScoreByGSE(groupID, startTime.getMillis(), endTime.getMillis()), Score.class);
+            DateTime intervalToUse = interval.getStart().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+            return getAggregateDriverScore(groupID,intervalToUse,intervalToUse);
         } catch (EmptyResultSetException e) {
             return null;
         }
     }
+    
+    @Override
+    public Score getAggregateDriverScore(Integer groupID, DateTime startTime, DateTime endTime) {
+        try {
+            return mapper.convertToModelObject(reportService.getGDScoreByGSE(groupID, 
+                    DateUtil.convertDateToSeconds(startTime.toDate()), 
+                    DateUtil.convertDateToSeconds(endTime.toDate())), Score.class);
+        } catch (EmptyResultSetException e) {
+            return null;
+        }
+    }    
 
     @Override
     public List<GroupTrendWrapper> getSubGroupsAggregateDriverTrends(Integer groupID, Duration duration) {
