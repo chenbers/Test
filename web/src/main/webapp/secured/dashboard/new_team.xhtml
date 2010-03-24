@@ -141,9 +141,10 @@
 	</h:form>	
 			
 		<!-- START CRASH SUMMARY PANEL -->
-        <div class="panel_w">
-            <div class="panel_content">
-               <div id="crashSummaryInnerPanel" style="height:100;width:800">
+	<a4j:outputPanel id="crashPanel" ajaxRendered="true" styleClass="section" layout="inline">
+<!--         <div class="panel_w"> -->
+<!--             <div class="panel_content"> -->
+<!--                <div id="crashSummaryInnerPanel" style="height:100;width:800"> -->
                		
 					<table id="crashSummaryTable" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody>
                         <tr  style="font-weight:bold; font-size:12px" align="center">  
@@ -167,37 +168,29 @@
                             		value="/images/icon_crash.png"/>
                         	</td>                      
                             <td align="left">
-                           		<h:outputText value="#{crashSummaryBean.crashSummary.crashesPerMillionMiles}" 
+                           		<h:outputText value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" 
                            			converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
                     			<h:outputFormat value=" #{messages.crash_summary_overDistance} " >
                                 	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                             	</h:outputFormat>                           			                           		
                         	</td>
                         	<td style="border-right-width:1px; border-left-width:1px" align="left">
-                       			<h:outputText value="#{crashSummaryBean.crashSummary.daysSinceLastCrash}"/>
+                       			<h:outputText value="#{teamCrashSummaryBean.crashSummary.daysSinceLastCrash}"/>
                        			#{messages.crash_summary_daysSinceLastCrash} 
                         	</td>
                         	<td align="left">
-                        	    <h:outputText value="#{crashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
+                        	    <h:outputText value="#{teamCrashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
                            		<h:outputFormat value=" #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} " >
                                 	<a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
                             	</h:outputFormat>                        	     
                         	</td>
                         </tr>
-                      
-                        <tr style="font-weight:normal">                        
-                        	<td colspan="7" align="right">                        		
-                           		<h:outputFormat value=" #{messages.crash_summary_lastXmonths} " >
-                              	  <a4j:actionparam value="12" />
-                            	</h:outputFormat>
-                        	
-                        	</td>                        	
-                        </tr>
                         </tbody>
 					</table>
-				</div>
-        	</div>
-        </div>
+<!-- 				</div> -->
+<!--         	</div> -->
+<!--         </div> -->
+    </a4j:outputPanel>
     	<!-- END CRASH SUMMARY -->	
 	
 	<div class="whathappened_panel">
