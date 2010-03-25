@@ -34,12 +34,15 @@ public class TeamCrashSummaryBean extends BaseBean {
         }       
         
         // Create the response
-        CrashSummary crashSummary = new CrashSummary(
+        CrashSummary crashSummary = new CrashSummary(0,0,0,0,0);
+        if ( crashData != null ) {
+            crashSummary = new CrashSummary(
                 crashData.getCrashEvents() == null ? 0 : crashData.getCrashEvents().intValue(), 
                 crashData.getCrashTotal() == null ? 0 : crashData.getCrashTotal().intValue(), 
                 crashData.getCrashDays() == null ? 0 : crashData.getCrashDays().intValue(),
                 crashData.getOdometer() == null ? 0 : crashData.getOdometer().doubleValue()/100.0, 
                 crashData.getCrashOdometer() == null ? 0 : crashData.getCrashOdometer().doubleValue()/100.0);
+        }
 
         return crashSummary;       
     }
