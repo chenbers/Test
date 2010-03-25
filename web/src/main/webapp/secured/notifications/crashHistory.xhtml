@@ -111,7 +111,7 @@
 	      		if (address.innerHTML.length==0){
 		      		      				
 					if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-						reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address);
+						reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
 					}
 					else {
 						lkFrZn(lat.value,lng.value,index);						
