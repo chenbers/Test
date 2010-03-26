@@ -476,6 +476,12 @@ a.ls_tab_mile {
     overflow-x: auto;
     overflow-y:hidden;
     min-height:50px;	
+	position:relative;
+}
+
+.datagrid th div {
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .datagrid {
