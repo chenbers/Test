@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class TeamTripsBean extends BaseBean {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private List<String> colors;
+	private List<String> labels;
+
 	private List<DriverTrips> driversTrips;
     private DriverDAO driverDAO;
     private EventDAO eventDAO;
@@ -40,6 +45,9 @@ public class TeamTripsBean extends BaseBean {
 		myTimeFrame =teamCommonBean.getTimeFrame();
 		initDrivers();
 		
+		colors = Arrays.asList(	"#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5","#EFDAF2",
+ 								"#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5");
+		labels = Arrays.asList("A","B", "C","D","E","F","G","H","I","J","K","L","M","N","O");
     }
     private void initDrivers(){
     	
@@ -131,7 +139,6 @@ public class TeamTripsBean extends BaseBean {
  * 
  */
 	public class TeamTrip {
-
 	    List<LatLng> route;
 	    LatLng routeLastStep;
 	    LatLng beginningPoint;
@@ -393,6 +400,18 @@ public class TeamTripsBean extends BaseBean {
 		public void setFullName(String driverFullName) {
 			this.fullName = driverFullName;
 		}
+	}
+	public List<String> getColors() {
+		return colors;
+	}
+	public void setColors(List<String> colors) {
+		this.colors = colors;
+	}
+	public List<String> getLabels() {
+		return labels;
+	}
+	public void setLabels(List<String> labels) {
+		this.labels = labels;
 	}
 
 }

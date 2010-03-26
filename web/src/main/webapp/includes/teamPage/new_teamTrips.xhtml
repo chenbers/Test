@@ -6,9 +6,8 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:t="http://myfaces.apache.org/tomahawk">
-	
+	xmlns:f="http://java.sun.com/jsf/core">
+ 	
 	<style>
 	.clear: after {
 	  content: ". ";
@@ -27,7 +26,15 @@
 	  text-align: center;
 	  font-size:12px
 	}
-	
+	.trips_color {
+		color: black;
+		width:14px;
+		height:13px;
+		vertical-align:middle;
+		padding-top:2px;
+		border:1px solid black; 
+		font: 12px bold Arial, sans-serif;
+	}
 	</style>
 	
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
@@ -66,13 +73,14 @@
 	    	icon.iconAnchor = new GPoint(0, 0);
 	    	icon.infoWindowAnchor = new GPoint(25, 12);
 				
-			var markerClustererOptions = {'maxStacked':3,
+			var markerClustererOptions = {'maxStacked':4,
 										  'customClusters':true};
 			var customClusterOptions ={ 
 		          	  "icon": icon,
 		          	  "clickable": true,
 		          	  "labelText": getClusterMarkerLabel(),
-		          	  "labelOffset": new GSize(0, 0),
+					  "canvasDrawFunction":drawCustomCluster,
+					  "labelOffset": new GSize(0, 0),
 		          	  "labelClass":"trips_markerLabel"
 		          	};
 					  
@@ -104,8 +112,7 @@
 	}
 		
  </script>
- 
-   <rich:tab id="teamTrips" ontableave=""  oncomplete="onTripTabSelectionComplete();" >
+    <rich:tab id="teamTrips" ontableave=""  oncomplete="onTripTabSelectionComplete();" >
    	
 	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">
@@ -157,7 +164,10 @@
             	</a4j:status>
 				
 				</f:facet>
-				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>
+					<div style="background-color:#{teamTripsBean.colors[index]};" class="trips_color">
+					#{teamTripsBean.labels[index]}
+					</div>
+<!--				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>-->
 				</rich:column>
 				</rich:dataTable>
 				<rich:datascroller 	align="left" for="driversTrips" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 

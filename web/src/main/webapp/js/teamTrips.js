@@ -9,10 +9,11 @@
 	var colorArray = new Array();
 	var markerClustererMaxZoom = 12;
 	var superMarkerClusterer;
-//	var clickLatLng = null;
 	
-	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
-				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
+	var colors = ["#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5","#EFDAF2",
+	              "#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5"];
+//	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
+//				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
 	var labels=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"];
 	
 	function findColorIndex(indexOnPage){
@@ -73,33 +74,7 @@
 			}
 		}
 		if (superMarkerClusterer !== null) superMarkerClusterer.clearAllMarkers();
-//		for (var i=0; i<markerClusterers.length;i++){
-//				
-//			if (markerClusterers[i]!=null){
-//				
-//				markerClusterers[i].clearMarkers();
-//			}
-//		}
 	}
-//	function createMarkers(index){
-//		
-//    	var icon = new GIcon();
-//    	icon.image = tripIcons[6];
-//    	icon.iconSize = new GSize(48, 24);
-//    	icon.iconAnchor = new GPoint(0, 0);
-//    	icon.infoWindowAnchor = new GPoint(25, 12);
-//
-//    	var clusterOpts = { 
-//          	  "icon": icon,
-//          	  "clickable": true,
-//          	  "labelText": getClusteredLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]]),
-//          	  "labelOffset": new GSize(0, 0),
-//          	  "labelClass":"trips_markerLabel"
-//          	};
-//
-//    	superMarkerClusterer.addMarkerSet(markersArray[index]);
-//
-//	}
 	function showAllOverlays(){
 		 
 		for (var i=0; i<overlaysArray.length;i++){
@@ -110,7 +85,9 @@
 					
 					overlaysArray[i][j].show();
 				}
-			   	superMarkerClusterer.addMarkerSet(markersArray[i]);
+			   	superMarkerClusterer.addMarkerSet({'displayColor':colors[colorArray[i]],
+			   									   'markerSet':markersArray[i]
+			   										});
 			}
 		}
 	}
@@ -142,9 +119,54 @@
 	function getClusterMarkerLabel(){
     	return '<div style="position: relative; line-height: 2.0em; background-color:white; border: 1px solid black; width: 48px;">'+ 
     	'<div style="height: 24px; width: 24px; background-color: #888888;vertical-align:middle">All</div>'+ 
-    	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 24px; height:24px;top: 0; left: 24px;">***</div></div>'; 
+    	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 24px; height:24px;top: 0; left: 24px;"></div></div>'; 
 		
 	}
+	function drawCustomCluster(displayColors, count, element) { 
+	  
+  	   //clusterDiv = document.createElement("div");
+		var width = 42 +(displayColors.length-1)*5;
+  	   element.innerHTML ="<canvas style='position: absolute;left:0;top:0' width='"+width+"' height='42'></canvas>";
+  	   var canvasInner = element.firstChild;
+  	   if (canvasInner.getContext) { 
+  	    
+         var ctx = canvasInner.getContext("2d"); 
+          
+	     var x              = 21+(displayColors.length-1)*5;     // x coordinate  
+	     var y              = 21;        // y coordinate  
+	     var radius         = 20;        // Arc radius  
+	     var startAngle     = 0;         // Starting point on circle  
+	     var endAngle       = 2*Math.PI; // End point on circle
+	           
+         ctx.strokeStyle="black";
+         ctx.lineWidth=2;
+         
+         for (var i=0; i<displayColors.length; i++){
+         
+ 	     	ctx.fillStyle = displayColors[i]; 
+         
+         	 ctx.beginPath();
+	         ctx.arc(x,y,radius,startAngle,endAngle, false); 
+	         ctx.stroke();
+             ctx.fill();
+	         x-=5; 
+	     }
+         //write label
+         ctx.beginPath();
+         ctx.lineWidth=1;
+         ctx.font = "12px";
+         
+         ctx.strokeStyle="black";
+         
+         var textMetric = ctx.measureText(count+"");
+		 var dx = (42-textMetric.width)/2;
+         ctx.strokeText(count,dx,24);
+         ctx.closePath();
+         
+       }
+       return null;  
+     }  
+
     function createLabeledMarker(point, iconImage, label) 
     {
     	//
@@ -230,17 +252,6 @@
 							markers.push(marker);
 					//End of trip marker
 			
-					if (driverTrips.trips[j].inProgress)
-					{
-						marker = createLabeledMarker(endlatlng,tripIcons[6],
-									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[1]));
-					}
-					else
-					{
-						marker = createLabeledMarker(endlatlng,tripIcons[6],
-									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[2]));
-					}
-					markers.push(marker);
 			
 					for(var k=0; k<driverTrips.trips[j].violations.length; k++){
 						var violation = new GLatLng(driverTrips.trips[j].violations[k].lat, driverTrips.trips[j].violations[k].lng);
@@ -260,6 +271,18 @@
 									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[5]));
 						markers.push(marker);
 					}
+					
+					if (driverTrips.trips[j].inProgress)
+					{
+						marker = createLabeledMarker(endlatlng,tripIcons[6],
+									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[1]));
+					}
+					else
+					{
+						marker = createLabeledMarker(endlatlng,tripIcons[6],
+									getSingleLabeledMarkerLabel(labels[colorArray[index]],colors[colorArray[index]],tripNumber,tripIcons[2]));
+					}
+					markers.push(marker);
 				}
 			}
 			 
@@ -328,11 +351,7 @@
 		 if(driverIndex < 0) return;
 		 
 		 tripsSelected[driverIndex] = selected;
-		 if(selected){
-			 
-//			 showOverlays(driverIndex);
-		 }
-		 else{
+		 if(!selected){
 			 
 			 hideOverlays(driverIndex);
 		 }
@@ -420,10 +439,6 @@
 			
 			if (superMarkerClusterer !== null) superMarkerClusterer.clearAllMarkers();
 			
-//			if(markerClusterers[i] != null) {
-//				
-//				markerClusterers[i].clearMarkers();
-//			}
 			for (var j=0; j< markersArray[i].length; j++){
 				
 				map.removeOverlay(markersArray[i][j]);

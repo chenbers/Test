@@ -125,7 +125,8 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
     		//Validate custom cluster opts
         	if (  opts_customClusterOpts.icon != null &&
         		  opts_customClusterOpts.labelText != null &&
-        		  opts_customClusterOpts.labelClass != null   ){
+        		  opts_customClusterOpts.labelClass != null &&
+        		  opts_customClusterOpts.canvasDrawFunction != null){
 
     			customClusters_ = opt_opts.customClusters;
     			customCluster_opts_ = opts_customClusterOpts;
@@ -224,14 +225,15 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
   this.addMarkerSet = function(markers){
 	  
 	  // initialize
-	  if (markers instanceof Array){
+	  if (markers.markerSet instanceof Array){
 		  //we have some marker sets
 		  //add each separately
 		  var markerSet = [];
-		  for(var i=0;i<markers.length;i++){
+		  for(var i=0;i<markers.markerSet.length;i++){
 			  markerSet.push({'isAdded':false,
 				  			  'hidden':false,
-				  			  'marker':markers[i]});
+				  			  'displayColor':markers.displayColor,
+				  			  'marker':markers.markerSet[i]});
 		  }
 		  markerSets_.push({'isAdded':true,
 			  				'markers':markerSet});
@@ -266,7 +268,8 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
   function reAddMarkers_(markers) {
     var len = markers.length;
     var clusters = [];
-    for (var i = len - 1; i >= 0; --i) {
+    for(var i=0; i<len;i++){
+//    for (var i = len - 1; i >= 0; --i) {
 //   this.addMarker = function (marker, opt_isNodraw, opt_isAdded, opt_clusters, opt_isNoCheck) {
       me_.addMarker(markers[i], true, markers[i].isAdded, clusters, true);
     }
@@ -316,7 +319,8 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 
     var length = clusters.length;
     var cluster = null;
-    for (var i = length - 1; i >= 0; i--) {
+    for(var i=0;i<length;i++){
+//    for (var i = length - 1; i >= 0; i--) {
       cluster = clusters[i];
       var center = cluster.getCenter();
       if (center === null) {
@@ -517,13 +521,6 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
     }
 //    this.redraw_();
   };
-
-//  // initialize
-//  if (opt_markers instanceof Array){
-//	  //we have some marker sets
-//	  //add each separately
-//	  this.addMarkers(opt_markers);
-//  }
 
   // when map move end, regroup.
   mcfn_ = GEvent.addListener(map_, "moveend", function () {
@@ -744,48 +741,14 @@ function LabeledCluster(markerClusterer, clusterOpts) {
       }
       if ((clusterMarker_ === null)&&(linedUpMarkers_=== null)){
 //        clusterMarker_ = new ClusterMarker_(center_, this.getTotalMarkers(), markerClusterer_.getStyles_(), markerClusterer_.getGridSize_());
-    	  
     	  if (zoom_ < 8 || this.getTotalMarkers() > markerClusterer_.getMaxStacked()){
     		  
-    		  var count = new String(""+this.getTotalMarkers());
-    		  var countLabel = label_.replace("***",count);
- 
-	    	var thisOpts = { 
-	          	  "icon": opts_.icon,
-	          	  "clickable": opts_.click,
-	          	  "labelText": countLabel,
-	          	  "labelOffset": opts_.labelOffset,
-	          	  "labelClass":opts_.labelClass
-	          	};
-	      	clusterMarker_ = new LabeledMarker(center_, thisOpts);
-	      	
-			var clickListener = GEvent.addListener(clusterMarker_, "click", function() {
-				//format all the markers into a list
-				var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
-				for (var i=0;i<markers_.length;i++){
-					windowHtml +="<li>";
-					windowHtml += markers_[i].marker.labelText_;
-					windowHtml +="</li>";
-				}
-				windowHtml+="</ul>";
-				clusterMarker_.openInfoWindowHtml(windowHtml);
-			});
-
-			map_.addOverlay(clusterMarker_);
-    	  }
+    		  clusterMarker_ = this.makeCanvasClusterMarker();
+     	  }
     	  else{
     		  //copy and reposition to stack one on top of the other center on center_
-        		linedUpMarkers_ = new Array();
-        		var nextPoint = map_.fromLatLngToDivPixel(center_);
-        		nextPoint = new GPoint(nextPoint.x-(10 * markers_.length), nextPoint.y-24);
-				for (var i=0;i<markers_.length;i++){
-					
-			    	var linedUpMarker_ = this.makeLinedUpMarker(markers_[i].marker,map_.fromDivPixelToLatLng(nextPoint));
-			    	linedUpMarkers_.push(linedUpMarker_);
-					map_.addOverlay(linedUpMarker_);
-					nextPoint = new GPoint(nextPoint.x, nextPoint.y+20);
-				}
-   	  }
+        	  linedUpMarkers_ = this.makeStackedMarkers();
+    	  }
       } else if(clusterMarker_!== null) {
         if (clusterMarker_.isHidden()) {
           clusterMarker_.show();
@@ -798,7 +761,111 @@ function LabeledCluster(markerClusterer, clusterOpts) {
       }
     }
   };
+  this.makeClusterMarker = function(){
+	  
+	  var count = new String(""+this.getTotalMarkers());
+	  var labelDiv = document.createElement("div");
+	  labelDiv.innerHTML = label_;
+	  labelDiv.firstChild.childNodes[1].innerHTML = count;
 
+	  var thisOpts = { 
+      	  "icon": opts_.icon,
+      	  "clickable": opts_.click,
+      	  "labelText": labelDiv.innerHTML,
+      	  "labelOffset": opts_.labelOffset,
+      	  "labelClass":opts_.labelClass
+      	};
+  	  clusterMarker = new LabeledMarker(center_, thisOpts);
+  	
+	  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
+		//format all the markers into a list
+	  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
+	  for (var i=0;i<markers_.length;i++){
+			windowHtml +="<li>";
+			windowHtml += markers_[i].marker.labelText_;
+			windowHtml +="</li>";
+	  }
+	  windowHtml+="</ul>";
+	  clusterMarker.openInfoWindowHtml(windowHtml);
+	  });
+
+	  	map_.addOverlay(clusterMarker);
+		return clusterMarker;
+  };
+  this.makeCanvasClusterMarker = function(){
+	  
+	  var drawFunction = opts_.canvasDrawFunction;
+	  if ( typeof drawFunction == 'function'){
+		  
+		  //Collect up how many sets of markers there are so we know what colors to include
+		  var displayColors = [];	
+		  for (var i=0;i<markers_.length;i++){
+			  
+			  var colorCounted = false;
+			  for (var j = 0; j<displayColors.length; j++){
+				  
+				  if (markers_[i].displayColor == displayColors[j]){
+					  
+					  colorCounted = true;
+					  break;
+				  }
+			  }
+			  if(!colorCounted){
+				  
+				  displayColors.push(markers_[i].displayColor);
+			  }
+			  colorCounted = false;
+		  }
+		  //plug into the draw function
+		  var thisOpts = { 
+		      	  "icon": opts_.icon,
+		      	  "clickable": opts_.click,
+		      	  "labelText": "",
+		      	  "labelOffset": opts_.labelOffset,
+		      	  "labelClass":opts_.labelClass
+		      	};
+		  var nextPoint = map_.fromLatLngToDivPixel(center_);
+		  nextPoint.x -= 20;
+		  nextPoint.y -= 20;
+		  var offsetPosition = map_.fromDivPixelToLatLng(nextPoint);
+		  var clusterMarker = new LabeledMarker(offsetPosition, thisOpts);
+		  	
+		  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
+				//format all the markers into a list
+			  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
+			  for (var i=0;i<markers_.length;i++){
+					windowHtml +="<li>";
+					windowHtml += markers_[i].marker.labelText_;
+					windowHtml +="</li>";
+			  }
+			  windowHtml+="</ul>";
+			  clusterMarker.openInfoWindowHtml(windowHtml);
+		 });
+
+		  map_.addOverlay(clusterMarker);
+		  drawFunction(displayColors, this.getTotalMarkers(), clusterMarker.getDiv());
+
+		  return clusterMarker;
+	  }
+	  else {
+		  
+		  return this.makeClusterMarker();
+	  }
+  };
+  this.makeStackedMarkers = function(){
+	  
+		var linedUpMarkers = new Array();
+		var nextPoint = map_.fromLatLngToDivPixel(center_);
+		nextPoint = new GPoint(nextPoint.x-(10 * markers_.length), nextPoint.y-24);
+		for (var i=0;i<markers_.length;i++){
+			
+	    	var linedUpMarker_ = this.makeLinedUpMarker(markers_[i].marker,map_.fromDivPixelToLatLng(nextPoint));
+	    	linedUpMarkers.push(linedUpMarker_);
+			map_.addOverlay(linedUpMarker_);
+			nextPoint = new GPoint(nextPoint.x, nextPoint.y+20);
+		}
+		return linedUpMarkers;
+  };
   /**
    *  Hide cluster
    */

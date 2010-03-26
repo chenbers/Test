@@ -7,7 +7,8 @@
 	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:t="http://myfaces.apache.org/tomahawk">
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:tiwi="http://pro.tiwi.com/jsf">
 	
 
 	<ui:param name="context" value="team" />
@@ -68,6 +69,9 @@
     			cursor: default;
 			}
 		</style>
+	<tiwi:conditionalCSS browserVersion="IE">
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/excanvas.pack.js"></script>
+	</tiwi:conditionalCSS>
         
 	    <script language="javascript" type="text/javascript">
 	    	window.Team = {};

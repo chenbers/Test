@@ -269,3 +269,7 @@ LabeledMarker.prototype.setLabelText = function (text) {
   this.opts_.labelText = text;
 };
 
+LabeledMarker.prototype.getDiv = function () {
+	return this.div_;
+};
+
