@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -44,10 +43,10 @@ public class TeamTripsBean extends BaseBean {
 		icons = MapIconFactory.IconType.TEAM_LEGEND.getIconList(15);
 		myTimeFrame =teamCommonBean.getTimeFrame();
 		initDrivers();
-		
-		colors = Arrays.asList(	"#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5","#EFDAF2",
- 								"#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5");
-		labels = Arrays.asList("A","B", "C","D","E","F","G","H","I","J","K","L","M","N","O");
+		colors = Arrays.asList(	"#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
+	              				"#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5","#AACC66",
+	              				"#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289");
+		labels = Arrays.asList("A","B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
     }
     private void initDrivers(){
     	
