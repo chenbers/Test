@@ -89,7 +89,7 @@
   
   <bean id="teamCommonBean" class="com.inthinc.pro.backing.TeamCommonBean" scope="request" parent="baseBean" init-method="init"/>
   <bean id="teamStatisticsBean" class="com.inthinc.pro.backing.TeamStatisticsBean" scope="request" parent="baseBean" init-method="init">
-    <property name="teamCommonBean" ref="teamCommonBean"></property>  
+    <property name="teamCommonBean" ref="teamCommonBean"></property>
   </bean>        
   <bean id="teamTripsBean" class="com.inthinc.pro.backing.TeamTripsBean" scope="request" parent="baseBean" init-method="init"/>         
  
@@ -444,10 +444,6 @@
     <property name="navigation" ref="navigationBean"></property>
   </bean>
   <!-- Report beans -->
-  <bean id="baseReportBean" class="com.inthinc.pro.backing.BaseReportBean" abstract="true" scope="session" parent="baseBean" init-method="initBean">
-<!--    <property name="groupDAO" ref="groupDAO"></property>-->
-    <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
-  </bean>
   <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseNotificationsBean" scope="session" parent="baseBean" abstract="true">
     <property name="driverDAO" ref="driverDAO" />
     <property name="vehicleDAO" ref="vehicleDAO" />
@@ -458,14 +454,6 @@
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     <property name="cacheBean" ref="cacheBean"></property>
   </bean>
-<!--   
-  <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
-    <property name="redFlagDAO" ref="redFlagDAO"></property>
-    <property name="eventDAO" ref="eventDAO"></property>
-  </bean>
-  <bean id="redFlagsCountBean" class="com.inthinc.pro.backing.RedFlagsCountBean" scope="session" parent="redFlagsBean" init-method="initBean">
-  </bean>
- -->    
   <bean id="crashHistoryBean" class="com.inthinc.pro.backing.CrashHistoryBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
     <property name="crashReportDAO" ref="crashReportDAO"></property>
   </bean>
@@ -641,5 +629,14 @@
    	<bean id="idlingReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.IdlingReportPaginationTableDataProvider" scope="request">
 	  <property name="reportDAO" ref="reportDAO"></property>   
   	</bean>
+
+
+
+    <!-- Table column Beans -->
+    <bean id="baseTableColumns" class="com.inthinc.pro.table.columns.BaseTableColumns" scope="request" init-method="init" parent="baseBean">
+		<property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>   
+    </bean>
+    <bean id="teamStatisticsTableColumns" class="com.inthinc.pro.table.columns.TeamStatisticsTableColumns" scope="request" parent="baseTableColumns">
+    </bean>
 
 </beans>

@@ -27,7 +27,8 @@ public enum TableType implements BaseEnum
     EMERGENCY(15, "EMERGENCY"),
     ZONE_ALERTS(15, "ZONE_ALERTS"),
     CRASH_HISTORY(17, "CRASH_HISTORY"),
-    ADMIN_CUSTOMROLE(18, "ADMIN_CUSTOMROLE");
+    ADMIN_CUSTOMROLE(18, "ADMIN_CUSTOMROLE"),
+    TEAM_STATS(19, "TEAM_STATS");
     
     private String description;
     private int    code;

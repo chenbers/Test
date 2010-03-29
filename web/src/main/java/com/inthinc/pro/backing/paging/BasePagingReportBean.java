@@ -17,7 +17,6 @@ import com.inthinc.pro.backing.TablePref;
 import com.inthinc.pro.backing.TablePrefOptions;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TableType;
