@@ -11,7 +11,7 @@
 	var superMarkerClusterer;
 	
 	var colors = ["#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
-	              "#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5","#AACC66",
+	              "#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
 	              "#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289"];
 //	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
 //				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
@@ -123,15 +123,37 @@
     	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 24px; height:24px;top: 0; left: 24px;"></div></div>'; 
 		
 	}
-	function drawCustomCluster(displayColors, count, element) { 
+	function initTeamTripsClusters(map,icons){
+		
+		tripIcons = icons;
+
+		var icon = new GIcon();
+		icon.image = tripIcons[6];
+		icon.iconSize = new GSize(42, 42);
+		icon.iconAnchor = new GPoint(0, 0);
+		icon.infoWindowAnchor = new GPoint(25, 12);
+			
+		var markerClustererOptions = {'maxStacked':4,
+									  'customClusters':true,
+									  'gridSize_x':50,
+									  'gridSize_y':64};
+		var customClusterOptions ={ 
+	          	  "icon": icon,
+	          	  "clickable": true,
+	          	  "labelText": getClusterMarkerLabel(),
+				  "canvasDrawFunction":drawCustomCluster,
+				  "labelOffset": new GSize(0, 0),
+	          	  "labelClass":"trips_markerLabel"
+	          	};
+				  
+		superMarkerClusterer = new MarkerClustererWithMergedMarkerSets(map,markerClustererOptions, customClusterOptions);
+	}
+	function drawCustomCluster(displayColors, count) { 
 	  
-  	   //clusterDiv = document.createElement("div");
-		var width = 42 +(displayColors.length-1)*5;
-  	   element.innerHTML ="<canvas style='position: absolute;left:0;top:0' width='"+width+"' height='42'></canvas>";
-  	   var canvasInner = element.firstChild;
-  	   if (canvasInner.getContext) { 
+  	   clusterDiv = document.createElement("canvas");
+  	   if (clusterDiv.getContext) { 
   	    
-         var ctx = canvasInner.getContext("2d"); 
+         var ctx = clusterDiv.getContext("2d"); 
           
 	     var x              = 21+(displayColors.length-1)*5;     // x coordinate  
 	     var y              = 21;        // y coordinate  
@@ -165,7 +187,7 @@
          ctx.closePath();
          
        }
-       return null;  
+       return clusterDiv;  
      }  
 
     function createLabeledMarker(point, iconImage, label) 

@@ -6,7 +6,8 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:custom="http://pro.tiwi.com/jsf/custom">
  	
 	<style>
 	.clear: after {
@@ -65,34 +66,13 @@
 			map.addControl(new GOverviewMapControl()); 
 			map.setMapType(G_NORMAL_MAP);
 			map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
-			tripIcons = icons;
 
-	    	var icon = new GIcon();
-	    	icon.image = tripIcons[6];
-	    	icon.iconSize = new GSize(48, 24);
-	    	icon.iconAnchor = new GPoint(0, 0);
-	    	icon.infoWindowAnchor = new GPoint(25, 12);
-				
-			var markerClustererOptions = {'maxStacked':4,
-										  'customClusters':true};
-			var customClusterOptions ={ 
-		          	  "icon": icon,
-		          	  "clickable": true,
-		          	  "labelText": getClusterMarkerLabel(),
-					  "canvasDrawFunction":drawCustomCluster,
-					  "labelOffset": new GSize(0, 0),
-		          	  "labelClass":"trips_markerLabel"
-		          	};
-					  
-			superMarkerClusterer = new MarkerClustererWithMergedMarkerSets(map,markerClustererOptions, customClusterOptions);
+			initTeamTripsClusters(map,icons);
 		}
 	}
 	var dayClickFunction = function(event){
 	   	resetTripsForSelectedDrivers();
 	};
-	var longDurationClickFunction = function(event){
-			event.preventDefault();
-		};
 		
 	function onTripTabSelectionComplete(){		
 		initTeamTripsMap();
@@ -124,7 +104,6 @@
 	
    	<!-- Trips Map -->
    	<div class="section">
-	       
 	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0;">
 	        	<h:form id="tripsTableForm">
 	        	<a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
@@ -134,22 +113,41 @@
 					       		rowKeyVar="index"
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
-								rows="15"
-								columnsWidth="50px,85%,50px"
+								rows="25"
+								columnsWidth="90px,85%,50px"
 								width="100%">
 				<rich:column>
-				<f:facet name="header">
-				     <h:outputText value="#{messages.teamPage_hideShow}"/>
-                </f:facet>
-                <h:selectBooleanCheckbox id="select" value="#{driver.selected}">
+                <a4j:outputPanel id="hideShow" ajaxRendered="true" >
+                
+                <h:selectBooleanCheckbox id="checkDriver" value="#{driver.selected}" >
                   <a4j:support event="onclick" eventsQueue="tripsQueue" data="#{driver}" 
-                  				oncomplete="processDriverTrips(#{index},data)" >
+                  				oncomplete="processDriverTrips(#{index},data)" ajaxSingle="true">
                    </a4j:support>
                   				
                 </h:selectBooleanCheckbox>
+<!--                <rich:panel rendered="#{teamCommonBean.timeFrame eq 'WEEK'}">-->
+<!--	                <custom:radioButton id="radioDriver" -->
+<!--		                 name="radioDriver" -->
+<!--		                 overrideName="true"                              -->
+<!--		                 value="#{driver.selected}"-->
+<!--		                 itemValue="#{index}" >  -->
+<!--		                   <a4j:support event="onclick" eventsQueue="tripsQueue" data="#{driver}" -->
+<!--		                  		oncomplete="processDriverTrips(#{index},data)" >-->
+<!--		                   </a4j:support>-->
+<!--	                </custom:radioButton>-->
+<!--	             </rich:panel>                   -->
+ 
+<!--                <h:selectOneRadio id="radioDriver" value="#{driver.selected}" rendered="#{teamCommonBean.timeFrame eq 'WEEK'}">-->
+<!--                	<f:selectItem itemValue="#{index}"/>-->
+<!--                  <a4j:support event="onclick" eventsQueue="tripsQueue" data="#{driver}" -->
+<!--                  				oncomplete="processDriverTrips(#{index},data)" >-->
+<!--                   </a4j:support>-->
+<!--                  				-->
+<!--                </h:selectOneRadio>-->
+                </a4j:outputPanel>
               </rich:column>
 												
-				<rich:column>
+				<rich:column style="text-align:left">
 					<f:facet name="header">
 						<h:outputText value="#{messages.teamPage_driverHeader}"/>
 					</f:facet>
@@ -167,7 +165,6 @@
 					<div style="background-color:#{teamTripsBean.colors[index]};" class="trips_color">
 					#{teamTripsBean.labels[index]}
 					</div>
-<!--				   <img src="#{teamTripsBean.icons[index].url}" alt="#{index}"/>-->
 				</rich:column>
 				</rich:dataTable>
 				<rich:datascroller 	align="left" for="driversTrips" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 
@@ -180,7 +177,6 @@
  				</h:form>	
  				         
 	         </div>  
-	            
 			 <div id="map-canvas" style="float:right; width: 74%; height: 500px; border: 0"></div>
 			 <div style="clear:both"></div>
 	       </div>

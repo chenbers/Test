@@ -268,8 +268,3 @@ LabeledMarker.prototype.setLabelText = function (text) {
   // save new label text in opts_, it may be required for copy()
   this.opts_.labelText = text;
 };
-
-LabeledMarker.prototype.getDiv = function () {
-	return this.div_;
-};
-

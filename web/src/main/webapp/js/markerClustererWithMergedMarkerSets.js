@@ -82,7 +82,8 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
   
   // options
   var maxZoom_ = null;
-  var gridSize_ = 60;
+  var gridSize_x = 60;
+  var gridSize_y = 60;
   var sizes = [53, 56, 66, 78, 90];
   var styles_ = [];
   var maxStacked_ = 0;
@@ -106,9 +107,12 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
   }
 
   if (typeof opt_opts === "object" && opt_opts !== null) {
-    if (typeof opt_opts.gridSize === "number" && opt_opts.gridSize > 0) {
-      gridSize_ = opt_opts.gridSize;
+    if (typeof opt_opts.gridSize_x === "number" && opt_opts.gridSize_x > 0) {
+      gridSize_x = opt_opts.gridSize_x;
     }
+    if (typeof opt_opts.gridSize_y === "number" && opt_opts.gridSize_y > 0) {
+        gridSize_y = opt_opts.gridSize_y;
+      }
     if (typeof opt_opts.maxZoom === "number") {
       maxZoom_ = opt_opts.maxZoom;
     }
@@ -329,8 +333,8 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
       center = map_.fromLatLngToDivPixel(center);
 
       // Found a cluster which contains the marker.
-      if (pos.x >= center.x - gridSize_ && pos.x <= center.x + gridSize_ &&
-          pos.y >= center.y - gridSize_ && pos.y <= center.y + gridSize_) {
+      if (pos.x >= center.x - gridSize_x && pos.x <= center.x + gridSize_x &&
+          pos.y >= center.y - gridSize_y && pos.y <= center.y + gridSize_y) {
     	  
     	marker.isAdded = isAdded;
         cluster.addMarker(marker);
@@ -436,9 +440,12 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
    * @private
    * @return {Number}
    */
-  this.getGridSize_ = function () {
-    return gridSize_;
+  this.getGridSize_x = function () {
+    return gridSize_x;
   };
+  this.getGridSize_y = function () {
+	    return gridSize_y;
+	  };
 
   /**
    * Get total number of markers.
@@ -579,15 +586,17 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 
     var centerxy = map_.fromLatLngToDivPixel(center_);
     var inViewport = true;
-    var gridSize = markerClusterer.getGridSize_();
+    var gridSize_x = markerClusterer.getGridSize_x();
+    var gridSize_y = markerClusterer.getGridSize_y();
     if (zoom_ !== map_.getZoom()) {
       var dl = map_.getZoom() - zoom_;
-      gridSize = Math.pow(2, dl) * gridSize;
+      gridSize_x = Math.pow(2, dl) * gridSize_x;
+      gridSize_y = Math.pow(2, dl) * gridSize_y;
     }
-    if (ne.x !== sw.x && (centerxy.x + gridSize < sw.x || centerxy.x - gridSize > ne.x)) {
+    if (ne.x !== sw.x && (centerxy.x + gridSize_x < sw.x || centerxy.x - gridSize_x > ne.x)) {
       inViewport = false;
     }
-    if (inViewport && (centerxy.y + gridSize < ne.y || centerxy.y - gridSize > sw.y)) {
+    if (inViewport && (centerxy.y + gridSize_y < ne.y || centerxy.y - gridSize_y > sw.y)) {
       inViewport = false;
     }
     return inViewport;
@@ -841,9 +850,20 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 			  windowHtml+="</ul>";
 			  clusterMarker.openInfoWindowHtml(windowHtml);
 		 });
+		  
+		  var preRenderedCanvas = drawFunction(displayColors, this.getTotalMarkers());
 
 		  map_.addOverlay(clusterMarker);
-		  drawFunction(displayColors, this.getTotalMarkers(), clusterMarker.getDiv());
+		  
+		  var width = opts_.icon.iconSize.width +(displayColors.length-1)*5;
+		  var height = opts_.icon.iconSize.height;
+		  clusterMarker.div_.innerHTML ="<canvas style='position: absolute;left:0;top:0' width='"+width+"' height='"+height+"'></canvas>";
+	  	  var canvasInner = clusterMarker.div_.firstChild;
+	  	  if (canvasInner.getContext) { 
+	  	    
+	  		  var ctx = canvasInner.getContext("2d"); 
+	          ctx.drawImage(preRenderedCanvas,0,0);
+	      }
 
 		  return clusterMarker;
 	  }

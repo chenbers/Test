@@ -18,32 +18,42 @@
 	<script type="text/javascript">
 	//<![CDATA[
 
-	var durationClickFunction = function(event){
-			event.preventDefault();
-		};
 		
 	function onCompleteLiveTeam(){
+		
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameToday");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameOneDay");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameTwoDay");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameThreeDay");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameFourDay");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameFiveDay");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameSixDay");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameWeek");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
+		Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
+		
+	}
+	
 //		alert("Finished");
-		jQuery('#allDurations').children().removeClass('selected_duration');
-		jQuery('#longDurations').children().removeClass('selected_duration');
+//		jQuery('#allDurations').children().removeClass('selected_duration');
+//		jQuery('#longDurations').children().removeClass('selected_duration');
 
-		jQuery('#allDurations').children().addClass('disable');
-		jQuery('#allDurations').children().click(durationClickFunction);
-		jQuery('#longDurations').children().addClass('disable');
-		jQuery('#longDurations').children().click(durationClickFunction);		
-	}
-	function onLeaveLiveTeam(){
+//		jQuery('#allDurations').children().addClass('disable');
+//		jQuery('#allDurations').children().click(durationClickFunction);
+//		jQuery('#longDurations').children().addClass('disable');
+//		jQuery('#longDurations').children().click(durationClickFunction);		
+//	}
+//	function onLeaveLiveTeam(){
 //		alert("Leaving");
-		jQuery('#allDurations').children().removeClass('disable');
-		jQuery('#allDurations').children().unbind('click',durationClickFunction);
-		jQuery('#longDurations').children().removeClass('disable');
-		jQuery('#longDurations').children().unbind('click',durationClickFunction);		
-	}
+//		jQuery('#allDurations').children().removeClass('disable');
+//		jQuery('#allDurations').children().unbind('click',durationClickFunction);
+//		jQuery('#longDurations').children().removeClass('disable');
+//		jQuery('#longDurations').children().unbind('click',durationClickFunction);		
+//	}
 //]]>
  </script>
 
-	<rich:tab id="liveTeam" switchType="server" 
-		ontableave="onLeaveLiveTeam();"  onlabelclick="onCompleteLiveTeam();">
+	<rich:tab id="liveTeam" oncomplete="onCompleteLiveTeam();bodyLoad()">
 	
 		<f:facet name="label">
 	 		<h:panelGroup>

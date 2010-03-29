@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -19,14 +20,19 @@ import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
 import com.inthinc.pro.util.MiscUtil;
 
+@KeepAlive
 public class DriverLocationBean extends BaseBean {    
-    private static final Logger logger = Logger.getLogger(DriverLocationBean.class);    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);    
 
 	private DriverDAO driverDAO;
 	private VehicleDAO vehicleDAO;

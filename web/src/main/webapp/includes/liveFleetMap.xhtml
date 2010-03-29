@@ -10,12 +10,12 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
- 	<t:saveState value="#{driverLocationBean.driverLocations}"/>
- 	<t:saveState value="#{driverLocationBean.legendIcons}"/>
-	<t:saveState value="#{driverLocationBean.mapIconMap}"/>
-	<t:saveState value="#{driverLocationBean.driverLocationsMap}"/>
-	<t:saveState value="#{driverLocationBean.selectedDriverID}"/>
-
+<!-- 	<t:saveState name="dls" value="#{driverLocationBean.driverLocations}"/>-->
+<!-- 	<t:saveState name="icons" value="#{driverLocationBean.legendIcons}"/>-->
+<!--	<t:saveState name="mapIcon" value="#{driverLocationBean.mapIconMap}"/>-->
+<!--	<t:saveState name="dlmap" value="#{driverLocationBean.driverLocationsMap}"/>-->
+<!--	<t:saveState name="sdi" value="#{driverLocationBean.selectedDriverID}"/>-->
+<!--<a4j:keepAlive beanName="driverLocationBean"/>-->
     <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
     <ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}"/>
      
@@ -161,7 +161,7 @@
        	<h:form id="liveFleetMapForm">
       	<rich:panel id="mapPopups" rendered="#{driverLocationBean.selectedDriverID != null}">
 			<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}"/>
-      			<ui:include src="../includes/driverBubble.xhtml">
+      			<ui:include src="/includes/driverBubble.xhtml">
       	            <ui:param name="hiddenDivID" value="bubble" />
       	            <ui:param name="driver" value="#{driverLocation.driver}" />
       	        	<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
