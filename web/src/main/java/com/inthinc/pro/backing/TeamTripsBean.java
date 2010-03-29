@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -33,24 +34,24 @@ public class TeamTripsBean extends BaseBean {
 	private List<DriverTrips> driversTrips;
     private DriverDAO driverDAO;
     private EventDAO eventDAO;
-    private List<MapIcon> icons;
+
     private TeamCommonBean teamCommonBean;
     
 	private TimeFrame myTimeFrame;
 	
     public void init(){
     	
-		icons = MapIconFactory.IconType.TEAM_LEGEND.getIconList(15);
 		myTimeFrame =teamCommonBean.getTimeFrame();
 		initDrivers();
 		colors = Arrays.asList(	"#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
-	              				"#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5","#AACC66",
+								"#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
 	              				"#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289");
 		labels = Arrays.asList("A","B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
     }
     private void initDrivers(){
     	
 		List<Driver> driversList = driverDAO.getDrivers(teamCommonBean.getGroupID());
+		Collections.sort(driversList);
 		driversTrips = new ArrayList<DriverTrips>();
 		for (Driver driver:driversList){
 			
@@ -109,12 +110,6 @@ public class TeamTripsBean extends BaseBean {
 	}
 	public void setDriverDAO(DriverDAO driverDAO) {
 		this.driverDAO = driverDAO;
-	}
-	public List<MapIcon> getIcons() {
-		return icons;
-	}
-	public void setIcons(List<MapIcon> icons) {
-		this.icons = icons;
 	}
 	public Integer getGroupID() {
 		return teamCommonBean.getGroupID();
@@ -305,7 +300,7 @@ public class TeamTripsBean extends BaseBean {
 	       List<Event> idles = loadIdles();
 	       List<Event> tampers = loadTampers();
 	       
-		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getTimeFrame().getInterval());
+		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
 	       trips = new ArrayList<TeamTrip>();
 	
 	       for (Trip trip : tripsList) {
