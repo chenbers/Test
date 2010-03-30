@@ -596,37 +596,34 @@
  	    <property name="searchCoordinationBean" ref="searchCoordinationBean"></property> 
     </bean>
 
+   	<bean id="reportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.ReportPaginationTableDataProvider" scope="request">
+		<property name="reportDAO" ref="reportDAO"></property>   
+  	</bean>
+    
+
     <bean id="pagingDriverReportBean" class="com.inthinc.pro.backing.paging.PagingDriverReportBean" scope="request" init-method="init" parent="basePagingReportBean">
 		<property name="tableDataProvider" ref="driverReportPaginationTableDataProvider"></property>
     </bean>
 
-   	<bean id="driverReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DriverReportPaginationTableDataProvider" scope="request">
-		<property name="reportDAO" ref="reportDAO"></property>   
-  	</bean>
+   	<bean id="driverReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DriverReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider"/>
     
     <bean id="pagingVehicleReportBean" class="com.inthinc.pro.backing.paging.PagingVehicleReportBean" scope="request" init-method="init" parent="basePagingReportBean">
 		<property name="tableDataProvider" ref="vehicleReportPaginationTableDataProvider"></property>
     </bean>
 
-   	<bean id="vehicleReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.VehicleReportPaginationTableDataProvider" scope="request">
-	  <property name="reportDAO" ref="reportDAO"></property>   
-  	</bean>
+   	<bean id="vehicleReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.VehicleReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider"/>
 
     <bean id="pagingDeviceReportBean" class="com.inthinc.pro.backing.paging.PagingDeviceReportBean" scope="request" init-method="init" parent="basePagingReportBean">
 		<property name="tableDataProvider" ref="deviceReportPaginationTableDataProvider"></property>
     </bean>
 
-   	<bean id="deviceReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DeviceReportPaginationTableDataProvider" scope="request">
-	  <property name="reportDAO" ref="reportDAO"></property>   
-  	</bean>
+   	<bean id="deviceReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DeviceReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider"/>
 
     <bean id="pagingIdlingReportBean" class="com.inthinc.pro.backing.paging.PagingIdlingReportBean" scope="request" init-method="init" parent="basePagingReportBean">
 		<property name="tableDataProvider" ref="idlingReportPaginationTableDataProvider"></property>
     </bean>
 
-   	<bean id="idlingReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.IdlingReportPaginationTableDataProvider" scope="request">
-	  <property name="reportDAO" ref="reportDAO"></property>   
-  	</bean>
+   	<bean id="idlingReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.IdlingReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider"/>
 
 
 

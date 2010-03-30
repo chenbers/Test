@@ -6,8 +6,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.TimeFrameBean;
-import com.inthinc.pro.model.TimeFrame;
-import com.inthinc.pro.model.pagination.TableFilterField;
 
 public abstract class BaseNotificationPaginationDataProvider<T> extends GenericPaginationTableDataProvider<T> {
 	

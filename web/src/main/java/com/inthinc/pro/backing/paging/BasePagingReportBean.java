@@ -16,10 +16,13 @@ import com.inthinc.pro.backing.SearchCoordinationBean;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.pagination.Range;
+import com.inthinc.pro.model.pagination.SortOrder;
+import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.table.BasePaginationTable;
+import com.inthinc.pro.table.model.provider.ReportPaginationTableDataProvider;
 
 public abstract class BasePagingReportBean<T> extends BaseBean 
 {
@@ -28,6 +31,8 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 	 */
 	private static final long serialVersionUID = -5858527809036670367L;
 
+	private ReportPaginationTableDataProvider<T> tableDataProvider;
+	private BasePaginationTable<T> table;
 
 	@SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(BasePagingReportBean.class);
@@ -38,9 +43,6 @@ public abstract class BasePagingReportBean<T> extends BaseBean
     
     private SearchCoordinationBean searchCoordinationBean;
     private String searchFor;
-    
-	private BasePaginationTable<T> table;
-
     
 	protected final static String BLANK_SELECTION = "&#160;";
     
@@ -98,8 +100,15 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 		initScoreRanges();
         setScoreFilterMap(new HashMap<String, String>());
 		table = new BasePaginationTable<T>();
+		
+        tableDataProvider.setSort(getDefaultSort());
+        tableDataProvider.setGroupID(this.getProUser().getUser().getGroupID());
+		getTable().initModel(tableDataProvider);
+		
+
     }
 
+	public abstract TableSortField getDefaultSort();
 
 	public BasePaginationTable<T> getTable() {
 		return table;
@@ -197,5 +206,12 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 		table.reset();
 		getSearchCoordinationBean().setSearchFor("");
     }
+
+	public ReportPaginationTableDataProvider<T> getTableDataProvider() {
+		return tableDataProvider;
+	}
+	public void setTableDataProvider(ReportPaginationTableDataProvider<T> tableDataProvider) {
+		this.tableDataProvider = tableDataProvider;
+	}
 
 }

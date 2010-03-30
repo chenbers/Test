@@ -20,25 +20,22 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
 {
 
 	private static final long serialVersionUID = 5349999687948286628L;
-	private static final long ONE_MINUTE = 60000L;
-
 	private static final Logger logger = Logger.getLogger(PagingIdlingReportBean.class);
+	
     private static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
     private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
+	private static final long ONE_MINUTE = 60000L;
+
     private String badDates;
-	private IdlingReportPaginationTableDataProvider tableDataProvider;
-
-
-
     private Date startDate;
     private Date endDate;
 
     public Integer getTotalDrivers() {
-		return tableDataProvider.getTotalDrivers();
+		return ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).getTotalDrivers();
 	}
 
     public Integer getTotalEMUDrivers(){
-		return tableDataProvider.getTotalDriversWithIdleStats();
+		return ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).getTotalDriversWithIdleStats();
 	}
 	
 	public Date getStartDate()
@@ -87,7 +84,7 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
     	
 		Interval interval = initInterval();
 		if (interval != null) {
-			getTableDataProvider().setInterval(interval);
+			((IdlingReportPaginationTableDataProvider)getTableDataProvider()).setInterval(interval);
 			getTable().reset();
 			
 		}
@@ -101,7 +98,7 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
 		if (interval == null) {
 	        startDate = new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate();
 	        endDate = new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE).toDate();
-	        tableDataProvider.setInterval(initInterval());
+	        ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).setInterval(initInterval());
 		}
     	getTable().reset();
 		getSearchCoordinationBean().setSearchFor("");
@@ -110,31 +107,22 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
     @Override
     public void init()
     {
-        super.init();
-
-		logger.info("PagingIdlingReportBean - constructor");
-		
-        tableDataProvider.setSort(new TableSortField(SortOrder.ASCENDING, "driverName"));
-        tableDataProvider.setGroupID(this.getProUser().getUser().getGroupID());
-        startDate = new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate();
+		startDate = new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate();
         endDate = new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE).toDate();
-        tableDataProvider.setInterval(initInterval());
-		getTable().initModel(tableDataProvider);
+        ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).setInterval(initInterval());
+
+        super.init();
 		
     }
-
-    public IdlingReportPaginationTableDataProvider getTableDataProvider() {
-		return tableDataProvider;
-	}
-
-	public void setTableDataProvider(IdlingReportPaginationTableDataProvider tableDataProvider) {
-		this.tableDataProvider = tableDataProvider;
+	@Override
+	public TableSortField getDefaultSort() {
+		return new TableSortField(SortOrder.ASCENDING, "driverName");
 	}
 
     @Override
 	protected ReportCriteria getReportCriteria()
     {
-    	return getReportCriteriaService().getIdlingReportCriteria(getTableDataProvider().getGroupID(), getTableDataProvider().getInterval(), getLocale());
+    	return getReportCriteriaService().getIdlingReportCriteria(getTableDataProvider().getGroupID(), ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).getInterval(), getLocale());
     }
     
 	public String getBadDates() {

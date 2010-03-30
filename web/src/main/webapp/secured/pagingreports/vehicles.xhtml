@@ -88,7 +88,7 @@
                                             	</pretty:link>                                                                                
                                         	</rich:column>
                                         	<rich:column id="name" rendered="#{tableColumns['vehicle_name'].visible}" 
-                                            			sortBy="#{item.vehicleName}" filterBy="#{item.vehicleName}" filterValue="#{pagingVehicleReportBean.searchFor}">
+                                            			sortBy="#{item.vehicleName}" sortOrder="ASCENDING" filterBy="#{item.vehicleName}" filterValue="#{pagingVehicleReportBean.searchFor}">
                                             	<f:facet name="header">
                                                 	<h:outputText value="#{messages.reports_vehicleID}" />
                                             	</f:facet>

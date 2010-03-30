@@ -5,17 +5,14 @@ import java.util.List;
 
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.pagination.PageParams;
 
 
-public class IdlingReportPaginationTableDataProvider extends GenericPaginationTableDataProvider<IdlingReportItem> {
+public class IdlingReportPaginationTableDataProvider extends ReportPaginationTableDataProvider<IdlingReportItem> {
 
 	private static final long serialVersionUID = 6565374170287773433L;
 	
-	private ReportDAO               reportDAO;
-	private Integer 				groupID;
 	private Interval 				interval;
 	private Integer					totalDrivers;
 	private Integer					totalDriversWithIdleStats;
@@ -26,36 +23,20 @@ public class IdlingReportPaginationTableDataProvider extends GenericPaginationTa
 			return new ArrayList<IdlingReportItem>();
 		}
 		PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
-		return reportDAO.getIdlingReportPage(groupID, interval, pageParams);
+		return getReportDAO().getIdlingReportPage(getGroupID(), interval, pageParams);
 	}
 
 	@Override
 	public int getRowCount() {
-		if (groupID == null)
+		if (getGroupID() == null)
 			return 0;
 
-		int idleRowCount =  reportDAO.getIdlingReportSupportsIdleStatsCount(groupID, interval, getFilters());
+		int idleRowCount =  getReportDAO().getIdlingReportSupportsIdleStatsCount(getGroupID(), interval, getFilters());
 		setTotalDriversWithIdleStats(idleRowCount);
-		int rowCount =  reportDAO.getIdlingReportCount(groupID, interval, getFilters());
+		int rowCount =  getReportDAO().getIdlingReportCount(getGroupID(), interval, getFilters());
 		setTotalDrivers(rowCount);
 		
 		return rowCount;
-	}
-
-	public ReportDAO getReportDAO() {
-		return reportDAO;
-	}
-
-	public void setReportDAO(ReportDAO reportDAO) {
-		this.reportDAO = reportDAO;
-	}
-
-	public Integer getGroupID() {
-		return groupID;
-	}
-
-	public void setGroupID(Integer groupID) {
-		this.groupID = groupID;
 	}
 
 	public Interval getInterval() {

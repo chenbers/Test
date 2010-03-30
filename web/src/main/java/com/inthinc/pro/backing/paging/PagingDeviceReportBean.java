@@ -10,31 +10,35 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.RedFlagLevel;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.table.model.provider.DeviceReportPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
 
 public class PagingDeviceReportBean extends BasePagingReportBean<DeviceReportItem>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 9116805820208771789L;
 
 
 	private static final Logger logger = Logger.getLogger(PagingDeviceReportBean.class);
-    
-    
-	private DeviceReportPaginationTableDataProvider tableDataProvider;
-
-
 
     private String filterStatus;
 	private List<SelectItem> deviceStatuses;
+	
+    
+    @Override
+	public TableSortField getDefaultSort() {
+		return new TableSortField(SortOrder.ASCENDING, "deviceName");
+	}
+
+
+    @Override
+	protected ReportCriteria getReportCriteria()
+    {
+    	return getReportCriteriaService().getDevicesReportCriteria(getUser().getGroupID(), getLocale());
+    }
+
+
 	public List<SelectItem>  getDeviceStatuses() {
 		if (deviceStatuses == null) {
 			deviceStatuses = new ArrayList<SelectItem> ();
@@ -59,40 +63,5 @@ public class PagingDeviceReportBean extends BasePagingReportBean<DeviceReportIte
 	public void setFilterStatus(String filterStatus) {
 		this.filterStatus = filterStatus;
 	}
-
-
-    @Override
-    public void init()
-    {
-        super.init();
-
-		logger.info("PagingDeviceReportBean - constructor");
-		
-        tableDataProvider.setSort(new TableSortField(SortOrder.ASCENDING, "deviceName"));
-        tableDataProvider.setGroupID(this.getProUser().getUser().getGroupID());
-		getTable().initModel(tableDataProvider);
-		
-    }
-    
-    
-    public DeviceReportPaginationTableDataProvider getTableDataProvider() {
-		return tableDataProvider;
-	}
-
-
-
-	public void setTableDataProvider(DeviceReportPaginationTableDataProvider tableDataProvider) {
-		this.tableDataProvider = tableDataProvider;
-	}
-
-
-
-    @Override
-	protected ReportCriteria getReportCriteria()
-    {
-    	return getReportCriteriaService().getDevicesReportCriteria(getUser().getGroupID(), getLocale());
-    }
-
-
 }
 

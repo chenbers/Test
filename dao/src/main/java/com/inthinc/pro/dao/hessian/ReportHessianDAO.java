@@ -134,7 +134,7 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
 	public Integer getVehicleReportCount(Integer groupID, List<TableFilterField> filters) {
 		if (filters == null)
            	filters = new ArrayList<TableFilterField>();
-		filters = removeBlankFilters(filters);
+//		filters = removeBlankFilters(filters);
 
 		try {
 			Map<String, Object> map = getSiloService().getVehicleReportCount(groupID, getMapper().convertList(filters)); 
@@ -146,7 +146,7 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
         }
         
 	}
-
+/*
 
 	private List<TableFilterField> removeBlankFilters(
 			List<TableFilterField> filters) {
@@ -162,10 +162,10 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
 		return newFilters;
 	}
 
-
+*/
 	@Override
 	public List<VehicleReportItem> getVehicleReportPage(Integer groupID, PageParams pageParams) {
-		pageParams.setFilterList(removeBlankFilters(pageParams.getFilterList()));
+//		pageParams.setFilterList(removeBlankFilters(pageParams.getFilterList()));
 		try {
 			return getMapper().convertToModelObject(getSiloService().getVehicleReportPage(groupID, getMapper().convertToMap(pageParams)), VehicleReportItem.class);
 		}
