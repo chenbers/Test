@@ -29,7 +29,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.table.BasePaginationTable;
 import com.inthinc.pro.table.model.provider.RedFlagPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
-public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> implements TablePrefOptions<RedFlag>{
+public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	
 
 	/**
@@ -37,26 +37,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> imp
 	 */
 	private static final long serialVersionUID = 3166689931697428969L;
 	private static final Logger logger = Logger.getLogger(PagingRedFlagsBean.class);
-    private final static String COLUMN_LABEL_PREFIX = "notes_redflags_";
-    private TablePreferenceDAO       tablePreferenceDAO;
     
-    private TablePref<RedFlag> tablePref;
-    
-    // package level -- so unit test can get it
-    static final List<String> AVAILABLE_COLUMNS;
-    static {
-        // available columns
-        AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("level");
-        AVAILABLE_COLUMNS.add("alerts");
-        AVAILABLE_COLUMNS.add("date");
-        AVAILABLE_COLUMNS.add("group");
-        AVAILABLE_COLUMNS.add("driver");
-        AVAILABLE_COLUMNS.add("vehicle");
-        AVAILABLE_COLUMNS.add("category");
-        AVAILABLE_COLUMNS.add("detail");
-        AVAILABLE_COLUMNS.add("clear");
-    }
 	private RedFlagPaginationTableDataProvider tableDataProvider;
 	private BasePaginationTable<RedFlag> table;
 	
@@ -130,8 +111,7 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
 	{
 		super.init();
 		
-		logger.info("PagingRedFlagsBean - init");
-        tablePref = new TablePref<RedFlag>(this);
+		logger.debug("PagingRedFlagsBean - init");
 		
         
 		tableDataProvider.setDateTimeZone(DateTimeZone.forTimeZone(getUser().getPerson().getTimeZone()));
@@ -141,90 +121,6 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
 		table.initModel(tableDataProvider);
 	}
 
-
-    public TablePref<RedFlag> getTablePref() {
-        return tablePref;
-    }
-
-    public void setTablePref(TablePref<RedFlag> tablePref) {
-        this.tablePref = tablePref;
-    }
-
-    public Map<String, TableColumn> getTableColumns() {
-        return tablePref.getTableColumns();
-    }
-
-    public void setTableColumns(Map<String, TableColumn> tableColumns) {
-        tablePref.setTableColumns(tableColumns);
-    }
-
-    
-    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO) {
-	    this.tablePreferenceDAO = tablePreferenceDAO;
-	}
-    
-    
-    // TablePrefOptions interface
-    @Override
-    public String getColumnLabelPrefix() {
-        return COLUMN_LABEL_PREFIX;
-    }
-
-    @Override
-    public TablePreferenceDAO getTablePreferenceDAO() {
-	    return tablePreferenceDAO;
-	}
-
-    @Override
-    public List<String> getAvailableColumns() {
-        return AVAILABLE_COLUMNS;
-    }
-
-    @Override
-    public Map<String, Boolean> getDefaultColumns() {
-        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
-        for (String col : AVAILABLE_COLUMNS)
-            columns.put(col, true);
-        return columns;
-    }
-
-
-    @Override
-    public TableType getTableType() {
-        return TableType.RED_FLAG;
-    }
-
-    @Override
-    public Integer getUserID() {
-        return getUser().getUserID();
-    }
-    /**
-     * Returns the value of the property of the given item described by the given column name. The default implementation calls TablePref.fieldValue.
-     * 
-     * @param item
-     *            The item to get the value from.
-     * @param column
-     *            The name of the column to get the value of.
-     * @return The value or <code>null</code> if unavailable.
-     */
-    public String fieldValue(RedFlag item, String column) {
-        if ("driver".equals(column))
-            column = "driverName";
-        else if ("vehicle".equals(column))
-            column = "vehicleName";
-        else if ("alert".equals(column)) {
-            if ((item != null) && (item.getAlert() != null))
-                return item.getAlert() ? "yes" : "no";
-            return null;
-        }
-        else if ("level".equals(column))
-            column = "redFlag_level_description";
-        else if ("alerts".equals(column))
-            return "";
-        else if ("clear".equals(column))
-            return "";
-        return TablePref.fieldValue(item, column);
-    }
 
     @Override
     protected List<RedFlagReportItem> getReportTableData()

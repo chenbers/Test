@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
 public class PagingDiagnosticsEventsBean extends PagingEventsBean {
@@ -31,12 +30,6 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 	{
 	}
 	
-	@Override
-    public TableType getTableType()
-    {
-        return TableType.DIAGNOSTICS;
-    }
-
     @Override
     protected ReportCriteria getReportCriteria()
     {

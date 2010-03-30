@@ -5,9 +5,11 @@
     <ui:param name="helpFile" value="Emergency.htm" />
     <ui:param name="context" value="emergency"/>
     <ui:param name="ajaxPanels" value="#{context}_table,#{context}_search"/>
+    
 
 
     <ui:define name="content">
+	    <a4j:keepAlive beanName="emergencyTableColumns" />
 
         <table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
             <tr>
@@ -33,23 +35,24 @@
 
                             <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
                                 <ui:include src="/includes/pagingNotificationsTable.xhtml">	
-                                    <ui:param name="tableColumns" value="#{pagingEmergencyEventsBean.tableColumns}" />
                                     <ui:param name="bean" value="#{pagingEmergencyEventsBean}" />
                                     <ui:param name="clearTitle" value="#{messages.notes_emergency_clearTitle}" />
                                     <ui:param name="clearInst" value="#{messages.notes_emergency_clearInst}" />
                                     <ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}" />
      	 							<ui:param name="context" value="emergency" />
+		    	 					<ui:param name="tableColumns" value="#{emergencyTableColumns.tableColumns}" />
                                 </ui:include>
                             </h:panelGroup>
 
                         </h:panelGroup>
                     </h:panelGroup>
 
-                    <ui:include src="/includes/editColumnsPopup.xhtml">
-                        <ui:param name="bean" value="#{pagingEmergencyEventsBean}" />
-                        <ui:param name="reRender" value="#{context}-form:#{context}" />
-      	 				<ui:param name="context" value="#{context}" />
-                    </ui:include>
+                    <ui:include src="/includes/columnSelectionPopup.xhtml">
+						<ui:param name="bean" value="#{emergencyTableColumns}"/>	
+						<ui:param name="reRender" value="#{context}-form:#{context}" />
+    	 				<ui:param name="context" value="#{context}" />
+					</ui:include>
+                    
 
                     <h:panelGroup layout="block" styleClass="panel_sw">
                         <h:panelGroup layout="block" styleClass="panel_statusbar" />

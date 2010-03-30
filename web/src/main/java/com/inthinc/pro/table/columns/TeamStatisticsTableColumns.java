@@ -41,13 +41,6 @@ public class TeamStatisticsTableColumns extends BaseTableColumns {
 		return COLUMNS;
 	}
 
-	@Override
-	public Map<String, Boolean> getDefaultColumns() {
-        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
-        for (String col : COLUMNS)
-            columns.put(col, true);
-        return columns;
-	}
 
 	@Override
 	public TableType getTableType() {

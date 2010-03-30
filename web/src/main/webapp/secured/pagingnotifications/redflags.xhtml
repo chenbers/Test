@@ -12,6 +12,8 @@
     
 
 	<ui:define name="content">
+		<a4j:keepAlive beanName="redFlagsTableColumns" />
+	
 		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
 		  <tr>
 		    <td valign="top">
@@ -37,7 +39,7 @@
 					
 		            <h:panelGroup id="redFlagsTable" layout="block" styleClass="datagrid_panel">
 						<ui:include src="/includes/pagingRedFlagsTable.xhtml">	
-		            		<ui:param name="tableColumns" value="#{pagingRedFlagsBean.tableColumns}"/>
+		            		<ui:param name="tableColumns" value="#{redFlagsTableColumns.tableColumns}"/>
 		    				<ui:param name="bean" value="#{pagingRedFlagsBean}"/>
 		             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
 		    			</ui:include>    							
@@ -47,11 +49,12 @@
 		          </h:panelGroup>
 				</h:panelGroup>
 		
-				<ui:include src="/includes/editColumnsPopup.xhtml">
-					<ui:param name="bean" value="#{pagingRedFlagsBean}"/>	
+				<ui:include src="/includes/columnSelectionPopup.xhtml">
+					<ui:param name="bean" value="#{redFlagsTableColumns}"/>	
 					<ui:param name="reRender" value="redFlags-form:redFlags" />
     	 			<ui:param name="context" value="redFlags" />
-				</ui:include>    
+				</ui:include>
+				
 				
 		        <h:panelGroup layout="block" styleClass="panel_sw">
 		          <h:panelGroup layout="block" styleClass="panel_statusbar"/>

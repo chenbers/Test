@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
 public class PagingSafetyEventsBean extends PagingEventsBean {
@@ -35,11 +34,6 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
 		logger.info("PagingSafetyEventsBean - constructor");
 	}
 
-	@Override
-    public TableType getTableType()
-    {
-        return TableType.EVENTS;
-    }
 
     @Override
     protected ReportCriteria getReportCriteria() {

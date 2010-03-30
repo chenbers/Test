@@ -27,7 +27,6 @@ public class BasePaginationTable<T> {
 	}
 	public void initModel(GenericPaginationTableDataProvider<T> dataProvider)
 	{
-		System.out.println("initModel");
         model = new PaginationTableDataModel<T>(dataProvider);
         pageData = new PageData();
         pageData.initPage(model.getRowCount());

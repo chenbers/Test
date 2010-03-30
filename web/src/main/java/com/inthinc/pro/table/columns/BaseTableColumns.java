@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
@@ -15,16 +17,27 @@ public abstract class BaseTableColumns extends BaseBean {
 
 	private static final long serialVersionUID = -6946632928703112651L;
 	
+    private static final Logger logger = Logger.getLogger(BaseTableColumns.class);
+
+	
 	private TablePreferenceDAO tablePreferenceDAO;
 	private TablePreference tablePreference; 
     private Map<String, TableColumn> tableColumns;
 
 	public abstract TableType getTableType();
     public abstract List<String> getAvailableColumns();
-    public abstract Map<String, Boolean> getDefaultColumns();
     public abstract String getColumnLabelPrefix();
 
+	public Map<String, Boolean> getDefaultColumns() {
+        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
+        for (String col : getAvailableColumns())
+            columns.put(col, true);
+        return columns;
+	}
+
+    
     public void init() {
+logger.info("init() " + getTableType());    	
     	initTablePreference();
     	initTableColumns();
     }
@@ -39,6 +52,7 @@ public abstract class BaseTableColumns extends BaseBean {
             if (cnt < visibleList.size())
                 visible = visibleList.get(cnt++);
             TableColumn tableColumn = new TableColumn(visible, getColumnLabelPrefix() + column);
+// TODO: is this ok?            
             if (column.equals("clear") ||                    
                 column.equals("edit") ||
                 column.equals("details") )

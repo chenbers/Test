@@ -564,7 +564,6 @@
 
     <bean id="pagingEventsBean" class="com.inthinc.pro.backing.paging.PagingEventsBean" scope="request" init-method="init" parent="basePagingNotificationsBean">
 	    <property name="tableDataProvider" ref="eventPaginationTableDataProvider"></property>
-	  <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>   
     </bean>
 
     <bean id="pagingSafetyEventsBean" class="com.inthinc.pro.backing.paging.PagingSafetyEventsBean" scope="request" parent="pagingEventsBean">
@@ -583,8 +582,8 @@
      
     <bean id="pagingRedFlagsBean" class="com.inthinc.pro.backing.paging.PagingRedFlagsBean" scope="request" init-method="init" parent="basePagingNotificationsBean">
 	    <property name="tableDataProvider" ref="redFlagPaginationTableDataProvider"></property>
-	    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>   
     </bean>
+
    	<bean id="redFlagPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.RedFlagPaginationTableDataProvider" scope="request">
 	  <property name="redFlagDAO" ref="redFlagDAO"></property>   
 		<property name="timeFrameBean" ref="timeFrameBean" />
@@ -637,6 +636,16 @@
 		<property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>   
     </bean>
     <bean id="teamStatisticsTableColumns" class="com.inthinc.pro.table.columns.TeamStatisticsTableColumns" scope="request" parent="baseTableColumns">
+    </bean>
+    <bean id="redFlagsTableColumns" class="com.inthinc.pro.table.columns.RedFlagsTableColumns" scope="request" parent="baseTableColumns">
+    </bean>
+    <bean id="eventsTableColumns" class="com.inthinc.pro.table.columns.EventsTableColumns" scope="request" parent="baseTableColumns">
+    </bean>
+    <bean id="safetyTableColumns" class="com.inthinc.pro.table.columns.SafetyTableColumns" scope="request" parent="eventsTableColumns">
+    </bean>
+    <bean id="diagnosticsTableColumns" class="com.inthinc.pro.table.columns.DiagnosticsTableColumns" scope="request" parent="eventsTableColumns">
+    </bean>
+    <bean id="emergencyTableColumns" class="com.inthinc.pro.table.columns.EmergencyTableColumns" scope="request" parent="eventsTableColumns">
     </bean>
 
 </beans>
