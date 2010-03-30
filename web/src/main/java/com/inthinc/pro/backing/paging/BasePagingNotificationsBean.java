@@ -140,19 +140,6 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 		return teams;
 	}
 
-	private Map<String, Integer> daysBackSel;
-
-	public Map<String, Integer> getDaysBackSel() {
-		if (daysBackSel == null) {
-			daysBackSel = new TreeMap<String, Integer>();
-
-			for (Integer i = 1; i <= MAX_DAYS_BACK; i++) {
-				daysBackSel.put(Integer.valueOf(i).toString(), i);
-			}
-		}
-		return daysBackSel;
-	}
-
 	public Event getClearItem() {
 		return clearItem;
 	}
