@@ -34,6 +34,15 @@ public abstract class EventsTableColumns extends BaseTableColumns {
 	public String getColumnLabelPrefix() {
 		return COLUMN_LABEL_PREFIX;
 	}
+	
+	@Override
+    public boolean getCanHideColumn(String columnName)
+    {
+		if (columnName.equals("clear"))
+			return false;
+    	return true;
+    }
+
 
 	public abstract TableType getTableType();
 

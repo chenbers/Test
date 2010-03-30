@@ -8,27 +8,6 @@
   	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">  	
 
-	    <script language="javascript" type="text/javascript">
-	    		
-			function bodyLoad() {
-			}
-			function bodyUnload() {
-			}
-			jQuery(function() {
-
-				jQuery('##{context}_search\\:#{context}PanelHeaderTwoDay').addClass('selected_duration');
-				
-				jQuery('[id*=#{context}PanelHeader]').click(function(){
-					
-					jQuery('.selected_duration').removeClass('selected_duration');
-					jQuery(this).addClass('selected_duration');
-				});
-				
-						
-			});
-					
-		</script>
-
 	<t:saveState value="#{bean}"/>
 
 	<a4j:region id="#{context}_searchRegion">							

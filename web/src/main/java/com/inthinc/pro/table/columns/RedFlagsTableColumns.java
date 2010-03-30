@@ -41,5 +41,14 @@ public class RedFlagsTableColumns extends BaseTableColumns {
 	public TableType getTableType() {
         return TableType.RED_FLAG;
 	}
+	
+	@Override
+    public boolean getCanHideColumn(String columnName)
+    {
+		if (columnName.equals("clear"))
+			return false;
+    	return true;
+    }
+
 
 }

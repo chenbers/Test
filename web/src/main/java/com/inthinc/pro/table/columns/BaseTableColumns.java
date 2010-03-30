@@ -27,6 +27,11 @@ public abstract class BaseTableColumns extends BaseBean {
 	public abstract TableType getTableType();
     public abstract List<String> getAvailableColumns();
     public abstract String getColumnLabelPrefix();
+    
+    public boolean getCanHideColumn(String columnName)
+    {
+    	return true;
+    }
 
 	public Map<String, Boolean> getDefaultColumns() {
         HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
@@ -37,7 +42,7 @@ public abstract class BaseTableColumns extends BaseBean {
 
     
     public void init() {
-    	logger.debug("Table Columns init() " + getTableType());    	
+    	logger.info("Table Columns init() " + getTableType());    	
     	initTablePreference();
     	initTableColumns();
     }
@@ -52,6 +57,7 @@ public abstract class BaseTableColumns extends BaseBean {
             if (cnt < visibleList.size())
                 visible = visibleList.get(cnt++);
             TableColumn tableColumn = new TableColumn(visible, getColumnLabelPrefix() + column);
+            tableColumn.setCanHide(getCanHideColumn(column));
             tableColumns.put(column, tableColumn);
         }
     }
