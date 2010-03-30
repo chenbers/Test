@@ -37,7 +37,7 @@ public abstract class BaseTableColumns extends BaseBean {
 
     
     public void init() {
-logger.info("init() " + getTableType());    	
+    	logger.debug("Table Columns init() " + getTableType());    	
     	initTablePreference();
     	initTableColumns();
     }
@@ -52,14 +52,6 @@ logger.info("init() " + getTableType());
             if (cnt < visibleList.size())
                 visible = visibleList.get(cnt++);
             TableColumn tableColumn = new TableColumn(visible, getColumnLabelPrefix() + column);
-// TODO: is this ok?            
-            if (column.equals("clear") ||                    
-                column.equals("edit") ||
-                column.equals("details") )
-            {
-                tableColumn.setCanHide(false);
-            }
-
             tableColumns.put(column, tableColumn);
         }
     }
@@ -110,7 +102,6 @@ logger.info("init() " + getTableType());
         }
         setTablePreference(pref);
         getTablePreferenceDAO().update(pref);
-    
     }
 
     public void cancelEditAction()
@@ -118,8 +109,7 @@ logger.info("init() " + getTableType());
     	initTableColumns();
     }
 
-
-	public TablePreference getTablePreference() {
+    public TablePreference getTablePreference() {
 		return tablePreference;
 	}
 	public void setTablePreference(TablePreference tablePreference) {

@@ -32,20 +32,6 @@ public class PagingDeviceReportBean extends BasePagingReportBean<DeviceReportIte
 	private DeviceReportPaginationTableDataProvider tableDataProvider;
 
 
-	// TablePrefOptions info
-    static final List<String> AVAILABLE_COLUMNS;
-    private final static String COLUMN_LABEL_PREFIX = "deviceReports_";
-    static {
-        // available columns
-        AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("device_name");
-        AVAILABLE_COLUMNS.add("vehicle_name");
-        AVAILABLE_COLUMNS.add("device_imei");
-        AVAILABLE_COLUMNS.add("device_phone");
-        AVAILABLE_COLUMNS.add("device_status");
-        AVAILABLE_COLUMNS.add("device_ephone");
-    }
-
 
     private String filterStatus;
 	private List<SelectItem> deviceStatuses;
@@ -108,26 +94,5 @@ public class PagingDeviceReportBean extends BasePagingReportBean<DeviceReportIte
     }
 
 
-    // TablePrefOptions overrides
-  
-    @Override
-    public List<String> getAvailableColumns()
-    {
-        return AVAILABLE_COLUMNS;
-    }
-
-    @Override
-    public String getColumnLabelPrefix()
-    {
-        return COLUMN_LABEL_PREFIX;
-    }
-
-    @Override
-    public TableType getTableType()
-    {
-        return TableType.DEVICE_REPORT;
-    }
-    
-    // END - TablePrefOptions overrides
 }
 

@@ -12,14 +12,16 @@
 	
 
 	<rich:tab  id="teamStatistics">
-	 <ui:param name="tableColumns" value="#{teamStatisticsTableColumns.tableColumns}" />
-	 <ui:param name="context" value="teamStatistics" />
+		<a4j:keepAlive beanName="teamStatisticsTableColumns" />
 	
-	 <f:facet name="label">
-	 	<h:panelGroup>
-	 		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"/>#{messages.team_driver_statistics}
-	 	</h:panelGroup>
-	 </f:facet>
+	 	<ui:param name="tableColumns" value="#{teamStatisticsTableColumns.tableColumns}" />
+	 	<ui:param name="context" value="teamStatistics" />
+	
+	 	<f:facet name="label">
+	 		<h:panelGroup>
+	 			<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"/>#{messages.team_driver_statistics}
+	 		</h:panelGroup>
+	 	</f:facet>
 	
 	<!-- Driver Statistics -->
 	<a4j:outputPanel id="statisticsTab" ajaxRendered="true" styleClass="section" layout="block">

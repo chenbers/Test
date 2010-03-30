@@ -13,20 +13,15 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.SearchCoordinationBean;
-import com.inthinc.pro.backing.TablePref;
-import com.inthinc.pro.backing.TablePrefOptions;
-import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.pagination.Range;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.table.BasePaginationTable;
 
-public abstract class BasePagingReportBean<T> extends BaseBean implements TablePrefOptions<T>
+public abstract class BasePagingReportBean<T> extends BaseBean 
 {
     /**
 	 * 
@@ -38,8 +33,6 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
     private static final Logger logger = Logger.getLogger(BasePagingReportBean.class);
 
     
-    private TablePreferenceDAO tablePreferenceDAO;
-    private TablePref<T> tablePref;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     
@@ -102,7 +95,6 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
 	}
 
 	public void init() {
-        setTablePref(new TablePref<T>(this));
 		initScoreRanges();
         setScoreFilterMap(new HashMap<String, String>());
 		table = new BasePaginationTable<T>();
@@ -125,32 +117,6 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
 		this.scoreFilterMap = scoreFilterMap;
 	}
 
-	public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
-    {
-        this.tablePreferenceDAO = tablePreferenceDAO;
-    }
-
-    
-    
-    public Map<String, TableColumn> getTableColumns()
-    {
-        return tablePref.getTableColumns();
-    }
-
-    public void setTableColumns(Map<String, TableColumn> tableColumns)
-    {
-        tablePref.setTableColumns(tableColumns);
-    }
-
-    public TablePref<T> getTablePref()
-    {
-        return tablePref;
-    }
-
-    public void setTablePref(TablePref<T> tablePref)
-    {
-        this.tablePref = tablePref;
-    }
 
     public void exportReportToPdf()
     {
@@ -231,47 +197,5 @@ public abstract class BasePagingReportBean<T> extends BaseBean implements TableP
 		table.reset();
 		getSearchCoordinationBean().setSearchFor("");
     }
-    
-
-    // TablePrefOptions implementation
-    @Override
-    abstract public String getColumnLabelPrefix();
-
-    @Override
-    public TablePreferenceDAO getTablePreferenceDAO()
-    {
-        return tablePreferenceDAO;
-    }
-    
-    @Override
-    abstract public List<String> getAvailableColumns();
-
-
-    @Override
-    public Map<String, Boolean> getDefaultColumns()
-    {
-        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
-        for (String col : getAvailableColumns())
-            columns.put(col, true);
-        return columns;
-    }
-
-
-    @Override
-    abstract public TableType getTableType();
-    
-    @Override
-    public Integer getUserID()
-    {
-        return getUser().getUserID();
-    }
-
-    @Override
-    public String fieldValue(T item, String column)
-    {
-        return TablePref.fieldValue(item, column);
-    }
-    
-    // END - TablePrefOptions implementation
 
 }

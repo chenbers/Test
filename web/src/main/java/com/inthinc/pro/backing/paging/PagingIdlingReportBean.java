@@ -1,8 +1,6 @@
 package com.inthinc.pro.backing.paging;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -12,7 +10,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.IdlingReportItem;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -32,23 +29,6 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
 	private IdlingReportPaginationTableDataProvider tableDataProvider;
 
 
-	// TablePrefOptions info
-    static final List<String> AVAILABLE_COLUMNS;
-    private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
-    static {
-        // available columns
-        AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("group");
-        AVAILABLE_COLUMNS.add("driver_person_fullName");
-        AVAILABLE_COLUMNS.add("driveTime");
-        AVAILABLE_COLUMNS.add("hasRPM");
-        AVAILABLE_COLUMNS.add("lowHrs");
-        AVAILABLE_COLUMNS.add("lowPercent");
-        AVAILABLE_COLUMNS.add("highHrs");
-        AVAILABLE_COLUMNS.add("highPercent");
-        AVAILABLE_COLUMNS.add("totalHrs");
-        AVAILABLE_COLUMNS.add("totalPercent");
-    }
 
     private Date startDate;
     private Date endDate;
@@ -147,21 +127,15 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
 		return tableDataProvider;
 	}
 
-
-
 	public void setTableDataProvider(IdlingReportPaginationTableDataProvider tableDataProvider) {
 		this.tableDataProvider = tableDataProvider;
 	}
-
-
 
     @Override
 	protected ReportCriteria getReportCriteria()
     {
     	return getReportCriteriaService().getIdlingReportCriteria(getTableDataProvider().getGroupID(), getTableDataProvider().getInterval(), getLocale());
     }
-
-    
     
 	public String getBadDates() {
 		return badDates;
@@ -174,28 +148,5 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
 	public TimeZone getTimeZone() {
 		return timeZone;
 	}
-
-    
-
-    // TablePrefOptions overrides
-    @Override
-    public List<String> getAvailableColumns()
-    {
-        return AVAILABLE_COLUMNS;
-    }
-
-    @Override
-    public String getColumnLabelPrefix()
-    {
-        return COLUMN_LABEL_PREFIX;
-    }
-
-    @Override
-    public TableType getTableType()
-    {
-        return TableType.IDLING_REPORT;
-    }
-    
-    // END - TablePrefOptions overrides
 }
 

@@ -21,6 +21,8 @@
 	</ui:define>
 	
 	<ui:define name="content">
+			<a4j:keepAlive beanName="idlingReportTableColumns" />
+		 	<ui:param name="tableColumns" value="#{idlingReportTableColumns.tableColumns}" />
 			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
 					<td valign="top">
@@ -111,7 +113,7 @@
 							        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller,#{context}-form:headerCounts"
                                          rowClasses="tableOdd,tableEven" 
  										 cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
-										<rich:column id="group" rendered="#{bean.tableColumns['group'].visible}" 
+										<rich:column id="group" rendered="#{tableColumns['group'].visible}" 
                             						sortBy="#{item.groupName}" filterBy="#{item.groupName}">
 											<f:facet name="header">
                             					<h:outputText value="#{messages.reports_group}" />
@@ -121,7 +123,7 @@
                                                		<f:param value="#{item.groupID}"/>
                                             </pretty:link>                                                                                
 										</rich:column>
-                                        <rich:column id="fullName" rendered="#{bean.tableColumns['driver_person_fullName'].visible}"  
+                                        <rich:column id="fullName" rendered="#{tableColumns['driver_person_fullName'].visible}"  
                                         			sortBy="#{item.driverName}" sortOrder="ASCENDING" filterBy="#{item.driverName}" 
                                         			filterValue="#{bean.searchFor}">
 											<f:facet name="header">
@@ -132,54 +134,54 @@
                                                 <f:param value="#{item.driverID}"/>
                                             </pretty:link>
                                 		</rich:column>
-										<rich:column id="idleSupport" rendered="#{bean.tableColumns['hasRPM'].visible}" 
+										<rich:column id="idleSupport" rendered="#{tableColumns['hasRPM'].visible}" 
                                 					sortBy="#{item.hasRPM}">    					
 											<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_idle_support}" />
                                   			</f:facet>
                                   			<h:outputText value="#{item.hasRPM == 1 ? messages.yes : messages.no}"/>        					
                                 		</rich:column>    				
-										<rich:column id="driveTime" rendered="#{bean.tableColumns['driveTime'].visible}" 
+										<rich:column id="driveTime" rendered="#{tableColumns['driveTime'].visible}" 
                                 					sortBy="#{item.driveTime}">    					
 											<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_drivetime}" />
                                   			</f:facet>
                                   			<h:outputText value="#{item.driveTime}" converter="TimeToStringConverter"/>        					
                                 		</rich:column>    				
-                                		<rich:column id="lowHours" rendered="#{bean.tableColumns['lowHrs'].visible}" 
+                                		<rich:column id="lowHours" rendered="#{tableColumns['lowHrs'].visible}" 
                                 					sortBy="#{item.lowIdleTime}">
                                   			<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_lowidlehrs}" />
                                   			</f:facet>
                                   			<h:outputText value="#{item.lowIdleTime}" converter="TimeToStringConverter"/>
                                 		</rich:column>
-                                		<rich:column rendered="#{bean.tableColumns['lowPercent'].visible}">    					
+                                		<rich:column rendered="#{tableColumns['lowPercent'].visible}">    					
                                   			<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_percent}" />
                                   			</f:facet>
                                   			<h:outputText value="#{item.lowIdlePercent}" converter="FloatConverter"/> 
                                 		</rich:column>
-                                		<rich:column id="highHours" rendered="#{bean.tableColumns['highHrs'].visible}"
+                                		<rich:column id="highHours" rendered="#{tableColumns['highHrs'].visible}"
                                 					sortBy="#{item.highIdleTime}">
                                   			<f:facet name="header">
                                   					<h:outputText value="#{messages.reports_highidlehrs}" />
                                   			</f:facet>
                                   			<h:outputText value="#{item.highIdleTime}" converter="TimeToStringConverter"/> 
                                 		</rich:column>
-                                		<rich:column rendered="#{bean.tableColumns['highPercent'].visible}">
+                                		<rich:column rendered="#{tableColumns['highPercent'].visible}">
                                   			<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_percent}" />
                                   			</f:facet>
                                   			<h:outputText value="#{item.highIdlePercent}" converter="FloatConverter"/> 
                                 		</rich:column>
-                                		<rich:column id="totalHours" rendered="#{bean.tableColumns['totalHrs'].visible}"
+                                		<rich:column id="totalHours" rendered="#{tableColumns['totalHrs'].visible}"
                                 				sortBy="#{item.totalIdleTime}">
                                   			<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_totalidlehrs}" />
                                   			</f:facet>      					
                                   			<h:outputText value="#{item.totalIdleTime}" converter="TimeToStringConverter"/> 
                                 		</rich:column>
-                          				<rich:column rendered="#{bean.tableColumns['totalPercent'].visible}">    					
+                          				<rich:column rendered="#{tableColumns['totalPercent'].visible}">    					
                            					<f:facet name="header">
                            						<h:outputText value="#{messages.reports_percent}" />
                            					</f:facet>      					
@@ -210,11 +212,11 @@
 					</div>
 				</div>
 				</a4j:form>
-				<ui:include src="/includes/editColumnsPopup.xhtml">
-					<ui:param name="bean" value="#{bean}"/>	
+				<ui:include src="/includes/columnSelectionPopup.xhtml">
+					<ui:param name="bean" value="#{idlingReportTableColumns}"/>	
 					<ui:param name="reRender" value="#{context}-form:#{context}" />
 					<ui:param name="context" value="#{context}" />
-				</ui:include>    
+				</ui:include>
 			</td>
 		</tr>
 	</table>

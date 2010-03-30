@@ -3,9 +3,7 @@ package com.inthinc.pro.backing.paging;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
@@ -13,16 +11,11 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.LocaleBean;
-import com.inthinc.pro.backing.TablePref;
-import com.inthinc.pro.backing.TablePrefOptions;
-import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagReportItem;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;

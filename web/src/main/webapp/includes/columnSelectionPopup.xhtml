@@ -23,7 +23,11 @@
      	<ui:param name="context" value="#{context}-pageName" />
       </ui:include>
 -->
-	
+	<style>
+		.colNoBorder {
+			border:0;
+		}
+	</style>
     <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
     	autosized="true" resizeable="false" zindex="2000" 
     	onshow="document.getElementById('editColumnsForm:#{context}-editColumnsGrid:0:col').focus();">
@@ -42,7 +46,8 @@
 
       <a4j:form id="editColumnsForm">
 
-        <rich:dataGrid id="#{context}-editColumnsGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
+        <rich:dataGrid id="#{context}-editColumnsGrid" columns="3" value="#{bean.availableColumns}" var="col" 
+        	width="100%" style="border:0" columnClasses="colNoBorder">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
            <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" id="#{context}-col" tabindex="1"/>
            <h:outputText value="#{messages[bean.tableColumns[col].colLabel]}" />

@@ -22,6 +22,9 @@
 	</ui:define>
 
 	<ui:define name="content">
+			<a4j:keepAlive beanName="deviceReportTableColumns" />
+		 	<ui:param name="tableColumns" value="#{deviceReportTableColumns.tableColumns}" />
+	
 			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
 					<td valign="top">
@@ -76,7 +79,7 @@
 								        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"
             	                             rowClasses="tableOdd,tableEven" 
  											 cellspacing="1" rows="#{pagingDeviceReportBean.table.pageData.rowsPerPage}" width="100%">
-                               					<rich:column id="deviceName" rendered="#{bean.tableColumns['device_name'].visible}" 
+                               					<rich:column id="deviceName" rendered="#{tableColumns['device_name'].visible}" 
                                 						sortBy="#{item.deviceName}" sortOrder="ASCENDING" filterBy="#{item.deviceName}"
                                 						filterValue="#{bean.searchFor}">
                                						<f:facet name="header">
@@ -84,7 +87,7 @@
                                						</f:facet>							
                                						<h:outputText value="#{item.deviceName}"/>										
                                    				</rich:column>
-                                   				<rich:column id="vehicleName" rendered="#{bean.tableColumns['vehicle_name'].visible}" 
+                                   				<rich:column id="vehicleName" rendered="#{tableColumns['vehicle_name'].visible}" 
                                     					sortBy="#{item.vehicleName}" filterBy="#{item.vehicleName}">
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_assignedvehicle}" />
@@ -94,21 +97,21 @@
                                                             <f:param value="#{item.vehicleID}"/>
                                                         </pretty:link>      
                                     				</rich:column>
-                                    				<rich:column id="imei" rendered="#{bean.tableColumns['device_imei'].visible}" 
+                                    				<rich:column id="imei" rendered="#{tableColumns['device_imei'].visible}" 
                                     					sortBy="#{item.deviceIMEI}" filterBy="#{item.deviceIMEI}">    					
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_imei}" />
                                       					</f:facet>
                                       					<h:outputText value="#{item.deviceIMEI}" />    					     					
                                     				</rich:column>
-                                    				<rich:column id="phone" rendered="#{bean.tableColumns['device_phone'].visible}" 
+                                    				<rich:column id="phone" rendered="#{tableColumns['device_phone'].visible}" 
                                     					sortBy="#{item.devicePhone}" filterBy="#{item.devicePhone}">
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_devicephonenbr}" />
                                       					</f:facet>
                                       					<h:outputText value="#{item.devicePhone}" />   
                                     				</rich:column>
-                                    				<rich:column id="status" rendered="#{bean.tableColumns['device_status'].visible}" 
+                                    				<rich:column id="status" rendered="#{tableColumns['device_status'].visible}" 
                                     								custFilterBy="#{item.deviceStatus}" filterValue="#{bean.filterStatus}">
                                       					<f:facet name="header">
 															<h:panelGroup>
@@ -126,7 +129,7 @@
       													<ui:param name="status" value="status#{item.deviceStatus.code}" />
       													<h:outputText value="#{messages[status]}" />
                                     				</rich:column>  
-                                    				<rich:column id="ephone" rendered="#{bean.tableColumns['device_ephone'].visible}" 
+                                    				<rich:column id="ephone" rendered="#{tableColumns['device_ephone'].visible}" 
                                     					sortBy="#{item.deviceEPhone}" filterBy="#{item.deviceEPhone}">
                                       					<f:facet name="header">
                                       						<h:outputText value="#{messages.reports_ecallphonenbr}" />
@@ -143,11 +146,12 @@
                                           requestDelay="200" eventsQueue="pagerQueue" 
                                           page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
                    			</h:form>
-							<ui:include src="/includes/editColumnsPopup.xhtml">
-								<ui:param name="bean" value="#{bean}"/>	
+							<ui:include src="/includes/columnSelectionPopup.xhtml">
+								<ui:param name="bean" value="#{deviceReportTableColumns}"/>	
 								<ui:param name="reRender" value="#{context}-form:#{context}" />
-	   							<ui:param name="context" value="#{context}" />
-							</ui:include>    
+    	 						<ui:param name="context" value="#{context}" />
+							</ui:include>
+							
 						</div>
 					</div>
 			    	<div class="panel_sw">

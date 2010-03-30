@@ -21,6 +21,9 @@
 	</ui:define>
 	
 	<ui:define name="content">
+		<a4j:keepAlive beanName="driverReportTableColumns" />
+		<ui:param name="tableColumns" value="#{driverReportTableColumns.tableColumns}" />
+	
 		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 			<tr>
 				<td valign="top">
@@ -77,7 +80,7 @@
                                          rowClasses="tableOdd,tableEven" 
  										 cellspacing="1" rows="#{pagingDriverReportBean.table.pageData.rowsPerPage}" width="100%">
  										<rich:column/>
-                                        <rich:column id="group" rendered="#{pagingDriverReportBean.tableColumns['group'].visible}" 
+                                        <rich:column id="group" rendered="#{tableColumns['group'].visible}" 
                                         				sortBy="#{item.groupName}" filterBy="#{item.groupName}"> 
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_group}" />
@@ -87,13 +90,13 @@
                                                 <f:param value="#{item.groupID}"/>
                                             </pretty:link> 
                                         </rich:column>
-                                        <rich:column id="empid" rendered="#{pagingDriverReportBean.tableColumns['driver_person_empid'].visible}" sortBy="#{item.employeeID}" filterBy="#{item.employeeID}">
+                                        <rich:column id="empid" rendered="#{tableColumns['driver_person_empid'].visible}" sortBy="#{item.employeeID}" filterBy="#{item.employeeID}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_empID}" />
                                             </f:facet>
                                             <h:outputText value="#{item.employeeID}" />
                                         </rich:column>
-                                        <rich:column id="fullName" rendered="#{pagingDriverReportBean.tableColumns['driver_person_fullName'].visible}"  
+                                        <rich:column id="fullName" rendered="#{tableColumns['driver_person_fullName'].visible}"  
                                         			sortBy="#{item.driverName}" sortOrder="ASCENDING" filterBy="#{item.driverName}" 
                                         			filterValue="#{pagingDriverReportBean.searchFor}">
                                             <f:facet name="header">
@@ -105,7 +108,7 @@
                                             </pretty:link>
                                         
                                         </rich:column>
-                                        <rich:column id="vehiclename" rendered="#{pagingDriverReportBean.tableColumns['vehicle_name'].visible}" sortBy="#{item.vehicleName}" filterBy="#{item.vehicleName}">
+                                        <rich:column id="vehiclename" rendered="#{tableColumns['vehicle_name'].visible}" sortBy="#{item.vehicleName}" filterBy="#{item.vehicleName}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_vehicle}" />
                                             </f:facet>
@@ -116,7 +119,7 @@
                                             
                                             <h:outputText rendered="#{item.vehicleID eq null}" value="#{messages.reports_none_assigned}" />
                                         </rich:column>
-                                        <rich:column id="distance" rendered="#{pagingDriverReportBean.tableColumns['distanceDriven'].visible}" sortBy="#{item.milesDriven}">
+                                        <rich:column id="distance" rendered="#{tableColumns['distanceDriven'].visible}" sortBy="#{item.milesDriven}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_distanceDriven}"/>
                                             </f:facet>
@@ -125,7 +128,7 @@
                                                 <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                                             </h:outputFormat>
                                         </rich:column>
-                                        <rich:column id="overallScore" rendered="#{pagingDriverReportBean.tableColumns['overallScore'].visible}" 
+                                        <rich:column id="overallScore" rendered="#{tableColumns['overallScore'].visible}" 
                                         				sortBy="#{item.overallScore}" width="10%"
                                          				custFilterBy="#{item.overallScore}" custFilterValue="#{pagingDriverReportBean.overallScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
@@ -140,7 +143,7 @@
 													<ui:param name="context" value="driversOverall" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column id="speedScore" rendered="#{pagingDriverReportBean.tableColumns['speedScore'].visible}" 
+                                        <rich:column id="speedScore" rendered="#{tableColumns['speedScore'].visible}" 
                                         					sortBy="#{item.speedScore}" width="10%" 
                                          					custFilterBy="#{item.speedScore}" custFilterValue="#{pagingDriverReportBean.speedScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
@@ -155,7 +158,7 @@
 													<ui:param name="context" value="driversSpeed" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column id="styleScore" rendered="#{pagingDriverReportBean.tableColumns['styleScore'].visible}" 
+                                        <rich:column id="styleScore" rendered="#{tableColumns['styleScore'].visible}" 
                                         					sortBy="#{item.styleScore}" width="10%"
                                          					custFilterBy="#{item.styleScore}" custFilterValue="#{pagingDriverReportBean.styleScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
@@ -170,7 +173,7 @@
 													<ui:param name="context" value="driversStyle" />
                                             </ui:include> 
                                         </rich:column>
-                                        <rich:column id="seatbeltScore" rendered="#{pagingDriverReportBean.tableColumns['seatBeltScore'].visible}" 
+                                        <rich:column id="seatbeltScore" rendered="#{tableColumns['seatBeltScore'].visible}" 
                                         					sortBy="#{item.seatbeltScore}" width="10%"
                                          					custFilterBy="#{item.seatbeltScore}" custFilterValue="#{pagingDriverReportBean.seatbeltScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
@@ -195,10 +198,10 @@
                                           requestDelay="200" eventsQueue="pagerQueue" 
                                           page="#{pagingDriverReportBean.table.pageData.currentPage}" renderIfSinglePage="false"/>
                    			</h:form>
-							<ui:include src="/includes/editColumnsPopup.xhtml">
-								<ui:param name="bean" value="#{pagingDriverReportBean}"/>	
+							<ui:include src="/includes/columnSelectionPopup.xhtml">
+								<ui:param name="bean" value="#{driverReportTableColumns}"/>	
 								<ui:param name="reRender" value="#{context}-form:#{context}" />
-								<ui:param name="context" value="#{context}" />
+    	 						<ui:param name="context" value="#{context}" />
 							</ui:include>
 						</div>
 					</div>
