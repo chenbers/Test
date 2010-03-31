@@ -35,7 +35,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_groupID}" /></f:facet>
       <h:outputText value="#{item.group.name}" />
     </rich:column>
-    <rich:column id="role" rendered="#{personBean.tableColumns['user_role'].visible}" sortBy="#{item.roleName}">
+    <rich:column id="role" rendered="#{personBean.tableColumns['user_role'].visible}" sortBy="#{item.rolesString}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_role}" /></f:facet>
       <h:outputText value="#{item.rolesString}" />
     </rich:column>
