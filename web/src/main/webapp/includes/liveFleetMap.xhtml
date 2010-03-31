@@ -31,6 +31,7 @@
 		var markers = [];
 	  	var mapNeedsInit = true;
 	  	var overviewMapControl;
+	    
 	    var baseIcon = new GIcon();
 		baseIcon.iconSize = new GSize(25, 30);
 		baseIcon.iconAnchor = new GPoint(6, 20);
@@ -44,24 +45,25 @@
 				if(mapNeedsInit == true)
 				{
 			 		map = new GMap2(document.getElementById("map-canvas"));
+		    		geocoder =new GClientGeocoder();
+	
+				    map.addControl(new GLargeMapControl());
+				    map.addControl(new GScaleControl());
+				    map.addControl(new GMenuMapTypeControl(true));
+	
+					map.setCenter(new GLatLng(lat, lng));
+				    map.enableScrollWheelZoom();
+					map.setZoom(zoom);
+					
+					initWMSLayers();
+					
+			 		overviewMapControl = new GOverviewMapControl();
+			 		map.addControl(overviewMapControl); 
+					bounds = new GLatLngBounds();
+//				    overviewMapControl.hide(true);
+		    		
 			 		mapNeedsInit = false;
 				}
-			    addLayers();
-
-			    map.addControl(new GLargeMapControl());
-			    map.addControl(new GScaleControl());
-			    map.addControl(new GMenuMapTypeControl(true));
-
-				map.setCenter(new GLatLng(lat, lng));
-			    map.enableScrollWheelZoom();
-
-				addListeners();
-				
-		 		overviewMapControl = new GOverviewMapControl();
-		 		map.addControl(overviewMapControl); 
-				bounds = new GLatLngBounds();
-			    overviewMapControl.hide();
-	    		geocoder =new GClientGeocoder();
 			}
 		}
 	  	function centerMap() 
