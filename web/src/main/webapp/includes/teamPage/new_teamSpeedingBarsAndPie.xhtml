@@ -62,7 +62,7 @@
 						<ui:param name="overallScoreStyle" value="#{teamSpeedBean.overallScoreStyle}" />									
       		    		<ui:param name="overallScore" value="#{teamSpeedBean.selectedOverallScore}" />             						
       		        	<ui:param name="context" value="#{context}-speed"/> 
-      		        	<ui:param name="customLabel" value="Speeding Score"/>
+      		        	<ui:param name="customLabel" value="#{messages.teamSpeedScoreLabel}"/>
     				</ui:include>    							
 					<ui:include src="/includes/scoreBoxLegend.xhtml">
               			<ui:param name="context" value="#{context}-speed"/> 
@@ -94,7 +94,7 @@
 							
 							<f:facet name="header">
 							<rich:columnGroup>
-								<rich:column colspan="6">Limit
+								<rich:column colspan="6">#{messages.teamSpeedLimit}
 								</rich:column>
 								
 								<rich:column breakBefore="true">#{teamSpeedBean.graphicLabels['zeroToThirty']}
