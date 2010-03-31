@@ -151,59 +151,74 @@
   						onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);">
   						<span class="search"><h:outputText value="#{messages.sbs_findAddress}" /></span></a4j:commandButton></li>
             <li class="l"><a4j:commandButton id="slcrpSubmitRequest" styleClass="left" onclick="Richfaces.showModalPanel('saveSlcrPanel')"><span class="edit"><h:outputText value="#{messages.sbs_submitRequest}" /></span></a4j:commandButton></li>
+            
+                    <li class="r grid_icon">
+                        <a4j:status id="team_ajax_status">
+                            <f:facet name="start">
+                                 <h:graphicImage value="/images/progress2.gif"/>
+                            </f:facet>
+                        </a4j:status>
+                    </li>
             </ul>
  				<div class="spacer"></div>			
 			 	<table>
 				  <tr style=" width : 100%">
 			    	<td  valign="top" width="50%">
-		<div class="datagrid"><!-- Start Speed Limit Changer Request table --> 
-		
-		<rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items"
-			var="item" styleClass="datagrid" rowkey="row" rowkeyVar="rowVar"
-			rowClasses="tableOdd,tableEven" cellspacing="1" rows="100"
-			width="50%" onRowClick="selectSegment(#{item.linkId})" 
-						onRowMouseOver="hoverSegment(#{item.linkId},this)" 
-						onRowMouseOut="hoverDeselectAllSegments(this)" >
-			<f:facet name="caption" style="text-align:center"><h:outputText value="#{speedLimitChangeRequests.caption}" id="caption" style="text-align:center"/></f:facet>
-		<c:if test="#{speedLimitChangeRequests.renderTable}">
-			<!-- Data -->
-              <rich:column>
-                <f:facet name="header">
-                  <h:outputText value=" " />
+		<style>
+            .alt_datagrid th {
+            	background: #BFD292;
+            	padding: 1px 5px;
+            	text-align: center;
+            }
+            
+            .alt_datagrid>tbody>tr>td {
+            	text-align: center;
+                padding: 5px;
+            }
+            .alt_datagrid caption {
+              font: 10px Verdana,Tahoma,Arial,sans-serif;
+              text-align: center;
+            }
+        </style>
+		<div class="datagrid">
+		<!-- Start Speed Limit Changer Request table --> 
+	    	<rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items" var="item" styleClass="datagrid alt_datagrid" rowkey="row" rowkeyVar="rowVar"
+                rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100" width="365px" onRowClick="selectSegment(#{item.linkId})"
+                onRowMouseOver="hoverSegment(#{item.linkId},this)" onRowMouseOut="hoverDeselectAllSegments(this)">
+                <f:facet name="caption" style="text-align:center">
+                    <h:outputText value="#{speedLimitChangeRequests.caption}" id="caption" style="text-align:center" />
                 </f:facet>
-                <h:selectBooleanCheckbox value="#{item.selected}" id="c" onclick="check = true"/>
-              </rich:column>
- 					<rich:column width="38" height="27" >
-						<f:facet name="header">
-							<h:outputText value="#{messages.sbs_address}" />
-						</f:facet>
-						<h:outputText value="#{item.address}"/>
 
-					</rich:column>
-					<rich:column width="20">
-						<f:facet name="header">
-							<h:outputText value="sbs_mph" converter="MeasurementTextConverter"/>
-						</f:facet>
-						<h:outputText value="#{item.speedLimit}" converter="MphToKphConverter"/>
-
-					</rich:column>
-					<rich:column width="20">
-						<f:facet name="header">
-							<h:outputText value="sbs_newmph" converter="MeasurementTextConverter"/>
-						</f:facet>
-						<h:inputText value="#{item.newSpeedLimit}" required="true" size="3" onclick="check = true" onkeyup="validate(this,0,199)" id="s" converter="MphToKphConverter"/>
-
-					</rich:column>
-					<rich:column width="68">
-						<f:facet name="header">
-							<h:outputText value="#{messages.sbs_comment}" />
-						</f:facet>
-						<h:inputText value="#{item.comment}" size="10" id="t" onclick="check = true"/>
-						
-						
-						</rich:column>
-</c:if>
-					</rich:dataTable>
+                <c:if test="#{speedLimitChangeRequests.renderTable}">                                   
+	                <f:facet name="header">
+	                    <rich:columnGroup>
+	                        <rich:column rowspan="2">#{""}</rich:column>
+	                        <rich:column rowspan="2">#{messages.sbs_address}</rich:column>
+	                        <rich:column colspan="2">#{messages.sbs_speed_limit}</rich:column>
+	                        <rich:column rowspan="2">#{messages.sbs_comment}</rich:column>
+	                        <rich:column breakBefore="true">#{messages.sbs_current}</rich:column>
+	                        <rich:column>#{messages.sbs_new}</rich:column>
+	                    </rich:columnGroup>	
+	                </f:facet>
+                    <!-- Data -->
+                    <rich:column style="padding: 0;">
+                        <h:selectBooleanCheckbox value="#{item.selected}" id="c" onclick="check = true" />
+                    </rich:column>
+                    <rich:column>
+                        <h:outputText value="#{item.address}" />
+                    </rich:column>
+                    <rich:column>
+                        <h:outputText value="#{item.speedLimit}  #{item.kilometersPerHour ? messages.sbs_kph : messages.sbs_mph}" />
+                        <!--<h:outputText value="#{item.speedLimit}" converter="MphToKphConverter"/>-->
+                    </rich:column>
+                    <rich:column>
+                        <h:inputText value="#{item.newSpeedLimit}" required="true" size="3" onclick="check = true" onkeyup="validate(this,0,199)" id="s" />
+                    </rich:column>
+                    <rich:column>
+                        <h:inputText value="#{item.comment}" size="10" id="t" onclick="check = true" />
+                    </rich:column>
+                </c:if>
+            </rich:dataTable>
 
 
 

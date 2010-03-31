@@ -1,21 +1,14 @@
-<ui:composition template="/layout/layout.xhtml"
-              xmlns="http://www.w3.org/1999/xhtml"
-              xmlns:ui="http://java.sun.com/jsf/facelets"
-              xmlns:h="http://java.sun.com/jsf/html"
-              xmlns:rich="http://richfaces.org/rich"
-              xmlns:a4j="http://richfaces.org/a4j"
-              xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:c="http://java.sun.com/jstl/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security"
-  				xmlns:t="http://myfaces.apache.org/tomahawk">
-              
-              
-    
-	<ui:define name="scripts">
-	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
-	<a4j:loadScript src="/js/speedByStreet.js" />			
-	<a4j:loadScript src="/js/gzoom.js" />				
-	<script type="text/javascript">
+<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:security="http://pro.tiwi.com/jsf/security" xmlns:t="http://myfaces.apache.org/tomahawk">
+
+
+
+    <ui:define name="scripts">
+        <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+        <a4j:loadScript src="/js/speedByStreet.js" />
+        <a4j:loadScript src="/js/gzoom.js" />
+        <script type="text/javascript">
 		function bodyLoad(){
 			if (GBrowserIsCompatible()) {
 			
@@ -66,107 +59,132 @@
   		
 	}	
 	</script>
-	</ui:define>  			
+        <style>
+.datagrid th {
+	background: #BFD292;
+	padding: 1px 5px;
+	text-align: center;
+}
 
-  <ui:param name="adminSelected" value="current" />
-  <ui:param name="title" value="#{messages.adminHeader_addSpeedLimitChangeRequest}"/>
-  <ui:param name="helpFile" value="Speed_by_Street.htm" />
-  <ui:define name="content">
-  
-		<t:saveState value="#{speedLimitChangeRequests}"/>
+.datagrid>tbody>tr>td {
+	text-align: center;
+	padding: 5px;
+}
 
-    <table width="920" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-      <tr>
-        <td valign="top" width="130">
-          <ui:include src="/includes/navigation/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="go_adminSBSCR" />
-            <ui:param name="parentAction" value="go_adminSBSCR" />
-             <ui:param name="context" value="sbscr"/>
-          </ui:include>
-        </td>
-       <td valign="top">
-          <!-- START PANEL -->
-          <div class="">
+.datagrid caption {
+	font: 10px Verdana, Tahoma, Arial, sans-serif;
+	text-align: center;
+}
 
-            <div class="panel_nw">
-              <div class="panel_title">
-                <span class="admin"><h:outputText value="#{messages.adminHeader_addSpeedLimitChangeRequest}" /></span>
-                <span class="panel_links"></span>
-              </div>
-            </div>
-			<div class="panel_w">
+.rich-table-footercell {
+	background-color: #EBFFCA;
+	border: 1px;
+}
+</style>
+    </ui:define>
 
-				<div class="panel_content">
-     <a4j:form id="speedLimitChangeRequestTable">
-          <ul id="grid_nav" style="margin: 0;">
-            <li class="l"><a4j:commandButton id="sbscrDelete" action="#{speedLimitChangeRequests.delete}" reRender="map-data" styleClass="left" onclick=""><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
-            <li class="l"><a4j:commandButton id="sbscrDeleteAll" styleClass="left" action="#{speedLimitChangeRequests.deleteAll}" reRender="map-data" onclick=""><span class="delete"><h:outputText value="#{messages.sbs_clearAll}" /></span></a4j:commandButton></li>
-            <li class="l">
-              <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                <tr>
-         		<td><h:outputText value="#{messages.button_search}" /></td>
-         		<td><h:inputText size="40" name="address" id="address" class="text" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('speedLimitChangeRequestTable:searchButton').onclick(); return false; } return true;"/></td>
-                 </tr>
-              </table>
-            </li>
-  		<li class="l"><a4j:commandButton id="sbscrSearch" styleClass="left" onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);"><span class="search"><h:outputText value="#{messages.sbs_findAddress}" /></span></a4j:commandButton></li>
-            <li class="l"><a4j:commandButton id="sbscrSubmit1" styleClass="left" onclick="Richfaces.showModalPanel('saveSlcrPanel')"><span class="edit"><h:outputText value="#{messages.sbs_submitRequest}" /></span></a4j:commandButton></li>
-            </ul>
- 				<div class="spacer"></div>			
-			 	<table>
-				  <tr style=" width : 100%">
-			    	<td  valign="top" width="50%">
-		<div class="datagrid"><!-- Start Speed Limit Changer Request table --> 
-		<rich:panel id="map-data">
-		
-		<rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items"
-			var="item" styleClass="datagrid" rowkey="row" rowkeyVar="rowVar"
-			rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100"
-			width="50%" onRowClick="selectSegment(#{item.linkId})" 
-						onRowMouseOver="hoverSegment(#{item.linkId},this)" 
-						onRowMouseOut="hoverDeselectAllSegments(this)" >
-			<f:facet name="caption" style="text-align:center"><h:outputText value="#{speedLimitChangeRequests.caption}" id="caption" style="text-align:center"/></f:facet>
-		<c:if test="#{speedLimitChangeRequests.renderTable}">
-			<!-- Data -->
-              <rich:column>
-                <f:facet name="header">
-                  <h:outputText value=" " />
-                </f:facet>
-                <h:selectBooleanCheckbox value="#{item.selected}" id="c" onclick="check = true"/>
-              </rich:column>
- 					<rich:column width="38" height="27" >
-						<f:facet name="header">
-							<h:outputText value="#{messages.sbs_address}" />
-						</f:facet>
-						<h:outputText value="#{item.address}"/>
+    <ui:param name="adminSelected" value="current" />
+    <ui:param name="title" value="#{messages.adminHeader_addSpeedLimitChangeRequest}" />
+    <ui:param name="helpFile" value="Speed_by_Street.htm" />
+    <ui:define name="content">
 
-					</rich:column>
-					<rich:column width="20">
-						<f:facet name="header">
-							<h:outputText value="sbs_mph" converter="MeasurementTextConverter"/>
-						</f:facet>
-						<h:outputText value="#{item.speedLimit}" converter="MphToKphConverter"/>
+        <t:saveState value="#{speedLimitChangeRequests}" />
 
-					</rich:column>
-					<rich:column width="20">
-						<f:facet name="header">
-							<h:outputText value="sbs_newmph" converter="MeasurementTextConverter"/>
-						</f:facet>
-						<h:inputText value="#{item.newSpeedLimit}" required="true" size="3" onclick="check = true" onkeyup="validate(this,0,199)" id="s" converter="MphToKphConverter"/>
+        <table width="920" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+            <tr>
+                <td valign="top" width="130"><ui:include src="/includes/navigation/adminSideNav.xhtml">
+                    <ui:param name="selectedAction" value="go_adminSBSCR" />
+                    <ui:param name="parentAction" value="go_adminSBSCR" />
+                    <ui:param name="context" value="sbscr" />
+                </ui:include></td>
+                <td valign="top"><!-- START PANEL -->
+                <div class="">
 
-					</rich:column>
-					<rich:column width="68">
-						<f:facet name="header">
-							<h:outputText value="#{messages.sbs_comment}" />
-						</f:facet>
-						<h:inputText value="#{item.comment}" size="10" id="t" onclick="check = true"/>
-						
-						
-						</rich:column>
-</c:if>
-					</rich:dataTable>
+                <div class="panel_nw">
+                <div class="panel_title"><span class="admin"><h:outputText value="#{messages.adminHeader_addSpeedLimitChangeRequest}" /></span> <span class="panel_links"></span></div>
+                </div>
+                <div class="panel_w">
 
-<script type="text/javascript">
+                <div class="panel_content"><a4j:form id="speedLimitChangeRequestTable">
+                    <ul id="grid_nav" style="margin: 0;">
+                        <li class="l"><a4j:commandButton id="sbscrDelete" action="#{speedLimitChangeRequests.delete}" reRender="map-data" styleClass="left" onclick="">
+                            <span class="delete"><h:outputText value="#{messages.button_delete}" /></span>
+                        </a4j:commandButton></li>
+                        <li class="l"><a4j:commandButton id="sbscrDeleteAll" styleClass="left" action="#{speedLimitChangeRequests.deleteAll}" reRender="map-data" onclick="">
+                            <span class="delete"><h:outputText value="#{messages.sbs_clearAll}" /></span>
+                        </a4j:commandButton></li>
+                        <li class="l">
+                        <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                            <tr>
+                                <td><h:outputText value="#{messages.button_search}" /></td>
+                                <td><h:inputText size="40" name="address" id="address" class="text"
+                                    onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('speedLimitChangeRequestTable:searchButton').onclick(); return false; } return true;" /></td>
+                            </tr>
+                        </table>
+                        </li>
+                        <li class="l"><a4j:commandButton id="sbscrSearch" styleClass="left" onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);">
+                            <span class="search"><h:outputText value="#{messages.sbs_findAddress}" /></span>
+                        </a4j:commandButton></li>
+                        <li class="l"><a4j:commandButton id="sbscrSubmit1" styleClass="left" onclick="Richfaces.showModalPanel('saveSlcrPanel')">
+                            <span class="edit"><h:outputText value="#{messages.sbs_submitRequest}" /></span>
+                        </a4j:commandButton></li>
+                        
+                    <li class="r grid_icon">
+                        <a4j:status id="team_ajax_status">
+                            <f:facet name="start">
+                                 <h:graphicImage value="/images/progress2.gif"/>
+                            </f:facet>
+                        </a4j:status>
+                    </li>
+                    </ul>
+                    <div class="spacer"></div>
+                    <table>
+                        <tr style="width: 100%">
+                            <td valign="top" width="50%">
+                            <div class="datagrid"><!-- Start Speed Limit Changer Request table --> <rich:panel id="map-data">
+
+                                <rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items" var="item" styleClass="datagrid" rowkey="row" rowkeyVar="rowVar"
+                                    rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100" width="365px" onRowClick="selectSegment(#{item.linkId})"
+                                    onRowMouseOver="hoverSegment(#{item.linkId},this)" onRowMouseOut="hoverDeselectAllSegments(this)">
+                                    <f:facet name="caption" style="text-align:center">
+                                        <h:outputText value="#{speedLimitChangeRequests.caption}" id="caption" style="text-align:center" />
+                                    </f:facet>
+
+                                    <c:if test="#{speedLimitChangeRequests.renderTable}">
+
+                                        <f:facet name="header">
+                                            <rich:columnGroup>
+                                                <rich:column rowspan="2">#{""}</rich:column>
+                                                <rich:column rowspan="2">#{messages.sbs_address}</rich:column>
+                                                <rich:column colspan="2">#{messages.sbs_speed_limit}</rich:column>
+                                                <rich:column rowspan="2">#{messages.sbs_comment}</rich:column>
+                                                <rich:column breakBefore="true">#{messages.sbs_current}</rich:column>
+                                                <rich:column>#{messages.sbs_new}</rich:column>
+                                            </rich:columnGroup>
+                                        </f:facet>
+
+                                        <!-- Data -->
+                                        <rich:column style="padding: 0;">
+                                            <h:selectBooleanCheckbox value="#{item.selected}" id="c" onclick="check = true" />
+                                        </rich:column>
+                                        <rich:column>
+                                            <h:outputText value="#{item.address}" />
+                                        </rich:column>
+                                        <rich:column>
+                                            <h:outputText value="#{item.speedLimit} #{item.kilometersPerHour ? messages.sbs_kph : messages.sbs_mph}" />
+                                            <!--<h:outputText value="#{item.speedLimit}" converter="MphToKphConverter"/>-->
+                                        </rich:column>
+                                        <rich:column>
+                                            <h:inputText value="#{item.newSpeedLimit}" required="true" size="3" onclick="check = true" onkeyup="validate(this,0,199)" id="s" />
+                                        </rich:column>
+                                        <rich:column>
+                                            <h:inputText value="#{item.comment}" size="10" id="t" onclick="check = true" />
+                                        </rich:column>
+
+                                    </c:if>
+                                </rich:dataTable>
+
+                                <script type="text/javascript">
 		if (mapsbs != null){
 	          var gLatLngArray;
 	          var polyline;
@@ -230,80 +248,71 @@
 		         </ui:repeat>
 		 }
 </script>
-</rich:panel>
-
-</div>
-
-			
-			
-			          <!-- END PANEL -->
-					 </td>
-					    <td width="5" valign="top">
-					    
-							<!-- START PANEL -->
-									
-								<!-- START FLEET MAP PANEL -->
-	<div class="">
-		<rich:panel  id="map">
-		<div id="map-canvas" style="height:400px;width:400px;border:0"></div>
- 	</rich:panel>
- 	</div>	
-
-							<!-- END PANEL -->
-							</td>
-					</tr>
-			    </table>
-</a4j:form>
-				</div>
-			</div>
-          </div>
-           <div class="panel_sw">
-              <div class="panel_statusbar"></div>
-            </div>
-          </td>
-		</tr>
-    </table>
+                            </rich:panel></div>
 
 
-	<a4j:form id="segment">
-		<a4j:jsFunction name="addSegment" action="#{speedLimitChangeRequests.addChangeRequest}" reRender="map-data" >
-			<a4j:actionparam name="lat" assignTo="#{speedLimitChangeRequests.lat}"/>
-			<a4j:actionparam name="lng" assignTo="#{speedLimitChangeRequests.lng}"/>
-			<a4j:actionparam name="address" assignTo="#{speedLimitChangeRequests.address}"/>
-			<a4j:actionparam name="zoom" assignTo="#{speedLimitChangeRequests.mapzoom}"/>
-		</a4j:jsFunction>
-	</a4j:form>	
-	
-	<rich:modalPanel id="saveSlcrPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true">
-      <f:facet name="header">
-        <h:outputText value="#{messages.sbs_header}" />
-      </f:facet>
-      <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('saveSlcrPanel')" />
-      </f:facet>
-      <rich:panel id="reRender">
- 	<div><h:outputText value="#{speedLimitChangeRequests.message}" /></div>
-  <a4j:form id="emailForm">
-   <c:if test="#{!speedLimitChangeRequests.requestSent}">
-    <h:inputText style="width:230px;margin:10px" id="email" label="#{messages.sbs_emailAddress}" value="#{speedLimitChangeRequests.emailAddress}" required="true" validator="#{speedLimitChangeRequests.validateEmail}"></h:inputText>
-    <div>
-      <rich:message for="email" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-    </div>
-    <div class="popupactions">
-      <button id="sbscrCancel" value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
-      <a4j:commandButton id="sbscrSubmit2" reRender="reRender" action="#{speedLimitChangeRequests.saveRequestsAction}" styleClass="left" onclick=""><span class="retrieve_password"><h:outputText value="#{messages.sbs_submit}" /></span></a4j:commandButton>
- 	</div>
-   </c:if>
-   <c:if test="#{speedLimitChangeRequests.requestSent}">
-      <div class="popupactions">
-      	<a4j:commandButton id="sbscrReset" reRender="map-data,reRender" action="#{speedLimitChangeRequests.resetAction}" styleClass="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel');"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></a4j:commandButton>
- 	  </div>
-   </c:if> 
-  </a4j:form>
-   
-  </rich:panel>
-	</rich:modalPanel>
-			
-  </ui:define>
+
+                            <!-- END PANEL --></td>
+                            <td width="5" valign="top"><!-- START PANEL --> <!-- START FLEET MAP PANEL -->
+                            <div class=""><rich:panel id="map">
+                                <div id="map-canvas" style="height: 400px; width: 400px; border: 0"></div>
+                            </rich:panel></div>
+
+                            <!-- END PANEL --></td>
+                        </tr>
+                    </table>
+                </a4j:form></div>
+                </div>
+                </div>
+                <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+                </div>
+                </td>
+            </tr>
+        </table>
+
+
+        <a4j:form id="segment">
+            <a4j:jsFunction name="addSegment" action="#{speedLimitChangeRequests.addChangeRequest}" reRender="map-data">
+                <a4j:actionparam name="lat" assignTo="#{speedLimitChangeRequests.lat}" />
+                <a4j:actionparam name="lng" assignTo="#{speedLimitChangeRequests.lng}" />
+                <a4j:actionparam name="address" assignTo="#{speedLimitChangeRequests.address}" />
+                <a4j:actionparam name="zoom" assignTo="#{speedLimitChangeRequests.mapzoom}" />
+            </a4j:jsFunction>
+        </a4j:form>
+
+        <rich:modalPanel id="saveSlcrPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true">
+            <f:facet name="header">
+                <h:outputText value="#{messages.sbs_header}" />
+            </f:facet>
+            <f:facet name="controls">
+                <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('saveSlcrPanel')" />
+            </f:facet>
+            <rich:panel id="reRender">
+                <div><h:outputText value="#{speedLimitChangeRequests.message}" /></div>
+                <a4j:form id="emailForm">
+                    <c:if test="#{!speedLimitChangeRequests.requestSent}">
+                        <h:inputText style="width:230px;margin:10px" id="email" label="#{messages.sbs_emailAddress}" value="#{speedLimitChangeRequests.emailAddress}" required="true"
+                            validator="#{speedLimitChangeRequests.validateEmail}"></h:inputText>
+                        <div><rich:message for="email" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /></div>
+                        <div class="popupactions">
+                        <button id="sbscrCancel" value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="cancel"><h:outputText
+                            value="#{messages.button_cancel}" /></span></button>
+                        <a4j:commandButton id="sbscrSubmit2" reRender="reRender" action="#{speedLimitChangeRequests.saveRequestsAction}" styleClass="left" onclick="">
+                            <span class="retrieve_password"><h:outputText value="#{messages.sbs_submit}" /></span>
+                        </a4j:commandButton></div>
+                    </c:if>
+                    <c:if test="#{speedLimitChangeRequests.requestSent}">
+                        <div class="popupactions"><a4j:commandButton id="sbscrReset" reRender="map-data,reRender" action="#{speedLimitChangeRequests.resetAction}" styleClass="left"
+                            onclick="Richfaces.hideModalPanel('saveSlcrPanel');">
+                            <span class="ok"><h:outputText value="#{messages.button_ok}" /></span>
+                        </a4j:commandButton></div>
+                    </c:if>
+                </a4j:form>
+
+            </rich:panel>
+        </rich:modalPanel>
+
+    </ui:define>
 
 </ui:composition>
