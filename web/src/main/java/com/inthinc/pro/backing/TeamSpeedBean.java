@@ -12,9 +12,12 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TabAction;
+import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.Bar2DStacked;
 import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
@@ -34,6 +37,7 @@ public class TeamSpeedBean extends BaseBean {
     private TeamCommonBean teamCommonBean;
     
     private List<HashMap> speedTotals;
+    private HashMap graphicLabels;
     
     private Integer totDrivers;
     private Integer totDriversSpeeding;
@@ -42,7 +46,29 @@ public class TeamSpeedBean extends BaseBean {
     private static final Logger logger = Logger.getLogger(TeamSpeedBean.class);
 
     public TeamSpeedBean() {
-        logger.debug("TeamSpeedBean - constructor");        
+        logger.debug("TeamSpeedBean - constructor"); 
+        
+        // Get the labels for the graphs
+        graphicLabels = new HashMap();
+        
+        if ( this.getMeasurementType().equals(MeasurementType.ENGLISH) ) {
+            graphicLabels.put("zeroToThirty", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_21_30"));
+            graphicLabels.put("thirtyOneToFourty", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_31_40"));
+            graphicLabels.put("fourtyOneToFiftyFour", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_41_54"));
+            graphicLabels.put("fiftyFiveToSixtyFour", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_55_64"));
+            graphicLabels.put("sixtyFiveAndUp", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_65_80"));
+
+
+        } else {
+            graphicLabels.put("zeroToThirty", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_21_30"));
+            graphicLabels.put("thirtyOneToFourty", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_31_40"));
+            graphicLabels.put("fourtyOneToFiftyFour", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_41_54"));
+            graphicLabels.put("fiftyFiveToSixtyFour", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_55_64"));
+            graphicLabels.put("sixtyFiveAndUp", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_65_80"));                     
+        }
+        
+        graphicLabels.put("teamTotal", MessageUtil.getMessageString("teamTotal"));
+               
     }
 
     private Integer initOverallScore(ScoreType scoreType) {
@@ -102,33 +128,12 @@ public class TeamSpeedBean extends BaseBean {
 
     public String getNewBarDef(Integer type) {
        return getNewBarDefMap().get(ScoreType.valueOf(type)).get(teamCommonBean.getTimeFrame().getDuration());
-    }    
-        
-    public String getSelectedSpeedOverBarDef() {
-        TabAction action = findTab("speed");
-        ScoreType scoreType = action.getScoreType();
-        TimeFrame timeFrame = teamCommonBean.getTimeFrame();
-        
-        if (getSpeedOverBarDefMap().get(scoreType) == null) {
-            
-            getSpeedOverBarDefMap().put(scoreType,  new HashMap<String, String>());
-        }
-        if (speedOverBarDefMap.get(scoreType).get(timeFrame.name()) == null){
-            
-            speedOverBarDefMap.get(scoreType).put(timeFrame.name(), createSpeedOverBarChart(scoreType));            
-        }
-        return getSpeedOverBarDefMap().get(scoreType).get(timeFrame.name());
-    }
-
-    public String getSpeedOverBarDef(Integer type) {
-       return getNewBarDefMap().get(ScoreType.valueOf(type)).get(teamCommonBean.getTimeFrame().getDuration());
-    }        
+    }         
     
     public String createPieChart(ScoreType scoreType) {
         List<ScoreableEntity> scoreDataList = null;        
         try {
-            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);
-//            scoreDataList = scoreDAO.getScoreBreakdown(getGroupID(), durationBean.getDuration(), scoreType);  
+            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);  
             scoreDataList = getScoreableEntitiesPie();                 
         }
         catch (Exception e) {
@@ -141,6 +146,7 @@ public class TeamSpeedBean extends BaseBean {
         
         // Control parameters
         sb.append(pie.getControlParameters());
+        sb.append(" caption = \'Speeding Count by Speed Limit\'>");
                
         if (scoreDataList.size() > 0) {
             ScoreableEntity se = null;
@@ -151,8 +157,8 @@ public class TeamSpeedBean extends BaseBean {
                 
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
-                
-                sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\' color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
+                sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\'" + 
+                        " color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
             }
         }
         
@@ -165,112 +171,67 @@ public class TeamSpeedBean extends BaseBean {
         List<Integer> milesSpeeding = null;
         
         try {
-            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);
-//            scoreDataList = scoreDAO.getScoreBreakdown(getGroupID(), durationBean.getDuration(), scoreType);  
+            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);             
             milesDriven = getMilesDriven();
-            milesSpeeding = getMilesSpeeding();            
+            milesSpeeding = getMilesSpeeding(); 
         }
         catch (Exception e) {
             milesDriven = new ArrayList<Integer>();
             milesSpeeding = new ArrayList<Integer>();
         }
-        List<String> categoryLabelList = new ArrayList<String>();
-       
-        // Labels for x-axis
-        for (ScoreType subType : scoreType.getSubTypes()) {
-            if ( !subType.equals(ScoreType.SCORE_SPEEDING) ) {
-                categoryLabelList.add(MessageUtil.getMessageString(subType.toString(), getLocale()));
-            }
-        }
 
         // Create the bar string
         StringBuffer sb = new StringBuffer();
-        Bar2DStacked bar = new Bar2DStacked();
+        Bar2DMultiAxisChart bar = new Bar2DMultiAxisChart(null,null);
         
         // Control parameters
         sb.append(bar.getControlParameters());
+        sb.append("caption=\"Speeding Distance by Speed Limit (");
+        sb.append(MessageUtil.getMessageString(this.getMeasurementType()+"_mph"));       
+        sb.append(")\">");
         
         // Categories
         sb.append("<categories>");
-        for ( String str:categoryLabelList ) {
-            sb.append("<category label=\"");
-            sb.append(str);            
-            sb.append("\"/>");
-        }
+        sb.append("<category label=\"");sb.append(graphicLabels.get("zeroToThirty"));sb.append("\"/>");        
+        sb.append("<category label=\"");sb.append(graphicLabels.get("thirtyOneToFourty"));sb.append("\"/>");  
+        sb.append("<category label=\"");sb.append(graphicLabels.get("fourtyOneToFiftyFour"));sb.append("\"/>");  
+        sb.append("<category label=\"");sb.append(graphicLabels.get("fiftyFiveToSixtyFour"));sb.append("\"/>");  
+        sb.append("<category label=\"");sb.append(graphicLabels.get("sixtyFiveAndUp"));sb.append("\"/>");          
         sb.append("</categories>");
 
         // Miles speeding
-        sb.append("<dataset seriesName=\"Speeding\" color=\"FF0000\" showValues=\"0\">");
+        sb.append("<dataset>");
+        sb.append("<dataset seriesName=\"Speeding Distance\" color=\"FF0000\" showValues=\"0\">");
         for (int i = 0; i < milesSpeeding.size(); i++)
-        {
-            Integer miles = milesSpeeding.get(i);
-            sb.append("<set value=\'" + miles.toString() + "\'/>");           
+        {            
+            Number miles = MeasurementConversionUtil.convertMilesToKilometers(milesSpeeding.get(i), this.getMeasurementType());
+            sb.append("<set value=\"" + miles.toString() + "\"/>");           
         }
         sb.append("</dataset>");
 
         // Miles driven
-        sb.append("<dataset seriesName=\"Driven\" color=\"00FF00\" showValues=\"0\">");
+        sb.append("<dataset seriesName=\"Driving Distance\" color=\"00FF00\" showValues=\"0\">");
         for (int i = 0; i < milesDriven.size(); i++)
         {
-            Integer miles = milesDriven.get(i) - milesSpeeding.get(i);
-            sb.append("<set value=\'" + miles.toString() + "\'/>");           
+            Number miles = MeasurementConversionUtil.convertMilesToKilometers(milesDriven.get(i), this.getMeasurementType());
+            sb.append("<set value=\"" + miles.toString() + "\"/>");           
         }
         sb.append("</dataset>");
+        sb.append("</dataset>");
+        
+        // Percent speeding
+        sb.append("<lineSet seriesName=\"% Distance\"  color=\"0000FF\" showValues=\"0\" lineThickness=\"4\">");
+        for (int i= 0; i < milesSpeeding.size(); i++ ) 
+        {           
+            Float avgOvr = (float)100.0*((float)milesSpeeding.get(i)/(float)milesDriven.get(i));
+            sb.append("<set value=\"" + avgOvr.toString() + "\"/>"); 
+        }
+        sb.append("</lineSet>");
         
         // Close string
-        sb.append(bar.getClose());
+        sb.append("</chart>");
         return sb.toString();
     }    
-    
-    public String createSpeedOverBarChart(ScoreType scoreType) {
-        List<Integer> milesOverSpeeding = null;
-        
-        try {
-            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);
-//            scoreDataList = scoreDAO.getScoreBreakdown(getGroupID(), durationBean.getDuration(), scoreType);  
-            milesOverSpeeding = getMilesOverSpeeding();            
-        }
-        catch (Exception e) {            
-            milesOverSpeeding = new ArrayList<Integer>();
-        }
-        List<String> categoryLabelList = new ArrayList<String>();
-       
-        // Labels for x-axis
-        for (ScoreType subType : scoreType.getSubTypes()) {
-            if ( !subType.equals(ScoreType.SCORE_SPEEDING) ) {
-                categoryLabelList.add(MessageUtil.getMessageString(subType.toString(), getLocale()));
-            }
-        }
-
-        // Create the bar string
-        StringBuffer sb = new StringBuffer();
-        Bar2DStacked bar = new Bar2DStacked();
-        
-        // Control parameters
-        sb.append(bar.getControlParameters());
-        
-        // Categories
-        sb.append("<categories>");
-        for ( String str:categoryLabelList ) {
-            sb.append("<category label=\"");
-            sb.append(str);            
-            sb.append("\"/>");
-        }
-        sb.append("</categories>");
-
-        // Miles over speeding
-        sb.append("<dataset seriesName=\"Speeding\" color=\"FF0000\" showValues=\"0\">");
-        for (int i = 0; i < milesOverSpeeding.size(); i++)
-        {
-            Integer miles = milesOverSpeeding.get(i);
-            sb.append("<set value=\'" + miles.toString() + "\'/>");           
-        }
-        sb.append("</dataset>");
-        
-        // Close string
-        sb.append(bar.getClose());
-        return sb.toString();
-    }        
 
     public Map<ScoreType, Map<String,String>> getBarDefMap() {
         if (barDefMap == null) {
@@ -367,7 +328,8 @@ public class TeamSpeedBean extends BaseBean {
 
     public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
         this.teamCommonBean = teamCommonBean;
-        this.groupID = teamCommonBean.getGroupID();
+        this.groupID = teamCommonBean.getGroupID();        
+        this.speedTotals = this.getSpeedTotals();
     }
 
     public Integer getTotDrivers() {
@@ -432,13 +394,13 @@ public class TeamSpeedBean extends BaseBean {
     }
     
     public List<HashMap> getSpeedTotals() {
-        speedTotals = new ArrayList<HashMap>();
+        ArrayList<HashMap> speedTot = new ArrayList<HashMap>();
         HashMap<String,String> totals = new HashMap<String,String>();
                 
         int zeroToThirty = 0;
-        int thirtyoneToFourty = 0;
-        int fourtyoneToFifty = 0;
-        int fiftyoneToSixtyFour = 0;
+        int thirtyOneToFourty = 0;
+        int fourtyOneToFiftyFour = 0;
+        int fiftyFiveToSixtyFour = 0;
         int sixtyFiveAndUp = 0;
                 
         this.totDrivers = 0;
@@ -458,13 +420,13 @@ public class TeamSpeedBean extends BaseBean {
                     zeroToThirty += dvsw.getScore().getSpeedEvents1().intValue();
                 }
                 if ( dvsw.getScore().getSpeedEvents2() != null ) {
-                    thirtyoneToFourty += dvsw.getScore().getSpeedEvents2().intValue();
+                    thirtyOneToFourty += dvsw.getScore().getSpeedEvents2().intValue();
                            }
                 if ( dvsw.getScore().getSpeedEvents3() != null ) {
-                    fourtyoneToFifty += dvsw.getScore().getSpeedEvents3().intValue();
+                    fourtyOneToFiftyFour += dvsw.getScore().getSpeedEvents3().intValue();
                 }
                 if ( dvsw.getScore().getSpeedEvents4() != null ) {
-                    fiftyoneToSixtyFour += dvsw.getScore().getSpeedEvents4().intValue();
+                    fiftyFiveToSixtyFour += dvsw.getScore().getSpeedEvents4().intValue();
                 }
                 if ( dvsw.getScore().getSpeedEvents5() != null ) {
                     sixtyFiveAndUp += dvsw.getScore().getSpeedEvents5().intValue();
@@ -473,32 +435,40 @@ public class TeamSpeedBean extends BaseBean {
         }
                
         totals.put("zeroToThirty", Integer.toString(zeroToThirty));
-        totals.put("thirtyoneToFourty", Integer.toString(thirtyoneToFourty));
-        totals.put("fourtyoneToFifty", Integer.toString(fourtyoneToFifty));
-        totals.put("fiftyoneToSixtyFour", Integer.toString(fiftyoneToSixtyFour));
+        totals.put("thirtyOneToFourty", Integer.toString(thirtyOneToFourty));
+        totals.put("fourtyOneToFiftyFour", Integer.toString(fourtyOneToFiftyFour));
+        totals.put("fiftyFiveToSixtyFour", Integer.toString(fiftyFiveToSixtyFour));
         totals.put("sixtyFiveAndUp", Integer.toString(sixtyFiveAndUp));
-        totals.put("total", Integer.toString(zeroToThirty + thirtyoneToFourty + fourtyoneToFifty + fiftyoneToSixtyFour + sixtyFiveAndUp));
+        totals.put("total", Integer.toString(zeroToThirty + thirtyOneToFourty + fourtyOneToFiftyFour + fiftyFiveToSixtyFour + sixtyFiveAndUp));
         
-        speedTotals.add(totals);
+        speedTot.add(totals);
         
-        return speedTotals;
+        return speedTot;
     }
     
+    public HashMap getGraphicLabels() {
+        return graphicLabels;
+    }
+
+    public void setGraphicLabels(HashMap graphicLabels) {
+        this.graphicLabels = graphicLabels;
+    }
+
     private List<ScoreableEntity> getScoreableEntitiesPie() {
         List<ScoreableEntity> local = new ArrayList<ScoreableEntity>();
         
-        List<HashMap> observations = getSpeedTotals();
+        List<HashMap> observations = speedTotals;
         int totObs = 0;
         HashMap observation = observations.get(0);
         
         String zeroToThirty = (String)observation.get("zeroToThirty");
         totObs += Integer.parseInt(zeroToThirty);
-        String thirtyoneToFourty = (String)observation.get("thirtyoneToFourty");
+        String thirtyoneToFourty = (String)observation.get("thirtyOneToFourty");
         totObs += Integer.parseInt(thirtyoneToFourty);
-        String fourtyoneToFifty = (String)observation.get("fourtyoneToFifty");
-        totObs += Integer.parseInt(fourtyoneToFifty);
-        String fiftyoneToSixtyFour = (String)observation.get("fiftyoneToSixtyFour");
-        totObs += Integer.parseInt(fiftyoneToSixtyFour);
+        String fourtyoneToFiftyFour = (String)observation.get("fourtyOneToFiftyFour");
+        totObs += Integer.parseInt(fourtyoneToFiftyFour);
+        String fiftyfiveToSixtyFour = (String)observation.get("fiftyFiveToSixtyFour");
+        totObs += Integer.parseInt(fiftyfiveToSixtyFour);
         String sixtyFiveAndUp = (String)observation.get("sixtyFiveAndUp");
         totObs += Integer.parseInt(sixtyFiveAndUp);
         
@@ -512,11 +482,11 @@ public class TeamSpeedBean extends BaseBean {
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(fourtyoneToFifty)/totObs);
+        se.setScore((100)*Integer.parseInt(fourtyoneToFiftyFour)/totObs);
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(fiftyoneToSixtyFour)/totObs);
+        se.setScore((100)*Integer.parseInt(fiftyfiveToSixtyFour)/totObs);
         local.add(se);
         se = new ScoreableEntity();
         
@@ -593,8 +563,7 @@ public class TeamSpeedBean extends BaseBean {
         
         return miles;
     }
-    
-    
+       
     private List<Integer> getMilesDriven() {
         ArrayList<Integer> miles = new ArrayList<Integer>();
                 
@@ -636,54 +605,6 @@ public class TeamSpeedBean extends BaseBean {
         miles.add(new Integer(fourtyOneToFiftyFour));
         miles.add(new Integer(fiftyFiveToSixtyFour));
         miles.add(new Integer(sixtyFiveAndUp));
-        
-        return miles;
-    }    
-    
-    
-    private List<Integer> getMilesOverSpeeding() {
-        ArrayList<Integer> miles = new ArrayList<Integer>();
-                
-        List<DriverVehicleScoreWrapper> local = 
-            teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
-        
-        int zeroToThirty = 0;
-        int thirtyOneToFourty = 0;
-        int fourtyOneToFiftyFour = 0;
-        int fiftyFiveToSixtyFour = 0;
-        int sixtyFiveAndUp = 0;
-        
-        for ( DriverVehicleScoreWrapper dvsw: local ) {
-            
-            if ( dvsw.getScore().getSpeedOver1() != null ) {
-                zeroToThirty += dvsw.getScore().getSpeedOver1().intValue();
-            }
-            
-            if ( dvsw.getScore().getSpeedOver2() != null ) {
-                thirtyOneToFourty += dvsw.getScore().getSpeedOver2().intValue();
-            }
-            
-            if ( dvsw.getScore().getSpeedOver3() != null ) {
-                fourtyOneToFiftyFour += dvsw.getScore().getSpeedOver3().intValue();
-            }
-            
-            if ( dvsw.getScore().getSpeedOver4() != null ) {
-                fiftyFiveToSixtyFour += dvsw.getScore().getSpeedOver4().intValue();
-            }
-            
-            if ( dvsw.getScore().getSpeedOver5() != null ) {
-                sixtyFiveAndUp += dvsw.getScore().getSpeedOver5().intValue();
-            } 
-              
-        }
-        
-        
-        // An average across all drivers participating
-        miles.add(new Integer(zeroToThirty/totDriversSpeeding));
-        miles.add(new Integer(thirtyOneToFourty/totDriversSpeeding));
-        miles.add(new Integer(fourtyOneToFiftyFour/totDriversSpeeding));
-        miles.add(new Integer(fiftyFiveToSixtyFour/totDriversSpeeding));
-        miles.add(new Integer(sixtyFiveAndUp/totDriversSpeeding));
         
         return miles;
     }    

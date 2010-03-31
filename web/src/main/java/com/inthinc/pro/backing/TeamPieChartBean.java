@@ -115,6 +115,7 @@ public class TeamPieChartBean extends BaseBean {
         
         // Control parameters
         sb.append(pie.getControlParameters());
+        sb.append(">");
                
         if (scoreDataList.size() > 0) {
             ScoreableEntity se = null;

@@ -24,7 +24,7 @@ public class Pie implements BaseChart
                                                     "baseFont=\'Verdana\' " +
                                                     "baseFontSize=\'12\' " +
                                                     "labelDistance=\'10\' " +
-                                                    "bgColor=\'#ffffff\'>";
+                                                    "bgColor=\'#ffffff\' ";
     
     private static final String PIE_CHART_CLOSE = "</chart>"; 
     private static final String PIE_CHART_ITEM_FORMAT = "<set value=''{0}'' label=''{1}'' color=''{2}''/>";

@@ -16,7 +16,7 @@
 			function renderSpeedBarChart(speedElement, speedDiv, width, height)
 			{
 				var speedDef = document.getElementById(speedElement);
-				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/StackedColumn2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
+				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListOS}", "ChartId", width, height, "0", "1");														
 				speedChart.setDataXML(speedDef.value);	
 				speedChart.setTransparent(true);								   	   
 				speedChart.render(speedDiv);
@@ -28,7 +28,7 @@
 			function renderSpeedPieChart(speedElement, speedDiv, width, height)
 			{
 				var speedDef = document.getElementById(speedElement);
-				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "320", "300", "0", "1");														
+				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", width, height, "0", "1");														
 				speedChart.setDataXML(speedDef.value);	
 				speedChart.setTransparent(true);								   	   
 				speedChart.render(speedDiv);
@@ -71,71 +71,84 @@
 					<div id="tab_speedBarDiv" align="center"></div>
 		  			<input type="hidden" id="tab_speedBarDef" value="#{teamSpeedBean.selectedNewBarDef}"/>
 					<script type="text/javascript">
-						renderSpeedBar("speedBar", "350", "500");
-					</script>
-<!-- 					
-					<div id="tab_speedOverBarDiv" align="center"></div>
-		  			<input type="hidden" id="tab_speedOverBarDef" value="#{teamSpeedBean.selectedSpeedOverBarDef}"/>
-					<script type="text/javascript">
-						renderSpeedBar("speedOverBar", "350", "500");
-					</script>  -->					
+						renderSpeedBar("speedBar", "350", "400");
+					</script>			
 				</td>
         		<td width="" align="center">
 					<div id="tab_speedPieDiv" align="center"></div>
 		  			<input type="hidden" id="tab_speedPieDef" value="#{teamSpeedBean.selectedBarDef}"/>
 					<script type="text/javascript">
-						renderSpeedPie("speedPie", "350", "500");
+						renderSpeedPie("speedPie", "350", "300");
 					</script>				
 				
 					<table>
 						<tr>
-							<td align="center" width="350">
+							<td align="center" width="400">
 					
 						<rich:dataTable id="summarySpeedStats" 
 							value="#{teamSpeedBean.speedTotals}" 
 							var="item"
 							styleClass="datagrid" 
 							rowClasses="tableOdd,tableEven">
+							
+							<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column colspan="6">Limit
+								</rich:column>
+								
+								<rich:column breakBefore="true">#{teamSpeedBean.graphicLabels['zeroToThirty']}
+								</rich:column>
+								
+								<rich:column>#{teamSpeedBean.graphicLabels['thirtyOneToFourty']}
+								</rich:column>
+								
+								<rich:column>#{teamSpeedBean.graphicLabels['fourtyOneToFiftyFour']}
+								</rich:column>
+								
+								<rich:column>#{teamSpeedBean.graphicLabels['fiftyFiveToSixtyFour']}
+								</rich:column>
+								
+								<rich:column>#{teamSpeedBean.graphicLabels['sixtyFiveAndUp']}
+								</rich:column>
+								
+								<rich:column>#{teamSpeedBean.graphicLabels['teamTotal']}
+								</rich:column>
+															
+							</rich:columnGroup>		
+							</f:facet>												
 						
 							<rich:column width="17%">
-								<f:facet name="header">
-									1 to 30
-								</f:facet>
+
 								<h:outputText id="zeroToThirty" value="#{item['zeroToThirty']}" style="color:#FF0101;font-style:bold;"/>                        		
 							</rich:column>
 							<rich:column width="17%">
-								<f:facet name="header">
-									31 to 40
-								</f:facet>
-								<h:outputText id="thirtyoneToFourty" value="#{item['thirtyoneToFourty']}" style="color:#FF6601;font-style:bold;"/>                      		
+
+								<h:outputText id="thirtyOneToFourty" value="#{item['thirtyOneToFourty']}" style="color:#FF6601;font-style:bold;"/>                      		
 							</rich:column>
 							<rich:column width="17%">
-								<f:facet name="header">
-									41 to 50
-								</f:facet>
-								<h:outputText id="fourtyoneToFifty" value="#{item['fourtyoneToFifty']}" style="color:#F6B305;font-style:bold;"/>                       		
+
+								<h:outputText id="fourtyOneToFiftyFour" value="#{item['fourtyOneToFiftyFour']}" style="color:#F6B305;font-style:bold;"/>                       		
 							</rich:column>
 							<rich:column width="16%">																					
-								<f:facet name="header">
-									51 to 64
-								</f:facet>
-								<h:outputText id="fiftyoneToSixtyFour" value="#{item['fiftyoneToSixtyFour']}" style="color:#1E88C8;font-style:bold;"/>                    		
+
+								<h:outputText id="fiftyFiveToSixtyFour" value="#{item['fiftyFiveToSixtyFour']}" style="color:#1E88C8;font-style:bold;"/>                    		
 							</rich:column>
 							<rich:column width="16%">
-								<f:facet name="header">
-									65 and up
-								</f:facet>
+
 								<h:outputText id="sixtyFiveAndUp" value="#{item['sixtyFiveAndUp']}" style="color:#6B9D1B;font-style:bold;"/>                    		
 							</rich:column>	
 							<rich:column width="16%">
-								<f:facet name="header">
-									Total
-								</f:facet>
-								#{item['zeroToThirty'] + item['thirtyoneToFourty'] + item['fourtyoneToFifty'] + item['fiftyoneToSixtyFour'] + item['sixtyFiveAndUp']}                         		
+
+								#{item['zeroToThirty'] + item['thirtyOneToFourty'] + item['fourtyOneToFiftyFour'] + item['fiftyFiveToSixtyFour'] + item['sixtyFiveAndUp']}                         		
 							</rich:column>														
 						</rich:dataTable>
-					
-					Statistics reflect #{teamSpeedBean.totDriversSpeeding} of #{teamSpeedBean.totDrivers} drivers with speed violations.
+						<br></br>
+						
+						<h:outputFormat value="#{messages.teamSpeedTotals}">
+         					<a4j:actionparam value="#{teamSpeedBean.totDriversSpeeding}"/>
+         					<a4j:actionparam value="#{teamSpeedBean.totDrivers}"/>
+      					</h:outputFormat>
+      					
 							</td>					
 						</tr>
 					</table>
