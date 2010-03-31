@@ -115,7 +115,7 @@ public class TeamPieChartBean extends BaseBean {
         
         // Control parameters
         sb.append(pie.getControlParameters());
-        sb.append(">");
+        sb.append(" caption = \'Breakdown of Drivers by Overall Score\'>");
                
         if (scoreDataList.size() > 0) {
             ScoreableEntity se = null;

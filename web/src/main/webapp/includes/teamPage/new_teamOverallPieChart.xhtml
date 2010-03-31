@@ -66,46 +66,60 @@
 					<h:outputText id="fillerText"></h:outputText>
 				</td>
 				<td align="center">
-					<div class="datagrid_panel" style="width: 700px;">
+					<div class="datagrid_panel" style="width: 600px;">
 						<rich:dataTable id="summaryOverallStats" value="#{teamPieChartBean.overallTotals}" var="item"
 							styleClass="datagrid" 
 							rowClasses="tableOdd,tableEven">
-							<rich:column width="17%">
-								<f:facet name="header">
-									#{messages.teamOverallNA}
-								</f:facet>
+							
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column colspan="7">Overall Score Range
+									</rich:column>
+								
+									<rich:column breakBefore="true">#{messages.teamOverallNA}
+									</rich:column>
+								
+									<rich:column>#{messages.teamOverallzerotoone}
+									</rich:column>
+								
+									<rich:column>#{messages.teamOverallonetotwo}
+									</rich:column>
+								
+									<rich:column>#{messages.teamOveralltwotothree}
+									</rich:column>
+								
+									<rich:column>#{messages.teamOverallthreetofour}
+									</rich:column>
+								
+									<rich:column>#{messages.teamOverallfourtofive}
+									</rich:column>
+									
+									<rich:column>#{messages.teamTotal}
+									</rich:column>															
+								</rich:columnGroup>		
+							</f:facet>		
+							
+							<rich:column width="15%">
 								#{item['nA']}                        		
 							</rich:column>							
-							<rich:column width="17%">
-								<f:facet name="header">
-									#{messages.teamOverallzerotoone}
-								</f:facet>
+							<rich:column width="15%">
 								#{item['zeroToOne']}                        		
 							</rich:column>
-							<rich:column width="17%">
-								<f:facet name="header">
-									#{messages.teamOverallonetotwo}
-								</f:facet>
+							<rich:column width="14%">
 								#{item['oneToTwo']}                         		
 							</rich:column>
-							<rich:column width="17%">
-								<f:facet name="header">
-									#{messages.teamOveralltwotothree}
-								</f:facet>
+							<rich:column width="14%">
 								#{item['twoToThree']}                         		
 							</rich:column>
-							<rich:column width="16%">																					
-								<f:facet name="header">
-									#{messages.teamOverallthreetofour}
-								</f:facet>
+							<rich:column width="14%">																					
 								#{item['threeToFour']}                         		
 							</rich:column>
-							<rich:column width="16%">
-								<f:facet name="header">
-									#{messages.teamOverallfourtofive}
-								</f:facet>
+							<rich:column width="14%">
 								#{item['fourToFive']}                         		
-							</rich:column>							
+							</rich:column>		
+							<rich:column width="14%">
+								#{item['nA'] + item['zeroToOne'] + item['oneToTwo'] + item['twoToThree'] + item['threeToFour'] + item['fourToFive']}                         		
+							</rich:column>	
 						</rich:dataTable>
 					</div>
 				</td>

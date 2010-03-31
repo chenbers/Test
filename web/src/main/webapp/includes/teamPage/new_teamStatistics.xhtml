@@ -67,7 +67,8 @@
                               <f:param value="#{item.driver.driverID}"/>
                         </pretty:link>
 				</rich:column>
-				<rich:column width="7%" rendered="#{tableColumns['score'].visible}" sortBy="#{item.score.overall}" id="newTeamStatsTab-overallScore">
+				<rich:column width="7%" rendered="#{tableColumns['score'].visible}" sortOrder="ASCENDING" 
+					sortBy="#{item.score.overall}" id="newTeamStatsTab-overallScore">
 					<f:facet name="header">
 						#{messages.team_score}
 					</f:facet>
