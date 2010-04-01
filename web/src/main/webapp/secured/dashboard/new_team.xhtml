@@ -161,7 +161,7 @@
                     			</ui:include>                         	
                         	</td>
                         	<td>
-                        		Overall Team Score
+                        		#{messages.team_overall_team_score}
                         	</td>
                         	<td>
                         		<h:graphicImage value="/images/grid_nav_divider.png" />
@@ -172,18 +172,18 @@
                             		value="/images/icon_crash.png"/>
                         	</td>                      
                             <td align="left">
-                           		<h:outputText value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" 
+                           		<h:outputText value="#{crashSummaryBean.crashSummary.crashesPerMillionMiles}" 
                            			converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
                     			<h:outputFormat value=" #{messages.crash_summary_overDistance} " >
                                 	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                             	</h:outputFormat>                           			                           		
                         	</td>
                         	<td style="border-right-width:1px; border-left-width:1px" align="left">
-                       			<h:outputText value="#{teamCrashSummaryBean.crashSummary.daysSinceLastCrash}"/>
+                       			<h:outputText value="#{crashSummaryBean.crashSummary.daysSinceLastCrash}"/>
                        			#{messages.crash_summary_daysSinceLastCrash} 
                         	</td>
                         	<td align="left">
-                        	    <h:outputText value="#{teamCrashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
+                        	    <h:outputText value="#{crashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
                            		<h:outputFormat value=" #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} " >
                                 	<a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
                             	</h:outputFormat>                        	     
