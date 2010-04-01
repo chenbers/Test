@@ -28,6 +28,7 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -463,6 +464,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return reportCriteria;
 	}
 
+    @Override
+	public ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, Locale locale) {
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STATISTICS_REPORT, group.getName(), locale);
+        reportCriteria.setTimeFrame(timeFrame);
+		return reportCriteria;
+	}
+
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -549,6 +558,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
+
 
 
 }

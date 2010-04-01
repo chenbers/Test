@@ -37,7 +37,6 @@
      						<h:outputText value="#{messages.button_editColumns}" />
 					</a4j:commandLink>            									
      			</li>
-<!--      			  
      			<li class="r grid_icon">
      				<h:panelGroup id="#{context}_reportToolImageId">
 						<h:graphicImage value="/images/ico_tools.png"/>
@@ -45,8 +44,14 @@
 				</li>
 				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 				</li>
--->
 			</ul>
+            <ui:include src="/includes/reportsContextMenu.xhtml">	
+				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+				<ui:param  name="reportBean" value="#{teamStatisticsBean}"/>
+				<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+				<ui:param  name="exportExcel" value="TRUE"/>
+				<ui:param name="context" value="#{context}" />
+			</ui:include>
 
 	       <div class="datagrid_panel" style="width: 890px;">
 	       <!-- Table -->

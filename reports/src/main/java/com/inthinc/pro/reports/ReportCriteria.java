@@ -12,8 +12,10 @@ import java.util.TimeZone;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.model.ChartData;
 import com.inthinc.pro.reports.util.MessageUtil;
+import com.inthinc.pro.reports.util.TimeFrameUtil;
 
 public class ReportCriteria
 {
@@ -21,7 +23,8 @@ public class ReportCriteria
     private Map<String, Object> paramMap = new HashMap<String, Object>();
     private ReportType report;
     private Duration duration;
-    private Integer recordsPerReport;
+    private TimeFrame timeFrame;
+	private Integer recordsPerReport;
     private String mainDatasetIdField;
     private String chartDataSetIdField;
     private Locale locale;
@@ -209,6 +212,15 @@ public class ReportCriteria
         paramMap.put("FUEL_EFFICIENCY_TYPE", fuelEfficiencyType);
         this.fuelEfficiencyType = fuelEfficiencyType;
     }
+
+    public TimeFrame getTimeFrame() {
+		return timeFrame;
+	}
+
+	public void setTimeFrame(TimeFrame timeFrame) {
+        paramMap.put("TIME_FRAME", TimeFrameUtil.getTimeFrameStr(timeFrame, locale));
+		this.timeFrame = timeFrame;
+	}
 
 
 }

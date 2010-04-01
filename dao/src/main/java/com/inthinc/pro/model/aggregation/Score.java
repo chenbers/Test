@@ -684,6 +684,21 @@ public class Score {
     			((aggressiveLeftEvents == null) ? 0 : aggressiveLeftEvents.longValue()) + 
     			((aggressiveRightEvents == null) ? 0 : aggressiveRightEvents.longValue());
     }
+    public Number getWeightedMpg() {
+    	// TODO:
+    	return 0;
+    }
+    public Number getMilesDriven() {
+    	return ((endingOdometer == null) ? 0l : endingOdometer.longValue()) - 
+    			((startingOdometer == null) ? 0l : startingOdometer.longValue());  
+    }
+    public Number getIdleTotal() {
+    	return ((idleLo == null) ? 0l : idleLo.longValue()) + 
+    			((idleHi == null) ? 0l : idleHi.longValue());  
+    }
+    public Number getIdlePercent() {
+    	return (driveTime == null || driveTime.longValue() == 0l) ? 0 : (getIdleTotal().doubleValue() * 100.0)/driveTime.doubleValue();
+    }
 
     @Override
     public String toString() {

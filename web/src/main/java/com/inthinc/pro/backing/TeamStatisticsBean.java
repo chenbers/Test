@@ -1,23 +1,26 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.AggregationDuration;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TeamStatisticsBean extends BaseBean {
@@ -34,8 +37,10 @@ public class TeamStatisticsBean extends BaseBean {
     
     private Integer teamOverallScore;
     private String teamOverallScoreStyle;
-
-    private CrashSummary crashSummary;
+    
+    private ReportRenderer reportRenderer;
+    private ReportCriteriaService reportCriteriaService;
+    
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -415,4 +420,58 @@ public class TeamStatisticsBean extends BaseBean {
         this.teamOverallScoreStyle = teamOverallScoreStyle;
     }
     
+
+
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(buildReportCriteria(), getFacesContext());
+    }
+
+    public void emailReport()
+    {
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());
+    }
+
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReportCriteria(), getFacesContext());
+    }
+
+    protected ReportCriteria buildReportCriteria()
+    {
+        ReportCriteria reportCriteria = getReportCriteria();
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
+        reportCriteria.setMeasurementType(getMeasurementType());
+        reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
+        reportCriteria.setMainDataset(driverStatistics);
+        return reportCriteria;
+    }
+    
+	protected ReportCriteria getReportCriteria()
+	{
+    	return getReportCriteriaService().getTeamStatisticsReportCriteria(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame(), getLocale());
+	}
+
+	public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
+    }
+
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
+    }
+
+
 }
