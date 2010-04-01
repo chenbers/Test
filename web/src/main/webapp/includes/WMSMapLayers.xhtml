@@ -16,6 +16,7 @@
 
 	//<![CDATA[
 	var currentLatLng;
+	var amp = "&";
 	function initWMSLayers(){
 	    addLayers();
 		addListeners();
@@ -139,7 +140,8 @@
 	var respondToClick = false;
 	 <ui:fragment rendered="#{(wmsConfigurationBean.url ne null) and (fn:length(wmsConfigurationBean.url) gt 0)}">
 		//Assumes map is defined elsewhere
-		var url = "#{wmsConfigurationBean.url}" + "#{wmsConfigurationBean.query}";
+		var url = "#{wmsConfigurationBean.url}" + "#{wmsConfigurationBean.query}" +amp;
+		
 		var wmsLayerQueryParam = "#{wmsConfigurationBean.layerQueryParam}";
 		var queryableLayers = [];
 
