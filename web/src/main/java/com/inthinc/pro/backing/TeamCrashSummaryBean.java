@@ -2,7 +2,6 @@ package com.inthinc.pro.backing;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.TimeFrame;

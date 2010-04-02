@@ -17,7 +17,6 @@ import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Bar3D;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;

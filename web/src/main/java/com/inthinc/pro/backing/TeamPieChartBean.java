@@ -1,8 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,20 +11,14 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.backing.ui.TabAction;
-import com.inthinc.pro.charts.Bar3D;
 import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.model.AggregationDuration;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.MessageUtil;
-
-import org.joda.time.Duration;
 
 public class TeamPieChartBean extends BaseBean {
     private ScoreDAO scoreDAO;
@@ -38,7 +30,7 @@ public class TeamPieChartBean extends BaseBean {
     
     private TeamCommonBean teamCommonBean;
     
-    private List<HashMap> overallTotals;
+    private List<HashMap<String,String>> overallTotals;
     
     private Integer groupID;
     private static final Logger logger = Logger.getLogger(TeamSpeedBean.class);
@@ -256,8 +248,8 @@ public class TeamPieChartBean extends BaseBean {
         return null;
     }
     
-    public List<HashMap> getOverallTotals() {
-        overallTotals = new ArrayList<HashMap>();
+    public List<HashMap<String,String>> getOverallTotals() {
+        overallTotals = new ArrayList<HashMap<String,String>>();
         HashMap<String,String> totals = new HashMap<String,String>();
         
         int nA = 0;
@@ -308,9 +300,9 @@ public class TeamPieChartBean extends BaseBean {
     private List<ScoreableEntity> getScoreableEntitiesPie() {
         List<ScoreableEntity> local = new ArrayList<ScoreableEntity>();
         
-        List<HashMap> observations = getOverallTotals();
+        List<HashMap<String,String>> observations = getOverallTotals();
         int totObs = 0;
-        HashMap observation = observations.get(0);
+        HashMap<String,String> observation = observations.get(0);
         
         String zeroToOne = (String)observation.get("zeroToOne");
         totObs += Integer.parseInt(zeroToOne);

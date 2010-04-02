@@ -13,7 +13,6 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
-import com.inthinc.pro.charts.Bar2DStacked;
 import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
@@ -36,8 +35,8 @@ public class TeamSpeedBean extends BaseBean {
     
     private TeamCommonBean teamCommonBean;
     
-    private List<HashMap> speedTotals;
-    private HashMap graphicLabels;
+    private List<HashMap<String,String>> speedTotals;
+    private HashMap<String,String> graphicLabels;
     
     private Integer totDrivers;
     private Integer totDriversSpeeding;
@@ -49,7 +48,7 @@ public class TeamSpeedBean extends BaseBean {
         logger.debug("TeamSpeedBean - constructor"); 
         
         // Get the labels for the graphs
-        graphicLabels = new HashMap();
+        graphicLabels = new HashMap<String,String>();
         
         if ( this.getMeasurementType().equals(MeasurementType.ENGLISH) ) {
             graphicLabels.put("zeroToThirty", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_21_30"));
@@ -395,8 +394,8 @@ public class TeamSpeedBean extends BaseBean {
         return null;
     }
     
-    public List<HashMap> getSpeedTotals() {
-        ArrayList<HashMap> speedTot = new ArrayList<HashMap>();
+    public List<HashMap<String,String>> getSpeedTotals() {
+        ArrayList<HashMap<String,String>> speedTot = new ArrayList<HashMap<String,String>>();
         HashMap<String,String> totals = new HashMap<String,String>();
                 
         int zeroToThirty = 0;
@@ -448,20 +447,20 @@ public class TeamSpeedBean extends BaseBean {
         return speedTot;
     }
     
-    public HashMap getGraphicLabels() {
+    public HashMap<String,String> getGraphicLabels() {
         return graphicLabels;
     }
 
-    public void setGraphicLabels(HashMap graphicLabels) {
+    public void setGraphicLabels(HashMap<String,String> graphicLabels) {
         this.graphicLabels = graphicLabels;
     }
 
     private List<ScoreableEntity> getScoreableEntitiesPie() {
         List<ScoreableEntity> local = new ArrayList<ScoreableEntity>();
         
-        List<HashMap> observations = speedTotals;
+        List<HashMap<String,String>> observations = speedTotals;
         int totObs = 0;
-        HashMap observation = observations.get(0);
+        HashMap<String,String> observation = observations.get(0);
         
         String zeroToThirty = (String)observation.get("zeroToThirty");
         totObs += Integer.parseInt(zeroToThirty);
