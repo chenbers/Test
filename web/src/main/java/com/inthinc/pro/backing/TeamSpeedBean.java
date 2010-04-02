@@ -186,7 +186,9 @@ public class TeamSpeedBean extends BaseBean {
         
         // Control parameters
         sb.append(bar.getControlParameters());
-        sb.append("caption=\"Speeding Distance by Speed Limit (");
+        sb.append(" baseFont=\'Verdana\' ");
+        sb.append(" baseFontSize=\'12\' ");
+        sb.append(" caption=\"Speeding Distance by Speed Limit (");
         sb.append(MessageUtil.getMessageString(this.getMeasurementType()+"_mph"));       
         sb.append(")\">");
         
