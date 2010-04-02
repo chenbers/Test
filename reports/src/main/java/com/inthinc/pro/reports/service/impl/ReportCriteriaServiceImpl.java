@@ -19,6 +19,7 @@ import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
@@ -29,6 +30,7 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -50,6 +52,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     private DeviceDAO deviceDAO;
     private ReportDAO reportDAO;
+    private GroupReportDAO groupReportDAO;
     
 	private Locale locale;
 
@@ -465,10 +468,25 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	}
 
     @Override
-	public ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, Locale locale) {
+	public ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, Locale locale, Boolean initDataSet) {
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STATISTICS_REPORT, group.getName(), locale);
         reportCriteria.setTimeFrame(timeFrame);
+        
+        if (initDataSet) {
+        	List<DriverVehicleScoreWrapper> driverStatistics;
+        	
+            if (    timeFrame.equals(TimeFrame.WEEK) ||
+            		timeFrame.equals(TimeFrame.MONTH) ||
+            		timeFrame.equals(TimeFrame.YEAR) ) 
+                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getAggregationDuration());
+            else
+                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval());
+            
+            reportCriteria.setMainDataset(driverStatistics);
+        	
+
+        }
 		return reportCriteria;
 	}
 
@@ -547,6 +565,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     public void setReportDAO(ReportDAO reportDAO) {
 		this.reportDAO = reportDAO;
+	}
+
+	public GroupReportDAO getGroupReportDAO() {
+		return groupReportDAO;
+	}
+
+
+	public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
+		this.groupReportDAO = groupReportDAO;
 	}
 
     public void setLocale(Locale locale)

@@ -34,8 +34,12 @@ public enum ReportGroup
     DEVICES_REPORT("Device Report",5,EntityType.ENTITY_GROUP,
             new CriteriaType[]{}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
-            ReportType.DEVICES_REPORT);
-    
+            ReportType.DEVICES_REPORT),
+    TEAM_STATISTICS_REPORT("Team Statistics Report",6,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.TEAM},
+            ReportType.TEAM_STATISTICS_REPORT);
+        
     
     private ReportType[] reports;
     private Integer code;

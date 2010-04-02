@@ -37,11 +37,11 @@ public class ReportSchedule
     private Integer vehicleID;
     private Integer groupID;
     private Status status;
+    private Integer duration;
     
-    @Column(name="duration")
-    private Duration reportDuration;
 
-    private Occurrence occurrence;
+    
+	private Occurrence occurrence;
     
     public ReportSchedule()
     {
@@ -210,7 +210,7 @@ public class ReportSchedule
         sb.append("lastDate="); sb.append(this.lastDate);sb.append(", ");
         sb.append("occurrence="); sb.append(this.occurrence);sb.append(", ");
         sb.append("dayOfWeek="); sb.append(this.dayOfWeek);sb.append(", ");
-        sb.append("reportDuration="); sb.append(this.reportDuration);sb.append(", ");
+        sb.append("reportDuration="); sb.append(this.duration);sb.append(", ");
         sb.append("emailTo="); sb.append(this.emailTo);
         sb.append("]");
         return sb.toString();
@@ -238,12 +238,24 @@ public class ReportSchedule
 
     public void setReportDuration(Duration reportDuration)
     {
-        this.reportDuration = reportDuration;
+        this.duration = (reportDuration == null) ? null : reportDuration.getCode();
     }
 
     public Duration getReportDuration()
     {
-        return reportDuration;
+    	
+        return (duration == null) ? null : Duration.valueOf(duration);
+    }
+
+    public void setReportTimeFrame(TimeFrame reportTimeFrame)
+    {
+        this.duration = (reportTimeFrame == null) ? null : reportTimeFrame.getCode();
+    }
+
+    public TimeFrame getReportTimeFrame()
+    {
+    	
+        return (duration == null) ? null : TimeFrame.valueOf(duration);
     }
 
     public void setOccurrence(Occurrence occurrence)
@@ -266,4 +278,12 @@ public class ReportSchedule
         return lastDate;
     }
     
+    public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+
 }

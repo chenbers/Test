@@ -1,10 +1,12 @@
 package com.inthinc.pro.reports;
 
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.TimeFrame;
 
 public enum CriteriaType
 {
-    DURATION(Duration.class);
+    DURATION(Duration.class),
+    TIMEFRAME(TimeFrame.class);
     
     private Class clazz;
 

@@ -33,11 +33,13 @@ import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
+import com.inthinc.pro.util.TimeFrameUtil;
 
 /**
  * 
@@ -104,6 +106,27 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public List<SelectItem> getDurations() {
         return SelectItemUtil.toList(Duration.class, true);
+    }
+    public List<SelectItem> getTimeFrames() {
+    	
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.add(new SelectItem(TimeFrame.TODAY, TimeFrameUtil.getTimeFrameStr(TimeFrame.TODAY, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.ONE_DAY_AGO, TimeFrameUtil.getTimeFrameStr(TimeFrame.ONE_DAY_AGO, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.WEEK, TimeFrameUtil.getTimeFrameStr(TimeFrame.WEEK, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.LAST_THIRTY_DAYS, TimeFrameUtil.getTimeFrameStr(TimeFrame.LAST_THIRTY_DAYS, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.THREE_MONTHS, TimeFrameUtil.getTimeFrameStr(TimeFrame.THREE_MONTHS, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.SIX_MONTHS, TimeFrameUtil.getTimeFrameStr(TimeFrame.SIX_MONTHS, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.YEAR, TimeFrameUtil.getTimeFrameStr(TimeFrame.YEAR, getLocale())));
+        
+        return selectItemList;
+    }
+    
+    public String getReportTimeFrameStr() {
+    	if (item != null && item.getReportTimeFrame() != null) {
+    		return TimeFrameUtil.getTimeFrameStr(item.getReportTimeFrame(), getLocale());
+    	}
+    	
+    	return "";
     }
 
     public List<SelectItem> getOccurrences() {

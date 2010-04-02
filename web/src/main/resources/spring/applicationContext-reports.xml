@@ -22,6 +22,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="eventDAO" ref="eventDAO" />
     <property name="redFlagDAO" ref="redFlagDAO" />
     <property name="reportDAO" ref="reportDAO" />
+    <property name="groupReportDAO" ref="groupReportDAO" />
   </bean>
 
 </beans>

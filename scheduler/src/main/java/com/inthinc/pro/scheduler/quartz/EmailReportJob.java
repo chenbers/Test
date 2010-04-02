@@ -26,6 +26,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.Report;
@@ -150,6 +151,12 @@ public class EmailReportJob extends QuartzJobBean {
                     Interval interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
                     reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), interval, user.getPerson().getLocale()));
                     break;
+                case TEAM_STATISTICS_REPORT:
+                	TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
+                	if (timeFrame == null)
+                		timeFrame = TimeFrame.TODAY;
+                    reportCriteriaList.add(reportCriteriaService.getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, user.getPerson().getLocale(), true));
+                	break;
                 default:
                     break;
 

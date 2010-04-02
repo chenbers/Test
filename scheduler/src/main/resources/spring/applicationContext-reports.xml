@@ -18,6 +18,7 @@
     <property name="mpgDAO" ref="mpgDAO" />
     <property name="vehicleDAO" ref="vehicleDAO" />
     <property name="deviceDAO" ref="deviceDAO" />
+    <property name="groupReportDAO" ref="groupReportDAO" />
   </bean>
 
   <!-- Forgot username/password Beans -->

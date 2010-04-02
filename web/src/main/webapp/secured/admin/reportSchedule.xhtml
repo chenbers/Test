@@ -157,6 +157,16 @@
                                     </td>
                                  </tr>
                            </h:outputText>
+                            <h:outputText rendered="#{reportScheduleBean.item.reportTimeFrame ne null}">
+                                 <tr>
+                                    <td width="100" valign="top">
+                                       <h:outputText value="#{messages.reportSchedule_daysReported}"/>
+                                    </td>
+                                    <td>
+                                       <h:outputText value="#{reportScheduleBean.reportTimeFrameStr}"/>
+                                    </td>
+                                 </tr>
+                           </h:outputText>
 							<h:outputText rendered="#{reportScheduleBean.item.groupName ne null}">
 									<tr>
 										<td width="100" valign="top">

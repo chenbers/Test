@@ -5,6 +5,7 @@
     <!-- Service Related Beans -->
     <bean id="siloServiceBean" factory-bean="siloServiceCreator" factory-method="getService" />
     <bean id="reportServiceBean" factory-bean="reportServiceCreator" factory-method="getService" />
+    
 
     <!-- DAO -->
     <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true">
@@ -38,6 +39,11 @@
         <property name="reportService" ref="reportServiceBean" />
     </bean>
     <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
+    
+    <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO">
+        <property name="reportService" ref="reportServiceBean" />
+    </bean>
+    
     
      <!-- Address Lookup -->
     <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">

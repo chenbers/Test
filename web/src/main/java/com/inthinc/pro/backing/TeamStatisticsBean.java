@@ -460,7 +460,7 @@ public class TeamStatisticsBean extends BaseBean {
     
 	protected ReportCriteria getReportCriteria()
 	{
-    	return getReportCriteriaService().getTeamStatisticsReportCriteria(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame(), getLocale());
+    	return getReportCriteriaService().getTeamStatisticsReportCriteria(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame(), getLocale(), false);
 	}
 
 	public void setReportRenderer(ReportRenderer reportRenderer)
