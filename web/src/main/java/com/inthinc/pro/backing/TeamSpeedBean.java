@@ -132,7 +132,7 @@ public class TeamSpeedBean extends BaseBean {
     public String createPieChart(ScoreType scoreType) {
         List<ScoreableEntity> scoreDataList = null;        
         try {
-            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);  
+            logger.debug("TeamSpeedBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);  
             scoreDataList = getScoreableEntitiesPie();                 
         }
         catch (Exception e) {
@@ -170,7 +170,7 @@ public class TeamSpeedBean extends BaseBean {
         List<Integer> milesSpeeding = null;
         
         try {
-            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);             
+            logger.debug("TeamSpeedBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);             
             milesDriven = getMilesDriven();
             milesSpeeding = getMilesSpeeding(); 
         }
@@ -281,6 +281,7 @@ public class TeamSpeedBean extends BaseBean {
     public Integer getSelectedOverallScore() {
         TabAction action = findTab("speed");       
         ScoreType scoreType = action.getScoreType();
+//        ScoreType scoreType = ScoreType.SCORE_SPEEDING;
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getOverallScoreMap().get(scoreType) == null) {
@@ -305,7 +306,8 @@ public class TeamSpeedBean extends BaseBean {
             ScoreType[] scoreTypes = { ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT };
             actions = new ArrayList<TabAction>();
             for (int i = 0; i < actionKeys.length; i++) {
-                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_" + actionKeys[i]), actionKeys[i] + "_on", actionKeys[i]
+                actions.add(new TabAction(actionKeys[i], actionKeys[i], 
+                        MessageUtil.getMessageString("teamOverviewSideNav_" + actionKeys[i]), actionKeys[i] + "_on", actionKeys[i]
                         + "_off", scoreTypes[i], width[i]));
             }
         }
@@ -330,7 +332,6 @@ public class TeamSpeedBean extends BaseBean {
     public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
         this.teamCommonBean = teamCommonBean;
         this.groupID = teamCommonBean.getGroupID();        
-        this.speedTotals = this.getSpeedTotals();
     }
 
     public Integer getTotDrivers() {
@@ -458,7 +459,8 @@ public class TeamSpeedBean extends BaseBean {
     private List<ScoreableEntity> getScoreableEntitiesPie() {
         List<ScoreableEntity> local = new ArrayList<ScoreableEntity>();
         
-        List<HashMap<String,String>> observations = speedTotals;
+        List<HashMap<String,String>> observations = this.getSpeedTotals();
+        
         int totObs = 0;
         HashMap<String,String> observation = observations.get(0);
         
@@ -535,23 +537,23 @@ public class TeamSpeedBean extends BaseBean {
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             
             if ( dvsw.getScore().getSpeedOdometer1() != null ) {
-                zeroToThirty += dvsw.getScore().getSpeedOdometer1().intValue();
+                zeroToThirty += dvsw.getScore().getSpeedOdometer1().intValue()/100;
             }
             
             if ( dvsw.getScore().getSpeedOdometer2() != null ) {
-                thirtyOneToFourty += dvsw.getScore().getSpeedOdometer2().intValue();
+                thirtyOneToFourty += dvsw.getScore().getSpeedOdometer2().intValue()/100;
             }
             
             if ( dvsw.getScore().getSpeedOdometer3() != null ) {
-                fourtyOneToFiftyFour += dvsw.getScore().getSpeedOdometer3().intValue();
+                fourtyOneToFiftyFour += dvsw.getScore().getSpeedOdometer3().intValue()/100;
             }
             
             if ( dvsw.getScore().getSpeedOdometer4() != null ) {
-                fiftyFiveToSixtyFour += dvsw.getScore().getSpeedOdometer4().intValue();
+                fiftyFiveToSixtyFour += dvsw.getScore().getSpeedOdometer4().intValue()/100;
             }
             
             if ( dvsw.getScore().getSpeedOdometer5() != null ) {
-                sixtyFiveAndUp += dvsw.getScore().getSpeedOdometer5().intValue();
+                sixtyFiveAndUp += dvsw.getScore().getSpeedOdometer5().intValue()/100;
             } 
               
         }
@@ -580,23 +582,23 @@ public class TeamSpeedBean extends BaseBean {
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             
             if ( dvsw.getScore().getOdometer1() != null ) {
-                zeroToThirty += dvsw.getScore().getOdometer1().intValue();
+                zeroToThirty += dvsw.getScore().getOdometer1().intValue()/100;
             }
             
             if ( dvsw.getScore().getOdometer2() != null ) {
-                thirtyOneToFourty += dvsw.getScore().getOdometer2().intValue();
+                thirtyOneToFourty += dvsw.getScore().getOdometer2().intValue()/100;
             }
             
             if ( dvsw.getScore().getOdometer3() != null ) {
-                fourtyOneToFiftyFour += dvsw.getScore().getOdometer3().intValue();
+                fourtyOneToFiftyFour += dvsw.getScore().getOdometer3().intValue()/100;
             }
             
             if ( dvsw.getScore().getOdometer4() != null ) {
-                fiftyFiveToSixtyFour += dvsw.getScore().getOdometer4().intValue();
+                fiftyFiveToSixtyFour += dvsw.getScore().getOdometer4().intValue()/100;
             }
             
             if ( dvsw.getScore().getOdometer5() != null ) {
-                sixtyFiveAndUp += dvsw.getScore().getOdometer5().intValue();
+                sixtyFiveAndUp += dvsw.getScore().getOdometer5().intValue()/100;
             } 
               
         }
