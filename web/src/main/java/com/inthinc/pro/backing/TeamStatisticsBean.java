@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class TeamStatisticsBean extends BaseBean {
         
         // Set the styles for the color-coded box and convert the mpg data               
         loadScoreStyles();
-        convertMPGData();
+//        convertMPGData();
         cleanData();
 
         // All set, save so we don't grab the data again
@@ -132,7 +133,7 @@ public class TeamStatisticsBean extends BaseBean {
         	}
         }
     }
-    
+    /*
     private void convertMPGData() {
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {
             
@@ -188,7 +189,7 @@ public class TeamStatisticsBean extends BaseBean {
 //                            dvsw.getScore().getMpgMedium(), getMeasurementType(), getFuelEfficiencyType()) : 0);
         }        
     }
-    
+*/    
     public void cleanData() {
         
         // A place to facilitate sorting and other good things
@@ -224,7 +225,13 @@ public class TeamStatisticsBean extends BaseBean {
         int totIdleLoEvt = 0;
         int totMilesDriven = 0;
         int totDriveTime = 0;
-        float totMpg = 0;
+//        float totMpg = 0;
+        float totMpgLight = 0;
+        float totMpgMedium = 0;
+        float totMpgHeavy = 0;
+        long totMilesLight = 0;
+        long totMilesMedium = 0;
+        long totMilesHeavy = 0;
         int totCrash = 0;
         int totSeatBeltEvt = 0;
         int totSpeedEvt = 0;
@@ -234,7 +241,7 @@ public class TeamStatisticsBean extends BaseBean {
         int totAggLeftEvt = 0;
         int totAggRightEvt = 0;   
         
-        int totActiveDrivers = 0;
+        float totActiveDrivers = 0;
         int totScoringDrivers = 0;
         
         // Crash related
@@ -272,19 +279,20 @@ public class TeamStatisticsBean extends BaseBean {
                 totDriveTime += dvsc.getScore().getDriveTime().intValue();
             }            
             
+            if (dvsc.getScore().getMpgHeavy() != null ||
+            		dvsc.getScore().getMpgMedium() != null ||
+            		dvsc.getScore().getMpgLight() != null)
+                totActiveDrivers++;
+            
+            totMpgHeavy += (dvsc.getScore().getMpgHeavy() == null) ? 0 : dvsc.getScore().getMpgHeavy().floatValue();
+            totMpgMedium += (dvsc.getScore().getMpgMedium() == null) ? 0 : dvsc.getScore().getMpgMedium().floatValue();
+            totMpgLight += (dvsc.getScore().getMpgLight() == null) ? 0 : dvsc.getScore().getMpgLight().floatValue();
             // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
             //  in a period
-            if ( (dvsc.getScore().getMpgHeavy() != null) && 
-                    (dvsc.getScore().getMpgHeavy().intValue() != 0) ) {                
-                totMpg += dvsc.getScore().getMpgHeavy().floatValue();
-                totActiveDrivers++;
-            }
-            if ( dvsc.getScore().getMpgLight() != null ) {
-                totMpg += dvsc.getScore().getMpgLight().intValue();                
-            }
-            if ( dvsc.getScore().getMpgMedium() != null ) {
-                totMpg += dvsc.getScore().getMpgMedium().intValue();                
-            }
+            totMilesHeavy += (dvsc.getScore().getMilesDriven()== null) ? 0 : dvsc.getScore().getMilesDriven().longValue();
+
+            
+            
             if ( dvsc.getScore().getCrashEvents() != null ) {
                 totCrash += dvsc.getScore().getCrashEvents().intValue();
             }
@@ -341,14 +349,16 @@ public class TeamStatisticsBean extends BaseBean {
         tmp.setDriveTime(totDriveTime);
         tmp.setEndingOdometer(totMilesDriven);
         tmp.setStartingOdometer(0); 
-        float floatTotMpg = totMpg;
-        float floatTotDrv = (float)totActiveDrivers;
+//        float floatTotMpg = totMpg;
+//        float floatTotDrv = (float)totActiveDrivers;
 //        float floatTotDrv = (float)driverStatistics.size();        
-        Number mpg = floatTotMpg/floatTotDrv;              
-        tmp.setMpgHeavy(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-                mpg, getMeasurementType(), getFuelEfficiencyType()));
-        tmp.setMpgMedium(0);
-        tmp.setMpgLight(0);
+//        Number mpg = floatTotMpg/floatTotDrv;              
+//        tmp.setMpgHeavy(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
+//                mpg, getMeasurementType(), getFuelEfficiencyType()));
+        tmp.setMpgHeavy(totMpgHeavy/totActiveDrivers);
+        tmp.setMpgMedium(totMpgMedium/totActiveDrivers);
+        tmp.setMpgLight(totMpgLight/totActiveDrivers);
+    // TODO: set mileages
         
         tmp.setCrashEvents(totCrash);       
         tmp.setSeatbeltEvents(totSeatBeltEvt);        
@@ -386,6 +396,7 @@ public class TeamStatisticsBean extends BaseBean {
         
         drv.setPerson(prs);
         dvsw.setDriver(drv);
+        dvsw.setSummary(true);
  
         local.add(dvsw);
         
@@ -444,7 +455,10 @@ public class TeamStatisticsBean extends BaseBean {
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
-        reportCriteria.setMainDataset(driverStatistics);
+        List<DriverVehicleScoreWrapper> reportDataSet = new ArrayList<DriverVehicleScoreWrapper>();
+        reportDataSet.addAll(this.getDriverStatistics());
+        reportDataSet.addAll(this.getDriverTotals());
+        reportCriteria.setMainDataset(reportDataSet);
         return reportCriteria;
     }
     

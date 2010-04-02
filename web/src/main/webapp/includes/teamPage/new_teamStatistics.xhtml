@@ -52,6 +52,14 @@
 				<ui:param  name="exportExcel" value="TRUE"/>
 				<ui:param name="context" value="#{context}" />
 			</ui:include>
+			<h:outputText id="#{context}_email_modalPanel">
+				<ui:include src="/includes/emailReportPopup.xhtml">	
+					<ui:param  name="id" value="#{context}_reportEmailModal" />
+					<ui:param  name="reportBean" value="#{teamStatisticsBean}"/>
+					<ui:param name="context" value="#{context}" />
+				</ui:include>
+			</h:outputText>
+			
 
 	       <div class="datagrid_panel" style="width: 890px;">
 	       <!-- Table -->
@@ -113,7 +121,8 @@
 				</rich:column>
 				<rich:column width="7%" rendered="#{tableColumns['miles_driven'].visible}" sortBy="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" id="newTeamStatsTab-milesDriven">
 					<f:facet name="header">
-						#{messages.team_miles_driven}
+						<h:outputText value="#{messages.team_miles_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 1}"/>
+						<h:outputText value="#{messages.team_km_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 2}"/>
 					</f:facet>
 
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
@@ -168,13 +177,12 @@
 					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" converter="DoubleConverter"/>
 					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" value="0.00"/>																				
 				</rich:column>
-				<rich:column width="7%" rendered="#{tableColumns['mpg'].visible}" sortBy="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" id="newTeamStatsTab-mpg">
+				<rich:column width="7%" rendered="#{tableColumns['mpg'].visible}" sortBy="#{item.score.weightedMpg}" id="newTeamStatsTab-mpg">
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
-					<!-- The following formula will need to change once we get mileage per vehicle type -->
 					<h:outputFormat value="#{messages.reports_time}">
-						<a4j:actionparam value="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" converter="DoubleConverter"/>
+						<a4j:actionparam value="#{item.score.weightedMpg}" converter="MpgToKplConverter"/>
 					</h:outputFormat>
 				</rich:column>
 				<rich:column width="7%" rendered="#{tableColumns['crashes'].visible}" sortBy="#{item.score.crashEvents}" id="newTeamStatsTab-crashes">
@@ -246,7 +254,8 @@
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['miles_driven'].visible}" width="7%" id="newTeamStatsTab-totalsMilesDriven">
 					<f:facet name="header">
-						#{messages.team_miles_driven}
+						<h:outputText value="#{messages.team_miles_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 1}"/>
+						<h:outputText value="#{messages.team_km_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 2}"/>
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
                     	<a4j:actionparam value="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
@@ -296,8 +305,7 @@
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
-					<!-- The following formula will need to change once we get mileage per vehicle type -->
-					<h:outputText id="summaryMpg" value="#{(item.score.mpgLight + item.score.mpgMedium + item.score.mpgHeavy)/1}" converter="DoubleConverter"/>                  					
+					<h:outputText id="summaryMpg" value="#{item.score.weightedMpg}" converter="MpgToKplConverter"/>                  					
 				</rich:column>
 				<rich:column rendered="#{tableColumns['crashes'].visible}" width="7%" id="newTeamStatsTab-totalsCrashes">
 					<f:facet name="header">

@@ -673,9 +673,9 @@ public class Score {
     public void setTrips(Number trips) {
         this.trips = trips;
     }
-    
+
+    // getter methods that aggregate some of the existing fields
     public Number getSafetyTotal() {
-//System.out.println(toString());    	
     	return ((seatbeltEvents == null) ? 0 : seatbeltEvents.longValue()) + 
     			((speedEvents == null) ? 0 : speedEvents.longValue()) + 
     			((aggressiveAccelEvents == null) ? 0 : aggressiveAccelEvents.longValue()) + 
@@ -686,7 +686,14 @@ public class Score {
     }
     public Number getWeightedMpg() {
     	// TODO:
-    	return 0;
+    	/*
+    	 * sum(mpg light * miles light + mpg medium * miles medium + mpg heavy * miles heavy)/(miles light + miles medium + miles heavy)
+    	 * 
+    	 */
+        Number totalMpg = (mpgHeavy == null ? 0 : mpgHeavy.longValue()) +
+        				  (mpgMedium == null ? 0 : mpgMedium.longValue()) +
+        				  (mpgLight == null ? 0 : mpgLight.longValue());
+    	return (totalMpg.doubleValue() / 3);
     }
     public Number getMilesDriven() {
     	return ((endingOdometer == null) ? 0l : endingOdometer.longValue()) - 

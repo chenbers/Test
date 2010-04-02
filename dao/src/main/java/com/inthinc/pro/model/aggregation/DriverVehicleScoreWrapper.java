@@ -13,8 +13,9 @@ public class DriverVehicleScoreWrapper {
     @Column(name="driveQ")
     private Score score;
     private String scoreStyle;
+    private Boolean summary;
 
-    public Driver getDriver() {
+	public Driver getDriver() {
         return driver;
     }
 
@@ -45,6 +46,15 @@ public class DriverVehicleScoreWrapper {
     public void setScoreStyle(String scoreStyle) {
         this.scoreStyle = scoreStyle;
     }
+
+    public Boolean getSummary() {
+		return summary;
+	}
+
+	public void setSummary(Boolean summary) {
+		this.summary = summary;
+	}
+
 
     @Override
     public String toString() {

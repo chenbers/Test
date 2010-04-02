@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.util.MathUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 
 public class MeasurementConverter {
@@ -62,4 +63,14 @@ public class MeasurementConverter {
         bd = bd.movePointLeft(n);        
         return convertDistance(Double.valueOf(bd.floatValue()), convertToMetric, locale);
     }
+
+
+    public static String convertFuelEfficiency(Number mpg, MeasurementType measurementType, FuelEfficiencyType fuelEfficiencyType, Locale locale) {
+        NumberFormat nf = NumberFormat.getNumberInstance(locale);
+        nf.setMaximumFractionDigits(2);
+        nf.setMinimumFractionDigits(2);
+    	return nf.format(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(mpg, measurementType, fuelEfficiencyType));
+    }
+
+
 }
