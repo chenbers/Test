@@ -24,14 +24,15 @@ public class TeamCrashSummaryBean extends BaseBean {
         Score crashData = new Score();        
 
         // Get the data
-        if ( whichMethodToUse() ) {            
+//        if ( whichMethodToUse() ) {            
+//            crashData = groupReportDAO.getAggregateDriverScore(groupID, 
+//                    teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+//            
+//        } else {
             crashData = groupReportDAO.getAggregateDriverScore(groupID, 
-                    teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
-            
-        } else {
-            crashData = groupReportDAO.getAggregateDriverScore(groupID, 
-                    teamCommonBean.getTimeFrame().getAggregationDuration());
-        }       
+                    TimeFrame.YEAR.getAggregationDuration());
+//                    teamCommonBean.getTimeFrame().getAggregationDuration());
+//        }       
         
         // Create the response
         CrashSummary crashSummary = new CrashSummary(0,0,0,0,0);
