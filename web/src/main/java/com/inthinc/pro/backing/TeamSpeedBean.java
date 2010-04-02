@@ -90,8 +90,9 @@ public class TeamSpeedBean extends BaseBean {
     }
 
     public String getSelectedBarDef() {
-        TabAction action = findTab("speed");
-        ScoreType scoreType = action.getScoreType();
+//        TabAction action = findTab("speed");
+//        ScoreType scoreType = action.getScoreType();
+        ScoreType scoreType = ScoreType.SCORE_SPEEDING;
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getBarDefMap().get(scoreType) == null) {
@@ -166,8 +167,8 @@ public class TeamSpeedBean extends BaseBean {
     }
     
     public String createBarChart(ScoreType scoreType) {
-        List<Integer> milesDriven = null;
-        List<Integer> milesSpeeding = null;
+        List<Float> milesDriven = null;
+        List<Float> milesSpeeding = null;
         
         try {
             logger.debug("TeamSpeedBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);             
@@ -175,8 +176,8 @@ public class TeamSpeedBean extends BaseBean {
             milesSpeeding = getMilesSpeeding(); 
         }
         catch (Exception e) {
-            milesDriven = new ArrayList<Integer>();
-            milesSpeeding = new ArrayList<Integer>();
+            milesDriven = new ArrayList<Float>();
+            milesSpeeding = new ArrayList<Float>();
         }
 
         // Create the bar string
@@ -522,92 +523,92 @@ public class TeamSpeedBean extends BaseBean {
         return se;
     }
     
-    private List<Integer> getMilesSpeeding() {
-        ArrayList<Integer> miles = new ArrayList<Integer>();
+    private List<Float> getMilesSpeeding() {
+        ArrayList<Float> miles = new ArrayList<Float>();
                 
         List<DriverVehicleScoreWrapper> local = 
             teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
         
-        int zeroToThirty = 0;
-        int thirtyOneToFourty = 0;
-        int fourtyOneToFiftyFour = 0;
-        int fiftyFiveToSixtyFour = 0;
-        int sixtyFiveAndUp = 0;
+        float zeroToThirty = 0;
+        float thirtyOneToFourty = 0;
+        float fourtyOneToFiftyFour = 0;
+        float fiftyFiveToSixtyFour = 0;
+        float sixtyFiveAndUp = 0;
         
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             
             if ( dvsw.getScore().getSpeedOdometer1() != null ) {
-                zeroToThirty += dvsw.getScore().getSpeedOdometer1().intValue()/100;
+                zeroToThirty += (float)dvsw.getScore().getSpeedOdometer1().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getSpeedOdometer2() != null ) {
-                thirtyOneToFourty += dvsw.getScore().getSpeedOdometer2().intValue()/100;
+                thirtyOneToFourty += dvsw.getScore().getSpeedOdometer2().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getSpeedOdometer3() != null ) {
-                fourtyOneToFiftyFour += dvsw.getScore().getSpeedOdometer3().intValue()/100;
+                fourtyOneToFiftyFour += dvsw.getScore().getSpeedOdometer3().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getSpeedOdometer4() != null ) {
-                fiftyFiveToSixtyFour += dvsw.getScore().getSpeedOdometer4().intValue()/100;
+                fiftyFiveToSixtyFour += dvsw.getScore().getSpeedOdometer4().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getSpeedOdometer5() != null ) {
-                sixtyFiveAndUp += dvsw.getScore().getSpeedOdometer5().intValue()/100;
+                sixtyFiveAndUp += dvsw.getScore().getSpeedOdometer5().intValue()/100.0;
             } 
               
         }
         
-        miles.add(new Integer(zeroToThirty));
-        miles.add(new Integer(thirtyOneToFourty));
-        miles.add(new Integer(fourtyOneToFiftyFour));
-        miles.add(new Integer(fiftyFiveToSixtyFour));
-        miles.add(new Integer(sixtyFiveAndUp));
+        miles.add(new Float(zeroToThirty));
+        miles.add(new Float(thirtyOneToFourty));
+        miles.add(new Float(fourtyOneToFiftyFour));
+        miles.add(new Float(fiftyFiveToSixtyFour));
+        miles.add(new Float(sixtyFiveAndUp));
         
         return miles;
     }
        
-    private List<Integer> getMilesDriven() {
-        ArrayList<Integer> miles = new ArrayList<Integer>();
+    private List<Float> getMilesDriven() {
+        ArrayList<Float> miles = new ArrayList<Float>();
                 
         List<DriverVehicleScoreWrapper> local = 
             teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
         
-        int zeroToThirty = 0;
-        int thirtyOneToFourty = 0;
-        int fourtyOneToFiftyFour = 0;
-        int fiftyFiveToSixtyFour = 0;
-        int sixtyFiveAndUp = 0;
+        float zeroToThirty = 0;
+        float thirtyOneToFourty = 0;
+        float fourtyOneToFiftyFour = 0;
+        float fiftyFiveToSixtyFour = 0;
+        float sixtyFiveAndUp = 0;
         
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             
             if ( dvsw.getScore().getOdometer1() != null ) {
-                zeroToThirty += dvsw.getScore().getOdometer1().intValue()/100;
+                zeroToThirty += (float)dvsw.getScore().getOdometer1().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getOdometer2() != null ) {
-                thirtyOneToFourty += dvsw.getScore().getOdometer2().intValue()/100;
+                thirtyOneToFourty += (float)dvsw.getScore().getOdometer2().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getOdometer3() != null ) {
-                fourtyOneToFiftyFour += dvsw.getScore().getOdometer3().intValue()/100;
+                fourtyOneToFiftyFour += (float)dvsw.getScore().getOdometer3().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getOdometer4() != null ) {
-                fiftyFiveToSixtyFour += dvsw.getScore().getOdometer4().intValue()/100;
+                fiftyFiveToSixtyFour += (float)dvsw.getScore().getOdometer4().intValue()/100.0;
             }
             
             if ( dvsw.getScore().getOdometer5() != null ) {
-                sixtyFiveAndUp += dvsw.getScore().getOdometer5().intValue()/100;
+                sixtyFiveAndUp += (float)dvsw.getScore().getOdometer5().intValue()/100.0;
             } 
               
         }
         
-        miles.add(new Integer(zeroToThirty));
-        miles.add(new Integer(thirtyOneToFourty));
-        miles.add(new Integer(fourtyOneToFiftyFour));
-        miles.add(new Integer(fiftyFiveToSixtyFour));
-        miles.add(new Integer(sixtyFiveAndUp));
+        miles.add(new Float(zeroToThirty));
+        miles.add(new Float(thirtyOneToFourty));
+        miles.add(new Float(fourtyOneToFiftyFour));
+        miles.add(new Float(fiftyFiveToSixtyFour));
+        miles.add(new Float(sixtyFiveAndUp));
         
         return miles;
     }    
