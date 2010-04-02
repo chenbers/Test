@@ -103,19 +103,24 @@
 								#{item['nA']}                        		
 							</rich:column>							
 							<rich:column width="15%">
-								#{item['zeroToOne']}                        		
+								<h:outputText id="zeroToOneData" value="#{item['zeroToOne']}"
+									style="color:#FF0101;font-style:bold;"></h:outputText>                        		
 							</rich:column>
 							<rich:column width="14%">
-								#{item['oneToTwo']}                         		
+								<h:outputText id="oneToTwoData" value="#{item['oneToTwo']}"
+								    style="color:#FF6601;font-style:bold;"></h:outputText>                        		
 							</rich:column>
 							<rich:column width="14%">
-								#{item['twoToThree']}                         		
+								<h:outputText id="twoToThreeData" value="#{item['twoToThree']}"
+									style="color:#F6B305;font-style:bold;"></h:outputText>                            		
 							</rich:column>
 							<rich:column width="14%">																					
-								#{item['threeToFour']}                         		
+								<h:outputText id="threeToFourData" value="#{item['threeToFour']}"
+									style="color:##1E88C8;font-style:bold;"></h:outputText>                            		
 							</rich:column>
 							<rich:column width="14%">
-								#{item['fourToFive']}                         		
+								<h:outputText id="fourToFiveData" value="#{item['fourToFive']}"
+									style="color:#6B9D1B;font-style:bold;"></h:outputText>                            		
 							</rich:column>		
 							<rich:column width="14%">
 								#{item['nA'] + item['zeroToOne'] + item['oneToTwo'] + item['twoToThree'] + item['threeToFour'] + item['fourToFive']}                         		
