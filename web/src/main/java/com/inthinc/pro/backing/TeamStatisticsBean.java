@@ -1,17 +1,13 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
-import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
