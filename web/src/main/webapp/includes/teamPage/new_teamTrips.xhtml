@@ -7,7 +7,7 @@
 	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:custom="http://pro.tiwi.com/jsf/custom">
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
  	
 	<style>
 	.clear: after {
@@ -47,13 +47,13 @@
 	
 	<script type="text/javascript">
 	
-	var icons = [	"#{facesContext.externalContext.request.contextPath}/images/green_circle.png",
-					"#{facesContext.externalContext.request.contextPath}/images/yellow_circle.png", 
-					"#{facesContext.externalContext.request.contextPath}/images/red_circle.png", 
-					"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png", 
-					"#{facesContext.externalContext.request.contextPath}/images/teamIdle2.png",
-					"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",
-					"#{facesContext.externalContext.request.contextPath}/images/x.gif"
+	var icons = [	"#{request.contextPath}/images/green_circle.png",
+					"#{request.contextPath}/images/yellow_circle.png", 
+					"#{request.contextPath}/images/red_circle.png", 
+					"#{request.contextPath}/images/ico_violation.png", 
+					"#{request.contextPath}/images/teamIdle2.png",
+					"#{request.contextPath}/images/ico_tampering.png",
+					"#{request.contextPath}/images/x.gif"
 				];
 	 
 	function initTeamTripsMap() {
@@ -76,7 +76,7 @@
 		
 	function onTripTabSelectionComplete(){		
 		initTeamTripsMap();
-		getLatestTrips();
+		resetTripsForSelectedDrivers();
 		initTripTimeFrameChangeListener();
 	}
 
@@ -100,16 +100,15 @@
 	 		<h:graphicImage value="/images/ico_map.png" /><rich:spacer width="10"/>Trips
 	 	</h:panelGroup>
 	 </f:facet>
- 
-	
+	 	
    	<!-- Trips Map -->
    	<div class="section">
 	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0;">
 	        	<h:form id="tripsTableForm">
 	        	<a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
-	         	<rich:dataTable	value="#{teamTripsBean.drivers}" 
+	         	<rich:dataTable	value="#{teamTripsBean.driversTrips}" 
 					       		id="driversTrips" 
-					       		var="driver"
+					       		var="driverTrips"
 					       		rowKeyVar="index"
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
@@ -119,60 +118,46 @@
 				<rich:column>
                 <a4j:outputPanel id="hideShow" ajaxRendered="true" >
                 
-                <h:selectBooleanCheckbox id="checkDriver" value="#{driver.selected}" >
-                  <a4j:support event="onclick" eventsQueue="tripsQueue" data="#{driver}" 
+                <h:selectBooleanCheckbox id="checkDriver" value="#{driverTrips.driverSelected}" >
+                  <a4j:support event="onclick" status="teamStatus" eventsQueue="tripsQueue" 
+                  				action="#{driverTrips.selectivelyLoadTrips}" data="#{driverTrips}" 
                   				oncomplete="processDriverTrips(#{index},data)" ajaxSingle="true">
                    </a4j:support>
                   				
                 </h:selectBooleanCheckbox>
-<!--                <rich:panel rendered="#{teamCommonBean.timeFrame eq 'WEEK'}">-->
-<!--	                <custom:radioButton id="radioDriver" -->
-<!--		                 name="radioDriver" -->
-<!--		                 overrideName="true"                              -->
-<!--		                 value="#{driver.selected}"-->
-<!--		                 itemValue="#{index}" >  -->
-<!--		                   <a4j:support event="onclick" eventsQueue="tripsQueue" data="#{driver}" -->
-<!--		                  		oncomplete="processDriverTrips(#{index},data)" >-->
-<!--		                   </a4j:support>-->
-<!--	                </custom:radioButton>-->
-<!--	             </rich:panel>                   -->
- 
-<!--                <h:selectOneRadio id="radioDriver" value="#{driver.selected}" rendered="#{teamCommonBean.timeFrame eq 'WEEK'}">-->
-<!--                	<f:selectItem itemValue="#{index}"/>-->
-<!--                  <a4j:support event="onclick" eventsQueue="tripsQueue" data="#{driver}" -->
-<!--                  				oncomplete="processDriverTrips(#{index},data)" >-->
-<!--                   </a4j:support>-->
-<!--                  				-->
-<!--                </h:selectOneRadio>-->
                 </a4j:outputPanel>
               </rich:column>
 												
-				<rich:column style="text-align:left">
+				<rich:column style="text-align:left;">
 					<f:facet name="header">
 						<h:outputText value="#{messages.teamPage_driverHeader}"/>
 					</f:facet>
-					<h:outputText value="#{driver.fullName}"/>
-				</rich:column>
+     				 <pretty:link id="teamTrips-driverPerformance" mappingId="driverPerformance" >
+        				 <f:param value="#{driverTrips.driverID}"/>
+ 						 <h:outputText value="#{driverTrips.driverName}"/>
+     				</pretty:link>
+ 				</rich:column>
 				<rich:column>
-				<f:facet name="header">
-				  <a4j:status layout="block">
-                	<f:facet name="start">
-                    	<h:graphicImage  value="/images/progress2.gif"/>
-                	</f:facet>
-            	</a4j:status>
-				
-				</f:facet>
 					<div style="background-color:#{teamTripsBean.colors[index]};" class="trips_color">
 					#{teamTripsBean.labels[index]}
 					</div>
 				</rich:column>
 				</rich:dataTable>
-				<rich:datascroller 	align="left" for="driversTrips" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 
+				<rich:datascroller 	align="left" for="driversTrips" status="teamStatus" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 
             		 				styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
             		 				eventsQueue="tripsQueue"/>
             		 
-    				<a4j:jsFunction ajaxSingle="true" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
+    				<a4j:jsFunction ajaxSingle="true" status="teamStatus" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
     						eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(data)"/>
+    						
+    				<a4j:jsFunction ajaxSingle="true" status="teamStatus" name="getTripBubbleData" action="#{teamTripsBean.setupEventData}" data="#{teamTripsBean.eventData}" 
+    						eventsQueue="tripsQueue" oncomplete="getAddressForBubble(data)">
+    								<a4j:actionparam id="driverID" name="driverID" assignTo="#{teamTripsBean.eventData.driverID}"/>
+									<a4j:actionparam id="eventType" name="eventType" assignTo="#{teamTripsBean.eventData.eventType}"/>
+									<a4j:actionparam id="eventIndex" name="eventIndex" assignTo="#{teamTripsBean.eventData.eventIndex}"/>
+									<a4j:actionparam id="tripnumber" name="tripNumber" assignTo="#{teamTripsBean.eventData.tripNumber}"/>
+					</a4j:jsFunction>
+    						
 				 </a4j:region>
  				</h:form>	
  				         
@@ -180,6 +165,28 @@
 			 <div id="map-canvas" style="float:right; width: 74%; height: 500px; border: 0"></div>
 			 <div style="clear:both"></div>
 	       </div>
+				<h:form id="teamBubbleForm">
+				<div id="bubbleElement" style="display:none">
+					<h:panelGrid columns="2" styleClass="google_popup" width="250" rowClasses="google_popups_rows" headerClass="google_popups_header">
+					<f:facet name="header">
+						<h:outputText id="bubbleTitle" />
+					</f:facet>
+					<h:outputText>#{messages.team_driver}:</h:outputText>
+				    <pretty:link id="teamBubbleDriverLink" mappingId="driverPerformance">
+	                     <h:outputText id="teamBubbleDriver"/>
+	                     <f:param id="teamBubbleDriverId" value=""/>
+	                </pretty:link>
+	                <h:outputText>Time:</h:outputText>
+					<h:outputText id="teamBubbleTime"/>
+					<h:outputText>#{messages.livefleet_address}:</h:outputText>
+					<h:outputText id="teamBubbleAddress"/>
+					</h:panelGrid>
+					<h:panelGrid columns="1" styleClass="google_popup" width="250" rowClasses="google_popups_rows" headerClass="google_popups_header">
+					<h:outputText id="teamBubbleDescription"/>
+					</h:panelGrid>
+				</div>
+				</h:form>
+	       
     <!-- End Trips Map -->
     </rich:tab>
  </ui:composition>

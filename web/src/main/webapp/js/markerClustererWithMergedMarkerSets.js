@@ -174,27 +174,22 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
  };
   this.hideMarkers = function (markerSetIndex) {
 	  
-	  //Just have to remove them for now
-	  if(markerSets_[markerSetIndex].isAdded){
+	  if(markerSets_[markerSetIndex] && markerSets_[markerSetIndex].isAdded){
 		  
 		  for (var i=0; i< markerSets_[markerSetIndex].markers.length; i++){
 			  
 			  markerSets_[markerSetIndex].markers[i].hidden = true;
 			  
-//			  this.removeMarker(markerSets_[markerSetIndex].markers[i]);
 		  }
 		  markerSets_[markerSetIndex].isAdded = false;
+		  
 		  me_.resetViewport(true);
+		  
 		  if (markerSets_.length == 0){
 			  
 			  GEvent.removeListener(mcfn_);
 		  }
 	  }
-//    for (var i = 0; i < clusters_[markerSetIndex].length; ++i) {
-//      if (typeof clusters_[markerSetIndex][i] !== "undefined" && clusters_[markerSetIndex][i] !== null) {
-//        clusters_[markerSetIndex][i].hideMarkers();
-//      }
-//    }
   };
   this.showMarkers = function (markerSetIndex) {
 	  
@@ -206,6 +201,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 		  }
 		  
 		  markerSets_[markerSetIndex].isAdded = true;
+		  this.addMarkers(markerSets_[markerSetIndex].markers);
 		  me_.resetViewport(true);
 
 		  if(markerSets_.length == 1){
@@ -216,11 +212,6 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 		  }
 	  }
 
-//	    for (var i = 0; i < clusters_[markerSetIndex].length; ++i) {
-//	      if (typeof clusters_[markerSetIndex][i] !== "undefined" && clusters_[markerSetIndex][i] !== null) {
-//	        clusters_[markerSetIndex][i].showMarkers();
-//	      }
-//	    }
   };
  
   /**
@@ -237,6 +228,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 			  markerSet.push({'isAdded':false,
 				  			  'hidden':false,
 				  			  'displayColor':markers.displayColor,
+				  			  'originalLatLng':markers.markerSet[i].getLatLng(),
 				  			  'marker':markers.markerSet[i]});
 		  }
 		  markerSets_.push({'isAdded':true,
@@ -260,8 +252,8 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
    * @private
    * @return {Boolean} if it is in current map viewport
    */
-  function isMarkerInViewport_(marker) {
-    return map_.getBounds().containsLatLng(marker.getLatLng());
+  function isLatLngInViewPoint_(latLng) {
+    return map_.getBounds().containsLatLng(latLng);
   }
 
   /**
@@ -304,7 +296,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 	}	
 	
     if (opt_isNoCheck !== true) {
-      if (!isMarkerInViewport_(marker.marker)) {
+      if (!isLatLngInViewPoint_(marker.originalLatLng)) {
         leftMarkers_.push(marker);
         return;
       }
@@ -312,7 +304,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 
     var isAdded = opt_isAdded;
     var clusters = opt_clusters;
-    var pos = map_.fromLatLngToDivPixel(marker.marker.getLatLng());
+    var pos = map_.fromLatLngToDivPixel(marker.originalLatLng);
 
     if (typeof isAdded !== "boolean") {
       isAdded = false;
@@ -376,12 +368,6 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
         return;
       }
     }
-//    for (var i = 0; i < leftMarkers_.length; ++i) {
-//        if (marker === leftMarkers_[i].marker) {
-//        	leftMarkers_.splice(i, 1);
-//          return;
-//        }
-//      }
   };
 
   /**
@@ -426,15 +412,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
   this.getMap_ = function () {
     return map_;
   };
-  /**
-   * Get opts for cluster marker.
-   * @private
-   * @return {opts}
-   */
-//  this.getClusterMarker_Opts_ = function (index) {
-//    return clusterMarker_opts_[index];
-//  };
-
+ 
   /**
    * Get grid size
    * @private
@@ -552,7 +530,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
   var markerClusterer_ = markerClusterer;
   var map_ = markerClusterer.getMap_();
   var clusterMarker_ = null;
-  var linedUpMarkers_ = null;
+  var isMarkersStacked = false;
   var zoom_ = map_.getZoom();
   var opts_ =  clusterOpts;
   var label_ = opts_.labelText;
@@ -620,12 +598,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
    */
   this.addMarker = function (marker) {
     if (center_ === null) {
-      /*var pos = marker['marker'].getLatLng();
-       pos = map.fromLatLngToContainerPixel(pos);
-       pos.x = parseInt(pos.x - pos.x % (GRIDWIDTH * 2) + GRIDWIDTH);
-       pos.y = parseInt(pos.y - pos.y % (GRIDWIDTH * 2) + GRIDWIDTH);
-       center = map.fromContainerPixelToLatLng(pos);*/
-      center_ = marker.marker.getLatLng();
+      center_ = marker.originalLatLng;
     }
     markers_.push(marker);
   };
@@ -659,50 +632,6 @@ function LabeledCluster(markerClusterer, clusterOpts) {
     return zoom_;
   };
   
-  this.hideLinedUpMarkers = function(){
-	  if(linedUpMarkers_ !== null){
-		  
-		  for(var i=0;i<linedUpMarkers_.length;i++){
-			  
-			  linedUpMarkers_[i].hide();
-		  }
-	  }
-  };
-  this.showLinedUpMarkers = function(){
-	  if(linedUpMarkers_ !== null){
-		  
-		  for(var i=0;i<linedUpMarkers_.length;i++){
-			  
-		     if (linedUpMarkers_[i].isHidden()) {
-		    	 linedUpMarkers_[i].show();
-		     }
-		     linedUpMarkers_[i].redraw(true);
-		  }
-	  }
-  };
-  this.makeLinedUpMarker = function(marker, latLng){
-	  
-  	var icon = new GIcon();
-	icon.image = marker.getIcon().image;
-	icon.iconSize = new GSize(48, 16);
-	icon.iconAnchor = new GPoint(0, 0);
-	icon.infoWindowAnchor = new GPoint(25, 7);
-  
-  	var thisOpts = { 
-        	  "icon": icon,
-        	  "clickable": true,
-        	  "labelText": marker.labelText_,
-        	  "labelOffset": marker.labelOffset_,
-        	  "labelClass":marker.labelClass_
-        	};
-	var linedUpMarker_ = new LabeledMarker(latLng, thisOpts);
-	
-	GEvent.addListener(linedUpMarker_, "click", function() {
-		//determine which item in the list was clicked on
-		linedUpMarker_.openInfoWindowHtml(linedUpMarker_.labelText_);
-	});
-	return linedUpMarker_;
-  };
   /**
    * Redraw a cluster.
    * @private
@@ -734,39 +663,30 @@ function LabeledCluster(markerClusterer, clusterOpts) {
           map_.addOverlay(markers_[i].marker);
           markers_[i].isAdded = true;
         }
+		markers_[i].marker.setLatLng(markers_[i].originalLatLng);
+		isMarkersStacked = false;
       }
       if (clusterMarker_ !== null) {
         clusterMarker_.hide();
-      }
-      this.hideLinedUpMarkers();
-      
+      }      
     } else {
-      // Else add a cluster marker on map to show the number of markers in
-      // this cluster.
-      for (i = 0; i < markers_.length; ++i) {
-        if (markers_[i].isAdded && (!markers_[i].marker.isHidden())) {
-          markers_[i].marker.hide();
-        }
-      }
-      if ((clusterMarker_ === null)&&(linedUpMarkers_=== null)){
+
+      if ((clusterMarker_ === null)&&(!isMarkersStacked)){
 //        clusterMarker_ = new ClusterMarker_(center_, this.getTotalMarkers(), markerClusterer_.getStyles_(), markerClusterer_.getGridSize_());
     	  if (zoom_ < 8 || this.getTotalMarkers() > markerClusterer_.getMaxStacked()){
     		  
     		  clusterMarker_ = this.makeCanvasClusterMarker();
      	  }
     	  else{
-    		  //copy and reposition to stack one on top of the other center on center_
-        	  linedUpMarkers_ = this.makeStackedMarkers();
+    		  //reposition to stack one on top of the other center on center_
+    		  this.makeStackedMarkers();
+        	  isMarkersStacked = true;
     	  }
       } else if(clusterMarker_!== null) {
         if (clusterMarker_.isHidden()) {
           clusterMarker_.show();
         }
         clusterMarker_.redraw(true);
-      }
-      else if(linedUpMarkers_ != null){
-    	  
-    	 this.showLinedUpMarkers(); 
       }
     }
   };
@@ -808,7 +728,8 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		  
 		  //Collect up how many sets of markers there are so we know what colors to include
 		  var displayColors = [];	
-		  for (var i=0;i<markers_.length;i++){
+		  var markers_length = markers_.length;
+		  for (var i=0;i < markers_length;i++){
 			  
 			  var colorCounted = false;
 			  for (var j = 0; j<displayColors.length; j++){
@@ -841,6 +762,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		  	
 		  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
 				//format all the markers into a list
+			  //This is to be changed depending on how many markers there are and to be configurable
 			  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
 			  for (var i=0;i<markers_.length;i++){
 					windowHtml +="<li>";
@@ -874,17 +796,23 @@ function LabeledCluster(markerClusterer, clusterOpts) {
   };
   this.makeStackedMarkers = function(){
 	  
-		var linedUpMarkers = new Array();
 		var nextPoint = map_.fromLatLngToDivPixel(center_);
 		nextPoint = new GPoint(nextPoint.x-(10 * markers_.length), nextPoint.y-24);
-		for (var i=0;i<markers_.length;i++){
-			
-	    	var linedUpMarker_ = this.makeLinedUpMarker(markers_[i].marker,map_.fromDivPixelToLatLng(nextPoint));
-	    	linedUpMarkers.push(linedUpMarker_);
-			map_.addOverlay(linedUpMarker_);
+
+		var markers_length = markers_.length;
+		for (var i=0;i<markers_length;i++){
+	        if (markers_[i].isAdded) {
+	            if (markers_[i].marker.isHidden()) {
+	              markers_[i].marker.show();
+	            }
+	          } else {
+	            map_.addOverlay(markers_[i].marker);
+	            markers_[i].isAdded = true;
+	          }
+
+			markers_[i].marker.setLatLng(map_.fromDivPixelToLatLng(nextPoint));
 			nextPoint = new GPoint(nextPoint.x, nextPoint.y+20);
 		}
-		return linedUpMarkers;
   };
   /**
    *  Hide cluster
@@ -893,15 +821,11 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		if (clusterMarker_ !== null) {
 			clusterMarker_.hide();
 		}
-		for (var i = 0; i < markers_.length; ++i) {
+
+		var markers_length = markers_.length;
+		for (var i = 0; i < markers_length; ++i) {
 			if (markers_[i].isAdded) {
 				markers_[i].marker.hide();
-			}
-		}
-		if(linedUpMarkers_ !== null){
-			for(var i=0;i<linedUpMarkers_.length;i++){
-						  
-				linedUpMarkers_[i].hide();
 			}
 		}
 		isHidden = true;
@@ -913,18 +837,12 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 	    if (clusterMarker_ !== null) {
 	        clusterMarker_.show();
 	      }
-	      for (var i = 0; i < markers_.length; ++i) {
+		var markers_length = markers_length;
+		for (var i = 0; i < markers_.length; ++i) {
 	        if (markers_[i].isAdded) {
 	          markers_[i].marker.show();
 	        }
 	      }
-	  	if(linedUpMarkers_ !== null){
-	  		  
-	  		for(var i=0;i<linedUpMarkers_.length;i++){
-	  			  
-	  			linedUpMarkers_[i].show();
-	  		}
-	  	}
 	  	isHidden = false;
   };
 
@@ -936,21 +854,14 @@ function LabeledCluster(markerClusterer, clusterOpts) {
       map_.removeOverlay(clusterMarker_);
       clusterMarker_ = null;
     }
-    for (var i = 0; i < markers_.length; ++i) {
+	var markers_length = markers_.length;
+	for (var i = 0; i < markers_length; ++i) {
       if (markers_[i].isAdded) {
         map_.removeOverlay(markers_[i].marker);
         markers_[i].isAdded = false;
       }
     }
     markers_ = [];
-	if(linedUpMarkers_ !== null){
-		  
-		for(var i=0;i<linedUpMarkers_.length;i++){
-			  
-			map_.removeOverlay(linedUpMarkers_[i]);
-		}
-		linedUpMarkers_ = [];
-	}
 
   };
 
@@ -962,148 +873,3 @@ function LabeledCluster(markerClusterer, clusterOpts) {
     return markers_.length;
   };
 }
-/**
- * ClusterMarker_ creates a marker that shows the number of markers that
- * a cluster contains.
- *
- * @constructor
- * @private
- * @param {GLatLng} latlng Marker's lat and lng.
- * @param {Number} count Number to show.
- * @param {Array of Object} styles The image list to be showed:
- *   {String} url Image url.
- *   {Number} height Image height.
- *   {Number} width Image width.
- *   {Array of Number} anchor Text anchor of image left and top.
- *   {String} textColor text color.
- * @param {Number} padding Padding of marker center.
- */
-function ClusterMarker_2(latlng, count, styles, padding) {
-  var index = 0;
-  var dv = count;
-  while (dv !== 0) {
-    dv = parseInt(dv / 10, 10);
-    index ++;
-  }
-
-  if (styles.length < index) {
-    index = styles.length;
-  }
-  this.url_ = styles[index - 1].url;
-  this.height_ = styles[index - 1].height;
-  this.width_ = styles[index - 1].width;
-  this.textColor_ = styles[index - 1].opt_textColor;
-  this.anchor_ = styles[index - 1].opt_anchor;
-  this.latlng_ = latlng;
-  this.index_ = index;
-  this.styles_ = styles;
-  this.text_ = count;
-  this.padding_ = padding;
-}
-
-ClusterMarker_2.prototype = new GOverlay();
-
-/**
- * Initialize cluster marker.
- * @private
- */
-ClusterMarker_2.prototype.initialize = function (map) {
-  this.map_ = map;
-  var div = document.createElement("div");
-  var latlng = this.latlng_;
-  var pos = map.fromLatLngToDivPixel(latlng);
-  pos.x -= parseInt(this.width_ / 2, 10);
-  pos.y -= parseInt(this.height_ / 2, 10);
-  var mstyle = "";
-  if (document.all) {
-    mstyle = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="' + this.url_ + '");';
-  } else {
-    mstyle = "background:url(" + this.url_ + ");";
-  }
-  if (typeof this.anchor_ === "object") {
-    if (typeof this.anchor_[0] === "number" && this.anchor_[0] > 0 && this.anchor_[0] < this.height_) {
-      mstyle += 'height:' + (this.height_ - this.anchor_[0]) + 'px;padding-top:' + this.anchor_[0] + 'px;';
-    } else {
-      mstyle += 'height:' + this.height_ + 'px;line-height:' + this.height_ + 'px;';
-    }
-    if (typeof this.anchor_[1] === "number" && this.anchor_[1] > 0 && this.anchor_[1] < this.width_) {
-      mstyle += 'width:' + (this.width_ - this.anchor_[1]) + 'px;padding-left:' + this.anchor_[1] + 'px;';
-    } else {
-      mstyle += 'width:' + this.width_ + 'px;text-align:center;';
-    }
-  } else {
-    mstyle += 'height:' + this.height_ + 'px;line-height:' + this.height_ + 'px;';
-    mstyle += 'width:' + this.width_ + 'px;text-align:center;';
-  }
-  var txtColor = this.textColor_ ? this.textColor_ : 'black';
-
-  div.style.cssText = mstyle + 'cursor:pointer;top:' + pos.y + "px;left:" +
-      pos.x + "px;color:" + txtColor +  ";position:absolute;font-size:11px;" +
-      'font-family:Arial,sans-serif;font-weight:bold';
-  div.innerHTML = this.text_;
-  map.getPane(G_MAP_MAP_PANE).appendChild(div);
-  var padding = this.padding_;
-  GEvent.addDomListener(div, "click", function () {
-    var pos = map.fromLatLngToDivPixel(latlng);
-    var sw = new GPoint(pos.x - padding, pos.y + padding);
-    sw = map.fromDivPixelToLatLng(sw);
-    var ne = new GPoint(pos.x + padding, pos.y - padding);
-    ne = map.fromDivPixelToLatLng(ne);
-    var zoom = map.getBoundsZoomLevel(new GLatLngBounds(sw, ne), map.getSize());
-    map.setCenter(latlng, zoom);
-  });
-  this.div_ = div;
-};
-
-/**
- * Remove this overlay.
- * @private
- */
-ClusterMarker_2.prototype.remove = function () {
-  this.div_.parentNode.removeChild(this.div_);
-};
-
-/**
- * Copy this overlay.
- * @private
- */
-ClusterMarker_2.prototype.copy = function () {
-  return new ClusterMarker_2(this.latlng_, this.index_, this.text_, this.styles_, this.padding_);
-};
-
-/**
- * Redraw this overlay.
- * @private
- */
-ClusterMarker_2.prototype.redraw = function (force) {
-  if (!force) {
-    return;
-  }
-  var pos = this.map_.fromLatLngToDivPixel(this.latlng_);
-  pos.x -= parseInt(this.width_ / 2, 10);
-  pos.y -= parseInt(this.height_ / 2, 10);
-  this.div_.style.top =  pos.y + "px";
-  this.div_.style.left = pos.x + "px";
-};
-
-/**
- * Hide this cluster marker.
- */
-ClusterMarker_2.prototype.hide = function () {
-  this.div_.style.display = "none";
-};
-
-/**
- * Show this cluster marker.
- */
-ClusterMarker_2.prototype.show = function () {
-  this.div_.style.display = "";
-};
-
-/**
- * Get whether the cluster marker is hidden.
- * @return {Boolean}
- */
-ClusterMarker_2.prototype.isHidden = function () {
-  return this.div_.style.display === "none";
-};
