@@ -145,9 +145,9 @@
  */
 	function getSingleLabeledMarkerLabel(letter,colorIndex, tripNumber, tripIcon){
 		
-    	return '<div style="position: relative; line-height: 1.5em; background-color:white; border: 1px solid black; width: 48px;">'+ 
-    	'<div style="height: 16px; width: 16px; background-color: ' + colorIndex + ';vertical-align:middle;text-align: center;">'+letter+'</div>'+ 
-    	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 48px; height:16px;top: 0; left: 0;'+
+    	return '<div style="position: relative; line-height: 1.5em; background-color:white; border: 1px solid black; width: 48px;height: 16px">'+ 
+    	'<div style="height: 16px; width: 16px; background-color: ' + colorIndex + ';vertical-align:middle;text-align: center;float:left">'+letter+'</div>'+ 
+    	'<div style="clear:left;position: absolute; text-align: center; vertical-align:middle; width: 48px; height:16px;top: 0; left: 0;'+
     	'background: transparent url('+tripIcon+') no-repeat center right;">' + 
     			tripNumber + '</div></div>'; 
 
