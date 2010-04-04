@@ -18,16 +18,16 @@
 	
 	// Collection of somewhat girlie colors for color coding trip routes and markers - 
 	// I kept asking for suitably manly trucker colors but none were forthcoming so this is what you've got.
-	var colors = ["#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
-	              "#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
-	              "#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289"];
+//	var colorset = ["#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
+//	              "#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
+//	              "#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289"];
 
 //  Original yucky color palette
 //	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
 //				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
 	
 	//Labels for markers
-	var labels=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+//	var labelset=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 	
 /**
  * Matches up color coding between the driver data table in the page, and the trip data arrays.
@@ -218,9 +218,9 @@
   	    
          var ctx = clusterDiv.getContext("2d"); 
           
-	     var x              = 21+(displayColors.length-1)*5;     // x coordinate  
-	     var y              = 21;        // y coordinate  
-	     var radius         = 20;        // Arc radius  
+	     var x              = 17+(displayColors.length-1)*5;     // x coordinate  
+	     var y              = 17;        // y coordinate  
+	     var radius         = 16;        // Arc radius  
 	     var startAngle     = 0;         // Starting point on circle  
 	     var endAngle       = 2*Math.PI; // End point on circle
 	           
@@ -245,8 +245,8 @@
          ctx.strokeStyle="black";
          
          var textMetric = ctx.measureText(count+"");
-		 var dx = (42-textMetric.width)/2;
-         ctx.strokeText(count,dx,24);
+		 var dx = (34-textMetric.width)/2;
+         ctx.strokeText(count,dx,20);
          ctx.closePath();
          
        }

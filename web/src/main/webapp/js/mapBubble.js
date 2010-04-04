@@ -35,7 +35,6 @@ function orderOfCreation(marker,b)
     	//Use default GoogleMap marker image.
     	else
     	{
-	      	markerIcon = new GIcon();
 			marker = new GMarker(point);
     	}
     	if (call != null){
