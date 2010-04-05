@@ -12,23 +12,8 @@
 	var markerClustererMaxZoom = 12;	// maximum zoom for 
 	var markerClustererWithMergedMarkerSets; 	// version of the MarkerClusterer that can manage sets of markers that can be independently shown/hidden
 												// and can stack up to a configured number of overlapping markers instead showing them as a cluster
-	var clickedMarker = null; 	//The most recently clicked on marker, for showing the infoWindow correctly 
-								//(was hoping it would accept the marker referenced in the array, but it wouldn't)
 	var geocoder = null;	//Google geocoder for reverse geocoding event addresses.
-	
-	// Collection of somewhat girlie colors for color coding trip routes and markers - 
-	// I kept asking for suitably manly trucker colors but none were forthcoming so this is what you've got.
-//	var colorset = ["#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
-//	              "#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
-//	              "#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289"];
-
-//  Original yucky color palette
-//	var colors= ["#820f00","#ff4a12","#94b3c5","#74c6f1","#586b7a","#3e4f4f","#abc507","#eab239","#588e03",
-//				 "#8a8c81","#8173b1","#f99b49","#c6064f","#c4bdd9","#c8a77b"];
-	
-	//Labels for markers
-//	var labelset=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-	
+	var clickedMarker = null;
 /**
  * Matches up color coding between the driver data table in the page, and the trip data arrays.
  * @param indexOnPage - row index in the page
@@ -56,12 +41,6 @@
 		}
 		return -1;
 	}
-//	function driverSelected(driverID){
-//		
-//		var i = findDriver(driverID);
-//		if (i > -1) return tripsSelected[i];
-//		return false;
-//	}
 	
 /** 
  * Hides the trip route overlays and markers for the designated driver
@@ -103,37 +82,6 @@
 		}
 	}
 
-//	function hideAllOverlays(){
-//		 
-//		for (var i=0; i<overlaysArray.length;i++){
-//			for (var j=0; j<overlaysArray[i].length;j++){
-//				
-//				overlaysArray[i][j].hide();
-//			}
-//			markerClustererWithMergedMarkerSets.hideMarkers(i);
-//		}
-//	}
-//	function showAllOverlays(){
-//		
-//		var length = overlaysArray.length;
-//		for (var i=0; i<length;i++){
-//			
-//			if(tripsSelected[i]){
-//				
-//				for (var j=0; j<overlaysArray[i].length;j++){
-//					
-//					overlaysArray[i][j].show();
-//				}
-//				markerClustererWithMergedMarkerSets.showMarkers(i);				
-//			}
-//		}
-//	}
-
-	 
-//	function orderOfCreation(marker,b) 
-//	{
-//	      return 1;
-//	}
 /**
  * Creates the HTML for the custom markers.
  * 
@@ -185,12 +133,12 @@
 		icon.image = tripIcons[6];
 		icon.iconSize = new GSize(42, 42);
 		icon.iconAnchor = new GPoint(0, 0);
-		icon.infoWindowAnchor = new GPoint(25, 12);
+		icon.infoWindowAnchor = new GPoint(21, 21);
 			
 		var markerClustererOptions = {'maxStacked':4,
 									  'customClusters':true,
-									  'gridSize_x':60,
-									  'gridSize_y':64};
+									  'gridSize_x':100,
+									  'gridSize_y':80};
 		var customClusterOptions ={ 
 	          	  "icon": icon,
 	          	  "clickable": true,
@@ -261,16 +209,17 @@
  * @param label			- custom html for the marker
  * 
  * Used to retrieve event data for the marker infoWindow
- * @param driverIndex	- driver's trip data index - to determine color and letter code
+ * @param driverID		- driver's ID
  * @param eventType		- start, end, in progress, violation, idling or tamper
  * @param tripNumber	- trip number for label
  * @param eventIndex	- event index in list
+ * @param point 		- (used again)	GLatLng of the marker/event passed to event data 
  * 
  * @return LabeledMarker
  * 
  * This could be parameterized further to make it more generic eg iconSize, infoWindowAnchor, labelClass
  */
-    function createLabeledMarker(point, iconImage, label, driverIndex, eventType, tripNumber, eventIndex) 
+    function createLabeledMarker(point, iconImage, label, driverID, eventType, tripNumber, eventIndex) 
     {
     	//
     	var icon = new GIcon();
@@ -288,17 +237,16 @@
     	  "labelClass":"trips_markerLabel"
     	};
     	var marker = new LabeledMarker(point, opts);
- 		
 		// Step 1 to display event data in a marker infoWindow.
   	  	var clickListener = GEvent.addListener(marker, "click", function() {
  
+  	  	  clickedMarker = marker;
   		  // use a4j:jsFunction to go get the driver's name and the event time
   		  // callback for that call will start the reverse geocode for the address
   		  // the call back for that will display the bubble
-  		    clickedMarker = marker; //keep track of clicked marker
   		    
-  		    //Get event data from the backing bean
-  		  	getTripBubbleData(driverIDArray[driverIndex], eventType, eventIndex, tripNumber);
+  		  //Get event data from the backing bean
+  	  	  getTripBubbleData(driverID, eventType, eventIndex, tripNumber, point.lat(),point.lng());
    	  	});
 
     	return marker;
@@ -318,7 +266,7 @@
     function getAddressForBubble(eventData){
     	
     	if (geocoder == null) geocoder = new GClientGeocoder();
-		var latlng = clickedMarker.getLatLng();
+    	var latlng = new GLatLng(eventData.lat, eventData.lng);
     	geocoder.getLocations(latlng, function(response){
     		var address = null;
 	        if (!response || response.Status.code != 200) {
@@ -355,35 +303,9 @@
 	  	
 		var windowElement = windowElementTemplate.cloneNode(true);	
 	  	windowElement.style.display = 'block';
-//	  	var theMarker = markersArray[eventData.driverIndex][eventData.eventIndex];
 	  	clickedMarker.openInfoWindow(windowElement);
 	
 	}
-//    function createTripMarker(point, iconImage) 
-//    {
-//    	var markerIcon;
-//    	var marker;
-//    	var baseIcon = new GIcon();
-//    	baseIcon.iconSize = new GSize(21, 20);
-//    	baseIcon.iconAnchor = new GPoint(6, 20);
-//    	baseIcon.infoWindowAnchor = new GPoint(5, 1);
-//
-//		//Use passed in image.
-//    	if(iconImage != null)
-//    	{
-//			markerIcon = new GIcon(baseIcon);
-//       	    markerIcon.image = iconImage;
-//       	 	markerOptions = { icon:markerIcon,zIndexProcess:orderOfCreation  };
-//       	 	marker = new GMarker(point, markerOptions);
-//    	}
-//    	//Use default GoogleMap marker image.
-//    	else
-//    	{
-//	      	markerIcon = new GIcon();
-//			marker = new GMarker(point);
-//    	}
-//    	return marker;
-//    }
 /**
  * creates all the trip route overlays (arrowed polylines) and event markers from the driverTrips data provided.
  * 
@@ -422,7 +344,7 @@
 					startlatlng = new GLatLng(driverTrips.trips[j].beginningPoint.lat, driverTrips.trips[j].beginningPoint.lng);
 					marker = createLabeledMarker(startlatlng,tripIcons[6],
 								getSingleLabeledMarkerLabel(labels[colorArray[driverIndex]],colors[colorArray[driverIndex]],tripNumber,tripIcons[0]),
-								driverIndex, "start",j,0);
+								driverIDArray[driverIndex], "start",j,0);
 					markers.push(marker);
 					//End of trip marker
 			
@@ -431,7 +353,7 @@
 						var violation = new GLatLng(driverTrips.trips[j].violations[k].lat, driverTrips.trips[j].violations[k].lng);
 						marker = createLabeledMarker(violation,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[3]),
-									driverIndex, "violation",j,k);
+									driverIDArray[driverIndex], "violation",j,k);
 						markers.push(marker);
 					}
 					length = driverTrips.trips[j].idles.length;
@@ -439,7 +361,7 @@
 						var idle = new GLatLng(driverTrips.trips[j].idles[k].lat,driverTrips.trips[j].idles[k].lng);
 						marker = createLabeledMarker(idle,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[4]),
-									driverIndex, "idle",j,k);
+									driverIDArray[driverIndex], "idle",j,k);
 						markers.push(marker);
 					}
 					length = driverTrips.trips[j].tampers.length;
@@ -447,7 +369,7 @@
 						var tamper = new GLatLng(driverTrips.trips[j].tampers[k].lat,driverTrips.trips[j].tampers[k].lng);
 						marker = createLabeledMarker(tamper,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[5]),
-									driverIndex, "tamper",j,k);
+									driverIDArray[driverIndex], "tamper",j,k);
 						markers.push(marker);
 					}
 					
@@ -455,14 +377,14 @@
 					{
 						marker = createLabeledMarker(endlatlng,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[1]),
-									driverIndex, "progress",j,0);
+									driverIDArray[driverIndex], "progress",j,0);
 						markers.push(marker);
 					}
 					else
 					{
 						marker = createLabeledMarker(endlatlng,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[2]),
-									driverIndex, "end",j,0);
+									driverIDArray[driverIndex], "end",j,0);
 						markers.push(marker);
 					}
 				}
@@ -517,6 +439,7 @@
  */
 	 function calculateTripBounds(){
 		 
+		 var bounds = null;
 		 var boundsPoints = new Array();
 		 var boundsArrayLength = boundsArray.length;
 		 for(var i=0; i<boundsArrayLength; i++){
@@ -528,7 +451,7 @@
 			}
 		 }
 		 if (boundsPoints.length > 1){
-			 var bounds = new GLatLngBounds(boundsPoints[0], boundsPoints[1]);
+			 bounds = new GLatLngBounds(boundsPoints[0], boundsPoints[1]);
 			 var boundsPointsLength =boundsPoints.length;
 			 for(var i=2; i < boundsPointsLength;i++){
 
@@ -549,11 +472,15 @@
 		 
 		 addTripOverlaysToMap(driverIndex);
 		 bounds = calculateTripBounds();
-		 map.setZoom(map.getBoundsZoomLevel(bounds));
-		 map.setCenter(bounds.getCenter());
-		 markerClustererWithMergedMarkerSets.addMarkerSet({'displayColor':colors[colorArray[driverIndex]],
-											'markerSet':markersArray[driverIndex]
-			  								});
+		 
+		 if (bounds != null){
+			 
+			 map.setZoom(map.getBoundsZoomLevel(bounds));
+			 map.setCenter(bounds.getCenter());
+			 markerClustererWithMergedMarkerSets.addMarkerSet({'displayColor':colors[colorArray[driverIndex]],
+												'markerSet':markersArray[driverIndex]
+				  								});
+		 }
 	 }
 			 
 /**
@@ -577,6 +504,8 @@
 			 colorArray.push(pageIndex);
 			 overlaysArray.push(new Array()); 	//just a place holder for now
 			 markersArray.push(new Array());
+			 createTripOverlays(driverTrips,i);
+			 boundsArray.push(calculateBounds(overlaysArray[i]));
 		}
 		 //data has previously been sent but is being replaced
 		else if (overlaysArray[i].length == 0){
@@ -584,9 +513,9 @@
 			 overlaysArray[i]=new Array(); 	//just a place holder for now
 			 markersArray[i]=new Array();
 			 tripsSelected[i] = true;			 
+			 createTripOverlays(driverTrips,i);
+			 boundsArray[i] = calculateBounds(overlaysArray[i]);
 		}
-		createTripOverlays(driverTrips,i);
-		boundsArray.push(calculateBounds(overlaysArray[i]));
 		showNewTrips(i);
 	 }
 	 
@@ -601,9 +530,12 @@
 		tripsSelected[driverIndex] = true;
 		
 		bounds = calculateTripBounds();
-		map.setZoom(map.getBoundsZoomLevel(bounds));
-		map.setCenter(bounds.getCenter());
-		showOverlays(driverIndex);
+		if (bounds != null){
+			
+			map.setZoom(map.getBoundsZoomLevel(bounds));
+			map.setCenter(bounds.getCenter());
+			showOverlays(driverIndex);
+		}
 	}
 	
 /**

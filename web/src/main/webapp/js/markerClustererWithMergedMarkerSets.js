@@ -601,6 +601,31 @@ function LabeledCluster(markerClusterer, clusterOpts) {
       center_ = marker.originalLatLng;
     }
     markers_.push(marker);
+//    //Adjust center
+//    if ((markers_.length > 1) && (markers_.length < 5)){
+//        var min_lat = 90;
+//        var max_lat = -90;
+//        var min_lng = 180;
+//        var max_lng = -180;
+//        for(var i=0; i<markers_.length;i++){
+//        	if (markers_[i].originalLatLng.lat() > max_lat){
+//        		max_lat = markers_[i].originalLatLng.lat();
+//        	}
+//        	if (markers_[i].originalLatLng.lat() < min_lat){
+//        		min_lat = markers_[i].originalLatLng.lat();
+//        	}
+//        	if (markers_[i].originalLatLng.lng() > max_lng){
+//        		max_lng = markers_[i].originalLatLng.lng();
+//        	}
+//        	if (markers_[i].originalLatLng.lng() < min_lng){
+//        		min_lng = markers_[i].originalLatLng.lng();
+//        	}
+//        }
+//        center_ = new GLatLng(min_lat+(max_lat-min_lat)/2,min_lng+(max_lng-min_lng)/2);
+//    }
+//    else {
+//    	center_ = markers_[0].originalLatLng;
+//    }
   };
 
   /**
@@ -704,6 +729,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
       	  "labelOffset": opts_.labelOffset,
       	  "labelClass":opts_.labelClass
       	};
+	  var trueCenter = this.findTrueClusterCenter();
   	  clusterMarker = new LabeledMarker(center_, thisOpts);
   	
 	  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
@@ -754,7 +780,8 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		      	  "labelOffset": opts_.labelOffset,
 		      	  "labelClass":opts_.labelClass
 		      	};
-		  var nextPoint = map_.fromLatLngToDivPixel(center_);
+
+		  var nextPoint = this.findTrueClusterCenter();
 		  nextPoint.x -= 20;
 		  nextPoint.y -= 20;
 		  var offsetPosition = map_.fromDivPixelToLatLng(nextPoint);
@@ -794,12 +821,79 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		  return this.makeClusterMarker();
 	  }
   };
+  this.boundsIntersect = function(bounds1,bounds2){
+	  
+	  return (	bounds1.containsPoint(new GPoint(bounds2.minX, bounds2.minY))||
+		   		bounds1.containsPoint(new GPoint(bounds2.maxX, bounds2.maxY))||
+		   		bounds1.containsPoint(new GPoint(bounds2.minX, bounds2.maxY))||
+		   		bounds1.containsPoint(new GPoint(bounds2.maxX, bounds2.minY))||
+		   		bounds2.containsPoint(new GPoint(bounds1.minX, bounds1.minY))||
+		   		bounds2.containsPoint(new GPoint(bounds1.maxX, bounds1.maxY))||
+		   		bounds2.containsPoint(new GPoint(bounds1.minX, bounds1.maxY))||
+		   		bounds2.containsPoint(new GPoint(bounds1.maxX, bounds1.minY)));
+			   
+  };
+  this.findTrueClusterCenter = function(){
+	  
+		var markers_length = markers_.length;
+	  	var stackBounds = new GBounds();
+	  	for (var k=0; k<markers_length; k++){
+	  		
+		  	stackBounds.extend(map_.fromLatLngToDivPixel(markers_[k].originalLatLng));
+	  	}
+	  	return stackBounds.mid();
+
+  };
   this.makeStackedMarkers = function(){
 	  
-		var nextPoint = map_.fromLatLngToDivPixel(center_);
-		nextPoint = new GPoint(nextPoint.x-(10 * markers_.length), nextPoint.y-24);
-
+	  //Really need to check here whether the items do overlap
+	  // and only stack the ones that do.
+	  //Work out the center of the cluster from the bounds of the cluaters in their original 
+	  // positions
 		var markers_length = markers_.length;
+	  	var centerStack = this.findTrueClusterCenter();
+	  	
+	  	//Find the bounds of where the stack would be based on that center
+	  	var topLeftStack = new GPoint(centerStack.x-25, centerStack.y-(markers_.length*10));
+	  	var bottomRightStack = new GPoint(centerStack.x+25, centerStack.y+(markers_.length*10));
+	  	var stackBounds = new GBounds([topLeftStack,bottomRightStack]);
+	  	
+	  	var overlappers = new Array();
+	  	
+		for (var i=0;i<markers_length;i++){
+			overlappers.push(false);
+		}
+		
+		// make a list of markers that overlap each other and/or the stack bounds
+		for (var i=0;i<markers_length;i++){
+			var topLefti = map_.fromLatLngToDivPixel(markers_[i].originalLatLng);
+			topLefti.x-=1;
+			topLefti.y-=1;
+			var bottomRighti = new GPoint(topLefti.x + 50,
+									  topLefti.y + 20);
+			var boundsi = new GBounds([ topLefti,bottomRighti]);
+			
+			if(this.boundsIntersect(stackBounds, boundsi)){
+				overlappers[i] = true;
+			}
+			if( i< markers_length-1){
+				for (var j=i+1; j<markers_length; j++){
+					var topLeftj = map_.fromLatLngToDivPixel(markers_[j].originalLatLng);
+					topLeftj.x-=1;
+					topLeftj.y-=1;
+					var bottomRightj = new GPoint(topLeftj.x + 50,
+											  topLeftj.y + 20);
+					var boundsj = new GBounds([ topLeftj,bottomRightj]);
+					if(this.boundsIntersect(boundsi,boundsj)){
+						overlappers[i] = true;
+						overlappers[j] = true;
+					}
+				}
+			}
+		}
+		// position markers.  If they don't overlap each other or the stack box 
+		// leave them in place.  Otherwise stack them.
+		var nextPoint = topLeftStack;
 		for (var i=0;i<markers_length;i++){
 	        if (markers_[i].isAdded) {
 	            if (markers_[i].marker.isHidden()) {
@@ -810,7 +904,13 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 	            markers_[i].isAdded = true;
 	          }
 
-			markers_[i].marker.setLatLng(map_.fromDivPixelToLatLng(nextPoint));
+			if (overlappers[i]){
+				
+				markers_[i].marker.setLatLng(map_.fromDivPixelToLatLng(nextPoint));
+			}
+			else{
+				markers_[i].marker.setLatLng(markers_[i].originalLatLng);
+			}
 			nextPoint = new GPoint(nextPoint.x, nextPoint.y+20);
 		}
   };
