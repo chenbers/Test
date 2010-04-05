@@ -195,7 +195,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             {
                 //final User user = userDAO.findByID(id);
                 final Person person = personDAO.findByID(id);
-                if (person != null && person.getStatus() != null && !person.getStatus().equals(Status.DELETED))
+                if (!isPersonDeleted(person))
                     notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
             }
             MiscUtil.sortSelectItems(notifyPeople);
@@ -203,6 +203,20 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return notifyPeople;
     }
 
+    private boolean isPersonDeleted(Person person)
+    {
+    	if (person == null)
+    		return true;
+    	
+    	if (person.getStatus() == null) {
+    		if ((person.getUser() != null && person.getUser().getStatus() != null && !person.getUser().getStatus().equals(Status.DELETED)) ||
+    			(person.getDriver() != null && person.getDriver().getStatus() != null && !person.getDriver().getStatus().equals(Status.DELETED)))
+    			 return false;
+    	}
+    	
+    	return person.getStatus().equals(Status.DELETED);
+    		
+    }
     @Override
     public void personListChanged()
     {
@@ -447,7 +461,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
         public List<Integer> getNotifyPersonIDs();
 
-        public void setNotifyPersonIDs(List<Integer> notifyUserIDs);
+        public void setNotifyPersonIDs(List<Integer> notifyPersonIDs);
 
         public List<String> getEmailTo();
 
