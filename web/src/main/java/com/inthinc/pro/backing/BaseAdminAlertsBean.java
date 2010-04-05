@@ -212,6 +212,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     		if ((person.getUser() != null && person.getUser().getStatus() != null && !person.getUser().getStatus().equals(Status.DELETED)) ||
     			(person.getDriver() != null && person.getDriver().getStatus() != null && !person.getDriver().getStatus().equals(Status.DELETED)))
     			 return false;
+    		else return true;
     	}
     	
     	return person.getStatus().equals(Status.DELETED);
