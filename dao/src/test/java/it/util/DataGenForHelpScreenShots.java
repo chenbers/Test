@@ -248,7 +248,7 @@ public class DataGenForHelpScreenShots {
                 notifyPersonIDList, // notifyPersonIDs
                 emailList, // emailTo
                 0, zoneID, true, true);
-        zoneAlert.setNotifyUserIDs(notifyPersonIDList);
+        zoneAlert.setNotifyPersonIDs(notifyPersonIDList);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         zoneAlert.setZoneAlertID(zoneAlertID);
     }

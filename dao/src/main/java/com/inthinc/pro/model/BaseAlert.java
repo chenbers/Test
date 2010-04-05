@@ -37,7 +37,6 @@ public abstract class BaseAlert extends BaseEntity
     private List<Integer>       vehicleIDs;
     private List<VehicleType>   vehicleTypes;
     private List<Integer>       notifyPersonIDs;
-    private List<Integer>       notifyUserIDs;
     private List<String>        emailTo;
     private Status  status;
 
@@ -180,9 +179,9 @@ public abstract class BaseAlert extends BaseEntity
         return notifyPersonIDs;
     }
 
-    public void setNotifyPersonIDs(List<Integer> notifyUserIDs)
+    public void setNotifyPersonIDs(List<Integer> notifyPersonIDs)
     {
-        this.notifyPersonIDs = notifyUserIDs;
+        this.notifyPersonIDs = notifyPersonIDs;
     }
 
     public List<String> getEmailTo()
@@ -226,16 +225,6 @@ public abstract class BaseAlert extends BaseEntity
     public void setStatus(Status status)
     {
         this.status = status;
-    }
-
-    public void setNotifyUserIDs(List<Integer> notifyUserIDs)
-    {
-        this.notifyUserIDs = notifyUserIDs;
-    }
-
-    public List<Integer> getNotifyUserIDs()
-    {
-        return notifyUserIDs;
     }
 
 }

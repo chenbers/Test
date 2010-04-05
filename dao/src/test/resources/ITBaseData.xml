@@ -630,9 +630,6 @@
   <void property="notifyPersonIDs"> 
    <object idref="ArrayList2"/> 
   </void> 
-  <void property="notifyUserIDs"> 
-   <object idref="ArrayList2"/> 
-  </void> 
   <void property="startTOD"> 
    <int>0</int> 
   </void> 

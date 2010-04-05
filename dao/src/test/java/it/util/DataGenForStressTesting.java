@@ -35,6 +35,7 @@ import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
+import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
@@ -426,7 +427,7 @@ public class DataGenForStressTesting {
                 notifyPersonIDList, // notifyPersonIDs
                 emailList, // emailTo
                 0, zoneID, true, true);
-        zoneAlert.setNotifyUserIDs(notifyPersonIDList);
+        zoneAlert.setNotifyPersonIDs(notifyPersonIDList);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         zoneAlert.setZoneAlertID(zoneAlertID);
     }
@@ -560,17 +561,29 @@ System.out.println("deviceID: " + deviceID);
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         
-        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
-        		genNumericID(uniqueID, 15), genNumericID(uniqueID, 19), genNumericID(uniqueID, 10), 
-        		genNumericID(uniqueID, 10), 
-        		"5555559876");
-        
-        device.setAccel("1100 50 4");
-        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
-        device.setDeviceID(deviceID);
-        
-        
-        return device;
+        for (int retryCnt = 0; retryCnt < 100; retryCnt++) {
+System.out.println("retryCnt: " + retryCnt);        	
+	        try{
+		        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
+		        		genNumericID(uniqueID, 15), genNumericID(uniqueID, 19), genNumericID(uniqueID, 10), 
+		        		genNumericID(uniqueID, 10), 
+		        		"5555559876");
+		        
+		        device.setAccel("1100 50 4");
+		        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
+		        device.setDeviceID(deviceID);
+		        
+		        
+		        return device;
+	        }
+	        catch (DuplicateIMEIException ex) {
+	        	if (retryCnt == 99) {
+	        		System.out.println("dupicate after 99 attempts");
+	        		throw ex;
+	        	}
+	        }
+        }
+	    return null;
     }
 
     private String genNumericID(Integer acctID, Integer len)
@@ -579,7 +592,7 @@ System.out.println("deviceID: " + deviceID);
         
         for (int i = id.length(); i < len; i++)
         {
-            id += "9";
+            id += ("" + Util.randomInt(0, 9));
         }
         
         return id;
