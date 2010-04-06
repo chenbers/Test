@@ -117,6 +117,10 @@ public class EmailReportJob extends QuartzJobBean {
     @SuppressWarnings("unchecked")
     private void processReportSchedule(ReportSchedule reportSchedule) {
         ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
+        if (reportGroup == null) {
+        	logger.error("null reportGroup for schedule ID " + reportSchedule.getReportID());
+        	return;
+        }
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         User user = userDAO.findByID(reportSchedule.getUserID());
         for (int i = 0; i < reportGroup.getReports().length; i++) {
@@ -155,7 +159,8 @@ public class EmailReportJob extends QuartzJobBean {
                 	TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
                 	if (timeFrame == null)
                 		timeFrame = TimeFrame.TODAY;
-                    reportCriteriaList.add(reportCriteriaService.getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, user.getPerson().getLocale(), true));
+                    reportCriteriaList.add(reportCriteriaService.getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
+                    		DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
                 	break;
                 default:
                     break;
@@ -279,7 +284,7 @@ public class EmailReportJob extends QuartzJobBean {
         if ((currentTimeInMinutes - 60) >= reportSchedule.getTimeOfDay()) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report time was more than an hour before the current time");
-                logger.debug("Name: " + reportSchedule.getName());
+                logger.debug("Name: " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
                 logger.debug("Current Time: Hour " + (Integer) (currentTimeInMinutes / 60) + " Minutes " + (Integer) currentTimeInMinutes % 60);
                 logger.debug("Time To Run Hour " + (Integer) (reportSchedule.getTimeOfDay() / 60) + " Minutes " + (Integer) reportSchedule.getTimeOfDay() % 60);
             }

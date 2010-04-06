@@ -121,8 +121,8 @@
 				</rich:column>
 				<rich:column width="7%" rendered="#{tableColumns['miles_driven'].visible}" sortBy="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" id="newTeamStatsTab-milesDriven">
 					<f:facet name="header">
-						<h:outputText value="#{messages.team_miles_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 1}"/>
-						<h:outputText value="#{messages.team_km_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 2}"/>
+						<ui:param name="MsgKey" value="team_dist_#{teamStatisticsBean.measurementType}"/>
+						<h:outputText value="#{messages[MsgKey]}"/>
 					</f:facet>
 
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
@@ -254,8 +254,8 @@
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['miles_driven'].visible}" width="7%" id="newTeamStatsTab-totalsMilesDriven">
 					<f:facet name="header">
-						<h:outputText value="#{messages.team_miles_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 1}"/>
-						<h:outputText value="#{messages.team_km_driven}" rendered="#{teamStatisticsBean.measurementType.code eq 2}"/>
+						<ui:param name="MsgKey" value="team_dist_#{teamStatisticsBean.measurementType}"/>
+						<h:outputText value="#{messages[MsgKey]}"/>
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
                     	<a4j:actionparam value="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>

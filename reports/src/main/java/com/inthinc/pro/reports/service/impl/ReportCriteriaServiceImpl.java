@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -468,7 +469,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	}
 
     @Override
-	public ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, Locale locale, Boolean initDataSet) {
+	public ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet) {
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STATISTICS_REPORT, group.getName(), locale);
         reportCriteria.setTimeFrame(timeFrame);
@@ -481,8 +482,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             		timeFrame.equals(TimeFrame.YEAR) ) 
                 driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getAggregationDuration());
             else
-                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval());
-            
+                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(timeZone));
+            DriverVehicleScoreWrapper totals = DriverVehicleScoreWrapper.summarize(driverStatistics, group);
+            if (totals != null) {
+            	driverStatistics.add(totals);
+            }
             reportCriteria.setMainDataset(driverStatistics);
         	
 

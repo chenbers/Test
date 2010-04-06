@@ -2,6 +2,7 @@ package com.inthinc.pro.reports.service;
 
 import java.util.Locale;
 
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Duration;
@@ -25,6 +26,6 @@ public interface ReportCriteriaService
     ReportCriteria getCrashHistoryReportCriteria(Integer groupID, Locale locale);
     ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
-    ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, Locale locale, Boolean initDataSet);
+    ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
 
 }

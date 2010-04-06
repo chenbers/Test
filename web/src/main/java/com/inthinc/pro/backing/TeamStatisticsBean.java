@@ -7,14 +7,10 @@ import java.util.List;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
-import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
@@ -208,6 +204,7 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     public List<DriverVehicleScoreWrapper> getDriverTotals() {
+/*    	
         List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
         
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
@@ -393,7 +390,14 @@ public class TeamStatisticsBean extends BaseBean {
         drv.setPerson(prs);
         dvsw.setDriver(drv);
         dvsw.setSummary(true);
- 
+*/ 
+//      tmp.setOverall(totScore/driverStatistics.size());        
+        List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
+        
+        DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(driverStatistics, teamCommonBean.getGroup());
+        dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
+                        dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL));
+
         local.add(dvsw);
         
         return local;
@@ -460,7 +464,8 @@ public class TeamStatisticsBean extends BaseBean {
     
 	protected ReportCriteria getReportCriteria()
 	{
-    	return getReportCriteriaService().getTeamStatisticsReportCriteria(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame(), getLocale(), false);
+    	return getReportCriteriaService().getTeamStatisticsReportCriteria(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame(), 
+    			getDateTimeZone(), getLocale(), false);
 	}
 
 	public void setReportRenderer(ReportRenderer reportRenderer)
