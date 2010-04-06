@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.ajax4jsf.model.KeepAlive;
 
@@ -26,7 +27,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class TeamTripsBean extends BaseBean {
 
 	/**
-	 * 
+	 * Backing bean for the TeamTrips tab of the new team page
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -38,7 +39,6 @@ public class TeamTripsBean extends BaseBean {
     
     private TeamCommonBean teamCommonBean;
 
-//	private List<DriverTrips> driversTrips;
 	private Map<Integer, DriverTrips> driversTripsMap;
 	
     private EventData eventData;
@@ -47,10 +47,17 @@ public class TeamTripsBean extends BaseBean {
     public void init(){
     	
 		initDrivers();
-		colors = Arrays.asList(	"#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
-								"#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
-	              				"#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289");
-		labels = Arrays.asList("A","B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+		colors = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamColors"))));
+		colors.remove(0);
+		
+//		colors = Arrays.asList(	"#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
+//								"#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
+//	              				"#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289");
+
+		labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamLabels"))));
+		labels.remove(0);
+
+//		labels = Arrays.asList("A","B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 		eventData = new EventData();
     }
     private void initDrivers(){
@@ -89,10 +96,8 @@ public class TeamTripsBean extends BaseBean {
  	   	}
  	   	return selectedDrivers;
  	}
-//	public void setDrivers(List<DriverTrips> drivers) {
-//		this.driversTrips = drivers;
-//	}
-	public void reloadTrips(){
+
+ 	public void reloadTrips(){
 		
     	for(DriverTrips dt:driversTripsMap.values()){
     		
@@ -541,6 +546,8 @@ public class TeamTripsBean extends BaseBean {
 		private String  eventType;
 		private Integer eventIndex;
 		private Integer tripNumber;
+		private Double lat;
+		private Double lng;
 
 		private String driverName;
 		private String timeString;
@@ -599,6 +606,18 @@ public class TeamTripsBean extends BaseBean {
 		}
 		public void setEventDescription(String eventDescription) {
 			this.eventDescription = eventDescription;
+		}
+		public Double getLat() {
+			return lat;
+		}
+		public void setLat(Double lat) {
+			this.lat = lat;
+		}
+		public Double getLng() {
+			return lng;
+		}
+		public void setLng(Double lng) {
+			this.lng = lng;
 		}
 	}
 }
