@@ -24,4 +24,11 @@ public class TableFilterField {
 	public void setFilter(Object filter) {
 		this.filter = filter;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return field + ": " + filter;
+	}
+
 }

@@ -55,5 +55,13 @@ public class PageParams {
 		this.filterList = filterList;
 	}
 
+	@Override
+	public String toString() {
+		
+		return "startrow: " + (startRow == null ? "null" : startRow) +
+		"endRow: " + (endRow == null ? "null" : endRow) +
+		"sort: " + ((sort == null) ? "null" : sort.toString()) +
+		"filterList: " + ((filterList == null) ? "null" : filterList.toString());
+	}
 
 }

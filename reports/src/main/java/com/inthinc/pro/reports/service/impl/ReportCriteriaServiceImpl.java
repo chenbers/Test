@@ -33,6 +33,8 @@ import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.pagination.PageParams;
+import com.inthinc.pro.model.pagination.SortOrder;
+import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.CategorySeriesData;
@@ -66,7 +68,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName(), locale);
         
 		Integer rowCount = reportDAO.getDriverReportCount(groupID, null);
-		PageParams pageParams = new PageParams(0, rowCount, null, null);
+		PageParams pageParams = new PageParams(0, rowCount, new TableSortField(SortOrder.ASCENDING, "driverName"), null);
 		reportCriteria.setMainDataset(reportDAO.getDriverReportPage(groupID, pageParams));
 
 

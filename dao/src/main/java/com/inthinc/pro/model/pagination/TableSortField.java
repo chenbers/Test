@@ -26,4 +26,10 @@ public class TableSortField {
 		this.field = field;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return field + ": " + order;
+	}
+	
 }
