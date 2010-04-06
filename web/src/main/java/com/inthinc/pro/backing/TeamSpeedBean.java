@@ -5,16 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.event.ActionEvent;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.Pie;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
@@ -24,28 +20,26 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TeamSpeedBean extends BaseBean {
-    private ScoreDAO scoreDAO;
     
-    private Map<ScoreType, Map<String,String>> barDefMap;
+//  Request scope bean for new team page 
+    private static final long serialVersionUID = -2065512595055745287L;
+    
+    private Map<ScoreType, Map<String,String>> pieDefMap;
     private Map<ScoreType, Map<String,String>> newBarDefMap;
-    private Map<ScoreType, Map<String,String>> speedOverBarDefMap;
     private Map<ScoreType, Map<String,Integer>> overallScoreMap;
-    private List<TabAction> actions;
-    private TabAction selectedAction;
     
     private TeamCommonBean teamCommonBean;
     
-    private List<HashMap<String,String>> speedTotals;
     private HashMap<String,String> graphicLabels;
     
     private Integer totDrivers;
     private Integer totDriversSpeeding;
     
-    private Integer groupID;
+    private ScoreType scoreType = ScoreType.SCORE_SPEEDING;
+
     private static final Logger logger = Logger.getLogger(TeamSpeedBean.class);
 
     public TeamSpeedBean() {
-        logger.debug("TeamSpeedBean - constructor"); 
         
         // Get the labels for the graphs
         graphicLabels = new HashMap<String,String>();
@@ -55,25 +49,25 @@ public class TeamSpeedBean extends BaseBean {
             graphicLabels.put("thirtyOneToFourty", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_31_40"));
             graphicLabels.put("fourtyOneToFiftyFour", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_41_54"));
             graphicLabels.put("fiftyFiveToSixtyFour", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_55_64"));
-            graphicLabels.put("sixtyFiveAndUp", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_65_80"));
-
+            graphicLabels.put("sixtyFiveAndUp", MessageUtil.getMessageString("MeasurementType.ENGLISH_SCORE_SPEEDING_65_80"));            
 
         } else {
             graphicLabels.put("zeroToThirty", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_21_30"));
             graphicLabels.put("thirtyOneToFourty", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_31_40"));
             graphicLabels.put("fourtyOneToFiftyFour", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_41_54"));
             graphicLabels.put("fiftyFiveToSixtyFour", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_55_64"));
-            graphicLabels.put("sixtyFiveAndUp", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_65_80"));                     
+            graphicLabels.put("sixtyFiveAndUp", MessageUtil.getMessageString("MeasurementType.METRIC_SCORE_SPEEDING_65_80"));    
+         
         }
         
-        graphicLabels.put("teamTotal", MessageUtil.getMessageString("teamTotal"));
-               
+        graphicLabels.put("teamTotal", MessageUtil.getMessageString("teamTotal"));               
     }
 
     private Integer initOverallScore(ScoreType scoreType) {
         ScoreableEntity scoreableEntity = getScoreableEntityNumber();               
-        if (scoreableEntity == null || scoreableEntity.getScore() == null)
+        if (scoreableEntity == null || scoreableEntity.getScore() == null) {
             return -1;
+        }
         return scoreableEntity.getScore();
     }
 
@@ -81,38 +75,25 @@ public class TeamSpeedBean extends BaseBean {
         return ScoreBox.GetStyleFromScore(getSelectedOverallScore(), ScoreBoxSizes.LARGE);
     }
 
-    public ScoreDAO getScoreDAO() {
-        return scoreDAO;
-    }
-
-    public void setScoreDAO(ScoreDAO scoreDAO) {
-        this.scoreDAO = scoreDAO;
-    }
-
-    public String getSelectedBarDef() {
-//        TabAction action = findTab("speed");
-//        ScoreType scoreType = action.getScoreType();
-        ScoreType scoreType = ScoreType.SCORE_SPEEDING;
+    public String getSelectedPieDef() {
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
-        if (getBarDefMap().get(scoreType) == null) {
+        if (getPieDefMap().get(scoreType) == null) {
             
-            getBarDefMap().put(scoreType,  new HashMap<String, String>());
+            getPieDefMap().put(scoreType,  new HashMap<String, String>());
         }
-        if (barDefMap.get(scoreType).get(timeFrame.name()) == null){
+        if (pieDefMap.get(scoreType).get(timeFrame.name()) == null){
             
-            barDefMap.get(scoreType).put(timeFrame.name(), createPieChart(scoreType));            
+            pieDefMap.get(scoreType).put(timeFrame.name(), createPieChart(scoreType));            
         }
-        return getBarDefMap().get(scoreType).get(timeFrame.name());
+        return getPieDefMap().get(scoreType).get(timeFrame.name());
     }
 
-    public String getBarDef(Integer type) {
-       return getBarDefMap().get(ScoreType.valueOf(type)).get(teamCommonBean.getTimeFrame().getDuration());
+    public String getPieDef(Integer type) {
+       return getPieDefMap().get(ScoreType.valueOf(type)).get(teamCommonBean.getTimeFrame().getDuration());
     }
     
     public String getSelectedNewBarDef() {
-        TabAction action = findTab("speed");
-        ScoreType scoreType = action.getScoreType();
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getNewBarDefMap().get(scoreType) == null) {
@@ -131,14 +112,7 @@ public class TeamSpeedBean extends BaseBean {
     }         
     
     public String createPieChart(ScoreType scoreType) {
-        List<ScoreableEntity> scoreDataList = null;        
-        try {
-            logger.debug("TeamSpeedBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);  
-            scoreDataList = getScoreableEntitiesPie();                 
-        }
-        catch (Exception e) {
-            scoreDataList = new ArrayList<ScoreableEntity>();
-        }
+        List<ScoreableEntity> scoreDataList = getScoreableEntitiesPie();                 
 
         // Create the pie string
         StringBuffer sb = new StringBuffer();
@@ -157,7 +131,7 @@ public class TeamSpeedBean extends BaseBean {
                 
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
-                sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\'" + 
+                sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\'" +                                                 
                         " color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
             }
         }
@@ -167,18 +141,9 @@ public class TeamSpeedBean extends BaseBean {
     }
     
     public String createBarChart(ScoreType scoreType) {
-        List<Float> milesDriven = null;
-        List<Float> milesSpeeding = null;
-        
-        try {
-            logger.debug("TeamSpeedBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);             
-            milesDriven = getMilesDriven();
-            milesSpeeding = getMilesSpeeding(); 
-        }
-        catch (Exception e) {
-            milesDriven = new ArrayList<Float>();
-            milesSpeeding = new ArrayList<Float>();
-        }
+        // Snag data
+        List<Float> milesDriven = getMilesDriven();
+        List<Float> milesSpeeding = getMilesSpeeding(); 
 
         // Create the bar string
         StringBuffer sb = new StringBuffer();
@@ -198,7 +163,7 @@ public class TeamSpeedBean extends BaseBean {
         sb.append("<category label=\"");sb.append(graphicLabels.get("thirtyOneToFourty"));sb.append("\"/>");  
         sb.append("<category label=\"");sb.append(graphicLabels.get("fourtyOneToFiftyFour"));sb.append("\"/>");  
         sb.append("<category label=\"");sb.append(graphicLabels.get("fiftyFiveToSixtyFour"));sb.append("\"/>");  
-        sb.append("<category label=\"");sb.append(graphicLabels.get("sixtyFiveAndUp"));sb.append("\"/>");          
+        sb.append("<category label=\"");sb.append(graphicLabels.get("sixtyFiveAndUp"));sb.append("\"/>");                   
         sb.append("</categories>");
 
         // Miles speeding
@@ -235,15 +200,15 @@ public class TeamSpeedBean extends BaseBean {
         return sb.toString();
     }    
 
-    public Map<ScoreType, Map<String,String>> getBarDefMap() {
-        if (barDefMap == null) {
-            barDefMap = new HashMap<ScoreType, Map<String,String>>();
+    public Map<ScoreType, Map<String,String>> getPieDefMap() {
+        if (pieDefMap == null) {
+            pieDefMap = new HashMap<ScoreType, Map<String,String>>();
         }
-        return barDefMap;
+        return pieDefMap;
     }
 
-    public void setBarDefMap(Map<ScoreType, Map<String,String>> barDefMap) {
-        this.barDefMap = barDefMap;
+    public void setPieDefMap(Map<ScoreType, Map<String,String>> pieDefMap) {
+        this.pieDefMap = pieDefMap;
     }
 
     public void setNewBarDefMap(Map<ScoreType, Map<String,String>> newBarDefMap) {
@@ -255,18 +220,7 @@ public class TeamSpeedBean extends BaseBean {
             newBarDefMap = new HashMap<ScoreType, Map<String,String>>();
         }
         return newBarDefMap;
-    }
-
-    public void setSpeedOverBarDefMap(Map<ScoreType, Map<String,String>> speedOverBarDefMap) {
-        this.speedOverBarDefMap = speedOverBarDefMap;
-    }    
-    
-    public Map<ScoreType, Map<String,String>> getSpeedOverBarDefMap() {
-        if (speedOverBarDefMap == null) {
-            speedOverBarDefMap = new HashMap<ScoreType, Map<String,String>>();
-        }
-        return speedOverBarDefMap;
-    }   
+    } 
 
     public Map<ScoreType, Map<String,Integer>> getOverallScoreMap() {
         if (overallScoreMap == null) {
@@ -280,9 +234,6 @@ public class TeamSpeedBean extends BaseBean {
     }
 
     public Integer getSelectedOverallScore() {
-        TabAction action = findTab("speed");       
-        ScoreType scoreType = action.getScoreType();
-//        ScoreType scoreType = ScoreType.SCORE_SPEEDING;
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getOverallScoreMap().get(scoreType) == null) {
@@ -296,43 +247,12 @@ public class TeamSpeedBean extends BaseBean {
         return getOverallScoreMap().get(scoreType).get(timeFrame.name());
     }
 
-    public void setActions(List<TabAction> actions) {
-        this.actions = actions;
-    }
-
-    public List<TabAction> getActions() {
-        if (actions == null) {
-            String[] actionKeys = { "overall", "driving", "speed", "seatbelt" };
-            int[] width = { 108, 104, 70, 85 };
-            ScoreType[] scoreTypes = { ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT };
-            actions = new ArrayList<TabAction>();
-            for (int i = 0; i < actionKeys.length; i++) {
-                actions.add(new TabAction(actionKeys[i], actionKeys[i], 
-                        MessageUtil.getMessageString("teamOverviewSideNav_" + actionKeys[i]), actionKeys[i] + "_on", actionKeys[i]
-                        + "_off", scoreTypes[i], width[i]));
-            }
-        }
-        return actions;
-    }
-
-    public TabAction getSelectedAction() {
-        if (selectedAction == null) {
-            setSelectedAction(getActions().get(0));
-        }
-        return selectedAction;
-    }
-
-    public void setSelectedAction(TabAction selectedAction) {
-        this.selectedAction = selectedAction;
-    }
-
     public TeamCommonBean getTeamCommonBean() {
         return teamCommonBean;
     }
 
     public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
-        this.teamCommonBean = teamCommonBean;
-        this.groupID = teamCommonBean.getGroupID();        
+        this.teamCommonBean = teamCommonBean;        
     }
 
     public Integer getTotDrivers() {
@@ -351,48 +271,8 @@ public class TeamSpeedBean extends BaseBean {
         this.totDriversSpeeding = totDriversSpeeding;
     }
 
-    public Integer getGroupID() {
-        return groupID;
-    }
-
-    public void setGroupID(Integer groupID) {
-        if (this.groupID != null && !this.groupID.equals(groupID)) {
-            logger.info("TeamOverviewBean groupID changed " + groupID);
-//            setDuration(Duration.DAYS);
-            setSelectedAction(null);
-            setOverallScoreMap(null);
-            setBarDefMap(null);
-        }
-        this.groupID = groupID;
-    }
-
     public String exportToPDF() {
         // TODO Auto-generated method stub
-        return null;
-    }
-        
-    public void setOverall(ActionEvent ae) {
-        this.selectedAction = findTab("overall");
-    }
-    
-    public void setSpeed(ActionEvent ae) {
-        this.selectedAction = findTab("speed");
-    }
-    
-    public void setDrivingStyle(ActionEvent ae) {
-        this.selectedAction = findTab("driving");
-    }    
-    
-    public void setSeatbelt(ActionEvent ae) {
-        this.selectedAction = findTab("seatbelt");
-    }    
-    
-    private TabAction findTab(String key) {
-        for ( TabAction ta: getActions() ) {
-            if ( ta.getKey().equalsIgnoreCase(key) ) {
-                return ta;
-            }
-        }
         return null;
     }
     

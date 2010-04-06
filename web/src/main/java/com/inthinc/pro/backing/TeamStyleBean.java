@@ -7,16 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.event.ActionEvent;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.ScoreCategory;
-import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Bar3D;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
@@ -26,26 +22,26 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TeamStyleBean extends BaseBean {
-    private ScoreDAO scoreDAO;
+    
+//  Request scope bean for new team page 
+    private static final long serialVersionUID = 3887694723869910138L;
     
     private Map<ScoreType, Map<String,String>> barDefMap;
     private Map<ScoreType, Map<String,Integer>> overallScoreMap;
-    private List<TabAction> actions;
-    private TabAction selectedAction;
 
     private TeamCommonBean teamCommonBean;
     
-    private Integer groupID;
+    private ScoreType scoreType = ScoreType.SCORE_DRIVING_STYLE;
+    
     private static final Logger logger = Logger.getLogger(TeamStyleBean.class);
 
-    public TeamStyleBean() {
-        logger.debug("TeamStyleBean - constructor");        
-    }
+    public TeamStyleBean() {}
 
     private Integer initOverallScore(ScoreType scoreType) {
         ScoreableEntity scoreableEntity = getScoreableEntityNumber();
-        if (scoreableEntity == null || scoreableEntity.getScore() == null)
+        if (scoreableEntity == null || scoreableEntity.getScore() == null) {
             return -1;
+        }
         return scoreableEntity.getScore();
     }
 
@@ -53,17 +49,7 @@ public class TeamStyleBean extends BaseBean {
         return ScoreBox.GetStyleFromScore(getSelectedOverallScore(), ScoreBoxSizes.LARGE);
     }
 
-    public ScoreDAO getScoreDAO() {
-        return scoreDAO;
-    }
-
-    public void setScoreDAO(ScoreDAO scoreDAO) {
-        this.scoreDAO = scoreDAO;
-    }
-
     public String getSelectedBarDef() {
-        TabAction action = findTab("driving");
-        ScoreType scoreType = action.getScoreType();
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
 
         if (getBarDefMap().get(scoreType) == null) {
@@ -82,40 +68,28 @@ public class TeamStyleBean extends BaseBean {
     }
 
     public String createBar3DChart(ScoreType scoreType) {
-        List<ScoreTypeBreakdown> scoreDataList = null;
-        try {
-            logger.debug("TeamStyleBean 3D BAR score groupID[" + getGroupID() + "] scoreType " + scoreType);
-            scoreDataList = getScoreTypeBreakdownBar(scoreType);
-        }
-        catch (Exception e) {
-            scoreDataList = new ArrayList<ScoreTypeBreakdown>();
-        }
+        List<ScoreTypeBreakdown> scoreDataList = getScoreTypeBreakdownBar(scoreType);    
+
         List<String> categoryLabelList = new ArrayList<String>();
         boolean first = true;
-        if (scoreType.equals(ScoreType.SCORE_SPEEDING)) {
-            for (ScoreType subType : scoreType.getSubTypes()) {
-                if (subType.equals(ScoreType.SCORE_SPEEDING))
-                    categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getLocale()));
-                else
-                    categoryLabelList.add(MessageUtil.getMessageString(getMeasurementType() + "_" + subType.toString(), getLocale()));
+
+        for (ScoreType subType : scoreType.getSubTypes()) {
+            if (first) {
+                categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getLocale()));
+                first = false;
+            }
+            else {
+                categoryLabelList.add(MessageUtil.getMessageString(subType.toString(), getLocale()));
             }
         }
-        else {
-            for (ScoreType subType : scoreType.getSubTypes()) {
-                if (first) {
-                    categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getLocale()));
-                    first = false;
-                }
-                else {
-                    categoryLabelList.add(MessageUtil.getMessageString(subType.toString(), getLocale()));
-                }
-            }
-        }
+        
         StringBuffer sb = new StringBuffer();
         Bar3D bar3d = new Bar3D();
+        
         // Control parameters
         sb.append(bar3d.getControlParameters());
         sb.append(bar3d.getCategories(categoryLabelList));
+        
         if (scoreDataList.size() > 0) {
             List<ScoreCategory> categoryList = Collections.list(Collections.enumeration(EnumSet.allOf(ScoreCategory.class)));
             Collections.reverse(categoryList);
@@ -157,8 +131,6 @@ public class TeamStyleBean extends BaseBean {
     }
 
     public Integer getSelectedOverallScore() {
-        TabAction action = findTab("driving");       
-        ScoreType scoreType = action.getScoreType();
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getOverallScoreMap().get(scoreType) == null) {
@@ -172,88 +144,18 @@ public class TeamStyleBean extends BaseBean {
         return getOverallScoreMap().get(scoreType).get(timeFrame.name());
     }
 
-    public void setActions(List<TabAction> actions) {
-        this.actions = actions;
-    }
-
-    public List<TabAction> getActions() {
-        if (actions == null) {
-            String[] actionKeys = { "overall", "driving", "speed", "seatbelt" };
-            int[] width = { 108, 104, 70, 85 };
-            ScoreType[] scoreTypes = { ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT };
-            actions = new ArrayList<TabAction>();
-            for (int i = 0; i < actionKeys.length; i++) {
-                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_" + actionKeys[i]), actionKeys[i] + "_on", actionKeys[i]
-                        + "_off", scoreTypes[i], width[i]));
-            }
-        }
-        return actions;
-    }
-
-    public TabAction getSelectedAction() {
-        if (selectedAction == null) {
-            setSelectedAction(getActions().get(0));
-        }
-        return selectedAction;
-    }
-
-    public void setSelectedAction(TabAction selectedAction) {
-        this.selectedAction = selectedAction;
-    }
-
     public TeamCommonBean getTeamCommonBean() {
         return teamCommonBean;
     }
 
     public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
         this.teamCommonBean = teamCommonBean;
-        this.groupID = teamCommonBean.getGroupID();
-    }
-
-    public Integer getGroupID() {
-        return groupID;
-    }
-
-    public void setGroupID(Integer groupID) {
-        if (this.groupID != null && !this.groupID.equals(groupID)) {
-            logger.info("TeamOverviewBean groupID changed " + groupID);
-//            setDuration(Duration.DAYS);
-            setSelectedAction(null);
-            setOverallScoreMap(null);
-            setBarDefMap(null);
-        }
-        this.groupID = groupID;
     }
 
     public String exportToPDF() {
         // TODO Auto-generated method stub
         return null;
-    }
-        
-    public void setOverall(ActionEvent ae) {
-        this.selectedAction = findTab("overall");
-    }
-    
-    public void setSpeed(ActionEvent ae) {
-        this.selectedAction = findTab("speed");
-    }
-    
-    public void setDrivingStyle(ActionEvent ae) {
-        this.selectedAction = findTab("driving");
-    }    
-    
-    public void setSeatbelt(ActionEvent ae) {
-        this.selectedAction = findTab("seatbelt");
-    }    
-    
-    private TabAction findTab(String key) {
-        for ( TabAction ta: getActions() ) {
-            if ( ta.getKey().equalsIgnoreCase(key) ) {
-                return ta;
-            }
-        }
-        return null;
-    }
+    }        
     
     private ScoreableEntity getScoreableEntityNumber() {
         ScoreableEntity se = new ScoreableEntity();
@@ -372,7 +274,7 @@ public class TeamStyleBean extends BaseBean {
     private ScoreableEntity createScoreableEntity(int value,int size, ScoreType scoreType) {
         ScoreableEntity entity = new ScoreableEntity();
         
-        entity.setEntityID(groupID);
+        entity.setEntityID(teamCommonBean.getGroupID());
         entity.setEntityType(EntityType.ENTITY_GROUP);
         entity.setScore(value*100/size);
         entity.setScoreType(scoreType);
@@ -380,4 +282,3 @@ public class TeamStyleBean extends BaseBean {
         return entity;
     }
 }
-

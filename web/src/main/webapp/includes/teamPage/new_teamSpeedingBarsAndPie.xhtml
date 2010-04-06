@@ -39,7 +39,7 @@
 			}			
 		</script>	
 
-	<rich:tab actionListener="#{teamSpeedBean.setSpeed}">
+	<rich:tab id="speeding">
 	
 		<f:facet name="label">
 	 		<h:panelGroup>
@@ -77,7 +77,7 @@
 				</td>
         		<td width="" align="center">
 					<div id="tab_speedPieDiv" align="center"></div>
-		  			<input type="hidden" id="tab_speedPieDef" value="#{teamSpeedBean.selectedBarDef}"/>
+		  			<input type="hidden" id="tab_speedPieDef" value="#{teamSpeedBean.selectedPieDef}"/>
 					<script type="text/javascript">
 						renderSpeedPie("speedPie", "350", "300");
 					</script>				

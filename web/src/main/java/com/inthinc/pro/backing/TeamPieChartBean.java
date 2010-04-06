@@ -5,13 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.event.ActionEvent;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.ScoreType;
@@ -21,19 +18,21 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TeamPieChartBean extends BaseBean {
+
+//  Request scope bean for new team page 
+    private static final long serialVersionUID = 6110042545459269849L;
+
     private ScoreDAO scoreDAO;
     
     private Map<ScoreType, Map<String,String>> barDefMap;
     private Map<ScoreType, Map<String,Integer>> overallScoreMap;
-    private List<TabAction> actions;
-    private TabAction selectedAction;
     
     private TeamCommonBean teamCommonBean;
     
     private List<HashMap<String,String>> overallTotals;
     
     private Integer groupID;
-    private static final Logger logger = Logger.getLogger(TeamSpeedBean.class);
+    private static final Logger logger = Logger.getLogger(TeamPieChartBean.class);
 
     public TeamPieChartBean() {
         logger.debug("TeamPieChartBean - constructor");        
@@ -59,8 +58,7 @@ public class TeamPieChartBean extends BaseBean {
     }
 
     public String getSelectedBarDef() {
-        TabAction action = findTab("overall");
-        ScoreType scoreType = action.getScoreType();
+        ScoreType scoreType = ScoreType.SCORE_OVERALL;
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getBarDefMap().get(scoreType) == null) {
@@ -74,15 +72,14 @@ public class TeamPieChartBean extends BaseBean {
         return getBarDefMap().get(scoreType).get(timeFrame.name());
     }
 
-    public String getBarDef(Integer type) {
-       return getBarDefMap().get(ScoreType.valueOf(type)).get(teamCommonBean.getTimeFrame().getDuration());
-    }
+//    public String getBarDef(Integer type) {
+//       return getBarDefMap().get(ScoreType.valueOf(type)).get(teamCommonBean.getTimeFrame().getDuration());
+//    }
     
     public String createPieChart(ScoreType scoreType) {
         List<ScoreableEntity> scoreDataList = null;        
         try {
             logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);
-//            scoreDataList = scoreDAO.getScoreBreakdown(getGroupID(), durationBean.getDuration(), scoreType);  
             scoreDataList = getScoreableEntitiesPie();                 
         }
         catch (Exception e) {
@@ -150,8 +147,7 @@ public class TeamPieChartBean extends BaseBean {
     }
 
     public Integer getSelectedOverallScore() {
-        TabAction action = findTab("overall");        
-        ScoreType scoreType = action.getScoreType();
+        ScoreType scoreType = ScoreType.SCORE_OVERALL;
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getOverallScoreMap().get(scoreType) == null) {
@@ -163,35 +159,6 @@ public class TeamPieChartBean extends BaseBean {
             overallScoreMap.get(scoreType).put(timeFrame.name(), initOverallScore(scoreType));
         }
         return getOverallScoreMap().get(scoreType).get(timeFrame.name());
-    }
-
-    public void setActions(List<TabAction> actions) {
-        this.actions = actions;
-    }
-
-    public List<TabAction> getActions() {
-        if (actions == null) {
-            String[] actionKeys = { "overall", "driving", "speed", "seatbelt" };
-            int[] width = { 108, 104, 70, 85 };
-            ScoreType[] scoreTypes = { ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT };
-            actions = new ArrayList<TabAction>();
-            for (int i = 0; i < actionKeys.length; i++) {
-                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_" + actionKeys[i]), actionKeys[i] + "_on", actionKeys[i]
-                        + "_off", scoreTypes[i], width[i]));
-            }
-        }
-        return actions;
-    }
-
-    public TabAction getSelectedAction() {
-        if (selectedAction == null) {
-            setSelectedAction(getActions().get(0));
-        }
-        return selectedAction;
-    }
-
-    public void setSelectedAction(TabAction selectedAction) {
-        this.selectedAction = selectedAction;
     }
 
     public TeamCommonBean getTeamCommonBean() {
@@ -208,43 +175,16 @@ public class TeamPieChartBean extends BaseBean {
     }
 
     public void setGroupID(Integer groupID) {
-        if (this.groupID != null && !this.groupID.equals(groupID)) {
-            logger.info("TeamOverviewBean groupID changed " + groupID);
-//            setDuration(Duration.DAYS);
-            setSelectedAction(null);
-            setOverallScoreMap(null);
-            setBarDefMap(null);
-        }
+//        if (this.groupID != null && !this.groupID.equals(groupID)) {
+//            logger.info("TeamOverviewBean groupID changed " + groupID);
+//            setOverallScoreMap(null);
+//            setBarDefMap(null);
+//        }
         this.groupID = groupID;
     }
 
     public String exportToPDF() {
         // TODO Auto-generated method stub
-        return null;
-    }
-        
-    public void setOverall(ActionEvent ae) {
-        this.selectedAction = findTab("overall");
-    }
-    
-    public void setSpeed(ActionEvent ae) {
-        this.selectedAction = findTab("speed");
-    }
-    
-    public void setDrivingStyle(ActionEvent ae) {
-        this.selectedAction = findTab("driving");
-    }    
-    
-    public void setSeatbelt(ActionEvent ae) {
-        this.selectedAction = findTab("seatbelt");
-    }    
-    
-    private TabAction findTab(String key) {
-        for ( TabAction ta: getActions() ) {
-            if ( ta.getKey().equalsIgnoreCase(key) ) {
-                return ta;
-            }
-        }
         return null;
     }
     
@@ -361,4 +301,3 @@ public class TeamPieChartBean extends BaseBean {
         return se;
     }
 }
-
