@@ -21,27 +21,25 @@ public class TeamPieChartBean extends BaseBean {
 
 //  Request scope bean for new team page 
     private static final long serialVersionUID = 6110042545459269849L;
-
-    private ScoreDAO scoreDAO;
     
-    private Map<ScoreType, Map<String,String>> barDefMap;
+    private Map<ScoreType, Map<String,String>> pieDefMap;
     private Map<ScoreType, Map<String,Integer>> overallScoreMap;
     
     private TeamCommonBean teamCommonBean;
     
     private List<HashMap<String,String>> overallTotals;
     
-    private Integer groupID;
+    private ScoreType scoreType = ScoreType.SCORE_OVERALL;
+    
     private static final Logger logger = Logger.getLogger(TeamPieChartBean.class);
 
-    public TeamPieChartBean() {
-        logger.debug("TeamPieChartBean - constructor");        
-    }
+    public TeamPieChartBean() {}
 
     private Integer initOverallScore(ScoreType scoreType) {
         ScoreableEntity scoreableEntity = getScoreableEntityNumber();               
-        if (scoreableEntity == null || scoreableEntity.getScore() == null)
+        if (scoreableEntity == null || scoreableEntity.getScore() == null) {
             return -1;
+        }
         return scoreableEntity.getScore();
     }
 
@@ -49,42 +47,23 @@ public class TeamPieChartBean extends BaseBean {
         return ScoreBox.GetStyleFromScore(getSelectedOverallScore(), ScoreBoxSizes.LARGE);
     }
 
-    public ScoreDAO getScoreDAO() {
-        return scoreDAO;
-    }
-
-    public void setScoreDAO(ScoreDAO scoreDAO) {
-        this.scoreDAO = scoreDAO;
-    }
-
-    public String getSelectedBarDef() {
-        ScoreType scoreType = ScoreType.SCORE_OVERALL;
+    public String getSelectedPieDef() {
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
-        if (getBarDefMap().get(scoreType) == null) {
+        if (getPieDefMap().get(scoreType) == null) {
             
-            getBarDefMap().put(scoreType,  new HashMap<String, String>());
+            getPieDefMap().put(scoreType,  new HashMap<String, String>());
         }
-        if (barDefMap.get(scoreType).get(timeFrame.name()) == null){
+        if (pieDefMap.get(scoreType).get(timeFrame.name()) == null){
             
-            barDefMap.get(scoreType).put(timeFrame.name(), createPieChart(scoreType));            
+            pieDefMap.get(scoreType).put(timeFrame.name(), createPieChart(scoreType));            
         }
-        return getBarDefMap().get(scoreType).get(timeFrame.name());
+        return getPieDefMap().get(scoreType).get(timeFrame.name());
     }
-
-//    public String getBarDef(Integer type) {
-//       return getBarDefMap().get(ScoreType.valueOf(type)).get(teamCommonBean.getTimeFrame().getDuration());
-//    }
     
     public String createPieChart(ScoreType scoreType) {
-        List<ScoreableEntity> scoreDataList = null;        
-        try {
-            logger.debug("TeamPieChartBean 2d score groupID[" + getGroupID() + "] scoreType " + scoreType);
-            scoreDataList = getScoreableEntitiesPie();                 
-        }
-        catch (Exception e) {
-            scoreDataList = new ArrayList<ScoreableEntity>();
-        }
+        List<ScoreableEntity> scoreDataList = getScoreableEntitiesPie();                 
+
         List<String> categoryLabelList = new ArrayList<String>();
         boolean first = true;
        
@@ -104,7 +83,7 @@ public class TeamPieChartBean extends BaseBean {
         
         // Control parameters
         sb.append(pie.getControlParameters());
-        sb.append(" caption = \'Breakdown of Drivers by Overall Score\'>");
+        sb.append(" caption = \'" + MessageUtil.getMessageString("team_overall_title") + "\'>");
                
         if (scoreDataList.size() > 0) {
             ScoreableEntity se = null;
@@ -124,15 +103,15 @@ public class TeamPieChartBean extends BaseBean {
         return sb.toString();
     }
 
-    public Map<ScoreType, Map<String,String>> getBarDefMap() {
-        if (barDefMap == null) {
-            barDefMap = new HashMap<ScoreType, Map<String,String>>();
+    public Map<ScoreType, Map<String,String>> getPieDefMap() {
+        if (pieDefMap == null) {
+            pieDefMap = new HashMap<ScoreType, Map<String,String>>();
         }
-        return barDefMap;
+        return pieDefMap;
     }
 
-    public void setBarDefMap(Map<ScoreType, Map<String,String>> barDefMap) {
-        this.barDefMap = barDefMap;
+    public void setPieDefMap(Map<ScoreType, Map<String,String>> pieDefMap) {
+        this.pieDefMap = pieDefMap;
     }
 
     public Map<ScoreType, Map<String,Integer>> getOverallScoreMap() {
@@ -167,20 +146,6 @@ public class TeamPieChartBean extends BaseBean {
 
     public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
         this.teamCommonBean = teamCommonBean;
-        this.groupID = teamCommonBean.getGroupID();
-    }
-
-    public Integer getGroupID() {
-        return groupID;
-    }
-
-    public void setGroupID(Integer groupID) {
-//        if (this.groupID != null && !this.groupID.equals(groupID)) {
-//            logger.info("TeamOverviewBean groupID changed " + groupID);
-//            setOverallScoreMap(null);
-//            setBarDefMap(null);
-//        }
-        this.groupID = groupID;
     }
 
     public String exportToPDF() {
@@ -255,25 +220,26 @@ public class TeamPieChartBean extends BaseBean {
         String fourToFive = (String)observation.get("fourToFive");
         totObs += Integer.parseInt(fourToFive);
         
-        ScoreableEntity se = new ScoreableEntity();
+        ScoreableEntity se = new ScoreableEntity();        
+        float factor = (100)/totObs;
         
-        se.setScore((100)*Integer.parseInt(zeroToOne)/totObs);
+        se.setScore(Math.round(factor*Integer.parseInt(zeroToOne)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(oneToTwo)/totObs);
+        se.setScore(Math.round(factor*Integer.parseInt(oneToTwo)));
+        local.add(se);
+        se = new ScoreableEntity();
+                
+        se.setScore(Math.round(factor*Integer.parseInt(twoToThree)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(twoToThree)/totObs);
+        se.setScore(Math.round(factor*Integer.parseInt(threeToFour)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(threeToFour)/totObs);
-        local.add(se);
-        se = new ScoreableEntity();
-        
-        se.setScore((100)*Integer.parseInt(fourToFive)/totObs);
+        se.setScore(Math.round(factor*Integer.parseInt(fourToFive)));
         local.add(se);
         
         return local;
