@@ -75,7 +75,7 @@ public class TeamStyleBean extends BaseBean {
 
         for (ScoreType subType : scoreType.getSubTypes()) {
             if (first) {
-                categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getLocale()));
+                categoryLabelList.add(MessageUtil.getMessageString(scoreType.toString(), getLocale()));
                 first = false;
             }
             else {
