@@ -1,12 +1,8 @@
 package com.inthinc.pro.backing;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.inthinc.pro.model.Duration;
 
 public class TrendBeanTest extends BaseBeanTest
 {
@@ -36,11 +32,10 @@ public class TrendBeanTest extends BaseBeanTest
         // make sure the spring injection worked
         assertNotNull(trendBean.getScoreDAO());
         assertNotNull(trendBean.getDurationBean());
-        assertNotNull(trendBean.getTrendBeanState());
                 
         // try grabbing some regions based on above, should be 3 
         //  for normal101
-        trendBean.getTrendBeanState().setGroupID(101);
+        trendBean.setGroupID(101);
         Integer start = trendBean.getStart();   
 /*        
         assertEquals(3,
