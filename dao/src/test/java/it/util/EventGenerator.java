@@ -202,6 +202,7 @@ eventCount = 0;
 //boolean tampering = false;
 		boolean ignitionOn = false;
 		boolean badSpeeding = false;
+		int adCnt = 0;
         for (int i = 0; i < locCnt; i++)
         {
         	if (includeExtraEvents && isExtraEventIndex(i)) {
@@ -267,7 +268,7 @@ eventCount = 0;
 //        		turn: 60..225   (deltaVY)
 //        		vert: 50..300   (deltaVZ)
         		
-        		int adType = randomInt(0, 1);
+        		int adType = adCnt % 2;
                 if (adType == 0) // hard vert
                     event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT,
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),

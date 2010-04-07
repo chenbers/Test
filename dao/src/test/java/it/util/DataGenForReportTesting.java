@@ -159,7 +159,8 @@ public class DataGenForReportTesting extends DataGenForTesting {
 	            {
 	            	for (int day = numDays; day > 0; day--)
 	            	{
-	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
+//	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
+	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 10800;
 	                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 	                    Date startDate = new Date((long)dateInSec * 1000l);
 	            		testData.generateDayData(mcmSim, startDate, teamType, ((ITData)testData.itData).teamGroupData);
@@ -196,7 +197,8 @@ public class DataGenForReportTesting extends DataGenForTesting {
                 {
     	        	for (int day = 0; day < testData.numDays; day++)
     	        	{
-    	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
+//    	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
+    	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 10800;
     	                Date startDate = new Date((long)dateInSec * 1000l);
     	        		testData.generateDayData(mcmSim, startDate, teamType, ((ITData)testData.itData).teamGroupData);
     	        	}
