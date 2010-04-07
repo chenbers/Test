@@ -13,6 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
@@ -69,6 +70,14 @@ public class TeamPieChartBeanTest extends BaseBeanTest {
         assertEquals(lTotals.get(0).get("twoToThree"),"0");
         assertEquals(lTotals.get(0).get("threeToFour"),"0");
         assertEquals(lTotals.get(0).get("fourToFive"),"1");
-    }
+        
+        // Check the chart
+        assertNotNull("chart xml should be set", 
+                bean.createPieChart(ScoreType.SCORE_OVERALL));   
+        
+        // Average overall score
+        int score = bean.getSelectedOverallScore().intValue();
+        assertEquals(29,score);
+    }   
 
 }
