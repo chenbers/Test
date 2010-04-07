@@ -9,10 +9,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TrendBeanState extends BaseBean {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7822673653887488933L;
 
 	private Boolean maximized;

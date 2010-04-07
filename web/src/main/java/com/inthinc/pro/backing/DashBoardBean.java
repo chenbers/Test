@@ -2,27 +2,26 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class DashBoardBean extends BaseBean implements Serializable {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -9102890511072356183L;
+    private static final long serialVersionUID = 1L;
     private NavigationBean navigationBean;
     private MpgBean mpgBean;
     private OverallScoreBean overallScoreBean;
     private Integer groupID;
     private GroupDAO groupDAO;
-    private TrendBeanState trendBeanState;
+    private TrendBean trendBean;
     private IdlePercentageBean idlePercentageBean;
     private SpeedPercentageBean speedPercentageBean;
 
-	public String getViewPath() {
+    public String getViewPath() {
         if (groupID == null)
             groupID = getUser().getGroupID();
         // TODO: try to pull the group from the group hierarchy before looking it up
@@ -31,17 +30,17 @@ public class DashBoardBean extends BaseBean implements Serializable {
         if (group == null)
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
         navigationBean.setGroupID(groupID);
-        trendBeanState.setMaximized(Boolean.FALSE);
-        trendBeanState.setGroupID(groupID);
+        trendBean.setMaximized(Boolean.FALSE);
+        trendBean.setGroupID(groupID);
         mpgBean.setGroupID(groupID);
         overallScoreBean.setGroupID(groupID);
         idlePercentageBean.setGroupID(groupID);
         speedPercentageBean.setGroupID(groupID);
         switch (group.getType()) {
             case FLEET:
-                return "/secured/dashboard/executive.faces";
+                return "pretty:fleet";
             case DIVISION:
-                return "/secured/dashboard/executive.faces";
+                return "pretty:fleet";
             case TEAM:
                 return "pretty:team";
         }
@@ -87,28 +86,29 @@ public class DashBoardBean extends BaseBean implements Serializable {
     public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
-    public TrendBeanState getTrendBeanState() {
-		return trendBeanState;
-	}
 
-	public void setTrendBeanState(TrendBeanState trendBeanState) {
-		this.trendBeanState = trendBeanState;
-	}
+    public TrendBean getTrendBean() {
+        return trendBean;
+    }
 
-	public IdlePercentageBean getIdlePercentageBean() {
-		return idlePercentageBean;
-	}
+    public void setTrendBean(TrendBean trendBean) {
+        this.trendBean = trendBean;
+    }
 
-	public void setIdlePercentageBean(IdlePercentageBean idlePercentageBean) {
-		this.idlePercentageBean = idlePercentageBean;
-	}
+    public IdlePercentageBean getIdlePercentageBean() {
+        return idlePercentageBean;
+    }
 
-	public SpeedPercentageBean getSpeedPercentageBean() {
-		return speedPercentageBean;
-	}
+    public void setIdlePercentageBean(IdlePercentageBean idlePercentageBean) {
+        this.idlePercentageBean = idlePercentageBean;
+    }
 
-	public void setSpeedPercentageBean(SpeedPercentageBean speedPercentageBean) {
-		this.speedPercentageBean = speedPercentageBean;
-	}
+    public SpeedPercentageBean getSpeedPercentageBean() {
+        return speedPercentageBean;
+    }
+
+    public void setSpeedPercentageBean(SpeedPercentageBean speedPercentageBean) {
+        this.speedPercentageBean = speedPercentageBean;
+    }
 
 }

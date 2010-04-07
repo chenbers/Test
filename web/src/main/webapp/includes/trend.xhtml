@@ -8,28 +8,26 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-   	<t:saveState value="#{trendBean.sortColumn}"></t:saveState>
-	<t:saveState value="#{trendBean.sortDirection}"></t:saveState>
-	<t:saveState value="#{trendBean.trendBeanItems}"></t:saveState>
+   	<!--<t:saveState value="#{trendBean.sortColumn}"></t:saveState>-->
+	<!--<t:saveState value="#{trendBean.sortDirection}"></t:saveState>-->
+	<!--<t:saveState value="#{trendBean.trendBeanItems}"></t:saveState>-->
 		<a4j:outputPanel id="trendOutputPanel" >
 		<div class="panel_nw">
 		<div class="panel_title" style="z-index: #{zorder}">
 			<span class="line">#{messages.trendReport_header}</span>
 
 			<pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
-				<f:param value="#{trendBeanState.groupID}" />
+				<f:param value="#{trendBean.groupID}" />
 				<f:param value="TREND" />
 			</pretty:urlbuffer> 
 			<pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
-            	<f:param value="#{trendBeanState.groupID}"/>
+            	<f:param value="#{trendBean.groupID}"/>
             </pretty:urlbuffer>
 			
 			<ui:include src="/includes/durationPanelHeader.xhtml">
 				<ui:param name="reRenderList" value="trendOutputPanel" />
-				<ui:param name="duration" value="#{trendDurationBean.duration}" />
-				<ui:param name="groupID" value="#{trendBeanState.groupID}" />
+				<ui:param name="bean" value="#{trendBean}" />
 				<ui:param name="report" value="TREND" />
-				<ui:param name="id" value="trend" />
 				<ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
                 <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
                 <ui:param name="context" value="#{context}-trend"/> 

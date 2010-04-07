@@ -3,8 +3,10 @@ package com.inthinc.pro.table.columns;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.model.TableType;
+import org.ajax4jsf.model.KeepAlive;
 
+import com.inthinc.pro.model.TableType;
+@KeepAlive
 public class DeviceReportTableColumns extends BaseTableColumns {
 
 	private static final long serialVersionUID = 2205061343607962607L;

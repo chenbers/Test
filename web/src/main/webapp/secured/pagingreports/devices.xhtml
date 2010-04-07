@@ -22,7 +22,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-			<a4j:keepAlive beanName="deviceReportTableColumns" />
+			<!--<a4j:keepAlive beanName="deviceReportTableColumns" />-->
 		 	<ui:param name="tableColumns" value="#{deviceReportTableColumns.tableColumns}" />
 	
 			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
@@ -73,7 +73,7 @@
 										</ui:include>
 	                                    <div class="spacer"></div>      
                                 		<div class="datagrid_panel" style="width: 925px;">		        						
-										<t:saveState value="#{bean}"/>
+										<!--<t:saveState value="#{bean}"/>-->    
 	                                    <rich:dataTable id="#{context}" value="#{bean.table.model}" var="item" 
     	                                     styleClass="datagrid filterabledatagrid" 
 								        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"

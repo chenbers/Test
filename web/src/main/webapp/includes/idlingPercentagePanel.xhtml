@@ -8,7 +8,7 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-    <t:saveState value="#{idlePercentageBean.groupID}"/>
+    <!--<t:saveState value="#{idlePercentageBean.groupID}"/>-->
     <a4j:outputPanel id="idlePercentageOutputPanel">
     	<div class="">
     		<div class="panel_nw">
@@ -20,9 +20,8 @@
     				</span>  
                     <ui:include src="/includes/durationPanelHeader.xhtml">
                         <ui:param name="reRenderList" value="idlePercentageOutputPanel" />
-                        <ui:param name="duration" value="#{idlePercentDurationBean.duration}" />
+                        <ui:param name="bean" value="#{idlePercentageBean}" />
                         <ui:param name="report" value="IDLE_PERCENTAGE" />
-                        <ui:param name="id" value="idlePercentage" />
                         <ui:param name="includeDetailsLink" value="false"/>
                         <ui:param name="maximized" value="#{false}"/>
                         <ui:param name="context" value="#{context}-idlingPercentagePanel"/>

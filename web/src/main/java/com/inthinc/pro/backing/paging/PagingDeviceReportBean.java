@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.DeviceReportItem;
@@ -14,7 +15,7 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.util.MessageUtil;
-
+@KeepAlive
 public class PagingDeviceReportBean extends BasePagingReportBean<DeviceReportItem>
 {
 	private static final long serialVersionUID = 9116805820208771789L;

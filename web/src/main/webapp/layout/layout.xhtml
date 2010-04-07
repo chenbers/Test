@@ -40,7 +40,7 @@
  <ui:insert name="scripts" />
 
 </head>
-    <body onload="reloadAjaxPanels();if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
+    <body onload="if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
      <script type="text/javascript"></script>
     <ui:insert name="header">
         <ui:include src="/includes/header.xhtml">

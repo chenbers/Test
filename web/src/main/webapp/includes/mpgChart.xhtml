@@ -8,7 +8,7 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
         
-    <t:saveState value="#{mpgBean.groupID}"/>
+    <!--<t:saveState value="#{mpgBean.groupID}"/>-->
     <a4j:outputPanel id="mpgOutputPanel">    
         <div class="panel_nw">    
             <div class="panel_title" style="z-index: #{zorder}">
@@ -24,10 +24,8 @@
                 </pretty:urlbuffer>
                 <ui:include src="/includes/durationPanelHeader.xhtml">
                     <ui:param name="reRenderList" value="mpgOutputPanel" />
-                    <ui:param name="duration" value="#{mpgDurationBean.duration}" />
+                    <ui:param name="bean" value="#{mpgBean}" />
                     <ui:param name="report" value="MPG_GROUP" />
-                    <ui:param name="id" value="mpg" />
-                    <ui:param name="groupID" value="#{mpgBean.groupID}"/>
                     <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
                     <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
     				<ui:param name="context" value="#{context}-mpgChart" />

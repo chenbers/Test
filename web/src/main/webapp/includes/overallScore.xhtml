@@ -8,8 +8,6 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-    <t:saveState value="#{overallScoreBean.groupID}"/>
-
     <a4j:outputPanel id="overallOutputPanel">
     	<div class="">
     		<div class="panel_nw">
@@ -25,10 +23,8 @@
                         
                     <ui:include src="/includes/durationPanelHeader.xhtml">
                         <ui:param name="reRenderList" value="overallOutputPanel" />
-                        <ui:param name="duration" value="#{overallScoreDurationBean.duration}" />
+                        <ui:param name="bean" value="#{overallScoreBean}"/>
                         <ui:param name="report" value="OVERALL_SCORE" />
-                        <ui:param name="id" value="overall" />
-                        <ui:param name="groupID" value="#{overallScoreBean.groupID}"/>
                         <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
                         <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
                         <ui:param name="context" value="#{context}-overallScore"/>

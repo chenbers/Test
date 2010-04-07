@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.dao.GroupDAO;
@@ -7,9 +8,13 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class DashBoardDetailBean extends BaseBean {
     public enum TabType {
-        TREND, OVERALL, MAP, MPG
+        TREND,
+        OVERALL,
+        MAP,
+        MPG
     }
 
     private Integer groupID;
@@ -21,9 +26,9 @@ public class DashBoardDetailBean extends BaseBean {
     private OverallScoreBean overallScoreBean;
     private NavigationBean navigationBean;
     private GroupDAO groupDAO;
-    private TrendBeanState trendBeanState;
+    private TrendBean trendBean;
 
-	public Integer getGroupID() {
+    public Integer getGroupID() {
         return groupID;
     }
 
@@ -43,10 +48,9 @@ public class DashBoardDetailBean extends BaseBean {
     }
 
     public TabType getTabType() {
-    	if (tabType == null)
-    	{
-    		tabType = TabType.OVERALL;
-    	}
+        if (tabType == null) {
+            tabType = TabType.OVERALL;
+        }
         return tabType;
     }
 
@@ -107,16 +111,16 @@ public class DashBoardDetailBean extends BaseBean {
         dashBoardBean.setGroupID(groupID);
         overallScoreBean.setGroupID(groupID);
         navigationBean.setGroupID(groupID);
-        trendBeanState.setMaximized(Boolean.TRUE);
-        trendBeanState.setGroupID(groupID);
+        trendBean.setMaximized(Boolean.TRUE);
+        trendBean.setGroupID(groupID);
     }
-    
-    public TrendBeanState getTrendBeanState() {
-		return trendBeanState;
-	}
 
-	public void setTrendBeanState(TrendBeanState trendBeanState) {
-		this.trendBeanState = trendBeanState;
-	}
+    public TrendBean getTrendBean() {
+        return trendBean;
+    }
+
+    public void setTrendBean(TrendBean trendBean) {
+        this.trendBean = trendBean;
+    }
 
 }

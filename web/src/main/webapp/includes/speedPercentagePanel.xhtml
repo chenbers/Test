@@ -8,7 +8,6 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-    <t:saveState value="#{speedPercentageBean.groupID}"/>
     <a4j:outputPanel id="speedPercentageOutputPanel">
     	<div class="">
     		<div class="panel_nw">
@@ -20,9 +19,8 @@
     				</span>  
                     <ui:include src="/includes/durationPanelHeader.xhtml">
                         <ui:param name="reRenderList" value="speedPercentageOutputPanel" />
-                        <ui:param name="duration" value="#{speedPercentDurationBean.duration}" />
+                        <ui:param name="bean" value="#{speedPercentageBean}" />
                         <ui:param name="report" value="SPEED_PERCENTAGE" />
-                        <ui:param name="id" value="speedPercentage" />
                         <ui:param name="includeDetailsLink" value="false"/>
                         <ui:param name="maximized" value="#{false}"/>
                      <ui:param name="context" value="#{context}-speedPercentagePanel"/> 

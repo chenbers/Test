@@ -11,9 +11,8 @@
 	<ui:param name="errorMessageListDetails" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
 
     <ui:define name="content">
-        <t:saveState value="#{dashBoardDetailBean.groupID}"/>
-        <t:saveState value="#{dashBoardDetailBean.tabType}"/>
-        
+        <!--<t:saveState value="#{dashBoardDetailBean.groupID}"/>-->
+        <!--<t:saveState value="#{dashBoardDetailBean.tabType}"/>-->
         <ul id="grid_nav">
             <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
             <li class="l grid_title">#{messages.detail_overview}</li>
@@ -123,7 +122,7 @@
                                 
                                 
                                 <c:when test="#{dashBoardDetailBean.tabType == 'OVERALL'}">
-                                    <t:saveState value="#{overallScoreBean.groupID}"/>
+                                    <!--<t:saveState value="#{overallScoreBean.groupID}"/>-->
                                     <!-- START PANEL -->
                                        <a4j:outputPanel id="overallOutputPanel">
                             			<div class="">

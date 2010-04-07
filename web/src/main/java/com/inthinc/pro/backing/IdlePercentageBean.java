@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.event.ActionEvent;
+
+import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
 import com.inthinc.pro.charts.DateLabels;
@@ -20,13 +25,11 @@ import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class IdlePercentageBean extends BaseBean {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -588572761374842763L;
-//	private static final Logger logger = Logger.getLogger(IdlePercentageBean.class);
+	private static final Logger logger = Logger.getLogger(IdlePercentageBean.class);
 	private ScoreDAO scoreDAO;
 	private Integer groupID;
 	private Group group;
@@ -48,11 +51,6 @@ public class IdlePercentageBean extends BaseBean {
 
 
 	private void init() {
-
-		if (groupID == null) {
-			setGroupID(getUser().getGroupID());
-		}
-
 		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(getGroupID(), getDurationBean().getDuration());
 
 		initChartData(idlePercentItemList);
@@ -248,5 +246,7 @@ public class IdlePercentageBean extends BaseBean {
 	public void setTotalVehicles(Integer totalVehicles) {
 		this.totalVehicles = totalVehicles;
 	}
-
+    public void durationChangeActionListener(ActionEvent event) {
+        init();
+    }
 }

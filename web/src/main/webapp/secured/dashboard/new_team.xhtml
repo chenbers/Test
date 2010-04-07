@@ -108,7 +108,7 @@
     </ui:define>
     
 	<ui:define name="content">	
-	<t:saveState  value="#{teamCommonBean}"/>
+	<a4j:keepAlive beanName="teamCommonBean" />
 	<!-- Team Header -->
     <h:form id="team_header_form">
     	<a4j:region id="team_header_region">
