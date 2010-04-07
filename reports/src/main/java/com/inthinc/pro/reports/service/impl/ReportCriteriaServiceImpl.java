@@ -2,6 +2,7 @@ package com.inthinc.pro.reports.service.impl;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,18 +61,25 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	private Locale locale;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
+    
     @Override
-    public ReportCriteria getDriverReportCriteria(Integer groupID, Locale locale)
+    public ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet)
     {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName(), locale);
         
-		Integer rowCount = reportDAO.getDriverReportCount(groupID, null);
-		PageParams pageParams = new PageParams(0, rowCount, new TableSortField(SortOrder.ASCENDING, "driverName"), null);
-		reportCriteria.setMainDataset(reportDAO.getDriverReportPage(groupID, pageParams));
-
-
+        if (initDataSet) {
+        	if (duration.equals(Duration.TWELVE)) {
+        		Integer rowCount = reportDAO.getDriverReportCount(groupID, null);
+        		PageParams pageParams = new PageParams(0, rowCount, new TableSortField(SortOrder.ASCENDING, "driverName"), null);
+        		reportCriteria.setMainDataset(reportDAO.getDriverReportPage(groupID, pageParams));
+        	}
+        	else {
+        		reportCriteria.setMainDataset(scoreDAO.getDriverReportData(groupID, duration, getGroupMap(group)));
+        	}
+            reportCriteria.setDuration(duration);
+        }
         return reportCriteria;
     }
 
@@ -228,21 +236,38 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return reportCriteria;
     }
     @Override
-    public ReportCriteria getVehicleReportCriteria(Integer groupID, Locale locale)
+    public ReportCriteria getVehicleReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet)
     {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName(), locale);
         
-		Integer rowCount = reportDAO.getVehicleReportCount(groupID, null);
-		PageParams pageParams = new PageParams(0, rowCount, null, null);
-		reportCriteria.setMainDataset(reportDAO.getVehicleReportPage(groupID, pageParams));
-
+        if (initDataSet) {
+        	if (duration.equals(Duration.TWELVE)) {
+        		Integer rowCount = reportDAO.getVehicleReportCount(groupID, null);
+        		PageParams pageParams = new PageParams(0, rowCount, null, null);
+        		reportCriteria.setMainDataset(reportDAO.getVehicleReportPage(groupID, pageParams));
+        	}
+        	else {
+        		reportCriteria.setMainDataset(scoreDAO.getVehicleReportData(groupID, duration, getGroupMap(group)));
+        	}
+            reportCriteria.setDuration(duration);
+        }
 
         return reportCriteria;
     }
 
-    private List<ScoreableEntity> getScores(Integer groupID, Duration duration)
+    private Map<Integer, Group> getGroupMap(Group group) {
+    	
+    	Map<Integer, Group> groupMap = new HashMap<Integer, Group>();
+    	List<Group> allGroups = groupDAO.getGroupsByAcctID(group.getAccountID());
+    	for (Group g : allGroups)
+    		groupMap.put(g.getGroupID(), g);
+		return groupMap;
+	}
+
+
+	private List<ScoreableEntity> getScores(Integer groupID, Duration duration)
     {
         List<ScoreableEntity> s = null;
         try
@@ -269,34 +294,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		reportCriteria.setMainDataset(reportDAO.getDeviceReportPage(groupID, pageParams));
         return reportCriteria;
     }
-/*
-    @Override
-    public ReportCriteria getIdlingReportCriteria(Integer groupID, Date startDate, Date endDate, Locale locale)
-    {
-    	this.locale = locale;
-        Group group = groupDAO.findByID(groupID);
-
-        IdlingReportData data = scoreDAO.getIdlingReportData(groupID, startDate, endDate);
-        List<IdlingReportItem> idlingReportItems = data.getItemList();
-
-        for (IdlingReportItem idlingReportItem : idlingReportItems)
-        {
-
-            // Group name
-            Group tmpGroup = groupDAO.findByID(idlingReportItem.getGroupID());
-            idlingReportItem.setGroup(tmpGroup.getName());
-//            idlingReportItem.prepareForDisplay();
-        }
-
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);
-        reportCriteria.setMainDataset(idlingReportItems);
-        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat", getLocale()));
-        reportCriteria.addParameter("BEGIN_DATE", sdf.format(startDate));
-        reportCriteria.addParameter("END_DATE", sdf.format(endDate));
-
-        return reportCriteria;
-    }
-*/
     @Override
     public ReportCriteria getIdlingReportCriteria(Integer groupID, Interval interval, Locale locale)
     {
@@ -308,10 +305,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);
 		reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
 
-//        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat", getLocale()));
-//        reportCriteria.addParameter("BEGIN_DATE", sdf.format(startDate));
-//        reportCriteria.addParameter("END_DATE", sdf.format(endDate));
-        
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(MessageUtil.getMessageString("dateFormat", getLocale()));
         reportCriteria.addParameter("BEGIN_DATE", fmt.print(interval.getStart()));
         reportCriteria.addParameter("END_DATE", fmt.print(interval.getEnd()));

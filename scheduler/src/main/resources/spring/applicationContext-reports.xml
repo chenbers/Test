@@ -19,6 +19,7 @@
     <property name="vehicleDAO" ref="vehicleDAO" />
     <property name="deviceDAO" ref="deviceDAO" />
     <property name="groupReportDAO" ref="groupReportDAO" />
+    <property name="reportDAO" ref="reportDAO" />
   </bean>
 
   <!-- Forgot username/password Beans -->

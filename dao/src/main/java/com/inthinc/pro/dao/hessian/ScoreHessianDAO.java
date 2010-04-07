@@ -16,10 +16,13 @@ import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQVMap;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ScoreItem;
@@ -28,6 +31,8 @@ import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.TrendItem;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleReportItem;
 
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
 {
@@ -413,50 +418,49 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-/*
+
     @Override
-    public List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration)
+    public List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap)
     {
         try
         {
         	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getDvqCode());
             List<DVQMap> result = getMapper().convertToModelObject(list, DVQMap.class);
-            List<VehicleReportItem> lVri = new ArrayList<VehicleReportItem>();
-            VehicleReportItem vri = null;
+            List<VehicleReportItem> vehicleReportItemList = new ArrayList<VehicleReportItem>();
 
             for (DVQMap d : result)
             {
-                vri = new VehicleReportItem();
-                Vehicle v = d.getVehicle();
+            	VehicleReportItem vehicleReportItem = new VehicleReportItem();
+                Vehicle vehicle = d.getVehicle();
+                Driver driver = d.getDriver();
                 DriveQMap dqm = d.getDriveQ();
 
-                vri.setGroupID(d.getVehicle().getGroupID());
-                vri.setVehicle(d.getVehicle());
-                vri.setMakeModelYear(v.getMake() + "/" + v.getModel() + "/" + v.getYear());
-
-                // May or may not have a driver assigned
-                vri.setDriver(null);
-                if (d.getDriver() != null)
-                {
-                    vri.setDriver(d.getDriver());
+                if (driver != null) {
+                	vehicleReportItem.setDriverID(driver.getDriverID());
+                	vehicleReportItem.setDriverName((driver.getPerson() != null) ? driver.getPerson().getFullName() : null);
                 }
-                vri.setMilesDriven((dqm.getOdometer() == null ? 0d : dqm.getOdometer().doubleValue() / 100d));
-                vri.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
-                vri.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
-                vri.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE : dqm.getDrivingStyle());
+                if (vehicle != null) {
+                	Group group = groupMap.get(vehicle.getGroupID());
+                    vehicleReportItem.setGroupName((group != null) ? group.getName() : "");
+                    vehicleReportItem.setGroupID(vehicle.getGroupID());
+                	vehicleReportItem.setVehicleName(vehicle.getName() != null ? vehicle.getName() : "");
+                	vehicleReportItem.setVehicleID(vehicle.getVehicleID());
+                	vehicleReportItem.setVehicleYMM(vehicle.getFullName());
+                    vehicleReportItem.setOdometer(vehicle.getOdometer() != null ? vehicle.getOdometer() : 0);
+                }
+
+                vehicleReportItem.setMilesDriven((dqm.getOdometer() == null ? 0d : dqm.getOdometer()));
+                vehicleReportItem.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
+                vehicleReportItem.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
+                vehicleReportItem.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE : dqm.getDrivingStyle());
                 
-                vri.setOdometer(0);
-                if ( v.getOdometer() != null ) {
-                    vri.setOdometer(v.getOdometer());
-                }
 
-                lVri.add(vri);
-                vri = null;
+                vehicleReportItemList.add(vehicleReportItem);
             }
 
-            Collections.sort(lVri); // Sort by vehicle.name
+            Collections.sort(vehicleReportItemList); // Sort by vehicle.name
 
-            return lVri;
+            return vehicleReportItemList;
 
         }
         catch (EmptyResultSetException e)
@@ -465,43 +469,45 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-*/    
-/*
+
     @Override
-    public List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration)
+    public List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap)
     {
         try
         {
             List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getDvqCode()), DVQMap.class);
             List<DriverReportItem> driverReportItemList = new ArrayList<DriverReportItem>();
-            DriverReportItem driverReportItem = null;
 
             for (DVQMap dvq : result)
             {
-                driverReportItem = new DriverReportItem();
+            	DriverReportItem driverReportItem = new DriverReportItem();
                 Driver driver = dvq.getDriver();
+                Vehicle vehicle = dvq.getVehicle();
                 DriveQMap driverQMap = dvq.getDriveQ();
 
-                driverReportItem.setDriver(driver);
 
-                driverReportItem.setGroupID(driver.getGroupID());
-                driverReportItem.setEmployeeID(driver.getPerson().getEmpid());
-                driverReportItem.setEmployee(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
+                if (driver != null) {
+                	Group group = groupMap.get(driver.getGroupID());
+                    driverReportItem.setGroupName((group != null) ? group.getName() : "");
+                    driverReportItem.setGroupID(driver.getGroupID());
+                	driverReportItem.setDriverID(driver.getDriverID());
+                	driverReportItem.setDriverName((driver.getPerson() != null) ? driver.getPerson().getFullName() : null);
+                    driverReportItem.setEmployeeID((driver.getPerson() != null) ? driver.getPerson().getEmpid() : "");
+                }
 
                 // May or may not have a vehicle assigned
-                driverReportItem.setVehicle(null);
-                if (dvq.getVehicle() != null)
+                if (vehicle != null)
                 {
-                    driverReportItem.setVehicle(dvq.getVehicle());
+                    driverReportItem.setVehicleID(vehicle.getVehicleID());
+                    driverReportItem.setVehicleName(vehicle.getName() != null ? vehicle.getName() : "");
                 }
-                driverReportItem.setMilesDriven(driverQMap.getOdometer() == null ? 0d : driverQMap.getOdometer().doubleValue() / 100d);
+                driverReportItem.setMilesDriven(driverQMap.getOdometer() == null ? 0d : driverQMap.getOdometer());
                 driverReportItem.setOverallScore(driverQMap.getOverall() == null ? NO_SCORE : driverQMap.getOverall());
                 driverReportItem.setSpeedScore(driverQMap.getSpeeding() == null ? NO_SCORE : driverQMap.getSpeeding());
                 driverReportItem.setStyleScore(driverQMap.getDrivingStyle() == null ? NO_SCORE : driverQMap.getDrivingStyle());
-                driverReportItem.setSeatBeltScore(driverQMap.getSeatbelt() == null ? NO_SCORE : driverQMap.getSeatbelt());
+                driverReportItem.setSeatbeltScore(driverQMap.getSeatbelt() == null ? NO_SCORE : driverQMap.getSeatbelt());
 
                 driverReportItemList.add(driverReportItem);
-                driverReportItem = null;
             }
 
             Collections.sort(driverReportItemList);
@@ -515,68 +521,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-
-    @Override
-    public IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end)
-    {
-        IdlingReportData data = new IdlingReportData();
-        try
-        {
-            List<DVQMap> result = getMapper().convertToModelObject(
-                    reportService.getDVScoresByGSE(groupID, DateUtil.convertDateToSeconds(start), DateUtil.convertDateToSeconds(end)), DVQMap.class);
-            List<IdlingReportItem> lIri = new ArrayList<IdlingReportItem>();
-            
-            data.setTotal(result.size());
-            data.setItemList(lIri);
-            
-            for (DVQMap d : result)
-            {
-                DriveQMap dqm = d.getDriveQ();
-                
-                //Only count records that are returning the emuRpmDriveTime field which implies that the device is sending idling data
-                if(dqm.getEmuRpmDriveTime() != null){
-                	
-                	IdlingReportItem iri = new IdlingReportItem();
-	                Driver v = d.getDriver();
-	
-	                iri.setGroupID(v.getGroupID());
-	                iri.setDriver(v);
-	                iri.setVehicle(d.getVehicle());
-	
-	                iri.setDriveTime(0.0f);
-	                iri.setLowHrs(0.0f);
-	                iri.setHighHrs(0.0f);
-	
-	                if (dqm.getIdleLo() != null)
-	                {
-	                    iri.setLowHrs(dqm.getIdleLo().floatValue() / SECONDS_TO_HOURS);
-	                }
-	                if (dqm.getIdleHi() != null)
-	                {
-	                    iri.setHighHrs(dqm.getIdleHi().floatValue() / SECONDS_TO_HOURS);
-	                }
-	
-	                iri.setDriveTime((dqm.getEmuRpmDriveTime().floatValue() / SECONDS_TO_HOURS));
-	                //Total idling            
-	                Float tot = iri.getLowHrs() + iri.getHighHrs();
-	                iri.setTotalHrs(tot);
-	                	
-	                lIri.add(iri);
-                }
-            }
-
-            return data;
-
-        }
-        catch (EmptyResultSetException e)
-        {
-        	data.setTotal(0);
-        	data.setItemList(new ArrayList<IdlingReportItem>());
-            return data;
-        }
-
-    }
-*/    
 	@Override
     public List<ScoreItem> getAverageScores(Integer id, EntityType entityType, Duration duration)
     {

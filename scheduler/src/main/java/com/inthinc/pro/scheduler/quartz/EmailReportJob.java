@@ -146,10 +146,10 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
                     break;
                 case DRIVER_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale(), true));
                     break;
                 case VEHICLE_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale(), true));
                     break;
                 case IDLING_REPORT:
                     Interval interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));

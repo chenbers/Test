@@ -9,6 +9,7 @@ import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.IdlingReportData;
 import com.inthinc.pro.model.IdlingReportItem;
@@ -145,7 +146,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-//    List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration);
+     List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap);
 
     /**
      * Retrieve the individual lines in the Driver Report.
@@ -153,17 +154,9 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-//    List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration);
+     List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap);
 
     
-    /**
-     * Retrieve the individual lines in the Idling Report.
-     * 
-     * @param groupID
-     * @param duration
-     */
-//    IdlingReportData getIdlingReportData(Integer groupID, Date start, Date end);    
-
     CrashSummary getGroupCrashSummaryData(Integer groupID);
     CrashSummary getDriverCrashSummaryData(Integer driverID);
     CrashSummary getVehicleCrashSummaryData(Integer vehicleID);
