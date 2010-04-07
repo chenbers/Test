@@ -221,25 +221,25 @@ public class TeamPieChartBean extends BaseBean {
         totObs += Integer.parseInt(fourToFive);
         
         ScoreableEntity se = new ScoreableEntity();        
-        float factor = (100)/totObs;
+        double factor = (100)/totObs;
         
-        se.setScore(Math.round(factor*Integer.parseInt(zeroToOne)));
+        se.setScore((int)Math.round(factor*Integer.parseInt(zeroToOne)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore(Math.round(factor*Integer.parseInt(oneToTwo)));
+        se.setScore((int)Math.round(factor*Integer.parseInt(oneToTwo)));
         local.add(se);
         se = new ScoreableEntity();
                 
-        se.setScore(Math.round(factor*Integer.parseInt(twoToThree)));
+        se.setScore((int)Math.round(factor*Integer.parseInt(twoToThree)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore(Math.round(factor*Integer.parseInt(threeToFour)));
+        se.setScore((int)Math.round(factor*Integer.parseInt(threeToFour)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore(Math.round(factor*Integer.parseInt(fourToFive)));
+        se.setScore((int)Math.round(factor*Integer.parseInt(fourToFive)));
         local.add(se);
         
         return local;

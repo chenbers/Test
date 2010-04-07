@@ -357,24 +357,25 @@ public class TeamSpeedBean extends BaseBean {
         totObs += Integer.parseInt(sixtyFiveAndUp);
         
         ScoreableEntity se = new ScoreableEntity();
-        
-        se.setScore((100)*Integer.parseInt(zeroToThirty)/totObs);
+        double factor = 100.0/totObs;
+      
+        se.setScore((int)(Math.round(factor*Integer.parseInt(zeroToThirty))));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(thirtyoneToFourty)/totObs);
+        se.setScore((int)Math.round(factor*Integer.parseInt(thirtyoneToFourty)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(fourtyoneToFiftyFour)/totObs);
+        se.setScore((int)Math.round(factor*Integer.parseInt(fourtyoneToFiftyFour)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(fiftyfiveToSixtyFour)/totObs);
+        se.setScore((int)Math.round(factor*Integer.parseInt(fiftyfiveToSixtyFour)));
         local.add(se);
         se = new ScoreableEntity();
         
-        se.setScore((100)*Integer.parseInt(sixtyFiveAndUp)/totObs);
+        se.setScore((int)Math.round(factor*Integer.parseInt(sixtyFiveAndUp)));
         local.add(se);
         
         return local;
@@ -403,7 +404,7 @@ public class TeamSpeedBean extends BaseBean {
         return se;
     }
     
-    private List<Float> getMilesSpeeding() {
+    protected List<Float> getMilesSpeeding() {
         ArrayList<Float> miles = new ArrayList<Float>();
                 
         List<DriverVehicleScoreWrapper> local = 
@@ -448,7 +449,7 @@ public class TeamSpeedBean extends BaseBean {
         return miles;
     }
        
-    private List<Float> getMilesDriven() {
+    protected List<Float> getMilesDriven() {
         ArrayList<Float> miles = new ArrayList<Float>();
                 
         List<DriverVehicleScoreWrapper> local = 
