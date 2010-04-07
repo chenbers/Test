@@ -73,7 +73,7 @@
 										</ui:include>
 	                                    <div class="spacer"></div>      
                                 		<div class="datagrid_panel" style="width: 925px;">		        						
-										<!--<t:saveState value="#{bean}"/>-->    
+										<t:saveState value="#{bean}"/>   
 	                                    <rich:dataTable id="#{context}" value="#{bean.table.model}" var="item" 
     	                                     styleClass="datagrid filterabledatagrid" 
 								        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"
