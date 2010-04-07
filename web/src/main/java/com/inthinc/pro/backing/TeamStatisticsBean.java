@@ -70,9 +70,8 @@ public class TeamStatisticsBean extends BaseBean {
             }
         }
         
-        // Set the styles for the color-coded box and convert the mpg data               
+        // Set the styles for the color-coded box               
         loadScoreStyles();
-//        convertMPGData();
         cleanData();
 
         // All set, save so we don't grab the data again
@@ -104,10 +103,6 @@ public class TeamStatisticsBean extends BaseBean {
     
         return true;
     }
-
-    public Integer getGroupID() {
-        return teamCommonBean.getGroupID();
-    }
     
     private void loadScoreStyles() {
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
@@ -125,63 +120,7 @@ public class TeamStatisticsBean extends BaseBean {
         	}
         }
     }
-    /*
-    private void convertMPGData() {
-        for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {
-            
-            
-            // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
-            //  in a period            
-            
-            // Compute an average value for mpg data based on non-zero values for the
-            //  three mpg vehicle types.            
-            int driverVehicleTypeCount = 0;
-            int driverMpgTotal = 0;
-            
-            if ( (dvsw.getScore().getMpgHeavy() != null) && 
-                    (dvsw.getScore().getMpgHeavy() != (Number)0) ) {
-                driverVehicleTypeCount++;
-                driverMpgTotal += dvsw.getScore().getMpgHeavy().intValue();
-            }
-            
-            if ( (dvsw.getScore().getMpgLight() != null) && 
-                    (dvsw.getScore().getMpgLight() != (Number)0) ) {
-                driverVehicleTypeCount++;
-                driverMpgTotal += dvsw.getScore().getMpgLight().intValue();
-            }
-            
-            if ( (dvsw.getScore().getMpgMedium() != null) && 
-                    (dvsw.getScore().getMpgMedium() != (Number)0) ) {
-                driverVehicleTypeCount++;
-                driverMpgTotal += dvsw.getScore().getMpgMedium().intValue();
-            }
-            
-            // For now, only set the heavy value
-            dvsw.getScore().setMpgHeavy(0);
-            dvsw.getScore().setMpgLight(0);
-            dvsw.getScore().setMpgMedium(0);
-            if ( driverVehicleTypeCount != 0 ) {
-                dvsw.getScore().setMpgHeavy((float)driverMpgTotal/(float)driverVehicleTypeCount);
-            }
-                            
-            // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
-            //  in a period
-            
-            // Now do units conversion
-            dvsw.getScore().setMpgHeavy(
-                    dvsw.getScore().getMpgHeavy() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-                            dvsw.getScore().getMpgHeavy(), getMeasurementType(), getFuelEfficiencyType()) : 0);
-            
-//            dvsw.getScore().setMpgLight(
-//                    dvsw.getScore().getMpgLight() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-//                            dvsw.getScore().getMpgLight(), getMeasurementType(), getFuelEfficiencyType()) : 0);            
-//            
-//            dvsw.getScore().setMpgMedium(
-//                    dvsw.getScore().getMpgMedium() != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-//                            dvsw.getScore().getMpgMedium(), getMeasurementType(), getFuelEfficiencyType()) : 0);
-        }        
-    }
-*/    
+    
     public void cleanData() {
         
         // A place to facilitate sorting and other good things
@@ -204,194 +143,6 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     public List<DriverVehicleScoreWrapper> getDriverTotals() {
-/*    	
-        List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
-        
-        DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();
-        
-        // Score
-        int totScore = 0;
-        int totTrips = 0;
-        int totIdleHi = 0;
-        int totIdleLo = 0;
-        int totIdleHiEvt = 0;
-        int totIdleLoEvt = 0;
-        int totMilesDriven = 0;
-        int totDriveTime = 0;
-//        float totMpg = 0;
-        float totMpgLight = 0;
-        float totMpgMedium = 0;
-        float totMpgHeavy = 0;
-        long totMilesLight = 0;
-        long totMilesMedium = 0;
-        long totMilesHeavy = 0;
-        int totCrash = 0;
-        int totSeatBeltEvt = 0;
-        int totSpeedEvt = 0;
-        int totAggAccelEvt = 0;
-        int totAggBrakeEvt = 0;
-        int totAggBumpEvt = 0;
-        int totAggLeftEvt = 0;
-        int totAggRightEvt = 0;   
-        
-        float totActiveDrivers = 0;
-        int totScoringDrivers = 0;
-        
-        // Crash related
-        int totCrashes = 0;
-        int milesSinceLastCrash = 1000000;
-        int daysSinceLastCrash = 1000000;
-        
-        if (driverStatistics==null) return null;
-        
-        for ( DriverVehicleScoreWrapper dvsc: driverStatistics ) { 
-            if ( (dvsc.getScore().getOverall() != null) && 
-                 (dvsc.getScore().getOverall().intValue() >= 0) ) {
-                totScore += dvsc.getScore().getOverall().intValue();
-                totScoringDrivers++;
-            }
-            if ( dvsc.getScore().getTrips() != null ) {
-                totTrips += dvsc.getScore().getTrips().intValue();
-            }
-            if ( dvsc.getScore().getIdleHi() != null ) {
-                totIdleHi += dvsc.getScore().getIdleHi().intValue();
-            }
-            if ( dvsc.getScore().getIdleLo() != null ) {
-                totIdleLo += dvsc.getScore().getIdleLo().intValue();
-            }             
-            if ( dvsc.getScore().getIdleHiEvents() != null ) {
-                totIdleHiEvt += dvsc.getScore().getIdleHiEvents().intValue();
-            }
-            if ( dvsc.getScore().getIdleLoEvents() != null ) {
-                totIdleLoEvt += dvsc.getScore().getIdleLoEvents().intValue();
-            }            
-            if ( dvsc.getScore().getEndingOdometer() != null && dvsc.getScore().getStartingOdometer() != null ) {
-                totMilesDriven += ( dvsc.getScore().getEndingOdometer().intValue() - dvsc.getScore().getStartingOdometer().intValue() );
-            }
-            if ( dvsc.getScore().getDriveTime() != null ) {
-                totDriveTime += dvsc.getScore().getDriveTime().intValue();
-            }            
-            
-            if (dvsc.getScore().getMpgHeavy() != null ||
-            		dvsc.getScore().getMpgMedium() != null ||
-            		dvsc.getScore().getMpgLight() != null)
-                totActiveDrivers++;
-            
-            totMpgHeavy += (dvsc.getScore().getMpgHeavy() == null) ? 0 : dvsc.getScore().getMpgHeavy().floatValue();
-            totMpgMedium += (dvsc.getScore().getMpgMedium() == null) ? 0 : dvsc.getScore().getMpgMedium().floatValue();
-            totMpgLight += (dvsc.getScore().getMpgLight() == null) ? 0 : dvsc.getScore().getMpgLight().floatValue();
-            // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
-            //  in a period
-            totMilesHeavy += (dvsc.getScore().getMilesDriven()== null) ? 0 : dvsc.getScore().getMilesDriven().longValue();
-
-            
-            
-            if ( dvsc.getScore().getCrashEvents() != null ) {
-                totCrash += dvsc.getScore().getCrashEvents().intValue();
-            }
-            if ( dvsc.getScore().getSeatbeltEvents() != null ) {
-                totSeatBeltEvt += dvsc.getScore().getSeatbeltEvents().intValue();
-            }
-            if ( dvsc.getScore().getSpeedEvents() != null ) {
-                totSpeedEvt += dvsc.getScore().getSpeedEvents().intValue();
-            }
-            if ( dvsc.getScore().getAggressiveAccelEvents() != null ) {
-                totAggAccelEvt += dvsc.getScore().getAggressiveAccelEvents().intValue();
-            }
-            if ( dvsc.getScore().getAggressiveBrakeEvents() != null ) {
-                totAggBrakeEvt += dvsc.getScore().getAggressiveBrakeEvents().intValue();
-            }
-            if ( dvsc.getScore().getAggressiveBumpEvents() != null ) {
-                totAggBumpEvt += dvsc.getScore().getAggressiveBumpEvents().intValue();
-            }
-            if ( dvsc.getScore().getAggressiveLeftEvents() != null ) {
-                totAggLeftEvt += dvsc.getScore().getAggressiveLeftEvents().intValue();
-            }
-            if ( dvsc.getScore().getAggressiveRightEvents() != null ) {
-                totAggRightEvt += dvsc.getScore().getAggressiveRightEvents().intValue();
-            }
-            
-            // Crash stuff, do days or miles define the most recent? (Use both for now)
-            if ( dvsc.getScore().getCrashTotal() != null ) {
-                totCrashes += dvsc.getScore().getCrashTotal().intValue();
-            }
-            if ( dvsc.getScore().getCrashDays() != null ) {
-                if ( dvsc.getScore().getCrashDays().intValue() < daysSinceLastCrash ) {
-                    daysSinceLastCrash = dvsc.getScore().getCrashDays().intValue();
-                }
-            }
-            if ( dvsc.getScore().getCrashOdometer() != null ) {
-                if ( dvsc.getScore().getCrashOdometer().intValue() < milesSinceLastCrash ) {
-                    milesSinceLastCrash = dvsc.getScore().getCrashOdometer().intValue();
-                }
-            }
-        }
-        
-        // The total miles are determined by setting ending to the total
-        //  and starting to 0. 
-        Score tmp = new Score();
-        tmp.setOverall((totScoringDrivers != 0)?totScore/totScoringDrivers:0);
-//        tmp.setOverall(totScore/driverStatistics.size());        
-        dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
-                        tmp.getOverall().intValue(), ScoreBoxSizes.SMALL));
-        tmp.setTrips(totTrips);
-        tmp.setIdleHi(totIdleHi);
-        tmp.setIdleLo(totIdleLo);
-        tmp.setIdleHiEvents(totIdleHiEvt);
-        tmp.setIdleLoEvents(totIdleLoEvt);
-        tmp.setDriveTime(totDriveTime);
-        tmp.setEndingOdometer(totMilesDriven);
-        tmp.setStartingOdometer(0); 
-//        float floatTotMpg = totMpg;
-//        float floatTotDrv = (float)totActiveDrivers;
-//        float floatTotDrv = (float)driverStatistics.size();        
-//        Number mpg = floatTotMpg/floatTotDrv;              
-//        tmp.setMpgHeavy(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-//                mpg, getMeasurementType(), getFuelEfficiencyType()));
-        tmp.setMpgHeavy(totMpgHeavy/totActiveDrivers);
-        tmp.setMpgMedium(totMpgMedium/totActiveDrivers);
-        tmp.setMpgLight(totMpgLight/totActiveDrivers);
-    // TODO: set mileages
-        
-        tmp.setCrashEvents(totCrash);       
-        tmp.setSeatbeltEvents(totSeatBeltEvt);        
-        tmp.setSpeedEvents(totSpeedEvt);
-        tmp.setAggressiveAccelEvents(totAggAccelEvt);
-        tmp.setAggressiveBrakeEvents(totAggBrakeEvt);
-        tmp.setAggressiveBumpEvents(totAggBumpEvt);
-        tmp.setAggressiveLeftEvents(totAggLeftEvt);
-        tmp.setAggressiveRightEvents(totAggRightEvt);
-        
-        dvsw.setScore(tmp);
-        
-        // Crash data
-//        crashSummary = new CrashSummary(
-//                crashData.getCrashEvents() == null ? 0 : crashData.getCrashEvents().intValue(), 
-//                crashData.getCrashTotal() == null ? 0 : crashData.getCrashTotal().intValue(), 
-//                crashData.getCrashDays() == null ? 0 : crashData.getCrashDays().intValue(),
-//                crashData.getOdometer() == null ? 0 : crashData.getOdometer().doubleValue()/100.0, 
-//                crashData.getCrashOdometer() == null ? 0 : crashData.getCrashOdometer().doubleValue()/100.0);        
-        
-        // Driver/Vehicle
-        Driver drv = new Driver();
-        drv.setDriverID(0);
-        Vehicle veh = new Vehicle();
-        veh.setName("");
-        Person prs = new Person();
-       
-        Group grp = this.getGroupHierarchy().getGroup(this.teamCommonBean.getGroupID());
-        
-        // Group check, may be driven by bad data        
-        prs.setFirst("");
-        if ( (grp != null) && (grp.getName()!= null) ) {
-            prs.setFirst(grp.getName());
-        }        
-        
-        drv.setPerson(prs);
-        dvsw.setDriver(drv);
-        dvsw.setSummary(true);
-*/ 
-//      tmp.setOverall(totScore/driverStatistics.size());        
         List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
         
         DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(driverStatistics, teamCommonBean.getGroup());
@@ -430,8 +181,6 @@ public class TeamStatisticsBean extends BaseBean {
     public void setTeamOverallScoreStyle(String teamOverallScoreStyle) {
         this.teamOverallScoreStyle = teamOverallScoreStyle;
     }
-    
-
 
     public void exportReportToPdf()
     {
