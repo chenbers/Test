@@ -1,13 +1,60 @@
-
 /* Rich Faces overrides */
+.dr-pnl {
+	border-width: 0px;
+	padding: 0px;
+}
 
-.dr-pnl			{border-width:0px;padding:0px;}
-.dr-pnl-b		{padding: 0px;}
-.dr-table-cell	{border: 0px 0px;border-width:0px;padding: 0px;}
+.dr-pnl-b {
+	padding: 0px;
+}
 
-.dr-tbpnl-tb	{font-family:inherit;}
-.dr-mpnl-pnl-b	{font-family:inherit;}
+.dr-table-cell {
+	border: 0px 0px;
+	border-width: 0px;
+	padding: 0px;
+}
 
-.rich-message {margin-left: 5px;}
-.rich-message-marker { margin-right: 5px; }
-.rich-message-label {}
+.dr-tbpnl-tb {
+	font-family: inherit;
+}
+
+.dr-mpnl-pnl-b {
+	font-family: inherit;
+}
+
+.rich-message {
+	margin-left: 5px;
+}
+
+.rich-message-marker {
+	margin-right: 5px;
+}
+
+.rich-message-label {
+	
+}
+
+.rich-panel {
+	padding: 0px;
+	border-style: none;
+}
+
+.rich-panel-body {
+	padding: 0px;
+}
+
+.rich-filter-input {
+	width: 80px;
+}
+
+.rich-tool-tip {
+	
+}
+
+.rich-table {
+	border: 1px solid #8BAD37;
+}
+
+.rich-table-cell {
+	border-bottom: 1px solid #8BAD37;
+}
