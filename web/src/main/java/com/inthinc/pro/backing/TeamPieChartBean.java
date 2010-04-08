@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.charts.Pie;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
@@ -69,7 +68,7 @@ public class TeamPieChartBean extends BaseBean {
        
         for (ScoreType subType : scoreType.getSubTypes()) {
             if (first) {
-                categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getLocale()));
+                categoryLabelList.add(MessageUtil.getMessageString(scoreType.toString(), getLocale()));
                 first = false;
             }
             else {
@@ -126,7 +125,6 @@ public class TeamPieChartBean extends BaseBean {
     }
 
     public Integer getSelectedOverallScore() {
-        ScoreType scoreType = ScoreType.SCORE_OVERALL;
         TimeFrame timeFrame = teamCommonBean.getTimeFrame();
         
         if (getOverallScoreMap().get(scoreType) == null) {
