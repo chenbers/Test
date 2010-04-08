@@ -175,7 +175,7 @@ public class EventGenerator
     public EventGenerator()
     {
     }
-static int eventCount;    
+    static int eventCount;    
 	public void generateTripExt(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, Integer zoneID ) throws Exception
 	{
 		generateTrip(imeiID, service, startTime, data, true, zoneID);
@@ -197,12 +197,12 @@ static int eventCount;
         
         List<byte[]> noteList = new ArrayList<byte[]>();
         Integer odometer = ReportTestConst.MILES_PER_EVENT;
-        Integer locCnt = ReportTestConst.EVENTS_PER_DAY;
-eventCount = 0;
-//boolean tampering = false;
+        int locCnt = ReportTestConst.EVENTS_PER_DAY;
+        eventCount = 0;
 		boolean ignitionOn = false;
 		boolean badSpeeding = false;
 		int adCnt = 0;
+		int realEventCnt = 0;
         for (int i = 0; i < locCnt; i++)
         {
         	if (includeExtraEvents && isExtraEventIndex(i)) {
@@ -238,11 +238,12 @@ eventCount = 0;
         	}
         	else if (i == (locCnt-1))
         	{
+//System.out.println("ignition off event count = " + realEventCnt);        		
                 int mpg = data.getMpg()*10;
                 event = new IgnitionOffEvent(0l, 0, EventMapper.TIWIPRO_EVENT_IGNITION_OFF,
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), mpg,
-                        locCnt*ReportTestConst.MILES_PER_EVENT,
-                        (int)(locCnt*ReportTestConst.ELAPSED_TIME_PER_EVENT/1000l));
+                        (realEventCnt+1)*ReportTestConst.MILES_PER_EVENT,
+                        (int)((realEventCnt+1)*ReportTestConst.ELAPSED_TIME_PER_EVENT/1000l));
                 
         	}
         	else if (data.isSpeedingIndex(i))
@@ -313,6 +314,9 @@ eventCount = 0;
             event.setSats(7);
             byte[] eventBytes = createDataBytesFromEvent(event);
             noteList.add(eventBytes);
+            
+			realEventCnt++;
+
 
             // coaching events
         	if (data.isSpeedingIndex(i) || data.isSeatbeltIndex(i)) 
@@ -325,6 +329,7 @@ eventCount = 0;
 	            event.setSats(7);
 	            eventBytes = createDataBytesFromEvent(event);
 	            noteList.add(eventBytes);
+				realEventCnt++;
             }
             
             eventTime = new Date(eventTime.getTime() + ReportTestConst.ELAPSED_TIME_PER_EVENT);
@@ -356,6 +361,7 @@ eventCount = 0;
         }
     	System.out.println(" COMPLETE");
     	System.out.println(" event count: " + eventCount);
+//    	System.out.println(" realEventCnt " + realEventCnt);
     }
 
 
@@ -446,7 +452,7 @@ eventCount = 0;
     // does -- this is currently only used to generate test data
     public static byte[] createDataBytesFromEvent(Event event)
     {
-eventCount++;    	
+    	eventCount++;    	
 //System.out.println("type: " + event.getType() + " time: " + DateUtil.convertDateToSeconds(event.getTime()));    	
         byte[] eventBytes = new byte[200];
         int idx = 0;

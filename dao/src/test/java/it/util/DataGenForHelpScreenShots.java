@@ -626,7 +626,7 @@ System.out.println("Waiting for imei: " + imei);
 
 			for (Device device : data.deviceList)
 			{
-				Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_FIRMWARE_UP_TO_DATE,//EventMapper.TIWIPRO_EVENT_LOCATION,
+				Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,//EventMapper.TIWIPRO_EVENT_LOCATION,
 	                    new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 				if (!genTestEvent(mcmSim, testEvent, device.getImei()))
 				{

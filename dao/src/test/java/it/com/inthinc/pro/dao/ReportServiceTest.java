@@ -33,6 +33,7 @@ import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.DriverScore;
@@ -41,12 +42,15 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedPercentItem;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.TrendItem;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
 
@@ -839,9 +843,38 @@ public class ReportServiceTest {
         assertEquals("getEntities mpgHeavy", expectedDailyFleetMPGHeavy, ((entity.getHeavyValue() == null) ? Integer.valueOf(0) : entity.getHeavyValue()));
     }
 
-    /*
-     * 
-     * private void dumpScoreableEntity(ScoreableEntity scoreableEntity) { System.out.println(scoreableEntity.getIdentifier() + " " + scoreableEntity.getEntityID() +" " +
-     * scoreableEntity.getEntityType().toString() +" " + scoreableEntity.getScore() +" " + scoreableEntity.getScoreType().toString()); }
-     */
+    @Test
+    // @Ignore
+    public void teamStats() {
+        GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
+        groupReportHessianDAO.setReportService(reportService);
+        
+        DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(ReportTestConst.timeZone);
+
+        for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
+        	List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), TimeFrame.ONE_DAY_AGO.getInterval(dateTimeZone));
+
+        	assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
+        	Score score = driverScoreList.get(0).getScore();
+//        	System.out.println("weighted mpg = " + score.getWeightedMpg());
+        	assertEquals(teamType + " weighted mpg", expectedDailyMPGLight[teamType].doubleValue(), score.getWeightedMpg().doubleValue(), 0.1);
+/*        	
+        	System.out.println("group ID " + driverScoreList.get(0).getDriver().getGroupID() );
+        	System.out.println("driver ID " + driverScoreList.get(0).getDriver().getDriverID() );
+        	System.out.println("total miles = " + score.getMilesDriven());
+        	System.out.println("miles light = " + score.getOdometerLight());
+        	System.out.println("miles med = " + score.getOdometerMedium());
+        	System.out.println("miles heavy = " + score.getOdometerHeavy());
+*/
+        	long totalMiles = score.getMilesDriven().longValue();
+        	long totalLMHMiles = score.getOdometerLight().longValue()
+        						+ score.getOdometerMedium().longValue()
+        						+ score.getOdometerHeavy().longValue();
+        	assertEquals("total miles should match total light, med, heavy miles", totalMiles, totalLMHMiles);
+
+        }
+        
+        
+
+    }
 }

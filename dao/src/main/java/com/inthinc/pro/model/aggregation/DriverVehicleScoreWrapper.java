@@ -80,12 +80,12 @@ public class DriverVehicleScoreWrapper {
         int totMilesDriven = 0;
         int totDriveTime = 0;
 //        float totMpg = 0;
-        float totMpgLight = 0;
-        float totMpgMedium = 0;
-        float totMpgHeavy = 0;
-        long totMilesLight = 0;
-        long totMilesMedium = 0;
-        long totMilesHeavy = 0;
+        double totMpgLight = 0;
+        double totMpgMedium = 0;
+        double totMpgHeavy = 0;
+        double totMilesLight = 0;
+        double totMilesMedium = 0;
+        double totMilesHeavy = 0;
         int totCrash = 0;
         int totSeatBeltEvt = 0;
         int totSpeedEvt = 0;
@@ -135,15 +135,16 @@ public class DriverVehicleScoreWrapper {
             
             if (dvsc.getScore().getMpgHeavy() != null ||
             		dvsc.getScore().getMpgMedium() != null ||
-            		dvsc.getScore().getMpgLight() != null)
+            		dvsc.getScore().getMpgLight() != null) {
                 totActiveDrivers++;
             
-            totMpgHeavy += (dvsc.getScore().getMpgHeavy() == null) ? 0 : dvsc.getScore().getMpgHeavy().floatValue();
-            totMpgMedium += (dvsc.getScore().getMpgMedium() == null) ? 0 : dvsc.getScore().getMpgMedium().floatValue();
-            totMpgLight += (dvsc.getScore().getMpgLight() == null) ? 0 : dvsc.getScore().getMpgLight().floatValue();
-            // TODO This will need to change when the miles driven for each vehicle type is returned for a driver
-            //  in a period
-            totMilesHeavy += (dvsc.getScore().getMilesDriven()== null) ? 0 : dvsc.getScore().getMilesDriven().longValue();
+                totMpgHeavy += (dvsc.getScore().getMpgHeavy() == null) ? 0 : dvsc.getScore().getMpgHeavy().doubleValue();
+                totMpgMedium += (dvsc.getScore().getMpgMedium() == null) ? 0 : dvsc.getScore().getMpgMedium().doubleValue();
+                totMpgLight += (dvsc.getScore().getMpgLight() == null) ? 0 : dvsc.getScore().getMpgLight().doubleValue();
+                totMilesHeavy += (dvsc.getScore().getOdometerHeavy()== null) ? 0d : dvsc.getScore().getOdometerHeavy().doubleValue();
+                totMilesMedium += (dvsc.getScore().getOdometerMedium()== null) ? 0d : dvsc.getScore().getOdometerMedium().doubleValue();
+                totMilesLight += (dvsc.getScore().getOdometerLight()== null) ? 0d : dvsc.getScore().getOdometerLight().doubleValue();
+            }
 
             
             
@@ -200,16 +201,12 @@ public class DriverVehicleScoreWrapper {
         tmp.setDriveTime(totDriveTime);
         tmp.setEndingOdometer(totMilesDriven);
         tmp.setStartingOdometer(0); 
-//        float floatTotMpg = totMpg;
-//        float floatTotDrv = (float)totActiveDrivers;
-//        float floatTotDrv = (float)driverStatistics.size();        
-//        Number mpg = floatTotMpg/floatTotDrv;              
-//        tmp.setMpgHeavy(MeasurementConversionUtil.convertMpgToFuelEfficiencyType(
-//                mpg, getMeasurementType(), getFuelEfficiencyType()));
         tmp.setMpgHeavy(totMpgHeavy/totActiveDrivers);
         tmp.setMpgMedium(totMpgMedium/totActiveDrivers);
         tmp.setMpgLight(totMpgLight/totActiveDrivers);
-    // TODO: set mileages
+        tmp.setOdometerHeavy(totMilesHeavy/totActiveDrivers);
+        tmp.setOdometerMedium(totMilesMedium/totActiveDrivers);
+        tmp.setOdometerLight(totMilesLight/totActiveDrivers);
         
         tmp.setCrashEvents(totCrash);       
         tmp.setSeatbeltEvents(totSeatBeltEvt);        

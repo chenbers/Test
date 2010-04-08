@@ -81,8 +81,11 @@ public class Score {
     private Number speedOver5;
     private Number startingOdometer;
     private Number trips;
+    private Number odometerLight;
+	private Number odometerMedium;
+    private Number odometerHeavy;
 
-    public Date getStartingDate() {
+	public Date getStartingDate() {
         return startingDate;
     }
 
@@ -673,6 +676,30 @@ public class Score {
     public void setTrips(Number trips) {
         this.trips = trips;
     }
+    public Number getOdometerLight() {
+		return odometerLight;
+	}
+
+	public void setOdometerLight(Number odometerLight) {
+		this.odometerLight = odometerLight;
+	}
+
+	public Number getOdometerMedium() {
+		return odometerMedium;
+	}
+
+	public void setOdometerMedium(Number odometerMedium) {
+		this.odometerMedium = odometerMedium;
+	}
+
+	public Number getOdometerHeavy() {
+		return odometerHeavy;
+	}
+
+	public void setOdometerHeavy(Number odometerHeavy) {
+		this.odometerHeavy = odometerHeavy;
+	}
+
 
     // getter methods that aggregate some of the existing fields
     public Number getSafetyTotal() {
@@ -685,15 +712,15 @@ public class Score {
     			((aggressiveRightEvents == null) ? 0 : aggressiveRightEvents.longValue());
     }
     public Number getWeightedMpg() {
-    	// TODO:
-    	/*
-    	 * sum(mpg light * miles light + mpg medium * miles medium + mpg heavy * miles heavy)/(miles light + miles medium + miles heavy)
-    	 * 
-    	 */
-        Number totalMpg = (mpgHeavy == null ? 0 : mpgHeavy.longValue()) +
-        				  (mpgMedium == null ? 0 : mpgMedium.longValue()) +
-        				  (mpgLight == null ? 0 : mpgLight.longValue());
-    	return (totalMpg.doubleValue() / 3);
+        double totalMpg = (mpgHeavy == null ? 0 : mpgHeavy.doubleValue()) * (odometerHeavy == null ? 0 : odometerHeavy.doubleValue()/100d)  +
+        				  (mpgMedium == null ? 0 : mpgMedium.doubleValue())  * (odometerMedium == null ? 0 : odometerMedium.doubleValue()/100d)  +
+        				  (mpgLight == null ? 0 : mpgLight.doubleValue()) * (odometerLight == null ? 0 : odometerLight.doubleValue() / 100d);
+        double totalMiles = (odometerHeavy == null ? 0 : odometerHeavy.doubleValue())  +
+		  					(odometerMedium == null ? 0 : odometerMedium.doubleValue())  +
+		  					(odometerLight == null ? 0 : odometerLight.doubleValue());
+        if (totalMiles == 0)
+        	return 0;
+    	return (totalMpg / (totalMiles/100d));
     }
     public Number getMilesDriven() {
     	return ((endingOdometer == null) ? 0l : endingOdometer.longValue()) - 

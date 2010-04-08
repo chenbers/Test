@@ -67,7 +67,9 @@ public class DriverVehicleScoreWrapperTest {
         score.setMpgHeavy(10);
         score.setMpgMedium(15);
         score.setMpgLight(20);
-    // TODO: set mileages
+        score.setOdometerHeavy(1000);
+        score.setOdometerMedium(1500);
+        score.setOdometerLight(2000);
         
         score.setCrashEvents(1);       
         score.setSeatbeltEvents(1);        
