@@ -1,9 +1,7 @@
 package com.inthinc.pro.table.columns;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.inthinc.pro.model.TableType;
 
@@ -20,7 +18,7 @@ public class TeamStatisticsTableColumns extends BaseTableColumns {
     	COLUMNS.add("vehicle");
     	COLUMNS.add("trips");
     	COLUMNS.add("stops");
-    	COLUMNS.add("miles_driven");
+    	COLUMNS.add("dist_driven");
     	COLUMNS.add("drive_time");
     	COLUMNS.add("idle_time");
     	COLUMNS.add("low_idle");
