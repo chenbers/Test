@@ -112,7 +112,8 @@ public class TeamSpeedBean extends BaseBean {
     }         
     
     public String createPieChart(ScoreType scoreType) {
-        List<ScoreableEntity> scoreDataList = getScoreableEntitiesPie();                 
+        List<ScoreableEntity> scoreDataList = getScoreableEntitiesPie(); 
+        List<String> worstOffenders = getWorstOffenders();
 
         // Create the pie string
         StringBuffer sb = new StringBuffer();
@@ -131,7 +132,8 @@ public class TeamSpeedBean extends BaseBean {
                 
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
-                sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\'" +                                                 
+                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'Worst offender: " + 
+                        worstOffenders.get(i)+ "\'" +                                                 
                         " color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
             }
         }
@@ -501,5 +503,65 @@ public class TeamSpeedBean extends BaseBean {
         miles.add(new Float(sixtyFiveAndUp));
         
         return miles;
+    }  
+
+    private List<String> getWorstOffenders() {
+        List<String> worst = new ArrayList<String>();
+        
+        List<DriverVehicleScoreWrapper> local = 
+            teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
+        
+        String zeroToThirty = "None found";
+        int zeroToThirtyCount = 0;
+        String thirtyOneToFourty = "None found";
+        int thirtyOneToFourtyCount = 0;
+        String fourtyOneToFiftyFour = "None found";
+        int fourtyOneToFiftyFourCount = 0;
+        String fiftyFiveToSixtyFour = "None found";
+        int fiftyFiveToSixtyFourCount = 0;
+        String sixtyFiveAndUp = "None found";
+        int sixtyFiveAndUpCount = 0;
+        
+        for ( DriverVehicleScoreWrapper dvsw: local ) {
+            
+            if ( dvsw.getScore().getSpeedEvents1() != null && 
+                 dvsw.getScore().getSpeedEvents1().intValue() > zeroToThirtyCount ) {
+                zeroToThirty = new String(dvsw.getDriver().getPerson().getFullName());
+                zeroToThirtyCount = dvsw.getScore().getSpeedEvents1().intValue();
+            }
+            
+            if ( dvsw.getScore().getSpeedEvents2() != null && 
+                 dvsw.getScore().getSpeedEvents2().intValue() > thirtyOneToFourtyCount ) {
+                thirtyOneToFourty = new String(dvsw.getDriver().getPerson().getFullName());
+                thirtyOneToFourtyCount = dvsw.getScore().getSpeedEvents2().intValue();
+            }
+            
+            if ( dvsw.getScore().getSpeedEvents3() != null && 
+                 dvsw.getScore().getSpeedEvents3().intValue() > fourtyOneToFiftyFourCount ) {
+                fourtyOneToFiftyFour = new String(dvsw.getDriver().getPerson().getFullName());
+                fourtyOneToFiftyFourCount = dvsw.getScore().getSpeedEvents3().intValue();
+            }
+            
+            if ( dvsw.getScore().getSpeedEvents4() != null && 
+                 dvsw.getScore().getSpeedEvents4().intValue() > fiftyFiveToSixtyFourCount ) {
+                fiftyFiveToSixtyFour = new String(dvsw.getDriver().getPerson().getFullName());
+                fiftyFiveToSixtyFourCount = dvsw.getScore().getSpeedEvents4().intValue();
+            }
+            
+            if ( dvsw.getScore().getSpeedEvents5() != null && 
+                 dvsw.getScore().getSpeedEvents5().intValue() > sixtyFiveAndUpCount ) {
+                sixtyFiveAndUp = new String(dvsw.getDriver().getPerson().getFullName());
+                sixtyFiveAndUpCount = dvsw.getScore().getSpeedEvents5().intValue();
+            } 
+              
+        }
+        
+        worst.add(zeroToThirty + ", " + String.valueOf(zeroToThirtyCount));
+        worst.add(thirtyOneToFourty + ", " + String.valueOf(thirtyOneToFourtyCount));
+        worst.add(fourtyOneToFiftyFour + ", " + String.valueOf(fourtyOneToFiftyFourCount));
+        worst.add(fiftyFiveToSixtyFour + ", " + String.valueOf(fiftyFiveToSixtyFourCount));
+        worst.add(sixtyFiveAndUp + ", " + String.valueOf(sixtyFiveAndUpCount));
+        
+        return worst;
     }    
 }
