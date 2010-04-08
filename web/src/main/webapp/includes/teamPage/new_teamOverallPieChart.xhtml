@@ -45,8 +45,8 @@
 			<tr>
 				<td width="120" align="center" valign="middle">
   			      	<ui:include src="/includes/overallScoreBox.xhtml">	
-						<ui:param name="overallScoreStyle" value="#{teamPieChartBean.overallScoreStyle}" />									
-      		    		<ui:param name="overallScore" value="#{teamPieChartBean.selectedOverallScore}" />             						
+						<ui:param name="overallScoreStyle" value="#{teamOverallBean.overallScoreStyle}" />									
+      		    		<ui:param name="overallScore" value="#{teamOverallBean.selectedOverallScore}" />             						
       		        	<ui:param name="context" value="#{context}-overall"/> 
     				</ui:include>    							
 					<ui:include src="/includes/scoreBoxLegend.xhtml">
@@ -55,7 +55,7 @@
 				</td>
         		<td width="">
 					<div id="tab_overallDiv" align="center"></div>
-		  			<input type="hidden" id="tab_overallDef" value="#{teamPieChartBean.selectedPieDef}"/>
+		  			<input type="hidden" id="tab_overallDef" value="#{teamOverallBean.selectedPieDef}"/>
 					<script type="text/javascript">
 						renderPie("overall", "320", "300");
 					</script>
@@ -67,7 +67,7 @@
 				</td>
 				<td align="center">
 					<div class="datagrid_panel" style="width: 600px;">
-						<rich:dataTable id="summaryOverallStats" value="#{teamPieChartBean.overallTotals}" var="item"
+						<rich:dataTable id="summaryOverallStats" value="#{teamOverallBean.overallTotals}" var="item"
 							styleClass="datagrid" 
 							rowClasses="tableOdd,tableEven">
 							
