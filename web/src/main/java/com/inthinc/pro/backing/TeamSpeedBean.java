@@ -120,7 +120,7 @@ public class TeamSpeedBean extends BaseBean {
         
         // Control parameters
         sb.append(pie.getControlParameters());
-        sb.append(" caption = \'Speeding Count by Speed Limit\'>");
+        sb.append(" caption = \'" + MessageUtil.getMessageString("teamSpeedPieLabel") + "\'>");
                
         if (scoreDataList.size() > 0) {
             ScoreableEntity se = null;
@@ -153,9 +153,11 @@ public class TeamSpeedBean extends BaseBean {
         sb.append(bar.getControlParameters());
         sb.append(" baseFont=\'Verdana\' ");
         sb.append(" baseFontSize=\'12\' ");
-        sb.append(" caption=\"Speeding Distance by Speed Limit (");
+        sb.append(" caption=\'");
+        sb.append(MessageUtil.getMessageString("teamSpeedBarLabelTop"));                
+        sb.append(" (");
         sb.append(MessageUtil.getMessageString(this.getMeasurementType()+"_mph"));       
-        sb.append(")\">");
+        sb.append(")\'>");
         
         // Categories
         sb.append("<categories>");
@@ -168,7 +170,9 @@ public class TeamSpeedBean extends BaseBean {
 
         // Miles speeding
         sb.append("<dataset>");
-        sb.append("<dataset seriesName=\"Speeding Distance\" color=\"FF0000\" showValues=\"0\">");
+        sb.append("<dataset seriesName=\'");
+        sb.append(MessageUtil.getMessageString("teamSpeedBarSpeedingDistance"));
+        sb.append("\' color=\"FF0000\" showValues=\"0\">");
         for (int i = 0; i < milesSpeeding.size(); i++)
         {            
             Number miles = MeasurementConversionUtil.convertMilesToKilometers(milesSpeeding.get(i), this.getMeasurementType());
@@ -177,7 +181,9 @@ public class TeamSpeedBean extends BaseBean {
         sb.append("</dataset>");
 
         // Miles driven
-        sb.append("<dataset seriesName=\"Driving Distance\" color=\"00FF00\" showValues=\"0\">");
+        sb.append("<dataset seriesName=\'");
+        sb.append(MessageUtil.getMessageString("teamSpeedBarDrivingDistance"));
+        sb.append("\' color=\"00FF00\" showValues=\"0\">");
         for (int i = 0; i < milesDriven.size(); i++)
         {
             Number miles = MeasurementConversionUtil.convertMilesToKilometers(milesDriven.get(i), this.getMeasurementType());
@@ -187,7 +193,10 @@ public class TeamSpeedBean extends BaseBean {
         sb.append("</dataset>");
         
         // Percent speeding
-        sb.append("<lineSet seriesName=\"% Distance\"  color=\"0000FF\" showValues=\"0\" lineThickness=\"4\">");
+        sb.append("<lineSet seriesName=\'");
+        sb.append(MessageUtil.getMessageString("teamSpeedBarPercentDistance"));
+        sb.append("\' color=\"0000FF\" showValues=\"0\" lineThickness=\"4\">");
+        
         for (int i= 0; i < milesSpeeding.size(); i++ ) 
         {           
             Float avgOvr = (float)100.0*((float)milesSpeeding.get(i)/(float)milesDriven.get(i));
