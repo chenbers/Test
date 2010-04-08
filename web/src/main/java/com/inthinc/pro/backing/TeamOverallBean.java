@@ -218,8 +218,12 @@ public class TeamOverallBean extends BaseBean {
         String fourToFive = (String)observation.get("fourToFive");
         totObs += Integer.parseInt(fourToFive);
         
-        ScoreableEntity se = new ScoreableEntity();        
-        double factor = (100)/totObs;
+        ScoreableEntity se = new ScoreableEntity();  
+        
+        double factor = 0.0;
+        if ( totObs != 0 ) {
+            factor = (100)/totObs;
+        }
         
         se.setScore((int)Math.round(factor*Integer.parseInt(zeroToOne)));
         local.add(se);

@@ -276,7 +276,10 @@ public class TeamStyleBean extends BaseBean {
         
         entity.setEntityID(teamCommonBean.getGroupID());
         entity.setEntityType(EntityType.ENTITY_GROUP);
-        entity.setScore(value*100/size);
+        entity.setScore(0);
+        if ( size != 0 ) {
+            entity.setScore(value*100/size);
+        }
         entity.setScoreType(scoreType);
 
         return entity;
