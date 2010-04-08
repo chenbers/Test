@@ -885,12 +885,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     public Map<String, Integer> getGroups() {
-//        final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
-//        for (final Group group : getGroupHierarchy().getGroupList())
-//            groups.put(group.getName(), group.getGroupID());
-//        return groups;
-
-    
         final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
 	    for (final Group group : getGroupHierarchy().getGroupList()) {
     		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
@@ -905,12 +899,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     public Map<String, Integer> getTeams() {
-//        final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-//        for (final Group group : getGroupHierarchy().getGroupList())
-//            if (group.getType() == GroupType.TEAM)
-//                teams.put(group.getName(), group.getGroupID());
-//        return teams;
-        
     	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
 	    for (final Group group : getGroupHierarchy().getGroupList())
 	    	if (group.getType() == GroupType.TEAM) {

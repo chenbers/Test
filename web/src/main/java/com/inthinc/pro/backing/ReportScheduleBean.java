@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
@@ -19,6 +20,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
@@ -147,7 +149,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
         return driverMap;
     }
-
+/*
     public List<SelectItem> getGroups() {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         List<Group> groupList = getGroupHierarchy().getGroupList();
@@ -161,6 +163,24 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         selectItemList.add(0, new SelectItem(null, ""));
         return selectItemList;
     }
+*/    
+    public Map<String, Integer> getGroups() {
+        final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
+        List<GroupType> acceptableGroupTypes = Arrays.asList(getItem().getReport().getGroupTypes());
+	    for (final Group group : getGroupHierarchy().getGroupList()) {
+            if (acceptableGroupTypes.contains(group.getType())) {
+	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
+		    	if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+		    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+		    	}
+		    	groups.put(fullName, group.getGroupID());
+            }
+	    }
+	    return groups;
+
+    
+    }
+
 
     @SuppressWarnings("unchecked")
     public Map<String, Integer> getVehicles() {

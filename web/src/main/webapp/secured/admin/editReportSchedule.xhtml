@@ -257,9 +257,14 @@
 									</td>
 									<td>
 										<rich:message for="editReportSchedule-group" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:selectOneMenu id="editReportSchedule-group" value="#{reportScheduleBean.item.groupID}" required="true" requiredMessage="#{messages.required}">
+										<h:selectOneMenu id="editReportSchedule-group" value="#{reportScheduleBean.item.groupID}" style="width:200px;"
+											required="true" requiredMessage="#{messages.required}">
 											<f:selectItems value="#{reportScheduleBean.groups}"/> 
 										</h:selectOneMenu>
+										<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     					 					<ui:param name="selectBoxID" value="edit-form:editReportSchedule-group" />
+										</ui:include>
+										
 									</td>
 								</tr>
 							</h:outputText>
