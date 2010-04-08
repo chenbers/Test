@@ -32,6 +32,7 @@
 	<field name="score.crashEvents" class="java.lang.Number"/>
 	<field name="score.safetyTotal" class="java.lang.Number"/>
 	<field name="summary" class="java.lang.Boolean"/>
+	<field name="vehicle" class="java.lang.Object"/>
 	<group name="Summary">
 		<groupExpression><![CDATA[$F{summary}]]></groupExpression>
 		<groupHeader>
@@ -171,10 +172,10 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{score.overall} == null  || $F{score.overall}.doubleValue() < 0.0) ?
 $R{notApplicable} : $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{score.overall}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false" hyperlinkType="None">
 				<reportElement key="textField-3" x="140" y="3" width="90" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{vehicle} == null || $F{vehicle.name} == null || $F{vehicle.name}.trim().isEmpty()) ? $R{report.none.assigned} : $F{vehicle.name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-4" x="230" y="3" width="50" height="17"/>
