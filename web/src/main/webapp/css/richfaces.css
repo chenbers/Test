@@ -1,26 +1,4 @@
 /* Rich Faces overrides */
-.dr-pnl {
-	border-width: 0px;
-	padding: 0px;
-}
-
-.dr-pnl-b {
-	padding: 0px;
-}
-
-.dr-table-cell {
-	border: 0px 0px;
-	border-width: 0px;
-	padding: 0px;
-}
-
-.dr-tbpnl-tb {
-	font-family: inherit;
-}
-
-.dr-mpnl-pnl-b {
-	font-family: inherit;
-}
 
 .rich-message {
 	margin-left: 5px;
@@ -57,4 +35,7 @@
 
 .rich-table-cell {
 	border-bottom: 1px solid #8BAD37;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
 }

@@ -16,6 +16,27 @@
 	
     <ui:define name="scripts">
        <style>
+       		.crashPanel {       		
+				width: 880px;
+				margin: auto;
+				padding-top: 8px;
+				text-align: center;
+       		}
+       		.crashPanel td {
+       			vertical-align: middle;
+       		}
+       		.crashPanel #crashImage{
+       			width: 25px;
+       			height: 21px;
+       			padding
+       		}
+       		.crashPanel .divider {
+       			padding-left: 15px;
+       			padding-right: 15px;
+       		}
+       		.crashPanelBoldValue {
+       			font-size: 16px;
+       		}
        		.section {
        			padding: 4px 8px;
        		}
@@ -146,46 +167,40 @@
 			
 		<!-- START CRASH SUMMARY PANEL -->
 	
-<!--         <div class="panel_w"> -->
-<!--             <div class="panel_content"> -->
-<!--                <div id="crashSummaryInnerPanel" style="height:100;width:800"> -->
-               		
-					<table id="crashSummaryTable" cellpadding="4px,2px" cellspacing="0" width="100%" class=""><tbody>
-                        <tr  style="font-weight:bold; font-size:12px" align="center">  
+               		<div class="crashPanel">
+					<table id="crashSummaryTable" cellpadding="0px" cellspacing="0" width="100%" class=""><tbody>
+                        <tr>  
                         	<td>
-                        		<a4j:outputPanel id="crashPanel" ajaxRendered="true" style="padding:10px;" layout="inline">
                     				<ui:include src="/includes/scoreBox.xhtml">
 	                    				<ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
 	                    				<ui:param name="scoreStyle" value="#{teamStatisticsBean.teamOverallScoreStyle}" /> 
 	                    				<ui:param name="item" value="0" /> 	                    	
 										<ui:param name="context" value="driversOverallNotAvailable" />
-                    				</ui:include>  
-							 	</a4j:outputPanel>                    			                       	
+                    				</ui:include>         			                       	
                         	</td>
                         	<td>
                         		#{messages.team_overall_team_score}
                         	</td>
-                        	<td>
+                        	<td class="divider">
                         		<h:graphicImage value="/images/grid_nav_divider.png" />
                         	</td>                        	
-                        	<td align="left">
-                        		<h:graphicImage id="crashImage" width="25" height="21" 
-                            		style="padding-top:5px;padding-left:10px;"
+                        	<td>
+                        		<h:graphicImage id="crashImage"
                             		value="/images/icon_crash.png"/>
                         	</td>                      
-                            <td align="left">
-                           		<h:outputText value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" 
+                            <td>
+                           		<h:outputText class="crashPanelBoldValue" value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" 
                            			converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
                     			<h:outputFormat value=" #{messages.crash_summary_overDistance} " >
                                 	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                             	</h:outputFormat>                           			                           		
                         	</td>
-                        	<td style="border-right-width:1px; border-left-width:1px" align="left">
-                       			<h:outputText value="#{teamCrashSummaryBean.crashSummary.daysSinceLastCrash}"/>
+                        	<td>
+                       			<h:outputText class="crashPanelBoldValue" value="#{teamCrashSummaryBean.crashSummary.daysSinceLastCrash}"/>
                        			#{messages.crash_summary_daysSinceLastCrash} 
                         	</td>
-                        	<td align="left">
-                        	    <h:outputText value="#{teamCrashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
+                        	<td>
+                        	    <h:outputText class="crashPanelBoldValue" value="#{teamCrashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
                            		<h:outputFormat value=" #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} " >
                                 	<a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
                             	</h:outputFormat>                        	     
@@ -193,9 +208,7 @@
                         </tr>
                         </tbody>
 					</table>
-<!-- 				</div> -->
-<!--         	</div> -->
-<!--         </div> -->
+					</div>
    
     	<!-- END CRASH SUMMARY -->	
 	

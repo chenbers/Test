@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
@@ -32,11 +33,9 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
+@KeepAlive
 public class TripsBean extends BaseBean {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 2409167667876030280L;
     private static final Logger logger = Logger.getLogger(TripsBean.class);
     private static final long THIRTY_DAYS = 30L * 24L * 60L * 60L * 1000L;

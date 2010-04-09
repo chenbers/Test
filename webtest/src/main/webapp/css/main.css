@@ -3088,21 +3088,21 @@ ul.legend {
 	width: 140px;
 }
 
-.lgnd top,.lgnd top {
+.lgnd .top {
 	background: url(../images/lgnd_top.png) no-repeat bottom left;
 	height: 10px;
 }
 
-.lgnd td.mid,.lgnd tr.mid {
+.lgnd .mid {
 	background: url(../images/lgnd_mid.png);
 }
 
-.lgnd bot,.lgnd bot {
+.lgnd .bot {
 	background: url(../images/lgnd_bot.png) no-repeat top left;
 	height: 10px;
 }
 
-.lgnd td.o_score {
+.lgnd .o_score {
 	background: url(../images/lgnd_label.png) no-repeat left center;
 	padding: 10px 0 10px 30px;
 	margin: 0;
@@ -3189,13 +3189,6 @@ ul.legend {
 
 /* Regular table definitions */
 
-.rich-table {
-    border: 1px solid #8BAD37;
-}
-
-.rich-table-cell {
-    border-bottom: 1px solid #8BAD37;
-}
 
 .tableOdd {
 	background: #ffffff;
