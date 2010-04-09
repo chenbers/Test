@@ -39,6 +39,7 @@
 	</style>
 	
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+	<a4j:loadScript src="/js/json.js"/>
 	<a4j:loadScript src="/js/arrowedPolyline.js"/>
 	<a4j:loadScript src="/js/labeledMarker.js"/>
 	<a4j:loadScript src="/js/markerClustererWithMergedMarkerSets.js"/>
@@ -104,10 +105,10 @@
 	 </f:facet>
 	 	
    	<!-- Trips Map -->
+ <a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
    	<div class="section">
 	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0;">
 	        	<h:form id="tripsTableForm">
-	        	<a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
 	         	<rich:dataTable	value="#{teamTripsBean.driversTrips}" 
 					       		id="driversTrips" 
 					       		var="driverTrips"
@@ -149,48 +150,92 @@
             		 				styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
             		 				eventsQueue="tripsQueue"/>
             		 
-    				<a4j:jsFunction ajaxSingle="true" status="teamStatus" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
-    						eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(data)"/>
-    						
-    				<a4j:jsFunction ajaxSingle="true" status="teamStatus" name="getTripBubbleData" action="#{teamTripsBean.setupEventData}" data="#{teamTripsBean.eventData}" 
-    						eventsQueue="tripsQueue" oncomplete="getAddressForBubble(data)">
-    								<a4j:actionparam id="driverID" name="driverID" assignTo="#{teamTripsBean.eventData.driverID}"/>
-									<a4j:actionparam id="eventType" name="eventType" assignTo="#{teamTripsBean.eventData.eventType}"/>
-									<a4j:actionparam id="eventIndex" name="eventIndex" assignTo="#{teamTripsBean.eventData.eventIndex}"/>
-									<a4j:actionparam id="tripnumber" name="tripNumber" assignTo="#{teamTripsBean.eventData.tripNumber}"/>
-									<a4j:actionparam id="lat" name="lat" assignTo="#{teamTripsBean.eventData.lat}"/>
-									<a4j:actionparam id="lng" name="lng" assignTo="#{teamTripsBean.eventData.lng}"/>
-					</a4j:jsFunction>
-    						
-				 </a4j:region>
- 				</h:form>	
+		<a4j:jsFunction id="getLatestTrips" ajaxSingle="true" status="teamStatus" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
+				eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(data)"/>
+				
+		<a4j:jsFunction id="getTripBubbleData" ajaxSingle="true" status="teamStatus" name="getTripBubbleData" action="#{teamTripsBean.createEventBubbleData}" reRender="teamBubbleForm" data="#{teamTripsBean.eventData}" 
+						eventsQueue="tripsQueue" oncomplete="getAddressForBubble(data)">
+				<a4j:actionparam id="eventID" name="eventID" assignTo="#{teamTripsBean.eventData.eventID}"/>
+		</a4j:jsFunction>
+ 						
+		<a4j:jsFunction id="getEventData" ajaxSingle="true" status="teamStatus" name="getEventData" action="#{teamTripsBean.createClusterBubbleData}" 
+				eventsQueue="tripsQueue" oncomplete="addAddressesToClusterBubble()" reRender="clusterBubbleForm">
+						<a4j:actionparam name="clusterEventIDs" assignTo="#{teamTripsBean.clusterEventIDs}"/>
+		</a4j:jsFunction>
+ 	</h:form>	
  				         
 	         </div>  
 			 <div id="map-canvas" style="float:right; width: 74%; height: 500px; border: 0"></div>
 			 <div style="clear:both"></div>
 	       </div>
-				<h:form id="teamBubbleForm">
-				<div id="bubbleElement" style="display:none">
+				<h:form id="teamBubbleForm" >
+				<div id="bubbleElement" style="display:none" >
 					<h:panelGrid columns="2" styleClass="google_popup" width="250" rowClasses="google_popups_rows" headerClass="google_popups_header">
 					<f:facet name="header">
-						<h:outputText id="bubbleTitle" />
+						<h:outputText id="bubbleTitle" value="#{teamTripsBean.eventData.eventName}"/>
 					</f:facet>
 					<h:outputText>#{messages.team_driver}:</h:outputText>
-				    <pretty:link id="teamBubbleDriverLink" mappingId="driverPerformance">
-	                     <h:outputText id="teamBubbleDriver"/>
-	                     <f:param id="teamBubbleDriverId" value=""/>
+				    <pretty:link id="teamBubbleDriver" mappingId="driverPerformance">
+	                     <h:outputText value="#{teamTripsBean.eventData.driverName}"/>
+	                     <f:param value="#{teamTripsBean.eventData.driverID}"/>
 	                </pretty:link>
+			
 	                <h:outputText>Time:</h:outputText>
-					<h:outputText id="teamBubbleTime"/>
+					<h:outputText id="teamBubbleTime" value="#{teamTripsBean.eventData.timeString}"/>
 					<h:outputText>#{messages.livefleet_address}:</h:outputText>
 					<h:outputText id="teamBubbleAddress"/>
 					</h:panelGrid>
 					<h:panelGrid columns="1" styleClass="google_popup" width="250" rowClasses="google_popups_rows" headerClass="google_popups_header">
-					<h:outputText id="teamBubbleDescription"/>
+					<h:outputText id="teamBubbleDescription" value="#{teamTripsBean.eventData.eventDescription}"/>
 					</h:panelGrid>
 				</div>
 				</h:form>
-	       
+	<div id="clusterBubbleTable" style="display:none">
+		<h:form id="clusterBubbleForm">
+			<rich:dataTable	value="#{teamTripsBean.clusterBubbleEvents}" 
+					       		id="clusterEvents" 
+					       		var="clusterEvent"
+					       		rowKeyVar="index"
+								styleClass="datagrid" 
+								rowClasses="tableOdd,tableEven"
+								rows="25"
+								columnsWidth="80px,80px,80px,150px"
+								width="100%">
+								
+				<rich:column style="text-align:left;">
+					<f:facet name="header">
+						<h:outputText value="#{messages.teamPage_driverHeader}"/>
+					</f:facet>
+				    <pretty:link id="teamClusterBubbleDriverLink" mappingId="driverPerformance">
+	                     <h:outputText value="#{clusterEvent.driverName}"/>
+	                     <f:param value="#{clusterEvent.driverID}"/>
+	                </pretty:link>
+ 				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages.teamPage_eventType}"/>
+					</f:facet>
+					<h:outputText value="#{clusterEvent.eventName}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages.teamPage_eventTime}"/>
+					</f:facet>
+					<h:outputText value="#{clusterEvent.timeString}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages.teamPage_eventAddress}"/>
+					</f:facet>
+					<h:inputHidden id="lat" value="#{clusterEvent.lat}"/>
+					<h:inputHidden id="lng" value="#{clusterEvent.lng}"/>
+					<h:outputText id ="clusterEventAddress"/>
+				</rich:column>
+			</rich:dataTable>
+		</h:form>  
+	</div>
+</a4j:region>
+	     
     <!-- End Trips Map -->
     </rich:tab>
  </ui:composition>

@@ -228,7 +228,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 			  markerSet.push({'isAdded':false,
 				  			  'hidden':false,
 				  			  'displayColor':markers.displayColor,
-				  			  'originalLatLng':markers.markerSet[i].getLatLng(),
+				  			  'originalLatLng':markers.markerSet[i].marker.getLatLng(),
 				  			  'marker':markers.markerSet[i]});
 		  }
 		  markerSets_.push({'isAdded':true,
@@ -601,31 +601,6 @@ function LabeledCluster(markerClusterer, clusterOpts) {
       center_ = marker.originalLatLng;
     }
     markers_.push(marker);
-//    //Adjust center
-//    if ((markers_.length > 1) && (markers_.length < 5)){
-//        var min_lat = 90;
-//        var max_lat = -90;
-//        var min_lng = 180;
-//        var max_lng = -180;
-//        for(var i=0; i<markers_.length;i++){
-//        	if (markers_[i].originalLatLng.lat() > max_lat){
-//        		max_lat = markers_[i].originalLatLng.lat();
-//        	}
-//        	if (markers_[i].originalLatLng.lat() < min_lat){
-//        		min_lat = markers_[i].originalLatLng.lat();
-//        	}
-//        	if (markers_[i].originalLatLng.lng() > max_lng){
-//        		max_lng = markers_[i].originalLatLng.lng();
-//        	}
-//        	if (markers_[i].originalLatLng.lng() < min_lng){
-//        		min_lng = markers_[i].originalLatLng.lng();
-//        	}
-//        }
-//        center_ = new GLatLng(min_lat+(max_lat-min_lat)/2,min_lng+(max_lng-min_lng)/2);
-//    }
-//    else {
-//    	center_ = markers_[0].originalLatLng;
-//    }
   };
 
   /**
@@ -638,7 +613,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
     for (var i = 0; i < markers_.length; ++i) {
       if (marker === markers_[i].marker) {
         if (markers_[i].isAdded) {
-          map_.removeOverlay(markers_[i].marker);
+          map_.removeOverlay(markers_[i].marker.marker);
         }
         markers_.splice(i, 1);
         return true;
@@ -681,14 +656,14 @@ function LabeledCluster(markerClusterer, clusterOpts) {
       // have only one marker, the marker(s) in cluster will be showed on map.
       for (i = 0; i < markers_.length; ++i) {
         if (markers_[i].isAdded) {
-          if (markers_[i].marker.isHidden()) {
-            markers_[i].marker.show();
+          if (markers_[i].marker.marker.isHidden()) {
+            markers_[i].marker.marker.show();
           }
         } else {
-          map_.addOverlay(markers_[i].marker);
+          map_.addOverlay(markers_[i].marker.marker);
           markers_[i].isAdded = true;
         }
-		markers_[i].marker.setLatLng(markers_[i].originalLatLng);
+		markers_[i].marker.marker.setLatLng(markers_[i].originalLatLng);
 		isMarkersStacked = false;
       }
       if (clusterMarker_ !== null) {
@@ -737,7 +712,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 	  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
 	  for (var i=0;i<markers_.length;i++){
 			windowHtml +="<li>";
-			windowHtml += markers_[i].marker.labelText_;
+			windowHtml += markers_[i].marker.marker.labelText_;
 			windowHtml +="</li>";
 	  }
 	  windowHtml+="</ul>";
@@ -790,14 +765,31 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
 				//format all the markers into a list
 			  //This is to be changed depending on how many markers there are and to be configurable
-			  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
+//			  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
+//			  for (var i=0;i<markers_.length;i++){
+//					windowHtml +="<li>";
+//					windowHtml += markers_[i].marker.marker.labelText_;
+//					windowHtml +="</li>";
+//			  }
+//			  windowHtml+="</ul>";
+			  var eventArray = [];
+			  var eventsJSONArray ='[';
 			  for (var i=0;i<markers_.length;i++){
-					windowHtml +="<li>";
-					windowHtml += markers_[i].marker.labelText_;
-					windowHtml +="</li>";
+				  eventArray.push(markers_[i].marker.eventID);
+				  eventsJSONArray+=markers_[i].marker.eventID;
+				  if(i==markers_.length-1){
+					  eventsJSONArray+=']';
+				  }
+				  else{
+					  eventsJSONArray+=",";
+				  }
 			  }
-			  windowHtml+="</ul>";
-			  clusterMarker.openInfoWindowHtml(windowHtml);
+//			  var eventsJSONArray = JSON.stringify(eventArray);
+			  
+//			  getEventData(eventArray);
+			  clickedMarker=clusterMarker;
+			  getEventData(eventsJSONArray);
+//			  clusterMarker.openInfoWindowHtml(windowHtml);
 		 });
 		  
 		  var preRenderedCanvas = drawFunction(displayColors, this.getTotalMarkers());
@@ -848,7 +840,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 	  
 	  //Really need to check here whether the items do overlap
 	  // and only stack the ones that do.
-	  //Work out the center of the cluster from the bounds of the cluaters in their original 
+	  //Work out the center of the cluster from the bounds of the clusters in their original 
 	  // positions
 		var markers_length = markers_.length;
 	  	var centerStack = this.findTrueClusterCenter();
@@ -896,20 +888,20 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		var nextPoint = topLeftStack;
 		for (var i=0;i<markers_length;i++){
 	        if (markers_[i].isAdded) {
-	            if (markers_[i].marker.isHidden()) {
-	              markers_[i].marker.show();
+	            if (markers_[i].marker.marker.isHidden()) {
+	              markers_[i].marker.marker.show();
 	            }
 	          } else {
-	            map_.addOverlay(markers_[i].marker);
+	            map_.addOverlay(markers_[i].marker.marker);
 	            markers_[i].isAdded = true;
 	          }
 
 			if (overlappers[i]){
 				
-				markers_[i].marker.setLatLng(map_.fromDivPixelToLatLng(nextPoint));
+				markers_[i].marker.marker.setLatLng(map_.fromDivPixelToLatLng(nextPoint));
 			}
 			else{
-				markers_[i].marker.setLatLng(markers_[i].originalLatLng);
+				markers_[i].marker.marker.setLatLng(markers_[i].originalLatLng);
 			}
 			nextPoint = new GPoint(nextPoint.x, nextPoint.y+20);
 		}
@@ -925,7 +917,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		var markers_length = markers_.length;
 		for (var i = 0; i < markers_length; ++i) {
 			if (markers_[i].isAdded) {
-				markers_[i].marker.hide();
+				markers_[i].marker.marker.hide();
 			}
 		}
 		isHidden = true;
@@ -940,9 +932,9 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		var markers_length = markers_length;
 		for (var i = 0; i < markers_.length; ++i) {
 	        if (markers_[i].isAdded) {
-	          markers_[i].marker.show();
+	          markers_[i].marker.marker.show();
 	        }
-	      }
+	    }
 	  	isHidden = false;
   };
 
@@ -957,7 +949,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 	var markers_length = markers_.length;
 	for (var i = 0; i < markers_length; ++i) {
       if (markers_[i].isAdded) {
-        map_.removeOverlay(markers_[i].marker);
+        map_.removeOverlay(markers_[i].marker.marker);
         markers_[i].isAdded = false;
       }
     }

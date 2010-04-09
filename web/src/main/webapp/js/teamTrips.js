@@ -14,6 +14,7 @@
 												// and can stack up to a configured number of overlapping markers instead showing them as a cluster
 	var geocoder = null;	//Google geocoder for reverse geocoding event addresses.
 	var clickedMarker = null;
+	var countDown;
 /**
  * Matches up color coding between the driver data table in the page, and the trip data arrays.
  * @param indexOnPage - row index in the page
@@ -219,7 +220,7 @@
  * 
  * This could be parameterized further to make it more generic eg iconSize, infoWindowAnchor, labelClass
  */
-    function createLabeledMarker(point, iconImage, label, driverID, eventType, tripNumber, eventIndex) 
+    function createLabeledMarker(point, iconImage, label, eventID) 
     {
     	//
     	var icon = new GIcon();
@@ -246,7 +247,7 @@
   		  // the call back for that will display the bubble
   		    
   		  //Get event data from the backing bean
-  	  	  getTripBubbleData(driverID, eventType, eventIndex, tripNumber, point.lat(),point.lng());
+  	  	  getTripBubbleData(eventID);
    	  	});
 
     	return marker;
@@ -277,35 +278,85 @@
 	        	  
 	        	 address = response.Placemark[0].address;
 	        }
-	        displayBubble(eventData,address);
+	        
+	        //Fill address element and display infowindow
+		  	var windowElementTemplate = document.getElementById("bubbleElement");
+		  	document.getElementById("teamBubbleForm:teamBubbleAddress").innerHTML=address;
+			var windowElement = windowElementTemplate.cloneNode(true);	
+		  	windowElement.style.display = 'block';
+		  	clickedMarker.openInfoWindow(windowElement);
     	});
     }
-/**
- * Step 3 to display event data in a marker infoWindow
- * Function called in the callback function on return from the geocoder request. 
- * Fills up the event bubble in the new_teamTrips.xhtml page using JSON data returned
- * by a4j:jsFunction getTripBubbleData
- * 
- * @param eventData - JSON data from TeamTripsBean.EventData
- * @param address - address returned by the geocoder
- * @return
- */   
-	function displayBubble(eventData, address){
-		
-	  	var windowElementTemplate = document.getElementById("bubbleElement");
-	  	document.getElementById("teamBubbleForm:bubbleTitle").innerHTML = eventData.eventName;
-	  	document.getElementById("teamBubbleForm:teamBubbleDriver").innerHTML = eventData.driverName;
-	  	var pretty = document.getElementById("teamBubbleForm:teamBubbleDriverLink");
-	  	pretty.href = pretty.href+eventData.driverID;
-	  	document.getElementById("teamBubbleForm:teamBubbleAddress").innerHTML=address;
-	  	document.getElementById("teamBubbleForm:teamBubbleTime").innerHTML = eventData.timeString;
-	  	document.getElementById("teamBubbleForm:teamBubbleDescription").innerHTML = eventData.eventDescription;
-	  	
-		var windowElement = windowElementTemplate.cloneNode(true);	
-	  	windowElement.style.display = 'block';
-	  	clickedMarker.openInfoWindow(windowElement);
+///**
+// * Step 3 to display event data in a marker infoWindow
+// * Function called in the callback function on return from the geocoder request. 
+// * Fills up the event bubble in the new_teamTrips.xhtml page using JSON data returned
+// * by a4j:jsFunction getTripBubbleData
+// * 
+// * @param eventData - JSON data from TeamTripsBean.EventData
+// * @param address - address returned by the geocoder
+// * @return
+// */   
+//	function displayBubble(eventData, address){
+//		
+//	  	var windowElementTemplate = document.getElementById("bubbleElement");
+//		
+////	  	document.getElementById("teamBubbleForm:bubbleTitle").innerHTML = eventData.eventName;
+////	  	document.getElementById("teamBubbleForm:teamBubbleDriver").innerHTML = eventData.driverName;
+////	  	var pretty = document.getElementById("teamBubbleForm:teamBubbleDriverLink");
+////	  	pretty.href = pretty.href+eventData.driverID;
+//	  	document.getElementById("teamBubbleForm:teamBubbleAddress").innerHTML=address;
+////	  	document.getElementById("teamBubbleForm:teamBubbleTime").innerHTML = eventData.timeString;
+////	  	document.getElementById("teamBubbleForm:teamBubbleDescription").innerHTML = eventData.eventDescription;
+//	  	
+//		var windowElement = windowElementTemplate.cloneNode(true);	
+//	  	windowElement.style.display = 'block';
+//	  	clickedMarker.openInfoWindow(windowElement);
+//	
+//	}
+    function getAddress(index){
+	  	var addressElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":clusterEventAddress");
+	  	var latElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":lat");
+	  	var lngElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":lng");
 	
-	}
+    	var latlng = new GLatLng(latElement.value, lngElement.value);
+    	geocoder.getLocations(latlng, function(response){
+    		
+    		var address = null;
+    		countDown--;
+    		
+	        if (!response || response.Status.code != 200) {
+	        	 
+	        	 address = "No address found";            	  
+	        } 
+	        else {
+	        	  
+	        	 address = response.Placemark[0].address;
+	        }
+    	  	addressElement.innerHTML=address;
+	        if (countDown==0){
+	        	var windowElementTemplate = document.getElementById("clusterBubbleTable");
+	    		var windowElement = windowElementTemplate.cloneNode(true);	
+	    	  	windowElement.style.display = 'block';
+	    	  	clickedMarker.openInfoWindow(windowElement);
+	        }
+
+    	});
+    }
+
+    function addAddressesToClusterBubble(){
+    	
+		if (geocoder == null) geocoder = new GClientGeocoder();
+	  	
+	  	var i = 0;
+	  	var numberOfEvents = jQuery('[id$=\\:clusterEventAddress]').length;
+	  	countDown = numberOfEvents;
+	  	
+	  	for(var i= 0; i<numberOfEvents; i++){
+	  		
+	  		getAddress(i);
+	  	}
+    }
 /**
  * creates all the trip route overlays (arrowed polylines) and event markers from the driverTrips data provided.
  * 
@@ -344,48 +395,54 @@
 					startlatlng = new GLatLng(driverTrips.trips[j].beginningPoint.lat, driverTrips.trips[j].beginningPoint.lng);
 					marker = createLabeledMarker(startlatlng,tripIcons[6],
 								getSingleLabeledMarkerLabel(labels[colorArray[driverIndex]],colors[colorArray[driverIndex]],tripNumber,tripIcons[0]),
-								driverIDArray[driverIndex], "start",j,0);
-					markers.push(marker);
+								driverTrips.trips[j].startEventItem.eventID);
+					markers.push({	eventID:driverTrips.trips[j].startEventItem.eventID,
+			  						marker:marker});
 					//End of trip marker
 			
 					var length = driverTrips.trips[j].violations.length;
 					for(var k=0; k<length; k++){
-						var violation = new GLatLng(driverTrips.trips[j].violations[k].lat, driverTrips.trips[j].violations[k].lng);
+						var violation = new GLatLng(driverTrips.trips[j].violations[k].latLng.lat, driverTrips.trips[j].violations[k].latLng.lng);
 						marker = createLabeledMarker(violation,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[3]),
-									driverIDArray[driverIndex], "violation",j,k);
-						markers.push(marker);
+									driverTrips.trips[j].violations[k].eventID);
+						markers.push({	eventID:driverTrips.trips[j].violations[k].eventID,
+				  						marker:marker});
 					}
 					length = driverTrips.trips[j].idles.length;
 					for(var k=0; k<length; k++){
 						var idle = new GLatLng(driverTrips.trips[j].idles[k].lat,driverTrips.trips[j].idles[k].lng);
 						marker = createLabeledMarker(idle,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[4]),
-									driverIDArray[driverIndex], "idle",j,k);
-						markers.push(marker);
+									driverTrips.trips[j].idles[k].eventID);
+						markers.push({	eventID:driverTrips.trips[j].idles[k].eventID,
+									  	marker:marker});
 					}
 					length = driverTrips.trips[j].tampers.length;
 					for(var k=0; k<length; k++){
 						var tamper = new GLatLng(driverTrips.trips[j].tampers[k].lat,driverTrips.trips[j].tampers[k].lng);
 						marker = createLabeledMarker(tamper,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[5]),
-									driverIDArray[driverIndex], "tamper",j,k);
-						markers.push(marker);
+									driverTrips.trips[j].tampers[k].eventID);
+						markers.push({	eventID:driverTrips.trips[j].tampers[k].eventID,
+							  			marker:marker});
 					}
 					
 					if (driverTrips.trips[j].inProgress)
 					{
 						marker = createLabeledMarker(endlatlng,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[1]),
-									driverIDArray[driverIndex], "progress",j,0);
-						markers.push(marker);
+									driverTrips.trips[j].endEventItem.eventID);
+						markers.push({	eventID:driverTrips.trips[j].endEventItem.eventID,
+				  						marker:marker});
 					}
 					else
 					{
 						marker = createLabeledMarker(endlatlng,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[2]),
-									driverIDArray[driverIndex], "end",j,0);
-						markers.push(marker);
+									driverTrips.trips[j].endEventItem.eventID);
+						markers.push({	eventID:driverTrips.trips[j].endEventItem.eventID,
+				  						marker:marker});
 					}
 				}
 			}

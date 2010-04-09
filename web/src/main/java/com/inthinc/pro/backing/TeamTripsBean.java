@@ -5,19 +5,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.richfaces.json.JSONArray;
+import org.richfaces.json.JSONException;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
@@ -40,25 +42,25 @@ public class TeamTripsBean extends BaseBean {
     private TeamCommonBean teamCommonBean;
 
 	private Map<Integer, DriverTrips> driversTripsMap;
-	
+	private Map<Long,Event> eventsMap;
     private EventData eventData;
-    
+    private List<EventData> clusterBubbleEvents;
 	
+    private List<Long> eventIDs;
+    private JSONArray jsonEventIDs;
     public void init(){
     	
 		initDrivers();
 		colors = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamColors"))));
 		colors.remove(0);
 		
-//		colors = Arrays.asList(	"#C7BBBF","#F2CBD1","#DE9ED4","#B0C0F5","#BCA6BF","#F28392","#A5B0D6","#C6F5DF","#F5D0EF","#C6E9F5",
-//								"#AACC66","#EFDAF2","#C0BBED","#D4BBED","#BFF5F1","#86DBD6","#78D6F5","#80F2BD","#D7F7CB","#BAE8A5",
-//	              				"#45BACC","#CCB345","#CCCA45","#E8C687","#F5B869","#E89289");
-
 		labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamLabels"))));
 		labels.remove(0);
 
-//		labels = Arrays.asList("A","B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+		eventsMap = new HashMap<Long,Event>();
 		eventData = new EventData();
+		clusterBubbleEvents = new ArrayList<EventData>();
+		eventIDs = new ArrayList<Long>();
     }
     private void initDrivers(){
     	
@@ -111,59 +113,34 @@ public class TeamTripsBean extends BaseBean {
     		dt.clearTrips();
     	}		
 	}
-	public void setupEventData(){
+	public void createEventBubbleData(){
 		
-		DriverTrips selectedDriverTrips = driversTripsMap.get(eventData.getDriverID());
-		eventData.setDriverName(selectedDriverTrips.getDriverName());
-		Date eventTime = null;
-		String eventDescription = "";
-		if (eventData.getEventType().equals("start")){
-			
-			eventTime = selectedDriverTrips.getTrips().get(eventData.tripNumber).getStartTime();
-			eventData.setEventName(MessageUtil.getMessageString("TRIP_START"));
-		}
-		else if (eventData.getEventType().equals("end")){
-			
-			eventTime = selectedDriverTrips.getTrips().get(eventData.tripNumber).getEndTime();
-			eventData.setEventName(MessageUtil.getMessageString("TRIP_END"));
-		}
-		else if (eventData.getEventType().equals("progress")){
-			
-			eventTime = selectedDriverTrips.getTrips().get(eventData.tripNumber).getEndTime();
-			eventData.setEventName(MessageUtil.getMessageString("TRIP_PROGRESS"));
-		}
-		else if(eventData.getEventType().equals("violation")){
-			Event event = selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getViolationEvents().get(eventData.getEventIndex());
-			eventTime = event.getTime();
-			
-			eventData.setEventName(MessageUtil.getMessageString(selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getViolationEvents().get(eventData.getEventIndex()).getEventType().toString()));
-			if (selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getViolationEvents().get(eventData.getEventIndex()).getEventType().equals(EventType.SPEEDING)){
-				
-				eventDescription = event.getDetails(MessageUtil.getMessageString("redflags_details" +event.getEventType().name(),LocaleBean.getCurrentLocale()),
-													getMeasurementType(),
-													MessageUtil.getMessageString(getMeasurementType().toString()+"_mph"));
-			}
-		}
-		else if(eventData.getEventType().equals("idle")){
-			
-			eventTime = selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getIdleEvents().get(eventData.getEventIndex()).getTime();
-			eventData.setEventName(MessageUtil.getMessageString(selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getIdleEvents().get(eventData.getEventIndex()).getEventType().toString()));
-			eventDescription = selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getIdleEvents().get(eventData.getEventIndex()).
-											getDetails(MessageUtil.getMessageString("redflags_detailsIDLING"), null,null);
-			
-		}
-		else if(eventData.getEventType().equals("tamper")){
-			
-			eventTime = selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getTamperEvents().get(eventData.getEventIndex()).getTime();
-			eventData.setEventName(MessageUtil.getMessageString(selectedDriverTrips.getTrips().get(eventData.getTripNumber()).getTamperEvents().get(eventData.getEventIndex()).getEventType().toString()));
-
-		}
+		//Assumes eventID has been set
+		//get event from map
 		
-        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), getLocale());
-        sdf.setTimeZone(this.getPerson().getTimeZone());
-        eventData.setTimeString(sdf.format(eventTime));
-        eventData.setEventDescription(eventDescription);
+		Event event = eventsMap.get(eventData.eventID);
+		if(event != null){
+			
+			eventData.createEventBubbleData(event);
+		}
 	}
+	public EventData setUpClusterBubbleData(Long eventID){
+		
+		//Assumes eventID has been set
+		//get event from map
+
+		Event event = eventsMap.get(eventID);
+		if(event != null){
+			
+			EventData eventData = new EventData(eventID);
+			eventData.setEventID(eventID);
+			eventData.createEventBubbleData(event);
+			
+			return eventData;
+		}
+		return null;
+	}
+
 	public DriverDAO getDriverDAO() {
 		return driverDAO;
 	}
@@ -203,7 +180,60 @@ public class TeamTripsBean extends BaseBean {
 	public void setEventData(EventData eventData) {
 		this.eventData = eventData;
 	}
-	
+	public List<EventData> getClusterBubbleEvents() {
+		return clusterBubbleEvents;
+	}
+	public void setClusterBubbleEvents(List<EventData> clusterBubbleEvents) {
+		this.clusterBubbleEvents = clusterBubbleEvents;
+	}
+
+	public void setClusterEventID(Long eventID){
+		
+		EventData eventData = new EventData();
+		eventData.setEventID(eventID);
+	}
+	public List<Long> getEventIDList() {
+		return eventIDs;
+	}
+	public String getClusterEventIDs(){
+		
+		return jsonEventIDs.toString();
+	}
+	public void setClusterEventIDs(String eventIDs) {
+		
+		try {
+			
+			jsonEventIDs = new JSONArray(eventIDs);
+		}
+		catch (JSONException JSONe){
+			
+			jsonEventIDs = null;
+		}
+		
+	}
+		
+	public void createClusterBubbleData(){
+		
+		if ((jsonEventIDs == null)||(jsonEventIDs.length()==0)) return;
+		
+		clusterBubbleEvents = new ArrayList<EventData>();
+		try {
+			for(int i = 0; i<jsonEventIDs.length(); i++){
+				
+				Long eventID = (Long)jsonEventIDs.getLong(i);
+
+				EventData eventData = setUpClusterBubbleData(eventID);
+				if(eventData != null){
+					
+					clusterBubbleEvents.add(eventData);
+				}
+			}
+		}
+		catch (JSONException JSONe){
+			
+		}
+	}
+
 /*
  * 
  * Driver Trips inner class
@@ -278,9 +308,21 @@ public class TeamTripsBean extends BaseBean {
 			   						getTripTampers(tampers,trip.getStartTime(),trip.getEndTime()),
 			   						1);
 	    	   trips.add(td);
-	 
+	    	   
 	        }
+	       //add events to the event map
+	       addEventsToMap(violations);
+	       addEventsToMap(idles);
+	       addEventsToMap(tampers);
 		}
+		private void addEventsToMap(List<Event>events){
+			
+			for(Event event: events){
+				
+				eventsMap.put(event.getNoteID(), event);
+			}
+		}
+	
 		private List<Event> getTripViolations(List<Event> violations,Date startTime, Date endTime){
 			
 			List<Event> tripViolations = new ArrayList<Event>();
@@ -368,18 +410,18 @@ public class TeamTripsBean extends BaseBean {
 	 * 
 	 */
 		public class TeamTrip {
+			
 			private List<LatLng> route;
 		    private LatLng routeLastStep;
 		    private LatLng beginningPoint;
 		    private boolean inProgress;
 		    private Date startTime;
 		    private Date endTime;
-		    private List<LatLng> violations;
-		    private List<LatLng> idles;
-		    private List<LatLng> tampers;
-		    private List<Event> violationEvents;
-		    private List<Event> idleEvents;
-		    private List<Event> tamperEvents;
+		    private EventItem startEventItem;
+		    private EventItem endEventItem;
+		    private List<EventItem> violations;
+		    private List<EventItem> idles;
+		    private List<EventItem> tampers;
 		    
 		    public TeamTrip(Trip trip, 
 		    			    List<Event> violationEvents,
@@ -387,24 +429,60 @@ public class TeamTripsBean extends BaseBean {
 		    			    List<Event> tamperEvents,
 		    				int compressionFactor)
 		    {
-		        startTime = trip.getStartTime();
-		        endTime = trip.getEndTime();
-		        
+
 		        route = compressRoute(trip.getRoute(), compressionFactor);
-		        inProgress = trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);        
+		        
+		        //Need to fake start and end/progress events for trips
+		    	Event startEvent = new Event();
+		    	startEvent.setDriverID(trip.getDriverID());
+		        if(route.size() > 0)
+		        {
+		            beginningPoint = route.get(0);
+		            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
+			    	startEvent.setLatitude(beginningPoint.getLat());
+			    	startEvent.setLongitude(beginningPoint.getLng());
+		        }
+		    	startEvent.setTime(trip.getStartTime());
+		    	startEvent.setNoteID(trip.getStartTime().getTime());
+		    	startEvent.setType(-1);
+		    	startEventItem = new EventItem();
+		    	startEventItem.eventID = startEvent.getNoteID();
+		    	startEventItem.latLng = new LatLng(startEvent.getLatitude(), startEvent.getLongitude());
+		    	
+		    	eventsMap.put(startEvent.getNoteID(), startEvent);
+		    	
+		    	Event endEvent = new Event();
+		    	endEvent.setDriverID(trip.getDriverID());
 		        if(route.size() > 0)
 		        {
 		            routeLastStep = route.get(route.size()-1);
 		            routeLastStep.setLat(routeLastStep.getLat() + 0.00001);
-		            
-		            beginningPoint = route.get(0);
-		            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
+		            endEvent.setLatitude(routeLastStep.getLat());
+		            endEvent.setLongitude(routeLastStep.getLng());
 		        }
-		        this.violationEvents = violationEvents;
+		        endEvent.setTime(trip.getEndTime());
+		        endEvent.setNoteID(trip.getEndTime().getTime());
+		        if (trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS)){
+		        	
+		        	endEvent.setType(-2);
+		        }
+		        else {
+		        	
+		        	endEvent.setType(-3);
+		        }
+		        
+		    	endEventItem = new EventItem();
+		    	endEventItem.eventID = endEvent.getNoteID();
+		    	endEventItem.latLng = new LatLng(endEvent.getLatitude(), endEvent.getLongitude());
+
+		        eventsMap.put(endEvent.getNoteID(), endEvent);
+		        
+		        startTime = trip.getStartTime();
+		        endTime = trip.getEndTime();
+		        
+		        inProgress = trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);        
 		        violations =  getTripViolations(violationEvents);
-		        this.idleEvents = idleEvents;
 		        idles = getTripIdles(idleEvents);
-		        this.tamperEvents = tamperEvents;
 		        tampers = getTripTampers(tamperEvents);
 		    }
 		    private List<LatLng> compressRoute(List<LatLng> route, int compressionFactor){
@@ -418,33 +496,42 @@ public class TeamTripsBean extends BaseBean {
 		    	compressedRoute.add(route.get(route.size()-1));
 		    	return compressedRoute;
 		    }
-			private List<LatLng> getTripViolations(List<Event> violations){
+			private List<EventItem> getTripViolations(List<Event> violations){
 				
-				List<LatLng> tripViolations = new ArrayList<LatLng>();
+				List<EventItem> tripViolations = new ArrayList<EventItem>();
 				
 				for (Event event:violations){
 					
-					tripViolations.add(event.getLatLng());
+					EventItem eventItem = new EventItem();
+					eventItem.setEventID(event.getNoteID());
+					eventItem.setLatLng(event.getLatLng());
+					tripViolations.add(eventItem);
 				}
 				return tripViolations;
 			}
-			private List<LatLng> getTripIdles(List<Event> idles){
+			private List<EventItem> getTripIdles(List<Event> idles){
 				
-				List<LatLng> tripIdles = new ArrayList<LatLng>();
+				List<EventItem> tripIdles = new ArrayList<EventItem>();
 				
 				for (Event event:idles){
 					
-					tripIdles.add(event.getLatLng());
+					EventItem eventItem = new EventItem();
+					eventItem.setEventID(event.getNoteID());
+					eventItem.setLatLng(event.getLatLng());
+					tripIdles.add(eventItem);
 				}
 				return tripIdles;
 			}
-			private List<LatLng> getTripTampers(List<Event> tampers){
+			private List<EventItem> getTripTampers(List<Event> tampers){
 				
-				List<LatLng> tripTampers = new ArrayList<LatLng>();
+				List<EventItem> tripTampers = new ArrayList<EventItem>();
 				
 				for (Event event:tampers){
 					
-					tripTampers.add(event.getLatLng());
+					EventItem eventItem = new EventItem();
+					eventItem.setEventID(event.getNoteID());
+					eventItem.setLatLng(event.getLatLng());
+					tripTampers.add(eventItem);
 				}
 				return tripTampers;
 			}
@@ -485,41 +572,23 @@ public class TeamTripsBean extends BaseBean {
 			public void setInProgress(boolean inProgress) {
 				this.inProgress = inProgress;
 			}
-			public List<LatLng> getViolations() {
+			public List<EventItem> getViolations() {
 				return violations;
 			}
-			public void setViolations(List<LatLng> violations) {
+			public void setViolations(List<EventItem> violations) {
 				this.violations = violations;
 			}
-			public List<LatLng> getIdles() {
+			public List<EventItem> getIdles() {
 				return idles;
 			}
-			public void setIdles(List<LatLng> idles) {
+			public void setIdles(List<EventItem> idles) {
 				this.idles = idles;
 			}
-			public List<LatLng> getTampers() {
+			public List<EventItem> getTampers() {
 				return tampers;
 			}
-			public void setTampers(List<LatLng> tampers) {
+			public void setTampers(List<EventItem> tampers) {
 				this.tampers = tampers;
-			}
-			public List<Event> getViolationEvents() {
-				return violationEvents;
-			}
-			public void setViolationEvents(List<Event> violationEvents) {
-				this.violationEvents = violationEvents;
-			}
-			public List<Event> getIdleEvents() {
-				return idleEvents;
-			}
-			public void setIdleEvents(List<Event> idleEvents) {
-				this.idleEvents = idleEvents;
-			}
-			public List<Event> getTamperEvents() {
-				return tamperEvents;
-			}
-			public void setTamperEvents(List<Event> tamperEvents) {
-				this.tamperEvents = tamperEvents;
 			}
 			public Date getStartTime() {
 				return startTime;
@@ -533,8 +602,44 @@ public class TeamTripsBean extends BaseBean {
 			public void setEndTime(Date endTime) {
 				this.endTime = endTime;
 			}
+			public EventItem getStartEventItem() {
+				return startEventItem;
+			}
+			public void setStartEventItem(EventItem startEventItem) {
+				this.startEventItem = startEventItem;
+			}
+			public EventItem getEndEventItem() {
+				return endEventItem;
+			}
+			public void setEndEventItem(EventItem endEventItem) {
+				this.endEventItem = endEventItem;
+			}
 		}
-
+/**
+ * 
+ * Inner class EventItem to pass id and latlng to the client side in JSON
+ * 
+ * @author jacquiehoward
+ *
+ */
+	public class EventItem{
+		
+		private Long eventID;
+		private LatLng latLng;
+		
+		public Long getEventID() {
+			return eventID;
+		}
+		public void setEventID(Long eventID) {
+			this.eventID = eventID;
+		}
+		public LatLng getLatLng() {
+			return latLng;
+		}
+		public void setLatLng(LatLng latLng) {
+			this.latLng = latLng;
+		}
+	}
 	/**
 	 * 
 	 * Event data inner class
@@ -542,10 +647,9 @@ public class TeamTripsBean extends BaseBean {
 	 */
 	public class EventData{
 		
+		private Long eventID;
+		
 		private Integer driverID;
-		private String  eventType;
-		private Integer eventIndex;
-		private Integer tripNumber;
 		private Double lat;
 		private Double lng;
 
@@ -554,8 +658,22 @@ public class TeamTripsBean extends BaseBean {
 		private String eventName;
 		private String eventDescription;
 		
+		public EventData(Long eventID){
+			
+			this();
+			this.eventID = eventID;
+		}
 		public EventData() {
-
+			
+			driverName = "";
+			driverID = 0;
+			eventName = "";
+			eventDescription = "";
+		}
+		public void reset(){
+			
+			driverName = "";
+			driverID = 0;
 			eventName = "";
 			eventDescription = "";
 		}
@@ -570,24 +688,6 @@ public class TeamTripsBean extends BaseBean {
 		}
 		public void setDriverName(String driverName) {
 			this.driverName = driverName;
-		}
-		public Integer getEventIndex() {
-			return eventIndex;
-		}
-		public void setEventIndex(Integer eventIndex) {
-			this.eventIndex = eventIndex;
-		}
-		public String getEventType() {
-			return eventType;
-		}
-		public void setEventType(String eventType) {
-			this.eventType = eventType;
-		}
-		public Integer getTripNumber() {
-			return tripNumber;
-		}
-		public void setTripNumber(Integer tripNumber) {
-			this.tripNumber = tripNumber;
 		}
 		public String getTimeString() {
 			return timeString;
@@ -619,5 +719,45 @@ public class TeamTripsBean extends BaseBean {
 		public void setLng(Double lng) {
 			this.lng = lng;
 		}
+		public Long getEventID() {
+			return eventID;
+		}
+		public void setEventID(Long eventID) {
+			this.eventID = eventID;
+		}
+		public void createEventBubbleData(Event event){
+			
+			//Assumes eventID has been set
+			reset();
+			
+			//set driver's name
+			Integer driverId = event.getDriverID();
+			setDriverName(driversTripsMap.get(driverId).getDriverName());
+			if(event.getType() == -1){
+				
+				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString("TRIP_START")));
+			}
+			else if (event.getType() == -2){
+				
+				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString("TRIP_INPROGRESS")));
+			}
+			else if (event.getType() == -3){
+				
+				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString("TRIP_END")));
+			}
+			else {
+				
+				setEventName(MessageUtil.getMessageString(event.getEventType().toString()));
+		        setEventDescription(	event.getDetails(MessageUtil.getMessageString("redflags_details" +event.getEventType().name(),LocaleBean.getCurrentLocale()),
+						getMeasurementType(),
+						MessageUtil.getMessageString(getMeasurementType().toString()+"_mph")));
+			}
+	        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), getLocale());
+	        sdf.setTimeZone(getPerson().getTimeZone());
+	        setTimeString(sdf.format(event.getTime()));
+	        lat = event.getLatitude();
+	        lng = event.getLongitude();
+		}
+
 	}
 }
