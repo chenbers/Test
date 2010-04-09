@@ -16,23 +16,24 @@
 	
     <ui:define name="scripts">
        <style>
-       		.crashPanel {       		
-				width: 880px;
+       		.crashPanel {       
 				margin: auto;
 				padding: 4px;
 				text-align: center;
        		}
-       		.crashPanel td {
+       		.crashPanel table {
+       			margin: auto;
+       		}
+       		.crashPanel > table > tbody > tr > td {
        			vertical-align: middle;
+       			padding: 0px 8px;
        		}
        		.crashPanel #crashImage{
        			width: 25px;
        			height: 21px;
-       			padding
        		}
        		.crashPanel .divider {
-       			padding-left: 15px;
-       			padding-right: 15px;
+       			padding: 0 15px;
        		}
        		.crashPanelBoldValue {
        			font-size: 16px;
@@ -167,7 +168,7 @@
 		<!-- START CRASH SUMMARY PANEL -->
 	
                		<div class="crashPanel">
-					<table id="crashSummaryTable" cellpadding="0px" cellspacing="0" width="100%" class=""><tbody>
+					<table id="crashSummaryTable" cellpadding="0px" cellspacing="0"><tbody>
                         <tr>  
                         	<td>
                     				<ui:include src="/includes/scoreBox.xhtml">
