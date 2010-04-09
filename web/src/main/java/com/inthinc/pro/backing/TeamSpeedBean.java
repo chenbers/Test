@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
@@ -24,7 +25,6 @@ public class TeamSpeedBean extends BaseBean {
     
 //  Request scope bean for new team page 
     private static final long serialVersionUID = -2065512595055745287L;
-//    private static final String[] reds = {"#BB0000","#CC0000","#DD0000","#EE0000","#FF0000"};
     
     private Map<ScoreType, Map<String,String>> pieDefMap;
     private Map<ScoreType, Map<String,String>> newBarDefMap;
@@ -33,6 +33,7 @@ public class TeamSpeedBean extends BaseBean {
     private TeamCommonBean teamCommonBean;
     
     private HashMap<String,String> graphicLabels;
+    private HashMap<String,String> colors;
     
     private Integer totDrivers;
     private Integer totDriversSpeeding;
@@ -42,6 +43,15 @@ public class TeamSpeedBean extends BaseBean {
     private static final Logger logger = Logger.getLogger(TeamSpeedBean.class);
 
     public TeamSpeedBean() {
+        
+        // Get the colors for the table. 
+        ColorSelectorStandard css = new ColorSelectorStandard();
+        colors = new HashMap<String,String>();
+        colors.put("0", css.getEntityColorKey(19));
+        colors.put("1", css.getEntityColorKey(20));
+        colors.put("2", css.getEntityColorKey(21));
+        colors.put("3", css.getEntityColorKey(22));
+        colors.put("4", css.getEntityColorKey(23));
         
         // Get the labels for the graphs
         graphicLabels = new HashMap<String,String>();
@@ -125,6 +135,7 @@ public class TeamSpeedBean extends BaseBean {
         sb.append(pie.getControlParameters());
         sb.append(" caption = \'" + MessageUtil.getMessageString("teamSpeedPieLabel") + "\'>");
                
+        ColorSelectorStandard cs = new ColorSelectorStandard();
         if (scoreDataList.size() > 0) {
             ScoreableEntity se = null;
             for (int i = 0; i < scoreDataList.size(); i++)
@@ -135,9 +146,10 @@ public class TeamSpeedBean extends BaseBean {
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
                 sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'Worst offender(s): " + 
-                        worstOffenders.get(i)+ "\'" +                                                 
+                        worstOffenders.get(i)+ "\'" +   
+                      " color=\'" + (colors.get(String.valueOf(i))) + "\'/>");                        
 //                        " color=\'" + (reds[i]) + "\'/>");
-                        " color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
+//                        " color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
             }
         }
         
@@ -350,6 +362,14 @@ public class TeamSpeedBean extends BaseBean {
 
     public void setGraphicLabels(HashMap<String,String> graphicLabels) {
         this.graphicLabels = graphicLabels;
+    }
+
+    public HashMap<String, String> getColors() {
+        return colors;
+    }
+
+    public void setColors(HashMap<String, String> colors) {
+        this.colors = colors;
     }
 
     private List<ScoreableEntity> getScoreableEntitiesPie() {
