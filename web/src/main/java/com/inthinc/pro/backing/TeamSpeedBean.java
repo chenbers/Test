@@ -17,12 +17,14 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TeamSpeedBean extends BaseBean {
     
 //  Request scope bean for new team page 
     private static final long serialVersionUID = -2065512595055745287L;
+//    private static final String[] reds = {"#BB0000","#CC0000","#DD0000","#EE0000","#FF0000"};
     
     private Map<ScoreType, Map<String,String>> pieDefMap;
     private Map<ScoreType, Map<String,String>> newBarDefMap;
@@ -132,12 +134,14 @@ public class TeamSpeedBean extends BaseBean {
                 
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
-                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'Worst offender: " + 
+                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'Worst offender(s): " + 
                         worstOffenders.get(i)+ "\'" +                                                 
+//                        " color=\'" + (reds[i]) + "\'/>");
                         " color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
             }
         }
         
+        sb.append(GraphicUtil.getStyleString());
         sb.append(pie.getClose());
         return sb.toString();
     }
@@ -525,34 +529,69 @@ public class TeamSpeedBean extends BaseBean {
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             
         	String fullName = new String((dvsw.getDriver() == null || dvsw.getDriver().getPerson() == null) ? "" : dvsw.getDriver().getPerson().getFullName());
-            if ( dvsw.getScore().getSpeedEvents1() != null && 
-                 dvsw.getScore().getSpeedEvents1().intValue() > zeroToThirtyCount ) {
-                zeroToThirty = fullName;
-                zeroToThirtyCount = dvsw.getScore().getSpeedEvents1().intValue();
+        	fullName = fullName.trim();
+        	
+            if ( dvsw.getScore().getSpeedEvents1() != null ) {
+                
+                if (        dvsw.getScore().getSpeedEvents1().intValue() == zeroToThirtyCount &&
+                            dvsw.getScore().getSpeedEvents1().intValue() != 0 ) {
+                    zeroToThirty += ",&lt;BR&gt;" + fullName;
+                    
+                } else if ( dvsw.getScore().getSpeedEvents1().intValue() > zeroToThirtyCount ) {
+                    zeroToThirtyCount = dvsw.getScore().getSpeedEvents1().intValue();
+                    zeroToThirty = fullName;
+                }
             }
             
-            if ( dvsw.getScore().getSpeedEvents2() != null && 
-                 dvsw.getScore().getSpeedEvents2().intValue() > thirtyOneToFourtyCount ) {
-                thirtyOneToFourty = fullName;
-                thirtyOneToFourtyCount = dvsw.getScore().getSpeedEvents2().intValue();
+            if ( dvsw.getScore().getSpeedEvents2() != null ) {                  
+                
+                if (        dvsw.getScore().getSpeedEvents2().intValue() == thirtyOneToFourtyCount &&
+                            dvsw.getScore().getSpeedEvents2().intValue() != 0 ) {
+                    thirtyOneToFourty += ",&lt;BR&gt;" + fullName;
+                
+                } else if ( dvsw.getScore().getSpeedEvents2().intValue() > thirtyOneToFourtyCount ) {
+                    thirtyOneToFourtyCount = dvsw.getScore().getSpeedEvents2().intValue();
+                    thirtyOneToFourty = fullName;
+                }                
             }
             
-            if ( dvsw.getScore().getSpeedEvents3() != null && 
-                 dvsw.getScore().getSpeedEvents3().intValue() > fourtyOneToFiftyFourCount ) {
-                fourtyOneToFiftyFour = fullName;
-                fourtyOneToFiftyFourCount = dvsw.getScore().getSpeedEvents3().intValue();
+            if ( dvsw.getScore().getSpeedEvents3() != null ) {
+                
+                if (        dvsw.getScore().getSpeedEvents3().intValue() == fourtyOneToFiftyFourCount &&
+                            dvsw.getScore().getSpeedEvents3().intValue() != 0 ) {
+                    fourtyOneToFiftyFour += ",&lt;BR&gt;" + fullName;
+            
+                } else if ( dvsw.getScore().getSpeedEvents3().intValue() > fourtyOneToFiftyFourCount ) {
+                    fourtyOneToFiftyFourCount = dvsw.getScore().getSpeedEvents3().intValue();
+                    fourtyOneToFiftyFour = fullName;
+                }                  
+                
             }
             
-            if ( dvsw.getScore().getSpeedEvents4() != null && 
-                 dvsw.getScore().getSpeedEvents4().intValue() > fiftyFiveToSixtyFourCount ) {
-                fiftyFiveToSixtyFour = fullName;
-                fiftyFiveToSixtyFourCount = dvsw.getScore().getSpeedEvents4().intValue();
+            if ( dvsw.getScore().getSpeedEvents4() != null ) {
+                
+                if (        dvsw.getScore().getSpeedEvents4().intValue() == fiftyFiveToSixtyFourCount &&
+                            dvsw.getScore().getSpeedEvents4().intValue() != 0 ) {
+                    fiftyFiveToSixtyFour += ",&lt;BR&gt;" + fullName;
+        
+                } else if ( dvsw.getScore().getSpeedEvents4().intValue() > fiftyFiveToSixtyFourCount ) {
+                    fiftyFiveToSixtyFourCount = dvsw.getScore().getSpeedEvents4().intValue();
+                    fiftyFiveToSixtyFour = fullName;
+                }  
+                
             }
             
-            if ( dvsw.getScore().getSpeedEvents5() != null && 
-                 dvsw.getScore().getSpeedEvents5().intValue() > sixtyFiveAndUpCount ) {
-                sixtyFiveAndUp = fullName;
-                sixtyFiveAndUpCount = dvsw.getScore().getSpeedEvents5().intValue();
+            if ( dvsw.getScore().getSpeedEvents5() != null ) {
+                
+                if (        dvsw.getScore().getSpeedEvents5().intValue() == sixtyFiveAndUpCount &&
+                            dvsw.getScore().getSpeedEvents5().intValue() != 0 ) {
+                    sixtyFiveAndUp += ",&lt;BR&gt;" + fullName;
+    
+                } else if ( dvsw.getScore().getSpeedEvents5().intValue() > sixtyFiveAndUpCount ) {
+                    sixtyFiveAndUpCount = dvsw.getScore().getSpeedEvents5().intValue();
+                    sixtyFiveAndUp = fullName;
+                }                  
+                
             } 
               
         }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.util.GraphicUtil;
 
 public class Bar2DMultiAxisChart extends DateCategoryChart {
 
@@ -46,14 +47,8 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
     
 
 
-    private static final String CHART_CLOSE = "<styles>"+
-        "<definition>" +
-            "<style name=\'toolTipFont\' type=\'font\' isHTML=\'1\'/>" +
-        "</definition>" +
-        "<application>" +
-            "<apply toObject=\'TOOLTIP\' styles=\'toolTipFont\' />" +
-        "</application>" +
-    "</styles></chart>"; 
+    private static final String CHART_CLOSE = 
+        GraphicUtil.getStyleString() + "</chart>"; 
 
     
     private static final String SERIES_START = "<dataset seriesName=''{0}'' color=''{1}'' showValues=''0''>";

@@ -472,4 +472,15 @@ public class GraphicUtil {
 		
 		return new DecimalFormatSymbols(locale).getDecimalSeparator();
 	}
+	
+	public static final String getStyleString() {
+	    return "<styles>"+
+                    "<definition>" +
+                        "<style name=\'toolTipFont\' type=\'font\' isHTML=\'1\'/>" +
+                    "</definition>" +
+                    "<application>" +
+                        "<apply toObject=\'TOOLTIP\' styles=\'toolTipFont\' />" +
+                    "</application>" +
+               "</styles>";	    	    
+	}
 }
