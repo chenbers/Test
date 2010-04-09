@@ -524,33 +524,34 @@ public class TeamSpeedBean extends BaseBean {
         
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             
+        	String fullName = new String((dvsw.getDriver() == null || dvsw.getDriver().getPerson() == null) ? "" : dvsw.getDriver().getPerson().getFullName());
             if ( dvsw.getScore().getSpeedEvents1() != null && 
                  dvsw.getScore().getSpeedEvents1().intValue() > zeroToThirtyCount ) {
-                zeroToThirty = new String(dvsw.getDriver().getPerson().getFullName());
+                zeroToThirty = fullName;
                 zeroToThirtyCount = dvsw.getScore().getSpeedEvents1().intValue();
             }
             
             if ( dvsw.getScore().getSpeedEvents2() != null && 
                  dvsw.getScore().getSpeedEvents2().intValue() > thirtyOneToFourtyCount ) {
-                thirtyOneToFourty = new String(dvsw.getDriver().getPerson().getFullName());
+                thirtyOneToFourty = fullName;
                 thirtyOneToFourtyCount = dvsw.getScore().getSpeedEvents2().intValue();
             }
             
             if ( dvsw.getScore().getSpeedEvents3() != null && 
                  dvsw.getScore().getSpeedEvents3().intValue() > fourtyOneToFiftyFourCount ) {
-                fourtyOneToFiftyFour = new String(dvsw.getDriver().getPerson().getFullName());
+                fourtyOneToFiftyFour = fullName;
                 fourtyOneToFiftyFourCount = dvsw.getScore().getSpeedEvents3().intValue();
             }
             
             if ( dvsw.getScore().getSpeedEvents4() != null && 
                  dvsw.getScore().getSpeedEvents4().intValue() > fiftyFiveToSixtyFourCount ) {
-                fiftyFiveToSixtyFour = new String(dvsw.getDriver().getPerson().getFullName());
+                fiftyFiveToSixtyFour = fullName;
                 fiftyFiveToSixtyFourCount = dvsw.getScore().getSpeedEvents4().intValue();
             }
             
             if ( dvsw.getScore().getSpeedEvents5() != null && 
                  dvsw.getScore().getSpeedEvents5().intValue() > sixtyFiveAndUpCount ) {
-                sixtyFiveAndUp = new String(dvsw.getDriver().getPerson().getFullName());
+                sixtyFiveAndUp = fullName;
                 sixtyFiveAndUpCount = dvsw.getScore().getSpeedEvents5().intValue();
             } 
               
