@@ -112,21 +112,21 @@
 							</f:facet>												
 						
 							<rich:column width="17%">
-								<h:outputText id="zeroToThirty" value="#{item['zeroToThirty']}" style="color:#{teamSpeedBean.colors['0']};font-style:bold;"/>                        		
+								<h:outputText id="zeroToThirty" value="#{item['zeroToThirty']}" style="color:#{teamSpeedBean.colors['0']};font-style:bold;font-size:12px;"/>                        		
 							</rich:column>
 							<rich:column width="17%">
-								<h:outputText id="thirtyOneToFourty" value="#{item['thirtyOneToFourty']}" style="color:#{teamSpeedBean.colors['1']};font-style:bold;"/>                      		
+								<h:outputText id="thirtyOneToFourty" value="#{item['thirtyOneToFourty']}" style="color:#{teamSpeedBean.colors['1']};font-style:bold;font-size:12px;"/>                      		
 							</rich:column>
 							<rich:column width="17%">
-								<h:outputText id="fourtyOneToFiftyFour" value="#{item['fourtyOneToFiftyFour']}" style="color:#{teamSpeedBean.colors['2']};font-style:bold;"/>                       		
+								<h:outputText id="fourtyOneToFiftyFour" value="#{item['fourtyOneToFiftyFour']}" style="color:#{teamSpeedBean.colors['2']};font-style:bold;font-size:12px;"/>                       		
 							</rich:column>
 							<rich:column width="16%">																					
-								<h:outputText id="fiftyFiveToSixtyFour" value="#{item['fiftyFiveToSixtyFour']}" style="color:#{teamSpeedBean.colors['3']};font-style:bold;"/>                    		
+								<h:outputText id="fiftyFiveToSixtyFour" value="#{item['fiftyFiveToSixtyFour']}" style="color:#{teamSpeedBean.colors['3']};font-style:bold;font-size:12px;"/>                    		
 							</rich:column>
 							<rich:column width="16%">
-								<h:outputText id="sixtyFiveAndUp" value="#{item['sixtyFiveAndUp']}" style="color:#{teamSpeedBean.colors['4']};font-style:bold;"/>                    		
+								<h:outputText id="sixtyFiveAndUp" value="#{item['sixtyFiveAndUp']}" style="color:#{teamSpeedBean.colors['4']};font-style:bold;font-size:12px;"/>                    		
 							</rich:column>	
-							<rich:column width="16%">
+							<rich:column width="16%" style="color:#{teamSpeedBean.colors['4']};font-style:bold;font-size:12px;">
 								#{item['zeroToThirty'] + item['thirtyOneToFourty'] + item['fourtyOneToFiftyFour'] + item['fiftyFiveToSixtyFour'] + item['sixtyFiveAndUp']}                         		
 							</rich:column>														
 						</rich:dataTable>
