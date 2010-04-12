@@ -99,30 +99,30 @@
 								</rich:columnGroup>		
 							</f:facet>		
 							
-							<rich:column width="15%">
+							<rich:column width="15%" style="font-style:bold;font-size:12px;">
 								#{item['nA']}                        		
 							</rich:column>							
 							<rich:column width="15%">
 								<h:outputText id="zeroToOneData" value="#{item['zeroToOne']}"
-									style="color:#FF0101;font-style:bold;"></h:outputText>                        		
+									style="color:#FF0101;font-style:bold;font-size:12px;"></h:outputText>                        		
 							</rich:column>
 							<rich:column width="14%">
 								<h:outputText id="oneToTwoData" value="#{item['oneToTwo']}"
-								    style="color:#FF6601;font-style:bold;"></h:outputText>                        		
+								    style="color:#FF6601;font-style:bold;font-size:12px;"></h:outputText>                        		
 							</rich:column>
 							<rich:column width="14%">
 								<h:outputText id="twoToThreeData" value="#{item['twoToThree']}"
-									style="color:#F6B305;font-style:bold;"></h:outputText>                            		
+									style="color:#F6B305;font-style:bold;font-size:12px;"></h:outputText>                            		
 							</rich:column>
 							<rich:column width="14%">																					
 								<h:outputText id="threeToFourData" value="#{item['threeToFour']}"
-									style="color:##1E88C8;font-style:bold;"></h:outputText>                            		
+									style="color:##1E88C8;font-style:bold;font-size:12px;"></h:outputText>                            		
 							</rich:column>
 							<rich:column width="14%">
 								<h:outputText id="fourToFiveData" value="#{item['fourToFive']}"
-									style="color:#6B9D1B;font-style:bold;"></h:outputText>                            		
+									style="color:#6B9D1B;font-style:bold;font-size:12px;"></h:outputText>                            		
 							</rich:column>		
-							<rich:column width="14%">
+							<rich:column width="14%" style="font-style:bold;font-size:12px;">
 								#{item['nA'] + item['zeroToOne'] + item['oneToTwo'] + item['twoToThree'] + item['threeToFour'] + item['fourToFive']}                         		
 							</rich:column>	
 						</rich:dataTable>
