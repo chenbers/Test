@@ -1,4 +1,3 @@
-	var map;
 	var tripIcons;
 	
 	// This set of arrays stores all the trip data
@@ -136,7 +135,7 @@
 		icon.iconAnchor = new GPoint(0, 0);
 		icon.infoWindowAnchor = new GPoint(21, 21);
 			
-		var markerClustererOptions = {'maxStacked':4,
+		var markerClustererOptions = {'maxStacked':3,
 									  'customClusters':true,
 									  'gridSize_x':100,
 									  'gridSize_y':80};
@@ -287,34 +286,15 @@
 		  	clickedMarker.openInfoWindow(windowElement);
     	});
     }
-///**
-// * Step 3 to display event data in a marker infoWindow
-// * Function called in the callback function on return from the geocoder request. 
-// * Fills up the event bubble in the new_teamTrips.xhtml page using JSON data returned
-// * by a4j:jsFunction getTripBubbleData
-// * 
-// * @param eventData - JSON data from TeamTripsBean.EventData
-// * @param address - address returned by the geocoder
-// * @return
-// */   
-//	function displayBubble(eventData, address){
-//		
-//	  	var windowElementTemplate = document.getElementById("bubbleElement");
-//		
-////	  	document.getElementById("teamBubbleForm:bubbleTitle").innerHTML = eventData.eventName;
-////	  	document.getElementById("teamBubbleForm:teamBubbleDriver").innerHTML = eventData.driverName;
-////	  	var pretty = document.getElementById("teamBubbleForm:teamBubbleDriverLink");
-////	  	pretty.href = pretty.href+eventData.driverID;
-//	  	document.getElementById("teamBubbleForm:teamBubbleAddress").innerHTML=address;
-////	  	document.getElementById("teamBubbleForm:teamBubbleTime").innerHTML = eventData.timeString;
-////	  	document.getElementById("teamBubbleForm:teamBubbleDescription").innerHTML = eventData.eventDescription;
-//	  	
-//		var windowElement = windowElementTemplate.cloneNode(true);	
-//	  	windowElement.style.display = 'block';
-//	  	clickedMarker.openInfoWindow(windowElement);
-//	
-//	}
-    function getAddress(index){
+    /**
+     * Gets the address for a cluster bubble event.  
+     * The countdown set up in the calling function is decremented.  If the countDown is 0 then
+     * all the addresses have been added to the bubble and it can be displayed.
+     * 
+     * @param index
+     * @return
+     */
+    function getAddressForClusterBubbleEvent(index){
 	  	var addressElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":clusterEventAddress");
 	  	var latElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":lat");
 	  	var lngElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":lng");
@@ -335,6 +315,7 @@
 	        }
     	  	addressElement.innerHTML=address;
 	        if (countDown==0){
+	        	
 	        	var windowElementTemplate = document.getElementById("clusterBubbleTable");
 	    		var windowElement = windowElementTemplate.cloneNode(true);	
 	    	  	windowElement.style.display = 'block';
@@ -343,7 +324,14 @@
 
     	});
     }
-
+/**
+ * For each event covered by a cluster get the address
+ * 
+ * The countdown is set to the number of events and is decremented in getAddressForClusterBubbleEvent
+ * when it reaches 0 all the reverse geocoding requests will have returned and the bubble will be shown
+ * 
+ * @return
+ */
     function addAddressesToClusterBubble(){
     	
 		if (geocoder == null) geocoder = new GClientGeocoder();
@@ -354,7 +342,7 @@
 	  	
 	  	for(var i= 0; i<numberOfEvents; i++){
 	  		
-	  		getAddress(i);
+	  		getAddressForClusterBubbleEvent(i);
 	  	}
     }
 /**
@@ -411,7 +399,7 @@
 					}
 					length = driverTrips.trips[j].idles.length;
 					for(var k=0; k<length; k++){
-						var idle = new GLatLng(driverTrips.trips[j].idles[k].lat,driverTrips.trips[j].idles[k].lng);
+						var idle = new GLatLng(driverTrips.trips[j].idles[k].latLng.lat,driverTrips.trips[j].idles[k].latLng.lng);
 						marker = createLabeledMarker(idle,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[4]),
 									driverTrips.trips[j].idles[k].eventID);
@@ -420,7 +408,7 @@
 					}
 					length = driverTrips.trips[j].tampers.length;
 					for(var k=0; k<length; k++){
-						var tamper = new GLatLng(driverTrips.trips[j].tampers[k].lat,driverTrips.trips[j].tampers[k].lng);
+						var tamper = new GLatLng(driverTrips.trips[j].tampers[k].latLng.lat,driverTrips.trips[j].tampers[k].latLng.lng);
 						marker = createLabeledMarker(tamper,tripIcons[6],
 									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[5]),
 									driverTrips.trips[j].tampers[k].eventID);
@@ -479,7 +467,7 @@
  * @param driverIndex
  * @return
  */
-	 function addTripOverlaysToMap(driverIndex){
+	 function addTripOverlaysToMap(map, driverIndex){
 		 
 		 var overlays = overlaysArray[driverIndex];
 		 var overlaysLength = overlays.length; 
@@ -525,9 +513,9 @@
  * @param driverIndex
  * @return
  */
-	 function showNewTrips(driverIndex){
+	 function showNewTrips(map,driverIndex){
 		 
-		 addTripOverlaysToMap(driverIndex);
+		 addTripOverlaysToMap(map,driverIndex);
 		 bounds = calculateTripBounds();
 		 
 		 if (bounds != null){
@@ -548,7 +536,7 @@
  * @param driverTrips
  * @return
  */
-	function addDriverTrips(pageIndex, driverTrips){
+	function addDriverTrips(map, pageIndex, driverTrips){
 
 		var i = findDriver(driverTrips.driverID);
 		 
@@ -573,7 +561,7 @@
 			 createTripOverlays(driverTrips,i);
 			 boundsArray[i] = calculateBounds(overlaysArray[i]);
 		}
-		showNewTrips(i);
+		showNewTrips(map, i);
 	 }
 	 
 /**
@@ -582,7 +570,7 @@
  * @param index - the index of the data arrays that represent this driver
  * @return
  */
-	function showExistingDriverTrips(driverIndex){
+	function showExistingDriverTrips(map, driverIndex){
 		
 		tripsSelected[driverIndex] = true;
 		
@@ -605,7 +593,7 @@
  * @param driverTrips - trip data
  * @return
  */
-	function processDriverTrips(pageIndex, driverTrips){
+	function processDriverTrips(map, pageIndex, driverTrips){
 		
 		// i will be the index of the data arrays that contains existing data
 		// for this driver.
@@ -620,12 +608,12 @@
 			}
 			else {
 				
-				showExistingDriverTrips(i);
+				showExistingDriverTrips(map,i);
 			}
 		}
 		else{
 			
-			addDriverTrips(pageIndex,driverTrips);
+			addDriverTrips(map, pageIndex,driverTrips);
 		}
 	}
 /**
@@ -633,7 +621,7 @@
  * 
  * @return
  */	
-	function clearDownTrips(){
+	function clearDownTrips(map){
 
 		if(map){
 			
@@ -658,7 +646,7 @@
  * @param driversTrips 
  * @return
  */
-	function redisplayAllTrips(driversTrips){
+	function redisplayAllTrips(map, driversTrips){
 			
 		var length = driversTrips.length;
 		for (var i=0;i<length;i++){
@@ -667,7 +655,7 @@
 			
 			if(colorIndex > -1){
 				
-				processDriverTrips(colorArray[colorIndex],driversTrips[i]);
+				processDriverTrips(map, colorArray[colorIndex],driversTrips[i]);
 			}
 		}
 	}
@@ -677,9 +665,9 @@
  * 
  * @return
  */	
-    function resetTripsForSelectedDrivers(){
+    function resetTripsForSelectedDrivers(map){
     	
-       	clearDownTrips();
+       	clearDownTrips(map);
        	getLatestTrips(); //a4j:jsFunction gets trip data from backing bean
     }
     

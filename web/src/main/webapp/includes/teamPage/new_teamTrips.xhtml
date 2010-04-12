@@ -48,6 +48,9 @@
 	
 	<script type="text/javascript">
 	
+	window.TeamTrips = {};
+
+
 	var icons = [	"#{request.contextPath}/images/green_circle.png",
 					"#{request.contextPath}/images/yellow_circle.png", 
 					"#{request.contextPath}/images/red_circle.png", 
@@ -63,23 +66,23 @@
 		
 		if (GBrowserIsCompatible()) {					
 			GUnload();
-			map = new GMap2(document.getElementById("map-canvas"));						
-			map.addControl(new GLargeMapControl());
-			map.addControl(new GMapTypeControl());
-			map.addControl(new GOverviewMapControl()); 
-			map.setMapType(G_NORMAL_MAP);
-			map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
+			TeamTrips.map = new GMap2(document.getElementById("map-canvas"));						
+			TeamTrips.map.addControl(new GLargeMapControl());
+			TeamTrips.map.addControl(new GMapTypeControl());
+			TeamTrips.map.addControl(new GOverviewMapControl()); 
+			TeamTrips.map.setMapType(G_NORMAL_MAP);
+			TeamTrips.map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
 
-			initTeamTripsClusters(map,icons);
+			initTeamTripsClusters(TeamTrips.map,icons);
 		}
 	}
 	var dayClickFunction = function(event){
-	   	resetTripsForSelectedDrivers();
+	   	resetTripsForSelectedDrivers(TeamTrips.map);
 	};
 		
 	function onTripTabSelectionComplete(){		
 		initTeamTripsMap();
-		resetTripsForSelectedDrivers();
+		resetTripsForSelectedDrivers(TeamTrips.map);
 		initTripTimeFrameChangeListener();
 	}
 
@@ -88,7 +91,7 @@
 		Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
 		Team.getSelectedTab()
 		.bind('timeFrameChange', function(){
-			resetTripsForSelectedDrivers();
+			resetTripsForSelectedDrivers(TeamTrips.map);
 			Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
 			Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
 		});
@@ -129,7 +132,7 @@
                 <h:selectBooleanCheckbox id="checkDriver" value="#{driverTrips.driverSelected}" >
                   <a4j:support event="onclick" status="teamStatus" eventsQueue="tripsQueue" 
                   				action="#{driverTrips.selectivelyLoadTrips}" data="#{driverTrips}" 
-                  				oncomplete="processDriverTrips(#{index},data)" ajaxSingle="true">
+                  				oncomplete="processDriverTrips(TeamTrips.map, #{index}, data)" ajaxSingle="true">
                    </a4j:support>
                   				
                 </h:selectBooleanCheckbox>
@@ -156,7 +159,7 @@
             		 				eventsQueue="tripsQueue"/>
             		 
 		<a4j:jsFunction id="getLatestTrips" ajaxSingle="true" status="teamStatus" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
-				eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(data)"/>
+				eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(TeamTrips.map,data)"/>
 				
 		<a4j:jsFunction id="getTripBubbleData" ajaxSingle="true" status="teamStatus" name="getTripBubbleData" action="#{teamTripsBean.createEventBubbleData}" reRender="teamBubbleForm" data="#{teamTripsBean.eventData}" 
 						eventsQueue="tripsQueue" oncomplete="getAddressForBubble(data)">
@@ -186,7 +189,9 @@
 	                </pretty:link>
 			
 	                <h:outputText>Time:</h:outputText>
-					<h:outputText id="teamBubbleTime" value="#{teamTripsBean.eventData.timeString}"/>
+					<h:outputText id="teamBubbleTime" value="#{teamTripsBean.eventData.eventTime}">
+						<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{teamTripsBean.person.timeZone}" />
+					</h:outputText>
 					<h:outputText>#{messages.livefleet_address}:</h:outputText>
 					<h:outputText id="teamBubbleAddress"/>
 					</h:panelGrid>
@@ -226,7 +231,9 @@
 					<f:facet name="header">
 						<h:outputText value="#{messages.teamPage_eventTime}"/>
 					</f:facet>
-					<h:outputText value="#{clusterEvent.timeString}"/>
+					<h:outputText value="#{clusterEvent.eventTime}">
+						<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{teamTripsBean.person.timeZone}" />
+					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">
