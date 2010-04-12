@@ -21,7 +21,12 @@
             <div class="panel_w">
                <div class="panel_content">
                  <p>
-                     #{errorTranslatorBean.errorAccessDeniedMsg}
+                     
+                 	<h:outputText id="msgIdUS" rendered="#{externalConfigBean.phoneNumber02 == ''}" 
+                 		value="#{errorTranslatorBean.errorAccessDeniedMsg} #{externalConfigBean.phoneNumber01}."/>
+                 	<h:outputText id="msgIdOther" rendered="#{externalConfigBean.phoneNumber02 != ''}" 
+                 		value="#{errorTranslatorBean.errorAccessDeniedMsg} #{externalConfigBean.phoneNumber01} or #{externalConfigBean.phoneNumber02}."/>                 		
+                     
                      
                      <h:inputHidden value="#{errorBean.stackTrace}" />
                  </p>

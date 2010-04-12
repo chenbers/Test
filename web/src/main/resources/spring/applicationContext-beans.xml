@@ -385,7 +385,7 @@
     <property name="layers" value="${wms.layers}" />
     <property name="layerQueryParam" value="${wms.layer.queryparam}" />
   </bean>
-  <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean">
+  <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean">
     <property name="phoneNumber01" value="${externalConfig.phone01}" />
     <property name="phoneNumber02" value="${externalConfig.phone02}" />
   </bean>
