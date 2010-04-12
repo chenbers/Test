@@ -9,13 +9,13 @@
   			xmlns:security="http://www.springframework.org/security/tags">
 
 	<ui:define name="scripts">
+		<a4j:loadScript src="/js/jquery.address-1.2rc.min.js"/>
 		<script type="text/javascript">
 			jQuery(function(){
-				//alert(jQuery.address.value());
 				var hash = jQuery.address.value();
-				if(hash != ""){
+				if(hash != "/"){
 					var action = jQuery("#loginForm").attr("action");
-					jQuery("#loginForm").attr("action",action + hash);
+					jQuery("#loginForm").attr("action",action + "#" + hash);
 				}
 			});
 		</script>

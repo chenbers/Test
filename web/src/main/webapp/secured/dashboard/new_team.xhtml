@@ -15,7 +15,7 @@
 	<ui:param name="title" value="#{messages.team_team} - #{teamCommonBean.group.name}"/>
 	
     <ui:define name="scripts">
-		
+	   <a4j:loadScript src="/js/jquery.address-1.2rc.min.js"/>
        <style>
        		.crashPanel {       
 				margin: auto;
@@ -93,9 +93,7 @@
 		<tiwi:conditionalCSS browserVersion="IE">
 			<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/excanvas.pack.js"></script>
 		</tiwi:conditionalCSS>
-		
-		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.address-1.2rc.min.js"></script>
-        
+    
 	    <script language="javascript" type="text/javascript">
 	    	window.Team = {};
 			function bodyLoad() {}
