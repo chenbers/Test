@@ -145,7 +145,7 @@ public class TeamSpeedBean extends BaseBean {
                 
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
-                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'Worst offender(s): " + 
+                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'Worst offender(s): &lt;BR&gt;" + 
                         worstOffenders.get(i)+ "\'" +   
                       " color=\'" + (colors.get(String.valueOf(i))) + "\'/>");                        
 //                        " color=\'" + (reds[i]) + "\'/>");
@@ -616,11 +616,11 @@ public class TeamSpeedBean extends BaseBean {
               
         }
         
-        worst.add(zeroToThirty + ", " + String.valueOf(zeroToThirtyCount));
-        worst.add(thirtyOneToFourty + ", " + String.valueOf(thirtyOneToFourtyCount));
-        worst.add(fourtyOneToFiftyFour + ", " + String.valueOf(fourtyOneToFiftyFourCount));
-        worst.add(fiftyFiveToSixtyFour + ", " + String.valueOf(fiftyFiveToSixtyFourCount));
-        worst.add(sixtyFiveAndUp + ", " + String.valueOf(sixtyFiveAndUpCount));
+        worst.add(zeroToThirty + ", &lt;BR&gt;" + String.valueOf(zeroToThirtyCount) + " event(s)");
+        worst.add(thirtyOneToFourty + ", &lt;BR&gt;" + String.valueOf(thirtyOneToFourtyCount) + " event(s)");
+        worst.add(fourtyOneToFiftyFour + ", &lt;BR&gt;" + String.valueOf(fourtyOneToFiftyFourCount) + " event(s)");
+        worst.add(fiftyFiveToSixtyFour + ", &lt;BR&gt;" + String.valueOf(fiftyFiveToSixtyFourCount) + " event(s)");
+        worst.add(sixtyFiveAndUp + ", &lt;BR&gt;" + String.valueOf(sixtyFiveAndUpCount) + " event(s)");
         
         return worst;
     }    
