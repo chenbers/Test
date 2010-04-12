@@ -65,6 +65,7 @@ public abstract class BaseTableColumns extends BaseBean {
 	public void initTablePreference()
     {
         List<TablePreference> tablePreferenceList = getTablePreferenceDAO().getTablePreferencesByUserID(getUser().getUserID());
+        boolean found = false;
         for (TablePreference pref : tablePreferenceList)
         {
             if (pref.getTableType().equals(getTableType()))
@@ -75,12 +76,22 @@ public abstract class BaseTableColumns extends BaseBean {
                 if (pref.getVisible().size() != columnCount)
                 {
                     getTablePreferenceDAO().deleteByID(pref.getTablePrefID());
-                    break;
                 }
-                setTablePreference(pref);
-                return;
+                else {
+                	if (found) {
+                		// duplicate for this user/table type, so delete it
+                        getTablePreferenceDAO().deleteByID(pref.getTablePrefID());
+                        logger.info("delete duplicate table pref for userID: " + getUser().getUserID() + " table type: " + getTableType());
+                	}
+                	else {
+                		setTablePreference(pref);
+                		found = true;
+                	}
+                }
             }
         }
+        if (found)
+        	return;
         TablePreference pref = new TablePreference();
         pref.setUserID(getUser().getUserID());
         pref.setTableType(getTableType());

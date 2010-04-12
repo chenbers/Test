@@ -99,6 +99,7 @@ public class TablePref<T>
     public void initTablePreference()
     {
         List<TablePreference> tablePreferenceList = tablePrefOptions.getTablePreferenceDAO().getTablePreferencesByUserID(tablePrefOptions.getUserID());
+        boolean found = false;
         for (TablePreference pref : tablePreferenceList)
         {
             if (pref.getTableType().equals(tablePrefOptions.getTableType()))
@@ -108,13 +109,24 @@ public class TablePref<T>
                 // in this case delete from db and re-init to all visible
                 if (pref.getVisible().size() != columnCount)
                 {
-                    tablePrefOptions.getTablePreferenceDAO().deleteByID(pref.getTablePrefID());
-                    break;
+                	tablePrefOptions.getTablePreferenceDAO().deleteByID(pref.getTablePrefID());
                 }
-                setTablePreference(pref);
-                return;
+                else {
+                	if (found) {
+                		// duplicate for this user/table type, so delete it
+                		tablePrefOptions.getTablePreferenceDAO().deleteByID(pref.getTablePrefID());
+                        logger.info("delete duplicate table pref for userID: " + tablePrefOptions.getUserID() + " table type: " + tablePrefOptions.getTableType());
+                	}
+                	else {
+                		setTablePreference(pref);
+                		found = true;
+                	}
+                }
             }
         }
+        if (found)
+        	return;
+        
         TablePreference pref = new TablePreference();
         pref.setUserID(tablePrefOptions.getUserID());
         pref.setTableType(tablePrefOptions.getTableType());
