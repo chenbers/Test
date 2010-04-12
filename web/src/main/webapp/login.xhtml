@@ -9,16 +9,16 @@
   			xmlns:security="http://www.springframework.org/security/tags">
 
 	<ui:define name="scripts">
-		<script type="text/javascript">
+		<script type="text/javascript"><!--
 			jQuery(function(){
-				alert(jQuery.address.value());
+				//alert(jQuery.address.value());
 				var hash = jQuery.address.value();
 				if(hash != ""){
 					var action = jQuery("#loginForm").attr("action");
 					jQuery("#loginForm").attr("action",action + hash);
 				}
 			});
-		</script>
+		--></script>
 	</ui:define>
 	<ui:define name="header">
   		<ui:include src="/includes/loginHeader.xhtml"/>
