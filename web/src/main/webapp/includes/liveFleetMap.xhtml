@@ -96,6 +96,7 @@
 			errorMessage = "#{messages.sbs_badLatLng}"
 			addressLookupAddressFormat = #{driverLocationBean.addressFormat};	    	
 		}
+		
 		function refreshMap()
 		{
 			mapNeedsInit = false;
@@ -110,6 +111,10 @@
 				fillBubbleMarker(obj.itemID,obj.subID);
 			}		
 		}  	
+
+		jQuery(function(){
+			bodyLoad();
+		});
 
 	</script>
  	

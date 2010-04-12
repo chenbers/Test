@@ -15,6 +15,7 @@
 	<ui:param name="title" value="#{messages.team_team} - #{teamCommonBean.group.name}"/>
 	
     <ui:define name="scripts">
+		
        <style>
        		.crashPanel {       
 				margin: auto;
@@ -69,7 +70,6 @@
 				padding: 0px;
 			}
 			
-			
 			.rich-table-footercell {
 			 	background-color: #EBFFCA;
 			 	border: 1px;
@@ -90,9 +90,11 @@
     			cursor: default;
 			}
 		</style>
-	<tiwi:conditionalCSS browserVersion="IE">
-		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/excanvas.pack.js"></script>
-	</tiwi:conditionalCSS>
+		<tiwi:conditionalCSS browserVersion="IE">
+			<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/excanvas.pack.js"></script>
+		</tiwi:conditionalCSS>
+		
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/jquery.address-1.2rc.min.js"></script>
         
 	    <script language="javascript" type="text/javascript">
 	    	window.Team = {};
@@ -118,12 +120,31 @@
 			Team.timeFrameChange = function() {
 				Team.getSelectedTab().triggerHandler('timeFrameChange');
 			}
-			
-			jQuery().ready(function(){
-				//jQuery("#timeFrameForm > a.timeframe-link").live('click', Team.timeFrameChange);
-			});
 
-					
+			Team.tabChange = function(tab){
+				//Set the has to be the id of the selected tab
+				jQuery.address.value("/tab/" + Team.getSelectedTabId().replace("_lbl",""));
+				return false;
+			}
+
+			Team.selectTab = function(tabId){
+				var clickableTabElementId = "#" + tabId + "_shifted";
+				//jQuery(clickableTabElementId).click();
+				selectTab(tabId);
+			}
+
+			
+			jQuery(function(){
+				tabId = jQuery.address.pathNames()[1];
+				Team.selectTab(tabId);	
+				
+				jQuery.address.change(function(){
+					var tabId = jQuery.address.pathNames()[1];
+					if(tabId != Team.getSelectedTabId().replace("_lbl","")){
+						Team.selectTab(tabId);
+					}
+				});
+			});	
 		</script>	
 						
     </ui:define>
@@ -316,12 +337,17 @@
 				</a4j:outputPanel>		  	
      	 	</div>
 		</div>    
-    							 	 	
+    	
+    						 	 	
 	    <div class="panel_w">
-	       <div class="panel_content">   	 
-	    
-	        <a4j:outputPanel id="overallTeamPanel">    							
-				<rich:tabPanel id="teamTabPanel" binding="#{teamCommonBean.teamTabPanel}" switchType="ajax">
+	       	<div class="panel_content">   
+	       	<a4j:form>
+		       	<a4j:jsFunction ajaxSingle="true" name="selectTab" reRender="overallTeamPanel">
+		        		<a4j:actionparam id="tabId" name="tabId" assignTo="#{teamCommonBean.selectedTabId}"/>
+		        </a4j:jsFunction>	 
+	        </a4j:form>
+	        <a4j:outputPanel id="overallTeamPanel">    					
+				<rich:tabPanel id="teamTabPanel" binding="#{teamCommonBean.teamTabPanel}" selectedTab="#{teamCommonBean.selectedTabId}" switchType="ajax">
                		<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_liveTeamMap.xhtml"/>

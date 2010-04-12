@@ -25,6 +25,7 @@ public class TeamCommonBean extends BaseBean {
 
     private TimeFrame timeFrame = TimeFrame.ONE_DAY_AGO;
     private UITabPanel teamTabPanel;
+    private String selectedTabId;
     
     private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = new HashMap<String,List<DriverVehicleScoreWrapper>>();
     
@@ -106,4 +107,12 @@ public class TeamCommonBean extends BaseBean {
     public void setCachedResults(Map<String, List<DriverVehicleScoreWrapper>> cachedResults) {
         this.cachedResults = cachedResults;
     }
+
+	public void setSelectedTabId(String selectedTabId) {
+		this.selectedTabId = selectedTabId;
+	}
+
+	public String getSelectedTabId() {
+		return selectedTabId;
+	}
 }

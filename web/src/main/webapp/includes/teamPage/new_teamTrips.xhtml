@@ -95,7 +95,12 @@
 	}
 		
  </script>
-    <rich:tab id="teamTrips" ontableave=""  oncomplete="onTripTabSelectionComplete();" >
+    <rich:tab id="teamTrips" oncomplete="Team.tabChange();">
+    	<script language="javascript" type="text/javascript">
+    		jQuery(function(){
+				onTripTabSelectionComplete();
+			});
+    	</script>
    	
 	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">

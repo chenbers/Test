@@ -11,7 +11,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
 
-	<rich:tab  id="teamStatistics">
+	<rich:tab  id="teamStatistics" oncomplete="Team.tabChange();">
 		<a4j:keepAlive beanName="teamStatisticsTableColumns" />
 	
 	 	<ui:param name="tableColumns" value="#{teamStatisticsTableColumns.tableColumns}" />

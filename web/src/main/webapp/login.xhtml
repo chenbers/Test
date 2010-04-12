@@ -9,6 +9,16 @@
   			xmlns:security="http://www.springframework.org/security/tags">
 
 	<ui:define name="scripts">
+		<script type="text/javascript">
+			jQuery(function(){
+				alert(jQuery.address.value());
+				var hash = jQuery.address.value();
+				if(hash != ""){
+					var action = jQuery("#loginForm").attr("action");
+					jQuery("#loginForm").attr("action",action + hash);
+				}
+			});
+		</script>
 	</ui:define>
 	<ui:define name="header">
   		<ui:include src="/includes/loginHeader.xhtml"/>
@@ -50,7 +60,7 @@
    
 	<div class="panel_w">
 	  <div class="panel_content">
-		<form action="#{facesContext.externalContext.requestContextPath}/security_filter" method="post">
+		<form id="loginForm" action="#{facesContext.externalContext.requestContextPath}/security_filter" method="post">
 		<table width="100%" border="0" cellspacing="0" cellpadding="4">
 		  <tr>
 			<td><h:outputText value="#{messages.login_username}:"/></td>
