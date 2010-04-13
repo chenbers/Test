@@ -28,13 +28,15 @@
 	  font-size:12px
 	}
 	.trips_color {
+		position:absolute;
+		top:2px;
+		left:0;
 		color: black;
-		width:14px;
-		height:13px;
+		width:16px;
+		height:15px;
 		vertical-align:middle;
-		padding-top:2px;
-		border:1px solid black; 
-		font: 12px bold Arial, sans-serif;
+		text-align: center;
+  		font: 12px bold Arial, sans-serif;
 	}
 	#driverTable {
 		float:left;
@@ -156,8 +158,11 @@
      				</pretty:link>
  				</rich:column>
 				<rich:column>
-					<div style="background-color:#{teamTripsBean.colors[index]};" class="trips_color">
-					#{teamTripsBean.labels[index]}
+					<div style="position: relative; background-color:#{teamTripsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">
+					
+						<div class="trips_color">
+						#{teamTripsBean.labels[index]}
+						</div>
 					</div>
 				</rich:column>
 				</rich:dataTable>
