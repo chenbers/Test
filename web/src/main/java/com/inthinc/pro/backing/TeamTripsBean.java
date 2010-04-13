@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import org.ajax4jsf.model.KeepAlive;
 import org.richfaces.json.JSONArray;
 import org.richfaces.json.JSONException;
+import org.richfaces.json.JSONObject;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
@@ -47,7 +48,10 @@ public class TeamTripsBean extends BaseBean {
     private List<EventData> clusterBubbleEvents;
 	
     private List<Long> eventIDs;
-    private JSONArray jsonEventIDs;
+    private LatLng clusterLatLng;
+     
+    private JSONObject jsonEventData;
+    
     public void init(){
     	
 		initDrivers();
@@ -195,32 +199,40 @@ public class TeamTripsBean extends BaseBean {
 	public List<Long> getEventIDList() {
 		return eventIDs;
 	}
-	public String getClusterEventIDs(){
+	public String getClusterEventData(){
 		
-		return jsonEventIDs.toString();
+		return jsonEventData.toString();
 	}
-	public void setClusterEventIDs(String eventIDs) {
+	public void setClusterEventData(String eventData) {
 		
 		try {
 			
-			jsonEventIDs = new JSONArray(eventIDs);
+			jsonEventData = new JSONObject(eventData);
 		}
 		catch (JSONException JSONe){
 			
-			jsonEventIDs = null;
+			jsonEventData = null;
 		}
 		
 	}
+	public LatLng getClusterLatLng(){
 		
+		return clusterLatLng;		
+	}
 	public void createClusterBubbleData(){
 		
-		if ((jsonEventIDs == null)||(jsonEventIDs.length()==0)) return;
+		if (jsonEventData == null) return;
 		
-		clusterBubbleEvents = new ArrayList<EventData>();
 		try {
-			for(int i = 0; i<jsonEventIDs.length(); i++){
+			
+			clusterLatLng = new LatLng( (Double) jsonEventData.get("lat"),
+										(Double) jsonEventData.get("lng"));
+			JSONArray eventIDs = jsonEventData.getJSONArray("events");
+			
+			clusterBubbleEvents = new ArrayList<EventData>();
+			for(int i = 0; i<eventIDs.length(); i++){
 				
-				Long eventID = (Long)jsonEventIDs.getLong(i);
+				Long eventID = (Long)eventIDs.getLong(i);
 
 				EventData eventData = setUpClusterBubbleData(eventID);
 				if(eventData != null){
@@ -654,6 +666,7 @@ public class TeamTripsBean extends BaseBean {
 		private Double lng;
 
 		private String driverName;
+		private Date eventTime;
 		private String timeString;
 		private String eventName;
 		private String eventDescription;
@@ -755,9 +768,16 @@ public class TeamTripsBean extends BaseBean {
 	        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), getLocale());
 	        sdf.setTimeZone(getPerson().getTimeZone());
 	        setTimeString(sdf.format(event.getTime()));
+	        
+	        eventTime = event.getTime();
 	        lat = event.getLatitude();
 	        lng = event.getLongitude();
 		}
-
+		public Date getEventTime() {
+			return eventTime;
+		}
+		public void setEventTime(Date eventTime) {
+			this.eventTime = eventTime;
+		}
 	}
 }
