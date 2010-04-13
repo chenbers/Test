@@ -122,7 +122,11 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
     @Override
 	protected ReportCriteria getReportCriteria()
     {
-    	return getReportCriteriaService().getIdlingReportCriteria(getTableDataProvider().getGroupID(), ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).getInterval(), getLocale());
+    	ReportCriteria reportCriteria =  getReportCriteriaService().getIdlingReportCriteria(getTableDataProvider().getGroupID(), ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).getInterval(), getLocale(), false);
+    	int rowCount = this.getTableDataProvider().getRowCount();
+    	reportCriteria.setMainDataset(getTableDataProvider().getItemsByRange(0, rowCount));
+    	return reportCriteria;
+
     }
     
 	public String getBadDates() {

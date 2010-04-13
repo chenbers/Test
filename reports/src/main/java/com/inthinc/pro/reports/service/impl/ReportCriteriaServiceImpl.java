@@ -283,41 +283,42 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     @Override
-    public ReportCriteria getDevicesReportCriteria(Integer groupID, Locale locale)
+    public ReportCriteria getDevicesReportCriteria(Integer groupID, Locale locale, Boolean initDataSet) 
     {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
-
-        Integer rowCount = reportDAO.getDeviceReportCount(groupID, null);
-		PageParams pageParams = new PageParams(0, rowCount, null, null);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, group.getName(), locale);
-		reportCriteria.setMainDataset(reportDAO.getDeviceReportPage(groupID, pageParams));
+    	ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, group.getName(), locale);
+        if (initDataSet) {
+        	Integer rowCount = reportDAO.getDeviceReportCount(groupID, null);
+        	PageParams pageParams = new PageParams(0, rowCount, null, null);
+        	reportCriteria.setMainDataset(reportDAO.getDeviceReportPage(groupID, pageParams));
+        }
         return reportCriteria;
     }
     @Override
-    public ReportCriteria getIdlingReportCriteria(Integer groupID, Interval interval, Locale locale)
+    public ReportCriteria getIdlingReportCriteria(Integer groupID, Interval interval, Locale locale, Boolean initDataSet)
     {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
-
-        Integer rowCount = reportDAO.getIdlingReportCount(groupID, interval, null);
-		PageParams pageParams = new PageParams(0, rowCount, null, null);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);
-		reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
-
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(MessageUtil.getMessageString("dateFormat", getLocale()));
         reportCriteria.addParameter("BEGIN_DATE", fmt.print(interval.getStart()));
         reportCriteria.addParameter("END_DATE", fmt.print(interval.getEnd()));
+
+        if (initDataSet) {
+        	Integer rowCount = reportDAO.getIdlingReportCount(groupID, interval, null);
+        	PageParams pageParams = new PageParams(0, rowCount, null, null);
+        	reportCriteria.setMainDataset(reportDAO.getIdlingReportPage(groupID, interval, pageParams));
+        }
+
 
         return reportCriteria;
     }
     @Override
     public ReportCriteria getEventsReportCriteria(Integer groupID, Locale locale)
     {
-        // List<Event> eventList = eventDAO.getViolationEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.EVENT_REPORT, tmpGroup.getName(), locale);
-        // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
 
@@ -325,10 +326,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public ReportCriteria getRedFlagsReportCriteria(Integer groupID, Locale locale)
     {
     	this.locale = locale;
-        // List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT, tmpGroup.getName(), locale);
-        // reportCriteria.setMainDataset(redFlagList);
         return reportCriteria;
     }
 
@@ -336,10 +335,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public ReportCriteria getWarningsReportCriteria(Integer groupID, Locale locale)
     {
     	this.locale = locale;
-        // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT, tmpGroup.getName(), locale);
-        // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
 
@@ -347,10 +344,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public ReportCriteria getEmergencyReportCriteria(Integer groupID, Locale locale)
     {
     	this.locale = locale;
-        // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName(), locale);
-        // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
     

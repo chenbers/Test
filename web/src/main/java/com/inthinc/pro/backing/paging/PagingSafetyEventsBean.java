@@ -37,9 +37,8 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
 
     @Override
     protected ReportCriteria getReportCriteria() {
-        return getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID(), getLocale());
+    	return getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID(), getLocale());
     }
-
     @Override
     public EventCategory getEventCategory()
     {

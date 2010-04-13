@@ -1,7 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
@@ -18,25 +16,22 @@ public class EventReportItem implements Comparable<EventReportItem> {
 	private String vehicleName;
 	private String category;
 	private String detail;
+	private String type;
+	private Boolean excluded;
 	
 	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String mphString)
 	{
-	    //TODO: at some point we need to look at using JODA time instead of DateFormat for performance reasons.
-//		DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
-//		dateFormatter.setTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone());
-//		setDate(dateFormatter.format(event.getTime()));
-
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(dateFormat);
 		DateTime dateTime = new DateTime(event.getTime(), DateTimeZone.forTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone()));
  	    setDate(fmt.print(dateTime));
-
 		
 		setGroup(event.getGroupName());
 		setDriverName(event.getDriverName());
 		setVehicleName(event.getVehicleName());
 		setCategory(event.getEventCategory().toString());
 		setDetail(event.getDetails(detailsFormat, measurementType, mphString));
-		
+		setType(event.getEventType().toString());
+		setExcluded(event.getForgiven() != null && event.getForgiven().intValue() == 1);
 	}
 	
 	
@@ -87,6 +82,26 @@ public class EventReportItem implements Comparable<EventReportItem> {
 	public void setVehicleName(String vehicleName) {
 	    this.vehicleName = vehicleName;
 	}
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Boolean getExcluded() {
+		return excluded;
+	}
+
+
+	public void setExcluded(Boolean excluded) {
+		this.excluded = excluded;
+	}
+
+
+
 
     @Override
     public int compareTo(EventReportItem o)

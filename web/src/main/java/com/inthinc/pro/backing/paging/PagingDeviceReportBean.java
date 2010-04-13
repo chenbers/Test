@@ -36,7 +36,10 @@ public class PagingDeviceReportBean extends BasePagingReportBean<DeviceReportIte
     @Override
 	protected ReportCriteria getReportCriteria()
     {
-    	return getReportCriteriaService().getDevicesReportCriteria(getUser().getGroupID(), getLocale());
+    	ReportCriteria reportCriteria =  getReportCriteriaService().getDevicesReportCriteria(getUser().getGroupID(), getLocale(), false);
+    	int rowCount = this.getTableDataProvider().getRowCount();
+    	reportCriteria.setMainDataset(getTableDataProvider().getItemsByRange(0, rowCount));
+    	return reportCriteria;
     }
 
 

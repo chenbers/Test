@@ -137,7 +137,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{score.overall} == null  || $F{score.overall}.doubleValue() < 0.0) ?
 $R{notApplicable} : $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{score.overall}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false" hyperlinkType="None">
 				<reportElement key="textField-3" x="140" y="3" width="90" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>

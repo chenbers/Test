@@ -77,8 +77,6 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
 
             eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, mphString));
         }
-        Collections.sort(eventReportItemList);
-        Collections.reverse(eventReportItemList);
         
         return eventReportItemList;
     }

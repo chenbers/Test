@@ -193,6 +193,8 @@ public class DashboardReportBean extends BaseBean
         reportList.add(ReportType.OVERALL_SCORE);
         reportList.add(ReportType.MPG_GROUP);        
         reportList.add(ReportType.TREND);
+        reportList.add(ReportType.SPEED_PERCENTAGE);
+        reportList.add(ReportType.IDLE_PERCENTAGE);
 
         return reportList;
     }

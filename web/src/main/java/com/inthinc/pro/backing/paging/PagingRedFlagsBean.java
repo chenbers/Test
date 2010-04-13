@@ -136,9 +136,6 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
 
             redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, mphString));
         }
-        Collections.sort(redFlagReportItemList);
-        Collections.reverse(redFlagReportItemList);
-        
         return redFlagReportItemList;
     }
 

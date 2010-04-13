@@ -30,7 +30,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 			</textField>
 			<lineChart>
-				<chart isShowLegend="false" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.TrendLineChartCustomizer">
+				<chart hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.TrendLineChartCustomizer">
 					<reportElement key="element-1" x="0" y="94" width="535" height="332"/>
 					<chartTitle/>
 					<chartSubtitle/>

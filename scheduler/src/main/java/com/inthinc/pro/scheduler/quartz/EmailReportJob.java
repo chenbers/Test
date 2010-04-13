@@ -143,7 +143,7 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
                     break;
                 case DEVICES_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale(), true));
                     break;
                 case DRIVER_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale(), true));
@@ -153,7 +153,7 @@ public class EmailReportJob extends QuartzJobBean {
                     break;
                 case IDLING_REPORT:
                     Interval interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
-                    reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), interval, user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), interval, user.getPerson().getLocale(), true));
                     break;
                 case TEAM_STATISTICS_REPORT:
                 	TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
