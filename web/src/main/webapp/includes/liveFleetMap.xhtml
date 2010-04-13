@@ -1,24 +1,16 @@
-<ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:pretty="http://ocpsoft.com/prettyfaces">
-	
-    <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
-    <ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}"/>
-     
-	<a4j:loadScript id="markclust" src="/js/markerclusterer_packed.js"/>
-	<a4j:loadScript id="progbar" src="/js/progressbarcontrol_packed.js"/>
-    
- 	<ui:include src="/includes/WMSMapLayers.xhtml"/>	
-  
-	<script type="text/javascript">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+		<ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}" />
+		<ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}" />
+
+		<a4j:loadScript id="markclust" src="/js/markerclusterer_packed.js" />
+		<a4j:loadScript id="progbar" src="/js/progressbarcontrol_packed.js" />
+
+		<ui:include src="/includes/WMSMapLayers.xhtml" />
+
+		<script type="text/javascript">
 
 	  	var map;
 	  	var markerClusterer;
@@ -81,14 +73,18 @@
 		}
 		
 		function bodyLoad()
-		{
+		{    	
+			initLiveFleetMap()
+		}
+
+		function initLiveFleetMap(){
 			initMap(#{mapxcenter},#{mapycenter},#{mapzoom});
  			addMarkers();
 	    	centerMap();
 	    	defaultAddressElement = "liveFleetMapForm:bubbleAddress";
 			bubbleElement = "driverBubble";
 			errorMessage = "#{messages.sbs_badLatLng}"
-			addressLookupAddressFormat = #{driverLocationBean.addressFormat};	    	
+			addressLookupAddressFormat = #{driverLocationBean.addressFormat};	
 		}
 		
 		function refreshMap()
@@ -111,11 +107,11 @@
 		});
 
 	</script>
- 	
-	<a4j:region id="main">
-	
-	<rich:panel id="scripts">
-		<script type="text/javascript">
+
+		<a4j:region id="main">
+
+				<rich:panel id="scripts">
+						<script type="text/javascript">
 
 		//<![CDATA[
 		//Pulled out of markerclusterer.js
@@ -157,136 +153,115 @@
 				progressBar.remove();
 			}
 		</script>
-		
-      
-       	<h:form id="liveFleetMapForm">
-      	<rich:panel id="mapPopups" rendered="#{driverLocationBean.selectedDriverID != null}">
-			<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}"/>
-      			<ui:include src="/includes/driverBubble.xhtml">
-      	            <ui:param name="hiddenDivID" value="bubble" />
-      	            <ui:param name="driver" value="#{driverLocation.driver}" />
-      	        	<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
-      	        	<ui:param name="bean" value="#{driverLocationBean}" />
-      	        	<ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
-      	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
-      	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
-      	        	<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
-      	        	<ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
-      	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
-      	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
-      	        	<ui:param name="vehicleTime" value="#{driverLocation.time}" />
-      	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
-      	        	<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
-      	        	<ui:param name="addressLookupAddressFormat" value="#{driverLocationBean.addressFormat}"/>
-      			</ui:include>
-      	</rich:panel>
-      	</h:form>
-      	
-	</rich:panel>
-	<div class="">
-			<div class="panel_nw">
-				<div class="panel_title">
-					<span class="map">#{title}</span>
-					<span class="panel_links">
-					<a4j:form id="refresh">
-                        <a4j:status id="refresh_ajax_status" for="main">
-                           <f:facet name="start">
-                              <h:outputText>
-                                          <img
-                                              src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
-                                             align="top" />&#160;</h:outputText>
-                           </f:facet>
-                        </a4j:status>
-   						<a4j:commandButton id="#{context}-liveFleetMapRefresh" image="/images/ico_refresh.png" immediate="true"
-   							reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"  alt="#{messages.refresh}"
-   							value="#{messages.refresh}" action="#{driverLocationBean.resetMap}">
-   						</a4j:commandButton>
-                     
-                         
-                         <ui:fragment rendered="#{detailLink ne null}">
-                            <rich:spacer width="5px"></rich:spacer>
-                            <h:outputLink id="#{context}-liveFleetMapRestore" value="#{detailLink}" title="#{detailTitle}" >
-                               <h:graphicImage value="#{detailImage}" />
-                            </h:outputLink>
-                         </ui:fragment>
-                         
-					</a4j:form>
-					<a4j:form id="dispatchForm">
-								<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>					
-					</a4j:form>
-					</span>
-				</div>
-			</div>
-			<div class="panel_w">
-				
-			 	 <rich:panel  id="map">
-					<div class="panel_content">
-						<h:form name="maplinks2"> <div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div></h:form>
- 					</div>
-				 </rich:panel>
-			</div>		
-																		
-			<div class="panel_sw">
-				<div class="panel_statusbar"></div>
-			</div>
-   </div>	
-   <div class="spacer"></div>		
-   <div>
-   		<div class="panel_nw">
-   			<div class="panel_title">
-   				<span class="legend">#{legend}</span>
-   				<span class="panel_links"></span>
-   			</div>
-   		</div>	
-      	<div class="panel_w">
-      		<div class="panel_content">
-      		  
-      		  <rich:dataGrid id="icos1" 
-      		  			value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
-      		  			rendered="#{driverLocationBean.teamLevel}" columns="3" border="0" cellpadding="5" cellspacing="5">
-      		  			
-      			  	<div onclick="fillBubbleMap(#{icon.entityID})" style="cursor: pointer;">
-      				  	<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
-      				  	<h:outputText value="#{icon.caption}" style="margin-left:5px" /></div>
-      			  	
-      		  </rich:dataGrid>
-      		  <rich:dataGrid id="icos2"
-      		  		value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
-      		  		rendered="#{!driverLocationBean.teamLevel}"  columns="3" border="0" cellpadding="5" cellspacing="5">
-      		  		<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
-      			  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
-      		  </rich:dataGrid>
-      		  <div style="clear:both"/>
-      		</div>
-      	</div>
-   
-      	<div class="panel_sw">
-      		<div class="panel_statusbar"></div>
-      	</div>
-   </div>
-   
-   </a4j:region>
-       
-	<a4j:form id="bubbleForm">
-		<a4j:jsFunction id="filBubMark" name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
-			<a4j:actionparam id="drvId" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
-			<a4j:actionparam id="sub" name="subId" />
-		</a4j:jsFunction>
-		<a4j:jsFunction id="filBubMap" name="fillBubbleMap" reRender="mapPopups" 
-			oncomplete="getAddressForPosition(#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lat},
-								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng})">
-			<a4j:actionparam id="drvId1" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}"/>
-		</a4j:jsFunction>
-		<a4j:jsFunction id="zoneFix" name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
-			<a4j:actionparam id="lat" name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam id="lng" name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam id="elmIndx" name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
-			<a4j:actionparam id="ntID" name="noteID" assignTo="#{addressBean.noteID}"/>	
-			<a4j:actionparam id="itmID" name="itemID" assignTo="#{addressBean.itemID}"/>
-			<a4j:actionparam id="subID1" name="subID" assignTo="#{addressBean.subID}"/>
-			<a4j:actionparam id="calFncID" name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
-		</a4j:jsFunction> 	
 
-	</a4j:form>	
-			
-</ui:composition>	
+
+						<h:form id="liveFleetMapForm">
+								<rich:panel id="mapPopups" rendered="#{driverLocationBean.selectedDriverID != null}">
+										<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}" />
+										<ui:include src="/includes/driverBubble.xhtml">
+												<ui:param name="hiddenDivID" value="bubble" />
+												<ui:param name="driver" value="#{driverLocation.driver}" />
+												<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
+												<ui:param name="bean" value="#{driverLocationBean}" />
+												<ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
+												<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
+												<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
+												<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
+												<ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
+												<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
+												<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
+												<ui:param name="vehicleTime" value="#{driverLocation.time}" />
+												<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
+												<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
+												<ui:param name="addressLookupAddressFormat" value="#{driverLocationBean.addressFormat}" />
+										</ui:include>
+								</rich:panel>
+						</h:form>
+
+				</rich:panel>
+				<div class="">
+				<div class="panel_nw">
+				<div class="panel_title"><span class="map">#{title}</span> <span class="panel_links"> <a4j:form id="refresh">
+						<a4j:status id="refresh_ajax_status" for="main">
+								<f:facet name="start">
+										<h:outputText>
+												<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+								</f:facet>
+						</a4j:status>
+						<a4j:commandButton id="#{context}-liveFleetMapRefresh" image="/images/ico_refresh.png" immediate="true" reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"
+								alt="#{messages.refresh}" value="#{messages.refresh}" action="#{driverLocationBean.resetMap}">
+						</a4j:commandButton>
+
+
+						<ui:fragment rendered="#{detailLink ne null}">
+								<rich:spacer width="5px"></rich:spacer>
+								<h:outputLink id="#{context}-liveFleetMapRestore" value="#{detailLink}" title="#{detailTitle}">
+										<h:graphicImage value="#{detailImage}" />
+								</h:outputLink>
+						</ui:fragment>
+
+				</a4j:form> <a4j:form id="dispatchForm">
+						<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}" />
+				</a4j:form> </span></div>
+				</div>
+				<div class="panel_w"><rich:panel id="map">
+						<div class="panel_content"><h:form name="maplinks2">
+								<div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div>
+						</h:form></div>
+				</rich:panel></div>
+
+				<div class="panel_sw">
+				<div class="panel_statusbar"></div>
+				</div>
+				</div>
+				<div class="spacer"></div>
+				<div>
+				<div class="panel_nw">
+				<div class="panel_title"><span class="legend">#{legend}</span> <span class="panel_links"></span></div>
+				</div>
+				<div class="panel_w">
+				<div class="panel_content"><rich:dataGrid id="icos1" value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
+						rendered="#{driverLocationBean.teamLevel}" columns="3" border="0" cellpadding="5" cellspacing="5">
+
+						<div onclick="fillBubbleMap(#{icon.entityID})" style="cursor: pointer;"><img src="#{icon.iconURL}" style="vertical-align: middle" /> <h:outputText value="#{icon.caption}"
+								style="margin-left:5px" /></div>
+
+				</rich:dataGrid> <rich:dataGrid id="icos2" value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend" rendered="#{!driverLocationBean.teamLevel}"
+						columns="3" border="0" cellpadding="5" cellspacing="5">
+						<img src="#{icon.iconURL}" style="vertical-align: middle" />
+						<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
+				</rich:dataGrid>
+				<div style="clear: both" />
+				</div>
+				</div>
+
+				<div class="panel_sw">
+				<div class="panel_statusbar"></div>
+				</div>
+				</div>
+
+		</a4j:region>
+
+		<a4j:form id="bubbleForm">
+				<a4j:jsFunction id="filBubMark" name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+						<a4j:actionparam id="drvId" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}" />
+						<a4j:actionparam id="sub" name="subId" />
+				</a4j:jsFunction>
+				<a4j:jsFunction id="filBubMap" name="fillBubbleMap" reRender="mapPopups"
+						oncomplete="getAddressForPosition(#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lat},
+								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng})">
+						<a4j:actionparam id="drvId1" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}" />
+				</a4j:jsFunction>
+				<a4j:jsFunction id="zoneFix" name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
+						<a4j:actionparam id="lat" name="latitude" assignTo="#{addressBean.zoneLat}" />
+						<a4j:actionparam id="lng" name="longitude" assignTo="#{addressBean.zoneLng}" />
+						<a4j:actionparam id="elmIndx" name="elemIndex" assignTo="#{addressBean.elemIndex}" />
+						<a4j:actionparam id="ntID" name="noteID" assignTo="#{addressBean.noteID}" />
+						<a4j:actionparam id="itmID" name="itemID" assignTo="#{addressBean.itemID}" />
+						<a4j:actionparam id="subID1" name="subID" assignTo="#{addressBean.subID}" />
+						<a4j:actionparam id="calFncID" name="callFuncID" assignTo="#{addressBean.callFuncID}" />
+				</a4j:jsFunction>
+
+		</a4j:form>
+
+</ui:composition>
