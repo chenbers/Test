@@ -42,7 +42,7 @@
 		height:500px; 
 		border:0;
 	}
-	#map-canvas {
+	#teamTrip-map-canvas {
 		float:right; 
 		width: 74%; 
 		height: 500px; 
@@ -78,7 +78,7 @@
 		
 		if (GBrowserIsCompatible()) {					
 			GUnload();
-			TeamTrips.map = new GMap2(document.getElementById("map-canvas"));						
+			TeamTrips.map = new GMap2(document.getElementById("teamTrip-map-canvas"));						
 			TeamTrips.map.addControl(new GLargeMapControl());
 			TeamTrips.map.addControl(new GMapTypeControl());
 			TeamTrips.map.addControl(new GOverviewMapControl()); 
@@ -180,7 +180,7 @@
  	</h:form>	
  				         
 	         </div>  
-			 <div id="map-canvas"></div>
+			 <div id="teamTrip-map-canvas"></div>
 			 <div style="clear:both"></div>
 	       </div>
 				<h:form id="teamBubbleForm" >
