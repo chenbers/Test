@@ -336,7 +336,7 @@
       	<h:form id="tripsMapForm">
 <!--    	<rich:jQuery selector="document" query="ready(function(){getAddresses()})" />-->
 
--         <rich:panel id="tripBubbles" rendered="#{driverTripsBean.selectedTripID != null}">
+         <rich:panel id="tripBubbles" rendered="#{driverTripsBean.selectedTripID != null}">
             <!-- BEGIN GOOGLE BUBBLES -->
             <ui:param name="trip" value="#{driverTripsBean.tripsMap[driverTripsBean.selectedTripID]}"/>
                 <ui:include src="/includes/tripBubble.xhtml">
