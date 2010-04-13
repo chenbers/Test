@@ -157,8 +157,14 @@ public abstract class BasePerformanceBean extends BaseBean
             else {
             	
                 cumulativeValues[i] = cumulativeList.get(i).getScore() == null ? null : cumulativeList.get(i).getScore() / 10D;
-	        	cumulativeToolTips.add(getToolText(cumulativeValues[i]));
-	            odometerToolTips.add(getToolText(odometerValues[i]));
+                
+                if ( cumulativeValues[i] == null ) {
+                    cumulativeToolTips.add("");                   
+                } else {
+                    cumulativeToolTips.add(getToolText(cumulativeValues[i]));                    
+                }
+                
+                odometerToolTips.add(getToolText(odometerValues[i]));                
             }
 	            
             sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(i)));
