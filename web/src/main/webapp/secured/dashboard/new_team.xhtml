@@ -189,12 +189,14 @@
 					<table id="crashSummaryTable" cellpadding="0px" cellspacing="0"><tbody>
                         <tr>  
                         	<td>
+                        		<a4j:outputPanel ajaxRendered="true">
                     				<ui:include src="/includes/scoreBox.xhtml">
 	                    				<ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
 	                    				<ui:param name="scoreStyle" value="#{teamStatisticsBean.teamOverallScoreStyle}" /> 
 	                    				<ui:param name="item" value="0" /> 	                    	
 										<ui:param name="context" value="driversOverallNotAvailable" />
-                    				</ui:include>         			                       	
+                    				</ui:include>         		
+                    			</a4j:outputPanel>	                       	
                         	</td>
                         	<td>
                         		#{messages.team_overall_team_score}
