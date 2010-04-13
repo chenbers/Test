@@ -36,6 +36,18 @@
 		border:1px solid black; 
 		font: 12px bold Arial, sans-serif;
 	}
+	#driverTable {
+		float:left;
+		width:25%;
+		height:500px; 
+		border:0;
+	}
+	#map-canvas {
+		float:right; 
+		width: 74%; 
+		height: 500px; 
+		border: 0;
+	}
 	</style>
 	
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
@@ -49,7 +61,7 @@
 	<script type="text/javascript">
 	
 	window.TeamTrips = {};
-
+	TeamTrips.map = null;
 
 	var icons = [	"#{request.contextPath}/images/green_circle.png",
 					"#{request.contextPath}/images/yellow_circle.png", 
@@ -110,7 +122,7 @@
    	<!-- Trips Map -->
  <a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
    	<div class="section">
-	         <div id="driverTable" 	style="float:left; width:25%;height: 500px; border: 0;">
+	         <div id="driverTable" >
 	        	<h:form id="tripsTableForm">
 	         	<rich:dataTable	value="#{teamTripsBean.driversTrips}" 
 					       		id="driversTrips" 
@@ -162,13 +174,13 @@
 		</a4j:jsFunction>
  						
 		<a4j:jsFunction id="getEventData" ajaxSingle="true" status="teamStatus" name="getEventData" action="#{teamTripsBean.createClusterBubbleData}" 
-				eventsQueue="tripsQueue" oncomplete="addAddressesToClusterBubble()" reRender="clusterBubbleForm">
-						<a4j:actionparam name="clusterEventIDs" assignTo="#{teamTripsBean.clusterEventIDs}"/>
+				eventsQueue="tripsQueue" data="#{teamTripsBean.clusterLatLng}" oncomplete="addAddressesToClusterBubble(TeamTrips.map, data)" reRender="clusterBubbleForm">
+						<a4j:actionparam name="clusterEventData" assignTo="#{teamTripsBean.clusterEventData}"/>
 		</a4j:jsFunction>
  	</h:form>	
  				         
 	         </div>  
-			 <div id="map-canvas" style="float:right; width: 74%; height: 500px; border: 0"></div>
+			 <div id="map-canvas"></div>
 			 <div style="clear:both"></div>
 	       </div>
 				<h:form id="teamBubbleForm" >

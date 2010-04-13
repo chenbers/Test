@@ -707,17 +707,17 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 	  var trueCenter = this.findTrueClusterCenter();
   	  clusterMarker = new LabeledMarker(center_, thisOpts);
   	
-	  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
-		//format all the markers into a list
-	  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
-	  for (var i=0;i<markers_.length;i++){
-			windowHtml +="<li>";
-			windowHtml += markers_[i].marker.marker.labelText_;
-			windowHtml +="</li>";
-	  }
-	  windowHtml+="</ul>";
-	  clusterMarker.openInfoWindowHtml(windowHtml);
-	  });
+//	  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
+//		//format all the markers into a list
+//	  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
+//	  for (var i=0;i<markers_.length;i++){
+//			windowHtml +="<li>";
+//			windowHtml += markers_[i].marker.marker.labelText_;
+//			windowHtml +="</li>";
+//	  }
+//	  windowHtml+="</ul>";
+//	  clusterMarker.openInfoWindowHtml(windowHtml);
+//	  });
 
 	  	map_.addOverlay(clusterMarker);
 		return clusterMarker;
@@ -757,39 +757,31 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		      	};
 
 		  var nextPoint = this.findTrueClusterCenter();
+		  var clusterCenter = map_.fromDivPixelToLatLng(nextPoint);
+		  var lat = clusterCenter.lat();
+		  var lng = clusterCenter.lng();
 		  nextPoint.x -= 20;
 		  nextPoint.y -= 20;
 		  var offsetPosition = map_.fromDivPixelToLatLng(nextPoint);
 		  var clusterMarker = new LabeledMarker(offsetPosition, thisOpts);
 		  	
 		  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
-				//format all the markers into a list
-			  //This is to be changed depending on how many markers there are and to be configurable
-//			  var windowHtml = "<ul style='list-style-type: none; margin-left: 0px;padding-left: 0px;'>";
-//			  for (var i=0;i<markers_.length;i++){
-//					windowHtml +="<li>";
-//					windowHtml += markers_[i].marker.marker.labelText_;
-//					windowHtml +="</li>";
-//			  }
-//			  windowHtml+="</ul>";
+
 			  var eventArray = [];
-			  var eventsJSONArray ='[';
+			  var eventsJSONArray = "{'lat':"+lat+
+						   ",'lng':"+lng+",";
+			  eventsJSONArray +="'events':[";
 			  for (var i=0;i<markers_.length;i++){
 				  eventArray.push(markers_[i].marker.eventID);
 				  eventsJSONArray+=markers_[i].marker.eventID;
 				  if(i==markers_.length-1){
-					  eventsJSONArray+=']';
+					  eventsJSONArray+=']}';
 				  }
 				  else{
 					  eventsJSONArray+=",";
 				  }
 			  }
-//			  var eventsJSONArray = JSON.stringify(eventArray);
-			  
-//			  getEventData(eventArray);
-			  clickedMarker=clusterMarker;
 			  getEventData(eventsJSONArray);
-//			  clusterMarker.openInfoWindowHtml(windowHtml);
 		 });
 		  
 		  var preRenderedCanvas = drawFunction(displayColors, this.getTotalMarkers());

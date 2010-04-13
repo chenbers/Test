@@ -226,14 +226,14 @@
     	icon.image = iconImage;
     	icon.iconSize = new GSize(48, 16);
     	icon.iconAnchor = new GPoint(0, 0);
-    	icon.infoWindowAnchor = new GPoint(25, 7);
+    	icon.infoWindowAnchor = new GPoint(0, 0);
 
     		
     	opts = { 
     	  "icon": icon,
     	  "clickable": true,
     	  "labelText": label,
-    	  "labelOffset": new GSize(0, 0),
+    	  "labelOffset": new GSize(-24, -7),
     	  "labelClass":"trips_markerLabel"
     	};
     	var marker = new LabeledMarker(point, opts);
@@ -294,7 +294,7 @@
      * @param index
      * @return
      */
-    function getAddressForClusterBubbleEvent(index){
+    function getAddressForClusterBubbleEvent(map, clusterLatLng, index){
 	  	var addressElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":clusterEventAddress");
 	  	var latElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":lat");
 	  	var lngElement = document.getElementById("clusterBubbleForm:clusterEvents:"+index+":lng");
@@ -319,7 +319,7 @@
 	        	var windowElementTemplate = document.getElementById("clusterBubbleTable");
 	    		var windowElement = windowElementTemplate.cloneNode(true);	
 	    	  	windowElement.style.display = 'block';
-	    	  	clickedMarker.openInfoWindow(windowElement);
+	    	  	map.openInfoWindow(new GLatLng(clusterLatLng.lat, clusterLatLng.lng), windowElement);
 	        }
 
     	});
@@ -332,8 +332,8 @@
  * 
  * @return
  */
-    function addAddressesToClusterBubble(){
-    	
+    function addAddressesToClusterBubble(map,clusterLatLng){
+    	    	
 		if (geocoder == null) geocoder = new GClientGeocoder();
 	  	
 	  	var i = 0;
@@ -342,7 +342,7 @@
 	  	
 	  	for(var i= 0; i<numberOfEvents; i++){
 	  		
-	  		getAddressForClusterBubbleEvent(i);
+	  		getAddressForClusterBubbleEvent(map,clusterLatLng,i);
 	  	}
     }
 /**
