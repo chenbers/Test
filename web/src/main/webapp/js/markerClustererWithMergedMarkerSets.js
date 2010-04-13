@@ -764,25 +764,27 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		  nextPoint.y -= 20;
 		  var offsetPosition = map_.fromDivPixelToLatLng(nextPoint);
 		  var clusterMarker = new LabeledMarker(offsetPosition, thisOpts);
-		  	
-		  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
-
-			  var eventArray = [];
-			  var eventsJSONArray = "{'lat':"+lat+
-						   ",'lng':"+lng+",";
-			  eventsJSONArray +="'events':[";
-			  for (var i=0;i<markers_.length;i++){
-				  eventArray.push(markers_[i].marker.eventID);
-				  eventsJSONArray+=markers_[i].marker.eventID;
-				  if(i==markers_.length-1){
-					  eventsJSONArray+=']}';
+		  if (this.getTotalMarkers() <= 10)	{
+			  
+			  var clickListener = GEvent.addListener(clusterMarker, "click", function() {
+	
+				  var eventArray = [];
+				  var eventsJSONArray = "{'lat':"+lat+
+							   ",'lng':"+lng+",";
+				  eventsJSONArray +="'events':[";
+				  for (var i=0;i<markers_.length;i++){
+					  eventArray.push(markers_[i].marker.eventID);
+					  eventsJSONArray+=markers_[i].marker.eventID;
+					  if(i==markers_.length-1){
+						  eventsJSONArray+=']}';
+					  }
+					  else{
+						  eventsJSONArray+=",";
+					  }
 				  }
-				  else{
-					  eventsJSONArray+=",";
-				  }
-			  }
-			  getEventData(eventsJSONArray);
-		 });
+				  getEventData(eventsJSONArray);
+			 });
+		  }
 		  
 		  var preRenderedCanvas = drawFunction(displayColors, this.getTotalMarkers());
 
