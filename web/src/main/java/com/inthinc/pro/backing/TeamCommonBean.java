@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -15,6 +16,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 
+@KeepAlive
 public class TeamCommonBean extends BaseBean {
 	
     private static final long serialVersionUID = 1L;

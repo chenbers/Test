@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -21,6 +22,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.CircularIterator;
 import com.inthinc.pro.util.MiscUtil;
 
+@KeepAlive
 public class LiveFleetBean extends BaseBean
 {
     private static final Logger  logger = Logger.getLogger(LiveFleetBean.class);

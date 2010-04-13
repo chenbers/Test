@@ -19,8 +19,7 @@
 		<a4j:loadScript src="/js/markerclusterer_packed.js"/>
 		<a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
 		
-		
-		<ui:include src="../includes/WMSMapLayers.xhtml"/>	
+			
 			
 		<script type="text/javascript">
 
@@ -184,8 +183,7 @@
 	</ui:define>
 	<ui:define name="content">
 	
-	<t:saveState value="#{liveFleetBean}" />
-	
+	<ui:include src="../includes/WMSMapLayers.xhtml"/>
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form id="liveFleetVehicleBubbles">
 			<rich:panel id="mapMarkers">

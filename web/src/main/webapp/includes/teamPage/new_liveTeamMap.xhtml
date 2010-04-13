@@ -11,16 +11,11 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
         
-    <ui:define name="scripts">
-       	<a4j:loadScript id="googleURL" src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-    </ui:define>  		
+    <a4j:loadScript id="googleURL" src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 
 	<script type="text/javascript">
 	//<![CDATA[
 
-	jQuery(function(){
-		onCompleteLiveTeam();
-	});
 	
 	function onCompleteLiveTeam(){
 		
@@ -36,24 +31,7 @@
 		Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
 		
 	}
-	
-//		alert("Finished");
-//		jQuery('#allDurations').children().removeClass('selected_duration');
-//		jQuery('#longDurations').children().removeClass('selected_duration');
-
-//		jQuery('#allDurations').children().addClass('disable');
-//		jQuery('#allDurations').children().click(durationClickFunction);
-//		jQuery('#longDurations').children().addClass('disable');
-//		jQuery('#longDurations').children().click(durationClickFunction);		
-//	}
-//	function onLeaveLiveTeam(){
-//		alert("Leaving");
-//		jQuery('#allDurations').children().removeClass('disable');
-//		jQuery('#allDurations').children().unbind('click',durationClickFunction);
-//		jQuery('#longDurations').children().removeClass('disable');
-//		jQuery('#longDurations').children().unbind('click',durationClickFunction);		
-//	}
-//]]>
+	//]]>
  </script>
 
 	<rich:tab id="liveTeam" oncomplete="Team.tabChange();">
@@ -77,7 +55,13 @@
      	 			<ui:param name="title" value="#{messages.liveTeamTitle}"/>
      	 			<ui:param name="legend" value="#{messages.liveTeamLegend}"/>
 				</ui:include>
-		<!-- END PANEL -->             			
+		<!-- END PANEL -->       
+		
+		<script type="text/javascript">
+			jQuery(function(){
+				onCompleteLiveTeam();bodyLoad()
+			});   
+		</script>
 	 
 	</rich:tab>
 	
