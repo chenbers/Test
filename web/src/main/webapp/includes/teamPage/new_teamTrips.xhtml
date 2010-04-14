@@ -53,7 +53,6 @@
 	</style>
 	
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-	<a4j:loadScript src="/js/excanvas.js"/>
 	<a4j:loadScript src="/js/arrowedPolyline.js"/>
 	<a4j:loadScript src="/js/labeledMarker.js"/>
 	<a4j:loadScript src="/js/markerClustererWithMergedMarkerSets.js"/>
@@ -63,7 +62,6 @@
 	<script type="text/javascript">
 	
 	window.TeamTrips = {};
-	TeamTrips.map = null;
 
 	var icons = [	"#{request.contextPath}/images/green_circle.png",
 					"#{request.contextPath}/images/yellow_circle.png", 

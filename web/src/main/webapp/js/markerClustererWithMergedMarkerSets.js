@@ -792,13 +792,15 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		  
 		  var width = opts_.icon.iconSize.width +(displayColors.length-1)*5;
 		  var height = opts_.icon.iconSize.height;
-		  clusterMarker.div_.innerHTML ="<canvas style='position: absolute;left:0;top:0' width='"+width+"' height='"+height+"'></canvas>";
-	  	  var canvasInner = clusterMarker.div_.firstChild;
-	  	  if (canvasInner.getContext) { 
-	  	    
-	  		  var ctx = canvasInner.getContext("2d"); 
-	          ctx.drawImage(preRenderedCanvas,0,0);
-	      }
+	 	  var outerClusterDiv = document.createElement("div");
+	  	   
+	  	   outerClusterDiv.setAttribute("width", width);
+	  	   outerClusterDiv.setAttribute("height", height)
+	  	   outerClusterDiv.setAttribute("position","absolute");
+	  	   outerClusterDiv.setAttribute("top", 0);
+	  	   outerClusterDiv.setAttribute("left", 0);
+	  	   
+	 	   clusterMarker.div_.appendChild(preRenderedCanvas);
 
 		  return clusterMarker;
 	  }

@@ -159,9 +159,16 @@
 	 * @param count	- number of events	
 	 * @return
 	 */
-	function drawCustomCluster(displayColors, count) { 
-	  
+	function drawCustomCluster(displayColors, count) {
+		
   	   clusterDiv = document.createElement("canvas");
+  	   
+  	   if(typeof G_vmlCanvasManager != 'undefined'){
+  		   
+  		   clusterDiv = G_vmlCanvasManager.initElement(clusterDiv);
+  		   clusterDiv.setAttribute("width", 42+(displayColors.length-1)*5);
+  		   clusterDiv.setAttribute("height", 42);
+  	   }
   	   if (clusterDiv.getContext) { 
   	    
          var ctx = clusterDiv.getContext("2d"); 
