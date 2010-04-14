@@ -174,7 +174,7 @@ $R{notApplicable} : $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false" hyperlinkType="None">
 				<reportElement key="textField-3" x="140" y="3" width="90" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle.name} == null ? $R{report.none.assigned} : $F{vehicle.name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField-4" x="230" y="3" width="50" height="17"/>

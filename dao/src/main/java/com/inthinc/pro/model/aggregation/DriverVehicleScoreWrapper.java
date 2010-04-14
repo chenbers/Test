@@ -234,6 +234,7 @@ public class DriverVehicleScoreWrapper {
         }        
         
         drv.setPerson(prs);
+        dvsw.setVehicle(veh);
         dvsw.setDriver(drv);
         dvsw.setSummary(true);
         
