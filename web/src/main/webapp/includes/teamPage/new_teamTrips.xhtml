@@ -193,9 +193,9 @@
 						<h:outputText id="bubbleTitle" value="#{teamTripsBean.eventData.eventName}"/>
 					</f:facet>
 					<h:outputText>#{messages.team_driver}:</h:outputText>
-				    <pretty:link id="teamBubbleDriver" mappingId="driverPerformance">
-	                     <h:outputText value="#{teamTripsBean.eventData.driverName}"/>
-	                     <f:param value="#{teamTripsBean.eventData.driverID}"/>
+				    <pretty:link id="teamBubbleDriverLink" mappingId="driverPerformance">
+	                     <h:outputText id="teamBubbleDriver" value="#{teamTripsBean.eventData.driverName}"/>
+	                     <f:param id="teamBubbleDriverID" value=""/>
 	                </pretty:link>
 			
 	                <h:outputText>Time:</h:outputText>

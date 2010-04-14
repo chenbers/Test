@@ -253,6 +253,7 @@
   		  // the call back for that will display the bubble
   		    
   		  //Get event data from the backing bean
+  	  	  var thisEvent = eventID;
   	  	  getTripBubbleData(eventID);
    	  	});
 
@@ -285,8 +286,17 @@
 	        	 address = response.Placemark[0].address;
 	        }
 	        
-	        //Fill address element and display infowindow
+	        //Fill data elements and display infowindow
 		  	var windowElementTemplate = document.getElementById("bubbleElement");
+		  	// Fill in the rest of the data
+		  	//add driver id to pretty faces href
+		  	var pretty = document.getElementById("teamBubbleForm:teamBubbleDriverLink");
+		  	pretty.href = pretty.href+eventData.driverID;
+
+		  	document.getElementById("teamBubbleForm:bubbleTitle").innerHTML=eventData.eventName;
+		  	document.getElementById("teamBubbleForm:teamBubbleTime").innerHTML=eventData.timeString;
+		  	document.getElementById("teamBubbleForm:teamBubbleDriver").innerHTML=eventData.driverName;
+		  	document.getElementById("teamBubbleForm:teamBubbleDescription").innerHTML=eventData.eventDescription;
 		  	document.getElementById("teamBubbleForm:teamBubbleAddress").innerHTML=address;
 			var windowElement = windowElementTemplate.cloneNode(true);	
 		  	windowElement.style.display = 'block';

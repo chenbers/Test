@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 import org.richfaces.json.JSONArray;
 import org.richfaces.json.JSONException;
 import org.richfaces.json.JSONObject;
@@ -334,15 +336,18 @@ public class TeamTripsBean extends BaseBean {
 				eventsMap.put(event.getNoteID(), event);
 			}
 		}
-	
+		private boolean eventInInterval(Date eventTime, Date startTime, Date endTime){
+			
+			return (eventTime.after(startTime) && eventTime.before(endTime))||
+			eventTime.equals(startTime) || eventTime.equals(endTime);
+		}
 		private List<Event> getTripViolations(List<Event> violations,Date startTime, Date endTime){
 			
 			List<Event> tripViolations = new ArrayList<Event>();
 			
 			for (Event event:violations){
 				
-				if ((event.getTime().after(startTime) && event.getTime().before(endTime))||
-						event.getTime().equals(startTime) || event.getTime().equals(endTime)){
+				if (eventInInterval(event.getTime(), startTime, endTime)){
 
 					tripViolations.add(event);
 				}
@@ -355,8 +360,7 @@ public class TeamTripsBean extends BaseBean {
 			
 			for (Event event:idles){
 				
-				if ((event.getTime().after(startTime) && event.getTime().before(endTime))||
-						event.getTime().equals(startTime) || event.getTime().equals(endTime)){
+				if (eventInInterval(event.getTime(), startTime, endTime)){
 
 					tripIdles.add(event);
 				}
@@ -369,8 +373,7 @@ public class TeamTripsBean extends BaseBean {
 			
 			for (Event event:tampers){
 				
-				if ((event.getTime().after(startTime) && event.getTime().before(endTime))||
-						event.getTime().equals(startTime) || event.getTime().equals(endTime)){
+				if (eventInInterval(event.getTime(), startTime, endTime)){
 
 					tripTampers.add(event);
 				}
@@ -383,15 +386,20 @@ public class TeamTripsBean extends BaseBean {
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-
-            return eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), violationEventTypeList, showExcludedEvents);
+            return eventDAO.getEventsForDriver(driverID, 
+            		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
+            		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 
+            		violationEventTypeList, showExcludedEvents);
 		}
 		private List<Event> loadIdles( ) {
 
             List<Integer> idleTypes = new ArrayList<Integer>();
             idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
             
-            return eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), idleTypes, showExcludedEvents);
+            return eventDAO.getEventsForDriver(driverID,
+            		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
+            		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 
+            		idleTypes, showExcludedEvents);
 
 		}
 		private List<Event> loadTampers( ) {
@@ -400,7 +408,10 @@ public class TeamTripsBean extends BaseBean {
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
 
-            return eventDAO.getEventsForDriver(driverID, teamCommonBean.getStartTime().toDate(), teamCommonBean.getEndTime().toDate(), tamperEventTypeList, showExcludedEvents);
+            return eventDAO.getEventsForDriver(driverID,
+            		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
+            		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 
+            		tamperEventTypeList, showExcludedEvents);
             
  	    }
 		public Integer getDriverID() {
@@ -744,8 +755,8 @@ public class TeamTripsBean extends BaseBean {
 			reset();
 			
 			//set driver's name
-			Integer driverId = event.getDriverID();
-			setDriverName(driversTripsMap.get(driverId).getDriverName());
+			driverID = event.getDriverID();
+			setDriverName(driversTripsMap.get(driverID).getDriverName());
 			if(event.getType() == -1){
 				
 				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString("TRIP_START")));
