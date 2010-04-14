@@ -91,7 +91,7 @@
 			}
 		</style>
 		<tiwi:conditionalCSS browserVersion="IE">
-			<script language="javascript" type="text/javascript" src="/js/excanvas.compile.js"></script>
+	   		<a4j:loadScript src="/js/excanvas.compiled.js"/>
 		</tiwi:conditionalCSS>
     
 	    <script language="javascript" type="text/javascript">
@@ -190,12 +190,13 @@
                         <tr>  
                         	<td>
                         		<a4j:outputPanel ajaxRendered="true">
-                    				<ui:include src="/includes/scoreBox.xhtml">
+                    				<!--<ui:include src="/includes/scoreBox.xhtml">
 	                    				<ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
 	                    				<ui:param name="scoreStyle" value="#{teamStatisticsBean.teamOverallScoreStyle}" /> 
 	                    				<ui:param name="item" value="0" /> 	                    	
 										<ui:param name="context" value="driversOverallNotAvailable" />
-                    				</ui:include>         		
+                    				</ui:include>-->        
+                    				<ui:include src="/includes/enhancedScoreBox.xhtml" /> 		
                     			</a4j:outputPanel>	                       	
                         	</td>
                         	<td>
