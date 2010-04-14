@@ -161,7 +161,7 @@
 	 */
 	function drawCustomCluster(displayColors, count) {
 		
-  	   clusterDiv = document.createElement("canvas");
+  	   var clusterDiv = document.createElement("canvas");
   	   
   	   if(typeof G_vmlCanvasManager != 'undefined'){
   		   
@@ -192,20 +192,28 @@
              ctx.fill();
 	         x-=5; 
 	     }
+    	 var clusterTextSpan = document.createElement("div");
+    	 clusterTextSpan.setAttribute("style", 
+    			 "position:absolute; display:table-cell;top:10px;left:0;width:34px;height:16px");
+      	 clusterTextSpan.innerHTML= count;
+      	 var parent = document.createElement('div');
+      	 
+      	 parent.appendChild(clusterDiv);
+      	 parent.appendChild(clusterTextSpan);
          //write label
-         ctx.beginPath();
-         ctx.lineWidth=1;
-         ctx.font = "12px";
-         
-         ctx.strokeStyle="black";
-         
-         var textMetric = ctx.measureText(count+"");
-		 var dx = (34-textMetric.width)/2;
-         ctx.strokeText(count,dx,20);
-         ctx.closePath();
+//         ctx.beginPath();
+//         ctx.lineWidth=1;
+//         ctx.font = "12px";
+//         
+//         ctx.strokeStyle="black";
+//         
+//         var textMetric = ctx.measureText(count+"");
+//		 var dx = (34-textMetric.width)/2;
+//         ctx.strokeText(count,dx,20);
+//         ctx.closePath();
          
        }
-       return clusterDiv;  
+       return parent;  
      }  
 /**
  * Creates a custom marker for a trip event
