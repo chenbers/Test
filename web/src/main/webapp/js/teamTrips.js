@@ -159,15 +159,16 @@
 	 * @param count	- number of events	
 	 * @return
 	 */
-	function drawCustomCluster(displayColors, count) {
+	function drawCustomCluster(displayColors, count, markerElement) {
 		
   	   var clusterDiv = document.createElement("canvas");
+  	   markerElement.appendChild(clusterDiv);
   	   
   	   if(typeof G_vmlCanvasManager != 'undefined'){
   		   
   		   clusterDiv = G_vmlCanvasManager.initElement(clusterDiv);
-  		   clusterDiv.setAttribute("width", 42+(displayColors.length-1)*5);
-  		   clusterDiv.setAttribute("height", 42);
+  		   clusterDiv.setAttribute("width", 35+(displayColors.length-1)*5);
+  		   clusterDiv.setAttribute("height", 35);
   	   }
   	   if (clusterDiv.getContext) { 
   	    
@@ -192,28 +193,19 @@
              ctx.fill();
 	         x-=5; 
 	     }
-    	 var clusterTextSpan = document.createElement("div");
-    	 clusterTextSpan.setAttribute("style", 
-    			 "position:absolute; display:table-cell;top:10px;left:0;width:34px;height:16px");
-      	 clusterTextSpan.innerHTML= count;
-      	 var parent = document.createElement('div');
-      	 
-      	 parent.appendChild(clusterDiv);
-      	 parent.appendChild(clusterTextSpan);
          //write label
-//         ctx.beginPath();
-//         ctx.lineWidth=1;
-//         ctx.font = "12px";
-//         
-//         ctx.strokeStyle="black";
-//         
-//         var textMetric = ctx.measureText(count+"");
-//		 var dx = (34-textMetric.width)/2;
-//         ctx.strokeText(count,dx,20);
-//         ctx.closePath();
+         ctx.beginPath();
+         ctx.lineWidth=1;
+         ctx.textAlign="center";
+         ctx.textBaseline="middle";
+		 ctx.font = "14px Helvetica";         
+         ctx.fillStyle="black";
+         
+         ctx.fillText(count,16,17);
+         ctx.closePath();
          
        }
-       return parent;  
+//       return parent;  
      }  
 /**
  * Creates a custom marker for a trip event
