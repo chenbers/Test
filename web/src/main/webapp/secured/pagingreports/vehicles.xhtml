@@ -108,12 +108,13 @@
                                             		sortBy="#{item.driverName}" filterBy="#{item.driverName}">
                                             	<f:facet name="header">
                                                 	<h:outputText value="#{messages.reports_driver}" />
-                                            	</f:facet>
-                                            	<pretty:link id="vehiclesDriverPerformance" mappingId="driverPerformance" rendered="#{item.driverID ne null}">
+                                            	</f:facet>                                            	
+                                            	<pretty:link id="vehiclesDriverPerformance" mappingId="driverPerformance" rendered="#{item.driverID ne null and item.driverID ne pagingVehicleReportBean.unknownDriverID}">
                                                 	<h:outputText value="#{item.driverName}"/>
                                                 	<f:param value="#{item.driverID}"/>
                                             	</pretty:link>
-	                                            <h:outputText rendered="#{item.driverID eq null}" value="#{messages.reports_none_assigned}" />                                            
+	                                            <h:outputText rendered="#{item.driverID eq null}" value="#{messages.reports_none_assigned}" />    
+	                                            <h:outputText rendered="#{item.driverID eq pagingVehicleReportBean.unknownDriverID}" value="#{item.driverName}" />                                            
                                         	</rich:column>
                                         	<rich:column id="distance" rendered="#{tableColumns['distanceDriven'].visible}" 
                                             			sortBy="#{item.milesDriven}">
