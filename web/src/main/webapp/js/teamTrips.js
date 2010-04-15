@@ -350,17 +350,23 @@
  * @return
  */
     function addAddressesToClusterBubble(map,clusterLatLng){
+
+    	
+    	var windowElementTemplate = document.getElementById("clusterBubbleTable");
+		var windowElement = windowElementTemplate.cloneNode(true);	
+	  	windowElement.style.display = 'block';
+	  	map.openInfoWindow(new GLatLng(clusterLatLng.lat, clusterLatLng.lng), windowElement);
     	    	
-		if (geocoder == null) geocoder = new GClientGeocoder();
-	  	
-	  	var i = 0;
-	  	var numberOfEvents = jQuery('[id$=\\:clusterEventAddress]').length;
-	  	countDown = numberOfEvents;
-	  	
-	  	for(var i= 0; i<numberOfEvents; i++){
-	  		
-	  		getAddressForClusterBubbleEvent(map,clusterLatLng,i);
-	  	}
+//		if (geocoder == null) geocoder = new GClientGeocoder();
+//	  	
+//	  	var i = 0;
+//	  	var numberOfEvents = jQuery('[id$=\\:clusterEventAddress]').length;
+//	  	countDown = numberOfEvents;
+//	  	
+//	  	for(var i= 0; i<numberOfEvents; i++){
+//	  		
+//	  		getAddressForClusterBubbleEvent(map,clusterLatLng,i);
+//	  	}
     }
 /**
  * creates all the trip route overlays (arrowed polylines) and event markers from the driverTrips data provided.
