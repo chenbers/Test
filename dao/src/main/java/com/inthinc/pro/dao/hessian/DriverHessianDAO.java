@@ -109,7 +109,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
 
     @Override
     public List<Trip> getTrips(Integer driverID, Interval interval) {
-        return getTrips(driverID, interval.getStart().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime().toDate(), interval.getEnd().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime().toDate());
+        return getTrips(driverID, interval.getStart().toDateTime().toDate(), interval.getEnd().toDateTime().toDate());
     }
 
     @Override
