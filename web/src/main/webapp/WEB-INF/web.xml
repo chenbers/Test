@@ -8,7 +8,7 @@
   <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
-  </context-param>   
+  </context-param>
   <context-param>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
@@ -16,6 +16,7 @@
   <context-param>
     <param-name>facelets.REFRESH_PERIOD</param-name>
     <param-value>2</param-value>
+    <!--<param-value>${facelets.REFRESH_PERIOD}</param-value>-->
   </context-param>
   <context-param>
     <param-name>facelets.LIBRARIES</param-name>
@@ -42,34 +43,48 @@
   </context-param>
   <context-param>
     <param-name>facelets.DEVELOPMENT</param-name>
-    <param-value>true</param-value>
+    <param-value>false</param-value>
+    <!--<param-value>${development.mode}</param-value>-->
   </context-param>
+  
   <!-- 
-  <context-param>
-    <param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
+    These params have been enable as of jsf 1.2_14. The following are notes from the change log found here:
+    https://javaserverfaces.dev.java.net/nonav/rlnotes/1.2_14/changelog.html
+    
+    This parameter (com.sun.faces.IS_SAVE_BINDINGS_STATE), in conjuction with two facelets-specific parameters, 
+    makes it possible to     achieve 30% - 60% memory savings for Facelet pages. This setting is only useful 
+    in conjuction with two parameters that direct the behavior of Facelets version 1.1.15 for JSF 1.2
+   -->
+  <!--<context-param>
+    <param-name>com.sun.faces.IS_SAVE_BINDINGS_STATE</param-name>
     <param-value>false</param-value>
   </context-param>
   <context-param>
     <param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
-    <param-value>false</param-value>
+    <param-value>true</param-value>
   </context-param>
   <context-param>
-    <param-name>com.sun.faces.IS_SAVE_BINDINGS_STATE</param-name>
-    <param-value>false</param-value>
+    <param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
+    <param-value>true</param-value>
   </context-param>
-   -->
-  <!-- Optional JSF-RI Parameters to Help Debug -->
+  --><!-- Optional JSF-RI Parameters to Help Debug -->
   <context-param>
     <param-name>com.sun.faces.validateXml</param-name>
     <param-value>true</param-value>
   </context-param>
   <context-param>
     <param-name>com.sun.faces.displayConfiguration</param-name>
-    <param-value>true</param-value>
+    <param-value>false</param-value>
+    <!--<param-value>${development.mode}</param-value>-->
   </context-param>
   <context-param>
     <param-name>com.sun.faces.developmentMode</param-name>
-    <param-value>true</param-value>
+    <param-value>false</param-value>
+    <!--<param-value>${development.mode}</param-value>-->
+  </context-param>
+  <context-param>
+    <param-name>com.sun.faces.sendPoweredByHeader</param-name>
+    <param-value>false</param-value>
   </context-param>
 
   <filter>
@@ -96,7 +111,7 @@
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>ERROR</dispatcher>
   </filter-mapping>
-  
+
   <filter>
     <filter-name>charsetFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -157,30 +172,6 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.faces</url-pattern>
   </servlet-mapping>
-
-    <!-- The servlet and mappings for the CGI Gateway servlet -->
-<!-- 
-    <servlet>
-        <servlet-name>cgi</servlet-name>
-        <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
-        <init-param>
-          <param-name>debug</param-name>
-          <param-value>0</param-value>
-        </init-param>
-        <init-param>
-          <param-name>cgiPathPrefix</param-name>
-          <param-value>WEB-INF/cgi</param-value>
-        </init-param>
-         <load-on-startup>5</load-on-startup>
-    </servlet>
-
-
-    <servlet-mapping>
-        <servlet-name>cgi</servlet-name>
-        <url-pattern>/cgi-bin/*</url-pattern>
-    </servlet-mapping>
- -->    
-
   <!-- Welcome files -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
