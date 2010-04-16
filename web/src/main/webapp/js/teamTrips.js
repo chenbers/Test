@@ -153,10 +153,11 @@
 	/**
 	 * Creates the cluster image.  Draws and fills colorcoded offset circles for each driver that has events in the cluster.
 	 * Draws the count of events in the cluster in the center of the top circle.
-	 * Uses the <canvas> tag.  To work with IE need to include excanvas.js
+	 * Uses the <canvas> tag.  To work with IE need to include excanvas_b4.js
 	 * 
 	 * @param displayColors - array of colors
 	 * @param count	- number of events	
+	 * @param markerElement - the parent element for the marker
 	 * @return
 	 */
 	function drawCustomCluster(displayColors, count, markerElement) {
@@ -205,7 +206,6 @@
          ctx.closePath();
          
        }
-//       return parent;  
      }  
 /**
  * Creates a custom marker for a trip event
