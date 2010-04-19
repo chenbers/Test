@@ -77,6 +77,7 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.TripQuality;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
@@ -385,6 +386,9 @@ public class SiloServiceTest {
             assertTrue(trip.getMileage() > 0);
             // can't rely on this so commenting out
 //            assertTrue(trip.getStatus().equals(TripStatus.TRIP_COMPLETED));
+            
+            // TODO: check when quality field is added to back end
+            assertTrue(trip.getTripQuality().equals(TripQuality.BAD) || trip.getTripQuality().equals(TripQuality.GOOD) );
         }
         Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
         assertNotNull(trip);
@@ -398,9 +402,13 @@ public class SiloServiceTest {
             assertTrue(startDate.before(t.getStartTime()));
             assertTrue(endDate.after(t.getEndTime()));
             assertTrue(t.getMileage() > 0);
+
+            // TODO: check when quality field is added to back end
+            assertTrue(trip.getTripQuality().equals(TripQuality.BAD) || trip.getTripQuality().equals(TripQuality.GOOD) );
         }
         trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
         assertNotNull(trip);
+        
     }
 
     @Test

@@ -28,6 +28,9 @@ public class Trip extends BaseEntity
     private List<Event> events;
     
     private TripStatus status;
+    
+    @Column(updateable=false)
+    private Integer quality;
 
 	public Trip()
     {
@@ -160,5 +163,15 @@ public class Trip extends BaseEntity
 	}
 	public void setStatus(TripStatus status) {
 		this.status = status;
+	}
+	public Integer getQuality() {
+		return quality;
+	}
+	public void setQuality(Integer quality) {
+		this.quality = quality;
+	}
+	
+	public TripQuality getTripQuality() {
+		return TripQuality.valueOf(getQuality() == null ? 0 : getQuality());
 	}
 }
