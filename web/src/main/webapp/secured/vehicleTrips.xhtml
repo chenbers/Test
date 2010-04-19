@@ -184,6 +184,7 @@
 				var marker;
 				var startlatlng;
 				var endlatlng;
+				var color;
 
 				if ( map == null ) {
 					return;
@@ -193,12 +194,19 @@
 				
    				<ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
    				//alert('drawing selected trip #{trip.trip.startTime}');
+   				
+   					
+   					if ("#{trip.trip.tripQuality}" == "BAD")
+						color = "#ff0000";
+   					else color = "#0000ff";
+   					
+   				
 					polyline = new GPolyline([
 					<ui:repeat value="#{trip.route}" var="rt">
 							new GLatLng(#{rt.lat}, #{rt.lng}),
 					</ui:repeat>
 			  				new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
-					], "#0000ff", 6);
+					], color, 6);
 					map.addOverlay(polyline);
 
 					<ui:repeat value="#{trip.route}" var="rt2">
@@ -717,14 +725,14 @@
 																		<f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
 																</a4j:support>
 
-																<rich:column id="date_column" sortBy="#{item.trip.startTime}" label="#{messages.vehicletrip_date}" style="white-space:nowrap; cursor: pointer;">
+																<rich:column id="date_column" sortBy="#{item.trip.startTime}" label="#{messages.vehicletrip_date}" style="white-space:nowrap; cursor: pointer;padding: 8px 8px 4px;">
 																		<f:facet name="header">
 																				<h:outputText value="#{messages.vehicletrip_date}" />
 																		</f:facet>
 																		<h:outputText value="#{item.dateShort}" />
 																</rich:column>
 
-																<rich:column id="time_column" sortBy="#{item.trip.startTime}" label="#{messages.vehicletrip_time}" style="white-space:nowrap; cursor: pointer;">
+																<rich:column id="time_column" sortBy="#{item.trip.startTime}" label="#{messages.vehicletrip_time}" style="white-space:nowrap; cursor: pointer;padding: 8px 8px 4px;">
 																		<f:facet name="header">
 																				<h:outputText value="#{messages.vehicletrip_time}" />
 																		</f:facet>
@@ -734,14 +742,14 @@
 																</rich:column>
 
 
-																<rich:column id="distance_column" sortBy="#{item.distance}" label="#{messages.vehicletrip_distance}" style="white-space:nowrap; cursor: pointer;">
+																<rich:column id="distance_column" sortBy="#{item.distance}" label="#{messages.vehicletrip_distance}" style="white-space:nowrap; cursor: pointer;padding: 8px 8px 4px;">
 																		<f:facet name="header">
 																				<h:outputText value="#{messages.vehicletrip_distance}" />
 																		</f:facet>
 																		<h:outputText value="#{item.distance}" converter="MilesToKilometersConverter" />#{' '}<h:outputText value="mi" converter="MeasurementTextConverter" />
 																</rich:column>
 
-																<rich:column id="end_column" sortBy="#{item.endAddress}" label="#{messages.vehicletrip_end_address}" style="cursor: pointer;">
+																<rich:column id="end_column" sortBy="#{item.endAddress}" label="#{messages.vehicletrip_end_address}" style="cursor: pointer;padding: 8px 8px 4px;">
 																		<f:facet name="header">
 																				<h:outputText value="#{messages.vehicletrip_end_address}" />
 																		</f:facet>
@@ -762,12 +770,19 @@
 																		</ui:fragment>
 																</rich:column>
 
-																<rich:column id="duration_column" sortBy="#{item.duration}" label="#{messages.vehicletrip_duration}" style="white-space:nowrap; cursor: pointer;">
+																<rich:column id="duration_column" sortBy="#{item.duration}" label="#{messages.vehicletrip_duration}" style="white-space:nowrap; cursor: pointer;padding: 8px 8px 4px;">
 																		<f:facet name="header">
 																				<h:outputText value="#{messages.vehicletrip_duration}" />
 																		</f:facet>
 																		<h:outputText value="#{item.duration}" />
 																</rich:column>
+																<rich:column id="quality_column" sortBy="#{item.trip.quality}" label="#{messages.vehicletrip_quality}" style="white-space:nowrap; cursor: pointer;padding: 8px 8px 4px;">
+								                                    <f:facet name="header">
+								                                        <h:outputText value="#{messages.vehicletrip_quality}" />
+								                                    </f:facet>
+								                                    <h:graphicImage value="/images/ico_x.png" rendered="#{item.trip.tripQuality == 'BAD'}" title="#{messages.vehicletrip_qualityBAD}"/>
+								                                    <h:graphicImage value="/images/icon_checkmark.png" rendered="#{item.trip.tripQuality == 'GOOD'}"  title="#{messages.vehicletrip_qualityGOOD}"/>
+								                                </rich:column>
 														</rich:dataTable>
 														<rich:spacer height="5" />
 														<rich:datascroller align="center" for="tripsTable" id="scroller" styleClass="dataScrollerSmall" oncomplete="onReRender();" reRender="tripsTable" renderIfSinglePage="false" />
