@@ -1,12 +1,13 @@
 	var tripIcons;
 	
 	// This set of arrays stores all the trip data
-	var driverIDArray = new Array(); 	// Array of driverIDs
-	var tripsSelected = new Array(); 	// Whether the driver's trips are currently selected or not.
-	var overlaysArray = new Array();	// array of arrays of trip overlays - one array per trip
-	var markersArray = new Array();		// array of arrays of event markers for each trip
-	var boundsArray = new Array();		// map bounds for the drivers trips
-	var colorArray = new Array();		// color for the driver
+	var driverIDArray = new Array(); 		// Array of driverIDs
+	var tripsSelected = new Array(); 		// Whether the driver's trips are currently selected or not.
+	var overlaysArray = new Array();		// array of arrays of trip overlays - one array per trip
+	var markersArray = new Array();			// array of arrays of event markers for each trip
+	var markerSetIndexArray = new Array();  // array for marker set indexes within the marker clusterer
+	var boundsArray = new Array();			// map bounds for the drivers trips
+	var colorArray = new Array();			// color for the driver
 	
 	var markerClustererMaxZoom = 12;	// maximum zoom for 
 	var markerClustererWithMergedMarkerSets; 	// version of the MarkerClusterer that can manage sets of markers that can be independently shown/hidden
@@ -59,7 +60,7 @@
 
 		if (markerClustererWithMergedMarkerSets!=null) {
 			
-			markerClustererWithMergedMarkerSets.hideMarkers(driverIndex);
+			markerClustererWithMergedMarkerSets.hideMarkers(markerSetIndexArray[driverIndex]);
 		}
 	}
 /** 
@@ -78,7 +79,7 @@
 
 		if (markerClustererWithMergedMarkerSets!=null) {
 			
-			markerClustererWithMergedMarkerSets.showMarkers(driverIndex);
+			markerClustererWithMergedMarkerSets.showMarkers(markerSetIndexArray[driverIndex]);
 		}
 	}
 
@@ -100,12 +101,6 @@
     			tripNumber + '</div></div>'; 
 
 	}
-//	function getClusteredLabeledMarkerLabel(letter, colorIndex){
-//    	return '<div style="position: relative; line-height: 2.0em; background-color:white; border: 1px solid black; width: 48px;">'+ 
-//    	'<div style="height: 24px; width: 24px; background-color: ' + colorIndex + ';vertical-align:middle">'+letter+'</div>'+ 
-//    	'<div style="position: absolute; text-align: center; vertical-align:middle; width: 24px; height:24px;top: 0; left: 24px;">***</div></div>'; 
-//		
-//	}
 
 /**
  * Fallback option if the <canvas> tag is not going to work for clusters - not actually using it at the moment, but it is set as the "labelText" 
@@ -545,9 +540,17 @@
 			 
 			 map.setZoom(map.getBoundsZoomLevel(bounds));
 			 map.setCenter(bounds.getCenter());
-			 markerClustererWithMergedMarkerSets.addMarkerSet({'displayColor':colors[colorArray[driverIndex]],
+			 var markerSetIndex = markerClustererWithMergedMarkerSets.addMarkerSet({'displayColor':colors[colorArray[driverIndex]],
 												'markerSet':markersArray[driverIndex]
 				  								});
+			 if(markerSetIndexArray.length > driverIndex){
+				 
+				 markerSetIndexArray[driverIndex] = markerSetIndex;
+			 }
+			 else {
+				 
+				 markerSetIndexArray.push(markerSetIndex);
+			 }
 		 }
 	 }
 			 
@@ -568,7 +571,7 @@
 			 
 			 i = driverIDArray.length;
 			 driverIDArray.push(driverTrips.driverID);
-			 tripsSelected.push(true);
+			 tripsSelected.push(document.getElementById("tripsTableForm:driversTrips:"+pageIndex+":checkDriver").checked);
 			 colorArray.push(pageIndex);
 			 overlaysArray.push(new Array()); 	//just a place holder for now
 			 markersArray.push(new Array());
@@ -580,7 +583,7 @@
 			 
 			 overlaysArray[i]=new Array(); 	//just a place holder for now
 			 markersArray[i]=new Array();
-			 tripsSelected[i] = true;			 
+			 tripsSelected[i] = document.getElementById("tripsTableForm:driversTrips:"+pageIndex+":checkDriver").checked;			 
 			 createTripOverlays(driverTrips,i);
 			 boundsArray[i] = calculateBounds(overlaysArray[i]);
 		}
@@ -594,8 +597,6 @@
  * @return
  */
 	function showExistingDriverTrips(map, driverIndex){
-		
-		tripsSelected[driverIndex] = true;
 		
 		bounds = calculateTripBounds();
 		if (bounds != null){
@@ -616,22 +617,25 @@
  * @param driverTrips - trip data
  * @return
  */
-	function processDriverTrips(map, pageIndex, driverTrips){
+	function toggleDriverTrips(map, pageIndex, driverTrips){
 		
 		// i will be the index of the data arrays that contains existing data
 		// for this driver.
+		// Selection needs to go off whether the checkbox is checked rather than the selected array.
+		
 		var i = findColorIndex(pageIndex);
 		
 		if ((i>-1) && driverIDArray[i] && (overlaysArray[i].length != 0)){
+			
 			//Already have these markers
+			tripsSelected[i] = document.getElementById("tripsTableForm:driversTrips:"+pageIndex+":checkDriver").checked; 
 			if (tripsSelected[i]){
 
-				tripsSelected[i] = false;
-				hideOverlays(i);
+				showExistingDriverTrips(map,i);
 			}
 			else {
 				
-				showExistingDriverTrips(map,i);
+				hideOverlays(i);
 			}
 		}
 		else{
@@ -639,6 +643,7 @@
 			addDriverTrips(map, pageIndex,driverTrips);
 		}
 	}
+
 /**
  * Clears out all the trip data, but retains the driver data
  * 
@@ -660,9 +665,28 @@
 				}
 				overlaysArray[i] = new Array();
 				markersArray[i] = new Array();
+				markerSetIndexArray[i] = null;
 			}
 		}
-	}	
+	}
+	
+/**
+ * Displays the route overlays and event markers for an existing list of drivers
+ * 
+ * @param driversTrips 
+ * @return
+ */
+	function displayAllTrips(map, driversTrips){
+			
+	    clearDownTrips(map);
+	    
+		var length = driversTrips.length;
+		for (var i=0;i<length;i++){
+			
+			addDriverTrips(map, driversTrips[i].driverIndex,driversTrips[i]);
+		}
+	}
+
 /**
  * Displays the route overlays and event markers for an existing list of drivers
  * 
@@ -673,13 +697,8 @@
 			
 		var length = driversTrips.length;
 		for (var i=0;i<length;i++){
-
-			var colorIndex = findDriver(driversTrips[i].driverID);
 			
-			if(colorIndex > -1){
-				
-				processDriverTrips(map, colorArray[colorIndex],driversTrips[i]);
-			}
+			addDriverTrips(map, driversTrips[i].driverIndex,driversTrips[i]);
 		}
 	}
 /**

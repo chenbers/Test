@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.ajax4jsf.model.KeepAlive;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
 import org.richfaces.json.JSONArray;
 import org.richfaces.json.JSONException;
 import org.richfaces.json.JSONObject;
@@ -35,6 +33,7 @@ public class TeamTripsBean extends BaseBean {
 	 * Backing bean for the TeamTrips tab of the new team page
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final int driversPerPage = 25;
 	
 	private List<String> colors;
 	private List<String> labels;
@@ -45,6 +44,8 @@ public class TeamTripsBean extends BaseBean {
     private TeamCommonBean teamCommonBean;
 
 	private Map<Integer, DriverTrips> driversTripsMap;
+	private Integer driversPage;
+	
 	private Map<Long,Event> eventsMap;
     private EventData eventData;
     private List<EventData> clusterBubbleEvents;
@@ -67,16 +68,19 @@ public class TeamTripsBean extends BaseBean {
 		eventData = new EventData();
 		clusterBubbleEvents = new ArrayList<EventData>();
 		eventIDs = new ArrayList<Long>();
+		driversPage = 1;
     }
     private void initDrivers(){
     	
 		List<Driver> driversList = driverDAO.getDrivers(teamCommonBean.getGroupID());
 		Collections.sort(driversList);
 		driversTripsMap = new LinkedHashMap<Integer,DriverTrips>();
+		int index = 0;
 		for (Driver driver:driversList){
 			
-			DriverTrips dw = new DriverTrips(driver.getDriverID(),driver.getPerson().getFullName());
+			DriverTrips dw = new DriverTrips(driver.getDriverID(),driver.getPerson().getFullName(), index);
 			driversTripsMap.put(dw.driverID, dw);
+			index++;
 		}
     }
     public void reset(){
@@ -93,9 +97,11 @@ public class TeamTripsBean extends BaseBean {
  	public List<DriverTrips> getSelectedDriversTrips(){
  		
  		List<DriverTrips> selectedDrivers = new ArrayList<DriverTrips>();
+ 		DriverTrips driversTripsList[] = driversTripsMap.values().toArray(new DriverTrips[0]);
  		
- 	   	for(DriverTrips dt:driversTripsMap.values()){
+ 		for (int i=(driversPage-1)*driversPerPage; i< (driversTripsMap.size()<driversPage*driversPerPage?driversTripsMap.size():driversPage*driversPerPage); i++){
  	   		
+ 			DriverTrips dt = driversTripsList[i];
  	   		if ( dt.isDriverSelected()){
  	   			
  	   			dt.reloadTrips();
@@ -247,6 +253,15 @@ public class TeamTripsBean extends BaseBean {
 			
 		}
 	}
+	public Integer getDriversPage() {
+		return driversPage;
+	}
+	public void setDriversPage(Integer driversPage) {
+		this.driversPage = driversPage;
+	}
+	public static int getDriversperpage() {
+		return driversPerPage;
+	}
 
 /*
  * 
@@ -259,13 +274,15 @@ public class TeamTripsBean extends BaseBean {
 		private String driverName;
 		private List<TeamTrip> trips;
 
-		boolean driverSelected;
+		private boolean driverSelected;
+		private Integer driverIndex; //so you know which row it is
 		
-		public DriverTrips(Integer driverID, String driverName) {
+		public DriverTrips(Integer driverID, String driverName, Integer index) {
 			super();
 			this.driverID = driverID;
 			this.driverName = driverName;
 			this.driverSelected = false;
+			this.driverIndex = index;
 		}
 		public boolean isDriverSelected() {
 			return driverSelected;
@@ -425,6 +442,12 @@ public class TeamTripsBean extends BaseBean {
 		}
 		public void setDriverName(String driverName) {
 			this.driverName = driverName;
+		}
+		public Integer getDriverIndex() {
+			return driverIndex;
+		}
+		public void setDriverIndex(Integer driverIndex) {
+			this.driverIndex = driverIndex;
 		}
 	}
 	/*

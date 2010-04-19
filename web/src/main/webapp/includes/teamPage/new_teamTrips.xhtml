@@ -110,6 +110,7 @@
 	}
 		
  </script>
+ 
     <rich:tab id="teamTrips" oncomplete="Team.tabChange();">
    	
 	 <a4j:queue name="tripsQueue"/>    
@@ -130,7 +131,7 @@
 					       		rowKeyVar="index"
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
-								rows="25"
+								rows="#{TeamTripsBean.driversPerPage}"
 								columnsWidth="90px,85%,50px"
 								width="100%">
 				<rich:column>
@@ -139,7 +140,7 @@
                 <h:selectBooleanCheckbox id="checkDriver" value="#{driverTrips.driverSelected}" >
                   <a4j:support event="onclick" status="teamStatus" eventsQueue="tripsQueue" 
                   				action="#{driverTrips.selectivelyLoadTrips}" data="#{driverTrips}" 
-                  				oncomplete="processDriverTrips(TeamTrips.map, #{index}, data)" ajaxSingle="true">
+                  				oncomplete="toggleDriverTrips(TeamTrips.map, #{index}, data)" ajaxSingle="true">
                    </a4j:support>
                   				
                 </h:selectBooleanCheckbox>
@@ -164,12 +165,12 @@
 					</div>
 				</rich:column>
 				</rich:dataTable>
-				<rich:datascroller 	align="left" for="driversTrips" status="teamStatus" action="#{teamTripsBean.reset}" oncomplete="resetTrips();" 
-            		 				styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%"
+				<rich:datascroller 	align="left" for="driversTrips" status="teamStatus" oncomplete="resetTripsForSelectedDrivers(TeamTrips.map);" 
+            		 				styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%" page="#{teamTripsBean.driversPage}"
             		 				eventsQueue="tripsQueue"/>
             		 
 		<a4j:jsFunction id="getLatestTrips" ajaxSingle="true" status="teamStatus" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
-				eventsQueue="tripsQueue" oncomplete="redisplayAllTrips(TeamTrips.map,data)"/>
+				eventsQueue="tripsQueue" oncomplete="displayAllTrips(TeamTrips.map,data)"/>
 				
 		<a4j:jsFunction id="getTripBubbleData" ajaxSingle="true" status="teamStatus" name="getTripBubbleData" action="#{teamTripsBean.createEventBubbleData}" reRender="teamBubbleForm" data="#{teamTripsBean.eventData}" 
 						eventsQueue="tripsQueue" oncomplete="getAddressForBubble(data)">
@@ -180,6 +181,7 @@
 				eventsQueue="tripsQueue" data="#{teamTripsBean.clusterLatLng}" oncomplete="addAddressesToClusterBubble(TeamTrips.map, data)" reRender="clusterBubbleForm">
 						<a4j:actionparam name="clusterEventData" assignTo="#{teamTripsBean.clusterEventData}"/>
 		</a4j:jsFunction>
+		
  	</h:form>	
  				         
 	         </div>  
@@ -262,6 +264,7 @@
     		jQuery(function(){
 				onTripTabSelectionComplete();
 			});
+    				
     	</script>
     <!-- End Trips Map -->
     </rich:tab>

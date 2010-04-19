@@ -242,7 +242,8 @@ function MarkerClustererWithMergedMarkerSets(map, opt_opts, opts_customClusterOp
 				    me_.resetViewport(false);
 				  });
 		  }
-		    me_.resetViewport(true);
+		  me_.resetViewport(true);
+		  return markerSets_.length-1;  
 
 	  }
 
