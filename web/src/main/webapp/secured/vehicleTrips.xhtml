@@ -197,9 +197,10 @@
    				
    					
    					if ("#{trip.trip.quality}" == "BAD")
-						color = "#ff0000";
-   					else color = "#0000ff";
-   					
+						color = "#ee0000";
+   					else if ("#{trip.trip.quality}" == "GOOD")
+						color = "#006600";
+   					else color = "#0000ee";
    				
 					polyline = new GPolyline([
 					<ui:repeat value="#{trip.route}" var="rt">
