@@ -1,31 +1,33 @@
 package com.inthinc.pro.model;
 
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public enum TripQuality implements BaseEnum {
 
-	// TODO: fix min,max
-	BAD(0, 0, 98),
-    GOOD(1, 99, 99); 
+	BAD(0),
+    GOOD(1),
+    UNKNOWN(2); 
 
 	Integer code;
-	Integer min;
-	Integer max;
 	
-	private TripQuality(Integer code, Integer min, Integer max) {
+	private TripQuality(Integer code) {
 		this.code = code;
-		this.min = min;
-		this.max = max;
 	}
 	
-    public static TripQuality valueOf(Integer quality) {
-        for (TripQuality type : EnumSet.allOf(TripQuality.class)) {
-        	if (quality >= type.min && quality <= type.max)
-        		return type;
+    private static final Map<Integer, TripQuality> lookup = new HashMap<Integer, TripQuality>();
+    static
+    {
+        for (TripQuality p : EnumSet.allOf(TripQuality.class))
+        {
+            lookup.put(p.code, p);
         }
-        
-        return null;
+    }
+
+    public static TripQuality valueOf(Integer code) {
+        return lookup.get(code);
     }
 
 	@Override

@@ -384,11 +384,9 @@ public class SiloServiceTest {
             assertTrue(startDate.before(trip.getStartTime()));
             assertTrue(endDate.after(trip.getEndTime()));
             assertTrue(trip.getMileage() > 0);
-            // can't rely on this so commenting out
-//            assertTrue(trip.getStatus().equals(TripStatus.TRIP_COMPLETED));
             
-            // TODO: check when quality field is added to back end
-            assertTrue(trip.getTripQuality().equals(TripQuality.BAD) || trip.getTripQuality().equals(TripQuality.GOOD) );
+            System.out.println(" " + trip.getQuality());
+            assertTrue("trip Quality should be set", trip.getQuality().equals(TripQuality.GOOD) || trip.getQuality().equals(TripQuality.BAD) || trip.getQuality().equals(TripQuality.UNKNOWN));
         }
         Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
         assertNotNull(trip);
@@ -403,8 +401,7 @@ public class SiloServiceTest {
             assertTrue(endDate.after(t.getEndTime()));
             assertTrue(t.getMileage() > 0);
 
-            // TODO: check when quality field is added to back end
-            assertTrue(trip.getTripQuality().equals(TripQuality.BAD) || trip.getTripQuality().equals(TripQuality.GOOD) );
+            assertTrue("trip Quality should be set", trip.getQuality().equals(TripQuality.GOOD) || trip.getQuality().equals(TripQuality.BAD) || trip.getQuality().equals(TripQuality.UNKNOWN));
         }
         trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
         assertNotNull(trip);

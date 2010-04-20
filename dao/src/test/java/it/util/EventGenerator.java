@@ -1,5 +1,6 @@
 package it.util;
 
+import it.com.inthinc.pro.dao.Util;
 import it.config.ReportTestConst;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class EventGenerator
     private final static int ATTR_TYPE_DELTAVY =  132;
     private final static int ATTR_TYPE_DELTAVZ =  133;
     private final static int ATTR_TYPE_MPG = 149;
+    private final static int ATTR_TYPE_GPS_QUALITY = 166;
     														// 192 up has 4 byte values
     private final static int ATTR_TYPE_ZONE_ID =  192;
     private final static int ATTR_SPEED_ID = 201;
@@ -513,6 +515,8 @@ public class EventGenerator
             idx = puti2(eventBytes, idx, fullEvent.getDeltaY());
             eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVZ & 0x000000FF);
             idx = puti2(eventBytes, idx, fullEvent.getDeltaZ());
+            eventBytes[idx++] = (byte) (ATTR_TYPE_GPS_QUALITY & 0x000000FF);
+            idx = puti2(eventBytes, idx, Util.randomInt(0, 1000));
         }
         else if (event instanceof ZoneArrivalEvent)
         {
@@ -535,6 +539,8 @@ public class EventGenerator
             idx = puti4(eventBytes, idx, ignitionOffEvent.getMpgDistance());
             eventBytes[idx++] = (byte) (ATTR_TYPE_DRIVETIME & 0x000000FF);
             idx = puti4(eventBytes, idx, ignitionOffEvent.getDriveTime());
+            eventBytes[idx++] = (byte) (ATTR_TYPE_GPS_QUALITY & 0x000000FF);
+            idx = puti2(eventBytes, idx, Util.randomInt(0, 1000));
             
         }
         else if (event instanceof IdleEvent)

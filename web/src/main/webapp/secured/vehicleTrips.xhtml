@@ -196,7 +196,7 @@
    				//alert('drawing selected trip #{trip.trip.startTime}');
    				
    					
-   					if ("#{trip.trip.tripQuality}" == "BAD")
+   					if ("#{trip.trip.quality}" == "BAD")
 						color = "#ff0000";
    					else color = "#0000ff";
    					
@@ -780,8 +780,9 @@
 								                                    <f:facet name="header">
 								                                        <h:outputText value="#{messages.vehicletrip_quality}" />
 								                                    </f:facet>
-								                                    <h:graphicImage value="/images/ico_x.png" rendered="#{item.trip.tripQuality == 'BAD'}" title="#{messages.vehicletrip_qualityBAD}"/>
-								                                    <h:graphicImage value="/images/icon_checkmark.png" rendered="#{item.trip.tripQuality == 'GOOD'}"  title="#{messages.vehicletrip_qualityGOOD}"/>
+								                                    <h:graphicImage value="/images/ico_x.png" rendered="#{item.trip.quality == 'BAD'}" title="#{messages.vehicletrip_qualityBAD}"/>
+								                                    <h:graphicImage value="/images/icon_checkmark.png" rendered="#{item.trip.quality == 'GOOD'}"  title="#{messages.vehicletrip_qualityGOOD}"/>
+								                                    <h:graphicImage value="/images/ico_help.png" rendered="#{item.trip.quality == 'UNKNOWN'}"  title="#{messages.vehicletrip_qualityUNKNOWN}"/>
 								                                </rich:column>
 														</rich:dataTable>
 														<rich:spacer height="5" />

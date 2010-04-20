@@ -200,7 +200,7 @@
 				
    				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
 
-   					if ("#{trip.trip.tripQuality}" == "BAD")
+   					if ("#{trip.trip.quality}" == "BAD")
 						color = "#ff0000";
    					else color = "#0000ff";
    					
@@ -812,8 +812,9 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.drivertrip_quality}" />
                                     </f:facet>
-                                    <h:graphicImage value="/images/ico_x.png" rendered="#{item.trip.tripQuality == 'BAD'}" title="#{messages.drivertrip_qualityBAD}"/>
-                                    <h:graphicImage value="/images/icon_checkmark.png" rendered="#{item.trip.tripQuality == 'GOOD'}"  title="#{messages.drivertrip_qualityGOOD}"/>
+                                    <h:graphicImage value="/images/ico_x.png" rendered="#{item.trip.quality == 'BAD'}" title="#{messages.drivertrip_qualityBAD}"/>
+                                    <h:graphicImage value="/images/icon_checkmark.png" rendered="#{item.trip.quality == 'GOOD'}"  title="#{messages.drivertrip_qualityGOOD}"/>
+                                    <h:graphicImage value="/images/ico_help.png" rendered="#{item.trip.quality == 'UNKNOWN'}"  title="#{messages.drivertrip_qualityUNKNOWN}"/>
                                 </rich:column>
                             </rich:dataTable>
                           <rich:datascroller align="center" for="tripsTable" id="scroller" styleClass="dataScrollerSmall"

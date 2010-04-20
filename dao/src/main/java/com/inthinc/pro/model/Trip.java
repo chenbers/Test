@@ -3,10 +3,10 @@ package com.inthinc.pro.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Trip extends BaseEntity
@@ -30,13 +30,13 @@ public class Trip extends BaseEntity
     private TripStatus status;
     
     @Column(updateable=false)
-    private Integer quality;
+    private TripQuality quality;
 
 	public Trip()
     {
         super();
     }
-    public Trip(Long tripID, Integer vehicleID, Date startTime, Date endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr)
+	public Trip(Long tripID, Integer vehicleID, Date startTime, Date endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr)
     {
         super();
         this.tripID = tripID;
@@ -164,14 +164,12 @@ public class Trip extends BaseEntity
 	public void setStatus(TripStatus status) {
 		this.status = status;
 	}
-	public Integer getQuality() {
+    public TripQuality getQuality() {
+    	if (quality == null)
+    		return TripQuality.UNKNOWN;
 		return quality;
 	}
-	public void setQuality(Integer quality) {
+	public void setQuality(TripQuality quality) {
 		this.quality = quality;
-	}
-	
-	public TripQuality getTripQuality() {
-		return TripQuality.valueOf(getQuality() == null ? 0 : getQuality());
 	}
 }
