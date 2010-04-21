@@ -86,4 +86,28 @@ public class DriverVehicleScoreWrapperTest {
 		
 		return wrapper;
 	}
+	
+	@Test
+	public void testWeightedMpg() {
+		DriverVehicleScoreWrapper wrapper = new DriverVehicleScoreWrapper();
+		Score score = new Score();
+		wrapper.setScore(score);
+		
+        score.setOdometerHeavy(0l);
+        score.setOdometerLight(0l);
+        score.setOdometerMedium(0l);
+        
+        Number mpg = wrapper.getScore().getWeightedMpg();
+        assertEquals("mpg", 0, mpg.longValue());
+		
+        score.setOdometerHeavy(0l);
+        score.setOdometerLight(0l);
+        score.setOdometerMedium(0l);
+        
+        mpg = wrapper.getScore().getWeightedMpg();
+        
+        assertEquals("mpg", 0, mpg.longValue());
+
+	}
+
 }
