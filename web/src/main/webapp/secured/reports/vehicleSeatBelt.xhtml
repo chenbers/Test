@@ -104,8 +104,8 @@
       
          <li class="l">
             <ui:include src="/includes/breadcrumb.xhtml">
-               <ui:param name="groupTreeNode" value="#{vehicleSeatBeltBean.groupTreeNodeImpl}" />
-               <ui:param name="lastBreadCrumb" value="true" />
+               <ui:param name="groupID" value="#{vehiclePerformanceBean.vehicle.groupID}" />
+               <ui:param name="displayLastSeperator" value="true" />
  			   <ui:param name="context" value="vehicleSeatBelt" />
             </ui:include>
          </li>
