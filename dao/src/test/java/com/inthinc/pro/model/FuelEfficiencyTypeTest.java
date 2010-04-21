@@ -30,6 +30,10 @@ public class FuelEfficiencyTypeTest {
 		Assert.assertEquals(23.52f,lp100km);
 		mpguk = FuelEfficiencyType.LP100KM.convertFromMPG(null);
 		Assert.assertEquals(null,mpguk);
+		lp100km = FuelEfficiencyType.LP100KM.convertFromMPG(0d);
+		Assert.assertEquals(0.0f,lp100km);
+		lp100km = FuelEfficiencyType.LP100KM.convertFromMPG((Number.class.cast(0d)));
+		Assert.assertEquals(0.0f,lp100km);
 		
 	}
 }
