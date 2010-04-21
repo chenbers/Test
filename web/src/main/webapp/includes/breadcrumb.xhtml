@@ -5,16 +5,20 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
+	xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
-
+    
 	<ul id="breadcrumb">
-		<a4j:repeat value="#{groupTreeNode.groupBreadCrumb}" var="crumb" rowKeyVar="rowKey" id="breadcrumbItem">
-			<li class="#{(rowKey eq (groupTreeNode.breadCrumbCount - 1) and lastBreadCrumb eq null)?'last':''}">
+		<c:set var="groupHierarchyList" value="${tiwiprofn:getGroupHierarchicalList(groupID,4)}"/>
+		<c:set var="groupHierarchyListSize" value="${tiwiprofn:getSize(groupHierarchyList)}"/>
+		<a4j:repeat value="#{groupHierarchyList}" var="group" rowKeyVar="rowKey" id="breadcrumbitem">
+			<li class="#{(rowKey eq (groupHierarchyListSize -1)) and displayLastSeperator eq null?'last':''}">
                <h:graphicImage value="/images/x.gif" width="10" height="10" />
-               <pretty:link id="#{context}-dashBoard" mappingId="dashboard">
-                  <h:outputText value="#{crumb.label}"/>
-                  <f:param value="#{crumb.id}"/>
+               <pretty:link id="#{context}-dashboard" mappingId="dashboard">
+                  <h:outputText value="#{group.name}"/>
+                  <f:param value="#{group.groupID}"/>
                </pretty:link>
             </li>
 		</a4j:repeat>

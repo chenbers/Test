@@ -22,7 +22,8 @@
             <!--<t:saveState value="#{dashBoardDetailBean}"/>-->
             <!--<t:saveState value="#{dashBoardReportBean}"/>-->       
             <ui:include src="/includes/overviewHeader.xhtml">
-             <ui:param name="showContextMenu" value="true"/>
+             		<ui:param name="showContextMenu" value="true"/>
+             		<ui:param name="groupID" value="#{navigationBean.groupID}"/>
      	 			<ui:param name="context" value="team" />
             </ui:include>
 	

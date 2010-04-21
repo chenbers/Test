@@ -18,8 +18,7 @@
     				<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
     				<li class="l">
     					<ui:include src="/includes/breadcrumb.xhtml">
-    						<ui:param name="groupTreeNode"
-    							value="#{navigationBean.groupTreeNode}" />
+    						<ui:param name="groupID" value="#{groupID}" />
                     		<ui:param name="context" value="#{context}-overviewHeader"/> 
     					</ui:include>
     				</li>

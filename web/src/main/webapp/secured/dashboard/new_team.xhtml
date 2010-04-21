@@ -13,6 +13,7 @@
 
 	<ui:param name="context" value="team" />
 	<ui:param name="title" value="#{messages.team_team} - #{teamCommonBean.group.name}"/>
+	<ui:param name="groupID" value="#{teamCommonBean.group.groupID}"/>
 	
     <ui:define name="scripts">
 	   <a4j:loadScript src="/js/jquery.address-1.2rc.min.js"/>
@@ -147,6 +148,7 @@
     </ui:define>
     
 	<ui:define name="content">	
+	
 	<!-- Team Header -->
     <h:form id="team_header_form">
     	<a4j:region id="team_header_region">
@@ -156,9 +158,8 @@
     				<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
     				<li class="l">
     					<ui:include src="/includes/breadcrumb.xhtml">
-    						<ui:param name="groupTreeNode"
-    							value="#{navigationBean.groupTreeNode}" />
-                    		<ui:param name="context" value="#{context}_header"/> 
+                    		<ui:param name="context" value="#{context}_header"/>
+                    		<ui:param name="groupID" value="#{teamCommonBean.groupID}"/> 
     					</ui:include>
     				</li>
     				

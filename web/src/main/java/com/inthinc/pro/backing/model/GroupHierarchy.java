@@ -22,6 +22,7 @@ public class GroupHierarchy implements Serializable
     {
         
     }
+    
     public GroupHierarchy(List<Group> groupList)
     {
         this.groupList = groupList;
@@ -64,6 +65,7 @@ public class GroupHierarchy implements Serializable
         }
         return null;
     }
+    
     public Group getGroup(Integer groupID)
     {
         for (Group group : groupList)
@@ -75,6 +77,7 @@ public class GroupHierarchy implements Serializable
         }
         return null;
     }
+    
     public String getFullGroupName(Integer groupID)
     {
     	StringBuilder builder = new StringBuilder();
@@ -121,6 +124,10 @@ public class GroupHierarchy implements Serializable
     }
     
     public Group getParentGroup(Group childGroup){
+    	if(childGroup == null)
+    	{
+    		return null;
+    	}
     	Group parentGroup = null;
     	for(Group group: groupList){
     		if(group.getGroupID().equals(childGroup.getParentID())){
@@ -155,4 +162,29 @@ public class GroupHierarchy implements Serializable
         return false;
     }
     
+    
+    /**
+     * 
+     * @param  groupID The child group for which we are request it's parents
+     * @param  heirarchyLevel Is the number of levels proceed up the hierarchy tree.
+     * @return Returns an ordered list of groups. The list of groups (starting with the lowest level first) contains 
+     *         the the complete hierarchy from the supplied group and up. 
+     *         (Does not contain any groups that are lower than the given group)
+     */
+    public List<Group> getGroupHierarchicalList(Integer groupID,Integer heirarchyLevel)
+    {
+    	Group tempGroup = getGroup(groupID);
+    	int counter = 0;
+    	List<Group> groupHierarchicalList = new ArrayList<Group>();
+    	groupHierarchicalList.add(tempGroup);
+    	while(getParentGroup(tempGroup) != null && counter < heirarchyLevel){
+    		Group parentGroup = getParentGroup(tempGroup);
+    		groupHierarchicalList.add(0, parentGroup);
+    		
+    		tempGroup = parentGroup;
+    		counter++;
+    	}
+    	
+    	return groupHierarchicalList;
+    }    
 }

@@ -13,7 +13,9 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 import org.springframework.security.context.SecurityContextHolder;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.security.userdetails.ProUser;
@@ -97,6 +99,14 @@ public class JsfFunctions
             return value;
     }
     
+    public static List<Group> getGroupHierarchicalList(Integer groupID,Integer heirarchyLevel){
+    	return getUser().getGroupHierarchy().getGroupHierarchicalList(groupID, heirarchyLevel);
+    }
+    
+    public static Integer getSize(List<?> genericList){
+    	return genericList.size();
+    }
+    
     private static ProUser getUser()
     {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -105,5 +115,4 @@ public class JsfFunctions
         
         return null;
     }
-    
 }
