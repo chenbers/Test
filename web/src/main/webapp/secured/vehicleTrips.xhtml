@@ -413,8 +413,8 @@
 								<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 
 								<li class="l"><ui:include src="/includes/breadcrumb.xhtml">
-										<ui:param name="groupTreeNode" value="#{vehicleTripsBean.groupTreeNodeImpl}" />
-										<ui:param name="lastBreadCrumb" value="true" />
+										<ui:param name="groupID" value="#{vehiclePerformanceBean.vehicle.groupID}" />
+										<ui:param name="displayLastSeperator" value="true" />
 										<ui:param name="context" value="vehicleTrips" />
 								</ui:include></li>
 								<li class="l" style="margin-left: -15px;">
