@@ -4,7 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlEnum;
 
+@XmlEnum
 public enum TripQuality implements BaseEnum {
 
 	BAD(0),

@@ -9,8 +9,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 @XmlRootElement
-public class Trip extends BaseEntity
-{
+public class Trip extends BaseEntity {
     @ID
     private Long tripID;
     private Integer vehicleID;
@@ -18,26 +17,25 @@ public class Trip extends BaseEntity
     private Date startTime;
     private Date endTime;
     private Integer mileage;
-    @Column(name="route", type=com.inthinc.pro.model.LatLng.class, updateable=false)
+    @Column(name = "route", type = com.inthinc.pro.model.LatLng.class, updateable = false)
     private List<LatLng> route;
-    
+
     private String startAddressStr;
     private String endAddressStr;
-    
-    @Column(name="events", type=com.inthinc.pro.model.Event.class, updateable=false)
+
+    @Column(name = "events", type = com.inthinc.pro.model.Event.class, updateable = false)
     private List<Event> events;
-    
+
     private TripStatus status;
-    
-    @Column(updateable=false)
+
+    @Column(updateable = false)
     private TripQuality quality;
 
-	public Trip()
-    {
+    public Trip() {
         super();
     }
-	public Trip(Long tripID, Integer vehicleID, Date startTime, Date endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr)
-    {
+
+    public Trip(Long tripID, Integer vehicleID, Date startTime, Date endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr) {
         super();
         this.tripID = tripID;
         this.vehicleID = vehicleID;
@@ -48,128 +46,127 @@ public class Trip extends BaseEntity
         this.startAddressStr = startAddressStr;
         this.endAddressStr = endAddressStr;
     }
-    public Date getEndTime()
-    {
+
+    public Date getEndTime() {
         return endTime;
     }
-    public void setEndTime(Date endTime)
-    {
+
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-    public Integer getMileage()
-    {
+
+    public Integer getMileage() {
         return mileage;
     }
-    public void setMileage(Integer mileage)
-    {
+
+    public void setMileage(Integer mileage) {
         this.mileage = mileage;
     }
-    public List<LatLng> getRoute()
-    {
+
+    public List<LatLng> getRoute() {
         return route;
     }
-    public void setRoute(List<LatLng> route)
-    {
+
+    public void setRoute(List<LatLng> route) {
         this.route = route;
     }
-    public Date getStartTime()
-    {
+
+    public Date getStartTime() {
         return startTime;
     }
-    public void setStartTime(Date startTime)
-    {
+
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-    public Integer getVehicleID()
-    {
+
+    public Integer getVehicleID() {
         return vehicleID;
     }
-    public void setVehicleID(Integer vehicleID)
-    {
+
+    public void setVehicleID(Integer vehicleID) {
         this.vehicleID = vehicleID;
     }
-    
-    public String getEndAddressStr()
-    {
+
+    public String getEndAddressStr() {
         return endAddressStr;
     }
-    public void setEndAddressStr(String endAddressStr)
-    {
+
+    public void setEndAddressStr(String endAddressStr) {
         this.endAddressStr = endAddressStr;
     }
-    public String getStartAddressStr()
-    {
+
+    public String getStartAddressStr() {
         return startAddressStr;
     }
-    public void setStartAddressStr(String startAddressStr)
-    {
+
+    public void setStartAddressStr(String startAddressStr) {
         this.startAddressStr = startAddressStr;
     }
-    public LatLng getStartLoc()
-    {
-        if (route != null && route.size() > 0)
-        {
+
+    public LatLng getStartLoc() {
+        if (route != null && route.size() > 0) {
             return route.get(0);
         }
         return null;
     }
-    public LatLng getEndLoc()
-    {
-        if (route != null && route.size() > 0)
-        {
-            return route.get(route.size()-1);
+
+    public LatLng getEndLoc() {
+        if (route != null && route.size() > 0) {
+            return route.get(route.size() - 1);
         }
         return null;
     }
-    public int compareTo(Trip trip)
-    {
+
+    public int compareTo(Trip trip) {
         return trip.getStartTime().compareTo(getStartTime());
     }
-    public List<Event> getEvents()
-    {
+
+    public List<Event> getEvents() {
         return events;
     }
-    public void setEvents(List<Event> events)
-    {
+
+    public void setEvents(List<Event> events) {
         this.events = events;
     }
-    
-    public boolean isEventsExist()
-    {
+
+    public boolean isEventsExist() {
         return events != null && events.size() > 0;
     }
-    public Long getTripID()
-    {
-        if(startTime != null){
+
+    public Long getTripID() {
+        if (startTime != null) {
             return startTime.getTime();
         }
         return tripID;
     }
-    public void setTripID(Long tripID)
-    {
+
+    public void setTripID(Long tripID) {
         this.tripID = tripID;
     }
-    public Integer getDriverID()
-    {
+
+    public Integer getDriverID() {
         return driverID;
     }
-    public void setDriverID(Integer driverID)
-    {
+
+    public void setDriverID(Integer driverID) {
         this.driverID = driverID;
     }
 
     public TripStatus getStatus() {
-		return status;
-	}
-	public void setStatus(TripStatus status) {
-		this.status = status;
-	}
+        return status;
+    }
+
+    public void setStatus(TripStatus status) {
+        this.status = status;
+    }
+
     public TripQuality getQuality() {
-    	if (quality == null)
-    		return TripQuality.UNKNOWN;
-		return quality;
-	}
-	public void setQuality(TripQuality quality) {
-		this.quality = quality;
-	}
+        if (quality == null)
+            return TripQuality.UNKNOWN;
+        return quality;
+    }
+
+    public void setQuality(TripQuality quality) {
+        this.quality = quality;
+    }
 }
