@@ -92,10 +92,10 @@
  * @param tripIcon		- icon for the marker's event
  * @return String		- of customized HTML
  */
-	function getSingleLabeledMarkerLabel(letter,colorIndex, tripNumber, tripIcon){
+	function getSingleLabeledMarkerLabel(letter,letterColor, colorIndex, tripNumber, tripIcon){
 		
     	return '<div style="position: relative; line-height: 1.5em; background-color:white; border: 1px solid black; width: 48px;height: 16px">'+ 
-    	'<div style="height: 16px; width: 16px; background-color: ' + colorIndex + ';vertical-align:middle;text-align: center;float:left">'+letter+'</div>'+ 
+    	'<div style="height: 16px; width: 16px; color:'+letterColor+'; background-color: ' + colorIndex + ';vertical-align:middle;text-align: center;float:left">'+letter+'</div>'+ 
     	'<div style="clear:left;position: absolute; text-align: center; vertical-align:middle; width: 48px; height:16px;top: 0; left: 0;'+
     	'background: transparent url('+tripIcon+') no-repeat center right;">' + 
     			tripNumber + '</div></div>'; 
@@ -195,7 +195,7 @@
          ctx.textAlign="center";
          ctx.textBaseline="middle";
 		 ctx.font = "14px Helvetica";         
-         ctx.fillStyle="black";
+         ctx.fillStyle="white";
          
          ctx.fillText(count,16,17);
          ctx.closePath();
@@ -400,7 +400,7 @@
 					//Start of trip marker
 					startlatlng = new GLatLng(driverTrips.trips[j].beginningPoint.lat, driverTrips.trips[j].beginningPoint.lng);
 					marker = createLabeledMarker(startlatlng,tripIcons[6],
-								getSingleLabeledMarkerLabel(labels[colorArray[driverIndex]],colors[colorArray[driverIndex]],tripNumber,tripIcons[0]),
+								getSingleLabeledMarkerLabel(labels[colorArray[driverIndex]], text[color],colors[colorArray[driverIndex]],tripNumber,tripIcons[0]),
 								driverTrips.trips[j].startEventItem.eventID);
 					markers.push({	eventID:driverTrips.trips[j].startEventItem.eventID,
 			  						marker:marker});
@@ -410,7 +410,7 @@
 					for(var k=0; k<length; k++){
 						var violation = new GLatLng(driverTrips.trips[j].violations[k].latLng.lat, driverTrips.trips[j].violations[k].latLng.lng);
 						marker = createLabeledMarker(violation,tripIcons[6],
-									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[3]),
+									getSingleLabeledMarkerLabel(labels[color], text[color], colors[color],tripNumber,tripIcons[3]),
 									driverTrips.trips[j].violations[k].eventID);
 						markers.push({	eventID:driverTrips.trips[j].violations[k].eventID,
 				  						marker:marker});
@@ -419,7 +419,7 @@
 					for(var k=0; k<length; k++){
 						var idle = new GLatLng(driverTrips.trips[j].idles[k].latLng.lat,driverTrips.trips[j].idles[k].latLng.lng);
 						marker = createLabeledMarker(idle,tripIcons[6],
-									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[4]),
+									getSingleLabeledMarkerLabel(labels[color],text[color],colors[color],tripNumber,tripIcons[4]),
 									driverTrips.trips[j].idles[k].eventID);
 						markers.push({	eventID:driverTrips.trips[j].idles[k].eventID,
 									  	marker:marker});
@@ -428,7 +428,7 @@
 					for(var k=0; k<length; k++){
 						var tamper = new GLatLng(driverTrips.trips[j].tampers[k].latLng.lat,driverTrips.trips[j].tampers[k].latLng.lng);
 						marker = createLabeledMarker(tamper,tripIcons[6],
-									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[5]),
+									getSingleLabeledMarkerLabel(labels[color],text[color],colors[color],tripNumber,tripIcons[5]),
 									driverTrips.trips[j].tampers[k].eventID);
 						markers.push({	eventID:driverTrips.trips[j].tampers[k].eventID,
 							  			marker:marker});
@@ -437,7 +437,7 @@
 					if (driverTrips.trips[j].inProgress)
 					{
 						marker = createLabeledMarker(endlatlng,tripIcons[6],
-									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[1]),
+									getSingleLabeledMarkerLabel(labels[color],text[color],colors[color],tripNumber,tripIcons[1]),
 									driverTrips.trips[j].endEventItem.eventID);
 						markers.push({	eventID:driverTrips.trips[j].endEventItem.eventID,
 				  						marker:marker});
@@ -445,7 +445,7 @@
 					else
 					{
 						marker = createLabeledMarker(endlatlng,tripIcons[6],
-									getSingleLabeledMarkerLabel(labels[color],colors[color],tripNumber,tripIcons[2]),
+									getSingleLabeledMarkerLabel(labels[color],text[color],colors[color],tripNumber,tripIcons[2]),
 									driverTrips.trips[j].endEventItem.eventID);
 						markers.push({	eventID:driverTrips.trips[j].endEventItem.eventID,
 				  						marker:marker});

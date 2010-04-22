@@ -31,7 +31,6 @@
 		position:absolute;
 		top:2px;
 		left:0;
-		color: black;
 		width:16px;
 		height:15px;
 		vertical-align:middle;
@@ -72,6 +71,7 @@
 					"#{request.contextPath}/images/x.gif"
 				];
 	var colors = [#{messages.teamColors}];
+	var text = [#{messages.teamText}];
 	var labels = [#{messages.teamLabels}];
 	
 	function initTeamTripsMap() {
@@ -161,7 +161,7 @@
 				<rich:column>
 					<div style="position: relative; background-color:#{teamTripsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">
 					
-						<div class="trips_label">
+						<div class="trips_label" style="color:#{teamTripsBean.text[index]};">
 						#{teamTripsBean.labels[index]}
 						</div>
 					</div>
