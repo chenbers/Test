@@ -38,7 +38,7 @@ public class TeamTripsBean extends BaseBean {
 	private static final int driversPerPage = 25;
 	
 	private List<String> colors;
-	private List<String> text;
+	private List<String> textColors;
 	private List<String> labels;
 	
     private DriverDAO driverDAO;
@@ -64,11 +64,6 @@ public class TeamTripsBean extends BaseBean {
     public void init(){
     	
 		initDrivers();
-		colors = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamColors"))));
-		colors.remove(0);
-		
-		text = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamText"))));
-		text.remove(0);
 
 		labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamLabels"))));
 		labels.remove(0);
@@ -206,11 +201,20 @@ public class TeamTripsBean extends BaseBean {
 	public void setColors(List<String> colors) {
 		this.colors = colors;
 	}
-	public List<String> getText() {
-		return text;
+	
+	public JSONArray getColorsJSON(){
+		
+		return new JSONArray(colors);
 	}
-	public void setText(List<String> text) {
-		this.text = text;
+	public List<String> getTextColors() {
+		return textColors;
+	}
+	public void setTextColors(List<String> textColors) {
+		this.textColors = textColors;
+	}
+	public JSONArray getTextColorsJSON(){
+		
+		return new JSONArray(textColors);
 	}
 	public List<String> getLabels() {
 		return labels;

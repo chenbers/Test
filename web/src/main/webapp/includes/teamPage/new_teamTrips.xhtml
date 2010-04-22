@@ -70,8 +70,8 @@
 					"#{request.contextPath}/images/ico_tampering.png",
 					"#{request.contextPath}/images/x.gif"
 				];
-	var colors = [#{messages.teamColors}];
-	var text = [#{messages.teamText}];
+	var colors = #{teamTripsBean.colorsJSON};
+	var textColors = #{teamTripsBean.textColorsJSON};
 	var labels = [#{messages.teamLabels}];
 	
 	function initTeamTripsMap() {
@@ -161,7 +161,7 @@
 				<rich:column>
 					<div style="position: relative; background-color:#{teamTripsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">
 					
-						<div class="trips_label" style="color:#{teamTripsBean.text[index]};">
+						<div class="trips_label" style="color:#{teamTripsBean.textColors[index]};">
 						#{teamTripsBean.labels[index]}
 						</div>
 					</div>
