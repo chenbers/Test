@@ -23,10 +23,26 @@
 		baseIcon.iconAnchor = new GPoint(6, 20);
 		baseIcon.infoWindowAnchor = new GPoint(5, 1);
 		baseIcon.shadow=null;
+		
+		//<![CDATA[
+		//Pulled out of markerclusterer.js
+		  var sizes = [53, 56, 66, 78, 90];
+		  var styles = [];
+
+		  var i = 0;
+		  for (i = 1; i <= 5; ++i) {
+		    styles.push({
+		      'url': "#{request.contextPath}/images/markerClusterer/m" + i + ".png",
+		      'height': sizes[i - 1],
+		      'width': sizes[i - 1]
+		    });
+		  }
+		//]]>
 
 	  	function initMap(lat,lng,zoom)
 	  	{
 			if (GBrowserIsCompatible()) {
+				GUnload();
 				
 				if(mapNeedsInit == true)
 				{
@@ -46,7 +62,6 @@
 			 		overviewMapControl = new GOverviewMapControl();
 			 		map.addControl(overviewMapControl); 
 					bounds = new GLatLngBounds();
-//				    overviewMapControl.hide(true);
 		    		
 			 		mapNeedsInit = false;
 				}
@@ -67,15 +82,15 @@
 			map.panTo(new GLatLng(lat, lng));
 		}
 		
-		function bodyUnload()
-		{
-			GUnload();
-		}
+//		function bodyUnload()
+//		{
+//			GUnload();
+//		}
 		
-		function bodyLoad()
-		{    	
-			initLiveFleetMap()
-		}
+//		function bodyLoad()
+//		{    	
+//			initLiveFleetMap();
+//		}
 
 		function initLiveFleetMap(){
 			initMap(#{mapxcenter},#{mapycenter},#{mapzoom});
@@ -101,10 +116,9 @@
 				fillBubbleMarker(obj.itemID,obj.subID);
 			}		
 		}  	
-
-		jQuery(function(){
-			bodyLoad();
-		});
+//		jQuery(function(){
+//			bodyLoad();
+//		});
 
 	</script>
 
@@ -112,26 +126,11 @@
 
 				<rich:panel id="scripts">
 						<script type="text/javascript">
-
-		//<![CDATA[
-		//Pulled out of markerclusterer.js
-		  var sizes = [53, 56, 66, 78, 90];
-		  var styles = [];
-
-		  var i = 0;
-		  for (i = 1; i <= 5; ++i) {
-		    styles.push({
-		      'url': "#{request.contextPath}/images/markerClusterer/m" + i + ".png",
-		      'height': sizes[i - 1],
-		      'width': sizes[i - 1]
-		    });
-		  }
-		//]]>
 			function addMarkers()
 			{
 				var progress = 0;
 				var progressBar = new ProgressbarControl(map);
-				if (markerClusterer != null) {
+				if ((markerClusterer != null) &amp;&amp;(markers)&amp;&amp;(markers.length &gt; 0)){
 			          markerClusterer.clearMarkers();
 			        }
 		        

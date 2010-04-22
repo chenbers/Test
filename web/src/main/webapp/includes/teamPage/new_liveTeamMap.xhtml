@@ -34,7 +34,7 @@
 	//]]>
  </script>
 
-	<rich:tab id="liveTeam" oncomplete="Team.tabChange();">
+	<rich:tab id="liveTeam" oncomplete="Team.tabChange();" ontableave="GUnload();">
 		<f:facet name="label">
 	 		<h:panelGroup>
 	 			<h:graphicImage value="/images/ico_line.png" />

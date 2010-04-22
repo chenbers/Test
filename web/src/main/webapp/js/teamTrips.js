@@ -163,8 +163,8 @@
   	   if(typeof G_vmlCanvasManager != 'undefined'){
   		   
   		   clusterDiv = G_vmlCanvasManager.initElement(clusterDiv);
-  		   clusterDiv.setAttribute("width", 35+(displayColors.length-1)*5);
-  		   clusterDiv.setAttribute("height", 35);
+		   clusterDiv.style.width = 35+(displayColors.length-1)*5;
+		   clusterDiv.style.height = 35;
   	   }
   	   if (clusterDiv.getContext) { 
   	    

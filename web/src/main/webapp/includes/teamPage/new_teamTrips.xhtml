@@ -27,7 +27,7 @@
 	  text-align: center;
 	  font-size:12px
 	}
-	.trips_color {
+	.trips_label {
 		position:absolute;
 		top:2px;
 		left:0;
@@ -40,7 +40,7 @@
 	}
 	#driverTable {
 		float:left;
-		width:25%;
+		width:24%;
 		height:500px; 
 		border:0;
 	}
@@ -81,7 +81,7 @@
 			TeamTrips.map = new GMap2(document.getElementById("teamTrip-map-canvas"));						
 			TeamTrips.map.addControl(new GLargeMapControl());
 			TeamTrips.map.addControl(new GMapTypeControl());
-			TeamTrips.map.addControl(new GOverviewMapControl()); 
+//			TeamTrips.map.addControl(new GOverviewMapControl()); 
 			TeamTrips.map.setMapType(G_NORMAL_MAP);
 			TeamTrips.map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
 
@@ -111,7 +111,7 @@
 		
  </script>
  
-    <rich:tab id="teamTrips" oncomplete="Team.tabChange();">
+    <rich:tab id="teamTrips" oncomplete="Team.tabChange();" ontableave="GUnload();">
    	
 	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">
@@ -123,8 +123,11 @@
    	<!-- Trips Map -->
  <a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
    	<div class="section">
+       	<h:form id="tripsTableForm">
+       	<rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
 	         <div id="driverTable" >
-	        	<h:form id="tripsTableForm">
+	        	
 	         	<rich:dataTable	value="#{teamTripsBean.driversTrips}" 
 					       		id="driversTrips" 
 					       		var="driverTrips"
@@ -137,12 +140,11 @@
 				<rich:column>
                 <a4j:outputPanel id="hideShow" ajaxRendered="true" >
                 
-                <h:selectBooleanCheckbox id="checkDriver" value="#{driverTrips.driverSelected}" >
+                <h:selectBooleanCheckbox id="checkDriver" value="#{driverTrips.driverSelected}" disabled="#{not teamTripsBean.validTimeFrame}">
                   <a4j:support event="onclick" status="teamStatus" eventsQueue="tripsQueue" 
                   				action="#{driverTrips.selectivelyLoadTrips}" data="#{driverTrips}" 
                   				oncomplete="toggleDriverTrips(TeamTrips.map, #{index}, data)" ajaxSingle="true">
                    </a4j:support>
-                  				
                 </h:selectBooleanCheckbox>
                 </a4j:outputPanel>
               </rich:column>
@@ -159,7 +161,7 @@
 				<rich:column>
 					<div style="position: relative; background-color:#{teamTripsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">
 					
-						<div class="trips_color">
+						<div class="trips_label">
 						#{teamTripsBean.labels[index]}
 						</div>
 					</div>
@@ -169,7 +171,7 @@
             		 				styleClass="dataScrollerSmall" renderIfSinglePage="false" id="driverTableScroller" width="98%" page="#{teamTripsBean.driversPage}"
             		 				eventsQueue="tripsQueue"/>
             		 
-		<a4j:jsFunction id="getLatestTrips" ajaxSingle="true" status="teamStatus" name="getLatestTrips" action="#{teamTripsBean.reloadTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
+		<a4j:jsFunction id="getLatestTrips" ajaxSingle="true" status="teamStatus" name="getLatestTrips" action="#{teamTripsBean.loadSelectedDriversTrips}" data="#{teamTripsBean.selectedDriversTrips}" 
 				eventsQueue="tripsQueue" oncomplete="displayAllTrips(TeamTrips.map,data)"/>
 				
 		<a4j:jsFunction id="getTripBubbleData" ajaxSingle="true" status="teamStatus" name="getTripBubbleData" action="#{teamTripsBean.createEventBubbleData}" reRender="teamBubbleForm" data="#{teamTripsBean.eventData}" 
@@ -182,11 +184,11 @@
 						<a4j:actionparam name="clusterEventData" assignTo="#{teamTripsBean.clusterEventData}"/>
 		</a4j:jsFunction>
 		
- 	</h:form>	
  				         
 	         </div>  
 			 <div id="teamTrip-map-canvas"></div>
 			 <div style="clear:both"></div>
+ 	</h:form>	
 	       </div>
 				<h:form id="teamBubbleForm" >
 				<div id="bubbleElement" style="display:none" >

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.model.TimeFrame;
 
 @KeepAlive
 public class TeamTripsBean extends BaseBean {
@@ -52,8 +54,11 @@ public class TeamTripsBean extends BaseBean {
 	
     private List<Long> eventIDs;
     private LatLng clusterLatLng;
+    
+    private List<DriverTrips> selectedDrivers;
      
     private JSONObject jsonEventData;
+    private static final EnumSet<TimeFrame> validTimeFrames = EnumSet.range(TimeFrame.TODAY,TimeFrame.WEEK);
     
     public void init(){
     	
@@ -94,30 +99,47 @@ public class TeamTripsBean extends BaseBean {
  		
 		return Collections.list(Collections.enumeration(driversTripsMap.values()));
 	}
+ 	
+ 	public boolean isValidTimeFrame(){
+ 		
+ 		return validTimeFrames.contains(teamCommonBean.getTimeFrame());
+		
+ 	}
+ 	public void loadSelectedDriversTrips(){
+ 	
+ 		if (isValidTimeFrame()){
+ 			
+	 		selectedDrivers = new ArrayList<DriverTrips>();
+	 		DriverTrips driversTripsList[] = driversTripsMap.values().toArray(new DriverTrips[0]);
+	 		
+	 		for (int i=(driversPage-1)*driversPerPage; i< (driversTripsMap.size()<driversPage*driversPerPage?driversTripsMap.size():driversPage*driversPerPage); i++){
+	 	   		
+	 			DriverTrips dt = driversTripsList[i];
+	 	   		if ( dt.isDriverSelected()){
+	 	   			
+	 	   			dt.reloadTrips();
+	 	   			selectedDrivers.add(dt);
+	 	   		}
+	 	   	}
+ 		}
+ 		else{
+ 			
+			addInfoMessage("Please choose a valid time frame for the Team Trips tab");
+ 		}
+
+ 	}
  	public List<DriverTrips> getSelectedDriversTrips(){
  		
- 		List<DriverTrips> selectedDrivers = new ArrayList<DriverTrips>();
- 		DriverTrips driversTripsList[] = driversTripsMap.values().toArray(new DriverTrips[0]);
- 		
- 		for (int i=(driversPage-1)*driversPerPage; i< (driversTripsMap.size()<driversPage*driversPerPage?driversTripsMap.size():driversPage*driversPerPage); i++){
- 	   		
- 			DriverTrips dt = driversTripsList[i];
- 	   		if ( dt.isDriverSelected()){
- 	   			
- 	   			dt.reloadTrips();
- 	   			selectedDrivers.add(dt);
- 	   		}
- 	   	}
- 	   	return selectedDrivers;
+ 		if (isValidTimeFrame()){
+ 			
+	 	   	return selectedDrivers;
+ 		}
+ 		else {
+ 			
+ 			return null;
+ 		}
  	}
 
- 	public void reloadTrips(){
-		
-    	for(DriverTrips dt:driversTripsMap.values()){
-    		
-    		dt.reloadTrips();
-    	}
-	}
 	public void clearTrips(){
 		
     	for(DriverTrips dt:driversTripsMap.values()){

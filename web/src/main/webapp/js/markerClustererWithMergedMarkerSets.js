@@ -787,23 +787,9 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 			 });
 		  }
 
-//		  var preRenderedCanvas = drawFunction(displayColors, this.getTotalMarkers(), clusterMarker.div_);
-
 		  map_.addOverlay(clusterMarker);
 		  drawFunction(displayColors, this.getTotalMarkers(), clusterMarker.div_);
 		  
-//		  var width = opts_.icon.iconSize.width +(displayColors.length-1)*5;
-//		  var height = opts_.icon.iconSize.height;
-//	 	  var outerClusterDiv = document.createElement("div");
-//	  	   
-//	  	   outerClusterDiv.setAttribute("width", width);
-//	  	   outerClusterDiv.setAttribute("height", height)
-//	  	   outerClusterDiv.setAttribute("position","absolute");
-//	  	   outerClusterDiv.setAttribute("top", 0);
-//	  	   outerClusterDiv.setAttribute("left", 0);
-	  	   
-//	 	   clusterMarker.div_.appendChild(preRenderedCanvas);
-
 		  return clusterMarker;
 	  }
 	  else {
