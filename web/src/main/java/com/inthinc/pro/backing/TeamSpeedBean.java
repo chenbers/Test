@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,11 +48,11 @@ public class TeamSpeedBean extends BaseBean {
         // Get the colors for the table. 
         ColorSelectorStandard css = new ColorSelectorStandard();
         colors = new HashMap<String,String>();
-        colors.put("0", css.getEntityColorKey(19));
-        colors.put("1", css.getEntityColorKey(20));
-        colors.put("2", css.getEntityColorKey(21));
-        colors.put("3", css.getEntityColorKey(22));
-        colors.put("4", css.getEntityColorKey(23));
+        colors.put("0", "fd0500");
+        colors.put("1", "9a2321");
+        colors.put("2", "fa6b00");
+        colors.put("3", "994500");
+        colors.put("4", "bc8b1d");        
         
         // Get the labels for the graphs
         graphicLabels = new HashMap<String,String>();
@@ -190,7 +191,7 @@ public class TeamSpeedBean extends BaseBean {
         sb.append("<dataset>");
         sb.append("<dataset seriesName=\'");
         sb.append(MessageUtil.getMessageString("teamSpeedBarSpeedingDistance"));
-        sb.append("\' color=\"FF0000\" showValues=\"0\">");
+        sb.append("\' color=\"1E88C8\" showValues=\"0\">");
         for (int i = 0; i < milesSpeeding.size(); i++)
         {            
             Number miles = MeasurementConversionUtil.convertMilesToKilometers(milesSpeeding.get(i), this.getMeasurementType());
@@ -201,7 +202,7 @@ public class TeamSpeedBean extends BaseBean {
         // Miles driven
         sb.append("<dataset seriesName=\'");
         sb.append(MessageUtil.getMessageString("teamSpeedBarDrivingDistance"));
-        sb.append("\' color=\"00FF00\" showValues=\"0\">");
+        sb.append("\' color=\"CCCCCC\" showValues=\"0\">");
         for (int i = 0; i < milesDriven.size(); i++)
         {
             Number miles = MeasurementConversionUtil.convertMilesToKilometers(milesDriven.get(i), this.getMeasurementType());
@@ -213,7 +214,7 @@ public class TeamSpeedBean extends BaseBean {
         // Percent speeding
         sb.append("<lineSet seriesName=\'");
         sb.append(MessageUtil.getMessageString("teamSpeedBarPercentDistance"));
-        sb.append("\' color=\"0000FF\" showValues=\"0\" lineThickness=\"4\">");
+        sb.append("\' color=\"000066\" showValues=\"0\" lineThickness=\"4\">");
         
         for (int i= 0; i < milesSpeeding.size(); i++ ) 
         {           
@@ -319,6 +320,7 @@ public class TeamSpeedBean extends BaseBean {
         List<DriverVehicleScoreWrapper> local = 
             teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
         
+        // Event Totals
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             totDrivers++;
             
@@ -343,17 +345,58 @@ public class TeamSpeedBean extends BaseBean {
                 }
             }
         }
+        int totalEvents = zeroToThirty + thirtyOneToFourty + fourtyOneToFiftyFour + fiftyFiveToSixtyFour + sixtyFiveAndUp;
                
         totals.put("zeroToThirty", Integer.toString(zeroToThirty));
         totals.put("thirtyOneToFourty", Integer.toString(thirtyOneToFourty));
         totals.put("fourtyOneToFiftyFour", Integer.toString(fourtyOneToFiftyFour));
         totals.put("fiftyFiveToSixtyFour", Integer.toString(fiftyFiveToSixtyFour));
         totals.put("sixtyFiveAndUp", Integer.toString(sixtyFiveAndUp));
-        totals.put("total", Integer.toString(zeroToThirty + thirtyOneToFourty + fourtyOneToFiftyFour + fiftyFiveToSixtyFour + sixtyFiveAndUp));
+        totals.put("total", Integer.toString(totalEvents));
+        totals.put("colored", "false");
         
         speedTot.add(totals);
         
         return speedTot;
+    }
+    
+    
+    public List<HashMap<String,String>> getSpeedTotalsTable() {
+        ArrayList<HashMap<String,String>> speedTot = new ArrayList<HashMap<String,String>>();
+        HashMap<String,String> totals = new HashMap<String,String>();
+                
+        // Get the total events and the percentages        
+        speedTot = (ArrayList)getSpeedTotals();        
+        List<ScoreableEntity> scoreDataList = getScoreableEntitiesPie();
+        
+        ScoreableEntity se = scoreDataList.get(0);
+        totals.put("zeroToThirty", (se.getScore() + "%"));
+        
+        se = scoreDataList.get(1);        
+        totals.put("thirtyOneToFourty", (se.getScore() + "%"));
+        
+        se = scoreDataList.get(2); 
+        totals.put("fourtyOneToFiftyFour", (se.getScore() + "%"));
+        
+        se = scoreDataList.get(3); 
+        totals.put("fiftyFiveToSixtyFour", (se.getScore() + "%"));
+        
+        se = scoreDataList.get(4); 
+        totals.put("sixtyFiveAndUp", (se.getScore() + "%"));
+
+        totals.put("total", "100%");
+        totals.put("colored", "true");
+        
+        speedTot.add(totals);
+     
+        return speedTot;
+    }
+    
+    private float toTwoDecimalPlaces(double factor,int value) {       
+        DecimalFormat df = new DecimalFormat("#,###,###,##0.00");
+        float f = (float)(factor*(float)value);
+        
+        return new Float(df.format(f)).floatValue();
     }
     
     public HashMap<String,String> getGraphicLabels() {
