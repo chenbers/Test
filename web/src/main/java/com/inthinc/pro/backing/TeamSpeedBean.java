@@ -49,9 +49,9 @@ public class TeamSpeedBean extends BaseBean {
         ColorSelectorStandard css = new ColorSelectorStandard();
         colors = new HashMap<String,String>();
         colors.put("0", "#fd0500");
-        colors.put("1", "#9a2321");
+        colors.put("1", "#d71b2d");
         colors.put("2", "#fa6b00");
-        colors.put("3", "#994500");
+        colors.put("3", "#907021");
         colors.put("4", "#bc8b1d");        
         
         // Get the labels for the graphs
