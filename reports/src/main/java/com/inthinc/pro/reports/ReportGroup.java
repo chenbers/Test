@@ -113,6 +113,14 @@ public enum ReportGroup
     {
         return criterias;
     }
+    
+    public Boolean getUseTimeFrame()
+    {
+    	for (CriteriaType criteria : criterias)
+    		if (criteria.equals(CriteriaType.TIMEFRAME))
+    			return true;
+    	return false;
+    }
 
     public EntityType getEntityType()
     {
