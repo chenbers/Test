@@ -147,7 +147,7 @@
 								</td>
 							</tr>
                      
-                            <h:outputText rendered="#{reportScheduleBean.item.reportDuration ne null}">
+                            <h:outputText rendered="#{not reportScheduleBean.item.report.useTimeFrame}">
                                  <tr>
                                     <td width="100" valign="top">
                                        <h:outputText value="#{messages.reportSchedule_daysReported}"/>
@@ -157,7 +157,7 @@
                                     </td>
                                  </tr>
                            </h:outputText>
-                            <h:outputText rendered="#{reportScheduleBean.item.reportTimeFrame ne null}">
+                            <h:outputText rendered="#{reportScheduleBean.item.report.useTimeFrame}">
                                  <tr>
                                     <td width="100" valign="top">
                                        <h:outputText value="#{messages.reportSchedule_daysReported}"/>
