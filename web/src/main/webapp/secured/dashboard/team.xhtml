@@ -13,8 +13,16 @@
        <ui:define name="scripts">
           <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>   
           <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+          <script> 
+				jQuery(function(){
+					initLiveFleetMap();
+				});
+				function bodyUnload()
+				{
+					GUnload();
+				}
+		</script>
        </ui:define>  		
-
 	<ui:param name="homeSelected" value="current" />
 	<ui:param name="helpFile" value="OverviewTeam.htm" />
         <ui:define name="content">
