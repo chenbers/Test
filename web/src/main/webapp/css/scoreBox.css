@@ -1,0 +1,114 @@
+@CHARSET "UTF-8";
+/* SCORES */ 
+
+/* Generic Styles for Score Boxes */
+.score {
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #333;
+}
+
+.score td {
+	text-align: center;
+	vertical-align: middle;
+}
+    
+
+.score a:visited,.score a:link,.score a:active, .score a:hover {
+	text-decoration: none;
+	color: #333;
+}
+
+/* Large Score Box */
+.score_lg_1 td,.score_lg_2 td,.score_lg_3 td,.score_lg_4 td,.score_lg_5 td,.score_lg_na td {
+	font-size: 32px;
+	height: 90px;
+	width: 90px;
+}
+
+.score_lg_1 td {
+	background: url(../images/score_lg_1.png) no-repeat;
+}
+
+.score_lg_2 td {
+	background: url(../images/score_lg_2.png) no-repeat;
+}
+
+.score_lg_3 td {
+	background: url(../images/score_lg_3.png) no-repeat;
+}
+
+.score_lg_4 td {
+	background: url(../images/score_lg_4.png) no-repeat;
+}
+
+.score_lg_5 td {
+	background: url(../images/score_lg_5.png) no-repeat;
+}
+
+.score_lg_na td {
+	background: url(../images/score_lg_na.png) no-repeat;
+}
+
+/* Medium Score Box*/
+.score_med_1 td,.score_med_2 td,.score_med_3 td,.score_med_4 td,.score_med_5 td,.score_med_na td
+	{
+	width: 60px;
+	height: 60px;
+	font-size: 24px;
+}
+
+.score_med_1 td {
+	background: url(../images/score_med_1.png) no-repeat;
+}
+
+.score_med_2 td {
+	background: url(../images/score_med_2.png) no-repeat;
+}
+
+.score_med_3 td {
+	background: url(../images/score_med_3.png) no-repeat;
+}
+
+.score_med_4 td {
+	background: url(../images/score_med_4.png) no-repeat;
+}
+
+.score_med_5 td {
+	background: url(../images/score_med_5.png) no-repeat;
+}
+
+.score_med_na td {
+	background: url(../images/score_med_na.png) no-repeat;
+}
+
+/* Small Score Box*/
+.score_sm_1 td,.score_sm_2 td,.score_sm_3 td,.score_sm_4 td,.score_sm_5 td,.score_sm_na td {
+	width: 40px;
+	height: 40px;
+	font-size: 18px;
+}
+
+.score_sm_1 td {
+	background: url(../images/score_sm_1.png) no-repeat;
+}
+
+.score_sm_2 td {
+	background: url(../images/score_sm_2.png) no-repeat;
+}
+
+.score_sm_3 td {
+	background: url(../images/score_sm_3.png) no-repeat;
+}
+
+.score_sm_4 td {
+	background: url(../images/score_sm_4.png) no-repeat;
+}
+
+.score_sm_5 td {
+	background: url(../images/score_sm_5.png) no-repeat;
+}
+
+.score_sm_na td {
+	background: url(../images/score_sm_na.png) no-repeat;
+}
