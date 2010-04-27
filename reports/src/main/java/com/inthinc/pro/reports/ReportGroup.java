@@ -121,6 +121,13 @@ public enum ReportGroup
     			return true;
     	return false;
     }
+    public Boolean getUseDuration()
+    {
+    	for (CriteriaType criteria : criterias)
+    		if (criteria.equals(CriteriaType.DURATION))
+    			return true;
+    	return false;
+    }
 
     public EntityType getEntityType()
     {
