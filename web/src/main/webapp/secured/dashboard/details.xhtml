@@ -95,6 +95,15 @@
                                     <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
                                         <f:param value="#{navigationBean.groupID}"/>
                                     </pretty:urlbuffer>
+                                   <script>
+	                                    jQuery(function(){
+											initLiveFleetMap();
+										});
+										function bodyUnload()
+										{
+											GUnload();
+										}
+                                    </script>
                                     <ui:include src="/includes/liveFleetMap.xhtml">
                                         <ui:param name="mapheight" value="height:800px"/>
                                         <ui:param name="mapwidth" value="width:800px"/>
