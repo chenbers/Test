@@ -22,7 +22,7 @@
 		<property name="reportServiceCreator" ref="reportServiceCreator" />
 		<property name="dateFormatBean" ref="dateFormatBean" />
     </bean>
-    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" init-method="init" parent="baseBean" scope="session">
+    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" init-method="init" scope="session">
 		<property name="deviceDAO" ref="deviceDAO" />
 		<property name="accountDAO" ref="accountDAO" />
 		<property name="userDAO" ref="userDAO" />
