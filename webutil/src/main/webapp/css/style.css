@@ -87,7 +87,7 @@ th.dr-table-headercell {
 	text-align: left;
 }
 
-
-.dataTableSelectedRow {
-	background-color : #6b9d1b;
+th.rich-table-subheadercell {
+	text-align: left;
 }
+

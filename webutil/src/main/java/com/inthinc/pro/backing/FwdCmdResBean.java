@@ -2,7 +2,6 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,16 +9,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.richfaces.component.html.HtmlExtendedDataTable;
-import org.richfaces.model.selection.Selection;
-
+import com.inthinc.pro.backing.model.DeviceItem;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.ForwardCommandDefDAO;
-import com.inthinc.pro.dao.ReportDAO;
-import com.inthinc.pro.model.DeviceReportItem;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandDef;
+import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.ForwardCommandType;
-import com.inthinc.pro.model.pagination.PageParams;
 
 public class FwdCmdResBean extends BaseBean {
 
@@ -27,24 +24,20 @@ public class FwdCmdResBean extends BaseBean {
 	private Integer intData;
 	private String stringData;
 
-	// Device Selection
 	private Integer acctID;
-	private List<DeviceReportItem> devices;
-	private DeviceReportItem filter;
-	private List<DeviceReportItem> selectedDevices;
-	private Integer deviceTotalCount;
+	private List<DeviceItem> devices;
+	private List<DeviceItem> selectedDevices;
+	private DeviceItem filter;
 
-//	private Selection deviceSelection;
-//	private HtmlExtendedDataTable scrollableDataTable;
 
 	private DeviceDAO deviceDAO;
-	private ReportDAO reportDAO;
 	private ForwardCommandDefDAO forwardCommandDefDAO;
-	private Integer page;
+	
 	Map<Integer, ForwardCommandDef> forwardCommandDefMap;
 	List<SelectItem> forwardCommandSelectList;
 	
-    private boolean               selectAll;
+
+	private boolean               selectAll;
 
 
 	public FwdCmdResBean() {
@@ -122,19 +115,21 @@ System.out.println("FwdCmdResBean init() - done");
 	public void loadDevices() {
 		if (devices != null)
 			devices.clear();
-//		selectedDevices.clear();
 		if (acctID != null) {
-			devices = new ArrayList<DeviceReportItem>();
+			devices = new ArrayList<DeviceItem>();
+			
+			List<Device> deviceList = deviceDAO.getDevicesByAcctID(getUser().getPerson().getAcctID());
+			for (Device device : deviceList) {
+				DeviceItem item = new DeviceItem(device.getDeviceID(), device.getName(), device.getSim(), device.getImei(), device.getStatus());
+				devices.add(item);
+			}
 
-			deviceTotalCount = reportDAO.getDeviceReportCount(getUser().getGroupID(), null);
-			PageParams pageParams = new PageParams(0, deviceTotalCount, null, null);
-			devices = reportDAO.getDeviceReportPage(getUser().getGroupID(), pageParams);
 		}
 	}
 	
 	public boolean validateDeviceSelected() {
-		selectedDevices = new ArrayList<DeviceReportItem>();
-        for (DeviceReportItem device : getDevices())
+		selectedDevices = new ArrayList<DeviceItem>();
+        for (DeviceItem device : getDevices())
             if (device.getSelected() && matchesFilter(device))
             	selectedDevices.add(device);
         
@@ -146,11 +141,11 @@ System.out.println("FwdCmdResBean init() - done");
 		return false;
 	}
 
-	private boolean matchesFilter(DeviceReportItem device) {
+	private boolean matchesFilter(DeviceItem device) {
 		
-		if (device.getDeviceIMEI().startsWith(filter.getDeviceIMEI()) &&
-			device.getDeviceName().startsWith(filter.getDeviceName()) &&
-			device.getVehicleName().startsWith(filter.getVehicleName()))
+		if (device.getDeviceIMEI().toLowerCase().contains(filter.getDeviceIMEI().trim().toLowerCase()) &&
+			device.getDeviceName().toLowerCase().contains(filter.getDeviceName().trim().toLowerCase()) &&
+			device.getDeviceSIM().toLowerCase().contains(filter.getDeviceSIM().trim().toLowerCase()))
 			return true;
 				
 		return false;
@@ -168,37 +163,10 @@ System.out.println("FwdCmdResBean init() - done");
 		} else {
 			data = Integer.valueOf(0);
 		}
-//		selectedDevices.clear();
-//		Iterator<Object> iterator = deviceSelection.getKeys();
-//		while (iterator.hasNext()) {
-//			Object key = iterator.next();
-//			scrollableDataTable.setRowKey(key);
-//			if (scrollableDataTable.isRowAvailable()) {
-//				DeviceReportItem d = (DeviceReportItem) scrollableDataTable.getRowData();
-//				selectedDevices.add(d);
-//			}
-//		}
-
-//		for (DeviceReportItem d : selectedDevices) {
-			// deviceDAO.queueForwardCommand(d.getDeviceID(),
-			// new ForwardCommand(0, fwdcmd, data,
-			// ForwardCommandStatus.STATUS_QUEUED));
-//		}
-		for (DeviceReportItem device : getSelectedDevices()) {
-//				deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
+		for (DeviceItem device : getSelectedDevices()) {
+				deviceDAO.queueForwardCommand(device.getDeviceID(),
+						new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
 		}
-	}
-
-	public void clearSelection() {
-		selectedDevices = null;
-		selectAll = false;
-		for (DeviceReportItem device : getDevices())
-		  device.setSelected(false);
-	//
-		page = 1;
-		// device = null;
-		
-		// clear filter?
 	}
 
 	public DeviceDAO getDeviceDAO() {
@@ -221,52 +189,12 @@ System.out.println("FwdCmdResBean init() - done");
 		return acctID;
 	}
 
-//	public void setSelectedDevices(List<DeviceReportItem> selectedDevices) {
-//		this.selectedDevices = selectedDevices;
-//	}
-//
-//	public List<DeviceReportItem> getSelectedDevices() {
-//		return selectedDevices;
-//	}
-
-	public List<DeviceReportItem> getDevices() {
+	public List<DeviceItem> getDevices() {
 		return devices;
 	}
 
-	public void setDevices(List<DeviceReportItem> devices) {
+	public void setDevices(List<DeviceItem> devices) {
 		this.devices = devices;
-	}
-
-//	public void setDeviceSelection(Selection deviceSelection) {
-//		this.deviceSelection = deviceSelection;
-//	}
-//
-//	public Selection getDeviceSelection() {
-//		return deviceSelection;
-//	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public Integer getPage() {
-		return page;
-	}
-
-//	public void setScrollableDataTable(HtmlExtendedDataTable scrollableDataTable) {
-//		this.scrollableDataTable = scrollableDataTable;
-//	}
-//
-//	public HtmlExtendedDataTable getScrollableDataTable() {
-//		return scrollableDataTable;
-//	}
-
-	public ReportDAO getReportDAO() {
-		return reportDAO;
-	}
-
-	public void setReportDAO(ReportDAO reportDAO) {
-		this.reportDAO = reportDAO;
 	}
 
 	public ForwardCommandDefDAO getForwardCommandDefDAO() {
@@ -287,30 +215,37 @@ System.out.println("FwdCmdResBean init() - done");
 
     public void doSelectAll()
     {
-        for (DeviceReportItem device : this.getDevices())
+        for (DeviceItem device : this.getDevices())
             device.setSelected(selectAll);
     }
-	public List<DeviceReportItem> getSelectedDevices() {
+	public List<DeviceItem> getSelectedDevices() {
 		return selectedDevices;
 	}
 
-	public void setSelectedDevices(List<DeviceReportItem> selectedDevices) {
+	public void setSelectedDevices(List<DeviceItem> selectedDevices) {
 		this.selectedDevices = selectedDevices;
 	}
 
-    public DeviceReportItem getFilter() {
+    public DeviceItem getFilter() {
 		return filter;
 	}
 
-	public void setFilter(DeviceReportItem filter) {
+	public void setFilter(DeviceItem filter) {
 		this.filter = filter;
 	}
 
 	public void initFilter()
 	{
-		filter = new DeviceReportItem();
+		filter = new DeviceItem();
 		filter.setDeviceIMEI("");
 		filter.setDeviceName("");
-		filter.setVehicleName("");
+		filter.setDeviceSIM("");
+	}
+	
+	public boolean filterMethod(Object obj) {
+		
+		DeviceItem item = (DeviceItem)obj; 
+		
+		return 	matchesFilter(item);
 	}
 }

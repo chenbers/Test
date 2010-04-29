@@ -5,11 +5,27 @@
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:a4j="http://richfaces.org/a4j"
    xmlns:rich="http://richfaces.org/rich">
-
-
-   <ui:param name="panelTitle" value="Forward Command Restricted" />
-   <ui:param name="groupSelected" value="MAIN" />
-   <ui:define name="util_content">
+   	<ui:define name="scripts">
+	<script type="text/javascript">
+        function setCaretToEnd (e) {
+            var control = $((e.target ? e.target : e.srcElement).id);
+            if (control.createTextRange) {
+                var range = control.createTextRange();
+                range.collapse(false);
+                range.select();
+            }
+            else if (control.setSelectionRange) {
+                control.focus();
+                var length = control.value.length;
+                control.setSelectionRange(length, length);
+            }
+            control.selectionStart = control.selectionEnd = control.value.length;
+        } 
+    </script>
+   	</ui:define>
+   	<ui:param name="panelTitle" value="Forward Command Utility" />
+   	<ui:param name="groupSelected" value="MAIN" />
+   	<ui:define name="util_content">
       <div id="middle">
       <div id="content">
          <a4j:form>
@@ -21,10 +37,30 @@
 						<rich:dataTable 
                         	id="deviceTable"
 	                        value="#{fwdcmdresBean.devices}" var="device"
-	                        rowKeyVar="index" rows="15" 
-                           	width="100%"> 
+	                        rowKeyVar="index" rows="10" 
+                           	width="100%" > 
                            	<f:facet name="header">
-                              <h:outputText value="Available Devices" />
+                              <rich:columnGroup>
+				                    <rich:column colspan="5">
+				                              <h:outputText value="Available Devices" />
+				                    </rich:column>
+				                    <rich:column breakBefore="true">
+				                                 <h:outputText value=" " />
+				                    </rich:column>
+				                    <rich:column>
+				                                 <h:outputText value="IMEI" />
+				                    </rich:column>
+				                    <rich:column>
+				                                 <h:outputText value="Device Name" />
+				                    </rich:column>
+				                    <rich:column>
+				                                 <h:outputText value="Status" />
+				                    </rich:column>
+				                    <rich:column>
+				                                 <h:outputText value="SIM" />
+				                    </rich:column>
+				                </rich:columnGroup>
+                              
                            </f:facet>
                            	
 						   <rich:column>
@@ -38,33 +74,40 @@
 			                  </h:selectBooleanCheckbox>
 				                
 				           </rich:column>
-                           <rich:column width="25%" label="IMEI" filterBy="#{device.deviceIMEI}" filterValue="#{fwdcmdresBean.filter.deviceIMEI}" sortBy="#{device.deviceIMEI}">
+                           <rich:column width="25%" label="IMEI"  filterMethod="#{fwdcmdresBean.filterMethod}" >
                               <f:facet name="header">
-                                 <h:outputText value="IMEI" />
-                              </f:facet>
+                                 <h:inputText value="#{fwdcmdresBean.filter.deviceIMEI}" id="deviceIMEIFilter" >
+                        			<a4j:support event="onkeyup" reRender="deviceTable, deviceDatascroller"
+                            				ignoreDupResponses="true" requestDelay="500" oncomplete="setCaretToEnd(event);"/>
+            			        </h:inputText>
+            			       </f:facet>
                               <h:outputText value="#{device.deviceIMEI}" />
                            </rich:column>
-                           <rich:column width="25%" label="Device Name" filterBy="#{device.deviceName}" filterValue="#{fwdcmdresBean.filter.deviceName}" sortBy="#{device.deviceName}">
+                           <rich:column width="25%" label="Device Name" filterMethod="#{fwdcmdresBean.filterMethod}"  sortBy="#{device.deviceName}" selfSorted="false">
                               <f:facet name="header">
-                                 <h:outputText value="Device Name" />
+                                 <h:inputText value="#{fwdcmdresBean.filter.deviceName}" id="deviceNameFilter" >
+                        			<a4j:support event="onkeyup" reRender="deviceTable, deviceDatascroller"
+                            				ignoreDupResponses="true" requestDelay="500" oncomplete="setCaretToEnd(event);"/>
+            			        </h:inputText>
                               </f:facet>
                               <h:outputText value="#{device.deviceName}" />
                            </rich:column>
-                           <rich:column width="25%" label="Status" sortBy="#{device.deviceStatus}">
-                              <f:facet name="header">
-                                 <h:outputText value="Status" />
-                              </f:facet>
+                           <rich:column width="25%" label="Status" sortBy="#{device.deviceStatus}" selfSorted="false">
                               <h:outputText value="#{device.deviceStatus}" />
                            </rich:column>
-                           <rich:column width="25%" label="Vehicle Name" filterBy="#{device.vehicleName}" filterValue="#{fwdcmdresBean.filter.vehicleName}" sortBy="#{device.vehicleName}">
+                           <rich:column width="25%" label="SIM" filterMethod="#{fwdcmdresBean.filterMethod}">
                               <f:facet name="header">
-                                 <h:outputText value="Vehicle Name" />
+                                 <h:inputText value="#{fwdcmdresBean.filter.deviceSIM}" id="simFilter" style="text-align:left" >
+                        			<a4j:support event="onkeyup" reRender="deviceTable, deviceDatascroller"
+                            				ignoreDupResponses="true" requestDelay="500" oncomplete="setCaretToEnd(event);"/>
+            			        </h:inputText>
                               </f:facet>
-                              <h:outputText value="#{device.vehicleName}" />
+                              <h:outputText value="#{device.deviceSIM}" />
                            </rich:column>
-                     	
+                     		<f:facet name="footer">
+		            			<rich:datascroller id="deviceDatascroller" renderIfSinglePage="false" />  
+                     		</f:facet>
                      	</rich:dataTable>
-      
                         
                      </h:panelGroup>
                      </td>
@@ -90,12 +133,12 @@
 	            </a4j:outputPanel>
 				<a4j:form id="params">
 		            <h:panelGroup  id="intParam" rendered="#{fwdcmdresBean.forwardCommandDef.expectedParamType == 'INTEGER'}">
-	            		<h:outputText value="IData:" style="font-size:12px;font-weight:bold;"/><br/>
+	            		<h:outputText value="Data:" style="font-size:12px;font-weight:bold;"/><br/>
 						<h:inputText id="intdata" label="Data" value="#{fwdcmdresBean.intData}" required="true" requiredMessage="Data is required."/>
         	          	<rich:message for="intdata" style="font-size:12px;color:red"/>
 		            </h:panelGroup >
 		            <h:panelGroup  id="strParam"  rendered="#{fwdcmdresBean.forwardCommandDef.expectedParamType == 'STRING'}">
-	                	<h:outputText value="SData:" style="font-size:12px;font-weight:bold;"/><br/>
+	                	<h:outputText value="Data:" style="font-size:12px;font-weight:bold;"/><br/>
     	            	<h:inputText id="stringdata" label="Data" value="#{fwdcmdresBean.stringData}"  required="true" requiredMessage="Data is required."/>
 						<rich:message for="stringdata" style="font-size:12px;color:red"/>
 		            </h:panelGroup>
@@ -116,7 +159,7 @@
          <f:facet name="header">
             <h:outputText value="Send Forward Command" />
          </f:facet>
-         <a4j:jsFunction name="reRenderTable" reRender="selectedDeviceTable"></a4j:jsFunction>
+         <a4j:jsFunction name="reRenderTable" reRender="selectedDeviceTable,datascroller"></a4j:jsFunction>
          <a4j:form>
          <p><h:outputText value="Forward command sent successfully to the following devices:" /></p>
             
@@ -138,16 +181,17 @@
 						</f:facet>                            	
                         <h:outputText value="#{device.deviceName}" />
                      </rich:column>
-                     <rich:column width="150" label="Vehicle Name">
+                     <rich:column width="150" label="SIM">
 	                    <f:facet name="header">
-                        	<h:outputText value="Vehicle Name" />
+                        	<h:outputText value="SIM" />
 						</f:facet>                            	
-                        <h:outputText value="#{device.vehicleName}" />
+                        <h:outputText value="#{device.deviceSIM}" />
                      </rich:column>
+            		 <f:facet name="footer">
+			            <rich:datascroller id="datascroller" renderIfSinglePage="false"/>
+			          </f:facet>  
                </rich:dataTable> 
-            <rich:datascroller id="datascroller" for="selectedDeviceTable" page="#{fwdcmdresBean.page}"/>  
             <a4j:commandButton
-               action="#{fwdcmdresBean.clearSelection}"
                oncomplete="Richfaces.hideModalPanel('successPanel')"
                reRender="deviceTable"
                value="OK"/>

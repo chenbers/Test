@@ -30,7 +30,6 @@
 	</bean>
     <bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session">
 		<property name="deviceDAO" ref="deviceDAO" />
-		<property name="reportDAO" ref="reportDAO" />
 		<property name="forwardCommandDefDAO" ref="forwardCommandDefDAO" />
 	</bean>
     <bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session">
