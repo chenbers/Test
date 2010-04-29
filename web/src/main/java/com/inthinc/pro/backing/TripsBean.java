@@ -88,7 +88,7 @@ public class TripsBean extends BaseBean {
             }
             
             for (Trip trip : tempTrips) {
-                TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), addressLookup);
+                TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), getAddressLookup());
                 // If starting or ending address is null, try to set a zone name
                 if ( td.getStartAddress() == null ) {
                     LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
@@ -163,15 +163,15 @@ public class TripsBean extends BaseBean {
             tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
             if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
             	
-                violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, showExcludedEvents);
-                idleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, idleTypes, showExcludedEvents);
-                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, showExcludedEvents);
+                violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, getShowExcludedEvents());
+                idleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, idleTypes, getShowExcludedEvents());
+                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, getShowExcludedEvents());
             }
             else {
             	
-                violationEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, violationEventTypeList, showExcludedEvents);
-                idleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, idleTypes, showExcludedEvents);
-                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, showExcludedEvents);
+                violationEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, violationEventTypeList, getShowExcludedEvents());
+                idleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, idleTypes, getShowExcludedEvents());
+                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, getShowExcludedEvents());
             }
             // Lookup Addresses for events
             populateAddresses(violationEvents);
@@ -237,10 +237,10 @@ public class TripsBean extends BaseBean {
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
         List<Event> tmpIdleEvents = new ArrayList<Event>();
         if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
-            tmpIdleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes, showExcludedEvents);
+            tmpIdleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes, getShowExcludedEvents());
         }
         else {
-            tmpIdleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes, showExcludedEvents);
+            tmpIdleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes, getShowExcludedEvents());
         }
         for (Event event : tmpIdleEvents) {
             idleSeconds += ((IdleEvent) event).getHighIdle();

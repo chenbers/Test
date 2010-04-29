@@ -67,7 +67,7 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
 
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types, showExcludedEvents);
+        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types, getShowExcludedEvents());
 
         events = new ArrayList<EventReportItem>();
         for (Event event : tempEvents)

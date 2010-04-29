@@ -158,7 +158,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 
 	public void showExcludedEventsChangeAction(){
 		
-		showExcludedEvents = showExcludedEvents==EventDAO.EXCLUDE_FORGIVEN?EventDAO.INCLUDE_FORGIVEN:EventDAO.EXCLUDE_FORGIVEN;
+		setShowExcludedEvents(getShowExcludedEvents()==EventDAO.EXCLUDE_FORGIVEN?EventDAO.INCLUDE_FORGIVEN:EventDAO.EXCLUDE_FORGIVEN);
 		initEvents();
         tableStatsBean.updateSize(getEventsListsMap().get(selectedBreakdown).size());
    	}

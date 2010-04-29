@@ -90,7 +90,7 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
 
-        tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types,showExcludedEvents);
+        tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types,getShowExcludedEvents());
         events = new ArrayList<EventReportItem>();
 
         for (Event event : tempEvents)

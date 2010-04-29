@@ -123,7 +123,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
             
-            List<Event> violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types,showExcludedEvents);
+            List<Event> violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types,getShowExcludedEvents());
             violationEventsMap = new LinkedHashMap<Long,Event>();
 
             // Lookup Addresses for events
@@ -205,7 +205,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
                 hasLastTrip = true;
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup);
+                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), getAddressLookup());
                 if ( trip.getStartAddress() == null ) {
                     trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
                             trip.getBeginningPoint()));

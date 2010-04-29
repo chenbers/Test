@@ -33,7 +33,12 @@ import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
 public class BaseBean implements Serializable {
-    private static final Logger logger = Logger.getLogger(BaseBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(BaseBean.class);
     private ErrorBean errorBean;
     private AccountDAO accountDAO;
     private String emailAddress;
@@ -224,6 +229,14 @@ public class BaseBean implements Serializable {
 	
 	public Driver getUnknownDriver() {
 		return getProUser().getUnknownDriver();
+	}
+
+	public Integer getShowExcludedEvents() {
+		return showExcludedEvents;
+	}
+
+	public void setShowExcludedEvents(Integer showExcludedEvents) {
+		this.showExcludedEvents = showExcludedEvents;
 	}
 	
 }

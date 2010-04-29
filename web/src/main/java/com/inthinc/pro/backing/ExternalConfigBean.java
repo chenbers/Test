@@ -1,6 +1,6 @@
 package com.inthinc.pro.backing;
 
-public class ExternalConfigBean extends BaseBean {
+public class ExternalConfigBean{
     
     private String phoneNumber01;
     private String phoneNumber02;

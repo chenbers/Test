@@ -115,7 +115,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
             types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
             
-            List<Event>violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, showExcludedEvents );
+            List<Event>violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, getShowExcludedEvents() );
             violationEventsMap = new LinkedHashMap<Long,Event>();
 
             // Lookup Addresses for events and add to map
@@ -123,7 +123,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             {
             	String address = "";
             	try {
-            		address = addressLookup.getAddress(event.getLatitude(), event.getLongitude());            		
+            		address = getAddressLookup().getAddress(event.getLatitude(), event.getLongitude());            		
             	}
             	catch (NoAddressFoundException nafe){
             	
@@ -222,7 +222,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
                 hasLastTrip = true;
-                TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), addressLookup);
+                TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup());
                 if ( trip.getStartAddress() == null ) {
                     trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
                             trip.getBeginningPoint()));
