@@ -9,8 +9,37 @@
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
     <!--<t:saveState value="#{idlePercentageBean.groupID}"/>-->
-    <a4j:outputPanel id="idlePercentageOutputPanel">
+	<script>
+		var idlingChart;
+		jQuery(function(){
+			getIdlingChartData();
+		});
+		function initIdlingChart(){
+			// get data via a4j:jsfunction - json format with xml inside
+	//<![CDATA[
+			var idlingChartXML = "<chart adjustDiv='0' numDivLines='4' yAxisValueDecimals='2' bgColor='#ffffff' showBorder='0' showToolTips='1' showValues='0' showLabels='1' rotateLabels='1' slantLabels='1' connectNullData='1' SYAxisMinValue='0' SYAxisMaxValue='100' SNumberSuffix='%' showLegend='1' legendPosition='BOTTOM' legendMarkerCircle='0' legendBorderThickness='0' legendShadow='0' decimals='2' forcedecimals='1' chartLeftMargin='3' chartRightMargin='3' areaOverColumns='0' decimalSeparator='"+
+									"#{idlePercentageBean.decimalSeparator}"+
+									"' thousandSeparator='"+ "#{idlePercentageBean.thousandSeparator}"+
+									"'> <categories> <category label='   '/></categories><dataset><dataset seriesName='Idle Time' color='6b9d1b' showValues='0'> <set value='0'/></dataset><dataset seriesName='Driving Time' color='cccccc' showValues='0'><set value='0'/></dataset></dataset><lineset seriesName='% Idle' color='006600' showValues='0' ></lineset></chart>"
+	//]]>
+			idlingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListIP}", "IdlingChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+			idlingChart.setDataXML(idlingChartXML);
+			idlingChart.setTransparent(true);
+			idlingChart.render("idlePercentChartdiv");
+
+		}
+		// callback to add data to chart
+		function fillIdlingChart(idlingData){
+			
+			document.getElementById("totalDriving").innerHTML =idlingData.totalDriving; 
+			document.getElementById("totalIdling").innerHTML =idlingData.totalIdling; 
+			document.getElementById("idlingPercentageStatsMessage").innerHTML=idlingData.statsMessage;;
+			idlingChart.setDataXML(idlingData.chartDef);
+			
+		}			
+	</script>
     	<div class="">
+    <rich:panel id="idlePercentageOutputPanel">
     		<div class="panel_nw">
     			<div class="panel_title" style="z-index: #{zorder}">
     				<ui:param name="TitleMsgKey" value="idling_percentage_title"/>
@@ -20,6 +49,7 @@
     				</span>  
                     <ui:include src="/includes/durationPanelHeader.xhtml">
                         <ui:param name="reRenderList" value="idlePercentageOutputPanel" />
+                        <ui:param name="refreshCall" value="getIdlingChartData"/>
                         <ui:param name="bean" value="#{idlePercentageBean}" />
                         <ui:param name="report" value="IDLE_PERCENTAGE" />
                         <ui:param name="includeDetailsLink" value="false"/>
@@ -28,46 +58,40 @@
                     </ui:include>
     			</div>
     		</div>	
-    		
+ </rich:panel>   		
     		<div class="panel_w">
     			<rich:panel bodyClass="panel_content" id="idlePercentagePanel" border="0">
                    	<table width="#{xywidth}-50" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="50%"><h:outputText value="#{messages.idling_percentage_driving_title}"/></td>
-                            <td><h:outputText id="totalDriving" value="#{idlePercentageBean.totalDriving}"/></td>
-                          </tr>
+                            <td><h:outputText id="totalDriving"/></td>
+                            </tr>
                           <tr>
                             <td width="50%"><h:outputText value="#{messages.idling_percentage_idling_title}" /></td>
-                            <td><h:outputText value="#{idlePercentageBean.totalIdling}" /></td>
+                            <td><h:outputText id="totalIdling"  /></td>
                           </tr>
                      </table>
                 	<div style="height:#{xyheight};width:#{xywidth}">
                    	<div id="idlePercentChartdiv" align="center"/>
-		  			<h:inputHidden value="#{idlePercentageBean.chartDef}" id="#{context}-hiddenIPChartField"/>
-	<ui:param name="errorMessageListIP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
-					<script type="text/javascript">
-						var targetChartElement = document.getElementById("#{context}-hiddenIPChartField");
-						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListIP}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
-						chart2.setDataXML(targetChartElement.value);	
-						chart2.setTransparent(true);								   	   
-						chart2.render("idlePercentChartdiv");
-					</script>
+                   	<script>
+        				initIdlingChart();
+                   	</script>
 					</div>
+	<ui:param name="errorMessageListIP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
                    	<table width="#{xywidth}" border="0" cellspacing="2" cellpadding="4" align="center">
 						<tr><td>
-	    					<h:outputFormat value="#{messages.idling_percentage_stats_msg}" >
-	    						<f:param value="#{idlePercentageBean.totalEMUVehicles}" />
-	    						<f:param value="#{idlePercentageBean.totalVehicles}" />
-			    			</h:outputFormat>
+	    					<h:outputText id="idlingPercentageStatsMessage" value=""/>
 	    				</td></tr>
 					</table>
     			</rich:panel>
-    			
+    	<h:form>
+ 		<a4j:jsFunction id="getIdlingChartData" ajaxSingle="true" status="#{context}-idlingPercentagePanel_durationStatus" name="getIdlingChartData" action="#{idlePercentageBean.createChart}" data="#{idlePercentageBean.idlingData}" 
+				oncomplete="fillIdlingChart(data)"/>
+    	</h:form>		
     		</div>
     		<div class="panel_sw">
     			<div class="panel_statusbar"></div>
     		</div>
     	</div>
-    </a4j:outputPanel>
-		
+ 		
 </ui:composition>	

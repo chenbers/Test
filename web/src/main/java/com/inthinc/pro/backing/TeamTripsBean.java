@@ -442,7 +442,7 @@ public class TeamTripsBean extends BaseBean {
             return eventDAO.getEventsForDriver(driverID, 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 
-            		violationEventTypeList, showExcludedEvents);
+            		violationEventTypeList, getShowExcludedEvents());
 		}
 		private List<Event> loadIdles( ) {
 
@@ -452,7 +452,7 @@ public class TeamTripsBean extends BaseBean {
             return eventDAO.getEventsForDriver(driverID,
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 
-            		idleTypes, showExcludedEvents);
+            		idleTypes, getShowExcludedEvents());
 
 		}
 		private List<Event> loadTampers( ) {
@@ -464,7 +464,7 @@ public class TeamTripsBean extends BaseBean {
             return eventDAO.getEventsForDriver(driverID,
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 
-            		tamperEventTypeList, showExcludedEvents);
+            		tamperEventTypeList, getShowExcludedEvents());
             
  	    }
 		public Integer getDriverID() {

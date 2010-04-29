@@ -11,52 +11,81 @@
    	<!--<t:saveState value="#{trendBean.sortColumn}"></t:saveState>-->
 	<!--<t:saveState value="#{trendBean.sortDirection}"></t:saveState>-->
 	<!--<t:saveState value="#{trendBean.trendBeanItems}"></t:saveState>-->
-		<a4j:outputPanel id="trendOutputPanel" >
-		<div class="panel_nw">
-		<div class="panel_title" style="z-index: #{zorder}">
-			<span class="line">#{messages.trendReport_header}</span>
-
-			<pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
-				<f:param value="#{trendBean.groupID}" />
-				<f:param value="TREND" />
-			</pretty:urlbuffer> 
-			<pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
-            	<f:param value="#{trendBean.groupID}"/>
-            </pretty:urlbuffer>
+	<script>
+		var trendChart;
+		jQuery(function(){
+			getTrendChartData();
+		});
+		function initTrendChart(){
+			// get data via a4j:jsfunction - json format with xml inside
+	//<![CDATA[
 			
-			<ui:include src="/includes/durationPanelHeader.xhtml">
-				<ui:param name="reRenderList" value="trendOutputPanel" />
-				<ui:param name="bean" value="#{trendBean}" />
-				<ui:param name="report" value="TREND" />
-				<ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
-                <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
-                <ui:param name="context" value="#{context}-trend"/> 
-			</ui:include>
-			
-		</div>
-		</div>
-
+			var chartXML = "<chart caption='' subCaption='' lineThickness='4' showValues='0' showBorder='0' drawAnchors='1' anchorRadius='3' borderColor='#cfcfcf' vDivLineColor='#cfcfcf' vDivLineThickness='1' showAlternateHGridColor='1' alternateHGridColor='#f0f0f0' alternateHGridAlpha='100' slantLabels='1' labelDisplay='Rotate' divLineColor='cfcfcf' divLineIsDashed='1' imageSaveURL='/tiwipro/secured/FusionChartsSave.jsp' imageSave='1' animation='1' bgColor='#ffffff' borderThickness='1' showToolTips='1' showLegend='0' decimals='1' forceDecimals='1' yAxisMaxValue='5' decimalSeparator='"+ "#{trendBean.decimalSeparator}"+
+			"' thousandSeparator='"+ "#{trendBean.thousandSeparator}"+"' chartLeftMargin='10' chartRightMargin='10' chartTopMargin='10' chartBottomMargin='10' canvasPadding='0' setAdaptiveYMin='0' numDivLines='9' adjustDiv='0'><categories><category label='   '/> </categories><dataset seriesName=''/></chart>";
+	//]]>
+  			trendChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+			trendChart.setDataXML(chartXML);
+			trendChart.setTransparent(true);
+			trendChart.render("chartdivTrend");
+		}
+		// callback to add data to chart
+		function fillTrendChart(trendData){
+ 			trendChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+			trendChart.setDataXML(trendData);
+			trendChart.setTransparent(true);
+			trendChart.render("chartdivTrend");
+		}			
+	</script>	
+		<rich:panel id="trendDurationPanel" >
+			<div class="panel_nw">
+			<div class="panel_title" style="z-index: #{zorder}">
+				<span class="line">#{messages.trendReport_header}</span>
+	
+				<pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
+					<f:param value="#{trendBean.groupID}" />
+					<f:param value="TREND" />
+				</pretty:urlbuffer> 
+				<pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
+	            	<f:param value="#{trendBean.groupID}"/>
+	            </pretty:urlbuffer>
+				
+				<ui:include src="/includes/durationPanelHeader.xhtml">
+					<ui:param name="reRenderList" value="trendDurationPanel,trendDataTablePanel" />
+					<ui:param name="refreshCall" value="getTrendChartData"/>
+					<ui:param name="bean" value="#{trendBean}" />
+					<ui:param name="report" value="TREND" />
+					<ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
+	                <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
+	                <ui:param name="context" value="#{context}-trend"/> 
+				</ui:include>
+				
+			</div>
+			</div>
+		</rich:panel>
 
 		<div class="panel_w">
 		<div class="panel_content">
-			<rich:panel id="xypanel" style="height:#{xyheight};width:#{xywidth}">
-				<div id="chartdivTrend" align="center"></div>
-				<h:inputHidden value="#{trendBean.lineDef}" id="#{context}-hiddenFieldTrend" />
+			<rich:panel id="xypanel" style="height:#{xyheight};width:#{xywidth}" >
+				<div id="chartdivTrend" align="center">
+				<script>
+				initTrendChart();
+				</script>
+				</div>
 	<ui:param name="errorMessageListTrend" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
-				<script type="text/javascript">
-					var trendTargetElement = document.getElementById("#{context}-hiddenFieldTrend");
-        			var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");						   						   		
-					chart.setDataXML(trendTargetElement.value);
-        			chart.setTransparent(true);
-        			chart.render("chartdivTrend");
-        		</script>
 			</rich:panel> 
 			<!-- End xy graph --> 
 			<rich:spacer height="3" /> 
-			<h:form id="trendTable">
+		<rich:panel id="trendDataTablePanel" >
+			<rich:panel rendered="#{not trendBean.dataReady}">
+			<div>
+				<h:outputText value="#{messages.chartXMLLoading}"/>
+			</div>
+			<rich:spacer height="400" /> 
+			</rich:panel>
+			<h:form id="trendTable" rendered="#{trendBean.dataReady}">
 				<rich:spacer height="15" />
 				<rich:separator />
-				<table id="trendTable:summaryitems"
+				<table id="trendTable:summaryitems" 
 					class="dr-table rich-table datatable" width="100%" cellspacing="1"
 					cellpadding="0" border="0" style="border: none;">
 					<colgroup span="5" />
@@ -65,7 +94,7 @@
 						<c:if test="#{not scroll}">
 							<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="5%">
 								<h:selectBooleanCheckbox id="#{context}-showCheckBox" value="#{trendBean.summaryItem.show}">
-			                    	<a4j:support event="onclick" reRender="xypanel,hiddenFieldTrend" action="#{trendBean.saveStateAction}">
+			                    	<a4j:support event="onclick" action="#{trendBean.saveStateAction}" oncomplete="getTrendChartData()">
 			                        	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
 			                            <f:param name="selected" value="#{trendBean.summaryItem.groupID}"/>
 			                        </a4j:support>
@@ -95,15 +124,17 @@
 					</tr>
 				</tbody>
 			</table>
+	       <div class="datagrid_panel" >
 
-			<rich:dataTable value="#{trendBean.trendBeanItems}" id="#{context}"	var="item" styleClass="datatable" 
-				rowClasses="tableOdd,tableEven" cellspacing="1" width="100%" 
+			<rich:dataTable value="#{trendBean.trendBeanItems}" 
+				id="#{context}"	var="item" styleClass="datagrid" 
+				rowClasses="tableOdd,tableEven" width="100%" 
 				rows="#{scroll ? 5 : 0}" >
 				
 				
 				<rich:column width="5%" rendered="#{not scroll}">
-					<h:selectBooleanCheckbox id="#{context}-showCheckBox" value="#{item.show}">
-                    	<a4j:support event="onclick" reRender="xypanel,hiddenFieldTrend" action="#{trendBean.saveStateAction}">
+					<h:selectBooleanCheckbox id="#{context}-showCheckBox" value="#{item.show}" >
+                    	<a4j:support event="onclick" action="#{trendBean.saveStateAction}" oncomplete="getTrendChartData()">
                         	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
                             <f:param name="selected" value="#{item.groupID}"/>
                         </a4j:support>
@@ -118,9 +149,10 @@
 						style="background-color:#{item.scoreableEntityPkg.colorKey};border-style:solid;border-width:1px;border-color:#000000">
 					</rich:spacer>
 				</rich:column>
-				<rich:column width="65%">
+				<rich:column width="65%" sortBy="#{item.groupName}">
 					<f:facet name="header">
-						<a4j:commandLink id="#{context}-trendGroupSort"
+					<h:outputText value="#{messages.trendReport_header_divisionTeam}" />
+						<!--<a4j:commandLink id="#{context}-trendGroupSort"
 							value="#{messages.trendReport_header_divisionTeam}"
 							reRender="xypanel,#{context}-bottomScroller,#{context}"
 							action="#{trendBean.sort}" ajaxSingle="true">
@@ -134,16 +166,17 @@
 							<h:graphicImage styleClass="sortArrows"
 								rendered="#{trendBean.sortColumn ne 'se.identifier'}"
 								value="/images/sort_available.gif" />
-						</a4j:commandLink>
+						</a4j:commandLink>-->
 					</f:facet>
 					<pretty:link id="#{context}-trendGroup" mappingId="dashboard" >
 						<f:param value="#{item.groupID}" />
 						<h:outputText value="#{item.groupName}" />
 					</pretty:link>
 				</rich:column>
-				<rich:column width="15%" styleClass="trendTableScore">
+				<rich:column width="15%" sortBy="#{item.score}">
 					<f:facet name="header">
-						<a4j:commandLink id="#{context}-trendScoreSort" value="#{messages.trendReport_header_score}"
+					<h:outputText value="#{messages.trendReport_header_score}"/>
+						<!--<a4j:commandLink id="#{context}-trendScoreSort" value="#{messages.trendReport_header_score}"
 							reRender="xypanel,#{context}-bottomScroller,#{context}"
 							action="#{trendBean.sort}" ajaxSingle="true">
 							<f:setPropertyActionListener target="#{trendBean.sortDirection}"
@@ -156,7 +189,7 @@
 							<h:graphicImage styleClass="sortArrows"
 								rendered="#{trendBean.sortColumn ne 'se.score'}"
 								value="/images/sort_available.gif" />
-						</a4j:commandLink>
+						</a4j:commandLink>-->
 					</f:facet>
 					<ui:include src="/includes/scoreBox.xhtml">
 						<ui:param name="scoreStyle"
@@ -182,23 +215,30 @@
 						style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>
 				</rich:column>
 			</rich:dataTable>
-
+		</div>
 		
 			<rich:datascroller id="#{context}-bottomScroller" for="#{context}" immediate="true"
 				align="center" styleClass="dataScrollerLarge"
 				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-				renderIfSinglePage="false" reRender="#{context},xypanel"
-				rendered="#{scroll}">
+				renderIfSinglePage="false" reRender="trendDataTablePanel"
+				rendered="#{scroll}" oncomplete="getTrendChartData();">
 			</rich:datascroller>
+		</h:form>
 
-
-		</h:form></div>
+		</rich:panel>
+		</div>
 		</div>
 
 		<div class="panel_sw">
 		<div class="panel_statusbar"></div>
 		</div>
+		<h:form>
+		<a4j:jsFunction id="getTrendChartData" ajaxSingle="true" 
+		 		status="#{context}-trend_durationStatus" reRender="trendDataTablePanel"
+				name="getTrendChartData" action="#{trendBean.createLineDef}" data="#{trendBean.lineDef}" 
+				oncomplete="fillTrendChart(data)"
+				/>
+		</h:form>
 
-	</a4j:outputPanel>
 
 </ui:composition>

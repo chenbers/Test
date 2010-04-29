@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import javax.faces.event.ActionEvent;
 
 import org.ajax4jsf.model.KeepAlive;
 
+import com.inthinc.pro.backing.IdlePercentageBean.IdlingData;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
 import com.inthinc.pro.charts.DateLabels;
@@ -53,8 +55,10 @@ public class SpeedPercentageBean extends BaseBean {
     public void setScoreDAO(ScoreDAO scoreDAO) {
         this.scoreDAO = scoreDAO;
     }
-
-    private void init() {
+    public void init(){
+    
+    }
+    public void createChart() {
         List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(getGroupID(), getDurationBean().getDuration());
         initChartData(speedPercentItemList);
     }
@@ -126,7 +130,7 @@ public class SpeedPercentageBean extends BaseBean {
 
     public String getTotalDistance() {
         if (totalDistance == null)
-            init();
+            createChart();
         return totalDistance;
     }
 
@@ -136,7 +140,7 @@ public class SpeedPercentageBean extends BaseBean {
 
     public String getTotalSpeeding() {
         if (totalSpeeding == null)
-            init();
+            createChart();
         return totalSpeeding;
     }
 
@@ -147,7 +151,7 @@ public class SpeedPercentageBean extends BaseBean {
     public String getChartDef() {
 
         if (chartDef == null)
-            init();
+            createChart();
         return chartDef;
     }
 
@@ -179,6 +183,15 @@ public class SpeedPercentageBean extends BaseBean {
     public void setDurationBean(DurationBean durationBean) {
         this.durationBean = durationBean;
     }
+	public SpeedingData getSpeedingData() {
+
+		SpeedingData speedingData = new SpeedingData();
+		speedingData.setTotalDistance(totalDistance);
+		speedingData.setTotalSpeeding(totalSpeeding);
+		speedingData.setChartDef(chartDef);
+		
+		return speedingData;
+	}
 
     public ReportCriteria buildReportCriteria() {
         if (groupID == null) {
@@ -201,7 +214,44 @@ public class SpeedPercentageBean extends BaseBean {
     }
 
     public void durationChangeActionListener(ActionEvent event) {
-        init();
+//        createChart();
     }
-
+	public void setDecimalSeparator(char decimalSeparator){
+		
+	}
+	public void setThousandSeparator(char thousandSeparator){
+		
+	}
+	public char getDecimalSeparator(){
+		return new DecimalFormatSymbols(getLocale()).getDecimalSeparator();
+	}
+	public char getThousandSeparator(){
+		return new DecimalFormatSymbols(getLocale()).getGroupingSeparator();
+	}
+    
+    public class SpeedingData {
+    	
+    	private String totalDistance;
+    	private String totalSpeeding;
+    	private String chartDef;
+    	
+		public String getTotalDistance() {
+			return totalDistance;
+		}
+		public void setTotalDistance(String totalDistance) {
+			this.totalDistance = totalDistance;
+		}
+		public String getTotalSpeeding() {
+			return totalSpeeding;
+		}
+		public void setTotalSpeeding(String totalSpeeding) {
+			this.totalSpeeding = totalSpeeding;
+		}
+		public String getChartDef() {
+			return chartDef;
+		}
+		public void setChartDef(String chartDef) {
+			this.chartDef = chartDef;
+		}
+    }
 }

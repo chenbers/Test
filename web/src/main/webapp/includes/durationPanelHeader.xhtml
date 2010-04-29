@@ -12,6 +12,7 @@
     <!-- 
         <ui:include src="/includes/durationPanelHeader.xhtml">
             <ui:param name="reRenderList" value="overallOutputPanel" />
+            <ui:param name="refreshCall" value="initTrendChart"/>
             <ui:param name="bean" value="#{overallScoreBean}"/>
             <ui:param name="report" value="OVERALL_SCORE" />
             <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
@@ -26,7 +27,6 @@
      -->
 
 
-
     <ui:param name="includeDetailsLink" value="#{not empty includeDetailsLink ? includeDetailsLink : true}"/>
     <ui:param name="includeExportLink" value="#{not empty includeExportLink ? includeExportLink : true}"/>
     <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
@@ -36,7 +36,7 @@
                         <td>
                             <h:form id="#{context}_form" style="display: inline;">
                                 <a4j:region>
-                                    <a4j:status>
+                                    <a4j:status id="#{context}_durationStatus">
                                         <f:facet name="start">                    
                                             <h:graphicImage styleClass="ajax_status" value="/images/progress2.gif"/>
                                         </f:facet>
@@ -46,7 +46,8 @@
                                         immediate="true"
                                         styleClass="#{bean.durationBean.duration eq 'DAYS' ? 'selected_duration' : ''}" 
                                         reRender="#{reRenderList}"                                       
-                                        value="#{messages.duration_days}">
+                                        value="#{messages.duration_days}"
+                                        oncomplete="#{refreshCall}()">
                                         <a4j:actionparam name="duration" assignTo="#{bean.durationBean.duration}" value="DAYS" actionListener="#{bean.durationChangeActionListener}" />
                                     </a4j:commandLink>
                                     <rich:spacer width="5"/>
@@ -55,7 +56,8 @@
                                         immediate="true"
                                         styleClass="#{bean.durationBean.duration eq 'THREE' ? 'selected_duration' : ''}" 
                                         reRender="#{reRenderList}"  
-                                        value="#{messages.duration_three}">
+                                        value="#{messages.duration_three}"
+                                        oncomplete="#{refreshCall}()">
                                         <a4j:actionparam name="duration" assignTo="#{bean.durationBean.duration}" value="THREE" actionListener="#{bean.durationChangeActionListener}"/>
                                     </a4j:commandLink> 
                                     <rich:spacer width="5"/>
@@ -64,7 +66,8 @@
                                         immediate="true"
                                         styleClass="#{bean.durationBean.duration eq 'SIX' ? 'selected_duration' : ''}" 
                                         reRender="#{reRenderList}"  
-                                        value="#{messages.duration_six}">
+                                        value="#{messages.duration_six}"
+                                        oncomplete="#{refreshCall}()">
                                         <a4j:actionparam name="duration" assignTo="#{bean.durationBean.duration}" value="SIX" actionListener="#{bean.durationChangeActionListener}" />
                                     </a4j:commandLink> 
                                     <rich:spacer width="5"/>
@@ -73,7 +76,8 @@
                                         immediate="true"
                                         styleClass="#{bean.durationBean.duration eq 'TWELVE' ? 'selected_duration' : ''}" 
                                         reRender="#{reRenderList}" 
-                                        value="#{messages.duration_twelve}">
+                                        value="#{messages.duration_twelve}"
+                                        oncomplete="#{refreshCall}()">
                                         <a4j:actionparam name="duration" assignTo="#{bean.durationBean.duration}" value="TWELVE" actionListener="#{bean.durationChangeActionListener}" />
                                     </a4j:commandLink> 
                                 </a4j:region>

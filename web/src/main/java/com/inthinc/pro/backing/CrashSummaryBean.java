@@ -1,11 +1,8 @@
 package com.inthinc.pro.backing;
 
-import java.text.DecimalFormat;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.CrashSummary;
 
 public class CrashSummaryBean extends BaseBean {

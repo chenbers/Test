@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,14 +16,12 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 import org.springframework.security.AccessDeniedException;
 
-import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.charts.DateCategoryChart;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.CrashSummary;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
@@ -42,6 +41,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
     private static final Logger logger = Logger.getLogger(TrendBean.class);
     private ScoreDAO scoreDAO;
     private DurationBean durationBean;
+    private boolean dataReady;
     private List<TrendBeanItem> trendBeanItems;
     Map<Integer, List<ScoreableEntity>> groupTrendMap;
     private String lineDef;
@@ -78,14 +78,14 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
         });
 
         // Populate the table
-        int cnt = 0;
+        int count = 0;
         ColorSelectorStandard cs = new ColorSelectorStandard();
         for (ScoreableEntity score : s) {
             TrendBeanItem trendBeanItem = new TrendBeanItem();
             ScoreableEntityPkg se = new ScoreableEntityPkg();
             se.setSe(score);
             se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
-            se.setColorKey(cs.getEntityColorKey(cnt++));
+            se.setColorKey(cs.getEntityColorKey(count++));
 
             CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(score.getEntityID());
             trendBeanItem.setCrashSummary(crashSummary);
@@ -98,6 +98,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
             }
             getTrendBeanItems().add(trendBeanItem);
         }
+        dataReady = true;
     }
 
     private List<ScoreableEntity> getScores() {
@@ -181,6 +182,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
     }
 
     public void init() {
+    	dataReady=false;
         setSortColumn("se.identifier");
     }
 
@@ -194,7 +196,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
         this.lineDef = lineDef;
     }
 
-    private void createLineDef() {
+    public void createLineDef() {
         StringBuffer sb = new StringBuffer();
 
         // Control parameters
@@ -477,6 +479,25 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
         summaryItem = null;
     }
 
+	public boolean isDataReady() {
+		return dataReady;
+	}
+
+	public void setDataReady(boolean dataReady) {
+		this.dataReady = dataReady;
+	}
+	public void setDecimalSeparator(char decimalSeparator){
+		
+	}
+	public void setThousandSeparator(char thousandSeparator){
+		
+	}
+	public char getDecimalSeparator(){
+		return new DecimalFormatSymbols(getLocale()).getDecimalSeparator();
+	}
+	public char getThousandSeparator(){
+		return new DecimalFormatSymbols(getLocale()).getGroupingSeparator();
+	}
     // @Override
     // public void onDurationChange(Duration d) {
     // setTrendBeanItems(null);

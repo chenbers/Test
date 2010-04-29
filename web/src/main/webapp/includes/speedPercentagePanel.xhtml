@@ -7,9 +7,45 @@
 	            xmlns:f="http://java.sun.com/jsf/core"
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	<script>
+		var speedingChart;
+		jQuery(function(){
+			getSpeedingChartData();
+		});
 
-    <a4j:outputPanel id="speedPercentageOutputPanel">
+		function initSpeedingChart(){
+			// get data via a4j:jsfunction - json format with xml inside
+	//<![CDATA[
+			var speedingChartXML = "<chart adjustDiv='0' numDivLines='4' yAxisValueDecimals='2' bgColor='#ffffff' showBorder='0' showToolTips='1' showValues='0' showLabels='1' rotateLabels='1' slantLabels='1' connectNullData='1' SYAxisMinValue='0' SYAxisMaxValue='100' SNumberSuffix='%' showLegend='1' legendPosition='BOTTOM' legendMarkerCircle='0' legendBorderThickness='0' legendShadow='0' decimals='2' forcedecimals='1' chartLeftMargin='3' chartRightMargin='3' areaOverColumns='0' decimalSeparator='"+
+			"#{speedPercentageBean.decimalSeparator}"+
+			"' thousandSeparator='"+ "#{speedPercentageBean.thousandSeparator}"+
+			"'> <categories> <category label='   '/> </categories><dataset><dataset seriesName='Speeding Distance' color='1e88c8' showValues='0'> <set value='0'/></dataset><dataset seriesName='Driving Distance' color='cccccc' showValues='0'> <set value='0'/></dataset></dataset><lineset seriesName='% Distance Speeding' color='006600' showValues='0' ></lineset></chart>"
+//]]>
+			speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "SpeedChartID", "#{xywidth}", "#{xyheight}", "0", "1");
+			
+			speedingChart.setDataXML(speedingChartXML);	
+ 			speedingChart.setTransparent(true);
+ 			speedingChart.render("speedPercentChartdiv");
+		}
+		// callback to add data to chart
+		function fillSpeedingChart(speedingData){
+			document.getElementById("totalDistance").innerHTML =speedingData.totalDistance; 
+			document.getElementById("totalSpeeding").innerHTML =speedingData.totalSpeeding; 
+  			//speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+			speedingChart = getChartFromId("SpeedChartID");
+			speedingChart.setDataXML(speedingData.chartDef);	
+ 			//speedingChart.setTransparent(true);
+			//speedingChart.render("speedPercentChartdiv");
+		}			
+	</script>
+    <h:form>
+			<a4j:jsFunction id="getSpeedingChartData" ajaxSingle="true" 
+				status="#{context}-speedPercentagePanel_durationStatus" 
+				name="getSpeedingChartData" action="#{speedPercentageBean.createChart}" data="#{speedPercentageBean.speedingData}" 
+				oncomplete="fillSpeedingChart(data)"/>
+	</h:form>
     	<div class="">
+    	<rich:panel id="speedPercentageOutputPanel">
     		<div class="panel_nw">
     			<div class="panel_title" style="z-index: #{zorder}">
     				<ui:param name="TitleMsgKey" value="speeding_percentage_#{speedPercentageBean.measurementType}"/>
@@ -19,6 +55,7 @@
     				</span>  
                     <ui:include src="/includes/durationPanelHeader.xhtml">
                         <ui:param name="reRenderList" value="speedPercentageOutputPanel" />
+						<ui:param name="refreshCall" value="getSpeedingChartData"/>
                         <ui:param name="bean" value="#{speedPercentageBean}" />
                         <ui:param name="report" value="SPEED_PERCENTAGE" />
                         <ui:param name="includeDetailsLink" value="false"/>
@@ -27,37 +64,32 @@
                     </ui:include>
     			</div>
     		</div>	
+     </rich:panel>
     		
     		<div class="panel_w">
     			<rich:panel bodyClass="panel_content" id="speedPercentagePanel" border="0">
                    	<table width="#{xywidth}-50" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="50%"><h:outputText value="#{messages.speeding_percentage_distance_title}"/></td>
-                            <td><h:outputText id="totalDistance" value="#{speedPercentageBean.totalDistance}"/></td>
+                            <td><h:outputText id="totalDistance"/></td>
                           </tr>
                           <tr>
                             <td width="50%"><h:outputText value="#{messages.speeding_percentage_speeding_title}" /></td>
-                            <td><h:outputText value="#{speedPercentageBean.totalSpeeding}" /></td>
+                            <td><h:outputText id="totalSpeeding"/></td>
                           </tr>
                      </table>
                 	<div style="height:#{xyheight};width:#{xywidth}">
                    	<div id="speedPercentChartdiv" align="center"/>
-		  			<h:inputHidden value="#{speedPercentageBean.chartDef}" id="#{context}-hiddenSPChartField"/>
-			<ui:param name="errorMessageListSP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
-					<script type="text/javascript">
-						var targetChartElement = document.getElementById("#{context}-hiddenSPChartField");
-						var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");										
-						chart2.setDataXML(targetChartElement.value);	
-						chart2.setTransparent(true);								   	   
-						chart2.render("speedPercentChartdiv");
-					</script>
+                   	<script>
+                   		initSpeedingChart();
+                   	</script>
 					</div>
+			<ui:param name="errorMessageListSP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
     			</rich:panel>
     		</div>
     		<div class="panel_sw">
     			<div class="panel_statusbar"></div>
     		</div>
     	</div>
-    </a4j:outputPanel>
 		
 </ui:composition>	

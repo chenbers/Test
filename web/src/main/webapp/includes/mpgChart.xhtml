@@ -9,7 +9,25 @@
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
         
     <!--<t:saveState value="#{mpgBean.groupID}"/>-->
-    <a4j:outputPanel id="mpgOutputPanel">    
+	<script>
+		var mpgChart;
+		jQuery(function(){
+			getMpgChartData();
+		});
+		function initMpgChart(){
+			// get data via a4j:jsfunction - json format with xml inside
+  			mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+		}
+		// callback to add data to chart
+		function fillMpgChart(mpgData){
+  			mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+			mpgChart.setDataXML(mpgData);
+			mpgChart.setTransparent(true);
+			mpgChart.render("mpgChartDiv");
+		}			
+	</script>
+	 <div class="">
+     <rich:panel id="mpgOutputPanel">    
         <div class="panel_nw">    
             <div class="panel_title" style="z-index: #{zorder}">
                 <span class="gas">
@@ -24,6 +42,7 @@
                 </pretty:urlbuffer>
                 <ui:include src="/includes/durationPanelHeader.xhtml">
                     <ui:param name="reRenderList" value="mpgOutputPanel" />
+					<ui:param name="refreshCall" value="getMpgChartData"/>
                     <ui:param name="bean" value="#{mpgBean}" />
                     <ui:param name="report" value="MPG_GROUP" />
                     <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
@@ -32,23 +51,19 @@
                     
                 </ui:include>
             </div>
-        </div>
+         </div>
+       </rich:panel>
         <div class="panel_w">
             <div class="panel_content">
                 <!-- Start xy graph --> 
                 <div style="height:#{xyheight};width:#{xywidth}">
-                    <div id="mpgChartDiv" align="center"></div>
+                    <div id="mpgChartDiv" align="center">
+                    <script>
+        			initMpgChart();
+                    </script>
+                    </div>
                     <rich:panel>
-            	        <h:inputHidden value="#{barDef}" id="mpgDataElement" />
 	<ui:param name="errorMessageListMPG" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
-            	        <script type="text/javascript">
-            	            var targetElement = document.getElementById("mpgDataElement");
-            	              
-            	            var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
-            	            chart.setDataXML(targetElement.value);
-            	            chart.setTransparent(true);          
-            	            chart.render("mpgChartDiv");
-            	          </script>
                      </rich:panel>                  
                 </div> 
                 <!-- End xy graph --> 
@@ -95,7 +110,12 @@
         <div class="panel_sw">
             <div class="panel_statusbar"/>
         </div>
-    </a4j:outputPanel>
     <!-- End xy graph --> 
-
+    <h:form>
+			<a4j:jsFunction id="getMpgChartData" ajaxSingle="true"
+				status="#{context}-mpgChart_durationStatus" 
+				name="getMpgChartData" action="#{mpgBean.createBarDef}" data="#{mpgBean.barDef}" 
+				oncomplete="fillMpgChart(data)"/>
+	</h:form>
+</div>
 </ui:composition>

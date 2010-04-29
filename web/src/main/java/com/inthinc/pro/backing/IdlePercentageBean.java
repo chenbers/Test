@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import javax.faces.event.ActionEvent;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
+import org.richfaces.json.JSONArray;
+import org.richfaces.json.JSONException;
 
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
 import com.inthinc.pro.charts.ChartColor;
@@ -48,9 +51,11 @@ public class IdlePercentageBean extends BaseBean {
 	private static final String IDLE_BAR_COLOR = ChartColor.GREEN.toString(); 
 	private static final String IDLE_LINE_COLOR = ChartColor.DARK_GREEN.toString(); 
 
+	public void init(){
+		
+	}
 
-
-	private void init() {
+	public void createChart() {
 		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(getGroupID(), getDurationBean().getDuration());
 
 		initChartData(idlePercentItemList);
@@ -144,11 +149,15 @@ public class IdlePercentageBean extends BaseBean {
 		return MessageUtil.getMessageString("idling_percentage_time_label", getLocale());
 	}
 
-	public String getChartDef() {
+	public IdlingData getIdlingData() {
 
-		if (chartDef == null)
-			init();
-		return chartDef;
+		IdlingData idlingData = new IdlingData();
+		idlingData.setTotalDriving(totalDriving);
+		idlingData.setTotalIdling(totalIdling);
+		idlingData.setChartDef(chartDef);
+		idlingData.setStatsMessage(MessageUtil.formatMessageString("idling_percentage_stats_msg", totalEMUVehicles,totalVehicles));
+		
+		return idlingData;
 	}
 
 	public void setChartDef(String chartDef) {
@@ -209,7 +218,7 @@ public class IdlePercentageBean extends BaseBean {
 
 	public String getTotalDriving() {
 		if (totalDriving == null)
-			init();
+			createChart();
 		return totalDriving;
 	}
 
@@ -219,7 +228,7 @@ public class IdlePercentageBean extends BaseBean {
 
 	public String getTotalIdling() {
 		if (totalIdling == null)
-			init();
+			createChart();
 		return totalIdling;
 	}
 
@@ -247,6 +256,54 @@ public class IdlePercentageBean extends BaseBean {
 		this.totalVehicles = totalVehicles;
 	}
     public void durationChangeActionListener(ActionEvent event) {
-        init();
+//        createChart();
     }
+	public void setDecimalSeparator(char decimalSeparator){
+		
+	}
+	public void setThousandSeparator(char thousandSeparator){
+		
+	}
+	public char getDecimalSeparator(){
+		return new DecimalFormatSymbols(getLocale()).getDecimalSeparator();
+	}
+	public char getThousandSeparator(){
+		return new DecimalFormatSymbols(getLocale()).getGroupingSeparator();
+	}
+    
+    public class IdlingData {
+    	private String totalDriving;
+    	private String totalIdling;
+    	private String chartDef;
+    	private String statsMessage;
+    	
+		public String getTotalDriving() {
+			return totalDriving;
+		}
+		public void setTotalDriving(String totalDriving) {
+			this.totalDriving = totalDriving;
+		}
+		public String getTotalIdling() {
+			return totalIdling;
+		}
+		public void setTotalIdling(String totalIdling) {
+			this.totalIdling = totalIdling;
+		}
+		public String getChartDef() {
+			return chartDef;
+		}
+		public void setChartDef(String chartDef) {
+			this.chartDef = chartDef;
+		}
+		public String getStatsMessage() {
+			return statsMessage;
+		}
+		public void setStatsMessage(String statsMessage) {
+			this.statsMessage = statsMessage;
+		}
+    }
+
+	public String getChartDef() {
+		return chartDef;
+	}
 }
