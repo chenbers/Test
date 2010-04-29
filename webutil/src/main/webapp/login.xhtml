@@ -4,6 +4,7 @@
     <ui:param name="panelTitle" value="Main Menu" />
     <ui:param name="groupSelected" value="MAIN" />
     <ui:define name="content">
+    	<div id="mtest" style="display:block;margin: 10px auto 20px;width: 1220px;">
         <rich:panel id="login_panel">
             <f:facet name="header">
                 <h:outputText value="Login" />
@@ -19,5 +20,12 @@
                 </h:panelGrid>
             </form>
         </rich:panel>
+        </div>
+		<rich:jQuery selector="document" query="ready(
+			function()
+			{
+				jQuery('#j_username').focus();	
+			}		
+		)"/>
     </ui:define>
 </ui:composition>

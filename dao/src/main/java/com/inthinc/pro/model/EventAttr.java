@@ -35,6 +35,8 @@ public class EventAttr
         mapping.put(24, "severity");
         mapping.put(25, "DMMVersion");
         
+        
+        
         // Attribute Id (128->191 have two byte values)
         mapping.put(129, "distance");
         mapping.put(130, "maxRPM");
@@ -47,7 +49,8 @@ public class EventAttr
         mapping.put(137, "GPSSatsSNRStddev100X");
         mapping.put(138, "GPSLockTime");
         mapping.put(148, "boundaryId");
-        mapping.put(148, "MPG");            // 10x
+        mapping.put(149, "MPG");            // 10x
+        mapping.put(166, "GPS quality"); 
 
         // Attribute id (192->254) have four byte values)
         mapping.put(192, "zoneID");        // 10x
@@ -55,11 +58,15 @@ public class EventAttr
         mapping.put(194, "fwdCmdId");
         mapping.put(195, "fwdCmdCommand");
         mapping.put(196, "fwdCmdError");
+        mapping.put(201, "batteryLevel");
 
         mapping.put(219, "lowIdle");
         mapping.put(220, "highIdle");
         mapping.put(222, "RFID0");
         mapping.put(223, "RFID1");
+        mapping.put(224, "MPGOdometer");
+        mapping.put(225, "tripDuration");
+        mapping.put(227, "driverID");
 
         // Attribute Id (255) has a stringId byte,  followed by a null terminate string.
         mapping.put(255, "string");

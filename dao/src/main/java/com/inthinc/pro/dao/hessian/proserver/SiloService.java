@@ -179,10 +179,6 @@ public interface SiloService extends HessianService
     
     List<Map<String, Object>> getVehicleNote(Integer vehicleID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);
     
-    List<Map<String, Object>> getNoteByMiles(Integer driverID, Integer milesBack, Integer types[]);
-    
-    List<Map<String, Object>> getVehicleNoteByMiles(Integer vehicleID, Integer milesBack, Integer types[]);
-
     // pagination methods
     Map<String, Object> getDriverEventCount(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, List<Map<String, Object>> filterList, Integer types[]);
 
@@ -302,8 +298,6 @@ public interface SiloService extends HessianService
     //    vin   - vehicleID
     Map<String, Object> getID(String name, String value);
 
-    Map<String, Object> getIDLong(String name, Long value);
-
     
     //--------------------------------------------------------------------------------------------------------
 
@@ -401,4 +395,10 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getIdlingReportPage(Integer groupID, Long startDate, Long endDate, Map<String, Object> pageParams);
 
 
+    
+    // super user methods
+    Map<String, Object> setSuperuser(Integer userID);
+    Map<String, Object> isSuperuser(Integer userID);
+    Map<String, Object> clearSuperuser(Integer userID);
+    
 }

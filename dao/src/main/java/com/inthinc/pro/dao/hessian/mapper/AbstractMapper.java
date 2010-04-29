@@ -140,7 +140,7 @@ public abstract class AbstractMapper implements Mapper
         return modelObject;
     }
 
-    private Class<?> getFieldType(Field field)
+    protected Class<?> getFieldType(Field field)
     {
         Class<?> fieldType = null;
         final Column annotation = field.getAnnotation(Column.class);
@@ -518,7 +518,7 @@ public abstract class AbstractMapper implements Mapper
         return convertList(list, handled, false);
     }
 
-    private List<Map<String, Object>> convertList(List<?> list, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
+    protected List<Map<String, Object>> convertList(List<?> list, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
     {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Object o : list)
@@ -528,7 +528,7 @@ public abstract class AbstractMapper implements Mapper
         return returnList;
     }
 
-    private List<Object> convertSimpleList(List<?> list, Field field, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
+    protected List<Object> convertSimpleList(List<?> list, Field field, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
     {
         List<Object> returnList = new ArrayList<Object>();
         for (Object o : list)
@@ -538,7 +538,7 @@ public abstract class AbstractMapper implements Mapper
         return returnList;
     }
 
-    private static boolean isStandardProperty(Object o)
+    protected static boolean isStandardProperty(Object o)
     {
         if (Number.class.isInstance(o))
             return true;

@@ -33,6 +33,7 @@ import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
+import com.inthinc.pro.dao.hessian.SuperuserHessianDAO;
 import com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO;
 import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
@@ -462,9 +463,38 @@ public class SiloServiceTest {
         // zone alert profiles
         zoneAlertProfiles(acctID, team1Group.getGroupID());
        // redFlagAlertProfiles(acctID, team1Group.getGroupID());
+        
+        
+        superuser(team1Group.getGroupID());
     }
 
-    private void redFlagAlertProfiles(Integer acctID, Integer groupID) {
+    private void superuser(Integer groupID) {
+System.out.println("groupID " + groupID);    	
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        SuperuserHessianDAO superuserDAO = new SuperuserHessianDAO();
+        superuserDAO.setSiloService(siloService);
+        
+        List<User> userList = userDAO.getUsersInGroupHierarchy(groupID);
+        assertTrue("no users found", userList.size() > 0);
+        
+        User user = userList.get(0);
+        
+        Boolean isSuperuser = superuserDAO.isSuperuser(user.getUserID());
+        assertTrue("not superuser", !isSuperuser);
+		
+        superuserDAO.setSuperuser(user.getUserID());
+        
+        isSuperuser = superuserDAO.isSuperuser(user.getUserID());
+        assertTrue("superuser", isSuperuser);
+        
+        superuserDAO.clearSuperuser(user.getUserID());
+        
+        isSuperuser = superuserDAO.isSuperuser(user.getUserID());
+        assertTrue("not superuser", !isSuperuser);
+	}
+
+	private void redFlagAlertProfiles(Integer acctID, Integer groupID) {
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
         redFlagAlertDAO.setSiloService(siloService);
         List<Boolean> dayOfWeek = new ArrayList<Boolean>();

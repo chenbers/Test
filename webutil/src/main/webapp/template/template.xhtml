@@ -12,24 +12,26 @@
                 </h:panelGroup>
             </f:facet>
 
-            <table width="100%">
+            <table width="1000px">
                 <tr valign="top">
-                    <td width="200"><a4j:form styleClass="menuPanel">
+                    <td width="20%"><a4j:form styleClass="menuPanel">
                         <rich:panelMenu mode="server" style="width:200px" iconExpandedGroup="disc" iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
                             iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right">
-                            <rich:panelMenuGroup label="Web Utils Menu" expanded="true">
+                            <rich:panelMenuGroup label="tiwiPro Utilities Menu" expanded="true">
                                 <rich:panelMenuItem label="DAO Util" action="go_daoUtil" ajaxSingle="false">
                                 </rich:panelMenuItem>
-                                <rich:panelMenuItem label="Create New Account" action="go_newAccount" ajaxSingle="false">
+                                <rich:panelMenuItem label="Create New Account" action="go_newAccount" ajaxSingle="false"  rendered="#{daoUtilBean.isSuperuser}">
                                 </rich:panelMenuItem>
-                                <rich:panelMenuItem label="Forward Commands" action="go_forwardCmd" ajaxSingle="false">
+                                <rich:panelMenuItem label="Forward Commands" action="go_forwardCmd" ajaxSingle="false"  rendered="#{baseBean.isSuperuser}">
                                 </rich:panelMenuItem>
-                                <rich:panelMenuItem label="Extract Scoring Data" action="go_dataExtract" ajaxSingle="false">
+                                <rich:panelMenuItem label="Forward Commands" action="go_forwardCmdRestricted" ajaxSingle="false" rendered="#{not baseBean.isSuperuser}">
+                                </rich:panelMenuItem>
+                                <rich:panelMenuItem label="Extract Scoring Data" action="go_dataExtract" ajaxSingle="false"  rendered="#{daoUtilBean.isSuperuser}">
                                 </rich:panelMenuItem>
                             </rich:panelMenuGroup>
                         </rich:panelMenu>
                     </a4j:form></td>
-                    <td><rich:panel bodyClass="rich-laguna-panel-no-header">
+                    <td width="80%"><rich:panel bodyClass="rich-laguna-panel-no-header">
                         <f:facet name="header">
                             <h:outputText value="#{panelTitle}" />
                         </f:facet>

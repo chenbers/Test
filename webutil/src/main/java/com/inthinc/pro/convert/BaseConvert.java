@@ -18,4 +18,9 @@ public class BaseConvert implements Convert
     {
         return "";
     }
+	@Override
+	public Object convert(Object input) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

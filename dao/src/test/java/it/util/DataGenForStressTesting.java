@@ -977,7 +977,8 @@ System.out.println("Waiting for imei: " + imei);
     	        	for (int day = 0; day < testData.numDays; day++)
     	        	{
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
-    	                Date startDate = new Date((long)dateInSec * 1000l);
+//    	                Date startDate = new Date((long)dateInSec * 1000l);
+    	                Date startDate = new Date((long)dateInSec * 1000l + DateUtil.MILLISECONDS_IN_MINUTE*120);
     	        		testData.generateDayData(mcmSim, startDate, imei, testData.zoneID);
     	        	}
                 }

@@ -2,6 +2,8 @@ package com.inthinc.pro.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 @XmlRootElement
 public class DeviceReportItem extends BaseEntity
 {
@@ -16,8 +18,19 @@ public class DeviceReportItem extends BaseEntity
     private String devicePhone;
     private String deviceEPhone;
     private DeviceStatus deviceStatus;
+    
+    @Column(updateable = false)
+    private boolean selected;
 
-    public String getDeviceName() {
+    public boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public String getDeviceName() {
 		return deviceName;
 	}
 

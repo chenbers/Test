@@ -18,12 +18,14 @@ public class EventMapper
     private static final Logger logger = Logger.getLogger(EventMapper.class);
     
     // codes for events that come from device (this is a subset of the events that it can generate)
+    
     public static final int TIWIPRO_EVENT_BASE = 0;
     public static final int TIWIPRO_EVENT_FULLEVENT = 1;
     public static final int TIWIPRO_EVENT_NOTEEVENT = 2;
     public static final int TIWIPRO_EVENT_SEATBELT = 3;  
     public static final int TIWIPRO_EVENT_SPEEDING = 4; // NOT USED
     public static final int TIWIPRO_EVENT_LOCATION = 6;
+    public static final int TIWIPRO_EVENT_NEW_DRIVER = 7;
     public static final int TIWIPRO_EVENT_RPM = 14;
     public static final int TIWIPRO_EVENT_IGNITION_ON = 19;
     public static final int TIWIPRO_EVENT_IGNITION_OFF = 20;
@@ -32,6 +34,7 @@ public class EventMapper
     public static final int TIWIPRO_EVENT_NO_DRIVER = 46;
     public static final int TIWIPRO_EVENT_STATS = 51;
     public static final int TIWIPRO_EVENT_LOW_POWER_MODE = 52;
+    public static final int TIWIPRO_EVENT_CLEAR_DRIVER = 66;
     public static final int TIWIPRO_EVENT_FIRMWARE_UP_TO_DATE = 74;
     public static final int TIWIPRO_EVENT_MAPS_UP_TO_DATE = 75;
     public static final int TIWIPRO_EVENT_ZONES_UP_TO_DATE = 76;

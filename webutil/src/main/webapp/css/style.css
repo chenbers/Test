@@ -2,16 +2,18 @@
 
 body {
 	background: #EEE;
-	background-position: top center;
-	margin: 0;
+/*	background-position: top center; */
+	margin: 10px 0 0;
 	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-	text-align: left;
 }
 
 .mainmenu {
 	font-size: 16px;
+	margin: 0 auto 10px auto;
+	width: 1220px;
+	
 }
 
 .cols {
@@ -24,8 +26,21 @@ body {
 	width: 300px;
 }
 
+form select {
+	float: left;
+	display: block;
+	margin-top: 3px;
+	font: 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+form td {
+	vertical-align: top;
+	font: 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
 .header {
 	width: 100%;
+	font-size: 11px;
 }
 
 .header_col1 {
@@ -38,4 +53,41 @@ body {
 
 #login_btn {
 	float: right;
+}
+
+.labelCol {
+	width: 20%;
+}
+.valueCol {
+	width: 80%;
+}
+.methodCol {
+	width: 30%;
+	vertical-align: top;
+}
+.paramsCol {
+	width: 70%;
+	vertical-align: top;
+}
+.optionCol {
+	width: 40%;
+	text-align : right;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+.optionSelCol {
+	width: 60%;
+}
+
+th.dr-table-headercell {
+	color : #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	text-align: left;
+}
+
+
+.dataTableSelectedRow {
+	background-color : #6b9d1b;
 }

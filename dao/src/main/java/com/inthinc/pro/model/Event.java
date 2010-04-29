@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -65,6 +66,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private String groupName;
     @Column(name="tzName")
     private TimeZone driverTimeZone;
+    
+    
+    private Integer deviceID;
+    private Integer speedLimit;
+    private Map<Object, Object> attrMap;
+    
+
 
 	public Event()
     {
@@ -412,5 +420,30 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 	}
 	public String getZonePointsStr() {
 		return null;
+	}
+
+
+	public Integer getDeviceID() {
+		return deviceID;
+	}
+
+	public void setDeviceID(Integer deviceID) {
+		this.deviceID = deviceID;
+	}
+
+	public Integer getSpeedLimit() {
+		return speedLimit;
+	}
+
+	public void setSpeedLimit(Integer speedLimit) {
+		this.speedLimit = speedLimit;
+	}
+
+	public Map<Object, Object> getAttrMap() {
+		return attrMap;
+	}
+
+	public void setAttrMap(Map<Object, Object> attrMap) {
+		this.attrMap = attrMap;
 	}
 }

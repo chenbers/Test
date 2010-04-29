@@ -147,22 +147,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> getIDLong(String name, Long value)
-    {
-        Map<String, Object> returnMap = null;
-        if (name.equals("rfid"))
-        {
-            Driver driver = MockData.getInstance().lookupObject(Driver.class, "RFID", value);
-            if (driver != null)
-            {
-                returnMap = new HashMap<String,Object>();
-                returnMap.put("id", driver.getDriverID());
-            }
-        }
-        return returnMap;
-    }
-
-    @Override
     public Map<String, Object> deletePerson(Integer personID) throws ProDAOException
     {
     	MockData.getInstance().deleteObject(Person.class, "personID", personID);
@@ -1207,31 +1191,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return getDriverNote(driverID,startDate,endDate,0, new Integer[]{EventType.SPEEDING.getCode()}).size() > 0?getDriverNote(driverID,startDate,endDate,0, new Integer[]{EventType.SPEEDING.getCode()}).get(0):null;
     }
 
-    @Override
-    public List<Map<String, Object>> getNoteByMiles(Integer driverID, Integer milesBack, Integer[] types)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -30);
-        
-        Date startDate = new Date();
-        Date endDate = calendar.getTime();  // using dates for mock data. no data with miles attributes.
-        
-        return getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 0, types);
-
-    }
-    
-    @Override
-    public List<Map<String, Object>> getVehicleNoteByMiles(Integer vehicleID, Integer milesBack, Integer[] types)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -30);
-        
-        Date startDate = new Date();
-        Date endDate = calendar.getTime();  // using dates for mock data. no data with miles attributes.
-        
-        return getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 0, types);
-
-    }
 
     @Override
     public Map<String, Object> getDriverByPersonID(Integer personID) throws ProDAOException
@@ -1751,6 +1710,24 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 	@Override
 	public List<Map<String, Object>> getVehicleReportPage(Integer groupID,
 			Map<String, Object> pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> clearSuperuser(Integer userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> isSuperuser(Integer userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> setSuperuser(Integer userID) {
 		// TODO Auto-generated method stub
 		return null;
 	}}

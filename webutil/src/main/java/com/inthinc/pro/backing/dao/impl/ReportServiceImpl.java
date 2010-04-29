@@ -4,155 +4,152 @@ import java.util.Map;
 
 import com.inthinc.pro.backing.dao.annotation.DaoParam;
 import com.inthinc.pro.backing.dao.annotation.MethodDescription;
+import com.inthinc.pro.backing.dao.model.CrudType;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 
 
 public class ReportServiceImpl implements ReportService
 {
 
-    
-    
-    @Override
-    @MethodDescription(description="Returns a quintileMap with the 5 scores for the given group,duration,metric")
+	private static final long serialVersionUID = -8644863464620429512L;
+
+
+	@Override
+    @MethodDescription(description="Returns 5 percentage scores for the given group,duration,metric", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.QuintileMap.class)
     public Map<String, Object> getDPctByGT(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration, 
-            @DaoParam(name="driveQMetric", inputDesc="START_ODOMETER = 0;END_ODOMETER = 1;ODOMETER = 2;OVERALL = 3;SPEEDING = 4;SPEED1 = 5; SPEED2 = 6;SPEED3 = 7;SPEED4 = 8;SPEED5 = 9;STYLE = 10;BRAKE = 11;ACCEL = 12;TURN = 13;BUMP = 16;SEATBELT = 17;COACHING = 18;MPG_LIGHT = 19;MPG_MEDIUM = 20;MPG_HEAVY = 21;IDLE_LO = 22;IDLE_HI = 23;DRIVE_TIME = 24;")Integer metric)
+            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationCodeList.class)Integer duration, 
+            @DaoParam(name="score metric", type=com.inthinc.pro.backing.dao.ui.DriveQMetricList.class, inputDesc="Scoring Information to fetch")Integer metric)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
     @Override
-    @MethodDescription(description="Returns a driveQMap with the drivers scores for the specified duration")
+    @MethodDescription(description="Returns the drivers scores for the specified duration", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.DriveQMap.class)
     public Map<String, Object> getDScoreByDT(@DaoParam(name="driverID")Integer driverID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration)
+            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationCodeList.class)Integer duration)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Returns a list of 'count' driveQMaps with the drivers scores for the specified aggregation type")
+    @MethodDescription(description="Returns a list the drivers scores for the specified aggregation type", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.DriveQMap.class)
     public List<Map<String, Object>> getDTrendByDTC(@DaoParam(name="driverID")Integer driverID, 
-            @DaoParam(name="aggType", inputDesc="0 (daily), 2 (monthly)")Integer duration,  
-            @DaoParam(name="count", inputDesc="30 (30 days), 3 (3 months), 6 (6 months), 12 (12 months)")Integer count)
+            @DaoParam(name="aggregation type", type=com.inthinc.pro.backing.dao.ui.DurationBinSizeList.class)Integer duration,  
+            @DaoParam(name="count", type=com.inthinc.pro.backing.dao.ui.DurationCountList.class)Integer count)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Returns a list of DVQMaps.  Each DVQMap contains a driverMap, an optional vehicleMap and a driveQMap.  The vehicleMap will be included if the driver is mapped to a vehicle.")  
+    @MethodDescription(description="Returns a list where each record contains a driver, an optional vehicle and scores.  The vehicle will be included if the driver is mapped to a vehicle.", crudType=CrudType.READ, 
+    					modelClass=com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper.class)  
     public List<Map<String, Object>> getDVScoresByGSE(@DaoParam(name="groupID")Integer groupID,             
-            @DaoParam(name="startDate", isDate=true,  inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate
-            )
-
+            @DaoParam(name="startDate", type=java.util.Date.class,  inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm")Long endDate)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    
     @Override
-    @MethodDescription(description="Returns a list of DVQMaps.  Each DVQMap contains a driverMap, an optional vehicleMap and a driveQMap.  The vehicleMap will be included if the driver is mapped to a vehicle.")  
+    @MethodDescription(description="Returns a list where each record contains a driver, a vehicle and scores.  The vehicle will be included if the driver is mapped to a vehicle.", crudType=CrudType.READ,  
+    					modelClass=com.inthinc.pro.model.DVQMap.class)  
     public List<Map<String, Object>> getDVScoresByGT(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration)
+            @DaoParam(name="aggregation duration", type=com.inthinc.pro.backing.dao.ui.AggregationDurationList.class)Integer duration)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Returns list of driver scores for all drivers in the specified group and time frame specified by start/end date.")
+    @MethodDescription(description="Returns list of driver scores for all drivers in the specified group and time frame specified by start/end date.", crudType=CrudType.READ,
+    					modelClass=com.inthinc.pro.model.aggregation.Score.class)  
     public Map<String, Object> getGDScoreByGSE(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate
+            @DaoParam(name="startDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm")Long endDate
             )
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Get list of driver score for the specified group and duration.")
+    @MethodDescription(description="Returns the list of driver scores for the specified group and duration.", crudType=CrudType.READ,
+    					modelClass=com.inthinc.pro.model.DriveQMap.class)  
     public Map<String, Object> getGDScoreByGT(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration)
+            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationCodeList.class)Integer duration)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Returns a driveQMap for the specified group and duration. The scores represent the weighted average scores for all drivers in the group and its subgroups.")
+    @MethodDescription(description="Returns scores for the specified group and duration. The scores represent the weighted average scores for all drivers in the group and its subgroups.", crudType=CrudType.READ,
+    					modelClass=com.inthinc.pro.model.DriveQMap.class)  
     public List<Map<String, Object>> getGDTrendByGTC(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration,
-            @DaoParam(name="count", inputDesc="30 (30 days), 3 (3 months), 6 (6 months), 12 (12 months)")Integer count)
+    		@DaoParam(name="aggregation type", type=com.inthinc.pro.backing.dao.ui.DurationBinSizeList.class)Integer duration,  
+            @DaoParam(name="count", type=com.inthinc.pro.backing.dao.ui.DurationCountList.class)Integer count)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Returns list of driver scores for all vehicles in the specified group and time frame specified by start/end date.")
+    @MethodDescription(description="Returns list of driver scores for all vehicles in the specified group and time frame specified by start/end date.", crudType=CrudType.READ,
+    					modelClass=com.inthinc.pro.model.DriveQMap.class)  
     public Map<String, Object> getGVScoreByGSE(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate
+            @DaoParam(name="startDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm")Long endDate
             )
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
     @Override
-    @MethodDescription(description="Returns a List of GQMaps for the specified groupID, duration. Scores returned for each subgroup are the weighted average of all drivers in the subgroup and its subordinate subgroups.")
-
+    @MethodDescription(description="Returns a list of scores for the specified groupID, duration. Scores returned for each subgroup are the weighted average of all drivers in the subgroup and its subordinate subgroups.", crudType=CrudType.READ,
+    				modelClass=com.inthinc.pro.model.aggregation.GroupScoreWrapper.class)
     public List<Map<String, Object>> getSDScoresByGT(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration)
+    		@DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationCodeList.class)Integer duration)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Returns a List of GQLists for the specified  group, duration, count. Trend returned for each subgroup are the weighted average of all the drivers in the subgroup and its subordinate subgroups.")
-
+    @MethodDescription(description="Returns a list of scores for subgroups of the specified group.  Trend scores returned for each subgroup are the weighted average of all the drivers in the subgroup and its subordinate subgroups.", crudType=CrudType.READ,
+    				modelClass=com.inthinc.pro.model.aggregation.GroupTrendWrapper.class)
     public List<Map<String, Object>> getSDTrendsByGTC(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="aggType", inputDesc="0 (daily), 2 (monthly)")Integer duration,  
-            @DaoParam(name="count", inputDesc="30 (30 days), 3 (3 months), 6 (6 months), 12 (12 months)")Integer count)
+            @DaoParam(name="aggregation type", type=com.inthinc.pro.backing.dao.ui.DurationBinSizeList.class)Integer duration,  
+            @DaoParam(name="count", type=com.inthinc.pro.backing.dao.ui.DurationCountList.class)Integer count)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @MethodDescription(description="Returns a list of DVQMaps. Each DVQMap contains an optional driverMap, an vehicleMap and a driveQMap.  The driverMap will be included if the vehicle is currently mapped to a driver.  In the event that the vehicle is not mapped to a driver, then no driver record will be included in the DVQMap.")
+    @MethodDescription(description="Returns a list where each record contains a vehicle, a driver and scores. The driver will be included if the vehicle is currently mapped to a driver.", crudType=CrudType.READ,
+    					modelClass=com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper.class)
     public List<Map<String, Object>> getVDScoresByGT(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration)
+            @DaoParam(name="aggregation duration", type=com.inthinc.pro.backing.dao.ui.AggregationDurationList.class)Integer duration)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
     @Override
-    @MethodDescription(description="Returns a driveQMap with the vehicles scores for the specified timeScale.")
+    @MethodDescription(description="Returns the vehicle's scores for the specified duration.", crudType=CrudType.READ,
+			modelClass=com.inthinc.pro.model.DriveQMap.class)
     public Map<String, Object> getVScoreByVT(@DaoParam(name="vehicleID")Integer vehicleID, 
-            @DaoParam(name="duration", inputDesc="1 (30 days), 2 (3 months), 3 (6 months), 4 (12 months)")Integer duration)
+            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationCodeList.class)Integer duration)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
     @Override
-    @MethodDescription(description="Returns a list of 'count' driveQMaps with the vehicles scores for the specified aggregation type.")
+    @MethodDescription(description="Returns a list the vehicle scores for the specified aggregation type", crudType=CrudType.READ,
+    		modelClass=com.inthinc.pro.model.DriveQMap.class)
     public List<Map<String, Object>> getVTrendByVTC(@DaoParam(name="vehicleID")Integer vehicleID, 
-            @DaoParam(name="aggType", inputDesc="0 (daily), 2 (monthly)")Integer duration,  
-            @DaoParam(name="count", inputDesc="30 (30 days), 3 (3 months), 6 (6 months), 12 (12 months)")Integer count)
+            @DaoParam(name="aggregation type", type=com.inthinc.pro.backing.dao.ui.DurationBinSizeList.class)Integer duration,  
+            @DaoParam(name="count", type=com.inthinc.pro.backing.dao.ui.DurationCountList.class)Integer count)
     {
-        // TODO Auto-generated method stub
         return null;
     }
+
 }

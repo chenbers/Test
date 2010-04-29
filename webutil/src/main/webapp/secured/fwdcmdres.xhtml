@@ -1,0 +1,157 @@
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich">
+
+
+   <ui:param name="panelTitle" value="Forward Command Restricted" />
+   <ui:param name="groupSelected" value="MAIN" />
+   <ui:define name="util_content">
+      <div id="middle">
+      <div id="content">
+         <a4j:form>
+            <a4j:region>
+               <table width="100%">
+                  <tr>
+                     <td style="">
+                     	<h:panelGroup id="deviceTablePanel" style="width=100%">
+						<rich:dataTable 
+                        	id="deviceTable"
+	                        value="#{fwdcmdresBean.devices}" var="device"
+	                        rowKeyVar="index" rows="15" 
+                           	width="100%"> 
+                           	<f:facet name="header">
+                              <h:outputText value="Available Devices" />
+                           </f:facet>
+                           	
+						   <rich:column>
+				                <f:facet name="header">
+				                  <h:selectBooleanCheckbox value="#{fwdcmdresBean.selectAll}" id="selectAll" title="Select All">
+				                    <a4j:support event="onclick" action="#{fwdcmdresBean.doSelectAll}" ajaxSingle="true" reRender="deviceTable" limitToList="true" />
+				                  </h:selectBooleanCheckbox>
+				                </f:facet>
+				                <h:selectBooleanCheckbox id="select" value="#{device.selected}">
+                                  <a4j:support event="onclick" reRender="errors" limitToList="true" />
+			                  </h:selectBooleanCheckbox>
+				                
+				           </rich:column>
+                           <rich:column width="25%" label="IMEI" filterBy="#{device.deviceIMEI}" filterValue="#{fwdcmdresBean.filter.deviceIMEI}" sortBy="#{device.deviceIMEI}">
+                              <f:facet name="header">
+                                 <h:outputText value="IMEI" />
+                              </f:facet>
+                              <h:outputText value="#{device.deviceIMEI}" />
+                           </rich:column>
+                           <rich:column width="25%" label="Device Name" filterBy="#{device.deviceName}" filterValue="#{fwdcmdresBean.filter.deviceName}" sortBy="#{device.deviceName}">
+                              <f:facet name="header">
+                                 <h:outputText value="Device Name" />
+                              </f:facet>
+                              <h:outputText value="#{device.deviceName}" />
+                           </rich:column>
+                           <rich:column width="25%" label="Status" sortBy="#{device.deviceStatus}">
+                              <f:facet name="header">
+                                 <h:outputText value="Status" />
+                              </f:facet>
+                              <h:outputText value="#{device.deviceStatus}" />
+                           </rich:column>
+                           <rich:column width="25%" label="Vehicle Name" filterBy="#{device.vehicleName}" filterValue="#{fwdcmdresBean.filter.vehicleName}" sortBy="#{device.vehicleName}">
+                              <f:facet name="header">
+                                 <h:outputText value="Vehicle Name" />
+                              </f:facet>
+                              <h:outputText value="#{device.vehicleName}" />
+                           </rich:column>
+                     	
+                     	</rich:dataTable>
+      
+                        
+                     </h:panelGroup>
+                     </td>
+                  </tr>
+               </table>
+           </a4j:region>
+         </a4j:form>  
+         <br />
+         <rich:messages id="errors" globalOnly="true" style="color:red"></rich:messages>
+         <h:panelGrid style="width: 100%" cellspacing="10">
+		         <a4j:form>
+           			<h:outputText value="Forward Command:" style="font-size:12px;font-weight:bold;"/><br/>
+               		<h:selectOneMenu id="selValue" value="#{fwdcmdresBean.fwdcmd}">
+                   		<f:selectItems value="#{fwdcmdresBean.forwardCommandSelectList}"/>
+                   		<a4j:support event="onchange" reRender="description,params" />
+               		</h:selectOneMenu>
+               	</a4j:form>	
+	            <a4j:outputPanel id="description">
+	            	<h:panelGroup  rendered="#{fwdcmdresBean.forwardCommandDef.description != null}">
+                  		<h:outputText value="Description:" style="font-size:12px;font-weight:bold;"/><br/>
+	                	<h:outputText value="#{fwdcmdresBean.forwardCommandDef.description}" style="font-size:11px;" />
+	                </h:panelGroup>
+	            </a4j:outputPanel>
+				<a4j:form id="params">
+		            <h:panelGroup  id="intParam" rendered="#{fwdcmdresBean.forwardCommandDef.expectedParamType == 'INTEGER'}">
+	            		<h:outputText value="IData:" style="font-size:12px;font-weight:bold;"/><br/>
+						<h:inputText id="intdata" label="Data" value="#{fwdcmdresBean.intData}" required="true" requiredMessage="Data is required."/>
+        	          	<rich:message for="intdata" style="font-size:12px;color:red"/>
+		            </h:panelGroup >
+		            <h:panelGroup  id="strParam"  rendered="#{fwdcmdresBean.forwardCommandDef.expectedParamType == 'STRING'}">
+	                	<h:outputText value="SData:" style="font-size:12px;font-weight:bold;"/><br/>
+    	            	<h:inputText id="stringdata" label="Data" value="#{fwdcmdresBean.stringData}"  required="true" requiredMessage="Data is required."/>
+						<rich:message for="stringdata" style="font-size:12px;color:red"/>
+		            </h:panelGroup>
+		            <br/>
+					<rich:spacer height="10px"/>
+					<rich:separator height="3px"/>
+        			<a4j:commandButton value="Send Command" 
+            			action="#{fwdcmdresBean.sendFwdCmdAction}" reRender="selectedDeviceTable, errors"
+            			oncomplete="javascript:if(#{empty facesContext.maximumSeverity}){Richfaces.showModalPanel('successPanel')}" />
+				</a4j:form>            			
+			</h:panelGrid>
+         </div>
+      </div>
+      
+      <rich:modalPanel id="successPanel" width="400" height="350" onshow="reRenderTable()"
+         zindex="2000">
+           
+         <f:facet name="header">
+            <h:outputText value="Send Forward Command" />
+         </f:facet>
+         <a4j:jsFunction name="reRenderTable" reRender="selectedDeviceTable"></a4j:jsFunction>
+         <a4j:form>
+         <p><h:outputText value="Forward command sent successfully to the following devices:" /></p>
+            
+            <rich:dataTable id="selectedDeviceTable"
+                     value="#{fwdcmdresBean.selectedDevices}" var="device"
+                     width="100%" rows="7">
+                     <f:facet name="header">
+                       	<h:outputText value="Selected Devices" />
+                     </f:facet>
+                     <rich:column width="150" label="IMEI">
+	                    <f:facet name="header">
+                        	<h:outputText value="IMEI" />
+						</f:facet>                            	
+                        <h:outputText value="#{device.deviceIMEI}" />
+                     </rich:column>
+                     <rich:column width="150" label="Device Name">
+	                    <f:facet name="header">
+                        	<h:outputText value="Device Name" />
+						</f:facet>                            	
+                        <h:outputText value="#{device.deviceName}" />
+                     </rich:column>
+                     <rich:column width="150" label="Vehicle Name">
+	                    <f:facet name="header">
+                        	<h:outputText value="Vehicle Name" />
+						</f:facet>                            	
+                        <h:outputText value="#{device.vehicleName}" />
+                     </rich:column>
+               </rich:dataTable> 
+            <rich:datascroller id="datascroller" for="selectedDeviceTable" page="#{fwdcmdresBean.page}"/>  
+            <a4j:commandButton
+               action="#{fwdcmdresBean.clearSelection}"
+               oncomplete="Richfaces.hideModalPanel('successPanel')"
+               reRender="deviceTable"
+               value="OK"/>
+         </a4j:form>
+      </rich:modalPanel>
+   </ui:define>
+</ui:composition>

@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
@@ -24,7 +22,6 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
     private static final Integer DRIVER_TYPE = 1;
 
-    private static final String CENTRAL_ID_KEY = "rfid";
     private static final String BARCODE_KEY = "barcode";
     
     @Override
@@ -139,19 +136,6 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         }
     }
 
-	@Override
-    public Integer getDriverIDForRFID(Long rfid)
-    {
-        try
-        {
-            Map<String, Object> returnMap = getSiloService().getIDLong(CENTRAL_ID_KEY, rfid);
-            return getCentralId(returnMap);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-    }
 	@Override
     public Integer getDriverIDByBarcode(String barcode)
     {

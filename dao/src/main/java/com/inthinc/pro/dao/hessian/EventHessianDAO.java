@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Event;
@@ -108,45 +106,6 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
                     .convertToModelObject(
                             getSiloService().getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven,
                                     eventTypesArray), Event.class));
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
-    public List<Event> getEventsForDriverByMiles(Integer driverID, Integer milesBack, List<Integer> eventTypes)
-    {
-        try
-        {
-            Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
-
-            return Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getNoteByMiles(driverID, milesBack, eventTypesArray), Event.class));
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-        // TODO: Remove when method is impl on back end
-        catch (ProxyException ex)
-        {
-            if (ex.getErrorCode() == 422)
-            {
-                return new ArrayList<Event>();
-            }
-            throw ex;
-        }
-    }
-
-    @Override
-    public List<Event> getEventsForVehicleByMiles(Integer vehicleID, Integer milesBack, List<Integer> eventTypes)
-    {
-        try
-        {
-            Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
-
-            return Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getNoteByMiles(vehicleID, milesBack, eventTypesArray), Event.class));
         }
         catch (EmptyResultSetException e)
         {

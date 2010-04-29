@@ -12,16 +12,26 @@
 		<property name="roleDAO" ref="roleDAO" />
     </bean>
 
+    <bean id="dateFormatBean" class="com.inthinc.pro.backing.dao.DateFormatBean" scope="session"/>
     
-    <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" scope="session">
+    <bean id="baseBean" class="com.inthinc.pro.backing.BaseBean" scope="session">
+		<property name="superuserDAO" ref="superuserDAO" />
+	</bean>
+    <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" init-method="init" parent="baseBean" scope="session">
 		<property name="siloServiceCreator" ref="siloServiceCreator" />
 		<property name="reportServiceCreator" ref="reportServiceCreator" />
+		<property name="dateFormatBean" ref="dateFormatBean" />
     </bean>
-    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session">
+    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" init-method="init" parent="baseBean" scope="session">
 		<property name="deviceDAO" ref="deviceDAO" />
 		<property name="accountDAO" ref="accountDAO" />
 		<property name="userDAO" ref="userDAO" />
 		<property name="groupDAO" ref="groupDAO" />
+	</bean>
+    <bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session">
+		<property name="deviceDAO" ref="deviceDAO" />
+		<property name="reportDAO" ref="reportDAO" />
+		<property name="forwardCommandDefDAO" ref="forwardCommandDefDAO" />
 	</bean>
     <bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session">
 		<property name="eventDAO" ref="eventDAO" />

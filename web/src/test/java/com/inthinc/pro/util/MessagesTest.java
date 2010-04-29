@@ -4,10 +4,14 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -142,10 +146,25 @@ public class MessagesTest {
 		nonTranslatedMap_ro.put("MeasurementType.METRIC_SCORE_SPEEDING_41_54",  "not_translated"); //  en: 65-88 kph ro: 65-88 kph
 		nonTranslatedMap_ro.put("devicesHeader_status",  "not_translated"); //  en: Status ro: Status
 		nonTranslatedMap_ro.put("sbs_email_from",  "not_translated"); //  en: tiwiPRO Support <speedbystreet@tiwi.com> ro: tiwiPRO Support <speedbystreet@tiwi.com>
+		nonTranslatedMap_ro.put("reports_time", "not_translated");
+		nonTranslatedMap_ro.put("teamLabels", "not_translated"); 
+		nonTranslatedMap_ro.put("teamOverallNA", "not_translated");	// en: N/A ro: N/A 
+		nonTranslatedMap_ro.put("customer_support_email", "not_translated");	// E-mail:
+		nonTranslatedMap_ro.put("drivertrip_quality", "not_translated");	// GPS
+		nonTranslatedMap_ro.put("editPerson_dob", "not_translated");	// DOB:
+		nonTranslatedMap_ro.put("personHeader_dob", "not_translated");	// DOB
+		nonTranslatedMap_ro.put("group_manager","not_translated");	// Manager
+		nonTranslatedMap_ro.put("teamOverallzerotoone","not_translated");	// 0.0 to 1.0
+		nonTranslatedMap_ro.put("teamOverallonetotwo","not_translated");	// 1.1 to 2.0
+		nonTranslatedMap_ro.put("teamOveralltwotothree","not_translated");	// 2.1 to 3.0
+		nonTranslatedMap_ro.put("teamOverallthreetofour","not_translated");	// 3.1 to 4.0
+		nonTranslatedMap_ro.put("teamOverallfourtofive","not_translated");	// 4.1 to 5.0
+		nonTranslatedMap_ro.put("vehicletrip_quality", "not_translated");	// GPS
+		nonTranslatedMap_ro.put("teamTotal", "not_translated");	// Total
 		
+
 	}
 	
-	@Ignore
 	@Test
 	public void roTest(){
 		
@@ -155,6 +174,7 @@ public class MessagesTest {
 		int errorCount =  0;
 			
 		System.out.println("Checking Language: ro");
+		Map<String, String> needTrans = new TreeMap<String, String>();
 		Enumeration<?> propNames = english.propertyNames(); 
 		while (propNames.hasMoreElements()) {
 			String key = propNames.nextElement().toString();
@@ -164,7 +184,9 @@ public class MessagesTest {
 			
 			
 			if (langValue == null) {
-				System.out.println("MISSING: " + key + " en: " + value);
+//				System.out.println("MISSING: " + key + " en: " + value);
+//				System.out.println(key + " = " + value);
+				needTrans.put(key, value);
 				errorCount++;
 			}
 			else if (langValue.isEmpty() && value.isEmpty())
@@ -174,15 +196,50 @@ public class MessagesTest {
 			else if (nonTranslatedMap_ro.containsKey(key))
 				continue;
 			else if (langValue.trim().equalsIgnoreCase(value.trim()) || langValue.contains("(ro)")) { 
-				System.out.println("NOT TRANSLATED: " + key + " en: " + value + " ro: " + langValue);
+//				System.out.println("NOT TRANSLATED: " + key + " en: " + value + " ro: " + langValue);
+//				System.out.println(key + " = " + value);
+				needTrans.put(key, value);
 				errorCount++;
 			}
+		}
+		if (needTrans.size() > 0) {
+			for (String key : needTrans.keySet()) 
+				System.out.println(key + " = " + needTrans.get(key));
 		}
 				
 		assertEquals("ro messages need translations", 0, errorCount);
 		
 		
 	}
+
+// TODO:
+//	@Test
+//	public void roDupsTest(){
+//		
+//		Properties translated = getProperties("com/inthinc/pro/resources/Messages_ro.properties");
+//
+//		int errorCount =  0;
+//			
+//		System.out.println("Checking For duplicates: ro");
+//		Enumeration<?> propNames = translated.propertyNames();
+//		List<String> keyList = new ArrayList<String>();
+//		while (propNames.hasMoreElements()) {
+//			keyList.add((String)propNames.nextElement());
+//		}
+//		Collections.sort(keyList);
+//		String lastKey = "";
+//		for (String key : keyList) {
+////System.out.println(" " + key);				
+//			if (key.equals(lastKey))
+//				System.out.println(key + "DUPLICATE");
+//			
+//			lastKey = key;
+//			
+//		}
+//		
+//		
+//	}
+
 
 	private Properties getProperties(String propFile) {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFile);
