@@ -358,7 +358,7 @@ public class DaoUtilBean extends BaseBean
 		                }
 		                Param p = findParam(mname, i);
 		                if (p != null) {
-		                	map.put(field.getName(), p.getConvertedParamValue());
+		                	map.put(mname, p.getConvertedParamValue());
 		                }
 					}
 					args[cnt++] = map;
