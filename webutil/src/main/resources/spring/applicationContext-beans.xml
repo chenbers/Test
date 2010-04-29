@@ -22,11 +22,12 @@
 		<property name="reportServiceCreator" ref="reportServiceCreator" />
 		<property name="dateFormatBean" ref="dateFormatBean" />
     </bean>
-    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" init-method="init" scope="session">
+    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session">
 		<property name="deviceDAO" ref="deviceDAO" />
 		<property name="accountDAO" ref="accountDAO" />
 		<property name="userDAO" ref="userDAO" />
 		<property name="groupDAO" ref="groupDAO" />
+		<property name="forwardCommandDefDAO" ref="forwardCommandDefDAO" />
 	</bean>
     <bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session">
 		<property name="deviceDAO" ref="deviceDAO" />

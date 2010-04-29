@@ -174,10 +174,10 @@
       
       <rich:panel>
       <f:facet name="header">Forward Command Descriptions</f:facet>
-        <rich:dataTable value="#{fwdcmdBean.fwdCmdDescriptions}" var="fwdcmd">
+        <rich:dataTable value="#{fwdcmdBean.forwardCommandDefList}" var="fwdcmd">
             <rich:column>
                 <f:facet name="header">Code</f:facet>
-                <h:outputText value="#{fwdcmd.code}" />
+                <h:outputText value="#{fwdcmd.cmdID}" />
             </rich:column>
             <rich:column>
                 <f:facet name="header">Name</f:facet>
