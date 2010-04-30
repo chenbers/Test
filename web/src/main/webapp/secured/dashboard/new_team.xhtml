@@ -108,14 +108,13 @@
 			Team.getSelectedTabId = function() {
 				return jQuery('.rich-tab-active').attr('id');
 			}
-
+			/*<![CDATA[*/  
 			Team.disableTimeFrame = function(timeFrameId) {
-				jQuery(timeFrameId)
-				.attr("onclick", "return false;")
-				.removeClass('timeframe-link')
-				.addClass('timeframe-disabled');
+				var element = jQuery(timeFrameId);
+				jQuery("<span class='timeframe-disabled'>"+element.text()+"</span>").replaceAll(element);
 			}
 
+			/*]]>*/
 			Team.timeFrameChange = function() {
 				Team.getSelectedTab().triggerHandler('timeFrameChange');
 			}
