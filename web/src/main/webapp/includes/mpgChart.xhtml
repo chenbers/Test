@@ -82,19 +82,19 @@
                                         <h:outputText value="#{item.entityName}" />
                                     </pretty:link>
                                 </rich:column>
-                                <rich:column id="light" sortBy="#{item.entity.lightValue}">
+                                <rich:column id="light" sortBy="#{item.lightValue}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_light_column}" />
                                     </f:facet>
                                     <h:outputText value="#{item.lightValue}" converter="MpgToKplConverter"/>
                                 </rich:column>
-                                <rich:column id="medium" sortBy="#{item.entity.mediumValue}">
+                                <rich:column id="medium" sortBy="#{item.mediumValue}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_medium_column}" converter="MpgToKplConverter"/>
                                     </f:facet>
                                     <h:outputText value="#{item.mediumValue}" converter="MpgToKplConverter" />
                                 </rich:column>
-                                <rich:column id="heavy" sortBy="#{item.entity.heavyValue}">
+                                <rich:column id="heavy" sortBy="#{item.heavyValue}">
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.mpg_heavy_column}" converter="MpgToKplConverter"/>
                                     </f:facet>
