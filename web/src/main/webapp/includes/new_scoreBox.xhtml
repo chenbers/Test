@@ -1,0 +1,27 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<a4j:loadScript src="/js/scoreBox.js"/>
+	<a4j:loadStyle src="/css/scoreBox.css"/>
+	<rich:jQuery selector=".#{id}" timing="onload" query="scoreBox({size:'#{size}'})" />
+	<div id="#{id}" class="#{id} score ">
+	   <c:choose>
+	   	   <c:when test="#{empty scoreMappingId}">
+	   	   		<h:outputText value="#{score}" converter="ScoreConverter"/>
+	   	   </c:when>
+	   	   <c:otherwise>
+	   	   	    <pretty:link id="#{scoreMappingId}" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+		           <h:outputText value="#{score}" converter="ScoreConverter" />
+		           <f:param value="#{item}" />
+		        </pretty:link>
+	   	   </c:otherwise>
+	   </c:choose>
+	</div>
+</ui:composition>

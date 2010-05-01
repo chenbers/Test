@@ -112,3 +112,102 @@
 .score_sm_na td {
 	background: url(../images/score_sm_na.png) no-repeat;
 }
+
+/* ScoreBox jQuery widget styles */
+.score{
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #333;
+	padding: 1px;
+	background-color: #FFFFFF;
+}
+
+.score div{
+	text-align: center;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.score_na{
+	border: #CCCCCC 1px solid;
+}
+
+.score_na div{
+	background-color: #888888;
+}
+
+.score_1{
+	border: #F8A188 1px solid;
+}
+
+.score_1 div{
+	background-color: #FF0101;
+}
+
+.score_2{
+	border: #FBDABA 1px solid;
+}
+
+.score_2 div{
+	background-color: #FF6601;
+}
+
+.score_3{
+	border: #FFEC9B 1px solid;
+}
+
+.score_3 div{
+	background-color: #F6B305;
+}
+
+.score_4{
+	border: #1E88C8 1px solid;
+	background-color: #9BD0F0;
+}
+
+.score_4 div{
+	background-color: #1E88C8;
+}
+
+.score_5{
+	border: #98Cf8F 1px solid;
+}
+
+.score_5 div{
+	background-color: #6B9D1B;
+}
+
+.score_xx-small,.score_xx-small div{
+	width: 25px;
+	height: 25px;
+	font-size: 12px;
+}
+
+.score_small,.score_small div{
+	width: 40px;
+	height: 40px;
+	font-size: 18px;
+}
+
+.score_medium,.score_medium div{
+	width: 60px;
+	height: 60px;
+	font-size: 24px;
+}
+
+.score_large,.score_large div{
+	font-size: 32px;
+	height: 90px;
+	width: 90px;
+}
+
+.score_xx-large,.score_xx-large div{
+	font-size: 36px;
+	height: 120px;
+	width: 120px;
+}
+
+
+
+
+
