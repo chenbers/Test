@@ -437,4 +437,14 @@
 		<action>#{unknownDriverBean.view}</action>
 	</url-mapping>
 
+	<url-mapping id="adminEditAccount">
+		<pattern>/app/admin/editAccount</pattern>
+		<view-id>/secured/admin/editAccount.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminAccount">
+		<pattern>/app/admin/account</pattern>
+		<view-id>/secured/admin/account.faces</view-id>
+		<action>#{accountBean.view}</action>
+	</url-mapping>	
+
 </pretty-config>
