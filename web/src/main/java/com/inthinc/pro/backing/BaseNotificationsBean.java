@@ -435,7 +435,7 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
 	}
 
 	public void emailReport() {
-	    getReportRenderer().exportReportToEmail(initReportCriteria(), getEmailAddress());
+	    getReportRenderer().exportReportToEmail(initReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
 	}
 
 	public void exportReportToExcel() {

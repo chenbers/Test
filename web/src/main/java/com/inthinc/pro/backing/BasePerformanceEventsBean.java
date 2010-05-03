@@ -190,7 +190,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 
     public  void emailReport()
     {
-        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
     public void exportReportToExcel()

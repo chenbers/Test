@@ -45,6 +45,7 @@ public class BaseBean implements Serializable {
     protected Integer showExcludedEvents = EventDAO.INCLUDE_FORGIVEN;
 	protected AddressLookup addressLookup;
     private static final MapType mapType = MapType.GOOGLE;
+    private String noReplyEmailAddress = "noreply@inthinc.com";
 
 
     public BaseBean() {
@@ -182,6 +183,17 @@ public class BaseBean implements Serializable {
         this.emailAddress = emailAddress;
     }
 
+    public String getNoReplyEmailAddress() {
+
+        Account acct = accountDAO.findByID(getProUser().getUser().getPerson().getAcctID());
+        String localAddr = acct.getProps().getNoReplyEmail();
+            
+        if ( localAddr != null && localAddr.trim().length() != 0 ) {
+            noReplyEmailAddress = localAddr.trim();
+        }       
+        
+        return noReplyEmailAddress;
+    }
     public List<String> getEmailAddressList() {
         String[] emails = getEmailAddress().split(",");
         return Arrays.asList(emails);

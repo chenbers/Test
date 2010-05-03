@@ -528,8 +528,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     }
 
     public void emailReport()
-    {
-        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());
+    { 
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
     public void setVehicleSpeedBean(VehicleSpeedBean vehicleSpeedBean)

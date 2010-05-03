@@ -79,7 +79,7 @@ public class DashboardReportBean extends BaseBean
         List<ReportCriteria> reportCriteriaList = getReportCriteriaList();
         
         if(reportCriteriaList.size() > 0){
-            reportRenderer.exportReportToEmail(reportCriteriaList, getEmailAddress());
+            reportRenderer.exportReportToEmail(reportCriteriaList, getEmailAddress(), getNoReplyEmailAddress());
         }
         
         addInfoMessage(MessageUtil.getMessageString("reports_email_sent"));

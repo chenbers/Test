@@ -191,7 +191,7 @@ public class TeamStatisticsBean extends BaseBean {
 
     public void emailReport()
     {
-        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
     public void exportReportToExcel()

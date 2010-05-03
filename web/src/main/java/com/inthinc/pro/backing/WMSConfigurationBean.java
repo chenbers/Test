@@ -4,12 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class WMSConfigurationBean {
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.model.Account;
+
+public class WMSConfigurationBean extends BaseBean {
 
     private String url;
     private String query;
     private List<Layer> layers;
     private String layerQueryParam;
+    
+    public void init() {        
+        Account acct = getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());
+        this.url = acct.getProps().getWmsURL();
+        this.query = acct.getProps().getWmsQuery();
+        setLayers(acct.getProps().getWmsLayers());        
+        this.layerQueryParam = acct.getProps().getWmsLayerQueryParam();
+    }
 
     public String getUrl() {
         return url;

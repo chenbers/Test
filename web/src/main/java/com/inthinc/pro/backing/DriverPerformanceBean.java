@@ -496,7 +496,7 @@ public class DriverPerformanceBean extends BasePerformanceBean
     @Override
     public void emailReport()
     {
-        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
 
