@@ -16,6 +16,11 @@
  * <a4j:loadScript src="/js/scorebox.js"/>
  * <rich:jQuery selector="jQuery Selector" timing="onload" query="scoreBox({size:'medium'})" />
  * 
+ * Then in your .xhtml page
+ * 
+ * <div id="some id">#{entity.score}</div>
+ * 	 
+ * 
  */
 
 (function($){ 
