@@ -195,8 +195,7 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 	}
 
 	public void emailReport() {
-		getReportRenderer().exportReportToEmail(initReportCriteria(),
-				getEmailAddress());
+		getReportRenderer().exportReportToEmail(initReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
 	}
 
 	public void exportReportToExcel() {

@@ -133,8 +133,8 @@ public abstract class BasePagingReportBean<T> extends BaseBean
     }
 
     public void emailReport()
-    {
-        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());
+    {       
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
     public void exportReportToExcel()
