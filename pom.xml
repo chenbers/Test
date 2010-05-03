@@ -205,12 +205,12 @@ WWUUnm]]>
     <repository>
         <id>devserv.tiwipro.com</id>
         <name>devserv.inthinc.com-releases</name>
-        <url>http://devserv.tiwipro.com:8284/artifactory/libs-releases-local</url>
+        <url>https://devserv.tiwipro.com:8484/artifactory/libs-releases-local</url>
     </repository>
     <snapshotRepository>
         <id>devserv.tiwipro.com</id>
         <name>devserv.inthinc.com-snapshots</name>
-        <url>http://devserv.tiwipro.com:8284/artifactory/libs-snapshots-local</url>
+        <url>https://devserv.tiwipro.com:8484/artifactory/libs-snapshots-local</url>
     </snapshotRepository>
 </distributionManagement>
 
