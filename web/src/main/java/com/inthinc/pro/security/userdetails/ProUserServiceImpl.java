@@ -14,6 +14,7 @@ import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
+import com.inthinc.pro.backing.ExternalConfigBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -67,7 +68,7 @@ public class ProUserServiceImpl implements UserDetailsService
             List<Zone> zoneList = zoneDAO.getZones(user.getPerson().getAcctID());
             proUser.setZones(zoneList);
             
-            Account account = accountDAO.findByID(user.getPerson().getAcctID());
+            Account account = accountDAO.findByID(user.getPerson().getAcctID());            
             
             Driver unknownDriver = driverDAO.findByID(account.getUnkDriverID());
             unknownDriver.getPerson().setDriver(unknownDriver);
@@ -141,7 +142,7 @@ public class ProUserServiceImpl implements UserDetailsService
 		this.driverDAO = driverDAO;
 	}
 
-	private GrantedAuthority[] getGrantedAuthorities(User user){
+    private GrantedAuthority[] getGrantedAuthorities(User user){
 		
 		//TODO make an enum for all role related things
 		
