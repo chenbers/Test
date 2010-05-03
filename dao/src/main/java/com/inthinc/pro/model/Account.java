@@ -1,5 +1,8 @@
 package com.inthinc.pro.model;
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -18,17 +21,20 @@ public class Account extends BaseEntity
 
 	//TODO: refactor names of fields. Remove the prefix acct. Acct is in
 	@ID
-    private Integer       acctID;	
+    private Integer                   acctID;	
 	@Column(name="name")
-	private String        acctName;
-	private Integer       mailID;
-    private Integer       billID;
-    private Status        status;    
-    private Integer       unkDriverID;
+	private String                    acctName;
+	private Integer                   mailID;
+    private Integer                   billID;
+    private Status                    status;    
+    private Integer                   unkDriverID;
+
+    private AccountAttributes         props;
 
     public Account()
     {
         super();
+        props = new AccountAttributes();
     }
     
     public Account(Integer acctID, Integer mailID, Integer billID, Status status)
@@ -49,6 +55,17 @@ public class Account extends BaseEntity
         this.billID = billID;
         this.status = status;
     }
+    
+    public Account(Integer acctID, String acctName, Integer mailID, Integer billID, Status status, AccountAttributes props)
+    {
+        super();
+        this.acctID = acctID;
+        this.acctName = acctName;
+        this.mailID = mailID;
+        this.billID = billID;
+        this.status = status;
+        this.props = props;
+    }    
 
     public Integer getAcctID()
     {
@@ -102,6 +119,14 @@ public class Account extends BaseEntity
 
     public void setUnkDriverID(Integer unkDriverID) {
         this.unkDriverID = unkDriverID;
+    }
+
+    public AccountAttributes getProps() {
+        return props;
+    }
+
+    public void setProps(AccountAttributes props) {
+        this.props = props;
     }
 
     @Override
