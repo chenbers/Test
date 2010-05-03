@@ -138,7 +138,7 @@
   </bean>
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">
-    <property name="reportCreator" ref="reportCreator" />
+    <property name="reportCreator" ref="reportCreator" />   
   </bean>
 
   <bean id="dashBoardReportBean" class="com.inthinc.pro.backing.DashboardReportBean" scope="request" parent="baseBean">
@@ -229,6 +229,13 @@
   <bean id="unknownDriverBean" class="com.inthinc.pro.backing.UnknownDriverBean" scope="session" init-method="initBean">
     <property name="personDAO" ref="personDAO"></property>
   </bean>
+  
+  <bean id="accountBean" class="com.inthinc.pro.backing.AccountBean" scope="session" init-method="initBean">
+    <property name="personDAO" ref="personDAO"></property>  
+    <property name="wmsConfigurationBean" ref="wmsConfigurationBean"></property>
+    <property name="externalConfigBean" ref="externalConfigBean"></property> 
+    <property name="accountOptionsBean" ref="accountOptionsBean"></property>
+  </bean>  
 
   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="session" parent="baseBean">
     <property name="vehicleDAO" ref="vehicleDAO" />
@@ -435,19 +442,22 @@
   <!-- Error translator -->
   <bean id="errorTranslatorBean" class="com.inthinc.pro.backing.ErrorTranslatorBean">
   </bean>
-  <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean">
-    <property name="phoneAlerts" value="${accountOptions.phoneAlerts}" />
+  <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean" init-method="init">  
   </bean>
 
-  <bean id="wmsConfigurationBean" class="com.inthinc.pro.backing.WMSConfigurationBean" scope="session">
+  <bean id="wmsConfigurationBean" class="com.inthinc.pro.backing.WMSConfigurationBean" scope="session" parent="baseBean" init-method="init">
+  <!-- 
     <property name="url" value="${wms.url}" />
     <property name="query" value="${wms.query}" />
     <property name="layers" value="${wms.layers}" />
     <property name="layerQueryParam" value="${wms.layer.queryparam}" />
+    -->
   </bean>
-  <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean">
+  <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean" init-method="init">
+  <!-- 
     <property name="phoneNumber01" value="${externalConfig.phone01}" />
     <property name="phoneNumber02" value="${externalConfig.phone02}" />
+    -->
   </bean>
   <!-- Cache Beans -->
   <bean id="cacheBean" class="com.inthinc.pro.backing.CacheBean" scope="session" parent="baseBean">

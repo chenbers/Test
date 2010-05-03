@@ -4,9 +4,6 @@
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
   <bean id="reportMailer" class="com.inthinc.pro.reports.mail.ReportMailerImpl">
     <property name="javaMailSender" ref="mailSenderBean" />
-    <property name="from">
-      <value><![CDATA[tiwiPRO Reporting <${accountOptions.noReplyEmailAddress}>]]></value>
-    </property>
   </bean>
 
   <bean id="reportCreator" class="com.inthinc.pro.reports.jasper.JasperReportCreator">
