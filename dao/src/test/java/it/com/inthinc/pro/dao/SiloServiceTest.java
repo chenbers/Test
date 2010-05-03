@@ -683,7 +683,7 @@ System.out.println("groupID " + groupID);
         account.setAcctID(acctID);
         logger.debug("CREATED ACCOUNT: " + account.getAcctID());
         // find
-        String ignoreFields[] = { "modified", "unkDriverID" };  // baseID was the previous 2nd value? found on device object but?
+        String ignoreFields[] = { "modified", "unkDriverID", "props" };  // baseID was the previous 2nd value? found on device object but?
         Account savedAccount = accountDAO.findByID(account.getAcctID());
         Util.compareObjects(account, savedAccount, ignoreFields);
         assertNotNull("Account unknownDriverID",savedAccount.getUnkDriverID());
