@@ -26,6 +26,7 @@
     <h:form id="side-nav-form">
       
       <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+      <!-- Users -->
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERSACCESS">
         <tr>
           <td valign="top">
@@ -54,6 +55,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
+        <!-- Vehicles -->
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VEHICLESACCESS">
         <tr>
           <td valign="top">
@@ -82,6 +84,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
+        <!-- Devices -->
        	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICESACCESS">
         
         <tr>
@@ -109,6 +112,7 @@
 <!--          </tr>-->
 <!--        </ui:fragment>-->
         </security:authorize>
+        <!-- Zones -->
      	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ZONESACCESS">
         <tr>
           <td valign="top">
@@ -122,6 +126,7 @@
           </td>
         </tr>
         </security:authorize>
+        <!-- Zone Alerts -->
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ZONEALERTSACCESS">
         <tr>
           <td valign="top">
@@ -151,6 +156,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
+        <!-- Red Flags -->
        	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REDFLAGSACCESS">
         <tr>
           <td valign="top">
@@ -180,6 +186,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
+        <!-- Reports -->
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REPORTSACCESS">
         <tr>
           <td valign="top">
@@ -209,6 +216,7 @@
           </tr>
         </ui:fragment>
         </security:authorize>
+        <!-- Organization -->
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ORGANIZATIONACCESS">
         <tr>
           <td valign="top">
@@ -222,6 +230,7 @@
           </td>
         </tr>
       </security:authorize>
+      <!-- Custom Role -->
         <security:authorize ifAnyGranted="ROLE_ADMIN">
         <tr>
           <td valign="top">
@@ -250,7 +259,8 @@
             </td>
           </tr>
         </ui:fragment>
- 		</security:authorize>       
+ 		</security:authorize>
+ 		<!-- Speed By Street -->       
       <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SPEEDBYSTREETACCESS">
         <tr>
           <td valign="top">
@@ -264,6 +274,7 @@
           </td>
         </tr>
         </security:authorize>
+        <!-- Unknown Driver 
         <security:authorize ifAnyGranted="ROLE_ADMIN">
         <tr>
           <td valign="top">
@@ -276,7 +287,21 @@
            </ui:include>
           </td>
         </tr>
- 		</security:authorize>       
+ 		</security:authorize> -->       
+        <!-- Account -->
+        <security:authorize ifAnyGranted="ROLE_ADMIN">
+        <tr>
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_account.png"/>
+               <ui:param name="mappingId" value="adminAccount"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAccount') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminAccount}"/>
+               <ui:param name="context" value="#{context}-vlt-account"/>
+           </ui:include>
+          </td>
+        </tr>
+ 		</security:authorize>      		
        </table>
 
     </h:form>
