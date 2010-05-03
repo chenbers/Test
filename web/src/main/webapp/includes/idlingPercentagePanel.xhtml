@@ -34,7 +34,10 @@
 			document.getElementById("totalDriving").innerHTML =idlingData.totalDriving; 
 			document.getElementById("totalIdling").innerHTML =idlingData.totalIdling; 
 			document.getElementById("idlingPercentageStatsMessage").innerHTML=idlingData.statsMessage;;
+			idlingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListIP}", "IdlingChartId", "#{xywidth}", "#{xyheight}", "0", "1");
 			idlingChart.setDataXML(idlingData.chartDef);
+			idlingChart.setTransparent(true);
+			idlingChart.render("idlePercentChartdiv");
 			
 		}			
 	</script>
