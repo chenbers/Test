@@ -27,8 +27,6 @@
 		return parent.children();
 	};
 	
-	
-	
 })(jQuery);
 
 
@@ -42,15 +40,15 @@ ScoreBox.getScoreCssClass = function(score){
 	
 	score = new Number(score);
 	
-	if(score >= 0 && score < 1)
+	if(score >= 0 && score <= 1)
 		return "score_1";
-	else if(score >= 1 && score < 2)
+	else if(score > 1 && score <= 2)
 		return "score_2";
-	else if(score >= 2 && score < 3)
+	else if(score > 2 && score <= 3)
 		return "score_3";
-	else if(score >= 3 && score < 4)
+	else if(score > 3 && score <= 4)
 		return "score_4";
-	else if(score >= 4)
+	else if(score > 4)
 		return "score_5";
 		
 	return "score_na";
