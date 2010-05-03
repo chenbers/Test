@@ -201,65 +201,19 @@ WWUUnm]]>
       </plugin>
     </plugins>
   </build>
-  <!--                          -->
-  <!-- Distritubtion Management -->
-  <!--                          -->
-  <distributionManagement>
+<distributionManagement>
     <repository>
-      <id>central</id>
-      <name>inthinc central repo</name>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/libs-releases-local</url>
+        <id>devserv.tiwipro.com</id>
+        <name>devserv.inthinc.com-releases</name>
+        <url>http://devserv.tiwipro.com:8284/artifactory/libs-releases-local</url>
     </repository>
     <snapshotRepository>
-      <id>snapshots</id>
-      <name>inthinc snapshot repo</name>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/libs-snapshots-local</url>
+        <id>devserv.tiwipro.com</id>
+        <name>devserv.inthinc.com-snapshots</name>
+        <url>http://devserv.tiwipro.com:8284/artifactory/libs-snapshots-local</url>
     </snapshotRepository>
-  </distributionManagement>
-  <!--                     -->
-  <!-- Source Repositories -->
-  <!--                     -->
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/repo</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>snapshots</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-  <!--                     -->
-  <!-- Plugin Repositories -->
-  <!--                     -->
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/repo</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>snapshots</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
+</distributionManagement>
+
 
   <!--                       -->
   <!-- Dependency Management -->
