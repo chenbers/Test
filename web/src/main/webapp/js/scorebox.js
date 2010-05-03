@@ -1,3 +1,23 @@
+/**
+ * 
+ * Score Box jQuery Widget.
+ * 
+ * Usage instructions
+ * 
+ * <a4j:loadStyle src="/css/scoreBox.css"/>
+ * <a4j:loadScript src="/js/scorebox.js"/>
+ * jQuery(function(){
+ * 		jQuery('jQuery Selector').scoreBox({size:'medium'});
+ * })
+ * 
+ * Richfaces jQuery tag example: (creates the same jQuery as above)
+ * 
+ * <a4j:loadStyle src="/css/scoreBox.css"/>
+ * <a4j:loadScript src="/js/scorebox.js"/>
+ * <rich:jQuery selector="jQuery Selector" timing="onload" query="scoreBox({size:'medium'})" />
+ * 
+ */
+
 (function($){ 
 
 	$.fn.scoreBox = function(options){
