@@ -58,6 +58,7 @@ public class EmailReportJob extends QuartzJobBean {
 
     private static final long ONE_MINUTE = 60000L;
     private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT"));
+    private static final String DEFAULT_NO_REPLY_EMAIL_ADDRESS = "noreply@inthinc.com";
 
 
     @Override
@@ -182,7 +183,17 @@ public class EmailReportJob extends QuartzJobBean {
             String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
             String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", user.getPerson().getLocale(), user.getPerson().getFullName(), user.getPerson().getPriEmail(),
                     unsubscribeURL);
-            report.exportReportToEmail(address, FormatType.PDF, message, subject);
+            
+            // Change noreplyemail address based on account
+            String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
+            Account acct = accountDAO.findByID(reportSchedule.getAccountID());
+            if (    (acct.getProps() != null) && 
+                    (acct.getProps().getNoReplyEmail() != null) && 
+                    (acct.getProps().getNoReplyEmail().trim().length() > 0) ) {
+                noReplyEmailAddress = acct.getProps().getNoReplyEmail();
+            }
+            
+            report.exportReportToEmail(address, FormatType.PDF, message, subject, noReplyEmailAddress);
         }
 
     }
