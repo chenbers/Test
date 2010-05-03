@@ -1,0 +1,177 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+  <ui:param name="title" value="#{messages.adminHeader_account}"/>
+  
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminAccount" />
+            <ui:param name="parentAction" value="go_adminAccount" />
+            <ui:param name="context" value="account"/>
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+
+          <a4j:form id="display-form">
+
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{messages.adminHeader_accountDetails}"/></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+
+              <div class="panel_w">
+
+                <div class="panel_content">
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="r">
+                      <h:commandButton id="accountEdit" action="#{accountBean.edit}" styleClass="left">
+                      	<span class="edit">
+                      		<h:outputText value="#{messages.button_edit}" />
+                      	</span>
+                      </h:commandButton>
+                    </li>
+                  </ul>
+
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+              
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+                
+                        <div class="add_section_title">
+                        	<h:outputText value="#{messages.editAccount_unknown_driver}" />
+                        </div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editUnknownDriver_first}" /></td>
+                            <td><h:outputText value="#{accountBean.item.person.first}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editUnknownDriver_last}" /></td>
+                            <td><h:outputText value="#{accountBean.item.person.last}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editUnknownDriver_timeZone}" /></td>
+                            <td><h:outputText value="#{accountBean.item.person.timeZone.ID}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="" /></td>
+                            <td><h:graphicImage value="/images/x.gif" width="10" /></td>
+                          </tr>                          
+                        </table>
+                          
+                      </td>
+					
+                      <td width="10" valign="top">
+                    	  <h:graphicImage value="/images/x.gif" width="10" />
+                      </td>
+                    
+                      <td width="390" valign="top">
+                        <div class="add_section_title">
+                      	  <h:outputText value="#{messages.editAccount_web_map_service}" />                      	
+                        </div>					     
+					  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_url}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.wmsURL}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_query}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.wmsQuery}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_layers}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.wmsLayers}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_query_parameters}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.wmsLayerQueryParam}" /></td>
+                          </tr>                          
+                        </table>
+                      </td>					                                              
+                    </tr>
+                    
+                    <tr>
+                      <td width="390" valign="top">
+                
+                        <div class="add_section_title">
+                        	<h:outputText value="#{messages.editAccount_miscellaneous}" />
+                        </div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_phone_alerts_active}" /></td>
+                            <td><h:outputText id="editAccount-phoneAlerts" disabled="true"
+                            	value="#{accountBean.item.props.phoneAlertsActive}" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_no_reply_email}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.noReplyEmail}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_support_phone1}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.supportPhone1}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_support_phone2}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.supportPhone2}" /></td>
+                          </tr>                          
+                        </table>
+                          
+                      </td>
+					
+                      <td width="10" valign="top">
+                    	  <h:graphicImage value="/images/x.gif" width="10" />
+                      </td>
+                    
+                      <td width="390" valign="top">
+                        <div class="add_section_title">
+                      	  <h:graphicImage value="/images/x.gif" width="10" />                     	
+                        </div>					     
+					  
+                        <table width="370" border="1" cellspacing="2" cellpadding="4" align="left">
+                          
+                        </table>
+                      </td>					                                              
+                    </tr>                    
+                  </table>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+
+          </a4j:form>
+
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+
+
+  </ui:define>
+
+</ui:composition>

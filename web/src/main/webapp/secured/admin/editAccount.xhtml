@@ -1,0 +1,394 @@
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+ 
+ 
+  <ui:param name="adminSelected" value="current" />
+  <ui:param name="title" value="#{messages.adminHeader_editAccount}"/>
+  <ui:define name="scripts">
+      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+	  <style type="text/css">
+		.role-panel {margin: auto;}
+		.role-panel td {vertical-align: top;}
+		.dnd-panel {width:100px;border:1px solid gray;padding:2px;display: block;}
+	  </style>
+  </ui:define>
+  
+  <ui:define name="content">
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+      <td valign="top" width="130">
+        <ui:include src="/includes/navigation/adminSideNav.xhtml">
+          <ui:param name="context" value="editAccount"/>
+        </ui:include>
+      </td>
+      <td valign="top">
+          <!-- START PANEL -->
+   		<rich:dragIndicator id="indicator" />
+
+        <a4j:form id="edit-form">
+		
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="admin">
+                	<h:outputText value="#{messages.adminHeader_editAccount}" />
+                </span>
+                <span class="panel_links"></span>
+              </div>
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
+
+                <ul id="grid_nav" style="margin: 0;">
+                  <li class="r">
+                    <h:commandButton id="editAccountSave1" action="#{accountBean.save}" styleClass="left">
+                    	<span class="save">
+                    		<h:outputText value="#{messages.button_save}" />
+                    	</span>
+                    </h:commandButton>
+                    <h:outputText value=" " />
+                    <h:commandButton id="editAccountCancel1" action="#{accountBean.cancelEdit}" immediate="true" styleClass="left">
+                    	<span class="cancel">
+                    		<h:outputText value="#{messages.button_cancel}" />
+                    	</span>
+                    </h:commandButton>
+                  </li>
+                </ul>
+                
+                <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+                  <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                     <dt class="error">
+                        <h:outputFormat value="#{messages.error_validationMsg}">
+                           <f:param value="${tiwiprofn:getMessageCount()}"/>
+                        </h:outputFormat>
+                     </dt>
+                  </dl>
+                </ui:fragment>
+                
+                <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg"/>
+
+                <div class="spacer"></div>
+
+                <table width="790" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td width="390" valign="top">
+
+                      <div class="add_section_title">
+                      	<h:outputText value="#{messages.editAccount_unknown_driver}" />
+                      </div>
+
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editUnknownDriver_first}" />
+                            <span class="required">*</span>
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-first" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{accountBean.item.person.first}" id="editAccount-first" 
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="20" required="true" requiredMessage="#{messages.required}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editUnknownDriver_last}" />
+                            <span class="required">*</span>
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-last" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{accountBean.item.person.last}" id="editAccount-last" 
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="20" required="true" requiredMessage="#{messages.required}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                          	<ui:include src="../../includes/admin/inputLabel.xhtml">
+								<ui:param name="required" value="TRUE"/>
+								<ui:param name="for" value="editAccount-timeZone"/>
+								<ui:param name="fieldName" value="timeZone"/>
+								<ui:param name="editBean" value="#{accountBean}"/>
+								<ui:param name="label" value="#{messages.editUnknownDriver_timeZone}"/>
+        					<ui:param name="context" value="editAccountTimeZone" />
+							</ui:include>
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-timeZone" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu value="#{accountBean.item.person.timeZone}" 
+                                    id="editAccount-timeZone"  
+                                    onchange="checkMultiple(this)"
+                                    required="true" 
+                                    requiredMessage="#{messages.required}" 
+                                    style="width:200px">
+                              <f:selectItem itemLabel="" />
+                              <f:converter  converterId="TimeZoneConverter" />
+                              <f:selectItems value="#{accountBean.timeZones}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:graphicImage value="/images/x.gif" width="10" />
+                            
+                          </td>
+                          <td>
+                            <h:graphicImage value="/images/x.gif" width="10" />
+                          </td>
+                        </tr>                        
+                     </table>
+
+                     
+					</td>
+					
+                    <td width="10" valign="top">
+                    	<h:graphicImage value="/images/x.gif" width="10" />
+                    </td>
+                    
+                    <td width="390" valign="top">
+                      <div class="add_section_title">
+                      	<h:outputText value="Web Map Service" />                      	
+                      </div> 
+                      
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_url}" />
+                            
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-url" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{accountBean.item.props.wmsURL}" id="editAccount-url" 
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                            
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_query}" />
+                            
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-query" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{accountBean.item.props.wmsQuery}" id="editAccount-query" 
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                               
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_layers}" />
+                                                  	
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-layers" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{accountBean.item.props.wmsLayers}" id="editAccount-layers" 
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                               
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_query_parameters}" />
+                                                  	
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-queryParameters" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{accountBean.item.props.wmsLayerQueryParam}" id="editAccount-queryParameters" 
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                               
+                          </td>
+                        </tr>                        
+                      </table>
+             
+                    </td>
+                    					
+                   </tr>
+                  <tr>
+                    <td width="390" valign="top">
+
+                      <div class="add_section_title">
+                      	<h:outputText value="#{messages.editAccount_miscellaneous}" />
+                      </div>
+
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_phone_alerts_active}" />
+                            
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-phoneAlerts" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu id="editAccount-phoneAlerts" value="#{accountBean.item.props.phoneAlertsActive}" 
+                            	required="false" requiredMessage="#{messages.required}" >
+                            	<f:selectItem itemLabel=""                            itemValue=""/>
+                            	<f:selectItem itemLabel="#{messages.editAccount_yes}" itemValue="#{messages.editAccount_yes}"/>
+                            	<f:selectItem itemLabel="#{messages.editAccount_no}"  itemValue="#{messages.editAccount_no}"/>
+                            </h:selectOneMenu>                              	                           	
+                              	                              
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_no_reply_email}" />
+                            <span class="required">*</span>
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-noReplyEmail" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-noReplyEmail" value="#{accountBean.item.props.noReplyEmail}"
+                            	styleClass="text" size="30" validator="#{accountBean.validateEmail}"
+                              	maxlength="50" required="true" requiredMessage="#{messages.required}" />                               
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_support_phone1}" />
+                            <span class="required">*</span>                          	
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-supportPhone1" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-supportPhone1" value="#{accountBean.item.props.supportPhone1}"
+                             	validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter"
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="22" required="true" requiredMessage="#{messages.required}" >
+                              	<f:validateLength  maximum="22" />
+                             	<f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />                              	
+                            </h:inputText>                               
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_support_phone2}" />                                                     	
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-supportPhone2" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-supportPhone2" value="#{accountBean.item.props.supportPhone2}"
+                             	validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter"
+                            	onchange="checkMultiple(this)" styleClass="text" size="30"
+                              	maxlength="22" required="false" requiredMessage="#{messages.required}" >
+                              	<f:validateLength  maximum="22" />
+                             	<f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />            
+                            </h:inputText>                               
+                          </td>
+                        </tr>                        
+                      </table>
+
+                     
+					</td>
+					
+                    <td width="10" valign="top">
+                    	<h:graphicImage value="/images/x.gif" width="10" />
+                    </td>
+                    
+                    <td width="390" valign="top">
+                      <div class="add_section_title">
+                      	<h:graphicImage value="/images/x.gif" width="10" />                  	
+                      </div> 
+                      
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value=""/>
+                            
+                          </td>
+                          <td>
+                            
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="" />
+                            
+                          </td>
+                          <td>
+                            
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="" />
+                                                   	
+                          </td>
+                          <td>
+                            
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="" />
+                                                    	
+                          </td>
+                          <td>
+                            
+                          </td>
+                        </tr>                        
+                      </table>
+             
+                    </td>
+                    					
+                   </tr>                   
+                   
+				</table>
+
+                <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+
+                <div class="spacer"></div>
+
+                <ul id="grid_nav" style="margin: 0;">
+                  <li class="r">
+                    <h:commandButton id="accountSave2" action="#{accountBean.save}" styleClass="left">
+                    	<span class="save">
+                    		<h:outputText value="#{messages.button_save}" />
+                    	</span>
+                    </h:commandButton>
+                    <h:outputText value=" " />
+                    <h:commandButton id="accountCancel2" action="#{accountBean.cancelEdit}" immediate="true" styleClass="left">
+                    	<span class="cancel">
+                    		<h:outputText value="#{messages.button_cancel}" />
+                    	</span>
+                    </h:commandButton>
+                  </li>
+                </ul>
+
+              </div>
+            </div>
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+          </div>
+
+          </a4j:form>
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+    
+    <script type="text/javascript">
+	  	function bodyLoad()
+  		{
+	    	document.getElementById("edit-form:editAccount-first").focus;
+  		}
+    </script>
+
+  </ui:define>
+
+</ui:composition>
