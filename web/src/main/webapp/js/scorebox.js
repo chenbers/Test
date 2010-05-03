@@ -1,5 +1,3 @@
-
-
 (function($){ 
 
 	$.fn.scoreBox = function(options){
@@ -18,10 +16,10 @@
 			
 			var scoreCssClass = ScoreBox.getScoreCssClass(score);
 			var sizeCssClass = ScoreBox.getSizeCssClass(settings.size);
-			$(this).attr("class",$(this).attr("class") + " score " + scoreCssClass + " " + sizeCssClass);
+			//$(this).attr("class",$(this).attr("class") + " score " + scoreCssClass + " " + sizeCssClass);
 			var innerHtml = $(this).html();
 			$(this).html("");
-			$("<div>" + innerHtml + "</div>").appendTo($(this));
+			$("<table cellpadding='0' cellspacing='0' class='score " + scoreCssClass + " " + sizeCssClass +"'><tr><td>" + innerHtml + "</td></tr></table>").appendTo($(this));
 		});
 	};	
 	
@@ -61,7 +59,7 @@ ScoreBox.getScoreCssClass = function(score){
 ScoreBox.getSizeCssClass = function(size){
 	if(size == "xx-small")
 		return "score_xx-small";
-	else if(size == "small")
+	else if(size == "small" || size == "")
 		return "score_small";
 	else if(size == "medium")
 		return "score_medium";

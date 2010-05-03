@@ -8,13 +8,13 @@
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-	<a4j:loadScript src="/js/scoreBox.js"/>
+	<a4j:loadScript src="/js/scorebox.js"/>
 	<a4j:loadStyle src="/css/scoreBox.css"/>
-	<rich:jQuery selector=".#{id}" timing="onload" query="scoreBox({size:'#{size}'})" />
-	<div id="#{id}" class="#{id} score ">
+	<rich:jQuery selector=".#{context}" timing="onload" query="scoreBox({size:'#{size}'})" />
+	<div id="#{context}" class="#{context} score ">
 	   <c:choose>
 	   	   <c:when test="#{empty scoreMappingId}">
-	   	   		<h:outputText value="#{score}" converter="ScoreConverter"/>
+	   	   		<h:outputText value="#{empty score?-1:score}" converter="ScoreConverter"/>
 	   	   </c:when>
 	   	   <c:otherwise>
 	   	   	    <pretty:link id="#{scoreMappingId}" mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
