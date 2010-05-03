@@ -51,17 +51,17 @@ public class ReportRendererImpl implements ReportRenderer
     
     @SuppressWarnings("unchecked")
     @Override
-    public void exportReportToEmail(List<ReportCriteria> reportCriteriaList, String email)
+    public void exportReportToEmail(List<ReportCriteria> reportCriteriaList, String email, String noReplyEmailAddress)
     {
         Report report = reportCreator.getReport(reportCriteriaList);
-        report.exportReportToEmail(email, FormatType.PDF);
+        report.exportReportToEmail(email, FormatType.PDF, noReplyEmailAddress);
     }
     
     @Override
-    public void exportReportToEmail(ReportCriteria reportCriteria, String email)
+    public void exportReportToEmail(ReportCriteria reportCriteria, String email, String noReplyEmailAddress)
     {
         Report report = reportCreator.getReport(reportCriteria);
-        report.exportReportToEmail(email, FormatType.PDF);
+        report.exportReportToEmail(email, FormatType.PDF, noReplyEmailAddress);
         
     }
     

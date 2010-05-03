@@ -16,9 +16,9 @@ public interface ReportRenderer
     
     public void exportReportToExcel(List<ReportCriteria> reportCriteriaList,FacesContext facesContext);
     
-    public void exportReportToEmail(List<ReportCriteria> reportCriteriaList,String email);
+    public void exportReportToEmail(List<ReportCriteria> reportCriteriaList,String email,String noReplyEmailAddress);
     
-    public void exportReportToEmail(ReportCriteria reportCriteria,String email);
+    public void exportReportToEmail(ReportCriteria reportCriteria,String email,String noReplyEmailAddress);
     
     public void exportReportToHTML(List<ReportCriteria> reportCriteriaList,FacesContext facesContext);
 }
