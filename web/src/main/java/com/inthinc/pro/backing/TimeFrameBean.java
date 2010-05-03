@@ -37,7 +37,7 @@ public class TimeFrameBean  extends BaseBean {
 			addItem(TimeFrame.SIX_DAYS_AGO);
 			addItem(TimeFrame.WEEK);
 			addItem(TimeFrame.MONTH);
-			addItem(TimeFrame.YEAR);
+			addItem(TimeFrame.LAST_THIRTY_DAYS);
 			
 			if (getTimeFrameKey() == null)
 				setTimeFrameKey(TimeFrame.TODAY.name());
