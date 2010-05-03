@@ -16,11 +16,19 @@
 		});
 		function initMpgChart(){
 			// get data via a4j:jsfunction - json format with xml inside
-  			mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+	//<![CDATA[
+			var mpgChartXML = "<chart caption='' xAxisName='' yAxisName='Miles Per Gallon(US)' showValues='0' decimals='0' decimalSeparator='.' thousandSeparator=',' formatNumberScale='0' numberSuffix='' animation='1' bgColor='#ffffff' borderThickness='1' showToolTips='1' showLegend='1' legendPosition='BOTTOM' legendCaption='Vehicle Type:' legendMarkerCircle='0' legendBorderColor='CCCCCC' legendBorderThickness='0' legendShadow='0' labelDisplay='' slantLabels='' canvasBorderColor='#ffffff' canvasBorderThickness='0' showPlotBorder='0' plotFillRatio='100'/>";
+//var mpgChartXML = "<chart/>";
+//]]>
+	  		mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+			mpgChart.setDataXML(mpgChartXML);
+			mpgChart.setTransparent(true);
+			mpgChart.render("mpgChartDiv");
 		}
 		// callback to add data to chart
 		function fillMpgChart(mpgData){
-  			mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+			
+	  		mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
 			mpgChart.setDataXML(mpgData);
 			mpgChart.setTransparent(true);
 			mpgChart.render("mpgChartDiv");
