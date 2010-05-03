@@ -33,7 +33,7 @@ public class JasperReport implements Report
     public static JasperReport getInstance(ReportCriteria reportCriteria)
     {
         JasperReport report = new JasperReport();
-        report.setReportBuilder(new JasperReportBuilder());
+        report.setReportBuilder(new JasperReportBuilder());       
         report.setReportMailer(new ReportMailerImpl());
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         reportCriteriaList.add(reportCriteria);
@@ -79,13 +79,13 @@ public class JasperReport implements Report
     }
 
     @Override
-    public void exportReportToEmail(String email, FormatType formatType)
+    public void exportReportToEmail(String email, FormatType formatType, String noReplyEmailAddress)
     {
-        exportReportToEmail(email, formatType,null,null);
+        exportReportToEmail(email, formatType,null,null, noReplyEmailAddress);
     } 
     
     @Override
-    public void exportReportToEmail(String email, FormatType formatType, String subject, String message)
+    public void exportReportToEmail(String email, FormatType formatType, String subject, String message, String noReplyEmailAddress)
     {
         JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
         byte[] bytes;
@@ -96,8 +96,8 @@ public class JasperReport implements Report
             List<ReportAttatchment> attachments = new ArrayList<ReportAttatchment>();
             attachments.add(reportAttatchment);
             String[] emails = email.split(",");
-            List<String> emailList = Arrays.asList(emails);
-            reportMailer.emailReport(emailList, attachments,subject,message);
+            List<String> emailList = Arrays.asList(emails);           
+            reportMailer.emailReport(emailList, attachments,subject,message, noReplyEmailAddress);
         }
         catch (JRException e)
         {

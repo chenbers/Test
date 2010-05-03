@@ -18,11 +18,11 @@ public class ReportMailerImpl implements ReportMailer {
     // TODO get these constants tied to a resource bundle
     private static final String DEFAULT_SUBJECT = "tiwiPRO Report";
     private static final String DEFAULT_MESSAGE = "View the attachment(s) to see the report";
-    private String from;
+    private static final String DEFAULT_FROM    = "tiwiPRO Reporting ";
 
     @Override
-    public void emailReport(List<String> toAddress, List<ReportAttatchment> attachments) {
-        emailReport(toAddress, from, attachments, DEFAULT_MESSAGE, DEFAULT_SUBJECT);
+    public void emailReport(List<String> toAddress, List<ReportAttatchment> attachments, String noReplyEmailAddress) {
+        emailReport(toAddress, noReplyEmailAddress, attachments, DEFAULT_MESSAGE, DEFAULT_SUBJECT);
 
     }
 
@@ -32,12 +32,15 @@ public class ReportMailerImpl implements ReportMailer {
     }
 
     @Override
-    public void emailReport(List<String> toAddress, List<ReportAttatchment> attachments, String message, String subject) {
-        emailReport(toAddress, from, attachments, message == null ? DEFAULT_MESSAGE : message, subject == null ? DEFAULT_SUBJECT : subject);
+    public void emailReport(List<String> toAddress, List<ReportAttatchment> attachments, String message, String subject, String noReplyEmailAddress) {
+        emailReport(toAddress, noReplyEmailAddress, attachments, message == null ? DEFAULT_MESSAGE : message, subject == null ? DEFAULT_SUBJECT : subject);
     }
 
     @Override
     public void emailReport(List<String> toAddress, String fromAddress, List<ReportAttatchment> attachments, String message, String subject) {
+        // Adjust the e-mail reply address
+        fromAddress = this.DEFAULT_FROM + "<" + fromAddress + ">";
+        
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             if (message == null) {
@@ -94,11 +97,4 @@ public class ReportMailerImpl implements ReportMailer {
         return javaMailSender;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getFrom() {
-        return from;
-    }
 }
