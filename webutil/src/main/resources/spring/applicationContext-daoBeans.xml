@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+    default-autowire="byName">
+    
 
     <!-- Service Related Beans -->
     <bean id="siloServiceBean" factory-bean="siloServiceCreator" factory-method="getService" />
@@ -9,6 +11,7 @@
     <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true">
         <property name="siloService" ref="siloServiceBean" />
     </bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO" parent="genericDAO"></bean>
     <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO" parent="genericDAO"></bean>
     <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" parent="genericDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
@@ -19,8 +22,14 @@
     <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" parent="genericDAO"></bean>
     <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO" parent="genericDAO"></bean>
     <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO" parent="genericDAO"></bean>
+    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO" parent="genericDAO"></bean>
     <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO" parent="genericDAO"></bean>
     <bean id="superuserDAO" class="com.inthinc.pro.dao.hessian.SuperuserHessianDAO" parent="genericDAO"></bean>
     <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO" parent="genericDAO"></bean>
     <bean id="forwardCommandDefDAO" class="com.inthinc.pro.dao.hessian.ForwardCommandDefHessianDAO" parent="genericDAO"></bean>
+    <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO" parent="genericDAO"></bean>
+    <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO" parent="genericDAO"></bean>
+    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" parent="genericDAO"></bean>
+    <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" parent="genericDAO"></bean>
+    <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
 </beans>

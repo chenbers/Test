@@ -30,6 +30,7 @@ import com.inthinc.pro.backing.dao.mapper.BaseUtilMapper;
 import com.inthinc.pro.backing.dao.model.CrudType;
 import com.inthinc.pro.backing.dao.model.DaoMethod;
 import com.inthinc.pro.backing.dao.model.Param;
+import com.inthinc.pro.backing.dao.validator.ValidatorType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -59,9 +60,10 @@ public class DaoUtilBean extends BaseBean
     private List<CrudType> excludedTypes;
 	private List<String> excludedFields= Arrays.asList("serialVersionUID");
 
-    private DateFormatBean dateFormatBean;    
+    private DateFormatBean dateFormatBean;
+    
 
-    public List<String> getExcludedMethods() {
+	public List<String> getExcludedMethods() {
     	return excludedMethods;
     }
 	public DateFormatBean getDateFormatBean() {
@@ -233,6 +235,7 @@ public class DaoUtilBean extends BaseBean
 	                            if (param.getInputType().equals(java.util.Date.class)) {
 	                            	param.setParamValue(new Date());
 	                            }
+	                            param.setValidatorType(ValidatorType.DEFAULT);
 		                        paramList.add(param);
 			                }
 			                else {
@@ -259,6 +262,7 @@ public class DaoUtilBean extends BaseBean
                         if (param.getInputType().equals(java.util.Date.class)) {
                         	param.setParamValue(new Date());
                         }
+                        param.setValidatorType(webParm.validator());
                     }
                     else
                     {
@@ -266,6 +270,7 @@ public class DaoUtilBean extends BaseBean
                         param.setParamInputDesc("");
                         param.setInputType(paramTypes[i]);
                         param.setIsAccountID(false);
+                        param.setValidatorType(ValidatorType.DEFAULT);
                     }
                     param.setIndex(i);
                     param.setParamType(paramTypes[i]);
@@ -544,6 +549,5 @@ public class DaoUtilBean extends BaseBean
 	public void setFormatResults(Boolean formatResults) {
 		this.formatResults = formatResults;
 	}
-	
 
 }

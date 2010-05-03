@@ -1,13 +1,19 @@
 package com.inthinc.pro.backing.dao.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.ValidatorException;
 
 import com.inthinc.pro.backing.dao.ui.PickList;
 import com.inthinc.pro.backing.dao.ui.SelectList;
 import com.inthinc.pro.backing.dao.ui.UIInputType;
+import com.inthinc.pro.backing.dao.validator.GenericValidator;
+import com.inthinc.pro.backing.dao.validator.ValidatorFactory;
+import com.inthinc.pro.backing.dao.validator.ValidatorType;
 import com.inthinc.pro.convert.ConvertUtil;
 
 
@@ -22,6 +28,7 @@ public class Param
 
 	Object paramValue;
 	List<Object> paramValueList;
+	ValidatorType validatorType;
     
 	public Param(String paramName, Class<?> paramType, Integer index, Class<?> inputType, Object paramValue)
     {
@@ -161,5 +168,23 @@ public class Param
 		this.paramValueList = paramValueList;
 	}
 
+	public ValidatorType getValidatorType() {
+		return validatorType;
+	}
+	public void setValidatorType(ValidatorType validatorType) {
+		this.validatorType = validatorType;
+	}
 
+	public void validate(FacesContext context, UIComponent component, Object value)
+	{
+		GenericValidator validator = ValidatorFactory.getValidator(validatorType);
+		if (!validator.isValid(value.toString())) {
+			System.out.println("validator " + ((value == null) ? "null value" : value.toString()));
+		
+			FacesMessage message = new FacesMessage();
+			message.setSummary(validator.invalidMsg());
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			throw new ValidatorException(message);
+		}
+	}
 }

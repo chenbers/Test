@@ -21,6 +21,7 @@
 		<property name="siloServiceCreator" ref="siloServiceCreator" />
 		<property name="reportServiceCreator" ref="reportServiceCreator" />
 		<property name="dateFormatBean" ref="dateFormatBean" />
+		
     </bean>
     <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session">
 		<property name="deviceDAO" ref="deviceDAO" />
@@ -36,5 +37,84 @@
     <bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session">
 		<property name="eventDAO" ref="eventDAO" />
 	</bean>
+
+
+	<!--  DAO validator beans -->
+    <bean id="baseValidator" class="com.inthinc.pro.backing.dao.validator.BaseValidator" abstract="true">
+		<property name="superuserDAO" ref="superuserDAO" />
+	</bean>
+    <bean id="addressIDValidator" class="com.inthinc.pro.backing.dao.validator.AddressIDValidator" parent="baseValidator">
+		<property name="addressDAO" ref="addressDAO" />
+    </bean>
+    <bean id="crashReportIDValidator" class="com.inthinc.pro.backing.dao.validator.CrashReportIDValidator" parent="baseValidator">
+		<property name="crashReportDAO" ref="crashReportDAO" />
+    </bean>
+    <bean id="defaultValidator" class="com.inthinc.pro.backing.dao.validator.DefaultValidator" parent="baseValidator"/>
+    <bean id="deviceIDValidator" class="com.inthinc.pro.backing.dao.validator.DeviceIDValidator" parent="baseValidator">
+		<property name="deviceDAO" ref="deviceDAO" />
+    </bean>
+    <bean id="driverIDValidator" class="com.inthinc.pro.backing.dao.validator.DriverIDValidator" parent="baseValidator">
+		<property name="driverDAO" ref="driverDAO" />
+    </bean>
+    <bean id="driverorVehicleIDValidator" class="com.inthinc.pro.backing.dao.validator.DriverorVehicleIDValidator" parent="baseValidator">
+		<property name="driverDAO" ref="driverDAO" />
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="vehicleDAO" ref="vehicleDAO" />
+    </bean>
+    <bean id="groupIDValidator" class="com.inthinc.pro.backing.dao.validator.GroupIDValidator" parent="baseValidator">
+		<property name="groupDAO" ref="groupDAO" />
+    </bean>
+    <bean id="noteIDValidator" class="com.inthinc.pro.backing.dao.validator.NoteIDValidator" parent="baseValidator">
+		<property name="eventDAO" ref="eventDAO" />
+		<property name="groupDAO" ref="groupDAO" />
+    </bean>
+    <bean id="personIDValidator" class="com.inthinc.pro.backing.dao.validator.PersonIDValidator" parent="baseValidator">
+		<property name="personDAO" ref="personDAO" />
+    </bean>
+    <bean id="redFlagAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.RedFlagAlertIDValidator" parent="baseValidator">
+		<property name="redFlagAlertDAO" ref="redFlagAlertDAO" />
+    </bean>
+    <bean id="reportPrefIDValidator" class="com.inthinc.pro.backing.dao.validator.ReportPrefIDValidator" parent="baseValidator">
+		<property name="reportScheduleDAO" ref="reportScheduleDAO" />
+    </bean>
+    <bean id="roleIDValidator" class="com.inthinc.pro.backing.dao.validator.RoleIDValidator" parent="baseValidator">
+		<property name="roleDAO" ref="roleDAO" />
+    </bean>
+    <bean id="tablePrefIDValidator" class="com.inthinc.pro.backing.dao.validator.TablePrefIDValidator" parent="baseValidator">
+		<property name="tablePreferenceDAO" ref="tablePreferenceDAO" />
+		<property name="userDAO" ref="userDAO" />
+    </bean>
+    <bean id="userIDValidator" class="com.inthinc.pro.backing.dao.validator.UserIDValidator" parent="baseValidator">
+		<property name="userDAO" ref="userDAO" />
+    </bean>
+    <bean id="vehicleIDValidator" class="com.inthinc.pro.backing.dao.validator.VehicleIDValidator" parent="baseValidator">
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="vehicleDAO" ref="vehicleDAO" />
+    </bean>
+    <bean id="zoneAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneAlertIDValidator" parent="baseValidator">
+		<property name="zoneAlertDAO" ref="zoneAlertDAO" />
+    </bean>
+    <bean id="zoneIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneIDValidator" parent="baseValidator">
+		<property name="zoneDAO" ref="zoneDAO" />
+    </bean>
+    <bean id="validatorFactory" class="com.inthinc.pro.backing.dao.validator.ValidatorFactory" init-method="init">
+		<property name="addressIDValidator" ref="addressIDValidator" />
+		<property name="crashReportIDValidator" ref="crashReportIDValidator" />
+		<property name="defaultValidator" ref="defaultValidator" />
+		<property name="deviceIDValidator" ref="deviceIDValidator" />
+		<property name="driverIDValidator" ref="driverIDValidator" />
+		<property name="driverorVehicleIDValidator" ref="driverorVehicleIDValidator" />
+		<property name="groupIDValidator" ref="groupIDValidator" />
+		<property name="noteIDValidator" ref="noteIDValidator" />
+		<property name="personIDValidator" ref="personIDValidator" />
+		<property name="redFlagAlertIDValidator" ref="redFlagAlertIDValidator" />
+		<property name="reportPrefIDValidator" ref="reportPrefIDValidator" />
+		<property name="roleIDValidator" ref="roleIDValidator" />
+		<property name="tablePrefIDValidator" ref="tablePrefIDValidator" />
+		<property name="userIDValidator" ref="userIDValidator" />
+		<property name="vehicleIDValidator" ref="vehicleIDValidator" />
+		<property name="zoneAlertIDValidator" ref="zoneAlertIDValidator" />
+		<property name="zoneIDValidator" ref="zoneIDValidator" />
+    </bean>
     
 </beans>

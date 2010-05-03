@@ -30,6 +30,8 @@ public class DateFormatBean {
       		"d MMM, yyyy HH:mm (z)",
       		"MM/dd/yy HH:mm",
       		"d MMM, yyyy HH:mm",
+      		"MM/dd/yy HH:mm:ss",
+      		"d MMM, yyyy HH:mm:ss",
 	};
 	
 	private String timeZoneStr = TimeZone.getDefault().getID();

@@ -79,8 +79,8 @@
                             <h:outputText value="Value" />
                         </f:facet>
                         <h:panelGroup rendered="#{p.uiInputType == 'DEFAULT'}">
-                            <h:inputText id="value" value="#{p.paramValue}" size="30" required="true" requiredMessage="required" />
-                            <rich:message for="value" />
+                            <h:inputText id="value" value="#{p.paramValue}" size="40" required="true" requiredMessage="required" validator="#{p.validate}"/>
+                            <rich:message for="value" style="color:red"/>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{p.uiInputType == 'BOOLEAN'}">
                         	<h:selectOneMenu id="booleanValue" value="#{p.paramValue}">
@@ -112,7 +112,7 @@
                 </rich:dataTable>
                 <br />
                 <a4j:commandButton id="query" value="run" reRender="resultsForm"  
-                		style="float:left" action="#{daoUtilBean.resultsAction}" rendered="#{daoUtilBean.selectedMethod != null}"/>
+                		style="float:left" action="#{daoUtilBean.resultsAction}" rendered="#{daoUtilBean.selectedMethod != null}" />
 		    	<a4j:status for="paramsRegion">
 					<f:facet name="start">
         		   		<h:outputText>
