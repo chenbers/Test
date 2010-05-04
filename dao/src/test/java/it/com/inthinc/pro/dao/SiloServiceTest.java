@@ -1081,8 +1081,14 @@ System.out.println("groupID " + groupID);
         personDAO.setSiloService(siloService);
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+        
+        List<Role> roleList = roleDAO.getRoles(acctID);
+        
         List<Person> emptyPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("expected no people in group", Integer.valueOf(0), new Integer(emptyPersonList.size()));
+        
         // create
         for (int i = 0; i < PERSON_COUNT; i++) {
             Date dob = Util.genDate(1959, 8, 30);
@@ -1091,8 +1097,8 @@ System.out.println("groupID " + groupID);
                     "emp" + i, null, "title" + i, "dept" + i, "first" + i, "m" + i, "last" + i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH,
                     FuelEfficiencyType.MPG_US, Locale.getDefault());
             List<Integer> roles = new ArrayList<Integer>();
-            roles.add(1);
-            roles.add(2); //default normal user
+            roles.add(roleList.get(0).getRoleID());
+            roles.add(roleList.get(1).getRoleID()); //default normal user
             User user = new User(0, 0, roles, Status.ACTIVE, "user" + groupID + "_" + i, PASSWORD, groupID);
             person.setUser(user);
             Integer personID = personDAO.create(acctID, person);
@@ -1107,8 +1113,8 @@ System.out.println("groupID " + groupID);
             personList.add(person);
             // update
             List<Integer> newRoles = new ArrayList<Integer>();
-            newRoles.add(1);// default admin role
-            newRoles.add(2);
+            newRoles.add(roleList.get(0).getRoleID());// default admin role
+            newRoles.add(roleList.get(1).getRoleID());
             
             user.setRoles(newRoles);
             Integer changedCount = userDAO.update(user);
