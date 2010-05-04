@@ -132,12 +132,12 @@
 	                </h:panelGroup>
 	            </a4j:outputPanel>
 				<a4j:form id="params">
-		            <h:panelGroup  id="intParam" rendered="#{fwdcmdresBean.forwardCommandDef.expectedParamType == 'INTEGER'}">
+		            <h:panelGroup  id="intParam" rendered="#{fwdcmdresBean.forwardCommandDef.paramType == 'INTEGER'}">
 	            		<h:outputText value="Data:" style="font-size:12px;font-weight:bold;"/><br/>
 						<h:inputText id="intdata" label="Data" value="#{fwdcmdresBean.intData}" required="true" requiredMessage="Data is required."/>
         	          	<rich:message for="intdata" style="font-size:12px;color:red"/>
 		            </h:panelGroup >
-		            <h:panelGroup  id="strParam"  rendered="#{fwdcmdresBean.forwardCommandDef.expectedParamType == 'STRING'}">
+		            <h:panelGroup  id="strParam"  rendered="#{fwdcmdresBean.forwardCommandDef.paramType == 'STRING'}">
 	                	<h:outputText value="Data:" style="font-size:12px;font-weight:bold;"/><br/>
     	            	<h:inputText id="stringdata" label="Data" value="#{fwdcmdresBean.stringData}"  required="true" requiredMessage="Data is required."/>
 						<rich:message for="stringdata" style="font-size:12px;color:red"/>
