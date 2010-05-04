@@ -1,33 +1,39 @@
 package com.inthinc.pro.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.dao.annotations.SimpleName;
+
+@XmlRootElement
+@SimpleName(simpleName="FwdCmdDef")
 public class ForwardCommandDef extends BaseEntity {
 
 	private static final long serialVersionUID = -663110688473083198L;
-	private Integer cmdID;
+	private Integer fwdCmd;
 	private String name;
 	private String description;
-	private ForwardCommandParamType expectedParamType;
-	private Boolean allAccess;
+	private ForwardCommandParamType paramType;
+	private Boolean accessAllowed;
 	
 	public ForwardCommandDef()
 	{
 		
 	}
-	public ForwardCommandDef(Integer cmdID, String name, String description,
-			ForwardCommandParamType expectedParamType, Boolean allAccess) {
+	public ForwardCommandDef(Integer fwdCmd, String name, String description,
+			ForwardCommandParamType paramType, Boolean accessAllowed) {
 		super();
-		this.cmdID = cmdID;
+		this.fwdCmd = fwdCmd;
 		this.name = name;
 		this.description = description;
-		this.expectedParamType = expectedParamType;
-		this.allAccess = allAccess;
+		this.paramType = paramType;
+		this.accessAllowed = accessAllowed;
 	}
 	
-	public Integer getCmdID() {
-		return cmdID;
+	public Integer getFwdCmd() {
+		return fwdCmd;
 	}
-	public void setCmdID(Integer cmdID) {
-		this.cmdID = cmdID;
+	public void setFwdCmd(Integer fwdCmd) {
+		this.fwdCmd = fwdCmd;
 	}
 	public String getName() {
 		return name;
@@ -41,17 +47,17 @@ public class ForwardCommandDef extends BaseEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public ForwardCommandParamType getExpectedParamType() {
-		return expectedParamType;
+	public ForwardCommandParamType getParamType() {
+		return paramType;
 	}
-	public void setExpectedParamType(ForwardCommandParamType expectedParamType) {
-		this.expectedParamType = expectedParamType;
+	public void setParamType(ForwardCommandParamType paramType) {
+		this.paramType = paramType;
 	}
-	public Boolean getAllAccess() {
-		return allAccess;
+	public Boolean getAccessAllowed() {
+		return accessAllowed;
 	}
-	public void setAllAccess(Boolean allAccess) {
-		this.allAccess = allAccess;
+	public void setAccessAllowed(Boolean accessAllowed) {
+		this.accessAllowed = accessAllowed;
 	}
 	
 }

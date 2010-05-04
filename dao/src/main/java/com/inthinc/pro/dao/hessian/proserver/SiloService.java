@@ -401,4 +401,11 @@ public interface SiloService extends HessianService
     Map<String, Object> isSuperuser(Integer userID);
     Map<String, Object> clearSuperuser(Integer userID);
     
+    // forward command defs
+    List<Map<String, Object>> getFwdCmdDefs();
+    Map<String, Object> createFwdCmdDef(Map<String, Object> fwdCmdDefMap);
+    Map<String, Object> deleteFwdCmdDef(Integer fwdCmd);
+    Map<String, Object> updateFwdCmdDef(Map<String, Object> fwdCmdDefMap);
+    
+    
 }

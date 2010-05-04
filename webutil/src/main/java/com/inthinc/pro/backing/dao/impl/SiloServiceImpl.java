@@ -882,4 +882,28 @@ public class SiloServiceImpl implements SiloService {
 	public Map<String, Object> setSuperuser(@DaoParam(name = "userID") Integer userID) {
 		return null;
 	}
+
+	@Override
+    @MethodDescription(description = "Create a forward command definition.", crudType=CrudType.CREATE, modelClass=com.inthinc.pro.model.ForwardCommandDef.class)
+	public Map<String, Object> createFwdCmdDef(@DaoParam(name = "ForwardCommandDef", type = com.inthinc.pro.model.ForwardCommandDef.class) Map<String, Object> fwdCmdDefMap) {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Delete a forward command definition.", crudType=CrudType.DELETE, modelClass=com.inthinc.pro.model.ForwardCommandDef.class)
+	public Map<String, Object> deleteFwdCmdDef(@DaoParam(name = "fwdCmd ID") Integer fwdCmd) {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Fetches forward command definitions.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ForwardCommandDef.class)
+	public List<Map<String, Object>> getFwdCmdDefs() {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Update a forward command definition.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.ForwardCommandDef.class)
+	public Map<String, Object> updateFwdCmdDef(@DaoParam(name = "ForwardCommandDef", type = com.inthinc.pro.model.ForwardCommandDef.class) Map<String, Object> fwdCmdDefMap) {
+		return null;
+	}
 }

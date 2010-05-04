@@ -54,8 +54,8 @@ System.out.println("FwdCmdResBean loadDevices()");
 System.out.println("FwdCmdResBean totaldevices: " + devices.size());
 			forwardCommandDefMap = new HashMap<Integer, ForwardCommandDef>();
 			for (ForwardCommandDef forwardCommandDef : fullForwardCommandDefList) {
-				if (forwardCommandDef.getAllAccess()) {
-					forwardCommandDefMap.put(forwardCommandDef.getCmdID(), forwardCommandDef);
+				if (forwardCommandDef.getAccessAllowed()) {
+					forwardCommandDefMap.put(forwardCommandDef.getFwdCmd(), forwardCommandDef);
 				}
 			}
 			fwdcmd = (Integer) getForwardCommandSelectList().get(0).getValue();
@@ -72,7 +72,7 @@ System.out.println("FwdCmdResBean init() - done");
 			forwardCommandSelectList = new ArrayList<SelectItem>();
 
 			for (ForwardCommandDef forwardCommandDef : forwardCommandDefMap.values()) {
-				forwardCommandSelectList.add(new SelectItem(forwardCommandDef.getCmdID(), forwardCommandDef.getName()));
+				forwardCommandSelectList.add(new SelectItem(forwardCommandDef.getFwdCmd(), forwardCommandDef.getName()));
 			}
 
 			// TODO: SORT

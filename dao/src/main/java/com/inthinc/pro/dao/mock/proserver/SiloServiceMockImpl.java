@@ -1730,4 +1730,28 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 	public Map<String, Object> setSuperuser(Integer userID) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Map<String, Object> createFwdCmdDef(Map<String, Object> fwdCmdDefMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> deleteFwdCmdDef(Integer fwdCmd) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getFwdCmdDefs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> updateFwdCmdDef(Map<String, Object> fwdCmdDefMap) {
+		// TODO Auto-generated method stub
+		return null;
 	}}

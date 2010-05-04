@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,6 +28,7 @@ import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
+import com.inthinc.pro.dao.hessian.ForwardCommandDefHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
@@ -57,7 +59,9 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandDef;
 import com.inthinc.pro.model.ForwardCommandID;
+import com.inthinc.pro.model.ForwardCommandParamType;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
@@ -160,7 +164,14 @@ public class SiloServiceTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
+
+    	// clean up 
+    	ForwardCommandDefHessianDAO forwardCommandDefDAO = new ForwardCommandDefHessianDAO();
+    	forwardCommandDefDAO.setSiloService(siloService);
+
+    	forwardCommandDefDAO.deleteByID(666);
     }
+    
 
     @Test
     public void states() {
@@ -191,6 +202,50 @@ public class SiloServiceTest {
         supportedTimeZones.init();
         assertTrue(SupportedTimeZones.getSupportedTimeZones().size() > 0);
     }
+    
+    @Test
+    public void forwardCommandDefs() {
+    	ForwardCommandDefHessianDAO forwardCommandDefDAO = new ForwardCommandDefHessianDAO();
+    	forwardCommandDefDAO.setSiloService(siloService);
+    	
+    	List<ForwardCommandDef> list = forwardCommandDefDAO.getFwdCmdDefs();
+    	
+    	assertTrue("expected some canned forward command defs", list.size() > 0);
+    	
+    	ForwardCommandDef def = new ForwardCommandDef(666, "Bad Command", "Bad Command - just testing",
+    			ForwardCommandParamType.NONE, true);
+    	
+    	forwardCommandDefDAO.create(def);
+    	
+    	List<ForwardCommandDef> newList = forwardCommandDefDAO.getFwdCmdDefs();
+    	
+    	assertEquals("expected list size to be one more", list.size()+1, newList.size());
+    	
+    	def.setAccessAllowed(false);
+    	def.setName("Bad Command updated");
+    	def.setDescription("Bad Command Description updated");
+    	def.setParamType(ForwardCommandParamType.INTEGER);
+    	
+    	forwardCommandDefDAO.update(def);
+    	newList = forwardCommandDefDAO.getFwdCmdDefs();
+    	boolean found = false;
+    	for (ForwardCommandDef forwardCommandDef : newList) {
+    		if (forwardCommandDef.getFwdCmd().equals(def.getFwdCmd())) {
+    			found = true;
+    	        Util.compareObjects(def, forwardCommandDef);
+    	        break;
+    		}
+    	}
+    	
+    	assertTrue("New/updated forward command def not found", found);
+    	
+    	forwardCommandDefDAO.deleteByID(666);
+    	newList = forwardCommandDefDAO.getFwdCmdDefs();
+    	
+    	assertEquals("expected list size to be back to original after delete", list.size(), newList.size());
+    	
+    }
+    
     @Test
     public void rfidsFromBarcode(){
     	
