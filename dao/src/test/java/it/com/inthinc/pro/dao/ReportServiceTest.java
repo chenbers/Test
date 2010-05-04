@@ -54,6 +54,7 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
 
+@Ignore
 public class ReportServiceTest {
     private static ReportService reportService;
     private static SiloService siloService;
