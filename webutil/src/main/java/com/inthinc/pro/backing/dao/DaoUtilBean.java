@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing.dao;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -16,7 +19,9 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.richfaces.model.Ordering;
@@ -34,6 +39,11 @@ import com.inthinc.pro.backing.dao.validator.ValidatorType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.AggressiveDrivingEvent;
+import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.SeatBeltEvent;
+import com.inthinc.pro.model.SpeedingEvent;
 
 public class DaoUtilBean extends BaseBean
 {
@@ -463,6 +473,68 @@ public class DaoUtilBean extends BaseBean
         for (String col : columnHeaders)
         	sortOrder.put(col, Ordering.UNSORTED);
     }
+
+    public void exportToCSV()
+    {
+    	System.out.println("export to csv");
+        HttpServletResponse response = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.setContentType("text/plain");
+        response.addHeader("Content-Disposition", "attachment; filename=\"tiwiPro.csv\"");
+
+        OutputStream out = null;
+        try
+        {
+            out = response.getOutputStream();
+            writeCSV(out);
+            
+            out.flush();
+            FacesContext.getCurrentInstance().responseComplete();
+        }
+        catch (IOException e)
+        {
+            logger.error(e);
+        }
+       
+        finally
+        {
+            try
+            {
+                out.close();
+            }
+            catch (IOException e)
+            {
+                logger.error(e);
+            }
+        }
+    }
+    
+	private boolean writeCSV(OutputStream outStream) {
+		if (records == null)
+			return false;
+		try {
+			PrintStream out = new PrintStream(outStream);
+			StringBuilder buffer = new StringBuilder();
+			for (String columnHeader : columnHeaders) {
+				buffer.append(columnHeader);
+				buffer.append(",");
+				
+			}
+			out.println(buffer.toString());
+			for (List<String> row : records) {
+				buffer = new StringBuilder();
+				for (String col : row) {
+					buffer.append(col);
+					buffer.append(",");
+				}
+				out.println(buffer.toString());
+			}
+			out.close();
+		} catch (Exception e) {
+    		setErrorMsg("File cannot be created.");
+    		return false;
+		}
+		return true;
+	}
 
 	public void setParamList(List<Param> paramList)
     {
