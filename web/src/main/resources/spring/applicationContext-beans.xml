@@ -454,10 +454,6 @@
     -->
   </bean>
   <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean" init-method="init">
-  <!-- 
-    <property name="phoneNumber01" value="${externalConfig.phone01}" />
-    <property name="phoneNumber02" value="${externalConfig.phone02}" />
-    -->
   </bean>
   <!-- Cache Beans -->
   <bean id="cacheBean" class="com.inthinc.pro.backing.CacheBean" scope="session" parent="baseBean">
@@ -553,5 +549,9 @@
   <bean id="vehicleReportTableColumns" class="com.inthinc.pro.table.columns.VehicleReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="deviceReportTableColumns" class="com.inthinc.pro.table.columns.DeviceReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="idlingReportTableColumns" class="com.inthinc.pro.table.columns.IdlingReportTableColumns" scope="request" parent="baseTableColumns" />
-
+  
+  <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">
+  	<!--  <property name="externalConfigBean" ref="externalConfigBean"/> -->
+  </bean>
+ 
 </beans>

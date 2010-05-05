@@ -21,10 +21,10 @@
             <div class="panel_w">
                <div class="panel_content">
                  <p>                                                                                                        
-                 	<h:outputText id="msgIdUS" rendered="#{externalConfigBean.phoneNumber02 == ''}" 
-                 		value="#{errorTranslatorBean.errorUnavailableMsg} #{externalConfigBean.phoneNumber01}."/>
-                 	<h:outputText id="msgIdOther" rendered="#{externalConfigBean.phoneNumber02 != ''}" 
-                 		value="#{errorTranslatorBean.errorUnavailableMsg} #{externalConfigBean.phoneNumber01} #{messages.error_or} #{externalConfigBean.phoneNumber02}."/>                 		
+                 	<h:outputText id="msgIdUS" rendered="#{phoneBean.phoneNumber02 eq ''}" 
+                 		value="#{errorTranslatorBean.errorUnavailableMsg} #{phoneBean.phoneNumber01}."/>
+                 	<h:outputText id="msgIdOther" rendered="#{phoneBean.phoneNumber02 ne ''}" 
+                 		value="#{errorTranslatorBean.errorUnavailableMsg} #{phoneBean.phoneNumber01} #{messages.error_or} #{phoneBean.phoneNumber02}."/>                 		
                      
                     <h:inputHidden value="#{errorBean.stackTrace}" />
                  </p>
