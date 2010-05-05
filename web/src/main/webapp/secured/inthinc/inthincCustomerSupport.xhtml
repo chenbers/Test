@@ -31,7 +31,7 @@
 		<table align="center">
 			<tr>
 				<td>#{messages.customer_support_toll_free}</td>
-				<td><h:outputText style="font-weight:bold" value="#{externalConfigBean.phoneNumber01}"/></td>
+				<td><h:outputText style="font-weight:bold" value="#{externalConfigBean.phoneNumber01}" converter="PhoneNumberConverter"/></td>
 				<td><h:outputText style="font-weight:bold" rendered="#{externalConfigBean.phoneNumber02 ne ''}"
 					value="#{externalConfigBean.phoneNumber02}"/></td>
 			</tr>

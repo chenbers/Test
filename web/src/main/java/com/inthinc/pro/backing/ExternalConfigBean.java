@@ -9,8 +9,8 @@ public class ExternalConfigBean extends BaseBean {
     
     public void init() {  
         // set inthinc default
-        phoneNumber01 = "1-888-888-TIWI";
-        phoneNumber02 = "1-888-888-8494";
+        phoneNumber01 = "1888888TIWI";
+        phoneNumber02 = "18888888494";
         
         if ( this.isLoggedIn() ) {
             setPhoneData();

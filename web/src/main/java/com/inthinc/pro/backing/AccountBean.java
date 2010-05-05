@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -36,6 +39,8 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;    
     private static final String REQUIRED_KEY = "required";
+    private static final char [] INVALID = {'(', ')', '-', '~', '`', '!',
+        '@', '#', '$', '%', '^', '&', '*', '_', '+', '=', '|', '\\'};
     
     static {
         // time zones
@@ -153,6 +158,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
     @Override
     protected String getDisplayRedirect() {
+        //  Reload the view page       
         return "pretty:adminAccount";
     }
 
@@ -201,8 +207,11 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
     @Override
     protected AccountView revertItem(AccountView editItem) {
-        // TODO Auto-generated method stub
-        return null;
+        
+        Person udp = getUnknownDriver().getPerson();
+        Account a = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());  
+        
+        return createAccountView(a,udp);
     }
 
     @Override
@@ -239,7 +248,61 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             context.addMessage("edit-form:editAccount-phoneAlerts", message);            
         }
         
+        // check that certain characters aren't present
+        if ( !digitCheck(saveItem.getProps().getSupportPhone1()) ) {            
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                MessageUtil.getMessageString("editAccount_bad_phone_characters"), null);
+            context.addMessage("edit-form:editAccount-supportPhone1", message);            
+        }
+        
+        // check that certain characters aren't present, if data is provided
+        if ( (saveItem.getProps().getSupportPhone2().trim().length() != 0) && 
+             (!digitCheck(saveItem.getProps().getSupportPhone2())) ) {            
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                MessageUtil.getMessageString("editAccount_bad_phone_characters"), null);
+            context.addMessage("edit-form:editAccount-supportPhone2", message);            
+        }      
+        
+        // even number of layers?
+        if ( !parseLayers(saveItem.getProps().getWmsLayers()) ) {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                MessageUtil.getMessageString("editAccount_bad_number_of_layers"), null);
+            context.addMessage("edit-form:editAccount-layers", message);                  
+        }
+        
         return valid;
+    }
+    
+    private boolean digitCheck(String str) {
+        
+        // It can't contain only numbers and letters if it's null or empty...
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+
+        // Any baddies?
+        for ( int i = 0; i < str.length(); i++ ) {
+            for ( int j = 0; j < INVALID.length; j++ ) {
+                if ( str.charAt(i) == INVALID[j] ) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    private boolean parseLayers(String layers) {
+        StringTokenizer st = new StringTokenizer(layers," ");
+        
+        if ( (st.countTokens() % 2) == 0 ) {
+            return true;
+        }
+        
+        return false;
     }
     
     public void validateEmail(FacesContext context, UIComponent component, Object value)
@@ -281,8 +344,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
         @Override
         public Integer getId() {
-            // TODO Auto-generated method stub
-            return null;
+            return getAcctID();
         }
 
         @Override
