@@ -39,11 +39,6 @@ import com.inthinc.pro.backing.dao.validator.ValidatorType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.model.AggressiveDrivingEvent;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.SeatBeltEvent;
-import com.inthinc.pro.model.SpeedingEvent;
 
 public class DaoUtilBean extends BaseBean
 {
@@ -97,7 +92,7 @@ public class DaoUtilBean extends BaseBean
     	initMethodMap();
     }
     
-    void initMethodMap()
+    public void initMethodMap()
     {
         methodMap = new TreeMap<String, DaoMethod>();
         for (int j = 0; j < dataAccessInterfaces.length; j++)
@@ -324,12 +319,12 @@ public class DaoUtilBean extends BaseBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+//            e.printStackTrace();
             setErrorMsg(e.getMessage() + e);
         }
         catch (Throwable t)
         {
-            t.printStackTrace();
+//            t.printStackTrace();
             setErrorMsg(t.getMessage() + t);
         }
     }

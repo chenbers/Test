@@ -91,7 +91,7 @@ public class ReportServiceImpl implements ReportService
     {
         return null;
     }
-
+/*
     @Override
     @MethodDescription(description="Returns list of driver scores for all vehicles in the specified group and time frame specified by start/end date.", crudType=CrudType.READ,
     					modelClass=com.inthinc.pro.model.DriveQMap.class)  
@@ -103,7 +103,7 @@ public class ReportServiceImpl implements ReportService
         return null;
     }
 
-
+*/
     @Override
     @MethodDescription(description="Returns a list of scores for the specified groupID, duration. Scores returned for each subgroup are the weighted average of all drivers in the subgroup and its subordinate subgroups.", crudType=CrudType.READ,
     				modelClass=com.inthinc.pro.model.aggregation.GroupScoreWrapper.class)

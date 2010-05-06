@@ -27,7 +27,7 @@ public class Param
     Boolean isAccountID;
 
 	Object paramValue;
-	List<Object> paramValueList;
+	List<?> paramValueList;
 	ValidatorType validatorType;
     
 	public Param(String paramName, Class<?> paramType, Integer index, Class<?> inputType, Object paramValue)
@@ -161,10 +161,10 @@ public class Param
 		this.isAccountID = isAccountID;
 	}
 
-	public List<Object> getParamValueList() {
+	public List<?> getParamValueList() {
 		return paramValueList;
 	}
-	public void setParamValueList(List<Object> paramValueList) {
+	public void setParamValueList(List<?> paramValueList) {
 		this.paramValueList = paramValueList;
 	}
 
@@ -179,7 +179,7 @@ public class Param
 	{
 		GenericValidator validator = ValidatorFactory.getValidator(validatorType);
 		if (!validator.isValid(value.toString())) {
-			System.out.println("validator " + ((value == null) ? "null value" : value.toString()));
+//			System.out.println("validator " + ((value == null) ? "null value" : value.toString()));
 		
 			FacesMessage message = new FacesMessage();
 			message.setSummary(validator.invalidMsg());

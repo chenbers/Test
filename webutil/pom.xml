@@ -25,6 +25,7 @@
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
                             <exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
+                            <exclude>**/applicationContext-serverPropertiesTest.xml</exclude>
                         </excludes>
                     </resource>
                 </resources>
@@ -49,6 +50,7 @@
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
                             <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
+                            <exclude>**/applicationContext-serverPropertiesTest.xml</exclude>
                         </excludes>
                     </resource>
                 </resources>
@@ -73,6 +75,7 @@
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
                             <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
+                            <exclude>**/applicationContext-serverPropertiesTest.xml</exclude>
                         </excludes>
                     </resource>
                 </resources>
@@ -95,6 +98,7 @@
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
                             <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
+                            <exclude>**/applicationContext-serverPropertiesTest.xml</exclude>
                         </excludes>
                     </resource>
                 </resources>

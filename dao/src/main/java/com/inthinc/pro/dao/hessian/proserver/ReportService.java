@@ -207,8 +207,9 @@ public interface ReportService extends HessianService
     List<Map<String, Object>> getGDTrendByGTC(Integer groupID, Integer duration, Integer metric);
     
     Map<String, Object> getGDScoreByGSE(Integer groupID, Long start, Long end);
-    
-    Map<String, Object> getGVScoreByGSE(Integer groupID, Long start, Long end);
+  
+// NOT USED    
+//    Map<String, Object> getGVScoreByGSE(Integer groupID, Long start, Long end);
     
 //  DVQMap  
     List<Map<String, Object>> getDVScoresByGT(Integer groupID, Integer duration);

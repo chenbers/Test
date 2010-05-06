@@ -277,10 +277,10 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         return null;
     }
 
-    public Map<String, Object> getGVScoreByGSE(Integer groupID, Long start, Long end)
-    {
-        return null;
-    }
+//    public Map<String, Object> getGVScoreByGSE(Integer groupID, Long start, Long end)
+//    {
+//        return null;
+//    }
     
 
     public List<Map<String, Object>> getDVScoresByGSE(Integer groupID, Long start, Long end)

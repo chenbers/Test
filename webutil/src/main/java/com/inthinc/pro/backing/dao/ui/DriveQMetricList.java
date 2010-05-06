@@ -15,9 +15,9 @@ public class DriveQMetricList implements SelectList {
 	public List<SelectItem> getSelectList() {
 		if (selectList == null) {
 			selectList = new ArrayList<SelectItem> ();
-			selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_STARTING_ODOMETER), DriveQMetric.DRIVEQMETRIC_STARTING_ODOMETER + " - STARTING_ODOMETER"));
-		    selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_ENDING_ODOMETER), DriveQMetric.DRIVEQMETRIC_ENDING_ODOMETER + " - ENDING_ODOMETER"));
-			selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_ODOMETER), DriveQMetric.DRIVEQMETRIC_ODOMETER + " - ODOMETER"));
+//			selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_STARTING_ODOMETER), DriveQMetric.DRIVEQMETRIC_STARTING_ODOMETER + " - STARTING_ODOMETER"));
+//		    selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_ENDING_ODOMETER), DriveQMetric.DRIVEQMETRIC_ENDING_ODOMETER + " - ENDING_ODOMETER"));
+//			selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_ODOMETER), DriveQMetric.DRIVEQMETRIC_ODOMETER + " - ODOMETER"));
 		    selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_OVERALL), DriveQMetric.DRIVEQMETRIC_OVERALL + " - OVERALL"));
 			selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_SPEEDING), DriveQMetric.DRIVEQMETRIC_SPEEDING + " - SPEEDING"));
 		    selectList.add(new SelectItem(Integer.valueOf(DriveQMetric.DRIVEQMETRIC_SPEEDING1), DriveQMetric.DRIVEQMETRIC_SPEEDING1 + " - SPEEDING1"));
