@@ -98,14 +98,15 @@
                                 style="position:relative")
                             -->
                             <h:form id="#{context}_detail_form" style="display: inline;">
+                            	
                                 <a4j:region>
-                                    <rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="server" attachTo="#{context}_toolImage">
+                                    <rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="ajax" attachTo="#{context}_toolImage">
                                         <rich:menuItem ajaxSingle="true" rendered="true" iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
                                             onclick="Richfaces.showModalPanel('#{context}_singleEmail');return false;" value="#{messages.contextMenu_email_this_report}" id="#{context}_email" submitMode="none">
                                         </rich:menuItem>
                         
                                         <rich:menuItem iconDisabled="/images/ico_pdf.gif" disabled="#{report eq null?'true':'false'}" icon="/images/ico_pdf.gif"
-                                            value="#{messages.contextMenu_export_to_pdf}" action="#{dashBoardReportBean.exportReportToPDF}" id="#{context}-export">
+                                            value="#{messages.contextMenu_export_to_pdf}" action="#{dashBoardReportBean.exportReportToPDF}" id="#{context}-export" similarityGroupingId="#{context}_pdf">
                                             <a4j:actionparam assignTo="#{dashBoardReportBean.report}" value="#{report}" />
                                             <a4j:actionparam assignTo="#{dashBoardReportBean.duration}" converter="SimpleBeanConverter" value="#{bean.durationBean.duration}" />
                                         </rich:menuItem>

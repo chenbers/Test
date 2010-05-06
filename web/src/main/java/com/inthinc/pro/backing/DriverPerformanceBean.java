@@ -308,15 +308,15 @@ public class DriverPerformanceBean extends BasePerformanceBean
         Float lightValues[] = new Float[mpgEntities.size()];
         Float medValues[] = new Float[mpgEntities.size()];
         Float heavyValues[] = new Float[mpgEntities.size()];
-        int cnt = 0;
+        int count = 0;
         sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
-            sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
-            cnt++;
+            lightValues[count] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
+            medValues[count] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
+            heavyValues[count] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
+            sb.append(multiLineChart.getCategoryLabel(catLabelList.get(count)));
+            count++;
 
         }
         sb.append(multiLineChart.getCategoriesEnd());

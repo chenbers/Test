@@ -54,7 +54,7 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
 
-@Ignore
+//@Ignore
 public class ReportServiceTest {
     private static ReportService reportService;
     private static SiloService siloService;
@@ -73,19 +73,19 @@ public class ReportServiceTest {
             30, // INTERMEDIATE
             23, // BAD
     };
-    public static Integer expectedDailyMPGLight[] = { 30, // GOOD
-            25, // INTERMEDIATE
-            20, // BAD
+    public static Double expectedDailyMPGLight[] = { 30.0, // GOOD
+            25.0, // INTERMEDIATE
+            20.0, // BAD
     };
-    public static Integer expectedDailyMPGMedium[] = { 0, 0, 0 };
-    public static Integer expectedDailyMPGHeavy[] = { 0, 0, 0 };
-    public static Integer expectedDailyFleetMPGLight = 25;
-    public static Integer expectedDailyFleetMPGMedium = 0;
-    public static Integer expectedDailyFleetMPGHeavy = 0;
+    public static Double expectedDailyMPGMedium[] = { 0d, 0d, 0d };
+    public static Double expectedDailyMPGHeavy[] = { 0d, 0d, 0d };
+    public static Double expectedDailyFleetMPGLight = 25.0;
+    public static Double expectedDailyFleetMPGMedium = 0d;
+    public static Double expectedDailyFleetMPGHeavy = 0d;
 
-    Integer expectedTeamBreakdown[][] = { { 50, 50, 50, 50, 50 }, // GOOD (OVERALL, SPEEDING, SEATBELT, DRIVING STYLE, COACHING)
-            { 23, 23, 23, 23, 23 }, // INTERMEDIATE
-            { 17, 17, 17, 17, 17 }, // BAD
+    Double expectedTeamBreakdown[][] = { { 50.0, 50.0, 50.0, 50.0, 50.0 }, // GOOD (OVERALL, SPEEDING, SEATBELT, DRIVING STYLE, COACHING)
+            { 23.0, 23.0, 23.0, 23.0, 23.0 }, // INTERMEDIATE
+            { 17.0, 17.0, 17.0, 17.0, 17.0 }, // BAD
     };
 
     static long baseMilesPerDay = ReportTestConst.MILES_PER_EVENT * ReportTestConst.EVENTS_PER_DAY; // 1/100 mile units
@@ -659,9 +659,9 @@ public class ReportServiceTest {
 
             for (MpgEntity entity : mpgEntityList) {
                 assertEquals("getDriverEntities odometer", expectedDailyMileagePerGroup[teamType], entity.getOdometer());
-                assertEquals("getDriverEntities mpgLight", expectedDailyMPGLight[teamType], ((entity.getLightValue() == null) ? Integer.valueOf(0) : entity.getLightValue()));
-                assertEquals("getDriverEntities mpgMedium", expectedDailyMPGMedium[teamType], ((entity.getMediumValue() == null) ? Integer.valueOf(0) : entity.getMediumValue()));
-                assertEquals("getDriverEntities mpgHeavy", expectedDailyMPGHeavy[teamType], ((entity.getHeavyValue() == null) ? Integer.valueOf(0) : entity.getHeavyValue()));
+                assertEquals("getDriverEntities mpgLight", expectedDailyMPGLight[teamType], ((entity.getLightValue() == null) ? Double.valueOf(0) : entity.getLightValue()));
+                assertEquals("getDriverEntities mpgMedium", expectedDailyMPGMedium[teamType], ((entity.getMediumValue() == null) ? Double.valueOf(0) : entity.getMediumValue()));
+                assertEquals("getDriverEntities mpgHeavy", expectedDailyMPGHeavy[teamType], ((entity.getHeavyValue() == null) ? Double.valueOf(0) : entity.getHeavyValue()));
             }
         }
     }
@@ -726,7 +726,7 @@ public class ReportServiceTest {
         }
     }
     @Test
-     @Ignore
+    //@Ignore
     public void vehicleMPGScores() {
         // getVTrendByDTC
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
@@ -741,9 +741,9 @@ public class ReportServiceTest {
 
             for (MpgEntity entity : mpgEntityList) {
                 assertEquals("getVehicleEntities odometer", expectedDailyMileagePerGroup[teamType], entity.getOdometer());
-                assertEquals("getVehicleEntities mpgLight", expectedDailyMPGLight[teamType], ((entity.getLightValue() == null) ? Integer.valueOf(0) : entity.getLightValue()));
-                assertEquals("getVehicleEntities mpgMedium", expectedDailyMPGMedium[teamType], ((entity.getMediumValue() == null) ? Integer.valueOf(0) : entity.getMediumValue()));
-                assertEquals("getVehicleEntities mpgHeavy", expectedDailyMPGHeavy[teamType], ((entity.getHeavyValue() == null) ? Integer.valueOf(0) : entity.getHeavyValue()));
+                assertEquals("getVehicleEntities mpgLight", expectedDailyMPGLight[teamType], ((entity.getLightValue() == null) ? Double.valueOf(0) : entity.getLightValue()));
+                assertEquals("getVehicleEntities mpgMedium", expectedDailyMPGMedium[teamType], ((entity.getMediumValue() == null) ? Double.valueOf(0) : entity.getMediumValue()));
+                assertEquals("getVehicleEntities mpgHeavy", expectedDailyMPGHeavy[teamType], ((entity.getHeavyValue() == null) ? Double.valueOf(0) : entity.getHeavyValue()));
             }
         }
     }
@@ -819,9 +819,9 @@ public class ReportServiceTest {
 
             MpgEntity entity = list.get(0);
             assertEquals("getEntities entityID", getTeamDriverID(teamType), entity.getEntityID());
-            assertEquals("getEntities mpgLight", expectedDailyMPGLight[teamType], ((entity.getLightValue() == null) ? Integer.valueOf(0) : entity.getLightValue()));
-            assertEquals("getEntities mpgMedium", expectedDailyMPGMedium[teamType], ((entity.getMediumValue() == null) ? Integer.valueOf(0) : entity.getMediumValue()));
-            assertEquals("getEntities mpgHeavy", expectedDailyMPGHeavy[teamType], ((entity.getHeavyValue() == null) ? Integer.valueOf(0) : entity.getHeavyValue()));
+            assertEquals("getEntities mpgLight", expectedDailyMPGLight[teamType], ((entity.getLightValue() == null) ? Double.valueOf(0) : entity.getLightValue()));
+            assertEquals("getEntities mpgMedium", expectedDailyMPGMedium[teamType], ((entity.getMediumValue() == null) ? Double.valueOf(0) : entity.getMediumValue()));
+            assertEquals("getEntities mpgHeavy", expectedDailyMPGHeavy[teamType], ((entity.getHeavyValue() == null) ? Double.valueOf(0) : entity.getHeavyValue()));
         }
     }
 
@@ -839,9 +839,9 @@ public class ReportServiceTest {
 
         MpgEntity entity = list.get(0);
         assertEquals("getEntities entityID", itData.districtGroup.getGroupID(), entity.getEntityID());
-        assertEquals("getEntities mpgLight", expectedDailyFleetMPGLight, ((entity.getLightValue() == null) ? Integer.valueOf(0) : entity.getLightValue()), 1);
-        assertEquals("getEntities mpgMedium", expectedDailyFleetMPGMedium, ((entity.getMediumValue() == null) ? Integer.valueOf(0) : entity.getMediumValue()));
-        assertEquals("getEntities mpgHeavy", expectedDailyFleetMPGHeavy, ((entity.getHeavyValue() == null) ? Integer.valueOf(0) : entity.getHeavyValue()));
+        assertEquals("getEntities mpgLight", expectedDailyFleetMPGLight, ((entity.getLightValue() == null) ? Double.valueOf(0) : entity.getLightValue()), 1);
+        assertEquals("getEntities mpgMedium", expectedDailyFleetMPGMedium, ((entity.getMediumValue() == null) ? Double.valueOf(0) : entity.getMediumValue()));
+        assertEquals("getEntities mpgHeavy", expectedDailyFleetMPGHeavy, ((entity.getHeavyValue() == null) ? Double.valueOf(0) : entity.getHeavyValue()));
     }
 
     @Test

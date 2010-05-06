@@ -299,7 +299,7 @@ public class GraphicUtil {
         .append("xAxisName=\'\' ")
         .append("yAxisName=\'\' ")
         .append("showValues=\'0\' ")
-        .append("decimals=\'0\' ")
+        .append("decimals=\'1\' ")
        .append("decimalSeparator=\'")
         .append(getDecimalSeparator(locale))
         .append("\' thousandSeparator=\'")
@@ -338,9 +338,9 @@ public class GraphicUtil {
         String heavyString = MessageUtil.getMessageString("mpg_heavy_column");
 	    StringBuilder sb = new StringBuilder();
 	    int numEntities = entities.size();
-	    Integer[] light = new Integer[numEntities];
-	    Integer[] medium = new Integer[numEntities];
-	    Integer[] heavy = new Integer[numEntities];
+	    Double[] light = new Double[numEntities];
+	    Double[] medium = new Double[numEntities];
+	    Double[] heavy = new Double[numEntities];
 
         sb.append("<categories>");
         for (int i = 0; i < numEntities; i++)
@@ -355,21 +355,21 @@ public class GraphicUtil {
         sb.append("</categories>");
         
         sb.append("<dataset seriesName=\'").append(lightString).append("\'>");
-        for (Integer value : light)
+        for (Double value : light)
         {
             sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(value, measurementType, fuelEfficiencyType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
 
         sb.append("<dataset seriesName=\'").append(mediumString).append("\'>");
-        for (Integer value : medium)
+        for (Double value : medium)
         {
             sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(value, measurementType, fuelEfficiencyType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
 
         sb.append("<dataset seriesName=\'").append(heavyString).append("\'>");
-        for (Integer value : heavy)
+        for (Double value : heavy)
         {
             sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMpgToFuelEfficiencyType(value, measurementType, fuelEfficiencyType).toString() : "0") + "\'/>");
         }

@@ -306,7 +306,7 @@ public class Score {
     }
 
     public void setMpgHeavy(Number mpgHeavy) {
-        this.mpgHeavy = mpgHeavy;
+        this.mpgHeavy = mpgHeavy.doubleValue();
     }
 
     public Number getMpgLight() {
@@ -712,9 +712,9 @@ public class Score {
     			((aggressiveRightEvents == null) ? 0 : aggressiveRightEvents.longValue());
     }
     public Number getWeightedMpg() {
-        double totalMpg = (mpgHeavy == null ? 0 : mpgHeavy.doubleValue()) * (odometerHeavy == null ? 0 : odometerHeavy.doubleValue()/100d)  +
-        				  (mpgMedium == null ? 0 : mpgMedium.doubleValue())  * (odometerMedium == null ? 0 : odometerMedium.doubleValue()/100d)  +
-        				  (mpgLight == null ? 0 : mpgLight.doubleValue()) * (odometerLight == null ? 0 : odometerLight.doubleValue() / 100d);
+        double totalMpg = (mpgHeavy == null ? 0 : mpgHeavy.doubleValue()/100) * (odometerHeavy == null ? 0 : odometerHeavy.doubleValue()/100d)  +
+        				  (mpgMedium == null ? 0 : mpgMedium.doubleValue()/100)  * (odometerMedium == null ? 0 : odometerMedium.doubleValue()/100d)  +
+        				  (mpgLight == null ? 0 : mpgLight.doubleValue()/100) * (odometerLight == null ? 0 : odometerLight.doubleValue() / 100d);
         double totalMiles = (odometerHeavy == null ? 0 : odometerHeavy.doubleValue())  +
 		  					(odometerMedium == null ? 0 : odometerMedium.doubleValue())  +
 		  					(odometerLight == null ? 0 : odometerLight.doubleValue());

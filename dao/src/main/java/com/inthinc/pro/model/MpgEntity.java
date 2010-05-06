@@ -12,9 +12,9 @@ public class MpgEntity extends BaseScore implements Comparable<MpgEntity> {
 	private Integer entityID;
 	private String entityName;
 	private Integer groupID;
-	private Integer lightValue;
-	private Integer mediumValue;
-	private Integer heavyValue;
+	private Double lightValue;
+	private Double mediumValue;
+	private Double heavyValue;
     private Number odometer;
 
 
@@ -29,9 +29,9 @@ public class MpgEntity extends BaseScore implements Comparable<MpgEntity> {
         this.entityID = entityID;
         this.entityName = entityName;
         this.groupID = groupID;
-        this.lightValue = lightValue;
-        this.mediumValue = mediumValue;
-        this.heavyValue = heavyValue;
+        this.lightValue = lightValue.doubleValue()/100;
+        this.mediumValue = mediumValue.doubleValue()/100;
+        this.heavyValue = heavyValue.doubleValue()/100;
     }
     
     public String toString()
@@ -66,29 +66,6 @@ public class MpgEntity extends BaseScore implements Comparable<MpgEntity> {
 		this.groupID = groupID;
 	}
 
-	public Integer getLightValue() {
-		return lightValue;
-	}
-
-	public void setLightValue(Integer lightValue) {
-		this.lightValue = lightValue;
-	}
-
-	public Integer getMediumValue() {
-		return mediumValue;
-	}
-
-	public void setMediumValue(Integer mediumValue) {
-		this.mediumValue = mediumValue;
-	}
-
-	public Integer getHeavyValue() {
-		return heavyValue;
-	}
-
-	public void setHeavyValue(Integer heavyValue) {
-		this.heavyValue = heavyValue;
-	}
     public Number getOdometer()
     {
         return odometer;
@@ -104,5 +81,29 @@ public class MpgEntity extends BaseScore implements Comparable<MpgEntity> {
     {
         return this.entityName.toUpperCase().compareTo(o.getEntityName().toUpperCase());
     }
+
+	public Double getLightValue() {
+		return lightValue;
+	}
+
+	public void setLightValue(Double lightValue) {
+		this.lightValue = lightValue;
+	}
+
+	public Double getMediumValue() {
+		return mediumValue;
+	}
+
+	public void setMediumValue(Double mediumValue) {
+		this.mediumValue = mediumValue;
+	}
+
+	public Double getHeavyValue() {
+		return heavyValue;
+	}
+
+	public void setHeavyValue(Double heavyValue) {
+		this.heavyValue = heavyValue;
+	}
 
 }

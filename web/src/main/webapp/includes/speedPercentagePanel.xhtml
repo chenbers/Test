@@ -29,14 +29,18 @@
 		}
 		// callback to add data to chart
 		function fillSpeedingChart(speedingData){
-			document.getElementById("totalDistance").innerHTML =speedingData.totalDistance; 
-			document.getElementById("totalSpeeding").innerHTML =speedingData.totalSpeeding; 
-  			//speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");
-			speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "SpeedChartID", "#{xywidth}", "#{xyheight}", "0", "1");
-			
-			speedingChart.setDataXML(speedingData.chartDef);	
- 			speedingChart.setTransparent(true);
- 			speedingChart.render("speedPercentChartdiv");
+
+			if(speedingData){
+				
+				document.getElementById("totalDistance").innerHTML =speedingData.totalDistance; 
+				document.getElementById("totalSpeeding").innerHTML =speedingData.totalSpeeding; 
+	  			//speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "ChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+				speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "SpeedChartID", "#{xywidth}", "#{xyheight}", "0", "1");
+				
+				speedingChart.setDataXML(speedingData.chartDef);	
+	 			speedingChart.setTransparent(true);
+	 			speedingChart.render("speedPercentChartdiv");
+			}
 		}			
 	</script>
     <h:form>

@@ -27,11 +27,14 @@
 		}
 		// callback to add data to chart
 		function fillMpgChart(mpgData){
-			
-	  		mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
-			mpgChart.setDataXML(mpgData);
-			mpgChart.setTransparent(true);
-			mpgChart.render("mpgChartDiv");
+
+			if(mpgData){
+				
+		  		mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+				mpgChart.setDataXML(mpgData);
+				mpgChart.setTransparent(true);
+				mpgChart.render("mpgChartDiv");
+			}
 		}			
 	</script>
 	 <div class="">

@@ -12,10 +12,10 @@ import com.inthinc.pro.dao.util.MathUtil;
 @XmlRootElement
 public enum FuelEfficiencyType implements BaseEnum {
 	
-    MPG_US(1) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon,2);}},
-    MPG_UK(2) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon.doubleValue()*MPGTOMPGUK,2);}},
-    KMPL(3) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon.doubleValue()*MPGTOKPL,2);}}, 
-    LP100KM(4) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:(milesPerGallon.doubleValue()==0)?0.0f:MathUtil.round(100.0f/( milesPerGallon.doubleValue() * MPGTOKPL),2);}} ;
+    MPG_US(1) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon,1);}},
+    MPG_UK(2) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon.doubleValue()*MPGTOMPGUK,1);}},
+    KMPL(3) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:MathUtil.round(milesPerGallon.doubleValue()*MPGTOKPL,1);}}, 
+    LP100KM(4) 	{@Override public Number convertFromMPG(Number milesPerGallon) {return milesPerGallon==null?null:(milesPerGallon.doubleValue()==0)?0.0f:MathUtil.round(100.0f/( milesPerGallon.doubleValue() * MPGTOKPL),1);}} ;
     
 	private static final Float MPGTOKPL = 0.42514f;
 	private static final Float MPGTOMPGUK = 1.2f;

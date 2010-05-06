@@ -89,7 +89,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION})]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="false">
+			<textField pattern="###0.0" isBlankWhenNull="false">
 				<reportElement key="textField-9" x="54" y="17" width="318" height="26"/>
 				<textElement>
 					<font size="16"/>
@@ -158,17 +158,17 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{entityName}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField pattern="###0.0" isBlankWhenNull="true">
 				<reportElement key="textField-4" x="253" y="2" width="80" height="19" forecolor="#666666"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Number"><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMpgToFuelEfficiencyType($F{lightValue},$P{MEASUREMENT_TYPE},$P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField pattern="###0.0" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="335" y="2" width="80" height="19" forecolor="#666666"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Number"><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMpgToFuelEfficiencyType($F{mediumValue},$P{MEASUREMENT_TYPE},$P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField pattern="###0.0" isBlankWhenNull="true">
 				<reportElement key="textField-6" x="420" y="2" width="80" height="19" forecolor="#666666"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Number"><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMpgToFuelEfficiencyType($F{heavyValue},$P{MEASUREMENT_TYPE},$P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>

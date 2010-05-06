@@ -30,10 +30,14 @@
 		}
 		// callback to add data to chart
 		function fillTrendChart(trendData){
- 			trendChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");
-			trendChart.setDataXML(trendData);
-			trendChart.setTransparent(true);
-			trendChart.render("chartdivTrend");
+
+			if(trendData){
+				
+	 			trendChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+				trendChart.setDataXML(trendData);
+				trendChart.setTransparent(true);
+				trendChart.render("chartdivTrend");
+			}
 		}			
 	</script>	
 		<rich:panel id="trendDurationPanel" >

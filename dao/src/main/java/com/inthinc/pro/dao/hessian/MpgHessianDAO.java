@@ -20,7 +20,10 @@ import com.inthinc.pro.model.MpgEntity;
 
 public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> implements MpgDAO
 {
-    private static final Logger logger = Logger.getLogger(MpgHessianDAO.class);
+	private static final long serialVersionUID = 1L;
+
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(MpgHessianDAO.class);
 
     private ReportService       reportService;
 
@@ -54,9 +57,9 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                     mpgEntity.setGroupID(groupID);
                     mpgEntity.setEntityName(dvq.getDriver().getPerson().getFirst() + " " + dvq.getDriver().getPerson().getLast());
 
-                    mpgEntity.setHeavyValue(dvq.getDriveQ().getMpgHeavy());
-                    mpgEntity.setLightValue(dvq.getDriveQ().getMpgLight());
-                    mpgEntity.setMediumValue(dvq.getDriveQ().getMpgMedium());
+                    mpgEntity.setHeavyValue(dvq.getDriveQ().getMpgHeavy()==null?null:dvq.getDriveQ().getMpgHeavy().doubleValue()/100);
+                    mpgEntity.setLightValue(dvq.getDriveQ().getMpgLight()==null?null:dvq.getDriveQ().getMpgLight().doubleValue()/100);
+                    mpgEntity.setMediumValue(dvq.getDriveQ().getMpgMedium()==null?null:dvq.getDriveQ().getMpgMedium().doubleValue()/100);
 
                     mpgEntity.setDate(dvq.getDriveQ().getEndingDate());
 
@@ -79,9 +82,9 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                     mpgEntity.setGroupID(gqMap.getGroup().getGroupID());
                     mpgEntity.setEntityName(gqMap.getGroup().getName());
 
-                    mpgEntity.setHeavyValue(gqMap.getDriveQ().getMpgHeavy());
-                    mpgEntity.setLightValue(gqMap.getDriveQ().getMpgLight());
-                    mpgEntity.setMediumValue(gqMap.getDriveQ().getMpgMedium());
+                    mpgEntity.setHeavyValue(gqMap.getDriveQ().getMpgHeavy()==null?null:gqMap.getDriveQ().getMpgHeavy().doubleValue()/100);
+                    mpgEntity.setLightValue(gqMap.getDriveQ().getMpgLight()==null?null:gqMap.getDriveQ().getMpgLight().doubleValue()/100);
+                    mpgEntity.setMediumValue(gqMap.getDriveQ().getMpgMedium()==null?null:gqMap.getDriveQ().getMpgMedium().doubleValue()/100);
 
                     mpgEntity.setDate(gqMap.getDriveQ().getEndingDate());
 
@@ -112,9 +115,9 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
             for (DriveQMap dqMap : dqMapList)
             {
                 MpgEntity mpgEntity = new MpgEntity();
-                mpgEntity.setHeavyValue(dqMap.getMpgHeavy());
-                mpgEntity.setLightValue(dqMap.getMpgLight());
-                mpgEntity.setMediumValue(dqMap.getMpgMedium());
+                mpgEntity.setHeavyValue(dqMap.getMpgHeavy()==null?null:dqMap.getMpgHeavy().doubleValue()/100);
+                mpgEntity.setLightValue(dqMap.getMpgLight()==null?null:dqMap.getMpgLight().doubleValue()/100);
+                mpgEntity.setMediumValue(dqMap.getMpgMedium()==null?null:dqMap.getMpgMedium().doubleValue()/100);
                 mpgEntity.setOdometer(dqMap.getOdometer());
                 mpgEntity.setDate(dqMap.getEndingDate());
 //logger.debug("L["+ dqMap.getMpgLight()+"] M["+ dqMap.getMpgMedium()+"] H["+ dqMap.getMpgMedium()+"]");
@@ -143,9 +146,9 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
             for (DriveQMap dqMap : dqMapList)
             {
                 MpgEntity mpgEntity = new MpgEntity();
-                mpgEntity.setHeavyValue(dqMap.getMpgHeavy());
-                mpgEntity.setLightValue(dqMap.getMpgLight());
-                mpgEntity.setMediumValue(dqMap.getMpgMedium());
+                mpgEntity.setHeavyValue(dqMap.getMpgHeavy()==null?null:dqMap.getMpgHeavy().doubleValue()/100);
+                mpgEntity.setLightValue(dqMap.getMpgLight()==null?null:dqMap.getMpgLight().doubleValue()/100);
+                mpgEntity.setMediumValue(dqMap.getMpgMedium()==null?null:dqMap.getMpgMedium().doubleValue()/100);
                 mpgEntity.setOdometer(dqMap.getOdometer());
 //logger.debug("L["+ dqMap.getMpgLight()+"] M["+ dqMap.getMpgMedium()+"] H["+ dqMap.getMpgMedium()+"]");
                 mpgEntity.setDate(dqMap.getEndingDate());
