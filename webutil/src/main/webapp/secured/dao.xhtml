@@ -149,11 +149,11 @@
                 	<h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS"></h:outputText>
             	</f:facet>
             	<rich:columns value="#{daoUtilBean.columnHeaders}" var="col" index="index" id="column#{index}" 
-            			sortBy="#{record[index]}" sortOrder="#{daoUtilBean.sortOrder[col]}">
+            			sortBy="#{record[index].sort}" sortOrder="#{daoUtilBean.sortOrder[col]}">
                 	<f:facet name="header">
 						<h:outputText value="#{col}" />
 					</f:facet>
-					<h:outputText value="#{record[index]}" />
+					<h:outputText value="#{record[index].display}" />
                 </rich:columns>
             </rich:dataTable>
 			<rich:datascroller id="resultScroll" for="result"  

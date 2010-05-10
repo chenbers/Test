@@ -41,6 +41,7 @@ import com.inthinc.pro.backing.dao.MockSuperuserDAO;
 import com.inthinc.pro.backing.dao.model.CrudType;
 import com.inthinc.pro.backing.dao.model.DaoMethod;
 import com.inthinc.pro.backing.dao.model.Param;
+import com.inthinc.pro.backing.dao.model.Result;
 import com.inthinc.pro.backing.dao.ui.UIInputType;
 import com.inthinc.pro.backing.dao.validator.ValidatorType;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
@@ -347,7 +348,7 @@ System.out.println("test");
     		else {
        			dao.resultsAction();
         		
-    			List<List<String>> results = dao.getRecords();
+    			List<List<Result>> results = dao.getRecords();
     			if (expectedNoResults.contains(methodName)) {
         			assertNotNull(methodName + " error msg should be not be null", dao.getErrorMsg());
         			assertTrue(methodName + " error msg should be 304", dao.getErrorMsg().contains("304"));

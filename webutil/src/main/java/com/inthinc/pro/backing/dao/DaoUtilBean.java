@@ -35,6 +35,7 @@ import com.inthinc.pro.backing.dao.mapper.BaseUtilMapper;
 import com.inthinc.pro.backing.dao.model.CrudType;
 import com.inthinc.pro.backing.dao.model.DaoMethod;
 import com.inthinc.pro.backing.dao.model.Param;
+import com.inthinc.pro.backing.dao.model.Result;
 import com.inthinc.pro.backing.dao.validator.ValidatorType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
@@ -56,7 +57,7 @@ public class DaoUtilBean extends BaseBean
     List<Param> paramList;
 
     List<String> columnHeaders;
-    List<List<String>> records;
+    List<List<Result>> records;
     Map<String, Object> sortOrder;
 
 	private Class<?> dataAccessInterfaces[] = { SiloServiceImpl.class, ReportServiceImpl.class };
@@ -404,7 +405,7 @@ public class DaoUtilBean extends BaseBean
 	@SuppressWarnings("unchecked")
 	private void processResults(Method method, Object returnObject) throws InstantiationException, IllegalAccessException
     {
-        records = new ArrayList<List<String>>();
+        records = new ArrayList<List<Result>>();
         
         DaoMethod daoMethod = getMethodMap().get(selectedMethod);
                 
@@ -428,10 +429,11 @@ public class DaoUtilBean extends BaseBean
         }
     }
 
-	private List<String> processRow(DaoMethod daoMethod,Map<String, Object> recordMap) throws InstantiationException,
+	private List<Result> processRow(DaoMethod daoMethod, Map<String, Object> recordMap) throws InstantiationException,
 																					IllegalAccessException {
-		List<String> fieldValueList = new ArrayList<String>();
+		List<Result> fieldValueList = new ArrayList<Result>();
 		
+		Map<String, Object> formattedRecordMap = null;
 		if (getFormatResults()) {
 			Class<?> modelClass = daoMethod.getModelClass();
 			if (modelClass != null && !modelClass.equals(java.util.Map.class)) {
@@ -441,13 +443,20 @@ public class DaoUtilBean extends BaseBean
 				// convert to the model object so we can get type info
 				// and then back to a map that is formatted for display
 				Object obj = mapper.convertToModelObject(recordMap, modelClass);
-				recordMap = mapper.convertToMap(obj);
+				formattedRecordMap = mapper.convertToMap(obj);
 			}
 		}
-
 		for (String header : columnHeaders)
 		{
-	    	fieldValueList.add(recordMap.get(header) == null ? "" : recordMap.get(header).toString());
+			Result result = new Result();
+			if (formattedRecordMap != null)
+				result.setDisplay(formattedRecordMap.get(header) == null ? "" : formattedRecordMap.get(header).toString());
+			else result.setDisplay(recordMap.get(header) == null ? "" : recordMap.get(header).toString());
+			Object obj = recordMap.get(header);
+			if (obj != null && java.util.Map.class.isAssignableFrom(obj.getClass()))
+				result.setSort(obj.toString());
+			else result.setSort(obj);
+	    	fieldValueList.add(result);
 		}
 		return fieldValueList;
 	}
@@ -515,10 +524,10 @@ public class DaoUtilBean extends BaseBean
 				
 			}
 			out.println(buffer.toString());
-			for (List<String> row : records) {
+			for (List<Result> row : records) {
 				buffer = new StringBuilder();
-				for (String col : row) {
-					buffer.append(col);
+				for (Result col : row) {
+					buffer.append(col.getDisplay());
 					buffer.append(",");
 				}
 				out.println(buffer.toString());
@@ -546,12 +555,12 @@ public class DaoUtilBean extends BaseBean
         this.columnHeaders = columnHeaders;
     }
 
-    public List<List<String>> getRecords()
+    public List<List<Result>> getRecords()
     {
         return records;
     }
 
-    public void setRecords(List<List<String>> records)
+    public void setRecords(List<List<Result>> records)
     {
         this.records = records;
     }
