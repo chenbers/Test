@@ -58,7 +58,8 @@ public class DaoUtilBean extends BaseBean
 
     List<String> columnHeaders;
     List<List<Result>> records;
-    Map<String, Object> sortOrder;
+    int recordCount;
+	Map<String, Object> sortOrder;
 
 	private Class<?> dataAccessInterfaces[] = { SiloServiceImpl.class, ReportServiceImpl.class };
     private Object dataAccess[];
@@ -427,6 +428,8 @@ public class DaoUtilBean extends BaseBean
         	initColumnHeaders(Arrays.asList(recordMap));
             records.add(processRow(daoMethod, recordMap));
         }
+        
+        recordCount = records.size();
     }
 
 	private List<Result> processRow(DaoMethod daoMethod, Map<String, Object> recordMap) throws InstantiationException,
@@ -563,6 +566,7 @@ public class DaoUtilBean extends BaseBean
     public void setRecords(List<List<Result>> records)
     {
         this.records = records;
+        setRecordCount(this.records == null ? 0: this.records.size());
     }
 
     public SiloServiceCreator getSiloServiceCreator()
@@ -624,6 +628,13 @@ public class DaoUtilBean extends BaseBean
 
 	public void setFormatResults(Boolean formatResults) {
 		this.formatResults = formatResults;
+	}
+
+    public int getRecordCount() {
+		return recordCount;
+	}
+	public void setRecordCount(int recordCount) {
+		this.recordCount = recordCount;
 	}
 
 }

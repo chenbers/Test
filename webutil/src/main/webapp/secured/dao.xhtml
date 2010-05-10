@@ -127,10 +127,10 @@
         </h:panelGrid>
 		<rich:spacer height="3"/>
         <a4j:form id="resultsForm">
-        	<div style="padding: 1px;overflow:auto;width: 960px;">
 			<h:panelGroup id="reportToolImageId" style="float:right;" rendered="#{daoUtilBean.errorMsg == null and daoUtilBean.records != null}">
 				<h:graphicImage value="/images/ico_tools.png"/>
-			</h:panelGroup>
+			</h:panelGroup><br/>
+        	<div style="padding: 1px;overflow:auto;width: 960px;">
     		<rich:contextMenu event="onclick" attachTiming="onavailable"
 					disableDefaultMenu="false" submitMode="server"
 					attachTo="reportToolImageId">
@@ -146,7 +146,7 @@
 			<rich:dataTable rows="30" value="#{daoUtilBean.records}" var="record" id="result" align="center" width="100%"
 							rendered="#{daoUtilBean.errorMsg == null and daoUtilBean.records != null}">
 			 	<f:facet name="header">
-                	<h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS"></h:outputText>
+                	<h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS - (Total Rows: #{daoUtilBean.recordCount})"></h:outputText>
             	</f:facet>
             	<rich:columns value="#{daoUtilBean.columnHeaders}" var="col" index="index" id="column#{index}" 
             			sortBy="#{record[index].sort}" sortOrder="#{daoUtilBean.sortOrder[col]}">
