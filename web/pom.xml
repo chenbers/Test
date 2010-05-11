@@ -293,7 +293,7 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>postgresql</groupId>
+      <groupId>postgres</groupId>
       <artifactId>postgis</artifactId>
       <version>1.3.1</version>
       <scope>compile</scope>
