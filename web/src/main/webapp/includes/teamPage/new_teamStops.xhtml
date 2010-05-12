@@ -1,0 +1,148 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	
+	<script language="javascript" type="text/javascript">
+		
+    	function resetRadioButtons(rad) {
+    	    var id = rad.name.substring(rad.name.lastIndexOf(':'));
+    	    var el = rad.form.elements;
+    		//<![CDATA[	
+    	    for (var i = 0; i < el.length; i++) {
+    	        if (el[i].name.substring(el[i].name.lastIndexOf(':')) == id) {
+    	            el[i].checked = false;
+    	        }
+    	    }
+    	    //]]>
+    	    rad.checked = true;  
+    	}    
+    	    
+    </script>
+ 
+    <rich:tab id="teamStops" oncomplete="Team.tabChange();">
+   	   
+		<f:facet name="label">
+	 		<h:panelGroup>
+	 			<h:graphicImage value="/images/ico_map.png" /><rich:spacer width="10"/>Stops
+			</h:panelGroup>
+		</f:facet> 				
+				
+		<a4j:outputPanel id="stopsPanel" ajaxRendered="true" styleClass="section">
+			
+		<table>
+		<tr>
+		<td valign="top">
+		    
+   			<div class="section">
+     	  		<h:form id="stopsTableForm">
+	 	        	<div id="stopsDriverTable" >
+	        	
+	 	        		<rich:dataTable	value="#{teamStopsBean.drivers}" 
+					       		id="stopsDrivers" 
+					       		var="drivers"
+					       		rowKeyVar="index"
+								styleClass="datagrid" 
+								rowClasses="tableOdd,tableEven"
+								rows="#{TeamStopsBean.driversPerPage}"
+								columnsWidth="10px,100px,10px">
+							<rich:column>     
+								<a4j:region id="radioBut">   		 			               
+               		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true"
+               		 					value="#{teamStopsBean.selectedDriverID}">
+               		 					<f:selectItem itemValue="#{drivers.driverID}"/>
+               		 					<a4j:support event="onclick" reRender="stopsPanel"
+               		 						limitToList="true" oncomplete="resetRadioButtons(this);"/>                	 					                 						
+                					</h:selectOneRadio>
+                				</a4j:region>              		
+              				</rich:column>
+												
+							<rich:column style="text-align:left;" sortBy="#{drivers.person.fullName}" sortOrder="ASCENDING">
+								<f:facet name="header">
+									<h:outputText value="#{messages.teamPage_driverHeader}"/>
+								</f:facet>
+     							<pretty:link id="teamTrips-driverPerformance" mappingId="driverPerformance" >
+        							<f:param value="#{drivers.driverID}"/>
+ 									<h:outputText value="#{drivers.person.fullName}"/>
+     							</pretty:link>
+ 							</rich:column>
+ 							
+							<rich:column>
+								<div style="position: relative; background-color:#{teamStopsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">
+					
+									<div class="trips_label" style="color:#{teamStopsBean.textColors[index]};">
+										#{teamStopsBean.labels[index]}
+									</div>
+								</div>
+							</rich:column> 							
+
+						</rich:dataTable>
+					
+						<rich:datascroller 	align="left" for="stopsDrivers" 							
+            			 	styleClass="dataScrollerSmall" renderIfSinglePage="false" 
+            			 	id="stopsDriverTableScroller" width="98%"/>            			
+ 				         
+	         		</div>  
+ 				</h:form>	
+			</div>
+			
+		</td>
+		<td valign="top">
+			
+			<div class="section">
+				<h:form id="stopsTripsTableForm">
+					<div id="stopsTripsTable" >
+
+	 	        		<rich:dataTable	value="#{teamStopsBean.drivers}" 
+					       		id="stopsTrips" 
+					       		var="trips"					       
+								styleClass="datagrid" 
+								rowClasses="tableOdd,tableEven"
+								rows="#{TeamStopsBean.driversPerPage}"
+								columnsWidth="50px,150px,100px,100px,100px,100px,100px,100px,100px">
+								
+	                		<f:facet name="header">
+	                    		<rich:columnGroup>
+	                        		<rich:column rowspan="2">Round Trip</rich:column>
+	                        		<rich:column rowspan="2">Stop Location</rich:column>
+	                        		<rich:column rowspan="2">Arrive</rich:column>
+	                        		<rich:column rowspan="2">Depart</rich:column>
+	                        		<rich:column colspan="4">Time at Stop</rich:column>
+	                        		<rich:column rowspan="2">Drive Time</rich:column>	                        			
+	                        		<rich:column breakBefore="true">Total</rich:column>
+	                        		<rich:column>Low Idle</rich:column>
+	                        		<rich:column>High Idle</rich:column>
+	                        		<rich:column>Wait</rich:column>	                        	                        			                        			                        		
+	                    		</rich:columnGroup>	
+	                		</f:facet>
+
+						</rich:dataTable>
+							
+						<rich:datascroller 	align="left" for="stopsTrips" 							
+            			 	styleClass="dataScrollerSmall" renderIfSinglePage="false" 
+            			 	id="stopsTripsTableScroller" width="98%"/>            			
+ 				         
+	         		</div>  
+	         	</h:form>
+			</div>
+			
+		</td>
+		</tr>
+		</table>						
+	     
+	    </a4j:outputPanel>	
+	     
+    	<script language="javascript" type="text/javascript">
+    		jQuery(function(){
+				onTripTabSelectionComplete();
+			});    				
+    	</script>
+
+    </rich:tab>
+ </ui:composition>

@@ -136,6 +136,71 @@
   	</property>
   	
   </bean>
+  
+  <bean id="teamStopsBean" class="com.inthinc.pro.backing.TeamStopsBean" scope="request" parent="baseBean" init-method="init" >
+    <property name="driverDAO" ref="driverDAO"></property>   
+    <property name="teamCommonBean" ref="teamCommonBean"></property>
+  	<property name="colors">
+  		<set>
+  			<value>#002BD5</value>
+  			<value>#0054EF</value>
+			<value>#295C7E</value>
+			<value>#0083F1</value>
+			<value>#00B6E3</value>
+			<value>#0E8E88</value>
+			<value>#F33535</value>
+			<value>#CE0000</value>
+			<value>#F3680A</value>
+			<value>#224838</value>
+			<value>#922D1D</value>
+			<value>#63000A</value>
+			<value>#912D6F</value>
+			<value>#C80071</value>
+			<value>#9226A7</value>
+			<value>#C900BF</value>
+			<value>#224812</value>
+			<value>#098E22</value>
+			<value>#FF8974</value>
+			<value>#849300</value>
+			<value>#638E66</value>
+			<value>#848C93</value>
+			<value>#00B6E3</value>
+			<value>#53544A</value>
+			<value>#646464</value>
+  			 
+  		</set>
+  	</property>
+  	<property name="textColors">
+  		<list>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+   			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+   			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+   			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+  			<value>#ffffff</value>
+   		</list>
+   	</property>    
+  </bean>  
+  
   <!-- Printing Reports -->
   <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">
     <property name="reportCreator" ref="reportCreator" />   
