@@ -271,7 +271,7 @@
 	                		</rich:column>
 	                		
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummar.totalTimeAtStop != null}">
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.totalTimeAtStop != null}">
                     				<a4j:actionparam value="#{stopsSummary.totalTimeAtStop}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
                     			<h:outputText value="00:00:00" rendered="#{stopsSummary.totalTimeAtStop == null}"/>	                			                			
