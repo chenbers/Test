@@ -1,8 +1,6 @@
 package com.inthinc.pro.backing;
 
 
-import static org.junit.Assert.*;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,19 +25,10 @@ public class VersionBeanTest extends BaseBeanTest
         // but here for completeness/code coverage
         
         VersionBean versionBean = (VersionBean)applicationContext.getBean("versionBean");
-
-        versionBean.setApplicationContext(applicationContext);
         
         String version = versionBean.getVersion();
         
-        assertEquals("Unknown", version);
-
-        versionBean.init();
-        
-        version = versionBean.getVersion();
-        
-        assertEquals("Unknown", version);
-        
+        assertEquals("Version | Time Stamp | Build Number", version);
     }
 
 }

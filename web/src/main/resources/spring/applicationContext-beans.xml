@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:util="http://www.springframework.org/schema/util" 
+  xmlns:context="http://www.springframework.org/schema/context"
   xsi:schemaLocation="http://www.springframework.org/schema/beans 
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/util 
@@ -48,7 +51,9 @@
     <property name="addressLookup" ref="${addressLookup}" />
   </bean>
   <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean"></bean>
-  <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init"></bean>
+  
+  <util:properties id="manifestProperties" location="classpath:META-INF/MANIFEST.MF" /> 
+  <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean"></bean>
 
   <bean id="groupLevelBean" class="com.inthinc.pro.backing.GroupLevelBean" scope="request" parent="baseBean" init-method="initGroupID">
     <property name="navigationBean" ref="navigationBean"></property>
