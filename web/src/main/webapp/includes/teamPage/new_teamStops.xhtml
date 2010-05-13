@@ -29,8 +29,7 @@
     	}   
 
         function getAddresses()
-        {      
-            alert("in there");     
+        {                    
 	    	geocoder = new GClientGeocoder();
 
 	    	jQuery('td[id$="address_column"]').each(function(n){
@@ -142,16 +141,16 @@
 								
 	                		<f:facet name="header">
 	                    		<rich:columnGroup>
-	                        		<rich:column rowspan="2">Round Trip</rich:column>
-	                        		<rich:column rowspan="2">Stop Location</rich:column>
-	                        		<rich:column rowspan="2">Arrive</rich:column>
-	                        		<rich:column rowspan="2">Depart</rich:column>
-	                        		<rich:column colspan="4">Time at Stop</rich:column>
-	                        		<rich:column rowspan="2">Drive Time</rich:column>	                        			
-	                        		<rich:column breakBefore="true">Total</rich:column>
-	                        		<rich:column>Low Idle</rich:column>
-	                        		<rich:column>High Idle</rich:column>
-	                        		<rich:column>Wait</rich:column>	                        	                        			                        			                        		
+	                        		<rich:column rowspan="2">#{messages.team_round_trip}</rich:column>
+	                        		<rich:column rowspan="2">#{messages.team_stop_location}</rich:column>
+	                        		<rich:column rowspan="2">#{messages.team_arrive}</rich:column>
+	                        		<rich:column rowspan="2">#{messages.team_depart}</rich:column>
+	                        		<rich:column colspan="4">#{messages.team_time_at_stop}</rich:column>
+	                        		<rich:column rowspan="2">#{messages.team_drive_time}</rich:column>	                        			
+	                        		<rich:column breakBefore="true">#{messages.team_total}</rich:column>
+	                        		<rich:column>#{messages.team_low_idle}</rich:column>
+	                        		<rich:column>#{messages.team_high_idle}</rich:column>
+	                        		<rich:column>#{messages.team_wait}</rich:column>	                        	                        			                        			                        		
 	                    		</rich:columnGroup>	
 	                		</f:facet>
 	                		
@@ -241,16 +240,16 @@
 								
 	                		<f:facet name="header">
 	                    		<rich:columnGroup>
-	                        		<rich:column rowspan="2">Round Trip</rich:column>
+	                        		<rich:column rowspan="2">#{messages.team_round_trip}</rich:column>
 	                        		<rich:column rowspan="2"></rich:column>
 	                        		<rich:column rowspan="2"></rich:column>
 	                        		<rich:column rowspan="2"></rich:column>
-	                        		<rich:column colspan="4">Time at Stop</rich:column>
-	                        		<rich:column rowspan="2">Drive Time</rich:column>	                        			
-	                        		<rich:column breakBefore="true">Total</rich:column>
-	                        		<rich:column>Low Idle</rich:column>
-	                        		<rich:column>High Idle</rich:column>
-	                        		<rich:column>Wait</rich:column>	                        	                        			                        			                        		
+	                        		<rich:column colspan="4">#{messages.team_time_at_stop}</rich:column>
+	                        		<rich:column rowspan="2">#{messages.team_drive_time}</rich:column>	                        			
+	                        		<rich:column breakBefore="true">#{messages.team_total}</rich:column>
+	                        		<rich:column>#{messages.team_low_idle}</rich:column>
+	                        		<rich:column>#{messages.team_high_idle}</rich:column>
+	                        		<rich:column>#{messages.team_wait}</rich:column>	                        	                        			                        			                        		
 	                    		</rich:columnGroup>	
 	                		</f:facet>
 	                		
