@@ -9,11 +9,14 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
+	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
+	
 	<script language="javascript" type="text/javascript">
 		
-    	function resetRadioButtons(rad) {
+    	function resetRadioButtons(rad) { 
     	    var id = rad.name.substring(rad.name.lastIndexOf(':'));
     	    var el = rad.form.elements;
+           	
     		//<![CDATA[	
     	    for (var i = 0; i < el.length; i++) {
     	        if (el[i].name.substring(el[i].name.lastIndexOf(':')) == id) {
@@ -21,8 +24,36 @@
     	        }
     	    }
     	    //]]>
-    	    rad.checked = true;  
-    	}    
+           	
+    	    rad.checked = true;
+    	}   
+
+        function getAddresses()
+        {      
+            alert("in there");     
+	    	geocoder = new GClientGeocoder();
+
+	    	jQuery('td[id$="address_column"]').each(function(n){
+
+         		var lat = jQuery(this).find('*[id$="lat"]');
+        		var lng = jQuery(this).find('*[id$="lng"]');
+        		var address = jQuery(this).find('*[id$="address"]');     	       		
+				
+				reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);	
+	    	});                        
+        }       
+
+        function reverseGeocodeTripAddress(latlng, addressElement){
+         	geocoder.getLocations(latlng, 
+        			function(response){    			
+    			        if (!response || response.Status.code != 200) {
+  			         	  	addressElement.innerHTML = "No address found.";
+    			        } 
+    			        else {						
+			             	addressElement.innerHTML = response.Placemark[0].address;
+    			        }    			       
+    		});
+	    }   	 
     	    
     </script>
  
@@ -42,6 +73,7 @@
 		    
    			<div class="section">
      	  		<h:form id="stopsTableForm">
+     	  		
 	 	        	<div id="stopsDriverTable" >
 	        	
 	 	        		<rich:dataTable	value="#{teamStopsBean.drivers}" 
@@ -51,14 +83,14 @@
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
 								rows="#{TeamStopsBean.driversPerPage}"
-								columnsWidth="10px,100px,10px">
+								columnsWidth="10px,120px,10px">
 							<rich:column>     
 								<a4j:region id="radioBut">   		 			               
                		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true"
                		 					value="#{teamStopsBean.selectedDriverID}">
                		 					<f:selectItem itemValue="#{drivers.driverID}"/>
                		 					<a4j:support event="onclick" reRender="stopsPanel"
-               		 						limitToList="true" oncomplete="resetRadioButtons(this);"/>                	 					                 						
+               		 						limitToList="true" oncomplete="resetRadioButtons(this);getAddresses();"/>                	 					                 						
                 					</h:selectOneRadio>
                 				</a4j:region>              		
               				</rich:column>
@@ -74,8 +106,7 @@
  							</rich:column>
  							
 							<rich:column>
-								<div style="position: relative; background-color:#{teamStopsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">
-					
+								<div style="position: relative; background-color:#{teamStopsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">					
 									<div class="trips_label" style="color:#{teamStopsBean.textColors[index]};">
 										#{teamStopsBean.labels[index]}
 									</div>
@@ -84,8 +115,10 @@
 
 						</rich:dataTable>
 					
+						<br></br>
+						
 						<rich:datascroller 	align="left" for="stopsDrivers" 							
-            			 	styleClass="dataScrollerSmall" renderIfSinglePage="false" 
+            			 	styleClass="dataScrollerSmall" 
             			 	id="stopsDriverTableScroller" width="98%"/>            			
  				         
 	         		</div>  
@@ -99,9 +132,9 @@
 				<h:form id="stopsTripsTableForm">
 					<div id="stopsTripsTable" >
 
-	 	        		<rich:dataTable	value="#{teamStopsBean.drivers}" 
+	 	        		<rich:dataTable	value="#{teamStopsBean.driverStops}" 
 					       		id="stopsTrips" 
-					       		var="trips"					       
+					       		var="stops"					       
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
 								rows="#{TeamStopsBean.driversPerPage}"
@@ -121,26 +154,171 @@
 	                        		<rich:column>Wait</rich:column>	                        	                        			                        			                        		
 	                    		</rich:columnGroup>	
 	                		</f:facet>
-
+	                		
+	                		<rich:column>
+	                			#{stops.roundTrip}
+	                		</rich:column>
+	                		
+	                		<rich:column id="address_column">
+	                			<h:inputHidden id="lat" value="#{stops.latitude}"/>
+								<h:inputHidden id="lng" value="#{stops.longitude}"/>
+ 								<h:outputText id="address" />
+	                		</rich:column>
+	                		
+	                		<rich:column>
+	                			#{stops.arrive}
+	                		</rich:column>	   
+	                		
+	                		<rich:column>
+	                			#{stops.depart}
+	                		</rich:column>
+	                		
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.totalTimeAtStop != null}">
+                    				<a4j:actionparam value="#{stops.totalTimeAtStop}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stops.totalTimeAtStop == null}"/>	                			                			
+	                		</rich:column>
+	                			         
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.lowIdle != null}">
+                    				<a4j:actionparam value="#{stops.lowIdle}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stops.lowIdle == null}"/>	      	                			                			
+	                		</rich:column>
+	                			   
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.highIdle != null}">
+                    				<a4j:actionparam value="#{stops.highIdle}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stops.highIdle == null}"/>	      	                			                			
+	                		</rich:column>	    
+	                		
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.wait != null}">
+                    				<a4j:actionparam value="#{stops.wait}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stops.wait == null}"/>	      	                			                			
+	                		</rich:column>	
+	                		
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.driveTime != null}">
+                    				<a4j:actionparam value="#{stops.driveTime}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stops.driveTime == null}"/>	      	                			                			
+	                		</rich:column>	                		                		            		             		       		
 						</rich:dataTable>
-							
-						<rich:datascroller 	align="left" for="stopsTrips" 							
-            			 	styleClass="dataScrollerSmall" renderIfSinglePage="false" 
-            			 	id="stopsTripsTableScroller" width="98%"/>            			
- 				         
+							<br></br>
+						<rich:datascroller 	align="center" for="stopsTrips" 							
+            			 	styleClass="dataScrollerSmall" 
+            			 	id="stopsTripsTableScroller" width="50%">
+            			</rich:datascroller>            			
+ 				          				             	  					         
 	         		</div>  
 	         	</h:form>
 			</div>
 			
 		</td>
 		</tr>
+		
+		<tr>
+		<td>
+			<rich:spacer id="filler" width="10px" height="10px">
+			</rich:spacer>
+		</td>
+		<td>
+			<div class="section">
+				<h:form id="stopsTripsTableSummaryForm">
+					<div id="stopsTripsTableSummary" >
+
+	 	        		<rich:dataTable	value="#{teamStopsBean.driverStopsSummary}" 
+					       		id="stopsTripsSummary" 
+					       		var="stopsSummary"					       
+								styleClass="datagrid" 
+								rowClasses="tableOdd,tableEven"
+								rows="#{TeamStopsBean.driversPerPage}"
+								columnsWidth="50px,150px,100px,100px,100px,100px,100px,100px,100px">
+								
+	                		<f:facet name="header">
+	                    		<rich:columnGroup>
+	                        		<rich:column rowspan="2">Round Trip</rich:column>
+	                        		<rich:column rowspan="2"></rich:column>
+	                        		<rich:column rowspan="2"></rich:column>
+	                        		<rich:column rowspan="2"></rich:column>
+	                        		<rich:column colspan="4">Time at Stop</rich:column>
+	                        		<rich:column rowspan="2">Drive Time</rich:column>	                        			
+	                        		<rich:column breakBefore="true">Total</rich:column>
+	                        		<rich:column>Low Idle</rich:column>
+	                        		<rich:column>High Idle</rich:column>
+	                        		<rich:column>Wait</rich:column>	                        	                        			                        			                        		
+	                    		</rich:columnGroup>	
+	                		</f:facet>
+	                		
+	                		<rich:column>
+	                			#{stopsSummary.roundTrip}
+	                		</rich:column>
+	                		
+	                		<rich:column id="address_column_sum">
+	                			
+	                		</rich:column>
+	                		
+	                		<rich:column>
+	                			
+	                		</rich:column>	   
+	                		
+	                		<rich:column>
+	                			
+	                		</rich:column>
+	                		
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummar.totalTimeAtStop != null}">
+                    				<a4j:actionparam value="#{stopsSummary.totalTimeAtStop}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.totalTimeAtStop == null}"/>	                			                			
+	                		</rich:column>
+	                			         
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.lowIdle != null}">
+                    				<a4j:actionparam value="#{stopsSummary.lowIdle}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.lowIdle == null}"/>	      	                			                			
+	                		</rich:column>
+	                			   
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.highIdle != null}">
+                    				<a4j:actionparam value="#{stopsSummary.highIdle}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.highIdle == null}"/>	      	                			                			
+	                		</rich:column>	    
+	                		
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.wait != null}">
+                    				<a4j:actionparam value="#{stopsSummary.wait}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.wait == null}"/>	      	                			                			
+	                		</rich:column>	
+	                		
+	                		<rich:column>
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.driveTime != null}">
+                    				<a4j:actionparam value="#{stopsSummary.driveTime}" converter="TimeToStringConverter"/>                    
+                    			</h:outputFormat>										
+                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.driveTime == null}"/>	      	                			                			
+	                		</rich:column>	                		                		            		             		       		
+						</rich:dataTable>  			
+ 				          				             	  					         
+	         		</div>  
+	         	</h:form>
+			</div>		
+		</td>
+		</tr>
+		
 		</table>						
 	     
 	    </a4j:outputPanel>	
 	     
     	<script language="javascript" type="text/javascript">
     		jQuery(function(){
-				onTripTabSelectionComplete();
+				getAddresses();
 			});    				
     	</script>
 
