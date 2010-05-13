@@ -26,16 +26,16 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <project.name>${project.name}</project.name>
-              <project.version>${project.version}</project.version>
-              <project.build.date>${maven.build.timestamp}</project.build.date>
-              <build.number>${BUILD_NUMBER}</build.number>
-              <build.id>${BUILD_ID}</build.id>
-              <job.name>${JOB_NAME}</job.name>
-              <build.tag>${BUILD_TAG}</build.tag>
-              <executor.name>${EXECUTOR_NAME}</executor.name>
-              <svn.revision>${SVN_REVISION}</svn.revision>
-              <hudson.url>${HUDSON_URL}</hudson.url>
+              <project-name>${project.name}</project-name>
+              <project-version>${project.version}</project-version>
+              <project-build-date>${maven.build.timestamp}</project-build-date>
+              <build-number>${BUILD_NUMBER}</build-number>
+              <build-id>${BUILD_ID}</build-id>
+              <job-name>${JOB_NAME}</job-name>
+              <build-tag>${BUILD_TAG}</build-tag>
+              <executor-name>${EXECUTOR_NAME}</executor-name>
+              <svn-revision>${SVN_REVISION}</svn-revision>
+              <hudson-url>${HUDSON_URL}</hudson-url>
               <workspace>${WORKSPACE}</workspace>              
             </manifestEntries>
           </archive>

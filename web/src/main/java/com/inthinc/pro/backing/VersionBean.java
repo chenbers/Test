@@ -19,11 +19,11 @@ public class VersionBean
 
     public void setManifestProperties(Properties manifestProperties) {
         this.manifestProperties = manifestProperties;
-        version = manifestProperties.getProperty("project.version", "Version |") + 
+        version = manifestProperties.getProperty("project-version", "Version |") + 
             " " + 
-            manifestProperties.getProperty("project.build.date", "Time Stamp |") + 
+            manifestProperties.getProperty("project-build-date", "Time Stamp |") + 
             " " + 
-            manifestProperties.getProperty("build.number", "Build Number");
+            manifestProperties.getProperty("build-number", "Build Number");
     }
 
     public String getVersion()
