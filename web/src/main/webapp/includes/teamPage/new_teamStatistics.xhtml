@@ -9,11 +9,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
-	
 
-	<rich:tab  id="teamStatistics" oncomplete="Team.tabChange();">
+	<rich:tab  id="teamStatistics" oncomplete="Team.tabChange();decorateScoreBox();">
 		<a4j:keepAlive beanName="teamStatisticsTableColumns" />
-	
 	 	<ui:param name="tableColumns" value="#{teamStatisticsTableColumns.tableColumns}" />
 	 	<ui:param name="context" value="teamStatistics" />
 	
@@ -85,14 +83,13 @@
 					<f:facet name="header">
 						#{messages.team_score}
 					</f:facet>
-
-                    <ui:include src="/includes/scoreBox.xhtml">
+                    <ui:include src="/includes/new_scoreBox.xhtml">
 	                    <ui:param name="score" value="#{item.score.overall}" />
-	                    <ui:param name="scoreStyle" value="#{item.scoreStyle}" /> 
 	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
 	                    <ui:param name="scoreMappingId" value="driverPerformance"/>
 						<ui:param name="context" value="driversOverallAvailable" />
-                    </ui:include> 
+						<ui:param name="size" value="xx-sm"/>
+                    </ui:include>  
 				</rich:column>			
 				<rich:column width="8%" rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicle.name}" id="newTeamStatsTab-vehicle">
 					<f:facet name="header">
@@ -229,10 +226,10 @@
 					<f:facet name="header">
 						#{messages.team_score}	
 					</f:facet>					 
-					<ui:include src="/includes/scoreBox.xhtml">
+					<ui:include src="/includes/new_scoreBox.xhtml">
 	                    <ui:param name="score" value="#{item.score.overall}" />
-	                    <ui:param name="scoreStyle" value="#{item.scoreStyle}" /> 
-	                    <ui:param name="item" value="#{item.driver.driverID}" /> 	                   
+	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
+	                    <ui:param name="size" value="xx-sm"/>                 
 						<ui:param name="context" value="driversOverallNotAvailable" />
                     </ui:include> 
 				</rich:column>

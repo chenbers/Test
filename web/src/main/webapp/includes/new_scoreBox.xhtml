@@ -11,7 +11,7 @@
 	
 	<!-- 
 		<ui:include src="/includes/new_scoreBox.xhtml">
-			<ui:param name="size" value="{xx-small,small,medium,large,xx-large}"/> (option:default to small);
+			<ui:param name="size" value="{xx-sm,sm,med,lg}"/> (option:default to sm);
             <ui:param name="score" value="#{yourBean.Score}" />
             <ui:param name="scoreMappingID" value="prettyMappingID" />
             <ui:param name="context" value="#{context}-pageName"/> 
@@ -43,9 +43,9 @@
 	<!-- Shorten variable #{score} to be used in expression to calculate -->
 	<c:set var="s" value="#{score}"/>
 	<c:set var="scoreColorClassSuffix" value="#{empty s?'na':(s ge 0 and s le 10?1:(s gt 10 and s le 20?2:(s gt 20 and s le 30?3:(s gt 30 and s le 40?4:(s gt 40?5:'na')))))}"/>
-	<c:set var="sizeCssSuffix" value="#{empty size?small:size}"/>
+	<c:set var="sizeCssSuffix" value="#{empty size?'sm':size}"/>
 	
-	<table class="score score_#{scoreColorClassSuffix} score_#{sizeCssSuffix}" cellpadding="0" cellspacing="0">
+	<table class="score score_#{sizeCssSuffix}_#{scoreColorClassSuffix}" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>
 				<c:choose>

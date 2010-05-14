@@ -1,98 +1,149 @@
-	@CHARSET "UTF-8";
+@CHARSET "UTF-8";
 /* SCORES */ 
 
-/* ScoreBox jQuery widget styles */
-table.score{
+/* Generic Styles for Score Boxes */
+.score {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	color: #333;
-	background-color: #FFFFFF;
-	padding: 1px;
 }
 
-table.score td{
+.score td {
 	text-align: center;
-	vertical-align:middle;
+	vertical-align: middle;
+}
+    
+
+.score a:visited,.score a:link,.score a:active, .score a:hover {
+	text-decoration: none;
+	color: #333;
 }
 
-table.score_na{
-	border: #CCCCCC 1px solid;
-}
-
-table.score_na td{
-	background-color: #888888;
-}
-
-table.score_1{
-	border: #F8A188 1px solid;
-}
-
-table.score_1 td{
-	background-color: #FF0101;
-}
-
-table.score_2{
-	border: #FBDABA 1px solid;
-}
-
-table.score_2 td{
-	background-color: #FF6601;
-}
-
-table.score_3{
-	border: #FFEC9B 1px solid;
-}
-
-table.score_3 td{
-	background-color: #F6B305;
-}
-
-table.score_4{
-	border: #1E88C8 1px solid;
-	background-color: #9BD0F0;
-}
-
-table.score_4 td{
-	background-color: #1E88C8;
-}
-
-table.score_5{
-	border: #98Cf8F 1px solid;
-}
-
-table.score_5 td{
-	background-color: #6B9D1B;
-}
-
-table.score_xx-small td{
-	width: 25px;
-	height: 25px;
-	font-size: 12px;
-}
-
-table.score_small td{
-	width: 40px;
-	height: 40px;
-	font-size: 18px;
-}
-
-table.score_medium td{
-	width: 60px;
-	height: 60px;
-	font-size: 24px;
-}
-
-table.score_large td{
+/* Large Score Box */
+.score_lg_1 td,.score_lg_2 td,.score_lg_3 td,.score_lg_4 td,.score_lg_5 td,.score_lg_na td {
 	font-size: 32px;
 	height: 90px;
 	width: 90px;
 }
 
-table.score_xx-large td{
-	font-size: 36px;
-	height: 120px;
-	width: 120px;
+.score_lg_1 td {
+	background: url(../images/score_lg_1.png) no-repeat;
 }
+
+.score_lg_2 td {
+	background: url(../images/score_lg_2.png) no-repeat;
+}
+
+.score_lg_3 td {
+	background: url(../images/score_lg_3.png) no-repeat;
+}
+
+.score_lg_4 td {
+	background: url(../images/score_lg_4.png) no-repeat;
+}
+
+.score_lg_5 td {
+	background: url(../images/score_lg_5.png) no-repeat;
+}
+
+.score_lg_na td {
+	background: url(../images/score_lg_na.png) no-repeat;
+}
+
+/* Medium Score Box*/
+.score_med_1 td,.score_med_2 td,.score_med_3 td,.score_med_4 td,.score_med_5 td,.score_med_na td
+	{
+	width: 60px;
+	height: 60px;
+	font-size: 24px;
+}
+
+.score_med_1 td {
+	background: url(../images/score_med_1.png) no-repeat;
+}
+
+.score_med_2 td {
+	background: url(../images/score_med_2.png) no-repeat;
+}
+
+.score_med_3 td {
+	background: url(../images/score_med_3.png) no-repeat;
+}
+
+.score_med_4 td {
+	background: url(../images/score_med_4.png) no-repeat;
+}
+
+.score_med_5 td {
+	background: url(../images/score_med_5.png) no-repeat;
+}
+
+.score_med_na td {
+	background: url(../images/score_med_na.png) no-repeat;
+}
+
+/* Small Score Box*/
+.score_sm_1 td,.score_sm_2 td,.score_sm_3 td,.score_sm_4 td,.score_sm_5 td,.score_sm_na td {
+	width: 40px;
+	height: 40px;
+	font-size: 18px;
+}
+
+.score_sm_1 td {
+	background: url(../images/score_sm_1.png) no-repeat;
+}
+
+.score_sm_2 td {
+	background: url(../images/score_sm_2.png) no-repeat;
+}
+
+.score_sm_3 td {
+	background: url(../images/score_sm_3.png) no-repeat;
+}
+
+.score_sm_4 td {
+	background: url(../images/score_sm_4.png) no-repeat;
+}
+
+.score_sm_5 td {
+	background: url(../images/score_sm_5.png) no-repeat;
+}
+
+.score_sm_na td {
+	background: url(../images/score_sm_na.png) no-repeat;
+}
+	
+/* Extra Small Score Box*/
+.score_xx-sm_1 td,.score_xx-sm_2 td,.score_xx-sm_3 td,.score_xx-sm_4 td,.score_xx-sm_5 td,.score_xx-sm_na td {
+	width: 25px;
+	height: 25px;
+	font-size: 10px;
+}
+
+.score_xx-sm_1 td {
+	background: url(../images/score_xxsm_1.png) no-repeat;
+}
+
+.score_xx-sm_2 td {
+	background: url(../images/score_xxsm_2.png) no-repeat;
+}
+
+.score_xx-sm_3 td {
+	background: url(../images/score_xxsm_3.png) no-repeat;
+}
+
+.score_xx-sm_4 td {
+	background: url(../images/score_xxsm_4.png) no-repeat;
+}
+
+.score_xx-sm_5 td {
+	background: url(../images/score_xxsm_5.png) no-repeat;
+}
+
+.score_xx-sm_na td {
+	background: url(../images/score_xxsm_na.png) no-repeat;
+}
+	
 
 
 
