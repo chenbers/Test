@@ -12,24 +12,9 @@
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
 	
 	<script language="javascript" type="text/javascript">
-		
-    	function resetRadioButtons(rad) { 
-    	    var id = rad.name.substring(rad.name.lastIndexOf(':'));
-    	    var el = rad.form.elements;
-           	
-    		//<![CDATA[	
-    	    for (var i = 0; i < el.length; i++) {
-    	        if (el[i].name.substring(el[i].name.lastIndexOf(':')) == id) {
-    	            el[i].checked = false;
-    	        }
-    	    }
-    	    //]]>
-           	
-    	    rad.checked = true;
-    	}   
 
         function getAddresses()
-        {                    
+        {              
 	    	geocoder = new GClientGeocoder();
 
 	    	jQuery('td[id$="address_column"]').each(function(n){
@@ -53,7 +38,7 @@
     			        }    			       
     		});
 	    }   	 
-    	    
+
     </script>
  
     <rich:tab id="teamStops" oncomplete="Team.tabChange();">
@@ -88,13 +73,12 @@
                		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true"
                		 					value="#{teamStopsBean.selectedDriverID}">
                		 					<f:selectItem itemValue="#{drivers.driverID}"/>
-               		 					<a4j:support event="onclick" reRender="stopsPanel"
-               		 						limitToList="true" oncomplete="resetRadioButtons(this);getAddresses();"/>                	 					                 						
+               		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="getAddresses();"/>                	 					                 						
                 					</h:selectOneRadio>
                 				</a4j:region>              		
               				</rich:column>
 												
-							<rich:column style="text-align:left;" sortBy="#{drivers.person.fullName}" sortOrder="ASCENDING">
+							<rich:column style="text-align:left;"> 
 								<f:facet name="header">
 									<h:outputText value="#{messages.teamPage_driverHeader}"/>
 								</f:facet>

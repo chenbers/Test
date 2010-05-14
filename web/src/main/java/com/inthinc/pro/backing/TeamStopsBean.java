@@ -2,10 +2,12 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.richfaces.json.JSONArray;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -14,6 +16,7 @@ import com.inthinc.pro.model.DriverStopsReportItem;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class TeamStopsBean extends BaseBean {
     
     private static final EnumSet<TimeFrame> validTimeFrames = 
@@ -54,15 +57,27 @@ public class TeamStopsBean extends BaseBean {
         this.teamCommonBean = teamCommonBean;
     }
     
-    public List<Driver> getDrivers() {        
+    public List<Driver> getDrivers() {  
+        if ( drivers == null || drivers.size() == 0 ) {
+            initDrivers();
+        }
+        
         return drivers;
     }  
     
-    public List<DriverStopsReportItem> getDriverStops() {
+    public List<DriverStopsReportItem> getDriverStops() { 
+        if ( selectedDriverID != null ) {
+            initDriverStops();
+        }
+        
         return driverStops;
     }
     
     public List<DriverStopsReportItem> getDriverStopsSummary() {
+        if ( selectedDriverID != null ) {
+            initDriverStopsSummary();
+        }
+        
         return driverStopsSummary;
     }
     
@@ -72,7 +87,12 @@ public class TeamStopsBean extends BaseBean {
 
     public void setSelectedDriverID(Integer selectedDriverID) {
         this.selectedDriverID = selectedDriverID;
+
+        // Have the new driver Id, find the info
+        initDriverStops();
+        initDriverStopsSummary();
     }
+    
     public List<String> getColors() {
         return colors;
     }
@@ -110,9 +130,10 @@ public class TeamStopsBean extends BaseBean {
     }
 
     public void init(){            
-        initDrivers();
-        initDriverStops();
-        initDriverStopsSummary();
+
+        drivers = new ArrayList<Driver>();
+        driverStops = new ArrayList<DriverStopsReportItem>();
+        driverStopsSummary = new ArrayList<DriverStopsReportItem>();
 
         // Labels to the right of the driver name
         labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(
@@ -121,12 +142,13 @@ public class TeamStopsBean extends BaseBean {
     }
     
     private void initDrivers(){       
-        drivers = driverDAO.getDrivers(teamCommonBean.getGroupID());
+        drivers = driverDAO.getDrivers(teamCommonBean.getGroupID());        
+        Collections.sort(drivers);
     }
 
     private void initDriverStops() {
         
-        // fake some data to get all the formatting correct in the page
+        // Fake some data to get all the formatting correct in the page
         DriverStopsReportItem dsri = new DriverStopsReportItem();
         driverStops = new ArrayList<DriverStopsReportItem>();
         
@@ -162,6 +184,7 @@ public class TeamStopsBean extends BaseBean {
     
     public void initDriverStopsSummary() {
         
+        // Re-init values
         DriverStopsReportItem d = new DriverStopsReportItem();
         driverStopsSummary = new ArrayList<DriverStopsReportItem>();
         
@@ -172,6 +195,7 @@ public class TeamStopsBean extends BaseBean {
         int wait = 0;
         int driveTime = 0;
         
+        // Sum up over all trips by the selected driver
         for ( DriverStopsReportItem dsri: driverStops ) {
             if ( dsri.getRoundTrip() != null ) {
                 roundTrip++;
@@ -193,6 +217,7 @@ public class TeamStopsBean extends BaseBean {
             }
         }
         
+        // Set the summary row
         d.setRoundTrip(roundTrip);
         d.setTotalTimeAtStop(totalTimeAtStop);
         d.setLowIdle(lowIdle);
