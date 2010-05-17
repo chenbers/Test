@@ -52,7 +52,7 @@
   </bean>
   <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean"></bean>
   
-  <util:properties id="manifestProperties" location="classpath:META-INF/MANIFEST.MF" /> 
+  <util:properties id="manifestProperties" location="META-INF/MANIFEST.MF" /> 
   <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean"></bean>
 
   <bean id="groupLevelBean" class="com.inthinc.pro.backing.GroupLevelBean" scope="request" parent="baseBean" init-method="initGroupID">
