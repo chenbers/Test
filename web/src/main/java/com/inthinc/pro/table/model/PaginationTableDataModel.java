@@ -3,6 +3,7 @@ package com.inthinc.pro.table.model;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,8 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 	private static final long serialVersionUID = -5823194019411336605L;
 	private PaginationDataProvider<T> dataProvider;
 	private Object rowKey;
-	private List<Object> wrappedKeys = null;
-	private Map<Object, T> wrappedData = new HashMap<Object, T>();
+	private List<Object> wrappedKeys = Collections.synchronizedList(new ArrayList<Object>());
+	private Map<Object, T> wrappedData = Collections.synchronizedMap(new HashMap<Object, T>());
 	List<FilterField> filterFields;
 	List<SortField2> sortFields;
 	private PageData pageData;
@@ -76,7 +77,7 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 	 * @see org.ajax4jsf.model.ExtendedDataModel#walk(javax.faces.context.FacesContext, org.ajax4jsf.model.DataVisitor, org.ajax4jsf.model.Range, java.lang.Object)
 	 */
 	@Override
-	public void walk(FacesContext context, DataVisitor visitor, Range range, Object argument) throws IOException {
+	public synchronized void walk(FacesContext context, DataVisitor visitor, Range range, Object argument) throws IOException {
 
 		int rowC = getRowCount();
 		int firstRow = ((SequenceRange) range).getFirstRow();
@@ -89,13 +90,13 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 			firstRow = 0;
 		}
 		
-		if (wrappedKeys != null) { 
+		if (wrappedKeys.size() > 0) { 
 			for (Object key : wrappedKeys) {
 				setRowKey(key);
 				visitor.process(context, key, argument);
 			}
 		} else { // if not serialized, than we request data from data provider
-			wrappedKeys = new ArrayList<Object>();
+//			wrappedKeys = Collections.synchronizedList(new ArrayList<Object>());
 			int endRow = firstRow + numberOfRows;
 			if (endRow >= rowC){
 				endRow = rowC-1; 
@@ -235,8 +236,8 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 		tableRowCount = null;
 		rowIndex = -1;
 	}
-	public void resetPage(){
-		wrappedKeys = null;
+	public synchronized void resetPage(){
+		wrappedKeys.clear();
 		wrappedData.clear();
 		rowKey = null;
 	}
