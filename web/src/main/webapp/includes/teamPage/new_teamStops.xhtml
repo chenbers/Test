@@ -139,56 +139,61 @@
 	                		</f:facet>
 	                		
 	                		<rich:column>
-	                			#{stops.roundTrip}
+	                			**** DETERMINE THIS ****
 	                		</rich:column>
 	                		
 	                		<rich:column id="address_column">
-	                			<h:inputHidden id="lat" value="#{stops.latitude}"/>
-								<h:inputHidden id="lng" value="#{stops.longitude}"/>
+	                			<h:inputHidden id="lat" value="#{stops.lat}"/>
+								<h:inputHidden id="lng" value="#{stops.lng}"/>
  								<h:outputText id="address" />
 	                		</rich:column>
 	                		
-	                		<rich:column>
-	                			#{stops.arrive}
+	                		<rich:column>	                			
+                            	<h:outputText value="#{stops.arriveTime * 1000}">
+                                	<f:convertDateTime pattern="#{messages.stopsDateTimeFormat}" timeZone="#{teamStopsBean.timeZone}" />
+                            	</h:outputText>     	                			
 	                		</rich:column>	   
 	                		
-	                		<rich:column>
-	                			#{stops.depart}
+	                		<rich:column>	                			
+                            	<h:outputText value="#{stops.departTime * 1000}">
+                                	<f:convertDateTime pattern="#{messages.stopsDateTimeFormat}" timeZone="#{teamStopsBean.timeZone}" />
+                            	</h:outputText>  	                			
 	                		</rich:column>
 	                		
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.totalTimeAtStop != null}">
-                    				<a4j:actionparam value="#{stops.totalTimeAtStop}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}">
+                    				<a4j:actionparam value="#{stops.departTime - stops.arriveTime}" 
+                    					converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stops.totalTimeAtStop == null}"/>	                			                			
+                    			        			                			
 	                		</rich:column>
 	                			         
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.lowIdle != null}">
-                    				<a4j:actionparam value="#{stops.lowIdle}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.idleLo != null}">
+                    				<a4j:actionparam value="#{stops.idleLo}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stops.lowIdle == null}"/>	      	                			                			
+                    			<h:outputText value="00:00:00" rendered="#{stops.idleLo == null}"/>	      	                			                			
 	                		</rich:column>
-	                			   
+	                			   	                	
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.highIdle != null}">
-                    				<a4j:actionparam value="#{stops.highIdle}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.idleHi != null}">
+                    				<a4j:actionparam value="#{stops.idleHi}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stops.highIdle == null}"/>	      	                			                			
+                    			<h:outputText value="00:00:00" rendered="#{stops.idleHi == null}"/>	      	                			                			
 	                		</rich:column>	    
-	                		
+	                			                
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.wait != null}">
-                    				<a4j:actionparam value="#{stops.wait}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}" >
+                    				<a4j:actionparam value="#{stops.departTime - stops.arriveTime - stops.idleHi - stops.idleLo}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stops.wait == null}"/>	      	                			                			
+                    			     	                			                			
 	                		</rich:column>	
-	                		
+	                			                	
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.driveTime != null}">
+                    			<h:outputFormat value="#{messages.reports_time}">
                     				<a4j:actionparam value="#{stops.driveTime}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stops.driveTime == null}"/>	      	                			                			
+                    			 	                			                			
 	                		</rich:column>	                		                		            		             		       		
 						</rich:dataTable>
 							<br></br>
@@ -238,7 +243,7 @@
 	                		</f:facet>
 	                		
 	                		<rich:column>
-	                			#{stopsSummary.roundTrip}
+	                			**** DETERMINE THIS ****
 	                		</rich:column>
 	                		
 	                		<rich:column id="address_column_sum">
@@ -254,39 +259,40 @@
 	                		</rich:column>
 	                		
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.totalTimeAtStop != null}">
-                    				<a4j:actionparam value="#{stopsSummary.totalTimeAtStop}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}">
+                    				<a4j:actionparam value="#{stopsSummary.departTime - stopsSummary.arriveTime}" 
+                    					converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.totalTimeAtStop == null}"/>	                			                			
+                    			        			                			
 	                		</rich:column>
 	                			         
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.lowIdle != null}">
-                    				<a4j:actionparam value="#{stopsSummary.lowIdle}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}">
+                    				<a4j:actionparam value="#{stopsSummary.idleLo}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.lowIdle == null}"/>	      	                			                			
+                    			    	                			                			
 	                		</rich:column>
-	                			   
+	                			   	                	
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.highIdle != null}">
-                    				<a4j:actionparam value="#{stopsSummary.highIdle}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}">
+                    				<a4j:actionparam value="#{stopsSummary.idleHi}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.highIdle == null}"/>	      	                			                			
+                    			      	                			                			
 	                		</rich:column>	    
-	                		
+	                			                
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.wait != null}">
-                    				<a4j:actionparam value="#{stopsSummary.wait}" converter="TimeToStringConverter"/>                    
+                    			<h:outputFormat value="#{messages.reports_time}" >
+                    				<a4j:actionparam value="#{stopsSummary.departTime - stopsSummary.arriveTime - stopsSummary.idleHi - stopsSummary.idleLo}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.wait == null}"/>	      	                			                			
+                    			     	                			                			
 	                		</rich:column>	
-	                		
+	                			                	
 	                		<rich:column>
-                    			<h:outputFormat value="#{messages.reports_time}" rendered="#{stopsSummary.driveTime != null}">
+                    			<h:outputFormat value="#{messages.reports_time}">
                     				<a4j:actionparam value="#{stopsSummary.driveTime}" converter="TimeToStringConverter"/>                    
                     			</h:outputFormat>										
-                    			<h:outputText value="00:00:00" rendered="#{stopsSummary.driveTime == null}"/>	      	                			                			
-	                		</rich:column>	                		                		            		             		       		
+                    			 	                			                			
+	                		</rich:column>	      	                		            		             		       		
 						</rich:dataTable>  			
  				          				             	  					         
 	         		</div>  

@@ -231,6 +231,18 @@ public interface SiloService extends HessianService
      *      trip map
      */
     Map<String, Object> getLastTrip(Integer id, Integer reqType) throws ProDAOException;
+    
+    /**
+     * @param id 
+     *       driverID
+     * @param startDate  
+     *          start of Date range (seconds)
+     * @param endDate
+     *          end of Date range (seconds)
+     * @return
+     *      list of stop map
+     */
+    List<Map<String, Object>> getStops(Integer driverID, Long startDate, Long endDate) throws ProDAOException;
 
 
     // -------------------------    Table Preferences   -----------------------------------------------

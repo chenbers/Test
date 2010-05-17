@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 
@@ -151,13 +152,27 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     }
 
 	@Override
-	public List<DriverLocation> getDriverLocations(Integer groupID) {
-
-		
+	public List<DriverLocation> getDriverLocations(Integer groupID) {		
         try {
             return getMapper().convertToModelObject(this.getSiloService().getDVLByGroupIDDeep(groupID), DriverLocation.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
+	}
+	
+	@Override
+    public List<DriverStops> getStops(Integer driverID, Interval interval) {
+        try {
+            Date start = interval.getStart().toDateTime().toDate();
+            Date end   = interval.getEnd().toDateTime().toDate();
+            return getMapper().convertToModelObject(this.getSiloService().getStops(
+                    driverID,
+                    DateUtil.convertDateToSeconds(start),
+                    DateUtil.convertDateToSeconds(end)), 
+                    DriverStops.class);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }	    
+	    
 	}
 }

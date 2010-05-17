@@ -7,6 +7,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 
@@ -99,4 +100,14 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      */
     List<DriverLocation> getDriverLocations(Integer groupID);
 
+    /**
+     * Gets a list of all a drivers stops for a timeframe.
+     * 
+     * @param driverID
+     *            The driverID to retrieve.
+     * @param interval
+     *            The time interval to consider.              
+     * @return List of DriverStopsReportItem or empty map if none found.
+     */
+    List<DriverStops> getStops(Integer driverID,  Interval interval);
 }
