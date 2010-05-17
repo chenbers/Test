@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 import org.ajax4jsf.model.KeepAlive;
@@ -12,9 +13,12 @@ import org.richfaces.json.JSONArray;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverStopsReportItem;
+import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.util.MessageUtil;
+
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 
 @KeepAlive
 public class TeamStopsBean extends BaseBean {
@@ -37,9 +41,10 @@ public class TeamStopsBean extends BaseBean {
     private List<String> labels;    
     
     private List<Driver> drivers;
-    private List<DriverStopsReportItem> driverStops;
-    private List<DriverStopsReportItem> driverStopsSummary;    
-    private Integer selectedDriverID;   
+    private List<DriverStops> driverStops;
+    private List<DriverStops> driverStopsSummary;    
+    private Integer selectedDriverID;  
+    private TimeZone timeZone;
 
     public DriverDAO getDriverDAO() {
         return driverDAO;
@@ -65,7 +70,7 @@ public class TeamStopsBean extends BaseBean {
         return drivers;
     }  
     
-    public List<DriverStopsReportItem> getDriverStops() { 
+    public List<DriverStops> getDriverStops() { 
         if ( selectedDriverID != null ) {
             initDriverStops();
         }
@@ -73,7 +78,7 @@ public class TeamStopsBean extends BaseBean {
         return driverStops;
     }
     
-    public List<DriverStopsReportItem> getDriverStopsSummary() {
+    public List<DriverStops> getDriverStopsSummary() {
         if ( selectedDriverID != null ) {
             initDriverStopsSummary();
         }
@@ -132,8 +137,8 @@ public class TeamStopsBean extends BaseBean {
     public void init(){            
 
         drivers = new ArrayList<Driver>();
-        driverStops = new ArrayList<DriverStopsReportItem>();
-        driverStopsSummary = new ArrayList<DriverStopsReportItem>();
+        driverStops = new ArrayList<DriverStops>();
+        driverStopsSummary = new ArrayList<DriverStops>();
 
         // Labels to the right of the driver name
         labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(
@@ -146,71 +151,40 @@ public class TeamStopsBean extends BaseBean {
         Collections.sort(drivers);
     }
 
-    private void initDriverStops() {
-        
-        // Fake some data to get all the formatting correct in the page
-        DriverStopsReportItem dsri = new DriverStopsReportItem();
-        driverStops = new ArrayList<DriverStopsReportItem>();
-        
-        dsri.setArrive("1/1/2010 8:05AM");
-        dsri.setDepart("1/1/2010 8:11AM");
-        dsri.setDriveTime(200);
-        dsri.setHighIdle(20);
-        dsri.setLatitude(40.710882);
-        dsri.setLongitude(-111.993299);
-        dsri.setLowIdle(40);
-        dsri.setRoundTrip(1);
-        dsri.setStopLocation("");
-        dsri.setTotalTimeAtStop(160);
-        dsri.setWait(100);
-        
-        driverStops.add(dsri);
-        dsri = new DriverStopsReportItem();
-        
-        dsri.setArrive("1/1/2010 9:01AM");
-        dsri.setDepart("1/1/2010 9:21AM");
-        dsri.setDriveTime(400);
-        dsri.setHighIdle(50);
-        dsri.setLatitude(40.594077);
-        dsri.setLongitude(-111.952615);
-        dsri.setLowIdle(70);
-        dsri.setRoundTrip(2);
-        dsri.setStopLocation("");
-        dsri.setTotalTimeAtStop(130);
-        dsri.setWait(10);
-        
-        driverStops.add(dsri);        
+    private void initDriverStops() {        
+        driverStops =                        
+            driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
     }
     
     public void initDriverStopsSummary() {
         
         // Re-init values
-        DriverStopsReportItem d = new DriverStopsReportItem();
-        driverStopsSummary = new ArrayList<DriverStopsReportItem>();
+        DriverStops d = new DriverStops();
+        driverStopsSummary = new ArrayList<DriverStops>();
         
         int roundTrip = 0;
-        int totalTimeAtStop = 0;
+        int arriveTime = 0;
+        int departTime = 0;
         int lowIdle = 0;
         int highIdle = 0;
-        int wait = 0;
         int driveTime = 0;
         
         // Sum up over all trips by the selected driver
-        for ( DriverStopsReportItem dsri: driverStops ) {
-            if ( dsri.getRoundTrip() != null ) {
-                roundTrip++;
+        for ( DriverStops dsri: driverStops ) {
+//            if ( dsri.getRoundTrip() != null ) {
+//                roundTrip++;
+//            }
+            if ( dsri.getArriveTime() != null ) {
+                arriveTime += dsri.getArriveTime().intValue();
             }
-            if ( dsri.getTotalTimeAtStop() != null ) {
-                totalTimeAtStop += dsri.getTotalTimeAtStop();
+            if ( dsri.getDepartTime() != null ) {
+                departTime += dsri.getDepartTime().intValue();
             }
-            if ( dsri.getLowIdle() != null ) {
-                lowIdle += dsri.getLowIdle();
+            if ( dsri.getIdleLo() != null ) {
+                lowIdle += dsri.getIdleLo().intValue();
             }
-            if ( dsri.getHighIdle() != null ) {
-                highIdle += dsri.getHighIdle();
-            }
-            if ( dsri.getWait() != null ) {
-                wait += dsri.getWait();
+            if ( dsri.getIdleHi() != null ) {
+                highIdle += dsri.getIdleHi().intValue();
             }
             if ( dsri.getDriveTime() != null ) {
                 driveTime += dsri.getDriveTime();
@@ -218,13 +192,45 @@ public class TeamStopsBean extends BaseBean {
         }
         
         // Set the summary row
-        d.setRoundTrip(roundTrip);
-        d.setTotalTimeAtStop(totalTimeAtStop);
-        d.setLowIdle(lowIdle);
-        d.setHighIdle(highIdle);
-        d.setWait(wait);
-        d.setDriveTime(driveTime);
+//        d.setRoundTrip(roundTrip);
+        d.setArriveTime(new Long(arriveTime));
+        d.setDepartTime(new Long(departTime));
+        d.setIdleLo(lowIdle);
+        d.setIdleHi(highIdle);
+        d.setDriveTime(new Long(driveTime));
         
         driverStopsSummary.add(d);
     }
+
+    public TimeZone getTimeZone() {
+        
+        // Return TimeZone if this driver is known.
+//        if (tripsDrivers.containsKey(driverID))
+//            return tripsDrivers.get(driverID).getPerson().getTimeZone();
+        // Lookup driver, save Driver for repeat requests. 
+        
+        // Find by driver
+//        Driver driver = driverDAO.findByID(selectedDriverID);
+        
+//        if (driver != null && driver.getPerson() != null && driver.getPerson().getTimeZone() != null) {
+//            tripsDrivers.put(driver.getDriverID(), driver);
+//            timeZone = driver.getPerson().getTimeZone();
+//        }
+//        else {
+            // Use GMT for default if no driver associated.
+//            timeZone = TimeZone.getTimeZone("GMT");
+//        }
+        
+        // Find by logged-in user
+        if (getPerson() != null && getPerson().getTimeZone() != null) {
+//            tripsDrivers.put(driver.getDriverID(), driver);
+            timeZone = getPerson().getTimeZone();
+        }
+        else {
+            // Use GMT for default if no driver associated.
+            timeZone = TimeZone.getTimeZone("GMT");
+        }        
+        
+        return timeZone;
+    }    
 }
