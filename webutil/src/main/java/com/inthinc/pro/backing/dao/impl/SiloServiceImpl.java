@@ -918,13 +918,15 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-    @MethodDescription(description = "Fetches red flag alerts for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class)
+    @MethodDescription(description = "Fetches red flag alerts for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
 	public List<Map<String, Object>> getRedFlagAlertsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
 		return null;
 	}
 
 	@Override
-    @MethodDescription(description = "Fetches red flag alerts for the user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class)
+    @MethodDescription(description = "Fetches red flag alerts for the user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
 	public List<Map<String, Object>> getRedFlagAlertsByUserID(@DaoParam(name = "userID", validator=ValidatorType.USER)Integer userID) {
 		return null;
 	}
