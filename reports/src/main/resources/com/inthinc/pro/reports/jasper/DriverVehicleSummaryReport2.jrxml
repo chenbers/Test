@@ -9,7 +9,7 @@
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
-		<field name="value" class="java.lang.Integer"/>
+		<field name="value" class="java.lang.Double"/>
 		<field name="label" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="coachingDataSet">
