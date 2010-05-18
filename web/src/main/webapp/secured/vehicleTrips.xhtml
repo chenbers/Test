@@ -809,7 +809,7 @@
 												<ui:param name="context" value="vehicleTrips" />
 												<ui:param name="driverID" value="#{vehicleTripsBean.selectedDriver.driverID}" />
 												<ui:param name="unknownDriverID" value="#{vehicleTripsBean.unknownDriverID}" />
-												<ui:param name="driverName" value="#{vehicleTripsBean.selectedDriver.person.fullName}" />
+												<ui:param name="driverName" value="#{driverID eq null or driverID eq unknownDriverID ? vehicleTripsBean.unknownDriver.person.fullName : vehicleTripsBean.selectedDriver.person.fullName}" />
 										</ui:include> </span>
 										<span class="panel_links"></span>
 								</h:form></div>
