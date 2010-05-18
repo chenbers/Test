@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -262,6 +263,13 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
+    @Override
+    public List<Map<String, Object>> getStops(@DaoParam(name="driverID", validator=ValidatorType.DRIVER) Integer driverID,
+                                              @DaoParam(name="startDate", type=java.util.Date.class) Long startDate,
+                                              @DaoParam(name="endDate", type=java.util.Date.class) Long endDate) {                   
+        return null;
+    }
+    
     @Override
     @MethodDescription(description = "Fetches the next silo.", crudType=CrudType.READ_RESTRICTED)
     public Map<String, Object> getNextSilo() {

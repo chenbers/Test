@@ -242,7 +242,7 @@ public interface SiloService extends HessianService
      * @return
      *      list of stop map
      */
-    List<Map<String, Object>> getStops(Integer driverID, Long startDate, Long endDate) throws ProDAOException;
+    public List<Map<String, Object>> getStops(Integer driverID, Long startDate, Long endDate) throws ProDAOException;
 
 
     // -------------------------    Table Preferences   -----------------------------------------------
