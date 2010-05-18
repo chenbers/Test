@@ -103,7 +103,7 @@ public class DataGenForStressTesting {
     List<GroupData> teamGroupData;
     Zone zone;
     Integer zoneID;
-    User fleetUser;
+    static User fleetUser;
     
     String names[][] = {  // first, last
     		{"James","Miller"},
@@ -292,7 +292,9 @@ public class DataGenForStressTesting {
     private RedFlagAlert initRedFlagAlert(String typeStr) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(account.getAcctID(), typeStr + " Red Flag", typeStr + " Red Flag Description", 0,
+    	RedFlagAlert redFlagAlert = new RedFlagAlert(account.getAcctID(), 
+    		fleetUser.getUserID(),
+    		typeStr + " Red Flag", typeStr + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
             anyTeam(),
@@ -320,7 +322,9 @@ public class DataGenForStressTesting {
 		// zone alert pref for enter/leave zone any time, any day, both teams
         ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-        ZoneAlert zoneAlert = new ZoneAlert(account.getAcctID(), "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
+        ZoneAlert zoneAlert = new ZoneAlert(account.getAcctID(), 
+        		fleetUser.getUserID(),
+        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
@@ -420,7 +424,9 @@ public class DataGenForStressTesting {
         emailList.add("test@email.com");
         List<Integer> notifyPersonIDList = new ArrayList<Integer>();
         notifyPersonIDList.add(notifyPersonIDs[0]);
-        ZoneAlert zoneAlert = new ZoneAlert(acctID, "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
+        ZoneAlert zoneAlert = new ZoneAlert(acctID,
+        		fleetUser.getUserID(),
+        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 dayOfWeek, groupIDList, null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
@@ -449,7 +455,9 @@ public class DataGenForStressTesting {
         List<String> emailList = new ArrayList<String>();
         emailList.add("test@email.com");
         // speeding alert
-        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
+        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, 
+        		fleetUser.getUserID(),
+        		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time
                 dayOfWeek, groupIDList,
                 null, // driverIDs

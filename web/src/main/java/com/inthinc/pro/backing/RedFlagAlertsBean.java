@@ -45,7 +45,15 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     @Override
     protected List<RedFlagAlertView> loadItems() {
         // get the red flags
-        final List<RedFlagAlert> plainRedFlagAlerts = redFlagAlertDAO.getRedFlagAlerts(getAccountID());
+//        final List<RedFlagAlert> plainRedFlagAlerts = redFlagAlertDAO.getRedFlagAlerts(getAccountID());
+    	List<RedFlagAlert> plainRedFlagAlerts = null;
+    	if (this.getProUser().isAdmin()) {
+    		plainRedFlagAlerts = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(getUser().getUserID());
+    	}
+    	else {
+    		plainRedFlagAlerts = redFlagAlertDAO.getRedFlagAlertsByUserID(getUser().getUserID());
+    	}
+
         // convert the RedFlagAlerts to RedFlagAlertViews
         final LinkedList<RedFlagAlertView> items = new LinkedList<RedFlagAlertView>();
         for (final RedFlagAlert flag : plainRedFlagAlerts)
@@ -102,6 +110,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         final RedFlagAlert flag = new RedFlagAlert();
         RedFlagAlertView redFlagAlertView = createRedFlagAlertView(flag);
         redFlagAlertView.setAccountID(getAccountID());
+        redFlagAlertView.setUserID(getUserID());
         return redFlagAlertView;
     }
 
@@ -136,6 +145,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     @Override
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
+        
         if (isBatchEdit()) {
             boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
             updateField.put("speedLevels", updateType);
@@ -302,7 +312,8 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlag-name", message);
             valid = false;
         }
-        if ("speed".equals(saveItem.getType())){
+  
+        if ("speed".equals(saveItem.getType()) && this.getUpdateField().get("speedLevels")){
         	boolean speedValid = false;
         	for(int i=0;i< saveItem.getSpeedSelected().length; i++){
         		

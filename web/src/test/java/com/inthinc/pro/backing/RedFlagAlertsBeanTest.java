@@ -7,7 +7,6 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.backing.RedFlagAlertsBean.RedFlagAlertView;
-import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.util.MiscUtil;
 
 public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.RedFlagAlertView>
@@ -34,17 +33,16 @@ public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.R
         for (int i = 0; i < 7; i++)
             dayOfWeek.add(new Boolean(MiscUtil.randomInt(0, 1) == 1));
         editItem.setDayOfWeek(dayOfWeek);
-        editItem.setSeatBeltLevel(RedFlagLevel.WARNING);
-        assertEquals("seatBelt", editItem.getType());
+//        editItem.setSeatBeltLevel(RedFlagLevel.WARNING);
+//        assertEquals("seatBelt", editItem.getType());
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
         ((RedFlagAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
-        editItem.setEmailToString("hello@dolly.com");
     }
 
     @Override
     protected String[] getBatchUpdateFields()
     {
-        return new String[] { "name", "description", "assignTo", "emailToString" };
+        return new String[] { "name", "description", "assignTo"};
     }
 }

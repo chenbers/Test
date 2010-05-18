@@ -36,6 +36,7 @@ import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.BeanUtil;
@@ -80,7 +81,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         Collections.sort(selectItemList, new Comparator<SelectItem>() {
             @Override
             public int compare(SelectItem o1, SelectItem o2) {
-                return MessageUtil.getMessageString(o1.toString()).toLowerCase().compareTo(MessageUtil.getMessageString(o2.toString()).toLowerCase());
+//                return MessageUtil.getMessageString(o1.toString()).toLowerCase().compareTo(MessageUtil.getMessageString(o2.toString()).toLowerCase());
+                return o1.getValue().toString().toLowerCase().compareTo(o2.getValue().toString().toLowerCase());
             }
         });
     }
@@ -143,7 +145,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public Map<String, Integer> getDrivers() {
         Map<String, Integer> driverMap = new HashedMap();
         driverMap.put("", null);
-        List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
+    	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
+    	User owner = null;
+    	if (!ownerID.equals(getUserID()))
+    		owner = userDAO.findByID(ownerID);
+    	else owner = getUser();
+
+//        List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
+        List<Driver> driverList = driverDAO.getAllDrivers(owner.getGroupID());
         for (Driver driver : driverList) {
             driverMap.put(driver.getPerson().getFullName(), driver.getDriverID());
         }
@@ -164,10 +173,20 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return selectItemList;
     }
 */    
+    
+    public void ownerChangedAction() {
+    }
+    
     public Map<String, Integer> getGroups() {
+    	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
+    	User owner = null;
+    	if (!ownerID.equals(getUserID()))
+    		owner = userDAO.findByID(ownerID);
+    	else owner = getUser();
+
         final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
         List<GroupType> acceptableGroupTypes = Arrays.asList(getItem().getReport().getGroupTypes());
-	    for (final Group group : getGroupHierarchy().getGroupList()) {
+	    for (final Group group : getGroupHierarchy().getSubGroupList(owner.getGroupID())) {
             if (acceptableGroupTypes.contains(group.getType())) {
 	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
 		    	if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
@@ -406,7 +425,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     @Override
     protected List<ReportScheduleView> loadItems() {
         List<ReportScheduleView> returnList = new ArrayList<ReportScheduleView>();
-        List<ReportSchedule> reportScheduleList = reportScheduleDAO.getReportSchedulesByUserID(getProUser().getUser().getUserID());
+        List<ReportSchedule> reportScheduleList = null;
+        if (getProUser().isAdmin()) 
+        	reportScheduleList = reportScheduleDAO.getReportSchedulesByUserIDDeep(getProUser().getUser().getUserID());
+        else reportScheduleList = reportScheduleDAO.getReportSchedulesByUserID(getProUser().getUser().getUserID());
         for (ReportSchedule reportSchedule : reportScheduleList) {
             returnList.add(createReportScheduleView(reportSchedule));
         }

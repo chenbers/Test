@@ -1560,4 +1560,38 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         // TODO Auto-generated method stub
         return null;
     }
+	@Override
+	public List<Map<String, Object>> getRedFlagAlertsByUserIDDeep(Integer userID) {
+        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
+        Person person = (Person) MockData.getInstance().lookupObject(Person.class, "personID", user.getPersonID());
+		return getRedFlagAlertsByAcctID(person.getAcctID());
+	}
+
+	@Override
+	public List<Map<String, Object>> getRedFlagAlertsByUserID(Integer userID) {
+        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
+		return getRedFlagAlertsByAcctID(user.getPerson().getAcctID());
+	}
+
+	@Override
+	public List<Map<String, Object>> getZoneAlertsByUserIDDeep(Integer userID) {
+        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
+        Person person = (Person) MockData.getInstance().lookupObject(Person.class, "personID", user.getPersonID());
+		return getZoneAlertsByAcctID(person.getAcctID());
+	}
+
+	@Override
+	public List<Map<String, Object>> getZoneAlertsByUserID(Integer userID) {
+        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
+		return getZoneAlertsByAcctID(user.getPerson().getAcctID());
+	}
+
+	@Override
+	public List<Map<String, Object>> getReportPrefsByUserIDDeep(Integer userID)
+			throws ProDAOException {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("userID", userID);
+        List<Map<String, Object>> returnList =  MockData.getInstance().lookupList(ReportSchedule.class,searchCriteria);
+        return returnList;
+	}
 }

@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
@@ -21,6 +22,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.BeanUtil;
@@ -30,7 +32,7 @@ import com.inthinc.pro.validators.EmailValidator;
 
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
-    protected UserDAO          userDAO;
+//    protected UserDAO          userDAO;
     protected PersonDAO        personDAO;
     protected DriverDAO        driverDAO;
     private VehiclesBean       vehiclesBean;
@@ -42,10 +44,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private T                  oldItem;
     private String             oldEmailToString;
 
-    public void setUserDAO(UserDAO userDAO)
-    {
-        this.userDAO = userDAO;
-    }
+
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -66,6 +65,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         return assignType;
     }
+    
+    public void ownerChangedAction() {
+    	assignPicker = null;
+    	item.setGroupIDs(null);
+    	item.setVehicleIDs(null);
+    	item.setDriverIDs(null);
+    }
 
     public void setAssignType(String assignType)
     {
@@ -83,10 +89,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     private List<SelectItem> getAssignPickFrom()
     {
+    	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
+    	User owner = null;
+    	if (!ownerID.equals(getUserID()))
+    		owner = userDAO.findByID(ownerID);
+    	else owner = getUser();
         final LinkedList<SelectItem> pickFrom = new LinkedList<SelectItem>();
         if ((assignType == null) || "groups".equals(assignType))
         {
-            for (final Group group : getGroupHierarchy().getGroupList())
+            for (final Group group : getGroupHierarchy().getSubGroupList(owner.getGroupID()))
                 pickFrom.add(new SelectItem("group" + group.getGroupID(), group.getName()));
         }
         else if ("vehicleTypes".equals(assignType))
@@ -97,11 +108,11 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
         else if ("vehicles".equals(assignType))
         {
-            pickFrom.addAll(getAllVehicles());
+            pickFrom.addAll(getAllVehicles(owner.getGroupID()));
         }
         else if ("drivers".equals(assignType))
         {
-            pickFrom.addAll(getAllDrivers());
+            pickFrom.addAll(getAllDrivers(owner.getGroupID()));
         }
         return pickFrom;
     }
@@ -130,6 +141,34 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             MiscUtil.sortSelectItems(allDrivers);
         }
         return allDrivers;
+    }
+
+    protected List<SelectItem> getAllVehicles(Integer groupID)
+    {
+    	List<Group> subGroupList = getGroupHierarchy().getSubGroupList(groupID);
+    	final List<VehicleView> vehicles = vehiclesBean.getItems();
+    	List<SelectItem> groupVehicles = new ArrayList<SelectItem>();
+        for (final Vehicle vehicle : vehicles) {
+        	for (Group group : subGroupList) {
+        		if (group.getGroupID().equals(vehicle.getGroupID())) {
+        			groupVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
+        			break;
+        		}
+        	}
+        }
+        MiscUtil.sortSelectItems(groupVehicles);
+        return groupVehicles;
+    }
+
+    protected List<SelectItem> getAllDrivers(Integer groupID)
+    {
+        final List<Driver> drivers = driverDAO.getAllDrivers(groupID);
+        List<SelectItem> groupDrivers = new ArrayList<SelectItem>(drivers.size());
+        for (final Driver driver : drivers)
+            groupDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getPerson().getFirst() + ' ' + driver.getPerson().getLast()));
+        MiscUtil.sortSelectItems(groupDrivers);
+        
+        return groupDrivers;
     }
 
     private List<SelectItem> getAssignPicked()
@@ -164,12 +203,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
             final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            
-            for (final Person person : people)
+            for (final Person person : people) 
                 allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
-                //allUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
-            
-                MiscUtil.sortSelectItems(allUsers);
+            MiscUtil.sortSelectItems(allUsers);
 
             final ArrayList<SelectItem> notifyPeople = getNotifyPicked();
 
@@ -337,6 +373,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         boolean valid = true;
         
         // at least one day chosen
+        Map<String, Boolean> updateFieldMap = getUpdateField();
         if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfWeek")))
         {
             boolean dayPicked = false;
@@ -374,6 +411,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             }
         }
 
+// not used
+/*        
         if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("emailToString")))
         {
             // valid e-mail addresses
@@ -390,7 +429,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 }
             }
         }
-        
+*/        
         return valid;
     }
 
@@ -424,6 +463,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 alert.setStopTOD(BaseAlert.DEFAULT_STOP_TOD);
         }
     }
+    
+
     public abstract String getAlertPage();
 
     public interface BaseAlertView extends EditItem
@@ -471,6 +512,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         public String getEmailToString();
 
         public void setEmailToString(String emailToString);
+        
+        public Integer getUserID();
         
     }
 }

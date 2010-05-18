@@ -1,11 +1,13 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.ZoneAlert;
 
 public class ZoneAlertHessianDAO extends GenericHessianDAO<ZoneAlert, Integer> implements ZoneAlertDAO
@@ -16,6 +18,31 @@ public class ZoneAlertHessianDAO extends GenericHessianDAO<ZoneAlert, Integer> i
         try
         {
             return getMapper().convertToModelObject(getSiloService().getZoneAlertsByAcctID(accountID), ZoneAlert.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        
+    }
+    @Override
+    public List<ZoneAlert> getZoneAlertsByUserID(Integer userID)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getSiloService().getZoneAlertsByUserID(userID), ZoneAlert.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+    @Override
+    public List<ZoneAlert> getZoneAlertsByUserIDDeep(Integer userID)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getSiloService().getZoneAlertsByUserIDDeep(userID), ZoneAlert.class);
         }
         catch (EmptyResultSetException e)
         {

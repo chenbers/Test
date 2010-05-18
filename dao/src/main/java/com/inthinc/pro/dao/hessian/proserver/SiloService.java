@@ -343,6 +343,8 @@ public interface SiloService extends HessianService
     Map<String, Object> createRedFlagAlert(Integer acctID, Map<String, Object> redFlagAlertMap) throws ProDAOException;
 
     List<Map<String, Object>> getRedFlagAlertsByAcctID(Integer accountID);
+    List<Map<String, Object>> getRedFlagAlertsByUserID(Integer userID);
+    List<Map<String, Object>> getRedFlagAlertsByUserIDDeep(Integer userID);
 
     // Methods related to the ZoneAlert type
     Map<String, Object> deleteZoneAlert(Integer zoneAlertID) throws ProDAOException;
@@ -354,6 +356,8 @@ public interface SiloService extends HessianService
     Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException;
 
     List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID);
+    List<Map<String, Object>> getZoneAlertsByUserID(Integer userID);
+    List<Map<String, Object>> getZoneAlertsByUserIDDeep(Integer userID);
 
     Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
     
@@ -371,6 +375,8 @@ public interface SiloService extends HessianService
     Map<String, Object> updateReportPref(Integer reportPrefID, Map<String, Object> reportPrefMap) throws ProDAOException;
     
     List<Map<String, Object>> getReportPrefsByUserID(Integer userID) throws ProDAOException;
+    
+    List<Map<String, Object>> getReportPrefsByUserIDDeep(Integer userID) throws ProDAOException;
     
     // Crash Reports
     

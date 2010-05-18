@@ -522,6 +522,21 @@
                        
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
+                      	<ui:fragment rendered="#{redFlagAlertsBean.admin}">
+                      
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_owner" value="#{redFlagAlertsBean.updateField['userID']}" />
+                          <h:outputText value="#{messages.editAlerts_owner}" />
+                        </div>
+
+                        <div class="instructions"><h:outputText value="#{messages.editAlerts_ownerInstructions}" /></div>
+						<h:selectOneMenu id="redFlagAlert-userID" value="#{redFlagAlertsBean.item.userID}" style="width: 200px">
+                            <f:selectItems value="#{redFlagAlertsBean.allGroupUsers}" />
+                            <a4j:support action="#{redFlagAlertsBean.ownerChangedAction}" event="onchange" 
+                            		reRender="edit-form:editRedFlag-from,edit-form:editRedFlag-pickedIDs,edit-form:editRedFlag-picked"/>
+                        </h:selectOneMenu>
+                        </ui:fragment>
+                      
                         <!-- 
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_emailToString" value="#{redFlagAlertsBean.updateField['emailToString']}" />

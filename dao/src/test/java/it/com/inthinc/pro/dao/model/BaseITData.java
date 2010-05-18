@@ -354,7 +354,9 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
     protected RedFlagAlert initRedFlagAlert(String typeStr) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(account.getAcctID(), typeStr + " Red Flag", typeStr + " Red Flag Description", 0,
+    	RedFlagAlert redFlagAlert = new RedFlagAlert(account.getAcctID(),
+    		fleetUser.getUserID(),
+    		typeStr + " Red Flag", typeStr + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
             anyTeam(),
@@ -386,7 +388,8 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
 		// zone alert pref for enter/leave zone any time, any day, both teams
         ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-        ZoneAlert zoneAlert = new ZoneAlert(account.getAcctID(), "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
+        ZoneAlert zoneAlert = new ZoneAlert(account.getAcctID(), this.fleetUser.getUserID(), 
+        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs

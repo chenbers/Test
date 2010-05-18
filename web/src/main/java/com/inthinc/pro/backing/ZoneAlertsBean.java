@@ -64,7 +64,14 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     protected List<ZoneAlertView> loadItems()
     {
         // get the zone alerts
-        final List<ZoneAlert> plainZoneAlerts = zoneAlertDAO.getZoneAlerts(getAccountID());
+//        final List<ZoneAlert> plainZoneAlerts = zoneAlertDAO.getZoneAlerts(getAccountID());
+    	List<ZoneAlert> plainZoneAlerts = null;
+    	if (this.getProUser().isAdmin()) {
+    		plainZoneAlerts = zoneAlertDAO.getZoneAlertsByUserIDDeep(getUser().getUserID());
+    	}
+    	else {
+    		plainZoneAlerts = zoneAlertDAO.getZoneAlertsByUserID(getUser().getUserID());
+    	}
 
         // convert the ZoneAlerts to ZoneAlertViews
         final LinkedList<ZoneAlertView> items = new LinkedList<ZoneAlertView>();
@@ -152,6 +159,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
                 alert.setZoneID((Integer)zones.get(0).getValue());
         }
         alert.setAccountID(getAccountID());
+        alert.setUserID(getUserID());
         return createZoneAlertView(alert);
     }
 
@@ -176,9 +184,18 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     {
         // if batch-changing alert definition, change all of its children
         final Map<String, Boolean> updateField = getUpdateField();
+        
+System.out.println("ZoneAlert - fields");
+for (String key : updateField.keySet())
+	System.out.println(key + " " + updateField.get(key));
+System.out.println("ZoneAlert - fields end");
+
         final boolean defineAlerts = Boolean.TRUE.equals(updateField.get("defineAlerts"));
+System.out.println("defineAlerts = " + defineAlerts);
         updateField.put("arrival", defineAlerts);
         updateField.put("departure", defineAlerts);
+        
+/* 	not currently used        
         updateField.put("driverIDViolation", defineAlerts);
         updateField.put("ignitionOn", defineAlerts);
         updateField.put("ignitionOff", defineAlerts);
@@ -190,6 +207,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         updateField.put("cautionArea", defineAlerts);
         updateField.put("disableRF", defineAlerts);
         updateField.put("monitorIdle", defineAlerts);
+*/
         
         if(isBatchEdit() && updateField.get("anytime"))
         {
@@ -316,7 +334,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         zonesBean.clearZones();
         super.resetList();
     }
-   
+    
     public static class ZoneAlertView extends ZoneAlert implements BaseAdminAlertsBean.BaseAlertView
     {
         @Column(updateable = false)

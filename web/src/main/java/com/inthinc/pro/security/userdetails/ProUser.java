@@ -27,7 +27,10 @@ public class ProUser extends org.springframework.security.userdetails.User
     private GroupHierarchy groupHierarchy;
     private List<Zone>     zones;
     private Driver	unknownDriver;
+    private boolean isAdmin;
+  
     
+
 	public ProUser(User user, GrantedAuthority[] grantedAuthorities)
     {
         super(  user.getUsername(),
@@ -83,5 +86,12 @@ public class ProUser extends org.springframework.security.userdetails.User
 		this.unknownDriver = unknownDriver;
 	}
 
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 
 }

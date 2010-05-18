@@ -7,4 +7,6 @@ import com.inthinc.pro.model.RedFlagAlert;
 public interface RedFlagAlertDAO extends GenericDAO<RedFlagAlert, Integer>
 {
     List<RedFlagAlert> getRedFlagAlerts(Integer accountID);
+    List<RedFlagAlert> getRedFlagAlertsByUserID(Integer userID);
+    List<RedFlagAlert> getRedFlagAlertsByUserIDDeep(Integer userID);
 }

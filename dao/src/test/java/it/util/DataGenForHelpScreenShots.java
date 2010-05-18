@@ -81,6 +81,7 @@ public class DataGenForHelpScreenShots {
     Account account;
     Address address;
     Group fleetGroup;
+    static User fleetUser;
     class GroupData {
     	Group group;
     	List<User> userList = new ArrayList<User>();
@@ -190,7 +191,7 @@ public class DataGenForHelpScreenShots {
         createGroupHierarchy(account.getAcctID());
 
         // User at fleet level
-        User fleetUser = createUser(account.getAcctID(), fleetGroup);
+        fleetUser = createUser(account.getAcctID(), fleetGroup);
         System.out.println("Fleet Level User " + fleetUser.getUsername());
 
         // User at team level
@@ -241,7 +242,9 @@ public class DataGenForHelpScreenShots {
         emailList.add("test@email.com");
         List<Integer> notifyPersonIDList = new ArrayList<Integer>();
         notifyPersonIDList.add(notifyPersonIDs[0]);
-        ZoneAlert zoneAlert = new ZoneAlert(acctID, "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
+        ZoneAlert zoneAlert = new ZoneAlert(acctID, 
+        		fleetUser.getUserID(),
+        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 dayOfWeek, groupIDList, null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
@@ -270,7 +273,9 @@ public class DataGenForHelpScreenShots {
         List<String> emailList = new ArrayList<String>();
         emailList.add("test@email.com");
         // speeding alert
-        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
+        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, 
+        		fleetUser.getUserID(),
+        		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time
                 dayOfWeek, groupIDList,
                 null, // driverIDs

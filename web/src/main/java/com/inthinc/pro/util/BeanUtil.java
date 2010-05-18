@@ -336,6 +336,9 @@ public class BeanUtil
                         if (!"class".equals(descriptor.getName()))
                             names.add(prefix + descriptor.getName());
                     }
+                    else if (java.util.List.class.isAssignableFrom(clazz)) {
+                    	names.add(prefix + descriptor.getName());
+                    }
                     else
                     {
                         // get or create the container

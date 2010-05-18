@@ -517,14 +517,15 @@ public class SiloServiceTest {
         find();
         // zone alert profiles
         zoneAlertProfiles(acctID, team1Group.getGroupID());
-       // redFlagAlertProfiles(acctID, team1Group.getGroupID());
+        
+        // TODO: this was commented out, not sure why
+        redFlagAlertProfiles(acctID, team1Group.getGroupID());
         
         
         superuser(team1Group.getGroupID());
     }
 
     private void superuser(Integer groupID) {
-System.out.println("groupID " + groupID);    	
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
         SuperuserHessianDAO superuserDAO = new SuperuserHessianDAO();
@@ -552,6 +553,12 @@ System.out.println("groupID " + groupID);
 	private void redFlagAlertProfiles(Integer acctID, Integer groupID) {
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
         redFlagAlertDAO.setSiloService(siloService);
+        
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
+        Integer userID = groupUserList.get(0).getUserID();
+        
         List<Boolean> dayOfWeek = new ArrayList<Boolean>();
         for (int i = 0; i < 7; i++)
             dayOfWeek.add(true);
@@ -567,7 +574,8 @@ System.out.println("groupID " + groupID);
                 speedLevels[i] = RedFlagLevel.CRITICAL;
             else
                 speedLevels[i] = RedFlagLevel.INFO;
-        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
+        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, userID, 
+        		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
                 null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
@@ -578,8 +586,22 @@ System.out.println("groupID " + groupID);
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);
-        // find
+        // account id
         String ignoreFields[] = { "modified" };
+        List<RedFlagAlert> redFlagAlertList = redFlagAlertDAO.getRedFlagAlerts(acctID);
+        assertEquals(1, redFlagAlertList.size());
+        Util.compareObjects(redFlagAlert, redFlagAlertList.get(0), ignoreFields);
+        // user id
+        List<RedFlagAlert> userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(userID);
+        assertEquals(1, userRedFlagAlertList.size());
+        Util.compareObjects(redFlagAlert, userRedFlagAlertList.get(0), ignoreFields);
+        // group id
+        List<RedFlagAlert> groupRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(userID);
+        assertEquals(1, groupRedFlagAlertList.size());
+        Util.compareObjects(redFlagAlert, groupRedFlagAlertList.get(0), ignoreFields);
+
+        
+        // find
         RedFlagAlert returnedRedFlagAlert = redFlagAlertDAO.findByID(redFlagAlertID);
         Util.compareObjects(redFlagAlert, returnedRedFlagAlert, ignoreFields);
         // update
@@ -616,6 +638,12 @@ System.out.println("groupID " + groupID);
     private void zoneAlertProfiles(Integer acctID, Integer groupID) {
         ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
         zoneDAO.setSiloService(siloService);
+        
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
+        Integer userID = groupUserList.get(0).getUserID();
+
         // create a zone to use
         Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", groupID);
         List<LatLng> points = new ArrayList<LatLng>();
@@ -637,7 +665,8 @@ System.out.println("groupID " + groupID);
         List<Integer> notifyPersonIDs = new ArrayList<Integer>();
         notifyPersonIDs.add(this.personList.get(0).getPersonID());
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
-        ZoneAlert zoneAlert = new ZoneAlert(acctID, "Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs
+        ZoneAlert zoneAlert = new ZoneAlert(acctID, userID, 
+        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
                 notifyPersonIDs, null, // emailTo
@@ -665,6 +694,16 @@ System.out.println("groupID " + groupID);
         List<ZoneAlert> zoneAlertList = zoneAlertDAO.getZoneAlerts(acctID);
         assertEquals(1, zoneAlertList.size());
         Util.compareObjects(zoneAlert, zoneAlertList.get(0), ignoreFields);
+        // get by user id
+        List<ZoneAlert> userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(userID);
+        assertEquals(1, userZoneAlertList.size());
+        Util.compareObjects(zoneAlert, userZoneAlertList.get(0), ignoreFields);
+        // get by group id
+        List<ZoneAlert> groupZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(userID);
+        assertEquals(1, groupZoneAlertList.size());
+        Util.compareObjects(zoneAlert, groupZoneAlertList.get(0), ignoreFields);
+        
+        
         // delete
         Integer deletedCount = zoneAlertDAO.deleteByID(zoneAlertID);
         assertEquals("Red Flag alert delete count", Integer.valueOf(1), deletedCount);
@@ -680,6 +719,8 @@ System.out.println("groupID " + groupID);
         zoneAlertDAO.deleteByZoneID(zoneID);
         returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         assertEquals("Zone alert have deleted status after deletebyzoneID", Status.DELETED, returnedZoneAlert.getStatus());
+        
+        
     }
 
     private void zones(Integer acctID, Integer groupID) {
@@ -1297,6 +1338,11 @@ System.out.println("groupID " + groupID);
         // get by userID
         List<ReportSchedule> reportSchedulesByUser = reportScheduleHessianDAO.getReportSchedulesByUserID(userID);
         assertEquals("report schedules for userID: " + userID, 3, reportSchedulesByUser.size());   
+
+        // get by groupID
+// TODO:        
+//        List<ReportSchedule> reportSchedulesByUserDeep = reportScheduleHessianDAO.getReportSchedulesByUserIDDeep(userID);
+//        assertEquals("report schedules for userIDDeep: " + userID, 3, reportSchedulesByUserDeep.size());   
 
         
         // delete

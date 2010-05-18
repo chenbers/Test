@@ -326,6 +326,11 @@
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
+                           <div class="add_section_title"><h:outputText value="#{messages.editAlerts_owner}" /></div>
+                           <div>
+                             <h:outputText value="#{redFlagAlertsBean.item.username}" />
+                           </div>
+                      
                         <!--  
                         <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
 

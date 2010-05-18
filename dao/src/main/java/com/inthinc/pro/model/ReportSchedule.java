@@ -39,7 +39,8 @@ public class ReportSchedule
     private Status status;
     private Integer duration;
     
-
+    @Column(updateable = false)
+    private String 				username;
     
 	private Occurrence occurrence;
     
@@ -284,6 +285,14 @@ public class ReportSchedule
 
 	public void setDuration(Integer duration) {
 		this.duration = duration;
+	}
+
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

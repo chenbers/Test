@@ -21,11 +21,8 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
 
 public class ITDataExt extends BaseITData {
 	public List<GroupListData> teamGroupListData;

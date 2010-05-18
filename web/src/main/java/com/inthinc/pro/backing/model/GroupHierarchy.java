@@ -37,6 +37,25 @@ public class GroupHierarchy implements Serializable
     {
         this.groupList = groupList;
     }
+    public List<Group> getSubGroupList(Integer groupID)
+    {
+    	Group group = getGroup(groupID);
+    	if (group == null)
+    		return null;
+    	
+    	List<Group> subGroupList = new ArrayList<Group>();
+    	subGroupList.add(group);
+    	for (Group subgroup : groupList) {
+    		
+    		if (group.getGroupID().equals(subgroup.getParentID())) {
+    			List<Group> subList = getSubGroupList(subgroup.getGroupID());
+    			if (subList != null)
+    				subGroupList.addAll(subList);
+    		}
+    	}
+    	
+        return subGroupList;
+    }
     
     public Group getTopGroup()
     {

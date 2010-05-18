@@ -27,6 +27,7 @@ public abstract class BaseAlert extends BaseEntity
 
     @Column(name = "acctID")
     private Integer             accountID;
+	private Integer             userID;
     private String              name;
     private String              description;
     private Integer             startTOD;
@@ -36,20 +37,24 @@ public abstract class BaseAlert extends BaseEntity
     private List<Integer>       driverIDs;
     private List<Integer>       vehicleIDs;
     private List<VehicleType>   vehicleTypes;
-    private List<Integer>       notifyPersonIDs;
+	private List<Integer>       notifyPersonIDs;
     private List<String>        emailTo;
     private Status  status;
+
+    @Column(updateable = false)
+    private String 				username;
 
     public BaseAlert()
     {
         
     }
     
-    public BaseAlert(Integer accountID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
+    public BaseAlert(Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo)
     {
         super();
         this.accountID = accountID;
+        this.userID = userID;
         this.name = name;
         this.description = description;
         this.startTOD = startTOD;
@@ -226,5 +231,21 @@ public abstract class BaseAlert extends BaseEntity
     {
         this.status = status;
     }
+
+    public Integer getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Integer userID) {
+		this.userID = userID;
+	}
+
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 }

@@ -59,7 +59,9 @@ public class ProUserServiceImpl implements UserDetailsService
             
             user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
 
-            ProUser proUser = new ProUser(user, getGrantedAuthorities(user));
+            boolean isAdmin = userIsAdmin(user);
+            ProUser proUser = new ProUser(user, getGrantedAuthorities(user, isAdmin));
+            proUser.setAdmin(isAdmin);
             
             Group topGroup = groupDAO.findByID(user.getGroupID());
             List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), user.getGroupID());                  
@@ -142,7 +144,7 @@ public class ProUserServiceImpl implements UserDetailsService
 		this.driverDAO = driverDAO;
 	}
 
-    private GrantedAuthority[] getGrantedAuthorities(User user){
+    private GrantedAuthority[] getGrantedAuthorities(User user, boolean isAdmin){
 		
 		//TODO make an enum for all role related things
 		
@@ -162,7 +164,7 @@ public class ProUserServiceImpl implements UserDetailsService
         List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();		
 
 		// this will take into account the site access points instead of the original roles as follows
-		if(userIsAdmin(user)){
+		if(isAdmin){
 			
 			//Will cover all access points
 			grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));

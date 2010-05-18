@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -16,12 +18,15 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.TablePreference;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 /**
  * @author David Gileadi
@@ -45,6 +50,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected TablePreferenceDAO  tablePreferenceDAO;
     protected TablePreference     tablePreference;
     private TablePref<T>          tablePref;
+    protected UserDAO             userDAO;
+	private List<SelectItem>   	  allGroupUsers;
 
     public void initBean()
     {
@@ -477,8 +484,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
 
         // validate
-        if (!validate(selected))
-            return null;
+        if (!validate(selected)) {
+        	return null;
+        }
 
         final boolean add = isAdd();
         try
@@ -803,7 +811,35 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         refreshItems();
     }
+    public UserDAO getUserDAO() {
+		return userDAO;
+	}
 
+	public void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+    public List<SelectItem> getAllGroupUsers() {
+    	if (allGroupUsers == null) {
+    		allGroupUsers = new ArrayList<SelectItem>();
+    		List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
+            for (User user : users) {
+            	if (user.getPerson() != null)
+            		allGroupUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
+            }
+            MiscUtil.sortSelectItems(allGroupUsers);
+    		
+    	}
+		return allGroupUsers;
+	}
+
+	public void setAllGroupUsers(List<SelectItem> allGroupUsers) {
+		this.allGroupUsers = allGroupUsers;
+	}
+    public Boolean getAdmin()
+    {
+    	return getProUser().isAdmin();
+    }
     
 
 }

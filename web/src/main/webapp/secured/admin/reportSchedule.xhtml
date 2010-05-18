@@ -214,6 +214,18 @@
 							</table>
 						</td>
 					</tr>
+					<tr>
+						<td width="390" valign="top" align="left">
+							<ui:fragment rendered="#{reportScheduleBean.admin}">
+						
+                           <div class="add_section_title"><h:outputText value="#{messages.reportSchedule_owner}" /></div>
+                           <div>
+                             <h:outputText value="#{reportScheduleBean.item.username}" />
+                           </div>
+                           </ui:fragment>
+						</td>
+						<td/>
+						</tr>
 				</table>
 				</div>
 

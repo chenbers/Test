@@ -63,7 +63,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Creates a new table preference.", crudType=CrudType.CREATE)
-    public Map<String, Object> createTablePref(@DaoParam(name = "accountID", isAccountID=true) Integer userID,
+    public Map<String, Object> createTablePref(@DaoParam(name = "userID") Integer userID,
             @DaoParam(name = "TablePreference", type = com.inthinc.pro.model.TablePreference.class) Map<String, Object> tablePrefMap) throws ProDAOException {
         return null;
     }
@@ -264,6 +264,8 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
+    @MethodDescription(description = "Fetches the stops made by a driver.", 
+			crudType=CrudType.READ, modelClass=com.inthinc.pro.model.DriverStops.class)
     public List<Map<String, Object>> getStops(@DaoParam(name="driverID", validator=ValidatorType.DRIVER) Integer driverID,
                                               @DaoParam(name="startDate", type=java.util.Date.class) Long startDate,
                                               @DaoParam(name="endDate", type=java.util.Date.class) Long endDate) {                   
@@ -912,6 +914,36 @@ public class SiloServiceImpl implements SiloService {
 	@Override
     @MethodDescription(description = "Update a forward command definition.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.ForwardCommandDef.class)
 	public Map<String, Object> updateFwdCmdDef(@DaoParam(name = "ForwardCommandDef", type = com.inthinc.pro.model.ForwardCommandDef.class) Map<String, Object> fwdCmdDefMap) {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Fetches red flag alerts for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class)
+	public List<Map<String, Object>> getRedFlagAlertsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Fetches red flag alerts for the user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class)
+	public List<Map<String, Object>> getRedFlagAlertsByUserID(@DaoParam(name = "userID", validator=ValidatorType.USER)Integer userID) {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Fetches zone alerts for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
+	public List<Map<String, Object>> getZoneAlertsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Fetches zone alerts for the user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
+	public List<Map<String, Object>> getZoneAlertsByUserID(@DaoParam(name = "userID", validator=ValidatorType.USER)Integer userID) {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Fetches report schedules for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ReportSchedule.class)
+	public List<Map<String, Object>> getReportPrefsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
 		return null;
 	}
 }
