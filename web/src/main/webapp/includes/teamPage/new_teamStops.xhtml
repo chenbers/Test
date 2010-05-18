@@ -13,6 +13,21 @@
 	
 	<script language="javascript" type="text/javascript">
 
+		function onStopTabSelectionComplete(){								
+			initStopTimeFrameChangeListener();
+		}
+
+		function initStopTimeFrameChangeListener() {
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameWeek");		
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
+			Team.getSelectedTab().bind('timeFrameChange', function(){				
+				Team.disableTimeFrame("#timeFrameForm\\:timeFrameWeek");
+				Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
+				Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
+			});
+		}	
+
         function getAddresses()
         {              
 	    	geocoder = new GClientGeocoder();
@@ -50,6 +65,8 @@
 		</f:facet> 				
 				
 		<a4j:outputPanel id="stopsPanel" ajaxRendered="true" styleClass="section">
+		
+		<rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />		
 			
 		<table>
 		<tr>
@@ -66,14 +83,14 @@
 					       		rowKeyVar="index"
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
-								rows="#{TeamStopsBean.driversPerPage}"
+								rows="#{teamStopsBean.stopsPerPage}"
 								columnsWidth="10px,120px,10px">
 							<rich:column>     
 								<a4j:region id="radioBut">   		 			               
                		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true"
                		 					value="#{teamStopsBean.selectedDriverID}">
                		 					<f:selectItem itemValue="#{drivers.driverID}"/>
-               		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="getAddresses();"/>                	 					                 						
+               		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="getAddresses();initStopTimeFrameChangeListener();"/>                	 					                 						
                 					</h:selectOneRadio>
                 				</a4j:region>              		
               				</rich:column>
@@ -120,12 +137,12 @@
 					       		var="stops"					       
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
-								rows="#{TeamStopsBean.driversPerPage}"
+								rows="#{teamStopsBean.stopsPerPage}"
 								columnsWidth="50px,150px,100px,100px,100px,100px,100px,100px,100px">
 								
 	                		<f:facet name="header">
 	                    		<rich:columnGroup>
-	                        		<rich:column rowspan="2">#{messages.team_round_trip}</rich:column>
+	                        		<rich:column rowspan="2">#{messages.team_zone_arrival}</rich:column>
 	                        		<rich:column rowspan="2">#{messages.team_stop_location}</rich:column>
 	                        		<rich:column rowspan="2">#{messages.team_arrive}</rich:column>
 	                        		<rich:column rowspan="2">#{messages.team_depart}</rich:column>
@@ -139,7 +156,7 @@
 	                		</f:facet>
 	                		
 	                		<rich:column>
-	                			**** DETERMINE THIS ****
+	                			#{stopsSummary.zoneName}
 	                		</rich:column>
 	                		
 	                		<rich:column id="address_column">
@@ -224,12 +241,12 @@
 					       		var="stopsSummary"					       
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
-								rows="#{TeamStopsBean.driversPerPage}"
+								rows="#{teamStopsBean.stopsPerPage}"
 								columnsWidth="50px,150px,100px,100px,100px,100px,100px,100px,100px">
 								
 	                		<f:facet name="header">
 	                    		<rich:columnGroup>
-	                        		<rich:column rowspan="2">#{messages.team_round_trip}</rich:column>
+	                        		<rich:column rowspan="2"></rich:column>
 	                        		<rich:column rowspan="2"></rich:column>
 	                        		<rich:column rowspan="2"></rich:column>
 	                        		<rich:column rowspan="2"></rich:column>
@@ -243,7 +260,7 @@
 	                		</f:facet>
 	                		
 	                		<rich:column>
-	                			**** DETERMINE THIS ****
+	                			
 	                		</rich:column>
 	                		
 	                		<rich:column id="address_column_sum">
@@ -307,7 +324,7 @@
 	     
     	<script language="javascript" type="text/javascript">
     		jQuery(function(){
-				getAddresses();
+    			onStopTabSelectionComplete();
 			});    				
     	</script>
 

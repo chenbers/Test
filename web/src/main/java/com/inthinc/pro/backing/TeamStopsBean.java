@@ -30,7 +30,8 @@ public class TeamStopsBean extends BaseBean {
      * Backing bean for the TeamStops tab of the new team page
      */
     private static final long serialVersionUID = 1L;
-    private static final int driversPerPage = 25;
+    
+    private int stopsPerPage = 25;
     
     private DriverDAO driverDAO;
     
@@ -45,6 +46,14 @@ public class TeamStopsBean extends BaseBean {
     private List<DriverStops> driverStopsSummary;    
     private Integer selectedDriverID;  
     private TimeZone timeZone;
+
+    public int getStopsPerPage() {
+        return stopsPerPage;
+    }
+
+    public void setStopsPerPage(int stopsPerPage) {
+        this.stopsPerPage = stopsPerPage;
+    }
 
     public DriverDAO getDriverDAO() {
         return driverDAO;
@@ -151,9 +160,13 @@ public class TeamStopsBean extends BaseBean {
         Collections.sort(drivers);
     }
 
-    private void initDriverStops() {        
-        driverStops =                        
-            driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+    private void initDriverStops() {       
+        if (isValidTimeFrame()){
+            driverStops =                        
+                driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+        } else {
+            addInfoMessage("Please choose a valid time frame for the Team Stops tab");
+        }
     }
     
     public void initDriverStopsSummary() {
@@ -232,5 +245,6 @@ public class TeamStopsBean extends BaseBean {
         }        
         
         return timeZone;
-    }    
+    }
+ 
 }
