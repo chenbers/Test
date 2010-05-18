@@ -90,13 +90,13 @@
 				<rich:spacer height="15" />
 				<rich:separator />
 				<table id="trendTable:summaryitems" 
-					class="dr-table rich-table datatable" width="100%" cellspacing="1"
+					class="rich-table datatable" width="100%" cellspacing="1"
 					cellpadding="0" border="0" style="border: none;">
 					<colgroup span="5" />
 					<tbody id="trendTable:summaryitems:tb">
-					<tr class="dr-table-row rich-table-row dr-table-firstrow rich-table-firstrow tableOdd">
+					<tr class="rich-table-row rich-table-firstrow tableOdd">
 						<c:if test="#{not scroll}">
-							<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="5%">
+							<td class="rich-table-cell " style="border-bottom: none" width="5%">
 								<h:selectBooleanCheckbox id="#{context}-showCheckBox" value="#{trendBean.summaryItem.show}">
 			                    	<a4j:support event="onclick" action="#{trendBean.saveStateAction}" oncomplete="getTrendChartData()">
 			                        	<f:setPropertyActionListener target="#{trendBean.animateChartData}" value="FALSE"/>       
@@ -105,22 +105,22 @@
 								</h:selectBooleanCheckbox>
 							</td>
 						</c:if>
-						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 10 : 8}%">
+						<td class="rich-table-cell " style="border-bottom: none" width="#{scroll ? 10 : 8}%">
 							<rich:spacer width="17" height="17"
 								style="background-color:#{trendBean.summaryItem.scoreableEntityPkg.colorKey};border-style:solid;border-width:1px;border-color:#000000">
 							</rich:spacer>
 						</td>
-						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 45 : 60}%">
+						<td class="rich-table-cell " style="border-bottom: none" width="#{scroll ? 45 : 60}%">
 							<h:outputText value="#{trendBean.summaryItem.groupName}" />
 						</td>
-						<td class="dr-table-cell rich-table-cell trendTableScore" style="border-bottom: none" width="15%">
+						<td class="rich-table-cell trendTableScore" style="border-bottom: none" width="15%">
 							<ui:include src="/includes/scoreBox.xhtml">
 								<ui:param name="scoreStyle" value="#{trendBean.summaryItem.scoreableEntityPkg.style}" />
 								<ui:param name="score" value="#{trendBean.summaryItem.score}" />
                 				<ui:param name="context" value="#{context}-trend"/> 
 							</ui:include>
 						</td>
-						<td class="dr-table-cell rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 15}%">
+						<td class="rich-table-cell " style="border-bottom: none" width="#{scroll ? 20 : 15}%">
 							<h:outputText value="#{trendBean.summaryItem.crashesPerMillionMiles}"
 								converter="PerMillionsMilesToPerMillionsKmEstimateConverter" 
 								style="font: bold 14px Verdana, Arial, Helvetica, sans-serif;"/>
