@@ -148,7 +148,7 @@ var firstLoad = new Boolean(true);
 					}
 					else {
 						
-						address[0].innerHTML ="#{messages.sbs_badLatLng} "+lat[0]+", "+lng[0];
+						address[0].innerHTML ="#{messages.sbs_badLatLng}";
 					}
 	      		}
               		
@@ -162,7 +162,7 @@ var firstLoad = new Boolean(true);
     			function(response){
 			        if (!response || response.Status.code != 200) {
     			        
-			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng} "+latlng.lat+", "+latlng.lng; 	  
+			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
 
 			        } 
 			        else {
