@@ -67,6 +67,7 @@
   <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
     <property name="durationBean" ref="navigationDurationBean" />
   </bean>
+  <bean id="treeNavigationBean" class="com.inthinc.pro.backing.TreeNavigationBean" scope="session" parent="baseBean" init-method="init"/>
   <bean id="dashBoardBean" class="com.inthinc.pro.backing.DashBoardBean" scope="request" parent="baseBean">
   </bean>
   <bean id="dashBoardDetailBean" class="com.inthinc.pro.backing.DashBoardDetailBean" scope="request" parent="baseBean">
@@ -110,7 +111,7 @@
   			 
   		</set>
   	</property>
-  	 	<property name="textColors">
+  	<property name="textColors">
   		<list>
   			<value>#ffffff</value>
   			<value>#ffffff</value>
