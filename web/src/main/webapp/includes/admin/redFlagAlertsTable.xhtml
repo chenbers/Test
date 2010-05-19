@@ -31,6 +31,16 @@
       <c:set var="typeMessage" value="redFlag_#{item.type}" />
       <h:outputText value="#{messages[typeMessage]}" />
     </rich:column>
+    <rich:column id="status" rendered="#{redFlagAlertsBean.tableColumns['status'].visible}" sortBy="#{item.status}">
+      <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_status}" /></f:facet>
+      <h:outputText value="#{messages[item.status]}">
+      </h:outputText>
+    </rich:column>
+    <rich:column id="owner" rendered="#{redFlagAlertsBean.tableColumns['owner'].visible}" sortBy="#{item.username}">
+      <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_owner}" /></f:facet>
+      <h:outputText value="#{item.username}" />
+    </rich:column>
+    
   </ui:define>
 
 </ui:composition>

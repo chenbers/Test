@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.EventDAO;
@@ -155,6 +156,7 @@ public class SiloServiceTest {
     }
     
     @Test
+    //@Ignore
     public void testDeviceSensitivityMapping() {
         for (SensitivityType type : SensitivityType.values()) {
             assertNotNull(DeviceSensitivityMapping.getForwardCommand(type, 1));
@@ -174,16 +176,23 @@ public class SiloServiceTest {
     
 
     @Test
+    //@Ignore
     public void states() {
+        initStates();
+        assertTrue(States.getStates().size() >= 50);
+    }
+    
+    private void initStates() {
         StateHessianDAO stateDAO = new StateHessianDAO();
         stateDAO.setSiloService(siloService);
         States states = new States();
         states.setStateDAO(stateDAO);
         states.init();
-        assertTrue(States.getStates().size() >= 50);
     }
+    
 
     @Test
+    //@Ignore
     public void accessPoints() {
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
@@ -194,6 +203,7 @@ public class SiloServiceTest {
     }
 
     @Test
+    //@Ignore
     public void supportedTimeZones() {
         TimeZoneHessianDAO timeZoneDAO = new TimeZoneHessianDAO();
         timeZoneDAO.setSiloService(siloService);
@@ -204,6 +214,7 @@ public class SiloServiceTest {
     }
     
     @Test
+    //@Ignore
     public void forwardCommandDefs() {
     	ForwardCommandDefHessianDAO forwardCommandDefDAO = new ForwardCommandDefHessianDAO();
     	forwardCommandDefDAO.setSiloService(siloService);
@@ -247,6 +258,7 @@ public class SiloServiceTest {
     }
     
     @Test
+    //@Ignore
     public void rfidsFromBarcode(){
     	
     	DriverHessianDAO driverDAO = new DriverHessianDAO();
@@ -257,6 +269,7 @@ public class SiloServiceTest {
     	assertEquals(1000000002l, rfids.get(1).longValue());
     }
     @Test
+    //@Ignore
     public void sensitivityForwardCommandMapping() {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
@@ -265,6 +278,7 @@ public class SiloServiceTest {
     }
 
     @Test
+    //@Ignore
     public void lastLocationDriver() {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
@@ -278,6 +292,7 @@ public class SiloServiceTest {
     }
 
     @Test
+    //@Ignore
     public void driversNearLoc() {
         // DriverHessianDAO driverDAO = new DriverHessianDAO();
         // driverDAO.setSiloService(siloService);
@@ -298,6 +313,7 @@ public class SiloServiceTest {
     }
 
     @Test
+    //@Ignore
     public void driversEvents() {
         EventHessianDAO eventDAO = new EventHessianDAO();
         eventDAO.setSiloService(siloService);
@@ -329,6 +345,7 @@ public class SiloServiceTest {
     }
 
     @Test
+    //@Ignore
     public void vehiclesEvents() {
         EventHessianDAO eventDAO = new EventHessianDAO();
         eventDAO.setSiloService(siloService);
@@ -348,6 +365,7 @@ public class SiloServiceTest {
         }
     }
     @Test
+    //@Ignore
     public void lastLocationVehicle() {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
@@ -360,6 +378,7 @@ public class SiloServiceTest {
     }
 
     @Test
+    //@Ignore
     public void lastLocationDrivers() {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
@@ -381,6 +400,7 @@ public class SiloServiceTest {
 
     
     @Test
+    //@Ignore
     public void events() {
         EventHessianDAO eventDAO = new EventHessianDAO();
         eventDAO.setSiloService(siloService);
@@ -421,6 +441,7 @@ public class SiloServiceTest {
     }
 
     @Test
+    //@Ignore
     public void trips() {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
@@ -515,12 +536,20 @@ public class SiloServiceTest {
     	
         // various find methods
         find();
-        // zone alert profiles
-        zoneAlertProfiles(acctID, team1Group.getGroupID());
+
+        // create a users at the fleet level for use by the alerts tests
+        Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(),  "email_" + fleetGroup.getGroupID() + "_" + 1000 + "@yahoo.com", null, "555555555" + 9, "555555555" + 9, null, null, null, null, null,
+                "emp" + 1000, null, "title", "dept" , "first", "m", "last", "jr", Gender.MALE, 65, 180, Util.genDate(1959, 8, 30), Status.ACTIVE, MeasurementType.ENGLISH,
+                FuelEfficiencyType.MPG_US, Locale.getDefault());
+        person.setUser(new User(0, 0, randomRole(acctID), Status.ACTIVE, "user" + fleetGroup.getGroupID() + "_" + 1000, PASSWORD, fleetGroup.getGroupID()));
+        PersonHessianDAO personDAO = new PersonHessianDAO();
+        personDAO.setSiloService(siloService);
+        Integer personID = personDAO.create(acctID, person);
+        assertNotNull(personID);
         
-        // TODO: this was commented out, not sure why
-        redFlagAlertProfiles(acctID, team1Group.getGroupID());
         
+        zoneAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID());
+        redFlagAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID());
         
         superuser(team1Group.getGroupID());
     }
@@ -550,7 +579,7 @@ public class SiloServiceTest {
         assertTrue("not superuser", !isSuperuser);
 	}
 
-	private void redFlagAlertProfiles(Integer acctID, Integer groupID) {
+	private void redFlagAlertProfiles(Integer acctID, Integer fleetGroupID, Integer groupID) {
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
         redFlagAlertDAO.setSiloService(siloService);
         
@@ -558,6 +587,8 @@ public class SiloServiceTest {
         userDAO.setSiloService(siloService);
         List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
         Integer userID = groupUserList.get(0).getUserID();
+        List<User> fleetUserList = userDAO.getUsersInGroupHierarchy(fleetGroupID);
+        Integer fleetUserID = fleetUserList.get(0).getUserID();
         
         List<Boolean> dayOfWeek = new ArrayList<Boolean>();
         for (int i = 0; i < 7; i++)
@@ -586,21 +617,9 @@ public class SiloServiceTest {
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);
-        // account id
-        String ignoreFields[] = { "modified" };
-        List<RedFlagAlert> redFlagAlertList = redFlagAlertDAO.getRedFlagAlerts(acctID);
-        assertEquals(1, redFlagAlertList.size());
-        Util.compareObjects(redFlagAlert, redFlagAlertList.get(0), ignoreFields);
-        // user id
-        List<RedFlagAlert> userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(userID);
-        assertEquals(1, userRedFlagAlertList.size());
-        Util.compareObjects(redFlagAlert, userRedFlagAlertList.get(0), ignoreFields);
-        // group id
-        List<RedFlagAlert> groupRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(userID);
-        assertEquals(1, groupRedFlagAlertList.size());
-        Util.compareObjects(redFlagAlert, groupRedFlagAlertList.get(0), ignoreFields);
 
-        
+        String ignoreFields[] = { "modified", "username" };
+
         // find
         RedFlagAlert returnedRedFlagAlert = redFlagAlertDAO.findByID(redFlagAlertID);
         Util.compareObjects(redFlagAlert, returnedRedFlagAlert, ignoreFields);
@@ -627,6 +646,69 @@ public class SiloServiceTest {
         // find after update
         returnedRedFlagAlert = redFlagAlertDAO.findByID(redFlagAlertID);
         Util.compareObjects(redFlagAlert, returnedRedFlagAlert, ignoreFields);
+
+        // account id
+        List<RedFlagAlert> redFlagAlertList = redFlagAlertDAO.getRedFlagAlerts(acctID);
+        assertEquals(1, redFlagAlertList.size());
+        Util.compareObjects(redFlagAlert, redFlagAlertList.get(0), ignoreFields);
+        // user id
+        List<RedFlagAlert> userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(userID);
+        assertEquals(1, userRedFlagAlertList.size());
+        Util.compareObjects(redFlagAlert, userRedFlagAlertList.get(0), ignoreFields);
+        // group id
+        List<RedFlagAlert> groupRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(userID);
+        assertEquals(1, groupRedFlagAlertList.size());
+        Util.compareObjects(redFlagAlert, groupRedFlagAlertList.get(0), ignoreFields);
+
+        
+        // fleet level user
+        userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
+        assertEquals(0, userRedFlagAlertList.size());
+        // get by user deep
+        groupRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(fleetUserID);
+        assertEquals(1, groupRedFlagAlertList.size());
+        Util.compareObjects(redFlagAlert, groupRedFlagAlertList.get(0), ignoreFields);
+        
+        RedFlagAlert fleetRedFlagAlert = new RedFlagAlert(acctID, fleetUserID, 
+                "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
+                null, // driverIDs
+                null, // vehicleIDs
+                null, // vehicleTypeIDs
+                notifyPersonIDs,
+                null, // emailTo
+                speedSettings, speedLevels, 10, 10, 10, 10, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING,
+                RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.NONE);
+        Integer fleetRedFlagAlertID = redFlagAlertDAO.create(acctID, fleetRedFlagAlert);
+        fleetRedFlagAlert.setRedFlagAlertID(fleetRedFlagAlertID);
+        userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
+        assertEquals(1, userRedFlagAlertList.size());
+        Util.compareObjects(fleetRedFlagAlert, userRedFlagAlertList.get(0), ignoreFields);
+        // get by user deep
+        groupRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(fleetUserID);
+        assertEquals(2, groupRedFlagAlertList.size());
+        
+        // modify the owner 
+        fleetRedFlagAlert.setUserID(userID);
+        fleetRedFlagAlert.setGroupIDs(fleetRedFlagAlert.getGroupIDs());
+        changedCount = redFlagAlertDAO.update(fleetRedFlagAlert);
+        assertEquals("Red flag update count", Integer.valueOf(1), changedCount);
+        RedFlagAlert updatedRedFlagAlert = redFlagAlertDAO.findByID(fleetRedFlagAlert.getRedFlagAlertID());
+        Util.compareObjects(fleetRedFlagAlert, updatedRedFlagAlert, ignoreFields);
+        
+        // check counts
+        userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
+        assertEquals(0, userRedFlagAlertList.size());
+        userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(fleetUserID);
+        assertEquals(2, userRedFlagAlertList.size());
+        userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(userID);
+        assertEquals(2, userRedFlagAlertList.size());
+        
+        
+        
+        
+
+        
+        
         // delete
         Integer deletedCount = redFlagAlertDAO.deleteByID(redFlagAlertID);
         assertEquals("Red Flag alert delete count", Integer.valueOf(1), deletedCount);
@@ -635,7 +717,7 @@ public class SiloServiceTest {
         assertEquals("Red flag alert should have deleted status after delete", Status.DELETED, returnedRedFlagAlert.getStatus());
     }
 
-    private void zoneAlertProfiles(Integer acctID, Integer groupID) {
+    private void zoneAlertProfiles(Integer acctID, Integer fleetGroupID, Integer groupID) {
         ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
         zoneDAO.setSiloService(siloService);
         
@@ -643,39 +725,22 @@ public class SiloServiceTest {
         userDAO.setSiloService(siloService);
         List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
         Integer userID = groupUserList.get(0).getUserID();
+        
+        List<User> fleetUserList = userDAO.getUsersInGroupHierarchy(fleetGroupID);
+        Integer fleetUserID = fleetUserList.get(0).getUserID();
+        
 
         // create a zone to use
-        Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", groupID);
-        List<LatLng> points = new ArrayList<LatLng>();
-        points.add(new LatLng(40.723871753812f, -111.92932452647742f));
-        points.add(new LatLng(40.704246f, -111.948613f));
-        points.add(new LatLng(40.70f, -111.95f));
-        points.add(new LatLng(40.723871753812f, -111.92932452647742f));
-        zone.setPoints(points);
-        Integer zoneID = zoneDAO.create(acctID, zone);
-        assertNotNull(zoneID);
-        zone.setZoneID(zoneID);
+        Integer zoneID = createZone(acctID, groupID, "Zone With Alerts", zoneDAO);
+        
         ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-        List<Boolean> dayOfWeek = new ArrayList<Boolean>();
-        for (int i = 0; i < 7; i++)
-            dayOfWeek.add(true);
-        List<Integer> groupIDList = new ArrayList<Integer>();
-        groupIDList.add(team1Group.getGroupID());
-        List<Integer> notifyPersonIDs = new ArrayList<Integer>();
-        notifyPersonIDs.add(this.personList.get(0).getPersonID());
-        notifyPersonIDs.add(this.personList.get(1).getPersonID());
-        ZoneAlert zoneAlert = new ZoneAlert(acctID, userID, 
-        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs
-                null, // vehicleIDs
-                null, // vehicleTypeIDs
-                notifyPersonIDs, null, // emailTo
-                0, zoneID, true, true);
-        Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
-        assertNotNull(zoneAlertID);
-        zoneAlert.setZoneAlertID(zoneAlertID);
+        
+        ZoneAlert zoneAlert = createZoneAlert(acctID, userID, zoneID, zoneAlertDAO);
+        Integer zoneAlertID = zoneAlert.getZoneAlertID();
+        
         // find
-        String ignoreFields[] = { "modified" };
+        String ignoreFields[] = { "modified", "username" };
         ZoneAlert returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         Util.compareObjects(zoneAlert, returnedZoneAlert, ignoreFields);
         // update
@@ -704,6 +769,40 @@ public class SiloServiceTest {
         Util.compareObjects(zoneAlert, groupZoneAlertList.get(0), ignoreFields);
         
         
+        // fleet level user
+        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(fleetUserID);
+        assertEquals(0, userZoneAlertList.size());
+        // get by user deep
+        groupZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(fleetUserID);
+        assertEquals(1, groupZoneAlertList.size());
+        Util.compareObjects(zoneAlert, groupZoneAlertList.get(0), ignoreFields);
+        
+        ZoneAlert fleetZoneAlert = createZoneAlert(acctID, fleetUserID, zoneID, zoneAlertDAO);
+        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(fleetUserID);
+        assertEquals(1, userZoneAlertList.size());
+        Util.compareObjects(fleetZoneAlert, userZoneAlertList.get(0), ignoreFields);
+        // get by user deep
+        groupZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(fleetUserID);
+        assertEquals(2, groupZoneAlertList.size());
+        
+        // modify the owner 
+        fleetZoneAlert.setUserID(userID);
+        fleetZoneAlert.setGroupIDs(zoneAlert.getGroupIDs());
+        changedCount = zoneAlertDAO.update(fleetZoneAlert);
+        assertEquals("Zone update count", Integer.valueOf(1), changedCount);
+        ZoneAlert updatedZoneAlert = zoneAlertDAO.findByID(fleetZoneAlert.getZoneAlertID());
+        Util.compareObjects(fleetZoneAlert, updatedZoneAlert, ignoreFields);
+        
+        // check counts
+        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(fleetUserID);
+        assertEquals(0, userZoneAlertList.size());
+        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(fleetUserID);
+        assertEquals(2, userZoneAlertList.size());
+        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(userID);
+        assertEquals(2, userZoneAlertList.size());
+        
+        
+        
         // delete
         Integer deletedCount = zoneAlertDAO.deleteByID(zoneAlertID);
         assertEquals("Red Flag alert delete count", Integer.valueOf(1), deletedCount);
@@ -721,6 +820,41 @@ public class SiloServiceTest {
         assertEquals("Zone alert have deleted status after deletebyzoneID", Status.DELETED, returnedZoneAlert.getStatus());
         
         
+    }
+
+    private ZoneAlert createZoneAlert(Integer acctID, Integer userID, Integer zoneID, ZoneAlertHessianDAO zoneAlertDAO) {
+        List<Boolean> dayOfWeek = new ArrayList<Boolean>();
+        for (int i = 0; i < 7; i++)
+            dayOfWeek.add(true);
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(team1Group.getGroupID());
+        List<Integer> notifyPersonIDs = new ArrayList<Integer>();
+        notifyPersonIDs.add(this.personList.get(0).getPersonID());
+        notifyPersonIDs.add(this.personList.get(1).getPersonID());
+        ZoneAlert zoneAlert = new ZoneAlert(acctID, userID, 
+        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs
+                null, // vehicleIDs
+                null, // vehicleTypeIDs
+                notifyPersonIDs, null, // emailTo
+                0, zoneID, true, true);
+        Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
+        assertNotNull(zoneAlertID);
+        zoneAlert.setZoneAlertID(zoneAlertID);
+        return zoneAlert;
+    }
+
+    private Integer createZone(Integer acctID, Integer groupID, String name, ZoneHessianDAO zoneDAO) {
+        Zone zone = new Zone(0, acctID, Status.ACTIVE, name, "123 Street, Salt Lake City, UT 84107", groupID);
+        List<LatLng> points = new ArrayList<LatLng>();
+        points.add(new LatLng(40.723871753812f, -111.92932452647742f));
+        points.add(new LatLng(40.704246f, -111.948613f));
+        points.add(new LatLng(40.70f, -111.95f));
+        points.add(new LatLng(40.723871753812f, -111.92932452647742f));
+        zone.setPoints(points);
+        Integer zoneID = zoneDAO.create(acctID, zone);
+        assertNotNull(zoneID);
+        zone.setZoneID(zoneID);
+        return zoneID;
     }
 
     private void zones(Integer acctID, Integer groupID) {
@@ -1122,26 +1256,24 @@ public class SiloServiceTest {
         personDAO.setSiloService(siloService);
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
-        RoleHessianDAO roleDAO = new RoleHessianDAO();
-        roleDAO.setSiloService(siloService);
         
-        List<Role> roleList = roleDAO.getRoles(acctID);
+//        RoleHessianDAO roleDAO = new RoleHessianDAO();
+//        roleDAO.setSiloService(siloService);
+//        
+//        List<Role> roleList = roleDAO.getRoles(acctID);
+//        List<Integer> roles = new ArrayList<Integer>();
+//        roles.add(roleList.get(0).getRoleID());
+//        roles.add(roleList.get(1).getRoleID()); //default normal user
         
         List<Person> emptyPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("expected no people in group", Integer.valueOf(0), new Integer(emptyPersonList.size()));
         
         // create
         for (int i = 0; i < PERSON_COUNT; i++) {
-            Date dob = Util.genDate(1959, 8, 30);
-            String email = "email_" + groupID + "_" + i + "@yahoo.com";
-            Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), email, null, "555555555" + i, "555555555" + i, null, null, null, null, null,
-                    "emp" + i, null, "title" + i, "dept" + i, "first" + i, "m" + i, "last" + i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH,
+            Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(),  "email_" + groupID + "_" + i + "@yahoo.com", null, "555555555" + i, "555555555" + i, null, null, null, null, null,
+                    "emp" + i, null, "title" + i, "dept" + i, "first" + i, "m" + i, "last" + i, "jr", Gender.MALE, 65, 180, Util.genDate(1959, 8, 30), Status.ACTIVE, MeasurementType.ENGLISH,
                     FuelEfficiencyType.MPG_US, Locale.getDefault());
-            List<Integer> roles = new ArrayList<Integer>();
-            roles.add(roleList.get(0).getRoleID());
-            roles.add(roleList.get(1).getRoleID()); //default normal user
-            User user = new User(0, 0, roles, Status.ACTIVE, "user" + groupID + "_" + i, PASSWORD, groupID);
-            person.setUser(user);
+            person.setUser(new User(0, 0, randomRole(acctID), Status.ACTIVE, "user" + groupID + "_" + i, PASSWORD, groupID));
             Integer personID = personDAO.create(acctID, person);
             assertNotNull(personID);
             
@@ -1149,15 +1281,17 @@ public class SiloServiceTest {
             String ignoreFields[] = { "personID","modified"};
             Util.compareObjects(person, createdPerson, ignoreFields);
             
+            User user = person.getUser();
+            
             person.setPersonID(personID);
             person.setAddress(address);
             personList.add(person);
             // update
-            List<Integer> newRoles = new ArrayList<Integer>();
-            newRoles.add(roleList.get(0).getRoleID());// default admin role
-            newRoles.add(roleList.get(1).getRoleID());
+//            List<Integer> newRoles = new ArrayList<Integer>();
+//            newRoles.add(roleList.get(0).getRoleID());// default admin role
+//            newRoles.add(roleList.get(1).getRoleID());
             
-            user.setRoles(newRoles);
+            user.setRoles(randomRole(acctID));
             Integer changedCount = userDAO.update(user);
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
             // find user by ID - ignoring roles until update fixed
@@ -1665,6 +1799,9 @@ public class SiloServiceTest {
     }
 
     private State randomState() {
+        if (States.getStates() == null) {
+            initStates();
+        }
         int idx = Util.randomInt(0, States.getStates().size() - 1);
         int cnt = 0;
         for (State state : States.getStates().values()) {

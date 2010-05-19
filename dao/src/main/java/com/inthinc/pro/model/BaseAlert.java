@@ -224,6 +224,8 @@ public abstract class BaseAlert extends BaseEntity
 
     public Status getStatus()
     {
+        if (status == null)
+            status = Status.ACTIVE;
         return status;
     }
 

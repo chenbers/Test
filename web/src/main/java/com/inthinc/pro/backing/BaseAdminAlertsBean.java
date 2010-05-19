@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -28,7 +25,7 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
-import com.inthinc.pro.validators.EmailValidator;
+import com.inthinc.pro.util.SelectItemUtil;
 
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
@@ -318,6 +315,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         updateField.put("vehicleTypes", assignTo);
         updateField.put("vehicleIDs", assignTo);
         updateField.put("driverIDs", assignTo);
+        updateField.put("userID", assignTo);
 
         // clear previous IDs
         getItem().setGroupIDs(new ArrayList<Integer>());
@@ -464,6 +462,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
     }
     
+    public List<SelectItem> getStatuses() {
+        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
+    }
+
 
     public abstract String getAlertPage();
 

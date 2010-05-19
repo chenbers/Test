@@ -101,6 +101,24 @@
                                 maxlength="64" />
                             </td>
                           </tr>
+							<tr>
+								<td width="115" valign="top">
+									<ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="status"/>
+										<ui:param name="for" value="status"/>
+										<ui:param name="fieldName" value="status"/>
+										<ui:param name="editBean" value="#{redFlagAlertsBean}"/>
+										<ui:param name="label" value="#{messages.editAlerts_status}"/>
+        								<ui:param name="context" value="redFlagAlertsStatus" />
+									</ui:include>
+								</td>
+								<td>
+      								<h:selectOneMenu id="redFlagAlertsStatus" value="#{redFlagAlertsBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      									<f:selectItems value="#{redFlagAlertsBean.statuses}"/> 
+      								</h:selectOneMenu>
+								</td>
+							</tr>
                           <tr>
                             <td width="105" valign="top">
                               <ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -522,20 +540,6 @@
                        
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
-                      	<ui:fragment rendered="#{redFlagAlertsBean.admin}">
-                      
-                        <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_owner" value="#{redFlagAlertsBean.updateField['userID']}" />
-                          <h:outputText value="#{messages.editAlerts_owner}" />
-                        </div>
-
-                        <div class="instructions"><h:outputText value="#{messages.editAlerts_ownerInstructions}" /></div>
-						<h:selectOneMenu id="redFlagAlert-userID" value="#{redFlagAlertsBean.item.userID}" style="width: 200px">
-                            <f:selectItems value="#{redFlagAlertsBean.allGroupUsers}" />
-                            <a4j:support action="#{redFlagAlertsBean.ownerChangedAction}" event="onchange" 
-                            		reRender="edit-form:editRedFlag-from,edit-form:editRedFlag-pickedIDs,edit-form:editRedFlag-picked"/>
-                        </h:selectOneMenu>
-                        </ui:fragment>
                       
                         <!-- 
                         <div class="add_section_title">

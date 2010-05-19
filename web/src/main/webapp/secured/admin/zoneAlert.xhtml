@@ -86,6 +86,14 @@
                             <td><h:outputText value="#{zoneAlertsBean.item.description}" /></td>
                           </tr>
                           <tr>
+								<td width="100" valign="top">
+									<h:outputText value="#{messages.editAlerts_status}" />
+								</td>
+								<td>
+									<h:outputText value="#{messages[zoneAlertsBean.item.status]}"/>
+								</td>
+						 </tr>
+                          <tr>
                             <td width="100" valign="top"><h:outputText value="#{messages.editAlerts_dayOfWeek}" /></td>
                             <td>
                               <ui:include src="../../includes/dayPicker.xhtml">
@@ -160,8 +168,14 @@
                         <ui:repeat value="#{zoneAlertsBean.assignPicker.picked}" var="item">
                           <h:outputText value="#{item.label}" /><br />
                         </ui:repeat>
-
-                      </td>
+                        <table width="380" border="0" align="left">
+						  <tr><td>&#160;</td></tr>                        	
+                          <tr>
+                            <td width="30%"><h:outputText value="#{messages.editAlerts_owner}"/></td>
+                           	<td><h:outputText value="#{zoneAlertsBean.item.username}" /></td>
+                    	   </tr>
+                    	</table>
+                    	</td>
                     </tr>
                   </table>
 
@@ -184,10 +198,6 @@
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
-                           <div class="add_section_title"><h:outputText value="#{messages.editAlerts_owner}" /></div>
-                           <div>
-                             <h:outputText value="#{zoneAlertsBean.item.username}" />
-                           </div>
                         <!-- 
                            <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
    

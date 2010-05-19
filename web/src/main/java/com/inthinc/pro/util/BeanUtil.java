@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import net.sf.cglib.core.Local;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -326,12 +324,14 @@ public class BeanUtil
         for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(item.getClass()))
         {
             final Class<?> clazz = descriptor.getPropertyType();
+            System.out.println(descriptor.getName());
             if (clazz != null)
             {
                 try
                 {
                     if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isAssignableFrom(Date.class) || clazz.isAssignableFrom(TimeZone.class) || 
-                            ReferenceEntity.class.isAssignableFrom(clazz) || BaseBean.class.isAssignableFrom(clazz))
+                            ReferenceEntity.class.isAssignableFrom(clazz) || BaseBean.class.isAssignableFrom(clazz) ||
+                            clazz.isArray())
                     {
                         if (!"class".equals(descriptor.getName()))
                             names.add(prefix + descriptor.getName());

@@ -30,6 +30,15 @@
       <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_zone}" /></f:facet>
       <h:outputText value="#{item.zone.name}" />
     </rich:column>
+    <rich:column id="status" rendered="#{zoneAlertsBean.tableColumns['status'].visible}" sortBy="#{item.status}">
+      <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_status}" /></f:facet>
+      <h:outputText value="#{messages[item.status]}">
+      </h:outputText>
+    </rich:column>
+    <rich:column id="owner" rendered="#{zoneAlertsBean.tableColumns['owner'].visible}" sortBy="#{item.username}">
+      <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_owner}" /></f:facet>
+      <h:outputText value="#{item.username}" />
+    </rich:column>
   </ui:define>
 
 </ui:composition>

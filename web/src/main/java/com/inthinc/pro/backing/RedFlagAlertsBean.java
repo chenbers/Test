@@ -28,13 +28,17 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 	 */
     private static final long serialVersionUID = -2066762539439571492L;
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3 };
+    private static final int[] DEFAULT_ADMIN_COLUMN_INDICES = new int[] { 4 };
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("name");
         AVAILABLE_COLUMNS.add("description");
         AVAILABLE_COLUMNS.add("type");
+        AVAILABLE_COLUMNS.add("status");
+        AVAILABLE_COLUMNS.add("owner"); // admin only
+
     }
     private RedFlagAlertDAO redFlagAlertDAO;
 
@@ -44,8 +48,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
     @Override
     protected List<RedFlagAlertView> loadItems() {
-        // get the red flags
-//        final List<RedFlagAlert> plainRedFlagAlerts = redFlagAlertDAO.getRedFlagAlerts(getAccountID());
     	List<RedFlagAlert> plainRedFlagAlerts = null;
     	if (this.getProUser().isAdmin()) {
     		plainRedFlagAlerts = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(getUser().getUserID());
@@ -83,6 +85,9 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
     @Override
     public List<String> getAvailableColumns() {
+        if (!getProUser().isAdmin()) {
+            return AVAILABLE_COLUMNS.subList(0, 3);
+        }
         return AVAILABLE_COLUMNS;
     }
 
@@ -92,6 +97,10 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         final List<String> availableColumns = getAvailableColumns();
         for (int i : DEFAULT_COLUMN_INDICES)
             columns.put(availableColumns.get(i), true);
+        if (getProUser().isAdmin()) {
+            for (int i : DEFAULT_ADMIN_COLUMN_INDICES)
+                columns.put(availableColumns.get(i), true);
+        }
         return columns;
     }
 

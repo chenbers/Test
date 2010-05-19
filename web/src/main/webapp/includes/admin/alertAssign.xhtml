@@ -53,6 +53,30 @@
       <ui:param name="context" value="#{context}" />
     </ui:include>
 
+
+
+
+   <ui:fragment rendered="#{alertsBean.admin}">
+    <table border="0" cellspacing="4" cellpadding="2">
+      <tr>
+      	<td>
+      	<h:outputText value="#{messages.editAlerts_owner}" />
+      	</td>
+      	<td>
+		<h:selectOneMenu id="#{context}-userID" value="#{alertsBean.item.userID}" style="width: 200px">
+				<f:selectItems value="#{alertsBean.allGroupUsers}" />
+                <a4j:support action="#{alertsBean.ownerChangedAction}" event="onchange" 
+                		reRender="edit-form:#{context}-from,edit-form:#{context}-pickedIDs,edit-form:#{context}-picked"/>
+        </h:selectOneMenu>
+        </td>
+      </tr>
+		<tr>
+		<td colspan='2'>        
+        <div class="instructions"><h:outputText value="#{messages.editAlerts_ownerInstructions}" /></div>
+        </td>
+        </tr>
+	</table>
+      </ui:fragment>
   </ui:composition>
 
 </html>
