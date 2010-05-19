@@ -17,7 +17,7 @@ public class GroupHierarchy implements Serializable
 	 */
 	private static final long serialVersionUID = 2855781183498326570L;
 
-	public static final String GROUP_SEPARATOR = " - ";
+	public static final String GROUP_SEPERATOR = " - ";
 //	List<Group> groupList;
 	Map<Integer, Group> groupMap;
 
@@ -118,7 +118,7 @@ public class GroupHierarchy implements Serializable
     		builder.append(getFullGroupName(group.getParentID()));
     	}
     	builder.append(group.getName());
-    	builder.append(GROUP_SEPARATOR);
+    	builder.append(GROUP_SEPERATOR);
 //            }
 //        }
         return builder.toString();
