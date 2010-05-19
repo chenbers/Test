@@ -3,6 +3,8 @@ package com.inthinc.pro.backing.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
@@ -15,27 +17,32 @@ public class GroupHierarchy implements Serializable
 	 */
 	private static final long serialVersionUID = 2855781183498326570L;
 
-	public static final String GROUP_SEPERATOR = " - ";
-	List<Group> groupList;
+	public static final String GROUP_SEPARATOR = " - ";
+//	List<Group> groupList;
+	Map<Integer, Group> groupMap;
 
     public GroupHierarchy()
     {
-        
+        groupMap = new TreeMap<Integer,Group>();
     }
     
     public GroupHierarchy(List<Group> groupList)
     {
-        this.groupList = groupList;
+//        this.groupList = groupList;
+        setGroupList(groupList);
     }
 
     public List<Group> getGroupList()
     {
-        return groupList;
+        return new ArrayList<Group>(groupMap.values());
     }
 
     public void setGroupList(List<Group> groupList)
     {
-        this.groupList = groupList;
+        groupMap = new TreeMap<Integer,Group>();
+        for(Group group:groupList){
+            groupMap.put(group.getGroupID(), group);
+        }
     }
     public List<Group> getSubGroupList(Integer groupID)
     {
@@ -45,7 +52,7 @@ public class GroupHierarchy implements Serializable
     	
     	List<Group> subGroupList = new ArrayList<Group>();
     	subGroupList.add(group);
-    	for (Group subgroup : groupList) {
+    	for (Group subgroup : groupMap.values()) {
     		
     		if (group.getGroupID().equals(subgroup.getParentID())) {
     			List<Group> subList = getSubGroupList(subgroup.getGroupID());
@@ -59,12 +66,12 @@ public class GroupHierarchy implements Serializable
     
     public Group getTopGroup()
     {
-        return groupList.get(0);
+        return groupMap.values().iterator().next();
     }
     
     public List<Group> getGroupsByLevel(GroupLevel groupLevel){
     	List<Group> filteredList = new ArrayList<Group>();
-    	for(Group group: groupList){
+    	for(Group group: groupMap.values()){
     		if(getGroupLevel(group) == groupLevel){
     			filteredList.add(group);
     		}
@@ -75,7 +82,7 @@ public class GroupHierarchy implements Serializable
 
     public GroupLevel getGroupLevel(Integer groupID)
     {
-        for (Group group : groupList)
+        for (Group group : groupMap.values())
         {
             if (group.getGroupID().equals(groupID))
             {
@@ -87,31 +94,33 @@ public class GroupHierarchy implements Serializable
     
     public Group getGroup(Integer groupID)
     {
-        for (Group group : groupList)
-        {
-            if (group.getGroupID().equals(groupID))
-            {
-                return group;
-            }
-        }
-        return null;
+        return groupMap.get(groupID);
+//        for (Group group : groupList)
+//        {
+//            if (group.getGroupID().equals(groupID))
+//            {
+//                return group;
+//            }
+//        }
+//        return null;
     }
     
     public String getFullGroupName(Integer groupID)
     {
     	StringBuilder builder = new StringBuilder();
-        for (Group group : groupList)
-        {
-            if (group.getGroupID().equals(groupID))
-            {
-            	if (group.getParentID() != null && group.getParentID().intValue() != 0)
-            	{
-            		builder.append(getFullGroupName(group.getParentID()));
-            	}
-            	builder.append(group.getName());
-            	builder.append(GROUP_SEPERATOR);
-            }
-        }
+//        for (Group group : groupList)
+//        {
+//            if (group.getGroupID().equals(groupID))
+//            {
+    	Group group = groupMap.get(groupID);
+    	if (group.getParentID() != null && group.getParentID().intValue() != 0)
+    	{
+    		builder.append(getFullGroupName(group.getParentID()));
+    	}
+    	builder.append(group.getName());
+    	builder.append(GROUP_SEPARATOR);
+//            }
+//        }
         return builder.toString();
     }
 
@@ -131,7 +140,7 @@ public class GroupHierarchy implements Serializable
     public List<Group> getChildren(Group parent){
     	
     	List<Group> children = new ArrayList<Group>();
-        for (Group group : groupList)
+        for (Group group : groupMap.values())
         {
             if (group.getParentID().equals(parent.getGroupID()))
             {
@@ -148,7 +157,7 @@ public class GroupHierarchy implements Serializable
     		return null;
     	}
     	Group parentGroup = null;
-    	for(Group group: groupList){
+    	for(Group group: groupMap.values()){
     		if(group.getGroupID().equals(childGroup.getParentID())){
     			parentGroup = group;
     		}
@@ -157,21 +166,21 @@ public class GroupHierarchy implements Serializable
     	return parentGroup;
     }
     
-    private boolean groupHasChildren(Group groupToCheck)
-    {
-        for (Group group : groupList)
-        {
-            if (group.getParentID().equals(groupToCheck.getGroupID()))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean groupHasChildren(Group groupToCheck)
+//    {
+//        for (Group group : groupMap.values())
+//        {
+//            if (group.getParentID().equals(groupToCheck.getGroupID()))
+//            {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
     
     public boolean containsGroupTypes(List<GroupType> groupTypeList)
     {
-        for(Group group: groupList)
+        for(Group group: groupMap.values())
         {
             if(groupTypeList.contains(group.getType())){
                 return true;

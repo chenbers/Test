@@ -5,8 +5,124 @@
   	xmlns:a4j="http://richfaces.org/a4j"
   	xmlns:rich="http://richfaces.org/rich"
   	xmlns:security="http://pro.tiwi.com/jsf/security"
-    xmlns:pretty="http://ocpsoft.com/prettyfaces">  	
- 	  	
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+    
+<a4j:loadScript src="/js/jsTree/jquery.tree.js"/>
+
+<style type="text/css">
+
+	.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; }
+
+#tree_nav a:hover{
+	background: url("#{request.contextPath}/images/tree_button_pressed.gif") no-repeat center right
+}
+#tree_nav a{
+	background: url("#{request.contextPath}/images/tree_button_unpressed.gif") no-repeat center right;
+	display: block;
+	position: absolute;
+	left: 293px;
+	top:111px;
+	width: 16px;
+	height: 17px
+}
+
+.dropBox{
+	display: none;
+	position: absolute;
+	left:289px;
+	top:132px;
+	z-index:100;
+	width:100;
+	height:200
+}
+</style>
+
+<script type="text/javascript">
+
+var timeout    = 1000;
+var closetimer = 0;
+
+	jQuery(function(){
+		getNavigationTreeData();
+	jQuery("#tree_link").click(function(){
+		jQuery(".dropBox").css("display","block");
+	});
+	
+	jQuery("#navigationTree").bind("mouseleave",navigationTree_timer);
+
+	jQuery("#navigationTree").bind("mouseover",navigationTree_canceltimer);
+	
+});
+
+	function buildNavigationTree(dataFromServer){
+		jQuery("#navigationTree").tree({
+			ui : {
+				theme_name : "classic"
+			},
+			
+			types : {
+
+			"default" : {
+				draggable	: false,
+				deletable : false,
+				renameable : false,
+				creatable : false
+			},
+			"fleet" : {
+				icon : { 
+					image : "#{request.contextPath}/images/ico_truck.png"
+				}
+			},
+			"group" : {
+				icon : { 
+					image : "#{request.contextPath}/images/ico_trucks.png"
+				}
+			},
+			"team" : {
+				icon : { 
+					image : "#{request.contextPath}/images/ico_team.png"
+				}
+			}
+		},
+		callback : {
+			onchange : function (NODE, TREE_OBJ) {
+				var groupID = jQuery(NODE).attr("groupid");
+			
+				var anchor = jQuery(NODE).children("a");
+				window.location = anchor[0].href;
+			}	
+		},
+		data : { 
+				type : "json",
+				opts : {
+					static :dataFromServer
+				}
+			}
+		});	
+	}
+
+	function navigationTree_close(){
+		jQuery(".dropBox").css("display","none");
+	}
+
+	function navigationTree_timer(){
+	  closetimer = window.setTimeout(navigationTree_close, timeout);
+	}
+
+	function navigationTree_canceltimer()
+	{  if(closetimer)
+	   {  window.clearTimeout(closetimer);
+	      closetimer = null;
+	   }
+    }
+</script>
+ 	
+ <div id="tree_nav"><a id="tree_link" href="#"></a></div>
+ 
+ <div id="navigationTreeBox" class="dropBox">  
+<div id="navigationTree" class="tree_back">
+</div>
+</div>		
 <div class="main_nav">
 	<div class="main_nav-right"></div>
 	<div class="main_nav-left"></div>
@@ -14,9 +130,10 @@
  <!-- check in with roles stuff -->   
 	<h:form id="navigation" > 
 		<ul>
-			<li class="#{homeSelected}">
-                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard"><span>#{messages.navigation_home}</span></pretty:link>
-			</li>
+		
+			<li class="current">
+                <a href="#"><span style="padding: 0 30px 0 0">#{messages.navigation_home}</span></a>
+ 			</li>
 			<li class="#{reportsSelected}">
                 <pretty:link id="#{context}-navigationReports" mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>
 			</li>
@@ -83,6 +200,8 @@
 			  
 			</li>	
 		</ul>
+		<a4j:jsFunction id="getNavigationTreeData" ajaxSingle="true" name="getNavigationTreeData" 
+				data="#{treeNavigationBean.navigationTree}" oncomplete="buildNavigationTree(data)"/>
 		</h:form>
 	</div>
 </div>
