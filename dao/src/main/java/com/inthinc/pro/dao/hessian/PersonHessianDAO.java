@@ -59,7 +59,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         {
             getSiloService().updateAddr(person.getAddressID(), getMapper().convertToMap(person.getAddress()));
         }
-        else if (person.getAddress() != null && person.getAddressID() == 0)
+        else if (person.getAddress() != null && (person.getAddressID() == null || person.getAddressID().intValue() == 0))
         {
             Integer addressID = getReturnKey(getSiloService().createAddr(person.getAcctID(), getMapper().convertToMap(person.getAddress())), Address.class);
             person.getAddress().setAddrID(addressID);
