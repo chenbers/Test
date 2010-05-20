@@ -51,7 +51,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected TablePreference     tablePreference;
     private TablePref<T>          tablePref;
     protected UserDAO             userDAO;
-	private List<SelectItem>   	  allGroupUsers;
+    protected List<SelectItem>   	  allGroupUsers;
 
     public void initBean()
     {

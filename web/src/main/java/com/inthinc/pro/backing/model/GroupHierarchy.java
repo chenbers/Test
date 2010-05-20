@@ -113,6 +113,8 @@ public class GroupHierarchy implements Serializable
 //            if (group.getGroupID().equals(groupID))
 //            {
     	Group group = groupMap.get(groupID);
+    	if (group == null) 
+    	    return "";
     	if (group.getParentID() != null && group.getParentID().intValue() != 0)
     	{
     		builder.append(getFullGroupName(group.getParentID()));

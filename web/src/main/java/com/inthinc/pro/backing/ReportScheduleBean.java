@@ -41,6 +41,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 import com.inthinc.pro.util.TimeFrameUtil;
 
@@ -56,6 +57,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final long serialVersionUID = -8422069679000248942L;
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
+    private static final int[] DEFAULT_ADMIN_COLUMN_INDICES = new int[] { 5 };
+
     private static final String REDIRECT_REPORT_SCHEDULES = "pretty:adminReportSchedules";
     private static final String REDIRECT_REPORT_SCHEDULE = "pretty:adminReportSchedule";
     private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "pretty:adminEditReportSchedule";
@@ -75,6 +78,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("lastEmail");
         AVAILABLE_COLUMNS.add("report");
         AVAILABLE_COLUMNS.add("status");
+        AVAILABLE_COLUMNS.add("owner");     // only admins see this
     }
 
     private static void sort(List<SelectItem> selectItemList) {
@@ -98,6 +102,23 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         sort(reportGroups);
         reportGroups.add(0, new SelectItem(null, ""));
         return reportGroups;
+    }
+    
+    public List<SelectItem> getAllGroupUsers() {
+        if (allGroupUsers == null) {
+            allGroupUsers = new ArrayList<SelectItem>();
+            List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
+            if (item == null)
+                return allGroupUsers;
+            List<GroupType> groupTypes = Arrays.asList(item.getReport().getGroupTypes());
+            for (User user : users) {
+                if (user.getPerson() != null && groupTypes.contains(getGroupHierarchy().getGroup(user.getGroupID()).getType())) 
+                    allGroupUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
+            }
+            MiscUtil.sortSelectItems(allGroupUsers);
+            
+        }
+        return allGroupUsers;
     }
 
     public EntityType getSelectedEntityType() {
@@ -175,6 +196,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 */    
     
     public void ownerChangedAction() {
+    }
+    
+    public void reportGroupChangeAction() {
+        allGroupUsers = null;
     }
     
     public Map<String, Integer> getGroups() {
@@ -395,6 +420,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     @Override
     public List<String> getAvailableColumns() {
+        if (!getProUser().isAdmin()) {
+            return AVAILABLE_COLUMNS.subList(0, 5);
+        }
         return AVAILABLE_COLUMNS;
     }
 
@@ -404,6 +432,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         final List<String> availableColumns = getAvailableColumns();
         for (int i : DEFAULT_COLUMN_INDICES)
             columns.put(availableColumns.get(i), true);
+        if (getProUser().isAdmin()) {
+            for (int i : DEFAULT_ADMIN_COLUMN_INDICES)
+                columns.put(availableColumns.get(i), true);
+        }
         return columns;
     }
 

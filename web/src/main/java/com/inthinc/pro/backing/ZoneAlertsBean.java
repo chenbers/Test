@@ -121,7 +121,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     public List<String> getAvailableColumns()
     {
         if (!getProUser().isAdmin()) {
-            return AVAILABLE_COLUMNS.subList(0, 3);
+            return AVAILABLE_COLUMNS.subList(0, 4);
         }
         return AVAILABLE_COLUMNS;
     }

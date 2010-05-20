@@ -60,6 +60,11 @@
       <h:outputText value="#{messages[item.status]}">
       </h:outputText>
     </rich:column>
+    <rich:column id="owner" rendered="#{reportScheduleBean.tableColumns['owner'].visible}" sortBy="#{item.username}">
+      <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_owner}" /></f:facet>
+      <h:outputText value="#{item.username}" />
+    </rich:column>
+    
   </ui:define>
 
 </ui:composition>

@@ -197,6 +197,16 @@
 										</td>
 									</tr>
 							</h:outputText>
+							<ui:fragment rendered="#{reportScheduleBean.admin}">
+							<tr>
+								<td width="100" valign="top" align="left">
+			                          <h:outputText value="#{messages.reportSchedule_owner}" />
+		                         </td>
+		                         <td> 
+	            	                 <h:outputText value="#{reportScheduleBean.item.username}" />
+								</td>
+							</tr>
+                           </ui:fragment>
 						</table>
 						</h:panelGroup>
                             <div class="spacer"></div>
@@ -214,18 +224,6 @@
 							</table>
 						</td>
 					</tr>
-					<tr>
-						<td width="390" valign="top" align="left">
-							<ui:fragment rendered="#{reportScheduleBean.admin}">
-						
-                           <div class="add_section_title"><h:outputText value="#{messages.reportSchedule_owner}" /></div>
-                           <div>
-                             <h:outputText value="#{reportScheduleBean.item.username}" />
-                           </div>
-                           </ui:fragment>
-						</td>
-						<td/>
-						</tr>
 				</table>
 				</div>
 

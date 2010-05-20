@@ -213,7 +213,7 @@
 								<td>
 									<rich:message for="editReportSchedule-report" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 									<h:selectOneMenu id="editReportSchedule-report" value="#{reportScheduleBean.item.reportID}" required="true" requiredMessage="#{messages.required}">
-										<a4j:support event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
+										<a4j:support action="#{reportScheduleBean.reportGroupChangeAction}" event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
 										<f:selectItems value="#{reportScheduleBean.reportGroups}"/> 
 									</h:selectOneMenu>
 								</td>
@@ -286,6 +286,20 @@
 										</td>
 									</tr>
 							</h:outputText>
+							<ui:fragment rendered="#{reportScheduleBean.admin}">
+								<tr>
+									<td width="100" valign="top">
+			                       		<h:outputText value="#{messages.reportSchedule_owner}" />
+			                  		</td>
+			                   		<td>
+			                            <h:selectOneMenu id="userID" value="#{reportScheduleBean.item.userID}" style="width: 200px">
+			                            	<f:selectItems value="#{reportScheduleBean.allGroupUsers}" />
+				                            <a4j:support action="#{reportScheduleBean.ownerChangedAction}" event="onchange" 
+			                            		reRender="edit-form:groupSelect,edit-form:driverSelect"/>
+			                        	</h:selectOneMenu>
+	                        		</td>
+	                        	</tr>
+							</ui:fragment>                           
 						</table>
 						</h:panelGroup>
                   
@@ -305,23 +319,6 @@
 						</table>
 						</ui:fragment>
 						</td>
-					</tr>
-					<tr>
-						<td width="390" valign="top" align="left">
-						<ui:fragment rendered="#{reportScheduleBean.admin}">
-                 			<div class="add_section_title">
-                          		<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_owner" 
-                          					value="#{reportScheduleBean.updateField['userID']}" />
-                          		<h:outputText value="#{messages.reportSchedule_owner}" />
-                        	</div>							
-                            <h:selectOneMenu id="userID" value="#{reportScheduleBean.item.userID}" style="width: 200px">
-                            	<f:selectItems value="#{reportScheduleBean.allGroupUsers}" />
-	                            <a4j:support action="#{reportScheduleBean.ownerChangedAction}" event="onchange" 
-                            		reRender="edit-form:groupSelect,edit-form:driverSelect"/>
-                        	</h:selectOneMenu>
-						</ui:fragment>                           
-						</td>
-						<td/>
 					</tr>
 				</table>
 				
