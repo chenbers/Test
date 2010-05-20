@@ -62,43 +62,44 @@ var closetimer = 0;
 			
 			types : {
 
-			"default" : {
-				draggable	: false,
-				deletable : false,
-				renameable : false,
-				creatable : false
-			},
-			"fleet" : {
-				icon : { 
-					image : "#{request.contextPath}/images/ico_truck.png"
+				"default" : {
+					draggable	: false,
+					deletable : false,
+					renameable : false,
+					creatable : false
+				},
+				"fleet" : {
+					icon : { 
+						image : "#{request.contextPath}/images/ico_truck.png"
+					}
+				},
+				"group" : {
+					icon : { 
+						image : "#{request.contextPath}/images/ico_trucks.png"
+					}
+				},
+				"team" : {
+					icon : { 
+						image : "#{request.contextPath}/images/ico_team.png"
+					}
 				}
 			},
-			"group" : {
-				icon : { 
-					image : "#{request.contextPath}/images/ico_trucks.png"
-				}
+			callback : {
+				onchange : function (NODE, TREE_OBJ) {
+					var groupID = jQuery(NODE).attr("groupid");
+				
+					var anchor = jQuery(NODE).children("a");
+					window.location = anchor[0].href;
+				}	
 			},
-			"team" : {
-				icon : { 
-					image : "#{request.contextPath}/images/ico_team.png"
+			data : { 
+					type : "json",
+					opts : {
+						static :dataFromServer.navigationTree
 				}
 			}
-		},
-		callback : {
-			onchange : function (NODE, TREE_OBJ) {
-				var groupID = jQuery(NODE).attr("groupid");
-			
-				var anchor = jQuery(NODE).children("a");
-				window.location = anchor[0].href;
-			}	
-		},
-		data : { 
-				type : "json",
-				opts : {
-					static :dataFromServer
-				}
-			}
-		});	
+		}
+	);	
 	}
 
 	function navigationTree_close(){

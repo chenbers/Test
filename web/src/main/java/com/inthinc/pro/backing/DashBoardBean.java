@@ -13,6 +13,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class DashBoardBean extends BaseBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private NavigationBean navigationBean;
+    private TreeNavigationBean treeNavigationBean;
     private MpgBean mpgBean;
     private OverallScoreBean overallScoreBean;
     private Integer groupID;
@@ -30,6 +31,8 @@ public class DashBoardBean extends BaseBean implements Serializable {
         if (group == null)
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
         navigationBean.setGroupID(groupID);
+        
+        treeNavigationBean.setCurrentGroupID(groupID);
         trendBean.setMaximized(Boolean.FALSE);
         trendBean.setGroupID(groupID);
         mpgBean.setGroupID(groupID);
@@ -109,6 +112,14 @@ public class DashBoardBean extends BaseBean implements Serializable {
 
     public void setSpeedPercentageBean(SpeedPercentageBean speedPercentageBean) {
         this.speedPercentageBean = speedPercentageBean;
+    }
+
+    public TreeNavigationBean getTreeNavigationBean() {
+        return treeNavigationBean;
+    }
+
+    public void setTreeNavigationBean(TreeNavigationBean treeNavigationBean) {
+        this.treeNavigationBean = treeNavigationBean;
     }
 
 }
