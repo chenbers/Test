@@ -45,13 +45,10 @@ public class FwdCmdResBean extends BaseBean {
 	}
 
 	public void init() {
-System.out.println("FwdCmdResBean init()");		
 		List<ForwardCommandDef> fullForwardCommandDefList = forwardCommandDefDAO.getFwdCmdDefs();
 		if (!isSuperuser()) {
 			acctID = getUser().getPerson().getAcctID();
-System.out.println("FwdCmdResBean loadDevices()");
 			loadDevices();
-System.out.println("FwdCmdResBean totaldevices: " + devices.size());
 			forwardCommandDefMap = new HashMap<Integer, ForwardCommandDef>();
 			for (ForwardCommandDef forwardCommandDef : fullForwardCommandDefList) {
 				if (forwardCommandDef.getAccessAllowed()) {
@@ -60,7 +57,6 @@ System.out.println("FwdCmdResBean totaldevices: " + devices.size());
 			}
 			fwdcmd = (Integer) getForwardCommandSelectList().get(0).getValue();
 			initFilter();
-System.out.println("FwdCmdResBean init() - done");
 		} else {
 			// this should not happen -- bean only used in case of non -
 			// superuser
