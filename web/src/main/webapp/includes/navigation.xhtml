@@ -88,8 +88,8 @@ var closetimer = 0;
 				onchange : function (NODE, TREE_OBJ) {
 					var groupID = jQuery(NODE).attr("groupid");
 				
-					var anchor = jQuery(NODE).children("a");
-					window.location = anchor[0].href;
+					document.location.href = $(NODE).children("a:eq(0)").attr("href");
+
 				}	
 			},
 			data : { 
