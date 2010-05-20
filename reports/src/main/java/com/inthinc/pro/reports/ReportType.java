@@ -31,7 +31,8 @@ public enum ReportType
     CRASH_HISTORY_REPORT("Crash History Report", "CrashHistoryReport.jrxml", "CrashHistoryReportRaw.jrxml"),
     SPEED_PERCENTAGE("Speeding Percentage Report", "SpeedPercentageReport.jrxml"),
     IDLE_PERCENTAGE("Idling Percentage Report", "IdlePercentageReport.jrxml"),
-    TEAM_STATISTICS_REPORT("Team Statistics Report","TeamStatisticsReport.jrxml","TeamStatisticsReportRaw.jrxml");
+    TEAM_STATISTICS_REPORT("Team Statistics Report","TeamStatisticsReport.jrxml","TeamStatisticsReportRaw.jrxml"),
+    TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml");
   
     private String prettyTemplate;
     private String rawTemplate;
