@@ -14,6 +14,9 @@ import java.util.TimeZone;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -39,6 +42,7 @@ public class TripsBean extends BaseBean {
     private static final long serialVersionUID = 2409167667876030280L;
     private static final Logger logger = Logger.getLogger(TripsBean.class);
     private static final long THIRTY_DAYS = 30L * 24L * 60L * 60L * 1000L;
+    private static final long ONE_SECOND = 1000L;
     
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
@@ -70,7 +74,11 @@ public class TripsBean extends BaseBean {
     private GroupTreeNodeImpl groupTreeNodeImpl;
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
     private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range",getLocale());
+
     
+
+    
+
     //Changes for clientside reverse geocoding
     private Map<Long,TripDisplay> tripsMap;
     private Long selectedTripID;
@@ -144,14 +152,6 @@ public class TripsBean extends BaseBean {
 
     public void initViolations(Date start, Date end) {
         if (violationEvents.isEmpty()) {
-        	
-            //Add 1 second to end time to get events, eg tampering events that occur at the end of a trip 
-            // - method uses < end time, not <= end time.  This isn't true anymore!
-            Calendar gc = new GregorianCalendar();
-            gc.setTime(end);
- //           gc.add(Calendar.SECOND, 1);
-            Date adjustedEnd = gc.getTime();
-
             List<Integer> violationEventTypeList = new ArrayList<Integer>();
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
             violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
@@ -165,13 +165,13 @@ public class TripsBean extends BaseBean {
             	
                 violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, getShowExcludedEvents());
                 idleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, idleTypes, getShowExcludedEvents());
-                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, getShowExcludedEvents());
+                tamperEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, tamperEventTypeList, getShowExcludedEvents());
             }
             else {
             	
                 violationEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, violationEventTypeList, getShowExcludedEvents());
                 idleEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, idleTypes, getShowExcludedEvents());
-                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, adjustedEnd, tamperEventTypeList, getShowExcludedEvents());
+                tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, tamperEventTypeList, getShowExcludedEvents());
             }
             // Lookup Addresses for events
             populateAddresses(violationEvents);
@@ -252,13 +252,7 @@ public class TripsBean extends BaseBean {
     public Date getStartDate() {
         if (startDate == null) {
             // Set start date to 7 days ago, apply driver's time zone..
-            Calendar calendar = Calendar.getInstance();
-            // calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
-            calendar.add(Calendar.DAY_OF_MONTH, -7);
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            startDate = calendar.getTime();
+            startDate = new DateMidnight(new DateTime().minusWeeks(1), DateTimeZone.forTimeZone(getTimeZoneFromEntity())).toDate();
             startDatePrev = startDate;
         }        
         return startDate;
@@ -278,31 +272,26 @@ public class TripsBean extends BaseBean {
 
     public Date getEndDate() {
         if (endDate == null) {
-            if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
-                // Set end date to now using driver's time zone.
-                endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(identifiableEntityBean.getId()));
-            }
-            else {
-                endDate = SetTimeToEndOfDay(new Date(), getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID()));
-            }
+            setEndDate(new Date());
             endDatePrev = endDate;
         }
         return endDate;
     }
 
     public void setEndDate(Date endDate) {
-        Date dateOut = null;
+        this.endDate = setTimeToEndOfDay(endDate, getTimeZoneFromEntity());
+    }
+    
+    private TimeZone getTimeZoneFromEntity()
+    {
+        if (identifiableEntityBean == null)
+            return TimeZone.getTimeZone("GMT");
         
-        // Set Time to 11:59:99 PM Always
         if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
-            // Set end date to now using driver's time zone.
-            dateOut = SetTimeToEndOfDay(endDate, getTimeZoneFromDriver(identifiableEntityBean.getId()));
+            return getTimeZoneFromDriver(identifiableEntityBean.getId());
         }
-        else {
-            dateOut = SetTimeToEndOfDay(endDate, getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID()));
-        }
+       return getTimeZoneFromDriver(((Vehicle)identifiableEntityBean.getEntity()).getDriverID());
         
-        this.endDate = dateOut;
     }
     
     public Date getEndDatePrev() {
@@ -314,8 +303,6 @@ public class TripsBean extends BaseBean {
     }
 
     public TimeZone getTimeZone(){
-        TimeZone timeZone;
-        
         if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
             // Set end date to now using driver's time zone.
             return getTimeZoneFromDriver(identifiableEntityBean.getId());
@@ -339,15 +326,9 @@ public class TripsBean extends BaseBean {
         return getTimeZone().getDisplayName(false,TimeZone.LONG,getLocale());
     }
 
-    public Date SetTimeToEndOfDay(Date date, TimeZone tz) {
-        // Adjust time using TimeZome and set to 11:59:59
-        Calendar calendar = Calendar.getInstance();
-        // calendar.setTimeZone(tz);
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        return calendar.getTime();
+    private Date setTimeToEndOfDay(Date date, TimeZone tz) {
+        return new DateMidnight(date, DateTimeZone.forTimeZone(tz)).toDateTime().plusDays(1).minus(ONE_SECOND).toDate();
+
     }
 
     // TRIP DAO PROPERTIES
@@ -559,6 +540,9 @@ public class TripsBean extends BaseBean {
             // Save the good dates
             startDatePrev = startDate;
             endDatePrev = endDate;
+            trips.clear();
+            tripsMap = null;
+            initTrips();
                     
         } else {
             // Bad dates, reload old
@@ -566,11 +550,7 @@ public class TripsBean extends BaseBean {
             endDate = endDatePrev;
         }
         
-        trips.clear();
-        tripsMap = null;
-        initTrips();
     }
-    
     private boolean checkDates() {     
         // Code implemented to make sure users don't go past 30 days when
         //  searching for trips  
@@ -695,4 +675,6 @@ public class TripsBean extends BaseBean {
 	public void setSelectedViolationID(Long selectedViolationID) {
 		this.selectedViolationID = selectedViolationID;
 	}
+
+
 }
