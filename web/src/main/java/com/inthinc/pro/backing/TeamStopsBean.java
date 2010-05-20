@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.TimeZone;
@@ -14,7 +15,12 @@ import org.richfaces.json.JSONArray;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
 
 import org.joda.time.DateTimeZone;
@@ -46,6 +52,9 @@ public class TeamStopsBean extends BaseBean {
     private List<DriverStops> driverStopsSummary;    
     private Integer selectedDriverID;  
     private TimeZone timeZone;
+        
+    private ReportRenderer reportRenderer;
+    private ReportCriteriaService reportCriteriaService;    
 
     public int getStopsPerPage() {
         return stopsPerPage;
@@ -175,42 +184,8 @@ public class TeamStopsBean extends BaseBean {
         DriverStops d = new DriverStops();
         driverStopsSummary = new ArrayList<DriverStops>();
         
-        int roundTrip = 0;
-        int arriveTime = 0;
-        int departTime = 0;
-        int lowIdle = 0;
-        int highIdle = 0;
-        int driveTime = 0;
-        
-        // Sum up over all trips by the selected driver
-        for ( DriverStops dsri: driverStops ) {
-//            if ( dsri.getRoundTrip() != null ) {
-//                roundTrip++;
-//            }
-            if ( dsri.getArriveTime() != null ) {
-                arriveTime += dsri.getArriveTime().intValue();
-            }
-            if ( dsri.getDepartTime() != null ) {
-                departTime += dsri.getDepartTime().intValue();
-            }
-            if ( dsri.getIdleLo() != null ) {
-                lowIdle += dsri.getIdleLo().intValue();
-            }
-            if ( dsri.getIdleHi() != null ) {
-                highIdle += dsri.getIdleHi().intValue();
-            }
-            if ( dsri.getDriveTime() != null ) {
-                driveTime += dsri.getDriveTime();
-            }
-        }
-        
-        // Set the summary row
-//        d.setRoundTrip(roundTrip);
-        d.setArriveTime(new Long(arriveTime));
-        d.setDepartTime(new Long(departTime));
-        d.setIdleLo(lowIdle);
-        d.setIdleHi(highIdle);
-        d.setDriveTime(new Long(driveTime));
+        // Extract from model method
+        d = DriverStops.summarize(driverStops);
         
         driverStopsSummary.add(d);
     }
@@ -246,5 +221,56 @@ public class TeamStopsBean extends BaseBean {
         
         return timeZone;
     }
- 
+
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(buildReportCriteria(), getFacesContext());
+    }
+
+    public void emailReport()
+    {
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
+    }
+
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReportCriteria(), getFacesContext());
+    }
+
+    protected ReportCriteria buildReportCriteria()
+    {
+        ReportCriteria reportCriteria = getReportCriteria();
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        List<DriverStops> reportDataSet = new ArrayList<DriverStops>();
+        reportDataSet.addAll(this.getDriverStops());
+        reportDataSet.addAll(this.getDriverStopsSummary());
+        reportCriteria.setMainDataset(reportDataSet);
+        return reportCriteria;
+    }
+    
+    protected ReportCriteria getReportCriteria()
+    {
+        return getReportCriteriaService().getTeamStopsReportCriteria(selectedDriverID, teamCommonBean.getTimeFrame(), 
+                getDateTimeZone(), getLocale(), false);
+    }
+
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
+    }
+
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
+    } 
 }

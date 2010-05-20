@@ -1,5 +1,9 @@
 package com.inthinc.pro.model;
 
+import java.util.List;
+
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+
 public class DriverStops extends BaseEntity {
 
     /**
@@ -17,6 +21,8 @@ public class DriverStops extends BaseEntity {
     private Integer idleLo;
     private Integer idleHi;
     private String zoneName;    
+    
+    private Boolean summary;
 
     public Integer getDriverID() {
         return driverID;
@@ -78,5 +84,54 @@ public class DriverStops extends BaseEntity {
     public void setZoneName(String zoneName) {
         this.zoneName = zoneName;
     }
-
+    
+    public Boolean getSummary() {
+        return summary;
+    }
+    public void setSummary(Boolean summary) {
+        this.summary = summary;
+    }
+    public static DriverStops summarize(List<DriverStops> driverStops) {
+        
+        DriverStops d = new DriverStops();
+        
+        int roundTrip = 0;
+        int arriveTime = 0;
+        int departTime = 0;
+        int lowIdle = 0;
+        int highIdle = 0;
+        int driveTime = 0;
+        
+        // Sum up over all trips by the selected driver
+        for ( DriverStops dsri: driverStops ) {
+//            if ( dsri.getRoundTrip() != null ) {
+//                roundTrip++;
+//            }
+            if ( dsri.getArriveTime() != null ) {
+                arriveTime += dsri.getArriveTime().intValue();
+            }
+            if ( dsri.getDepartTime() != null ) {
+                departTime += dsri.getDepartTime().intValue();
+            }
+            if ( dsri.getIdleLo() != null ) {
+                lowIdle += dsri.getIdleLo().intValue();
+            }
+            if ( dsri.getIdleHi() != null ) {
+                highIdle += dsri.getIdleHi().intValue();
+            }
+            if ( dsri.getDriveTime() != null ) {
+                driveTime += dsri.getDriveTime();
+            }
+        }
+        
+        // Set the summary row
+//        d.setRoundTrip(roundTrip);
+        d.setArriveTime(new Long(arriveTime));
+        d.setDepartTime(new Long(departTime));
+        d.setIdleLo(lowIdle);
+        d.setIdleHi(highIdle);
+        d.setDriveTime(new Long(driveTime));
+        
+        return d;   
+    }
 }

@@ -27,5 +27,5 @@ public interface ReportCriteriaService
     ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
     ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
-
+    ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
 }

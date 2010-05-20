@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.MpgDAO;
@@ -24,6 +25,8 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
@@ -57,6 +60,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private DeviceDAO deviceDAO;
     private ReportDAO reportDAO;
     private GroupReportDAO groupReportDAO;
+    private DriverDAO driverDAO;
     
 	private Locale locale;
 
@@ -484,6 +488,32 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		return reportCriteria;
 	}
 
+    @Override
+    public ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet) {
+        Driver driver = driverDAO.findByID(driverID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STOPS_REPORT, driver.getPerson().getFullName(), locale);
+        reportCriteria.setTimeFrame(timeFrame);
+        
+        if (initDataSet) {
+            List<DriverStops> driverStops;
+            
+            driverStops = driverDAO.getStops(driverID, timeFrame.getInterval(timeZone));
+            
+            DriverStops totals = DriverStops.summarize(driverStops);
+            
+            // Clean-up the totals before we ship-it
+            if (totals != null) {
+                totals.setDepartTime(null);
+                totals.setArriveTime(null);
+                driverStops.add(totals);
+            }
+            reportCriteria.setMainDataset(driverStops);
+            
+
+        }
+        return reportCriteria;
+    }    
+    
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -569,6 +599,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
 		this.groupReportDAO = groupReportDAO;
 	}
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+
 
     public void setLocale(Locale locale)
     {

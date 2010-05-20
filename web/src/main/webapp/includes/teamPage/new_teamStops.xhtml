@@ -58,6 +58,8 @@
  
     <rich:tab id="teamStops" oncomplete="Team.tabChange();">
    	   
+	 	<ui:param name="context" value="teamStops" />   	   
+   	   
 		<f:facet name="label">
 	 		<h:panelGroup>
 	 			<h:graphicImage value="/images/ico_map.png" /><rich:spacer width="10"/>Stops
@@ -67,6 +69,33 @@
 		<a4j:outputPanel id="stopsPanel" ajaxRendered="true" styleClass="section">
 		
 		<rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />		
+
+		<h:form id="stopsReport">
+			<ul id="grid_nav" style="margin: 0;">            							
+     			<li class="r grid_icon">
+     				<h:panelGroup id="#{context}_reportToolImageId">
+						<h:graphicImage value="/images/ico_tools.png"/>
+					</h:panelGroup>
+				</li>
+				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+				</li>
+			</ul>
+            <ui:include src="/includes/reportsContextMenu.xhtml">	
+				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+				<ui:param  name="reportBean" value="#{teamStopsBean}"/>
+				<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+				<ui:param  name="exportExcel" value="TRUE"/>
+				<ui:param name="context" value="#{context}" />
+			</ui:include>
+			<h:outputText id="#{context}_email_modalPanel">
+				<ui:include src="/includes/emailReportPopup.xhtml">	
+					<ui:param  name="id" value="#{context}_reportEmailModal" />
+					<ui:param  name="reportBean" value="#{teamStopsBean}"/>
+					<ui:param name="context" value="#{context}" />
+				</ui:include>
+			</h:outputText>
+		</h:form>
+
 			
 		<table>
 		<tr>
