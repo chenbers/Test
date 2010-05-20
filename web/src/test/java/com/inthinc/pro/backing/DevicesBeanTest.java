@@ -1,6 +1,10 @@
 package com.inthinc.pro.backing;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.inthinc.pro.backing.DevicesBean.DeviceView;
 import com.inthinc.pro.model.DeviceStatus;
@@ -36,4 +40,13 @@ public class DevicesBeanTest extends BaseAdminBeanTest<DevicesBean.DeviceView>
     {
         return new String[] { "name", "ephone" };
     }
+    
+    @Test
+    @Ignore
+    @Override
+    public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
+    {
+        
+    }
+
 }
