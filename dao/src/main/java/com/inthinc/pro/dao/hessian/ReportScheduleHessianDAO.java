@@ -46,16 +46,6 @@ public class ReportScheduleHessianDAO extends GenericHessianDAO<ReportSchedule, 
         {
             return Collections.emptyList();
         }
-// TODO:        
-        catch (ProxyException pe) 
-        {
-        	if (pe.getErrorCode() == 422) {
-        	    return getReportSchedulesByUserID(userID);
-        	}
-        	else throw pe;
-        }
-        
-        
 	}
 
 }
