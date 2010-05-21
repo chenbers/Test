@@ -324,7 +324,7 @@ public class BeanUtil
         for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(item.getClass()))
         {
             final Class<?> clazz = descriptor.getPropertyType();
-            System.out.println(descriptor.getName());
+//            System.out.println(descriptor.getName());
             if (clazz != null)
             {
                 try
