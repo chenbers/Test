@@ -63,6 +63,7 @@ public class MessagesTest {
 	}
 	
 	@Test
+	@Ignore
 	public void roTest(){
 		
 		Properties english = getProperties("com/inthinc/pro/ReportMessages.properties");
