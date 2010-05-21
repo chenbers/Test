@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.AlertMessageHessianDAO;
@@ -84,6 +85,8 @@ public class AlertMessagesTest {
     private static RedFlagAlertHessianDAO redFlagAlertHessianDAO;
     private static List<ZoneAlert> zoneAlerts;
     private static List<RedFlagAlert> redFlagAlerts;
+    private static List<ZoneAlert> originalZoneAlerts;
+    private static List<RedFlagAlert> originalRedFlagAlerts;
     private static ITData itData;
     
     @BeforeClass
@@ -106,8 +109,10 @@ public class AlertMessagesTest {
             throw new Exception("Error parsing Test data xml file");
         }
     	zoneAlerts = zoneAlertHessianDAO.getZoneAlerts(itData.account.getAcctID());
+        originalZoneAlerts = zoneAlertHessianDAO.getZoneAlerts(itData.account.getAcctID());
     	
     	redFlagAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+        originalRedFlagAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
     }
 
     private static void initApp() {
@@ -126,11 +131,12 @@ public class AlertMessagesTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-    	for (ZoneAlert zoneAlert : zoneAlerts) {
-    		modZoneAlertPref(GROUPS, zoneAlert);
+        // save original settings
+    	for (ZoneAlert zoneAlert : originalZoneAlerts) {
+    	    zoneAlertHessianDAO.update(zoneAlert);
     	}
-    	for (RedFlagAlert redFlagAlert : redFlagAlerts) {
-    		modRedFlagAlertPref(GROUPS, redFlagAlert);
+    	for (RedFlagAlert redFlagAlert : originalRedFlagAlerts) {
+    	    redFlagAlertHessianDAO.update(redFlagAlert);
     	}
     }
 
@@ -215,8 +221,8 @@ public class AlertMessagesTest {
 	        String IMEI = groupData.device.getImei();
 	        if (eventType.equals(EventType.NO_DRIVER))
 	        	IMEI = itData.noDriverDevice.getImei();
+
 	        
-	        // generate zone arrival/departure event
 	        if (!genEvent(IMEI, eventType))
 	            fail("Unable to generate event of type " + eventType);
 	        if (pollForMessages("Red Flag Alert Groups Set"))
@@ -468,6 +474,7 @@ public class AlertMessagesTest {
         severity = 1
     return severity    	
  */
+//System.out.println("genEvent: " + eventType);    	
     	if (eventType.equals(EventType.SEATBELT) )
     			event = new SeatBeltEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SEATBELT, new Date(), 60, 1000, 
     					new Double(40.704246f), new Double(-111.948613f), 80, 100, 20);
