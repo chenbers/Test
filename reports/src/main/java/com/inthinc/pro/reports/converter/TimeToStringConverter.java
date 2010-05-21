@@ -14,6 +14,15 @@ public class TimeToStringConverter {
     	
     	return DateUtil.getDurationFromSeconds(seconds.intValue());
     }
+	
+    
+    public static String convertSeconds(Long seconds) {
+        
+        if (seconds == null)
+            seconds = 0L;
+        
+        return DateUtil.getDurationFromSeconds(seconds.intValue());
+    }	
     
     public static String convertSecondsToDate(Long seconds) {
         

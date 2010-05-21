@@ -20,7 +20,8 @@ public class DriverStops extends BaseEntity {
     private Long departTime;
     private Integer idleLo;
     private Integer idleHi;
-    private String zoneName;    
+    private String zoneName;  
+    private String address;
     
     private Boolean summary;
 
@@ -83,24 +84,29 @@ public class DriverStops extends BaseEntity {
     }
     public void setZoneName(String zoneName) {
         this.zoneName = zoneName;
-    }
-    
+    }    
     public Boolean getSummary() {
         return summary;
     }
     public void setSummary(Boolean summary) {
         this.summary = summary;
     }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
     public static DriverStops summarize(List<DriverStops> driverStops) {
         
         DriverStops d = new DriverStops();
         
         int roundTrip = 0;
-        int arriveTime = 0;
-        int departTime = 0;
+        long arriveTime = 0;
+        long departTime = 0;
         int lowIdle = 0;
         int highIdle = 0;
-        int driveTime = 0;
+        long driveTime = 0;
         
         // Sum up over all trips by the selected driver
         for ( DriverStops dsri: driverStops ) {
@@ -126,11 +132,11 @@ public class DriverStops extends BaseEntity {
         
         // Set the summary row
 //        d.setRoundTrip(roundTrip);
-        d.setArriveTime(new Long(arriveTime));
-        d.setDepartTime(new Long(departTime));
+        d.setArriveTime(arriveTime);
+        d.setDepartTime(departTime);
         d.setIdleLo(lowIdle);
         d.setIdleHi(highIdle);
-        d.setDriveTime(new Long(driveTime));
+        d.setDriveTime(driveTime);
         
         return d;   
     }

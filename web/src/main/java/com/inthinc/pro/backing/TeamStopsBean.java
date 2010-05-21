@@ -173,6 +173,11 @@ public class TeamStopsBean extends BaseBean {
         if (isValidTimeFrame()){
             driverStops =                        
                 driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+            
+            // Till we figure-out how to get the address back, set to something
+            for ( DriverStops ds: driverStops ) {
+                ds.setAddress("Set this");
+            }
         } else {
             addInfoMessage("Please choose a valid time frame for the Team Stops tab");
         }
@@ -186,6 +191,9 @@ public class TeamStopsBean extends BaseBean {
         
         // Extract from model method
         d = DriverStops.summarize(driverStops);
+        
+        // Till we figure-out how to get the address back, set to something 
+        d.setAddress(null);
         
         driverStopsSummary.add(d);
     }
@@ -241,9 +249,9 @@ public class TeamStopsBean extends BaseBean {
     {
         ReportCriteria reportCriteria = getReportCriteria();
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        List<DriverStops> reportDataSet = new ArrayList<DriverStops>();
+        List<DriverStops> reportDataSet = new ArrayList<DriverStops>();        
         reportDataSet.addAll(this.getDriverStops());
-        reportDataSet.addAll(this.getDriverStopsSummary());
+        reportDataSet.addAll(this.getDriverStopsSummary());               
         reportCriteria.setMainDataset(reportDataSet);
         return reportCriteria;
     }
