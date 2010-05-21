@@ -163,6 +163,13 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
                     		DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
                 	break;
+                case TEAM_STOPS_REPORT:
+                    TimeFrame timeFrameStops = reportSchedule.getReportTimeFrame();
+                    if (timeFrameStops == null)
+                        timeFrameStops = TimeFrame.TODAY;
+                    reportCriteriaList.add(reportCriteriaService.getTeamStopsReportCriteria(reportSchedule.getGroupID(), timeFrameStops, 
+                            DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
+                    break;                	
                 default:
                     break;
 
