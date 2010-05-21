@@ -11,7 +11,6 @@
 
 <style type="text/css">
 
-	.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; }
 
 #tree_nav a:hover{
 	background: url("#{request.contextPath}/images/tree_button_pressed.gif") no-repeat center right
@@ -26,8 +25,16 @@
 	height: 17px
 }
 
+.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; }
+.recent_back { margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; }
+.recent_back li a:active,.recent_back li a:link,.recent_back li a:hover,.recent_back li a:visited
+	{
+	color: #333;
+	text-decoration: none;
+}
+
 .dropBox{
-	display: none;
+	display: block;
 	position: absolute;
 	left:289px;
 	top:132px;
@@ -103,7 +110,7 @@ var closetimer = 0;
 	}
 
 	function navigationTree_close(){
-		jQuery(".dropBox").css("display","none");
+		jQuery(".dropBox").css("display","block");
 	}
 
 	function navigationTree_timer(){
@@ -120,7 +127,15 @@ var closetimer = 0;
  	
  <div id="tree_nav"><a id="tree_link" href="#"></a></div>
  
- <div id="navigationTreeBox" class="dropBox">  
+ <div id="navigationTreeBox" class="dropBox">
+ 
+ <div id="recents" class="recent_back">
+ <ul style="list-style:none outside none">
+ <ui:repeat  value="#{treeNavigationBean.recentNodes}" var="recent"> 
+ <li><a href="#{recent.data.attributes['href']}" >#{recent.data.title}</a></li>
+ </ui:repeat>
+ </ul>
+ </div>
 <div id="navigationTree" class="tree_back">
 </div>
 </div>		
@@ -133,7 +148,7 @@ var closetimer = 0;
 		<ul>
 		
 			<li class="current">
-                <a href="#"><span style="padding: 0 30px 0 0">#{messages.navigation_home}</span></a>
+                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard"><span style="padding: 0 30px 0 0">#{messages.navigation_home}</span></pretty:link>
  			</li>
 			<li class="#{reportsSelected}">
                 <pretty:link id="#{context}-navigationReports" mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>
