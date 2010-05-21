@@ -136,12 +136,14 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="331" y="0" width="127" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{departTime})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{address} == null)? "":
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{departTime})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="198" y="0" width="133" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{arriveTime})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{address} == null)? "":
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{arriveTime})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="1" y="0" width="75" height="20"/>
