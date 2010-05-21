@@ -5,6 +5,7 @@ package com.inthinc.pro.backing;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,11 +44,14 @@ public class TreeNavigationBean extends BaseBean {
     private String currentGroupName;
     private JsTreeRoot navigationTree;
     
+    private final int maxRecentNodes = 3;
+    
     public void init(){
         
         setGroupID(getUser().getGroupID());
 
         currentGroupName=group.getName();
+        recentNodes = new ArrayList<JsTreeNode>();
      }
         
  	public GroupDAO getGroupDAO() {
@@ -81,10 +85,13 @@ public class TreeNavigationBean extends BaseBean {
 	public void setRecentNodes(List<JsTreeNode> recentNodes) {
 		this.recentNodes = recentNodes;
 	}
-//  [
-//  { data : "A node", children : [ { data : "Only child" } ], state : "open" },
-//  { data : "Some other node" }
-//]
+    public boolean getRenderRecentNodes(){
+        
+        return !recentNodes.isEmpty();
+    }
+    public void setRenderRecentNodes(boolean renderRecentNodes){
+        
+    }
 
     public JsTreeRoot getNavigationTree() {
         return navigationTree;
@@ -109,11 +116,6 @@ public class TreeNavigationBean extends BaseBean {
             setNavigationTree(new JsTreeRoot(group, getGroupHierarchy()));
 
         }
-        if (navigationTree != null) {
-            
-            navigationTree.setCurrentNode(groupID);
-        }
-
         this.groupID = groupID;
     
     }
@@ -128,7 +130,7 @@ public class TreeNavigationBean extends BaseBean {
     
     public void setCurrentGroupID(Integer currentGroupID) {
         
-         currentGroupName = getGroupHierarchy().getGroup(currentGroupID).getName();
+        currentGroupName = getGroupHierarchy().getGroup(currentGroupID).getName();
         //find node in the tree and set it selected
         navigationTree.setCurrentNode(currentGroupID);
         openParentPath(getGroupHierarchy().getGroup(currentGroupID));
@@ -143,11 +145,17 @@ public class TreeNavigationBean extends BaseBean {
     
     private void openParentPath(Group group){
         navigationTree.closeAll();
+        Group child = group;
         Group parent = getGroupHierarchy().getParentGroup(group);
         while (parent != null){
             
             navigationTree.open(parent.getGroupID());
+            child = parent;
             parent = getGroupHierarchy().getParentGroup(parent);
+        }
+        if (parent == null){
+            
+            navigationTree.open(child.getGroupID());
         }
     }
     private void getDriverSubtree()
@@ -200,11 +208,26 @@ public class TreeNavigationBean extends BaseBean {
             if (currentNode != null){
                 
                 currentNode.getData().addAttribute("class", "");
+                Iterator<JsTreeNode> it = recentNodes.iterator();
+                while(it.hasNext()){
+                    
+                    JsTreeNode jsTreeNode = it.next();
+                    if((jsTreeNode==currentNode) || (jsTreeNode == findTreeNode(groupID))){
+                        
+                        it.remove(); 
+                    }
+                }
+                recentNodes.add(0, currentNode);
+                if (recentNodes.size()>maxRecentNodes){
+                    
+                    recentNodes.remove(maxRecentNodes);
+                }
             }
             //find node in the tree and set it selected
             currentNode = findTreeNode(groupID);
             currentNode.getData().addAttribute("class", "selectedNode");
-           
+            
+         
         }
         public void open(Integer groupID){
             

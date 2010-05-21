@@ -26,7 +26,7 @@
 }
 
 .tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; }
-.recent_back { margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; }
+.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; }
 .recent_back li a:active,.recent_back li a:link,.recent_back li a:hover,.recent_back li a:visited
 	{
 	color: #333;
@@ -93,7 +93,7 @@ var closetimer = 0;
 			},
 			callback : {
 				onchange : function (NODE, TREE_OBJ) {
-					var groupID = jQuery(NODE).attr("groupid");
+//					var groupID = jQuery(NODE).attr("groupid");
 				
 					document.location.href = $(NODE).children("a:eq(0)").attr("href");
 
@@ -129,13 +129,14 @@ var closetimer = 0;
  
  <div id="navigationTreeBox" class="dropBox">
  
- <div id="recents" class="recent_back">
+ <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
+ <p style="text-indent:5px">#{messages.navigation_recents}</p>
  <ul style="list-style:none outside none">
  <ui:repeat  value="#{treeNavigationBean.recentNodes}" var="recent"> 
  <li><a href="#{recent.data.attributes['href']}" >#{recent.data.title}</a></li>
  </ui:repeat>
  </ul>
- </div>
+ </rich:panel>
 <div id="navigationTree" class="tree_back">
 </div>
 </div>		
