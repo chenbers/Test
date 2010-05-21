@@ -37,7 +37,7 @@
     </rich:column>
     <rich:column id="owner" rendered="#{zoneAlertsBean.tableColumns['owner'].visible}" sortBy="#{item.username}">
       <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_owner}" /></f:facet>
-      <h:outputText value="#{item.username}" />
+      <h:outputText value="#{item.fullName}" />
     </rich:column>
   </ui:define>
 

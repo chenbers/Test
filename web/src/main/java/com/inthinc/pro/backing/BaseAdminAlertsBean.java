@@ -309,13 +309,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public String save()
     {
         // if batch-changing assignment, change all assignment types
-        final Map<String, Boolean> updateField = getUpdateField();
-        final boolean assignTo = Boolean.TRUE.equals(updateField.get("assignTo"));
-        updateField.put("groupIDs", assignTo);
-        updateField.put("vehicleTypes", assignTo);
-        updateField.put("vehicleIDs", assignTo);
-        updateField.put("driverIDs", assignTo);
-        updateField.put("userID", assignTo);
+//        final Map<String, Boolean> updateField = getUpdateField();
+        final boolean assignTo = Boolean.TRUE.equals(getUpdateField().get("assignTo"));
+        getUpdateField().put("groupIDs", assignTo);
+        getUpdateField().put("vehicleTypes", assignTo);
+        getUpdateField().put("vehicleIDs", assignTo);
+        getUpdateField().put("driverIDs", assignTo);
+        getUpdateField().put("userID", assignTo);
 
         // clear previous IDs
         getItem().setGroupIDs(new ArrayList<Integer>());

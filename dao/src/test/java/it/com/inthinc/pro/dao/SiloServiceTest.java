@@ -703,12 +703,6 @@ public class SiloServiceTest {
         userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(userID);
         assertEquals(2, userRedFlagAlertList.size());
         
-        
-        
-        
-
-        
-        
         // delete
         Integer deletedCount = redFlagAlertDAO.deleteByID(redFlagAlertID);
         assertEquals("Red Flag alert delete count", Integer.valueOf(1), deletedCount);

@@ -8,7 +8,6 @@ import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.ZoneAlert;
 
 public class ReportScheduleHessianDAO extends GenericHessianDAO<ReportSchedule, Integer> implements ReportScheduleDAO
 {
@@ -51,9 +50,7 @@ public class ReportScheduleHessianDAO extends GenericHessianDAO<ReportSchedule, 
         catch (ProxyException pe) 
         {
         	if (pe.getErrorCode() == 422) {
-                List<Map<String, Object>> reportSchedules = getSiloService().getReportPrefsByUserID(userID);
-                List<ReportSchedule> list = getMapper().convertToModelObject(reportSchedules, ReportSchedule.class);
-                return list;
+        	    return getReportSchedulesByUserID(userID);
         	}
         	else throw pe;
         }

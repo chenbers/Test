@@ -593,7 +593,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         {
             if (updateField == null)
                 updateField = new HashMap<String, Boolean>();
-            if (getItems().size() > 0)
+            if (getItem() != null)
                 for (final String name : BeanUtil.getPropertyNames(getItem()))
                     updateField.put(name, false);
         }

@@ -42,7 +42,7 @@ public abstract class BaseAlert extends BaseEntity
     private Status  status;
 
     @Column(updateable = false)
-    private String 				username;
+    private String 				fullName;
 
     public BaseAlert()
     {
@@ -242,12 +242,12 @@ public abstract class BaseAlert extends BaseEntity
 		this.userID = userID;
 	}
 
-    public String getUsername() {
-		return username;
+    public String getFullName() {
+		return fullName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

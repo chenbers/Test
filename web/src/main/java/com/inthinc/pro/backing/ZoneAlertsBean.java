@@ -195,13 +195,13 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         // if batch-changing alert definition, change all of its children
         final Map<String, Boolean> updateField = getUpdateField();
         
-System.out.println("ZoneAlert - fields");
-for (String key : updateField.keySet())
-	System.out.println(key + " " + updateField.get(key));
-System.out.println("ZoneAlert - fields end");
+//System.out.println("ZoneAlert - fields");
+//for (String key : updateField.keySet())
+//	System.out.println(key + " " + updateField.get(key));
+//System.out.println("ZoneAlert - fields end");
 
         final boolean defineAlerts = Boolean.TRUE.equals(updateField.get("defineAlerts"));
-System.out.println("defineAlerts = " + defineAlerts);
+//System.out.println("defineAlerts = " + defineAlerts);
         updateField.put("arrival", defineAlerts);
         updateField.put("departure", defineAlerts);
         
