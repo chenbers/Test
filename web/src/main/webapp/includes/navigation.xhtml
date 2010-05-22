@@ -12,35 +12,44 @@
 <style type="text/css">
 
 
-#tree_nav a:hover{
-	background: url("#{request.contextPath}/images/tree_button_pressed.gif") no-repeat center right
+#tree_link:hover {
+	background: url("#{request.contextPath}/images/tree_button_pressed.gif") no-repeat center center;
 }
-#tree_nav a{
-	background: url("#{request.contextPath}/images/tree_button_unpressed.gif") no-repeat center right;
-	display: block;
-	position: absolute;
-	left: 293px;
-	top:111px;
-	width: 16px;
-	height: 17px
+#tree_link{
+	background: url("#{request.contextPath}/images/tree_button_unpressed.gif") no-repeat center center;
+	height: 38px;
+	float: right;
+	padding: 0 25px 0 0;
 }
 
-.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; }
-.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; }
+
+
+.tree ul ins {
+	height: 18px;
+}
+
+.tree li {
+	padding: 0px 5px 2px 15px;
+}
+
+.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; padding: 10px 0; width: 100% }
+.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; width: 100%}
 .recent_back li a:active,.recent_back li a:link,.recent_back li a:hover,.recent_back li a:visited
 	{
 	color: #333;
 	text-decoration: none;
 }
 
+.selectedNavigationTreeNode {
+	font-weight: bold;
+}
+
 .dropBox{
 	display: none;
-	position: absolute;
-	left:289px;
-	top:132px;
 	z-index:100;
-	width:100;
-	height:200
+	position: absolute;
+	left:421px;
+	top:130px;
 }
 </style>
 
@@ -125,7 +134,7 @@ var closetimer = 0;
     }
 </script>
  	
- <div id="tree_nav"><a id="tree_link" href="#"></a></div>
+ <!--<div id="tree_nav"><a id="tree_link" href="#"></a></div>-->
  
  <div id="navigationTreeBox" class="dropBox">
  
@@ -149,7 +158,7 @@ var closetimer = 0;
 		<ul>
 		
 			<li class="current">
-                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard"><span style="padding: 0 30px 0 0">#{messages.navigation_home}</span></pretty:link>
+                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard"><span style="padding: 0 5px 0 0; width: 65px">#{messages.navigation_home}<span onclick="return false;" id="tree_link"></span></span></pretty:link>
  			</li>
 			<li class="#{reportsSelected}">
                 <pretty:link id="#{context}-navigationReports" mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>

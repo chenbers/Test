@@ -225,7 +225,7 @@ public class TreeNavigationBean extends BaseBean {
             }
             //find node in the tree and set it selected
             currentNode = findTreeNode(groupID);
-            currentNode.getData().addAttribute("class", "selectedNode");
+            currentNode.getData().addAttribute("class", "selectedNavigationTreeNode");
             
          
         }
