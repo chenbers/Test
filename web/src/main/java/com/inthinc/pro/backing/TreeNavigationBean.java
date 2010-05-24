@@ -359,6 +359,13 @@ public class TreeNavigationBean extends BaseBean {
             }
             return fullName;
 		}
+		public String getImage(){
+		    
+		   if(attributes.get("rel").equals("fleet")) return "/images/ico_truck.png";
+		   else if (attributes.get("rel").equals("group")) return "/images/ico_trucks.png";
+           else if (attributes.get("rel").equals("team")) return "/images/ico_team.png";
+		   return "";
+		}
 	}
 	public class NodeData{
 	    

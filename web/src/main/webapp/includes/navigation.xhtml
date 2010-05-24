@@ -64,9 +64,9 @@ var closetimer = 0;
 		jQuery(".dropBox").css("display","block");
 	});
 	
-	jQuery("#navigationTree").bind("mouseleave",navigationTree_timer);
+	jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
 
-	jQuery("#navigationTree").bind("mouseover",navigationTree_canceltimer);
+	jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
 	
 });
 
@@ -144,6 +144,7 @@ var closetimer = 0;
  <rich:dataList type="none" value="#{treeNavigationBean.recentNodes}" 
  		var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
                <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
+               	 <h:graphicImage value="#{recent.image}"/>
                   <h:outputText value="#{recent.data.title}"/>
                   <f:param value="#{recent.attributes['groupid']}"/>
                </pretty:link>
