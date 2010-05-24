@@ -226,7 +226,7 @@ var closetimer = 0;
 			  
 			</li>	
 		</ul>
-		<a4j:jsFunction id="getNavigationTreeData" ajaxSingle="true" name="getNavigationTreeData" 
+		<a4j:jsFunction id="getNavigationTreeData" ajaxSingle="true" name="getNavigationTreeData" limitToList="true"
 				data="#{treeNavigationBean.navigationTree}" oncomplete="buildNavigationTree(data)"/>
 		</h:form>
 	</div>
