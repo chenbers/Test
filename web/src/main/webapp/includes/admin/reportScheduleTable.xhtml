@@ -60,7 +60,7 @@
       <h:outputText value="#{messages[item.status]}">
       </h:outputText>
     </rich:column>
-    <rich:column id="owner" rendered="#{reportScheduleBean.tableColumns['owner'].visible}" sortBy="#{item.username}">
+    <rich:column id="owner" rendered="#{reportScheduleBean.tableColumns['owner'].visible}" sortBy="#{item.fullName}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_owner}" /></f:facet>
       <h:outputText value="#{item.fullName}" />
     </rich:column>
