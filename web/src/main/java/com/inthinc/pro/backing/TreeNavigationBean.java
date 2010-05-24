@@ -351,6 +351,14 @@ public class TreeNavigationBean extends BaseBean {
             }
 
 		}
+		public String getFullPath(){
+		    
+		    String fullName = getGroupHierarchy().getFullGroupName(Integer.parseInt(getAttributes().get("groupid")));
+            if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+                fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+            }
+            return fullName;
+		}
 	}
 	public class NodeData{
 	    

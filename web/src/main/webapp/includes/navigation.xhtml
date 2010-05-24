@@ -104,7 +104,7 @@ var closetimer = 0;
 				onchange : function (NODE, TREE_OBJ) {
 //					var groupID = jQuery(NODE).attr("groupid");
 				
-					document.location.href = $(NODE).children("a:eq(0)").attr("href");
+					document.location.href = jQuery(NODE).children("a:eq(0)").attr("href");
 
 				}	
 			},
@@ -139,12 +139,16 @@ var closetimer = 0;
  <div id="navigationTreeBox" class="dropBox">
  
  <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
+ <h:form>
  <p style="text-indent:5px">#{messages.navigation_recents}</p>
- <ul style="list-style:none outside none">
- <ui:repeat  value="#{treeNavigationBean.recentNodes}" var="recent"> 
- <li><a href="#{recent.data.attributes['href']}" >#{recent.data.title}</a></li>
- </ui:repeat>
- </ul>
+ <rich:dataList type="none" value="#{treeNavigationBean.recentNodes}" 
+ 		var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
+               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
+                  <h:outputText value="#{recent.data.title}"/>
+                  <f:param value="#{recent.attributes['groupid']}"/>
+               </pretty:link>
+ </rich:dataList>
+ </h:form>
  </rich:panel>
 <div id="navigationTree" class="tree_back">
 </div>
