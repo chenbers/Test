@@ -48,8 +48,8 @@
 	display: none;
 	z-index:100;
 	position: absolute;
-	left:421px;
-	top:130px;
+	left:72px;
+	top:28px;
 }
 </style>
 
@@ -58,8 +58,8 @@
 var timeout    = 1000;
 var closetimer = 0;
 
-	jQuery(function(){
-		getNavigationTreeData();
+jQuery(function(){
+	getNavigationTreeData();
 	jQuery("#tree_link").click(function(){
 		jQuery(".dropBox").css("display","block");
 	});
@@ -135,25 +135,7 @@ var closetimer = 0;
 </script>
  	
  <!--<div id="tree_nav"><a id="tree_link" href="#"></a></div>-->
- 
- <div id="navigationTreeBox" class="dropBox">
- 
- <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
- <h:form>
- <p style="text-indent:5px">#{messages.navigation_recents}</p>
- <rich:dataList type="none" value="#{treeNavigationBean.recentNodes}" 
- 		var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
-               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
-               	 <h:graphicImage value="#{recent.image}"/>
-                  <h:outputText value="#{recent.data.title}"/>
-                  <f:param value="#{recent.attributes['groupid']}"/>
-               </pretty:link>
- </rich:dataList>
- </h:form>
- </rich:panel>
-<div id="navigationTree" class="tree_back">
-</div>
-</div>		
+ 	
 <div class="main_nav">
 	<div class="main_nav-right"></div>
 	<div class="main_nav-left"></div>
@@ -162,22 +144,42 @@ var closetimer = 0;
 	<h:form id="navigation" > 
 		<ul>
 		
-			<li class="current">
-                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard"><span style="padding: 0 5px 0 0; width: 65px">#{messages.navigation_home}<span onclick="return false;" id="tree_link"></span></span></pretty:link>
+			<li class="main_nav_item current" style="position:relative;">
+                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard">
+                	<span style="padding: 0 5px 0 0; width: 75px">
+                		<span>#{messages.navigation_home}</span>                		
+                		<span onclick="return false;" id="tree_link"></span>
+                	</span>
+                </pretty:link>                
+   	 			<div id="navigationTreeBox" class="dropBox"> 
+					 <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
+						 <h:form>
+						 <p style="text-indent:5px">#{messages.navigation_recents}</p>
+						 <rich:dataList type="none" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
+			               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
+			              	  <h:graphicImage value="#{recent.image}"/>
+			                  <h:outputText value="#{recent.data.title}"/>
+			                  <f:param value="#{recent.attributes['groupid']}"/>
+			               </pretty:link>
+						 </rich:dataList>
+						 </h:form>
+					 </rich:panel>
+					<div id="navigationTree" class="tree_back"></div>
+				</div>
  			</li>
-			<li class="#{reportsSelected}">
+			<li class="main_nav_item #{reportsSelected}">
                 <pretty:link id="#{context}-navigationReports" mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>
 			</li>
-			<li class="#{notificationsSelected}">
+			<li class="main_nav_item #{notificationsSelected}">
                 <pretty:link id="#{context}-navigationNotifications" mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
 			</li>
 			<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_LIVEFLEETACCESS">
-    			<li class="#{liveFleetSelected}">
+    			<li class="main_nav_item #{liveFleetSelected}">
                     <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
     			</li>
 			</security:authorize>
 			<security:authorize ifAnyGranted="ROLE_ADMIN">
-				<li class="#{adminSelected}">
+				<li class="main_nav_item #{adminSelected}">
                     <pretty:link id="#{context}-navigationAdmin" mappingId="admin"><span>#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
@@ -188,11 +190,11 @@ var closetimer = 0;
 			<ui:param name="firstAccessPoint" value="#{myAccountBean.user.accessPoints[0].accessPtID}"/>
 			<ui:param name="defaultPage" value="#{siteAccessPoints.accessPointsMap[firstAccessPoint].msgKey}"/>
 			
-				<li class="#{adminSelected}">
+				<li class="main_nav_item #{adminSelected}">
                     <pretty:link id="#{context}-navigationAdminSubset" mappingId="admin#{defaultPage}"><span>#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
-			<li style="float:right">
+			<li class="main_nav_item" style="float:right">
 				<table width="250" border="0" cellspacing="0" cellpadding="0" id="menu_search_box">
 				  <tr>
 					<td class="left">

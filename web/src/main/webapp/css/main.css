@@ -428,20 +428,20 @@ img {
 	height: 38px;
 }
 
-.main_nav-bg ul {
+.main_nav-bg>form>ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.main_nav-bg li {
+.main_nav_item {
 	float: left;
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.main_nav-bg li a {
+.main_nav_item>a {
 	float: left;
 	display: block;
 	color: #fff;
@@ -455,42 +455,42 @@ img {
 	cursor: pointer;
 }
 
-.main_nav-bg li a span {
+.main_nav_item>a>span {
 	float: left;
 	display: block;
 	padding: 0 18px 0 0;
 }
 
-.main_nav-bg li.current a {
+.main_nav_item.current>a {
 	color: #333;
 	background: url(../images/main_nav_hover_l.gif) no-repeat left 5px;
 	font-weight: bold;
 }
 
-.main_nav-bg li.current a span {
+.main_nav_item.current>a>span {
 	color: #333;
 	background: url(../images/main_nav_hover_r.gif) no-repeat right 5px;
 }
 
-.main_nav-bg li.search a {
+.main_nav_item.search>a {
 	color: #fff;
 	background: url(../images/main_nav_hover_l_search.gif) no-repeat left
 		5px;
 	font-weight: normal;
 }
 
-.main_nav-bg li.search a span {
+.main_nav_item.search>a>span {
 	color: #fff;
 	background: url(../images/main_nav_hover_r_search.gif) no-repeat right
 		5px;
 }
 
-.main_nav-bg li a:hover {
+.main_nav_item>a:hover {
 	color: #333;
 	background: url(../images/main_nav_hover_l.gif) no-repeat left 5px;
 }
 
-.main_nav-bg li a:hover span {
+.main_nav_item>a:hover>span {
 	color: #333;
 	background: url(../images/main_nav_hover_r.gif) no-repeat right 5px;
 }
