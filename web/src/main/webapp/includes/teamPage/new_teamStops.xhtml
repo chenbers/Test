@@ -31,7 +31,20 @@
         function getAddresses()
         {              
 	    	geocoder = new GClientGeocoder();
+	    	
+	    	// start table address
+	    	jQuery('td[id$="address_column_start"]').each(function(n){
 
+         		var latStart = jQuery(this).find('*[id$="latStart"]');
+        		var lngStart = jQuery(this).find('*[id$="lngStart"]');
+        		var addressStart = jQuery(this).find('*[id$="addressStart"]');  
+//        		var indexAdd = jQuery(this).find('*[id$="indexAdd"]');        
+				
+				reverseGeocodeTripAddress(new GLatLng(latStart[0].value,lngStart[0].value),addressStart[0]);	
+	    	});   	    	
+
+
+	    	// main table addresses
 	    	jQuery('td[id$="address_column"]').each(function(n){
 
          		var lat = jQuery(this).find('*[id$="lat"]');
@@ -197,7 +210,7 @@
 	                			
 	                		</rich:column>
 	                		
-	                		<rich:column id="address_column">
+	                		<rich:column id="address_column_start">
 	                			<h:inputHidden id="latStart" value="#{startStops.lat}"/>
 								<h:inputHidden id="lngStart" value="#{startStops.lng}"/>								
  								<h:outputText id="addressStart"/>
