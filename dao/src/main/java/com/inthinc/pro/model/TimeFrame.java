@@ -60,7 +60,8 @@ public enum TimeFrame implements BaseEnum {
     },
     WEEK(AggregationDuration.SEVEN_DAY, 9) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(new DateTime().minusDays(6), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));
+//            return new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));            
         }
     },
     LAST_THIRTY_DAYS(AggregationDuration.ONE_MONTH, 10) {
