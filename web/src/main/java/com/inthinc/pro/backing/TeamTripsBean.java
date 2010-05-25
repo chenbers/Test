@@ -35,7 +35,7 @@ public class TeamTripsBean extends BaseBean {
 	 * Backing bean for the TeamTrips tab of the new team page
 	 */
 	private static final long serialVersionUID = 1L;
-	private final int driversPerPage = 10;
+	private final int driversPerPage = 25;
 	
 	private List<String> colors;
 	private List<String> textColors;
