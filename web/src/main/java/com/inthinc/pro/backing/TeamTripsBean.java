@@ -35,7 +35,7 @@ public class TeamTripsBean extends BaseBean {
 	 * Backing bean for the TeamTrips tab of the new team page
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int driversPerPage = 25;
+	private final int driversPerPage = 10;
 	
 	private List<String> colors;
 	private List<String> textColors;
@@ -295,7 +295,7 @@ public class TeamTripsBean extends BaseBean {
 	public void setDriversPage(Integer driversPage) {
 		this.driversPage = driversPage;
 	}
-	public static int getDriversperpage() {
+	public int getDriversPerPage() {
 		return driversPerPage;
 	}
 
