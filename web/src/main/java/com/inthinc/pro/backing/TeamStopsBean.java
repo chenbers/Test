@@ -49,7 +49,8 @@ public class TeamStopsBean extends BaseBean {
     
     private List<Driver> drivers;
     private List<DriverStops> driverStops;
-    private List<DriverStops> driverStopsSummary;    
+    private List<DriverStops> driverStopsSummary;  
+    private List<DriverStops> driverStart;
     private Integer selectedDriverID;  
     private TimeZone timeZone;
         
@@ -103,6 +104,14 @@ public class TeamStopsBean extends BaseBean {
         
         return driverStopsSummary;
     }
+        
+    public List<DriverStops> getDriverStart() {
+        if ( selectedDriverID != null ) {
+            initDriverStart();
+        }
+        
+        return driverStart;
+    }    
     
     public Integer getSelectedDriverID() {
         return selectedDriverID;
@@ -157,6 +166,7 @@ public class TeamStopsBean extends BaseBean {
         drivers = new ArrayList<Driver>();
         driverStops = new ArrayList<DriverStops>();
         driverStopsSummary = new ArrayList<DriverStops>();
+        driverStart = new ArrayList<DriverStops>();
 
         // Labels to the right of the driver name
         labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(
@@ -169,7 +179,10 @@ public class TeamStopsBean extends BaseBean {
         Collections.sort(drivers);
     }
 
-    private void initDriverStops() {       
+    private void initDriverStops() {  
+        
+        // The way jsf works, this will probably be called AFTER the call for the driver start data,
+        //  so, the first data access shown below will probably need to be moved to initDriverStart()
         if (isValidTimeFrame()){
             driverStops =                        
                 driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
@@ -196,6 +209,10 @@ public class TeamStopsBean extends BaseBean {
         d.setAddress(null);
         
         driverStopsSummary.add(d);
+    }
+    
+    public void initDriverStart() {
+        
     }
 
     public TimeZone getTimeZone() {
