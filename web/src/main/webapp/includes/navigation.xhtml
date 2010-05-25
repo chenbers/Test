@@ -51,6 +51,7 @@
 	left:72px;
 	top:28px;
 }
+
 </style>
 
 <script type="text/javascript">
@@ -155,7 +156,7 @@ jQuery(function(){
 					 <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
 						 <h:form>
 						 <p style="text-indent:5px">#{messages.navigation_recents}</p>
-						 <rich:dataList type="none" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
+						 <rich:dataList style="list-style: none;" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
 			               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
 			              	  <h:graphicImage value="#{recent.image}"/>
 			                  <h:outputText value="#{recent.data.title}"/>
