@@ -36,7 +36,8 @@
 
          		var lat = jQuery(this).find('*[id$="lat"]');
         		var lng = jQuery(this).find('*[id$="lng"]');
-        		var address = jQuery(this).find('*[id$="address"]');     	       		
+        		var address = jQuery(this).find('*[id$="address"]');  
+//        		var indexAdd = jQuery(this).find('*[id$="indexAdd"]');        
 				
 				reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);	
 	    	});                        
@@ -50,7 +51,8 @@
     			        } 
     			        else {						
 			             	addressElement.innerHTML = response.Placemark[0].address;
-    			        }    			       
+    			        }     			       
+//    			        setAddInBean(indexAdd,addressElement.innerHTML);   			           			       
     		});
 	    }   	 
 
@@ -80,13 +82,15 @@
 				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 				</li>
 			</ul>
-            <ui:include src="/includes/reportsContextMenu.xhtml">	
+			
+            <ui:include src="/includes/reportsContextMenu.xhtml">	            
 				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
 				<ui:param  name="reportBean" value="#{teamStopsBean}"/>
 				<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
 				<ui:param  name="exportExcel" value="TRUE"/>
 				<ui:param name="context" value="#{context}" />
 			</ui:include>
+			
 			<h:outputText id="#{context}_email_modalPanel">
 				<ui:include src="/includes/emailReportPopup.xhtml">	
 					<ui:param  name="id" value="#{context}_reportEmailModal" />
@@ -190,7 +194,7 @@
 	                		
 	                		<rich:column id="address_column">
 	                			<h:inputHidden id="lat" value="#{stops.lat}"/>
-								<h:inputHidden id="lng" value="#{stops.lng}"/>
+								<h:inputHidden id="lng" value="#{stops.lng}"/>								
  								<h:outputText id="address"/>
 	                		</rich:column>
 	                		
@@ -349,11 +353,19 @@
 		
 		</table>						
 	     
-	    </a4j:outputPanel>	
+	    </a4j:outputPanel>
+	    
+		<a4j:form id="setAddressInBean">
+			<a4j:jsFunction name="setAddInBean" action="#{teamStopsBean.addressFromClient}">
+				<a4j:actionparam name="addressIndex" assignTo="#{teamStopsBean.addressIndex}"/>
+				<a4j:actionparam name="addressToSet" assignTo="#{teamStopsBean.addressToSet}"/>
+			</a4j:jsFunction>
+		</a4j:form>	
 	     
     	<script language="javascript" type="text/javascript">
     		jQuery(function(){
     			onStopTabSelectionComplete();
+    			getAddresses();
 			});    				
     	</script>
 
