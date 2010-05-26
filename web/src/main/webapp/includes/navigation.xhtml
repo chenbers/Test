@@ -190,12 +190,12 @@ jQuery(function(){
 	<h:form id="navigation" > 
 		<ul>
 		
-			<li class="tree_button #{homeSelected}" style="position:relative;">
+			<li class="tree_button #{homeSelected}" style="position:relative;z-index:99;">
                 <span id="tree_link" class="tree_button_left">
                 	<span class="tree_button_right">#{messages.navigation_home}<rich:spacer width="5px"/><small>▼</small></span> 
                 </span>       
    	 			<div id="navigationTreeBox" class="dropBox"> 
-					 <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
+					 <!--<rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
 							 <p style="text-indent:5px">#{messages.navigation_recents}</p>
 							 <rich:dataList style="list-style: none;" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
 				               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
@@ -204,7 +204,7 @@ jQuery(function(){
 				                  <f:param value="#{recent.attributes['groupid']}"/>
 				               </pretty:link>
 							 </rich:dataList>
-					 </rich:panel>
+					 </rich:panel>-->
 					<div id="navigationTree" class="tree_back"></div>
 				</div>
  			</li>
