@@ -53,7 +53,7 @@
 		 <!-- SPEEDING EVENT -->
 		<h:outputText rendered="#{eventType.code eq '3'}" >
 			<ul>
-				<li>#{messages.eventBubble_speedLimit}:<h:outputText value="#{eventSpeedLimit}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
+				<li>#{messages.eventBubble_speedLimit}:<h:outputText value="#{eventSpeedLimit}" converter="MphToKphSpeedLimitConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
 				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
 				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
 				<li>#{messages.eventBubble_distance}: <h:outputText value="#{eventDistance}" converter="DistanceConverter" />#{' '}<h:outputText value="mi" converter="MeasurementTextConverter" /></li>

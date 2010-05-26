@@ -603,7 +603,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_posted_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.speedLimit}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<strong><h:outputText value="#{item.event.speedLimit}" converter="MphToKphSpeedLimitConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<a4j:commandButton id="vehicleSpeedSlcr" onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
 												title="#{messages.sbs_submitRequest}" image="/images/ico_limit_edit.png"
 												style="vertical-align:middle;margin-left:10px">
