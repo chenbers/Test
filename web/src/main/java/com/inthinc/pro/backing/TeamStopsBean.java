@@ -48,6 +48,7 @@ public class TeamStopsBean extends BaseBean {
     private List<String> labels;    
     
     private List<Driver> drivers;
+    private List<DriverStops> allDriverStopData;
     private List<DriverStops> driverStops;
     private List<DriverStops> driverStopsSummary;  
     private List<DriverStops> driverStart;
@@ -162,12 +163,7 @@ public class TeamStopsBean extends BaseBean {
     }
 
     public void init(){            
-
-        drivers = new ArrayList<Driver>();
-        driverStops = new ArrayList<DriverStops>();
-        driverStopsSummary = new ArrayList<DriverStops>();
-        driverStart = new ArrayList<DriverStops>();
-
+        
         // Labels to the right of the driver name
         labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(
                 MessageUtil.getMessageString("teamLabels"))));
@@ -175,24 +171,37 @@ public class TeamStopsBean extends BaseBean {
     }
     
     private void initDrivers(){       
+        drivers = new ArrayList<Driver>();
         drivers = driverDAO.getDrivers(teamCommonBean.getGroupID());        
         Collections.sort(drivers);
     }
 
-    private void initDriverStops() {  
+    private void initDriverStops() {
+        allDriverStopData = new ArrayList<DriverStops>();
+        driverStops = new ArrayList<DriverStops>();
         
-        // The way jsf works, this will probably be called AFTER the call for the driver start data,
-        //  so, the first data access shown below will probably need to be moved to initDriverStart()
+        // Grab all the data here, then grab the start record, the first one
         if (isValidTimeFrame()){
-            driverStops =                        
+            allDriverStopData =                        
                 driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
             
-            // Till we figure-out how to get the address back, set to something
-            for ( DriverStops ds: driverStops ) {
+            // Till we figure-out how to get the address back, set to something, for the report
+            for ( DriverStops ds: allDriverStopData ) {
                 ds.setAddress("Set this");
             }
         } else {
             addInfoMessage("Please choose a valid time frame for the Team Stops tab");
+        }          
+                
+        int count = 0;
+        
+        // The stops data for the table starts in the second position of the 
+        //  returned stops list, since the first location is the start location info
+        for ( DriverStops ds: allDriverStopData ) {
+            if ( count != 0 ) {
+                driverStops.add(ds);                
+            }
+            count++;
         }
     }
     
@@ -203,7 +212,7 @@ public class TeamStopsBean extends BaseBean {
         driverStopsSummary = new ArrayList<DriverStops>();
         
         // Extract from model method
-        d = DriverStops.summarize(driverStops);
+        d = DriverStops.summarize(allDriverStopData);
         
         // Till we figure-out how to get the address back, set to something 
         d.setAddress(null);
@@ -211,8 +220,9 @@ public class TeamStopsBean extends BaseBean {
         driverStopsSummary.add(d);
     }
     
-    public void initDriverStart() {
-        
+    public void initDriverStart() {  
+        driverStart = new ArrayList<DriverStops>();
+        driverStart.add(allDriverStopData.get(0));
     }
 
     public TimeZone getTimeZone() {
@@ -267,7 +277,7 @@ public class TeamStopsBean extends BaseBean {
         ReportCriteria reportCriteria = getReportCriteria();
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         List<DriverStops> reportDataSet = new ArrayList<DriverStops>();        
-        reportDataSet.addAll(this.getDriverStops());
+        reportDataSet.addAll(this.allDriverStopData);
         reportDataSet.addAll(this.getDriverStopsSummary());               
         reportCriteria.setMainDataset(reportDataSet);
         return reportCriteria;
