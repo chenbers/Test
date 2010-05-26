@@ -443,7 +443,6 @@ img {
 
 .main_nav_item>a {
 	float: left;
-	display: block;
 	color: #fff;
 	text-decoration: none;
 	font: 10px Verdana, 'Lucida Sans', sans-serif;
@@ -457,7 +456,6 @@ img {
 
 .main_nav_item>a>span {
 	float: left;
-	display: block;
 	padding: 0 18px 0 0;
 }
 
@@ -526,7 +524,6 @@ img {
 
 .sub_nav-bg li a {
 	float: left;
-	display: block;
 	color: #fff;
 	text-decoration: none;
 	font: 10px Verdana, 'Lucida Sans', sans-serif;

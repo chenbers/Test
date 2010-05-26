@@ -11,18 +11,18 @@
 
 <style type="text/css">
 
-
+/*
 #tree_link:hover {
-	background: url("#{request.contextPath}/images/tree_button_pressed.gif") no-repeat center center;
+	border-style: solid;
+	border-width: 1px;
+	padding: 1px;
 }
 #tree_link{
-	background: url("#{request.contextPath}/images/tree_button_unpressed.gif") no-repeat center center;
-	height: 38px;
-	float: right;
-	padding: 0 25px 0 0;
+	border-style: hidden;
+	border-width: 1px;
+	padding: 2px;
 }
-
-
+*/
 
 .tree ul ins {
 	height: 18px;
@@ -48,8 +48,53 @@
 	display: none;
 	z-index:100;
 	position: absolute;
-	left:72px;
-	top:28px;
+	left:28px;
+	top:30px;
+}
+.tree_button {
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tree_button .tree_button_left {
+	float: left;
+	color: #fff;
+	text-decoration: none;
+	font: 10px Verdana, 'Lucida Sans', sans-serif;
+	font-weight: normal;
+	padding: 0 0 0 18px;
+	height: 38px;
+	line-height: 38px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.tree_button .tree_button_right {
+	float: left;
+	padding: 0 12px 0 0;
+}
+
+.tree_button.current .tree_button_left {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+	font-weight: bold;
+}
+
+.tree_button.current .tree_button_right {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+}
+
+.tree_button .tree_button_left:hover {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+}
+
+.tree_button .tree_button_right:hover {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
 }
 
 </style>
@@ -62,12 +107,12 @@ var closetimer = 0;
 jQuery(function(){
 	getNavigationTreeData();
 	jQuery("#tree_link").click(function(){
-		jQuery(".dropBox").css("display","block");
+	    jQuery(".dropBox").slideToggle("fast");
 	});
 	
-	jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
+	//jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
 
-	jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
+	//jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
 	
 });
 
@@ -145,25 +190,20 @@ jQuery(function(){
 	<h:form id="navigation" > 
 		<ul>
 		
-			<li class="main_nav_item current" style="position:relative;">
-                <pretty:link id="#{context}-navigationInitDashboard" mappingId="init-dashboard">
-                	<span style="padding: 0 5px 0 0; width: 75px">
-                		<span>#{messages.navigation_home}</span>                		
-                		<span onclick="return false;" id="tree_link"></span>
-                	</span>
-                </pretty:link>                
+			<li class="tree_button #{homeSelected}" style="position:relative;">
+                <span id="tree_link" class="tree_button_left">
+                	<span class="tree_button_right">#{messages.navigation_home}<rich:spacer width="5px"/><small>▼</small></span> 
+                </span>       
    	 			<div id="navigationTreeBox" class="dropBox"> 
 					 <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
-						 <h:form>
-						 <p style="text-indent:5px">#{messages.navigation_recents}</p>
-						 <rich:dataList style="list-style: none;" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
-			               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
-			              	  <h:graphicImage value="#{recent.image}"/>
-			                  <h:outputText value="#{recent.data.title}"/>
-			                  <f:param value="#{recent.attributes['groupid']}"/>
-			               </pretty:link>
-						 </rich:dataList>
-						 </h:form>
+							 <p style="text-indent:5px">#{messages.navigation_recents}</p>
+							 <rich:dataList style="list-style: none;" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
+				               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
+				              	  <h:graphicImage value="#{recent.image}"/>
+				                  <h:outputText value="#{recent.data.title}"/>
+				                  <f:param value="#{recent.attributes['groupid']}"/>
+				               </pretty:link>
+							 </rich:dataList>
 					 </rich:panel>
 					<div id="navigationTree" class="tree_back"></div>
 				</div>
