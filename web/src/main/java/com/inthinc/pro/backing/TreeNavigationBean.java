@@ -147,15 +147,18 @@ public class TreeNavigationBean extends BaseBean {
         navigationTree.closeAll();
         Group child = group;
         Group parent = getGroupHierarchy().getParentGroup(group);
-        while (parent != null){
-            
-            navigationTree.open(parent.getGroupID());
-            child = parent;
-            parent = getGroupHierarchy().getParentGroup(parent);
-        }
         if (parent == null){
             
             navigationTree.open(child.getGroupID());
+        }
+        else{
+            
+            while (parent != null){
+                
+                navigationTree.open(parent.getGroupID());
+                child = parent;
+                parent = getGroupHierarchy().getParentGroup(parent);
+            }
         }
     }
     private void getDriverSubtree()
@@ -205,6 +208,8 @@ public class TreeNavigationBean extends BaseBean {
         }
         public void setCurrentNode(Integer groupID){
             
+            JsTreeNode nextNode = findTreeNode(groupID);
+            
             if (currentNode != null){
                 
                 currentNode.getData().addAttribute("class", "");
@@ -217,14 +222,17 @@ public class TreeNavigationBean extends BaseBean {
                         it.remove(); 
                     }
                 }
-                recentNodes.add(0, currentNode);
+                if (currentNode != nextNode){
+                    
+                    recentNodes.add(0, currentNode);
+                }
                 if (recentNodes.size()>maxRecentNodes){
                     
                     recentNodes.remove(maxRecentNodes);
                 }
             }
             //find node in the tree and set it selected
-            currentNode = findTreeNode(groupID);
+            currentNode = nextNode;
             currentNode.getData().addAttribute("class", "selectedNavigationTreeNode");
             
          
@@ -358,6 +366,10 @@ public class TreeNavigationBean extends BaseBean {
                 fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
             }
             return fullName;
+		}
+		public String getType(){
+		    
+		    return attributes.get("rel");
 		}
 		public String getImage(){
 		    

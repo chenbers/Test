@@ -39,7 +39,27 @@
 	color: #333;
 	text-decoration: none;
 }
-
+.recent_back span[rel="group"]{
+	background-image:url(#{request.contextPath}/images/ico_trucks.png);
+	background-repeat:no-repeat;
+	background-position: left center;
+	padding: 7px;
+	line-height:20px
+	}
+.recent_back span[rel="fleet"]{
+	background-image:url(#{request.contextPath}/images/ico_truck.png);
+	background-repeat:no-repeat;
+	background-position: left center;
+	padding: 7px;
+	line-height:20px
+}
+.recent_back span[rel="team"]{
+	background-image:url(#{request.contextPath}/images/ico_team.png);
+	background-repeat:no-repeat;
+	background-position: left center;
+	padding: 7px;
+	line-height:20px
+}
 .selectedNavigationTreeNode {
 	font-weight: bold;
 }
@@ -109,7 +129,10 @@ jQuery(function(){
 	jQuery("#tree_link").click(function(){
 	    jQuery(".dropBox").slideToggle("fast");
 	});
-	
+
+	//jQuery(.recent_back ins[rel="fleet"]).css("background-image","url(#{request.contextPath}/images/ico_truck.png)");
+	//jQuery(.recent_back ins[rel="group"]).css("background-image","url(#{request.contextPath}/images/ico_trucks.png)");
+	//jQuery(.recent_back ins[rel="team"]).css("background-image","url(#{request.contextPath}/images/ico_team.png)");
 	//jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
 
 	//jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
@@ -148,10 +171,8 @@ jQuery(function(){
 			},
 			callback : {
 				onchange : function (NODE, TREE_OBJ) {
-//					var groupID = jQuery(NODE).attr("groupid");
-				
-					document.location.href = jQuery(NODE).children("a:eq(0)").attr("href");
 
+					document.location.href = jQuery(NODE).children("a:eq(0)").attr("href");
 				}	
 			},
 			data : { 
@@ -197,10 +218,9 @@ jQuery(function(){
    	 			<div id="navigationTreeBox" class="dropBox"> 
 					 <!--<rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
 							 <p style="text-indent:5px">#{messages.navigation_recents}</p>
-							 <rich:dataList style="list-style: none;" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
+							 <rich:dataList style="list-style: none;padding-left: 25px" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
 				               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
-				              	  <h:graphicImage value="#{recent.image}"/>
-				                  <h:outputText value="#{recent.data.title}"/>
+				              	  <span rel="#{recent.type}"><h:outputText value="&#160;&#160;&#160;&#160;&#160;#{recent.data.title}"/></span>
 				                  <f:param value="#{recent.attributes['groupid']}"/>
 				               </pretty:link>
 							 </rich:dataList>
