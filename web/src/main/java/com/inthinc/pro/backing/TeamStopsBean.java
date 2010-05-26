@@ -222,7 +222,11 @@ public class TeamStopsBean extends BaseBean {
     
     public void initDriverStart() {  
         driverStart = new ArrayList<DriverStops>();
-        driverStart.add(allDriverStopData.get(0));
+        
+        // Trips found
+        if ( allDriverStopData.size() > 0 ) {
+            driverStart.add(allDriverStopData.get(0));
+        }
     }
 
     public TimeZone getTimeZone() {
