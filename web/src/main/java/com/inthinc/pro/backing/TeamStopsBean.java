@@ -15,16 +15,11 @@ import org.richfaces.json.JSONArray;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverStops;
-import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TimeFrame;
-import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
-
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
 
 @KeepAlive
 public class TeamStopsBean extends BaseBean {
@@ -56,7 +51,7 @@ public class TeamStopsBean extends BaseBean {
     private TimeZone timeZone;
         
     private ReportRenderer reportRenderer;
-    private ReportCriteriaService reportCriteriaService;    
+    private ReportCriteriaService reportCriteriaService;
 
     public int getStopsPerPage() {
         return stopsPerPage;
@@ -162,7 +157,7 @@ public class TeamStopsBean extends BaseBean {
         return validTimeFrames.contains(teamCommonBean.getTimeFrame());        
     }
 
-    public void init(){            
+    public void init(){   
         
         // Labels to the right of the driver name
         labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(
@@ -180,7 +175,7 @@ public class TeamStopsBean extends BaseBean {
         allDriverStopData = new ArrayList<DriverStops>();
         driverStops = new ArrayList<DriverStops>();
         
-        // Grab all the data here, then grab the start record, the first one
+        // Grab all the data here
         if (isValidTimeFrame()){
             allDriverStopData =                        
                 driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
@@ -191,7 +186,12 @@ public class TeamStopsBean extends BaseBean {
             }
         } else {
             addInfoMessage("Please choose a valid time frame for the Team Stops tab");
-        }          
+        }      
+        
+        // If no data, return
+        if ( allDriverStopData.size() == 0 ) {
+            return;
+        }
                 
         int count = 0;
         
@@ -203,16 +203,28 @@ public class TeamStopsBean extends BaseBean {
             }
             count++;
         }
+        
+        // Lastly, the final stop can have some un-savory info in it, alter        
+        DriverStops ds = driverStops.get(driverStops.size()-1);
+        ds.setDepartTime(0L);  
+        ds.setIdleHi(0);
+        ds.setIdleLo(0);
+        driverStops.set(driverStops.size()-1, ds);        
     }
     
     public void initDriverStopsSummary() {
+        
+        driverStopsSummary = new ArrayList<DriverStops>();
+        if ( driverStops.size() == 0 ) {
+            return;
+        }
         
         // Re-init values
         DriverStops d = new DriverStops();
         driverStopsSummary = new ArrayList<DriverStops>();
         
         // Extract from model method
-        d = DriverStops.summarize(allDriverStopData);
+        d = DriverStops.summarize(driverStops);
         
         // Till we figure-out how to get the address back, set to something 
         d.setAddress(null);
@@ -223,9 +235,12 @@ public class TeamStopsBean extends BaseBean {
     public void initDriverStart() {  
         driverStart = new ArrayList<DriverStops>();
         
-        // Trips found
+        // Trips found, adjust data to get the correct total line
         if ( allDriverStopData.size() > 0 ) {
-            driverStart.add(allDriverStopData.get(0));
+            DriverStops ds = allDriverStopData.get(0);
+            ds.setArriveTime(0L);   
+            ds.setDriveTime(0L);           
+            driverStart.add(ds);
         }
     }
 
@@ -279,11 +294,28 @@ public class TeamStopsBean extends BaseBean {
     protected ReportCriteria buildReportCriteria()
     {
         ReportCriteria reportCriteria = getReportCriteria();
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        List<DriverStops> reportDataSet = new ArrayList<DriverStops>();        
-        reportDataSet.addAll(this.allDriverStopData);
-        reportDataSet.addAll(this.getDriverStopsSummary());               
+        reportCriteria.setReportDate(new Date(), getTimeZone());
+        List<DriverStops> reportDataSet = new ArrayList<DriverStops>(); 
+        
+        // Compute some here to get the correct report look
+        ArrayList<DriverStops> tmp = new ArrayList<DriverStops>();
+        
+        // This gets a net zero for the start location
+        DriverStops ds = driverStart.get(0);        
+        ds.setDepartTime(ds.getArriveTime());
+        tmp.add(ds);
+        reportDataSet.addAll(tmp); 
+        
+        // This gets a net zero for the last location
+        ds = driverStops.get(driverStops.size()-1);
+        ds.setDepartTime(ds.getArriveTime());
+        driverStops.set(driverStops.size()-1, ds);
+        
+        reportDataSet.addAll(driverStops);
+        reportDataSet.addAll(driverStopsSummary);
+        
         reportCriteria.setMainDataset(reportDataSet);
+        
         return reportCriteria;
     }
     
@@ -311,5 +343,6 @@ public class TeamStopsBean extends BaseBean {
     public ReportCriteriaService getReportCriteriaService()
     {
         return reportCriteriaService;
-    } 
+    }
+
 }

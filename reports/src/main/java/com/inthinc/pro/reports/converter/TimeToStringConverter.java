@@ -25,6 +25,10 @@ public class TimeToStringConverter {
     }	
     
     public static String convertSecondsToDate(Long seconds) {
+                
+        if (seconds != null && seconds == 0L) {
+            return "";            
+        }
         
         if (seconds == null) {
             seconds = 0L;

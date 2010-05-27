@@ -97,9 +97,11 @@ public class DriverStops extends BaseEntity {
     public void setAddress(String address) {
         this.address = address;
     }
+
     public static DriverStops summarize(List<DriverStops> driverStops) {
         
         DriverStops d = new DriverStops();
+        DriverStops dsri = null;
         
         int roundTrip = 0;
         long arriveTime = 0;
@@ -108,11 +110,11 @@ public class DriverStops extends BaseEntity {
         int highIdle = 0;
         long driveTime = 0;
         
-        // Sum up over all trips by the selected driver
-        for ( DriverStops dsri: driverStops ) {
-//            if ( dsri.getRoundTrip() != null ) {
-//                roundTrip++;
-//            }
+        // Sum up over all stops by the selected driver, except
+        //  for the last stop
+        for ( int i = 0; i < driverStops.size()-1; i++ ) {
+            dsri = driverStops.get(i);
+            
             if ( dsri.getArriveTime() != null ) {
                 arriveTime += dsri.getArriveTime().intValue();
             }
@@ -130,8 +132,15 @@ public class DriverStops extends BaseEntity {
             }
         }
         
+        // The last row must be handled differently (note arrive = depart ==> net zero)
+        dsri = driverStops.get(driverStops.size()-1);
+        arriveTime += dsri.getArriveTime().intValue();               
+        departTime += dsri.getArriveTime().intValue();        
+        lowIdle += dsri.getIdleLo().intValue();
+        highIdle += dsri.getIdleHi().intValue();
+        driveTime += dsri.getDriveTime();
+        
         // Set the summary row
-//        d.setRoundTrip(roundTrip);
         d.setArriveTime(arriveTime);
         d.setDepartTime(departTime);
         d.setIdleLo(lowIdle);
