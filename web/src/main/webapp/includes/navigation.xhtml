@@ -32,8 +32,8 @@
 	padding: 0px 5px 2px 15px;
 }
 
-.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; padding: 10px 0; width: 100% }
-.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; width: 100%}
+.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; padding: 10px 0; width: auto; }
+.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; width: auto;}
 .recent_back li a:active,.recent_back li a:link,.recent_back li a:hover,.recent_back li a:visited
 	{
 	color: #333;
@@ -130,12 +130,11 @@ jQuery(function(){
 	    jQuery(".dropBox").slideToggle("fast");
 	});
 
-	//jQuery(.recent_back ins[rel="fleet"]).css("background-image","url(#{request.contextPath}/images/ico_truck.png)");
-	//jQuery(.recent_back ins[rel="group"]).css("background-image","url(#{request.contextPath}/images/ico_trucks.png)");
-	//jQuery(.recent_back ins[rel="team"]).css("background-image","url(#{request.contextPath}/images/ico_team.png)");
-	//jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
-
-	//jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
+	jQuery(".recent_back ins[rel='fleet']").css("background-image","url(#{request.contextPath}/images/ico_truck.png)");
+	jQuery(".recent_back ins[rel='group']").css("background-image","url(#{request.contextPath}/images/ico_trucks.png)");
+	jQuery(".recent_back ins[rel='team']").css("background-image","url(#{request.contextPath}/images/ico_team.png)");
+	jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
+	jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
 	
 });
 
@@ -216,7 +215,7 @@ jQuery(function(){
                 	<span class="tree_button_right">#{messages.navigation_home}<rich:spacer width="5px"/><small>▼</small></span> 
                 </span>       
    	 			<div id="navigationTreeBox" class="dropBox"> 
-					 <!--<rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
+					 <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
 							 <p style="text-indent:5px">#{messages.navigation_recents}</p>
 							 <rich:dataList style="list-style: none;padding-left: 25px" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
 				               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
@@ -224,7 +223,7 @@ jQuery(function(){
 				                  <f:param value="#{recent.attributes['groupid']}"/>
 				               </pretty:link>
 							 </rich:dataList>
-					 </rich:panel>-->
+					 </rich:panel>
 					<div id="navigationTree" class="tree_back"></div>
 				</div>
  			</li>
