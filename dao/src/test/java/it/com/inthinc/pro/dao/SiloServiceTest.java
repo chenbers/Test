@@ -618,7 +618,7 @@ public class SiloServiceTest {
         assertNotNull(redFlagAlertID);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);
 
-        String ignoreFields[] = { "modified", "username" };
+        String ignoreFields[] = { "modified", "fullName" };
 
         // find
         RedFlagAlert returnedRedFlagAlert = redFlagAlertDAO.findByID(redFlagAlertID);
@@ -734,7 +734,7 @@ public class SiloServiceTest {
         Integer zoneAlertID = zoneAlert.getZoneAlertID();
         
         // find
-        String ignoreFields[] = { "modified", "username" };
+        String ignoreFields[] = { "modified", "fullName" };
         ZoneAlert returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         Util.compareObjects(zoneAlert, returnedZoneAlert, ignoreFields);
         // update
