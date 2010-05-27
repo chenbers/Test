@@ -38,7 +38,6 @@
          		var latStart = jQuery(this).find('*[id$="latStart"]');
         		var lngStart = jQuery(this).find('*[id$="lngStart"]');
         		var addressStart = jQuery(this).find('*[id$="addressStart"]');  
-//        		var indexAdd = jQuery(this).find('*[id$="indexAdd"]');        
 				
 				reverseGeocodeTripAddress(new GLatLng(latStart[0].value,lngStart[0].value),addressStart[0]);	
 	    	});   	    	
@@ -50,7 +49,6 @@
          		var lat = jQuery(this).find('*[id$="lat"]');
         		var lng = jQuery(this).find('*[id$="lng"]');
         		var address = jQuery(this).find('*[id$="address"]');  
-//        		var indexAdd = jQuery(this).find('*[id$="indexAdd"]');        
 				
 				reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);	
 	    	});                        
@@ -65,7 +63,6 @@
     			        else {						
 			             	addressElement.innerHTML = response.Placemark[0].address;
     			        }     			       
-//    			        setAddInBean(indexAdd,addressElement.innerHTML);   			           			       
     		});
 	    }   	 
 
@@ -145,7 +142,7 @@
 								<f:facet name="header">
 									<h:outputText value="#{messages.teamPage_driverHeader}"/>
 								</f:facet>
-     							<pretty:link id="teamTrips-driverPerformance" mappingId="driverPerformance" >
+     							<pretty:link id="teamStops-driverPerformance" mappingId="driverPerformance" >
         							<f:param value="#{drivers.driverID}"/>
  									<h:outputText value="#{drivers.person.fullName}"/>
      							</pretty:link>
@@ -458,13 +455,6 @@
 		</table>						
 	     
 	    </a4j:outputPanel>
-	    
-		<a4j:form id="setAddressInBean">
-			<a4j:jsFunction name="setAddInBean" action="#{teamStopsBean.addressFromClient}">
-				<a4j:actionparam name="addressIndex" assignTo="#{teamStopsBean.addressIndex}"/>
-				<a4j:actionparam name="addressToSet" assignTo="#{teamStopsBean.addressToSet}"/>
-			</a4j:jsFunction>
-		</a4j:form>	
 	     
     	<script language="javascript" type="text/javascript">
     		jQuery(function(){
