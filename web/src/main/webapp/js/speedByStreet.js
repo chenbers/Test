@@ -16,6 +16,8 @@ var entryPoint = 1;
 var address;
 var lat;
 var lon;
+var eventLatLng;
+var iconImage;
 var check = false;
 var cursor;
 //StreetView stuff
@@ -189,7 +191,7 @@ var cursor;
 	 		segmentSelected = null;
 	 	}
  	}
- 	function hoverSegment(id) {
+ 	function hoverSegment(id, pan) {
  	 
  	 	if (!segmentSelected){
  	 	
@@ -201,9 +203,13 @@ var cursor;
 	 		
 				streetSegment.polyline.setStrokeStyle({color:"#ff0000"});
 		 		streetSegment.row.style.backgroundColor = '#DfDfF8';
-		       	var vertexCount = streetSegment.polyline.getVertexCount();
-		       	var half = (vertexCount+vertexCount%2)/2;
-				mapsbs.panTo(streetSegment.polyline.getVertex(half));
+		 		
+		 		if (pan){
+		 			
+			       	var vertexCount = streetSegment.polyline.getVertexCount();
+			       	var half = (vertexCount+vertexCount%2)/2;
+					mapsbs.panTo(streetSegment.polyline.getVertex(half));
+		 		}
 			}
 		}
  	}
@@ -254,12 +260,36 @@ var cursor;
 //		}, 5000);
        }
     }
-
-      function reverseGeocode(lat,lng, fullAddress) {
+      function reverseGeocode(lat,lng, fullAddress, markerAtLatLng) {
       
-      	geocoder.getLocations(new GLatLng(lat,lng), addAddressToMap);      	
+      	geocoder.getLocations(new GLatLng(lat,lng), addAddressToMap);
+      	
+      	if (markerAtLatLng != false){
+      		
+      		eventLatLng = new GLatLng(lat,lng);
+      		iconImage = markerAtLatLng;
+      	}
+      		
       }
-      
+    	function addMarker(){
+    		
+    		if (eventLatLng != null){
+    			
+	    		var baseIcon = new GIcon();
+	    		baseIcon.iconSize = new GSize(25, 25);
+	    		baseIcon.iconAnchor = new GPoint(12, 12);
+	    		baseIcon.infoWindowAnchor = new GPoint(5, 1);
+	    		baseIcon.shadow=null;
+	    	
+	    		var markerIcon = new GIcon(baseIcon);
+	         	markerIcon.image = iconImage;
+	         	markerOptions = { icon:markerIcon};
+	         	marker = new GMarker(eventLatLng, markerOptions);
+	    		
+	    		mapsbs.addOverlay(marker);
+    		}
+    	}
+     
     // addAddressToMap() is called when the geocoder returns an
     // answer.  It adds a marker to the mapsbs with an open info window
     // showing the nicely formatted version of the address and the country code.

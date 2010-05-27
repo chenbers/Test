@@ -43,7 +43,7 @@
 			 			}	
 			          } else {
 			          
-			            reverseGeocode(point.y,point.x,"");
+			            reverseGeocode(point.y,point.x,"", false);
 			            
 				      }
 			        });
@@ -61,22 +61,6 @@
 			        });
 				}
 			}
-	function addMarker(){
-	
-		var baseIcon = new GIcon();
-		baseIcon.iconSize = new GSize(25, 30);
-		baseIcon.iconAnchor = new GPoint(6, 20);
-		baseIcon.infoWindowAnchor = new GPoint(5, 1);
-		baseIcon.shadow=null;
-	
-		var markerIcon = new GIcon(baseIcon);
-     	markerIcon.image = "#{request.contextPath}/images/ico_violation.png";
-     	markerOptions = { icon:markerIcon};
-     	marker = new GMarker(new GLatLng(#{speedLimitChangeRequests.lat},#{speedLimitChangeRequests.lng}), markerOptions);
-		
-		mapsbs.addOverlay(marker);
-		
-	}
 	function showSegments(){
 			    bcolor = '#EBFFCA';
 				streetSegments = new Array();
@@ -110,7 +94,7 @@
 			          	if (segment != null){
 			          	
 			          		mapsbs.getDragObject().setDraggableCursor("pointer");
-			 				hoverSegment(segment.id);
+			 				hoverSegment(segment.id, false);
 			 			}
 			
 			 		});	
@@ -197,7 +181,7 @@
 		<!-- Start Speed Limit Changer Request table --> 
 	    	<rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items" var="item" styleClass="datagrid alt_datagrid" rowkey="row" rowkeyVar="rowVar"
                 rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100" width="365px" onRowClick="selectSegment(#{item.linkId})"
-                onRowMouseOver="hoverSegment(#{item.linkId},this)" onRowMouseOut="hoverDeselectAllSegments(this)">
+                onRowMouseOver="hoverSegment(#{item.linkId},true)" onRowMouseOut="hoverDeselectAllSegments(this)">
                 <f:facet name="caption" style="text-align:center">
                     <h:outputText value="#{speedLimitChangeRequests.caption}" id="caption" style="text-align:center" />
                 </f:facet>

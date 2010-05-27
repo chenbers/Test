@@ -721,7 +721,7 @@ var firstLoad = new Boolean(true);
 <!-- END FORGIVE MODAL -->
 
 <!-- START SBS MODAL -->
-	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null);"
+	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null, '#{request.contextPath}/images/ico_violation.png');"
 					onhide="clearSegments()">
       <f:facet name="header">
         <h:outputText value="#{messages.sbs_header}" />
