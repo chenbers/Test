@@ -23,11 +23,11 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
     "astext(the_geom) as tigerline, speed_cat, fr_spd_lim, to_spd_lim, kph "+
     "from streets_tiwiPro1 "+
     "where the_geom && " +
-    "expand(setsrid(geomFromText(?,32767),4326),0.002) order by dist limit 10";
+    "expand(setsrid(geomFromText(?,32767),4326),0.0008) order by dist limit 10";
 	
 	
 	@Override
-	public SBSChangeRequest getCompleteChains(double lat, double lng, final int address)
+	public List<SBSChangeRequest> getCompleteChains(double lat, double lng, final int address)
 			throws ParserConfigurationException {
 		
 		String point = "Point(" + lng + " " + lat + ")";
@@ -79,20 +79,22 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
 			return null;
 		}
 		
-		for (SBSChangeRequest ss: matches){
-		//test if we have a segment in the right range and return 
-			if (ss.isContainsAddress()){
-				
-				return ss;
-			}
-		}
-		// Nothing with correct address? return first item or null
-		if (matches.size() > 0) {
-			return matches.get(0);
-		}
-		else {
-			return null;
-		}
+		return matches;
+		
+//		for (SBSChangeRequest ss: matches){
+//		//test if we have a segment in the right range and return 
+//			if (ss.isContainsAddress()){
+//				
+//				return ss;
+//			}
+//		}
+//		// Nothing with correct address? return first item or null
+//		if (matches.size() > 0) {
+//			return matches.get(0);
+//		}
+//		else {
+//			return null;
+//		}
 
 	}
 

@@ -12,18 +12,19 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.sbs.baseDao.TigerDAO;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.validators.EmailValidator;
 import com.iwi.teenserver.dao.GenericDataAccess;
 import com.iwi.teenserver.model.SpeedLimitChangeRequest;
 
+@KeepAlive
 public class SpeedLimitChangeRequestBean extends BaseBean implements Serializable{
 
     /**
@@ -127,22 +128,23 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		if ((lat < outOfRangeLatLngDummyValue)&& (lng < outOfRangeLatLngDummyValue)){
 			
 			try{
-				SBSChangeRequest sbscr = tigerDao.getCompleteChains(lat, lng, getAddressNumber(address));
+				List<SBSChangeRequest> sbscrList = tigerDao.getCompleteChains(lat, lng, getAddressNumber(address));
 				
-				if (sbscr ==  null){
+				if ((sbscrList ==  null)||(sbscrList.isEmpty())){
 					
 					setCaption(MessageUtil.getMessageString("sbs_noNearbyRoad"));
 					return;
 				}
-				if (!duplicateLinkId(sbscr.getLinkId())){
-					sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
-					changeRequests.add(0,sbscr);
-					
-					centerMap();
-					
-					return;
+				for(SBSChangeRequest sbscr:sbscrList){
+				    
+    				if (!duplicateLinkId(sbscr.getLinkId())){
+    					sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
+    					changeRequests.add(0,sbscr);
+    					
+     				}
 				}
-	
+                centerMap();
+                
 			}
 			catch(ParserConfigurationException pce){
 				
@@ -159,8 +161,8 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		
 		maplat = lat;
 		maplng = lng;
-		lat = outOfRangeLatLngDummyValue;
-		lng = outOfRangeLatLngDummyValue;
+//		lat = outOfRangeLatLngDummyValue;
+//		lng = outOfRangeLatLngDummyValue;
 
 	}
 	public void setChangeRequests(List<SBSChangeRequest> changeRequests) {

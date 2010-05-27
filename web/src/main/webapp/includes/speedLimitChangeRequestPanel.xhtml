@@ -5,12 +5,9 @@
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:c="http://java.sun.com/jstl/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security"
-  			  xmlns:t="http://myfaces.apache.org/tomahawk">
+              xmlns:security="http://pro.tiwi.com/jsf/security">
               
 <ui:composition>
-
-<t:saveState value="#{speedLimitChangeRequests}"/>
 
 <rich:panel id="script">
 	<script type="text/javascript">
@@ -64,6 +61,22 @@
 			        });
 				}
 			}
+	function addMarker(){
+	
+		var baseIcon = new GIcon();
+		baseIcon.iconSize = new GSize(25, 30);
+		baseIcon.iconAnchor = new GPoint(6, 20);
+		baseIcon.infoWindowAnchor = new GPoint(5, 1);
+		baseIcon.shadow=null;
+	
+		var markerIcon = new GIcon(baseIcon);
+     	markerIcon.image = "#{request.contextPath}/images/ico_violation.png";
+     	markerOptions = { icon:markerIcon};
+     	marker = new GMarker(new GLatLng(#{speedLimitChangeRequests.lat},#{speedLimitChangeRequests.lng}), markerOptions);
+		
+		mapsbs.addOverlay(marker);
+		
+	}
 	function showSegments(){
 			    bcolor = '#EBFFCA';
 				streetSegments = new Array();
@@ -238,6 +251,7 @@
 		<script  type="text/javascript">
 			initMap();
 			showSegments();
+			addMarker();
     	</script> 
  	</div>	
 
@@ -314,6 +328,7 @@
 	<script type="text/javascript">
 		initMap();
 		showSegments();
+		addMarker();
 	</script>
 </ui:composition>	
 </html>
