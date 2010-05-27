@@ -13,7 +13,8 @@
 
 	<ui:param name="context" value="team" />
 	<ui:param name="title" value="#{messages.team_team} - #{teamCommonBean.group.name}"/>
-	<ui:param name="groupID" value="#{teamCommonBean.group.groupID}"/>
+	<ui:param name="groupID" value="#{teamCommonBean.group.groupID}"/>	
+    <ui:param name="homeSelected" value="current" />
 	
     <ui:define name="scripts">
 	   <a4j:loadScript src="/js/jquery.address-1.2rc.min.js"/>
