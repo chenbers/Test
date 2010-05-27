@@ -359,6 +359,14 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             userIDs.add((Integer) item.getValue());
         
         getItem().setNotifyPersonIDs(userIDs);
+        
+        if (!isBatchEdit()) {
+            for (SelectItem selectItem : getAllGroupUsers()) {
+                if (selectItem.getValue().equals(item.getUserID())) {
+                    getItem().setFullName(selectItem.getLabel());
+                }
+            }
+        }
 
         return super.save();
     }
@@ -516,6 +524,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         public void setEmailToString(String emailToString);
         
         public Integer getUserID();
+        
+        public void setFullName(String fullName);
         
     }
 }

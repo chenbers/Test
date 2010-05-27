@@ -108,17 +108,30 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (allGroupUsers == null) {
             allGroupUsers = new ArrayList<SelectItem>();
             List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
-            if (item == null)
+            if (item == null || item.getReport() == null)
                 return allGroupUsers;
             List<GroupType> groupTypes = Arrays.asList(item.getReport().getGroupTypes());
             for (User user : users) {
-                if (user.getPerson() != null && groupTypes.contains(getGroupHierarchy().getGroup(user.getGroupID()).getType())) 
+                if (user.getPerson() != null && isUserGroupTypeValid(groupTypes, getGroupHierarchy().getGroup(user.getGroupID()).getType())) 
                     allGroupUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
             }
             MiscUtil.sortSelectItems(allGroupUsers);
             
         }
         return allGroupUsers;
+    }
+    
+    private boolean isUserGroupTypeValid(List<GroupType> groupTypes, GroupType userGroupType)
+    {
+        if (groupTypes.contains(userGroupType))
+            return true;
+        
+        for (GroupType reportGroupType : groupTypes) {
+            if (reportGroupType.getCode() > userGroupType.getCode())
+                return true;
+        }
+        
+        return false;
     }
 
     public EntityType getSelectedEntityType() {
@@ -202,6 +215,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         allGroupUsers = null;
     }
     
+    
     public Map<String, Integer> getGroups() {
     	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
     	User owner = null;
@@ -272,6 +286,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
             else if (item.getOccurrence() != null && item.getOccurrence().equals(Occurrence.MONTHLY)) {
                 getUpdateField().put("dayOfMonth", occurrence);
+            }
+        }
+        else {
+            for (SelectItem selectItem : getAllGroupUsers()) {
+                if (selectItem.getValue().equals(item.getUserID())) {
+                    item.setFullName(selectItem.getLabel());
+                }
             }
         }
         return super.save();
@@ -614,6 +635,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         public String getVehicleName() {
             return vehicleName;
         }
+        
 
         public void setReport(ReportGroup report) {
             this.report = report;

@@ -295,7 +295,7 @@
 			                            <h:selectOneMenu id="userID" value="#{reportScheduleBean.item.userID}" style="width: 200px">
 			                            	<f:selectItems value="#{reportScheduleBean.allGroupUsers}" />
 				                            <a4j:support action="#{reportScheduleBean.ownerChangedAction}" event="onchange" 
-			                            		reRender="edit-form:groupSelect,edit-form:driverSelect"/>
+			                            		reRender="edit-form:groupSelect,edit-form:driverSelect" ajaxSingle="true"/>
 			                        	</h:selectOneMenu>
 	                        		</td>
 	                        	</tr>
