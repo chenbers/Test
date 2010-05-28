@@ -20,8 +20,10 @@
 	padding: 0px 5px 2px 15px;
 }
 
-.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; padding: 10px 0; width: auto; min-width: 150px;}
-.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; width: auto; min-width: 150px;}
+#navigationTree li > a ins { background-color:transparent; }
+
+.tree_back { float:left; margin:0; border:1px solid #8BAD37; font-family:Verdana; font-size:10px; background:white; padding: 10px; width: auto;}
+.recent_back { margin:0; padding:10px;border-top:1px solid #8BAD37; border-right:1px solid #8BAD37;border-left:1px solid #8BAD37;font-family:Verdana; font-size:10px; background:white; width: auto;}
 .recent_back li a:active,.recent_back li a:link,.recent_back li a:hover,.recent_back li a:visited
 	{
 	color: #333;
@@ -47,21 +49,9 @@
 	text-decoration: none;
 }
 
-.recent_item .group {
-	background-image: url(#{request.contextPath}/images/ico_trucks.png);
-	background-position: 0 0;
-	background-repeat: no-repeat;
-}
-.recent_item .fleet{
-	background-image: url(#{request.contextPath}/images/ico_truck.png);
-	background-position: 0 3px;
-	background-repeat: no-repeat;
-}
-.recent_item .team{
-	background-image: url(#{request.contextPath}/images/ico_team.png);
-	background-position: 0 0;
-	background-repeat: no-repeat;
-}
+.recent_item .group { background: transparent url(#{request.contextPath}/images/ico_trucks.png) no-repeat 0 0; }
+.recent_item .fleet{ background: transparent url(#{request.contextPath}/images/ico_truck.png) no-repeat 0 3px; }
+.recent_item .team{ background: transparent url(#{request.contextPath}/images/ico_team.png) no-repeat 0 0; }
 
 .selectedNavigationTreeNode {
 	font-weight: bold;
@@ -154,17 +144,17 @@ jQuery(function(){
 				},
 				"fleet" : {
 					icon : { 
-						image : "#{request.contextPath}/images/ico_truck.png"
+						image : "#{request.contextPath}/images/ico_truck.png"		
 					}
 				},
 				"group" : {
 					icon : { 
-						image : "#{request.contextPath}/images/ico_trucks.png"
+						image : "#{request.contextPath}/images/ico_trucks.png"	
 					}
 				},
 				"team" : {
 					icon : { 
-						image : "#{request.contextPath}/images/ico_team.png"
+						image : "#{request.contextPath}/images/ico_team.png"		
 					}
 				}
 			},
@@ -216,7 +206,7 @@ jQuery(function(){
                 </span>       
    	 			<div id="navigationTreeBox" class="dropBox"> 
 					 <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
-							 <p style="text-indent:5px">#{messages.navigation_recents}</p>
+							 #{messages.navigation_recents}
 							 <rich:dataList  style="list-style: none;padding-left: 15px" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">				               
 				               <pretty:link id="#{context}-dashboard-recents" styleClass="recent_item" mappingId="dashboard" title="#{recent.fullPath}">
 				                  <f:param value="#{recent.attributes['groupid']}"/>
