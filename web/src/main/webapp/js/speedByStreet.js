@@ -18,6 +18,7 @@ var lat;
 var lon;
 var eventLatLng;
 var iconImage;
+var limit;
 var check = false;
 var cursor;
 //StreetView stuff
@@ -250,7 +251,7 @@ var cursor;
         var fullAddress = place.address;
 //        makeMarker(point);
                 
-        addSegmentWithoutRerendering(point.y, point.x, fullAddress, mapsbs.getZoom());
+        addSegmentWithoutRerendering(point.y, point.x, fullAddress, mapsbs.getZoom(), 1);
         
 //        marker.openInfoWindowHtml(place.address + '<br>' +
 ///          '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
@@ -268,6 +269,11 @@ var cursor;
       		
       		eventLatLng = new GLatLng(lat,lng);
       		iconImage = markerAtLatLng;
+      		limit=10;
+      	}
+      	else {
+      		
+      		limit = 1;
       	}
       		
       }
@@ -330,7 +336,7 @@ var cursor;
         var fullAddress = place.address;
 //        makeMarker(point);
                 
-        addSegment(point.y, point.x, fullAddress, mapsbs.getZoom());
+        addSegment(point.y, point.x, fullAddress, mapsbs.getZoom(), limit);
         
 //        marker.openInfoWindowHtml(place.address + '<br>' +
 ///          '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);

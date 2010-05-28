@@ -54,6 +54,10 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
     private boolean					success;
     private boolean					emailSent;
     
+    private double  eventLat;
+    private double  eventLng;
+    private int     limit;
+    
     private static final int outOfRangeLatLngDummyValue = 360;
     
     public TigerDAO getTigerDao() {
@@ -91,6 +95,9 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		requestSent = false;
 		success = false;
 		emailSent = false;
+		
+		eventLat = outOfRangeLatLngDummyValue;
+		eventLng = outOfRangeLatLngDummyValue;
 	}
 
 	public JavaMailSenderImpl getMailSender() {
@@ -120,7 +127,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		
 		return changeRequests;
 	}
-
+	
 	public void addChangeRequest() {
 		
 		setCaption(MessageUtil.getMessageString("sbs_caption_select"));
@@ -128,18 +135,19 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		if ((lat < outOfRangeLatLngDummyValue)&& (lng < outOfRangeLatLngDummyValue)){
 			
 			try{
-				List<SBSChangeRequest> sbscrList = tigerDao.getCompleteChains(lat, lng, getAddressNumber(address));
+				List<SBSChangeRequest> sbscrList = tigerDao.getCompleteChains(lat, lng, getAddressNumber(address), limit);
 				
 				if ((sbscrList ==  null)||(sbscrList.isEmpty())){
 					
 					setCaption(MessageUtil.getMessageString("sbs_noNearbyRoad"));
 					return;
 				}
+				int addAt = 0;
 				for(SBSChangeRequest sbscr:sbscrList){
 				    
     				if (!duplicateLinkId(sbscr.getLinkId())){
     					sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
-    					changeRequests.add(0,sbscr);
+    					changeRequests.add(addAt++,sbscr);
     					
      				}
 				}
@@ -519,4 +527,22 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		}
 		return false;
 	}
+    public double getEventLat() {
+        return eventLat;
+    }
+    public void setEventLat(double eventLat) {
+        this.eventLat = eventLat;
+    }
+    public double getEventLng() {
+        return eventLng;
+    }
+    public void setEventLng(double eventLng) {
+        this.eventLng = eventLng;
+    }
+    public int getLimit() {
+        return limit;
+    }
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
 }

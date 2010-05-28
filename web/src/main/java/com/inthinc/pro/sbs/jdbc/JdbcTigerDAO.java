@@ -2,6 +2,7 @@ package com.inthinc.pro.sbs.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,7 +28,7 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
 	
 	
 	@Override
-	public List<SBSChangeRequest> getCompleteChains(double lat, double lng, final int address)
+	public List<SBSChangeRequest> getCompleteChains(double lat, double lng, final int address, int limit)
 			throws ParserConfigurationException {
 		
 		String point = "Point(" + lng + " " + lat + ")";
@@ -79,7 +80,7 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
 			return null;
 		}
 		
-		return matches;
+		return matches.subList(0, Math.min(limit,matches.size()));
 		
 //		for (SBSChangeRequest ss: matches){
 //		//test if we have a segment in the right range and return 

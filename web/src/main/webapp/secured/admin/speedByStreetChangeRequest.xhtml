@@ -145,7 +145,7 @@
 
                                 <rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items" var="item" styleClass="datagrid" rowkey="row" rowkeyVar="rowVar"
                                     rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100" width="365px" onRowClick="selectSegment(#{item.linkId})"
-                                    onRowMouseOver="hoverSegment(#{item.linkId},this)" onRowMouseOut="hoverDeselectAllSegments(this)">
+                                    onRowMouseOver="hoverSegment(#{item.linkId},true)" onRowMouseOut="hoverDeselectAllSegments(this)">
                                     <f:facet name="caption" style="text-align:center">
                                         <h:outputText value="#{speedLimitChangeRequests.caption}" id="caption" style="text-align:center" />
                                     </f:facet>
@@ -225,7 +225,7 @@
 			          	if (segment != null){
 			          	
 			          		mapsbs.getDragObject().setDraggableCursor("pointer");
-			 				hoverSegment(segment.id);
+			 				hoverSegment(segment.id, false);
 			 			}
 			
 			 		});	
