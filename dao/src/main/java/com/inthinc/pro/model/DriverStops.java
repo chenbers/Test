@@ -112,7 +112,7 @@ public class DriverStops extends BaseEntity {
         
         // Sum up over all stops by the selected driver, except
         //  for the last stop
-        for ( int i = 0; i < driverStops.size()-1; i++ ) {
+        for ( int i = 1; i < driverStops.size()-1; i++ ) {
             dsri = driverStops.get(i);
             
             if ( dsri.getArriveTime() != null ) {
@@ -132,7 +132,15 @@ public class DriverStops extends BaseEntity {
             }
         }
         
-        // The last row must be handled differently (note arrive = depart ==> net zero)
+        // The first and last row must be handled differently 
+        //  (note arrive = depart ==> net zero)
+        dsri = driverStops.get(0);
+        arriveTime += dsri.getDepartTime().intValue();
+        departTime += dsri.getDepartTime().intValue();
+        lowIdle += dsri.getIdleLo().intValue();
+        highIdle += dsri.getIdleHi().intValue();
+//        driveTime += dsri.getDriveTime();
+        
         dsri = driverStops.get(driverStops.size()-1);
         arriveTime += dsri.getArriveTime().intValue();               
         departTime += dsri.getArriveTime().intValue();        
