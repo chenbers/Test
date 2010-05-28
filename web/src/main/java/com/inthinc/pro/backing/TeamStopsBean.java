@@ -43,10 +43,8 @@ public class TeamStopsBean extends BaseBean {
     private List<String> labels;    
     
     private List<Driver> drivers;
-    private List<DriverStops> allDriverStopData;
     private List<DriverStops> driverStops;
     private List<DriverStops> driverStopsSummary;  
-    private List<DriverStops> driverStart;
     private Integer selectedDriverID;  
     private TimeZone timeZone;
         
@@ -86,9 +84,9 @@ public class TeamStopsBean extends BaseBean {
     }  
     
     public List<DriverStops> getDriverStops() { 
-        if ( selectedDriverID != null ) {
-            initDriverStops();
-        }
+//        if ( selectedDriverID != null ) {
+//            initDriverStops();
+//        }
         
         return driverStops;
     }
@@ -99,15 +97,7 @@ public class TeamStopsBean extends BaseBean {
         }
         
         return driverStopsSummary;
-    }
-        
-    public List<DriverStops> getDriverStart() {
-        if ( selectedDriverID != null ) {
-            initDriverStart();
-        }
-        
-        return driverStart;
-    }    
+    }   
     
     public Integer getSelectedDriverID() {
         return selectedDriverID;
@@ -172,16 +162,15 @@ public class TeamStopsBean extends BaseBean {
     }
 
     private void initDriverStops() {
-        allDriverStopData = new ArrayList<DriverStops>();
         driverStops = new ArrayList<DriverStops>();
         
         // Grab all the data here
         if (isValidTimeFrame()){
-            allDriverStopData =                        
+            driverStops =                        
                 driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
             
             // Till we figure-out how to get the address back, set to something, for the report
-            for ( DriverStops ds: allDriverStopData ) {
+            for ( DriverStops ds: driverStops ) {
                 ds.setAddress("Set this");
             }
         } else {
@@ -189,23 +178,18 @@ public class TeamStopsBean extends BaseBean {
         }      
         
         // If no data, return
-        if ( allDriverStopData.size() == 0 ) {
+        if ( driverStops.size() == 0 ) {
             return;
-        }
-                
-        int count = 0;
+        }                
         
-        // The stops data for the table starts in the second position of the 
-        //  returned stops list, since the first location is the start location info
-        for ( DriverStops ds: allDriverStopData ) {
-            if ( count != 0 ) {
-                driverStops.add(ds);                
-            }
-            count++;
-        }
+        // Lastly, the first and last stops can have some un-savory info in them, alter
+        DriverStops ds = driverStops.get(0);
+        ds.setArriveTime(0L);
+        ds.setIdleHi(0);
+        ds.setIdleLo(0);
+        driverStops.set(0, ds);
         
-        // Lastly, the final stop can have some un-savory info in it, alter        
-        DriverStops ds = driverStops.get(driverStops.size()-1);
+        ds = driverStops.get(driverStops.size()-1);
         ds.setDepartTime(0L);  
         ds.setIdleHi(0);
         ds.setIdleLo(0);
@@ -215,6 +199,8 @@ public class TeamStopsBean extends BaseBean {
     public void initDriverStopsSummary() {
         
         driverStopsSummary = new ArrayList<DriverStops>();
+        initDriverStops();
+        
         if ( driverStops.size() == 0 ) {
             return;
         }
@@ -230,18 +216,6 @@ public class TeamStopsBean extends BaseBean {
         d.setAddress(null);
         
         driverStopsSummary.add(d);
-    }
-    
-    public void initDriverStart() {  
-        driverStart = new ArrayList<DriverStops>();
-        
-        // Trips found, adjust data to get the correct total line
-        if ( allDriverStopData.size() > 0 ) {
-            DriverStops ds = allDriverStopData.get(0);
-            ds.setArriveTime(0L);   
-            ds.setDriveTime(0L);           
-            driverStart.add(ds);
-        }
     }
 
     public TimeZone getTimeZone() {
@@ -301,15 +275,15 @@ public class TeamStopsBean extends BaseBean {
         ArrayList<DriverStops> tmp = new ArrayList<DriverStops>();
         
         // This gets a net zero for the start location
-        DriverStops ds = driverStart.get(0);        
-        ds.setDepartTime(ds.getArriveTime());
-        tmp.add(ds);
-        reportDataSet.addAll(tmp); 
+//        DriverStops ds = driverStart.get(0);        
+//        ds.setDepartTime(ds.getArriveTime());
+//        tmp.add(ds);
+//        reportDataSet.addAll(tmp); 
         
         // This gets a net zero for the last location
-        ds = driverStops.get(driverStops.size()-1);
-        ds.setDepartTime(ds.getArriveTime());
-        driverStops.set(driverStops.size()-1, ds);
+//        ds = driverStops.get(driverStops.size()-1);
+//        ds.setDepartTime(ds.getArriveTime());
+//        driverStops.set(driverStops.size()-1, ds);
         
         reportDataSet.addAll(driverStops);
         reportDataSet.addAll(driverStopsSummary);
