@@ -136,11 +136,12 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="overall" />
 											</ui:include>
-                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                            <ui:include src="/includes/new_scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.overallScore}" />
                                                     <ui:param name="item" value="#{item.driverID}" /> 
                                                     <ui:param name="scoreMappingId" value="driverPerformance"/>
 													<ui:param name="context" value="driversOverall" />
+
                                             </ui:include> 
                                         </rich:column>
                                         <rich:column id="speedScore" rendered="#{tableColumns['speedScore'].visible}" 
@@ -151,7 +152,7 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="speed" />
 											</ui:include>
-                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                            <ui:include src="/includes/new_scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.speedScore}" />
                                                     <ui:param name="item" value="#{item.driverID}" /> 
                                                     <ui:param name="scoreMappingId" value="driverPerformanceSpeed"/>
@@ -166,7 +167,7 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="style" />
 											</ui:include>
-                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                            <ui:include src="/includes/new_scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.styleScore}" />
                                                     <ui:param name="item" value="#{item.driverID}" />  
                                                     <ui:param name="scoreMappingId" value="driverPerformanceStyle"/>
@@ -181,7 +182,7 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="seatbelt" />
 											</ui:include>
-                                            <ui:include src="/includes/table/scoreBox.xhtml">
+                                            <ui:include src="/includes/new_scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.seatbeltScore}" />
                                                     <ui:param name="item" value="#{item.driverID}" /> 
                                                     <ui:param name="scoreMappingId" value="driverPerformanceSeatBelt"/>

@@ -144,7 +144,7 @@
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
 													<ui:param name="type" value="overall" />
 												</ui:include>
-	                                            <ui:include src="/includes/table/scoreBox.xhtml">
+	                                            <ui:include src="/includes/new_scoreBox.xhtml">
 	                                                    <ui:param name="score" value="#{item.overallScore}" />
 	                                                    <ui:param name="item" value="#{item.vehicleID}" /> 
 	                                                    <ui:param name="scoreMappingId" value="vehiclePerformance"/>
@@ -159,7 +159,7 @@
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
 													<ui:param name="type" value="speed" />
 												</ui:include>
-	                                            <ui:include src="/includes/table/scoreBox.xhtml">
+	                                            <ui:include src="/includes/new_scoreBox.xhtml">
 	                                                    <ui:param name="score" value="#{item.speedScore}" />
 	                                                    <ui:param name="item" value="#{item.vehicleID}" /> 
 	                                                    <ui:param name="scoreMappingId" value="vehiclePerformanceSpeed"/>
@@ -174,7 +174,7 @@
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
 													<ui:param name="type" value="style" />
 												</ui:include>
-	                                            <ui:include src="/includes/table/scoreBox.xhtml">
+	                                            <ui:include src="/includes/new_scoreBox.xhtml">
 	                                                    <ui:param name="score" value="#{item.styleScore}" />
 	                                                    <ui:param name="item" value="#{item.vehicleID}" /> 
 	                                                    <ui:param name="scoreMappingId" value="vehiclePerformanceStyle"/>
