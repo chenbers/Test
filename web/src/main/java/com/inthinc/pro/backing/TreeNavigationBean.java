@@ -114,7 +114,7 @@ public class TreeNavigationBean extends BaseBean {
             
             //build the json tree
             setNavigationTree(new JsTreeRoot(group, getGroupHierarchy()));
-
+            openParentPath(group);
         }
         this.groupID = groupID;
     
@@ -317,7 +317,6 @@ public class TreeNavigationBean extends BaseBean {
     		    }
        		    setChildren(children);
 		    }
-		            
 		}
         public List<JsTreeNode> getChildren() {
 			return children;
