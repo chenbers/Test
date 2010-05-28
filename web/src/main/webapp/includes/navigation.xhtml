@@ -11,61 +11,64 @@
 
 <style type="text/css">
 
-/*
-#tree_link:hover {
-	border-style: solid;
-	border-width: 1px;
-	padding: 1px;
-}
-#tree_link{
-	border-style: hidden;
-	border-width: 1px;
-	padding: 2px;
-}
-*/
-
 .tree ul ins {
 	height: 18px;
+	width: 18px;
 }
 
 .tree li {
 	padding: 0px 5px 2px 15px;
 }
 
-.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; padding: 10px 0; width: auto; }
-.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; width: auto;}
+.tree_back { float:left; margin:0; border:1px solid green; font-family:Verdana; font-size:10px; background:white; padding: 10px 0; width: auto; min-width: 150px;}
+.recent_back { margin:0; padding-bottom:5px;border-top:1px solid green; border-right:1px solid green;border-left:1px solid green;font-family:Verdana; font-size:10px; background:white; width: auto; min-width: 150px;}
 .recent_back li a:active,.recent_back li a:link,.recent_back li a:hover,.recent_back li a:visited
 	{
 	color: #333;
 	text-decoration: none;
 }
-.recent_back span[rel="group"]{
-	background-image:url(#{request.contextPath}/images/ico_trucks.png);
-	background-repeat:no-repeat;
-	background-position: left center;
-	padding: 7px;
-	line-height:20px
-	}
-.recent_back span[rel="fleet"]{
-	background-image:url(#{request.contextPath}/images/ico_truck.png);
-	background-repeat:no-repeat;
-	background-position: left center;
-	padding: 7px;
-	line-height:20px
+
+.recent_item {
+	display: inline-block;
+	height: 16px;
+	line-height: 16px;
+	margin: 0px;
+	padding: 1px 4px;
+	text-decoration: none;
+	white-space: nowrap;
 }
-.recent_back span[rel="team"]{
-	background-image:url(#{request.contextPath}/images/ico_team.png);
-	background-repeat:no-repeat;
-	background-position: left center;
-	padding: 7px;
-	line-height:20px
+
+.recent_item ins {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+	margin: 0 4px 0 0;
+	text-decoration: none;
 }
+
+.recent_item .group {
+	background-image: url(#{request.contextPath}/images/ico_trucks.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+.recent_item .fleet{
+	background-image: url(#{request.contextPath}/images/ico_truck.png);
+	background-position: 0 3px;
+	background-repeat: no-repeat;
+}
+.recent_item .team{
+	background-image: url(#{request.contextPath}/images/ico_team.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+
 .selectedNavigationTreeNode {
 	font-weight: bold;
 }
 
 .dropBox{
-	display: none;
+	display:none;
 	z-index:100;
 	position: absolute;
 	left:28px;
@@ -130,9 +133,6 @@ jQuery(function(){
 	    jQuery(".dropBox").slideToggle("fast");
 	});
 
-	jQuery(".recent_back ins[rel='fleet']").css("background-image","url(#{request.contextPath}/images/ico_truck.png)");
-	jQuery(".recent_back ins[rel='group']").css("background-image","url(#{request.contextPath}/images/ico_trucks.png)");
-	jQuery(".recent_back ins[rel='team']").css("background-image","url(#{request.contextPath}/images/ico_team.png)");
 	jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
 	jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
 	
@@ -212,35 +212,35 @@ jQuery(function(){
 		
 			<li class="tree_button #{homeSelected}" style="position:relative;z-index:99;">
                 <span id="tree_link" class="tree_button_left">
-                	<span class="tree_button_right">#{messages.navigation_home}<rich:spacer width="5px"/><small>▼</small></span> 
+                	<span class="tree_button_right">#{messages.navigation_home}#{' '}<small>▼</small></span> 
                 </span>       
    	 			<div id="navigationTreeBox" class="dropBox"> 
 					 <rich:panel id="recents" styleClass="recent_back" rendered="#{treeNavigationBean.renderRecentNodes}">
 							 <p style="text-indent:5px">#{messages.navigation_recents}</p>
-							 <rich:dataList style="list-style: none;padding-left: 25px" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">
-				               <pretty:link id="#{context}-dashboard-recents" mappingId="dashboard" title="#{recent.fullPath}">
-				              	  <span rel="#{recent.type}"><h:outputText value="&#160;&#160;&#160;&#160;&#160;#{recent.data.title}"/></span>
+							 <rich:dataList  style="list-style: none;padding-left: 15px" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">				               
+				               <pretty:link id="#{context}-dashboard-recents" styleClass="recent_item" mappingId="dashboard" title="#{recent.fullPath}">
 				                  <f:param value="#{recent.attributes['groupid']}"/>
+				              	  <ins class="#{recent.type}">&#160;</ins> #{recent.data.title}
 				               </pretty:link>
 							 </rich:dataList>
 					 </rich:panel>
 					<div id="navigationTree" class="tree_back"></div>
 				</div>
  			</li>
-			<li class="main_nav_item #{reportsSelected}">
-                <pretty:link id="#{context}-navigationReports" mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>
+			<li class="nav_button #{reportsSelected}">
+                <pretty:link id="#{context}-navigationReports" mappingId="reports" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_reports}</span></pretty:link>
 			</li>
-			<li class="main_nav_item #{notificationsSelected}">
-                <pretty:link id="#{context}-navigationNotifications" mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
+			<li class="nav_button #{notificationsSelected}">
+                <pretty:link id="#{context}-navigationNotifications" mappingId="notifications" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_notifications}</span></pretty:link>
 			</li>
 			<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_LIVEFLEETACCESS">
-    			<li class="main_nav_item #{liveFleetSelected}">
-                    <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
+    			<li class="nav_button #{liveFleetSelected}">
+                    <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_liveFleet}</span></pretty:link>
     			</li>
 			</security:authorize>
 			<security:authorize ifAnyGranted="ROLE_ADMIN">
-				<li class="main_nav_item #{adminSelected}">
-                    <pretty:link id="#{context}-navigationAdmin" mappingId="admin"><span>#{messages.navigation_admin}</span></pretty:link>
+				<li class="nav_button #{adminSelected}">
+                    <pretty:link id="#{context}-navigationAdmin" mappingId="admin" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
 			<security:authorize ifAnyGranted="ROLE_ADMIN_SUBSET">
@@ -250,11 +250,11 @@ jQuery(function(){
 			<ui:param name="firstAccessPoint" value="#{myAccountBean.user.accessPoints[0].accessPtID}"/>
 			<ui:param name="defaultPage" value="#{siteAccessPoints.accessPointsMap[firstAccessPoint].msgKey}"/>
 			
-				<li class="main_nav_item #{adminSelected}">
-                    <pretty:link id="#{context}-navigationAdminSubset" mappingId="admin#{defaultPage}"><span>#{messages.navigation_admin}</span></pretty:link>
+				<li class="nav_button #{adminSelected}">
+                    <pretty:link id="#{context}-navigationAdminSubset" mappingId="admin#{defaultPage}" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
-			<li class="main_nav_item" style="float:right">
+			<li class="nav_button" style="float:right">
 				<table width="250" border="0" cellspacing="0" cellpadding="0" id="menu_search_box">
 				  <tr>
 					<td class="left">
