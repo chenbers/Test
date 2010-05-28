@@ -8,5 +8,5 @@ import com.inthinc.pro.backing.SBSChangeRequest;
 
 public interface TigerDAO {
 
-    public  List<SBSChangeRequest> getCompleteChains(double lat, double lng, int address) throws ParserConfigurationException;
+    public  List<SBSChangeRequest> getCompleteChains(double lat, double lng, int address, int limit) throws ParserConfigurationException;
 }
