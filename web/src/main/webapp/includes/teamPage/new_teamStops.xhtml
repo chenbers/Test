@@ -127,10 +127,11 @@
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
 								rows="#{teamStopsBean.stopsPerPage}"
-								columnsWidth="10px,120px,10px">
+								width="215px"
+								columnsWidth="10px,195px,10px">
 							<rich:column>     
 								<a4j:region id="radioBut">   		 			               
-               		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true"
+               		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true" style="text-decoration:none;border:0;"
                		 					value="#{teamStopsBean.selectedDriverID}">
                		 					<f:selectItem itemValue="#{drivers.driverID}"/>
                		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="getAddresses();initStopTimeFrameChangeListener();"/>                	 					                 						
