@@ -159,12 +159,17 @@
 		
   	   var clusterDiv = document.createElement("canvas");
   	   markerElement.appendChild(clusterDiv);
-  	   
+ 	   
   	   if(typeof G_vmlCanvasManager != 'undefined'){
   		   
   		   clusterDiv = G_vmlCanvasManager.initElement(clusterDiv);
 		   clusterDiv.style.width = 35+(displayColors.length-1)*5;
 		   clusterDiv.style.height = 35;
+  	   }
+  	   else{
+  		   
+  		   clusterDiv.width = 35+(displayColors.length-1)*5;
+		   clusterDiv.height = 35;
   	   }
   	   if (clusterDiv.getContext) { 
   	    
