@@ -65,7 +65,8 @@ import com.inthinc.pro.security.userdetails.ProUser;
 
 public class DaoUtilTest extends BaseSpringTest {
 	
-    
+    // Warning: this test uses the same data as the alert messages test in the dao project -- If the alert data is regenerated
+    // copy the AlertTest.xml from that project's test/resources to this one.
     private static final String XML_DATA_FILE = "AlertTest.xml";
     private static final String OTHER_XML_DATA_FILE = "UtilTest.xml";
 
@@ -84,7 +85,6 @@ public class DaoUtilTest extends BaseSpringTest {
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-System.out.println("setupbefore class  start");
         IntegrationConfig config = new IntegrationConfig();
 
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
@@ -98,14 +98,16 @@ System.out.println("setupbefore class  start");
 	    DateTimeZone dateTimeZone = DateTimeZone.forID(TimeZone.getDefault().getID());
 
         dateList = new ArrayList<Date>();
-        for (int i = 7; i > 0; i--) {
-        	dateList.add(new DateTime(dateTimeZone).minusDays(i).toDate());
-        }
+      	dateList.add(new DateTime(dateTimeZone).minusDays(7).toDate());
+        dateList.add(new DateTime(dateTimeZone).minusDays(0).toDate());
         expectedNoResults = new ArrayList<String>();
         expectedNoResults.add("getCrashes");
         expectedNoResults.add("getDriverByPersonID");
+        expectedNoResults.add("getRedFlagAlertsByUserIDDeep"); 
         expectedNoResults.add("getSDScoresByGT");
         expectedNoResults.add("getSDTrendsByGTC");
+        expectedNoResults.add("getStops");
+        expectedNoResults.add("getZoneAlertsByUserIDDeep");
         
         
         expectedNoAttempt = new ArrayList<String>();
@@ -113,7 +115,6 @@ System.out.println("setupbefore class  start");
         expectedNoAttempt.add("getID");
         expectedNoAttempt.add("getNote");
         expectedNoAttempt.add("getRfidsForBarcode");
-System.out.println("setupbefore class  end");
    }
     
     private static Map<ValidatorType, String> initValueMap(String filename, boolean initUser) throws Exception {
@@ -255,7 +256,6 @@ System.out.println("test");
     	Map<String, DaoMethod> methodMap = dao.getMethodMap();
     	
     	for (String methodName: methodMap.keySet()) {
-	
     		DaoMethod daoMethod = methodMap.get(methodName);
     		assertEquals("expected read methods only", CrudType.READ, daoMethod.getCrudType());
     		
