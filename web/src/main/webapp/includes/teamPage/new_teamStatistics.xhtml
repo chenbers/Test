@@ -68,8 +68,8 @@
 	       		var="item"
 				styleClass="datagrid" 
 				rowClasses="tableOdd,tableEven"
-				width="890px"
-				columnsWidth="130px,50px,70px,50px,50px,50px,75px,75px,75px,75px,40px,50px,50px,50px"
+				width="100%"				
+				columnsWidth="8%,     7%,  8%,  7%,  7%,  7%,  7%,  7%, 7%,   7%, 7%,  7%,  7%,  7%"
 				rows="10">				
 
 				<rich:column  rendered="#{tableColumns['driver_team'].visible}" id="newTeamStatsTab-totalsTeamName">
@@ -185,8 +185,8 @@
 	       		var="item"
 				styleClass="datagrid" 
 				rowClasses="tableOdd,tableEven"
-				width="890px"
-				columnsWidth="130px,50px,70px,50px,50px,50px,75px,75px,75px,75px,40px,50px,50px,50px"
+				width="100%"
+				columnsWidth="8%,     7%,  8%,  7%,  7%,  7%,  7%,  7%, 7%,   7%, 7%,  7%,  7%,  7%"
 				rows="#{teamStatisticsBean.numRowsPerPg}">				
 
 				<rich:column rendered="#{tableColumns['driver_team'].visible}" sortBy="#{item.driver.person.first}" id="newTeamStatsTab-driverName">

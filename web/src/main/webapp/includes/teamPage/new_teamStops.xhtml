@@ -67,6 +67,23 @@
 	    }   	 
 
     </script>
+    
+		<style>
+            .alt_datagrid th {
+            	background: #BFD292;
+            	padding: 1px 5px;
+            	text-align: center;
+            }
+            
+            .alt_datagrid>tbody>tr>td {
+            	text-align: center;
+                padding: 5px;
+            }
+            .alt_datagrid caption {
+              font: 10px Verdana,Tahoma,Arial,sans-serif;
+              text-align: center;
+            }
+        </style>		    
  
     <rich:tab id="teamStops" oncomplete="Team.tabChange();">
    	   
@@ -81,7 +98,7 @@
 		<a4j:outputPanel id="stopsPanel" ajaxRendered="true" styleClass="section">
 		
 		<rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />		
-
+<!-- Report stuff, for another day 
 		<h:form id="stopsReport">
 			<ul id="grid_nav" style="margin: 0;">            							
      			<li class="r grid_icon">
@@ -109,26 +126,26 @@
 				</ui:include>
 			</h:outputText>
 		</h:form>
-
+-->
 			
 		<table>
 		<tr>
-		<td valign="top">
+		<td valign="top" align="left">
 		    
    			<div class="section">
      	  		<h:form id="stopsTableForm">
      	  		
 	 	        	<div id="stopsDriverTable" >
-	        	
+	        			        	
 	 	        		<rich:dataTable	value="#{teamStopsBean.drivers}" 
 					       		id="stopsDrivers" 
 					       		var="drivers"
 					       		rowKeyVar="index"
 								styleClass="datagrid" 
 								rowClasses="tableOdd,tableEven"
-								rows="#{teamStopsBean.stopsPerPage}"
-								width="215px"
-								columnsWidth="10px,195px,10px">
+								rows="25"
+								width="230px"
+								columnsWidth="15px,200px,15px">
 							<rich:column>     
 								<a4j:region id="radioBut">   		 			               
                		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true" style="text-decoration:none;border:0;"
@@ -155,16 +172,14 @@
 										#{teamStopsBean.labels[index]}
 									</div>
 								</div>
-							</rich:column> 							
-
-						</rich:dataTable>
-					
-						<br></br>
-						
-						<rich:datascroller 	align="left" for="stopsDrivers" 							
-            			 	styleClass="dataScrollerSmall" 
-            			 	id="stopsDriverTableScroller" width="98%"/>            			
- 				         
+							</rich:column> 	
+							<f:facet name="footer">
+								<rich:datascroller 	align="left" for="stopsDrivers" 							            			 	
+            			 			id="stopsDriverTableScroller">
+								</rich:datascroller>  
+							</f:facet>		
+						</rich:dataTable>													
+ 				       	 
 	         		</div>  
  				</h:form>	
 			</div>
@@ -179,12 +194,13 @@
 						<table>
 							<tr>
 								<td>
+																
 	 	        			<rich:dataTable	value="#{teamStopsBean.driverStopsSummary}" 
 					       			id="stopsTripsSummary" 
 					       			var="stopsSummary"					       
-									styleClass="datagrid" 
+									styleClass="datagrid alt_datagrid" 
 									rowClasses="tableOdd,tableEven"
-									rows="#{teamStopsBean.stopsPerPage}"
+									rows="10"
 									width="625px"
 									columnsWidth="50px,100px,75px,75px,100px,75px,50px,50px,50px">
 								
@@ -263,11 +279,11 @@
 	 	        					<rich:dataTable	value="#{teamStopsBean.driverStops}" 
 					       				id="stopsTrips" 
 					       				var="stops"									       		
-										styleClass="datagrid" 
+										styleClass="datagrid alt_datagrid" 
 										rowClasses="tableOdd,tableEven"
-										rows="#{teamStopsBean.stopsPerPage}"
+										rows="10"
 										width="625px"
-									columnsWidth="50px,100px,75px,75px,100px,75px,50px,50px,50px">
+										columnsWidth="50px,100px,75px,75px,100px,75px,50px,50px,50px">
 								
 	                					<f:facet name="header">
 	                    					<rich:columnGroup>
@@ -347,16 +363,14 @@
                     							<a4j:actionparam value="#{stops.driveTime}" converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>                    															
           									<h:outputText value="---" rendered="#{stops.departTime != 0 and stops.arriveTime == 0}"/>                    							                			                			
-	                					</rich:column>	                		                		            		             		       		
-									</rich:dataTable>
-								
-									<br></br>
-								
-									<rich:datascroller 	align="center" for="stopsTrips" 							
-            			 				styleClass="dataScrollerSmall" 
-            			 				id="stopsTripsTableScroller" width="50%">
-            						</rich:datascroller>
-					
+	                					</rich:column>	  
+	                					<f:facet name="footer">  
+	                						<rich:datascroller 	align="center" for="stopsTrips" 							
+            			 						styleClass="dataScrollerSmall" 
+            			 						id="stopsTripsTableScroller">
+            								</rich:datascroller>
+            							</f:facet>            		                		            		             		       		
+									</rich:dataTable>																								                                           										            											
 								</td>
 							</tr>
 

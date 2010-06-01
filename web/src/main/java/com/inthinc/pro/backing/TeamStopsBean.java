@@ -32,8 +32,6 @@ public class TeamStopsBean extends BaseBean {
      */
     private static final long serialVersionUID = 1L;
     
-    private int stopsPerPage = 25;
-    
     private DriverDAO driverDAO;
     
     private TeamCommonBean teamCommonBean;
@@ -50,14 +48,6 @@ public class TeamStopsBean extends BaseBean {
         
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-
-    public int getStopsPerPage() {
-        return stopsPerPage;
-    }
-
-    public void setStopsPerPage(int stopsPerPage) {
-        this.stopsPerPage = stopsPerPage;
-    }
 
     public DriverDAO getDriverDAO() {
         return driverDAO;
