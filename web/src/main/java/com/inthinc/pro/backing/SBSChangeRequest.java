@@ -26,6 +26,7 @@ public class SBSChangeRequest implements EditItem, Serializable {
     private SpeedLimitChangeRequest changeRequest;
     private boolean containsAddress;
     private boolean isKilometersPerHour;
+    private Double distance;
 
     @Override
     public Integer getId() {
@@ -357,5 +358,13 @@ public class SBSChangeRequest implements EditItem, Serializable {
             Point point = new Point(lat1, lng1);
             streetSegmentPoints.add(point);
         }
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }

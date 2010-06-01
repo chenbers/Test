@@ -2,7 +2,7 @@ package com.inthinc.pro.sbs.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,6 +59,7 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
                     ss.setKilometersPerHour(rs.getBoolean("kph"));
                     ss.setCategory(rs.getInt("speed_cat"));
                     ss.setStreetSegmentPoints(rs.getString("tigerLine"));
+                    ss.setDistance(rs.getDouble("dist"));
 
                     return ss;
                 }
@@ -72,7 +73,8 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
         }
 		
 		// No match
-		if ( matches == null ) {
+		if ( (matches == null) || matches.isEmpty() ) {
+		    
 			if (logger.isDebugEnabled()){
 				
 				logger.debug("No match for: " + lat + " " + lng);
@@ -80,22 +82,31 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
 			return null;
 		}
 		
-		return matches.subList(0, Math.min(limit,matches.size()));
+  		int count = 0;
+  		Iterator<SBSChangeRequest> it = matches.iterator();
+  		
+        //Find segments in the right range and return 
+		while (it.hasNext()){
+		    
+			if (it.next().getDistance() < .0002d){
+				
+			    count++;
+			}
+			else {
+			    
+			    break;
+			}
+		}
 		
-//		for (SBSChangeRequest ss: matches){
-//		//test if we have a segment in the right range and return 
-//			if (ss.isContainsAddress()){
-//				
-//				return ss;
-//			}
-//		}
-//		// Nothing with correct address? return first item or null
-//		if (matches.size() > 0) {
-//			return matches.get(0);
-//		}
-//		else {
-//			return null;
-//		}
+		if (count > 0){
+		    
+		    return  matches.subList(0, count);
+		}
+		else {
+		    
+		    //If there aren't any then just return the top one
+		    return matches.subList(0, 1);
+		}
 
 	}
 
