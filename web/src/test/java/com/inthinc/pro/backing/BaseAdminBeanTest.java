@@ -128,7 +128,6 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     @Test
     public void display()
     {
-System.out.println("display()");
         // login
         loginUser("superuser101");
 
@@ -195,7 +194,6 @@ System.out.println("display()");
     @Test
     public void edit()
     {
-System.out.println("edit()");        
         // login
         loginUser("superuser101");
 
@@ -237,7 +235,6 @@ System.out.println("edit()");
     @Test
     public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
     {
-System.out.println("batchEdit()");
         // login
         loginUser("superuser101");
 
@@ -270,16 +267,12 @@ System.out.println("batchEdit()");
 
         // populate
         populate(adminBean.getItem(), adminBean);
-System.out.println("batch");        
         for (final String field : getBatchUpdateFields()) {
-System.out.println(field);        	
             adminBean.getUpdateField().put(field, true);
         }
-System.out.println("batch-end");
 
         // save
         int count = adminBean.getItemCount();
-System.out.println("count: " + count);        
         assertEquals(adminBean.save(), adminBean.getFinishedRedirect());
         assertEquals(adminBean.getItemCount(), count);
         assertEquals(adminBean.getSelectedItems().size(), 0);
@@ -297,7 +290,6 @@ System.out.println("count: " + count);
     @Test
     public void delete()
     {
-System.out.println("delete()");
         // login
         loginUser("superuser101");
 

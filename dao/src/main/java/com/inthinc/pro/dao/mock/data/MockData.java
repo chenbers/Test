@@ -85,9 +85,9 @@ public class MockData {
     static final int MAX_GROUPS = 100;
     static final int MAX_REPORT_SCHEDULES = 50;
     static final int MAX_CRASH_REPORTS = 1; //This is called per driver
-    static final int MAX_DRIVERS_IN_GROUP = 10;
-    static final int MAX_VEHICLES_IN_GROUP = 10;
-    static final int MAX_USERS_IN_GROUP = 10;
+    static final int MAX_DRIVERS_IN_GROUP = 9;
+    static final int MAX_VEHICLES_IN_GROUP = 9;
+    static final int MAX_USERS_IN_GROUP = 9;
     static final int MAX_ZONES = 100;
     static final int MAX_ZONE_ALERTS_PER_ZONE = 5;
     static final int MAX_RED_FLAG_PREFS = 100;
@@ -329,8 +329,14 @@ public class MockData {
                 createUser(idOffset + 5, accountID, groupID, "superuser" + groupID, PASSWORD, randomPhone(), randomPhone(), "superuser" + groupID + "@email.com", adminRoles,
                          Boolean.TRUE),
                 createUser(idOffset + 6, accountID, groupID, "supervisor" + groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor" + groupID + "@email.com", adminRoles,
-                         Boolean.TRUE) 
-        };
+                         Boolean.TRUE), 
+                createUser(idOffset + 7, accountID, groupID, "normal7" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal7" + groupID + "@email.com", normalRoles,
+                                 Boolean.TRUE),
+                createUser(idOffset + 8, accountID, groupID, "normal8" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal8" + groupID + "@email.com", normalRoles,
+                                         Boolean.TRUE),
+                createUser(idOffset + 9, accountID, groupID, "normal9" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal9" + groupID + "@email.com", normalRoles,
+                                                 Boolean.TRUE),
+                };
         for (int userCnt = 0; userCnt < users.length; userCnt++) {
             storeObject(users[userCnt]);
             storeObject(users[userCnt].getPerson());

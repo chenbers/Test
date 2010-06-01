@@ -643,9 +643,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
         
         if(item != null && displayed && authorizeAccess(item) == Boolean.FALSE){
-            System.out.println("item is null ? " + (item == null));
-            System.out.println("displayed ? " + displayed);
-            System.out.println("authorizeAccess(item) ? " + authorizeAccess(item));
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied"));
         }
         
