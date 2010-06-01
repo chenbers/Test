@@ -100,7 +100,7 @@
                             <h:form id="#{context}_detail_form" style="display: inline;">
                             	
                                 <a4j:region>
-                                    <rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="ajax" attachTo="#{context}_toolImage">
+                                    <rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="server" attachTo="#{context}_toolImage">
                                         <rich:menuItem ajaxSingle="true" rendered="true" iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
                                             onclick="Richfaces.showModalPanel('#{context}_singleEmail');return false;" value="#{messages.contextMenu_email_this_report}" id="#{context}_email" submitMode="none">
                                         </rich:menuItem>
