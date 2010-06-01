@@ -128,6 +128,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     @Test
     public void display()
     {
+System.out.println("display()");
         // login
         loginUser("superuser101");
 
@@ -194,6 +195,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     @Test
     public void edit()
     {
+System.out.println("edit()");        
         // login
         loginUser("superuser101");
 
@@ -235,6 +237,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
     @Test
     public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
     {
+System.out.println("batchEdit()");
         // login
         loginUser("superuser101");
 
@@ -294,6 +297,7 @@ System.out.println("count: " + count);
     @Test
     public void delete()
     {
+System.out.println("delete()");
         // login
         loginUser("superuser101");
 
