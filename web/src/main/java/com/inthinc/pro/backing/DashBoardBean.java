@@ -21,30 +21,29 @@ public class DashBoardBean extends BaseBean implements Serializable {
     private TrendBean trendBean;
     private IdlePercentageBean idlePercentageBean;
     private SpeedPercentageBean speedPercentageBean;
+    private TeamCommonBean teamCommonBean;
 
     public String getViewPath() {
         if (groupID == null)
             groupID = getUser().getGroupID();
-        // TODO: try to pull the group from the group hierarchy before looking it up
-        // Group group = groupDAO.findByID(groupID);
         Group group = getGroupHierarchy().getGroup(groupID);
         if (group == null)
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
-        navigationBean.setGroupID(groupID);
         
         treeNavigationBean.setCurrentGroupID(groupID);
-        trendBean.setMaximized(Boolean.FALSE);
-        trendBean.setGroupID(groupID);
-        mpgBean.setGroupID(groupID);
-        overallScoreBean.setGroupID(groupID);
-        idlePercentageBean.setGroupID(groupID);
-        speedPercentageBean.setGroupID(groupID);
         switch (group.getType()) {
             case FLEET:
-                return "pretty:fleet";
             case DIVISION:
+                navigationBean.setGroupID(groupID);
+                trendBean.setMaximized(Boolean.FALSE);
+                trendBean.setGroupID(groupID);
+                mpgBean.setGroupID(groupID);
+                overallScoreBean.setGroupID(groupID);
+                idlePercentageBean.setGroupID(groupID);
+                speedPercentageBean.setGroupID(groupID);
                 return "pretty:fleet";
             case TEAM:
+                teamCommonBean.setGroupID(groupID);
                 return "pretty:team";
         }
         return null;
@@ -120,6 +119,14 @@ public class DashBoardBean extends BaseBean implements Serializable {
 
     public void setTreeNavigationBean(TreeNavigationBean treeNavigationBean) {
         this.treeNavigationBean = treeNavigationBean;
+    }
+
+    public TeamCommonBean getTeamCommonBean() {
+        return teamCommonBean;
+    }
+
+    public void setTeamCommonBean(TeamCommonBean teamCommonBean) {
+        this.teamCommonBean = teamCommonBean;
     }
 
 }

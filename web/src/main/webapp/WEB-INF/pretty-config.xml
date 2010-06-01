@@ -57,8 +57,8 @@
         <view-id>/secured/dashboard/executive.faces</view-id>
     </url-mapping>
     <url-mapping id="team">
-        <pattern>/app/team/#{navigationBean.groupID}</pattern>
-        <view-id>/secured/dashboard/team.faces</view-id>
+        <pattern>/app/team/#{teamCommonBean.groupID}</pattern>
+        <view-id>/secured/dashboard/new_team.faces</view-id>
     </url-mapping>  
     <url-mapping id="newteam">
         <pattern>/app/newteam/#{teamCommonBean.groupID}</pattern>
