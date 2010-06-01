@@ -175,20 +175,15 @@
 					</pretty:link>
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
 				</rich:column>
-			</rich:dataTable>		       
-	       	       			
-			<br></br>
-			
-	       <!-- Table -->
-	       <rich:dataTable value="#{teamStatisticsBean.driverStatistics}" 
+				
+				<rich:subTable value="#{teamStatisticsBean.driverStatistics}" 
 	       		id="drivers" 
 	       		var="item"
 				styleClass="datagrid" 
 				rowClasses="tableOdd,tableEven"
 				width="100%"
 				columnsWidth="8%,     7%,  8%,  7%,  7%,  7%,  7%,  7%, 7%,   7%, 7%,  7%,  7%,  7%"
-				rows="#{teamStatisticsBean.numRowsPerPg}">				
-
+				rows="#{teamStatisticsBean.numRowsPerPg}">
 				<rich:column rendered="#{tableColumns['driver_team'].visible}" sortBy="#{item.driver.person.first}" id="newTeamStatsTab-driverName">
 					<f:facet name="header">
 						#{messages.team_driver}
@@ -321,11 +316,16 @@
 					</pretty:link>
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
 				</rich:column>
-				<f:facet name="footer">
+				<f:facet name="footer">				
+					<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" renderIfSinglePage="true" >
+					</rich:datascroller>
+				</f:facet>				
 				
-			<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" renderIfSinglePage="true" />
-				</f:facet>
-			</rich:dataTable>			
+				
+				</rich:subTable>
+				
+			</rich:dataTable>		       
+		
 
 			</div>
 			</h:form>
