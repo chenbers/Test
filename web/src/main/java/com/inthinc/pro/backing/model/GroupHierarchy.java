@@ -63,6 +63,16 @@ public class GroupHierarchy implements Serializable
     	
         return subGroupList;
     }
+    public List<Integer> getSubGroupIDList(Integer groupID)
+    {
+        List<Group> subGroupList = getSubGroupList(groupID);
+        List<Integer> idList = new ArrayList<Integer>();
+        for (Group group : subGroupList) {
+            idList.add(group.getGroupID());
+        }
+        
+        return idList;
+    }
     
     public Group getTopGroup()
     {

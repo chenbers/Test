@@ -64,10 +64,50 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     }
     
     public void ownerChangedAction() {
+        List<Integer> selectedGroupIDs = (item.getGroupIDs() == null) ? null : new ArrayList<Integer>(item.getGroupIDs());
+        List<Integer> selectedVehicleIDs = (item.getVehicleIDs() == null) ? null : new ArrayList<Integer>(item.getVehicleIDs());
+        List<Integer> selectedDriverIDs = (item.getDriverIDs() == null) ? null : new ArrayList<Integer>(item.getDriverIDs());
     	assignPicker = null;
     	item.setGroupIDs(null);
     	item.setVehicleIDs(null);
     	item.setDriverIDs(null);
+        Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
+        User owner = null;
+        if (!ownerID.equals(getUserID()))
+            owner = userDAO.findByID(ownerID);
+        else owner = getUser();
+        List<Integer> groupIDList = getGroupHierarchy().getSubGroupIDList(owner.getGroupID());
+
+        List<Integer> newGroupIDs = new ArrayList<Integer>();
+        for (Integer id : selectedGroupIDs)
+            for (Integer groupID : groupIDList)
+                if (groupID.equals(id)) {
+                    newGroupIDs.add(id);
+                    break;
+                }
+        item.setGroupIDs(newGroupIDs);
+        List<Integer> newVehicleIDs = new ArrayList<Integer>();
+        final List<VehicleView> vehicles = vehiclesBean.getItems();
+        for (Integer id : selectedVehicleIDs)
+            for (VehicleView vehicle : vehicles)
+                if (vehicle.getVehicleID().equals(id)) {
+                    for (Integer groupID : groupIDList)
+                        if (groupID.equals(vehicle.getGroupID())) {
+                            newVehicleIDs.add(id);
+                            break;
+                        }
+                    break;
+                }
+        item.setVehicleIDs(newVehicleIDs);
+        List<Integer> newDriverIDs = new ArrayList<Integer>();
+        List<Driver> drivers = driverDAO.getAllDrivers(owner.getGroupID());
+        for (Integer id : selectedDriverIDs)
+            for (Driver driver : drivers)
+                if (driver.getDriverID().equals(id)) {
+                    newDriverIDs.add(id);
+                    break;
+                }
+        item.setDriverIDs(newDriverIDs);
     }
 
     public void setAssignType(String assignType)
