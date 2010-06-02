@@ -557,7 +557,7 @@
 								<div class="panel_w">
 								<div class="panel_content"><!-- Start Event table --> <rich:panel id="selectedEvents">
 										<a4j:form id="selectedEventsForm">
-												<rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datatable" rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%"
+												<rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%"
 														onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,#{item.noteID});">
 
 														<!-- Data -->
@@ -720,7 +720,7 @@
 										<a4j:form id="tripsTableForm">
 												<div class="panel_w"><rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
 														<!-- Start Trip table -->
-														<rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datatable" rowClasses="tableOdd,tableEven" rows="4" width="100%">
+														<rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
 
 																<a4j:support event="onRowClick" reRender="script,tripBubbles,selectedEvents,showLastTenForm,selectDriverForm" oncomplete="bodyLoad();getAddresses();">
 																		<f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />

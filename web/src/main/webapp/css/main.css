@@ -6,7 +6,7 @@ body {
 }
 
 img {
-    border: none;
+	border: none;
 }
 
 #header {
@@ -134,198 +134,168 @@ img {
 
 .panel_title span.login {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_key.png) no-repeat center left
-		;
+	background: transparent url(../images/ico_key.png) no-repeat center left;
 	width: 225px;
 }
 
 .panel_title span.top5 {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_overall.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_overall.png) no-repeat center left;
 }
 
 .panel_title span.mile {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_mile.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_mile.png) no-repeat center left;
 }
 
 .panel_title span.thumbsdown {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_thumbsdown.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_thumbsdown.png) no-repeat center left;
 }
 
 .panel_title span.line {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_line.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_line.png) no-repeat center left;
 }
 
 .panel_title span.overall {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_overall.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_overall.png) no-repeat center left;
 }
 
 .panel_title span.event {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_event.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_event.png) no-repeat center left;
 }
 
 .panel_title span.diagnostics_title {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_warning.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_warning.png) no-repeat center left;
 }
 
 .panel_title span.emergency_title {
-    padding: 0 0 0 20px;
-    background: transparent url(../images/ico_critical.png) no-repeat center left;
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_critical.png) no-repeat center left;
 }
 
 .panel_title span.gas {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_gas.png) no-repeat center left
-		;
+	background: transparent url(../images/ico_gas.png) no-repeat center left;
 }
+
 .panel_title span.crash {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/icon_crash.png) no-repeat center left
-		;
+	background: transparent url(../images/icon_crash.png) no-repeat center left;
 }
 
 .panel_title span.legend {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_legend.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_legend.png) no-repeat center left;
 }
 
 .panel_title span.map {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_map.png) no-repeat center left
-		;
+	background: transparent url(../images/ico_map.png) no-repeat center left;
 }
 
-.panel_title span.map a:active,.panel_title span.map a:link,.panel_title span.map a:hover,.panel_title span.map a:visited
-	{
+.panel_title span.map a:active,.panel_title span.map a:link,.panel_title span.map a:hover,.panel_title span.map a:visited {
 	color: #333;
 	text-decoration: underline;
 }
 
 .panel_title span.search {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_search.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_search.png) no-repeat center left;
 }
 
 .panel_title span.vehicle {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_vehicle.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_vehicle.png) no-repeat center left;
 }
 
 .panel_title span.zones {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_zones.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_zones.png) no-repeat center left;
 }
 
 .panel_title span.zone_alerts {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_zone_alerts.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_zone_alerts.png) no-repeat center left;
 }
 
 .panel_title span.driver {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_driver.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_driver.png) no-repeat center left;
 }
 
 .panel_title span.email {
 	padding: 0 0 0 20px;
-	background: transparent url(/images/ico_email.png) no-repeat center left
-		;
+	background: transparent url(/images/ico_email.png) no-repeat center left;
 }
 
 .panel_title span.admin {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_admin.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_admin.png) no-repeat center left;
 }
 
 .panel_title span.account {
-	background: transparent url(../images/ico_account.png) no-repeat scroll
-		left center;
+	background: transparent url(../images/ico_account.png) no-repeat scroll left center;
 	padding: 0 0 0 20px;
 }
 
 .panel_title span.notify {
-	background: transparent url(../images/ico_notification.png) no-repeat
-		scroll left center;
+	background: transparent url(../images/ico_notification.png) no-repeat scroll left center;
 	padding: 0 0 0 20px;
 }
 
 .panel_title span.contact {
-	background: transparent url(../images/ico_contact.png) no-repeat scroll
-		left center;
+	background: transparent url(../images/ico_contact.png) no-repeat scroll left center;
 	padding: 0 0 0 20px;
 }
 
 .panel_title span.speed {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_speed.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_speed.png) no-repeat center left;
 }
 
 .panel_title span.details {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_details.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_details.png) no-repeat center left;
 }
 
 .panel_title span.seatbelt {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_seatbelt.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_seatbelt.png) no-repeat center left;
 }
 
 .panel_title span.coaching {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_coaching.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_coaching.png) no-repeat center left;
 }
 
 .panel_title span.redflag {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_red_flag.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_red_flag.png) no-repeat center left;
 }
 
 .panel_title span.cal {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_cal.png) no-repeat center left
-		;
+	background: transparent url(../images/ico_cal.png) no-repeat center left;
 }
 
 .panel_title span.zones {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_zones.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_zones.png) no-repeat center left;
 }
 
 .panel_title span.slcr {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_spd_limit.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_spd_limit.png) no-repeat center left;
 }
 
 .panel_title .ajax_status {
-    vertical-align: top;
-    padding-right: 10px;
+	vertical-align: top;
+	padding-right: 10px;
 }
 
 .panel_title .panel_links a.on {
@@ -335,13 +305,13 @@ img {
 }
 
 .panel_links .selected_duration {
-    color: #6B9D1B !important;
-    font-weight: bold !important;
-    text-decoration: none !important;
-    cursor: default;
+	color: #6B9D1B !important;
+	font-weight: bold !important;
+	text-decoration: none !important;
+	cursor: default;
 }
 
-.panel_title a:link, .panel_links a:hover, .panel_links a:active, .panel_links a:visited {
+.panel_title a:link,.panel_links a:hover,.panel_links a:active,.panel_links a:visited {
 	color: #333;
 }
 
@@ -353,14 +323,14 @@ img {
 }
 
 .panel_links td {
-    padding:0 3px;
+	padding: 0 3px;
 }
 
 /*This is a temporary style... DO NOT USE ANYMORE!!!! All using this should conver to using .panel_links .selected_duration*/
 .on {
-    color: #6B9D1B !important;
-    font-weight: bold !important;
-    text-decoration: none !important;
+	color: #6B9D1B !important;
+	font-weight: bold !important;
+	text-decoration: none !important;
 }
 
 .panel_links_ico {
@@ -472,15 +442,13 @@ img {
 
 .nav_button.search a {
 	color: #fff;
-	background: url(../images/main_nav_hover_l_search.gif) no-repeat left
-		5px;
+	background: url(../images/main_nav_hover_l_search.gif) no-repeat left 5px;
 	font-weight: normal;
 }
 
 .nav_button.search a span {
 	color: #fff;
-	background: url(../images/main_nav_hover_r_search.gif) no-repeat right
-		5px;
+	background: url(../images/main_nav_hover_r_search.gif) no-repeat right 5px;
 }
 
 .nav_button .nav_button_left:hover {
@@ -592,8 +560,7 @@ img {
 	color: #fff;
 }
 
-#horz_nav ul a:hover,#horz_nav ul a.active,#horz_nav ul li a:hover,#horz_nav ul li a:active
-	{
+#horz_nav ul a:hover,#horz_nav ul a.active,#horz_nav ul li a:hover,#horz_nav ul li a:active {
 	color: #fff;
 	text-decoration: underline;
 }
@@ -604,8 +571,7 @@ img {
 
 #horz_nav li a.tb-account {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_account.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_account.png) no-repeat center left;
 	text-decoration: none;
 	color: #fff;
 	margin: 0 0 0 8px;
@@ -613,8 +579,7 @@ img {
 
 #horz_nav li a.tb-help {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_help.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_help.png) no-repeat center left;
 	text-decoration: none;
 	color: #fff;
 	margin: 0 0 0 8px;
@@ -622,8 +587,7 @@ img {
 
 #horz_nav li a.tb-logout {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_logout.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_logout.png) no-repeat center left;
 	text-decoration: none;
 	color: #fff;
 	margin: 0 0 0 8px;
@@ -901,6 +865,12 @@ ul#grid_nav .grid_title {
 	margin: 7px 5px 0 4px;
 }
 
+ul#grid_nav .grid_title.max_width {
+	max-width: 250px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
 ul#grid_nav .grid_icon {
 	margin: 8px 0 0 8px;
 }
@@ -919,19 +889,16 @@ ul#grid_nav li.select {
 	margin: 0;
 }
 
-
 ul#grid_nav li.select2 select {
 	width: 120px;
 }
 
-ul#grid_nav li a:active,ul#grid_nav li a:link,ul#grid_nav li a:hover,ul#grid_nav li a:visited
-	{
+ul#grid_nav li a:active,ul#grid_nav li a:link,ul#grid_nav li a:hover,ul#grid_nav li a:visited {
 	color: #333;
 	text-decoration: none;
 }
 
-ul#grid_nav li.text a:active,ul#grid_nav li.text a:link,ul#grid_nav li.text a:hover,ul#grid_nav li.text a:visited
-	{
+ul#grid_nav li.text a:active,ul#grid_nav li.text a:link,ul#grid_nav li.text a:hover,ul#grid_nav li.text a:visited {
 	color: #333;
 	text-decoration: underline;
 }
@@ -984,14 +951,12 @@ ul#grid_nav_dark li.l {
 	float: left;
 }
 
-ul#grid_nav_dark li a:active,ul#grid_nav_dark li a:link,ul#grid_nav_dark li a:hover,ul#grid_nav_dark li a:visited
-	{
+ul#grid_nav_dark li a:active,ul#grid_nav_dark li a:link,ul#grid_nav_dark li a:hover,ul#grid_nav_dark li a:visited {
 	color: #333;
 	text-decoration: none;
 }
 
-ul#grid_nav_dark li.text a:active,ul#grid_nav_dark li.text a:link,ul#grid_nav_dark li.text a:hover,ul#grid_nav_dark li.text a:visited
-	{
+ul#grid_nav_dark li.text a:active,ul#grid_nav_dark li.text a:link,ul#grid_nav_dark li.text a:hover,ul#grid_nav_dark li.text a:visited {
 	color: #333;
 	text-decoration: underline;
 }
@@ -1031,9 +996,7 @@ ul#grid_nav_dark li.text a:active,ul#grid_nav_dark li.text a:link,ul#grid_nav_da
 	height: 10px;
 }
 
-/* SCORES */ 
-
-/* Generic Styles for Score Boxes */
+/* SCORES */ /* Generic Styles for Score Boxes */
 .score {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-weight: bold;
@@ -1044,9 +1007,8 @@ ul#grid_nav_dark li.text a:active,ul#grid_nav_dark li.text a:link,ul#grid_nav_da
 	text-align: center;
 	vertical-align: middle;
 }
-    
 
-.score a:visited,.score a:link,.score a:active, .score a:hover {
+.score a:visited,.score a:link,.score a:active,.score a:hover {
 	text-decoration: none;
 	color: #333;
 }
@@ -1083,8 +1045,7 @@ ul#grid_nav_dark li.text a:active,ul#grid_nav_dark li.text a:link,ul#grid_nav_da
 }
 
 /* Medium Score Box*/
-.score_med_1 td,.score_med_2 td,.score_med_3 td,.score_med_4 td,.score_med_5 td,.score_med_na td
-	{
+.score_med_1 td,.score_med_2 td,.score_med_3 td,.score_med_4 td,.score_med_5 td,.score_med_na td {
 	width: 60px;
 	height: 60px;
 	font-size: 24px;
@@ -1291,33 +1252,25 @@ h2 {
 dl.vl_tab_off {
 	width: 129px;
 	margin: 0;
-	background:
-		url(../images/ls_tab_off_bottom.png)
-		no-repeat bottom left;
+	background: url(../images/ls_tab_off_bottom.png) no-repeat bottom left;
 }
 
 dl.vl_tab_off dt {
 	padding: 2px;
 	margin: 0;
-	background:
-		url(../images/ls_tab_off_top.png)
-		no-repeat;
+	background: url(../images/ls_tab_off_top.png) no-repeat;
 }
 
 dl.vl_tab_on {
 	width: 129px;
 	margin: 0;
-	background:
-		url(../images/ls_tab_on_bottom.png)
-		no-repeat bottom left;
+	background: url(../images/ls_tab_on_bottom.png) no-repeat bottom left;
 }
 
 dl.vl_tab_on dt {
 	padding: 2px;
 	margin: 0;
-	background:
-		url(../images/ls_tab_on_top.png)
-		no-repeat;
+	background: url(../images/ls_tab_on_top.png) no-repeat;
 }
 
 dd {
@@ -1396,26 +1349,22 @@ div.ls_tab_sub_off a {
 }
 
 /* LEFT Tabs for radio button list */
-
 table.left_tab_table {
 	border-spacing: 0px;
 }
 
-table.left_tab_table tr
-{
-      background: url(../images/ls_tab_off_bottom.png) no-repeat bottom left;
+table.left_tab_table tr {
+	background: url(../images/ls_tab_off_bottom.png) no-repeat bottom left;
 }
 
-table.left_tab_table td
-{
-      padding: 7px;
-      background: url(../images/ls_tab_off_top.png) no-repeat top left;
-      font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+table.left_tab_table td {
+	padding: 7px;
+	background: url(../images/ls_tab_off_top.png) no-repeat top left;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 }
 
-table.left_tab_table input
-{
-      float: left;
+table.left_tab_table input {
+	float: left;
 }
 
 /* LEFT SIDE TABS */
@@ -1457,8 +1406,7 @@ table.left_tab_table input
 
 a.ls_tab_critical {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_critical.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_critical.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 0;
@@ -1466,8 +1414,7 @@ a.ls_tab_critical {
 
 a.ls_tab_warning {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_warning.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_warning.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 0;
@@ -1475,8 +1422,7 @@ a.ls_tab_warning {
 
 a.ls_tab_info {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_info.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_info.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 0;
@@ -1484,8 +1430,7 @@ a.ls_tab_info {
 
 .ls_tab_critical {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_critical.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_critical.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 0;
@@ -1493,8 +1438,7 @@ a.ls_tab_info {
 
 .ls_tab_warning {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_warning.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_warning.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 0;
@@ -1502,8 +1446,7 @@ a.ls_tab_info {
 
 .ls_tab_info {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_info.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_info.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 0;
@@ -1511,8 +1454,7 @@ a.ls_tab_info {
 
 a.ls_tab_drivestyle {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_car.png) no-repeat center left
-		;
+	background: transparent url(../images/ico_car.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1520,8 +1462,7 @@ a.ls_tab_drivestyle {
 
 a.ls_tab_speed {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_speed.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_speed.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1529,8 +1470,7 @@ a.ls_tab_speed {
 
 a.ls_tab_seatbelt {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_seatbelt.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_seatbelt.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1538,8 +1478,7 @@ a.ls_tab_seatbelt {
 
 a.ls_tab_add_driver {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_add_driver.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_add_driver.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1547,8 +1486,7 @@ a.ls_tab_add_driver {
 
 a.ls_tab_add_vehicle {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_add_vehicle.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_add_vehicle.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1556,8 +1494,7 @@ a.ls_tab_add_vehicle {
 
 a.ls_tab_coaching {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_coaching.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_coaching.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1565,8 +1502,7 @@ a.ls_tab_coaching {
 
 a.ls_tab_search {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_search.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_search.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1574,8 +1510,7 @@ a.ls_tab_search {
 
 a.ls_tab_driver {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_driver.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_driver.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1583,8 +1518,7 @@ a.ls_tab_driver {
 
 a.ls_tab_vehicle {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_vehicle.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_vehicle.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1592,8 +1526,7 @@ a.ls_tab_vehicle {
 
 a.ls_tab_map {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_map.png) no-repeat center left
-		;
+	background: transparent url(../images/ico_map.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1601,8 +1534,7 @@ a.ls_tab_map {
 
 a.ls_tab_time {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_time.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_time.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1610,8 +1542,7 @@ a.ls_tab_time {
 
 a.ls_tab_cost {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_cost.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_cost.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1619,8 +1550,7 @@ a.ls_tab_cost {
 
 a.ls_tab_redflag {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_red_flag.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_red_flag.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1628,8 +1558,7 @@ a.ls_tab_redflag {
 
 a.ls_tab_add_redflag {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_add_redflag.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_add_redflag.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1637,8 +1566,7 @@ a.ls_tab_add_redflag {
 
 a.ls_tab_zones {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_zones.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_zones.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1646,8 +1574,7 @@ a.ls_tab_zones {
 
 a.ls_tab_zone_alerts {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_zone_alerts.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_zone_alerts.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1655,8 +1582,7 @@ a.ls_tab_zone_alerts {
 
 a.ls_tab_add_zone_alerts {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_add_zone_alerts.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_add_zone_alerts.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1664,8 +1590,7 @@ a.ls_tab_add_zone_alerts {
 
 a.ls_tab_asset {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_asset.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_asset.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1673,8 +1598,7 @@ a.ls_tab_asset {
 
 a.ls_tab_tiwi {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_tiwi.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_tiwi.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1682,8 +1606,7 @@ a.ls_tab_tiwi {
 
 a.ls_tab_add_tiwi {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_add_tiwi.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_add_tiwi.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1691,8 +1614,7 @@ a.ls_tab_add_tiwi {
 
 a.ls_tab_trailer {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_trailer.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_trailer.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1700,8 +1622,7 @@ a.ls_tab_trailer {
 
 a.ls_tab_add_trailer {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_add_trailer.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_add_trailer.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1709,8 +1630,7 @@ a.ls_tab_add_trailer {
 
 a.ls_tab_edit_columns {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_edit_columns.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_edit_columns.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1718,8 +1638,7 @@ a.ls_tab_edit_columns {
 
 a.ls_tab_email {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_email.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_email.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1727,8 +1646,7 @@ a.ls_tab_email {
 
 a.ls_tab_standing {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_vehicle_stopped.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_vehicle_stopped.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1736,8 +1654,7 @@ a.ls_tab_standing {
 
 a.ls_tab_idling {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_vehicle_idling.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_vehicle_idling.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1745,8 +1662,7 @@ a.ls_tab_idling {
 
 a.ls_tab_gas {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_gas.png) no-repeat center left
-		;
+	background: transparent url(../images/ico_gas.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1754,8 +1670,7 @@ a.ls_tab_gas {
 
 a.ls_tab_mile {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_mile.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_mile.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1763,8 +1678,7 @@ a.ls_tab_mile {
 
 a.ls_tab_line {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_line.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_line.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1772,8 +1686,7 @@ a.ls_tab_line {
 
 a.ls_tab_overall {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_overall.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_overall.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1781,8 +1694,7 @@ a.ls_tab_overall {
 
 a.ls_tab_organization {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_building.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_building.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1790,8 +1702,7 @@ a.ls_tab_organization {
 
 a.ls_tab_report_schedule {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_email.gif) no-repeat center
-		left;
+	background: transparent url(../images/ico_email.gif) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1799,8 +1710,7 @@ a.ls_tab_report_schedule {
 
 a.ls_tab_add_report_schedule {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_email.gif) no-repeat center
-		left;
+	background: transparent url(../images/ico_email.gif) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1808,8 +1718,7 @@ a.ls_tab_add_report_schedule {
 
 a.ls_tab_sbscr {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_spd_limit.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_spd_limit.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
@@ -1817,48 +1726,46 @@ a.ls_tab_sbscr {
 
 a.ls_tab_add_sbscr {
 	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_add_spd_limit.png) no-repeat
-		center left;
+	background: transparent url(../images/ico_add_spd_limit.png) no-repeat center left;
 	text-decoration: none;
 	color: #000;
 	margin: 0 0 0 8px;
 }
 
 /* DASHBOARD DETAILS */
-
 .dashboard_detail {
-    padding-top: 10px;
+	padding-top: 10px;
 }
 
 .dashboard_detail_tabs {
-    vertical-align: top;
-    padding: 40px 0 0 10px;
+	vertical-align: top;
+	padding: 40px 0 0 10px;
 }
 
-
-.dashboard_detail_tabs .tab{
-	background: url(../images/ls_tab_off.png) no-repeat; 
-    height:31px;
-    width:125px;
+.dashboard_detail_tabs .tab {
+	background: url(../images/ls_tab_off.png) no-repeat;
+	height: 31px;
+	width: 125px;
 }
-.dashboard_detail_tabs .selected_tab{
+
+.dashboard_detail_tabs .selected_tab {
 	background: url(../images/ls_tab_on.png) no-repeat;
 }
-.dashboard_detail_tabs a{    
+
+.dashboard_detail_tabs a {
 	text-decoration: none;
 	color: #000;
 	font-size: 10px;
 }
 
 .dashboard_detail_tabs img {
-    border: none;
-    padding:0 5px 0 8px;
+	border: none;
+	padding: 0 5px 0 8px;
 }
 
-.dashboard_detail_content{
-    width: 815px;
+.dashboard_detail_content {
+	width: 815px;
 }
-
 
 /* SCORE BOX */
 .scorebox {
@@ -2138,8 +2045,7 @@ ul#pagination {
 	text-decoration: underline;
 }
 
-.tiny_title a:active,.tiny_title a:link,.tiny_title a:hover,.tiny_title a:visited
-	{
+.tiny_title a:active,.tiny_title a:link,.tiny_title a:hover,.tiny_title a:visited {
 	color: #333;
 	text-decoration: underline;
 	font-weight: bold;
@@ -2175,7 +2081,7 @@ ul#pagination {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	padding: 10px 5px 17px 35px;
 	background: none;
-/*	color: none;*/
+	/*	color: none;*/
 }
 
 .msg li {
@@ -2187,7 +2093,7 @@ ul#pagination {
 .msg dt {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	padding: 10px 5px 17px 35px;
-/*	color: none;*/
+	/*	color: none;*/
 	list-style: none;
 }
 
@@ -2198,8 +2104,7 @@ ul#pagination {
 }
 
 #redflag {
-	background: #fce9e9 url(../images/icon_msg_redflag.png) top left
-		no-repeat;
+	background: #fce9e9 url(../images/icon_msg_redflag.png) top left no-repeat;
 	border: 1px solid #f46666;
 	color: #c44d34;
 }
@@ -2236,8 +2141,7 @@ ul#pagination {
 }
 
 .success {
-	background: #eefcd2 url(../images/icon_msg_success.png) top left
-		no-repeat;
+	background: #eefcd2 url(../images/icon_msg_success.png) top left no-repeat;
 	border: 1px solid #a0bf4e;
 	color: #277822;
 }
@@ -2278,17 +2182,16 @@ ul#pagination {
 
 /*  NEW AND IMPROVED DATA GRID STYLES */
 .datagrid_panel {
-    padding: 1px;
-    overflow: auto;
+	padding: 1px;
+	overflow: auto;
 }
 
-.datagrid_panel > table {
-    width: 100%;
+.datagrid_panel>table {
+	width: 100%;
 }
 
-.datagrid {
-	/*border: 1px solid #8BAD37; */
-	/*border-collapse:collapse; This doesn't work in IE*/
+.datagrid { /*border: 1px solid #8BAD37; */ /*border-collapse:collapse; This doesn't work in IE*/
+	
 }
 
 .datagrid .cs1 {
@@ -2328,9 +2231,6 @@ ul#pagination {
 	vertical-align: top;
 }
 
-
-
-
 .datagrid td.total {
 	border-top: 0;
 	border-left: 0;
@@ -2357,8 +2257,7 @@ ul#pagination {
 	background: #8EAF3C url(../images/bg_header_up.jpg) no-repeat 0 0;
 }
 
-.datagrid thead th.forwardSort a,.datagrid thead th.reverseSort a
-	{
+.datagrid thead th.forwardSort a,.datagrid thead th.reverseSort a {
 	color: #000;
 	text-decoration: none;
 }
@@ -2397,11 +2296,11 @@ These styles should be added when very long tables are expected
         background:transparent;
         }
 */
-.datagrid > tbody > tr > td {
+.datagrid td {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	/*border-right: 1px solid #8BAD37; 
         border-bottom: 1px solid #8BAD37; */
-	padding: 8px ;
+	padding: 8px;
 	color: #333;
 }
 
@@ -2442,76 +2341,6 @@ These styles should be added when very long tables are expected
 	background-color: #CADF9A;
 }
 
-/* Data Table */
-.datatable {
-	padding: 0;
-	margin: 0 auto 1.5em auto;
-	border: 1px solid #8BAD37;
-}
-
-.datatable th {
-	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
-	color: #333;
-	border-right: 1px solid #8BAD37;
-	border-bottom: 1px solid #8BAD37;
-	border-top: 1px solid #8BAD37;
-	letter-spacing: 1px;
-	/* text-transform: uppercase; */
-	text-align: left;
-	padding: 8px 12px 4px 12px;
-	background: #8EAF3C url(../images/bg_header.jpg) no-repeat;
-	vertical-align: middle;
-}
-
-.datatable th.sortable,.datatable th.sortable-text,.datatable th.sortable-date,.datatable th.sortable-keep,.datatable th.sortable-date-dmy,.datatable th.sortable-numeric,.datatable th.sortable-currency,.datatable th.sortable-sortByTwelveHourTimestamp,.datatable th.sortable-sortIPAddress,.datatable th.sortable-sortEnglishLonghandDateFormat,.datatable th.sortable-sortScientificNotation,.datatable th.sortable-sortImage,.datatable th.sortable-sortFileSize,.datatable th.sortable-sortAlphaNumeric,.datatable th.sortable-sortEnglishDateTime
-	{
-	cursor: pointer;
-	background: #8EAF3C url(../images/bg_header_sortable.jpg) no-repeat;
-	padding: 8px 12px 4px 16px;
-}
-
-.datatable th.forwardSort {
-	background: #8EAF3C url(../images/bg_header_down.jpg) no-repeat 0 0;
-}
-
-.datatable th.reverseSort {
-	background: #8EAF3C url(../images/bg_header_up.jpg) no-repeat 0 0;
-}
-
-.datatable table thead th.forwardSort a,.datatable table thead th.reverseSort a
-	{
-	color: #000;
-	text-decoration: none;
-}
-
-.datatable th a {
-	text-decoration: none;
-	color: #333;
-	
-	
-	background: transparent;
-}
-
-.datatable > tbody > tr > td a {
-	text-decoration: underline;
-	color: #333;
-}
-
-.datatable > tbody > tr > td {
-	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
-	border-bottom: 1px solid #8BAD37;
-	padding: 6px 12px 6px 12px;
-	color: #333;
-}
-
-.datatable td.lft {
-	text-align: left;
-}
-
-.datatable tr.alt {
-	background: #EBFFCA;
-	color: #333;
-}
 
 /* Large Scroller  */
 .dataScrollerLarge table {
@@ -2545,12 +2374,10 @@ These styles should be added when very long tables are expected
 	color: #333;
 }
 
-.sortArrows
-{
+.sortArrows {
 	border: 0px;
 	vertical-align: middle;
 }
-
 
 /* Pagination list styles */
 ul.fdtablePaginater {
@@ -2601,7 +2428,7 @@ ul.fdtablePaginater li a,ul.fdtablePaginater li div {
 ul.fdtablePaginater li div {
 	cursor: default;
 	opacity: .5;
-	filter: alpha(opacity =       50);
+	filter: alpha(opacity =         50);
 }
 
 ul.fdtablePaginater li a span,ul.fdtablePaginater li div span {
@@ -2628,8 +2455,7 @@ ul.fdtablePaginater li a:focus {
 	text-decoration: none;
 }
 
-ul.fdtablePaginater li .next-page span,ul.fdtablePaginater li .previous-page span,ul.fdtablePaginater li .first-page span,ul.fdtablePaginater li .last-page span
-	{
+ul.fdtablePaginater li .next-page span,ul.fdtablePaginater li .previous-page span,ul.fdtablePaginater li .first-page span,ul.fdtablePaginater li .last-page span {
 	font-weight: bold !important;
 }
 
@@ -2638,8 +2464,7 @@ ul.fdtablePaginater li .next-page span,ul.fdtablePaginater li .previous-page spa
 	letter-spacing: normal;
 }
 
-* html ul.fdtablePaginater li div span,* html ul.fdtablePaginater li div span
-	{
+* html ul.fdtablePaginater li div span,* html ul.fdtablePaginater li div span {
 	background: #eee;
 }
 
@@ -2739,9 +2564,9 @@ input.text,select.text {
 #grid_nav_timeframe_box select {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
-	width:150px;
-	height:22px;
-	float:none;
+	width: 150px;
+	height: 22px;
+	float: none;
 }
 
 /* WIZARD NAVIGATION STEPS */
@@ -2800,8 +2625,7 @@ input.text,select.text {
 	background-image: url(../images/navDoneBtn.png);
 }
 
-#mainNav li a,#mainNav li a:link,#mainNav li a:visited,#mainNav li a:hover,#mainNav li a:active
-	{
+#mainNav li a,#mainNav li a:link,#mainNav li a:visited,#mainNav li a:hover,#mainNav li a:active {
 	color: #999;
 }
 
@@ -3002,12 +2826,14 @@ table.carlegend {
 	margin: 0 0 0 0px;
 	padding: 0;
 	width: 100%;
-	border-width:0px;
+	border-width: 0px;
 }
-.carlegend tr td{
-	border-width:0px;
-	border-bottom:0px;
+
+.carlegend tr td {
+	border-width: 0px;
+	border-bottom: 0px;
 }
+
 .carlegend td a {
 	color: #333333;
 	text-decoration: underline;
@@ -3191,13 +3017,10 @@ ul.legend {
 }
 
 .trendTableScore {
-	text-align: center;	
-	
+	text-align: center;
 }
 
 /* Regular table definitions */
-
-
 .tableOdd {
 	background: #ffffff;
 }
@@ -3268,26 +3091,22 @@ ul.htabs .tabBorder {
 
 ul.htabs span.overall {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_overall.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_overall.png) no-repeat center left;
 }
 
 ul.htabs span.speed {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_speed.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_speed.png) no-repeat center left;
 }
 
 ul.htabs span.seatbelt {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_seatbelt.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_seatbelt.png) no-repeat center left;
 }
 
 ul.htabs span.driving {
 	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_vehicle.png) no-repeat center
-		left;
+	background: transparent url(../images/ico_vehicle.png) no-repeat center left;
 }
 
 ul.htabs span.tab a:link {
@@ -3426,38 +3245,33 @@ Tree View
 	border: none;
 }
 
-
 /*
 Slider (Device Sensitivity)
 */
-.handleSelected
-{
-    background-image:url(../images/selectedSliderHandle.gif);
+.handleSelected {
+	background-image: url(../images/selectedSliderHandle.gif);
 }
 
 /*
 Slider (Red Flag Driver Style Severity)
 */
-.severitySliderHandle
-{
-	height:28px;
-    background-image: url(../images/sev_bar_marker.png);
+.severitySliderHandle {
+	height: 28px;
+	background-image: url(../images/sev_bar_marker.png);
 }
 
-.severity-slider-handle
-{
-	height:28px;
-	width:9px;
-    background-image: url(../images/sev_bar_marker.png);
+.severity-slider-handle {
+	height: 28px;
+	width: 9px;
+	background-image: url(../images/sev_bar_marker.png);
 }
 
-.severity-slider-bar
-{
-	 padding:0px;
-	 margin-left:-10px;
-	 margin-right:-10px;
-	 height:28px;
-	 background-image:url(../images/sev_bar_no_marker.png);
+.severity-slider-bar {
+	padding: 0px;
+	margin-left: -10px;
+	margin-right: -10px;
+	height: 28px;
+	background-image: url(../images/sev_bar_no_marker.png);
 }
 
 .severity-table-odd {
@@ -3469,43 +3283,42 @@ Slider (Red Flag Driver Style Severity)
 	background-color: #EBFFCA;
 	border: #EBFFCA solid 1px;
 }
-td.crash-summary-title {
 
+td.crash-summary-title {
 	margin: 0;
 	padding: 0 2px 0 10px;
 	color: #333;
 	font: normal 10px Verdana, Tahoma, Arial, sans-serif;
 }
-td.crash-summary {
 
+td.crash-summary {
 	margin: 0;
-	padding: 0 2px 0 10px;	
+	padding: 0 2px 0 10px;
 	color: #333;
 	font: normal 10px Verdana, Tahoma, Arial, sans-serif;
- 	
 }
+
 td.middle select {
 	width: 95px;
-	margin-top:0;
-	margin-left:5px;
+	margin-top: 0;
+	margin-left: 5px;
 }
 
 .infoWindow p {
-	margin: 3px;	
+	margin: 3px;
 }
+
 /* Drag and drop panels */
 .panelc {
-    width:25%;
-    vertical-align:top;         
+	width: 25%;
+	vertical-align: top;
 }
 
 .dropTargetPanel {
-    width: 90%;
+	width: 90%;
 }
 
 .footerClass {
-    text-align: center;
-    padding-top: 5px;
+	text-align: center;
+	padding-top: 5px;
 }
-
-

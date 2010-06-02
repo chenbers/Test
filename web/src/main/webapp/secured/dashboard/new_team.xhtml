@@ -19,6 +19,21 @@
     <ui:define name="scripts">
 	   <a4j:loadScript src="/js/jquery.address-1.2rc.min.js"/>
        <style>
+       		.rich-tabpanel {
+				width: 920px;
+				margin: auto;
+			}
+			.driver-stats-header {
+				background-color: #6B9D1B;
+			}
+			.rich-table-subheadercell {
+				padding: 0px;
+			}
+			
+			.rich-table-footercell {
+			 	background-color: #EBFFCA;
+			 	border: 1px;
+			}
        		.crashPanel {       
 				margin: auto;
 				padding: 4px;
@@ -41,12 +56,28 @@
        		.crashPanelBoldValue {
        			font-size: 16px;
        		}
+       		
+       		ul#grid_nav li.crash-item {
+       			line-height: 32px;
+       			padding-right: 10px;
+       			padding-left: 10px;
+       		}
+       		
+       		ins.crash-pic {
+       			background: url("#{request.contextPath}/images/icon_crash.png") no-repeat 0 8px;
+       			display: inline-block;
+       			width: 18px;
+       			height: 28px;
+       			text-decoration: none;
+       		}
+       		
        		.section {
        			padding: 4px 8px;
        		}
 			.whathappened_panel {
 				width: 940px;
 				margin: auto;
+				padding-top: 10px;
 			}
 			.datagrid th {			
 				text-align: center;
@@ -55,27 +86,12 @@
 				padding: 4px 1px;
 				font-size: 9px;
 			}
-			.datagrid > tbody > tr > td {
+			.datagrid td {
 				text-align: center;
-			}
-			.datagrid > tbody > tr > td {
-				padding: 4px;
-			}
-			.datagrid > tbody > tr > td {
+				padding: 3px;
 				font-size: 9px;
 			}			
-			.rich-tabpanel {
-				width: 920px;
-				margin: auto;
-			}
-			.rich-table-subheadercell {
-				padding: 0px;
-			}
-			
-			.rich-table-footercell {
-			 	background-color: #EBFFCA;
-			 	border: 1px;
-			}
+
 			.disable {
 				color: #cccccc !important;
     			cursor: default;
@@ -153,14 +169,38 @@
     <h:form id="team_header_form">
     	<a4j:region id="team_header_region">
     		<ul id="grid_nav">
-    				<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-    				<li class="l grid_title">#{messages.team_team}</li>
+    				<li class="l grid_icon"><h:graphicImage value="/images/ico_team.png" /></li>
+    				<li class="l grid_title max-width">#{teamCommonBean.group.name}</li>
+    				<li class="l" style="padding:6px 10px 6px 0px">
+    				<ui:include src="/includes/new_scoreBox.xhtml">
+	                    <ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
+	                    <ui:param name="item" value="#" /> 
+	                    <ui:param name="size" value="xx-sm"/>              
+						<ui:param name="context" value="teamscore" />
+                    </ui:include>
+    				</li>
+    	
     				<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
-    				<li class="l">
-    					<ui:include src="/includes/breadcrumb.xhtml">
-                    		<ui:param name="context" value="#{context}_header"/>
-                    		<ui:param name="groupID" value="#{teamCommonBean.groupID}"/> 
-    					</ui:include>
+    				
+    				<li class="l crash-item" >
+    					<ins class="crash-pic">&#160;</ins>
+    					<span>    					
+                        	<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
+                   			<h:outputFormat value=" #{messages.crash_summary_overDistance} " >
+                               	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
+                           	</h:outputFormat> 
+    					</span>
+    				</li>
+    				
+    				<li class="l crash-item" >    				
+                       			<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.daysSinceLastCrash}"/>
+                       			#{messages.crash_summary_daysSinceLastCrash} 
+    				</li>
+    				<li class="l crash-item">    		    				
+                        	    <h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
+                           		<h:outputFormat value=" #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} " >
+                                	<a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
+                            	</h:outputFormat>  		
     				</li>
     				
     				<h:outputText rendered="#{showContextMenu eq 'true'}">
@@ -185,17 +225,31 @@
 			
 		<!-- START CRASH SUMMARY PANEL -->
 	
+               		<!--
+               			
+    				<li class="l" style="margin-top:4px; margin-left:4px;">
+                    	<a4j:outputPanel ajaxRendered="true" layout="none">                    							 
+							<ui:include src="/includes/new_scoreBox.xhtml">
+			                    <ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
+			                    <ui:param name="item" value="#" /> 
+			                    <ui:param name="size" value="xx-sm"/>              
+								<ui:param name="context" value="teamscore" />
+		                    </ui:include>
+                    	</a4j:outputPanel>	
+                    </li>
+               		
                		<div class="crashPanel">
 					<table id="crashSummaryTable" cellpadding="0px" cellspacing="0"><tbody>
                         <tr>  
                         	<td>
-                        		<a4j:outputPanel ajaxRendered="true">
-                    				<ui:include src="/includes/scoreBox.xhtml">
-	                    				<ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
-	                    				<ui:param name="scoreStyle" value="#{teamStatisticsBean.teamOverallScoreStyle}" /> 
-	                    				<ui:param name="item" value="0" /> 	                    	
-										<ui:param name="context" value="driversOverallNotAvailable" />
-                    				</ui:include>   	
+                        		<a4j:outputPanel ajaxRendered="true">	
+                    							 
+					<ui:include src="/includes/new_scoreBox.xhtml">
+	                    <ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
+	                    <ui:param name="item" value="#" /> 
+	                    <ui:param name="size" value="sm"/>              
+						<ui:param name="context" value="teamscore" />
+                    </ui:include>
                     			</a4j:outputPanel>	                       	
                         	</td>
                         	<td>
@@ -228,7 +282,7 @@
                         </tr>
                         </tbody>
 					</table>
-					</div>
+					</div>-->
    
     	<!-- END CRASH SUMMARY -->	
 	

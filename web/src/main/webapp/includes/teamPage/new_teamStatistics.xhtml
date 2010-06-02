@@ -24,7 +24,7 @@
 	<!-- Driver Statistics -->
 	<a4j:outputPanel id="statisticsTab" ajaxRendered="true" styleClass="section" layout="block">
 		<h:form id="teamStatisticsForm">	  
-			<ul id="grid_nav" style="margin: 0;">            							
+			<!--<ul id="grid_nav" style="margin: 0;">            							
      			<li class="l text">
      				<a4j:commandLink 
      					id="#{context}EditColumns" 
@@ -42,7 +42,7 @@
 				</li>
 				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 				</li>
-			</ul>
+			</ul>-->
             <ui:include src="/includes/reportsContextMenu.xhtml">	
 				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
 				<ui:param  name="reportBean" value="#{teamStatisticsBean}"/>
@@ -58,20 +58,35 @@
 				</ui:include>
 			</h:outputText>
 			
-			<br></br>
-
-	       <div class="datagrid_panel" style="width: 890px;">
+	       <div class="datagrid_panel" style="width: 900px;">
 	       
 	       <!-- Summary -->
 	       <rich:dataTable	value="#{teamStatisticsBean.driverTotals}" 
 	       		id="driverTotals" 
 	       		var="item"
-				styleClass="datagrid" 
+				styleClass="datatable" 
 				rowClasses="tableOdd,tableEven"
 				width="100%"				
 				rows="10">				
+				<f:facet name="header" >			
+     				<h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
+						<span title="#{messages.button_editColumns}">
+							<a4j:commandLink 
+		     					id="#{context}EditColumns" 
+								reRender="editColumnsForm:editColumnGrid"
+		     					action="#"
+		     					onclick="Richfaces.showModalPanel('editColumns');"> 
+		     					<h:graphicImage value="/images/ico_edit_columns.png"/>
+							</a4j:commandLink>    
+						</span>	
+						<span style="cursor:pointer;">
+							<h:graphicImage value="/images/ico_tools.png"/>
+						</span>
+					</h:panelGroup>
+					
+				</f:facet>
 
-				<rich:column  rendered="#{tableColumns['driver_team'].visible}" id="newTeamStatsTab-totalsTeamName">
+				<rich:column rendered="#{tableColumns['driver_team'].visible}" id="newTeamStatsTab-totalsTeamName">
 					<f:facet name="header">
 						#{messages.team_team}	
 					</f:facet>
@@ -178,7 +193,7 @@
 				<rich:subTable value="#{teamStatisticsBean.driverStatistics}" 
 	       		id="drivers" 
 	       		var="item"
-				styleClass="datagrid" 
+				styleClass="datatable" 
 				rowClasses="tableOdd,tableEven"
 				width="100%"
 				rows="#{teamStatisticsBean.numRowsPerPg}">

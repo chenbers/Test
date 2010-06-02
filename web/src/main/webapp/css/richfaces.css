@@ -1,5 +1,4 @@
 /* Rich Faces overrides */
-
 .rich-message {
 	margin-left: 5px;
 }
@@ -49,4 +48,77 @@
 	border-top: 0px;
 	border-left: 0px;
 	border-right: 0px;
+}
+.rich-tabpanel-content {
+	padding: 4px;
+}
+
+.datatable caption {
+	padding: 0 0 5px 0;
+	margin: 0 auto;
+	width: auto;
+	font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	text-align: right;
+}
+
+.datatable.rich-table th.rich-table-headercell {
+	font: bold 9px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	border: 1px solid #8BAD37;
+	background-color: #EBFFCA;
+	vertical-align: middle;
+	text-align: center;
+	letter-spacing: 0px;
+	white-space: normal;
+	padding: 4px 1px;
+	}
+
+.datatable.rich-table th.rich-table-subheadercell, .datatable.rich-table td.rich-subtable-headercell {
+	font: bold 9px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	border: 1px solid #8BAD37;
+	background: #8EAF3C url(../images/bg_header.jpg) no-repeat;
+	vertical-align: middle;
+	text-align: center;
+	letter-spacing: 0px;
+	white-space: normal;
+	padding: 4px 1px;
+}
+
+.datatable.rich-table th.rich-table-subheadercell a, .datatable.rich-table th.rich-subtable-headercell a {
+	text-decoration: none;
+	color: #4f6b72;
+	background: transparent;
+}
+
+.datatable.rich-table a {
+	text-decoration: underline;
+	color: #333;
+}
+
+.datatable.rich-table td.rich-table-cell, .datatable.rich-table td.rich-subtable-cell {
+	font: normal 9px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	text-align: center;
+	padding: 3px;
+}
+
+.datatable.rich-table td.rich-table-cell.lft {
+	text-align: left;
+}
+
+.datatable.rich-table tr.rich-table-row.alt {
+	background: #EBFFCA;
+	color: #333;
+}
+
+/* Poor old Internet Explorer 6 has a bug that means we can't use background images for the table rows
+   as it trys to download the image each and every time that it is used (which means a 1000 row table
+   will produce 1000 http requests for the image in question) */
+.datatable.rich-table tr[class="alt"] td {
+	background: #EBFFCA url(../images/td_alt.jpg) no-repeat;
+}
+
+.datatable.rich-table td[class~="alt"] {
+	background: #CADF9A url(../images/col_alt.jpg) no-repeat !important;
 }
