@@ -365,7 +365,8 @@
           									<h:outputText value="---" rendered="#{stops.departTime != 0 and stops.arriveTime == 0}"/>                    							                			                			
 	                					</rich:column>	  
 	                					<f:facet name="footer">  
-	                						<rich:datascroller 	align="center" for="stopsTrips" 							
+	                						<rich:datascroller 	align="center" for="stopsTrips" 
+	                							oncomplete="getAddresses();"							
             			 						styleClass="dataScrollerSmall" 
             			 						id="stopsTripsTableScroller">
             								</rich:datascroller>
