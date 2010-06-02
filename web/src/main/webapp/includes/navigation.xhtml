@@ -117,15 +117,7 @@ var closetimer = 0;
 
 jQuery(function(){
 	getNavigationTreeData();
-	/*jQuery("#tree_link").hover(
-		function(){
-		    jQuery(".dropBox").slideDown("fast");
-		},
-		function(){
-		    jQuery(".dropBox").slideUp("fast");
-		}
-	);
-*/
+	
 	jQuery("#tree_link_box").bind("mouseleave",navigationTree_timer);
 	jQuery("#tree_link_box").bind("mouseover",function(){
 			navigationTree_canceltimer();
@@ -182,7 +174,7 @@ jQuery(function(){
 	}
 
 	function navigationTree_close(){
-//		jQuery(".dropBox").css("display","none");
+
 	    jQuery(".dropBox").slideUp("fast");
 
 	}
