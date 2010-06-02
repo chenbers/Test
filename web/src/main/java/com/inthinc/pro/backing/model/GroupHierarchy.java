@@ -104,7 +104,14 @@ public class GroupHierarchy implements Serializable
     
     public Group getGroup(Integer groupID)
     {
-        return groupMap.get(groupID);
+        try{
+            return groupMap.get(groupID);
+        }
+        catch(NullPointerException npe){
+            
+            return null;
+        }
+        
 //        for (Group group : groupList)
 //        {
 //            if (group.getGroupID().equals(groupID))
