@@ -165,12 +165,16 @@
   		   clusterDiv = G_vmlCanvasManager.initElement(clusterDiv);
 		   clusterDiv.style.width = 35+(displayColors.length-1)*5;
 		   clusterDiv.style.height = 35;
-  	   }
-  	   else{
+		   for(var i=0; i< clusterDiv.childNodes.length;i++){
+			   
+			   clusterDiv.childNodes[i].style.width = 35+(displayColors.length-1)*5;
+			   clusterDiv.childNodes[i].style.height = "35px";
+		   }
+ 	   }
   		   
-  		   clusterDiv.width = 35+(displayColors.length-1)*5;
-		   clusterDiv.height = 35;
-  	   }
+	   clusterDiv.width = 35+(displayColors.length-1)*5;
+	   clusterDiv.height = 35;
+	   
   	   if (clusterDiv.getContext) { 
   	    
          var ctx = clusterDiv.getContext("2d"); 
