@@ -82,30 +82,36 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
 			return null;
 		}
 		
-  		int count = 0;
-  		Iterator<SBSChangeRequest> it = matches.iterator();
-  		
-        //Find segments in the right range and return 
-		while (it.hasNext()){
-		    
-			if (it.next().getDistance() < .0002d){
-				
-			    count++;
-			}
-			else {
-			    
-			    break;
-			}
-		}
-		
-		if (count > 0){
-		    
-		    return  matches.subList(0, count);
+		if (limit > 1){
+      		int count = 0;
+      		Iterator<SBSChangeRequest> it = matches.iterator();
+      		
+            //Find segments in the right range and return 
+    		while (it.hasNext()){
+    		    
+    			if (it.next().getDistance() < .0002d){
+    				
+    			    count++;
+    			}
+    			else {
+    			    
+    			    break;
+    			}
+    		}
+    		
+    		if (count > 0){
+    		    
+    		    return  matches.subList(0, count);
+    		}
+    		else {
+    		    
+    		    //If there aren't any then just return the top one
+    		    return matches.subList(0, 1);
+    		}
 		}
 		else {
 		    
-		    //If there aren't any then just return the top one
-		    return matches.subList(0, 1);
+            return matches.subList(0, 1);
 		}
 
 	}

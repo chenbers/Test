@@ -263,18 +263,19 @@ var cursor;
     }
       function reverseGeocode(lat,lng, fullAddress, markerAtLatLng) {
       
-      	geocoder.getLocations(new GLatLng(lat,lng), addAddressToMap);
+        	if (markerAtLatLng){
+          		
+          		eventLatLng = new GLatLng(lat,lng);
+          		iconImage = markerAtLatLng;
+          		limit=10;
+          	}
+          	else {
+          		
+          		limit = 1;
+          	}
+        	
+        	geocoder.getLocations(new GLatLng(lat,lng), addAddressToMap);
       	
-      	if (markerAtLatLng != false){
-      		
-      		eventLatLng = new GLatLng(lat,lng);
-      		iconImage = markerAtLatLng;
-      		limit=10;
-      	}
-      	else {
-      		
-      		limit = 1;
-      	}
       		
       }
     	function addMarker(){
