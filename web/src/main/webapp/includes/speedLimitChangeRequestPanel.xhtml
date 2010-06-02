@@ -19,6 +19,7 @@
 	  var row;
 	
 		function initMap(){
+		
 			if (GBrowserIsCompatible()) {
 			
 	        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
@@ -140,12 +141,13 @@
               <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                 <tr>
          		<td><h:outputText value="#{messages.button_search}" /></td>
-         		<td><h:inputText size="40" name="address" id="address" class="text" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('speedLimitChangeRequestTable:searchButton').onclick(); return false; } return true;"/></td>
+         		<td><h:inputText size="40" name="address" id="address" class="text" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('speedLimitChangeRequestTable:slcrpFindAddress').onclick(); return false; } return true;"/></td>
                  </tr>
               </table>
             </li>
   			<li class="l"><a4j:commandButton id="slcrpFindAddress" styleClass="left" 
-  						onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);">
+  						onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);
+  						document.getElementById('speedLimitChangeRequestTable:address').value = '';">
   						<span class="search"><h:outputText value="#{messages.sbs_findAddress}" /></span></a4j:commandButton></li>
             <li class="l"><a4j:commandButton id="slcrpSubmitRequest" styleClass="left" onclick="Richfaces.showModalPanel('saveSlcrPanel')"><span class="edit"><h:outputText value="#{messages.sbs_submitRequest}" /></span></a4j:commandButton></li>
             
