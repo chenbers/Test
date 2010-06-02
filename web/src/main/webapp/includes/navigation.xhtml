@@ -112,17 +112,26 @@
 
 <script type="text/javascript">
 
-var timeout    = 1000;
+var timeout    = 300;
 var closetimer = 0;
 
 jQuery(function(){
 	getNavigationTreeData();
-	jQuery("#tree_link").click(function(){
-	    jQuery(".dropBox").slideToggle("fast");
-	});
-
-	jQuery("#navigationTreeBox").bind("mouseleave",navigationTree_timer);
-	jQuery("#navigationTreeBox").bind("mouseover",navigationTree_canceltimer);
+	/*jQuery("#tree_link").hover(
+		function(){
+		    jQuery(".dropBox").slideDown("fast");
+		},
+		function(){
+		    jQuery(".dropBox").slideUp("fast");
+		}
+	);
+*/
+	jQuery("#tree_link_box").bind("mouseleave",navigationTree_timer);
+	jQuery("#tree_link_box").bind("mouseover",function(){
+			navigationTree_canceltimer();
+			jQuery(".dropBox").slideDown("fast");
+		}
+	);
 	
 });
 
@@ -173,7 +182,9 @@ jQuery(function(){
 	}
 
 	function navigationTree_close(){
-		jQuery(".dropBox").css("display","none");
+//		jQuery(".dropBox").css("display","none");
+	    jQuery(".dropBox").slideUp("fast");
+
 	}
 
 	function navigationTree_timer(){
@@ -198,7 +209,7 @@ jQuery(function(){
 	<h:form id="navigation" > 
 		<ul>
 		
-			<li class="tree_button #{homeSelected}" style="position:relative;z-index:99;">
+			<li id="tree_link_box" class="tree_button #{homeSelected}" style="position:relative;z-index:99;">
                 <span id="tree_link" class="tree_button_left">
                 	<span class="tree_button_right">#{messages.navigation_home}#{' '}<small>▼</small></span> 
                 </span>       
@@ -213,7 +224,7 @@ jQuery(function(){
 							 </rich:dataList>
 					 </rich:panel>
 					<div id="navigationTree" class="tree_back"></div>
-				</div>
+			</div>
  			</li>
 			<li class="nav_button #{reportsSelected}">
                 <pretty:link id="#{context}-navigationReports" mappingId="reports" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_reports}</span></pretty:link>
