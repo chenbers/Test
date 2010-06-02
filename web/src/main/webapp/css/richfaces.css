@@ -39,3 +39,14 @@
 	border-left: 0px;
 	border-right: 0px;
 }
+
+.rich-subtable {
+	border: 1px solid #8BAD37;
+}
+
+.rich-subtable-cell {
+	border-bottom: 1px solid #8BAD37;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+}
