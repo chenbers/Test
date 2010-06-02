@@ -98,7 +98,7 @@
 	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
 }
 
-.tree_button .tree_button_left:hover {
+/*.tree_button .tree_button_left:hover {
 	color: #333;
 	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
 }
@@ -106,8 +106,16 @@
 .tree_button .tree_button_left:hover .tree_button_right {
 	color: #333;
 	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
-}
+}*/
 
+.treeButtonLeftMouseOver {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+}
+.treeButtonRightMouseOver {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+}
 </style>
 
 <script type="text/javascript">
@@ -121,6 +129,8 @@ jQuery(function(){
 	jQuery("#tree_link_box").bind("mouseleave",navigationTree_timer);
 	jQuery("#tree_link_box").bind("mouseover",function(){
 			navigationTree_canceltimer();
+			jQuery(".tree_button_left").addClass("treeButtonLeftMouseOver");
+			jQuery(".tree_button_right").addClass("treeButtonRightMouseOver");
 			jQuery(".dropBox").slideDown("fast");
 		}
 	);
@@ -176,6 +186,9 @@ jQuery(function(){
 	function navigationTree_close(){
 
 	    jQuery(".dropBox").slideUp("fast");
+		jQuery(".tree_button_left").removeClass("treeButtonLeftMouseOver");
+		jQuery(".tree_button_right").removeClass("treeButtonRightMouseOver");
+    
 
 	}
 
