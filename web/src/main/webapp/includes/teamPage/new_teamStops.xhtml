@@ -97,7 +97,12 @@
 				
 		<a4j:outputPanel id="stopsPanel" ajaxRendered="true" styleClass="section">
 		
-		<rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />		
+			<!-- The following is a trick to provide error info -->
+			<h:inputHidden id="hidnMsg" value="#{teamStopsBean.errorMessage}">
+			</h:inputHidden>						
+			<rich:messages globalOnly="true" errorClass="error" 
+				fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+					   					
 <!-- Report stuff, for another day 
 		<h:form id="stopsReport">
 			<ul id="grid_nav" style="margin: 0;">            							
@@ -371,7 +376,8 @@
             			 						id="stopsTripsTableScroller">
             								</rich:datascroller>
             							</f:facet>            		                		            		             		       		
-									</rich:dataTable>																								                                           										            											
+									</rich:dataTable>	
+																																                                           										            											
 								</td>
 							</tr>
 
@@ -385,7 +391,7 @@
 		</tr>
 		
 		</table>						
-	     
+		  
 	    </a4j:outputPanel>
 	     
     	<script language="javascript" type="text/javascript">

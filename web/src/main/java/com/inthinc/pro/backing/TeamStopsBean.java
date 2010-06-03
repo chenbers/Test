@@ -45,6 +45,7 @@ public class TeamStopsBean extends BaseBean {
     private List<DriverStops> driverStopsSummary;  
     private Integer selectedDriverID;  
     private TimeZone timeZone;
+    private String errorMessage;
         
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
@@ -84,6 +85,8 @@ public class TeamStopsBean extends BaseBean {
     public List<DriverStops> getDriverStopsSummary() {
         if ( selectedDriverID != null ) {
             initDriverStopsSummary();
+        } else {
+            addInfoMessage("Please choose a valid time frame and driver for the Team Stops tab"); 
         }
         
         return driverStopsSummary;
@@ -133,6 +136,21 @@ public class TeamStopsBean extends BaseBean {
         this.labels = labels;
     }    
 
+    public String getErrorMessage() {
+        if ( !isValidTimeFrame() && selectedDriverID == null ) {
+            addInfoMessage("Please choose a valid time frame and driver for the Team Stops tab");     
+        } else if ( !isValidTimeFrame() ) {
+            addInfoMessage("Please choose a valid time frame for the Team Stops tab"); 
+        } else if ( selectedDriverID == null ) {
+            addInfoMessage("Please choose a driver for the Team Stops tab"); 
+        }
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public boolean isValidTimeFrame(){        
         return validTimeFrames.contains(teamCommonBean.getTimeFrame());        
     }
@@ -164,7 +182,7 @@ public class TeamStopsBean extends BaseBean {
                 ds.setAddress("Set this");
             }
         } else {
-            addInfoMessage("Please choose a valid time frame for the Team Stops tab");
+            addInfoMessage("Please choose a valid time frame for the Team Stops tab");            
         }      
         
         // If no data, return
