@@ -1,8 +1,8 @@
 @CHARSET "UTF-8";
 
 body {
-	background: #EEE;
-/*	background-position: top center; */
+/*	background: #EEE;
+	background-position: top center; */
 	margin: 10px 0 0;
 	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
@@ -12,7 +12,8 @@ body {
 .mainmenu {
 	font-size: 16px;
 	margin: 0 auto 10px auto;
-	width: 1220px;
+	border: none;
+/*	width: 1220px; */
 	
 }
 
@@ -50,7 +51,19 @@ form td {
 .header_col2 {
 	text-align: right;
 }
+.result_header {
+	width: 900px; 
+	font-size: 11px;
+	z-index: 10;
+}
 
+.result_header_col1 {
+	font-weight: bold;
+}
+
+.result_header_col2 {
+	text-align: right;
+}
 #login_btn {
 	float: right;
 }
@@ -91,3 +104,9 @@ th.rich-table-subheadercell {
 	text-align: left;
 }
 
+.resultPanel {
+	position:relative;
+	z-index:20;
+	overflow:auto; 
+}
+	

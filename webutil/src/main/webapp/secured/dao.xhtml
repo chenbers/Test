@@ -6,12 +6,13 @@
     <ui:param name="panelTitle" value="Data Utils" />
     <ui:param name="groupSelected" value="MAIN" />
     <ui:define name="util_content">
-    <div style="width: 960px;margin: 10px auto 20px auto;background: #fff;">
+    <div style="margin: 10px auto 20px auto;background: #fff;">
+    <div style="width:900px">
         <rich:simpleTogglePanel id="optionsPanel" switchType="client" style="float:right;" opened="false">
             <f:facet name="header">
 				<h:outputText value="Options:" />
             </f:facet>
-            <a4j:form>
+            <a4j:form >
 		        <h:panelGrid columns="2" cellspacing="10px;" columnClasses="optionCol,optionSelCol">
 		       		<h:outputText value="Default Time Zone:"/> 
 		       		<h:selectOneMenu value="#{dateFormatBean.timeZoneStr}" 
@@ -126,27 +127,23 @@
     		</h:panelGroup>
         </h:panelGrid>
 		<rich:spacer height="3"/>
+		</div>
         <a4j:form id="resultsForm">
-			<h:panelGroup id="reportToolImageId" style="float:right;" rendered="#{daoUtilBean.errorMsg == null and daoUtilBean.records != null}">
-				<h:graphicImage value="/images/ico_tools.png"/>
-			</h:panelGroup><br/>
-        	<div style="padding: 1px;overflow:auto;width: 960px;">
-    		<rich:contextMenu event="onclick" attachTiming="onavailable"
-					disableDefaultMenu="false" submitMode="server"
-					attachTo="reportToolImageId">
-				<rich:menuItem ajaxSingle="true"
-					icon="/images/ico_grid.png"
-					value="Export to CSV"
-					action="#{daoUtilBean.exportToCSV}"
-					id="exportCSVMenuItem">
-				</rich:menuItem>
-			</rich:contextMenu>
-			
-        	
-			<rich:dataTable rows="30" value="#{daoUtilBean.records}" var="record" id="result" align="center" width="100%"
-							rendered="#{daoUtilBean.errorMsg == null and daoUtilBean.records != null}">
+        
+        	<h:panelGroup  
+        		layout="block" 
+        		styleClass="resultPanel" 
+        		 rendered="#{daoUtilBean.errorMsg == null and daoUtilBean.recordCount != 0}">
+                <h:panelGrid columns="2" styleClass="result_header dr-pnl-h" columnClasses="result_header_col1, result_header_col2">
+               		<h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS - (Total Rows: #{daoUtilBean.recordCount})  "></h:outputText>
+					<h:commandLink action="#{daoUtilBean.exportToCSV}" value="Export" />
+				</h:panelGrid>
+			</h:panelGroup>
+			<rich:spacer id="spacer" height="5" rendered="#{daoUtilBean.errorMsg == null}" />
+			<rich:dataTable rows="10" value="#{daoUtilBean.records}" var="record" id="resultTable" align="left" width="99%"
+							rendered="#{daoUtilBean.errorMsg == null and daoUtilBean.recordCount != 0}">
 			 	<f:facet name="header">
-                	<h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS - (Total Rows: #{daoUtilBean.recordCount})"></h:outputText>
+				 	<rich:datascroller id="resultScrollTop" renderIfSinglePage="false"/>
             	</f:facet>
             	<rich:columns value="#{daoUtilBean.columnHeaders}" var="col" index="index" id="column#{index}" 
             			sortBy="#{record[index].sort}" sortOrder="#{daoUtilBean.sortOrder[col]}">
@@ -155,17 +152,16 @@
 					</f:facet>
 					<h:outputText value="#{record[index].display}" />
                 </rich:columns>
+			 	<f:facet name="footer">
+				 	<rich:datascroller id="resultScrollBottom" renderIfSinglePage="false"/>
+			 	</f:facet>
             </rich:dataTable>
-			<rich:datascroller id="resultScroll" for="result"  
-			 			renderIfSinglePage="false"
-			 			rendered="#{daoUtilBean.errorMsg == null and daoUtilBean.records != null}"/>
-			<rich:panel rendered="#{daoUtilBean.errorMsg != null}">
+			<rich:panel rendered="#{daoUtilBean.errorMsg != null}" width="99%" style="padding-bottom: 15px">
 			 	<f:facet name="header">
                 	<h:outputText value="#{daoUtilBean.selectedMethod} - ERROR" style=""></h:outputText>
             	</f:facet>
             	<h:outputText value="#{daoUtilBean.errorMsg}" />
             </rich:panel>
-            </div>
         </a4j:form>
 		</div>
     </ui:define>

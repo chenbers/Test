@@ -430,6 +430,8 @@ public class DaoUtilBean extends BaseBean
         }
         
         recordCount = records.size();
+        if (recordCount == 0)
+            setErrorMsg("No results were returned");
     }
 
 	private List<Result> processRow(DaoMethod daoMethod, Map<String, Object> recordMap) throws InstantiationException,

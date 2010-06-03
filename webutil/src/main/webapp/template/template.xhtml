@@ -1,6 +1,8 @@
 <ui:composition template="/template/baseTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 
+
+
     <ui:define name="content">
         <rich:panel id="util-panel" styleClass="mainmenu">
             <f:facet name="header">
@@ -12,9 +14,9 @@
                 </h:panelGroup>
             </f:facet>
 
-            <table width="1000px">
+            <table width="100%">
                 <tr valign="top">
-                    <td width="20%"><a4j:form styleClass="menuPanel">
+                    <td width="200px"><a4j:form styleClass="menuPanel">
                         <rich:panelMenu mode="server" style="width:200px" iconExpandedGroup="disc" iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
                             iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right">
                             <rich:panelMenuGroup label="tiwiPro Utilities Menu" expanded="true">
@@ -31,7 +33,8 @@
                             </rich:panelMenuGroup>
                         </rich:panelMenu>
                     </a4j:form></td>
-                    <td width="80%"><rich:panel bodyClass="rich-laguna-panel-no-header">
+                    <td width="100%">
+                    <rich:panel bodyClass="rich-laguna-panel-no-header" style="border:none">
                         <f:facet name="header">
                             <h:outputText value="#{panelTitle}" />
                         </f:facet>
