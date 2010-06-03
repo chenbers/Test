@@ -251,6 +251,10 @@
 		// Step 1 to display event data in a marker infoWindow.
   	  	var clickListener = GEvent.addListener(marker, "click", function() {
  
+  	  	  if (clickedMarker != null){
+  	  		  
+  	  		  clickedMarker.closeInfoWindow();
+  	  	  }
   	  	  clickedMarker = marker;
   		  // use a4j:jsFunction to go get the driver's name and the event time
   		  // callback for that call will start the reverse geocode for the address
