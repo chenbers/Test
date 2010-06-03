@@ -3440,31 +3440,31 @@ td.middle select {
 
 .tree_button.current .tree_button_left {
 	color: #333;
-	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+	background: url(../images/main_nav_hover_l.gif) no-repeat left 5px;
 	font-weight: bold;
 }
 
 .tree_button.current .tree_button_right {
 	color: #333;
-	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+	background: url(../images/main_nav_hover_r.gif) no-repeat right 5px;
 }
 
 /*.tree_button .tree_button_left:hover {
 	color: #333;
-	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+	background: url(../images/main_nav_hover_l.gif) no-repeat left 5px;
 }
 
 .tree_button .tree_button_left:hover .tree_button_right {
 	color: #333;
-	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+	background: url(../images/main_nav_hover_r.gif) no-repeat right 5px;
 }*/
 .treeButtonLeftMouseOver {
 	color: #333;
-	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+	background: url(../images/main_nav_hover_l.gif) no-repeat left 5px;
 }
 
 .treeButtonRightMouseOver {
 	color: #333;
-	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+	background: url(../images/main_nav_hover_r.gif) no-repeat right 5px;
 }
 }
