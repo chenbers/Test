@@ -61,6 +61,10 @@
 	text-align: right;
 }
 
+.datatable.rich-table-header {
+	background: none;
+}
+
 .datatable.rich-table th.rich-table-headercell {
 	font: bold 9px Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
