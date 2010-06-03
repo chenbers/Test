@@ -61,13 +61,13 @@
        			line-height: 32px;
        			padding-right: 10px;
        			padding-left: 10px;
+       			display: inline-block;
        		}
        		
        		ins.crash-pic {
        			background: url("#{request.contextPath}/images/icon_crash.png") no-repeat 0 8px;
        			display: inline-block;
-       			width: 18px;
-       			height: 28px;
+       			width: 20px;      			
        			text-decoration: none;
        		}
        		
@@ -183,13 +183,11 @@
     				<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
     				
     				<li class="l crash-item" >
-    					<ins class="crash-pic">&#160;</ins>
-    					<span>    					
-                        	<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
-                   			<h:outputFormat value=" #{messages.crash_summary_overDistance} " >
-                               	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
-                           	</h:outputFormat> 
-    					</span>
+    					<span><ins class="crash-pic">&#160;</ins></span>
+                       	<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
+              			<h:outputFormat value=" #{messages.crash_summary_overDistance} " >
+                          	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
+                      	</h:outputFormat> 
     				</li>
     				
     				<li class="l crash-item" >    				
