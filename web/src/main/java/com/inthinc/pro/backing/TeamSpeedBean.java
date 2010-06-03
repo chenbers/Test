@@ -170,6 +170,7 @@ public class TeamSpeedBean extends BaseBean {
         
         // Control parameters
         sb.append(bar.getControlParameters());
+        sb.append(" SYAxisMaxValue=\'50\' ");
         sb.append(" baseFont=\'Verdana\' ");
         sb.append(" baseFontSize=\'12\' ");
         sb.append(" caption=\'");

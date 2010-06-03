@@ -26,7 +26,7 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
 		    "connectNullData=\'1\' " +
 		    									// secondary y-axis
             "SYAxisMinValue=\'0\' " +
-            "SYAxisMaxValue=\'100\' " +
+//            "SYAxisMaxValue=\'50\' " +
             "SNumberSuffix=\'%\' " +
             									// legend parameters
 		    "showLegend=\'1\' " +

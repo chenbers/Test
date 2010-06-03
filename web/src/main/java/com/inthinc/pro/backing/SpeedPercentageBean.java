@@ -101,6 +101,7 @@ public class SpeedPercentageBean extends BaseBean {
         Bar2DMultiAxisChart bar2DMultiAxisChart = new Bar2DMultiAxisChart(getDurationBean().getDuration(), dateValues);
         StringBuilder chartBuilder = new StringBuilder();
         chartBuilder.append(bar2DMultiAxisChart.getControlParameters());
+        chartBuilder.append(" SYAxisMaxValue=\'50\' ");
         chartBuilder.append("decimalSeparator=\'");
         chartBuilder.append(GraphicUtil.getDecimalSeparator(getLocale()));
         chartBuilder.append("\' thousandSeparator=\'");
