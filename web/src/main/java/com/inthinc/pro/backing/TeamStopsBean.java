@@ -86,7 +86,7 @@ public class TeamStopsBean extends BaseBean {
         if ( selectedDriverID != null ) {
             initDriverStopsSummary();
         } else {
-            addInfoMessage("Please choose a valid time frame and driver for the Team Stops tab"); 
+            addInfoMessage(MessageUtil.getMessageString("team_timeframe_and_driver_msg", getLocale())); 
         }
         
         return driverStopsSummary;
@@ -138,11 +138,11 @@ public class TeamStopsBean extends BaseBean {
 
     public String getErrorMessage() {
         if ( !isValidTimeFrame() && selectedDriverID == null ) {
-            addInfoMessage("Please choose a valid time frame and driver for the Team Stops tab");     
+            addInfoMessage(MessageUtil.getMessageString("team_timeframe_and_driver_msg", getLocale()));     
         } else if ( !isValidTimeFrame() ) {
-            addInfoMessage("Please choose a valid time frame for the Team Stops tab"); 
+            addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale())); 
         } else if ( selectedDriverID == null ) {
-            addInfoMessage("Please choose a driver for the Team Stops tab"); 
+            addInfoMessage(MessageUtil.getMessageString("team_driver_msg", getLocale())); 
         }
         return errorMessage;
     }
@@ -182,7 +182,7 @@ public class TeamStopsBean extends BaseBean {
                 ds.setAddress("Set this");
             }
         } else {
-            addInfoMessage("Please choose a valid time frame for the Team Stops tab");            
+            addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale()));            
         }      
         
         // If no data, return
