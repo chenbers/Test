@@ -354,7 +354,10 @@ System.out.println("test");
         			assertTrue(methodName + " error msg should be 304", dao.getErrorMsg().contains("304"));
     				
     			}
-    			else { 
+    			else if (dao.getErrorMsg() != null && dao.getErrorMsg().equals(DaoUtilBean.NO_RESULTS)) {
+    			    continue;
+    			}
+    			else {
     				assertNotNull(methodName + " results should not be null", results);
 //            		System.out.println(" - ATTEMPTED [" + dao.getErrorMsg() + "]");
     				assertNull(methodName + " error msg should be null", dao.getErrorMsg());

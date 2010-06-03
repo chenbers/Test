@@ -69,7 +69,7 @@ public class DaoUtilBean extends BaseBean
 
     private DateFormatBean dateFormatBean;
     
-
+    public static final String NO_RESULTS = "No results were returned";
 	public List<String> getExcludedMethods() {
     	return excludedMethods;
     }
@@ -431,7 +431,7 @@ public class DaoUtilBean extends BaseBean
         
         recordCount = records.size();
         if (recordCount == 0)
-            setErrorMsg("No results were returned");
+            setErrorMsg(NO_RESULTS);
     }
 
 	private List<Result> processRow(DaoMethod daoMethod, Map<String, Object> recordMap) throws InstantiationException,
