@@ -2341,7 +2341,6 @@ These styles should be added when very long tables are expected
 	background-color: #CADF9A;
 }
 
-
 /* Large Scroller  */
 .dataScrollerLarge table {
 	padding: 0;
@@ -2428,7 +2427,7 @@ ul.fdtablePaginater li a,ul.fdtablePaginater li div {
 ul.fdtablePaginater li div {
 	cursor: default;
 	opacity: .5;
-	filter: alpha(opacity =         50);
+	filter: alpha(opacity =             50);
 }
 
 ul.fdtablePaginater li a span,ul.fdtablePaginater li div span {
@@ -3321,4 +3320,151 @@ td.middle select {
 .footerClass {
 	text-align: center;
 	padding-top: 5px;
+}
+
+/*Navigation Tree*/
+.tree ul ins {
+	height: 18px;
+	width: 18px;
+}
+
+.tree li {
+	padding: 0px 5px 2px 15px;
+}
+
+/* .tree_back and .recent_back have IE6 conditional overrides in layout.xhtml*/
+.tree ul ins {
+	height: 18px;
+	width: 18px;
+}
+
+.tree li {
+	padding: 0px 5px 2px 15px;
+}
+
+.tree_back {
+	float: left;
+	margin: 0;
+	border: 1px solid #8BAD37;
+	font-family: Verdana;
+	font-size: 10px;
+	background: white;
+	padding: 10px;
+	width: 100%;
+}
+
+.recent_back {
+	margin: 0;
+	padding: 10px;
+	border-top: 1px solid #8BAD37;
+	border-right: 1px solid #8BAD37;
+	border-left: 1px solid #8BAD37;
+	font-family: Verdana;
+	font-size: 10px;
+	background: white;
+	width: 100%;
+}
+
+.recent_back li a:active,.recent_back li a:link,.recent_back li a:hover,.recent_back li a:visited {
+	color: #333;
+	text-decoration: none;
+}
+
+.recent_item {
+	display: inline-block;
+	height: 16px;
+	line-height: 16px;
+	margin: 0px;
+	padding: 1px 4px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.recent_item ins {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+	margin: 0 4px 0 0;
+	text-decoration: none;
+}
+
+.recent_item .group {
+	background: transparent url(#{request.contextPath}/images/ico_trucks.png) no-repeat 0 0;
+}
+
+.recent_item .fleet {
+	background: transparent url(#{request.contextPath}/images/ico_truck.png) no-repeat 0 3px;
+}
+
+.recent_item .team {
+	background: transparent url(#{request.contextPath}/images/ico_team.png) no-repeat 0 0;
+}
+
+.selectedNavigationTreeNode {
+	font-weight: bold;
+}
+
+.dropBox {
+	display: none;
+	z-index: 100;
+	position: absolute;
+	left: 28px;
+	top: 30px;
+}
+
+.tree_button {
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tree_button .tree_button_left {
+	float: left;
+	color: #fff;
+	text-decoration: none;
+	font: 10px Verdana, 'Lucida Sans', sans-serif;
+	font-weight: normal;
+	padding: 0 0 0 18px;
+	height: 38px;
+	line-height: 38px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.tree_button .tree_button_right {
+	float: left;
+	padding: 0 12px 0 0;
+}
+
+.tree_button.current .tree_button_left {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+	font-weight: bold;
+}
+
+.tree_button.current .tree_button_right {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+}
+
+/*.tree_button .tree_button_left:hover {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+}
+
+.tree_button .tree_button_left:hover .tree_button_right {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+}*/
+.treeButtonLeftMouseOver {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_l.gif) no-repeat left 5px;
+}
+
+.treeButtonRightMouseOver {
+	color: #333;
+	background: url(#{request.contextPath}/images/main_nav_hover_r.gif) no-repeat right 5px;
+}
 }
