@@ -25,7 +25,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class TeamStopsBean extends BaseBean {
     
     private static final EnumSet<TimeFrame> validTimeFrames = 
-        EnumSet.range(TimeFrame.TODAY,TimeFrame.WEEK);    
+        EnumSet.range(TimeFrame.TODAY,TimeFrame.SIX_DAYS_AGO);    
 
     /**
      * Backing bean for the TeamStops tab of the new team page
@@ -97,8 +97,8 @@ public class TeamStopsBean extends BaseBean {
         this.selectedDriverID = selectedDriverID;
 
         // Have the new driver Id, find the info
-        initDriverStops();
-        initDriverStopsSummary();
+//        initDriverStops();
+//        initDriverStopsSummary();
     }
     
     public List<String> getColors() {
