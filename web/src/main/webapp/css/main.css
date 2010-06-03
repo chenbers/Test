@@ -3390,15 +3390,15 @@ td.middle select {
 }
 
 .recent_item .group {
-	background: transparent url(#{request.contextPath}/images/ico_trucks.png) no-repeat 0 0;
+	background: transparent url(../images/ico_trucks.png) no-repeat 0 0;
 }
 
 .recent_item .fleet {
-	background: transparent url(#{request.contextPath}/images/ico_truck.png) no-repeat 0 3px;
+	background: transparent url(../images/ico_truck.png) no-repeat 0 3px;
 }
 
 .recent_item .team {
-	background: transparent url(#{request.contextPath}/images/ico_team.png) no-repeat 0 0;
+	background: transparent url(../images/ico_team.png) no-repeat 0 0;
 }
 
 .selectedNavigationTreeNode {
