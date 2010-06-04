@@ -36,6 +36,11 @@ public class TeamCommonBean extends BaseBean {
     }
 
     public Integer getGroupID() {
+        if (groupID == null){
+            
+            groupID = getUser().getGroupID();
+            group = getGroupHierarchy().getGroup(groupID);
+        }
         return groupID;
     }
 
@@ -96,6 +101,7 @@ public class TeamCommonBean extends BaseBean {
 
 	public void setTeamTabPanel(UITabPanel teamTabPanel) {
 		this.teamTabPanel = teamTabPanel;
+		this.teamTabPanel.setSelectedTab("teamStatistics");
 	}
 
 	public Object getSelectedTab() {
