@@ -3380,7 +3380,7 @@ td.middle select {
 	white-space: nowrap;
 }
 
-.recent_item ins {
+.recent_item span {
 	display: inline-block;
 	width: 18px;
 	height: 18px;

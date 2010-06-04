@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.richfaces.component.UITree;
 import org.richfaces.event.DropEvent;
@@ -36,10 +37,16 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class OrganizationBean extends BaseBean
 {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     //TODO Mike - I'd like to create a OrganizationTreeViewBean and added it to this OrganizationBean. Wire it up using Spring.
+    //TODO Jacquie - kinda doing that with the TreeNavigationBean
     
     private static final Logger logger = Logger.getLogger(OrganizationBean.class);
     /*
@@ -69,6 +76,7 @@ public class OrganizationBean extends BaseBean
 
     private Map<Integer, Boolean> treeStateMap = new HashMap<Integer, Boolean>();
 
+    private TreeNavigationBean treeNavigationBean;
     /*
      * For controlling state of page
      */
@@ -419,6 +427,7 @@ public class OrganizationBean extends BaseBean
 //        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID()));
         getProUser().setGroupHierarchy(organizationHierarchy);
+        treeNavigationBean.refresh();
     }
 
     /**
@@ -802,6 +811,14 @@ public class OrganizationBean extends BaseBean
     public DeviceTreeNodeImpl getSelectedDeviceTreeNode()
     {
         return selectedDeviceTreeNode;
+    }
+
+    public TreeNavigationBean getTreeNavigationBean() {
+        return treeNavigationBean;
+    }
+
+    public void setTreeNavigationBean(TreeNavigationBean treeNavigationBean) {
+        this.treeNavigationBean = treeNavigationBean;
     }
 
 }

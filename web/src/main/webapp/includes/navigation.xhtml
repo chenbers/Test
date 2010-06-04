@@ -15,7 +15,8 @@ var timeout    = 300;
 var closetimer = 0;
 
 jQuery(function(){
-	getNavigationTreeData();
+	
+	refreshNavigationTree();
 	
 	jQuery("#tree_link_box").bind("mouseleave",navigationTree_timer);
 	jQuery("#tree_link_box").bind("mouseover",function(){
@@ -28,6 +29,11 @@ jQuery(function(){
 	
 });
 
+	function refreshNavigationTree(){
+		
+		getNavigationTreeData();
+		
+	}
 	function buildNavigationTree(dataFromServer){
 		jQuery("#navigationTree").tree({
 			ui : {
@@ -115,7 +121,7 @@ jQuery(function(){
 							 <rich:dataList  style="list-style: none;padding-left: 15px" value="#{treeNavigationBean.recentNodes}" var="recent" rendered="#{treeNavigationBean.renderRecentNodes}">				               
 				               <pretty:link id="#{context}-dashboard-recents" styleClass="recent_item" mappingId="dashboard" title="#{recent.fullPath}">
 				                  <f:param value="#{recent.attributes['groupid']}"/>
-				              	  <ins class="#{recent.type}">&#160;</ins> #{recent.data.title}
+				              	  <span class="#{recent.type}">&#160;</span> #{recent.data.title}
 				               </pretty:link>
 							 </rich:dataList>
 					 </rich:panel>

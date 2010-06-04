@@ -6,8 +6,7 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:security="http://pro.tiwi.com/jsf/security"
-	xmlns:t="http://myfaces.apache.org/tomahawk">
+	xmlns:security="http://pro.tiwi.com/jsf/security">
    
     <ui:param name="title" value="#{messages.adminHeader_organization}"/>
 	<ui:param name="adminSelected" value="current" />
@@ -19,7 +18,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<t:saveState value="#{organizationBean}"/>
+<!--		<t:saveState value="#{organizationBean}"/>-->
 		
 		<table width="920" border="0" cellspacing="0" cellpadding="0"
 			align="center" style="margin: 0 auto 0 auto;">
@@ -131,7 +130,7 @@
                                     }
 									
 								</script>
-							   <a4j:jsFunction name="refreshTree" reRender="organizationTreePanel,groupPanel">
+							   <a4j:jsFunction name="refreshTree" reRender="organizationTreePanel,groupPanel" oncomplete="getNavigationTreeData()">
 							   </a4j:jsFunction>
                                
 							</div>
@@ -243,8 +242,9 @@
 		<ui:include src="/includes/confirmDelete.xhtml">
 	      <ui:param name="deleteBean" value="#{organizationBean}" />
 	      <ui:param name="explanation" value="#{messages.group_delete_confirmation}" />
-	      <ui:param name="reRender" value="contentPanel,organizationTreePanel" />
+	      <ui:param name="reRender" value="contentPanel,organizationTreePanel,navigation:recents" />
       		<ui:param name="context" value="organization" />
+      		<ui:param name="ondelete" value="refreshNavigationTree()" />
 	    </ui:include>
     
 	    <script type="text/javascript">	

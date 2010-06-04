@@ -2,18 +2,11 @@ package com.inthinc.pro.backing;
 
 //import static com.inthinc.pro.backing.BaseBean.logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
-
-import org.richfaces.json.JSONException;
-import org.richfaces.json.JSONObject;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
@@ -161,32 +154,52 @@ public class TreeNavigationBean extends BaseBean {
             }
         }
     }
-    private void getDriverSubtree()
-    {
-        FacesContext facesContext =  getFacesContext();
-        HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
-        JSONObject json = new JSONObject();
-        try{
-            json.append("data", "drivers");
-        }
-        catch (JSONException jsone){
+    private void checkRecents(){
+        //Make sure that the recent items still exist in the tree
+        // And swap to the new node
+        List<JsTreeNode> newRecents = new ArrayList<JsTreeNode>();
+        for(JsTreeNode recentNode :recentNodes){
             
-        }
-        populateWithJSON(response, json);
-        facesContext.responseComplete();
-     }
-
-    public void populateWithJSON(HttpServletResponse response,JSONObject json) {
-        if(json!=null) {
-            response.setContentType("text/x-json;charset=UTF-8");           
-            response.setHeader("Cache-Control", "no-cache");
-            try {
-                 response.getWriter().write(json.toString());
-            } catch (IOException e) {
-//                throw new Exception("IOException in populateWithJSON", e);
-            }                               
+            JsTreeNode treeNode = navigationTree.findTreeNode(Integer.parseInt(recentNode.getAttributes().get("groupid")));
+            if (treeNode != null){
+                
+                newRecents.add(treeNode);
+            }
+            recentNodes = newRecents;
         }
     }
+    public void refresh(){
+
+        setNavigationTree(new JsTreeRoot(group, getGroupHierarchy()));
+        checkRecents();
+        openParentPath(group);
+    }
+//    private void getDriverSubtree()
+//    {
+//        FacesContext facesContext =  getFacesContext();
+//        HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
+//        JSONObject json = new JSONObject();
+//        try{
+//            json.append("data", "drivers");
+//        }
+//        catch (JSONException jsone){
+//            
+//        }
+//        populateWithJSON(response, json);
+//        facesContext.responseComplete();
+//     }
+//
+//    public void populateWithJSON(HttpServletResponse response,JSONObject json) {
+//        if(json!=null) {
+//            response.setContentType("text/x-json;charset=UTF-8");           
+//            response.setHeader("Cache-Control", "no-cache");
+//            try {
+//                 response.getWriter().write(json.toString());
+//            } catch (IOException e) {
+////                throw new Exception("IOException in populateWithJSON", e);
+//            }                               
+//        }
+//    }
     public class JsTreeRoot {
         
         private Map<Integer, JsTreeNode> navigationTreeMap;
@@ -290,7 +303,6 @@ public class TreeNavigationBean extends BaseBean {
 		    data = new NodeData(group.getName(),null);
 		    data.addAttribute("href",getExternalContext().getRequestContextPath()+"/app/dashboard/"+group.getGroupID());
 
-//		    data.addAttribute("id", "navigationTree:"+group.getGroupID());
 		    attributes = new HashMap<String,String>();
 		    switch (group.getType()){
 		        case FLEET:

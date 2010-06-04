@@ -12,23 +12,23 @@
 		<ul id="grid_nav_dark">
 			<li class="r">
 				<h:commandButton id="groupEditPanelView" rendered="#{organizationBean.groupState ne 'VIEW'}" tabindex="11"
-					action="#{organizationBean.view}"
-					reRender="contentPanel,organizationTreePanel" immediate="true" styleClass="left">
+					action="#{organizationBean.view}" oncomplete="refreshNavigationTree()"
+					reRender="contentPanel,organizationTreePanel,navigation:recents" immediate="true" styleClass="left">
 					<span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="10"
-					action="#{organizationBean.update}"
-					reRender="contentPanel,organizationTreePanel" styleClass="left">
+					action="#{organizationBean.update}" oncomplete="refreshNavigationTree()"
+					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="10"
-					action="#{organizationBean.save}"
-					reRender="contentPanel,organizationTreePanel" styleClass="left">
+					action="#{organizationBean.save}" oncomplete="refreshNavigationTree()"
+					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
@@ -135,23 +135,23 @@
 		<ul id="grid_nav_dark">
 			<li class="r">
 				<h:commandButton id="#{context}-groupEditEditView" rendered="#{organizationBean.groupState ne 'VIEW'}"
-					action="#{organizationBean.view}"
-					reRender="contentPanel,organizationTreePanel" immediate="true" styleClass="left" tabindex="9">
+					action="#{organizationBean.view}" oncomplete="refreshNavigationTree()"
+					reRender="contentPanel,organizationTreePanel,navigation:recents" immediate="true" styleClass="left" tabindex="9">
 					<span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton id="#{context}-groupEditEditEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="8"
-					action="#{organizationBean.update}"
-					reRender="contentPanel,organizationTreePanel" styleClass="left">
+					action="#{organizationBean.update}" oncomplete="refreshNavigationTree()"
+					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton id="#{context}-groupEditEditAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="8"
-					action="#{organizationBean.save}"
-					reRender="contentPanel,organizationTreePanel" styleClass="left">
+					action="#{organizationBean.save}" oncomplete="refreshNavigationTree()"
+					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="add"><h:outputText
 						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
