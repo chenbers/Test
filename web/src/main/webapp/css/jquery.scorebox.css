@@ -1,0 +1,104 @@
+.score {
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #333;
+}
+
+/* Score Sizes */
+.score_x_lg{
+	font-size: 36px;
+	height: 110px;
+	width: 110px;
+}
+
+.score_lg{
+	font-size: 32px;
+	height: 90px;
+	width: 90px;
+}
+
+.score_med{
+	width: 60px;
+	height: 60px;
+	font-size: 24px;
+}
+
+.score_sm{
+	width: 40px;
+	height: 40px;
+	font-size: 18px;
+}
+
+.score_x_sm{
+	width: 32px;
+	height: 32px;
+	font-size: 14px;
+}
+
+.score_xx_sm{
+	width: 25px;
+	height: 25px;
+	font-size: 10px;
+}
+
+
+/* Score Box Colors */
+.score_5{
+	background: #FFFFFF;
+	border: 1px solid #98CF8F;
+	padding: 1px;
+}
+
+.score_5 div{
+	background: #6b9d1b;
+}
+
+.score_4{
+	background: #9BD0F0;
+	border: 1px solid #1E88C8;
+	padding: 1px;
+}
+
+.score_4 div{
+	background: #1e88C8
+}
+
+.score_3{
+	background: #FFFFFF;
+	border: 1px solid #FFEC9B;
+	padding: 1px;
+}
+
+.score_3 div{
+	background: #f6b305
+}
+
+.score_2{
+	border: 1px solid #FBDABA;
+	background: #FFFFFF;
+	padding: 1px;
+}
+
+.score_2 div{
+	background: #ff6601
+}
+
+.score_1{
+	border: #F8A188 1px solid;
+	background: #FFFFFF;
+	padding: 1px;
+}
+
+.score_1 div{
+	background: #FF0101;
+}
+
+.score_na{
+	border: #cccccc 1px solid;
+	background: #FFFFFF;
+	padding: 1px;	
+}
+
+.score_na div{
+	background: #888888;
+}
