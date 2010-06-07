@@ -61,44 +61,50 @@
 	       <div class="datagrid_panel" style="width: 900px;">
 	       
 	       <!-- Summary -->
-	       <rich:dataTable	value="#{teamStatisticsBean.driverTotals}" 
-	       		id="driverTotals" 
+			     <h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
+					<span title="#{messages.button_editColumns}">
+						<a4j:commandLink 
+	     					id="#{context}EditColumns" 
+							reRender="editColumnsForm:editColumnGrid"
+	     					action="#"
+	     					onclick="Richfaces.showModalPanel('editColumns');"> 
+	     					<h:graphicImage value="/images/ico_edit_columns.png"/>
+						</a4j:commandLink>    
+					</span>	
+					<span style="cursor:pointer;">
+						<h:graphicImage value="/images/ico_tools.png"/>
+					</span>
+				</h:panelGroup>
+				
+				<rich:dataTable value="#{teamStatisticsBean.driverStatistics}" 
+	       		id="drivers" 
 	       		var="item"
+				styleClass="datatable" 
+				rowClasses="tableOdd,tableEven"
+				width="100%"
+				rows="#{teamStatisticsBean.numRowsPerPg}">
+
+				<f:facet name="header" >			
+	       		<rich:subTable	value="#{teamStatisticsBean.driverTotals}" 
+	       		id="driverTotals" 
+	       		var="total"
 				styleClass="datatable" 
 				rowClasses="tableOdd,tableEven"
 				width="100%"				
 				rows="10">				
-				<f:facet name="header" >			
-     				<h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
-						<span title="#{messages.button_editColumns}">
-							<a4j:commandLink 
-		     					id="#{context}EditColumns" 
-								reRender="editColumnsForm:editColumnGrid"
-		     					action="#"
-		     					onclick="Richfaces.showModalPanel('editColumns');"> 
-		     					<h:graphicImage value="/images/ico_edit_columns.png"/>
-							</a4j:commandLink>    
-						</span>	
-						<span style="cursor:pointer;">
-							<h:graphicImage value="/images/ico_tools.png"/>
-						</span>
-					</h:panelGroup>
-					
-				</f:facet>
-
 				<rich:column rendered="#{tableColumns['driver_team'].visible}" id="newTeamStatsTab-totalsTeamName">
 					<f:facet name="header">
 						#{messages.team_team}	
 					</f:facet>
-					#{item.driver.person.fullName}
+					#{total.driver.person.fullName}
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['score'].visible}" id="newTeamStatsTab-totalsOverallScore">
 					<f:facet name="header">
 						#{messages.team_score}	
 					</f:facet>					 
 					<ui:include src="/includes/new_scoreBox.xhtml">
-	                    <ui:param name="score" value="#{item.score.overall}" />
-	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
+	                    <ui:param name="score" value="#{total.score.overall}" />
+	                    <ui:param name="item" value="#{total.driver.driverID}" /> 
 	                    <ui:param name="size" value="xx-sm"/>                 
 						<ui:param name="context" value="driversOverallNotAvailable" />
                     </ui:include> 
@@ -110,20 +116,20 @@
 					<f:facet name="header" id="newTeamStatsTab-totalsTrips">
 						#{messages.team_trips}
 					</f:facet>
-					#{item.score.trips}
+					#{total.score.trips}
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['stops'].visible}" id="newTeamStatsTab-totalsTripStops">
 					<f:facet name="header">
 						#{messages.team_stops}
 					</f:facet>
-					#{item.score.idleHiEvents + item.score.trips}
+					#{total.score.idleHiEvents + total.score.trips}
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['dist_driven'].visible}" id="newTeamStatsTab-totalsMilesDriven">
 					<f:facet name="header">
 						#{messages.team_dist_driven}
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
-                    	<a4j:actionparam value="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
+                    	<a4j:actionparam value="#{(total.score.endingOdometer - total.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
                     	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                     </h:outputFormat>										
 				</rich:column>
@@ -132,7 +138,7 @@
 						#{messages.team_drive_time}
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{item.score.driveTime}" converter="TimeToStringConverter"/>                    
+                    	<a4j:actionparam value="#{total.score.driveTime}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['idle_time'].visible}" id="newTeamStatsTab-totalsIdleTime">
@@ -140,7 +146,7 @@
 						#{messages.team_idle_time}
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{(item.score.idleLo + item.score.idleHi)}" converter="TimeToStringConverter"/>                    
+                    	<a4j:actionparam value="#{(total.score.idleLo + total.score.idleHi)}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['low_idle'].visible}" id="newTeamStatsTab-totalsLoIdle">
@@ -148,7 +154,7 @@
 						#{messages.team_low_idle}
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{item.score.idleLo}" converter="TimeToStringConverter"/>                    
+                    	<a4j:actionparam value="#{total.score.idleLo}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>					
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['high_idle'].visible}" id="newTeamStatsTab-totalsHiIdle">
@@ -156,21 +162,21 @@
 						#{messages.team_high_idle}
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_time}" >
-                    	<a4j:actionparam value="#{item.score.idleHi}" converter="TimeToStringConverter"/>                    
+                    	<a4j:actionparam value="#{total.score.idleHi}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>										
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['idle_percentage'].visible}" id="newTeamStatsTab-totalsIdlePercentage">
 					<f:facet name="header">
 						#{messages.team_idle_percentage}
 					</f:facet>
-					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{(item.score.idleHi+item.score.idleLo)*100/item.score.driveTime}" converter="DoubleConverter"/>
-					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" value="0.00"/>																				
+					<h:outputText id="idlePercentageNonZero" rendered="#{total.score.driveTime != 0 and total.score.driveTime != null}" value="#{(total.score.idleHi+item.score.idleLo)*100/total.score.driveTime}" converter="DoubleConverter"/>
+					<h:outputText id="idlePercentageZero" rendered="#{total.score.driveTime == 0 or total.score.driveTime == null}" value="0.00"/>																				
 				</rich:column>
 				<rich:column rendered="#{tableColumns['mpg'].visible}" id="newTeamStatsTab-totalsMpg">
 					<f:facet name="header">
 						#{messages.team_mpg}
 					</f:facet>
-					<h:outputText id="summaryMpg" value="#{item.score.weightedMpg}" converter="MpgToKplConverter"/>                  					
+					<h:outputText id="summaryMpg" value="#{total.score.weightedMpg}" converter="MpgToKplConverter"/>                  					
 				</rich:column>
 				<rich:column rendered="#{tableColumns['crashes'].visible}" id="newTeamStatsTab-totalsCrashes">
 					<f:facet name="header">
@@ -182,21 +188,15 @@
 					<f:facet name="header">
 						#{messages.team_safety}
 					</f:facet>
-                    <pretty:link id="safetyGroupLink" mappingId="safetyGroupLink" rendered="#{item.score.safetyTotal ne 0}">
-	                   	<h:outputText value="#{item.score.safetyTotal}"/>
+                    <pretty:link id="safetyGroupLink" mappingId="safetyGroupLink" rendered="#{total.score.safetyTotal ne 0}">
+	                   	<h:outputText value="#{total.score.safetyTotal}"/>
 	                    <f:param value="#{teamCommonBean.groupID}"/>
 				        <f:param value="#{teamCommonBean.timeFrame}"/>
 					</pretty:link>
-                   	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
+                   	<h:outputText value="#{total.score.safetyTotal}" rendered="#{total.score.safetyTotal eq 0}"/>
 				</rich:column>
-				
-				<rich:subTable value="#{teamStatisticsBean.driverStatistics}" 
-	       		id="drivers" 
-	       		var="item"
-				styleClass="datatable" 
-				rowClasses="tableOdd,tableEven"
-				width="100%"
-				rows="#{teamStatisticsBean.numRowsPerPg}">
+				</rich:subTable>
+				</f:facet>
 				<rich:column rendered="#{tableColumns['driver_team'].visible}" sortBy="#{item.driver.person.first}" id="newTeamStatsTab-driverName">
 					<f:facet name="header">
 						#{messages.team_driver}
@@ -329,12 +329,11 @@
 					</pretty:link>
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
 				</rich:column>							
-				
-				</rich:subTable>
-				
 				<f:facet name="footer">				
 					<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" />
 				</f:facet>
+				
+				
 			</rich:dataTable>		       
 		
 
