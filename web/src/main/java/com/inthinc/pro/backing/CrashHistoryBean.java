@@ -89,7 +89,9 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     @Override
     protected void filterTableData() {
         if (tableData == null) {
+logger.info("initTableData() - start");            
             initTableData();
+logger.info("initTableData() - end");
         }
         setFilteredTableData(tableData);
         if (searchCoordinationBean.isGoodSearch()) {
@@ -162,7 +164,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
             reportItem.setNbrOccupants(String.valueOf(cr.getOccupantCount().intValue()));
             reportItem.setStatus(cr.getCrashReportStatus().name());
             reportItem.setVehicle(cr.getVehicle());
-            reportItem.setVehicleName(cr.getVehicle().getName());
+            reportItem.setVehicleName((cr.getVehicle() == null) ? "" : cr.getVehicle().getName());
             reportItem.setLatitude(cr.getLatLng().getLat());
             reportItem.setLongitude(cr.getLatLng().getLng());
             reportItem.setForgiven(cr.getCrashReportStatus().getCode());
