@@ -529,11 +529,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             DriveQMap driveQMap = null;
             if (entityType.equals(EntityType.ENTITY_DRIVER))
             {
-            	driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDT(id, duration.getCode()), DriveQMap.class);
+            	driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDT(id, duration.getDvqCode()), DriveQMap.class);
             }
             else
             {
-            	driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(id, duration.getCode()), DriveQMap.class);
+            	driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(id, duration.getDvqCode()), DriveQMap.class);
             }
             
             List<ScoreItem> scoreItemList = new ArrayList<ScoreItem>();

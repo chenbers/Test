@@ -28,7 +28,7 @@ public class ReportServiceImpl implements ReportService
     @Override
     @MethodDescription(description="Returns the drivers scores for the specified duration", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.DriveQMap.class)
     public Map<String, Object> getDScoreByDT(@DaoParam(name="driverID", validator=ValidatorType.DRIVER)Integer driverID, 
-            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationCodeList.class)Integer duration)
+            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationDvqCodeList.class)Integer duration)
     {
         return null;
     }
@@ -137,7 +137,7 @@ public class ReportServiceImpl implements ReportService
     @MethodDescription(description="Returns the vehicle's scores for the specified duration.", crudType=CrudType.READ,
 			modelClass=com.inthinc.pro.model.DriveQMap.class)
     public Map<String, Object> getVScoreByVT(@DaoParam(name="vehicleID", validator=ValidatorType.VEHICLE)Integer vehicleID, 
-            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationCodeList.class)Integer duration)
+            @DaoParam(name="duration", type=com.inthinc.pro.backing.dao.ui.DurationDvqCodeList.class)Integer duration)
     {
         return null;
     }

@@ -13,10 +13,8 @@ import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.SiteAccessPoints;
@@ -29,7 +27,6 @@ public class ProUserServiceImpl implements UserDetailsService
     private static final Logger logger = Logger.getLogger(ProUserServiceImpl.class);
     
     private UserDAO userDAO;
-    private ZoneDAO zoneDAO;
     private RoleDAO roleDAO;
     
     @Override
@@ -38,6 +35,7 @@ public class ProUserServiceImpl implements UserDetailsService
         logger.debug("ProUserServiceImpl:loadUserByUsername " + username);
         try
         {
+            
             User user = lookup(username);
             if (user == null)
             {

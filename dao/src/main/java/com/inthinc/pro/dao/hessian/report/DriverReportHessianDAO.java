@@ -14,7 +14,7 @@ public class DriverReportHessianDAO extends AbstractReportHessianDAO implements 
     @Override
     public Score getScore(Integer driverID, Duration duration) {
         try {
-            return mapper.convertToModelObject(reportService.getDScoreByDT(driverID, duration.getCode()), Score.class);
+            return mapper.convertToModelObject(reportService.getDScoreByDT(driverID, duration.getDvqCode()), Score.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
