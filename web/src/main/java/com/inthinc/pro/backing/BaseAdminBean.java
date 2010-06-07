@@ -492,7 +492,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         try
         {
             doSave(selected, add);
-            applyFilter(this.getPage());
+            if (items == null)
+                getItems();
+            else applyFilter(this.getPage());
         }
         catch (HessianException e)
         {
