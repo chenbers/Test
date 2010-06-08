@@ -221,6 +221,8 @@ public class TreeNavigationBean extends BaseBean {
         }
         public void setCurrentNode(Integer groupID){
             
+            if (groupID == null) return;
+            
             JsTreeNode nextNode = findTreeNode(groupID);
             
             if (currentNode != null){
@@ -245,8 +247,11 @@ public class TreeNavigationBean extends BaseBean {
                 }
             }
             //find node in the tree and set it selected
-            currentNode = nextNode;
-            currentNode.getData().addAttribute("class", "selectedNavigationTreeNode");
+            if (nextNode != null){
+                
+                currentNode = nextNode;
+                currentNode.getData().addAttribute("class", "selectedNavigationTreeNode");
+            }
             
          
         }
