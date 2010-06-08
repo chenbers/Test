@@ -137,7 +137,11 @@ public class TreeNavigationBean extends BaseBean {
     }
     
     private void openParentPath(Group group){
+        
         navigationTree.closeAll();
+        
+        if (group == null) return;
+        
         Group child = group;
         Group parent = getGroupHierarchy().getParentGroup(group);
         if (parent == null){
@@ -268,6 +272,8 @@ public class TreeNavigationBean extends BaseBean {
         }
         private JsTreeNode findTreeNode(Integer groupID){
             
+            if (groupID == null) return null;
+
             return navigationTreeMap.get(groupID);
             
 //            if (fromHere.getAttributes().get("groupid").equals(groupID.toString())) {
