@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class TeamCommonBean extends BaseBean {
     private UITabPanel teamTabPanel;
     private String selectedTabId;
     
-    private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = new HashMap<String,List<DriverVehicleScoreWrapper>>();
+    private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = Collections.synchronizedMap(new HashMap<String,List<DriverVehicleScoreWrapper>>());
     
     public void init() {
 
