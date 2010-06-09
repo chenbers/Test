@@ -160,13 +160,17 @@ public class MessagesTest {
 		nonTranslatedMap_ro.put("teamOverallthreetofour","not_translated");	// 3.1 to 4.0
 		nonTranslatedMap_ro.put("teamOverallfourtofive","not_translated");	// 4.1 to 5.0
 		nonTranslatedMap_ro.put("vehicletrip_quality", "not_translated");	// GPS
-		nonTranslatedMap_ro.put("teamTotal", "not_translated");	// Total
+		nonTranslatedMap_ro.put("team_total", "not_translated");	// Total
 		
-
+		nonTranslatedMap_ro.put("redFlagsHeader_status", "not_translated");//Status
+		nonTranslatedMap_ro.put("zoneAlertsHeader_status", "not_translated");//Status
+        nonTranslatedMap_ro.put("editAlerts_status", "not_translated");//Status
+        nonTranslatedMap_ro.put("stopsDateTimeFormat", "not_translated");// MM/dd/yyy h:mm a(z)
+        nonTranslatedMap_ro.put("teamTotal", "not_translated"); // Total
 	}
 	
-	@Ignore
 	@Test
+	@Ignore
 	public void roTest(){
 		
 		Properties english = getProperties("com/inthinc/pro/resources/Messages.properties");
