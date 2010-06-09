@@ -40,7 +40,6 @@
 	#driverTable {
 		float:left;
 		width:24%;
-		height:500px; 
 		border:0;
 	}
 	#teamTrip-map-canvas {
@@ -122,17 +121,17 @@
 	 	
    	<!-- Trips Map -->
  <a4j:region id="teamTripsRegion" renderRegionOnly="true" >	       
-   	<div class="section">
+   	<div class="section" >
        	<h:form id="tripsTableForm">
        	<rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-	         <div id="driverTable" >
+	         <div id="driverTable" style="float:left">
 	        	
 	         	<rich:dataTable	value="#{teamTripsBean.driversTrips}" 
 					       		id="driversTrips" 
 					       		var="driverTrips"
 					       		rowKeyVar="index"
-								styleClass="datagrid" 
+								styleClass="datatable" 
 								rowClasses="tableOdd,tableEven"
 								rows="#{teamTripsBean.driversPerPage}"
 								columnsWidth="90px,85%,50px"
@@ -143,7 +142,7 @@
                 <h:selectBooleanCheckbox id="checkDriver" value="#{driverTrips.driverSelected}" disabled="#{not teamTripsBean.validTimeFrame}">
                   <a4j:support event="onclick" status="teamStatus" eventsQueue="tripsQueue" 
                   				action="#{driverTrips.selectivelyLoadTrips}" data="#{driverTrips}" 
-                  				oncomplete="toggleDriverTrips(TeamTrips.map, #{index}, data)" ajaxSingle="true">
+                  				oncomplete="toggleDriverTrips(TeamTrips.map, #{index%25}, data)" ajaxSingle="true">
                    </a4j:support>
                 </h:selectBooleanCheckbox>
                 </a4j:outputPanel>
@@ -159,10 +158,10 @@
      				</pretty:link>
  				</rich:column>
 				<rich:column>
-					<div style="position: relative; background-color:#{teamTripsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">
+					<div style="position: relative; background-color:#{teamTripsBean.colors[index%25]}; border: 1px solid black; width: 16px;height: 16px">
 					
-						<div class="trips_label" style="color:#{teamTripsBean.textColors[index]};">
-						#{teamTripsBean.labels[index]}
+						<div class="trips_label" style="color:#{teamTripsBean.textColors[index%25]};">
+						#{teamTripsBean.labels[index%25]}
 						</div>
 					</div>
 				</rich:column>
@@ -186,7 +185,7 @@
 		
  				         
 	         </div>  
-			 <div id="teamTrip-map-canvas"></div>
+			 <div id="teamTrip-map-canvas" style="float:right;"></div>
 			 <div style="clear:both"></div>
  	</h:form>	
 	       </div>
