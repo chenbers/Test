@@ -27,6 +27,7 @@ import javax.faces.validator.ValidatorException;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
@@ -236,6 +237,7 @@ public class DaoUtilTest extends BaseSpringTest {
 
     
     @Test
+    @Ignore
     public void daoUtilNonSuperuser()
     {
 System.out.println("test");    	
