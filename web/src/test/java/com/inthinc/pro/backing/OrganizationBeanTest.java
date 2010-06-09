@@ -23,6 +23,7 @@ import com.inthinc.pro.model.LatLng;
 public class OrganizationBeanTest extends BaseBeanTest
 {
     private OrganizationBean organizationBean;
+    private TreeNavigationBean treeNavigationBean;
     private static Map<String, Object> conversationContext = new HashMap<String, Object>();//Mimics the t:saveState 
 
     @BeforeClass
@@ -39,6 +40,12 @@ public class OrganizationBeanTest extends BaseBeanTest
     {
         loginUser("custom101");
         organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
+        treeNavigationBean = (TreeNavigationBean)applicationContext.getBean("treeNavigationBean");
+        
+        Integer  groupID = getUser().getGroupID();
+
+        treeNavigationBean.setCurrentGroupID(groupID);
+
     }
 
     @Test
