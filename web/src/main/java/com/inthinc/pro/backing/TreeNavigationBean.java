@@ -41,9 +41,9 @@ public class TreeNavigationBean extends BaseBean {
     
     public void init(){
         
-        setGroupID(getUser().getGroupID());
+ //       setGroupID(getUser().getGroupID());
 
-        currentGroupName=group.getName();
+ //       currentGroupName=group.getName();
         recentNodes = new ArrayList<JsTreeNode>();
      }
         
@@ -123,6 +123,10 @@ public class TreeNavigationBean extends BaseBean {
     
     public void setCurrentGroupID(Integer currentGroupID) {
         
+        if(groupID==null){
+
+            setGroupID(getUser().getGroupID());
+        }
         currentGroupName = getGroupHierarchy().getGroup(currentGroupID).getName();
         //find node in the tree and set it selected
         navigationTree.setCurrentNode(currentGroupID);
@@ -153,7 +157,6 @@ public class TreeNavigationBean extends BaseBean {
             while (parent != null){
                 
                 navigationTree.open(parent.getGroupID());
-                child = parent;
                 parent = getGroupHierarchy().getParentGroup(parent);
             }
         }
@@ -261,7 +264,11 @@ public class TreeNavigationBean extends BaseBean {
         }
         public void open(Integer groupID){
             
-            findTreeNode(groupID).setState("open");
+            if (groupID == null) return;
+            JsTreeNode jsTreeNode = findTreeNode(groupID);
+            if (jsTreeNode == null) return;
+            
+            jsTreeNode.setState("open");
         }
         public void closeAll(){
             
