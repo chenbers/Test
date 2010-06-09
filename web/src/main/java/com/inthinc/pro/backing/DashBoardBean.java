@@ -31,16 +31,16 @@ public class DashBoardBean extends BaseBean implements Serializable {
             throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
         
         treeNavigationBean.setCurrentGroupID(groupID);
+        navigationBean.setGroupID(groupID);
+        trendBean.setMaximized(Boolean.FALSE);
+        trendBean.setGroupID(groupID);
+        mpgBean.setGroupID(groupID);
+        overallScoreBean.setGroupID(groupID);
+        idlePercentageBean.setGroupID(groupID);
+        speedPercentageBean.setGroupID(groupID);
         switch (group.getType()) {
             case FLEET:
             case DIVISION:
-                navigationBean.setGroupID(groupID);
-                trendBean.setMaximized(Boolean.FALSE);
-                trendBean.setGroupID(groupID);
-                mpgBean.setGroupID(groupID);
-                overallScoreBean.setGroupID(groupID);
-                idlePercentageBean.setGroupID(groupID);
-                speedPercentageBean.setGroupID(groupID);
                 return "pretty:fleet";
             case TEAM:
                 teamCommonBean.setGroupID(groupID);
