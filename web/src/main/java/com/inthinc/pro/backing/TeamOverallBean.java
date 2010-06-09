@@ -5,17 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.charts.Pie;
+import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.MessageUtil;
 
+//@KeepAlive
 public class TeamOverallBean extends BaseBean {
 
 //  Request scope bean for new team page 
@@ -31,6 +34,7 @@ public class TeamOverallBean extends BaseBean {
     private ScoreType scoreType = ScoreType.SCORE_OVERALL;
     
     private static final Logger logger = Logger.getLogger(TeamOverallBean.class);
+    private GroupReportDAO groupReportDAO;  
 
     public TeamOverallBean() {}
 
@@ -162,12 +166,11 @@ public class TeamOverallBean extends BaseBean {
         int threeToFour = 0;
         int fourToFive = 0;
         
-        List<DriverVehicleScoreWrapper> local = 
-            teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
+        List<DriverVehicleScoreWrapper> local = getDriverVehicleScoreList(); 
         
         for ( DriverVehicleScoreWrapper dvsw: local ) {
             
-            if(         dvsw.getScore().getOverall().intValue() <  0 ) {
+            if(dvsw.getScore().getOverall() == null || dvsw.getScore().getOverall().intValue() <  0 ) {
                 nA++;
                 
             } else if(  dvsw.getScore().getOverall().intValue() >= 0 && dvsw.getScore().getOverall().intValue() <= 10 ) {
@@ -250,8 +253,7 @@ public class TeamOverallBean extends BaseBean {
     private ScoreableEntity getScoreableEntityNumber() {
         ScoreableEntity se = new ScoreableEntity();
         
-        List<DriverVehicleScoreWrapper> local = 
-            teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
+        List<DriverVehicleScoreWrapper> local = getDriverVehicleScoreList();
         
         int totScoreableDrivers = 0;
         int totalScores = 0;
@@ -268,4 +270,43 @@ public class TeamOverallBean extends BaseBean {
         
         return se;
     }
+
+    private List<DriverVehicleScoreWrapper> getDriverVehicleScoreList() {
+        List<DriverVehicleScoreWrapper> local = teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
+        if (local == null) {
+            if ( whichMethodToUse() ) {
+                local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                        teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+            
+            } else {
+                local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                        teamCommonBean.getTimeFrame().getAggregationDuration());
+            }
+            
+            teamCommonBean.getCachedResults().put(teamCommonBean.getTimeFrame().name(), local);
+
+
+        }
+        return local;
+    }
+    
+    private boolean whichMethodToUse() {      
+        
+        if (    this.teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) ||
+                this.teamCommonBean.getTimeFrame().equals(TimeFrame.MONTH) ||
+                this.teamCommonBean.getTimeFrame().equals(TimeFrame.YEAR) ) {
+            return false;
+        }
+    
+        return true;
+    }
+    public GroupReportDAO getGroupReportDAO() {
+        return groupReportDAO;
+    }
+
+    public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
+        this.groupReportDAO = groupReportDAO;
+    }
+
+
 }

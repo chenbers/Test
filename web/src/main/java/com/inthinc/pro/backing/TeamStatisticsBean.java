@@ -18,7 +18,7 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
 
-@KeepAlive
+//@KeepAlive
 public class TeamStatisticsBean extends BaseBean {
 
 //  Request scope bean for new team page    
