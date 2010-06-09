@@ -137,13 +137,16 @@ public class TeamStopsBean extends BaseBean {
     }    
 
     public String getErrorMessage() {
-        if ( !isValidTimeFrame() && selectedDriverID == null ) {
-            addInfoMessage(MessageUtil.getMessageString("team_timeframe_and_driver_msg", getLocale()));     
-        } else if ( !isValidTimeFrame() ) {
+//        if ( !isValidTimeFrame() && selectedDriverID == null ) {
+//            addInfoMessage(MessageUtil.getMessageString("team_timeframe_and_driver_msg", getLocale()));     
+//        } else if ( !isValidTimeFrame() ) {
+//            addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale())); 
+//        } else if ( selectedDriverID == null ) {
+//            addInfoMessage(MessageUtil.getMessageString("team_driver_msg", getLocale())); 
+//        }
+        if ( !isValidTimeFrame() ) {
             addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale())); 
-        } else if ( selectedDriverID == null ) {
-            addInfoMessage(MessageUtil.getMessageString("team_driver_msg", getLocale())); 
-        }
+        } 
         return errorMessage;
     }
 
