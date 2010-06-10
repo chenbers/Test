@@ -15,6 +15,19 @@
 	var geocoder = null;	//Google geocoder for reverse geocoding event addresses.
 	var clickedMarker = null;
 	var countDown;
+	
+	function closeInfoWindow(map){
+		
+		if (clickedMarker){
+			
+			clickedMarker.closeInfoWindow();
+			clickedMarker = null;
+		}
+		else {
+			
+			map.closeInfoWindow();
+		}
+	}
 /**
  * Matches up color coding between the driver data table in the page, and the trip data arrays.
  * @param indexOnPage - row index in the page
@@ -50,7 +63,9 @@
  * @return
  */
 
-	function hideOverlays(driverIndex){
+	function hideOverlays(map,driverIndex){
+		
+		closeInfoWindow(map);
 		
 		var length = overlaysArray[driverIndex].length;
 		for (var j=0; j<length; j++){
@@ -250,11 +265,7 @@
     	var marker = new LabeledMarker(point, opts);
 		// Step 1 to display event data in a marker infoWindow.
   	  	var clickListener = GEvent.addListener(marker, "click", function() {
- 
-  	  	  if (clickedMarker != null){
-  	  		  
-  	  		  clickedMarker.closeInfoWindow();
-  	  	  }
+   		
   	  	  clickedMarker = marker;
   		  // use a4j:jsFunction to go get the driver's name and the event time
   		  // callback for that call will start the reverse geocode for the address
@@ -308,6 +319,7 @@
 		  	document.getElementById("teamBubbleForm:teamBubbleAddress").innerHTML=address;
 			var windowElement = windowElementTemplate.cloneNode(true);	
 		  	windowElement.style.display = 'block';
+		  	
 		  	clickedMarker.openInfoWindow(windowElement);
     	});
     }
@@ -344,6 +356,7 @@
 	        	var windowElementTemplate = document.getElementById("clusterBubbleTable");
 	    		var windowElement = windowElementTemplate.cloneNode(true);	
 	    	  	windowElement.style.display = 'block';
+	    	  	closeInfoWindow(map);
 	    	  	map.openInfoWindow(new GLatLng(clusterLatLng.lat, clusterLatLng.lng), windowElement);
 	        }
 
@@ -363,6 +376,7 @@
     	var windowElementTemplate = document.getElementById("clusterBubbleTable");
 		var windowElement = windowElementTemplate.cloneNode(true);	
 	  	windowElement.style.display = 'block';
+	  	closeInfoWindow(map);
 	  	map.openInfoWindow(new GLatLng(clusterLatLng.lat, clusterLatLng.lng), windowElement);
     	    	
 //		if (geocoder == null) geocoder = new GClientGeocoder();
@@ -647,8 +661,8 @@
 				showExistingDriverTrips(map,i);
 			}
 			else {
-				
-				hideOverlays(i);
+
+				hideOverlays(map,i);
 			}
 		}
 		else{
@@ -666,6 +680,7 @@
 
 		if(map){
 			
+			closeInfoWindow(map);
 			if (markerClustererWithMergedMarkerSets !== null) markerClustererWithMergedMarkerSets.clearAllMarkers();
 
 			var overlaysArrayLength = overlaysArray.length;
@@ -707,7 +722,8 @@
  * @return
  */
 	function redisplayAllTrips(map, driversTrips){
-			
+		
+		closeInfoWindow(map);	
 		var length = driversTrips.length;
 		for (var i=0;i<length;i++){
 			
