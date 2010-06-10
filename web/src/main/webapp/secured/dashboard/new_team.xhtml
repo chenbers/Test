@@ -288,6 +288,7 @@
     	<div class="panel_nw">    
 			<div class="panel_title">
 	    		<h:graphicImage value="/images/ico_line.png" /><rich:spacer width="10"></rich:spacer>#{messages.team_what_happened} 
+	    		
                 <a4j:outputPanel ajaxRendered="true" layout="block" styleClass="panel_links">
 	                <h:form id="timeFrameForm" style="display: inline;">	                	
 	                        <a4j:status id="teamStatus">
@@ -385,20 +386,25 @@
 	                            <a4j:actionparam name="timeframe" assignTo="#{teamCommonBean.timeFrame}" value="YEAR" />
 	                        </a4j:commandLink>                     
 	        		</h:form>
-				</a4j:outputPanel>		  	
+
+ 				</a4j:outputPanel>		  	
      	 	</div>
 		</div>    
     	
     						 	 	
 	    <div class="panel_w">
-	       	<div class="panel_content">   
+	       	<div class="panel_content"> 
+<!--
+This was causing an extra 2 or 3 requests for the page to be issue (performance and threading issues). 	       	
 	       	<a4j:form>
 		       	<a4j:jsFunction ajaxSingle="true" name="selectTab" reRender="overallTeamPanel">
 		        		<a4j:actionparam id="tabId" name="tabId" assignTo="#{teamCommonBean.selectedTabId}"/>
 		        </a4j:jsFunction>	 
 	        </a4j:form>
+ -->		       	
 	        <a4j:outputPanel id="overallTeamPanel">    					
-				<rich:tabPanel id="teamTabPanel" binding="#{teamCommonBean.teamTabPanel}" selectedTab="#{teamCommonBean.selectedTabId}" switchType="ajax">
+				<rich:tabPanel id="teamTabPanel" binding="#{teamCommonBean.teamTabPanel}" 
+				selectedTab="#{teamCommonBean.selectedTabId}" switchType="ajax">
                		<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamStops.xhtml"/>
