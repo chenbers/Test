@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -18,21 +19,23 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
 
-//@KeepAlive
+@KeepAlive
 public class TeamStatisticsBean extends BaseBean {
 
 //  Request scope bean for new team page    
     private static final long serialVersionUID = 1L;
+    private static final Logger logger = Logger.getLogger(TeamStatisticsBean.class);
+
     
     private int numRowsPerPg = 25;
-    private List<DriverVehicleScoreWrapper> driverStatistics;
-    private List<DriverVehicleScoreWrapper> driverTotals;   
+//    private List<DriverVehicleScoreWrapper> driverStatistics;
+//    private List<DriverVehicleScoreWrapper> driverTotals;   
 
     private GroupReportDAO groupReportDAO;  
     private TeamCommonBean teamCommonBean;   
     
-    private Integer teamOverallScore;
-    private String teamOverallScoreStyle;
+//    private Integer teamOverallScore;
+//    private String teamOverallScoreStyle;
     
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
@@ -55,8 +58,29 @@ public class TeamStatisticsBean extends BaseBean {
     }
     
     public void init() {
+//        logger.info("TeamStatisticsBean:init()");        
         
+        // Set the styles for the color-coded box               
+//        loadScoreStyles();
+//        cleanData();
+
+        // All set, save so we don't grab the data again
+//        teamCommonBean.getCachedResults().put(key, driverStatistics);
+
+        // Find the totals
+  //      driverTotals = getDriverTotals(); 
+        
+        // Set the score and style for the top of the containing page
+//        teamOverallScore = driverTotals.get(0).getScore().getOverall().intValue();
+//        teamOverallScoreStyle = driverTotals.get(0).getScoreStyle();
+        
+//        logger.info("TeamStatisticsBean:init()-END");        
+    }
+
+    public List<DriverVehicleScoreWrapper> getDriverStatistics() {
         // Have this cached?
+        List<DriverVehicleScoreWrapper> driverStatistics = null;
+  
         String key = teamCommonBean.getTimeFrame().name();
         if (teamCommonBean.getCachedResults().containsKey(key)) {
             driverStatistics = teamCommonBean.getCachedResults().get(key);
@@ -73,30 +97,17 @@ public class TeamStatisticsBean extends BaseBean {
                 driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
                         teamCommonBean.getTimeFrame().getAggregationDuration());
             }
+            cleanData(driverStatistics);
+
+            // All set, save so we don't grab the data again
+            teamCommonBean.getCachedResults().put(key, driverStatistics);
         }
-        
-        // Set the styles for the color-coded box               
-        loadScoreStyles();
-        cleanData();
-
-        // All set, save so we don't grab the data again
-        teamCommonBean.getCachedResults().put(key, driverStatistics);
-
-        // Find the totals
-        driverTotals = getDriverTotals(); 
-        
-        // Set the score and style for the top of the containing page
-        teamOverallScore = driverTotals.get(0).getScore().getOverall().intValue();
-        teamOverallScoreStyle = driverTotals.get(0).getScoreStyle();              
-    }
-
-    public List<DriverVehicleScoreWrapper> getDriverStatistics() {
         return driverStatistics;
     }
 
-    public void setDriverStatistics(List<DriverVehicleScoreWrapper> driverStatistics) {
-        this.driverStatistics = driverStatistics;
-    }
+//    public void setDriverStatistics(List<DriverVehicleScoreWrapper> driverStatistics) {
+//        this.driverStatistics = driverStatistics;
+//    }
     
     private boolean whichMethodToUse() {      
         
@@ -108,6 +119,8 @@ public class TeamStatisticsBean extends BaseBean {
     
         return true;
     }
+    
+/*    
     
     private void loadScoreStyles() {
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
@@ -125,8 +138,8 @@ public class TeamStatisticsBean extends BaseBean {
         	}
         }
     }
-    
-    public void cleanData() {
+*/    
+    public void cleanData(List<DriverVehicleScoreWrapper> driverStatistics) {
         
         // A place to facilitate sorting and other good things
         for ( DriverVehicleScoreWrapper dvsw: driverStatistics ) {
@@ -150,7 +163,7 @@ public class TeamStatisticsBean extends BaseBean {
     public List<DriverVehicleScoreWrapper> getDriverTotals() {
         List<DriverVehicleScoreWrapper> local = new ArrayList<DriverVehicleScoreWrapper>();
         
-        DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(driverStatistics, teamCommonBean.getGroup());
+        DriverVehicleScoreWrapper dvsw = DriverVehicleScoreWrapper.summarize(getDriverStatistics(), teamCommonBean.getGroup());
         dvsw.setScoreStyle(ScoreBox.GetStyleFromScore(
                         dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL));
 
@@ -159,9 +172,9 @@ public class TeamStatisticsBean extends BaseBean {
         return local;
     }
 
-    public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
-        this.driverTotals = driverTotals;
-    }
+//    public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
+//        this.driverTotals = driverTotals;
+//    }
 
     public int getNumRowsPerPg() {
         return numRowsPerPg;
@@ -172,20 +185,21 @@ public class TeamStatisticsBean extends BaseBean {
     }
 
     public Integer getTeamOverallScore() {       
-        return teamOverallScore;
+        return getDriverTotals().get(0).getScore().getOverall().intValue();
+//        return teamOverallScore;
     }
 
-    public void setTeamOverallScore(Integer teamOverallScore) {
-        this.teamOverallScore = teamOverallScore;
-    }
+//    public void setTeamOverallScore(Integer teamOverallScore) {
+//        this.teamOverallScore = teamOverallScore;
+//    }
 
-    public String getTeamOverallScoreStyle() {
-        return teamOverallScoreStyle;
-    }
-
-    public void setTeamOverallScoreStyle(String teamOverallScoreStyle) {
-        this.teamOverallScoreStyle = teamOverallScoreStyle;
-    }
+//    public String getTeamOverallScoreStyle() {
+//        return teamOverallScoreStyle;
+//    }
+//
+//    public void setTeamOverallScoreStyle(String teamOverallScoreStyle) {
+//        this.teamOverallScoreStyle = teamOverallScoreStyle;
+//    }
 
     public void exportReportToPdf()
     {
