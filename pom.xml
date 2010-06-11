@@ -4,7 +4,7 @@
   <groupId>com.inthinc.pro</groupId>
   <artifactId>root</artifactId>
   <packaging>pom</packaging>
-  <version>1.2.3-snapshot</version>
+  <version>1.2.3-SNAPSHOT</version>
   <name>TIWI Pro Application</name>
   <url>http://www.iwiglobal.com</url>
   <organization>
