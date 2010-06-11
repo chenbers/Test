@@ -33,7 +33,7 @@ public class TeamCommonBean extends BaseBean {
     private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = Collections.synchronizedMap(new HashMap<String,List<DriverVehicleScoreWrapper>>());
     
     public void init() {
-
+        selectedTabId = "teamStatistics";
     }
 
     public Integer getGroupID() {
@@ -102,11 +102,18 @@ public class TeamCommonBean extends BaseBean {
 
 	public void setTeamTabPanel(UITabPanel teamTabPanel) {
 		this.teamTabPanel = teamTabPanel;
-		this.teamTabPanel.setSelectedTab("teamStatistics");
+		this.teamTabPanel.setSelectedTab(selectedTabId);
 	}
 
 	public Object getSelectedTab() {
-		return teamTabPanel.getSelectedTab();
+	    
+        if (teamTabPanel != null) return teamTabPanel.getSelectedTab();
+        return selectedTabId;
+	}
+	public void setSelectedTab(Object selectedTab){
+	    
+	    if (teamTabPanel != null) teamTabPanel.setSelectedTab(selectedTab);
+	    selectedTabId = selectedTab.toString();
 	}
 
     public Map<String, List<DriverVehicleScoreWrapper>> getCachedResults() {
@@ -117,11 +124,11 @@ public class TeamCommonBean extends BaseBean {
         this.cachedResults = cachedResults;
     }
 
-	public void setSelectedTabId(String selectedTabId) {
-		this.selectedTabId = selectedTabId;
+    public void setSelectedTabId(Object selectedTabId) {
+		this.selectedTabId = selectedTabId.toString();
 	}
 
-	public String getSelectedTabId() {
-		return selectedTabId;
+	public Object getSelectedTabId() {
+	 	return selectedTabId;
 	}
 }

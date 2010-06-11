@@ -107,6 +107,7 @@
 			mapNeedsInit = false;
 			map.clearOverlays();
 			addMarkers();
+			#{oncomplete};
 		}
 
 		function funcToCall(obj) {
@@ -115,6 +116,7 @@
 			if ( obj.callFuncID == 0 ) {
 				fillBubbleMarker(obj.itemID,obj.subID);
 			}		
+			#{oncomplete};
 		}  	
 //		jQuery(function(){
 //			bodyLoad();
@@ -242,16 +244,16 @@
 		</a4j:region>
 
 		<a4j:form id="bubbleForm">
-				<a4j:jsFunction id="filBubMark" name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+				<a4j:jsFunction id="filBubMark" name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker();#{oncomplete}">
 						<a4j:actionparam id="drvId" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}" />
 						<a4j:actionparam id="sub" name="subId" />
 				</a4j:jsFunction>
 				<a4j:jsFunction id="filBubMap" name="fillBubbleMap" reRender="mapPopups"
 						oncomplete="getAddressForPosition(#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lat},
-								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng})">
+								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng});#{oncomplete}">
 						<a4j:actionparam id="drvId1" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}" />
 				</a4j:jsFunction>
-				<a4j:jsFunction id="zoneFix" name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
+				<a4j:jsFunction id="zoneFix" name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);#{oncomplete}">
 						<a4j:actionparam id="lat" name="latitude" assignTo="#{addressBean.zoneLat}" />
 						<a4j:actionparam id="lng" name="longitude" assignTo="#{addressBean.zoneLng}" />
 						<a4j:actionparam id="elmIndx" name="elemIndex" assignTo="#{addressBean.elemIndex}" />

@@ -41,10 +41,14 @@ public class TreeNavigationBean extends BaseBean {
     
     public void init(){
         
- //       setGroupID(getUser().getGroupID());
-
- //       currentGroupName=group.getName();
         recentNodes = new ArrayList<JsTreeNode>();
+        
+        if(getUser()!= null){
+            
+            buildTreeFrom(getUser().getGroupID());
+
+            currentGroupName=group.getName();
+        }
      }
         
  	public GroupDAO getGroupDAO() {
@@ -98,7 +102,7 @@ public class TreeNavigationBean extends BaseBean {
         return groupID;
     }
     
-    public void setGroupID(Integer groupID)
+    public void buildTreeFrom(Integer groupID)
     {
         // Lets not load a new group if we don't need to
         if (this.groupID != groupID && groupDAO != null && groupID != 0) // groupID ZERO is for Unknown Driver
@@ -125,7 +129,7 @@ public class TreeNavigationBean extends BaseBean {
         
         if(groupID==null){
 
-            setGroupID(getUser().getGroupID());
+            buildTreeFrom(getUser().getGroupID());
         }
         currentGroupName = getGroupHierarchy().getGroup(currentGroupID).getName();
         //find node in the tree and set it selected

@@ -86,7 +86,7 @@
 				padding: 4px 1px;
 				font-size: 9px;
 			}
-			.datagrid td {
+			.datagrid > tbody > tr > td, .datagrid td  {
 				text-align: center;
 				padding: 3px;
 				font-size: 9px;
@@ -138,26 +138,29 @@
 
 			Team.tabChange = function(tab){
 				//Set the hash to be the id of the selected tab
-				jQuery.address.value("/tab/" + Team.getSelectedTabId().replace("_lbl",""));
+//				jQuery.address.value("/tab/" + Team.getSelectedTabId().replace("_lbl",""));
+				var tabId = jQuery.address.pathNames();
 				return false;
 			}
 
 			Team.selectTab = function(tabId){
-				var clickableTabElementId = "#" + tabId + "_shifted";
+				//var clickableTabElementId = "#" + tabId + "_shifted";
 				//jQuery(clickableTabElementId).click();
 				selectTab(tabId);
 			}
 			
 			jQuery(function(){
-				tabId = jQuery.address.pathNames()[1];
-				Team.selectTab(tabId);	
-				
+/*				tabId = jQuery.address.pathNames()[1];
+				if(tabId != undefined){
+					
+					Team.selectTab(tabId);	
+				}
 				jQuery.address.change(function(){
 					var tabId = jQuery.address.pathNames()[1];
 					if(tabId != Team.getSelectedTabId().replace("_lbl","")){
 						Team.selectTab(tabId);
 					}
-				});
+				});*/
 			});	
 		</script>	
 						
@@ -395,13 +398,17 @@
 	    <div class="panel_w">
 	       	<div class="panel_content"> 
 <!--
-This was causing an extra 2 or 3 requests for the page to be issue (performance and threading issues). 	       	
+This was causing an extra 2 or 3 requests for the page to be issue (performance and threading issues). 
+This is needed for the first time the page is selected by bookmark but took out
+jQuery.address.change which doesn't need to be called as the component takes care of
+changing the selected tab on its own - sets/gets teamCommonBean.selectedTabId
+	       	
 	       	<a4j:form>
 		       	<a4j:jsFunction ajaxSingle="true" name="selectTab" reRender="overallTeamPanel">
 		        		<a4j:actionparam id="tabId" name="tabId" assignTo="#{teamCommonBean.selectedTabId}"/>
 		        </a4j:jsFunction>	 
 	        </a4j:form>
- -->		       	
+-->
 	        <a4j:outputPanel id="overallTeamPanel">    					
 				<rich:tabPanel id="teamTabPanel" binding="#{teamCommonBean.teamTabPanel}" 
 				selectedTab="#{teamCommonBean.selectedTabId}" switchType="ajax">
