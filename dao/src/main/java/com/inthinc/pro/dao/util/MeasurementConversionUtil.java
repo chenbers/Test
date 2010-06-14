@@ -1,5 +1,7 @@
 package com.inthinc.pro.dao.util;
 
+import java.text.NumberFormat;
+
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -54,6 +56,18 @@ public class MeasurementConversionUtil
     {
         
         return milesPerHour==null?null:Long.valueOf(Math.round(milesPerHour.doubleValue() * MILESTOKM)).intValue();
+    }
+
+    public static Integer fromMPHtoKPHSpeedLimit(Number milesPerHour)
+    {
+        //Converts to KPH and then rounds to the nearest 5kph - used for converting speed limits only
+        
+        if (milesPerHour == null) return null;
+        
+        Double addSome= new Double(MeasurementConversionUtil.fromMPHtoKPH(Number.class.cast(milesPerHour)).doubleValue())+2.5d;
+        int nearestFive = addSome.intValue()/5 * 5;
+        
+        return nearestFive;
     }
 
     public static Number fromKPHtoMPH(Number kilometersPerHour)

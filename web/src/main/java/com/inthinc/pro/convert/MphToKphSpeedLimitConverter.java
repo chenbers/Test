@@ -34,8 +34,10 @@ public class MphToKphSpeedLimitConverter extends BaseConverter {
         if (Number.class.isInstance(value))
         {
             if (getMeasurementType().equals(MeasurementType.METRIC)){
-                Double addSome= new Double(MeasurementConversionUtil.fromMPHtoKPH(Number.class.cast(value)).doubleValue())+2.5d;
-                   int nearestFive = addSome.intValue()/5 * 5;
+                
+                Integer nearestFive = MeasurementConversionUtil.fromMPHtoKPHSpeedLimit(Number.class.cast(value));
+//                Double addSome= new Double(MeasurementConversionUtil.fromMPHtoKPH(Number.class.cast(value)).doubleValue())+2.5d;
+//                   int nearestFive = addSome.intValue()/5 * 5;
                 return NumberFormat.getInstance(getLocale()).format(nearestFive);
             }
         }
