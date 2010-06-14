@@ -39,6 +39,31 @@ public class MetricConversionUtilTest
 //        logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(null, kilometersperhour);
 }
+    @Test
+    public void testFromMPHtoKPHSpeedLimit()
+    {
+        Integer expectedkph = 90;
+        Integer actualmph = 55;
+        Number kilometersperhour = MeasurementConversionUtil.fromMPHtoKPHSpeedLimit(actualmph);
+        logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
+        Assert.assertEquals(expectedkph, kilometersperhour);
+        
+        expectedkph = 55;
+        actualmph = 35;
+        kilometersperhour = MeasurementConversionUtil.fromMPHtoKPHSpeedLimit(actualmph);
+        logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
+        Assert.assertEquals(expectedkph, kilometersperhour);
+        
+        expectedkph = 70;
+        actualmph = 45;
+        kilometersperhour = MeasurementConversionUtil.fromMPHtoKPHSpeedLimit(actualmph);
+        logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
+        Assert.assertEquals(expectedkph, kilometersperhour);
+
+        kilometersperhour = MeasurementConversionUtil.fromMPHtoKPHSpeedLimit(null);
+//        logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
+        Assert.assertEquals(null, kilometersperhour);
+}
     
     @Test
     public void testFromKPHtoMPH()
