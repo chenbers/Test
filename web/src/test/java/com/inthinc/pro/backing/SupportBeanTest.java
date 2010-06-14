@@ -21,6 +21,9 @@ public class SupportBeanTest extends BaseBeanTest {
     @Test
     public void notLoggedIn()
     {
+        this.loginUser(UnitTestStats.UNIT_TEST_LOGIN);
+        this.logoutUser();
+        
         SupportBean supportBean = (SupportBean)applicationContext.getBean("supportBean");
         
         List<String>contactList = supportBean.getSupportContacts();
