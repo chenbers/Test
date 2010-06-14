@@ -20,6 +20,10 @@
 		</ui:include>
 	</ui:define>
 	<ui:define name="content">
+			<a4j:loadStyle src="/css/jquery.scorebox.css"/>
+	 		<a4j:loadScript src="/js/jquery.scorebox.js"/>
+	 		<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'sm'})" />
+	 		<rich:jQuery selector=".scoreBox" timing="onJScall" query="scoreBox({size:'sm'})" name="decorateScorebox"/>
 			<a4j:keepAlive beanName="vehicleReportTableColumns" />
 		 	<ui:param name="tableColumns" value="#{vehicleReportTableColumns.tableColumns}" />
 			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
@@ -144,12 +148,13 @@
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
 													<ui:param name="type" value="overall" />
 												</ui:include>
-	                                            <ui:include src="/includes/new_scoreBox.xhtml">
-	                                                    <ui:param name="score" value="#{item.overallScore}" />
-	                                                    <ui:param name="item" value="#{item.vehicleID}" /> 
-	                                                    <ui:param name="scoreMappingId" value="vehiclePerformance"/>
-														<ui:param name="context" value="vehiclesOverall" />
-	                                            </ui:include> 
+												<div class="scoreBox">
+													<pretty:link mappingId="vehiclePerformance">
+											           <h:outputText value="#{item.overallScore}" converter="ScoreConverter" rendered="#{not empty item.overallScore}"/>
+									   	   			   <h:outputText value="-1" converter="ScoreConverter" rendered="#{empty item.overallScore}"/>
+											           <f:param value="#{item.vehicleID}" />
+											        </pretty:link>
+												</div>	
                                         	</rich:column>
 	                                        <rich:column id="speedScore" rendered="#{tableColumns['speedScore'].visible}"
     	                                        sortBy="#{item.speedScore}"  width="10%"
@@ -159,12 +164,13 @@
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
 													<ui:param name="type" value="speed" />
 												</ui:include>
-	                                            <ui:include src="/includes/new_scoreBox.xhtml">
-	                                                    <ui:param name="score" value="#{item.speedScore}" />
-	                                                    <ui:param name="item" value="#{item.vehicleID}" /> 
-	                                                    <ui:param name="scoreMappingId" value="vehiclePerformanceSpeed"/>
-														<ui:param name="context" value="vehiclesSpeed" />
-	                                            </ui:include> 
+												<div class="scoreBox">
+													<pretty:link mappingId="vehiclePerformanceSpeed">
+											           <h:outputText value="#{item.speedScore}" converter="ScoreConverter" rendered="#{not empty item.speedScore}"/>
+									   	   			   <h:outputText value="-1" converter="ScoreConverter" rendered="#{empty item.speedScore}"/>
+											           <f:param value="#{item.vehicleID}" />
+											        </pretty:link>
+												</div>
 	                                        </rich:column>
 	                                        <rich:column id="styleScore" rendered="#{tableColumns['styleScore'].visible}"
     	                                        sortBy="#{item.styleScore}"  width="10%"
@@ -174,12 +180,13 @@
 													<ui:param name="bean" value="#{pagingVehicleReportBean}" />
 													<ui:param name="type" value="style" />
 												</ui:include>
-	                                            <ui:include src="/includes/new_scoreBox.xhtml">
-	                                                    <ui:param name="score" value="#{item.styleScore}" />
-	                                                    <ui:param name="item" value="#{item.vehicleID}" /> 
-	                                                    <ui:param name="scoreMappingId" value="vehiclePerformanceStyle"/>
-														<ui:param name="context" value="vehiclesStyle" />
-	                                            </ui:include> 
+												<div class="scoreBox">
+													<pretty:link mappingId="vehiclePerformanceStyle">
+											           <h:outputText value="#{item.styleScore}" converter="ScoreConverter" rendered="#{not empty item.styleScore}"/>
+									   	   			   <h:outputText value="-1" converter="ScoreConverter" rendered="#{empty item.styleScore}"/>
+											           <f:param value="#{item.vehicleID}" />
+											        </pretty:link>
+												</div>
 	                                        </rich:column>
     	                                </rich:dataTable>                     		
     								</div>	
@@ -190,6 +197,7 @@
                                           scrollerListener="#{pagingVehicleReportBean.table.scrollerListener}" 
                                           reRender="#{context},#{context}-form:header"
                                           requestDelay="200" eventsQueue="pagerQueue" 
+                                          oncomplete="decorateScorebox();"
                                           page="#{pagingVehicleReportBean.table.pageData.currentPage}" renderIfSinglePage="false"/>
 	                   			</h:form>
 								<ui:include src="/includes/columnSelectionPopup.xhtml">

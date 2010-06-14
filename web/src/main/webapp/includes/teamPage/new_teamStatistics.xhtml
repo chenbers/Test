@@ -11,6 +11,10 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<rich:tab  id="teamStatistics" oncomplete="Team.tabChange();decorateScoreBox();">
+		<a4j:loadStyle src="/css/jquery.scorebox.css"/>
+ 		<a4j:loadScript src="/js/jquery.scorebox.js"/>
+ 		<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'xx_sm'})" />
+ 		<rich:jQuery selector=".scoreBox" timing="onJScall" query="scoreBox({size:'xx_sm'})" name="decorateScorebox"/>
 		<a4j:keepAlive beanName="teamStatisticsTableColumns" />
 	 	<ui:param name="tableColumns" value="#{teamStatisticsTableColumns.tableColumns}" />
 	 	<ui:param name="context" value="teamStatistics" />
@@ -102,12 +106,9 @@
 					<f:facet name="header">
 						#{messages.team_score}	
 					</f:facet>					 
-					<ui:include src="/includes/new_scoreBox.xhtml">
-	                    <ui:param name="score" value="#{total.score.overall}" />
-	                    <ui:param name="item" value="#{total.driver.driverID}" /> 
-	                    <ui:param name="size" value="xx-sm"/>                 
-						<ui:param name="context" value="driversOverallNotAvailable" />
-                    </ui:include> 
+					<div class="scoreBox">
+						<h:outputText value="#{item.score.overall}" converter="ScoreConverter" />
+			        </div> 
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['vehicle'].visible}" id="newTeamStatsTab-totalsVehicle-empty">  
 					<h:outputText value=""/>
@@ -212,13 +213,12 @@
 					<f:facet name="header">
 						#{messages.team_score}
 					</f:facet>
-                    <ui:include src="/includes/new_scoreBox.xhtml">
-	                    <ui:param name="score" value="#{item.score.overall}" />
-	                    <ui:param name="item" value="#{item.driver.driverID}" /> 
-	                    <ui:param name="scoreMappingId" value="driverPerformance"/>
-						<ui:param name="context" value="driversOverallAvailable" />
-						<ui:param name="size" value="xx-sm"/>
-                    </ui:include>  
+					<div class="scoreBox">
+						<pretty:link mappingId="driverPerformance">
+							<h:outputText value="#{item.score.overall}" converter="ScoreConverter" />
+							<f:param value="#{item.driver.driverID}"/>
+						</pretty:link>
+					</div>
 				</rich:column>			
 				<rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicle.name}" id="newTeamStatsTab-vehicle">
 					<f:facet name="header">
@@ -330,7 +330,7 @@
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
 				</rich:column>							
 				<f:facet name="footer">				
-					<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" />
+					<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" oncomplete="decorateScorebox()"/>
 				</f:facet>
 				
 				
