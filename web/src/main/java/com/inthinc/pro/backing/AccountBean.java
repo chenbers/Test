@@ -35,8 +35,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;    
     private static final String REQUIRED_KEY = "required";
-    private static final char [] INVALID = {'(', ')', '-', '~', '`', '!',
-        '@', '#', '$', '%', '^', '&', '*', '_', '+', '=', '|', '\\'};
     
     static {
         // time zones
@@ -65,8 +63,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     }      
     private PersonDAO personDAO;
     private WMSConfigurationBean wmsConfigurationBean;
-//    private ExternalConfigBean externalConfigBean;
-//    private AccountOptionsBean accountOptionsBean;
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
@@ -80,31 +76,14 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         this.wmsConfigurationBean = wmsConfigurationBean;
     }
 
-//    public ExternalConfigBean getExternalConfigBean() {
-//        return externalConfigBean;
-//    }
-//
-//    public void setExternalConfigBean(ExternalConfigBean externalConfigBean) {
-//        this.externalConfigBean = externalConfigBean;
-//    }
-
-//    public AccountOptionsBean getAccountOptionsBean() {
-//        return accountOptionsBean;
-//    }
-//
-//    public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
-//        this.accountOptionsBean = accountOptionsBean;
-//    }
 
     @Override
     protected Boolean authorizeAccess(AccountView item) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     protected AccountView createAddItem() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -130,26 +109,17 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             wmsConfigurationBean.setQuery(a.getProps().getWmsQuery());
             wmsConfigurationBean.setUrl(a.getProps().getWmsURL());  
             
-            // Support numbers
-//            externalConfigBean.setPhoneData();
-            
-            // Alerts on
-//            accountOptionsBean.setEnablePhoneAlerts(
-//                    a.getProps().getPhoneAlertsActive().equalsIgnoreCase(MessageUtil.getMessageString("editAccount_yes"))?true:false);
-            
             getProUser().setAccountAttributes(a.getProps());
         }  
     }
 
     @Override
     public List<String> getAvailableColumns() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Map<String, Boolean> getDefaultColumns() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -161,7 +131,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
     @Override
     protected String getEditRedirect() {
-        // TODO Auto-generated method stub
         return "pretty:adminEditAccount";
     }
 
@@ -244,24 +213,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
                 MessageUtil.getMessageString("editAccount_bad_phone_alerts"), null);
             context.addMessage("edit-form:editAccount-phoneAlerts", message);            
         }
-/*        
-        // check that certain characters aren't present
-        if ( !digitCheck(saveItem.getProps().getSupportPhone1()) ) {            
-            valid = false;
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                MessageUtil.getMessageString("editAccount_bad_phone_characters"), null);
-            context.addMessage("edit-form:editAccount-supportPhone1", message);            
-        }
-        
-        // check that certain characters aren't present, if data is provided
-        if ( (saveItem.getProps().getSupportPhone2().trim().length() != 0) && 
-             (!digitCheck(saveItem.getProps().getSupportPhone2())) ) {            
-            valid = false;
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                MessageUtil.getMessageString("editAccount_bad_phone_characters"), null);
-            context.addMessage("edit-form:editAccount-supportPhone2", message);            
-        }      
-*/        
         // even number of layers?
         if ( !parseLayers(saveItem.getProps().getWmsLayers()) ) {
             valid = false;
@@ -272,26 +223,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
         return valid;
     }
-/*    
-    private boolean digitCheck(String str) {
-        
-        // It can't contain only numbers and letters if it's null or empty...
-        if (str == null || str.length() == 0) {
-            return false;
-        }
-
-        // Any baddies?
-        for ( int i = 0; i < str.length(); i++ ) {
-            for ( int j = 0; j < INVALID.length; j++ ) {
-                if ( str.charAt(i) == INVALID[j] ) {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
-*/    
     private boolean parseLayers(String layers) {
         StringTokenizer st = new StringTokenizer(layers," ");
         
@@ -313,13 +244,11 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
     @Override
     public String getColumnLabelPrefix() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public TableType getTableType() {
-        // TODO Auto-generated method stub
         return null;
     }
     
