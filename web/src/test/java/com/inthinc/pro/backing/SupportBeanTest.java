@@ -3,11 +3,20 @@ package com.inthinc.pro.backing;
 import java.util.List;
 import java.util.Properties;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 
 public class SupportBeanTest extends BaseBeanTest { 
+
+    @After
+    @Override
+    public void tearDown() throws Exception
+    {
+        super.tearDown();
+        logoutUser();
+    }
 
     @Test
     public void notLoggedIn()

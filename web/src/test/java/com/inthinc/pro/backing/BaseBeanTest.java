@@ -131,6 +131,12 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         
     }
     
+    protected void logoutUser()
+    {
+        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null)
+            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+    }
+    
     protected ProUser loginUser(String username)
     {
         User user = getUserDAO().findByUserName(username);
