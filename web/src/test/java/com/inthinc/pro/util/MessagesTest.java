@@ -167,6 +167,13 @@ public class MessagesTest {
         nonTranslatedMap_ro.put("editAlerts_status", "not_translated");//Status
         nonTranslatedMap_ro.put("stopsDateTimeFormat", "not_translated");// MM/dd/yyy h:mm a(z)
         nonTranslatedMap_ro.put("teamTotal", "not_translated"); // Total
+        
+        nonTranslatedMap_ro.put("editAccount_support_contact0", "not_translated"); // Contact 1:
+        nonTranslatedMap_ro.put("editAccount_support_contact1", "not_translated"); // Contact 2:
+        nonTranslatedMap_ro.put("editAccount_support_contact2", "not_translated"); // Contact 3:
+        nonTranslatedMap_ro.put("editAccount_support_contact3", "not_translated"); // Contact 4:
+        nonTranslatedMap_ro.put("editAccount_support_contact4", "not_translated"); // Contact 5:
+
 	}
 	
 	@Test
