@@ -34,7 +34,7 @@ public class MyAccountBean extends BaseBean
     private UserDAO userDAO;
     private DriverDAO driverDAO;
     private HelpBean helpBean;
-    private AccountOptionsBean accountOptionsBean;
+//    private AccountOptionsBean accountOptionsBean;
 
     public MyAccountBean()
     {
@@ -100,10 +100,11 @@ public class MyAccountBean extends BaseBean
 
     public Map<String, Integer> getAlertOptions() {
         // alert options
+        
         LinkedHashMap<String, Integer> alertOptions = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 8; i++) {
             if (i == 5 ||  // skip cell phone 
-              (!accountOptionsBean.getEnablePhoneAlerts() && (i == 3 || i == 4)))  // skip phone alerts if account is set to this
+              (!isEnablePhoneAlerts() && (i == 3 || i == 4)))  // skip phone alerts if account is set to this
             	continue;
             alertOptions.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
         }
@@ -132,7 +133,7 @@ public class MyAccountBean extends BaseBean
 		this.helpBean = helpBean;
 	}
 
-    
+/*    
     public AccountOptionsBean getAccountOptionsBean() {
 		return accountOptionsBean;
 	}
@@ -140,7 +141,7 @@ public class MyAccountBean extends BaseBean
 	public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
 		this.accountOptionsBean = accountOptionsBean;
 	}
-
+*/
 	public Integer getInfo()
 	{
 		return validAccountAlertValue(getUser().getPerson().getInfo());
@@ -159,8 +160,10 @@ public class MyAccountBean extends BaseBean
 	private Integer validAccountAlertValue(Integer value) {
         if (value == null || 
         	value == 5 ||  // skip cell phone 
-           (!accountOptionsBean.getEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
+           (!isEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
            return 0;
 		return value;
 	}
+	
+	
 }

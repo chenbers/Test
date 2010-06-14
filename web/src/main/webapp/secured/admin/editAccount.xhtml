@@ -5,9 +5,10 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
-     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
-     xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
  
  
   <ui:param name="adminSelected" value="current" />
@@ -158,7 +159,7 @@
                     
                     <td width="390" valign="top">
                       <div class="add_section_title">
-                      	<h:outputText value="Web Map Service" />                      	
+                      	<h:outputText value="#{messages.editAccount_web_map_service}" />                      	
                       </div> 
                       
                       <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
@@ -238,8 +239,8 @@
                             <h:selectOneMenu id="editAccount-phoneAlerts" value="#{accountBean.item.props.phoneAlertsActive}" 
                             	required="false" requiredMessage="#{messages.required}" >
                             	<f:selectItem itemLabel=""                            itemValue=""/>
-                            	<f:selectItem itemLabel="#{messages.editAccount_yes}" itemValue="#{messages.editAccount_yes}"/>
-                            	<f:selectItem itemLabel="#{messages.editAccount_no}"  itemValue="#{messages.editAccount_no}"/>
+                            	<f:selectItem itemLabel="#{messages.editAccount_yes}" itemValue="1"/>
+                            	<f:selectItem itemLabel="#{messages.editAccount_no}"  itemValue="0"/>
                             </h:selectOneMenu>                              	                           	
                               	                              
                           </td>
@@ -257,40 +258,6 @@
                               	maxlength="50" required="true" requiredMessage="#{messages.required}" />                               
                           </td>
                         </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_support_phone1}" />
-                            <span class="required">*</span>                          	
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-supportPhone1" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-supportPhone1" value="#{accountBean.item.props.supportPhone1}"
-                             	validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter"
-                            	onchange="checkMultiple(this)" styleClass="text" size="30"
-                              	maxlength="22" required="true" requiredMessage="#{messages.required}" >
-                              	<f:validateLength  maximum="22" />
-                             	<f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />                              	
-                            </h:inputText>                               
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_support_phone2}" /> 
-                                                                                	
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-supportPhone2" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-supportPhone2" value="#{accountBean.item.props.supportPhone2}"
-                             	validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter"
-                            	onchange="checkMultiple(this)" styleClass="text" size="30"
-                              	maxlength="22" required="false" requiredMessage="#{messages.required}" >
-                              	<f:validateLength  maximum="22" />
-                             	<f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />            
-                            </h:inputText>                               
-                          </td>
-                        </tr>                        
                       </table>
 
                      
@@ -301,49 +268,40 @@
                     </td>
                     
                     <td width="390" valign="top">
-                      <div class="add_section_title">
-                      	<h:graphicImage value="/images/x.gif" width="10" />                  	
-                      </div> 
+						<div class="add_section_title">
+                   			<h:outputText  id="example" value="#{messages.editAccount_example}" style="float:right;cursor:hand;text-decoration: underline;"/>
+	                      	<rich:toolTip for="example" showEvent="onclick"  
+	                      		style="background: url(../../images/bg_grid_nav.png);border: 1px solid #8BAD37;">
+        	              		<h:outputText value="#{messages.editAccount_sampleEmail}" /><br/>
+    	                  		<h:outputText value="#{messages.editAccount_sampleEmail}" escape="false" /><br/>
+        	              		<br/>
+                	      		<h:outputText value="#{messages.editAccount_samplePhone}" /><br/>
+            	          		<h:outputText value="#{messages.editAccount_samplePhone}" escape="false" /><br/>
+        					</rich:toolTip>
+                      		<h:outputText value="#{messages.editAccount_support}" />                      	
+                      	</div> 
                       
-                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value=""/>
-                            
-                          </td>
-                          <td>
-                            
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="" />
-                            
-                          </td>
-                          <td>
-                            
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="" />
-                                                   	
-                          </td>
-                          <td>
-                            
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="" />
-                                                    	
-                          </td>
-                          <td>
-                            
-                          </td>
-                        </tr>                        
-                      </table>
-             
+		                <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
+		                	<c:forEach begin="0" var="row" end="4">
+		                        <tr>
+		                          <c:set var="label" value="editAccount_support_contact#{row}" />
+		                          <c:set var="value" value="supportContact#{row+1}" />
+		                        
+		                          <td width="120" valign="top">
+		                            <h:outputText value="#{messages[label]}" />
+		                            <h:panelGroup rendered="#{row == 0}" class="required">*</h:panelGroup>
+		                          </td>
+		                          <td width="200" valign="top">
+		                            <rich:message for="editAccount-supportContact#{row}" errorClass="field-error" fatalClass="field-error" 
+		                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+		                            <h:inputText id="editAccount-supportContact#{row}" value="#{accountBean.item.props[value]}"
+		                             	onchange="checkMultiple(this)" styleClass="text" size="40"
+		                              	maxlength="255" required="#{row == 0}" requiredMessage="#{messages.required}" />
+		                          </td>
+		                    	</tr>
+							</c:forEach>
+						</table>
+                      	
                     </td>
                     					
                    </tr>                   

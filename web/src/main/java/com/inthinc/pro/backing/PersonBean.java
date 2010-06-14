@@ -165,7 +165,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private List<PersonChangeListener> changeListeners;
 
     private FuelEfficiencyBean fuelEfficiencyBean;
-    private AccountOptionsBean accountOptionsBean;
+//    private AccountOptionsBean accountOptionsBean;
     private Roles accountRoles;
     private CacheBean cacheBean;
     private ListPicker         rolePicker;
@@ -177,7 +177,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	public void setCacheBean(CacheBean cacheBean) {
 		this.cacheBean = cacheBean;
 	}
-
+/*
 	public AccountOptionsBean getAccountOptionsBean() {
 		return accountOptionsBean;
 	}
@@ -185,7 +185,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
 		this.accountOptionsBean = accountOptionsBean;
 	}
-
+*/
 	public FuelEfficiencyBean getFuelEfficiencyBean() {
 		return fuelEfficiencyBean;
 	}
@@ -867,7 +867,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         LinkedHashMap<String, Integer> alertOptions = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 8; i++) {
             if (i == 5 ||  // skip cell phone 
-              (!accountOptionsBean.getEnablePhoneAlerts() && (i == 3 || i == 4)))  // skip phone alerts if account is set to this
+              (!isEnablePhoneAlerts() && (i == 3 || i == 4)))  // skip phone alerts if account is set to this
             	continue;
             alertOptions.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
         }
@@ -1110,7 +1110,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         
     	private Integer validAccountAlertValue(Integer value) {
             if (value == null || value == 5 ||  // skip cell phone 
-               (!bean.getAccountOptionsBean().getEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
+               (!bean.isEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
                return 0;
     		return value;
     	}

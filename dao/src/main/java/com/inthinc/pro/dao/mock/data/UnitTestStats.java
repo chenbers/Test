@@ -16,6 +16,9 @@ public class UnitTestStats
     public static final String UNIT_TEST_LOGIN = "custom114";
     public static final Integer UNIT_TEST_DRIVER_ID = 1222;
 
+    public static final String ACCOUNT_CONTACT1 = "PHONE: 1-555-555-5555";
+    public static final String ACCOUNT_CONTACT2 = "E-MAIL: test@email.com";
+    
     // stats for the test group
     public int totalRedFlags = 0;
     public int totalWarningRedFlags = 0;

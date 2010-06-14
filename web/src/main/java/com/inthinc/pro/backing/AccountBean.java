@@ -4,14 +4,11 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -22,7 +19,6 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.app.SupportedTimeZones;
@@ -69,8 +65,8 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     }      
     private PersonDAO personDAO;
     private WMSConfigurationBean wmsConfigurationBean;
-    private ExternalConfigBean externalConfigBean;
-    private AccountOptionsBean accountOptionsBean;
+//    private ExternalConfigBean externalConfigBean;
+//    private AccountOptionsBean accountOptionsBean;
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
@@ -84,21 +80,21 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         this.wmsConfigurationBean = wmsConfigurationBean;
     }
 
-    public ExternalConfigBean getExternalConfigBean() {
-        return externalConfigBean;
-    }
+//    public ExternalConfigBean getExternalConfigBean() {
+//        return externalConfigBean;
+//    }
+//
+//    public void setExternalConfigBean(ExternalConfigBean externalConfigBean) {
+//        this.externalConfigBean = externalConfigBean;
+//    }
 
-    public void setExternalConfigBean(ExternalConfigBean externalConfigBean) {
-        this.externalConfigBean = externalConfigBean;
-    }
-
-    public AccountOptionsBean getAccountOptionsBean() {
-        return accountOptionsBean;
-    }
-
-    public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
-        this.accountOptionsBean = accountOptionsBean;
-    }
+//    public AccountOptionsBean getAccountOptionsBean() {
+//        return accountOptionsBean;
+//    }
+//
+//    public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
+//        this.accountOptionsBean = accountOptionsBean;
+//    }
 
     @Override
     protected Boolean authorizeAccess(AccountView item) {
@@ -135,12 +131,13 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             wmsConfigurationBean.setUrl(a.getProps().getWmsURL());  
             
             // Support numbers
-            externalConfigBean.setPhoneData();
+//            externalConfigBean.setPhoneData();
             
             // Alerts on
-            accountOptionsBean.setEnablePhoneAlerts(
-                    a.getProps().getPhoneAlertsActive().equalsIgnoreCase(MessageUtil.getMessageString("editAccount_yes"))?true:false);
+//            accountOptionsBean.setEnablePhoneAlerts(
+//                    a.getProps().getPhoneAlertsActive().equalsIgnoreCase(MessageUtil.getMessageString("editAccount_yes"))?true:false);
             
+            getProUser().setAccountAttributes(a.getProps());
         }  
     }
 
@@ -247,7 +244,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
                 MessageUtil.getMessageString("editAccount_bad_phone_alerts"), null);
             context.addMessage("edit-form:editAccount-phoneAlerts", message);            
         }
-        
+/*        
         // check that certain characters aren't present
         if ( !digitCheck(saveItem.getProps().getSupportPhone1()) ) {            
             valid = false;
@@ -264,7 +261,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
                 MessageUtil.getMessageString("editAccount_bad_phone_characters"), null);
             context.addMessage("edit-form:editAccount-supportPhone2", message);            
         }      
-        
+*/        
         // even number of layers?
         if ( !parseLayers(saveItem.getProps().getWmsLayers()) ) {
             valid = false;
@@ -275,7 +272,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
         return valid;
     }
-    
+/*    
     private boolean digitCheck(String str) {
         
         // It can't contain only numbers and letters if it's null or empty...
@@ -294,7 +291,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
         return true;
     }
-    
+*/    
     private boolean parseLayers(String layers) {
         StringTokenizer st = new StringTokenizer(layers," ");
         
@@ -339,7 +336,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
         public AccountView() {
             super();
-            this.person = new Person();            
+            this.person = new Person();
         }
         
         @Override

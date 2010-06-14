@@ -307,8 +307,9 @@
   <bean id="accountBean" class="com.inthinc.pro.backing.AccountBean" scope="session" init-method="initBean">
     <property name="personDAO" ref="personDAO"></property>  
     <property name="wmsConfigurationBean" ref="wmsConfigurationBean"></property>
-    <property name="externalConfigBean" ref="externalConfigBean"></property> 
+<!--  <property name="externalConfigBean" ref="externalConfigBean"></property>    
     <property name="accountOptionsBean" ref="accountOptionsBean"></property>
+     --> 
   </bean>  
 
   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="session" parent="baseBean">
@@ -516,8 +517,10 @@
   <!-- Error translator -->
   <bean id="errorTranslatorBean" class="com.inthinc.pro.backing.ErrorTranslatorBean">
   </bean>
+<!--   
   <bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" scope="session" parent="baseBean" init-method="init">  
   </bean>
+-->
 
   <bean id="wmsConfigurationBean" class="com.inthinc.pro.backing.WMSConfigurationBean" scope="session" parent="baseBean" init-method="init">
   <!-- 
@@ -527,8 +530,11 @@
     <property name="layerQueryParam" value="${wms.layer.queryparam}" />
     -->
   </bean>
+<!--   
   <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean" init-method="init">
   </bean>
+ -->
+   
   <!-- Cache Beans -->
   <bean id="cacheBean" class="com.inthinc.pro.backing.CacheBean" scope="session" parent="baseBean">
     <property name="driverDAO" ref="driverDAO"></property>
@@ -624,8 +630,13 @@
   <bean id="deviceReportTableColumns" class="com.inthinc.pro.table.columns.DeviceReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="idlingReportTableColumns" class="com.inthinc.pro.table.columns.IdlingReportTableColumns" scope="request" parent="baseTableColumns" />
   
+<!--    
   <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">
-  	<!--  <property name="externalConfigBean" ref="externalConfigBean"/> -->
+  </bean>
+-->
+
+  <bean id="supportBean" class="com.inthinc.pro.backing.SupportBean" parent="baseBean">
+  	<property name="defaultSupportContacts" value="${supportContact.default}" />
   </bean>
  
 </beans>

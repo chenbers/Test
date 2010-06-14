@@ -28,7 +28,13 @@
 	
 		<center><h3>#{messages.customer_support_assistance}</h3></center>
 		<br />
-		<table align="center">
+		<table align="center" border="0" cellspacing="5" cellpadding="4" >
+			<a4j:repeat rowKeyVar="row" value="#{supportBean.supportContacts}" var="contact">
+				<tr>
+					<td><h:outputText escape="false" value="#{contact}"/></td>
+				</tr>
+			</a4j:repeat>
+<!-- 		
 			<tr>
 				<td>#{messages.customer_support_toll_free}</td>
 				<td><h:outputText style="font-weight:bold" value="#{externalConfigBean.phoneNumber01}" converter="PhoneNumberConverter"/></td>
@@ -42,6 +48,7 @@
 				<td><h:outputLink href="mailto:#{messages.customer_support_email_address1}" rendered="#{messages.customer_support_email_address1 ne ''}">
 					#{messages.customer_support_email_address1}</h:outputLink></td>					
 			</tr>
+ -->			
 		</table>
 	</body>
 	                

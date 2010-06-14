@@ -14,7 +14,7 @@ import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
-import com.inthinc.pro.backing.ExternalConfigBean;
+//import com.inthinc.pro.backing.ExternalConfigBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -70,7 +70,8 @@ public class ProUserServiceImpl implements UserDetailsService
             List<Zone> zoneList = zoneDAO.getZones(user.getPerson().getAcctID());
             proUser.setZones(zoneList);
             
-            Account account = accountDAO.findByID(user.getPerson().getAcctID());            
+            Account account = accountDAO.findByID(user.getPerson().getAcctID());        
+            proUser.setAccountAttributes(account.getProps());
             
             Driver unknownDriver = driverDAO.findByID(account.getUnkDriverID());
             unknownDriver.getPerson().setDriver(unknownDriver);

@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessage;
@@ -168,6 +169,10 @@ public class MockData {
     private void addAccountData(Integer accountID) {
         Account account = new Account(accountID, 0, 0, Status.ACTIVE);
         account.setAcctName("United States Fleet");
+        AccountAttributes attribs = new AccountAttributes();
+        attribs.setSupportContact1(UnitTestStats.ACCOUNT_CONTACT1);
+        attribs.setSupportContact2(UnitTestStats.ACCOUNT_CONTACT2);
+        account.setProps(attribs);
         storeObject(account);
         addGroupData(accountID);
         addDevices(accountID, randomInt(MAX_DEVICES / 2, MAX_DEVICES));

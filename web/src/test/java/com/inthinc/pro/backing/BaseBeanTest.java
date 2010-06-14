@@ -30,12 +30,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.SiteAccessPoints;
@@ -141,6 +143,8 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         mockLogin(proUser);
         // TODO: this is a bit of a kludge -- probably can include our authentication provider in the list when logging in here
         initGroupHierarchy();
+        initAccountProps();
+        
         return proUser;
         
     }
@@ -162,6 +166,18 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         proUser.setGroupHierarchy(groupHierarchy);
         
         return groupHierarchy;
+    }
+    
+    private void initAccountProps()
+    {
+        ProUser proUser = (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer acctID = proUser.getGroupHierarchy().getTopGroup().getAccountID();
+        
+        AccountDAO accountDAO = (AccountDAO)applicationContext.getBean("accountDAO");
+        
+        Account account = accountDAO.findByID(acctID);
+        proUser.setAccountAttributes(account.getProps());
+        
     }
 
     

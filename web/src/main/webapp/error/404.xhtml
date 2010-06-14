@@ -20,11 +20,19 @@
             </div>
             <div class="panel_w">
                <div class="panel_content">
-                 <p>                                                                                                        
+                 <p>                                         
+<!--                                                                                 
                  	<h:outputText id="msgIdUS" rendered="#{phoneBean.phoneNumber02 eq ''}" 
                  		value="#{errorTranslatorBean.errorUnavailableMsg} #{phoneBean.phoneNumber01}."/>
                  	<h:outputText id="msgIdOther" rendered="#{phoneBean.phoneNumber02 ne ''}" 
-                 		value="#{errorTranslatorBean.errorUnavailableMsg} #{phoneBean.phoneNumber01} #{messages.error_or} #{phoneBean.phoneNumber02}."/>                 		
+                 		value="#{errorTranslatorBean.errorUnavailableMsg} #{phoneBean.phoneNumber01} #{messages.error_or} #{phoneBean.phoneNumber02}."/>
+-->
+                 	<h:outputText id="msgIdUS" value="#{errorTranslatorBean.errorUnavailableMsg}"/>
+                 	 <ul style="list-style: none">
+                 		<a4j:repeat rowKeyVar="row" value="#{supportBean.supportContacts}" var="contact">
+							<li><h:outputText escape="false" style="font-weight:bold" value="#{contact}"/></li>
+						</a4j:repeat>
+					</ul>
                      
                     <h:inputHidden value="#{errorBean.stackTrace}" />
                  </p>

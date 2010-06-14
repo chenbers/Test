@@ -121,21 +121,13 @@
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editAccount_phone_alerts_active}" /></td>
                             <td><h:outputText id="editAccount-phoneAlerts" disabled="true"
-                            	value="#{accountBean.item.props.phoneAlertsActive}" />                               
+                            	value="#{accountBean.item.props.phoneAlertsActive == '1' ?  messages.editAccount_yes : messages.editAccount_no}" />                               
 							</td>
                           </tr>
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editAccount_no_reply_email}" /></td>
                             <td><h:outputText value="#{accountBean.item.props.noReplyEmail}" /></td>
                           </tr>
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_support_phone1}" /></td>
-                            <td><h:outputText value="#{accountBean.item.props.supportPhone1}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_support_phone2}" /></td>
-                            <td><h:outputText value="#{accountBean.item.props.supportPhone2}" /></td>
-                          </tr>                          
                         </table>
                           
                       </td>
@@ -146,10 +138,19 @@
                     
                       <td width="390" valign="top">
                         <div class="add_section_title">
-                      	  <h:graphicImage value="/images/x.gif" width="10" />                     	
-                        </div>					     
+                        	<h:outputText value="#{messages.editAccount_support}" />
+                        </div>
 					  
-                        <table width="370" border="1" cellspacing="2" cellpadding="4" align="left">
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <a4j:repeat rowKeyVar="row" value="#{accountBean.item.props.supportContacts}" var="contact">
+                          	 <h:panelGroup rendered="#{not empty contact}">
+                             <c:set var="label" value="editAccount_support_contact#{row}" />
+	                          <tr>
+    	                        <td width="100"><h:outputText value="#{messages[label]}" /></td>
+        	                    <td><h:outputText escape="false" value="#{contact}" /></td>
+            	              </tr>
+            	              </h:panelGroup>
+                          </a4j:repeat>
                           
                         </table>
                       </td>					                                              

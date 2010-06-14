@@ -249,5 +249,10 @@ public class BaseBean implements Serializable {
 	public void setShowExcludedEvents(Integer showExcludedEvents) {
 		this.showExcludedEvents = showExcludedEvents;
 	}
+
+	protected boolean isEnablePhoneAlerts() {
+        return Boolean.valueOf(getProUser().getAccountAttributes().getPhoneAlertsActive());
+        
+    }
 	
 }
