@@ -751,7 +751,7 @@ function LabeledCluster(markerClusterer, clusterOpts) {
 		  //plug into the draw function
 		  var thisOpts = { 
 		      	  "icon": opts_.icon,
-		      	  "clickable": opts_.click,
+		      	  "clickable": this.getTotalMarkers() <= 10?opts_.click:false,
 		      	  "labelText": "",
 		      	  "labelOffset": opts_.labelOffset,
 		      	  "labelClass":opts_.labelClass
