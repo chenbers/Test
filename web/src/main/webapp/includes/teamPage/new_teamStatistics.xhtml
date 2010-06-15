@@ -107,7 +107,7 @@
 						#{messages.team_score}	
 					</f:facet>					 
 					<div class="scoreBox">
-						<h:outputText value="#{item.score.overall}" converter="ScoreConverter" />
+						<h:outputText value="#{total.score.overall}" converter="ScoreConverter" />
 			        </div> 
 				</rich:column>
 				<rich:column  rendered="#{tableColumns['vehicle'].visible}" id="newTeamStatsTab-totalsVehicle-empty">  
