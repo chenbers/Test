@@ -138,29 +138,34 @@
 
 			Team.tabChange = function(tab){
 				//Set the hash to be the id of the selected tab
-//				jQuery.address.value("/tab/" + Team.getSelectedTabId().replace("_lbl",""));
+				jQuery.address.value("/tab/" + Team.getSelectedTabId().replace("_lbl",""));
 				var tabId = jQuery.address.pathNames();
 				return false;
 			}
 
+			//This is used for manually changing the tab. Only needed for use of bookmarks and back button.
+			//Clicking a tab should be handled by the rich faces tab control.
 			Team.selectTab = function(tabId){
-				//var clickableTabElementId = "#" + tabId + "_shifted";
-				//jQuery(clickableTabElementId).click();
 				selectTab(tabId);
 			}
 			
 			jQuery(function(){
-/*				tabId = jQuery.address.pathNames()[1];
-				if(tabId != undefined){
-					
-					Team.selectTab(tabId);	
+				var tab = jQuery.address.pathNames()[1];
+				if(tab == undefined){
+					Team.defaultTabId = tab;
 				}
+				/*<![CDATA[*/  
 				jQuery.address.change(function(){
 					var tabId = jQuery.address.pathNames()[1];
-					if(tabId != Team.getSelectedTabId().replace("_lbl","")){
+					//alert(tabId);
+					if(tabId != undefined && tabId != Team.getSelectedTabId().replace("_lbl","")){
 						Team.selectTab(tabId);
+					}else if(tabId == undefined && Team.getSelectedTabId().replace("_lbl","") != "teamStatistics"){
+						//If there is no tabId and the current selectedTab is not the default, set it to the default tab
+						Team.selectTab("teamStatistics");
 					}
-				});*/
+				});
+				/*]]>*/
 			});	
 		</script>	
 						
@@ -397,18 +402,19 @@
     						 	 	
 	    <div class="panel_w">
 	       	<div class="panel_content"> 
-<!--
-This was causing an extra 2 or 3 requests for the page to be issue (performance and threading issues). 
-This is needed for the first time the page is selected by bookmark but took out
-jQuery.address.change which doesn't need to be called as the component takes care of
-changing the selected tab on its own - sets/gets teamCommonBean.selectedTabId
 	       	
+	       	<!-- As long as this is only called when needed it should be okay. This should only be called as needed
+	       		1. Bookmark is entered.
+	       		2. Back button is pressed.
+	       		
+	       		Otherwise just let the richfaces tab panel take care of the tab selection.	       	
+	       	 -->
 	       	<a4j:form>
-		       	<a4j:jsFunction ajaxSingle="true" name="selectTab" reRender="overallTeamPanel">
+		       	<a4j:jsFunction name="selectTab" ajaxSingle="true" reRender="teamTabPanel">
 		        		<a4j:actionparam id="tabId" name="tabId" assignTo="#{teamCommonBean.selectedTabId}"/>
 		        </a4j:jsFunction>	 
 	        </a4j:form>
--->
+
 	        <a4j:outputPanel id="overallTeamPanel">    					
 				<rich:tabPanel id="teamTabPanel" binding="#{teamCommonBean.teamTabPanel}" 
 				selectedTab="#{teamCommonBean.selectedTabId}" switchType="ajax">

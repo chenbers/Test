@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -19,6 +20,8 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 
 @KeepAlive
 public class TeamCommonBean extends BaseBean {
+	
+	private static Logger logger = Logger.getLogger(TeamCommonBean.class);
 	
     private static final long serialVersionUID = 1L;
     private List<String> dayLabels = new ArrayList<String>();
@@ -33,7 +36,8 @@ public class TeamCommonBean extends BaseBean {
     private Map<String,List<DriverVehicleScoreWrapper>> cachedResults = Collections.synchronizedMap(new HashMap<String,List<DriverVehicleScoreWrapper>>());
     
     public void init() {
-        selectedTabId = "teamStatistics";
+    	//This sets the selected tab id to always be teamStatistics. Breaks the backbutton and history funtionality.
+        //selectedTabId = "teamStatistics";
     }
 
     public Integer getGroupID() {
@@ -102,7 +106,7 @@ public class TeamCommonBean extends BaseBean {
 
 	public void setTeamTabPanel(UITabPanel teamTabPanel) {
 		this.teamTabPanel = teamTabPanel;
-		this.teamTabPanel.setSelectedTab(selectedTabId);
+		//this.teamTabPanel.setSelectedTab(selectedTabId);
 	}
 
 	public Object getSelectedTab() {
@@ -124,11 +128,12 @@ public class TeamCommonBean extends BaseBean {
         this.cachedResults = cachedResults;
     }
 
-    public void setSelectedTabId(Object selectedTabId) {
-		this.selectedTabId = selectedTabId.toString();
+    public void setSelectedTabId(String selectedTabId) {
+    	logger.debug("Setting Selected Tab Id To: " + selectedTabId);
+		this.selectedTabId = selectedTabId;
 	}
 
-	public Object getSelectedTabId() {
+	public String getSelectedTabId() {
 	 	return selectedTabId;
 	}
 }
