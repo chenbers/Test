@@ -22,8 +22,6 @@
 	<ui:define name="content">
 			<a4j:loadStyle src="/css/jquery.scorebox.css"/>
 	 		<a4j:loadScript src="/js/jquery.scorebox.js"/>
-	 		<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'sm'})" />
-	 		<rich:jQuery selector=".scoreBox" timing="onJScall" query="scoreBox({size:'sm'})" name="decorateScorebox"/>
 			<a4j:keepAlive beanName="vehicleReportTableColumns" />
 		 	<ui:param name="tableColumns" value="#{vehicleReportTableColumns.tableColumns}" />
 			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
@@ -84,7 +82,10 @@
 	                                        <rich:column id="group" rendered="#{tableColumns['group'].visible}" 
                                             		sortBy="#{item.groupName}" filterBy="#{item.groupName}" >
                                             	<f:facet name="header">
-                                                	<h:outputText value="#{messages.reports_group}" />
+	                                            	<h:panelGroup>
+	                                                	<h:outputText value="#{messages.reports_group}" />
+	 													<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'x_sm'})" />   
+											 		</h:panelGroup>
                                             	</f:facet>          
                                             	<pretty:link id="vehiclesDashboard" mappingId="dashboard">
                                                 	<h:outputText value="#{item.groupName}"/>
@@ -189,9 +190,8 @@
 												</div>
 	                                        </rich:column>
     	                                </rich:dataTable>                     		
-    								</div>	
-                        
-            	                    <div class="spacer"></div>
+    								</div>	           
+    								<div class="spacer"></div>
                 	                <rich:datascroller id="#{context}-bottomScroller" 
                                           for="#{context}" immediate="true" 
                                           scrollerListener="#{pagingVehicleReportBean.table.scrollerListener}" 
@@ -199,6 +199,7 @@
                                           requestDelay="200" eventsQueue="pagerQueue" 
                                           oncomplete="decorateScorebox();"
                                           page="#{pagingVehicleReportBean.table.pageData.currentPage}" renderIfSinglePage="false"/>
+	                   			            
 	                   			</h:form>
 								<ui:include src="/includes/columnSelectionPopup.xhtml">
 									<ui:param name="bean" value="#{vehicleReportTableColumns}"/>	

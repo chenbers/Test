@@ -13,8 +13,6 @@
 	<rich:tab  id="teamStatistics" oncomplete="Team.tabChange();decorateScoreBox();">
 		<a4j:loadStyle src="/css/jquery.scorebox.css"/>
  		<a4j:loadScript src="/js/jquery.scorebox.js"/>
- 		<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'xx_sm'})" />
- 		<rich:jQuery selector=".scoreBox" timing="onJScall" query="scoreBox({size:'xx_sm'})" name="decorateScorebox"/>
 		<a4j:keepAlive beanName="teamStatisticsTableColumns" />
 	 	<ui:param name="tableColumns" value="#{teamStatisticsTableColumns.tableColumns}" />
 	 	<ui:param name="context" value="teamStatistics" />
@@ -330,7 +328,10 @@
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
 				</rich:column>							
 				<f:facet name="footer">				
-					<rich:datascroller align="center" for="drivers" id="driverScroller" reRender="drivers" oncomplete="decorateScorebox()"/>
+					<h:panelGroup>
+						<rich:datascroller align="center" id="driverScroller" />
+	 					<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'xx_sm'})" />
+ 					</h:panelGroup>
 				</f:facet>
 				
 				
