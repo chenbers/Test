@@ -36,15 +36,15 @@
 			while(wrappedSet.html().indexOf("<") >= 0){
 				wrappedSet = $.getChildWrappedSet(wrappedSet);
 			}
-
 			var score = wrappedSet.html();
-			wrappedSet.html(score != parseFloat(score)?settings.notApplicableText:score);
-			
+			var parseableScore = score.replace(",", ".");
+			wrappedSet.html(parseableScore != parseFloat(parseableScore)?settings.notApplicableText:score);
+						
 			var innerHtml = $(this).html();
 			$(this).html("");
 			
 			
-			var scoreCssClass = "score_" + ScoreBox.getScoreCssSuffix(score);
+			var scoreCssClass = "score_" + ScoreBox.getScoreCssSuffix(parseableScore);
 			var sizeCssClass = "score_" + settings.size;
 			
 			var wrapperDivStyle = "";
