@@ -213,8 +213,10 @@ jQuery(function(){
 			},
 			callback : {
 				onchange : function (NODE, TREE_OBJ) {
-
-					document.location.href = jQuery(NODE).children("a:eq(0)").attr("href");
+					if(document.location.href != jQuery(NODE).children("a:eq(0)").attr("href")){
+						
+						document.location.href = jQuery(NODE).children("a:eq(0)").attr("href");
+					}
 				}	
 			},
 			data : { 
