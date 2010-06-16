@@ -24,6 +24,16 @@ public class MeasurementConverter {
             return nf.format(speed);
     }
 
+    public static String convertSpeedLimit(Integer speed, Boolean convertToMetric, Locale locale) {
+        NumberFormat nf = NumberFormat.getNumberInstance(locale);
+        nf.setMaximumFractionDigits(1);
+        nf.setMinimumFractionDigits(1);
+        if (convertToMetric)
+            return nf.format(MeasurementConversionUtil.fromMPHtoKPHSpeedLimit(Number.class.cast(speed)).intValue());
+        else
+            return nf.format(speed);
+    }
+
     public static Number convertMileage(Number mileage, Boolean convertToMetric, Locale locale) {
         logger.debug("Mileage: " + mileage + " Convert To Metric: " + convertToMetric);
         if (convertToMetric != null && convertToMetric)
