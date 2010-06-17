@@ -63,6 +63,7 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
     @Override
     protected void initEvents()
     {
+        setDateFormatter();
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
 
@@ -73,7 +74,7 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(getAddress(event.getLatLng()));
-            events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
+            events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType(),dateFormatter));
         }
         tableStatsBean.reset(ROWCOUNT, events.size());
         sortEvents();

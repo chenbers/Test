@@ -22,7 +22,7 @@ public class CrashHistoryReportItem extends NotificationReportItem<CrashHistoryR
     private Integer forgiven;
     private Double latitude;
     private Double longitude;
-    private LatLng latlng;
+//    private LatLng latlng;
     
     private Driver driver;    
     private Vehicle vehicle;

@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.util.MessageUtil;
 
 public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 
@@ -28,11 +31,18 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected List<EventReportItem>              events;
 	protected Map<String, List<EventReportItem>> eventsListsMap;
   
+	protected static DateFormat dateFormatter;
+	
 	protected abstract void initTrends();
 	protected abstract void initScores();
 	protected abstract void initEvents();
 	public abstract void sortEvents();
 	
+	protected static void setDateFormatter(){
+	    
+	   dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"),
+                                            LocaleBean.getCurrentLocale());
+	}
     public List<EventReportItem> getFilteredEvents() {
     	
         if (filteredEvents == null)

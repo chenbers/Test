@@ -55,12 +55,14 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         AVAILABLE_COLUMNS.add("clear");
     }
 //    private String userRole;
-    private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
+    private static DateFormat dateFormatter ;
     private final static String UNKNOWN_DRIVER = "unknown_driver";
 
     @Override
     public void initBean() {
+        
         super.initBean();
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), LocaleBean.getCurrentLocale());
         tablePref = new TablePref<CrashHistoryReportItem>(this);
     }
 

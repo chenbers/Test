@@ -86,6 +86,8 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
     @Override
     protected void initEvents() 
     {
+        setDateFormatter();
+
         List<Event> tempEvents = new ArrayList<Event>();
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
@@ -96,7 +98,7 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(getAddress(event.getLatLng()));
-            events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
+            events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType(), dateFormatter));
         }
         sortEvents();
       

@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
@@ -19,9 +20,11 @@ public class EventReportItem implements Comparable<EventReportItem> {
 	private String type;
 	private Boolean excluded;
 	
-	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String mphString)
+	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String mphString, Locale locale)
 	{
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(dateFormat);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(dateFormat).withLocale(locale);
+		
+		
 		DateTime dateTime = new DateTime(event.getTime(), DateTimeZone.forTimeZone(event.getDriverTimeZone() == null ? TimeZone.getDefault() : event.getDriverTimeZone()));
  	    setDate(fmt.print(dateTime));
 		

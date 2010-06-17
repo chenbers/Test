@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.ui;
 
+import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.TimeZone;
 
@@ -13,145 +14,125 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.util.MessageUtil;
 
-public class EventReportItem extends NotificationReportItem<EventReportItem> 
-{
-    
+public class EventReportItem extends NotificationReportItem<EventReportItem> {
+
     private static final Logger logger = Logger.getLogger(EventReportItem.class);
-    
+
     private Event event;
     private RedFlagLevel level;
     private boolean alert;
-    
+
     private long noteID;
 
     /* added for pagination (JASPER) -- may be able to remove others */
-    public EventReportItem(Event event, MeasurementType measurementType)
-    {
+    public EventReportItem(Event event, MeasurementType measurementType, DateFormat dateFormatter) {
+        
         this.event = event;
         this.level = RedFlagLevel.INFO;
-        
+
         if (event.getDriverTimeZone() != null) {
-        	dateFormatter.setTimeZone(event.getDriverTimeZone());
+            dateFormatter.setTimeZone(event.getDriverTimeZone());
         }
         setDate(dateFormatter.format(event.getTime()));
         setGroup(event.getGroupName());
         setGroupID(event.getGroupID());
-            
+
         setDriverName(event.getDriverName() == null ? MessageUtil.getMessageString("unknown_driver") : event.getDriverName());
         setVehicleName(event.getVehicleName() == null ? MessageUtil.getMessageString("unassigned") : event.getVehicleName());
 
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
-        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
-        
-        String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()),measurementType,mphString));
+        setCategory(MessageFormat.format(catFormat, new Object[] { MessageUtil.getMessageString(event.getEventType().toString()) }));
+
+        String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, mphString));
         setNoteID(event.getNoteID());
     }
-    /* END - added for pagination -- may be able to remove others */
-    
 
-    
-    
-    
-    public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy,MeasurementType measurementType)
-    {
+    /* END - added for pagination -- may be able to remove others */
+
+    public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy, MeasurementType measurementType, DateFormat dateFormatter) {
         this.event = event;
         alert = (rfAlert != null);
-        if (rfAlert != null)
-        {
+        if (rfAlert != null) {
             level = rfAlert.getLevel();
-        }
-        else level = RedFlagLevel.INFO;
-        
+        } else
+            level = RedFlagLevel.INFO;
+
         TimeZone tz = (event.getDriver() == null || event.getDriver().getPerson() == null) ? TimeZone.getDefault() : event.getDriver().getPerson().getTimeZone();
-        dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);
+        dateFormatter.setTimeZone((tz == null) ? TimeZone.getDefault() : tz);
         setDate(dateFormatter.format(event.getTime()));
-        
+
         Group group = groupHierarchy.getGroup(event.getGroupID());
-        if (group != null)
-        {
+        if (group != null) {
             setGroup(group.getName());
             setGroupID(event.getGroupID());
-        }
-        else
-        {
+        } else {
             setGroup("");
             setGroupID(null);
         }
-        
-        setDriverName((event.getDriver() == null|| event.getDriver().getPerson() == null) ? MessageUtil.getMessageString("unassigned") : event.getDriver().getPerson().getFullName());
-        setVehicleName((event.getVehicle() == null)?  MessageUtil.getMessageString("unassigned") : event.getVehicle().getName());
+
+        setDriverName((event.getDriver() == null || event.getDriver().getPerson() == null) ? MessageUtil.getMessageString("unassigned") : event.getDriver().getPerson().getFullName());
+        setVehicleName((event.getVehicle() == null) ? MessageUtil.getMessageString("unassigned") : event.getVehicle().getName());
 
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
-        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
-        
-        String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
-        
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()),measurementType,mphString));
+        setCategory(MessageFormat.format(catFormat, new Object[] { MessageUtil.getMessageString(event.getEventType().toString()) }));
+
+        String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
+
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()), measurementType, mphString));
 
         setNoteID(event.getNoteID());
     }
-    
-    public EventReportItem(Event event, TimeZone tz,MeasurementType measurementType)
-    {
+
+    public EventReportItem(Event event, TimeZone tz, MeasurementType measurementType, DateFormat dateFormatter) {
         this.event = event;
-        
-        dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);
+
+        dateFormatter.setTimeZone((tz == null) ? TimeZone.getDefault() : tz);
         setDate(dateFormatter.format(event.getTime()));
-        
+
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
-        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
+        setCategory(MessageFormat.format(catFormat, new Object[] { MessageUtil.getMessageString(event.getEventType().toString()) }));
 
-        String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
+        String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
 
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()),measurementType,mphString));
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()), measurementType, mphString));
     }
-    
 
-    public Event getEvent()
-    {
+    public Event getEvent() {
         return event;
     }
 
-    public void setEvent(Event event)
-    {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
-    public RedFlagLevel getLevel()
-    {
+    public RedFlagLevel getLevel() {
         return level;
     }
 
-    public void setLevel(RedFlagLevel level)
-    {
+    public void setLevel(RedFlagLevel level) {
         this.level = level;
     }
 
-    public boolean isAlert()
-    {
+    public boolean isAlert() {
         return alert;
     }
 
-    public void setAlert(boolean alert)
-    {
+    public void setAlert(boolean alert) {
         this.alert = alert;
     }
-    
+
     @Override
-    public int compareTo(EventReportItem o)
-    {
+    public int compareTo(EventReportItem o) {
         return this.getEvent().getTime().compareTo(o.getEvent().getTime());
     }
 
-    public long getNoteID()
-    {
+    public long getNoteID() {
         return noteID;
     }
 
-    public void setNoteID(long noteID)
-    {
+    public void setNoteID(long noteID) {
         this.noteID = noteID;
     }
-    
+
 }

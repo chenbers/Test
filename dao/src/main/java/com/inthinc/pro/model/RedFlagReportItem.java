@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Locale;
+
 public class RedFlagReportItem extends EventReportItem {
 
 	// TODO: should we flatten this out?
@@ -9,8 +11,8 @@ public class RedFlagReportItem extends EventReportItem {
 	String eventType;
 	
 	public RedFlagReportItem(RedFlag redFlag, MeasurementType measurementType,
-			String dateFormat, String detailsFormat, String mphString) {
-		super(redFlag.getEvent(), measurementType, dateFormat, detailsFormat, mphString);
+			String dateFormat, String detailsFormat, String mphString, Locale locale) {
+		super(redFlag.getEvent(), measurementType, dateFormat, detailsFormat, mphString, locale);
 		this.redFlag = redFlag;
 //		this.level = redFlag.getLevel();
 //		this.alert = redFlag.getAlert();

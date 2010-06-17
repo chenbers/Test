@@ -98,7 +98,7 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(getAddress(event.getLatLng()));
-            events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
+            events.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType(), dateFormatter));
         }
         sortEvents();
     }

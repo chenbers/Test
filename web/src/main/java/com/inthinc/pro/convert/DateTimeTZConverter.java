@@ -50,7 +50,7 @@ public class DateTimeTZConverter extends BaseConverter
 		  sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), getLocale());
 	  }
 	  else {
-		  sdf = new SimpleDateFormat(pattern);
+		  sdf = new SimpleDateFormat(pattern, getLocale());
 	  }
 	  if (timeZone == null) {
 //		  sdf.setTimeZone(getTimeZone());

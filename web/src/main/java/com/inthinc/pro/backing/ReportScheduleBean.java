@@ -414,7 +414,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public String fieldValue(ReportScheduleView item, String column) {
         // Need to make sure we return the date string just as it appears in the UI table
         String returnString = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy",LocaleBean.getCurrentLocale());
         sdf.setTimeZone(getUtcTimeZone());
         if ("name".equals(column))
             returnString = item.getName();
