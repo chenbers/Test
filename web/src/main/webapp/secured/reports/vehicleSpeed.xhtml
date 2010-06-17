@@ -31,7 +31,25 @@
               jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
     		  getAddresses();
-           }
+			  setSpeedDifferences();
+	            
+          }
+    	  function setAverageSpeedDifference(index){
+  		
+    		document.getElementById("notificationsTableForm:notificationsTable:"+index+":averageSpeedDifference").innerHTML = 	
+    	      	parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":averageSpeedValue").innerHTML)-
+  		  		parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":speedLimitValue").innerHTML);
+  		
+  		  }
+
+    	  function setTopSpeedDifference(index){
+  		
+    		document.getElementById("notificationsTableForm:notificationsTable:"+index+":topSpeedDifference").innerHTML = 	
+				parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":topSpeedValue").innerHTML)-
+  				parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":speedLimitValue").innerHTML);
+  		
+  	 	  }
+    	
           function getAddresses()
           {
               if (#{vehicleSpeedBean.addressFormat == 3}){
@@ -58,6 +76,16 @@
           		});
               }
               
+          }
+          function setSpeedDifferences(){
+              
+             	jQuery('td[id$="averageSpeed"]').each(function(n){
+
+             		var tokens = this.id.split(':');
+            		setAverageSpeedDifference(tokens[2]);
+            		setTopSpeedDifference(tokens[2]);
+            		
+             	});
           }
           function reverseGeocodeTripAddress(latlng, addressElement){
               
@@ -603,7 +631,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_posted_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.speedLimit}" converter="MphToKphSpeedLimitConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<strong><h:outputText id="speedLimitValue" value="#{item.event.speedLimit}" converter="MphToKphSpeedLimitConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<a4j:commandButton id="vehicleSpeedSlcr" onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
 												title="#{messages.sbs_submitRequest}" image="/images/ico_limit_edit.png"
 												style="vertical-align:middle;margin-left:10px">
@@ -615,20 +643,24 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.avgSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<strong><h:outputText id="averageSpeedValue" value="#{item.event.avgSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<br />
 					            <h:outputText class="red" value="+"/>
-					            <h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
+					            <h:outputText class="red" id="averageSpeedDifference"/>
+					            
+					            <!--<h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="MphToKphConverter" />-->
 							</rich:column>
 							
 							<rich:column id="topSpeed" sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_top_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.topSpeed}"  converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<strong><h:outputText id="topSpeedValue" value="#{item.event.topSpeed}"  converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<br />
               					<h:outputText class="red" value="+"/>
-        					    <h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
+              					<h:outputText class="red" id="topSpeedDifference"/>
+              					
+        					    <!--<h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="MphToKphConverter" />-->
 							</rich:column>
 							
 							<rich:column id="distance"  sortBy="#{item.event.distance}">

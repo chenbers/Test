@@ -28,9 +28,26 @@
           {
               jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-  			getAddresses();
+				getAddresses();
+  				setSpeedDifferences();
             
             }
+      	function setAverageSpeedDifference(index){
+    		
+      		document.getElementById("driverSpeedForm:notificationsTable:"+index+":averageSpeedDifference").innerHTML = 	
+      	      parseInt(document.getElementById("driverSpeedForm:notificationsTable:"+index+":averageSpeedValue").innerHTML)-
+    		  parseInt(document.getElementById("driverSpeedForm:notificationsTable:"+index+":speedLimitValue").innerHTML);
+    		
+    	}
+
+      	function setTopSpeedDifference(index){
+    		
+      		document.getElementById("driverSpeedForm:notificationsTable:"+index+":topSpeedDifference").innerHTML = 	
+					parseInt(document.getElementById("driverSpeedForm:notificationsTable:"+index+":topSpeedValue").innerHTML)-
+    				parseInt(document.getElementById("driverSpeedForm:notificationsTable:"+index+":speedLimitValue").innerHTML);
+    		
+    	}
+      	
     	</script>
 
 	</ui:define>
@@ -88,7 +105,6 @@ var selected;
 var selectedVar;
 var selectedTitle;
 var firstLoad = new Boolean(true);
-
 	function SelectBreakDown(region, chartVar, title)
 	{
 		//Un-Select last component in CSS.
@@ -156,6 +172,16 @@ var firstLoad = new Boolean(true);
         }
         
     }
+    function setSpeedDifferences(){
+        
+       	jQuery('td[id$="averageSpeed"]').each(function(n){
+
+       		var tokens = this.id.split(':');
+      		setAverageSpeedDifference(tokens[2]);
+      		setTopSpeedDifference(tokens[2]);
+      		
+       	});
+    }
     function reverseGeocodeTripAddress(latlng, addressElement){
         
      	geocoder.getLocations(latlng, 
@@ -171,7 +197,10 @@ var firstLoad = new Boolean(true);
 			        }
 		    	});
     }
-
+	function onSBSModalHide(){
+		clearSegments();
+		reset();
+	}		
 </script>
 
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
@@ -555,7 +584,7 @@ var firstLoad = new Boolean(true);
     					<a4j:queue requestDelay="500"/>
 								
 						<rich:dataTable 
-						value="#{driverSpeedBean.filteredEvents}" 
+						value="#{driverSpeedBean.filteredEvents}" rowKeyVar="index"
 						id="notificationsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedBean.tableStatsBean.tableRowCount}" width="100%">			
 
@@ -597,7 +626,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_posted_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.speedLimit}" converter="MphToKphSpeedLimitConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<strong><h:outputText id="speedLimitValue" value="#{item.event.speedLimit}" converter="MphToKphSpeedLimitConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<a4j:commandButton id="driverSpeedSlcr" onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
 												title="#{messages.sbs_submitRequest}" image="/images/ico_limit_edit.png"
 												style="vertical-align:middle;margin-left:10px">
@@ -609,20 +638,22 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_avg_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.avgSpeed}" converter="MphToKphConverter"/>#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<strong><h:outputText id="averageSpeedValue" value="#{item.event.avgSpeed}" converter="MphToKphConverter"/>#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<br />
 					            <h:outputText class="red" value="+"/>
-					            <h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
+					            <h:outputText id="averageSpeedDifference" class="red"  />
+					            <!--<h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="MphToKphConverter" />-->
 							</rich:column>
 							
 							<rich:column id="topSpeed" sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_top_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.topSpeed}" converter="MphToKphConverter"/>#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<strong><h:outputText id="topSpeedValue" value="#{item.event.topSpeed}" converter="MphToKphConverter"/>#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<br />
               					<h:outputText class="red" value="+"/>
-        					    <h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
+        					    <!--<h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="MphToKphConverter" />-->
+								<h:outputText class="red" id="topSpeedDifference"/>
 							</rich:column>
 							
 							<rich:column id="distance" sortBy="#{item.event.distance}">
@@ -715,7 +746,7 @@ var firstLoad = new Boolean(true);
 
 <!-- START SBS MODAL -->
 	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null,'#{request.contextPath}/images/ico_violation.png');"
-					onhide="clearSegments();reset();">
+					onhide="onSBSModalHide()">
       <f:facet name="header">
         <h:outputText value="#{messages.sbs_header}" />
       </f:facet>
