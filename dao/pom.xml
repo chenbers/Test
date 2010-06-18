@@ -12,7 +12,6 @@
   <packaging>jar</packaging>
 
   <name>Pro Portal - Data Layer</name>
-
   <build>  
     <finalName>dao</finalName>
   </build>
@@ -31,7 +30,6 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -62,22 +60,15 @@
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-core</artifactId>
-    	<version>2.5.1</version>
         <scope>provided</scope>
     </dependency>
     <dependency>
     	<groupId>org.jasypt</groupId>
     	<artifactId>jasypt</artifactId>
-    	<version>1.5</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>joda-time</groupId>
     	<artifactId>joda-time</artifactId>
-    	<version>1.6</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
     </dependency>
   </dependencies>
 

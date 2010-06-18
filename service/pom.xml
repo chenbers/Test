@@ -38,59 +38,48 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>2.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-dao</artifactId>
-      <version>2.0.8</version>
+      <artifactId>spring-tx</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>2.5.6</version>
     </dependency>
     <!-- added for spring junit tests -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>2.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>2.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>2.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>2.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-support</artifactId>
-      <version>2.0.8</version>
+      <artifactId>spring-context-support</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>2.0.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>2.0.5.RELEASE</version>
       <classifier>tests</classifier>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core-tiger</artifactId>
-      <version>2.0.5.RELEASE</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>
@@ -105,7 +94,6 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-taglibs</artifactId>
-      <version>2.0.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.aspectj</groupId>
@@ -120,7 +108,6 @@
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
-      <version>1.4.1</version>
     </dependency>
     <dependency>
       <groupId>com.iwi</groupId>
@@ -128,18 +115,14 @@
       <version>1.0.17</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>8.3-603.jdbc4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.postgis</groupId>
-        <artifactId>postgis-jdbc</artifactId>
-        <version>1.3.1</version>
-        <scope>compile</scope>
-    </dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>postgres</groupId>
+				<artifactId>postgis</artifactId>
+			</dependency>
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
@@ -184,16 +167,8 @@
    <!-- Spring integration -->
     
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>2.5.6</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
-      <type>jar</type>
       <scope>provided</scope>
     </dependency><!--
     <dependency>
@@ -213,9 +188,6 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>1.6</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>org.jboss.resteasy</groupId>
@@ -264,8 +236,6 @@
     <dependency>
     	<groupId>org.jasypt</groupId>
     	<artifactId>jasypt</artifactId>
-    	<version>1.5</version>
-    	<scope>compile</scope>
     </dependency>
   </dependencies>
 </project>
