@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleSpeedBeanTest extends BaseBeanTest
 {
@@ -97,7 +100,8 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         se.setSpeedLimit(45);
         se.setTime(new Date());
         
-        EventReportItem eri = new EventReportItem(se, TimeZone.getTimeZone("MST"),MeasurementType.ENGLISH);
+        DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"),LocaleBean.getCurrentLocale());
+        EventReportItem eri = new EventReportItem(se, TimeZone.getTimeZone("MST"),MeasurementType.ENGLISH, dateFormatter);
         speedingEvents.add(eri);
         
         vehicleSpeedBean.setEvents(speedingEvents);

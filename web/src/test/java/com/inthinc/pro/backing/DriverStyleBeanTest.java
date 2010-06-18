@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,14 +19,11 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EventType;
-import com.inthinc.pro.model.FullEvent;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverStyleBeanTest extends BaseBeanTest
 {
@@ -94,7 +93,8 @@ public class DriverStyleBeanTest extends BaseBeanTest
         assertTrue( e.getEventType() == EventType.HARD_VERT); 
         
         // Test Event Filtering
-        EventReportItem eri = new EventReportItem(e, p.getTimeZone(),MeasurementType.ENGLISH);
+        DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"),LocaleBean.getCurrentLocale());
+        EventReportItem eri = new EventReportItem(e, p.getTimeZone(),MeasurementType.ENGLISH, dateFormatter);
         styleEvents.add(eri);
 
         driverStyleBean.setSelectedBreakdown("HARD_VERT");

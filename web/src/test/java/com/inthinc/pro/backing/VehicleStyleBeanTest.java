@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleStyleBeanTest extends BaseBeanTest
 {
@@ -98,7 +101,8 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         assertTrue( e.getEventType() == EventType.HARD_VERT); 
         
         // Test Event Filtering
-        EventReportItem eri = new EventReportItem(e, p.getTimeZone(),MeasurementType.ENGLISH);
+        DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"),LocaleBean.getCurrentLocale());
+        EventReportItem eri = new EventReportItem(e, p.getTimeZone(),MeasurementType.ENGLISH, dateFormatter);
         styleEvents.add(eri);
 
         vehicleStyleBean.setSelectedBreakdown("HARD_VERT");
