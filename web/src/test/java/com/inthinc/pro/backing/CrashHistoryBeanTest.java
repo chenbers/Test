@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.AfterClass;
@@ -38,6 +39,8 @@ public class CrashHistoryBeanTest extends BaseBeanTest {
         loginUser(UnitTestStats.UNIT_TEST_LOGIN);
         
         // get the bean from the applicationContext (initialized by Spring injection)
+        LocaleBean localeBean = new LocaleBean();
+        localeBean.setLocale(Locale.US);
         CrashHistoryBean crashHistoryBean = (CrashHistoryBean)applicationContext.getBean("crashHistoryBean");
         
         // test the spring creation/injection
