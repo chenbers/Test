@@ -16,7 +16,18 @@
         <a4j:loadScript src="/js/FusionCharts.js" />
 	    <script type="text/javascript">
 	    var geocoder;
-	      function initialize(lat, lng) 
+	    (function($){ 
+
+	    	$.fn.refreshTable = function(index){
+		    	
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+					setAddress(index);
+	    	};
+	    	
+	    })(jQuery);
+
+	    function initialize(lat, lng) 
 	      {
 	        if (GBrowserIsCompatible())
 		        {
@@ -28,7 +39,29 @@
 		    		geocoder = new GClientGeocoder();
 	        	}
 	      }
-          function initializeTable()
+	      function setAddress(index){
+	        	
+		  		var address = document.getElementById("eventTableForm:notificationsTable:"+index+":eventAddress");
+		  		
+		  		if (address.innerHTML.length==0){
+
+		      		var lat = document.getElementById("eventTableForm:notificationsTable:"+index+":eventLat");
+		      		var lng = document.getElementById("eventTableForm:notificationsTable:"+index+":eventLng");
+//		    		var lat = jQuery(this).find('*[id$="eventLat"]');
+//		    		var lng = jQuery(this).find('*[id$="eventLng"]');
+		
+		    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
+							
+		    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
+					}
+					else {
+						
+						address.innerHTML ="#{messages.sbs_badLatLng}";
+					}
+		  		}
+	    	}
+	      
+/*          function initializeTable()
           {
               jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
@@ -60,7 +93,7 @@
           		});
               }
               
-          }
+          }*/
           function reverseGeocodeTripAddress(latlng, addressElement){
               
               if (geocoder == null) geocoder = new GClientGeocoder();
@@ -91,7 +124,7 @@
 <div id="wrapper">
 
 <h:form>
-    <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+    <!--<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />-->
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
@@ -134,7 +167,7 @@
 							<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
    							<ui:param name="ajaxForm" value="seatBeltForm"/>
    							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,overall_script,eventsPanel"/>			
-							<ui:param name="oncomplete" value="initializeTable();"/>			
+							<!--<ui:param name="oncomplete" value="initializeTable();"/>-->			
    							<ui:param name="thirtyDaysOn" value="#{(vehicleSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"/>
    							<ui:param name="threeMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"/>
    							<ui:param name="sixMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -241,7 +274,7 @@
 <!--					reRender="notificationsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"/>-->
 						<rich:dataTable 
 							value="#{vehicleSeatBeltBean.seatBeltEvents}" 
-							id="notificationsTable" var="item" styleClass="datagrid"
+							id="notificationsTable" var="item" styleClass="datagrid"  rowKeyVar="index"
 							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{vehicleSeatBeltBean.tableStatsBean.tableRowCount}"  
 							width="100%"> 
 						<!-- Data -->
@@ -275,6 +308,7 @@
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
+	 								<rich:jQuery selector="id$=notificationsTable" timing="onload" query="refreshTable(#{index})" />
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleSeatBeltBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
 									</h:outputText>
@@ -311,7 +345,7 @@
 									<f:setPropertyActionListener target="#{vehicleSeatBeltBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleSeatBeltBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom"
- 													id="vehicleSeatBelt_excluded" oncomplete="initializeTable()">
+ 													id="vehicleSeatBelt_excluded">
 									<h:outputText value="#{messages.vehicleReports_include}" />
 									<f:setPropertyActionListener target="#{vehicleSeatBeltBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -324,7 +358,6 @@
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="notificationsTable" id="scrollerBottom" page="#{vehicleSeatBeltBean.tableStatsBean.page}"
-						oncomplete="initializeTable()"
 						reRender="notificationsTable,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"
 						renderIfSinglePage="false"/>
 					</h:form> 
@@ -368,7 +401,7 @@
         <div class="popupactions">
           <button id="vehicleSeatBeltNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink id="vehicleSeatBeltConfirm" action="#{vehicleSeatBeltBean.excludeEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel');"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
                 			eventsQueue="eventTableForm" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">

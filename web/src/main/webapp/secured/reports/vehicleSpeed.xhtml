@@ -15,6 +15,20 @@
         <a4j:loadScript src="/js/speedByStreet.js" />	
 	    <script type="text/javascript">
 	    var geocoder;
+
+	    (function($){ 
+
+	    	$.fn.refreshTable = function(index){
+		    	
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+					setAddress(index);
+	  				setAverageSpeedDifference(index);
+	  				setTopSpeedDifference(index);
+	    	};
+	    	
+	    })(jQuery);
+	    
 	      function initialize(lat, lng) 
 	      {
 	        if (GBrowserIsCompatible()) {
@@ -26,14 +40,14 @@
 	    	  geocoder = new GClientGeocoder();
 	        }
 	      }
-          function initializeTable()
+/*          function initializeTable()
           {
               jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
     		  getAddresses();
 			  setSpeedDifferences();
 	            
-          }
+          }*/
     	  function setAverageSpeedDifference(index){
   		
     		document.getElementById("notificationsTableForm:notificationsTable:"+index+":averageSpeedDifference").innerHTML = 	
@@ -49,8 +63,27 @@
   				parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":speedLimitValue").innerHTML);
   		
   	 	  }
+    	function setAddress(index){
+        	
+	  		var address = document.getElementById("notificationsTableForm:notificationsTable:"+index+":eventAddress");
+	  		
+	  		if (address.innerHTML.length==0){
+
+	      		var lat = document.getElementById("notificationsTableForm:notificationsTable:"+index+":eventLat");
+	      		var lng = document.getElementById("notificationsTableForm:notificationsTable:"+index+":eventLng");
+	
+	    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
+						
+	    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
+				}
+				else {
+					
+					address.innerHTML ="#{messages.sbs_badLatLng}";
+				}
+	  		}
+    	}
     	
-          function getAddresses()
+/*          function getAddresses()
           {
               if (#{vehicleSpeedBean.addressFormat == 3}){
 
@@ -76,7 +109,7 @@
           		});
               }
               
-          }
+          }*/
           function setSpeedDifferences(){
               
              	jQuery('td[id$="averageSpeed"]').each(function(n){
@@ -122,7 +155,7 @@
     <t:saveState value="#{vehicleSpeedBean.groupTreeNodeImpl}"/>
 <div id="wrapper">
 <h:form>
-    <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+    <!--<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />-->
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
@@ -215,7 +248,7 @@ var firstLoad = new Boolean(true);
 							<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
 							<ui:param name="reRenderList" value="speedForm,overallScoreBox,breakdownPanel,selectScript,eventsPanel"/>			
-							<ui:param name="oncomplete" value="initializeTable();"/>			
+							<!--<ui:param name="oncomplete" value="initializeTable();"/>-->			
 							<ui:param name="thirtyDaysOn" value="#{(vehicleSpeedBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(vehicleSpeedBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(vehicleSpeedBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -305,7 +338,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartOverallSpeedForm">
 						  	  <a4j:commandLink id="vehicleSpeedOverall" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="OVERALL" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
@@ -346,7 +379,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartTwentyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedTwentyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="TWENTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_21_30" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
@@ -383,7 +416,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartThirtyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedThirtyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="THIRTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_31_40" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
@@ -422,7 +455,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartFortyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedFortyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FOURTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_41_54" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
@@ -459,7 +492,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartFiftyFiveForm">
 						  	  <a4j:commandLink id="vehicleSpeedFiftyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FIFTYFIVE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_55_64" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
@@ -496,7 +529,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartSixtyFiveForm">
 						  	  <a4j:commandLink id="vehicleSpeedSixtyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_65_80" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
@@ -588,7 +621,7 @@ var firstLoad = new Boolean(true);
 <!--								       scrollerListener="#{vehicleSpeedBean.tableStatsBean.scrollerListener}" />-->
 								
 						<rich:dataTable 
-						value="#{vehicleSpeedBean.filteredEvents}" 
+						value="#{vehicleSpeedBean.filteredEvents}"  rowKeyVar="index"
 						id="notificationsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{vehicleSpeedBean.tableStatsBean.tableRowCount}" width="100%">			
 
@@ -621,6 +654,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
+ 	 								<rich:jQuery selector="id$=notificationsTable" timing="onload" query="refreshTable(#{index})" />
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleSpeedBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
 									</h:outputText>
@@ -680,7 +714,7 @@ var firstLoad = new Boolean(true);
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleSpeedBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom" 
- 													id="vehicleSpeed_excluded" oncomplete="initializeTable()">
+ 													id="vehicleSpeed_excluded">
 									<h:outputText value="#{messages.vehicleReports_include}" />
 									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -692,7 +726,7 @@ var firstLoad = new Boolean(true);
     						</rich:column>
 						</rich:dataTable>
 						<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{vehicleSpeedBean.tableStatsBean.page}"
-										   id="scrollerBottom" reRender="notificationsTable,tableStats" oncomplete=" initializeTable()"
+										   id="scrollerBottom" reRender="notificationsTable,tableStats"
 										   scrollerListener="#{vehicleSpeedBean.tableStatsBean.scrollerListener}"
 										   renderIfSinglePage="false"/>
 								
@@ -737,7 +771,7 @@ var firstLoad = new Boolean(true);
         <div class="popupactions">
           <button id="vehicleSpeedNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink id="vehicleSpeedConfirm" action="#{vehicleSpeedBean.excludeEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel');"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
                 			eventsQueue="notificationsTableForm" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">

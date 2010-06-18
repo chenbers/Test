@@ -14,7 +14,18 @@
         <a4j:loadScript src="/js/FusionCharts.js" />
 	    <script type="text/javascript">
 	    var geocoder;
-	      function initialize(lat, lng) 
+	    (function($){ 
+
+	    	$.fn.refreshTable = function(index){
+		    	
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+					setAddress(index);
+	    	};
+	    	
+	    })(jQuery);
+
+	    function initialize(lat, lng) 
 	      {
 	        if (GBrowserIsCompatible())
 		        {
@@ -26,7 +37,7 @@
 		    		geocoder = new GClientGeocoder();
 	        	}
 	      }
-          function initializeTable()
+	    /*         function initializeTable()
           {
               jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
               jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
@@ -58,7 +69,8 @@
           		});
               }
               
-          }
+          }*/
+          
           function reverseGeocodeTripAddress(latlng, addressElement){
               
             if (geocoder == null) geocoder = new GClientGeocoder();
@@ -76,6 +88,28 @@
       			        }
       		    	});
           }
+	      function setAddress(index){
+	        	
+		  		var address = document.getElementById("eventTable:notificationsTable:"+index+":eventAddress");
+		  		
+		  		if (address.innerHTML.length==0){
+
+		      		var lat = document.getElementById("eventTable:notificationsTable:"+index+":eventLat");
+		      		var lng = document.getElementById("eventTable:notificationsTable:"+index+":eventLng");
+//		    		var lat = jQuery(this).find('*[id$="eventLat"]');
+//		    		var lng = jQuery(this).find('*[id$="eventLng"]');
+		
+		    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
+							
+		    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
+					}
+					else {
+						
+						address.innerHTML ="#{messages.sbs_badLatLng}";
+					}
+		  		}
+	    	}
+        
     	</script>
 	</ui:define>
 
@@ -92,7 +126,7 @@
 <div id="wrapper">
 
 <h:form>
-   <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+   <!--<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />-->
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
@@ -185,7 +219,7 @@ var firstLoad = new Boolean(true);
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
 							<ui:param name="reRenderList" value="styleForm,overallScoreBox,breakdownPanel,selectScript,eventsPanel"/>			
-							<ui:param name="oncomplete" value="initializeTable();"/>			
+							<!--<ui:param name="oncomplete" value="initializeTable();"/>-->			
 							<ui:param name="thirtyDaysOn" value="#{(vehicleStyleBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(vehicleStyleBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(vehicleStyleBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -274,7 +308,7 @@ var firstLoad = new Boolean(true);
 						  <div class="tiny_title">
 						  <h:form id="vehicleChartOverallStyleForm">
 						  	  <a4j:commandLink  id="vehicleStyleOverall" onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
-						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom" >
 						  	  		<a4j:actionparam name="eventType" value="OVERALL" assignTo="#{vehicleStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
@@ -311,7 +345,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartBrakeForm">
 						  	  <a4j:commandLink  id="vehicleStyleBrake" onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{vehicleStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}"/>
 						  	  </a4j:commandLink>
@@ -348,7 +382,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartAccelerateForm">
 						  	  <a4j:commandLink  id="vehicleStyleAccelerate" onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{vehicleStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}"/>
 						  	  </a4j:commandLink>
@@ -386,7 +420,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartTurnForm">
 						  	  <a4j:commandLink  id="vehicleStyleTurn" onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{vehicleStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_TURN}"/>
 						  	  </a4j:commandLink>
@@ -425,7 +459,7 @@ var firstLoad = new Boolean(true);
 							<h:form id="vehicleChartBumpForm">
 						  	  <a4j:commandLink  id="vehicleStyleBump" onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
 						  	  					action="#{vehicleStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom" oncomplete=" initializeTable()">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{vehicleStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}"/>
 						  	  </a4j:commandLink>
@@ -518,7 +552,7 @@ var firstLoad = new Boolean(true);
 <!--							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{vehicleStyleBean.tableStatsBean.scrollerListener}" />-->
 						<rich:dataTable value="#{vehicleStyleBean.filteredEvents}" 
 						id="notificationsTable" var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" 
+						rowClasses="tableOdd,tableEven" cellspacing="1"  rowKeyVar="index"
 						rows="#{vehicleStyleBean.tableStatsBean.tableRowCount}" width="100%">
 						
 							<rich:column id="address_column">
@@ -550,6 +584,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
+ 	 								<rich:jQuery selector="id$=notificationsTable" timing="onload" query="refreshTable(#{index})" />
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleStyleBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
 									</h:outputText>
@@ -589,7 +624,7 @@ var firstLoad = new Boolean(true);
 									<f:setPropertyActionListener target="#{vehicleStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
  								<a4j:commandLink rendered="#{item.event.forgiven == 1}" title="#{messages.vehicleReports_exclude}" action="#{vehicleStyleBean.includeEventAction}" reRender="clearItemForm:clearItem,notificationsTable,tableStats,scrollerBottom"
- 												id="vehicleStyle_excluded" oncomplete="initializeTable()" >
+ 												id="vehicleStyle_excluded">
 									<h:outputText value="#{messages.vehicleReports_include}" />
 									<f:setPropertyActionListener target="#{vehicleStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
@@ -603,7 +638,7 @@ var firstLoad = new Boolean(true);
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="notificationsTable" immediate="true" id="scrollerBottom" page="#{vehicleStyleBean.tableStatsBean.page}"
-						reRender="notificationsTable,tableStats" scrollerListener="#{vehicleStyleBean.tableStatsBean.scrollerListener}" oncomplete="initializeTable()"
+						reRender="notificationsTable,tableStats" scrollerListener="#{vehicleStyleBean.tableStatsBean.scrollerListener}" 
 						renderIfSinglePage="false"/>
 					</h:form> 
 				<!-- End Event table -->
@@ -646,7 +681,7 @@ var firstLoad = new Boolean(true);
         <div class="popupactions">
           <button id="vehicleStyleNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink id="vehicleStyleConfirm" action="#{vehicleStyleBean.excludeEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel'); initializeTable()"
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel');"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
                 			eventsQueue="eventTable" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
