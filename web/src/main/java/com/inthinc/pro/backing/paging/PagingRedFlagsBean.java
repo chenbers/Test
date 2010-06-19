@@ -134,7 +134,7 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
             	redFlag.getEvent().setDriverName(MessageUtil.getMessageString("unknown_driver"));
             }
 
-            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, mphString));
+            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, mphString, LocaleBean.getCurrentLocale()));
         }
         return redFlagReportItemList;
     }

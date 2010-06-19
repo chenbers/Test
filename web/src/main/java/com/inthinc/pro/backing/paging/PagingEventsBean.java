@@ -75,7 +75,7 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
             	event.setDriverName(MessageUtil.getMessageString("unknown_driver"));
             }
 
-            eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, mphString));
+            eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, mphString,LocaleBean.getCurrentLocale()));
         }
         
         return eventReportItemList;
