@@ -1,12 +1,12 @@
 package com.inthinc.pro.backing.paging;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
@@ -22,6 +22,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.table.BasePaginationTable;
 import com.inthinc.pro.table.model.provider.RedFlagPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
+@KeepAlive
 public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	
 

@@ -3,9 +3,12 @@ package com.inthinc.pro.backing.paging;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ajax4jsf.model.KeepAlive;
+
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.reports.ReportCriteria;
 
+@KeepAlive
 public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 
     /**
