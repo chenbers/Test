@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ajax4jsf.model.KeepAlive;
+
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -21,6 +23,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class VehicleSpeedBean extends BasePerformanceEventsBean
 {
 	/**
@@ -105,15 +108,15 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
     }
 
 
-	public EventReportItem getClearItem()
-    {
-        return clearItem;
-    }
-
-    public void setClearItem(EventReportItem clearItem)
-    {
-        this.clearItem = clearItem;
-    }
+//	public EventReportItem getClearItem()
+//    {
+//        return clearItem;
+//    }
+//
+//    public void setClearItem(EventReportItem clearItem)
+//    {
+//        this.clearItem = clearItem;
+//    }
 
     public ReportCriteria buildReport()
     {

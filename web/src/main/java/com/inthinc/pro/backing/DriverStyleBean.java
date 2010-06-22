@@ -1,12 +1,13 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -23,6 +24,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class DriverStyleBean extends BasePerformanceEventsBean
 {
     /**

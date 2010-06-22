@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.EventReportItem;
@@ -23,13 +24,15 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class DriverSpeedBean extends BasePerformanceEventsBean
 {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 7654119463494183673L;
-	private static final Logger                logger         = Logger.getLogger(DriverSpeedBean.class);
+	@SuppressWarnings("unused")
+    private static final Logger                logger         = Logger.getLogger(DriverSpeedBean.class);
 
     
     public DriverSpeedBean() {
