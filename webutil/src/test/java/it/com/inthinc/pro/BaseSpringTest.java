@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //any classes that extend this one will also have access to these configurations
 @ContextConfiguration(locations={"classpath:spring/applicationContext-serverPropertiesTest.xml",
 								"classpath:spring/applicationContext-dao.xml",
-                              "classpath:spring/applicationContext-daoBeans.xml",
                               "classpath:spring/applicationContext-beans.xml"})
 
 public class BaseSpringTest implements ApplicationContextAware {

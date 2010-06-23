@@ -1,138 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xmlns:util="http://www.springframework.org/schema/util" 
-  xmlns:context="http://www.springframework.org/schema/context"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/util 
     http://www.springframework.org/schema/util/spring-util-2.5.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
-  default-autowire="byName">
-  
-  <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="ignoreResourceNotFound" value="true" />
-    <property name="locations">
-      <list>
-        <value>classpath:tiwipro.properties</value>
-        <value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
-      </list>
-    </property>
-  </bean>
+	default-autowire="byName">
 
-    <!-- Backing Beans -->
-    <bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init" scope="session">
-		<property name="accountDAO" ref="accountDAO" />
-		<property name="personDAO" ref="personDAO" />
-		<property name="userDAO" ref="userDAO" />
-		<property name="groupDAO" ref="groupDAO" />
-		<property name="roleDAO" ref="roleDAO" />
-    </bean>
+	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:tiwipro.properties</value>
+				<value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- Global Application Context (singleton scoped) beans -->
+	<bean id="states" class="com.inthinc.pro.model.app.States" init-method="init" />
+	<bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init" />
+	<bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init" />
+	<bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init" />
 
-    <bean id="dateFormatBean" class="com.inthinc.pro.backing.dao.DateFormatBean" scope="session"/>
-    
-    <bean id="baseBean" class="com.inthinc.pro.backing.BaseBean" scope="session">
-		<property name="superuserDAO" ref="superuserDAO" />
-	</bean>
-    <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" init-method="init" parent="baseBean" scope="session">
-		<property name="siloServiceCreator" ref="siloServiceCreator" />
-		<property name="reportServiceCreator" ref="reportServiceCreator" />
-		<property name="dateFormatBean" ref="dateFormatBean" />
-		
-    </bean>
-    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session">
-		<property name="deviceDAO" ref="deviceDAO" />
-		<property name="accountDAO" ref="accountDAO" />
-		<property name="userDAO" ref="userDAO" />
-		<property name="groupDAO" ref="groupDAO" />
-		<property name="forwardCommandDefDAO" ref="forwardCommandDefDAO" />
-	</bean>
-    <bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session">
-		<property name="deviceDAO" ref="deviceDAO" />
-		<property name="forwardCommandDefDAO" ref="forwardCommandDefDAO" />
-	</bean>
-    <bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session">
-		<property name="eventDAO" ref="eventDAO" />
-	</bean>
+	<!-- Backing Beans -->
+	<bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init" scope="session"/>
+	<bean id="dateFormatBean" class="com.inthinc.pro.backing.dao.DateFormatBean" scope="session" />
+	<bean id="baseBean" class="com.inthinc.pro.backing.BaseBean" scope="session"/>
+	<bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" init-method="init" parent="baseBean" scope="session"/>
+	<bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session"/>
+	<bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session"/>
+	<bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session"/>
 
 
 	<!--  DAO validator beans -->
-    <bean id="baseValidator" class="com.inthinc.pro.backing.dao.validator.BaseValidator" abstract="true">
-		<property name="superuserDAO" ref="superuserDAO" />
-	</bean>
-    <bean id="addressIDValidator" class="com.inthinc.pro.backing.dao.validator.AddressIDValidator" parent="baseValidator">
-		<property name="addressDAO" ref="addressDAO" />
-    </bean>
-    <bean id="crashReportIDValidator" class="com.inthinc.pro.backing.dao.validator.CrashReportIDValidator" parent="baseValidator">
-		<property name="crashReportDAO" ref="crashReportDAO" />
-    </bean>
-    <bean id="defaultValidator" class="com.inthinc.pro.backing.dao.validator.DefaultValidator" parent="baseValidator"/>
-    <bean id="deviceIDValidator" class="com.inthinc.pro.backing.dao.validator.DeviceIDValidator" parent="baseValidator">
-		<property name="deviceDAO" ref="deviceDAO" />
-    </bean>
-    <bean id="driverIDValidator" class="com.inthinc.pro.backing.dao.validator.DriverIDValidator" parent="baseValidator">
-		<property name="driverDAO" ref="driverDAO" />
-    </bean>
-    <bean id="driverorVehicleIDValidator" class="com.inthinc.pro.backing.dao.validator.DriverorVehicleIDValidator" parent="baseValidator">
-		<property name="driverDAO" ref="driverDAO" />
-		<property name="groupDAO" ref="groupDAO" />
-		<property name="vehicleDAO" ref="vehicleDAO" />
-    </bean>
-    <bean id="groupIDValidator" class="com.inthinc.pro.backing.dao.validator.GroupIDValidator" parent="baseValidator">
-		<property name="groupDAO" ref="groupDAO" />
-    </bean>
-    <bean id="noteIDValidator" class="com.inthinc.pro.backing.dao.validator.NoteIDValidator" parent="baseValidator">
-		<property name="eventDAO" ref="eventDAO" />
-		<property name="groupDAO" ref="groupDAO" />
-    </bean>
-    <bean id="personIDValidator" class="com.inthinc.pro.backing.dao.validator.PersonIDValidator" parent="baseValidator">
-		<property name="personDAO" ref="personDAO" />
-    </bean>
-    <bean id="redFlagAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.RedFlagAlertIDValidator" parent="baseValidator">
-		<property name="redFlagAlertDAO" ref="redFlagAlertDAO" />
-    </bean>
-    <bean id="reportPrefIDValidator" class="com.inthinc.pro.backing.dao.validator.ReportPrefIDValidator" parent="baseValidator">
-		<property name="reportScheduleDAO" ref="reportScheduleDAO" />
-    </bean>
-    <bean id="roleIDValidator" class="com.inthinc.pro.backing.dao.validator.RoleIDValidator" parent="baseValidator">
-		<property name="roleDAO" ref="roleDAO" />
-    </bean>
-    <bean id="tablePrefIDValidator" class="com.inthinc.pro.backing.dao.validator.TablePrefIDValidator" parent="baseValidator">
-		<property name="tablePreferenceDAO" ref="tablePreferenceDAO" />
-		<property name="userDAO" ref="userDAO" />
-    </bean>
-    <bean id="userIDValidator" class="com.inthinc.pro.backing.dao.validator.UserIDValidator" parent="baseValidator">
-		<property name="userDAO" ref="userDAO" />
-    </bean>
-    <bean id="vehicleIDValidator" class="com.inthinc.pro.backing.dao.validator.VehicleIDValidator" parent="baseValidator">
-		<property name="groupDAO" ref="groupDAO" />
-		<property name="vehicleDAO" ref="vehicleDAO" />
-    </bean>
-    <bean id="zoneAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneAlertIDValidator" parent="baseValidator">
-		<property name="zoneAlertDAO" ref="zoneAlertDAO" />
-    </bean>
-    <bean id="zoneIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneIDValidator" parent="baseValidator">
-		<property name="zoneDAO" ref="zoneDAO" />
-    </bean>
-    <bean id="validatorFactory" class="com.inthinc.pro.backing.dao.validator.ValidatorFactory" init-method="init">
-		<property name="addressIDValidator" ref="addressIDValidator" />
-		<property name="crashReportIDValidator" ref="crashReportIDValidator" />
-		<property name="defaultValidator" ref="defaultValidator" />
-		<property name="deviceIDValidator" ref="deviceIDValidator" />
-		<property name="driverIDValidator" ref="driverIDValidator" />
-		<property name="driverorVehicleIDValidator" ref="driverorVehicleIDValidator" />
-		<property name="groupIDValidator" ref="groupIDValidator" />
-		<property name="noteIDValidator" ref="noteIDValidator" />
-		<property name="personIDValidator" ref="personIDValidator" />
-		<property name="redFlagAlertIDValidator" ref="redFlagAlertIDValidator" />
-		<property name="reportPrefIDValidator" ref="reportPrefIDValidator" />
-		<property name="roleIDValidator" ref="roleIDValidator" />
-		<property name="tablePrefIDValidator" ref="tablePrefIDValidator" />
-		<property name="userIDValidator" ref="userIDValidator" />
-		<property name="vehicleIDValidator" ref="vehicleIDValidator" />
-		<property name="zoneAlertIDValidator" ref="zoneAlertIDValidator" />
-		<property name="zoneIDValidator" ref="zoneIDValidator" />
-    </bean>
-    
+	<bean id="baseValidator" class="com.inthinc.pro.backing.dao.validator.BaseValidator" abstract="true"/>
+	<bean id="addressIDValidator" class="com.inthinc.pro.backing.dao.validator.AddressIDValidator" parent="baseValidator"/>
+	<bean id="crashReportIDValidator" class="com.inthinc.pro.backing.dao.validator.CrashReportIDValidator" parent="baseValidator"/>
+	<bean id="defaultValidator" class="com.inthinc.pro.backing.dao.validator.DefaultValidator" parent="baseValidator" />
+	<bean id="deviceIDValidator" class="com.inthinc.pro.backing.dao.validator.DeviceIDValidator" parent="baseValidator"/>
+	<bean id="driverIDValidator" class="com.inthinc.pro.backing.dao.validator.DriverIDValidator" parent="baseValidator"/>
+	<bean id="driverorVehicleIDValidator" class="com.inthinc.pro.backing.dao.validator.DriverorVehicleIDValidator" parent="baseValidator"/>
+	<bean id="groupIDValidator" class="com.inthinc.pro.backing.dao.validator.GroupIDValidator" parent="baseValidator"/>
+	<bean id="noteIDValidator" class="com.inthinc.pro.backing.dao.validator.NoteIDValidator" parent="baseValidator"/>
+	<bean id="personIDValidator" class="com.inthinc.pro.backing.dao.validator.PersonIDValidator" parent="baseValidator"/>
+	<bean id="redFlagAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.RedFlagAlertIDValidator" parent="baseValidator"/>
+	<bean id="reportPrefIDValidator" class="com.inthinc.pro.backing.dao.validator.ReportPrefIDValidator" parent="baseValidator"/>
+	<bean id="roleIDValidator" class="com.inthinc.pro.backing.dao.validator.RoleIDValidator" parent="baseValidator"/>
+	<bean id="tablePrefIDValidator" class="com.inthinc.pro.backing.dao.validator.TablePrefIDValidator" parent="baseValidator"/>
+	<bean id="userIDValidator" class="com.inthinc.pro.backing.dao.validator.UserIDValidator" parent="baseValidator"/>
+	<bean id="vehicleIDValidator" class="com.inthinc.pro.backing.dao.validator.VehicleIDValidator" parent="baseValidator"/>
+	<bean id="zoneAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneAlertIDValidator" parent="baseValidator"/>
+	<bean id="zoneIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneIDValidator" parent="baseValidator"/>
+	<bean id="validatorFactory" class="com.inthinc.pro.backing.dao.validator.ValidatorFactory" init-method="init"/>
 </beans>
