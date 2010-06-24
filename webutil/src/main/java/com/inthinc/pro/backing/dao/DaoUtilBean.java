@@ -550,9 +550,10 @@ public class DaoUtilBean extends BaseBean
         this.paramList = paramList;
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> getColumnHeaders()
     {
-        return columnHeaders;
+        return (List<String>) (columnHeaders == null ? (Collections.emptyList()) : columnHeaders);
     }
 
     public void setColumnHeaders(List<String> columnHeaders)
