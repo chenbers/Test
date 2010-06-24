@@ -122,10 +122,6 @@
 			<artifactId>jts</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.jasypt</groupId>
-			<artifactId>jasypt</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.richfaces.ui</groupId>
 			<artifactId>richfaces-ui</artifactId>
 		</dependency>
