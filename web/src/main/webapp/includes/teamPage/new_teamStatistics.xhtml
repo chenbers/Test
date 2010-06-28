@@ -168,8 +168,10 @@
 					<f:facet name="header">
 						#{messages.team_idle_percentage}
 					</f:facet>
-					<h:outputText id="idlePercentageNonZero" rendered="#{total.score.driveTime != 0 and total.score.driveTime != null}" value="#{(total.score.idleHi+item.score.idleLo)*100/total.score.driveTime}" converter="DoubleConverter"/>
-					<h:outputText id="idlePercentageZero" rendered="#{total.score.driveTime == 0 or total.score.driveTime == null}" value="0.00"/>																				
+					<h:outputText id="idlePercentageNonZero" rendered="#{total.score.driveTime != 0 and total.score.driveTime != null}" 
+						value="#{(total.score.idleHi+total.score.idleLo)*100/total.score.driveTime}" converter="DoubleConverter"/>
+					<h:outputText id="idlePercentageZero" rendered="#{total.score.driveTime == 0 or total.score.driveTime == null}" 
+						value="0.00"/>																				
 				</rich:column>
 				<rich:column rendered="#{tableColumns['mpg'].visible}" id="newTeamStatsTab-totalsMpg">
 					<f:facet name="header">
@@ -297,8 +299,10 @@
 						#{messages.team_idle_percentage}
 					</f:facet>
 
-					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" value="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" converter="DoubleConverter"/>
-					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" value="0.00"/>																				
+					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" 
+						value="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" converter="DoubleConverter"/>
+					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" 
+						value="0.00"/>																				
 				</rich:column>
 				<rich:column rendered="#{tableColumns['mpg'].visible}" sortBy="#{item.score.weightedMpg}" id="newTeamStatsTab-mpg">
 					<f:facet name="header">
