@@ -21,6 +21,7 @@
 	<bean id="states" class="com.inthinc.pro.model.app.States" init-method="init" />
 	<bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init" />
 	<bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init" />
+	<bean id="deviceSettingDefinitions" class="com.inthinc.pro.model.configurator.DeviceSettingDefinitions" init-method="init"/>
 	<bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init" />
 
 	<!-- Backing Beans -->
@@ -31,8 +32,8 @@
 	<bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session"/>
 	<bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session"/>
 	<bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session"/>
-
-
+	<bean id="configuratorBean" class = "com.inthinc.pro.backing.ConfiguratorBean" init-method="init" parent="baseBean" scope="session"/>
+	
 	<!--  DAO validator beans -->
 	<bean id="baseValidator" class="com.inthinc.pro.backing.dao.validator.BaseValidator" abstract="true"/>
 	<bean id="addressIDValidator" class="com.inthinc.pro.backing.dao.validator.AddressIDValidator" parent="baseValidator"/>

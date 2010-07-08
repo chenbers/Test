@@ -723,7 +723,7 @@ public class SiloServiceImpl implements SiloService {
 
 
 	@Override
-    @MethodDescription(description = "Get a list of all portal access points.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.security.SiteAccessPoint.class)
+//    @MethodDescription(description = "Get a list of all portal access points.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.security.SiteAccessPoint.class)
 	public List<Map<String, Object>> getSiteAccessPts() {
 		return null;
 	}
@@ -948,4 +948,29 @@ public class SiloServiceImpl implements SiloService {
 	public List<Map<String, Object>> getReportPrefsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
 		return null;
 	}
+
+    @Override
+    @MethodDescription(description = "Fetches the device settings definitions", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.DeviceSettingDefinition.class)
+    public List<Map<String, Object>> getSettingDefs() {
+
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getVehicleSettings(int vehicleID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(int groupID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getVehicleSettingsHistory(int vehicleID, long startTime, long endTime) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
