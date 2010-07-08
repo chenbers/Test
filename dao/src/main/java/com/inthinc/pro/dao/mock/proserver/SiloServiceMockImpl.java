@@ -1594,4 +1594,28 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         List<Map<String, Object>> returnList =  MockData.getInstance().lookupList(ReportSchedule.class,searchCriteria);
         return returnList;
 	}
+
+    @Override
+    public List<Map<String, Object>> getSettingDefs() {
+
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getVehicleSettings(int vehicleID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(int groupID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getVehicleSettingsHistory(int vehicleID, long startTime, long endTime) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

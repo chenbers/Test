@@ -184,8 +184,6 @@ public interface SiloService extends HessianService
 
     List<Map<String, Object>> getDriverEventPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams, Integer types[]);
 
-    
-    
     /**
      * getMostRecentEvents
      * 
@@ -425,5 +423,9 @@ public interface SiloService extends HessianService
     Map<String, Object> deleteFwdCmdDef(Integer fwdCmd);
     Map<String, Object> updateFwdCmdDef(Map<String, Object> fwdCmdDefMap);
     
-    
+    // Configurator
+    List<Map<String, Object>> getSettingDefs();
+    Map<String,Object> getVehicleSettings(int vehicleID);
+    List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(int groupID);
+    List<Map<String, Object>> getVehicleSettingsHistory(int vehicleID, long startTime, long endTime);
 }
