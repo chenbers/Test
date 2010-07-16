@@ -723,7 +723,7 @@ public class SiloServiceImpl implements SiloService {
 
 
 	@Override
-//    @MethodDescription(description = "Get a list of all portal access points.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.security.SiteAccessPoint.class)
+    @MethodDescription(description = "Get a list of all portal access points.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.security.SiteAccessPoint.class)
 	public List<Map<String, Object>> getSiteAccessPts() {
 		return null;
 	}
@@ -957,19 +957,22 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    public Map<String, Object> getVehicleSettings(int vehicleID) {
+    @MethodDescription(description = "Fetches the vehicle settings for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
+    public Map<String, Object> getVehicleSettings(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE) int vehicleID) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(int groupID) {
+    @MethodDescription(description = "Fetches the vehicle settings for group hierarchy.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
+    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(@DaoParam(name = "groupID", validator=ValidatorType.GROUP) int groupID) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getVehicleSettingsHistory(int vehicleID, long startTime, long endTime) {
+    @MethodDescription(description = "Fetches the vehicle settings history for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.SetHistory.class)
+    public List<Map<String, Object>> getVehicleSettingsHistory(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE)int vehicleID, @DaoParam(name = "startTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long startTime, @DaoParam(name = "endTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long endTime) {
         // TODO Auto-generated method stub
         return null;
     }
