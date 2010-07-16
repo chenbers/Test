@@ -912,8 +912,9 @@ public class SiloServiceTest {
         Util.compareObjects(account, savedAccount, ignoreFields);
         assertNotNull("Account unknownDriverID",savedAccount.getUnkDriverID());
         
+        Address accountAddress = address(acctID);
+
         // TODO: uncomment when back end is ready
-//        Address accountAddress = address(acctID);
 //        account.setAddressID(accountAddress.getAddrID());
         // update
         Integer changedCount = accountDAO.update(account);
