@@ -94,7 +94,7 @@ public class HosDriverDailyLogReportCriteriaTest {
     };
     
     
-
+    @Ignore
     @Test
     public void gainTestCases() {
 
