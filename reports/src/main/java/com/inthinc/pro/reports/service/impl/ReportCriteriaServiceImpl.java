@@ -41,6 +41,7 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.HosDailyDriverLogReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
@@ -513,6 +514,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
         return reportCriteria;
     }    
+
+    @Override
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric) {
+        HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric);
+        
+        hosDailyDriverLogReportCriteria.init(driverID, interval);
+        return hosDailyDriverLogReportCriteria.getCriteriaList();
+        
+    }
+
+
     
     public void setGroupDAO(GroupDAO groupDAO)
     {
@@ -619,6 +631,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
 
 
 

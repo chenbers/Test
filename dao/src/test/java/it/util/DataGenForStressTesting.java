@@ -729,7 +729,7 @@ System.out.println("retryCnt: " + retryCnt);
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         
-        account = new Account(null, null, null, Status.ACTIVE);
+        account = new Account(null, Status.ACTIVE);
         String timeStamp = Calendar.getInstance().getTime().toString();
         account.setAcctName("inthinc " + Util.randomInt(0, 1000));
 

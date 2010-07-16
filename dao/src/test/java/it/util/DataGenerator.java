@@ -275,7 +275,7 @@ public class DataGenerator
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         
-        account = new Account(null, null, null, Status.ACTIVE);
+        account = new Account(null, Status.ACTIVE);
         
         // create
 //        Integer siloID = TESTING_SILO;

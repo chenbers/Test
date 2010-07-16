@@ -22,6 +22,7 @@ public class MeasurementConversionUtil
 	private static final Double MPGTOMPGUK = 1.2;
 	private static final Double LBTOKG = .45359237;
 	private static final Double INCHESTOCM = 2.54;
+    private static final Double LITERS_PER_GALLON = 3.7854;
 
 	/**
      * 
@@ -155,5 +156,12 @@ public class MeasurementConversionUtil
     public static Long fromCentimetersToInches(Integer cm)
     {
         return cm==null?null:Math.round(cm / INCHESTOCM);
+    }
+    
+    public static Number fromGallonsToLiters(Number gallons) {
+        
+        
+        return gallons == null ? null : Math.round(gallons.doubleValue() * LITERS_PER_GALLON);
+
     }
 }

@@ -46,7 +46,10 @@ public class ReportCriteria
     {
         paramMap.put(USE_METRIC, Boolean.FALSE);
     }
-    
+    public ReportCriteria()
+    {
+        
+    }
     public ReportCriteria(ReportCriteria reportCriteria)
     {
         setReport(reportCriteria.getReport());

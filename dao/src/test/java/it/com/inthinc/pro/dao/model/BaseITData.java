@@ -288,7 +288,7 @@ public abstract class BaseITData {
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         
-        account = new Account(null, null, null, Status.ACTIVE);
+        account = new Account(null, Status.ACTIVE);
         String timeStamp = Calendar.getInstance().getTime().toString();
         account.setAcctName("TEST " + timeStamp.substring(15));
 System.out.println("acct name: " + "TEST " + timeStamp.substring(15));        

@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,13 +34,14 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private Date expiration;
     @Column(name = "certs")
     private String certifications;
-    private String dot;
+//    private String dot;
+    private RuleSetType dot;
     @Column(updateable = false)
     private Person person;
     private Integer groupID;
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
-            String dot, Integer groupID) {
+            RuleSetType dot, Integer groupID) {
         super();
         this.driverID = driverID;
         this.personID = personID;
@@ -149,11 +151,11 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.certifications = certifications;
     }
 
-    public String getDot() {
+    public RuleSetType getDot() {
         return dot;
     }
 
-    public void setDot(String dot) {
+    public void setDot(RuleSetType dot) {
         this.dot = dot;
     }
 

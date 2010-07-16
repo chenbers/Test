@@ -209,4 +209,12 @@ public class DateUtil
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
     }
+    
+    
+    public static long deltaMinutes(Date startTime, Date endDate) {
+        return ((endDate.getTime() - startTime.getTime()) + 30000)/60000l;
+    }
+
 }
+
+

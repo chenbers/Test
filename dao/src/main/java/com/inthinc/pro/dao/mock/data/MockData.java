@@ -167,7 +167,7 @@ public class MockData {
     }
 
     private void addAccountData(Integer accountID) {
-        Account account = new Account(accountID, 0, 0, Status.ACTIVE);
+        Account account = new Account(accountID, Status.ACTIVE);
         account.setAcctName("United States Fleet");
         AccountAttributes attribs = new AccountAttributes();
         attribs.setSupportContact1(UnitTestStats.ACCOUNT_CONTACT1);

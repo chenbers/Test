@@ -69,8 +69,6 @@ public class DaoUtilBeanTest {
 		new Param("accountID", Integer.class, 0, Integer.class, Integer.valueOf(10)),	
 		new Param("acctID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),	
 		new Param("name", String.class, 1, com.inthinc.pro.model.Account.class, "testAccount"),	
-		new Param("mailID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),	
-		new Param("billID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),	
 		new Param("status", com.inthinc.pro.model.Status.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),	
 		new Param("unkDriverID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),	
 	};

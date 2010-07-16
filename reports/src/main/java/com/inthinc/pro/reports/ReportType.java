@@ -32,8 +32,11 @@ public enum ReportType
     SPEED_PERCENTAGE("Speeding Percentage Report", "SpeedPercentageReport.jrxml"),
     IDLE_PERCENTAGE("Idling Percentage Report", "IdlePercentageReport.jrxml"),
     TEAM_STATISTICS_REPORT("Team Statistics Report","TeamStatisticsReport.jrxml","TeamStatisticsReportRaw.jrxml"),
-    TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml");
-  
+    TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml"),
+    
+    // HOS
+    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml");
+    
     private String prettyTemplate;
     private String rawTemplate;
     private String label;

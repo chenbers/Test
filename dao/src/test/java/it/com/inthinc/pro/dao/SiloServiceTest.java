@@ -897,7 +897,7 @@ public class SiloServiceTest {
     private void account() {
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
-        account = new Account(null, null, null, Status.ACTIVE);
+        account = new Account(null, Status.ACTIVE);
         String timeStamp = Calendar.getInstance().getTime().toString();
         account.setAcctName(timeStamp);
         // create
@@ -911,10 +911,10 @@ public class SiloServiceTest {
         Account savedAccount = accountDAO.findByID(account.getAcctID());
         Util.compareObjects(account, savedAccount, ignoreFields);
         assertNotNull("Account unknownDriverID",savedAccount.getUnkDriverID());
-        Address mailAddress = address(acctID);
-        account.setMailID(mailAddress.getAddrID());
-        Address billAddress = address(acctID);
-        account.setBillID(billAddress.getAddrID());
+        
+        // TODO: uncomment when back end is ready
+//        Address accountAddress = address(acctID);
+//        account.setAddressID(accountAddress.getAddrID());
         // update
         Integer changedCount = accountDAO.update(account);
         assertEquals("Account update count", Integer.valueOf(1), changedCount);

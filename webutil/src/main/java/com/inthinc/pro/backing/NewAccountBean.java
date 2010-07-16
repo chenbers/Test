@@ -51,7 +51,7 @@ public class NewAccountBean {
 
     public void createAction() {
         setErrorMsg(null);
-        Account account = new Account(null, getAccountName(), null, null, Status.ACTIVE);
+        Account account = new Account(null, getAccountName(), Status.ACTIVE);
         // create an account
         Integer acctID = accountDAO.create(account);
         // create the account's top level group

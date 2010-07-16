@@ -36,6 +36,11 @@ public class Group extends BaseEntity
     private Double            mapLng = -95.8008;
     private Integer           zoneRev;
 
+    private Integer           addressID;
+    
+    @Column(updateable=false)
+    private Address           address;
+
 
     public Group()
     {
@@ -226,6 +231,23 @@ public class Group extends BaseEntity
     {
         this.zoneRev = zoneRev;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Integer getAddressID() {
+        return addressID;
+    }
+
+    public void setAddressID(Integer addressID) {
+        this.addressID = addressID;
+    }
+
 
     @Override
     public String toString() {

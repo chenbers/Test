@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.service;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTimeZone;
@@ -28,4 +29,9 @@ public interface ReportCriteriaService
     ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
     ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
     ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
+    
+    
+    // HOS
+    List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric);
+    
 }

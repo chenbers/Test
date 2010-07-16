@@ -1,8 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.util.HashMap;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -24,12 +21,19 @@ public class Account extends BaseEntity
     private Integer                   acctID;	
 	@Column(name="name")
 	private String                    acctName;
-	private Integer                   mailID;
-    private Integer                   billID;
+	
     private Status                    status;    
     private Integer                   unkDriverID;
 
     private AccountAttributes         props;
+    
+    private Integer                   addressID;
+    
+
+
+
+    @Column(updateable=false)
+    private Address                   address;
 
     public Account()
     {
@@ -37,32 +41,26 @@ public class Account extends BaseEntity
         props = new AccountAttributes();
     }
     
-    public Account(Integer acctID, Integer mailID, Integer billID, Status status)
+    public Account(Integer acctID, Status status)
     {
         super();
         this.acctID = acctID;
-        this.mailID = mailID;
-        this.billID = billID;
         this.status = status;
     }
     
-    public Account(Integer acctID, String acctName, Integer mailID, Integer billID, Status status)
+    public Account(Integer acctID, String acctName, Status status)
     {
         super();
         this.acctID = acctID;
         this.acctName = acctName;
-        this.mailID = mailID;
-        this.billID = billID;
         this.status = status;
     }
     
-    public Account(Integer acctID, String acctName, Integer mailID, Integer billID, Status status, AccountAttributes props)
+    public Account(Integer acctID, String acctName, Status status, AccountAttributes props)
     {
         super();
         this.acctID = acctID;
         this.acctName = acctName;
-        this.mailID = mailID;
-        this.billID = billID;
         this.status = status;
         this.props = props;
     }    
@@ -77,25 +75,6 @@ public class Account extends BaseEntity
         this.acctID = acctID;
     }
 
-    public Integer getMailID()
-    {
-        return mailID;
-    }
-
-    public void setMailID(Integer mailID)
-    {
-        this.mailID = mailID;
-    }
-
-    public Integer getBillID()
-    {
-        return billID;
-    }
-
-    public void setBillID(Integer billID)
-    {
-        this.billID = billID;
-    }
 
     public Status getStatus()
     {
@@ -129,9 +108,26 @@ public class Account extends BaseEntity
         this.props = props;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Integer getAddressID() {
+        return addressID;
+    }
+
+    public void setAddressID(Integer addressID) {
+        this.addressID = addressID;
+    }
+
+    
     @Override
     public String toString() {
-        return "Account [acctID=" + acctID + ", acctName=" + acctName + ", billID=" + billID + ", mailID=" + mailID + ", status=" + status + ", unkDriverID=" + unkDriverID + "]";
+        return "Account [acctID=" + acctID + ", acctName=" + acctName + ", status=" + status + ", unkDriverID=" + unkDriverID + "]";
     }
 
 }

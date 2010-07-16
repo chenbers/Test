@@ -94,7 +94,7 @@ public class Address extends BaseEntity {
 	public void setAccountID(Integer accountID) {
 		this.accountID = accountID;
 	}
-
+	
     @Override
     public String toString() {
         return "Address [addr1=" + addr1 + ", addr2=" + addr2 + ", addrID=" + addrID + ", city=" + city + ", state=" + state + ", zip=" + zip + ", accountID=" + accountID + "]";
