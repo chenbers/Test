@@ -196,8 +196,7 @@ public class EventGenerator
     	data.initIndexes(ReportTestConst.EVENTS_PER_DAY, includeExtraEvents);
         Date eventTime = startTime;
         Event event = null;
-        
-        List<byte[]> noteList = new ArrayList<byte[]>();
+        List<Event> eventList = new ArrayList<Event>();
         Integer odometer = ReportTestConst.MILES_PER_EVENT;
         int locCnt = ReportTestConst.EVENTS_PER_DAY;
         eventCount = 0;
@@ -314,10 +313,9 @@ public class EventGenerator
             	}
             }
             event.setSats(7);
-            byte[] eventBytes = createDataBytesFromEvent(event);
-            noteList.add(eventBytes);
-            
+            eventList.add(event);
 			realEventCnt++;
+            System.out.print(".");
 
 
             // coaching events
@@ -329,44 +327,53 @@ public class EventGenerator
         		else event = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_COACHING_SEATBELT,
         				new Date(eventTime.getTime() + 2000l), 60, odometer,  locations[i].getLat(), locations[i].getLng());
 	            event.setSats(7);
-	            eventBytes = createDataBytesFromEvent(event);
-	            noteList.add(eventBytes);
+	            eventList.add(event);
 				realEventCnt++;
+	            System.out.print(".");
             }
-            
             eventTime = new Date(eventTime.getTime() + ReportTestConst.ELAPSED_TIME_PER_EVENT);
-            
-            if ((i+1) % 4 == 0 ||(i+1) == locations.length)
-            {
-            	for (int retryCnt = 0; retryCnt < 10; retryCnt++)
-            	{
-	            	try
-	            	{
-	            		service.note(imeiID, noteList);
-	            		break;
-	            	}
-	            	catch (HessianException e)
-	            	{
-	            		System.out.println("Exception inserting notes: " + e.getErrorCode() + " retrying...");
-	            		
-	            	}
-	            	catch (Throwable t)
-	            	{
-	            		System.out.println("Exception inserting notes: " + t.getMessage() + " retrying...");
-	            		
-	            	}
-            	}
-                noteList = new ArrayList<byte[]>();
-                System.out.print(".");
-            }
-            
         }
+        sendEvents(eventList, imeiID, service);
+        
+        
     	System.out.println(" COMPLETE");
     	System.out.println(" event count: " + eventCount);
 //    	System.out.println(" realEventCnt " + realEventCnt);
     }
 
 
+    private void sendEvents(List<Event> eventList, String imeiID, MCMSimulator service) throws Exception {
+        
+        List<byte[]> noteList = new ArrayList<byte[]>();
+
+        int cnt = 1;
+        for (Event event : eventList) {
+            byte[] eventBytes = createDataBytesFromEvent(event);
+            noteList.add(eventBytes);
+        
+            if (cnt % 4 == 0 || cnt == eventList.size()){
+//                System.out.print(cnt + " "  + noteList.size() + " ");
+                int retryCnt = 0;
+                for (; retryCnt < 10; retryCnt++) {
+                    try {
+                        service.note(imeiID, noteList);
+                        break;
+                    }
+                    catch (HessianException e) {
+                        System.out.println("Exception inserting notes: " + e.getErrorCode() + " retrying...");
+                    }
+                    catch (Throwable t) {
+                        System.out.println("Exception inserting notes: " + t.getMessage() + " retrying...");
+                    }
+                }
+                if (retryCnt == 10)
+                    throw new Exception("Error inserting notes even after 10 retry attempts.");
+                noteList = new ArrayList<byte[]>();
+            }
+            cnt++;
+        }
+//        System.out.println("done");
+    }
     private boolean isExtraEventIndex(int idx) {
     		for (int cnt = 0; cnt < ReportTestConst.extraEventIndexes.length; cnt++)
     			if (idx == ReportTestConst.extraEventIndexes[cnt])
