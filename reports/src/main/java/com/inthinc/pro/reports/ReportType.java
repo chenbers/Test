@@ -80,6 +80,16 @@ public enum ReportType
         return rawTemplate;
     }
     
+    public String getPrettyJasper()
+    {
+        return prettyTemplate == null ? null : prettyTemplate.replace(".jrxml", ".jasper");
+    }
+
+    public String getRawJasper()
+    {
+        return rawTemplate == null ? null : rawTemplate.replace(".jrxml", ".jasper");
+    }
+
     @Override
     public String toString()
     {

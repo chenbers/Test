@@ -97,6 +97,8 @@ public class JasperReportBuilder
             ResourceBundle resourceBundle = MessageUtil.getBundle(locale);
             reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, resourceBundle);
 
+            reportCriteria.getPramMap().put("SUBREPORT_DIR", ReportUtils.getSubReportDir());
+            
             // Lets break up the report if the recordsPerReport is set
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset() != null? reportCriteria.getMainDataset() : Collections.EMPTY_LIST);
             jp = JasperFillManager.fillReport(jr, reportCriteria.getPramMap(), ds);
