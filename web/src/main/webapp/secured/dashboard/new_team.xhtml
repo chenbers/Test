@@ -180,12 +180,14 @@
     				<li class="l grid_icon"><h:graphicImage value="/images/ico_team.png" /></li>
     				<li class="l grid_title max-width">#{teamCommonBean.group.name}</li>
     				<li class="l" style="padding:6px 10px 6px 0px">
+    				<a4j:outputPanel ajaxRendered="true">
     				<ui:include src="/includes/new_scoreBox.xhtml">
 	                    <ui:param name="score" value="#{teamStatisticsBean.teamOverallScore}" />
 	                    <ui:param name="item" value="#" /> 
 	                    <ui:param name="size" value="xx-sm"/>              
 						<ui:param name="context" value="teamscore" />
                     </ui:include>
+                    </a4j:outputPanel>
     				</li>
     	
     				<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
