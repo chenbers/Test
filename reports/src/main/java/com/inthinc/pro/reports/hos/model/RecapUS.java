@@ -25,7 +25,7 @@ public class RecapUS extends Recap {
 
     }
     
-    
+    @Override
     public String getHoursAvailToday() {
         return formatMinutes(cummulativeData.getMinAvailToday());
     }
@@ -35,6 +35,7 @@ public class RecapUS extends Recap {
     public String getHoursWorked8Days() {
         return formatMinutes(cummulativeData.getTotalMinWorked());
     }
+    @Override
     public String getHoursAvailTomorrow() {
         return formatMinutes(cummulativeData.getMinAvailTomorrow());
     }

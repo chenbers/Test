@@ -1,7 +1,6 @@
 package com.inthinc.pro.reports.hos.model;
 
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 
@@ -9,8 +8,6 @@ import com.inthinc.hos.model.CummulativeData;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
-import com.inthinc.hos.rules.HOSRules;
-import com.inthinc.hos.rules.RuleSetFactory;
 
 public class RecapCanada2007 extends Recap {
     
@@ -29,6 +26,7 @@ public class RecapCanada2007 extends Recap {
         setDay(getCycleRecapDay());
 
     }
+    @Override
     public String getHoursAvailToday() {
         return formatMinutes(cummulativeData.getMinAvailToday());
     }
@@ -44,6 +42,7 @@ public class RecapCanada2007 extends Recap {
         return cycle;
     }
     
+    @Override
     public String getHoursAvailTomorrow() {
         return formatMinutes(cummulativeData.getMinAvailTomorrow());
     }

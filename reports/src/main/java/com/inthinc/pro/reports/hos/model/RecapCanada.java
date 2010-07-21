@@ -30,6 +30,7 @@ public class RecapCanada extends Recap {
         setDay(getRecapDay(day));
     }
     
+    @Override
     public String getHoursAvailToday() {
         return formatMinutes(cummulativeDataBestToday.getMinAvailToday());
     }
@@ -76,21 +77,11 @@ public class RecapCanada extends Recap {
 
     public int getRecapDay(DateTime day)
     {
-//        GregorianCalendar resetDayCalendar = new GregorianCalendar();
-//        resetDayCalendar.setTime(cummData.getStartTime());
-//
-//        logger.debug("Cumm Reset Date" + cummData.getStartTime());
-//        logger.debug("Current Date" + currentDayCalendar.getTime());
-//
-//        int daysDiff = currentDayCalendar.get(Calendar.DAY_OF_YEAR) - resetDayCalendar.get(Calendar.DAY_OF_YEAR);
-//        return daysDiff + 1;
-        
         DateTime resetDay = new DateTime(cummulativeDataBestToday.getStartTime());
-//        DateTime currentDay = new DateTime(cummulativeDataBestToday.getCurrentTime());
-//        int daysDiff = currentDay.getDayOfYear() - resetDay.getDayOfYear();
         int daysDiff = day.getDayOfYear() - resetDay.getDayOfYear();
         return daysDiff + 1;
     }
+    @Override
     public String getHoursAvailTomorrow() {
         return formatMinutes(cummulativeDataBestTomorrow.getMinAvailTomorrow());
     }

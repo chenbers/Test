@@ -44,15 +44,6 @@ public class HosDriverDailyLogGraph {
             endIncrement = startIncrement + hosRec.getTotalIncrements();
             
 			if (hosRec.getTotalIncrements() > 0) {
-			    // TODO: this case may already be handled by the adjusted list stuff
-				if (firstSeg && startIncrement > 0)
-				{
-					//We have a situation where no data exists for beginning part of day,
-					//so draw offduty for beginning section
-					drawSegment(bi, HOSStatus.OFF_DUTY, HOSStatus.OFF_DUTY, 0, startIncrement, bsBol, false);
-					lastStatus = HOSStatus.OFF_DUTY;
-				}
-				
 				drawSegment(bi, hosRec.getAdjustedStatus(), lastStatus, startIncrement, endIncrement,          
 					            (hosRec.isEdited()) ? bsBol: bsReg, !firstSeg);
 				lastStatus= hosRec.getAdjustedStatus();

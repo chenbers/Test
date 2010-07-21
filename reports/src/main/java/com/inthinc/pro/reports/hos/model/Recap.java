@@ -16,7 +16,7 @@ import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
 
-public class Recap {
+public abstract class Recap {
     private RuleSetType ruleSetType;
     private RecapType recapType;
    
@@ -43,6 +43,10 @@ public class Recap {
         
 
     }
+    
+    public abstract String getHoursAvailToday();
+    public abstract String getHoursAvailTomorrow();
+
     
 
     public String formatMinutes(long minutes) {
