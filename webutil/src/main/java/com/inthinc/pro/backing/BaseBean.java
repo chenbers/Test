@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.SuperuserDAO;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
@@ -60,5 +61,8 @@ public class BaseBean {
 		this.superuserDAO = superuserDAO;
 	}
 
+    public GroupHierarchy getGroupHierarchy() {
+        return getProUser().getGroupHierarchy();
+    }
 
 }

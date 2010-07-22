@@ -16,6 +16,9 @@
 
             <table width="100%">
                 <tr valign="top">
+                	<td width="200px">
+                	<table>
+                	<tr>
                     <td width="200px"><a4j:form styleClass="menuPanel">
                         <rich:panelMenu mode="server" style="width:200px" iconExpandedGroup="disc" iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
                             iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right">
@@ -34,7 +37,15 @@
                                 </rich:panelMenuItem>
                             </rich:panelMenuGroup>
                         </rich:panelMenu>
-                    </a4j:form></td>
+                    </a4j:form></td></tr>
+                    <tr>
+                    <td>
+                         <ui:insert name="util_leftPanel">
+                         </ui:insert>
+                    </td>
+                    </tr>
+                    </table>
+                    </td>
                     <td width="100%">
                     <rich:panel bodyClass="rich-laguna-panel-no-header" style="border:none">
                         <f:facet name="header">

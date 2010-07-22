@@ -1,6 +1,5 @@
 package com.inthinc.pro.model.configurator;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.dao.ConfiguratorDAO;
@@ -8,26 +7,19 @@ import com.inthinc.pro.model.app.BaseAppEntity;
 
 public class DeviceSettingDefinitions implements BaseAppEntity {
 
-    private List<DeviceSettingDefinition> deviceSettings;
-    
-    private ConfiguratorDAO deviceSettingDAO;
+    private List<DeviceSettingDefinition> allDeviceSettingDefinitions;
+    private ConfiguratorDAO configuratorDAO;
 
     public void init(){
-        
- //      deviceSettings =  deviceSettingDAO.getDeviceSettingDefinitions();
-//       Collections.sort(deviceSettings);
-       
-    }
-    public List<DeviceSettingDefinition> getDeviceSettings() {
-        return deviceSettings;
+
+        allDeviceSettingDefinitions = configuratorDAO.getDeviceSettingDefinitions();        
     }
 
-    public void setDeviceSettings(List<DeviceSettingDefinition> deviceSettings) {
-        this.deviceSettings = deviceSettings;
+    public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
+        this.configuratorDAO = configuratorDAO;
     }
-    
-    public List<DeviceSettingDefinition> getOrderedDeviceSettings(){
-        
-        return deviceSettings;
+
+    public List<DeviceSettingDefinition> getAllDeviceSettingDefinitions() {
+        return allDeviceSettingDefinitions;
     }
 }

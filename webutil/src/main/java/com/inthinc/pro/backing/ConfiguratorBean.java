@@ -5,247 +5,200 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.model.VehicleSetting;
+import com.inthinc.pro.backing.model.ConfigurationExtractor;
+import com.inthinc.pro.backing.model.ConfigurationSet;
+import com.inthinc.pro.backing.model.SettingOptions;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinitions;
+import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.model.configurator.VehicleSettings;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
 
 public class ConfiguratorBean extends BaseBean {
     
-    private DeviceSettingDefinitions deviceSettingDefinitions;
-    private List<VehicleSetting> vehicleSettings;
+    private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
+    private VehicleSettings vehicleSettings;
     
-    private ConfigurationTree<Integer,Long> configurationsTree;
-    private List<SettingOptions> settingsConfigurations;
-     
-    public List<VehicleSetting> getVehicleSettings() {
-        return vehicleSettings;
+    private VehicleSettingsByProductType vehicleSettingsByProductType;
+    
+    private ConfigurationSet configurationSet;
+    
+    private List<DeviceSettingDefinition> differentDeviceSettings;
+    
+    private List<DeviceSettingDefinition> displaySettingsDefinitions;
+    
+     private SettingOptions selectedSettings;
+    
+    private Integer selectedGroupId;
+    @SuppressWarnings("unused")
+    private Integer productTypeCode; //jsf needs this for reflection
+    private ProductType productType;
+    private boolean differentOnly;
+    
+//    private Selection selectedRow;
+    private Integer selectedRowKey;
+    
+    public void init() {
+        
+        selectedGroupId = null;
+        productType = ProductType.valueOfByCode(16);
+        differentOnly = false;
+        
+        displaySettingsDefinitions = new ArrayList<DeviceSettingDefinition>();
+        vehicleSettingsByProductType = new VehicleSettingsByProductType();
     }
+    public Integer getSelectedRowKey() {
+        return selectedRowKey;
+    }
+    public void setSelectedRowKey(Integer selectedRowKey) {
+        this.selectedRowKey = selectedRowKey;
+    }
+    public List<DeviceSettingDefinition> getDisplaySettingsDefinitions() {
+        return displaySettingsDefinitions;
+    }
+    public void setDisplaySettingsDefinitions(List<DeviceSettingDefinition> displaySettingsDefinitions) {
+        this.displaySettingsDefinitions = displaySettingsDefinitions;
+    }
+    public Integer getProductTypeCode() {
+        return productType.getCode();
+    }
+    public void setProductTypeCode(Integer productTypeCode) {
+        productType = ProductType.valueOfByCode(productTypeCode);
+    }
+    public void changeProduct(){
+        
+        if(selectedGroupId == null) return;
+        
+        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(selectedGroupId));
+        
+        //temporary until real data comes
+//        makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(productType),vehicleSettingsByProductType.getVehicleSettings(productType));
+        configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettings(productType));
+        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
+    }
+    public void buildSettings(){
+        makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(productType),vehicleSettingsByProductType.getVehicleSettings(productType));
+        
+        configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettings(productType));
+        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
+    }
+    public void changeDifferentOnly(){
+        
+        if(selectedGroupId == null) return;
 
-    public void setVehicleSettings(List<VehicleSetting> vehicleSettings) {
+        if(differentOnly){
+            
+            displaySettingsDefinitions = differentDeviceSettings;
+        }
+        else{
+ 
+            displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
+        }
+    }
+    public void groupChanged(){
+        
+        changeProduct();
+    }
+    public void setVehicleSettings(VehicleSettings vehicleSettings) {
         this.vehicleSettings = vehicleSettings;
     }
     
-    public DeviceSettingDefinitions getDeviceSettingDefinitions() {
-        return deviceSettingDefinitions;
+    public DeviceSettingDefinitionsByProductType getDeviceSettingDefinitionsByProductType() {
+        return deviceSettingDefinitionsByProductType;
     }
 
-    public void setDeviceSettingDefinitions(DeviceSettingDefinitions deviceSettingDefinitions) {
-        this.deviceSettingDefinitions = deviceSettingDefinitions;
+    public void setDeviceSettingDefinitionsByProductType(DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType) {
+        this.deviceSettingDefinitionsByProductType = deviceSettingDefinitionsByProductType;
     }
     
     public void createConfigurationsFromVehicleSettings(){
-         buildTree();
-         buildTable();
-    }
-    private void buildTree(){
-       
-        configurationsTree = new ConfigurationTree<Integer, Long>();
-        List<DeviceSettingDefinition> settings = deviceSettingDefinitions.getOrderedDeviceSettings();
-        ConfigurationTree<Integer, Long> lastLeaf = null;
-        for (VehicleSetting vs : vehicleSettings){
-            //build tree
-            lastLeaf = buildVehicleSettingsPath(vs, configurationsTree, settings);
-
-            //add the vehicleID to the last leaf
-            lastLeaf.leaf.add(vs.getVehicleID());
-        }
-    }
-    private  ConfigurationTree<Integer,Long> buildVehicleSettingsPath(  VehicleSetting vehicleSetting, 
-                                            ConfigurationTree<Integer,Long> configurationsTree,
-                                            List<DeviceSettingDefinition> settings){
-         
-        ConfigurationTree<Integer,Long> currentConfigurationsTreeNode = configurationsTree;
-        for(DeviceSettingDefinition setting : settings){
-
-            ConfigurationTree<Integer,Long> nextNode = followExistingPath(vehicleSetting,currentConfigurationsTreeNode,setting);
-            if (nextNode == null){
-                
-                nextNode  = createNewPath(vehicleSetting,currentConfigurationsTreeNode,setting);
-            }
-            currentConfigurationsTreeNode = nextNode;
-        }
-        return currentConfigurationsTreeNode;
-    }
-    private ConfigurationTree<Integer, Long> followExistingPath(   VehicleSetting vehicleSetting,
-                                                                            ConfigurationTree<Integer, Long> currentConfigurationsTreeNode,
-                                                                            DeviceSettingDefinition setting){
-        String value = vehicleSetting.getSettings().get(setting.getSettingID());
-        for(ConfigurationTree<Integer,Long> ct: currentConfigurationsTreeNode.subConfigurationTrees){
-            
-            if (ct.value.equals(value)){
-                return ct;
-            }
-        }
-        return null;
-    }
-    private ConfigurationTree<Integer,Long> createNewPath( VehicleSetting vehicleSetting,
-                                                                     ConfigurationTree<Integer, Long> currentConfigurationsTreeNode,
-                                                                     DeviceSettingDefinition setting){
         
-        String value = vehicleSetting.getSettings().get(setting.getSettingID());
-        ConfigurationTree<Integer, Long> subConfigurationTree = new ConfigurationTree<Integer, Long>();
-        subConfigurationTree.value = value;
-        subConfigurationTree.setParent(currentConfigurationsTreeNode);
-        currentConfigurationsTreeNode.addSubTree(subConfigurationTree);
-        
-        return subConfigurationTree;
-    }
+        ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettings(ProductType.TIWIPRO_R74));
+//         buildTreeOfDeviceSettingsForVehicles(deviceSettingDefinitionsByProductType.getDeviceSettings("tiwipro R74"),
+//                         vehicleSettingsByProductType.getVehicleSettings(ProductType.TIWIPRO_R74));
+//         buildTableOfConfigurationsFromTree(deviceSettingDefinitionsByProductType.getDeviceSettings("tiwipro R74"));
+//         makeReducedSettings(deviceSettingDefinitionsByProductType.getDeviceSettings("tiwipro R74"), differentSettings);
+   }
+    private void makeupSettings( List<DeviceSettingDefinition> settings, List<VehicleSetting> vehicleSettings){
     
-    private void buildTable(){
-        
-        //build a row for each path through the tree
-        //go through  left most branch to the leaf
-        // copy path for each leaf
-        //back up one copy path for each branch
-//        settingsConfigurations = new ArrayList<SettingOptions>();
-//        getSettingsFromTree(configurationsTree, null);
-        settingsConfigurations = new ArrayList<SettingOptions>();
-        for(int i=0;i<4;i++){
-            //create table row
-            SettingOptions settingOptions = new SettingOptions();
-            Map<String,String> settings = new HashMap<String,String>();
-            for(int j=0;j<32;j++){
-                settings.put("string_"+j,"string_"+ new Double(Math.random()*100).intValue());
-            }
-            settingOptions.setValueList(settings);
-            List<Long> vehicleIDs = new ArrayList<Long>();
-            int max = new Double(Math.random()*5).intValue();
-            for(long j=0l;j<Math.random()*5;j++){
-                vehicleIDs.add(j);
-            }
-            settingOptions.setVehicleIDs(vehicleIDs);
-            settingsConfigurations.add(settingOptions);
-        }
-     }
-    public void init() {
-
-        deviceSettingDefinitions = new DeviceSettingDefinitions();
-        List<DeviceSettingDefinition> dsdList = new ArrayList<DeviceSettingDefinition>();
-        for (int i=0;i<32;i++){
+        for(VehicleSetting vs: vehicleSettings){
             
-           DeviceSettingDefinition dsd = new DeviceSettingDefinition();
-           dsd.setSettingID(i);
-           dsdList.add(dsd);
-        }
-        deviceSettingDefinitions.setDeviceSettings(dsdList);
-        setDeviceSettingDefinitions(deviceSettingDefinitions);
-        
-        List<VehicleSetting> vehicleSettings = new ArrayList<VehicleSetting>();
-        for (int i=0;i<100;i++){
+            Map<Integer, String> settingMap = new HashMap<Integer, String>();
             
-            VehicleSetting vs = new VehicleSetting();
-            vs.setVehicleID(i);
-            Map<Integer,String> settings = new HashMap<Integer,String>();
-            
-            for(int j= 0;j<32;j++){
-                
-                settings.put(j, "string_"+j);
+            for (DeviceSettingDefinition dsd: settings){
+                String value = "";
+                if (dsd.getChoices().size()>1){
+                    
+                    value =  dsd.getChoices().get(new Double(Math.random()*dsd.getChoices().size()).intValue());
+                }
+                else if (dsd.getVarType().equals(VarType.VTBOOLEAN)){
+                    
+                    value = ""+(new Double(Math.random()*2).intValue()==0);
+                }
+                else if (dsd.getVarType().equals(VarType.VTDOUBLE) || dsd.getVarType().equals(VarType.VTINTEGER)){
+                    
+                    if ((dsd.getMin() != null) && (dsd.getMax() != null)){
+                        
+                        int range = new Integer(Integer.parseInt(dsd.getMax()))-new Integer(Integer.parseInt(dsd.getMin()));
+                        int valuePlus = new Double(Math.random()*range).intValue();
+                        value=""+new Integer(Integer.parseInt(dsd.getMin())).intValue() +valuePlus;
+                    }
+                    else{
+                        
+                        value = ""+0;
+                    }
+                }
+                else {
+                    
+                   value = "made_up_value";
+                }
+                settingMap.put(dsd.getSettingID(),value);
             }
-            vs.setSettings(settings);
-            vehicleSettings.add(vs);
-         }
-         setVehicleSettings(vehicleSettings);
-         buildTable();
-    }
-
-    private void getSettingsFromTree(ConfigurationTree<Integer,Long> currentNode, SettingOptions currentSettingOptions){
-        
-        SettingOptions settingOptions = currentSettingOptions;
-        for(ConfigurationTree<Integer,Long> subTree: currentNode.subConfigurationTrees){
-            
-            if (currentSettingOptions == null){
-                
-                //back at the top so add a new row
-                settingOptions = new SettingOptions();
-                settingOptions.addValue(currentNode.value);
-            }
-            else {
-                
-            }
+            vs.setActual(settingMap);
         }
     }
-//   private class ConfigurationStructure{
-//        
-//        private List<SettingOptions> settingOptions;
-//        private ConfigurationTree<Integer, List<?>> configurationTree;
+
+//     public List<SettingOptions> getSettingsConfigurations() {
+//        return settingsConfigurations;
 //    }
-    private class ConfigurationTree<K extends Comparable<K>,L> {
-        
-        private String value;
-//        private K element;
-        private ConfigurationTree<K,L> parent;
-        private List<ConfigurationTree<K,L>> subConfigurationTrees;
-        private List<L> leaf;
-        
-        public ConfigurationTree() {
-            super();
-            subConfigurationTrees = new ArrayList<ConfigurationTree<K,L>>();
-            leaf = new ArrayList<L>();
-        }
-        
-        public void addSubTree(ConfigurationTree<K,L >subTree){
-            
-            subConfigurationTrees.add(subTree);
-        }
+//
+//    public void setSettingsConfigurations(List<SettingOptions> settingsConfigurations) {
+//        this.settingsConfigurations = settingsConfigurations;
+//    }
 
-        public ConfigurationTree<K, L> getParent() {
-            return parent;
-        }
-
-        public void setParent(ConfigurationTree<K, L> parent) {
-            this.parent = parent;
-        }
-        
-    }
-    
-    public class SettingOptions{
-        
-        private List<Long> vehicleIDs;
-        private Map<String, String> valueList;
-        private List<String> values;
-        
-        public SettingOptions() {
-            super();
-            valueList = new HashMap<String,String>();
-            values = new ArrayList<String>();
-        }
-        public void addValue(String value){
-            
-            if (valueList.get(value) == null) {
-                valueList.put(value, value);
-                values.add(value);
-            }
-        }
-        public Map<String, String> getValueList() {
-            return valueList;
-        }
-        public void setValueList(Map<String, String> valueList) {
-            this.valueList = valueList;
-            values = new ArrayList<String>(valueList.values());
-        }
-        public List<Long> getVehicleIDs() {
-            return vehicleIDs;
-        }
-        public void setVehicleIDs(List<Long> vehicleIDs) {
-            this.vehicleIDs = vehicleIDs;
-        }
-        public void copy(SettingOptions settingOptions){
-            valueList = settingOptions.valueList;
-        }
-        public Integer getCount(){
-            return vehicleIDs.size();
-        }
-        public List<String> getValueListEntries(){
-
-            return values;
-        }
+    public Integer getSelectedGroupId() {
+        return selectedGroupId;
     }
 
-    public List<SettingOptions> getSettingsConfigurations() {
-        return settingsConfigurations;
+    public void setSelectedGroupId(Integer selectedGroupId) {
+        this.selectedGroupId = selectedGroupId;
     }
 
-    public void setSettingsConfigurations(List<SettingOptions> settingsConfigurations) {
-        this.settingsConfigurations = settingsConfigurations;
+    public boolean isDifferentOnly() {
+        return differentOnly;
     }
-}
+    public void setDifferentOnly(boolean differentOnly) {
+        this.differentOnly = differentOnly;
+    }
+    public void editSettings(){
+        
+        if((configurationSet == null)||(configurationSet.getConfigurations()==null) ||(configurationSet.getConfigurations().size() == 0)) {
+            selectedSettings = null;
+        }
+        else{
+            selectedSettings = configurationSet.getConfigurations().get(getSelectedRowKey());
+        }
+    }
+    public SettingOptions getSelectedSettings() {
+        return selectedSettings;
+    }
+    public void setSelectedSettings(SettingOptions selectedSettings) {
+        this.selectedSettings = selectedSettings;
+    }
+     public void setVehicleSettingsByProductType(VehicleSettingsByProductType vehicleSettingsByProductType) {
+        this.vehicleSettingsByProductType = vehicleSettingsByProductType;
+    }
+    public ConfigurationSet getConfigurationSet() {
+        return configurationSet;
+    }
+ }

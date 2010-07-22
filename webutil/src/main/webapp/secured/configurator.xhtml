@@ -1,0 +1,152 @@
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+<ui:define name="scripts">
+<style>
+.selectedGroup {
+	background:#cccccc;
+}
+</style>
+<script type="text/javascript">
+function goChangeGroup(groupid){
+	
+	changeGroup(groupid);
+}
+function goEditSettings(row){
+	
+	editSettings(row);
+}
+
+</script>
+</ui:define>  	
+
+<ui:param name="panelTitle" value="Configurator"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="util_leftPanel">
+<h:form>
+<table>
+<tr><td>Product:</td>
+<td>
+<a4j:region id="productMenu">
+<h:selectOneMenu value="#{configuratorBean.productTypeCode}">
+<f:selectItem itemValue="1" itemLabel="tiwi for teen"/>
+<f:selectItem itemValue="2" itemLabel="waysmart"/>
+<f:selectItem itemValue="4" itemLabel="tiwi for fleet R71"/>
+<f:selectItem itemValue="16" itemLabel="tiwi for fleet R74"/>
+<a4j:support event="onchange" action="#{configuratorBean.changeProduct}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
+</h:selectOneMenu>
+</a4j:region>
+</td></tr>
+<tr><td>Show only differences</td><td>
+<a4j:region id="differences">
+<h:selectBooleanCheckbox value="#{configuratorBean.differentOnly}">
+<a4j:support event="onchange" action="#{configuratorBean.changeDifferentOnly}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
+</h:selectBooleanCheckbox>
+</a4j:region>
+</td></tr>
+</table>
+</h:form>
+
+   <a4j:region id="configuratorGroupRegion">
+   <a4j:form> 
+	<rich:tree style="width:300px" ajaxSubmitSelection="true"  switchType="client" 
+                value="#{treeNavigationBean.navigationTree.navigationTree}" var="item" ajaxKeys="#{null}" nodeFace="#{item.type}">
+         	<rich:treeNode type="fleet" iconLeaf="/images/ico_truck.png"
+							icon="/images/ico_truck.png" selectedClass="selectedGroup">
+				<h:commandLink onclick="goChangeGroup(#{item.attributes['groupid']})">											
+					<h:outputText value="#{item.title}" />
+				</h:commandLink>
+			</rich:treeNode>
+			<rich:treeNode type="group"
+				iconLeaf="/images/ico_trucks.png"
+				icon="/images/ico_trucks.png" selectedClass="selectedGroup">
+				<h:commandLink onclick="goChangeGroup(#{item.attributes['groupid']})">											
+					<h:outputText value="#{item.title}" />
+				</h:commandLink>
+			</rich:treeNode>
+			<rich:treeNode type="team" iconLeaf="/images/ico_team.png"
+				icon="/images/ico_team.png" selectedClass="selectedGroup">
+				<h:commandLink onclick="changeGroup(#{item.attributes['groupid']})">											
+					<h:outputText value="#{item.title}" />
+				</h:commandLink>
+			</rich:treeNode>
+		</rich:tree>
+		<a4j:jsFunction id="changeGroup" name="changeGroup" action="#{configuratorBean.groupChanged}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion">
+			<a4j:actionparam id="selectedGroupId" name="selectedGroupId" assignTo="#{configuratorBean.selectedGroupId}"/>
+		</a4j:jsFunction>
+  		<a4j:jsFunction id="editSettings" name="editSettings" action="#{configuratorBean.editSettings}" reRender="configuratorEditSettingsRegion">
+			<a4j:actionparam id="selectedRow" name="selectedRow" assignTo="#{configuratorBean.selectedRowKey}"/>
+  		</a4j:jsFunction>
+    </a4j:form>
+    </a4j:region>
+</ui:define>
+<ui:define name="util_content">
+
+<div>
+            <a4j:form id="configuratorForm">
+
+    	    <rich:panel id="configuratorSettingsRegion">
+			<h:outputText styleClass="headerText" value="No data to display" rendered="#{configuratorBean.configurationSet.configurations eq null}"/>
+            <rich:scrollableDataTable rowKeyVar="rkv" frozenColCount="1" 
+                id="settingList" rows="40" width="100%" rendered="#{configuratorBean.configurationSet.configurations ne null}"
+                value="#{configuratorBean.configurationSet.configurations}" var="configuration" sortMode="single" onRowClick="goEditSettings(#{rkv})">
+
+                <rich:column id="count">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Count" />
+                    </f:facet>
+                    <h:outputText value="#{configuration.count}" />
+                </rich:column>
+ 				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 
+ 								index="index" id="setting_#{index}" sortExpression="#{configuration.values[setting.settingID]}">
+					<f:facet name="header">
+				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
+				 	</f:facet>
+				 	<h:outputText value="#{configuration.values[setting.settingID]}" />
+				</rich:columns>
+                
+             </rich:scrollableDataTable>
+</rich:panel>
+             <rich:panel id="configuratorEditSettingsRegion">
+           	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.selectedSettings.keys}" var="settingOption" columns="6" elements="120" width="600px">
+                <f:facet name="header">
+<!--                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].name}"></h:outputText>-->
+                    <h:outputText value="Setting"></h:outputText>
+                </f:facet>
+                <h:panelGrid columns="2">
+                    <h:outputText value="Category:" styleClass="label"></h:outputText>
+                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].category}"></h:outputText>
+                    <h:outputText value="Name:" styleClass="label"></h:outputText>
+                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].name}"></h:outputText>
+                    <h:outputText value="Key:" styleClass="label"></h:outputText>
+                    <h:outputText value="#{settingOption}" />
+                     <h:outputText value="ID:" styleClass="label"></h:outputText>
+                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].settingID}"></h:outputText>
+                     <h:outputText value="Value:" styleClass="label"></h:outputText>
+                    <h:outputText value="#{configuratorBean.selectedSettings.values[configuratorBean.displaySettingsDefinitions[settingOption].settingID]}" />
+                     <h:outputText value="Type:" styleClass="label"></h:outputText>
+                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].varType}"></h:outputText>
+                      <h:outputText value="Unit:" styleClass="label"></h:outputText>
+                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].unit}"></h:outputText>
+                     <h:outputText value="Choices:" styleClass="label"></h:outputText>
+                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].choices}"></h:outputText>
+                     <h:outputText value="Min:" styleClass="label"></h:outputText>
+                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].min}"></h:outputText>
+                     <h:outputText value="Max:" styleClass="label"></h:outputText>
+                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].max}"></h:outputText>
+                </h:panelGrid>
+              <f:facet name="footer">
+                <rich:datascroller></rich:datascroller>
+            </f:facet>
+        </rich:dataGrid>
+        </rich:panel>
+            </a4j:form>
+</div><!-- end page -->
+
+</ui:define>
+</ui:composition>

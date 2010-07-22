@@ -1,26 +1,46 @@
 package com.inthinc.pro.model.configurator;
 
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.model.BaseEnum;
+import com.inthinc.pro.model.configurator.VehicleSetting.ProductVersion;
 
-public class DeviceSettingDefinition implements Comparable{
+public class DeviceSettingDefinition implements Comparable<DeviceSettingDefinition>{
     
-    public enum SettingCategory{VEHICLE(0, "Vehicle"), HOS(1, "HOS"), THRESHOLDS(2, "Thresholds"),
-                                NOTIFICATIONS(3,"Notifications"), GEOFENCE(4, "Geofence"), ALARM(5,"Alarm"),
-                                WITNESS_TRIAX(6, "Witness Triax"), REMOTEUPDATE(7, "Remote Update"), COMM(8, "Comm"),
-                                MCM(9,"MCM");
- 
+    public enum Category implements BaseEnum
+    {
+        VEHICLE(0, "Vehicle"), HOS(1, "Hours of Service"), THRESHOLDS(2, "Thresholds"),
+        NOTIFICATIONS(3,"Notifications"), GEOFENCE(4, "Geofence"), ALARMS(5,"Alarms"),
+        DMM_CRASH(6, "Dmm and Crash"), REMOTEUPDATE(7, "Remote Update"), COMM(8, "Communication"),
+        DEVICE(9,"Device");
 
         private int code;
         private String name;
         
-        SettingCategory(int code, String name){
+        private static final Map<Integer, Category> lookup = new HashMap<Integer, Category>();
+        static
+        {
+            for (Category p : EnumSet.allOf(Category.class))
+            {
+                lookup.put(p.code, p);
+            }
+        }
+        
+        public static Category valueOf(Integer code)
+        {
+            return lookup.get(code);
+        }
+
+        Category(int code, String name){
             
             this.code = code;
             this.name = name;
         }
-        public int getCode(){
+        public Integer getCode(){
             
             return code;
         }
@@ -30,26 +50,147 @@ public class DeviceSettingDefinition implements Comparable{
         }
     }
     
-    public enum VarType{ VTBOOLEAN(0), VTINTEGER(1), VTDOUBLE(2), VTSTRING(3);
+    public enum VarType implements BaseEnum
+    { 
+        VTBOOLEAN(0), VTINTEGER(1), VTDOUBLE(2), VTSTRING(3);
     
         private int code;
         
+        private static final Map<Integer, VarType> lookup = new HashMap<Integer, VarType>();
+        static
+        {
+            for (VarType p : EnumSet.allOf(VarType.class))
+            {
+                lookup.put(p.code, p);
+            }
+        }
+       
+        public static VarType valueOf(Integer code)
+        {
+            return lookup.get(code);
+        }
+
         VarType(int code){
             this.code = code;
         }
-        public int getCode(){
+        public Integer getCode(){
             
             return code;
         }
       
     }
+    public enum Unit implements BaseEnum
+    {
+        NO_UNITS(0,""),SECONDS(1,"Seconds"),MINUTES(2,"Minutes"),HOURS(3,"Hours"),
+        MILES(4,"Miles"),FEET(5,"Feet"),MPH(6,"Mph"),KPH(7,"Kph"),
+        TOGGLE(8,"Disabled:Enabled"),RPM(9,"RPM"),VOLTS(10,"Volts"),
+        G(11,"G"),DAYS(12,"Days"),DEGREES(13,"Degrees"),DB(14,"dB");
+        
+        private int code;
+        private String name;
+        
+        private static final Map<Integer, Unit> lookup = new HashMap<Integer, Unit>();
+        static
+        {
+            for (Unit p : EnumSet.allOf(Unit.class))
+            {
+                lookup.put(p.code, p);
+            }
+        }
+        public static Unit valueOf(Integer code)
+        {
+            return lookup.get(code);
+        }
+       
+        Unit(int code, String name){
+            
+            this.code = code;
+            this.name = name;
+        }
+        public Integer getCode(){
+            
+            return code;
+        }
+        public String getName(){
+            
+            return name;
+        }
+      
+    }
+    
+    public enum ProductType implements BaseEnum
+    {
+        UNKNOWN(0,0,"Unknown"),TEEN(1,1,"Teen"),WS820(2,2,"WaySmart"),TIWIPRO_R71(4,3,"TiwiPro R71"),
+        TIWIPRO_R74(16,5,"TiwiPro R74");
+        
+        private int code;
+        private int version;
+        private String name;
+        
+        private static final Map<Integer, ProductType> lookupByCode = new HashMap<Integer, ProductType>();
+        private static final Map<Integer, ProductType> lookupByVersion = new HashMap<Integer, ProductType>();
+        static
+        {
+            for (ProductType p : EnumSet.allOf(ProductType.class))
+            {
+                lookupByCode.put(p.code, p);
+                lookupByVersion.put(p.version, p);
+            }
+        }
+        public static ProductType valueOf(Integer code)
+        {
+            return lookupByCode.get(code);
+        }
+       
+        public static ProductType valueOfByCode(Integer code)
+        {
+            return lookupByCode.get(code);
+        }
+        public static ProductType valueOfByVersion(Integer version)
+        {
+            return lookupByVersion.get(version);
+        }
+        public static EnumSet<ProductType> getSet(){
+            
+            return EnumSet.allOf(ProductType.class);
+        }
+        ProductType(int code,int version, String name){
+            
+            this.code = code;
+            this.version = version;
+            this.name = name;
+        }
+        public Integer getCode(){
+            
+            return code;
+        }
+        public String getName(){
+            
+            return name;
+        }
+
+        public int getVersion() {
+            
+            return version;
+        }
+        public boolean maskBitSet(Integer mask){
+            
+            return  (mask & code)==code;
+        }
+    }
     @ID
     private Integer settingID;
-    private String description;
     private String name;
-    private SettingCategory category;
+    private String description;
+    private Category category;
     private VarType varType;
+    private Unit unit;
     private List<String> choices;
+    private String min;
+    private String max;
+    private Integer visibility;
+    private Integer ignore;
+    private Integer productMask;
     
     
     public Integer getSettingID() {
@@ -70,10 +211,10 @@ public class DeviceSettingDefinition implements Comparable{
     public void setName(String name) {
         this.name = name;
     }
-    public SettingCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
-    public void setCategory(SettingCategory category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
     public VarType getVarType() {
@@ -82,24 +223,55 @@ public class DeviceSettingDefinition implements Comparable{
     public void setVarType(VarType varType) {
         this.varType = varType;
     }
-    public List<String> getChoices() {
-        return choices;
-    }
-    public void setChoices(List<String> choices) {
+    public void setChoices( List<String> choices){
+        
         this.choices = choices;
     }
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(DeviceSettingDefinition o) {
         
-        if (o != null && o instanceof DeviceSettingDefinition) {
-            Integer rhsID = ((DeviceSettingDefinition) o).getSettingID();
-            
-            if (rhsID == null) {
-                return -1;
-            }
-            
-            return settingID.compareTo(rhsID);
-        }
-        return -1;
+        return settingID.compareTo(o.getSettingID());
+    }
+    public Unit getUnit() {
+        return unit;
+    }
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+    public String getMin() {
+        return min;
+    }
+    public void setMin(String min) {
+        this.min = min;
+    }
+    public String getMax() {
+        return max;
+    }
+    public void setMax(String max) {
+        this.max = max;
+    }
+    public Integer getVisibility() {
+        return visibility;
+    }
+    public void setVisibility(Integer visibility) {
+        this.visibility = visibility;
+    }
+    public boolean isInclude(){
+        return ignore == 0;
+    }
+    public Integer getIgnore() {
+        return ignore;
+    }
+    public void setIgnore(Integer ignore) {
+        this.ignore = ignore;
+    }
+    public Integer getProductMask() {
+        return productMask;
+    }
+    public void setProductMask(Integer productMask) {
+        this.productMask = productMask;
+    }
+    public List<String> getChoices() {
+        return choices;
     }
 }
