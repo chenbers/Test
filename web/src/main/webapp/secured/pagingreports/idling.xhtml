@@ -174,8 +174,7 @@
                                   			</f:facet>
                                   			<h:outputText value="#{item.highIdlePercent}" converter="FloatConverter"/> 
                                 		</rich:column>
-                                		<rich:column id="totalHours" rendered="#{tableColumns['totalHrs'].visible}"
-                                				sortBy="#{item.totalIdleTime}">
+                                		<rich:column id="totalHours" rendered="#{tableColumns['totalHrs'].visible}">
                                   			<f:facet name="header">
                                   				<h:outputText value="#{messages.reports_totalidlehrs}" />
                                   			</f:facet>      					
