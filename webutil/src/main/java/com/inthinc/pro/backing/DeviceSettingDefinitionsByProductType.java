@@ -54,7 +54,7 @@ public class DeviceSettingDefinitionsByProductType {
         }
     }
 
-    public List<DeviceSettingDefinition> getDeviceSettings(Object key) {
+    public List<DeviceSettingDefinition> getDeviceSettings(ProductType key) {
         
         return deviceSettings.get(key);
     }
@@ -63,11 +63,7 @@ public class DeviceSettingDefinitionsByProductType {
         this.deviceSettingDefinitions = deviceSettingDefinitions;
     }
     
-    public List<DeviceSettingDefinition> getDeviceSettingDefinitions(String key){
-        
-        return deviceSettings.get(key);
-    }
-    public Map<ProductType, List<DeviceSettingDefinition>> getIgnoredSettings() {
-        return ignoredSettings;
+    public List<DeviceSettingDefinition> getIgnoredSettings(ProductType key) {
+        return ignoredSettings.get(key);
     }
 }

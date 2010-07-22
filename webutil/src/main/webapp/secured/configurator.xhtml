@@ -113,32 +113,30 @@ function goEditSettings(row){
              </rich:scrollableDataTable>
 </rich:panel>
              <rich:panel id="configuratorEditSettingsRegion">
-           	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.selectedSettings.keys}" var="settingOption" columns="6" elements="120" width="600px">
+           	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.displaySettingsDefinitions}" var="setting" columns="6" elements="120" width="600px">
                 <f:facet name="header">
 <!--                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].name}"></h:outputText>-->
                     <h:outputText value="Setting"></h:outputText>
                 </f:facet>
                 <h:panelGrid columns="2">
                     <h:outputText value="Category:" styleClass="label"></h:outputText>
-                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].category}"></h:outputText>
+                    <h:outputText value="#{setting.category}"></h:outputText>
                     <h:outputText value="Name:" styleClass="label"></h:outputText>
-                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].name}"></h:outputText>
-                    <h:outputText value="Key:" styleClass="label"></h:outputText>
-                    <h:outputText value="#{settingOption}" />
+                    <h:outputText value="#{setting.name}"></h:outputText>
                      <h:outputText value="ID:" styleClass="label"></h:outputText>
-                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].settingID}"></h:outputText>
+                   <h:outputText value="#{setting.settingID}"></h:outputText>
                      <h:outputText value="Value:" styleClass="label"></h:outputText>
-                    <h:outputText value="#{configuratorBean.selectedSettings.values[configuratorBean.displaySettingsDefinitions[settingOption].settingID]}" />
+                    <h:outputText value="#{configuratorBean.selectedSettings.values[setting.settingID]}" />
                      <h:outputText value="Type:" styleClass="label"></h:outputText>
-                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].varType}"></h:outputText>
+                   <h:outputText value="#{setting.varType}"></h:outputText>
                       <h:outputText value="Unit:" styleClass="label"></h:outputText>
-                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].unit}"></h:outputText>
+                   <h:outputText value="#{setting.unit}"></h:outputText>
                      <h:outputText value="Choices:" styleClass="label"></h:outputText>
-                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].choices}"></h:outputText>
+                   <h:outputText value="#{setting.choices}"></h:outputText>
                      <h:outputText value="Min:" styleClass="label"></h:outputText>
-                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].min}"></h:outputText>
+                   <h:outputText value="#{setting.min}"></h:outputText>
                      <h:outputText value="Max:" styleClass="label"></h:outputText>
-                   <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].max}"></h:outputText>
+                   <h:outputText value="#{setting.max}"></h:outputText>
                 </h:panelGrid>
               <f:facet name="footer">
                 <rich:datascroller></rich:datascroller>
