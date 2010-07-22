@@ -114,10 +114,6 @@ public class ConfiguratorBean extends BaseBean {
     public void createConfigurationsFromVehicleSettings(){
         
         ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettings(ProductType.TIWIPRO_R74));
-//         buildTreeOfDeviceSettingsForVehicles(deviceSettingDefinitionsByProductType.getDeviceSettings("tiwipro R74"),
-//                         vehicleSettingsByProductType.getVehicleSettings(ProductType.TIWIPRO_R74));
-//         buildTableOfConfigurationsFromTree(deviceSettingDefinitionsByProductType.getDeviceSettings("tiwipro R74"));
-//         makeReducedSettings(deviceSettingDefinitionsByProductType.getDeviceSettings("tiwipro R74"), differentSettings);
    }
     private void makeupSettings( List<DeviceSettingDefinition> settings, List<VehicleSetting> vehicleSettings){
     
@@ -157,14 +153,6 @@ public class ConfiguratorBean extends BaseBean {
             vs.setActual(settingMap);
         }
     }
-
-//     public List<SettingOptions> getSettingsConfigurations() {
-//        return settingsConfigurations;
-//    }
-//
-//    public void setSettingsConfigurations(List<SettingOptions> settingsConfigurations) {
-//        this.settingsConfigurations = settingsConfigurations;
-//    }
 
     public Integer getSelectedGroupId() {
         return selectedGroupId;
