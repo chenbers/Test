@@ -247,8 +247,8 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
             }
             catch (Exception e)
             {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
+                System.exit(1);
             }
 
         }
