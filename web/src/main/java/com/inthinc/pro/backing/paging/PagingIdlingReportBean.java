@@ -3,6 +3,7 @@ package com.inthinc.pro.backing.paging;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -15,7 +16,7 @@ import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.table.model.provider.IdlingReportPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
-
+@KeepAlive
 public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportItem>
 {
 
@@ -107,8 +108,12 @@ public class PagingIdlingReportBean extends BasePagingReportBean<IdlingReportIte
     @Override
     public void init()
     {
+        if ( startDate == null ) {
 		startDate = new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate();
+        }
+        if ( endDate == null ) {
         endDate = new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE).toDate();
+        }
         ((IdlingReportPaginationTableDataProvider)getTableDataProvider()).setInterval(initInterval());
 
         super.init();
