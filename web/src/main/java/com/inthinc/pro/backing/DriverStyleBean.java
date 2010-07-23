@@ -90,6 +90,8 @@ public class DriverStyleBean extends BasePerformanceEventsBean
     @Override
     protected void initEvents()
     {
+        setDateFormatter();
+        
         List<Event> tempEvents = new ArrayList<Event>();
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
