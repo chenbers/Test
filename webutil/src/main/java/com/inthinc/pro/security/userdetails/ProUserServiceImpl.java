@@ -13,13 +13,18 @@ import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.model.AccessPointMode;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.app.SiteAccessPoints;
+//import com.inthinc.pro.model.app.SiteAccessPointsOld;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Roles;
+import com.inthinc.pro.model.app.SiteAccessPoints;
 
 
 public class ProUserServiceImpl implements UserDetailsService
@@ -28,6 +33,7 @@ public class ProUserServiceImpl implements UserDetailsService
     
     private UserDAO userDAO;
     private RoleDAO roleDAO;
+    private GroupDAO groupDAO;
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
@@ -44,7 +50,11 @@ public class ProUserServiceImpl implements UserDetailsService
             user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
 
             ProUser proUser = new ProUser(user, getGrantedAuthorities(user));
-            
+
+            Group topGroup = groupDAO.findByID(user.getGroupID());
+            List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), user.getGroupID());                  
+            proUser.setGroupHierarchy(new GroupHierarchy(groupList));
+
             return proUser;
         }
         catch (EmptyResultSetException ex)
@@ -93,8 +103,10 @@ public class ProUserServiceImpl implements UserDetailsService
 		else{
 			
 			for(AccessPoint ap:user.getAccessPoints()){
-				
+
 				grantedAuthoritiesList.add(new GrantedAuthorityImpl(SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).toString()));
+				
+//				grantedAuthoritiesList.add(new GrantedAuthorityImpl(ap.getSiteAccessPoint().toString()));
 			}
 		}
 		grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_NORMAL"));
@@ -121,4 +133,15 @@ public class ProUserServiceImpl implements UserDetailsService
 		}
 		return false;
 	}
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
+
 }

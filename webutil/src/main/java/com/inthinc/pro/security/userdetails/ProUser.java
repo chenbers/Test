@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Zone;
@@ -22,7 +23,8 @@ public class ProUser extends org.springframework.security.userdetails.User
 
     private User user;
     private List<Zone>     zones;
-    
+    private GroupHierarchy groupHierarchy;
+   
     public ProUser(User user, GrantedAuthority[] grantedAuthorities)
     {
         super(  user.getUsername(),
@@ -64,6 +66,15 @@ public class ProUser extends org.springframework.security.userdetails.User
     public void setUser(User user)
     {
         this.user = user;
+    }
+    public GroupHierarchy getGroupHierarchy()
+    {
+        return groupHierarchy;
+    }
+
+    public void setGroupHierarchy(GroupHierarchy groupHierarchy)
+    {
+        this.groupHierarchy = groupHierarchy;
     }
 
 }
