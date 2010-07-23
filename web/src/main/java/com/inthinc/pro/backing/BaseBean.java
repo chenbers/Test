@@ -252,7 +252,8 @@ public class BaseBean implements Serializable {
 
 	protected boolean isEnablePhoneAlerts() {
 	    String active = getProUser().getAccountAttributes().getPhoneAlertsActive();
-        return (active != null && active.trim().equals("1"));
+	    // not set defaults to TRUE or any setting other than 0 is TRUE
+        return (active == null || !active.trim().equals("0"));
         
     }
 	

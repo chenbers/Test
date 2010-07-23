@@ -248,14 +248,13 @@
                         <tr>
                           <td width="150" valign="top">
                             <h:outputText value="#{messages.editAccount_no_reply_email}" />
-                            <span class="required">*</span>
                           </td>
                           <td>
                             <rich:message for="editAccount-noReplyEmail" errorClass="field-error" fatalClass="field-error" 
                             	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-noReplyEmail" value="#{accountBean.item.props.noReplyEmail}"
                             	styleClass="text" size="30" validator="#{accountBean.validateEmail}"
-                              	maxlength="50" required="true" requiredMessage="#{messages.required}" />                               
+                              	maxlength="50" />                               
                           </td>
                         </tr>
                       </table>
@@ -289,14 +288,13 @@
 		                        
 		                          <td width="120" valign="top">
 		                            <h:outputText value="#{messages[label]}" />
-		                            <h:panelGroup rendered="#{row == 0}" class="required">*</h:panelGroup>
 		                          </td>
 		                          <td width="200" valign="top">
 		                            <rich:message for="editAccount-supportContact#{row}" errorClass="field-error" fatalClass="field-error" 
 		                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 		                            <h:inputText id="editAccount-supportContact#{row}" value="#{accountBean.item.props[value]}"
 		                             	onchange="checkMultiple(this)" styleClass="text" size="40"
-		                              	maxlength="255" required="#{row == 0}" requiredMessage="#{messages.required}" />
+		                              	maxlength="255" />
 		                          </td>
 		                    	</tr>
 							</c:forEach>
