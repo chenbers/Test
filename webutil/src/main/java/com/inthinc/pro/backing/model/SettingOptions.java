@@ -11,7 +11,7 @@ public class SettingOptions{
     
     private List<Integer> vehicleIDs;
     private Map<Integer, String> values;
-    private List<String> colors;
+    private Map<Integer, String> colors;
     private List<Integer> keys;
     private List<Entry<Integer,String>> entries;
     
@@ -21,11 +21,15 @@ public class SettingOptions{
         values = new HashMap<Integer,String>();
         vehicleIDs = new ArrayList<Integer>();
     }
+    public SettingOptions(List<Integer> vehicleIDs) {
+        super();
+        this.vehicleIDs = vehicleIDs;
+    }
     public SettingOptions(SettingOptions settingOptions){
         
         vehicleIDs = new ArrayList<Integer>(settingOptions.vehicleIDs);
         values = new HashMap<Integer, String>(settingOptions.values);
-        colors = new ArrayList<String>();
+        setColors(new HashMap<Integer, String>());
     }
     public void addValue(Integer settingID, String value){
         
@@ -65,17 +69,16 @@ public class SettingOptions{
         }
         return entries;
     }
-    public List<String> getColors(){
-        
-        for(int i = 0;i<values.size();i++){
-            colors.add(new Double(Math.random()*2).intValue()==0?"red":"white");
-        }
-        return colors;
-    }
     public Map<Integer, String> getValues() {
         return values;
     }
     public void setValues(Map<Integer, String> values) {
         this.values = values;
+    }
+    public void setColors(Map<Integer, String> colors) {
+        this.colors = colors;
+    }
+    public Map<Integer, String> getColors() {
+        return colors;
     }
 }

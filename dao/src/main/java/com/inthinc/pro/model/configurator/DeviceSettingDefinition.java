@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.BaseEnum;
-import com.inthinc.pro.model.configurator.VehicleSetting.ProductVersion;
 
 public class DeviceSettingDefinition implements Comparable<DeviceSettingDefinition>{
     
@@ -52,7 +51,50 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     
     public enum VarType implements BaseEnum
     { 
-        VTBOOLEAN(0), VTINTEGER(1), VTDOUBLE(2), VTSTRING(3);
+        VTBOOLEAN(0){
+            protected boolean validateValue(String min, String max, String value){
+                
+                return  value.equalsIgnoreCase("true") || 
+                        value.equalsIgnoreCase("false") || 
+                        value.equalsIgnoreCase("0") || 
+                        value.equalsIgnoreCase("1");
+            }
+            protected void checkType(String value){}
+            protected boolean greaterThanMax(String max, String value){return false;}
+            protected boolean lessThanMin(String min, String value){return false;}
+
+        },
+        VTINTEGER(1){
+            protected void checkType(String value){
+                Integer.parseInt(value);
+            }
+            protected boolean greaterThanMax(String max, String value){
+                return Integer.parseInt(value) > Integer.parseInt(max);
+            }
+            protected boolean lessThanMin(String min, String value){
+                return Integer.parseInt(value) < Integer.parseInt(min);
+            }
+        }, 
+        VTDOUBLE(2){
+            protected void checkType(String value){
+                Double.parseDouble(value);
+            }
+            protected boolean greaterThanMax(String max, String value){
+                return Double.parseDouble(value) > Double.parseDouble(max);
+            }
+            protected boolean lessThanMin(String min, String value){
+                return Double.parseDouble(value) < Double.parseDouble(min);
+            }
+        }, 
+        VTSTRING(3){
+            protected void checkType(String value){}
+            protected boolean greaterThanMax(String max, String value){
+                return value.length() > Integer.parseInt(max);
+            }
+            protected boolean lessThanMin(String min, String value){
+                return value.length() < Integer.parseInt(min);
+            }
+        };
     
         private int code;
         
@@ -75,9 +117,31 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
         }
         public Integer getCode(){
             
-            return code;
+             return code;
         }
-      
+
+       protected boolean validateValue(String min, String max, String value){
+            try{
+                checkType(value);
+                
+                if((max != null) && !max.isEmpty()){
+                    if (greaterThanMax(max, value)) return false;
+                }
+                if((min != null) && !min.isEmpty()){
+                    if(lessThanMin(min, value)) return false;
+                }
+                return true;
+            }
+            catch(NumberFormatException nfe){
+                
+                return false;
+            }
+
+        }
+        protected abstract void checkType(String value);
+        protected abstract boolean greaterThanMax(String max, String value);
+        protected abstract boolean lessThanMin(String min, String value);
+       
     }
     public enum Unit implements BaseEnum
     {
@@ -192,6 +256,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     private Integer ignore;
     private Integer productMask;
     
+    private ValidationMode validationMode;
     
     public Integer getSettingID() {
         return settingID;
@@ -220,12 +285,20 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     public VarType getVarType() {
         return varType;
     }
+    public String getVarTypeString() {
+        return varType.name();
+    }
+
     public void setVarType(VarType varType) {
         this.varType = varType;
     }
     public void setChoices( List<String> choices){
         
         this.choices = choices;
+        if (choices != null && !choices.isEmpty() && !(choices.get(0).length()==0)){
+            
+            validationMode = new ChoiceValidationMode();
+        }
     }
     @Override
     public int compareTo(DeviceSettingDefinition o) {
@@ -273,5 +346,39 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     }
     public List<String> getChoices() {
         return choices;
+    }
+    public boolean validateValue( String value){
+        
+        return validationMode.validate(value);
+    }
+    
+    public DeviceSettingDefinition() {
+        super();
+        validationMode = new RangeValidationMode();
+    }
+    public boolean getHasChoices(){
+        return (choices != null) && !choices.isEmpty() && (choices.get(0).length()!=0);
+    }
+    protected interface ValidationMode {
+        
+        public boolean validate(String value);
+    }
+    protected class ChoiceValidationMode implements ValidationMode{
+        
+        public boolean validate(String value) {
+
+            if (value == null) return true;
+            
+            return getChoices().contains(value);
+        }
+    }
+    protected class RangeValidationMode implements ValidationMode{
+        
+        public boolean validate(String value) {
+
+            if (value == null) return true;
+
+            return getVarType().validateValue(getMin(), getMax(), value);
+        }
     }
 }

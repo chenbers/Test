@@ -21,7 +21,12 @@ function goEditSettings(row){
 	
 	editSettings(row);
 }
-
+function save(){
+	alert("hello");
+}
+function clicked(element){
+	element.readonly = false;
+}
 </script>
 </ui:define>  	
 
@@ -29,32 +34,22 @@ function goEditSettings(row){
 <ui:param name="groupSelected" value="MAIN"/>
 <ui:define name="util_leftPanel">
 <h:form>
-<table>
-<tr><td>Product:</td>
-<td>
-<a4j:region id="productMenu">
-<h:selectOneMenu value="#{configuratorBean.productTypeCode}">
-<f:selectItem itemValue="1" itemLabel="tiwi for teen"/>
-<f:selectItem itemValue="2" itemLabel="waysmart"/>
-<f:selectItem itemValue="4" itemLabel="tiwi for fleet R71"/>
-<f:selectItem itemValue="16" itemLabel="tiwi for fleet R74"/>
-<a4j:support event="onchange" action="#{configuratorBean.changeProduct}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
-</h:selectOneMenu>
-</a4j:region>
-</td></tr>
-<tr><td>Show only differences</td><td>
-<a4j:region id="differences">
+<h:panelGrid columns="2" style="width: 150px">
+	<h:outputText value="Product:" styleClass="label"></h:outputText>
+	<h:selectOneMenu value="#{configuratorBean.productTypeCode}">
+	<f:selectItem itemValue="1" itemLabel="tiwi for teen"/>
+	<f:selectItem itemValue="2" itemLabel="waysmart"/>
+	<f:selectItem itemValue="4" itemLabel="tiwi for fleet R71"/>
+	<f:selectItem itemValue="16" itemLabel="tiwi for fleet R74"/>
+	<a4j:support event="onchange" action="#{configuratorBean.changeProduct}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
+	</h:selectOneMenu>
+	<h:outputText value="Show only differences:" styleClass="label"></h:outputText>
 <h:selectBooleanCheckbox value="#{configuratorBean.differentOnly}">
-<a4j:support event="onchange" action="#{configuratorBean.changeDifferentOnly}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
+<a4j:support event="onchange" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
 </h:selectBooleanCheckbox>
-</a4j:region>
-</td></tr>
-</table>
-</h:form>
-
+</h:panelGrid>
    <a4j:region id="configuratorGroupRegion">
-   <a4j:form> 
-	<rich:tree style="width:300px" ajaxSubmitSelection="true"  switchType="client" 
+ 	<rich:tree style="width:150px" ajaxSubmitSelection="true"  switchType="client" 
                 value="#{treeNavigationBean.navigationTree.navigationTree}" var="item" ajaxKeys="#{null}" nodeFace="#{item.type}">
          	<rich:treeNode type="fleet" iconLeaf="/images/ico_truck.png"
 							icon="/images/ico_truck.png" selectedClass="selectedGroup">
@@ -82,8 +77,9 @@ function goEditSettings(row){
   		<a4j:jsFunction id="editSettings" name="editSettings" action="#{configuratorBean.editSettings}" reRender="configuratorEditSettingsRegion">
 			<a4j:actionparam id="selectedRow" name="selectedRow" assignTo="#{configuratorBean.selectedRowKey}"/>
   		</a4j:jsFunction>
-    </a4j:form>
     </a4j:region>
+</h:form>
+    
 </ui:define>
 <ui:define name="util_content">
 
@@ -91,29 +87,59 @@ function goEditSettings(row){
             <a4j:form id="configuratorForm">
 
     	    <rich:panel id="configuratorSettingsRegion">
-			<h:outputText styleClass="headerText" value="No data to display" rendered="#{configuratorBean.configurationSet.configurations eq null}"/>
-            <rich:scrollableDataTable rowKeyVar="rkv" frozenColCount="1" 
-                id="settingList" rows="40" width="100%" rendered="#{configuratorBean.configurationSet.configurations ne null}"
+			<h:outputText styleClass="headerText" value="No data to display" rendered="#{!configuratorBean.configurationSet.hasConfigurations}"/>
+            <rich:scrollableDataTable rowKeyVar="rkv" frozenColCount="3" 
+                id="settingList" rows="#{configuratorBean.configurationSet.configurationsSize}" width="100%" rendered="#{configuratorBean.configurationSet.hasConfigurations}"
                 value="#{configuratorBean.configurationSet.configurations}" var="configuration" sortMode="single" onRowClick="goEditSettings(#{rkv})">
-
+            	<rich:column id="configurationIndex">
+                    <f:facet name="header">
+                    </f:facet>
+                     <h:outputText value="#{rkv}" />
+                </rich:column>
+            	<rich:column id="saveButton">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="controls" />
+                    </f:facet>
+                    <a4j:commandButton value="Save" reRender="settingList" onclick="save()" action="configuratorBean.save"/>
+                </rich:column>
                 <rich:column id="count">
                     <f:facet name="header">
-                    	<h:outputText styleClass="headerText" value="Count" />
+                    	<h:outputText styleClass="headerText" value="# of Vehicles" />
                     </f:facet>
                     <h:outputText value="#{configuration.count}" />
                 </rich:column>
- 				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 
- 								index="index" id="setting_#{index}" sortExpression="#{configuration.values[setting.settingID]}">
+ 				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting" rendered="#{not configuratorBean.differentOnly}"
+ 								index="index" id="allSetting_#{index}" sortExpression="#{configuration.values[setting.settingID]}">
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
-				 	<h:outputText value="#{configuration.values[setting.settingID]}" />
+				 	
+				 	<rich:inplaceInput value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
+				 				 style="background-color:#{configuration.colors[setting.settingID]}" 
+				 				 rendered="#{not setting.hasChoices}"/>
+				 	<rich:inplaceSelect value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
+				 				 		rendered="#{setting.hasChoices}">
+
+						<f:selectItem itemValue="0" itemLabel="0"/>
+						<f:selectItem itemValue="1" itemLabel="1"/>
+
+					</rich:inplaceSelect>
+
+				 				 
+				</rich:columns>
+ 				<rich:columns value="#{configuratorBean.differentDeviceSettings}" var="setting" rendered="#{configuratorBean.differentOnly}"
+ 								index="index" id="diffSetting_#{index}" sortExpression="#{configuration.values[setting.settingID]}">
+					<f:facet name="header">
+				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
+				 	</f:facet>
+				 	<h:inputText value="#{configuration.values[setting.settingID]}" style="background-color:#{configuration.colors[setting.settingID]}" onclick="clicked();"/>
 				</rich:columns>
                 
              </rich:scrollableDataTable>
 </rich:panel>
              <rich:panel id="configuratorEditSettingsRegion">
-           	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.displaySettingsDefinitions}" var="setting" columns="6" elements="120" width="600px">
+           	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 
+           					columns="6" elements="120" width="600px" rendered="#{configuratorBean.selectedRowKey ne null}">
                 <f:facet name="header">
 <!--                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].name}"></h:outputText>-->
                     <h:outputText value="Setting"></h:outputText>
@@ -128,7 +154,7 @@ function goEditSettings(row){
                      <h:outputText value="Value:" styleClass="label"></h:outputText>
                     <h:outputText value="#{configuratorBean.selectedSettings.values[setting.settingID]}" />
                      <h:outputText value="Type:" styleClass="label"></h:outputText>
-                   <h:outputText value="#{setting.varType}"></h:outputText>
+                   <h:outputText value="#{setting.varTypeString}"></h:outputText>
                       <h:outputText value="Unit:" styleClass="label"></h:outputText>
                    <h:outputText value="#{setting.unit}"></h:outputText>
                      <h:outputText value="Choices:" styleClass="label"></h:outputText>

@@ -9,11 +9,12 @@ public class ConfigurationExtractor {
 
     public static ConfigurationSet getConfigurations(List<VehicleSetting> vehicleSettings){
         
-        if(vehicleSettings == null) return null;
         
         ConfigurationSet configurationSet = new ConfigurationSet();
         
-        configurationSet.setConfigurations(createConfigurations(vehicleSettings));
+       if(vehicleSettings == null) return configurationSet;
+       
+       configurationSet.setConfigurations(createConfigurations(vehicleSettings));
         
         return configurationSet;
     }
