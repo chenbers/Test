@@ -2,8 +2,11 @@ package com.inthinc.pro.model.configurator;
 
 import java.util.Date;
 
-public class SetHistory {
+import com.inthinc.pro.dao.annotations.ID;
+
+public class VehicleSettingHistory {
     
+    @ID
     private Integer setHistoryID;   
     private Integer vehicleID;  
     private Integer deviceID;

@@ -18,8 +18,10 @@ public class DeviceSettingDefinitionsByProductType {
     
     public void init(){
         
+        deviceSettingDefinitions.init();
         initProductSettings();
         distributeSettings();
+        sortSettings();
     }
     private void initProductSettings(){
         
@@ -54,6 +56,13 @@ public class DeviceSettingDefinitionsByProductType {
                     ignoredSettings.get(productType).add(dsd);
                 }
             }
+        }
+    }
+    private void sortSettings(){
+        
+        for(List<DeviceSettingDefinition> dsds:deviceSettings.values()){
+            
+            Collections.sort(dsds);
         }
     }
     public List<DeviceSettingDefinition> deriveReducedSettings(List<Integer> settingIDsWithMoreThanOneValue,ProductType productType){

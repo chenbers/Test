@@ -10,15 +10,14 @@ import java.util.Map.Entry;
 
 public class ConfigurationSet {
 
+    List<SettingOptions> configurations;
+    List<Integer> settingIDsWithMoreThanOneValue;
+    
     public ConfigurationSet() {
         super();
         configurations = new ArrayList<SettingOptions>();
         settingIDsWithMoreThanOneValue = new ArrayList<Integer>();
-    }
-    List<SettingOptions> configurations;
-    List<Integer> settingIDsWithMoreThanOneValue;
-    
-    
+    }    
     
     public List<SettingOptions> getConfigurations() {
         return configurations;

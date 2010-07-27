@@ -959,21 +959,37 @@ public class SiloServiceImpl implements SiloService {
     @Override
     @MethodDescription(description = "Fetches the vehicle settings for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
     public Map<String, Object> getVehicleSettings(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE) int vehicleID) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     @MethodDescription(description = "Fetches the vehicle settings for group hierarchy.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
     public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(@DaoParam(name = "groupID", validator=ValidatorType.GROUP) int groupID) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Fetches the vehicle settings history for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.SetHistory.class)
-    public List<Map<String, Object>> getVehicleSettingsHistory(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE)int vehicleID, @DaoParam(name = "startTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long startTime, @DaoParam(name = "endTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long endTime) {
-        // TODO Auto-generated method stub
+    @MethodDescription(description = "Fetches the vehicle settings history for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSettingHistory.class)
+    public List<Map<String, Object>> getVehicleSettingsHistory(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE)int vehicleID, 
+            @DaoParam(name = "startTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long startTime, 
+            @DaoParam(name = "endTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long endTime) {
+
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.configurator.VehicleSettings.class)
+    public Map<String, Object> setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
+
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.configurator.VehicleSettings.class)
+    public Map<String, Object> updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
+
         return null;
     }
 }

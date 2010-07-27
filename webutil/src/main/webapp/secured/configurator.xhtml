@@ -86,9 +86,9 @@ function clicked(element){
 <div>
             <a4j:form id="configuratorForm">
 
-    	    <rich:panel id="configuratorSettingsRegion">
+    	    <rich:panel id="configuratorSettingsRegion" >
 			<h:outputText styleClass="headerText" value="No data to display" rendered="#{!configuratorBean.configurationSet.hasConfigurations}"/>
-            <rich:scrollableDataTable rowKeyVar="rkv" frozenColCount="3" 
+            <rich:scrollableDataTable rowKeyVar="rkv" frozenColCount="3" style="height:#{configuratorBean.configurationSet.configurationsSize*20+40}px"
                 id="settingList" rows="#{configuratorBean.configurationSet.configurationsSize}" width="100%" rendered="#{configuratorBean.configurationSet.hasConfigurations}"
                 value="#{configuratorBean.configurationSet.configurations}" var="configuration" sortMode="single" onRowClick="goEditSettings(#{rkv})">
             	<rich:column id="configurationIndex">
@@ -115,14 +115,12 @@ function clicked(element){
 				 	</f:facet>
 				 	
 				 	<rich:inplaceInput value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
-				 				 style="background-color:#{configuration.colors[setting.settingID]}" 
+				 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true" 
 				 				 rendered="#{not setting.hasChoices}"/>
 				 	<rich:inplaceSelect value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
 				 				 		rendered="#{setting.hasChoices}">
 
-						<f:selectItem itemValue="0" itemLabel="0"/>
-						<f:selectItem itemValue="1" itemLabel="1"/>
-
+						<f:selectItems value="#{configuratorBean.choiceSelectItems.selectItems[setting.settingID]}" />
 					</rich:inplaceSelect>
 
 				 				 
@@ -132,7 +130,14 @@ function clicked(element){
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
-				 	<h:inputText value="#{configuration.values[setting.settingID]}" style="background-color:#{configuration.colors[setting.settingID]}" onclick="clicked();"/>
+				 	<rich:inplaceInput value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
+				 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true" 
+				 				 rendered="#{not setting.hasChoices}"/>
+				 	<rich:inplaceSelect value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
+				 				 		rendered="#{setting.hasChoices}">
+
+						<f:selectItems value="#{configuratorBean.choiceSelectItems.selectItems[setting.settingID]}" />
+					</rich:inplaceSelect>
 				</rich:columns>
                 
              </rich:scrollableDataTable>

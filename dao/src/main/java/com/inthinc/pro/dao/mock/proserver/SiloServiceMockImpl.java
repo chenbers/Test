@@ -1618,4 +1618,16 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Map<String, Object> setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -2,8 +2,9 @@
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules::0" NAME="item" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="go_home::#home.xhtml" NAME="output"
-    PATH="/home.xhtml" TARGET="rules:#home.xhtml" TITLE="go_home" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="go_home::#secured#home.xhtml" NAME="output"
+    PATH="/secured/home.xhtml" TARGET="rules:#secured#home.xhtml"
+    TITLE="go_home" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules::1" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
@@ -27,12 +28,42 @@
     TARGET="rules:#secured#fwdcmd.xhtml" TITLE="go_forwardCmd" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#home.xhtml" PATH="/home.xhtml"
-  SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#secured#newAccount.xhtml"
   PATH="/secured/newAccount.xhtml" SHAPE="240,145,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#secured#fwdcmd.xhtml"
   PATH="/secured/fwdcmd.xhtml" SHAPE="240,369,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#secured#dao.xhtml" PATH="/secured/dao.xhtml"
   SHAPE="240,257,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::4" SHAPE="32,465,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::4" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="go_forwardCmdRestricted::#secured#fwdcmdres.xhtml" NAME="output"
+    PATH="/secured/fwdcmdres.xhtml"
+    TARGET="rules:#secured#fwdcmdres.xhtml"
+    TITLE="go_forwardCmdRestricted" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::5" SHAPE="32,577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::5" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_dataExtract::#secured#dataExtract.xhtml"
+    NAME="output" PATH="/secured/dataExtract.xhtml"
+    TARGET="rules:#secured#dataExtract.xhtml" TITLE="go_dataExtract" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#secured#dataExtract.xhtml"
+  PATH="/secured/dataExtract.xhtml" SHAPE="240,593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#fwdcmdres.xhtml"
+  PATH="/secured/fwdcmdres.xhtml" SHAPE="240,481,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#home.xhtml"
+  PATH="/secured/home.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::6" SHAPE="32,689,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::6" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="go_configurator::#secured#configurator.xhtml" NAME="output"
+    PATH="/secured/configurator.xhtml"
+    TARGET="rules:#secured#configurator.xhtml" TITLE="go_configurator" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#secured#configurator.xhtml"
+  PATH="/secured/configurator.xhtml" SHAPE="240,705,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

@@ -9,23 +9,26 @@ import com.inthinc.pro.backing.model.ConfigurationExtractor;
 import com.inthinc.pro.backing.model.ConfigurationSet;
 import com.inthinc.pro.backing.model.SettingOptions;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinitions;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.VehicleSettings;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
+import com.inthinc.pro.ui.ChoiceSelectItems;
 
 public class ConfiguratorBean extends BaseBean {
     
+    private DeviceSettingDefinitions deviceSettingDefinitions;
     private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-    private VehicleSettings vehicleSettings;
+    private ChoiceSelectItems choiceSelectItems;
+    private List<DeviceSettingDefinition> differentDeviceSettings;
+    private List<DeviceSettingDefinition> displaySettingsDefinitions;
     
+    private VehicleSettings vehicleSettings;
     private VehicleSettingsByProductType vehicleSettingsByProductType;
     
     private ConfigurationSet configurationSet;
     
-    private List<DeviceSettingDefinition> differentDeviceSettings;
-    
-    private List<DeviceSettingDefinition> displaySettingsDefinitions;
     
      private SettingOptions selectedSettings;
     
@@ -45,9 +48,27 @@ public class ConfiguratorBean extends BaseBean {
         productType = ProductType.valueOfByCode(16);
         differentOnly = false;
         
+        deviceSettingDefinitionsByProductType.init();
+        choiceSelectItems = new ChoiceSelectItems();
+        choiceSelectItems.init(deviceSettingDefinitionsByProductType.getDeviceSettings(productType));
         displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
         vehicleSettingsByProductType = new VehicleSettingsByProductType();
         differentDeviceSettings = Collections.emptyList();
+    }
+    public Object setupConfigurator(){
+        
+        selectedGroupId = null;
+        productType = ProductType.valueOfByCode(16);
+        differentOnly = false;
+        
+        deviceSettingDefinitionsByProductType.init();
+        choiceSelectItems = new ChoiceSelectItems();
+        choiceSelectItems.init(deviceSettingDefinitionsByProductType.getDeviceSettings(productType));
+        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
+        vehicleSettingsByProductType = new VehicleSettingsByProductType();
+        differentDeviceSettings = Collections.emptyList();
+        
+        return "go_configurator";
     }
     public Integer getSelectedRowKey() {
         return selectedRowKey;
@@ -201,5 +222,11 @@ public class ConfiguratorBean extends BaseBean {
     }
     public List<DeviceSettingDefinition> getDifferentDeviceSettings() {
         return differentDeviceSettings;
+    }
+    public ChoiceSelectItems getChoiceSelectItems() {
+        return choiceSelectItems;
+    }
+    public DeviceSettingDefinitions getDeviceSettingDefinitions() {
+        return deviceSettingDefinitions;
     }
  }

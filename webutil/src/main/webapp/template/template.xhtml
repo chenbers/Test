@@ -33,7 +33,7 @@
                                 </rich:panelMenuItem>
                                 <rich:panelMenuItem label="Extract Scoring Data" action="go_dataExtract" ajaxSingle="false"  rendered="#{daoUtilBean.isSuperuser}">
                                 </rich:panelMenuItem>
-                                <rich:panelMenuItem label="Configurator" action="go_configurator" ajaxSingle="false"  rendered="#{daoUtilBean.isSuperuser}">
+                                <rich:panelMenuItem label="Configurator" action="#{configuratorBean.setupConfigurator}" ajaxSingle="false"  rendered="#{daoUtilBean.isSuperuser}">
                                 </rich:panelMenuItem>
                             </rich:panelMenuGroup>
                         </rich:panelMenu>

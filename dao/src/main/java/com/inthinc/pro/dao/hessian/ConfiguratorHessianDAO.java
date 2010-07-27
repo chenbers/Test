@@ -1,13 +1,17 @@
 package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.model.configurator.VehicleSettingHistory;
 
 public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefinition, Integer> implements ConfiguratorDAO {
 
@@ -34,5 +38,28 @@ public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefin
             
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public void setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
+        getSiloService().setVehicleSettings(vehicleID, setMap, userID, reason);
+    }
+
+    @Override
+    public  void updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
+
+        getSiloService().updateVehicleSettings(vehicleID, setMap, userID, reason);
+    }
+
+    @Override
+    public List<VehicleSettingHistory> getVehicleSettingsHistory(Integer vehicleID, Date startTime, Date endTime) {
+
+        return getMapper().convertToModelObject(getSiloService().getVehicleSettingsHistory(vehicleID, DateUtil.convertDateToSeconds(startTime), DateUtil.convertDateToSeconds(endTime)),VehicleSettingHistory.class);
+    }
+
+    @Override
+    public VehicleSetting getVehicleSettings(Integer vehicleID) {
+
+        return getMapper().convertToModelObject(getSiloService().getVehicleSettings(vehicleID), VehicleSetting.class);
     }
 }
