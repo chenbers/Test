@@ -8,6 +8,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.backing.configurator.ConfiguratorBean;
+import com.inthinc.pro.backing.configurator.DeviceSettingDefinitionsByProductType;
+import com.inthinc.pro.backing.configurator.VehicleSettingsByProductType;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;

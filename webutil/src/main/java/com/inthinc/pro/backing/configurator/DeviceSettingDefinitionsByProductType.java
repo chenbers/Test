@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing;
+package com.inthinc.pro.backing.configurator;
 
 import java.util.ArrayList;
 import java.util.Collections;

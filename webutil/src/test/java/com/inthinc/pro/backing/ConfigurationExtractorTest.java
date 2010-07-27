@@ -12,6 +12,8 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.backing.configurator.DeviceSettingDefinitionsByProductType;
+import com.inthinc.pro.backing.configurator.VehicleSettingsByProductType;
 import com.inthinc.pro.backing.model.ConfigurationExtractor;
 import com.inthinc.pro.backing.model.ConfigurationSet;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;

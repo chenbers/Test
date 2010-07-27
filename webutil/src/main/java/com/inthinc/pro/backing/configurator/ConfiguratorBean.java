@@ -1,10 +1,11 @@
-package com.inthinc.pro.backing;
+package com.inthinc.pro.backing.configurator;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.model.ConfigurationExtractor;
 import com.inthinc.pro.backing.model.ConfigurationSet;
 import com.inthinc.pro.backing.model.SettingOptions;

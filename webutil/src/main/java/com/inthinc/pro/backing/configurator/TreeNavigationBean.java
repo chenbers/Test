@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing;
+package com.inthinc.pro.backing.configurator;
 
 //import static com.inthinc.pro.backing.BaseBean.logger;
 
@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import org.richfaces.model.TreeNode;
 
+import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
