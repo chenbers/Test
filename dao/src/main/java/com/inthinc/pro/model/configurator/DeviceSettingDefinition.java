@@ -51,7 +51,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     
     public enum VarType implements BaseEnum
     { 
-        VTBOOLEAN(0){
+        VTBOOLEAN(0, "boolean"){
             protected boolean validateValue(String min, String max, String value){
                 
                 return  value.equalsIgnoreCase("true") || 
@@ -64,7 +64,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
             protected boolean lessThanMin(String min, String value){return false;}
 
         },
-        VTINTEGER(1){
+        VTINTEGER(1, "integer"){
             protected void checkType(String value){
                 Integer.parseInt(value);
             }
@@ -75,7 +75,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
                 return Integer.parseInt(value) < Integer.parseInt(min);
             }
         }, 
-        VTDOUBLE(2){
+        VTDOUBLE(2,"double"){
             protected void checkType(String value){
                 Double.parseDouble(value);
             }
@@ -86,7 +86,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
                 return Double.parseDouble(value) < Double.parseDouble(min);
             }
         }, 
-        VTSTRING(3){
+        VTSTRING(3,"string"){
             protected void checkType(String value){}
             protected boolean greaterThanMax(String max, String value){
                 return value.length() > Integer.parseInt(max);
@@ -97,8 +97,9 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
         };
     
         private int code;
+        private String name;
         
-        private static final Map<Integer, VarType> lookup = new HashMap<Integer, VarType>();
+		private static final Map<Integer, VarType> lookup = new HashMap<Integer, VarType>();
         static
         {
             for (VarType p : EnumSet.allOf(VarType.class))
@@ -112,13 +113,17 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
             return lookup.get(code);
         }
 
-        VarType(int code){
+        VarType(int code, String name){
             this.code = code;
+            this.name = name;
         }
         public Integer getCode(){
             
              return code;
         }
+        public String getName() {
+			return name;
+		}
 
        protected boolean validateValue(String min, String max, String value){
             try{
@@ -147,7 +152,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     {
         NO_UNITS(0,""),SECONDS(1,"Seconds"),MINUTES(2,"Minutes"),HOURS(3,"Hours"),
         MILES(4,"Miles"),FEET(5,"Feet"),MPH(6,"Mph"),KPH(7,"Kph"),
-        TOGGLE(8,"Disabled:Enabled"),RPM(9,"RPM"),VOLTS(10,"Volts"),
+        TOGGLE(8,"off/on"),RPM(9,"RPM"),VOLTS(10,"Volts"),
         G(11,"G"),DAYS(12,"Days"),DEGREES(13,"Degrees"),DB(14,"dB");
         
         private int code;
