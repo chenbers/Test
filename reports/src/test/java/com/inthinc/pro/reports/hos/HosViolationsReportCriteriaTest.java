@@ -101,6 +101,7 @@ public class HosViolationsReportCriteriaTest {
             }
             
 //            dumpToPDF(1000*(testCaseCnt+1), criteria);
+//            dumpToEXCEL(1000*(testCaseCnt+1), criteria);
         }
     }
 //    System.out.println("new HosViolationsSummary(\", " + s.getGroupName() + "\"," + 
@@ -136,9 +137,24 @@ public class HosViolationsReportCriteriaTest {
             e.printStackTrace();
         }
     }
+    private void dumpToEXCEL(int testCaseCnt, HosViolationsSummaryReportCriteria hosViolationsSummaryReportCriteria) {
+        ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
+        Report report = reportCreator.getReport(hosViolationsSummaryReportCriteria);
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream("c:\\reportTest" + testCaseCnt + ".xls");
+            report.exportReportToStream(FormatType.EXCEL, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     class ViolationsTestData {
-        // criteria.initDataSet(Interval interval, Group topGroup, List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap);
         Group topGroup;
         List<Group> groupList = new ArrayList<Group>();
         Map<String, Integer> groupIDMap = new HashMap<String, Integer>();
@@ -253,9 +269,7 @@ public class HosViolationsReportCriteriaTest {
             BufferedReader in;
             try {
                 InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
-//                System.out.println("filename: " + filename);
                 if (stream != null) {
-//                    System.out.println("stream exists");
                     in = new BufferedReader(new InputStreamReader(stream));
                     String str;
                     while ((str = in.readLine()) != null) {
@@ -264,11 +278,6 @@ public class HosViolationsReportCriteriaTest {
                             if (values[i].startsWith("\"") && values[i].endsWith("\"")) {
                                 values[i] = values[i].substring(1, values[i].length() - 1);
                             }
-                        
-    //                    6AC094CF-96AC-46BC-BE81-C6F5DC039341,8,2,1276743078000,US/Mountain,10724356,true,false
-    //                    AC43A0FD-F258-4932-8070-B8C6AE7ACDE3,7,2,1276726937000,US/Mountain,10724356,true,false
-    //                    csv.println(id + "," + status + "," + ruleType + "," + ts.getTime() + "," + timezoneID + "," + vehicleID + "," + singleDriver + "," + nonDOTDriverDrivingDOTVehicle);
-    
                         String id = values[0];
                         HOSStatus status = HOSStatus.valueOf(Integer.valueOf(values[1]));
                         RuleSetType ruleType = RuleSetType.valueOf(Integer.valueOf(values[2]));
@@ -373,10 +382,7 @@ public class HosViolationsReportCriteriaTest {
                 groupIDMap.put(gainGroupID, groupID);
                 
             }
-            
             return groupID;
-            
         }
-
     }
 }
