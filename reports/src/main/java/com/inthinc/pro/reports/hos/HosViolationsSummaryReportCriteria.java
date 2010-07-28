@@ -146,7 +146,8 @@ public class HosViolationsSummaryReportCriteria extends ReportCriteria {
          
         List<HosViolationsSummary> dataList = new ArrayList<HosViolationsSummary>();
         for (HosViolationsSummary summary : dataMap.values()) { 
-            dataList.add(summary);
+            if (summary.getDriverCnt().intValue() != 0 || summary.getTotalMiles().intValue() != 0)
+                dataList.add(summary);
         }
 
         setMainDataset(dataList);
@@ -160,6 +161,10 @@ public class HosViolationsSummaryReportCriteria extends ReportCriteria {
 
     private HosViolationsSummary findSummary(GroupHierarchy groupHierarchy, Group topGroup, Map<Integer, HosViolationsSummary> dataMap, Integer groupID) {
         Group driverGroup = groupHierarchy.getGroup(groupID);
+        if (driverGroup == null) {
+            logger.error("Group is null for groupID: " + groupID);
+            return null;
+        }
         Group topAncestor = (groupID.equals(topGroup.getGroupID())) ? topGroup : groupHierarchy.getTopAncestor(driverGroup, groupHierarchy.getChildren(topGroup));
         if (topAncestor == null) {
             logger.error("Group topAncestor is null for group: " + driverGroup.getGroupID());

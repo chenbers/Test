@@ -1,5 +1,7 @@
 package com.inthinc.pro.reports.hos;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -33,34 +35,90 @@ import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.hos.model.HosGroupMileage;
+import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportCreator;
 
 public class HosViolationsReportCriteriaTest {
-    public static final String testCaseName[] = { "vtest_00_07012010_07072010", };
+    public static final String testCaseName[] = { 
+        "vtest_00_07012010_07072010", 
+        "vtest_01H1_07012010_07072010",
+    };
+
+    /*
+    public HosViolationsSummary(String groupName, Integer driving_1, Integer driving_2, Integer driving_3, Integer onDuty_1, Integer onDuty_2, Integer onDuty_3,
+            Integer cumulative_1, Integer cumulative_2, Integer cumulative_3, Integer offDuty_1, Integer offDuty_2, Integer offDuty_3, Integer driverCnt, Double totalMiles,
+            Double totalMilesNoDriver) {
+
+    */
+    
+    HosViolationsSummary expectedData[][] = {
+            {
+                new HosViolationsSummary(", HOS",0,0,0,2,0,0,0,0,0,0,0,0,32,306500.0d,0.0d),
+                new HosViolationsSummary(", HOS->Open Hole",0,0,0,0,0,0,0,0,0,0,0,0,7,531200.0d,5300.0d),
+                new HosViolationsSummary(", HOS->Cased Hole",0,0,0,7,3,1,3,1,1,0,0,0,54,1296600.0d,21100.0d),
+                new HosViolationsSummary(", HOS->Slickline",0,0,0,0,0,0,0,0,0,0,0,0,6,133900.0d,0.0d),
+                new HosViolationsSummary(", HOS->Tech",0,0,0,0,0,0,0,0,0,0,0,0,5,0.0d,0.0d),
+                new HosViolationsSummary(", HOS->Gun Loader",0,0,0,0,0,0,0,0,0,0,0,0,8,0.0d,0.0d),
+                new HosViolationsSummary(", HOS->Temporary Drivers",0,0,0,0,0,0,0,0,0,0,0,0,10,0.0d,0.0d),
+            },
+            {
+                new HosViolationsSummary(", Norman Wells->Norman Wells - WS",0,0,0,4,1,0,0,0,0,3,1,1,7,26700.0d,100.0d),
+                new HosViolationsSummary(", Norman Wells->REW",0,0,0,0,0,0,0,0,0,0,0,0,0,15200.0d,0.0d),
+            }
+    };
 
     @Test
     public void gainTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             ViolationsTestData violationsTestData = new ViolationsTestData(testCaseName[testCaseCnt]);
-            /*            
-            for (Group group : violationsTestData.groupList)
-                System.out.println("Group: " + group);
-            System.out.println("TopGroup:" + violationsTestData.topGroup);
-            for (Group group : violationsTestData.groupList)
-                System.out.println("Group: " + group);
-            for (Driver driver : violationsTestData.driverHOSRecordMap.keySet()) {
-                System.out.println("Driver: " + driver);
-                System.out.println("Record count: " + violationsTestData.driverHOSRecordMap.get(driver).size());
-            }
-*/            
-            
             HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria(Locale.US);
             criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap,
                                     violationsTestData.groupMileageList, violationsTestData.groupNoDriverMileageList);
-//            dumpToPDF(1000, criteria);
+            
+            
+            List<HosViolationsSummary> dataList = criteria.getMainDataset();
+            assertEquals(testCaseName[testCaseCnt] + " number of records", expectedData[testCaseCnt].length, dataList.size());
+            int eCnt = 0;
+            for (HosViolationsSummary s : dataList)
+            {
+                HosViolationsSummary expected = expectedData[testCaseCnt][eCnt++];
+                assertEquals(testCaseName[testCaseCnt] +" driving_1 " + eCnt, expected.getDriving_1(), s.getDriving_1()); 
+                assertEquals(testCaseName[testCaseCnt] +" driving_2 " + eCnt, expected.getDriving_2(), s.getDriving_2()); 
+                assertEquals(testCaseName[testCaseCnt] +" driving_2 " + eCnt, expected.getDriving_3(), s.getDriving_3()); 
+                assertEquals(testCaseName[testCaseCnt] +" OnDuty_1 " + eCnt, expected.getOnDuty_1(), s.getOnDuty_1()); 
+                assertEquals(testCaseName[testCaseCnt] +" OnDuty_2 " + eCnt, expected.getOnDuty_2(), s.getOnDuty_2()); 
+                assertEquals(testCaseName[testCaseCnt] +" OnDuty_3 " + eCnt, expected.getOnDuty_3(), s.getOnDuty_3()); 
+                assertEquals(testCaseName[testCaseCnt] +" Cumulative_1 " + eCnt, expected.getCumulative_1(), s.getCumulative_1()); 
+                assertEquals(testCaseName[testCaseCnt] +" Cumulative_2 " + eCnt, expected.getCumulative_2(), s.getCumulative_2()); 
+                assertEquals(testCaseName[testCaseCnt] +" Cumulative_3 " + eCnt, expected.getCumulative_3(), s.getCumulative_3()); 
+                assertEquals(testCaseName[testCaseCnt] +" OffDuty_1 " + eCnt, expected.getOffDuty_1(), s.getOffDuty_1()); 
+                assertEquals(testCaseName[testCaseCnt] +" OffDuty_2 " + eCnt, expected.getOffDuty_2(), s.getOffDuty_2()); 
+                assertEquals(testCaseName[testCaseCnt] +" OffDuty_3 " + eCnt, expected.getOffDuty_3(), s.getOffDuty_3()); 
+                assertEquals(testCaseName[testCaseCnt] +" DriverCnt " + eCnt, expected.getDriverCnt(), s.getDriverCnt()); 
+                assertEquals(testCaseName[testCaseCnt] +" TotalMiles " + eCnt, expected.getTotalMiles(), s.getTotalMiles()); 
+                assertEquals(testCaseName[testCaseCnt] +" TotalMilesNoDriver " + eCnt, expected.getTotalMilesNoDriver(), s.getTotalMilesNoDriver()); 
+            }
+            
+//            dumpToPDF(1000*(testCaseCnt+1), criteria);
         }
     }
+//    System.out.println("new HosViolationsSummary(\", " + s.getGroupName() + "\"," + 
+//            s.getDriving_1() + "," + 
+//            s.getDriving_2() + "," + 
+//            s.getDriving_3() + "," + 
+//            s.getOnDuty_1() + "," + 
+//            s.getOnDuty_2() + "," + 
+//            s.getOnDuty_3() + "," + 
+//            s.getCumulative_1() + "," + 
+//            s.getCumulative_2() + "," + 
+//            s.getCumulative_3() + "," + 
+//            s.getOffDuty_1() + "," + 
+//            s.getOffDuty_2() + "," + 
+//            s.getOffDuty_3() + "," + 
+//            s.getDriverCnt() + "," + 
+//            s.getTotalMiles() + "d," +
+//            s.getTotalMilesNoDriver() + "d" + "),");
 
     private void dumpToPDF(int testCaseCnt, HosViolationsSummaryReportCriteria hosViolationsSummaryReportCriteria) {
         ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
@@ -97,6 +155,7 @@ public class HosViolationsReportCriteriaTest {
 
         public ViolationsTestData(String baseFilename) {
             String values[] = baseFilename.split("_");
+            readInGroupHierarchy("violations/" + baseFilename + "_groups.csv", values[1]);
             readInTestDataSet("violations/" + baseFilename + ".csv", values[1]);
             for (Driver driver : driverHOSRecordMap.keySet()) {
                 
@@ -110,6 +169,50 @@ public class HosViolationsReportCriteriaTest {
             endDate = new DateMidnight(fmt.parseDateTime(values[3]).plusDays(1).minusSeconds(1)).toDateTime();
             interval = new Interval(startDate, endDate);
             numDays = interval.toPeriod().toStandardDays().getDays();
+        }
+
+        private void readInGroupHierarchy(String filename, String topGroupID) {
+            BufferedReader in;
+            try {
+                InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
+                if (stream != null) {
+                    in = new BufferedReader(new InputStreamReader(stream));
+                    String str;
+                    while ((str = in.readLine()) != null) {
+                        String values[] = str.split(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+                        for (int i = 0; i < values.length; i++)
+                            if (values[i].startsWith("\"") && values[i].endsWith("\"")) {
+                                values[i] = values[i].substring(1, values[i].length() - 1);
+                            }
+                        
+    
+                        String groupId = values[0];
+                        String groupName = values[1];
+                        if (groupId.equals(topGroupID)) {
+                            topGroup = new Group();
+                            topGroup.setGroupID(calcGroupID(groupIDMap, topGroupID));
+                            topGroup.setParentID(-1);
+                            topGroup.setName(groupName);
+                        }
+                        else {
+                            Group group = new Group();
+                            group.setGroupID(calcGroupID(groupIDMap, groupId));
+                            group.setName(groupName);
+                            String parentGroupID = groupId.substring(0, groupId.length() - 1);
+                            group.setParentID(calcGroupID(groupIDMap, parentGroupID));
+                            groupList.add(group);
+                        }
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            
         }
 
         private List<HosGroupMileage> readInMileage(String filename) {
@@ -221,12 +324,6 @@ public class HosViolationsReportCriteriaTest {
                     String timeZoneID = values[6];
                     Group driverGroup = null;
                     if (groupId.equals(topGroupID)) {
-                        if (topGroup == null) {
-                            topGroup = new Group();
-                            topGroup.setGroupID(calcGroupID(groupIDMap, groupId));
-                            topGroup.setParentID(calcGroupID(groupIDMap, groupId.substring(0, groupId.length() - 1)));
-                            topGroup.setName(groupName);
-                        }
                         driverGroup = topGroup;
                     } else {
                         for (Group group : groupList)
@@ -235,21 +332,7 @@ public class HosViolationsReportCriteriaTest {
                                 break;
                             }
                         if (driverGroup == null) {
-                            driverGroup = new Group();
-                            driverGroup.setGroupID(calcGroupID(groupIDMap, groupId));
-                            driverGroup.setName(groupName);
-                            String parentGroupID = groupId.substring(0, groupId.length() - 1);
-                            if (groupIDMap.get(parentGroupID) == null) {
-                                Group parentGroup = new Group();
-                                parentGroup.setGroupID(calcGroupID(groupIDMap, parentGroupID));
-                                parentGroup.setName("Generated " + parentGroupID);
-                                groupList.add(parentGroup);
-                                
-                                
-                            }
-                            driverGroup.setParentID(calcGroupID(groupIDMap, parentGroupID));
-//System.out.println("groupID " + driverGroup.getGroupID());                            
-                            groupList.add(driverGroup);
+                            System.out.println("ERROR: groupID MISSING " + groupId );                            
                         }
                     }
                     boolean found = false;
@@ -282,6 +365,7 @@ public class HosViolationsReportCriteriaTest {
             }
         }
 
+
         private Integer calcGroupID(Map<String, Integer>groupIdMap, String gainGroupID) {
             Integer groupID = groupIDMap.get(gainGroupID);
             if (groupID == null) {
@@ -293,5 +377,6 @@ public class HosViolationsReportCriteriaTest {
             return groupID;
             
         }
+
     }
 }

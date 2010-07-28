@@ -86,7 +86,7 @@
 	<variable name="SUM_offDuty_3_1" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{offDuty_3}]]></variableExpression>
 	</variable>
-	<group name="locataion">
+	<group name="locataion" keepTogether="true">
 		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
 		<groupHeader>
 			<band height="23" splitType="Stretch">

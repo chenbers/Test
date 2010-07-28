@@ -37,10 +37,11 @@ public class ExtractHOSTestData {
         try {
             conn = dataSource.getConnection();
             String sqlStr = " SELECT e.pk_personId, " + " g.name groupName,  " + " e.groupId, " + " e.clientEmployeeID, "
-                    + " e.dot, " + " e.lastName + ', ' + e.firstName as driverName, " + " tz.tzname " + " FROM  " + "    tableEmployee e, " + " TimeZoneName tz, "
-                    + "  groups g  " + " WHERE " + " e.status = 'Active' " + " AND e.fk_customerId = " + customerID
-                    + " AND e.groupId = g.id and g.companyId=fk_customerID"  
-                    + " AND LEFT(e.groupId, LEN(g.id)) = g.id " + " AND tz.id = e.timezone " + " ORDER BY driverName ";
+                + " e.dot, " + " e.lastName + ', ' + e.firstName as driverName, " + " tz.tzname " + " FROM  " + "    tableEmployee e, " + " TimeZoneName tz, "
+                + " dbo.groupTable('" + groupID + "') gt, "
+                + "  groups g  " + " WHERE " + " e.status = 'Active' " + " AND e.fk_customerId = " + customerID
+                + " AND e.groupId = g.id and g.companyId=fk_customerID"  
+                + " AND LEFT(e.groupId, LEN(gt.id)) = gt.id " + " AND tz.id = e.timezone " + " ORDER BY driverName ";
             statement = conn.createStatement();
             resultSet = statement.executeQuery(sqlStr);
             while (resultSet.next()) {
@@ -69,7 +70,6 @@ public class ExtractHOSTestData {
             extractDriverHOSData(baseName, driver, startDate, endDate);
         }
         
-        
     }
     private PrintWriter createCSVWriter(String baseName) throws FileNotFoundException {
         PrintWriter csv = null;
@@ -83,6 +83,34 @@ public class ExtractHOSTestData {
         return csv;
     }
 
+    private void extractGroupData(String groupID, Integer customerID, String baseName) throws FileNotFoundException, SQLException {
+        PrintWriter csv = createCSVWriter(baseName + "_groups");
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = dataSource.getConnection();
+            String sqlStr = " select id, name from groups where id like '" + groupID +  "%' and companyID = " + customerID;
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(sqlStr);
+            while (resultSet.next()) {
+                String groupId = resultSet.getString(1);
+                String groupName = resultSet.getString(2);
+                csv.println(groupId + "," + groupName);
+            }
+        } // end try
+        catch (SQLException e) { // handle database hosLogs in the usual manner
+            logger.error(e);
+        } // end catch
+        finally { // clean up and release the connection
+            resultSet.close();
+            statement.close();
+            conn.close();
+            csv.close();
+        } // end finally
+        
+        
+    }
     private void extractDriverHOSData(String baseName, DriverIDDOT driver, String startDate, String endDate) throws SQLException, FileNotFoundException {
         GregorianCalendar logCalendar = new GregorianCalendar();
         logCalendar.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -165,7 +193,11 @@ public class ExtractHOSTestData {
      * @param args
      */
     public static void main(String[] args) {
-        dataSet1();
+        
+        // this is not really intended to be something that is run all of the time
+        // it was just an easy way to extract the data from gain for unit tests in tiwipro
+//        dataSet1();
+//        dataSet2();
     }
     
     private static void dataSet1() {
@@ -180,6 +212,7 @@ public class ExtractHOSTestData {
 
         ExtractHOSTestData extractHOSTestData = new ExtractHOSTestData(new DBUtilDataSource());
         try {
+            extractHOSTestData.extractGroupData(groupID, customerID, baseName);
             extractHOSTestData.extractDriverGroupData(groupID, customerID, startDate, endDate, baseName);
             // mileage data
             extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName, false);
@@ -190,6 +223,30 @@ public class ExtractHOSTestData {
             e.printStackTrace();
         }
     }
+    private static void dataSet2() {
+        // data set 2 from SINET data
+        String groupID = "01H1";
+        Integer customerID = 148;
+        String startDate = "2010-06-10 00:00:00";
+        String endDate = "2010-07-09 23:59:59";
+        String baseName = "vtest_01H1_07012010_07072010";
+        String startDateMileage = "2010-07-01";
+        String endDateMileage = "2010-07-07";
+
+        ExtractHOSTestData extractHOSTestData = new ExtractHOSTestData(new DBUtilDataSource());
+        try {
+            extractHOSTestData.extractGroupData(groupID, customerID, baseName);
+            extractHOSTestData.extractDriverGroupData(groupID, customerID, startDate, endDate, baseName);
+            // mileage data
+            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName, false);
+            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public class DriverIDDOT {
         String id;

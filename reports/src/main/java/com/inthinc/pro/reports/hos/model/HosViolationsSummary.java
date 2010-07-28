@@ -159,9 +159,9 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
     public void updateMinutes(RuleViolationTypes violationType, int minutes) {
         if (minutes == 0)
             return;
+//System.out.println(violationType + " " + minutes);            
         
         if (violationType == RuleViolationTypes.DRIVING_HOUR || violationType == RuleViolationTypes.DAILY_DRIVING) {
-//System.out.println("DRIVING_HOUR " + minutes);            
             if (minutes < 15)
                 driving_1++;
             else if (minutes < 30) 
@@ -170,7 +170,6 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
                 driving_3++;
         }
         else if (violationType == RuleViolationTypes.ON_DUTY_HOUR || violationType == RuleViolationTypes.DAILY_ON_DUTY) {
-//System.out.println("ON_DUTY_HOUR " + minutes);            
             if (minutes < 15) 
                 onDuty_1++;
             else if (minutes < 30) 
@@ -179,7 +178,6 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
                 onDuty_3++;
         }
         else if (violationType == RuleViolationTypes.OFF_DUTY_HOUR || violationType == RuleViolationTypes.DAILY_OFF_DUTY) {
-//System.out.println("OFF_DUTY_HOUR " + minutes);            
             if (minutes < 15) 
                 offDuty_1++;
             else if (minutes < 30) 
@@ -188,7 +186,6 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
                 offDuty_3++;
         }
         else if (violationType == RuleViolationTypes.CUMMULATIVE_HOURS) {
-//System.out.println("CUMMULATIVE_HOUR " + minutes);            
             if (minutes < 15) 
                 cumulative_1++;
             else if (minutes < 30) 
