@@ -45,7 +45,7 @@ public class ConfiguratorTest {
         deviceSettingDefinitionsByProductType.setDeviceSettingDefinitions(deviceSettingDefinitions);
         deviceSettingDefinitionsByProductType.init();
         
-        configuratorBean.init();
+        configuratorBean.setupConfigurator();
         configuratorBean.setDeviceSettingDefinitionsByProductType(deviceSettingDefinitionsByProductType);
         vehicleSettings = new VehicleSettings();
         vehicleSettings.setConfiguratorDAO(configuratorHessianDAO);

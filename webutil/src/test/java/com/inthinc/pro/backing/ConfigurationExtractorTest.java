@@ -14,8 +14,8 @@ import org.junit.Test;
 
 import com.inthinc.pro.backing.configurator.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.backing.configurator.VehicleSettingsByProductType;
-import com.inthinc.pro.backing.model.ConfigurationExtractor;
-import com.inthinc.pro.backing.model.ConfigurationSet;
+import com.inthinc.pro.backing.configurator.model.ConfigurationExtractor;
+import com.inthinc.pro.backing.configurator.model.ConfigurationSet;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -91,13 +91,24 @@ public class ConfigurationExtractorTest {
                 settingMap.put(dsd.getSettingID(),value);
             }
             vs.setActual(settingMap);
+            
+            Map<Integer, String> desiredSettingMap = new HashMap<Integer, String>();
+            for (DeviceSettingDefinition dsd: settings){
+            	
+                 if (dsd.getVarType().equals(VarType.VTSTRING)){
+                    
+                	desiredSettingMap.put(dsd.getSettingID(),"desired_value");
+                }
+            }
+            
+            vs.setDesired(desiredSettingMap);
         }
     }
     private void makeupSettingsSame( List<DeviceSettingDefinition> settings, List<VehicleSetting> vehicleSettings){
         
         for(VehicleSetting vs: vehicleSettings){
             
-            Map<Integer, String> settingMap = new HashMap<Integer, String>();
+            Map<Integer, String> actualSettingMap = new HashMap<Integer, String>();
             
             for (DeviceSettingDefinition dsd: settings){
                 String value = "";
@@ -124,9 +135,19 @@ public class ConfigurationExtractorTest {
                     
                    value = "made_up_value";
                 }
-                settingMap.put(dsd.getSettingID(),value);
+                actualSettingMap.put(dsd.getSettingID(),value);
             }
-            vs.setActual(settingMap);
+            vs.setActual(actualSettingMap);
+            Map<Integer, String> desiredSettingMap = new HashMap<Integer, String>();
+            for (DeviceSettingDefinition dsd: settings){
+            	
+                 if (dsd.getVarType().equals(VarType.VTSTRING)){
+                    
+                	desiredSettingMap.put(dsd.getSettingID(),"desired_value");
+                }
+            }
+            
+            vs.setDesired(desiredSettingMap);
         }
     }
     

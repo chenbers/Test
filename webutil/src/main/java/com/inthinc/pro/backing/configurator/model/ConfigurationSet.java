@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.model;
+package com.inthinc.pro.backing.configurator.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

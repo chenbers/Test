@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.model;
+package com.inthinc.pro.backing.configurator.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,9 @@ public class SettingOptions{
     
     private List<Integer> vehicleIDs;
     private Map<Integer, String> values;
-    private Map<Integer, String> colors;
+    private Map<Integer,String> desiredValues;
+	private String reason;
+	private Map<Integer, String> colors;
     private List<Integer> keys;
     private List<Entry<Integer,String>> entries;
     
@@ -20,6 +22,7 @@ public class SettingOptions{
         super();
         values = new HashMap<Integer,String>();
         vehicleIDs = new ArrayList<Integer>();
+        desiredValues = new HashMap<Integer,String>();
     }
     public SettingOptions(List<Integer> vehicleIDs) {
         super();
@@ -31,6 +34,15 @@ public class SettingOptions{
         values = new HashMap<Integer, String>(settingOptions.values);
         setColors(new HashMap<Integer, String>());
     }
+    public Map<Integer, String> getDesiredValues() {
+		return desiredValues;
+	}
+   public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
     public void addValue(Integer settingID, String value){
         
         values.put(settingID,value);
