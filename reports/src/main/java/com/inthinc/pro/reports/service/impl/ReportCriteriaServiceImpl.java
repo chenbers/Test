@@ -42,6 +42,7 @@ import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.HosDailyDriverLogReportCriteria;
+import com.inthinc.pro.reports.hos.HosViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
@@ -524,6 +525,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         
     }
 
+    @Override
+    public ReportCriteria getHosViolationsSummaryReportCriteria(Integer groupID, Interval interval, Locale locale) {
+        HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria (locale);
+        criteria.init(groupID, interval);
+        return criteria;
+    }
+
 
     
     public void setGroupDAO(GroupDAO groupDAO)
@@ -631,6 +639,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
 
 
 

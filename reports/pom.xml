@@ -146,5 +146,18 @@
          	<artifactId>hos</artifactId>
          	<version>0.0.1-SNAPSHOT</version>
          </dependency>
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-jdbc</artifactId>
+	      <version>2.5.6</version>
+  			<scope>test</scope>
+	    </dependency>
+	    <dependency>
+	    	<groupId>net.sourceforge.jtds</groupId>
+		  	<artifactId>jtds</artifactId>
+  			<version>1.2</version>
+  			<scope>test</scope>
+    	</dependency>
+         
   </dependencies>
 </project>

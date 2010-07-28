@@ -35,11 +35,14 @@ public enum ReportType
     TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml"),
     
     // HOS
-    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml");
+    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml"),
+    HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hos/hosViolations.jrxml", "hos/hosViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations");
     
+
     private String prettyTemplate;
     private String rawTemplate;
     private String label;
+    private String resourceBundle;
     
     private ReportType(String label,String prettyTemplate){
         this.label = label;
@@ -50,6 +53,13 @@ public enum ReportType
         this.label = label;
         this.prettyTemplate = prettyTemplate;
         this.rawTemplate = rawTemplate;
+    }
+
+    private ReportType(String label,String prettyTemplate, String rawTemplate, String resourceBundle){
+        this.label = label;
+        this.prettyTemplate = prettyTemplate;
+        this.rawTemplate = rawTemplate;
+        this.resourceBundle = resourceBundle;
     }
     
     private static final Map<String, ReportType> lookup = new HashMap<String, ReportType>();
@@ -88,6 +98,10 @@ public enum ReportType
     public String getRawJasper()
     {
         return rawTemplate == null ? null : rawTemplate.replace(".jrxml", ".jasper");
+    }
+
+    public String getResourceBundle() {
+        return resourceBundle;
     }
 
     @Override

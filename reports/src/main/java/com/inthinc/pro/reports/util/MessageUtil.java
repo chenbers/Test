@@ -53,4 +53,18 @@ public class MessageUtil
             return null;
         }
     }
+
+    public static ResourceBundle getBundle(Locale locale, String bundleName)
+    {
+        try
+        {
+            // Last resort is the context class loader
+            return ResourceBundle.getBundle(bundleName, locale, Thread.currentThread().getContextClassLoader());
+        }
+        catch (MissingResourceException ext)
+        {
+            logger.error("resource bundle " + bundleName + " could not be found");
+            return null;
+        }
+    }
 }

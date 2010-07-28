@@ -34,4 +34,5 @@ public interface ReportCriteriaService
     // HOS
     List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric);
     
+    ReportCriteria getHosViolationsSummaryReportCriteria(Integer groupID, Interval interval, Locale locale);
 }

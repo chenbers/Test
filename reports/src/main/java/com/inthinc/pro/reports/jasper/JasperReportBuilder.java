@@ -88,14 +88,17 @@ public class JasperReportBuilder
             {
                 reportCriteria.getPramMap().put("REPORT_LOGO", imageInputStream);
             }
+            reportCriteria.getPramMap().put("REPORT_LOGO_URL", ReportUtils.getLogoPath("logo_main.gif"));
             
             Locale locale = DEFAULT_LOCALE;
             if(reportCriteria.getLocale() != null)
             {
                 locale = reportCriteria.getLocale();
             }
-            ResourceBundle resourceBundle = MessageUtil.getBundle(locale);
-            reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, resourceBundle);
+//            ResourceBundle resourceBundle = MessageUtil.getBundle(locale);
+            if (reportCriteria.getReport().getResourceBundle() != null)
+                reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale, reportCriteria.getReport().getResourceBundle()));
+            else reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale));
 
             reportCriteria.getPramMap().put("SUBREPORT_DIR", ReportUtils.getSubReportDir());
             
@@ -117,10 +120,12 @@ public class JasperReportBuilder
         }
         catch (IOException e)
         {
+            logger.error(e);
             throw new ReportRuntimeException(e);
         }
         catch (JRException e)
         {
+            logger.error(e);
             throw new ReportRuntimeException(e);
         }
     }

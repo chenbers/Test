@@ -65,6 +65,13 @@ public class ReportUtils
         return inputStream;
     }
 
+    public static Object getLogoPath(String fileName) {
+        
+        String path = PACKAGE_PATH + fileName;
+        URL url = ReportUtils.class.getClassLoader().getResource(path);
+        return url.getPath();
+        
+    }
     public static Object getSubReportDir() {
         
         URL url = ReportUtils.class.getClassLoader().getResource(PACKAGE_PATH );

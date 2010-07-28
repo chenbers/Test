@@ -212,7 +212,8 @@ public class DateUtil
     
     
     public static long deltaMinutes(Date startTime, Date endDate) {
-        return ((endDate.getTime() - startTime.getTime()) + 30000)/60000l;
+//        return ((endDate.getTime() - startTime.getTime()) + 30000)/60000l;
+        return (endDate.getTime() - startTime.getTime())/60000l;
     }
 
 }

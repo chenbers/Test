@@ -56,6 +56,7 @@ public class HosDailyDriverLogReportCriteria {
     private List<ReportCriteria> criteriaList;
     private Locale locale;
     private Boolean defaultUseMetric;
+    DateTimeFormatter dateTimeFormatter; 
     Integer hosStatuses[] = {
             HOSStatus.OFF_DUTY.getCode(),
             HOSStatus.SLEEPER.getCode(), 
@@ -84,9 +85,7 @@ public class HosDailyDriverLogReportCriteria {
     {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
-
-        
-       
+        dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
     public void init(Integer driverID, Interval interval)
     {
@@ -123,7 +122,6 @@ public class HosDailyDriverLogReportCriteria {
 
     void initCriteriaList(Interval interval, List<HOSRecord> hosRecordList, List<HOSVehicleDayData> hosVehicleDayData, List<HOSOccupantLog> hosOccupantLogList, Driver driver, Account account, Group group) 
     {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         HOSAdjustedList adjustedList = getAdjustedListFromLogList(hosRecordList);
         List<HOSRec> hosRecapList = getRecapList(adjustedList, interval.getEnd().toDate());
         adjustForOccupantTravelTime(hosRecordList, adjustedList, interval.getEnd().toDate());
@@ -145,7 +143,7 @@ public class HosDailyDriverLogReportCriteria {
 //System.out.println("---day: " + DateTimeFormat.forPattern("MM/dd/yyyy HH:mm (z)").print(day));
 
             HosDailyDriverLog dayData= new HosDailyDriverLog();
-            dayData.setDay(fmt.print(day));
+            dayData.setDay(dateTimeFormatter.print(day));
 
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList));
             dayData.setCarrierName(account.getAcctName());

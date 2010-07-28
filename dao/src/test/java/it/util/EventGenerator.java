@@ -350,6 +350,7 @@ public class EventGenerator
         for (Event event : eventList) {
             byte[] eventBytes = createDataBytesFromEvent(event);
             noteList.add(eventBytes);
+//            System.out.println("event type: " + event.getType());
         
             if (cnt % 4 == 0 || cnt == eventList.size()){
 //                System.out.print(cnt + " "  + noteList.size() + " ");
