@@ -165,6 +165,8 @@ public class ViolationsReportCriteriaTest {
         }
     }
     private void dump(int testCaseCnt, ReportCriteria reportCriteria, FormatType formatType) {
+        // remove comments to get pdf or xls dump of report
+/*        
         ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
         Report report = reportCreator.getReport(reportCriteria);
         OutputStream out = null;
@@ -179,6 +181,7 @@ public class ViolationsReportCriteriaTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+*/        
     }
 
     class ViolationsTestData {
