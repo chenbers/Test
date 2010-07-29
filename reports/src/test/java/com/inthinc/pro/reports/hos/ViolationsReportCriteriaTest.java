@@ -1,6 +1,6 @@
 package com.inthinc.pro.reports.hos;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -34,55 +34,81 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCreator;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.hos.model.DrivingTimeViolationsSummary;
 import com.inthinc.pro.reports.hos.model.HosGroupMileage;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
+import com.inthinc.pro.reports.hos.model.NonDOTViolationsSummary;
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportCreator;
 
-public class HosViolationsReportCriteriaTest {
+public class ViolationsReportCriteriaTest {
     public static final String testCaseName[] = { 
         "vtest_00_07012010_07072010", 
         "vtest_01H1_07012010_07072010",
     };
-
-    /*
-    public HosViolationsSummary(String groupName, Integer driving_1, Integer driving_2, Integer driving_3, Integer onDuty_1, Integer onDuty_2, Integer onDuty_3,
-            Integer cumulative_1, Integer cumulative_2, Integer cumulative_3, Integer offDuty_1, Integer offDuty_2, Integer offDuty_3, Integer driverCnt, Double totalMiles,
-            Double totalMilesNoDriver) {
-
-    */
-    
-    HosViolationsSummary expectedData[][] = {
+    HosViolationsSummary hosViolationsExpectedData[][] = {
             {
-                new HosViolationsSummary(", HOS",0,0,0,2,0,0,0,0,0,0,0,0,32,306500.0d,0.0d),
-                new HosViolationsSummary(", HOS->Open Hole",0,0,0,0,0,0,0,0,0,0,0,0,7,531200.0d,5300.0d),
-                new HosViolationsSummary(", HOS->Cased Hole",0,0,0,7,3,1,3,1,1,0,0,0,54,1296600.0d,21100.0d),
-                new HosViolationsSummary(", HOS->Slickline",0,0,0,0,0,0,0,0,0,0,0,0,6,133900.0d,0.0d),
-                new HosViolationsSummary(", HOS->Tech",0,0,0,0,0,0,0,0,0,0,0,0,5,0.0d,0.0d),
-                new HosViolationsSummary(", HOS->Gun Loader",0,0,0,0,0,0,0,0,0,0,0,0,8,0.0d,0.0d),
-                new HosViolationsSummary(", HOS->Temporary Drivers",0,0,0,0,0,0,0,0,0,0,0,0,10,0.0d,0.0d),
+                new HosViolationsSummary("HOS",0,0,0,2,0,0,0,0,0,0,0,0,32,306500.0d,0.0d),
+                new HosViolationsSummary("HOS->Open Hole",0,0,0,0,0,0,0,0,0,0,0,0,7,531200.0d,5300.0d),
+                new HosViolationsSummary("HOS->Cased Hole",0,0,0,7,3,1,3,1,1,0,0,0,54,1296600.0d,21100.0d),
+                new HosViolationsSummary("HOS->Slickline",0,0,0,0,0,0,0,0,0,0,0,0,6,133900.0d,0.0d),
+                new HosViolationsSummary("HOS->Tech",0,0,0,0,0,0,0,0,0,0,0,0,5,0.0d,0.0d),
+                new HosViolationsSummary("HOS->Gun Loader",0,0,0,0,0,0,0,0,0,0,0,0,8,0.0d,0.0d),
+                new HosViolationsSummary("HOS->Temporary Drivers",0,0,0,0,0,0,0,0,0,0,0,0,10,0.0d,0.0d),
             },
             {
-                new HosViolationsSummary(", Norman Wells->Norman Wells - WS",0,0,0,4,1,0,0,0,0,3,1,1,7,26700.0d,100.0d),
-                new HosViolationsSummary(", Norman Wells->REW",0,0,0,0,0,0,0,0,0,0,0,0,0,15200.0d,0.0d),
+                new HosViolationsSummary("Norman Wells->Norman Wells - WS",0,0,0,4,1,0,0,0,0,3,1,1,7,26700.0d,100.0d),
+                new HosViolationsSummary("Norman Wells->REW",0,0,0,0,0,0,0,0,0,0,0,0,0,15200.0d,0.0d),
             }
     };
+    NonDOTViolationsSummary nonDOTViolationsExpectedData[][] = {
+            {
+                new NonDOTViolationsSummary("HOS",51,2),
+                new NonDOTViolationsSummary("HOS->Open Hole",7,0),
+                new NonDOTViolationsSummary("HOS->Cased Hole",55,0),
+                new NonDOTViolationsSummary("HOS->Slickline",6,0),
+                new NonDOTViolationsSummary("HOS->Tech",5,0),
+                new NonDOTViolationsSummary("HOS->Gun Loader",8,0),
+                new NonDOTViolationsSummary("HOS->Temporary Drivers",14,0),
+
+            },
+            {
+                new NonDOTViolationsSummary("Norman Wells->Norman Wells - WS",8,0),
+            }
+    };
+    DrivingTimeViolationsSummary drivingTimeViolationsExpectedData[][] = {
+            {
+                new DrivingTimeViolationsSummary("HOS",1,0,2,51),
+                new DrivingTimeViolationsSummary("HOS->Open Hole",5,0,0,7),
+                new DrivingTimeViolationsSummary("HOS->Cased Hole",10,4,0,55),
+                new DrivingTimeViolationsSummary("HOS->Slickline",0,0,0,6),
+                new DrivingTimeViolationsSummary("HOS->Tech",1,0,0,5),
+                new DrivingTimeViolationsSummary("HOS->Gun Loader",0,0,0,8),
+                new DrivingTimeViolationsSummary("HOS->Temporary Drivers",2,0,0,14),
+
+            },
+            {
+                new DrivingTimeViolationsSummary("Norman Wells->Norman Wells - WS", 0, 6, 0, 8),
+            }
+    };
+
 
     @Test
     public void gainTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             ViolationsTestData violationsTestData = new ViolationsTestData(testCaseName[testCaseCnt]);
+            
+            // HOS VIOLATIONS
             HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria(Locale.US);
             criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap,
                                     violationsTestData.groupMileageList, violationsTestData.groupNoDriverMileageList);
-            
-            
             List<HosViolationsSummary> dataList = criteria.getMainDataset();
-            assertEquals(testCaseName[testCaseCnt] + " number of records", expectedData[testCaseCnt].length, dataList.size());
+            assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
             int eCnt = 0;
             for (HosViolationsSummary s : dataList)
             {
-                HosViolationsSummary expected = expectedData[testCaseCnt][eCnt++];
+                HosViolationsSummary expected = hosViolationsExpectedData[testCaseCnt][eCnt++];
                 assertEquals(testCaseName[testCaseCnt] +" driving_1 " + eCnt, expected.getDriving_1(), s.getDriving_1()); 
                 assertEquals(testCaseName[testCaseCnt] +" driving_2 " + eCnt, expected.getDriving_2(), s.getDriving_2()); 
                 assertEquals(testCaseName[testCaseCnt] +" driving_2 " + eCnt, expected.getDriving_3(), s.getDriving_3()); 
@@ -100,50 +126,51 @@ public class HosViolationsReportCriteriaTest {
                 assertEquals(testCaseName[testCaseCnt] +" TotalMilesNoDriver " + eCnt, expected.getTotalMilesNoDriver(), s.getTotalMilesNoDriver()); 
             }
             
-//            dumpToPDF(1000*(testCaseCnt+1), criteria);
-//            dumpToEXCEL(1000*(testCaseCnt+1), criteria);
-        }
-    }
-//    System.out.println("new HosViolationsSummary(\", " + s.getGroupName() + "\"," + 
-//            s.getDriving_1() + "," + 
-//            s.getDriving_2() + "," + 
-//            s.getDriving_3() + "," + 
-//            s.getOnDuty_1() + "," + 
-//            s.getOnDuty_2() + "," + 
-//            s.getOnDuty_3() + "," + 
-//            s.getCumulative_1() + "," + 
-//            s.getCumulative_2() + "," + 
-//            s.getCumulative_3() + "," + 
-//            s.getOffDuty_1() + "," + 
-//            s.getOffDuty_2() + "," + 
-//            s.getOffDuty_3() + "," + 
-//            s.getDriverCnt() + "," + 
-//            s.getTotalMiles() + "d," +
-//            s.getTotalMilesNoDriver() + "d" + "),");
+             dump(100*(testCaseCnt+1), criteria, FormatType.PDF);
+             dump(100*(testCaseCnt+1), criteria, FormatType.EXCEL);
 
-    private void dumpToPDF(int testCaseCnt, HosViolationsSummaryReportCriteria hosViolationsSummaryReportCriteria) {
-        ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
-        Report report = reportCreator.getReport(hosViolationsSummaryReportCriteria);
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream("c:\\reportTest" + testCaseCnt + ".pdf");
-            report.exportReportToStream(FormatType.PDF, out);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        
+        
+             // NON-DOT VIOLATIONS
+             NonDOTViolationsSummaryReportCriteria nonDOTCriteria = new NonDOTViolationsSummaryReportCriteria(Locale.US);
+             nonDOTCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+             dump(1000*(testCaseCnt+1), nonDOTCriteria, FormatType.PDF);
+             dump(1000*(testCaseCnt+1), nonDOTCriteria, FormatType.EXCEL);
+             List<NonDOTViolationsSummary> nonDOTDataList = nonDOTCriteria.getMainDataset();
+             assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
+             eCnt = 0;
+             for (NonDOTViolationsSummary s : nonDOTDataList)
+             {
+                 NonDOTViolationsSummary expected = nonDOTViolationsExpectedData[testCaseCnt][eCnt++];
+                 assertEquals(testCaseName[testCaseCnt] +" driverCnt " + eCnt, expected.getDriverCnt(), s.getDriverCnt());
+                 assertEquals(testCaseName[testCaseCnt] +" NonDOTDriverCount " + eCnt, expected.getNonDOTDriverCount(), s.getNonDOTDriverCount());
+             }
+             
+             // DrivingTime VIOLATIONS
+             DrivingTimeViolationsSummaryReportCriteria drivingTimeCriteria = new DrivingTimeViolationsSummaryReportCriteria(Locale.US);
+             drivingTimeCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+             dump(10000*(testCaseCnt+1), drivingTimeCriteria, FormatType.PDF);
+             dump(10000*(testCaseCnt+1), drivingTimeCriteria, FormatType.EXCEL);
+             List<DrivingTimeViolationsSummary> drivingTimeDataList = drivingTimeCriteria.getMainDataset();
+             assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
+             eCnt = 0;
+             for (DrivingTimeViolationsSummary s : drivingTimeDataList)
+             {
+                 DrivingTimeViolationsSummary expected = drivingTimeViolationsExpectedData[testCaseCnt][eCnt++];
+                 assertEquals(testCaseName[testCaseCnt] +" DriverCnt " + eCnt, expected.getDriverCnt(), s.getDriverCnt());
+                 assertEquals(testCaseName[testCaseCnt] +" DrivingHourBanCount " + eCnt, expected.getDrivingHourBanCount(), s.getDrivingHourBanCount());
+                 assertEquals(testCaseName[testCaseCnt] +" NonDOTDriverCount " + eCnt, expected.getNonDOTDriverCount(), s.getNonDOTDriverCount());
+                 assertEquals(testCaseName[testCaseCnt] +" OnDuty16HrCount " + eCnt, expected.getOnDuty16HrCount(), s.getOnDuty16HrCount());
+             }
         }
     }
-    private void dumpToEXCEL(int testCaseCnt, HosViolationsSummaryReportCriteria hosViolationsSummaryReportCriteria) {
+    private void dump(int testCaseCnt, ReportCriteria reportCriteria, FormatType formatType) {
         ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
-        Report report = reportCreator.getReport(hosViolationsSummaryReportCriteria);
+        Report report = reportCreator.getReport(reportCriteria);
         OutputStream out = null;
         try {
-            out = new FileOutputStream("c:\\reportTest" + testCaseCnt + ".xls");
-            report.exportReportToStream(FormatType.EXCEL, out);
+            out = new FileOutputStream("c:\\reportTest" + testCaseCnt + ((formatType == FormatType.PDF)? ".pdf" : ".xls"));
+            report.exportReportToStream(formatType, out);
             out.flush();
             out.close();
         } catch (FileNotFoundException e) {

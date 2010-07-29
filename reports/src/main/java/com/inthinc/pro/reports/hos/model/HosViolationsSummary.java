@@ -2,9 +2,8 @@ package com.inthinc.pro.reports.hos.model;
 
 import com.inthinc.hos.model.RuleViolationTypes;
 
-public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
+public class HosViolationsSummary extends ViolationsSummary  {
     
-    private String groupName;
     private Integer driving_1;
     private Integer driving_2;
     private Integer driving_3;
@@ -17,13 +16,12 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
     private Integer offDuty_1;
     private Integer offDuty_2;
     private Integer offDuty_3;
-    private Integer driverCnt;
     private Double totalMiles;
     private Double totalMilesNoDriver;
     
     
     public HosViolationsSummary(String groupName) {
-        this.groupName = groupName;
+        super(groupName);
         this.driving_1 = 0;
         this.driving_2 = 0;
         this.driving_3 = 0;
@@ -36,14 +34,13 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
         this.offDuty_1 = 0;
         this.offDuty_2 = 0;
         this.offDuty_3 = 0;
-        this.driverCnt = 0;
         this.totalMiles = 0d;
         this.totalMilesNoDriver = 0d;
     }
     public HosViolationsSummary(String groupName, Integer driving_1, Integer driving_2, Integer driving_3, Integer onDuty_1, Integer onDuty_2, Integer onDuty_3,
             Integer cumulative_1, Integer cumulative_2, Integer cumulative_3, Integer offDuty_1, Integer offDuty_2, Integer offDuty_3, Integer driverCnt, Double totalMiles,
             Double totalMilesNoDriver) {
-        this.groupName = groupName;
+        super(groupName, driverCnt);
         this.driving_1 = driving_1;
         this.driving_2 = driving_2;
         this.driving_3 = driving_3;
@@ -56,15 +53,8 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
         this.offDuty_1 = offDuty_1;
         this.offDuty_2 = offDuty_2;
         this.offDuty_3 = offDuty_3;
-        this.driverCnt = driverCnt;
         this.totalMiles = totalMiles;
         this.totalMilesNoDriver = totalMilesNoDriver;
-    }
-    public String getGroupName() {
-        return groupName;
-    }
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
     }
     public Integer getDriving_1() {
         return driving_1;
@@ -150,12 +140,8 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
     public void setTotalMilesNoDriver(Double totalMilesNoDriver) {
         this.totalMilesNoDriver = totalMilesNoDriver;
     }
-    public Integer getDriverCnt() {
-        return driverCnt;
-    }
-    public void setDriverCnt(Integer driverCnt) {
-        this.driverCnt = driverCnt;
-    }
+
+    @Override
     public void updateMinutes(RuleViolationTypes violationType, int minutes) {
         if (minutes == 0)
             return;
@@ -196,9 +182,25 @@ public class HosViolationsSummary implements Comparable<HosViolationsSummary> {
         
         
     }
-
-    @Override
-    public int compareTo(HosViolationsSummary o) {
-        return groupName.compareTo(o.getGroupName());
+    
+    public void dump() {
+      System.out.println("new HosViolationsSummary(\", " + getGroupName() + "\"," + 
+              getDriving_1() + "," + 
+              getDriving_2() + "," + 
+              getDriving_3() + "," + 
+              getOnDuty_1() + "," + 
+              getOnDuty_2() + "," + 
+              getOnDuty_3() + "," + 
+              getCumulative_1() + "," + 
+              getCumulative_2() + "," + 
+              getCumulative_3() + "," + 
+              getOffDuty_1() + "," + 
+              getOffDuty_2() + "," + 
+              getOffDuty_3() + "," + 
+              getDriverCnt() + "," + 
+              getTotalMiles() + "d," +
+              getTotalMilesNoDriver() + "d" + ");");
+        
     }
+
 }

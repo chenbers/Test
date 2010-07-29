@@ -18,25 +18,23 @@ import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.rules.RuleSetFactory;
-import com.inthinc.hos.violations.DailyViolations;
 import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.model.DrivingTimeViolationsSummary;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.HosGroupMileage;
-import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
 
-public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria {
+public class DrivingTimeViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria {
 
-    private static final Logger logger = Logger.getLogger(HosViolationsSummaryReportCriteria.class);
+    private static final Logger logger = Logger.getLogger(DrivingTimeViolationsSummaryReportCriteria.class);
     
     
-    public HosViolationsSummaryReportCriteria(Locale locale) 
+    public DrivingTimeViolationsSummaryReportCriteria(Locale locale) 
     {
-        super(ReportType.HOS_VIOLATIONS_SUMMARY_REPORT, locale);
+        super(ReportType.DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT, locale);
     }
     
     public void init(Integer groupID, Interval interval)
@@ -66,24 +64,20 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             }
         }
         
-        // TODO:
-        List<HosGroupMileage> groupMileageList = new ArrayList<HosGroupMileage>();
-        List<HosGroupMileage> groupNoDriverMileageList = new ArrayList<HosGroupMileage>();
 
-        initDataSet(interval, topGroup, groupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
+        initDataSet(interval, topGroup, groupList, driverHOSRecordMap);
 
     }
     
-    void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap,
-            List<HosGroupMileage> groupMileageList, List<HosGroupMileage> groupNoDriverMileageList)
+    void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
         List<Group> childGroupList = groupHierarchy.getChildren(topGroup);
         
-        Map<Integer, HosViolationsSummary> dataMap = new TreeMap<Integer, HosViolationsSummary>();
-        dataMap.put(topGroup.getGroupID(), new HosViolationsSummary(topGroup.getName()));
+        Map<Integer, DrivingTimeViolationsSummary> dataMap = new TreeMap<Integer, DrivingTimeViolationsSummary>();
+        dataMap.put(topGroup.getGroupID(), new DrivingTimeViolationsSummary(topGroup.getName()));
         for (Group group : childGroupList) {
-            dataMap.put(group.getGroupID(), new HosViolationsSummary(groupHierarchy.getFullName(group)));
+            dataMap.put(group.getGroupID(), new DrivingTimeViolationsSummary(groupHierarchy.getFullName(group)));
         }
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
@@ -98,43 +92,19 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             }
             
             // violations
-            List<ViolationsData> dailyViolations = new DailyViolations().getDailyHosViolationsForReport(interval,
-                    driverTimeZone.toTimeZone(),
-                    driverDOTType, 
-                    recListForViolationsCalc);
-            updateSummary(summary, dailyViolations);
-
             List<ViolationsData> shiftViolations = new ShiftViolations().getHosViolationsInTimeFrame(
                     interval, driverTimeZone.toTimeZone(),
                     driverDOTType, 
-                    null, // RuleSetType overrideDOTType, TODO 
+                    RuleSetType.SLB_INTERNAL,
                     recListForViolationsCalc);
             updateSummary(summary, shiftViolations);
 
             updateSummaryDriverCount(summary, driver);
         }
         
-        for (HosGroupMileage groupMileage : groupMileageList) {
-            HosViolationsSummary summary = (HosViolationsSummary)findSummary(groupHierarchy, topGroup, dataMap, groupMileage.getGroupID());
-            if (summary == null) {
-                continue;
-            }
-            summary.setTotalMiles(summary.getTotalMiles()+groupMileage.getDistance());
-            
-        }
-        for (HosGroupMileage groupMileage : groupNoDriverMileageList) {
-            HosViolationsSummary summary = (HosViolationsSummary)findSummary(groupHierarchy, topGroup, dataMap, groupMileage.getGroupID());
-            if (summary == null) {
-                continue;
-            }
-            summary.setTotalMiles(summary.getTotalMiles()+groupMileage.getDistance());
-            summary.setTotalMilesNoDriver(summary.getTotalMilesNoDriver()+groupMileage.getDistance());
-            
-        }
-         
-        List<HosViolationsSummary> dataList = new ArrayList<HosViolationsSummary>();
-        for (HosViolationsSummary summary : dataMap.values()) { 
-            if (summary.getDriverCnt().intValue() != 0 || summary.getTotalMiles().intValue() != 0)
+        List<DrivingTimeViolationsSummary> dataList = new ArrayList<DrivingTimeViolationsSummary>();
+        for (DrivingTimeViolationsSummary summary : dataMap.values()) { 
+            if (summary.getDriverCnt().intValue() != 0 )
                 dataList.add(summary);
         }
 
@@ -147,12 +117,13 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         
     }
 
+
     @Override
     protected void updateSummaryDriverCount(ViolationsSummary summary, Driver driver) {
-        if (driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT)
-            summary.setDriverCnt(summary.getDriverCnt() + 1);
-        
+        summary.setDriverCnt(summary.getDriverCnt() + 1);
     }
+
+
 
 
 }

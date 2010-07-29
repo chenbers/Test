@@ -33,6 +33,7 @@ public class Converter {
         NumberFormat nf = NumberFormat.getNumberInstance(locale);
         nf.setMaximumFractionDigits(0);
         nf.setMinimumFractionDigits(0);
+        nf.setGroupingUsed(false);
         if (convertToMetric)
             return nf.format(MeasurementConversionUtil.convertMilesToKilometers(distance, MeasurementType.METRIC));
         else {
