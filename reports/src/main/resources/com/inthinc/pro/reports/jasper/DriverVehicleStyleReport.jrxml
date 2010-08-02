@@ -47,7 +47,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dv.event.count} + " " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
 			</textField>
 			<lineChart>
-				<chart isShowLegend="false" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer">
+				<chart isShowLegend="true" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer">
 					<reportElement key="element-1" x="-1" y="50" width="536" height="230"/>
 					<chartTitle/>
 					<chartSubtitle/>
