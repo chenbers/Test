@@ -268,6 +268,29 @@ public class Person extends BaseEntity implements Comparable<Person> {
         }
         return result.toString();
     }
+    public String getFullNameLastFirst() {
+        StringBuilder result = new StringBuilder();
+        if (last != null) {
+            result.append(last);
+            result.append(",");
+        }
+        if (first != null) {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(first);
+        }
+        if (middle != null) {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(middle);
+        }
+        if (suffix != null) {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(suffix);
+        }
+        return result.toString();
+    }
 
     public String getFullNameWithId() {
         StringBuilder result = new StringBuilder();

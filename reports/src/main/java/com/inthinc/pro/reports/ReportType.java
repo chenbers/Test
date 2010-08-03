@@ -38,7 +38,8 @@ public enum ReportType
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml"),
     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hos/hosViolations.jrxml", "hos/hosViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations"),
     NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","hos/nonDOTViolations.jrxml", "hos/nonDOTViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
-    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","hos/drivingTimeViolations.jrxml", "hos/drivingTimeViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations");
+    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","hos/drivingTimeViolations.jrxml", "hos/drivingTimeViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
+    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","hos/hosViolationsDetail.jrxml", "hos/hosViolationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolationsDetail");
     
 
     private String prettyTemplate;

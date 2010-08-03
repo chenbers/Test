@@ -10,6 +10,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.dao.util.MathUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
@@ -76,4 +77,19 @@ public class Converter {
         }
         return description;
     }
+    
+    
+    public static String convertMinutes(Long minutes) {
+        
+        if (minutes == null)
+            minutes = 0L;
+        
+        Long hours = minutes / 60;
+        minutes = minutes % 60;
+
+        return  (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+
+        
+    }   
+
 }

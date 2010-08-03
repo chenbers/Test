@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.hos;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +25,12 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -37,8 +41,10 @@ import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.hos.model.DrivingTimeViolationsSummary;
 import com.inthinc.pro.reports.hos.model.HosGroupMileage;
+import com.inthinc.pro.reports.hos.model.HosViolationsDetail;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.NonDOTViolationsSummary;
+import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportCreator;
 
@@ -93,9 +99,93 @@ public class ViolationsReportCriteriaTest {
             }
     };
 
+    
+    HosViolationsDetail hosViolationsDetailExpectedData[][] = {
+            {
+                new HosViolationsDetail("HOS->Cased Hole",new Date(1277981363000l),"461353","Coombs,  Eric","10965839",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.CUMMULATIVE_HOURS,14l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1277982212000l),"461353","Coombs,  Eric","10965839",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.CUMMULATIVE_HOURS,11l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1277982907000l),"461353","Coombs,  Eric","10965839",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.CUMMULATIVE_HOURS,14l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1277983787000l),"461353","Coombs,  Eric",null,RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.CUMMULATIVE_HOURS,19l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1277985145000l),"461353","Coombs,  Eric","10965839",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.CUMMULATIVE_HOURS,41l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278482069000l),"469874","Dewitt,  Jason","10965838",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,24l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278484060000l),"469874","Dewitt,  Jason","10965838",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,15l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278239817000l),"450702","Freeman,  Justin Thomas","10830717",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,1l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278446400000l),"475707","Grover,  Peter",null,RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,60l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278423124000l),"409241","Lee,  Jeremy Joseph","11242145",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,5l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278118747000l),"408554","Monroe,  Eddie (ED)","10965841",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,2l)
+                    )),
+                    new HosViolationsDetail("HOS",new Date(1278524792000l),"473468","Penfield,  Daniel","11134018",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,5l)
+                    )),
+                    new HosViolationsDetail("HOS",new Date(1278525340000l),"473468","Penfield,  Daniel","11134018",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,5l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278240070000l),"370532","Retzlaff,  John E","10830717",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,25l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278241650000l),"370532","Retzlaff,  John E","10830717",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,12l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278154891000l),"426338","Shannon,  Dustin","10965839",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,10l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278155970000l),"426338","Shannon,  Dustin","10965839",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,7l)
+                    )),
+                    new HosViolationsDetail("HOS->Cased Hole",new Date(1278242430000l),"451337","Smith,  Matthew Mark","10830717",RuleSetType.US_OIL,Arrays.asList(
+                        new Violation(RuleViolationTypes.ON_DUTY_HOUR,2l)
+                    )),
+            },
+            {
+        new HosViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278511164000l),"01041730","Harris,  Eugene","2467",RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
+                new Violation(RuleViolationTypes.OFF_DUTY_HOUR,6l),
+                new Violation(RuleViolationTypes.ON_DUTY_HOUR,6l)
+            )),
+            new HosViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278482400000l),"01466044","Szpuniarski,  James",null,RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
+                new Violation(RuleViolationTypes.DAILY_OFF_DUTY,142l)
+            )),
+            new HosViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278514452000l),"01466044","Szpuniarski,  James","2TRA02584",RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
+                new Violation(RuleViolationTypes.ON_DUTY_HOUR,12l)
+            )),
+            new HosViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278535495000l),"01466044","Szpuniarski,  James","2371",RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
+                new Violation(RuleViolationTypes.OFF_DUTY_HOUR,15l),
+                new Violation(RuleViolationTypes.ON_DUTY_HOUR,15l)
+            )),
+            new HosViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278547639000l),"01466044","Szpuniarski,  James","2371",RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
+                new Violation(RuleViolationTypes.OFF_DUTY_HOUR,10l),
+                new Violation(RuleViolationTypes.ON_DUTY_HOUR,10l)
+            )),
+            new HosViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278548506000l),"01466044","Szpuniarski,  James","2371",RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
+                new Violation(RuleViolationTypes.OFF_DUTY_HOUR,12l),
+                new Violation(RuleViolationTypes.ON_DUTY_HOUR,12l)
+            )),
+            }
+    };
 
+    @Ignore
     @Test
-    public void gainTestCases() {
+    public void gainSummmaryTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             ViolationsTestData violationsTestData = new ViolationsTestData(testCaseName[testCaseCnt]);
             
@@ -126,16 +216,16 @@ public class ViolationsReportCriteriaTest {
                 assertEquals(testCaseName[testCaseCnt] +" TotalMilesNoDriver " + eCnt, expected.getTotalMilesNoDriver(), s.getTotalMilesNoDriver()); 
             }
             
-             dump(100*(testCaseCnt+1), criteria, FormatType.PDF);
-             dump(100*(testCaseCnt+1), criteria, FormatType.EXCEL);
+             dump("hosViolationsSummaryTest", testCaseCnt+1, criteria, FormatType.PDF);
+             dump("hosViolationsSummaryTest", testCaseCnt+1, criteria, FormatType.EXCEL);
 
         
         
              // NON-DOT VIOLATIONS
              NonDOTViolationsSummaryReportCriteria nonDOTCriteria = new NonDOTViolationsSummaryReportCriteria(Locale.US);
              nonDOTCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
-             dump(1000*(testCaseCnt+1), nonDOTCriteria, FormatType.PDF);
-             dump(1000*(testCaseCnt+1), nonDOTCriteria, FormatType.EXCEL);
+             dump("nonDOTViolationsTest", testCaseCnt+1, nonDOTCriteria, FormatType.PDF);
+             dump("notDOTViolationsTest", testCaseCnt+1, nonDOTCriteria, FormatType.EXCEL);
              List<NonDOTViolationsSummary> nonDOTDataList = nonDOTCriteria.getMainDataset();
              assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
              eCnt = 0;
@@ -149,8 +239,8 @@ public class ViolationsReportCriteriaTest {
              // DrivingTime VIOLATIONS
              DrivingTimeViolationsSummaryReportCriteria drivingTimeCriteria = new DrivingTimeViolationsSummaryReportCriteria(Locale.US);
              drivingTimeCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
-             dump(10000*(testCaseCnt+1), drivingTimeCriteria, FormatType.PDF);
-             dump(10000*(testCaseCnt+1), drivingTimeCriteria, FormatType.EXCEL);
+             dump("drivingViolationsTest", testCaseCnt+1, drivingTimeCriteria, FormatType.PDF);
+             dump("drivingViolationsTest", testCaseCnt+1, drivingTimeCriteria, FormatType.EXCEL);
              List<DrivingTimeViolationsSummary> drivingTimeDataList = drivingTimeCriteria.getMainDataset();
              assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
              eCnt = 0;
@@ -164,14 +254,44 @@ public class ViolationsReportCriteriaTest {
              }
         }
     }
-    private void dump(int testCaseCnt, ReportCriteria reportCriteria, FormatType formatType) {
+    @Test
+    public void gainDetailsTestCases() {
+        for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
+            ViolationsTestData violationsTestData = new ViolationsTestData(testCaseName[testCaseCnt]);
+            
+            // HOS VIOLATIONS
+            HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(Locale.US);
+            criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+            List<HosViolationsDetail> dataList = criteria.getMainDataset();
+//            for (HosViolationsDetail data : dataList)
+//                data.dump();
+            assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsDetailExpectedData[testCaseCnt].length, dataList.size());
+            int eCnt = 0;
+            for (HosViolationsDetail s : dataList)
+            {
+                HosViolationsDetail expected = hosViolationsDetailExpectedData[testCaseCnt][eCnt++];
+                assertEquals(testCaseName[testCaseCnt] +" driverName " + eCnt, expected.getDriverName(), s.getDriverName());
+                assertEquals(testCaseName[testCaseCnt] +" EmployeeId " + eCnt, expected.getEmployeeId(), s.getEmployeeId());
+                assertEquals(testCaseName[testCaseCnt] +" NotificationTime " + eCnt, expected.getNotificationTime(), s.getNotificationTime());
+                assertEquals(testCaseName[testCaseCnt] +" ruleType " + eCnt, expected.getRuleType(), s.getRuleType());
+//                assertEquals(testCaseName[testCaseCnt] +" timeStr " + eCnt, expected.getTimeStr(), s.getTimeStr());
+                if (expected.getVehicleId() == null)
+                    assertNull(testCaseName[testCaseCnt] +" vehicleID " + eCnt, s.getVehicleId());
+                else assertEquals(testCaseName[testCaseCnt] +" vehicleID " + eCnt, expected.getVehicleId(), s.getVehicleId());
+                assertEquals(testCaseName[testCaseCnt] +" violationList size " + eCnt, expected.getViolationsList().size(), s.getViolationsList().size());
+                
+            }
+            dump("hosViolationsDetailTest", testCaseCnt+1, criteria, FormatType.PDF);
+        }
+    }
+    
+    private void dump(String prefix, int testCaseCnt, ReportCriteria reportCriteria, FormatType formatType) {
         // remove comments to get pdf or xls dump of report
-/*        
         ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
         Report report = reportCreator.getReport(reportCriteria);
         OutputStream out = null;
         try {
-            out = new FileOutputStream("c:\\reportTest" + testCaseCnt + ((formatType == FormatType.PDF)? ".pdf" : ".xls"));
+            out = new FileOutputStream("c:\\" + prefix + testCaseCnt + ((formatType == FormatType.PDF)? ".pdf" : ".xls"));
             report.exportReportToStream(formatType, out);
             out.flush();
             out.close();
@@ -181,7 +301,6 @@ public class ViolationsReportCriteriaTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-*/        
     }
 
     class ViolationsTestData {
@@ -308,6 +427,8 @@ public class ViolationsReportCriteriaTest {
                             if (values[i].startsWith("\"") && values[i].endsWith("\"")) {
                                 values[i] = values[i].substring(1, values[i].length() - 1);
                             }
+                            else if (values[i].equals("null"))
+                                values[i] = null;
                         String id = values[0];
                         HOSStatus status = HOSStatus.valueOf(Integer.valueOf(values[1]));
                         RuleSetType ruleType = RuleSetType.valueOf(Integer.valueOf(values[2]));
