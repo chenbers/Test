@@ -39,13 +39,16 @@ public enum ReportType
     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hos/hosViolations.jrxml", "hos/hosViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations"),
     NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","hos/nonDOTViolations.jrxml", "hos/nonDOTViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
     DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","hos/drivingTimeViolations.jrxml", "hos/drivingTimeViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
-    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","hos/hosViolationsDetail.jrxml", "hos/hosViolationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolationsDetail");
+    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "HOS_VIOLATIONS_DETAIL"),
+    NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "NON_DOT_VIOLATIONS_DETAIL"),
+    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL");
     
 
     private String prettyTemplate;
     private String rawTemplate;
     private String label;
     private String resourceBundle;
+    private String name;
     
     private ReportType(String label,String prettyTemplate){
         this.label = label;
@@ -63,6 +66,14 @@ public enum ReportType
         this.prettyTemplate = prettyTemplate;
         this.rawTemplate = rawTemplate;
         this.resourceBundle = resourceBundle;
+    }
+    
+    private ReportType(String label,String prettyTemplate, String rawTemplate, String resourceBundle, String name){
+        this.label = label;
+        this.prettyTemplate = prettyTemplate;
+        this.rawTemplate = rawTemplate;
+        this.resourceBundle = resourceBundle;
+        this.name = name;
     }
     
     private static final Map<String, ReportType> lookup = new HashMap<String, ReportType>();
@@ -106,6 +117,14 @@ public enum ReportType
     public String getResourceBundle() {
         return resourceBundle;
     }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     @Override
     public String toString()

@@ -1,0 +1,19 @@
+groupName,notificationTime,timeZone,employeeId,driverName,vehicleId,ViolationsHeader_0,ViolationsHeader_1,ViolationsHeader_2,ViolationsHeader_3,ViolationsHeader_4,ViolationsHeader_5,ViolationsHeader_6,Violations_0,Violations_1,Violations_2,Violations_3,Violations_4,Violations_5,Violations_6,ruleType
+HOS->Cased Hole,07/01/10 04:49 MDT,,461353,"Coombs, Eric",10965839,Cumulative Hours,,,,,,,14,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/01/10 05:03 MDT,,461353,"Coombs, Eric",10965839,Cumulative Hours,,,,,,,11,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/01/10 05:15 MDT,,461353,"Coombs, Eric",10965839,Cumulative Hours,,,,,,,14,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/01/10 05:29 MDT,,461353,"Coombs, Eric",,Cumulative Hours,,,,,,,19,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/01/10 05:52 MDT,,461353,"Coombs, Eric",10965839,Cumulative Hours,,,,,,,41,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/02/10 18:59 MDT,,408554,"Monroe, Eddie (ED)",10965841,Shift On Duty Hours,,,,,,,2,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/03/10 05:01 MDT,,426338,"Shannon, Dustin",10965839,Shift On Duty Hours,,,,,,,10,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/03/10 05:19 MDT,,426338,"Shannon, Dustin",10965839,Shift On Duty Hours,,,,,,,7,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/04/10 04:36 MDT,,450702,"Freeman, Justin Thomas",10830717,Shift On Duty Hours,,,,,,,1,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/04/10 04:41 MDT,,370532,"Retzlaff, John E",10830717,Shift On Duty Hours,,,,,,,25,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/04/10 05:07 MDT,,370532,"Retzlaff, John E",10830717,Shift On Duty Hours,,,,,,,12,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/04/10 05:20 MDT,,451337,"Smith, Matthew Mark",10830717,Shift On Duty Hours,,,,,,,2,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/06/10 07:32 MDT,,409241,"Lee, Jeremy Joseph",11242145,Shift On Duty Hours,,,,,,,5,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/06/10 14:00 MDT,,475707,"Grover, Peter",,Shift On Duty Hours,,,,,,,60,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/06/10 23:54 MDT,,469874,"Dewitt, Jason",10965838,Shift On Duty Hours,,,,,,,24,0,0,0,0,0,0,US Oil
+HOS->Cased Hole,07/07/10 00:27 MDT,,469874,"Dewitt, Jason",10965838,Shift On Duty Hours,,,,,,,15,0,0,0,0,0,0,US Oil
+HOS,07/07/10 11:46 MDT,,473468,"Penfield, Daniel",11134018,Shift On Duty Hours,,,,,,,5,0,0,0,0,0,0,US Oil
+HOS,07/07/10 11:55 MDT,,473468,"Penfield, Daniel",11134018,Shift On Duty Hours,,,,,,,5,0,0,0,0,0,0,US Oil

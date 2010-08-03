@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="i18n/hosViolations">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hosViolations" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/hosViolations">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -24,7 +24,7 @@
 	<field name="totalMiles" class="java.lang.Double"/>
 	<field name="totalMilesNoDriver" class="java.lang.Double"/>
 	<columnHeader>
-		<band height="22">
+		<band height="19">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
@@ -103,91 +103,91 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.15.raw}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField" x="735" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="735" y="0" width="107" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.16.raw}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="1" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-40" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="105" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="106" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="105" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driving_1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="151" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="150" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driving_2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="196" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="195" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driving_3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="241" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="240" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{onDuty_1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="286" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="285" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{onDuty_2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="331" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="330" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{onDuty_3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="376" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="375" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cumulative_1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="421" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="420" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cumulative_2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="466" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="465" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cumulative_3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-54" x="511" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField-54" x="510" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{offDuty_1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-55" x="556" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField-55" x="555" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{offDuty_2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-56" x="601" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField-56" x="600" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{offDuty_3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="646" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="645" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{driverCnt}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField" x="691" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="690" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="false">
-				<reportElement key="textField" x="736" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="textField" x="735" y="0" width="107" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{totalMilesNoDriver},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>

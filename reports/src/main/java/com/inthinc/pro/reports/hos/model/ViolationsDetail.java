@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import com.inthinc.hos.model.RuleSetType;
 
-public class HosViolationsDetail implements Comparable<HosViolationsDetail> {
+public class ViolationsDetail implements Comparable<ViolationsDetail> {
     
     private String groupName;
     private String timeStr;
@@ -15,11 +15,11 @@ public class HosViolationsDetail implements Comparable<HosViolationsDetail> {
     private RuleSetType ruleType;
     List<Violation> violationsList;
     
-    public HosViolationsDetail()
+    public ViolationsDetail()
     {
         
     }
-    public HosViolationsDetail(String groupName, Date notificationTime, String employeeId, String driverName, String vehicleId, RuleSetType ruleType, List<Violation> violationsList) {
+    public ViolationsDetail(String groupName, Date notificationTime, String employeeId, String driverName, String vehicleId, RuleSetType ruleType, List<Violation> violationsList) {
         this.groupName = groupName;
         this.notificationTime = notificationTime;
         this.employeeId = employeeId;
@@ -79,7 +79,7 @@ public class HosViolationsDetail implements Comparable<HosViolationsDetail> {
 
 
     @Override
-    public int compareTo(HosViolationsDetail o) {
+    public int compareTo(ViolationsDetail o) {
         
         int cmp = driverName.compareTo(o.getDriverName());
         if (cmp == 0) {
@@ -90,7 +90,7 @@ public class HosViolationsDetail implements Comparable<HosViolationsDetail> {
     }
 
     public void dump() {
-        System.out.println("new HosViolationsDetail(\"" + getGroupName() + "\"," + 
+        System.out.println("new ViolationsDetail(\"" + getGroupName() + "\"," + 
                 "new Date("+getNotificationTime().getTime() + "l)," + 
                 "\"" + getEmployeeId() + "\"," + 
                 "\"" + getDriverName() + "\"," + 
