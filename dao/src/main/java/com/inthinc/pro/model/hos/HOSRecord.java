@@ -22,6 +22,7 @@ public class HOSRecord extends BaseEntity {
     private Boolean vehicleIsDOT;
     private Number vehicleOdometer;
     private Date logTime;
+    private Date addedTime;
     private TimeZone timeZone;
     private HOSStatus status;
     private HOSOrigin origin;
@@ -37,7 +38,14 @@ public class HOSRecord extends BaseEntity {
     private String originalLocation;
     private Boolean deleted;
     private String notificationData;
+    private Integer changedCnt;
     
+    public Integer getChangedCnt() {
+        return changedCnt;
+    }
+    public void setChangedCnt(Integer changedCnt) {
+        this.changedCnt = changedCnt;
+    }
     public Boolean getDeleted() {
         return deleted;
     }
@@ -85,6 +93,12 @@ public class HOSRecord extends BaseEntity {
     }
     public void setLogTime(Date logTime) {
         this.logTime = logTime;
+    }
+    public Date getAddedTime() {
+        return addedTime;
+    }
+    public void setAddedTime(Date addedTime) {
+        this.addedTime = addedTime;
     }
     public TimeZone getTimeZone() {
         return timeZone;

@@ -41,8 +41,8 @@ public enum ReportType
     DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","hos/drivingTimeViolations.jrxml", "hos/drivingTimeViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
     HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "HOS_VIOLATIONS_DETAIL"),
     NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "NON_DOT_VIOLATIONS_DETAIL"),
-    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL");
-    
+    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL"),
+    HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report","hos/driverDotLog.jrxml", "hos/driverDotLogRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.driverDotLog");
 
     private String prettyTemplate;
     private String rawTemplate;

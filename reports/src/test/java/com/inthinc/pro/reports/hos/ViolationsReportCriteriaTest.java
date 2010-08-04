@@ -48,7 +48,7 @@ import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportCreator;
 
-public class ViolationsReportCriteriaTest {
+public class ViolationsReportCriteriaTest extends BaseUnitTest {
     public static final String testCaseName[] = { "vtest_00_07012010_07072010", "vtest_01H1_07012010_07072010", };
     HosViolationsSummary hosViolationsExpectedData[][] = {
             { new HosViolationsSummary("HOS", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 32, 306500.0d, 0.0d),
@@ -309,26 +309,6 @@ public class ViolationsReportCriteriaTest {
         else
             assertEquals(testCaseName[testCaseCnt] + " vehicleID ", expected.getVehicleId(), s.getVehicleId());
         assertEquals(testCaseName[testCaseCnt] + " violationList size ", expected.getViolationsList().size(), s.getViolationsList().size());
-    }
-
-    private void dump(String prefix, int testCaseCnt, ReportCriteria reportCriteria, FormatType formatType) {
-        // remove comments to get pdf or xls dump of report
-/*        
-        ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
-        Report report = reportCreator.getReport(reportCriteria);
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream("c:\\" + prefix + testCaseCnt + ((formatType == FormatType.PDF) ? ".pdf" : ".xls"));
-            report.exportReportToStream(formatType, out);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-*/        
     }
 
     class ViolationsTestData {
