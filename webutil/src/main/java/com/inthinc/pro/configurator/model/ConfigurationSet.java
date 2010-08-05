@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.configurator.model;
+package com.inthinc.pro.configurator.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,30 +10,34 @@ import java.util.Map.Entry;
 
 public class ConfigurationSet {
 
-    List<SettingOptions> configurations;
+    List<Configuration> configurations;
     List<Integer> settingIDsWithMoreThanOneValue;
     
-    public ConfigurationSet() {
-        super();
-        configurations = new ArrayList<SettingOptions>();
-        settingIDsWithMoreThanOneValue = new ArrayList<Integer>();
-    }    
-    
-    public List<SettingOptions> getConfigurations() {
-        return configurations;
-    }
-    public void setConfigurations(List<SettingOptions> configurations) {
+//    public ConfigurationSet() {
+//        super();
+//        configurations = new ArrayList<Configuration>();
+//        settingIDsWithMoreThanOneValue = new ArrayList<Integer>();
+//    }    
+    public ConfigurationSet(List<Configuration> configurations){
+
         this.configurations = configurations;
         deriveSettingIDsWithMoreThanOneValue();
     }
+    public List<Configuration> getConfigurations() {
+        return configurations;
+    }
+//    public void setConfigurations(List<Configuration> configurations) {
+//        this.configurations = configurations;
+//        deriveSettingIDsWithMoreThanOneValue();
+//    }
     private void deriveSettingIDsWithMoreThanOneValue(){
         
         //Build  a set for each setting 
         Map<Integer,Set<String>> differences = new HashMap<Integer,Set<String>>();
         
-        for(SettingOptions settingOptions : configurations){
+        for(Configuration configuration : configurations){
             
-            for (Entry<Integer,String> setting : settingOptions.getEntries()){
+            for (Entry<Integer,String> setting : configuration.getEntries()){
                 
                 if (!differences.containsKey(setting.getKey())){
                     

@@ -12,17 +12,17 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.inthinc.pro.backing.configurator.DeviceSettingDefinitionsByProductType;
-import com.inthinc.pro.backing.configurator.VehicleSettingsByProductType;
-import com.inthinc.pro.backing.configurator.model.ConfigurationExtractor;
-import com.inthinc.pro.backing.configurator.model.ConfigurationSet;
+import com.inthinc.pro.configurator.model.ConfigurationExtractor;
+import com.inthinc.pro.configurator.model.ConfigurationSet;
+import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
+import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
+import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
+import com.inthinc.pro.configurator.model.VehicleSettings;
+import com.inthinc.pro.configurator.model.VehicleSettingsByProductType;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinitions;
 import com.inthinc.pro.model.configurator.VehicleSetting;
-import com.inthinc.pro.model.configurator.VehicleSettings;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
 
@@ -46,7 +46,6 @@ public class ConfigurationExtractorTest {
         deviceSettingDefinitions.setConfiguratorDAO(configuratorHessianDAO);
         deviceSettingDefinitions.init();
         deviceSettingDefinitionsByProductType = new DeviceSettingDefinitionsByProductType();
-        deviceSettingDefinitionsByProductType.setDeviceSettingDefinitions(deviceSettingDefinitions);
         deviceSettingDefinitionsByProductType.init();
 
         vehicleSettings = new VehicleSettings();
@@ -55,29 +54,30 @@ public class ConfigurationExtractorTest {
         vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(1));
 
     }
-    private void makeupSettingsRandom( List<DeviceSettingDefinition> settings, List<VehicleSetting> vehicleSettings){
+    private void makeupSettingsRandom( List<DeviceSettingDefinitionBean> list, List<VehicleSetting> vehicleSettings){
         
         for(VehicleSetting vs: vehicleSettings){
             
             Map<Integer, String> settingMap = new HashMap<Integer, String>();
             
-            for (DeviceSettingDefinition dsd: settings){
+            for (DeviceSettingDefinitionBean dsdBean: list){
+            	
                 String value = "";
-                if (dsd.getChoices().size()>1){
+                if (dsdBean.getChoices().size()>1){
                     
-                    value =  dsd.getChoices().get(new Double(Math.random()*dsd.getChoices().size()).intValue());
+                    value =  dsdBean.getChoices().get(new Double(Math.random()*dsdBean.getChoices().size()).intValue());
                 }
-                else if (dsd.getVarType().equals(VarType.VTBOOLEAN)){
+                else if (dsdBean.getVarType().equals(VarType.VTBOOLEAN)){
                     
                     value = ""+(new Double(Math.random()*2).intValue()==0);
                 }
-                else if (dsd.getVarType().equals(VarType.VTDOUBLE) || dsd.getVarType().equals(VarType.VTINTEGER)){
+                else if (dsdBean.getVarType().equals(VarType.VTDOUBLE) || dsdBean.getVarType().equals(VarType.VTINTEGER)){
                     
-                    if ((dsd.getMin() != null) && (dsd.getMax() != null)){
+                    if ((dsdBean.getMin() != null) && (dsdBean.getMax() != null)){
                         
-                        int range = new Integer(Integer.parseInt(dsd.getMax()))-new Integer(Integer.parseInt(dsd.getMin()));
+                        int range = Integer.parseInt(dsdBean.getMax())-(Integer.parseInt(dsdBean.getMin()));
                         int valuePlus = new Double(Math.random()*range).intValue();
-                        value=""+new Integer(Integer.parseInt(dsd.getMin())).intValue() +valuePlus;
+                        value=""+new Integer(Integer.parseInt(dsdBean.getMin())).intValue() +valuePlus;
                     }
                     else{
                         
@@ -88,43 +88,45 @@ public class ConfigurationExtractorTest {
                     
                    value = "made_up_value";
                 }
-                settingMap.put(dsd.getSettingID(),value);
+                settingMap.put(dsdBean.getSettingID(),value);
             }
             vs.setActual(settingMap);
             
             Map<Integer, String> desiredSettingMap = new HashMap<Integer, String>();
-            for (DeviceSettingDefinition dsd: settings){
+            for (DeviceSettingDefinitionBean dsdBean: list){
             	
-                 if (dsd.getVarType().equals(VarType.VTSTRING)){
+                  if (dsdBean.getVarType().equals(VarType.VTSTRING)){
                     
-                	desiredSettingMap.put(dsd.getSettingID(),"desired_value");
+                	desiredSettingMap.put(dsdBean.getSettingID(),"desired_value");
                 }
             }
             
             vs.setDesired(desiredSettingMap);
+            vs.clearCombinedSettings();
+            vs.combineSettings();
         }
     }
-    private void makeupSettingsSame( List<DeviceSettingDefinition> settings, List<VehicleSetting> vehicleSettings){
+    private void makeupSettingsSame( List<DeviceSettingDefinitionBean> list, List<VehicleSetting> vehicleSettings){
         
         for(VehicleSetting vs: vehicleSettings){
             
             Map<Integer, String> actualSettingMap = new HashMap<Integer, String>();
             
-            for (DeviceSettingDefinition dsd: settings){
+            for (DeviceSettingDefinitionBean dsdBean: list){
                 String value = "";
-                if (dsd.getChoices().size()>1){
+                if (dsdBean.getChoices().size()>1){
                     
-                    value =  dsd.getChoices().get(0);
+                    value =  dsdBean.getChoices().get(0);
                 }
-                else if (dsd.getVarType().equals(VarType.VTBOOLEAN)){
+                else if (dsdBean.getVarType().equals(VarType.VTBOOLEAN)){
                     
                     value = ""+0;
                 }
-                else if (dsd.getVarType().equals(VarType.VTDOUBLE) || dsd.getVarType().equals(VarType.VTINTEGER)){
+                else if (dsdBean.getVarType().equals(VarType.VTDOUBLE) || dsdBean.getVarType().equals(VarType.VTINTEGER)){
                     
-                    if ((dsd.getMin() != null) && (dsd.getMax() != null)){
+                    if ((dsdBean.getMin() != null) && (dsdBean.getMax() != null)){
                         
-                        value=""+dsd.getMin();
+                        value=""+dsdBean.getMin();
                     }
                     else{
                         
@@ -135,19 +137,21 @@ public class ConfigurationExtractorTest {
                     
                    value = "made_up_value";
                 }
-                actualSettingMap.put(dsd.getSettingID(),value);
+                actualSettingMap.put(dsdBean.getSettingID(),value);
             }
             vs.setActual(actualSettingMap);
             Map<Integer, String> desiredSettingMap = new HashMap<Integer, String>();
-            for (DeviceSettingDefinition dsd: settings){
+            for (DeviceSettingDefinitionBean dsdBean: list){
             	
-                 if (dsd.getVarType().equals(VarType.VTSTRING)){
+                 if (dsdBean.getVarType().equals(VarType.VTSTRING)){
                     
-                	desiredSettingMap.put(dsd.getSettingID(),"desired_value");
+                	desiredSettingMap.put(dsdBean.getSettingID(),"desired_value");
                 }
             }
             
             vs.setDesired(desiredSettingMap);
+            vs.clearCombinedSettings();
+            vs.combineSettings();
         }
     }
     
@@ -175,8 +179,8 @@ public class ConfigurationExtractorTest {
     @Test
     public void configuratorExtractConfigurationsFromVehicleSettingsRealTest(){
         ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettings(ProductType.TIWIPRO_R74));
-//        assertEquals("3 out of 3 vehicle settings should have returned 3 configuration",3,configurationSet.getConfigurations().size());
-//        assertEquals("1 vehicles should be in list",1,configurationSet.getConfigurations().get(0).getVehicleIDs().size());
-//        Assert.notEmpty(configurationSet.getSettingIDsWithMoreThanOneValue(),"should be some settings that aren't the same");
+        assertEquals("3 out of 3 vehicle settings should have returned 3 configuration",3,configurationSet.getConfigurations().size());
+        assertEquals("1 vehicles should be in list",1,configurationSet.getConfigurations().get(0).getVehicleIDs().size());
+        assertFalse("should be some settings that aren't the same",configurationSet.getSettingIDsWithMoreThanOneValue().isEmpty());
     }
 }

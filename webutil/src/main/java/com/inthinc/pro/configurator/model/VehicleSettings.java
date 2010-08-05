@@ -1,9 +1,10 @@
-package com.inthinc.pro.model.configurator;
+package com.inthinc.pro.configurator.model;
 
 import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class VehicleSettings {
     
@@ -23,5 +24,10 @@ public class VehicleSettings {
     }
     public void updateVehicleSettings(Integer vehicleID,Map<Integer, String> vehicleSettings, Integer userID, String reason){
     	configuratorDAO.updateVehicleSettings(vehicleID, vehicleSettings, userID, reason);
+    }
+    
+    public VehicleSetting getVehicleSetting(Integer vehicleID){
+    	
+    	return configuratorDAO.getVehicleSettings(vehicleID);
     }
 }

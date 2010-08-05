@@ -4,9 +4,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 
+import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
 
@@ -22,14 +24,14 @@ public class DeviceSettingDefinitionTest {
         choices.add("two");
         choices.add("three");
         dsd.setChoices(choices);
-        assertTrue(dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "two"));
-        assertTrue(dsd.validateValue( "three"));
-        assertTrue(!dsd.validateValue( "four"));
-        assertTrue(!dsd.validateValue( ""));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(!dsd.validateValue( "ONE"));
-        assertTrue(!dsd.validateValue( "One"));
+        assertTrue(dsd.validate( "one"));
+        assertTrue(dsd.validate( "two"));
+        assertTrue(dsd.validate( "three"));
+        assertTrue(!dsd.validate( "four"));
+        assertTrue(!dsd.validate( ""));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "ONE"));
+        assertTrue(!dsd.validate( "One"));
     }
     @Test
     public void validateIntegerChoiceSettingTest(){
@@ -42,14 +44,14 @@ public class DeviceSettingDefinitionTest {
         choices.add("0");
         choices.add("234");
         dsd.setChoices(choices);
-        assertTrue(dsd.validateValue( "1"));
-        assertTrue(dsd.validateValue( "-1"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "234"));
-        assertTrue(!dsd.validateValue( "4352345"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(!dsd.validateValue( "afass"));
-        assertTrue(!dsd.validateValue( "-2323"));
+        assertTrue(dsd.validate( "1"));
+        assertTrue(dsd.validate( "-1"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "234"));
+        assertTrue(!dsd.validate( "4352345"));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "afass"));
+        assertTrue(!dsd.validate( "-2323"));
     }
     @Test
     public void validateDoubleChoiceSettingTest(){
@@ -62,14 +64,14 @@ public class DeviceSettingDefinitionTest {
         choices.add("0");
         choices.add("234.5");
         dsd.setChoices(choices);
-        assertTrue(dsd.validateValue( "1.0"));
-        assertTrue(dsd.validateValue( "-1.35"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "234.5"));
-        assertTrue(!dsd.validateValue( "4352345.352"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(!dsd.validateValue( "afass"));
-        assertTrue(!dsd.validateValue( "-2323"));
+        assertTrue(dsd.validate( "1.0"));
+        assertTrue(dsd.validate( "-1.35"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "234.5"));
+        assertTrue(!dsd.validate( "4352345.352"));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "afass"));
+        assertTrue(!dsd.validate( "-2323"));
     }
     @Test
     public void validateBooleanChoiceSettingTest(){
@@ -82,29 +84,29 @@ public class DeviceSettingDefinitionTest {
         choices.add("0");
         choices.add("234.5");
         dsd.setChoices(choices);
-        assertTrue(dsd.validateValue( "1.0"));
-        assertTrue(dsd.validateValue( "-1.35"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "234.5"));
-        assertTrue(!dsd.validateValue( "4352345.352"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(!dsd.validateValue( "afass"));
-        assertTrue(!dsd.validateValue( "-2323"));
+        assertTrue(dsd.validate( "1.0"));
+        assertTrue(dsd.validate( "-1.35"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "234.5"));
+        assertTrue(!dsd.validate( "4352345.352"));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "afass"));
+        assertTrue(!dsd.validate( "-2323"));
     }
     @Test
     public void validateStringnoNoRestraintSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
         dsd.setSettingID(200);
         dsd.setVarType(VarType.VTSTRING);
-        assertTrue(dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "o"));
-        assertTrue(dsd.validateValue( "three"));
-        assertTrue(dsd.validateValue( "four"));
-        assertTrue(dsd.validateValue( ""));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "ONE"));
-        assertTrue(dsd.validateValue( "One"));
-        assertTrue(dsd.validateValue( "A really huge long stringdsfjasjasjkfaskjghaksgh;asgkagk"));
+        assertTrue(dsd.validate( "one"));
+        assertTrue(dsd.validate( "o"));
+        assertTrue(dsd.validate( "three"));
+        assertTrue(dsd.validate( "four"));
+        assertTrue(dsd.validate( ""));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "ONE"));
+        assertTrue(dsd.validate( "One"));
+        assertTrue(dsd.validate( "A really huge long stringdsfjasjasjkfaskjghaksgh;asgkagk"));
     }
     @Test
     public void validateStringRangeMinSettingTest(){
@@ -112,14 +114,14 @@ public class DeviceSettingDefinitionTest {
         dsd.setSettingID(200);
         dsd.setVarType(VarType.VTSTRING);
         dsd.setMin("2");
-        assertTrue(dsd.validateValue( "one"));
-        assertTrue(!dsd.validateValue( "o"));
-        assertTrue(dsd.validateValue( "three"));
-        assertTrue(dsd.validateValue( "four"));
-        assertTrue(!dsd.validateValue( ""));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "ONE"));
-        assertTrue(dsd.validateValue( "One"));
+        assertTrue(dsd.validate( "one"));
+        assertTrue(!dsd.validate( "o"));
+        assertTrue(dsd.validate( "three"));
+        assertTrue(dsd.validate( "four"));
+        assertTrue(!dsd.validate( ""));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "ONE"));
+        assertTrue(dsd.validate( "One"));
     }
     @Test
     public void validateStringRangeMaxSettingTest(){
@@ -127,14 +129,14 @@ public class DeviceSettingDefinitionTest {
         dsd.setSettingID(200);
         dsd.setVarType(VarType.VTSTRING);
         dsd.setMax("12");
-        assertTrue(dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "o"));
-        assertTrue(dsd.validateValue( "three"));
-        assertTrue(!dsd.validateValue( "four hundred and seventy five"));
-        assertTrue(dsd.validateValue( ""));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "ONE"));
-        assertTrue(dsd.validateValue( "One"));
+        assertTrue(dsd.validate( "one"));
+        assertTrue(dsd.validate( "o"));
+        assertTrue(dsd.validate( "three"));
+        assertTrue(!dsd.validate( "four hundred and seventy five"));
+        assertTrue(dsd.validate( ""));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "ONE"));
+        assertTrue(dsd.validate( "One"));
     }
     @Test
     public void validateStringRangeMinMaxSettingTest(){
@@ -144,14 +146,14 @@ public class DeviceSettingDefinitionTest {
         dsd.setMin("2");
         dsd.setMax("12");
         
-        assertTrue(dsd.validateValue( "one"));
-        assertTrue(!dsd.validateValue( "o"));
-        assertTrue(dsd.validateValue( "three"));
-        assertTrue(!dsd.validateValue( "four hundred and seventy five"));
-        assertTrue(!dsd.validateValue( ""));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "ONE"));
-        assertTrue(dsd.validateValue( "One"));
+        assertTrue(dsd.validate( "one"));
+        assertTrue(!dsd.validate( "o"));
+        assertTrue(dsd.validate( "three"));
+        assertTrue(!dsd.validate( "four hundred and seventy five"));
+        assertTrue(!dsd.validate( ""));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "ONE"));
+        assertTrue(dsd.validate( "One"));
     }
     @Test
     public void validateStringRangeBadMinMaxSettingTest(){
@@ -161,14 +163,14 @@ public class DeviceSettingDefinitionTest {
         dsd.setMin("safasf");
         dsd.setMax("asdfasf");
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(!dsd.validateValue( "o"));
-        assertTrue(!dsd.validateValue( "three"));
-        assertTrue(!dsd.validateValue( "four hundred and seventy five"));
-        assertTrue(!dsd.validateValue( ""));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(!dsd.validateValue( "ONE"));
-        assertTrue(!dsd.validateValue( "One"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(!dsd.validate( "o"));
+        assertTrue(!dsd.validate( "three"));
+        assertTrue(!dsd.validate( "four hundred and seventy five"));
+        assertTrue(!dsd.validate( ""));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "ONE"));
+        assertTrue(!dsd.validate( "One"));
     }
     @Test
     public void validateIntegerNoRestraintSettingTest(){
@@ -176,16 +178,16 @@ public class DeviceSettingDefinitionTest {
         dsd.setSettingID(200);
         dsd.setVarType(VarType.VTINTEGER);
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "-2"));
-        assertTrue(dsd.validateValue( "1"));
-        assertTrue(dsd.validateValue( "11"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12"));
-        assertTrue(dsd.validateValue( "13"));
-        assertTrue(!dsd.validateValue( "89458456895689564894658945689645"));
-        assertTrue(!dsd.validateValue( "11.23344"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "-2"));
+        assertTrue(dsd.validate( "1"));
+        assertTrue(dsd.validate( "11"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12"));
+        assertTrue(dsd.validate( "13"));
+        assertTrue(!dsd.validate( "89458456895689564894658945689645"));
+        assertTrue(!dsd.validate( "11.23344"));
    }
 
     @Test
@@ -196,15 +198,15 @@ public class DeviceSettingDefinitionTest {
         dsd.setMin("2");
         dsd.setMax("12");
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(!dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "2"));
-        assertTrue(!dsd.validateValue( "1"));
-        assertTrue(dsd.validateValue( "11"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12"));
-        assertTrue(!dsd.validateValue( "13"));
-        assertTrue(!dsd.validateValue( "11.23344"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(!dsd.validate( "0"));
+        assertTrue(dsd.validate( "2"));
+        assertTrue(!dsd.validate( "1"));
+        assertTrue(dsd.validate( "11"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12"));
+        assertTrue(!dsd.validate( "13"));
+        assertTrue(!dsd.validate( "11.23344"));
     }
     @Test
     public void validateIntegerRangeMinSettingTest(){
@@ -213,15 +215,15 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTINTEGER);
         dsd.setMin("2");
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(!dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "2"));
-        assertTrue(!dsd.validateValue( "1"));
-        assertTrue(dsd.validateValue( "11"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12"));
-        assertTrue(dsd.validateValue( "13"));
-        assertTrue(!dsd.validateValue( "11.23344"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(!dsd.validate( "0"));
+        assertTrue(dsd.validate( "2"));
+        assertTrue(!dsd.validate( "1"));
+        assertTrue(dsd.validate( "11"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12"));
+        assertTrue(dsd.validate( "13"));
+        assertTrue(!dsd.validate( "11.23344"));
    }
     @Test
     public void validateIntegerRangeMaxSettingTest(){
@@ -230,15 +232,15 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTINTEGER);
         dsd.setMax("12");
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "2"));
-        assertTrue(dsd.validateValue( "1"));
-        assertTrue(dsd.validateValue( "11"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12"));
-        assertTrue(!dsd.validateValue( "13"));
-        assertTrue(!dsd.validateValue( "11.23344"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "2"));
+        assertTrue(dsd.validate( "1"));
+        assertTrue(dsd.validate( "11"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12"));
+        assertTrue(!dsd.validate( "13"));
+        assertTrue(!dsd.validate( "11.23344"));
     }
     @Test
     public void validateDoubleNoRestraintSettingTest(){
@@ -246,17 +248,17 @@ public class DeviceSettingDefinitionTest {
         dsd.setSettingID(200);
         dsd.setVarType(VarType.VTDOUBLE);
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "2.5"));
-        assertTrue(dsd.validateValue( "2.45555567"));
-        assertTrue(dsd.validateValue( "2.534467"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12.744444"));
-        assertTrue(dsd.validateValue( "12.75"));
-        assertTrue(dsd.validateValue( "12.7567785433"));
-        assertTrue(dsd.validateValue( "12.76"));
-        assertTrue(dsd.validateValue( "27"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "2.5"));
+        assertTrue(dsd.validate( "2.45555567"));
+        assertTrue(dsd.validate( "2.534467"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12.744444"));
+        assertTrue(dsd.validate( "12.75"));
+        assertTrue(dsd.validate( "12.7567785433"));
+        assertTrue(dsd.validate( "12.76"));
+        assertTrue(dsd.validate( "27"));
     }
     @Test
     public void validateDoubleRangeMinMaxSettingTest(){
@@ -266,17 +268,17 @@ public class DeviceSettingDefinitionTest {
         dsd.setMin("2.5");
         dsd.setMax("12.75");
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(!dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "2.5"));
-        assertTrue(!dsd.validateValue( "2.45555567"));
-        assertTrue(dsd.validateValue( "2.534467"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12.744444"));
-        assertTrue(dsd.validateValue( "12.75"));
-        assertTrue(!dsd.validateValue( "12.7567785433"));
-        assertTrue(!dsd.validateValue( "12.76"));
-        assertTrue(dsd.validateValue( "11"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(!dsd.validate( "0"));
+        assertTrue(dsd.validate( "2.5"));
+        assertTrue(!dsd.validate( "2.45555567"));
+        assertTrue(dsd.validate( "2.534467"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12.744444"));
+        assertTrue(dsd.validate( "12.75"));
+        assertTrue(!dsd.validate( "12.7567785433"));
+        assertTrue(!dsd.validate( "12.76"));
+        assertTrue(dsd.validate( "11"));
     }
     @Test
     public void validateDoubleRangeMinSettingTest(){
@@ -285,17 +287,17 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTDOUBLE);
         dsd.setMin("2.5");
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(!dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "2.5"));
-        assertTrue(!dsd.validateValue( "2.45555567"));
-        assertTrue(dsd.validateValue( "2.534467"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12.744444"));
-        assertTrue(dsd.validateValue( "12.75"));
-        assertTrue(dsd.validateValue( "12.7567785433"));
-        assertTrue(dsd.validateValue( "12.76"));
-        assertTrue(dsd.validateValue( "11"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(!dsd.validate( "0"));
+        assertTrue(dsd.validate( "2.5"));
+        assertTrue(!dsd.validate( "2.45555567"));
+        assertTrue(dsd.validate( "2.534467"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12.744444"));
+        assertTrue(dsd.validate( "12.75"));
+        assertTrue(dsd.validate( "12.7567785433"));
+        assertTrue(dsd.validate( "12.76"));
+        assertTrue(dsd.validate( "11"));
     }
     @Test
     public void validateDoubleRangeMaxSettingTest(){
@@ -304,17 +306,17 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTDOUBLE);
         dsd.setMax("12.75");
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "2.5"));
-        assertTrue(dsd.validateValue( "2.45555567"));
-        assertTrue(dsd.validateValue( "2.534467"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(dsd.validateValue( "12.744444"));
-        assertTrue(dsd.validateValue( "12.75"));
-        assertTrue(!dsd.validateValue( "12.7567785433"));
-        assertTrue(!dsd.validateValue( "12.76"));
-        assertTrue(dsd.validateValue( "11"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "2.5"));
+        assertTrue(dsd.validate( "2.45555567"));
+        assertTrue(dsd.validate( "2.534467"));
+        assertTrue(dsd.validate( null));
+        assertTrue(dsd.validate( "12.744444"));
+        assertTrue(dsd.validate( "12.75"));
+        assertTrue(!dsd.validate( "12.7567785433"));
+        assertTrue(!dsd.validate( "12.76"));
+        assertTrue(dsd.validate( "11"));
     }
     @Test
     public void validateBooleanSettingTest(){
@@ -322,16 +324,16 @@ public class DeviceSettingDefinitionTest {
         dsd.setSettingID(200);
         dsd.setVarType(VarType.VTBOOLEAN);
         
-        assertTrue(!dsd.validateValue( "one"));
-        assertTrue(dsd.validateValue( "0"));
-        assertTrue(dsd.validateValue( "1"));
-        assertTrue(dsd.validateValue( "truE"));
-        assertTrue(dsd.validateValue( "False"));
-        assertTrue(dsd.validateValue( null));
-        assertTrue(!dsd.validateValue( "enabled"));
-        assertTrue(!dsd.validateValue( "disabled"));
-        assertTrue(!dsd.validateValue( "dgsdgsdf"));
-        assertTrue(!dsd.validateValue( "12.76"));
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(dsd.validate( "0"));
+        assertTrue(dsd.validate( "1"));
+        assertTrue(dsd.validate( "truE"));
+        assertTrue(dsd.validate( "False"));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "enabled"));
+        assertTrue(!dsd.validate( "disabled"));
+        assertTrue(!dsd.validate( "dgsdgsdf"));
+        assertTrue(!dsd.validate( "12.76"));
     }
     @Test
     public void validateMinString(){
@@ -340,7 +342,7 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTSTRING);
         dsd.setMin("2.5");
         
-        assertTrue(!dsd.validateValue( "one"));
+        assertTrue(!dsd.validate( "one"));
         
     }
     @Test
@@ -350,7 +352,7 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTSTRING);
         dsd.setMax("12.5");
         
-        assertTrue(!dsd.validateValue( "one"));
+        assertTrue(!dsd.validate( "one"));
         
     }
     @Test
@@ -360,7 +362,7 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTSTRING);
         dsd.setMin("");
         
-        assertTrue(dsd.validateValue( "one"));
+        assertTrue(dsd.validate( "one"));
         
     }
     @Test
@@ -370,7 +372,7 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTSTRING);
         dsd.setMax("");
         
-        assertTrue(dsd.validateValue( "one"));
+        assertTrue(dsd.validate( "one"));
         
     }
     @Test
@@ -380,7 +382,7 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTINTEGER);
         dsd.setMin("2.5");
         
-        assertTrue(!dsd.validateValue( "3"));
+        assertTrue(!dsd.validate( "3"));
         
     }
     @Test
@@ -390,7 +392,7 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTINTEGER);
         dsd.setMax("12.5");
         
-        assertTrue(!dsd.validateValue( "11"));
+        assertTrue(!dsd.validate( "11"));
     }
     @Test
     public void validateMinDouble(){
@@ -399,7 +401,7 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTDOUBLE);
         dsd.setMin("dgsdgsdg");
         
-        assertTrue(!dsd.validateValue( "3.2"));
+        assertTrue(!dsd.validate( "3.2"));
         
     }
     @Test
@@ -409,7 +411,75 @@ public class DeviceSettingDefinitionTest {
         dsd.setVarType(VarType.VTDOUBLE);
         dsd.setMax("asfsfasdf");
         
-        assertTrue(!dsd.validateValue( "11.5"));
+        assertTrue(!dsd.validate( "11.5"));
     }
+    @Test
+    public void validateVariableSpeedLimit(){
+        DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
+        dsd.setSettingID(85);
+        dsd.setVarType(VarType.VTSTRING);
+        dsd.setMax("asfsfasdf");
+        
+        assertTrue(!dsd.validate( "one"));
+        assertTrue(!dsd.validate( "0"));
+        assertTrue(!dsd.validate( "2.5"));
+        assertTrue(!dsd.validate( "2.45555567"));
+        assertTrue(!dsd.validate( "2.534467"));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "12.744444"));
+        assertTrue(!dsd.validate( "12.75"));
+        assertTrue(!dsd.validate( "12.7567785433"));
+        assertTrue(!dsd.validate( "12.76"));
+        assertTrue(!dsd.validate( "11"));
+        assertTrue(dsd.validate( "5 10 15 20 25 30 35 40 45 50 55 60 65 70 75"));
+        assertTrue(dsd.validate( "0 0 0 0 0 5 10 15 20 25 30 35 40 45 50"));
+        assertTrue(dsd.validate( "30 35 40 45 50 55 60 65 70 75 80 85 90 95 100"));
+        assertTrue(!dsd.validate( "56 67 45 3250 56 67 34 56 34 34 78 67 95 100"));
+    	
+    }
+    @Test
+    public void validateRegex(){
+		Pattern regex = Pattern.compile("([0-9]|[1-2][0-9]|30) ([0-9]|[1-2][0-9]|3[0-5]) ([0-9]|[1-3][0-9]|40) ([0-9]|[1-3][0-9]|4[0-5]) ([0-9]|[1-4][0-9]|50) ([5-9]|[1-4][0-9]|5[0-5]) ([1-5][0-9]|60) (1[5-9]|[2-5][0-9]|6[0-5]) ([2-6][0-9]|70) (2[5-9]|[3-6][0-9]|7[0-5]) ([3-7][0-9]|80) (3[5-9]|[4-7][0-9]|8[0-5]) ([4-8][0-9]|90) (4[5-9]|[5-8][0-9]|9[0-5]) ([5-9][0-9]|100)");
+        DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
+        dsd.setSettingID(200);
+        dsd.setVarType(VarType.VTSTRING);
+		dsd.setRegex(regex);
+		
+       	assertTrue(!dsd.validate( "one"));
+        assertTrue(!dsd.validate( "0"));
+        assertTrue(!dsd.validate( "2.5"));
+        assertTrue(!dsd.validate( "2.45555567"));
+        assertTrue(!dsd.validate( "2.534467"));
+        assertTrue(dsd.validate( null));
+        assertTrue(!dsd.validate( "12.744444"));
+        assertTrue(!dsd.validate( "12.75"));
+        assertTrue(!dsd.validate( "12.7567785433"));
+        assertTrue(!dsd.validate( "12.76"));
+        assertTrue(!dsd.validate( "11"));
+        assertTrue(dsd.validate( "5 10 15 20 25 30 35 40 45 50 55 60 65 70 75"));
+        assertTrue(dsd.validate( "0 0 0 0 0 5 10 15 20 25 30 35 40 45 50"));
+        assertTrue(dsd.validate( "30 35 40 45 50 55 60 65 70 75 80 85 90 95 100"));
+        assertTrue(!dsd.validate( "56 67 45 3250 56 67 34 56 34 34 78 67 95 100"));
+        assertTrue(!dsd.validate( "5 10 15 20 25 30 35 40 45"));
+    }
+    
+    @Test 
+    public void ConfiguratorMapperChoicesTest(){
+    	ConfiguratorMapper configuratorMapper = new ConfiguratorMapper();
+        DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
 
+    	configuratorMapper.regexToModel(dsd, "3000 900 1 300|3000 80 2 300|2200 70 3 275|2000 70 4 250|1800 65 5 225|1500 60 6 188|1300 55 7 163|1200 50 8 150|1000 50 9 125|950 45 10 119|900 45 11 113|850 45 12 106|750 35 13 94|650 30 14 81|500 25 15 63");
+    	assertTrue((dsd.getChoices() != null) && !dsd.getChoices().isEmpty());
+    	assertTrue(dsd.getChoices().size()==15);
+    	assertTrue(dsd.getRegex() == null);
+    }
+    @Test 
+    public void ConfiguratorMapperRangeTest(){
+    	ConfiguratorMapper configuratorMapper = new ConfiguratorMapper();
+        DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
+
+    	configuratorMapper.regexToModel(dsd, "0*([2-9]|[1-9][0-9]{1,2}|1[0-9]{3}|2000)");
+    	assertTrue((dsd.getChoices()== null) || dsd.getChoices().isEmpty()) ;
+    	assertTrue(dsd.getRegex() != null);
+    }
 }

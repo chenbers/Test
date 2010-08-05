@@ -950,7 +950,8 @@ public class SiloServiceImpl implements SiloService {
 	}
 
     @Override
-    @MethodDescription(description = "Fetches the device settings definitions", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.DeviceSettingDefinition.class)
+    @MethodDescription(description = "Fetches the device settings definitions", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.DeviceSettingDefinition.class,
+    		mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilConfiguratorMapper.class)
     public List<Map<String, Object>> getSettingDefs() {
 
         return null;
@@ -980,14 +981,14 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.configurator.VehicleSettings.class)
+    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class)
     public Map<String, Object> setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
 
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.configurator.VehicleSettings.class)
+    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class)
     public Map<String, Object> updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
 
         return null;

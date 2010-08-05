@@ -45,6 +45,7 @@ public class VehicleSetting {
     private ProductVersion productVer;
     private Map<Integer, String> desired;
     private Map<Integer, String> actual;
+    private Map<Integer, String> combinedSettings;
        
     public Integer getVehicleID() {
         return vehicleID;
@@ -76,5 +77,29 @@ public class VehicleSetting {
     public void setActual(Map<Integer, String> actual) {
         this.actual = actual;
     }
+    public boolean hasSettings(){
+    	
+    	return (actual != null) || (desired != null);
+    }
+    public void combineSettings(){
+    	
+		combinedSettings = new HashMap<Integer,String>();
+
+		if (actual != null){
+    		
+    		combinedSettings.putAll(getActual());
+    	}
+    	if (desired != null){
+    		
+    		combinedSettings.putAll(getDesired());   		
+    	}
+    }
+	public Map<Integer,String> getCombinedSettings(){
+    	
+		return combinedSettings;
+    }
+	public void clearCombinedSettings() {
+		this.combinedSettings = null;
+	}
 
 }

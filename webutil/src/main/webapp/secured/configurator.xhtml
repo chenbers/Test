@@ -24,6 +24,17 @@ function goChangeGroup(groupid){
 <ui:param name="groupSelected" value="MAIN"/>
 <ui:define name="util_leftPanel">
 <h:form>
+<rich:panel id="vehicle-centric">
+	<h:outputText value="Vehicle-centric" styleClass="label"></h:outputText>
+<h:panelGrid columns="2" style="width: 150px">
+	<h:outputText value="Vehicle id:" styleClass="label"></h:outputText>
+	<h:inputText value="#{configuratorBean.selectedVehicleID}">
+		<a4j:support event="onchange" action="#{configuratorBean.changeVehicle}" reRender="vehicleEditSettingsRegion" ajaxSingle="true"/>
+	</h:inputText>
+</h:panelGrid>
+</rich:panel>
+<rich:panel id="configuration-centric">
+	<h:outputText value="Configuration-centric" styleClass="label"></h:outputText>
 <h:panelGrid columns="2" style="width: 150px">
 	<h:outputText value="Product:" styleClass="label"></h:outputText>
 	<h:selectOneMenu value="#{configuratorBean.productTypeCode}">
@@ -31,40 +42,42 @@ function goChangeGroup(groupid){
 	<f:selectItem itemValue="2" itemLabel="waysmart"/>
 	<f:selectItem itemValue="4" itemLabel="tiwi for fleet R71"/>
 	<f:selectItem itemValue="16" itemLabel="tiwi for fleet R74"/>
-	<a4j:support event="onchange" action="#{configuratorBean.changeProduct}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
+	<a4j:support event="onchange" action="#{configuratorBean.changeProduct}" reRender="configuratorSettingsRegion" ajaxSingle="true"/>
 	</h:selectOneMenu>
 	<h:outputText value="Show only differences:" styleClass="label"></h:outputText>
 <h:selectBooleanCheckbox value="#{configuratorBean.differentOnly}">
-<a4j:support event="onchange" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion" ajaxSingle="true"/>
+<a4j:support event="onchange" reRender="configuratorSettingsRegion" ajaxSingle="true"/>
 </h:selectBooleanCheckbox>
 </h:panelGrid>
-   <a4j:region id="configuratorGroupRegion">
+   <rich:panel id="configuratorGroupRegion" style="border:none">
  	<rich:tree style="width:150px" ajaxSubmitSelection="true"  switchType="client" 
                 value="#{treeNavigationBean.navigationTree.navigationTree}" var="item" ajaxKeys="#{null}" nodeFace="#{item.type}">
          	<rich:treeNode type="fleet" iconLeaf="/images/ico_truck.png"
 							icon="/images/ico_truck.png" selectedClass="selectedGroup">
-				<h:commandLink onclick="changeGroup(#{item.attributes['groupid']})">											
+				<h:commandLink onclick="goChangeGroup(#{item.attributes['groupid']})">											
 					<h:outputText value="#{item.title}" />
 				</h:commandLink>
 			</rich:treeNode>
 			<rich:treeNode type="group"
 				iconLeaf="/images/ico_trucks.png"
 				icon="/images/ico_trucks.png" selectedClass="selectedGroup">
-				<h:commandLink onclick="changeGroup(#{item.attributes['groupid']})">											
+				<h:commandLink onclick="goChangeGroup(#{item.attributes['groupid']})">											
 					<h:outputText value="#{item.title}" />
 				</h:commandLink>
 			</rich:treeNode>
 			<rich:treeNode type="team" iconLeaf="/images/ico_team.png"
 				icon="/images/ico_team.png" selectedClass="selectedGroup">
-				<h:commandLink onclick="changeGroup(#{item.attributes['groupid']})">											
+				<h:commandLink onclick="goChangeGroup(#{item.attributes['groupid']})">											
 					<h:outputText value="#{item.title}" />
 				</h:commandLink>
 			</rich:treeNode>
 		</rich:tree>
-		<a4j:jsFunction id="changeGroup" name="changeGroup" action="#{configuratorBean.groupChanged}" reRender="configuratorSettingsRegion,configuratorEditSettingsRegion">
+		<a4j:jsFunction id="changeGroup" name="changeGroup" action="#{configuratorBean.groupChanged}" reRender="configuratorSettingsRegion">
 			<a4j:actionparam id="selectedGroupId" name="selectedGroupId" assignTo="#{configuratorBean.selectedGroupId}"/>
 		</a4j:jsFunction>
-    </a4j:region>
+    </rich:panel>
+    </rich:panel>
+    
 </h:form>
     
 </ui:define>
@@ -74,7 +87,19 @@ function goChangeGroup(groupid){
             <a4j:form id="configuratorForm">
 
     	    <rich:panel id="configuratorSettingsRegion" >
-			<h:outputText styleClass="headerText" value="No data to display" rendered="#{not configuratorBean.configurationSet.hasConfigurations}"/>
+<!--    	    <rich:messages passedLabel="Data is allowed to be stored." layout="list">-->
+<!--	            <f:facet name="header">-->
+<!--                    <h:outputText value="Entered Data Status:"></h:outputText>-->
+<!--                </f:facet>-->
+<!--                <f:facet name="passedMarker">-->
+<!--                    <h:graphicImage  value="/images/ajax/passed.gif" /> -->
+<!--                </f:facet>-->
+<!--                <f:facet name="errorMarker">-->
+<!--                    <h:graphicImage value="/images/ajax/error.gif" />   -->
+<!--                </f:facet>-->
+<!--            </rich:messages>-->
+    	    
+<!--			<h:outputText styleClass="headerText" value="No data to display" rendered="#{not configuratorBean.configurationSet.hasConfigurations}"/>-->
             <rich:scrollableDataTable rowKeyVar="rkv" frozenColCount="2" style="height:#{configuratorBean.configurationSet.configurationsSize*20+40}px"
                 id="settingList" rows="#{configuratorBean.configurationSet.configurationsSize}" width="100%" rendered="#{configuratorBean.configurationSet.hasConfigurations}"
                 value="#{configuratorBean.configurationSet.configurations}" var="configuration" sortMode="single" selection="#{configuratorBean.selection}">
@@ -96,22 +121,25 @@ function goChangeGroup(groupid){
                     <h:outputText value="#{configuration.count}" />
                 </rich:column>
  				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting" rendered="#{not configuratorBean.differentOnly}"
- 								index="index" id="all-#{setting.name}" sortExpression="#{configuration.values[setting.settingID]}">
+ 								index="index" id="all-#{setting.name}">
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
-				 	<h:panelGrid columns="2" title="#{setting.varType.name} - min:#{setting.min},max:#{setting.max}">
+				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}">
 				 	
 					 	<rich:inplaceInput id="input-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
-					 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true" 
-					 				 rendered="#{not setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}">
-					 				 </rich:inplaceInput>
+					 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true"  selectOnEdit="true" 
+					 				 rendered="#{not setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}"
+					 				 validator="#{setting.validate}" >
+								<a4j:support event="onviewactivated" reRender="message-#{setting.settingID}" ajaxSingle="true"/> 
+						</rich:inplaceInput>
 					 	<rich:inplaceSelect id="select-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
 					 				 		rendered="#{setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}">
 	
 							<f:selectItems value="#{configuratorBean.choiceSelectItems.selectItems[setting.settingID]}" />
 						</rich:inplaceSelect>
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="message-#{setting.settingID}" for="input-#{setting.settingID}" style="color:red" rendered="true" value="ok"/>
 					</h:panelGrid>					
 				 				 
 				</rich:columns>
@@ -120,11 +148,13 @@ function goChangeGroup(groupid){
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
-				 	<h:panelGrid columns="2">
+				 	<h:panelGrid columns="3">
 				 	
 					 	<rich:inplaceInput id="diffinput-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
-					 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true" 
-					 				 rendered="#{not setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}"/>
+					 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true"  selectOnEdit="true" 
+					 				 rendered="#{not setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}">
+					 				 <a4j:support event="onviewactivated" action="#{configuratorBean.testWhatGetsCalled}" reRender="configuratorSettingsRegion, messages"/>
+					 				 </rich:inplaceInput>
 					 	<rich:inplaceSelect id="diffselect-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
 					 				 		rendered="#{setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}">
 	
@@ -138,11 +168,11 @@ function goChangeGroup(groupid){
              <a4j:commandLink value="Save Selected Configurations" action="#{configuratorBean.updateSettings}" 
              					rendered="#{configuratorBean.configurationSet.hasConfigurations}"
              					reRender="configuratorSettingsRegion" />
-              
+	              
 </rich:panel>
-             <rich:panel id="configuratorEditSettingsRegion">
+             <rich:panel id="vehicleEditSettingsRegion">
            	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 
-           					columns="6" elements="120" width="600px" rendered="#{configuratorBean.selectedRowKey ne null}">
+           					columns="6" elements="120" width="600px" rendered="#{configuratorBean.selectedVehicleID ne null}">
                 <f:facet name="header">
 <!--                    <h:outputText value="#{configuratorBean.displaySettingsDefinitions[settingOption].name}"></h:outputText>-->
                     <h:outputText value="Setting"></h:outputText>
@@ -154,8 +184,10 @@ function goChangeGroup(groupid){
                     <h:outputText value="#{setting.name}"></h:outputText>
                      <h:outputText value="ID:" styleClass="label"></h:outputText>
                    <h:outputText value="#{setting.settingID}"></h:outputText>
-                     <h:outputText value="Value:" styleClass="label"></h:outputText>
-                    <h:outputText value="#{configuratorBean.selectedSettings.values[setting.settingID]}" />
+                     <h:outputText value="Actual Value:" styleClass="label"></h:outputText>
+                    <h:outputText value="#{configuratorBean.selectedVehicleSetting.actual[setting.settingID]}" />
+                     <h:outputText value="Desired Value:" styleClass="label"></h:outputText>
+                    <h:outputText value="#{configuratorBean.selectedVehicleSetting.desired[setting.settingID]}" />
                      <h:outputText value="Type:" styleClass="label"></h:outputText>
                    <h:outputText value="#{setting.varTypeString}"></h:outputText>
                       <h:outputText value="Unit:" styleClass="label"></h:outputText>

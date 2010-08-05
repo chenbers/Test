@@ -4,6 +4,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.BaseEnum;
@@ -59,14 +61,20 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
                         value.equalsIgnoreCase("0") || 
                         value.equalsIgnoreCase("1");
             }
-            protected void checkType(String value){}
+            protected boolean checkType(String value){return true;}
             protected boolean greaterThanMax(String max, String value){return false;}
             protected boolean lessThanMin(String min, String value){return false;}
 
         },
         VTINTEGER(1, "integer"){
-            protected void checkType(String value){
-                Integer.parseInt(value);
+            protected boolean checkType(String value){
+            	try{
+            		Integer.parseInt(value);
+            		return true;
+            	}
+            	catch(NumberFormatException nfe){
+            		return false;
+            	}
             }
             protected boolean greaterThanMax(String max, String value){
                 return Integer.parseInt(value) > Integer.parseInt(max);
@@ -76,8 +84,14 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
             }
         }, 
         VTDOUBLE(2,"double"){
-            protected void checkType(String value){
-                Double.parseDouble(value);
+            protected boolean checkType(String value){
+            	try{
+            		Double.parseDouble(value);
+            		return true;
+            	}
+            	catch(NumberFormatException nfe){
+            		return false;
+            	}
             }
             protected boolean greaterThanMax(String max, String value){
                 return Double.parseDouble(value) > Double.parseDouble(max);
@@ -87,7 +101,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
             }
         }, 
         VTSTRING(3,"string"){
-            protected void checkType(String value){}
+            protected boolean checkType(String value){return true;}
             protected boolean greaterThanMax(String max, String value){
                 return value.length() > Integer.parseInt(max);
             }
@@ -126,9 +140,10 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
 		}
 
        protected boolean validateValue(String min, String max, String value){
-            try{
-                checkType(value);
                 
+    	   	if (!checkType(value)) return false;
+                
+            try{
                 if((max != null) && !max.isEmpty()){
                     if (greaterThanMax(max, value)) return false;
                 }
@@ -143,7 +158,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
             }
 
         }
-        protected abstract void checkType(String value);
+        protected abstract boolean checkType(String value);
         protected abstract boolean greaterThanMax(String max, String value);
         protected abstract boolean lessThanMin(String min, String value);
        
@@ -260,14 +275,25 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     private Integer visibility;
     private Integer ignore;
     private Integer productMask;
+    private Pattern regex;
+	private ValidationMode validationMode;
     
-    private ValidationMode validationMode;
-    
+    public Pattern getRegex() {
+		return regex;
+	}
+	public void setRegex(Pattern regex) {
+		this.regex = regex;
+		validationMode = new RegexValidationMode();
+	}
     public Integer getSettingID() {
         return settingID;
     }
     public void setSettingID(Integer settingID) {
         this.settingID = settingID;
+//        if (settingID.intValue()== 85){
+//        	regex = Pattern.compile("([0-9]|[1-2][0-9]|30) ([0-9]|[1-2][0-9]|3[0-5]) ([0-9]|[1-3][0-9]|40) ([0-9]|[1-3][0-9]|4[0-5]) ([0-9]|[1-4][0-9]|50) ([5-9]|[1-4][0-9]|5[0-5]) ([1-5][0-9]|60) (1[5-9]|[2-5][0-9]|6[0-5]) ([2-6][0-9]|70) (2[5-9]|[3-6][0-9]|7[0-5]) ([3-7][0-9]|80) (3[5-9]|[4-7][0-9]|8[0-5]) ([4-8][0-9]|90) (4[5-9]|[5-8][0-9]|9[0-5]) ([5-9][0-9]|100)");
+//    		validationMode = new RegexValidationMode();
+//        }
     }
     public String getDescription() {
         return description;
@@ -352,7 +378,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     public List<String> getChoices() {
         return choices;
     }
-    public boolean validateValue( String value){
+    public boolean validate( String value){
         
         return validationMode.validate(value);
     }
@@ -385,5 +411,36 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
 
             return getVarType().validateValue(getMin(), getMax(), value);
         }
+    }
+    protected class VariableSpeedLimitsValidationMode implements ValidationMode{
+
+		@Override
+		public boolean validate(String value) {
+			
+            if (value == null) return true;
+            
+			String[] speedLimits = value.split(" ");
+			if(speedLimits.length != 15) return false;
+			int mph = 5;
+			for (String speedLimit : speedLimits){
+				
+				if (!VarType.VTINTEGER.checkType(speedLimit)) return false;
+				if (!VarType.VTINTEGER.validateValue(""+Math.max(0, mph-25), ""+(mph+25), speedLimit)) return false;
+				mph+=5;
+			}
+			return true;
+		}
+    }
+    protected class RegexValidationMode implements ValidationMode{
+
+		@Override
+		public boolean validate(String value) {
+			
+            if (value == null) return true;
+            
+			Matcher matcher = regex.matcher(value);
+			return matcher.matches();
+		}
+    	
     }
 }

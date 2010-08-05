@@ -1,39 +1,56 @@
-package com.inthinc.pro.backing.configurator.model;
+package com.inthinc.pro.configurator.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class SettingOptions{
+public class Configuration{
     
     private List<Integer> vehicleIDs;
-    private Map<Integer, String> values;
+    private Map<Integer,String> values;
     private Map<Integer,String> desiredValues;
 	private String reason;
 	private Map<Integer, String> colors;
-    private List<Integer> keys;
+	private Map<Integer, String> messages;
+	//    private List<Integer> keys;
     private List<Entry<Integer,String>> entries;
+    private Map<Integer, String> newDesiredValues;
     
-    
-    public SettingOptions() {
+    public Configuration() {
         super();
-        values = new HashMap<Integer,String>();
         vehicleIDs = new ArrayList<Integer>();
+        values = new HashMap<Integer,String>();
         desiredValues = new HashMap<Integer,String>();
+        newDesiredValues = new HashMap<Integer,String>();
     }
-    public SettingOptions(List<Integer> vehicleIDs) {
-        super();
-        this.vehicleIDs = vehicleIDs;
+    
+    public void setNewDesiredValue(Integer settingID, String value){
+    	
+    	if (desiredValues.get(settingID).equals(value)) {
+    		
+    		newDesiredValues.remove(settingID);
+    		return;
+    	}
+    	newDesiredValues.put(settingID, value);
     }
-    public SettingOptions(SettingOptions settingOptions){
+    public Map<Integer, String> getNewDesiredValues() {
+		return newDesiredValues;
+	}
+	public Configuration(Configuration configuration){
         
-        vehicleIDs = new ArrayList<Integer>(settingOptions.vehicleIDs);
-        values = new HashMap<Integer, String>(settingOptions.values);
+        vehicleIDs = new ArrayList<Integer>(configuration.vehicleIDs);
+        values = new HashMap<Integer, String>(configuration.values);
         setColors(new HashMap<Integer, String>());
+        setMessages(new HashMap<Integer, String>());
     }
+	public Map<Integer, String> getMessages() {
+		return messages;
+	}
+	public void setMessages(Map<Integer, String> messages) {
+		this.messages = messages;
+	}
     public Map<Integer, String> getDesiredValues() {
 		return desiredValues;
 	}
@@ -63,15 +80,6 @@ public class SettingOptions{
     public List<String> getValuesList(){
 
         return new ArrayList<String>(values.values());
-    }
-    public List<Integer> getKeys(){
-        
-        if(keys == null){
-            
-            keys = new ArrayList<Integer>(values.keySet());
-            Collections.sort(keys);
-        }
-        return keys;
     }
     public List<Entry<Integer,String>> getEntries(){
         

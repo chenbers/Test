@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.hessian.mapper;
+package com.inthinc.pro.backing.dao.mapper;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -8,10 +8,11 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
+import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
-public class ConfiguratorMapper extends AbstractMapper {
+public class DaoUtilConfiguratorMapper extends DaoUtilMapper {
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(ConfiguratorMapper.class);
@@ -66,7 +67,6 @@ public class ConfiguratorMapper extends AbstractMapper {
         if (value instanceof Map){
             
             vehicleSetting.setActual((Map<Integer,String>) value);
-            vehicleSetting.combineSettings();
         }
     }
     @SuppressWarnings("unchecked")
@@ -76,7 +76,6 @@ public class ConfiguratorMapper extends AbstractMapper {
         if (value instanceof Map){
             
             vehicleSetting.setDesired((Map<Integer,String>) value);
-            vehicleSetting.combineSettings();
         }
     }
 }

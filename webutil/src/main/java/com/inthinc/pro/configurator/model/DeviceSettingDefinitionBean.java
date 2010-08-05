@@ -1,0 +1,92 @@
+package com.inthinc.pro.configurator.model;
+
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Category;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Unit;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
+
+public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefinitionBean>{
+
+	private DeviceSettingDefinition deviceSettingDefinition;
+
+	public DeviceSettingDefinitionBean(DeviceSettingDefinition deviceSettingDefinition) {
+
+		this.deviceSettingDefinition = deviceSettingDefinition;
+	}
+
+	public boolean isInclude() {
+		return deviceSettingDefinition.isInclude();
+	}
+	public Category getCategory() {
+		return deviceSettingDefinition.getCategory();
+	}
+	public List<String> getChoices() {
+		return deviceSettingDefinition.getChoices();
+	}
+	public String getDescription() {
+		return deviceSettingDefinition.getDescription();
+	}
+	public boolean getHasChoices() {
+		return deviceSettingDefinition.getHasChoices();
+	}
+	public Integer getIgnore() {
+		return deviceSettingDefinition.getIgnore();
+	}
+	public String getMax() {
+		return deviceSettingDefinition.getMax();
+	}
+	public String getMin() {
+		return deviceSettingDefinition.getMin();
+	}
+	public String getName() {
+		return deviceSettingDefinition.getName();
+	}
+	public Integer getProductMask() {
+		return deviceSettingDefinition.getProductMask();
+	}
+	public Pattern getRegex() {
+		return deviceSettingDefinition.getRegex();
+	}
+	public Integer getSettingID() {
+		return deviceSettingDefinition.getSettingID();
+	}
+	public VarType getVarType() {
+		return deviceSettingDefinition.getVarType();
+	}
+	public String getVarTypeString() {
+		return deviceSettingDefinition.getVarTypeString();
+	}
+	public Integer getVisibility() {
+		return deviceSettingDefinition.getVisibility();
+	}
+
+	public Unit getUnit() {
+		return deviceSettingDefinition.getUnit();
+	}
+	public boolean validate(String value){
+		
+		return deviceSettingDefinition.validate(value);
+	}
+	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		
+		if (!deviceSettingDefinition.validate((String)value)){
+			
+//			throw new ValidatorException(new FacesMessage("value should match"+deviceSettingDefinition.getRegex()));
+			throw new ValidatorException(new FacesMessage("invalid"));
+		}
+	}
+	@Override
+	public int compareTo(DeviceSettingDefinitionBean o) {
+
+		return this.deviceSettingDefinition.compareTo(o.deviceSettingDefinition);
+	}
+
+}
