@@ -69,6 +69,8 @@ public class DriverLocationBean extends BaseBean {
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
         center = organizationHierarchy.getTopGroup().getMapCenter();
         zoom = organizationHierarchy.getTopGroup().getMapZoom();
+        
+        groupID = null;
 		
 	}
 	
