@@ -12,6 +12,8 @@ import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.model.KeepAlive;
+
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -19,6 +21,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.util.FormUtil;
 import com.inthinc.pro.util.MessageUtil;
 
+@KeepAlive
 public class ZonesBean extends BaseBean
 {
     private List<Zone>           zones;
