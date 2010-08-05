@@ -28,24 +28,21 @@ public class BaseUnitTest {
         // remove comments to get pdf or xls dump of report
         ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
         Report report = reportCreator.getReport(reportCriteria);
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream("c:\\" + prefix + testCaseCnt + ((formatType == FormatType.PDF) ? ".pdf" : ".xls"));
-            report.exportReportToStream(formatType, out);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        
+        genReport(prefix, testCaseCnt, formatType, report);
     }
+
     
     protected void dump(String prefix, int testCaseCnt, List<ReportCriteria> reportCriteriaList, FormatType formatType) {
         // remove comments to get pdf or xls dump of report
         ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
         Report report = reportCreator.getReport(reportCriteriaList);
+        genReport(prefix, testCaseCnt, formatType, report);
+
+    }
+
+    private void genReport(String prefix, int testCaseCnt, FormatType formatType, Report report) {
+/*        
         OutputStream out = null;
         try {
             out = new FileOutputStream("c:\\" + prefix + testCaseCnt + ((formatType == FormatType.PDF) ? ".pdf" : ".xls"));
@@ -58,8 +55,7 @@ public class BaseUnitTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+*/        
     }
-
 
 }
