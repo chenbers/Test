@@ -7,10 +7,7 @@ import org.apache.commons.httpclient.methods.*;
 import com.inthinc.pro.model.LatLng;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
-import java.awt.*;
 
 /**
  * MapLookup
@@ -85,6 +82,9 @@ public class MapLookup {
     public static String getMap(int sizeW, int sizeH, List<LatLng> path){
         return _map.getURI(sizeW, sizeH, path);
     }
+    public static String getMap(int sizeW, int sizeH, List<LatLng> path, MapMarker... marks){
+        return _map.getURI(sizeW, sizeH, path, marks);
+    }
 
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     // param handling and uri generation
@@ -114,6 +114,37 @@ public class MapLookup {
 
         return sb.toString();
     }
+    
+    public String getURI(int sizeW, int sizeH, List<LatLng> path, MapMarker ... marks ) {
+        _validateParams(sizeW, sizeH, ZoomDefault);
+
+        // generate the URI
+        StringBuilder sb = new StringBuilder();
+        sb.append(GmapStaticURI);
+
+        // size key
+        sb.
+        append("?").
+        append(SizeKey).append("=").append(sizeW).append(SizeSeparator).append(sizeH);
+
+        // markers key, start and end
+        sb.
+        append("&").
+        append(MarkerUtils.toString(marks));        
+
+        // markers key
+        sb.
+        append("&").
+        append(MarkerUtils.pathToString(path));
+
+        // maps key
+        sb.
+        append("&").
+        append(GmapLicenseKey).append("=").append(GmapLicense);
+
+
+        return sb.toString();
+    }    
 
     public String getURI(double lat, double lon, int sizeW, int sizeH, MapMarker... markers) {
         _validateParams(sizeW, sizeH, ZoomDefault);
@@ -350,5 +381,5 @@ public class MapLookup {
         System.out.println(u4);
 
     }
-
+//    getExternalContext().getRequestContextPath()+"/images/ico_idle.png"
 }//end class MapLookup

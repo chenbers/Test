@@ -21,7 +21,7 @@ static final long serialVersionUID = 5805831996822361347L;
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 // enum for marker colors
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-enum MarkerColor {
+public enum MarkerColor {
   red, green, blue
 }// enum MarkerColor
 
@@ -50,6 +50,14 @@ public MapMarker(double lat, double lon, MarkerColor color, char alpha) {
   if (color == null) throw new IllegalArgumentException("marker color can not be null");
 }
 
+public MapMarker(double lat, double lon, MarkerColor color) {
+    _lat = lat;
+    _lon = lon;
+    _color = color;
+
+    if (color == null) throw new IllegalArgumentException("marker color can not be null");
+  }
+
 public MapMarker(double lat, double lon) {
   _lat = lat;
   _lon = lon;
@@ -68,6 +76,10 @@ public String toString() {
         append(",").
         append(_color.toString()).
         append(_alpha);
+  } else if ( _color != null ) {
+    sb.
+        append(",").
+        append(_color.toString());
   }
 
   return sb.toString();

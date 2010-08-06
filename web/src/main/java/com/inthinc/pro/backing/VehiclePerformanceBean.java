@@ -34,6 +34,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.map.MapLookup;
+import com.inthinc.pro.reports.map.MapMarker;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
@@ -510,7 +511,27 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
             reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
 
-            String imageUrl = MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
+            // Need to have approximately 60 location pairs for the server to accept the encoded url
+            int routePtsCnt = lastTrip.getRoute().size();
+            int tossOut = Math.round(((float)routePtsCnt/(float)40));
+            if ( tossOut < 1 ) {
+                tossOut = 1;
+            }
+            
+            // The algorithm will always get the first point, add the last            
+            List<LatLng> local = new ArrayList<LatLng>();
+            int cnt = 0;
+            for ( LatLng ll: lastTrip.getRoute() ) {
+                if ( (cnt % tossOut) == 0 ) {
+                    local.add(ll);
+                }
+                cnt++;
+            }
+            local.add(lastTrip.getRouteLastStep());            
+
+            String imageUrl = MapLookup.getMap(250,200,local, 
+                    new MapMarker(local.get(0).getLat(),              local.get(0).getLng()            ,MapMarker.MarkerColor.green), 
+                    new MapMarker(local.get(local.size()-1).getLat(),local.get(local.size()-1).getLng(),MapMarker.MarkerColor.red));            
             reportCriteria.addParameter("MAP_URL", imageUrl);
         }
         reportCriteria.addChartDataSet(createMpgJasperDef());
