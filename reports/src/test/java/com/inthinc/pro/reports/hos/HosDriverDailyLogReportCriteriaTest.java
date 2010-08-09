@@ -239,7 +239,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseLogUnitTest{
         new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00.00","70.00","-","00.00","70.00","","",0),
     };
     
-    @Ignore
     @Test
     public void gainTestCases() {
 

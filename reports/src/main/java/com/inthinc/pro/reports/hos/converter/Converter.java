@@ -91,5 +91,38 @@ public class Converter {
 
         
     }   
+    
+    public static String convertMinutesRound15(Long minutes) {
+        
+        if (minutes == null)
+            minutes = 0L;
+        
+        if (minutes % 15 > 7)
+            minutes = (minutes/15 + 1) * 15;
+        else minutes = (minutes/15) * 15;
+        
+        Long hours = minutes / 60;
+        minutes = minutes % 60;
 
+        return  (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+
+        
+    }   
+
+    public static String convertMinutesRound15Excel(Long minutes) {
+        
+        if (minutes == null)
+            minutes = 0L;
+        
+        if (minutes % 15 > 7)
+            minutes = (minutes/15 + 1) * 15;
+        else minutes = (minutes/15) * 15;
+        
+        Long hours = minutes / 60;
+        minutes = minutes % 60;
+
+        return  hours + ((minutes == 0) ? "" : ( "." + minutes));
+
+        
+    }   
 }

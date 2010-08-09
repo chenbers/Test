@@ -32,7 +32,7 @@ import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
-public abstract class ViolationsDetailReportCriteria extends ViolationsReportCriteria {
+public abstract class ViolationsDetailReportCriteria extends HosRecordReportCriteria {
 
     private static final Logger logger = Logger.getLogger(ViolationsDetailReportCriteria.class);
     

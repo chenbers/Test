@@ -21,4 +21,31 @@ public class ConverterTest {
         assertEquals("Unexpected conversion", " Fuel Stop: Vehicle Liters: 61 Trailer Liters: 0", convertedStr);
         
     }
+
+
+    @Test
+    public void convertMinutesRound15() {
+        
+        String convertedStr = Converter.convertMinutesRound15(100l);
+        
+        assertEquals("Unexpected conversion", "01:45", convertedStr);
+        
+        convertedStr = Converter.convertMinutesRound15(120l);
+        
+        assertEquals("Unexpected conversion", "02:00", convertedStr);
+        
+        convertedStr = Converter.convertMinutesRound15(119l);
+        
+        assertEquals("Unexpected conversion", "02:00", convertedStr);
+        
+        convertedStr = Converter.convertMinutesRound15(127l);
+        
+        assertEquals("Unexpected conversion", "02:00", convertedStr);
+
+        convertedStr = Converter.convertMinutesRound15(128l);
+        
+        assertEquals("Unexpected conversion", "02:15", convertedStr);
+
+    }
+
 }
