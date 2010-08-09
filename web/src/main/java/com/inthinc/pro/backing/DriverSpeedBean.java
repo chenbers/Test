@@ -12,10 +12,12 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -142,7 +144,17 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
         	
         	reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
         }
-        reportCriteria.setMainDataset(this.events);
+        
+        // Prior to sending the data, get the addresses, if using google client side geocoding
+        List<EventReportItem> local = new ArrayList<EventReportItem>();
+        local.addAll(this.events);
+        
+        if ( super.getAddressFormat() == 3 ) {
+            local.clear();
+            local = this.populateAddresses(this.events);
+        }
+        
+        reportCriteria.setMainDataset(local);
 
         return reportCriteria;
     }

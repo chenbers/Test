@@ -139,7 +139,17 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         	
         	reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
         }
-        reportCriteria.setMainDataset(getEvents());
+        
+        // Prior to sending the data, get the addresses, if using google client side geocoding
+        List<EventReportItem> local = new ArrayList<EventReportItem>();
+        local.addAll(this.events);
+        
+        if ( super.getAddressFormat() == 3 ) {
+            local.clear();
+            local = this.populateAddresses(this.events);
+        }
+        
+        reportCriteria.setMainDataset(local);
 
         return reportCriteria;
     }

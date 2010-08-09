@@ -463,6 +463,7 @@
   <bean id="basePerformanceEventsBean" class="com.inthinc.pro.backing.BasePerformanceEventBean" scope="request" parent="basePerformanceBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="eventDAO" ref="eventDAO"></property>
+    <property name="googleAddressLookupBean" ref="googleAddressLookupBean"></property>
   </bean>
   <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request" />
   <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request" />

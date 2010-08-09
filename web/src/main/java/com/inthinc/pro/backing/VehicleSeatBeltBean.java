@@ -157,7 +157,17 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean {
         	
         	reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
         }
-        reportCriteria.setMainDataset(events);
+        
+        // Prior to sending the data, get the addresses, if using google client side geocoding
+        List<EventReportItem> local = new ArrayList<EventReportItem>();
+        local.addAll(this.events);
+        
+        if ( super.getAddressFormat() == 3 ) {
+            local.clear();
+            local = this.populateAddresses(this.events);
+        }
+        
+        reportCriteria.setMainDataset(local);
         return reportCriteria;
     }
 

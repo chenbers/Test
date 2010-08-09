@@ -2,12 +2,14 @@ package com.inthinc.pro.backing;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -30,6 +32,8 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected List<EventReportItem>              filteredEvents;
 	protected List<EventReportItem>              events;
 	protected Map<String, List<EventReportItem>> eventsListsMap;
+	
+	protected GoogleAddressLookup                googleAddressLookupBean;
   
 	protected static DateFormat dateFormatter;
 	
@@ -142,7 +146,13 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	}
   
 
-	@Override
+	public GoogleAddressLookup getGoogleAddressLookupBean() {
+        return googleAddressLookupBean;
+    }
+    public void setGoogleAddressLookupBean(GoogleAddressLookup googleAddressLookupBean) {
+        this.googleAddressLookupBean = googleAddressLookupBean;
+    }
+    @Override
 	public Map<String, Integer> getScoreMap() {
 	    if (scoreMap == null)
 	        initScores();
@@ -231,5 +241,23 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 		return "";
 	}
 	
+	protected List<EventReportItem> populateAddresses(List<EventReportItem> evnts) {
+        
+        List<EventReportItem> local = new ArrayList<EventReportItem>();
+        
+        for ( EventReportItem eri: evnts) {
+            try{      
+                String addr = googleAddressLookupBean.getAddress(eri.getEvent().getLatLng());
+                eri.getEvent().setAddressStr(addr);
+            } catch (Exception e) {
+                eri.getEvent().setAddressStr(
+                        MessageUtil.formatMessageString("noAddressFound", 
+                                eri.getEvent().getLatitude(),eri.getEvent().getLongitude()));
+            }
+            local.add(eri);
+        }
+        
+        return local;
+	}
     
 }
