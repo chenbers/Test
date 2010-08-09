@@ -2,11 +2,9 @@ package com.inthinc.pro.backing.configurator;
 
 //import static com.inthinc.pro.backing.BaseBean.logger;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -33,11 +31,11 @@ public class TreeNavigationBean extends BaseBean {
     private Integer groupID;
     private Group group;
     
-    private String currentGroupName;
-    private JsTreeRoot navigationTree;
+//    private String currentGroupName;
+    private NavigationTreeNode<NodeData> navigationTree;
     
-    private List<String> selectedNodeChildren = new ArrayList<String>();  
-    private String nodeTitle;
+//    private List<String> selectedNodeChildren = new ArrayList<String>();  
+//    private String nodeTitle;
     
     public void init(){
         
@@ -45,19 +43,19 @@ public class TreeNavigationBean extends BaseBean {
             
             buildTreeFrom(getUser().getGroupID());
 
-            currentGroupName=group.getName();
+//            currentGroupName=group.getName();
         }
-     }
+    }
         
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
 	}
 
-    public JsTreeRoot getNavigationTree() {
+    public NavigationTreeNode<NodeData> getNavigationTree() {
         return navigationTree;
     }
     
-    public void setNavigationTree(JsTreeRoot navigationTree) {
+    public void setNavigationTree(NavigationTreeNode<NodeData> navigationTree) {
         this.navigationTree = navigationTree;
     }
     
@@ -73,24 +71,66 @@ public class TreeNavigationBean extends BaseBean {
             group = getGroupHierarchy().getGroup(groupID);
             
             //build the tree
-            setNavigationTree(new JsTreeRoot(group, getGroupHierarchy()));
-            openParentPath(group);
+            navigationTree = new NavigationTreeNode<NodeData>();
+            buildTree(group, getGroupHierarchy(), navigationTree);
         }
         this.groupID = groupID;
     
     }
-    public List<String> getSelectedNodeChildren() {
-        return selectedNodeChildren;
+    public void buildTree(Group group, GroupHierarchy groupHierarchy, NavigationTreeNode<NodeData> parentNode) {
+    	
+        NavigationTreeNode<NodeData> treeNode = new NavigationTreeNode<NodeData>();
+        
+        treeNode.setData(createNodeData(group));
+        
+        parentNode.addChild(group.getGroupID(), treeNode);
+        
+        buildSubTrees(group, groupHierarchy,treeNode);
     }
-    public void setSelectedNodeChildren(List<String> selectedNodeChildren) {
-        this.selectedNodeChildren = selectedNodeChildren;
+    private NodeData createNodeData(Group group){
+    	
+        NodeData nodeData = new NodeData();
+        
+        nodeData.setTitle(group.getName());
+        switch (group.getType()){
+            case FLEET:
+                nodeData.setType("fleet");
+                break;
+            case DIVISION:
+            	nodeData.setType("group");
+               break;
+            case TEAM:
+            	nodeData.setType("team");
+                break;
+        }
+        nodeData.addAttribute("groupid", group.getGroupID().toString());
+        nodeData.addAttribute("id", "navigationTree_"+group.getGroupID());
+        
+        return nodeData;
+
     }
-    public String getNodeTitle() {
-        return nodeTitle;
+    private void buildSubTrees(Group group, GroupHierarchy groupHierarchy, NavigationTreeNode<NodeData> treeNode){
+    	
+        if (groupHierarchy.getChildren(group)!= null){
+            
+            for (Group childGroup: groupHierarchy.getChildren(group)){
+                
+                 buildTree(childGroup,groupHierarchy,treeNode);
+            }
+        }
     }
-    public void setNodeTitle(String nodeTitle) {
-        this.nodeTitle = nodeTitle;
-    }
+//    public List<String> getSelectedNodeChildren() {
+//        return selectedNodeChildren;
+//    }
+//    public void setSelectedNodeChildren(List<String> selectedNodeChildren) {
+//        this.selectedNodeChildren = selectedNodeChildren;
+//    }
+//    public String getNodeTitle() {
+//        return nodeTitle;
+//    }
+//    public void setNodeTitle(String nodeTitle) {
+//        this.nodeTitle = nodeTitle;
+//    }
     public Group getGroup() {
         return group;
     }
@@ -105,124 +145,72 @@ public class TreeNavigationBean extends BaseBean {
 
             buildTreeFrom(getUser().getGroupID());
         }
-        currentGroupName = getGroupHierarchy().getGroup(currentGroupID).getName();
+//        currentGroupName = getGroupHierarchy().getGroup(currentGroupID).getName();
         //find node in the tree and set it selected
-        openParentPath(getGroupHierarchy().getGroup(currentGroupID));
+//        openParentPath(getGroupHierarchy().getGroup(currentGroupID));
      }
-    public String getCurrentGroupName() {
-        return currentGroupName;
-    }
+//    public String getCurrentGroupName() {
+//        return currentGroupName;
+//    }
+//    
+//    public void setCurrentGroupName(String currentGroupName) {
+//        this.currentGroupName = currentGroupName;
+//    }
     
-    public void setCurrentGroupName(String currentGroupName) {
-        this.currentGroupName = currentGroupName;
-    }
-    
-    private void openParentPath(Group group){
-        
-        navigationTree.closeAll();
-        
-        if (group == null) return;
-        
-        Group child = group;
-        Group parent = getGroupHierarchy().getParentGroup(group);
-        if (parent == null){
-            
-            navigationTree.open(child.getGroupID());
-        }
-        else{
-            
-            while (parent != null){
-                
-                navigationTree.open(parent.getGroupID());
-                parent = getGroupHierarchy().getParentGroup(parent);
-            }
-        }
-    }
+//    private void openParentPath(Group group){
+//        
+//        navigationTree.closeAll();
+//        
+//        if (group == null) return;
+//        
+//        Group child = group;
+//        Group parent = getGroupHierarchy().getParentGroup(group);
+//        if (parent == null){
+//            
+//            navigationTree.open(child.getGroupID());
+//        }
+//        else{
+//            
+//            while (parent != null){
+//                
+//                navigationTree.open(parent.getGroupID());
+//                parent = getGroupHierarchy().getParentGroup(parent);
+//            }
+//        }
+//    }
 
-    public void refresh(){
-
-        setNavigationTree(new JsTreeRoot(group, getGroupHierarchy()));
-        openParentPath(group);
-    }
-    public class JsTreeRoot {
-        
-        private Map<Integer, NavigationTreeNode<NodeData>> navigationTreeMap;
-        private NavigationTreeNode<NodeData> navigationTree;
-        
-        public JsTreeRoot(Group group, GroupHierarchy groupHierarchy) {
-            
-            navigationTreeMap = new HashMap<Integer,NavigationTreeNode<NodeData>>();
-            navigationTree = new NavigationTreeNode<NodeData>();
-            buildTree(group, groupHierarchy, navigationTree);
-         }
-
-         public NavigationTreeNode<NodeData> getNavigationTree() {
-            return navigationTree;
-        }
-
-        public void setNavigationTree(NavigationTreeNode<NodeData> navigationTree) {
-            this.navigationTree = navigationTree;
-        }
-        public void open(Integer groupID){
-            
-            if (groupID == null) return;
-            NavigationTreeNode<NodeData> jsTreeNode = findTreeNode(groupID);
-            if (jsTreeNode == null) return;
-            
-            jsTreeNode.setState("open");
-        }
-        public void closeAll(){
-            
-            for(NavigationTreeNode<NodeData> treeNode:navigationTreeMap.values()){
-                
-                     treeNode.closeNode();
-            }
-        }
-        private NavigationTreeNode<NodeData> findTreeNode(Integer groupID){
-            
-            if (groupID == null) return null;
-
-            return navigationTreeMap.get(groupID);
-            
-        }
-        public void buildTree(Group group, GroupHierarchy groupHierarchy, NavigationTreeNode<NodeData> parentNode) {
-            
-            NavigationTreeNode<NodeData> treeNode = new NavigationTreeNode<NodeData>();
-            
-            navigationTreeMap.put(group.getGroupID(),treeNode);
-            
-            NodeData data = new NodeData(group.getName(),null);
-
-            Map<String, String> attributes = new HashMap<String,String>();
-            switch (group.getType()){
-                case FLEET:
-                    data.addAttribute("rel", "fleet");
-                    break;
-                case DIVISION:
-                    data.addAttribute("rel", "group");
-                   break;
-                case TEAM:
-                    data.addAttribute("rel", "team");
-                    break;
-            }
-            data.addAttribute("groupid", group.getGroupID().toString());
-            data.addAttribute("id", "navigationTree_"+group.getGroupID());
-            
-            treeNode.setData(data);
-            treeNode.setAttributes(attributes);
-            parentNode.addChild(group.getGroupID(), treeNode);
-            
-            if (groupHierarchy.getChildren(group)!= null){
-                
-                for (Group childGroup: groupHierarchy.getChildren(group)){
-                    
-                     buildTree(childGroup,groupHierarchy,treeNode);
-                }
-            }
-        }
-
-    }
-	public class NavigationTreeNode<T extends NodeData> implements TreeNode<T>{
+//    public void refresh(){
+//
+//        setNavigationTree(new JsTreeRoot(group, getGroupHierarchy()));
+//        openParentPath(group);
+//    }
+//    public class TreeRoot {
+//        
+////        private Map<Integer, NavigationTreeNode<Map<String,String>>> navigationTreeMap;
+//        private NavigationTreeNode<NodeData> navigationTree;
+//        
+//        public TreeRoot(Group group, GroupHierarchy groupHierarchy) {
+//            
+////            navigationTreeMap = new HashMap<Integer,NavigationTreeNode<Map<String,String>>>();
+//            navigationTree = new NavigationTreeNode<NodeData>();
+//            buildTree(group, groupHierarchy, navigationTree);
+//         }
+//
+//         public NavigationTreeNode<NodeData> getNavigationTree() {
+//            return navigationTree;
+//        }
+//
+//        public void setNavigationTree(NavigationTreeNode<NodeData> navigationTree) {
+//            this.navigationTree = navigationTree;
+//        }
+////        private NavigationTreeNode<Map<String,String>> findTreeNode(Integer groupID){
+////            
+////            if (groupID == null) return null;
+////
+////            return navigationTreeMap.get(groupID);
+////            
+////        }
+	public class NavigationTreeNode<T> implements TreeNode<T>{
 		
         private static final long serialVersionUID = 1L;
         private T data;
@@ -230,9 +218,6 @@ public class TreeNavigationBean extends BaseBean {
         
         private Map<Object, TreeNode<T>> childrenMap = 
             new LinkedHashMap<Object, TreeNode<T>>();
-
-		private String state;
-		private Map<String, String> attributes;
 		
 		@Override
 		public T getData() {
@@ -242,53 +227,18 @@ public class TreeNavigationBean extends BaseBean {
 		public void setData(T data) {
 			this.data = data;
 		}
-		public String getState() {
-			return state;
-		}
-		public void setState(String state) {
-			this.state = state;
-		}
-		public Map<String, String> getAttributes() {
-			return attributes;
-		}
-		public void setAttributes(Map<String, String> attributes) {
-			this.attributes = attributes;
-		}
 		public boolean hasChildren(){
 		    
 		    return !((childrenMap == null) || (childrenMap.isEmpty()));
 		}
-		public void closeNode(){
-		    
-            if (hasChildren()){
-                
-                setState("closed");
-            }
-            else {
-                
-                setState("none");
-            }
-
-		}
-		public String getFullPath(){
-		    
-		    String fullName = getGroupHierarchy().getFullGroupName(Integer.parseInt(getAttributes().get("groupid")));
-            if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
-                fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
-            }
-            return fullName;
-		}
-		public String getType(){
-		    
-		    return attributes.get("rel");
-		}
-		public String getImage(){
-		    
-		   if(attributes.get("rel").equals("fleet")) return "/images/ico_truck.png";
-		   else if (attributes.get("rel").equals("group")) return "/images/ico_trucks.png";
-           else if (attributes.get("rel").equals("team")) return "/images/ico_team.png";
-		   return "";
-		}
+//		public String getFullPath(){
+//		    
+//		    String fullName = getGroupHierarchy().getFullGroupName(Integer.parseInt(getAttributes().get("groupid")));
+//            if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+//                fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+//            }
+//            return fullName;
+//		}
         @Override
         public void addChild(Object identifier, TreeNode<T> child) {
  
@@ -332,43 +282,38 @@ public class TreeNavigationBean extends BaseBean {
  	}
 	public class NodeData{
 	    
-	    private String title;
 	    private Map<String, String> attributes;
 	    
-        public String getTitle() {
-            return title;
-        }
-        public void setTitle(String title) {
-            this.title = title;
-        }
         public Map<String, String> getAttributes() {
             return this.attributes;
-        }
-        public void setAttributes(Map<String, String> attributes) {
-            this.attributes = attributes;
         }
 	    public void addAttribute(String key, String value){
 	        
 	        this.attributes.put(key,value);
 	    }
-        public NodeData(String title, Map<String, String> attributes) {
+        public NodeData() {
             
-            super();
-            this.title = title;
-            this.attributes = attributes;
+        	this.attributes = new HashMap<String, String>();
+        }
+        public void setTitle(String title){
+        	
+            attributes.put("title", title);
+        }
+        public String getTitle(){
             
-            if (this.attributes == null){
-                this.attributes = new HashMap<String, String>();
-            }
+            return attributes.get("title");
+        }
+        public void setType(String type){
+        	
+        	attributes.put("type", type);
         }
         public String getType(){
             
-            return attributes.get("rel");
+            return attributes.get("type");
         }
 
         @Override
         public String toString() {
-            return title;
+            return attributes.get("title");
         }
-	}
- }
+	} }

@@ -1,4 +1,4 @@
-package com.inthinc.pro.ui;
+package com.inthinc.pro.configurator.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -22,6 +22,7 @@
 	<bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init" />
 	<bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init" />
 	<bean id="deviceSettingDefinitions" class="com.inthinc.pro.configurator.model.DeviceSettingDefinitions" init-method="init"/>
+	<bean id="productSelectItems" class="com.inthinc.pro.configurator.ui.ProductSelectItems"/>
 	<bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init" />
 
 	<!-- Backing Beans -->
@@ -32,9 +33,9 @@
 	<bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session"/>
 	<bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session"/>
 	<bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session"/>
-	<bean id="configuratorBean" class ="com.inthinc.pro.backing.configurator.ConfiguratorBean" parent="baseBean" scope="session" init-method="init"/>
-	<bean id="vehicleSettings" class="com.inthinc.pro.configurator.model.VehicleSettings" scope="session"/>
-	<bean id="deviceSettingDefinitionsByProductType" class="com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType" scope="session" init-method="init"/>
+	<bean id="configuratorBean" class ="com.inthinc.pro.backing.configurator.ConfiguratorBean" parent="baseBean" scope="request" />
+	<bean id="vehicleSettings" class="com.inthinc.pro.configurator.model.VehicleSettings" scope="request"/>
+	<bean id="deviceSettingDefinitionsByProductType" class="com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType" scope="request" init-method="init"/>
 
 	<!--  UI beans -->
   	<bean id="treeNavigationBean" class="com.inthinc.pro.backing.configurator.TreeNavigationBean" scope="session" parent="baseBean" init-method="init"/>

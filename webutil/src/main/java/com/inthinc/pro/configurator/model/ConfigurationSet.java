@@ -61,10 +61,10 @@ public class ConfigurationSet {
     }
     public boolean getHasConfigurations(){
         
-        return !configurations.isEmpty();
+        return configurations != null && !configurations.isEmpty();
     }
     public Integer getConfigurationsSize(){
         
-        return configurations.size();
+        return configurations == null?0:configurations.size();
     }
 }

@@ -11,7 +11,7 @@ import com.inthinc.pro.model.configurator.VehicleSetting.ProductVersion;
 
 public class VehicleSettingsByProductType {
 
-    private Map<ProductType, List<VehicleSetting>> vehicleSettings;
+    private Map<ProductType, List<VehicleSetting>> vehicleSettingsByProductType;
     
     public void initializeSettings(List<VehicleSetting> allVehicleSettings){
         
@@ -20,18 +20,18 @@ public class VehicleSettingsByProductType {
     }
     private void setup(){
         
-        vehicleSettings = new HashMap<ProductType,List<VehicleSetting>>();
+        vehicleSettingsByProductType = new HashMap<ProductType,List<VehicleSetting>>();
         
         for (ProductVersion productVersion : ProductVersion.getSet()){
             
-            vehicleSettings.put(getProductType(productVersion),new ArrayList<VehicleSetting>()); 
+            vehicleSettingsByProductType.put(getProductType(productVersion),new ArrayList<VehicleSetting>()); 
         }
     }
     private void distributeSettings(List<VehicleSetting> allVehicleSettings){
 
         for(VehicleSetting vehicleSetting:allVehicleSettings){
             
-            vehicleSettings.get(getProductType(vehicleSetting.getProductVer())).add(vehicleSetting);
+            vehicleSettingsByProductType.get(getProductType(vehicleSetting.getProductVer())).add(vehicleSetting);
         }
     }
     private ProductType getProductType(ProductVersion productVersion){
@@ -39,8 +39,8 @@ public class VehicleSettingsByProductType {
         return ProductType.valueOfByVersion(productVersion.getCode());
     }
     
-    public List<VehicleSetting> getVehicleSettings(ProductType key) {
+    public List<VehicleSetting> getVehicleSettingsByProductType(ProductType key) {
         
-        return vehicleSettings.get(key);
+        return vehicleSettingsByProductType.get(key);
     }
 }

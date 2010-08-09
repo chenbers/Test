@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
+import org.ajax4jsf.model.KeepAlive;
 
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
+@KeepAlive
 public class DeviceSettingDefinitionsByProductType {
 
     private Map<ProductType, Map<Integer,DeviceSettingDefinitionBean>> deviceSettings;
@@ -82,9 +84,6 @@ public class DeviceSettingDefinitionsByProductType {
     }
     public List<DeviceSettingDefinitionBean> getDeviceSettings(ProductType key) {
     	
-//    	List<DeviceSettingDefinitionBean> dsds = new ArrayList<DeviceSettingDefinitionBean>(deviceSettings.get(key).values());
-//    	Collections.sort(dsds);
-    	
         return deviceSettingLists.get(key);
     }
 
@@ -103,5 +102,4 @@ public class DeviceSettingDefinitionsByProductType {
         
         return DeviceSettingDefinitions.getDeviceSettingDefinition(settingID).validate(value);
     }   
-       
 }

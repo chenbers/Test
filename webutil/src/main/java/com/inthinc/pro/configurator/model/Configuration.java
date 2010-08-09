@@ -28,7 +28,7 @@ public class Configuration{
     
     public void setNewDesiredValue(Integer settingID, String value){
     	
-    	if (desiredValues.get(settingID).equals(value)) {
+    	if (desiredValues.get(settingID) != null && desiredValues.get(settingID).equals(value)) {
     		
     		newDesiredValues.remove(settingID);
     		return;

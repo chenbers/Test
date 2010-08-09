@@ -1,6 +1,6 @@
 package com.inthinc.pro.backing.configurator;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +10,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.backing.BaseBean;
@@ -20,10 +21,10 @@ import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.model.VehicleSettings;
 import com.inthinc.pro.configurator.model.VehicleSettingsByProductType;
+import com.inthinc.pro.configurator.ui.ChoiceSelectItems;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
-import com.inthinc.pro.ui.ChoiceSelectItems;
-
+@KeepAlive
 public class ConfiguratorBean extends BaseBean {
     
 //    private DeviceSettingDefinitions deviceSettingDefinitions;
@@ -37,34 +38,39 @@ public class ConfiguratorBean extends BaseBean {
     
     private ConfigurationSet configurationSet;
     
-    
-    private Configuration selectedSettings;
     //vehicle-centric
     private Integer selectedVehicleID;
     private VehicleSetting selectedVehicleSetting;
     
 	//configuration-centric
-    private Integer selectedGroupId;
+    private String selectedGroupId;
     @SuppressWarnings("unused")
     private Integer productTypeCode; //jsf needs this for reflection
-    private ProductType productType;
+	private ProductType productType;
     private boolean differentOnly;
 
+    private Configuration selectedConfiguration;
     
     private Selection selection;
 	private Integer selectedRowKey;
     
+    public ConfiguratorBean() {
+		super();
+		productType = ProductType.TIWIPRO_R74;
+		vehicleSettingsByProductType = new VehicleSettingsByProductType();
+		displaySettingsDefinitions = new ArrayList<DeviceSettingDefinitionBean>();
+		differentDeviceSettings = new ArrayList<DeviceSettingDefinitionBean>();
+	}
     public void init() {
         
-        selectedGroupId = null;
-        productType = ProductType.TIWIPRO_R74;
-        differentOnly = false;
+//        selectedGroupId = null;
+//        productType = ProductType.TIWIPRO_R74;
+//        differentOnly = false;
         
-        choiceSelectItems = new ChoiceSelectItems(deviceSettingDefinitionsByProductType.getDeviceSettings(productType));
         
-        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
-        vehicleSettingsByProductType = new VehicleSettingsByProductType();
-        differentDeviceSettings = Collections.emptyList();
+//        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
+//        vehicleSettingsByProductType = new VehicleSettingsByProductType();
+//        differentDeviceSettings = Collections.emptyList();
     }
     public Integer getSelectedVehicleID() {
 		return selectedVehicleID;
@@ -101,25 +107,31 @@ public class ConfiguratorBean extends BaseBean {
     public void setProductTypeCode(Integer productTypeCode) {
         productType = ProductType.valueOfByCode(productTypeCode);
     }
-    public void changeVehicle(){
+    public String displayVehicle(){
     	
-    	if (selectedVehicleID == null) return;
+    	if (selectedVehicleID == null) return null;
     	
     	selectedVehicleSetting = vehicleSettings.getVehicleSetting(selectedVehicleID);
+    	
+    	return null;
     }
     public void changeProduct(){
         
         if(selectedGroupId == null) return;
         
-        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(selectedGroupId));
+        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
         
-        buildSettings();
+        choiceSelectItems = new ChoiceSelectItems(deviceSettingDefinitionsByProductType.getDeviceSettings(productType));
+        
+        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(getSelectedGroupIdValue()));
+        
+        buildConfigurations();
     }
-    public void buildSettings(){
+    public void buildConfigurations(){
     	
 //        makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(productType),vehicleSettingsByProductType.getVehicleSettings(productType));
         
-        configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettings(productType));
+        configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettingsByProductType(productType));
         validateConfigurationSet();
         displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
         differentDeviceSettings = deviceSettingDefinitionsByProductType.deriveReducedSettings(configurationSet.getSettingIDsWithMoreThanOneValue(),productType);
@@ -172,16 +184,17 @@ public class ConfiguratorBean extends BaseBean {
         }
         return null;
     }
-//    public void revalidateSettings(){
-//    	
-//    	int i = 0;
-//    	i++;
-//    }
-//    public void testWhatGetsCalled(){
-//    	
-//    	int i = 0;
-//    	i++;
-//    }
+    public void updateConfiguration(){
+    	
+       	for(Integer vehicleID : selectedConfiguration.getVehicleIDs()){
+    		
+       		//For testing only update vehicle 1
+    		if (vehicleID.intValue()==1){
+    			vehicleSettings.updateVehicleSettings(vehicleID, selectedConfiguration.getNewDesiredValues(), getProUser().getUser().getUserID(), "testing"/*configuration.getReason()*/);
+    		}
+    	}
+
+    }
 
     public void markSetting(ValueChangeEvent valueChangeEvent){
     	
@@ -208,14 +221,17 @@ public class ConfiguratorBean extends BaseBean {
     }
     public void createConfigurationsFromVehicleSettings(){
         
-        ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettings(ProductType.TIWIPRO_R74));
+        ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
    }
 
-    public Integer getSelectedGroupId() {
-        return selectedGroupId;
+    public Integer getSelectedGroupIdValue() {
+        return Integer.parseInt(selectedGroupId);
     }
 
-    public void setSelectedGroupId(Integer selectedGroupId) {
+    public String getSelectedGroupId() {
+		return selectedGroupId;
+	}
+	public void setSelectedGroupId(String selectedGroupId) {
         this.selectedGroupId = selectedGroupId;
     }
 
@@ -227,22 +243,18 @@ public class ConfiguratorBean extends BaseBean {
     }
     public void editSettings(){
         
-         selectedSettings = hasConfigurations()?null:configurationSet.getConfigurations().get(getSelectedRowKey());
+         selectedConfiguration = getHasConfigurations()?configurationSet.getConfigurations().get(getSelectedRowKey()):null;
     }
-    private boolean hasConfigurations(){
-    	
-    	return (configurationSet == null)||(configurationSet.getConfigurations()==null) ||(configurationSet.getConfigurations().size() == 0);
-    }
-    public Configuration getSelectedSettings() {
-        return selectedSettings;
-    }
-    public void setSelectedSettings(Configuration selectedSettings) {
-        this.selectedSettings = selectedSettings;
-    }
-     public void setVehicleSettingsByProductType(VehicleSettingsByProductType vehicleSettingsByProductType) {
+    public void setVehicleSettingsByProductType(VehicleSettingsByProductType vehicleSettingsByProductType) {
         this.vehicleSettingsByProductType = vehicleSettingsByProductType;
     }
-    public ConfigurationSet getConfigurationSet() {
+    public Configuration getSelectedConfiguration() {
+		return selectedConfiguration;
+	}
+	public void setSelectedConfiguration(Configuration selectedConfiguration) {
+		this.selectedConfiguration = selectedConfiguration;
+	}
+	public ConfigurationSet getConfigurationSet() {
         return configurationSet;
     }
     public List<DeviceSettingDefinitionBean> getDifferentDeviceSettings() {
@@ -250,6 +262,24 @@ public class ConfiguratorBean extends BaseBean {
     }
     public ChoiceSelectItems getChoiceSelectItems() {
         return choiceSelectItems;
+    }
+    public Object displayConfigurations(){
+    	
+        if(selectedGroupId == null) return null;
+        
+        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
+        
+        choiceSelectItems = new ChoiceSelectItems(deviceSettingDefinitionsByProductType.getDeviceSettings(productType));
+        
+        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(getSelectedGroupIdValue()));
+        
+        buildConfigurations();
+
+    	return "go_configurator";
+    }
+    public boolean getHasConfigurations(){
+    	
+    	return configurationSet != null && configurationSet.getHasConfigurations();
     }
  }
 //    private void makeupSettings( List<DeviceSettingDefinition> settings, List<VehicleSetting> vehicleSettings){

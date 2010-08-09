@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.model.SelectItem;
+
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.model.app.BaseAppEntity;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
 
 public class DeviceSettingDefinitions implements BaseAppEntity {
 
@@ -41,5 +44,4 @@ public class DeviceSettingDefinitions implements BaseAppEntity {
         
         return deviceSettingDefinitionsList;
     }
-
 }
