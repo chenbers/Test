@@ -42,7 +42,7 @@ public class BaseUnitTest {
     }
 
     private void genReport(String prefix, int testCaseCnt, FormatType formatType, Report report) {
-
+/*
         OutputStream out = null;
         try {
             out = new FileOutputStream("c:\\" + prefix + testCaseCnt + ((formatType == FormatType.PDF) ? ".pdf" : ".xls"));
@@ -55,6 +55,7 @@ public class BaseUnitTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+*/        
     }
 
 }
