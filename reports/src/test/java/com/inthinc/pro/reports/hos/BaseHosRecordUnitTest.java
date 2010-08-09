@@ -53,12 +53,15 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
         public SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
         public TestData(String basePath, String baseFilename, boolean includeMileage) {
+            this(basePath, baseFilename, includeMileage, true);
+        }
+        public TestData(String basePath, String baseFilename, boolean includeMileage, boolean filterByGraphable) {
             String values[] = baseFilename.split("_");
             readInGroupHierarchy(basePath + baseFilename + "_groups.csv", values[1]);
             readInTestDataSet(basePath + baseFilename + ".csv", values[1]);
             for (Driver driver : driverHOSRecordMap.keySet()) {
 //                System.out.println("driver: " + driver.getBarcode());
-                driverHOSRecordMap.put(driver, readInHOSTestDataSet(basePath + baseFilename + "_" + driver.getBarcode() + ".csv"));
+                driverHOSRecordMap.put(driver, readInHOSTestDataSet(basePath + baseFilename + "_" + driver.getBarcode() + ".csv", filterByGraphable));
             }
             if (includeMileage) {
                 groupMileageList = readInMileage(basePath + baseFilename + "_mileage.csv");
@@ -140,7 +143,7 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
             return mileageList;
         }
 
-        private List<HOSRecord> readInHOSTestDataSet(String filename) {
+        private List<HOSRecord> readInHOSTestDataSet(String filename, boolean filterGraphable) {
             List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
             int hosLogID = 0;
             BufferedReader in;
@@ -159,8 +162,9 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
                         }
                         String id = values[0];
                         HOSStatus status = HOSStatus.valueOf(Integer.valueOf(values[1]));
-                        if (!status.isGraphable())
+                        if (filterGraphable && !status.isGraphable()) {
                             continue;
+                        }
                         RuleSetType ruleType = RuleSetType.valueOf(Integer.valueOf(values[2]));
                         Date logTime = new Date(Long.valueOf(values[3]).longValue());
                         TimeZone timeZone = TimeZone.getTimeZone(values[4]);

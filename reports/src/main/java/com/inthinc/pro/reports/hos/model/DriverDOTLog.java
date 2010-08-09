@@ -17,7 +17,45 @@ public class DriverDOTLog {
     private HOSOrigin origin;
     private Boolean deleted;
     private Integer changedCnt;
-
+    
+    public DriverDOTLog()
+    {
+        
+    }
+    public DriverDOTLog(String editUserName, String timeStr, String timeAddedStr, String location, String vehicleName, String driverName, String trailer, String service,
+            HOSStatus status, HOSOrigin origin, Boolean deleted, Integer changedCnt) {
+        this.editUserName = editUserName;
+        this.timeStr = timeStr;
+        this.timeAddedStr = timeAddedStr;
+        this.location = location;
+        this.vehicleName = vehicleName;
+        this.driverName = driverName;
+        this.trailer = trailer;
+        this.service = service;
+        this.status = status;
+        this.origin = origin;
+        this.deleted = deleted;
+        this.changedCnt = changedCnt;
+    }
+    
+    
+    public void dump() {
+        System.out.println("new DriverDOTLog(" +
+                ((editUserName == null) ? "null," : ("\"" + editUserName + "\",")) + 
+                ((timeStr == null) ? "null," : ("\"" + timeStr + "\",")) + 
+                ((timeAddedStr == null) ? "null," : ("\"" + timeAddedStr + "\",")) + 
+                ((location == null) ? "null," : ("\"" + location + "\",")) + 
+                ((vehicleName == null) ? "null," : ("\"" + vehicleName + "\",")) + 
+                ((driverName == null) ? "null," : ("\"" + driverName + "\",")) + 
+                ((trailer == null) ? "null," : ("\"" + trailer + "\",")) + 
+                ((service == null) ? "null," : ("\"" + service + "\",")) + 
+                "HOSStatus." + status.getName() + "," + 
+                "HOSOrigin." + origin.getName() + "," + 
+                deleted.toString() + "," + 
+                changedCnt +
+                "),");
+                        
+    }
     public Boolean getDeleted() {
         return deleted;
     }
