@@ -44,7 +44,9 @@ public enum ReportType
     DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL"),
     HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report","hos/driverDotLog.jrxml", "hos/driverDotLogRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.driverDotLog"),
     DOT_HOURS_REMAINING("DOT Time Remaining","hos/dotHoursRemaining.jrxml", "hos/dotHoursRemainingRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.dotHoursRemaining"),
-    HOS_ZERO_MILES("HOS Zero Miles","hos/hosZeroMiles.jrxml", "hos/hosZeroMilesRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosZeroMiles");
+    HOS_ZERO_MILES("HOS Zero Miles","hos/hosZeroMiles.jrxml", "hos/hosZeroMilesRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosZeroMiles"),
+    PAYROLL_DETAIL("Driver Hours Report","hos/payrollDetail.jrxml", "hos/payrollDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.payrollDetail"),
+    PAYROLL_SIGNOFF("Driver Hours Signoff","hos/payrollSignOff.jrxml", "hos/payrollSignOffRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.payrollSignOff");
     
     private String prettyTemplate;
     private String rawTemplate;

@@ -99,4 +99,19 @@ public class Address extends BaseEntity {
     public String toString() {
         return "Address [addr1=" + addr1 + ", addr2=" + addr2 + ", addrID=" + addrID + ", city=" + city + ", state=" + state + ", zip=" + zip + ", accountID=" + accountID + "]";
     }
+    
+    public String getDisplayString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append((addr1 == null) ? "" : addr1);
+        buffer.append((addr2 == null) ? "" : (", " + addr2));
+        buffer.append((city == null) ? "" : (", " + city));
+        buffer.append((state == null) ? "" : (", " + state.getAbbrev()));
+        buffer.append((zip == null) ? "" : (", " + zip));
+        if (buffer.length() > 0 && buffer.charAt(0) == ',')
+            buffer.deleteCharAt(0);
+        
+        return buffer.toString();
+        
+    }
+
 }

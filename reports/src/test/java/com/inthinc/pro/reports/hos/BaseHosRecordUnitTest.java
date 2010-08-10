@@ -31,14 +31,18 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.reports.hos.model.HosGroupMileage;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class BaseHosRecordUnitTest extends BaseUnitTest {
     
     class TestData {
+        Account account;
         Group topGroup;
         List<Group> groupList = new ArrayList<Group>();
         Map<String, Integer> groupIDMap = new HashMap<String, Integer>();
@@ -56,6 +60,8 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
             this(basePath, baseFilename, includeMileage, true);
         }
         public TestData(String basePath, String baseFilename, boolean includeMileage, boolean filterByGraphable) {
+            account = createMockAccount();
+            
             String values[] = baseFilename.split("_");
             readInGroupHierarchy(basePath + baseFilename + "_groups.csv", values[1]);
             readInTestDataSet(basePath + baseFilename + ".csv", values[1]);
@@ -68,13 +74,15 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
                 groupNoDriverMileageList = readInNoDriverMileage(basePath + baseFilename + "_mileageZero.csv");
             }
             // "vtest_00_07012010_07072010",
-            DateTimeFormatter fmt = DateTimeFormat.forPattern("MMddyyyy");
-            startDate = new DateMidnight(fmt.parseDateTime(values[2])).toDateTime();
-            endDate = new DateMidnight(fmt.parseDateTime(values[3]).plusDays(1).minusSeconds(1)).toDateTime();
-            interval = new Interval(startDate, endDate);
+            interval = DateTimeUtil.getStartEndInterval(values[2], values[3], "MMddyyyy");
             numDays = interval.toPeriod().toStandardDays().getDays();
         }
 
+        private Account createMockAccount() {
+            Account account = new Account(1, "Mock Company", Status.ACTIVE);
+            account.setAddress(createMockAddress(account.getAcctName()));
+            return account;
+        }
         private void readInGroupHierarchy(String filename, String topGroupID) {
             BufferedReader in;
             try {
@@ -95,12 +103,14 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
                             topGroup.setGroupID(calcGroupID(groupIDMap, topGroupID));
                             topGroup.setParentID(-1);
                             topGroup.setName(groupName);
+                            topGroup.setAddress(createMockAddress(groupName));
                         } else {
                             Group group = new Group();
                             group.setGroupID(calcGroupID(groupIDMap, groupId));
                             group.setName(groupName);
                             String parentGroupID = groupId.substring(0, groupId.length() - 1);
                             group.setParentID(calcGroupID(groupIDMap, parentGroupID));
+                            group.setAddress(createMockAddress(groupName));
                             groupList.add(group);
                         }
                     }
@@ -114,6 +124,9 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
             }
         }
 
+        private Address createMockAddress(String groupName) {
+            return new Address(0, "123 " + groupName, null, "City", new State(1, "Utah", "UT"), "12345", 0);
+        }
         private List<HosGroupMileage> readInNoDriverMileage(String filename) {
             List<HosGroupMileage> mileageList = new ArrayList<HosGroupMileage>();
             BufferedReader in;
@@ -254,6 +267,7 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
         }
 
         private void readInTestDataSet(String filename, String topGroupID) {
+            Integer driverIDCnt = 0;
             BufferedReader in;
             try {
                 InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
@@ -293,6 +307,7 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
                         }
                     if (!found) {
                         Driver driver = new Driver();
+                        driver.setDriverID(driverIDCnt++);
                         Person person = new Person();
                         driver.setPerson(person);
                         String[] names = driverName.split(",");

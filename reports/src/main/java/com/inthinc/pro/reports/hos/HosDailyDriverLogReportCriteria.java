@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -138,17 +139,13 @@ public class HosDailyDriverLogReportCriteria {
             DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList);
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
             
-//System.out.println("---intervalDay: " + intervalDay + " midnight " + new DateMidnight(intervalDay).toDateTime());
-//System.out.println("---day: " + day);
-//System.out.println("---day: " + DateTimeFormat.forPattern("MM/dd/yyyy HH:mm (z)").print(day));
-
             HosDailyDriverLog dayData= new HosDailyDriverLog();
             dayData.setDay(dateTimeFormatter.print(day));
 
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList));
             dayData.setCarrierName(account.getAcctName());
-            dayData.setMainAddress(getDisplayAddress(account.getAddress()));
-            dayData.setTerminalAddress(getDisplayAddress(group.getAddress()));
+            dayData.setMainAddress(account.getAddress() == null ? "" : account.getAddress().getDisplayString());
+            dayData.setTerminalAddress(group.getAddress() == null ? "" : group.getAddress().getDisplayString());
             dayData.setDriverName(driver.getPerson().getFullName());
             
             List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true); 
@@ -476,22 +473,6 @@ public class HosDailyDriverLogReportCriteria {
         return hosDriverDailyLogGraph.drawHosLogGraph(img, graphList, dayTotals);
     }
     
-    private String getDisplayAddress(Address address) {
-        if (address == null)
-            return "";
-        
-        StringBuffer buffer = new StringBuffer();
-        buffer.append((address.getAddr1() == null) ? "" : address.getAddr1());
-        buffer.append((address.getAddr2() == null) ? "" : (", " + address.getAddr2()));
-        buffer.append((address.getCity() == null) ? "" : (", " + address.getCity()));
-        buffer.append((address.getState() == null) ? "" : (", " + address.getState().getAbbrev()));
-        buffer.append((address.getZip() == null) ? "" : (", " + address.getZip()));
-        if (buffer.length() > 0 && buffer.charAt(0) == ',')
-            buffer.deleteCharAt(0);
-        
-        return buffer.toString();
-        
-    }
     
     private HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecList)
     {

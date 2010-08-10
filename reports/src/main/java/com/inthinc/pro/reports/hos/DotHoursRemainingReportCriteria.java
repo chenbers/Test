@@ -30,6 +30,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class DotHoursRemainingReportCriteria extends HosRecordReportCriteria {
 
@@ -83,7 +84,7 @@ public class DotHoursRemainingReportCriteria extends HosRecordReportCriteria {
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
-            List<DateTime> dayList = getDayList(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
+            List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
             fillInDotHoursRemainingData(dotHoursRemainingList, group, driver, dayList, entry.getValue(), currentDate);
         }
     
@@ -94,18 +95,6 @@ public class DotHoursRemainingReportCriteria extends HosRecordReportCriteria {
         
     }
     
-    // TODO: move to utility class and unit test it
-    public List<DateTime> getDayList(Interval interval, DateTimeZone dateTimeZone)
-    {
-        List<DateTime> dayList = new ArrayList<DateTime>();
-        
-        for (DateTime intervalDay = interval.getStart(); intervalDay.isBefore(interval.getEnd()); intervalDay = intervalDay.plusDays(1)) {
-            LocalDate localDate = new LocalDate(intervalDay);
-            DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
-            dayList.add(day);
-        }
-        return dayList;
-    }
     private void fillInDotHoursRemainingData(List<DotHoursRemaining> dataList, Group group, Driver driver, List<DateTime> dayList, List<HOSRecord> hosRecordList, DateTime currentDate )
     {
 

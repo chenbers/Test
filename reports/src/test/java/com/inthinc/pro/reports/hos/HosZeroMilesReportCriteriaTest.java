@@ -25,6 +25,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.HosGroupUnitMileage;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class HosZeroMilesReportCriteriaTest extends BaseUnitTest {
     public static final String DATA_PATH = "violations/";
@@ -75,8 +76,6 @@ public class HosZeroMilesReportCriteriaTest extends BaseUnitTest {
         List<Group> groupList = new ArrayList<Group>();
         Map<String, Integer> groupIDMap = new HashMap<String, Integer>();
         List<HosGroupUnitMileage> groupUnitNoDriverMileageList;
-        DateTime startDate;
-        DateTime endDate;
         Interval interval;
         int numDays;
         // 2010-01-29 17:11:08.0
@@ -87,10 +86,7 @@ public class HosZeroMilesReportCriteriaTest extends BaseUnitTest {
             readInGroupHierarchy(basePath + baseFilename + "_groups.csv", values[1]);
             groupUnitNoDriverMileageList = readInNoDriverMileage(basePath + baseFilename + "_mileageZero.csv");
             // "vtest_00_07012010_07072010",
-            DateTimeFormatter fmt = DateTimeFormat.forPattern("MMddyyyy");
-            startDate = new DateMidnight(fmt.parseDateTime(values[2])).toDateTime();
-            endDate = new DateMidnight(fmt.parseDateTime(values[3]).plusDays(1).minusSeconds(1)).toDateTime();
-            interval = new Interval(startDate, endDate);
+            interval = DateTimeUtil.getStartEndInterval(values[2], values[3], "MMddyyyy");
             numDays = interval.toPeriod().toStandardDays().getDays();
         }
 

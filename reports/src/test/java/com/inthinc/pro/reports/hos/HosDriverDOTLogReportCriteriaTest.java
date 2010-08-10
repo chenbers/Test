@@ -58,10 +58,9 @@ public class HosDriverDOTLogReportCriteriaTest extends BaseHosRecordUnitTest {
 
             HosDriverDOTLogReportCriteria hosDriverDOTLogReportCriteria = new HosDriverDOTLogReportCriteria(Locale.US);
             Map<Driver, List<HOSRecord>> dataMap = new HashMap<Driver, List<HOSRecord>>();
-            Interval interval = new Interval(testData.interval.getStart(), testData.interval.getEnd().plusDays(1).minusSeconds(1));
             for (Entry<Driver, List<HOSRecord>> entry : testData.driverHOSRecordMap.entrySet())
-                dataMap.put(entry.getKey(), filterByInterval(interval, entry.getValue()));
-            hosDriverDOTLogReportCriteria.initDataSet(interval, dataMap);
+                dataMap.put(entry.getKey(), filterByInterval(testData.interval, entry.getValue()));
+            hosDriverDOTLogReportCriteria.initDataSet(testData.interval, dataMap);
             dump("hosDriverDOTTest", testCaseCnt, hosDriverDOTLogReportCriteria, FormatType.PDF);
             dump("hosDriverDOTTest", testCaseCnt, hosDriverDOTLogReportCriteria, FormatType.EXCEL);
 
@@ -73,11 +72,11 @@ public class HosDriverDOTLogReportCriteriaTest extends BaseHosRecordUnitTest {
 //System.out.println(driver.getPerson().getFullNameLastFirst());                    
           
                     if (driver.getPerson().getFullNameLastFirst().trim().compareTo("Knutson,  Matthew") == 0) {
-                        dataMap.put(entry.getKey(), filterByInterval(interval, entry.getValue()));
+                        dataMap.put(entry.getKey(), filterByInterval(testData.interval, entry.getValue()));
                         break;
                     }
                 }
-                hosDriverDOTLogReportCriteria.initDataSet(interval, dataMap);
+                hosDriverDOTLogReportCriteria.initDataSet(testData.interval, dataMap);
                 
                 List<DriverDOTLog> driverDOTLogList = hosDriverDOTLogReportCriteria.getMainDataset();
                 int ecnt = 0;

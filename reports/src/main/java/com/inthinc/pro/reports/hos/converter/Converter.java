@@ -10,7 +10,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.dao.util.MathUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
@@ -107,8 +106,9 @@ public class Converter {
         
     }   
     
-    public static String convertMinutesRound15(Long minutes) {
+    public static String convertMinutesRound15(Number min) {
         
+        Long minutes = min.longValue();
         if (minutes == null)
             minutes = 0L;
         
