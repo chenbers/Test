@@ -29,7 +29,7 @@ public class ViolationsReportCriteriaTest extends BaseHosRecordUnitTest {
     HosViolationsSummary hosViolationsExpectedData[][] = {
             { new HosViolationsSummary("HOS", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 32, 306500.0d, 0.0d),
                     new HosViolationsSummary("HOS->Open Hole", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 531200.0d, 5300.0d),
-                    new HosViolationsSummary("HOS->Cased Hole", 0, 0, 0, 7, 3, 1, 3, 1, 1, 0, 0, 0, 54, 1296600.0d, 21100.0d),
+                    new HosViolationsSummary("HOS->Cased Hole", 0, 0, 0, 7, 3, 1, 3, 1, 1, 0, 0, 0, 54, 1296500.0d, 21000.0d), // Note: this is off by 1 mile on the zero miles from what gain reports, but it matches the hos zero miles report
                     new HosViolationsSummary("HOS->Slickline", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 133900.0d, 0.0d),
                     new HosViolationsSummary("HOS->Tech", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0.0d, 0.0d),
                     new HosViolationsSummary("HOS->Gun Loader", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0.0d, 0.0d),
