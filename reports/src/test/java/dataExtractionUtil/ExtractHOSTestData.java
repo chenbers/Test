@@ -180,19 +180,14 @@ System.out.println(sqlStr);
             csv.close();
         } // end finally
     }
-    private void extractMileageData(String groupID, Integer customerID, String startDate, String endDate, String baseName, boolean zeroMiles) throws SQLException, FileNotFoundException {
-        PrintWriter csv = null;
-        if (zeroMiles)
-                csv = createCSVWriter(baseName + "_mileageZero");
-        else csv = createCSVWriter(baseName + "_mileage");
+    private void extractMileageData(String groupID, Integer customerID, String startDate, String endDate, String baseName) throws SQLException, FileNotFoundException {
+        PrintWriter csv = createCSVWriter(baseName + "_mileage");
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
         try {
             conn = dataSource.getConnection();
-            if (zeroMiles)
-                statement = conn.prepareCall("{call fetchHosZeroMilesByGroup(?,?,?,?,?)}");
-            else statement = conn.prepareCall("{call fetchHosMilesByGroup(?,?,?,?,?)}");
+            statement = conn.prepareCall("{call fetchHosMilesByGroup(?,?,?,?,?)}");
             statement.setString(1, ""+customerID);
             statement.setString(2, groupID);
             statement.setString(3, startDate);
@@ -218,6 +213,39 @@ System.out.println(sqlStr);
     }
 
     
+    private void extractZeroMileageData(String groupID, Integer customerID, String startDate, String endDate, String baseName) throws SQLException, FileNotFoundException {
+        PrintWriter csv = createCSVWriter(baseName + "_mileageZero");
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = dataSource.getConnection();
+            statement = conn.prepareCall("{call cj_hosZeroMiles(?,?,?,?,?)}");
+            statement.setString(1, ""+customerID);
+            statement.setString(2, groupID);
+            statement.setString(3, startDate);
+            statement.setString(4, endDate);
+            statement.setString(5, "english");
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String groupId = resultSet.getString(1);
+                String unitId = resultSet.getString(2);
+                Float distance = resultSet.getFloat(3);
+                csv.println(groupId + "," + unitId + "," + mileageFormat.format(distance));
+            }
+        } // end try
+        catch (SQLException e) { // handle database hosLogs in the usual manner
+            logger.error(e);
+        } // end catch
+        finally { // clean up and release the connection
+            resultSet.close();
+            statement.close();
+            conn.close();
+            csv.close();
+        } // end finally
+        
+    }
+
 
     /**
      * @param args
@@ -227,7 +255,7 @@ System.out.println(sqlStr);
         // this is not really intended to be something that is run all of the time
         // it was just an easy way to extract the data from gain for unit tests in tiwipro
 //        dataSet1();
-//        dataSet2();
+        dataSet2();
         
         // lists of HOSRecords used by DDL, HosLog
 //        dataSet3();
@@ -248,11 +276,11 @@ System.out.println(sqlStr);
 
         ExtractHOSTestData extractHOSTestData = new ExtractHOSTestData(new DBUtilDataSource());
         try {
-            extractHOSTestData.extractGroupData(groupID, customerID, baseName);
-            extractHOSTestData.extractDriverGroupDataExt(groupID, customerID, startDate, endDate, baseName);
-            // mileage data
-            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName, false);
-            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName, true);
+//            extractHOSTestData.extractGroupData(groupID, customerID, baseName);
+//            extractHOSTestData.extractDriverGroupDataExt(groupID, customerID, startDate, endDate, baseName);
+//            // mileage data
+//            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName);
+            extractHOSTestData.extractZeroMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -271,11 +299,11 @@ System.out.println(sqlStr);
 
         ExtractHOSTestData extractHOSTestData = new ExtractHOSTestData(new DBUtilDataSource());
         try {
-            extractHOSTestData.extractGroupData(groupID, customerID, baseName);
-            extractHOSTestData.extractDriverGroupDataExt(groupID, customerID, startDate, endDate, baseName);
-            // mileage data
-            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName, false);
-            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName, true);
+//            extractHOSTestData.extractGroupData(groupID, customerID, baseName);
+//            extractHOSTestData.extractDriverGroupDataExt(groupID, customerID, startDate, endDate, baseName);
+//            // mileage data
+//            extractHOSTestData.extractMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName);
+            extractHOSTestData.extractZeroMileageData(groupID, customerID, startDateMileage, endDateMileage, baseName);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -375,6 +403,33 @@ alter  PROCEDURE [dbo].[cj_getHOSRecsInDateRange](@driverId varchar(50), @driver
     AND l.timeZone = tz.id
     ORDER BY COALESCE(logTimeUTC, dbo.udf_Timezone_Conversion_datetime(l.timezone, 24, localTime)) DESC
 GO
+
+CREATE         PROCEDURE [dbo].[cj_hosZeroMiles](@customerId int, @groupId varchar(50), @startDate varchar(50), @endDate varchar(50), @units varchar(50)) AS
+DECLARE @metric float
+SELECT @metric = 1
+
+if @units = 'metric'
+    SELECT @metric = 1.609344
+
+SELECT @startDate = convert(varchar(20), @startDate, 101) + ' 00:00:00'
+SELECT @endDate = convert(varchar(20), @endDate, 101) + ' 23:59:59'
+
+-- Note: the zero miles counts must match those in the hos violations summary report
+SELECT 
+    v.groupId, 
+    v.UnitID,
+    ROUND(SUM(distance) * @metric, 0) AS totalMilesNoDriver
+FROM notification n, tableClientVehicle v, dbo.groupTable(@groupId) g
+WHERE n.customerId = @customerId 
+AND n.type=46
+AND n.localTime between @startDate AND @endDate
+and n.id not in (select notificationId from nodriver)
+AND v.fk_customerId = @customerId
+AND LEFT(v.groupId, LEN(g.id)) = g.id
+AND n.vehicleId = v.pk_vehicleId
+group by v.groupId, v.unitId
+having SUM(distance) > 0
+order by 1
 
 
 

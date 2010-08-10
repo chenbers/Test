@@ -18,12 +18,10 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
-import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 
 
 
-public class HosDriverDOTLogReportCriteriaTest //extends BaseLogUnitTest {
-    extends BaseHosRecordUnitTest {
+public class HosDriverDOTLogReportCriteriaTest extends BaseHosRecordUnitTest {
 
         public static final String DATA_PATH = "violations/";
         public static final String testCaseName[] = { 

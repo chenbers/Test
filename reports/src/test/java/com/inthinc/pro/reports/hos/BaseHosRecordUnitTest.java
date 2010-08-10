@@ -65,7 +65,7 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
             }
             if (includeMileage) {
                 groupMileageList = readInMileage(basePath + baseFilename + "_mileage.csv");
-                groupNoDriverMileageList = readInMileage(basePath + baseFilename + "_mileageZero.csv");
+                groupNoDriverMileageList = readInNoDriverMileage(basePath + baseFilename + "_mileageZero.csv");
             }
             // "vtest_00_07012010_07072010",
             DateTimeFormatter fmt = DateTimeFormat.forPattern("MMddyyyy");
@@ -114,6 +114,45 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
             }
         }
 
+        private List<HosGroupMileage> readInNoDriverMileage(String filename) {
+            List<HosGroupMileage> mileageList = new ArrayList<HosGroupMileage>();
+            BufferedReader in;
+            try {
+                InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
+                if (stream != null) {
+                    in = new BufferedReader(new InputStreamReader(stream));
+                    String str;
+                    while ((str = in.readLine()) != null) {
+                        String values[] = str.split(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+                        for (int i = 0; i < values.length; i++)
+                            if (values[i].startsWith("\"") && values[i].endsWith("\"")) {
+                                values[i] = values[i].substring(1, values[i].length() - 1);
+                            }
+                        String groupId = values[0];
+                        String unitID = values[1];
+                        long mileage = Long.valueOf(values[2].replace(",", "")).longValue() * 100;
+                        HosGroupMileage hosGroupMileage = findGroupInMileageList(mileageList, groupId);
+                        if (hosGroupMileage == null)
+                            mileageList.add(new HosGroupMileage(calcGroupID(groupIDMap, groupId), mileage));
+                        else hosGroupMileage.setDistance(hosGroupMileage.getDistance() + mileage);
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return mileageList;
+        }
+        private HosGroupMileage findGroupInMileageList(List<HosGroupMileage> mileageList, String groupId) {
+            Integer interalID = calcGroupID(groupIDMap, groupId);
+            for (HosGroupMileage groupMileage : mileageList)
+                if (groupMileage.getGroupID().equals(interalID))
+                    return groupMileage;
+            return null;
+        }
         private List<HosGroupMileage> readInMileage(String filename) {
             List<HosGroupMileage> mileageList = new ArrayList<HosGroupMileage>();
             BufferedReader in;
@@ -142,6 +181,7 @@ public class BaseHosRecordUnitTest extends BaseUnitTest {
             }
             return mileageList;
         }
+
 
         private List<HOSRecord> readInHOSTestDataSet(String filename, boolean filterGraphable) {
             List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();

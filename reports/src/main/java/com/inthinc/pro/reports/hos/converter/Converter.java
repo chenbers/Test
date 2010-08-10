@@ -41,6 +41,21 @@ public class Converter {
             return nf.format( MathUtil.round(distance, 2));
         }
     }
+    public static String convertDistance(Number distance, Boolean convertToMetric, Locale locale) {
+        if (distance == null)
+            distance = 0;
+        distance = distance.doubleValue()/100d;
+        NumberFormat nf = NumberFormat.getNumberInstance(locale);
+        nf.setMaximumFractionDigits(0);
+        nf.setMinimumFractionDigits(0);
+        nf.setGroupingUsed(false);
+        if (convertToMetric)
+            return nf.format(MeasurementConversionUtil.convertMilesToKilometers(distance, MeasurementType.METRIC));
+        else {
+            return nf.format( MathUtil.round(distance, 2));
+        }
+    }
+
 
     public static final String GALLONS = "Gallons:";
     // format is Vehicle Gallons: ## Trailer Gallons: ##  convert to
