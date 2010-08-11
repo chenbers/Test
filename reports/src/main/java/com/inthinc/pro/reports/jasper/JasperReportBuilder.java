@@ -11,8 +11,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JRPrintPage;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.log4j.Logger;
 
@@ -22,14 +29,6 @@ import com.inthinc.pro.reports.exception.ReportPagingException;
 import com.inthinc.pro.reports.exception.ReportRuntimeException;
 import com.inthinc.pro.reports.model.ChartData;
 import com.inthinc.pro.reports.util.MessageUtil;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.JRPrintPage;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class JasperReportBuilder
 {
@@ -95,12 +94,11 @@ public class JasperReportBuilder
             {
                 locale = reportCriteria.getLocale();
             }
-//            ResourceBundle resourceBundle = MessageUtil.getBundle(locale);
             if (reportCriteria.getReport().getResourceBundle() != null)
                 reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale, reportCriteria.getReport().getResourceBundle()));
             else reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale));
 
-            reportCriteria.getPramMap().put("SUBREPORT_DIR", ReportUtils.getSubReportDir());
+            reportCriteria.getPramMap().put("SUBREPORT_DIR", ReportUtils.getSubReportDir(reportCriteria.getReport().getSubDirectory()));
             
             // Lets break up the report if the recordsPerReport is set
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset() != null? reportCriteria.getMainDataset() : Collections.EMPTY_LIST);

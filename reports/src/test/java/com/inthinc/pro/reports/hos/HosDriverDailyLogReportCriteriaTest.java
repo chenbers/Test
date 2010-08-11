@@ -3,46 +3,17 @@ package com.inthinc.pro.reports.hos;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.pro.dao.mock.data.MockStates;
-import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.hos.HOSOccupantLog;
-import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.Report;
-import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.hos.model.HosDailyDriverLog;
 import com.inthinc.pro.reports.hos.model.Recap;
@@ -50,8 +21,6 @@ import com.inthinc.pro.reports.hos.model.RecapCanada;
 import com.inthinc.pro.reports.hos.model.RecapCanada2007;
 import com.inthinc.pro.reports.hos.model.RecapType;
 import com.inthinc.pro.reports.hos.model.RecapUS;
-import com.inthinc.pro.reports.jasper.JasperReport;
-import com.inthinc.pro.reports.jasper.JasperReportCreator;
 
 public class HosDriverDailyLogReportCriteriaTest extends BaseLogUnitTest{
 

@@ -19,6 +19,10 @@ import com.inthinc.pro.reports.jasper.JasperReportCreator;
 
 public class BaseUnitTest {
     
+    public static final String BASE_PATH = "c:/reportDump/";
+    
+    // switch to true to get a file dump of the report for debug/test
+    public static final boolean DUMP_TO_FILE = false;
     @Test
     public void dummy() {
         assertTrue(true);
@@ -42,10 +46,13 @@ public class BaseUnitTest {
     }
 
     private void genReport(String prefix, int testCaseCnt, FormatType formatType, Report report) {
-/*
+
+        if (!DUMP_TO_FILE)
+            return;
+        
         OutputStream out = null;
         try {
-            out = new FileOutputStream("c:\\" + prefix + testCaseCnt + ((formatType == FormatType.PDF) ? ".pdf" : ".xls"));
+            out = new FileOutputStream(BASE_PATH + prefix + testCaseCnt + ((formatType == FormatType.PDF) ? ".pdf" : ".xls"));
             report.exportReportToStream(formatType, out);
             out.flush();
             out.close();
@@ -55,7 +62,6 @@ public class BaseUnitTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-*/        
     }
 
 }

@@ -72,9 +72,10 @@ public class ReportUtils
         return url.getPath();
         
     }
-    public static Object getSubReportDir() {
+    public static Object getSubReportDir(String subDirectory) {
         
-        URL url = ReportUtils.class.getClassLoader().getResource(PACKAGE_PATH );
+        String path = PACKAGE_PATH + (subDirectory == null ? "" : (subDirectory + "/"));
+        URL url = ReportUtils.class.getClassLoader().getResource(path);
         return url.getPath();
         
     }

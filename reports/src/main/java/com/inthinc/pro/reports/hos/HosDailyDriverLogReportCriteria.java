@@ -12,7 +12,7 @@ import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
-import org.joda.time.DateMidnight;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -32,7 +32,6 @@ import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
@@ -53,6 +52,10 @@ import com.inthinc.pro.reports.util.MessageUtil;
 
 public class HosDailyDriverLogReportCriteria {
 
+    private static final Logger logger = Logger.getLogger(HosDailyDriverLogReportCriteria.class);
+
+    private static final String BASE_LOG_GRAPH_IMAGE_PATH = "hos/hosLog.jpg";
+    
     // each item in list is data for one day
     private List<ReportCriteria> criteriaList;
     private Locale locale;
@@ -81,7 +84,6 @@ public class HosDailyDriverLogReportCriteria {
 //            HOS_PERSONALTIME(30, "Personal Time", "PERSONAL TIME");
       
     };
-    
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
     {
         this.locale = locale;
@@ -117,7 +119,7 @@ public class HosDailyDriverLogReportCriteria {
     }
 
     private void setReportDate(Date date, ReportCriteria reportCriteria){
-        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("report.ddl.dateTimeFormat", locale));
+        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("report.hos.dateTimeFormat", locale));
         reportCriteria.addParameter("REPORT_DATE_TIME", sdf.format(date));
     }
 
@@ -463,8 +465,9 @@ public class HosDailyDriverLogReportCriteria {
         
         BufferedImage img = null;
         try {
-            img = ImageIO.read(ReportUtils.loadFile("hosLog.jpg"));
+            img = ImageIO.read(ReportUtils.loadFile(BASE_LOG_GRAPH_IMAGE_PATH));
         } catch (IOException e) {
+            logger.error(e);
         }
         
         

@@ -35,22 +35,23 @@ public enum ReportType
     TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml"),
     
     // HOS
-    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml"),
-    HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hos/hosViolations.jrxml", "hos/hosViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations"),
-    NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","hos/nonDOTViolations.jrxml", "hos/nonDOTViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
-    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","hos/drivingTimeViolations.jrxml", "hos/drivingTimeViolationsRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
-    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "HOS_VIOLATIONS_DETAIL"),
-    NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "NON_DOT_VIOLATIONS_DETAIL"),
-    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","hos/violationsDetail.jrxml", "hos/violationsDetailRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL"),
-    HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report","hos/driverDotLog.jrxml", "hos/driverDotLogRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.driverDotLog"),
-    DOT_HOURS_REMAINING("DOT Time Remaining","hos/dotHoursRemaining.jrxml", "hos/dotHoursRemainingRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.dotHoursRemaining"),
-    HOS_ZERO_MILES("HOS Zero Miles","hos/hosZeroMiles.jrxml", "hos/hosZeroMilesRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.hosZeroMiles"),
-    PAYROLL_DETAIL("Driver Hours Report","hos/payrollDetail.jrxml", "hos/payrollRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.payrollDetail"),
-    PAYROLL_SIGNOFF("Driver Hours Signoff","hos/payrollSignOff.jrxml", "hos/payrollRaw.jrxml", "com.inthinc.pro.reports.jasper.hos.i18n.payrollSignOff");
+    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),
+    HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hosViolations.jrxml", "hosViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations"),
+    NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","nonDOTViolations.jrxml", "nonDOTViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
+    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","drivingTimeViolations.jrxml", "drivingTimeViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
+    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "HOS_VIOLATIONS_DETAIL"),
+    NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "NON_DOT_VIOLATIONS_DETAIL"),
+    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL"),
+    HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report","driverDotLog.jrxml", "driverDotLogRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.driverDotLog"),
+    DOT_HOURS_REMAINING("DOT Time Remaining","dotHoursRemaining.jrxml", "dotHoursRemainingRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.dotHoursRemaining"),
+    HOS_ZERO_MILES("HOS Zero Miles","hosZeroMiles.jrxml", "hosZeroMilesRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosZeroMiles"),
+    PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollDetail"),
+    PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollSignOff");
     
     private String prettyTemplate;
     private String rawTemplate;
     private String label;
+    private String subDirectory;
     private String resourceBundle;
     private String name;
     
@@ -60,23 +61,22 @@ public enum ReportType
     }
     
     private ReportType(String label,String prettyTemplate, String rawTemplate){
-        this.label = label;
-        this.prettyTemplate = prettyTemplate;
+        this(label, prettyTemplate);
         this.rawTemplate = rawTemplate;
     }
+    
+    private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory){
+        this(label, prettyTemplate, rawTemplate);
+        this.subDirectory = subDirectory;
+    }
 
-    private ReportType(String label,String prettyTemplate, String rawTemplate, String resourceBundle){
-        this.label = label;
-        this.prettyTemplate = prettyTemplate;
-        this.rawTemplate = rawTemplate;
+    private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory, String resourceBundle){
+        this(label, prettyTemplate, rawTemplate, subDirectory);
         this.resourceBundle = resourceBundle;
     }
     
-    private ReportType(String label,String prettyTemplate, String rawTemplate, String resourceBundle, String name){
-        this.label = label;
-        this.prettyTemplate = prettyTemplate;
-        this.rawTemplate = rawTemplate;
-        this.resourceBundle = resourceBundle;
+    private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory, String resourceBundle, String name){
+        this(label, prettyTemplate, rawTemplate, subDirectory, resourceBundle);
         this.name = name;
     }
     
@@ -110,12 +110,17 @@ public enum ReportType
     
     public String getPrettyJasper()
     {
-        return prettyTemplate == null ? null : prettyTemplate.replace(".jrxml", ".jasper");
+        String subDir = (subDirectory == null) ? "" : (subDirectory + "/");
+        return prettyTemplate == null ? null : subDir + prettyTemplate.replace(".jrxml", ".jasper");
     }
 
     public String getRawJasper()
     {
-        return rawTemplate == null ? null : rawTemplate.replace(".jrxml", ".jasper");
+        String subDir = (subDirectory == null) ? "" : (subDirectory + "/");
+        return rawTemplate == null ? null : subDir + rawTemplate.replace(".jrxml", ".jasper");
+    }
+    public String getSubDirectory() {
+        return subDirectory;
     }
 
     public String getResourceBundle() {
