@@ -1,28 +1,23 @@
 package com.inthinc.pro.reports.hos;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 
-import org.joda.time.Interval;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
-
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.hos.model.DriverDOTLog;
 import com.inthinc.pro.reports.hos.model.PayrollData;
+import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 
 
-public class PayrollCriteriaTest extends BaseHosRecordUnitTest {
+public class PayrollCriteriaTest extends BaseUnitTest {
 
     public static final String DATA_PATH = "violations/";
     public static final String testCaseName[] = { 
@@ -279,7 +274,7 @@ public class PayrollCriteriaTest extends BaseHosRecordUnitTest {
     @Test
     public void gainDetailsTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-            TestData testData = new TestData(DATA_PATH, testCaseName[testCaseCnt], false);
+            HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
             
             PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(Locale.US);
             criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, testData.driverHOSRecordMap);
@@ -303,7 +298,7 @@ public class PayrollCriteriaTest extends BaseHosRecordUnitTest {
     @Test
     public void gainSignoffTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-            TestData testData = new TestData(DATA_PATH, testCaseName[testCaseCnt], false);
+            HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
             
             PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(Locale.US);
             

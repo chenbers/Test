@@ -18,8 +18,9 @@ import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.NonDOTViolationsSummary;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
+import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 
-public class ViolationsReportCriteriaTest extends BaseHosRecordUnitTest {
+public class ViolationsReportCriteriaTest extends BaseUnitTest {
 
     public static final String DATA_PATH = "violations/";
     public static final String testCaseName[] = { 
@@ -174,7 +175,7 @@ public class ViolationsReportCriteriaTest extends BaseHosRecordUnitTest {
     @Test
     public void gainSummmaryTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-            TestData violationsTestData = new TestData(DATA_PATH, testCaseName[testCaseCnt], true);
+            HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
                       // HOS VIOLATIONS
 //System.out.println(" " + testCaseCnt);            
             HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria(Locale.US);
@@ -237,7 +238,7 @@ public class ViolationsReportCriteriaTest extends BaseHosRecordUnitTest {
     @Test
     public void gainDetailsTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-            TestData violationsTestData = new TestData(DATA_PATH, testCaseName[testCaseCnt], true);
+            HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
             // HOS VIOLATIONS
             HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(Locale.US);
             criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);

@@ -18,10 +18,11 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
+import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 
 
 
-public class HosDriverDOTLogReportCriteriaTest extends BaseHosRecordUnitTest {
+public class HosDriverDOTLogReportCriteriaTest extends BaseUnitTest {
 
         public static final String DATA_PATH = "violations/";
         public static final String testCaseName[] = { 
@@ -54,7 +55,7 @@ public class HosDriverDOTLogReportCriteriaTest extends BaseHosRecordUnitTest {
     @Test
     public void gainTestCasesForDriverLog() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-            TestData testData = new TestData(DATA_PATH, testCaseName[testCaseCnt], false, false);
+            HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false, false);
 
             HosDriverDOTLogReportCriteria hosDriverDOTLogReportCriteria = new HosDriverDOTLogReportCriteria(Locale.US);
             Map<Driver, List<HOSRecord>> dataMap = new HashMap<Driver, List<HOSRecord>>();

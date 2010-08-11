@@ -13,9 +13,10 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
+import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 
 
-public class DotHoursRemainingReportCriteriaTest extends BaseHosRecordUnitTest {
+public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
     
     public static final String DATA_PATH = "hos/";
 
@@ -245,7 +246,7 @@ public class DotHoursRemainingReportCriteriaTest extends BaseHosRecordUnitTest {
     public void gainTestCasesForHoursRemaining() {
 
       for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-            TestData testData = new TestData(DATA_PATH, testCaseName[testCaseCnt], false);
+            HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
             DotHoursRemainingReportCriteria dotHoursRemainingReportCriteria = new DotHoursRemainingReportCriteria(Locale.US);
             dotHoursRemainingReportCriteria.initDataSet(testData.topGroup, testData.driverHOSRecordMap, new DateTime(testCaseCurrentDate[testCaseCnt].getTime()));
             
