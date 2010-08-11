@@ -61,7 +61,7 @@ public class Converter {
     //           Vehicle Liters: ## Trailer Liters: ##
     public static String convertRemarkDescription(String description, Locale locale) {
         int index = description.indexOf(GALLONS);
-        String litersLabel = MessageUtil.getMessageString("report.ddl.liters", locale);
+        String litersLabel = MessageUtil.getMessageString("report.hos.liters", locale);
         if (index != -1)
         {
             StringBuffer newDescription = new StringBuffer();
