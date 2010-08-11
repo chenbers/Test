@@ -59,15 +59,15 @@ import com.inthinc.pro.reports.jasper.ReportUtils;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
-public class PayrollDetailReportCriteria extends PayrollReportCriteria {
+public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
 
     
-    public PayrollDetailReportCriteria(Locale locale) 
+    public PayrollSignoffReportCriteria(Locale locale) 
     {
-        super(ReportType.PAYROLL_DETAIL, locale);
+        super(ReportType.PAYROLL_SIGNOFF, locale);
     }
 
-    public void init(Integer groupID, Interval interval)
+    public void init(Integer driverID, Interval interval)
     {
 /*
  * TODO:
@@ -87,23 +87,18 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
 //        initDataSet(interval, hosRecordMap);
     }
     
-    void initDataSet(Interval interval, Account account, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    void initDataSet(Interval interval, Account account, Group topGroup,  List<Group> groupList, Driver driver, List<HOSRecord> driverHOSRecordList)
     {
         super.initDataSet(interval, account);
         GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
 
         Date currentTime = new Date();
         
-        List<PayrollData> dataList = new ArrayList<PayrollData>();
-        
-        for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
-            dataList.addAll(getDriverPayrollData(interval, groupHierarchy, currentTime, entry.getKey(), entry.getValue()));
-
-        }
+        List<PayrollData> dataList = getDriverPayrollData(interval, groupHierarchy, currentTime, driver, driverHOSRecordList);
         
         Collections.sort(dataList);
         setMainDataset(dataList);
-        
+
     }
 
     

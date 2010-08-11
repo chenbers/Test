@@ -2,19 +2,27 @@ package com.inthinc.pro.reports.hos;
 
 import static org.junit.Assert.*;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
 
+import org.joda.time.Interval;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.hos.HOSRecord;
+
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
 import com.inthinc.pro.reports.hos.model.PayrollData;
 
 
-public class PayrollDetailCriteriaTest extends BaseHosRecordUnitTest {
+public class PayrollCriteriaTest extends BaseHosRecordUnitTest {
 
     public static final String DATA_PATH = "violations/";
     public static final String testCaseName[] = { 
@@ -267,14 +275,13 @@ public class PayrollDetailCriteriaTest extends BaseHosRecordUnitTest {
 
     
     
+
     @Test
     public void gainDetailsTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             TestData testData = new TestData(DATA_PATH, testCaseName[testCaseCnt], false);
             
             PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(Locale.US);
-            
-            
             criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, testData.driverHOSRecordMap);
             List<PayrollData> dataList = criteria.getMainDataset();
             int eCnt = 0;
@@ -290,7 +297,45 @@ public class PayrollDetailCriteriaTest extends BaseHosRecordUnitTest {
             dump("payrollDetailTest", testCaseCnt + 1, criteria, FormatType.PDF);
             dump("payrollDetailTest", testCaseCnt + 1, criteria, FormatType.EXCEL);
 
-
         }
     }
+
+    @Test
+    public void gainSignoffTestCases() {
+        for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
+            TestData testData = new TestData(DATA_PATH, testCaseName[testCaseCnt], false);
+            
+            PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(Locale.US);
+            
+            for (Entry<Driver, List<HOSRecord>> entry : testData.driverHOSRecordMap.entrySet()) {
+                
+                Driver driver = entry.getKey();
+                criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, driver, entry.getValue());
+
+                if (driver.getPerson().getLast().startsWith("Giem")) {
+                    int eCnt = 0;
+                    for (;eCnt < payrollDataExpectedData[testCaseCnt].length; eCnt++) {
+                        PayrollData expected = payrollDataExpectedData[testCaseCnt][eCnt];
+                        if (expected.getDriverName().startsWith("Giem"))
+                            break;
+                    }
+                    List<PayrollData> dataList = criteria.getMainDataset();
+                    for (PayrollData data : dataList) {
+                        PayrollData expected = payrollDataExpectedData[testCaseCnt][eCnt++];
+                        assertEquals(testCaseName[testCaseCnt] + "groupName " + eCnt, expected.getGroupName(), data.getGroupName());
+                        assertEquals(testCaseName[testCaseCnt] + "groupAddress " + eCnt, expected.getGroupAddress(), data.getGroupAddress());
+                        assertEquals(testCaseName[testCaseCnt] + "driverName " + eCnt, expected.getDriverName(), data.getDriverName());
+                        assertEquals(testCaseName[testCaseCnt] + "day " + eCnt, expected.getDay(), data.getDay());
+                        assertEquals(testCaseName[testCaseCnt] + "employeeID " + eCnt, expected.getEmployeeID(), data.getEmployeeID());
+                    }
+                }
+                String prefix = "payrollSignoffTest "+entry.getKey().getPerson().getLast() + "_"; 
+                dump(prefix, testCaseCnt + 1, criteria, FormatType.PDF);
+                dump(prefix, testCaseCnt + 1, criteria, FormatType.EXCEL);
+                
+
+            }
+        }
+    }
+
 }

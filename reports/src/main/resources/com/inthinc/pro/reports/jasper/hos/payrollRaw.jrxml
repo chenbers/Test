@@ -138,7 +138,7 @@
 			<textField isStretchWithOverflow="true" pattern="MM/dd/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{day}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[java.text.DateFormat.getDateInstance().format($F{day})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
