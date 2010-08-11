@@ -13,6 +13,12 @@
 		<field name="deleted" class="java.lang.Boolean"/>
 		<field name="edited" class="java.lang.Boolean"/>
 	</subDataset>
+	<subDataset name="vehiclesDataset">
+		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+		<field name="startOdometer" class="java.lang.Number"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="milesDriven" class="java.lang.Number"/>
+	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\develop\\tiwipro\\root\\reports\\src\\main\\resources\\com\\inthinc\\pro\\reports\\jasper\\hos\\"]]></defaultValueExpression>
 	</parameter>
@@ -76,55 +82,72 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{day}]]></textFieldExpression>
 			</textField>
-			<subreport>
-				<reportElement x="0" y="66" width="350" height="28">
-					<printWhenExpression><![CDATA[Boolean.valueOf($F{vehicles} != null && !$F{vehicles}.isEmpty())]]></printWhenExpression>
-				</reportElement>
-				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
-				<dataSourceExpression><![CDATA[new  net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{vehicles})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "HOSDailyDriverLog_vehicleHeader.jasper"]]></subreportExpression>
-			</subreport>
+			<componentElement>
+				<reportElement x="0" y="66" width="350" height="14"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="vehiclesDataset">
+						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{vehicles})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="14" width="350">
+						<textField isStretchWithOverflow="true">
+							<reportElement x="1" y="1" width="100" height="12"/>
+							<textElement textAlignment="Center">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement x="110" y="1" width="240" height="12"/>
+							<textElement textAlignment="Center">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[msg("{0} ({1})", $F{name}, com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE}))]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 			<frame>
-				<reportElement x="0" y="66" width="350" height="28">
+				<reportElement x="0" y="68" width="350" height="14">
 					<printWhenExpression><![CDATA[Boolean.valueOf($F{vehicles} == null || $F{vehicles}.isEmpty())]]></printWhenExpression>
 				</reportElement>
 				<staticText>
-					<reportElement x="2" y="0" width="100" height="14"/>
+					<reportElement x="2" y="0" width="100" height="12"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[0]]></text>
 				</staticText>
-				<line>
-					<reportElement x="0" y="14" width="100" height="1"/>
-				</line>
-				<textField pattern="">
-					<reportElement x="0" y="15" width="100" height="12"/>
-					<textElement textAlignment="Center">
-						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.startOdometer}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement x="110" y="14" width="240" height="1"/>
-				</line>
-				<textField pattern="">
-					<reportElement x="110" y="15" width="240" height="12"/>
-					<textElement textAlignment="Center">
-						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.vehiclesDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
-				</textField>
 				<textField>
-					<reportElement x="110" y="0" width="240" height="14"/>
+					<reportElement x="110" y="0" width="240" height="12"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.none}]]></textFieldExpression>
 				</textField>
 			</frame>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="357" y="69" width="133" height="12"/>
+			<line>
+				<reportElement x="0" y="81" width="100" height="1"/>
+			</line>
+			<textField pattern="">
+				<reportElement x="0" y="82" width="100" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.startOdometer}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="110" y="81" width="240" height="1"/>
+			</line>
+			<textField pattern="">
+				<reportElement x="110" y="82" width="240" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.vehiclesDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="357" y="68" width="133" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
