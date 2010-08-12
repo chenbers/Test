@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -90,8 +93,36 @@ public class TeamStatisticsBean extends BaseBean {
 
             // Get the data
             if ( whichMethodToUse() ) {
+                
+                // The following trims the interval info to be exactly 00:00:00
+                DateTime dt = new DateTime(getDateTimeZone());
+                DateTime dtBase = new DateTime(dt.getYear(),dt.getMonthOfYear(),dt.getDayOfMonth(),0,0,0,0,DateTimeZone.UTC);
+                DateTime dtGMT = null;
+                DateTime dtGMTP1 = null;
+                
+                if (        teamCommonBean.getTimeFrame().equals(TimeFrame.TODAY) ) {
+                    dtGMT = dtBase;
+                } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.ONE_DAY_AGO) ) {
+                    dtGMT = dtBase.minusDays(1);
+                } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.TWO_DAYS_AGO ) ) {
+                    dtGMT = dtBase.minusDays(2);
+                } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.THREE_DAYS_AGO ) ) {
+                    dtGMT = dtBase.minusDays(3);
+                } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.FOUR_DAYS_AGO ) ) {
+                    dtGMT = dtBase.minusDays(4);
+                } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.FIVE_DAYS_AGO ) ) {
+                    dtGMT = dtBase.minusDays(5);
+                } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.SIX_DAYS_AGO ) ) {
+                    dtGMT = dtBase.minusDays(6);
+                } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.SEVEN_DAYS_AGO ) ) {
+                    dtGMT = dtBase.minusDays(7);
+                }
+
+                dtGMTP1 = dtGMT.plusDays(1);
+              
+                Interval intToUse = new Interval(dtGMT, dtGMTP1);
                 driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                        teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+                        intToUse);                
             
             } else {
                 driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
