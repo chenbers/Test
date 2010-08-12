@@ -13,9 +13,8 @@ import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
 
-
+@Ignore
 public class DeviceSettingDefinitionTest {
-    @Ignore
     @Test
     public void validateStringChoiceSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -35,7 +34,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "ONE"));
         assertTrue(!dsd.validate( "One"));
     }
-    @Ignore
     @Test
     public void validateIntegerChoiceSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -56,7 +54,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "afass"));
         assertTrue(!dsd.validate( "-2323"));
     }
-    @Ignore
     @Test
     public void validateDoubleChoiceSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -77,7 +74,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "afass"));
         assertTrue(!dsd.validate( "-2323"));
     }
-    @Ignore
     @Test
     public void validateBooleanChoiceSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -98,7 +94,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "afass"));
         assertTrue(!dsd.validate( "-2323"));
     }
-    @Ignore
     @Test
     public void validateStringnoNoRestraintSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -114,7 +109,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "One"));
         assertTrue(dsd.validate( "A really huge long stringdsfjasjasjkfaskjghaksgh;asgkagk"));
     }
-    @Ignore
     @Test
     public void validateStringRangeMinSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -130,7 +124,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "ONE"));
         assertTrue(dsd.validate( "One"));
     }
-    @Ignore
     @Test
     public void validateStringRangeMaxSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -146,7 +139,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "ONE"));
         assertTrue(dsd.validate( "One"));
     }
-    @Ignore
     @Test
     public void validateStringRangeMinMaxSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -164,7 +156,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "ONE"));
         assertTrue(dsd.validate( "One"));
     }
-    @Ignore
     @Test
     public void validateStringRangeBadMinMaxSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -182,7 +173,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "ONE"));
         assertTrue(!dsd.validate( "One"));
     }
-    @Ignore
     @Test
     public void validateIntegerNoRestraintSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -201,7 +191,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "11.23344"));
    }
 
-    @Ignore
     @Test
     public void validateIntegerRangeMinMaxSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -220,7 +209,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "13"));
         assertTrue(!dsd.validate( "11.23344"));
     }
-    @Ignore
     @Test
     public void validateIntegerRangeMinSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -238,7 +226,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "13"));
         assertTrue(!dsd.validate( "11.23344"));
    }
-    @Ignore
     @Test
     public void validateIntegerRangeMaxSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -256,7 +243,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "13"));
         assertTrue(!dsd.validate( "11.23344"));
     }
-    @Ignore
     @Test
     public void validateDoubleNoRestraintSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -275,7 +261,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "12.76"));
         assertTrue(dsd.validate( "27"));
     }
-    @Ignore
     @Test
     public void validateDoubleRangeMinMaxSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -296,7 +281,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "12.76"));
         assertTrue(dsd.validate( "11"));
     }
-    @Ignore
     @Test
     public void validateDoubleRangeMinSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -316,7 +300,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "12.76"));
         assertTrue(dsd.validate( "11"));
     }
-    @Ignore
     @Test
     public void validateDoubleRangeMaxSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -336,7 +319,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "12.76"));
         assertTrue(dsd.validate( "11"));
     }
-    @Ignore
     @Test
     public void validateBooleanSettingTest(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -354,7 +336,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "dgsdgsdf"));
         assertTrue(!dsd.validate( "12.76"));
     }
-    @Ignore
     @Test
     public void validateMinString(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -365,7 +346,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "one"));
         
     }
-    @Ignore
     @Test
     public void validateMaxString(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -376,7 +356,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "one"));
         
     }
-    @Ignore
     @Test
     public void validateMinEmptyString(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -387,7 +366,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "one"));
         
     }
-    @Ignore
     @Test
     public void validateMaxEmptyString(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -398,7 +376,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(dsd.validate( "one"));
         
     }
-    @Ignore
     @Test
     public void validateMinInteger(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -409,7 +386,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "3"));
         
     }
-    @Ignore
     @Test
     public void validateMaxInteger(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -419,7 +395,6 @@ public class DeviceSettingDefinitionTest {
         
         assertTrue(!dsd.validate( "11"));
     }
-    @Ignore
     @Test
     public void validateMinDouble(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -430,7 +405,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "3.2"));
         
     }
-    @Ignore
     @Test
     public void validateMaxDouble(){
         DeviceSettingDefinition dsd = new  DeviceSettingDefinition();
@@ -440,7 +414,6 @@ public class DeviceSettingDefinitionTest {
         
         assertTrue(!dsd.validate( "11.5"));
     }
-    @Ignore
     @Test
     public void validateRegex(){
 		Pattern regex = Pattern.compile("([0-9]|[1-2][0-9]|30) ([0-9]|[1-2][0-9]|3[0-5]) ([0-9]|[1-3][0-9]|40) ([0-9]|[1-3][0-9]|4[0-5]) ([0-9]|[1-4][0-9]|50) ([5-9]|[1-4][0-9]|5[0-5]) ([1-5][0-9]|60) (1[5-9]|[2-5][0-9]|6[0-5]) ([2-6][0-9]|70) (2[5-9]|[3-6][0-9]|7[0-5]) ([3-7][0-9]|80) (3[5-9]|[4-7][0-9]|8[0-5]) ([4-8][0-9]|90) (4[5-9]|[5-8][0-9]|9[0-5]) ([5-9][0-9]|100)");
@@ -467,7 +440,6 @@ public class DeviceSettingDefinitionTest {
         assertTrue(!dsd.validate( "5 10 15 20 25 30 35 40 45"));
     }
     
-    @Ignore
     @Test 
     public void ConfiguratorMapperChoicesTest(){
     	ConfiguratorMapper configuratorMapper = new ConfiguratorMapper();
@@ -478,7 +450,6 @@ public class DeviceSettingDefinitionTest {
     	assertTrue(dsd.getChoices().size()==15);
     	assertTrue(dsd.getRegex() == null);
     }
-    @Ignore
     @Test 
     public void ConfiguratorMapperRangeTest(){
     	ConfiguratorMapper configuratorMapper = new ConfiguratorMapper();

@@ -19,7 +19,9 @@ function setGroupSelection(groupId){
 }
 
 </script>
-</ui:define>  	
+</ui:define>
+  	
+<a4j:keepAlive beanName="configuratorBean" ajaxOnly="true"/>
 
 <ui:param name="panelTitle" value="Configurator"/>
 <ui:param name="groupSelected" value="MAIN"/>
@@ -41,15 +43,15 @@ function setGroupSelection(groupId){
 	<h:outputText value="Configuration-centric" styleClass="label"></h:outputText>
 <h:panelGrid columns="2" style="width: 150px">
 	<h:outputText value="Product:" styleClass="label"></h:outputText>
-	<h:selectOneMenu value="#{configuratorBean.productTypeCode}">
+	<h:selectOneMenu value="#{configurationSelectionBean.productTypeCode}">
 	<f:selectItems value="#{productSelectItems.selectItems}"/>
 	</h:selectOneMenu>
 	<h:outputText value="Show only differences:" styleClass="label"></h:outputText>
-<h:selectBooleanCheckbox value="#{configuratorBean.differentOnly}">
+<h:selectBooleanCheckbox value="#{configurationSelectionBean.differentOnly}">
 </h:selectBooleanCheckbox>
 </h:panelGrid>
    <rich:panel id="configuratorGroupRegion" style="border:none">
-   <h:inputHidden id="selectedGroup" value="#{configuratorBean.selectedGroupId}"/>
+   <h:inputHidden id="selectedGroup" value="#{configurationSelectionBean.selectedGroupId}"/>
  	<rich:tree style="width:150px" switchType="client" 
                 value="#{treeNavigationBean.navigationTree}" var="item" ajaxKeys="#{null}" nodeFace="#{item.type}">
          	<rich:treeNode type="fleet" iconLeaf="/images/ico_truck.png"
@@ -73,21 +75,20 @@ function setGroupSelection(groupId){
 			</rich:treeNode>
 		</rich:tree>
     </rich:panel>
-		<h:commandButton id="getConfigurations" value="Get Configurations" action="#{configuratorBean.displayConfigurations}"/>
+		<h:commandButton id="getConfigurations" value="Get Configurations" action="go_configurator"/>
     </rich:panel>
-    
 </a4j:form>
-    
 </ui:define>
 <ui:define name="util_content">
 
 <div>
-            <a4j:form id="configuratorForm">
+            <h:form id="configuratorForm">
 
     	    <rich:panel id="configuratorSettingsRegion" >
-    	    
-            <rich:dataTable rowKeyVar="rkv" rendered="#{configuratorBean.hasConfigurations}"
-                id="settingList" width="100%" 
+    	        	    
+            <rich:scrollableDataTable rowKeyVar="rkv" rendered="#{configuratorBean.hasConfigurations}"
+                id="settingList" rows="#{configuratorBean.configurationSet.configurationsSize}" width="100%" 
+                 frozenColCount="2" style="height:#{configuratorBean.configurationSet.configurationsSize*20+40}px"
                 value="#{configuratorBean.configurationSet.configurations}" var="configuration">
             	<rich:column id="configurationIndex">
                     <f:facet name="header">
@@ -100,54 +101,50 @@ function setGroupSelection(groupId){
                     </f:facet>
                     <h:outputText value="#{configuration.count}" />
                 </rich:column>
- 				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting" rendered="#{not configuratorBean.differentOnly}"
+			     <rich:column id="reason">
+                   <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Reason" />
+                    </f:facet>
+				 	<rich:inplaceInput id="reason"  value="#{configuration.reason}" 
+				 				 showControls="true" selectOnEdit="true" >
+				 				 <a4j:support event="onviewactivated" ajaxSingle="true"/>
+					</rich:inplaceInput>
+			 		<rich:message id="messageTable" for="reason" style="color:red" rendered="true" value="ok"/>
+			</rich:column>
+ 				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting"
  								index="index" id="all-#{setting.name}">
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
-				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}">
-				 	
-					 	<rich:inplaceInput id="input-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
-					 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true"  selectOnEdit="true" 
-					 				 rendered="#{not setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}"
-					 				 validator="#{setting.validate}" >
-								<a4j:support event="onviewactivated" reRender="message-#{setting.settingID}" ajaxSingle="true" process="input-#{setting.settingID}"/> 
+				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices}">
+					 	<rich:inplaceInput id="input-#{setting.settingIDKey}"  value="#{configuration.values[setting.settingID]}" 
+					 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true" selectOnEdit="true"
+					 				  valueChangeListener="#{configuratorBean.markSetting}"
+					 				 validator="#{deviceSettingDefinitions.deviceSettingDefinitionsMap[setting.settingIDKey].validate}" >
+					 				  <a4j:support event="onviewactivated" ajaxSingle="true"/>
 						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="message-#{setting.settingIDKey}" for="input-#{setting.settingIDKey}" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{setting.hasChoices}">
 					 	<rich:inplaceSelect id="select-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
-					 				 		rendered="#{setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}">
+					 				 		 valueChangeListener="#{configuratorBean.markSetting}">
 	
 							<f:selectItems value="#{configuratorBean.choiceSelectItems.selectItems[setting.settingID]}" />
+							 <a4j:support event="onviewactivated" ajaxSingle="true"/>
 						</rich:inplaceSelect>
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
- 					 		<rich:message id="message-#{setting.settingID}" for="input-#{setting.settingID}" style="color:red" rendered="true" value="ok"/>
 					</h:panelGrid>					
 				 				 
 				</rich:columns>
- 				<rich:columns value="#{configuratorBean.differentDeviceSettings}" var="setting" rendered="#{configuratorBean.differentOnly}"
- 								index="index" id="diff-#{setting.name}" sortExpression="#{configuration.values[setting.settingID]}">
-					<f:facet name="header">
-				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
-				 	</f:facet>
-				 	<h:panelGrid columns="3">
-				 	
-					 	<rich:inplaceInput id="diffinput-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
-					 				 style="background-color:#{configuration.colors[setting.settingID]}" showControls="true"  selectOnEdit="true" 
-					 				 rendered="#{not setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}">
-					 				 <a4j:support event="onviewactivated" action="#{configuratorBean.testWhatGetsCalled}" reRender="configuratorSettingsRegion, messages"/>
-					 				 </rich:inplaceInput>
-					 	<rich:inplaceSelect id="diffselect-#{setting.settingID}" name="#{setting.settingID}-#{index}" value="#{configuration.values[setting.settingID]}" defaultLabel="#{configuration.values[setting.settingID]}"
-					 				 		rendered="#{setting.hasChoices}" valueChangeListener="#{configuratorBean.markSetting}">
-	
-							<f:selectItems value="#{configuratorBean.choiceSelectItems.selectItems[setting.settingID]}" />
-						</rich:inplaceSelect>
-				 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
-				 		</h:panelGrid>
-				</rich:columns>
                 
-             </rich:dataTable>
+             </rich:scrollableDataTable>
+             <a4j:commandLink value="Save Selected Configurations" action="#{configuratorBean.updateSettings}" 
+             					rendered="#{configuratorBean.configurationSet.hasConfigurations}"
+             					reRender="configuratorSettingsRegion" />
 	              
 </rich:panel>
-</a4j:form>
+</h:form>
 <a4j:form>
              <rich:panel id="vehicleEditSettingsRegion" rendered="#{configuratorBean.selectedVehicleID ne null}">
            	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 

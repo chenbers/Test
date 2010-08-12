@@ -1,5 +1,6 @@
 package com.inthinc.pro.configurator.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -13,8 +14,9 @@ import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Category;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Unit;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
 
-public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefinitionBean>{
+public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefinitionBean>, Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private DeviceSettingDefinition deviceSettingDefinition;
 
 	public DeviceSettingDefinitionBean(DeviceSettingDefinition deviceSettingDefinition) {
@@ -58,6 +60,9 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 	public Integer getSettingID() {
 		return deviceSettingDefinition.getSettingID();
 	}
+	public String getSettingIDKey(){
+		return deviceSettingDefinition.getSettingID().toString();
+	}
 	public VarType getVarType() {
 		return deviceSettingDefinition.getVarType();
 	}
@@ -67,7 +72,7 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 	public Integer getVisibility() {
 		return deviceSettingDefinition.getVisibility();
 	}
-
+	
 	public Unit getUnit() {
 		return deviceSettingDefinition.getUnit();
 	}
@@ -79,7 +84,6 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 		
 		if (!deviceSettingDefinition.validate((String)value)){
 			
-//			throw new ValidatorException(new FacesMessage("value should match"+deviceSettingDefinition.getRegex()));
 			throw new ValidatorException(new FacesMessage("invalid"));
 		}
 	}

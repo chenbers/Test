@@ -1,5 +1,6 @@
 package com.inthinc.pro.configurator.ui;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,9 +10,11 @@ import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 
-public class ChoiceSelectItems {
+public class ChoiceSelectItems implements Serializable{
     
-    private Map<Integer,List<SelectItem>> selectItems;
+	private static final long serialVersionUID = 1L;
+	
+	private Map<Integer,List<SelectItem>> selectItems;
     
     public ChoiceSelectItems(List<DeviceSettingDefinitionBean> settingsDefinitions){
     	

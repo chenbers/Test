@@ -5,16 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.model.SelectItem;
-
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.model.app.BaseAppEntity;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
 
 public class DeviceSettingDefinitions implements BaseAppEntity {
 
-    private static Map<Integer, DeviceSettingDefinitionBean> deviceSettingDefinitions;
+    private static Map<String, DeviceSettingDefinitionBean> deviceSettingDefinitions;
     private static List<DeviceSettingDefinitionBean> deviceSettingDefinitionsList;
     
     private ConfiguratorDAO configuratorDAO;
@@ -22,11 +19,11 @@ public class DeviceSettingDefinitions implements BaseAppEntity {
     public void init(){
 
         List<DeviceSettingDefinition> dsdList = configuratorDAO.getDeviceSettingDefinitions();  
-        deviceSettingDefinitions = new HashMap<Integer,DeviceSettingDefinitionBean>();
+        deviceSettingDefinitions = new HashMap<String,DeviceSettingDefinitionBean>();
         for(DeviceSettingDefinition dsd : dsdList){
             
         	DeviceSettingDefinitionBean dsdBean = new DeviceSettingDefinitionBean(dsd);
-            deviceSettingDefinitions.put(dsd.getSettingID(), dsdBean);
+            deviceSettingDefinitions.put(dsd.getSettingID().toString(), dsdBean);
         }
         deviceSettingDefinitionsList = new ArrayList<DeviceSettingDefinitionBean>(deviceSettingDefinitions.values());
     }
@@ -43,5 +40,9 @@ public class DeviceSettingDefinitions implements BaseAppEntity {
     public static List<DeviceSettingDefinitionBean> getDeviceSettingDefinitions(){
         
         return deviceSettingDefinitionsList;
+    }
+    public Map<String, DeviceSettingDefinitionBean> getDeviceSettingDefinitionsMap(){
+        
+        return deviceSettingDefinitions;
     }
 }
