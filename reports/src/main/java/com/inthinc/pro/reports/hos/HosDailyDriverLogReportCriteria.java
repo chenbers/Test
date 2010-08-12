@@ -31,6 +31,10 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.hos.util.DateUtil;
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -53,37 +57,21 @@ import com.inthinc.pro.reports.util.MessageUtil;
 public class HosDailyDriverLogReportCriteria {
 
     private static final Logger logger = Logger.getLogger(HosDailyDriverLogReportCriteria.class);
-
+    
+    private AccountDAO accountDAO;
+    private DriverDAO driverDAO;
+    private GroupDAO groupDAO;
+    private HOSDAO hosDAO;
+    
     private static final String BASE_LOG_GRAPH_IMAGE_PATH = "hos/hosLog.jpg";
     
     // each item in list is data for one day
     private List<ReportCriteria> criteriaList;
     private Locale locale;
     private Boolean defaultUseMetric;
-    DateTimeFormatter dateTimeFormatter; 
-    Integer hosStatuses[] = {
-            HOSStatus.OFF_DUTY.getCode(),
-            HOSStatus.SLEEPER.getCode(), 
-            HOSStatus.DRIVING.getCode(),
-            HOSStatus.ON_DUTY.getCode(),
-            HOSStatus.OFF_DUTY_AT_WELL.getCode(), 
-            HOSStatus.ON_DUTY_OCCUPANT.getCode(), 
-            HOSStatus.OFF_DUTY_OCCUPANT.getCode(),
-//            HOS_PRETRIP_INSPECTION(17, "Pre Trip Inspection", "HOS_PRETRIP_INSPECTION"),
-//            HOS_PRETRIP_INSPECTION_NOT_NEEDED(18, "Pre Trip Inspection Not Needed", "HOS_PRETRIP_INSPECTION_NOT_NEEDED"),
-//            HOS_POSTTRIP_INSPECTION(19, "Post Trip Inspection", "HOS_POSTTRIP_INSPECTION"),
-//            HOS_POSTTRIP_INSPECTION_NOT_NEEDED(20, "Post Trip Inspection Not Needed", "HOS_POSTTRIP_INSPECTION_NOT_NEEDED"),
-//            HOS_ADVERSE_DRIVING_CONDITIONS(21, "Adverse Driving Conditions", "HOS_ADVERSE_DRIVING_CONDITIONS"),
-//            HOS_NEAREST_PLACE_OF_REST(22, "Nearest Place of Rest", "HOS_NEAREST_PLACE_OF_REST"),
-//            HOS_EMERGENCY(23, "Emergency", "HOS_EMERGENCY"),
-            HOSStatus.HOS_DERERRAL.getCode(),
-//            DRIVING_NONDOT(25, "Driving Non-DOT", "DRIVING_NONDOT"),   
-//            STOP_DRIVING_NONDOT(26, "Stop Driving Non-DOT", "STOP_DRIVING_NONDOT"),    
-//            HOS_MIDTRIP_INSPECTION(28, "Mid Trip Inspection", "HOS_MIDTRIP_INSPECTION"),
-//            TRAVELTIME_OCCUPANT(29, "Occupant Travel Time", "TRAVELTIME_OCCUPANT"),
-//            HOS_PERSONALTIME(30, "Personal Time", "PERSONAL TIME");
-      
-    };
+    
+    private DateTimeFormatter dateTimeFormatter; 
+
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
     {
         this.locale = locale;
@@ -92,22 +80,12 @@ public class HosDailyDriverLogReportCriteria {
     }
     public void init(Integer driverID, Interval interval)
     {
-/*
- * TODO:
- *              
-        List<HOSRecord> hosRecordList = hosDAO.getHosRecords(driverID, interval, hosStatuses);
-        List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHosVehicleDataByDay(driverID, interval);
-        List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHosOccupantLogs(driverID, interval);
         Driver driver = driverDAO.findByID(driverID);
         Account account = accountDAO.findByID(driver.getPerson().getAcctID());
-        
-*/        
-        Driver driver = null;
-        Account account = null;
-        Group group = null;
-        List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
-        List<HOSVehicleDayData> hosVehicleDayData = new ArrayList<HOSVehicleDayData>();
-        List<HOSOccupantLog> hosOccupantLogList = new ArrayList<HOSOccupantLog>();
+        Group group = groupDAO.findByID(driver.getGroupID());
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval);
+        List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, interval);
+        List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, interval);
         
         initCriteriaList(interval, hosRecordList, hosVehicleDayData, hosOccupantLogList, driver, account, group);
     }
@@ -140,39 +118,33 @@ public class HosDailyDriverLogReportCriteria {
             LocalDate localDate = new LocalDate(intervalDay);
             DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList);
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
+            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true); 
+            List<HOSOccupantLog> occupantLogListForDay = getOccupantLogsForDay(logListForDay, hosOccupantLogList);
+            HOSRec firstHosRecForDay = getFirstRecordForDay(intervalDay.toDate(), hosRecapList);
+            RuleSetType ruleSetType = getRuleSetTypeForDay(day, driver, firstHosRecForDay);
+            DayTotals dayTotals = adjustedList.getAdjustedDayTotals(logListForDay);
             
             HosDailyDriverLog dayData= new HosDailyDriverLog();
             dayData.setDay(dateTimeFormatter.print(day));
-
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList));
             dayData.setCarrierName(account.getAcctName());
             dayData.setMainAddress(account.getAddress() == null ? "" : account.getAddress().getDisplayString());
             dayData.setTerminalAddress(group.getAddress() == null ? "" : group.getAddress().getDisplayString());
             dayData.setDriverName(driver.getPerson().getFullName());
-            
-            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true); 
             dayData.setEdited(isListEdited(logListForDay));
-            dayData.setCodrivers(getCodrivers(logListForDay, hosOccupantLogList));
-            
-            HOSRec firstHosRecForDay = getFirstRecordForDay(intervalDay.toDate(), hosRecapList);
-            RuleSetType ruleSetType = getRuleSetTypeForDay(day, driver, firstHosRecForDay);
+            dayData.setCodrivers(getCodrivers(logListForDay, occupantLogListForDay));
+            dayData.setShipping(getShippingInfoForDay(logListForDay, occupantLogListForDay));
+            dayData.setTrailers(getTrailerInfoForDay(logListForDay, occupantLogListForDay));
             dayData.setRuleSetType(ruleSetType);
-            
             dayData.setVehicles(getVehicleInfoForDay(day, hosVehicleDayData));
             dayData.setMilesDriven(getMilesDrivenOnDay(dayData.getVehicles()));
-            dayData.setShipping(getShippingInfoForDay(logListForDay));
-            dayData.setTrailers(getTrailerInfoForDay(logListForDay));
-            
             dayData.setCorrectedGraphList(logListForDay);
-            DayTotals dayTotals = adjustedList.getAdjustedDayTotals(logListForDay);
             dayData.setCorrectedGraph(createGraph(logListForDay, dayTotals));
-            
             if (dayData.getEdited()) {
                 List<HOSRecAdjusted> originalLogListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, false); 
                 dayData.setOriginalGraphList(originalLogListForDay);
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, adjustedList.getAdjustedDayTotals(logListForDay)));
             }
-
             dayData.setRecap(initRecap(ruleSetType, day, hosRecapList, dayTotals));
             dayData.setRecapType(getRecapType(dayData.getRecap()));
 
@@ -187,8 +159,6 @@ public class HosDailyDriverLogReportCriteria {
         }
     }
     private void adjustForOccupantTravelTime(List<HOSRecord> hosRecordList, HOSAdjustedList adjustedList, Date endDate) {
-        
-        // TODO: refactor
         
         RuleSetType occupantTravelTimeRuleType = null;
         for (HOSRecord logRec : hosRecordList) {
@@ -364,28 +334,41 @@ public class HosDailyDriverLogReportCriteria {
         remarkLog.setStatusDescription((hosRecord.getNotificationData() != null) ? (" " + hosRecord.getNotificationData()) : "");
         return remarkLog;
     }
-    private String getCodrivers(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> hosOccupantLogList) {
-        StringBuffer codrivers = new StringBuffer();
+
+    private List<HOSOccupantLog> getOccupantLogsForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> hosOccupantLogList) {
+        
+        List<HOSOccupantLog> dayOccupantLogList = new ArrayList<HOSOccupantLog>(); 
         for (HOSRecAdjusted hosRecord: logListForDay) {
-            if (hosRecord.getStatus().equals(HOSStatus.DRIVING)) {
-                
+            if (hosRecord.getStatus().equals(HOSStatus.DRIVING) ||
+                    hosRecord.getStatus().equals(HOSStatus.ON_DUTY) ||
+                    hosRecord.getStatus().equals(HOSStatus.ON_DUTY_OCCUPANT) ||
+                    hosRecord.getStatus().equals(HOSStatus.SLEEPER)) {
                 for (HOSOccupantLog hosOccupantLog :  hosOccupantLogList) {
-                    if (timesOverlap(hosRecord, hosOccupantLog)) {
-                        codrivers.append(codrivers.length() > 0 ? ", " : "");
-                        codrivers.append(hosOccupantLog.getDriverName());
-                    }
+                    if (hosOccupantLog.getVehicleID().equals(hosRecord.getVehicleID()) && timesOverlap(hosRecord, hosOccupantLog)) 
+                        dayOccupantLogList.add(hosOccupantLog);                
                 }
             }
         }
-        return codrivers.toString();
+        return dayOccupantLogList;
     }
     private boolean timesOverlap(HOSRecAdjusted hosRecord, HOSOccupantLog hosOccupantLog) {
         Interval driverInterval = new Interval(new DateTime(hosRecord.getLogTimeDate()), 
                                                 new DateTime(hosRecord.getLogTimeDate()).plusMinutes((int)hosRecord.getTotalRealMinutes()));
-        Interval occupantInterval = new Interval(new DateTime(hosOccupantLog.getTime()), new DateTime(hosOccupantLog.getEndTime()));
+        Interval occupantInterval = new Interval(new DateTime(hosOccupantLog.getLogTime()), new DateTime(hosOccupantLog.getEndTime()));
         return driverInterval.overlaps(occupantInterval);
     }
-    private String getTrailerInfoForDay(List<HOSRecAdjusted> logListForDay) {
+
+    private String getCodrivers(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> occupantLogListForDay) {
+        StringBuffer codrivers = new StringBuffer();
+        for (HOSOccupantLog hosOccupantLog :  occupantLogListForDay) {
+            if (!codrivers.toString().contains(hosOccupantLog.getDriverName())) {
+                codrivers.append(codrivers.length() > 0 ? ", " : "");
+                codrivers.append(hosOccupantLog.getDriverName());
+            }
+         }
+        return codrivers.toString();
+    }
+    private String getTrailerInfoForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> occupantLogListForDay) {
         StringBuffer trailerInfo = new StringBuffer();
         for (HOSRecAdjusted hosRecord: logListForDay) {
             if (hosRecord.getTrailerID() != null && !trailerInfo.toString().contains(hosRecord.getTrailerID())) {
@@ -393,9 +376,17 @@ public class HosDailyDriverLogReportCriteria {
                 trailerInfo.append(hosRecord.getTrailerID());
             }
         }
+        for (HOSOccupantLog hosOccupantLog :  occupantLogListForDay) {
+            if (hosOccupantLog.getTrailerID() == null)
+                continue;
+            if (!trailerInfo.toString().contains(hosOccupantLog.getTrailerID())) {
+                trailerInfo.append(trailerInfo.length() > 0 ? ", " : "");
+                trailerInfo.append(hosOccupantLog.getTrailerID());
+            }
+         }
         return trailerInfo.toString();
     }
-    private String getShippingInfoForDay(List<HOSRecAdjusted> logListForDay) {
+    private String getShippingInfoForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> occupantLogListForDay) {
         StringBuffer shippingInfo = new StringBuffer();
         for (HOSRecAdjusted hosRecord: logListForDay) {
             if (hosRecord.getServiceID() != null && !shippingInfo.toString().contains(hosRecord.getServiceID())) {
@@ -403,6 +394,14 @@ public class HosDailyDriverLogReportCriteria {
                 shippingInfo.append(hosRecord.getServiceID());
             }
         }
+        for (HOSOccupantLog hosOccupantLog :  occupantLogListForDay) {
+            if (hosOccupantLog.getServiceID() == null)
+                continue;
+            if (!shippingInfo.toString().contains(hosOccupantLog.getServiceID())) {
+                shippingInfo.append(shippingInfo.length() > 0 ? ", " : "");
+                shippingInfo.append(hosOccupantLog.getServiceID());
+            }
+         }
         return shippingInfo.toString();
     }
 
@@ -415,9 +414,7 @@ public class HosDailyDriverLogReportCriteria {
     }
     private List<VehicleInfo> getVehicleInfoForDay(DateTime day, List<HOSVehicleDayData> hosVehicleDayDataList) {
         List<VehicleInfo> vehicleInfoList = new ArrayList<VehicleInfo>();
-//System.out.println("day " + day.toDate().getTime());            
         for (HOSVehicleDayData hosVehicleDayData: hosVehicleDayDataList) {
-//System.out.println("vehicle day " + hosVehicleDayData.getDay().getTime());            
             if (day.toDate().getTime() == hosVehicleDayData.getDay().getTime()) {
                 VehicleInfo vehicleInfo = new VehicleInfo();
                 vehicleInfo.setStartOdometer(hosVehicleDayData.getStartOdometer());
@@ -436,7 +433,6 @@ public class HosDailyDriverLogReportCriteria {
     }
     private RuleSetType getRuleSetTypeForDay(DateTime day, Driver driver, HOSRecBase hosRec)
     {
-        // TODO: LOCALIZED RULE SET TYPE?
         RuleSetType ruleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
         if (hosRec != null) {
             ruleSetType =  hosRec.getRuleType();
@@ -492,6 +488,7 @@ public class HosDailyDriverLogReportCriteria {
             hosDDLRec.setEdited(hosRec.getEdited() || hosRec.getOrigin().equals(HOSOrigin.PORTAL));
             hosDDLRec.setServiceID(hosRec.getServiceID());
             hosDDLRec.setTrailerID(hosRec.getTrailerID());
+            hosDDLRec.setVehicleID(hosRec.getVehicleID());
             hosDDLRec.setRuleType(hosRec.getDriverDotType());
 
             adjustedList.add(hosDDLRec);
@@ -514,6 +511,25 @@ public class HosDailyDriverLogReportCriteria {
         }
 
         return hosRecapList;
+    }
+
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
     }
 
 }

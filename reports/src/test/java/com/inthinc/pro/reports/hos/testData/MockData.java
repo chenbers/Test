@@ -44,5 +44,17 @@ public class MockData {
         return driver;
     }
 
+    public static Driver createMockDriver(Integer acctID, Integer driverID, String first, String last) {
+        Driver driver = new Driver();
+        driver.setDriverID(driverID);
+        driver.setDot(RuleSetType.US);
+        
+        Person person = new Person();
+        person.setFirst(first);
+        person.setLast(last);
+        driver.setPerson(person);
+        
+        return driver;
+    }
 
 }

@@ -67,93 +67,92 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         0,
         0
     };
-    
     public HOSRecAdjusted expectedAdjustedList[][]  = {
             {     // test0_03302010_04012010_rule2
-                new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1269928800000l),TimeZone.getTimeZone("UTC"),new Date(1269928800000l),495l,0,33,false,"","",488l,RuleSetType.US_OIL),
-                new HOSRecAdjusted("1",HOSStatus.OFF_DUTY,new Date(1269958500000l),TimeZone.getTimeZone("UTC"),new Date(1269958500000l),90l,33,6,false,"","",103l,RuleSetType.US_OIL),
-                new HOSRecAdjusted("0",HOSStatus.OFF_DUTY,new Date(1269963900000l),TimeZone.getTimeZone("UTC"),new Date(1269963900000l),-1l,39,57,false,"","",3728l,RuleSetType.US_OIL),
+                new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1269928800000l),TimeZone.getTimeZone("UTC"),new Date(1269928800000l),495l,0,33,false,"","",488l,RuleSetType.US_OIL, 2),
+                new HOSRecAdjusted("1",HOSStatus.OFF_DUTY,new Date(1269958500000l),TimeZone.getTimeZone("UTC"),new Date(1269958500000l),90l,33,6,false,"","",103l,RuleSetType.US_OIL, 1),
+                new HOSRecAdjusted("0",HOSStatus.OFF_DUTY,new Date(1269963900000l),TimeZone.getTimeZone("UTC"),new Date(1269963900000l),-1l,39,57,false,"","",3728l,RuleSetType.US_OIL, 0),
+                
             },
-            {     // test1_01242010_01312010_rule2
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1264316400000l),TimeZone.getTimeZone("UTC"),new Date(1264316400000l),1440l,0,96,false,"","",1440l,RuleSetType.US_OIL),
-            },
-            {     // test2_03012010_03052010_rule2
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1267426800000l),TimeZone.getTimeZone("UTC"),new Date(1267426800000l),1440l,0,96,false,"","",1440l,RuleSetType.US_OIL),
-            },
-            {     // test3_06202010_06302010_rule13
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277103600000l),TimeZone.getTimeZone("UTC"),new Date(1277103600000l),360l,0,24,false,"","",357l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("19",HOSStatus.ON_DUTY,new Date(1277125200000l),TimeZone.getTimeZone("UTC"),new Date(1277125200000l),15l,24,1,false,"","",17l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("17",HOSStatus.ON_DUTY,new Date(1277126100000l),TimeZone.getTimeZone("UTC"),new Date(1277126100000l),15l,25,1,false,"380039","",12l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("16",HOSStatus.DRIVING,new Date(1277127000000l),TimeZone.getTimeZone("UTC"),new Date(1277127000000l),0l,26,0,false,"380039","",6l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("15",HOSStatus.ON_DUTY,new Date(1277127000000l),TimeZone.getTimeZone("UTC"),new Date(1277127000000l),45l,26,3,false,"380039","",34l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("14",HOSStatus.DRIVING,new Date(1277129700000l),TimeZone.getTimeZone("UTC"),new Date(1277129700000l),45l,29,3,false,"380039","",57l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("12",HOSStatus.ON_DUTY,new Date(1277132400000l),TimeZone.getTimeZone("UTC"),new Date(1277132400000l),345l,32,23,false,"380039","",337l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("11",HOSStatus.DRIVING,new Date(1277153100000l),TimeZone.getTimeZone("UTC"),new Date(1277153100000l),60l,55,4,false,"380039","",56l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("9",HOSStatus.ON_DUTY,new Date(1277156700000l),TimeZone.getTimeZone("UTC"),new Date(1277156700000l),0l,59,0,false,"380039","",0l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("8",HOSStatus.DRIVING,new Date(1277156700000l),TimeZone.getTimeZone("UTC"),new Date(1277156700000l),0l,59,0,false,"380039","",11l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("7",HOSStatus.ON_DUTY,new Date(1277156700000l),TimeZone.getTimeZone("UTC"),new Date(1277156700000l),15l,59,1,false,"380039","",8l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("6",HOSStatus.DRIVING,new Date(1277157600000l),TimeZone.getTimeZone("UTC"),new Date(1277157600000l),0l,60,0,false,"380039","",1l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("4",HOSStatus.ON_DUTY,new Date(1277157600000l),TimeZone.getTimeZone("UTC"),new Date(1277157600000l),30l,60,2,false,"380039","",35l,RuleSetType.CANADA_2007_OIL),
-                new HOSRecAdjusted("3",HOSStatus.OFF_DUTY,new Date(1277159400000l),TimeZone.getTimeZone("UTC"),new Date(1277159400000l),12555l,62,34,false,"","",12552l,RuleSetType.CANADA_2007_OIL),
-            },
-            {     // test4_06202010_06302010_rule7
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277010000000l),TimeZone.getTimeZone("UTC"),new Date(1277010000000l),1440l,0,96,false,"","",1440l,RuleSetType.TEXAS),
-            },
-            {     // test5_06202010_06302010_rule1
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277010000000l),TimeZone.getTimeZone("UTC"),new Date(1277010000000l),1440l,0,96,false,"","",1440l,RuleSetType.US),
-            },
-            {     // test6_04182010_04202010_rule10
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1271570400000l),TimeZone.getTimeZone("UTC"),new Date(1271570400000l),1440l,0,96,false,"","",1440l,RuleSetType.NON_DOT),
-            },
-            {     // test7_06202010_06302010_rule14
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277013600000l),TimeZone.getTimeZone("UTC"),new Date(1277013600000l),660l,0,44,false,"","",656l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("46",HOSStatus.ON_DUTY,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),0l,44,0,false,"","",0l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("45",HOSStatus.DRIVING,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),0l,44,0,false,"","",5l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("44",HOSStatus.ON_DUTY,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),0l,44,0,false,"","",1l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("42",HOSStatus.DRIVING,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),15l,44,1,false,"","",5l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("41",HOSStatus.ON_DUTY,new Date(1277054100000l),TimeZone.getTimeZone("UTC"),new Date(1277054100000l),30l,45,2,false,"","",34l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("40",HOSStatus.DRIVING,new Date(1277055900000l),TimeZone.getTimeZone("UTC"),new Date(1277055900000l),15l,47,1,false,"","",10l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("39",HOSStatus.ON_DUTY,new Date(1277056800000l),TimeZone.getTimeZone("UTC"),new Date(1277056800000l),60l,48,4,false,"","",61l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("38",HOSStatus.DRIVING,new Date(1277060400000l),TimeZone.getTimeZone("UTC"),new Date(1277060400000l),0l,52,0,false,"","",4l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-                new HOSRecAdjusted("37",HOSStatus.OFF_DUTY,new Date(1277060400000l),TimeZone.getTimeZone("UTC"),new Date(1277060400000l),1170l,52,44,false,"","",1164l,RuleSetType.CANADA_2007_60_DEGREES_OIL),
-            },
-            {     // test8_06202010_06302010_rule6
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277006400000l),TimeZone.getTimeZone("UTC"),new Date(1277006400000l),495l,0,33,false,"","",496l,RuleSetType.CANADA_HOME_OFFICE),
-                new HOSRecAdjusted("50",HOSStatus.ON_DUTY_OCCUPANT,new Date(1277036100000l),TimeZone.getTimeZone("UTC"),new Date(1277036100000l),30l,33,2,false,"0","",21l,RuleSetType.CANADA_HOME_OFFICE),
-                new HOSRecAdjusted("49",HOSStatus.OFF_DUTY,new Date(1277037900000l),TimeZone.getTimeZone("UTC"),new Date(1277037900000l),225l,35,15,false,"","",232l,RuleSetType.CANADA_HOME_OFFICE),
-                new HOSRecAdjusted("48",HOSStatus.ON_DUTY_OCCUPANT,new Date(1277051400000l),TimeZone.getTimeZone("UTC"),new Date(1277051400000l),60l,50,4,false,"","",61l,RuleSetType.CANADA_HOME_OFFICE),
-                new HOSRecAdjusted("47",HOSStatus.OFF_DUTY,new Date(1277055000000l),TimeZone.getTimeZone("UTC"),new Date(1277055000000l),1260l,54,42,false,"","",1254l,RuleSetType.CANADA_HOME_OFFICE),
-            },
-            {     // test9_06202010_06302010_rule8
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277013600000l),TimeZone.getTimeZone("UTC"),new Date(1277013600000l),1440l,0,96,false,"","",1440l,RuleSetType.CANADA_ALBERTA),
-            },
-            {     // test10_06052010_06152010_rule9
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275710400000l),TimeZone.getTimeZone("UTC"),new Date(1275710400000l),540l,0,36,false,"","",541l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("35",HOSStatus.ON_DUTY,new Date(1275742800000l),TimeZone.getTimeZone("UTC"),new Date(1275742800000l),0l,36,0,false,"1","",0l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("34",HOSStatus.DRIVING,new Date(1275742800000l),TimeZone.getTimeZone("UTC"),new Date(1275742800000l),15l,36,1,false,"1","",6l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("33",HOSStatus.ON_DUTY,new Date(1275743700000l),TimeZone.getTimeZone("UTC"),new Date(1275743700000l),0l,37,0,false,"1","",0l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("32",HOSStatus.DRIVING,new Date(1275743700000l),TimeZone.getTimeZone("UTC"),new Date(1275743700000l),30l,37,2,false,"1","",39l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("30",HOSStatus.OFF_DUTY,new Date(1275745500000l),TimeZone.getTimeZone("UTC"),new Date(1275745500000l),480l,39,32,false,"","",470l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("28",HOSStatus.ON_DUTY,new Date(1275774300000l),TimeZone.getTimeZone("UTC"),new Date(1275774300000l),0l,71,0,false,"1","",0l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("27",HOSStatus.DRIVING,new Date(1275774300000l),TimeZone.getTimeZone("UTC"),new Date(1275774300000l),30l,71,2,false,"1","",41l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("26",HOSStatus.OFF_DUTY,new Date(1275776100000l),TimeZone.getTimeZone("UTC"),new Date(1275776100000l),705l,73,23,false,"","",695l,RuleSetType.CANADA_2007_CYCLE_1),
-            },
-            {     // test11_01192010_01212010_rule11
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1263873600000l),TimeZone.getTimeZone("UTC"),new Date(1263873600000l),1440l,0,96,false,"","",1440l,RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1),
-            },
-            {     // test12_07132010_07172010_personalTime
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1279000800000l),TimeZone.getTimeZone("UTC"),new Date(1279000800000l),405l,0,27,false,"","",412l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("17",HOSStatus.ON_DUTY_OCCUPANT,new Date(1279025100000l),TimeZone.getTimeZone("UTC"),new Date(1279025100000l),705l,27,47,false,"","",701l,RuleSetType.CANADA_2007_CYCLE_1),
-                new HOSRecAdjusted("15",HOSStatus.OFF_DUTY,new Date(1279067400000l),TimeZone.getTimeZone("UTC"),new Date(1279067400000l),690l,74,22,false,"","",691l,RuleSetType.CANADA_2007_CYCLE_1),
-            },
-            {     // test13_06062010_06102010_travelTimeOccupant
-                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1020l,0,68,true,"","",1021l,RuleSetType.US_OIL),
-                new HOSRecAdjusted("55",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),0l,68,0,true,"","",1l,RuleSetType.US_OIL),
-                new HOSRecAdjusted("54",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),180l,68,12,true,"","",174l,RuleSetType.US_OIL),
-                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL),
-            },
+        {   // test1_01242010_01312010_rule2
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1264316400000l),TimeZone.getTimeZone("UTC"),new Date(1264316400000l),1440l,0,96,false,"","",1440l,RuleSetType.US_OIL, 17),
+        },
+        {   // test2_03012010_03052010_rule2
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1267426800000l),TimeZone.getTimeZone("UTC"),new Date(1267426800000l),1440l,0,96,false,"","",1440l,RuleSetType.US_OIL, 2),
+        },
+        {   // test3_06202010_06302010_rule13
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277103600000l),TimeZone.getTimeZone("UTC"),new Date(1277103600000l),360l,0,24,false,"","",357l,RuleSetType.CANADA_2007_OIL, 20),
+                new HOSRecAdjusted("19",HOSStatus.ON_DUTY,new Date(1277125200000l),TimeZone.getTimeZone("UTC"),new Date(1277125200000l),15l,24,1,false,"","",17l,RuleSetType.CANADA_2007_OIL, 19),
+                new HOSRecAdjusted("17",HOSStatus.ON_DUTY,new Date(1277126100000l),TimeZone.getTimeZone("UTC"),new Date(1277126100000l),15l,25,1,false,"380039","",12l,RuleSetType.CANADA_2007_OIL, 17),
+                new HOSRecAdjusted("16",HOSStatus.DRIVING,new Date(1277127000000l),TimeZone.getTimeZone("UTC"),new Date(1277127000000l),0l,26,0,false,"380039","",6l,RuleSetType.CANADA_2007_OIL, 16),
+                new HOSRecAdjusted("15",HOSStatus.ON_DUTY,new Date(1277127000000l),TimeZone.getTimeZone("UTC"),new Date(1277127000000l),45l,26,3,false,"380039","",34l,RuleSetType.CANADA_2007_OIL, 15),
+                new HOSRecAdjusted("14",HOSStatus.DRIVING,new Date(1277129700000l),TimeZone.getTimeZone("UTC"),new Date(1277129700000l),45l,29,3,false,"380039","",57l,RuleSetType.CANADA_2007_OIL, 14),
+                new HOSRecAdjusted("12",HOSStatus.ON_DUTY,new Date(1277132400000l),TimeZone.getTimeZone("UTC"),new Date(1277132400000l),345l,32,23,false,"380039","",337l,RuleSetType.CANADA_2007_OIL, 12),
+                new HOSRecAdjusted("11",HOSStatus.DRIVING,new Date(1277153100000l),TimeZone.getTimeZone("UTC"),new Date(1277153100000l),60l,55,4,false,"380039","",56l,RuleSetType.CANADA_2007_OIL, 11),
+                new HOSRecAdjusted("9",HOSStatus.ON_DUTY,new Date(1277156700000l),TimeZone.getTimeZone("UTC"),new Date(1277156700000l),0l,59,0,false,"380039","",0l,RuleSetType.CANADA_2007_OIL, 9),
+                new HOSRecAdjusted("8",HOSStatus.DRIVING,new Date(1277156700000l),TimeZone.getTimeZone("UTC"),new Date(1277156700000l),0l,59,0,false,"380039","",11l,RuleSetType.CANADA_2007_OIL, 8),
+                new HOSRecAdjusted("7",HOSStatus.ON_DUTY,new Date(1277156700000l),TimeZone.getTimeZone("UTC"),new Date(1277156700000l),15l,59,1,false,"380039","",8l,RuleSetType.CANADA_2007_OIL, 7),
+                new HOSRecAdjusted("6",HOSStatus.DRIVING,new Date(1277157600000l),TimeZone.getTimeZone("UTC"),new Date(1277157600000l),0l,60,0,false,"380039","",1l,RuleSetType.CANADA_2007_OIL, 6),
+                new HOSRecAdjusted("4",HOSStatus.ON_DUTY,new Date(1277157600000l),TimeZone.getTimeZone("UTC"),new Date(1277157600000l),30l,60,2,false,"380039","",35l,RuleSetType.CANADA_2007_OIL, 4),
+                new HOSRecAdjusted("3",HOSStatus.OFF_DUTY,new Date(1277159400000l),TimeZone.getTimeZone("UTC"),new Date(1277159400000l),12555l,62,34,false,"","",12552l,RuleSetType.CANADA_2007_OIL, 3),
+        },
+        {   // test4_06202010_06302010_rule7
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277010000000l),TimeZone.getTimeZone("UTC"),new Date(1277010000000l),1440l,0,96,false,"","",1440l,RuleSetType.TEXAS, 32),
+        },
+        {   // test5_06202010_06302010_rule1
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277010000000l),TimeZone.getTimeZone("UTC"),new Date(1277010000000l),1440l,0,96,false,"","",1440l,RuleSetType.US, 10),
+        },
+        {   // test6_04182010_04202010_rule10
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1271570400000l),TimeZone.getTimeZone("UTC"),new Date(1271570400000l),1440l,0,96,false,"","",1440l,RuleSetType.NON_DOT, 6),
+        },
+        {   // test7_06202010_06302010_rule14
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277013600000l),TimeZone.getTimeZone("UTC"),new Date(1277013600000l),660l,0,44,false,"","",656l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 48),
+                new HOSRecAdjusted("46",HOSStatus.ON_DUTY,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),0l,44,0,false,"","",0l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 46),
+                new HOSRecAdjusted("45",HOSStatus.DRIVING,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),0l,44,0,false,"","",5l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 45),
+                new HOSRecAdjusted("44",HOSStatus.ON_DUTY,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),0l,44,0,false,"","",1l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 44),
+                new HOSRecAdjusted("42",HOSStatus.DRIVING,new Date(1277053200000l),TimeZone.getTimeZone("UTC"),new Date(1277053200000l),15l,44,1,false,"","",5l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 42),
+                new HOSRecAdjusted("41",HOSStatus.ON_DUTY,new Date(1277054100000l),TimeZone.getTimeZone("UTC"),new Date(1277054100000l),30l,45,2,false,"","",34l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 41),
+                new HOSRecAdjusted("40",HOSStatus.DRIVING,new Date(1277055900000l),TimeZone.getTimeZone("UTC"),new Date(1277055900000l),15l,47,1,false,"","",10l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 40),
+                new HOSRecAdjusted("39",HOSStatus.ON_DUTY,new Date(1277056800000l),TimeZone.getTimeZone("UTC"),new Date(1277056800000l),60l,48,4,false,"","",61l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 39),
+                new HOSRecAdjusted("38",HOSStatus.DRIVING,new Date(1277060400000l),TimeZone.getTimeZone("UTC"),new Date(1277060400000l),0l,52,0,false,"","",4l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 38),
+                new HOSRecAdjusted("37",HOSStatus.OFF_DUTY,new Date(1277060400000l),TimeZone.getTimeZone("UTC"),new Date(1277060400000l),1170l,52,44,false,"","",1164l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 37),
+        },
+        {   // test8_06202010_06302010_rule6
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277006400000l),TimeZone.getTimeZone("UTC"),new Date(1277006400000l),495l,0,33,false,"","",496l,RuleSetType.CANADA_HOME_OFFICE, 51),
+                new HOSRecAdjusted("50",HOSStatus.ON_DUTY_OCCUPANT,new Date(1277036100000l),TimeZone.getTimeZone("UTC"),new Date(1277036100000l),30l,33,2,false,"0","",21l,RuleSetType.CANADA_HOME_OFFICE, 50),
+                new HOSRecAdjusted("49",HOSStatus.OFF_DUTY,new Date(1277037900000l),TimeZone.getTimeZone("UTC"),new Date(1277037900000l),225l,35,15,false,"","",232l,RuleSetType.CANADA_HOME_OFFICE, 49),
+                new HOSRecAdjusted("48",HOSStatus.ON_DUTY_OCCUPANT,new Date(1277051400000l),TimeZone.getTimeZone("UTC"),new Date(1277051400000l),60l,50,4,false,"","",61l,RuleSetType.CANADA_HOME_OFFICE, 48),
+                new HOSRecAdjusted("47",HOSStatus.OFF_DUTY,new Date(1277055000000l),TimeZone.getTimeZone("UTC"),new Date(1277055000000l),1260l,54,42,false,"","",1254l,RuleSetType.CANADA_HOME_OFFICE, 47),
+        },
+        {   // test9_06202010_06302010_rule8
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277013600000l),TimeZone.getTimeZone("UTC"),new Date(1277013600000l),1440l,0,96,false,"","",1440l,RuleSetType.CANADA_ALBERTA, 74),
+        },
+        {   // test10_06052010_06152010_rule9
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275710400000l),TimeZone.getTimeZone("UTC"),new Date(1275710400000l),540l,0,36,false,"","",541l,RuleSetType.CANADA_2007_CYCLE_1, 37),
+                new HOSRecAdjusted("35",HOSStatus.ON_DUTY,new Date(1275742800000l),TimeZone.getTimeZone("UTC"),new Date(1275742800000l),0l,36,0,false,"1","",0l,RuleSetType.CANADA_2007_CYCLE_1, 35),
+                new HOSRecAdjusted("34",HOSStatus.DRIVING,new Date(1275742800000l),TimeZone.getTimeZone("UTC"),new Date(1275742800000l),15l,36,1,false,"1","",6l,RuleSetType.CANADA_2007_CYCLE_1, 34),
+                new HOSRecAdjusted("33",HOSStatus.ON_DUTY,new Date(1275743700000l),TimeZone.getTimeZone("UTC"),new Date(1275743700000l),0l,37,0,false,"1","",0l,RuleSetType.CANADA_2007_CYCLE_1, 33),
+                new HOSRecAdjusted("32",HOSStatus.DRIVING,new Date(1275743700000l),TimeZone.getTimeZone("UTC"),new Date(1275743700000l),30l,37,2,false,"1","",39l,RuleSetType.CANADA_2007_CYCLE_1, 32),
+                new HOSRecAdjusted("30",HOSStatus.OFF_DUTY,new Date(1275745500000l),TimeZone.getTimeZone("UTC"),new Date(1275745500000l),480l,39,32,false,"","",470l,RuleSetType.CANADA_2007_CYCLE_1, 30),
+                new HOSRecAdjusted("28",HOSStatus.ON_DUTY,new Date(1275774300000l),TimeZone.getTimeZone("UTC"),new Date(1275774300000l),0l,71,0,false,"1","",0l,RuleSetType.CANADA_2007_CYCLE_1, 28),
+                new HOSRecAdjusted("27",HOSStatus.DRIVING,new Date(1275774300000l),TimeZone.getTimeZone("UTC"),new Date(1275774300000l),30l,71,2,false,"1","",41l,RuleSetType.CANADA_2007_CYCLE_1, 27),
+                new HOSRecAdjusted("26",HOSStatus.OFF_DUTY,new Date(1275776100000l),TimeZone.getTimeZone("UTC"),new Date(1275776100000l),705l,73,23,false,"","",695l,RuleSetType.CANADA_2007_CYCLE_1, 26),
+        },
+        {   // test11_01192010_01212010_rule11
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1263873600000l),TimeZone.getTimeZone("UTC"),new Date(1263873600000l),1440l,0,96,false,"","",1440l,RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1, 9),
+        },
+        {   // test12_07132010_07172010_personalTime
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1279000800000l),TimeZone.getTimeZone("UTC"),new Date(1279000800000l),405l,0,27,false,"","",412l,RuleSetType.CANADA_2007_CYCLE_1, 18),
+                new HOSRecAdjusted("17",HOSStatus.ON_DUTY_OCCUPANT,new Date(1279025100000l),TimeZone.getTimeZone("UTC"),new Date(1279025100000l),705l,27,47,false,"","",701l,RuleSetType.CANADA_2007_CYCLE_1, 17),
+                new HOSRecAdjusted("15",HOSStatus.OFF_DUTY,new Date(1279067400000l),TimeZone.getTimeZone("UTC"),new Date(1279067400000l),690l,74,22,false,"","",691l,RuleSetType.CANADA_2007_CYCLE_1, 15),
+        },
+        {   // test13_06062010_06102010_travelTimeOccupant
+                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1020l,0,68,true,"","",1021l,RuleSetType.US_OIL, 56),
+                new HOSRecAdjusted("55",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),0l,68,0,true,"","",1l,RuleSetType.US_OIL, 55),
+                new HOSRecAdjusted("54",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),180l,68,12,true,"","",174l,RuleSetType.US_OIL, 54),
+                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 53),
+        },
     };
-    
     public HOSRecAdjusted expectedOriginalList[][]  = {
             {     // test0_03302010_04012010_rule2
             },
@@ -182,8 +181,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             {     // test12_07132010_07172010_personalTime
             },
             {     // test13_06062010_06102010_travelTimeOccupant
-                new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1200l,0,80,false,"","",1196l,RuleSetType.US_OIL),
-                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL),
+                new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1200l,0,80,false,"","",1196l,RuleSetType.US_OIL, 58),
+                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 53),
             },
     };
     public Boolean expectedEdited[] = {
@@ -254,11 +253,9 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             assertEquals("corrected list size ", expectedAdjustedList[testCaseCnt].length, correctedList.size());
             int recCnt = 0;
             for (HOSRecAdjusted adjustedRec : correctedList) {
-                
                 compareHOSRecAdjusted(expectedAdjustedList[testCaseCnt][recCnt], adjustedRec, recCnt, testCaseCnt);
                 recCnt++;
             }
-            
             assertEquals("day edited testcase " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedEdited[testCaseCnt], hosDailyDriverLog.getEdited());
             
             List<HOSRecAdjusted> originalList = hosDailyDriverLog.getOriginalGraphList();
@@ -422,30 +419,4 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             
         }
     }
-    
-    
-    
-    
-    
-//  public HOSRecAdjusted expectedAdjustedList[][]  = {
-//  System.out.println("    {     // " + testCaseName[i]); 
-//  for (HOSRecAdjusted rec : correctedList) {
-//      System.out.println("        new HOSRecAdjusted(" + 
-//                  "\"" + rec.getId() + "\"," + 
-//                  "HOSStatus." + rec.getStatus().getName() + "," + 
-//                  "new Date(" + rec.getLogTimeDate().getTime() + "l)," +
-//                  "TimeZone.getTimeZone(\""+rec.getLogTimeZone().getID() + "\")," +
-//                  "new Date(" + rec.getAdjustedTime().getTime() + "l)," + 
-//                  "" + rec.getTotalAdjustedMinutes()+ "l," + 
-//                  "" + rec.getStartIncrement()+ "," + 
-//                  "" + rec.getTotalIncrements()+ "," + 
-//                  "" + rec.isEdited()+ "," + 
-//                  "\"" + rec.getServiceID() + "\"," + 
-//                  "\"" + rec.getTrailerID() + "\"," + 
-//                  "" + rec.getTotalRealMinutes()+ "l," + 
-//                  "RuleSetType." + rec.getRuleType().getName() + 
-//              "),");
-//  }
-//  System.out.println("    },"); 
-//  
 }

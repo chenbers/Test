@@ -10,10 +10,24 @@ public class HOSOccupantLog extends BaseEntity {
     private Integer     driverID;
     private String      driverName;
     private Integer     vehicleID;
-    private Date        time;
+    private Date        logTime;
     private Date        endTime;
     private HOSStatus   status;
+    private String      trailerID;
+    private String      serviceID;
     
+    public String getTrailerID() {
+        return trailerID;
+    }
+    public void setTrailerID(String trailerID) {
+        this.trailerID = trailerID;
+    }
+    public String getServiceID() {
+        return serviceID;
+    }
+    public void setServiceID(String serviceID) {
+        this.serviceID = serviceID;
+    }
     public Integer getDriverID() {
         return driverID;
     }
@@ -32,11 +46,11 @@ public class HOSOccupantLog extends BaseEntity {
     public void setVehicleID(Integer vehicleID) {
         this.vehicleID = vehicleID;
     }
-    public Date getTime() {
-        return time;
+    public Date getLogTime() {
+        return logTime;
     }
-    public void setTime(Date time) {
-        this.time = time;
+    public void setLogTime(Date logTime) {
+        this.logTime = logTime;
     }
     public Date getEndTime() {
         return endTime;

@@ -84,7 +84,7 @@
 			</textField>
 			<componentElement>
 				<reportElement x="0" y="66" width="350" height="14"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="vehiclesDataset">
 						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{vehicles})]]></dataSourceExpression>
@@ -127,20 +127,20 @@
 				</textField>
 			</frame>
 			<line>
-				<reportElement x="0" y="81" width="100" height="1"/>
+				<reportElement positionType="Float" x="0" y="81" width="100" height="1"/>
 			</line>
 			<textField pattern="">
-				<reportElement x="0" y="82" width="100" height="12"/>
+				<reportElement positionType="Float" x="0" y="82" width="100" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.startOdometer}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="110" y="81" width="240" height="1"/>
+				<reportElement positionType="Float" x="110" y="81" width="240" height="1"/>
 			</line>
 			<textField pattern="">
-				<reportElement x="110" y="82" width="240" height="12"/>
+				<reportElement positionType="Float" x="110" y="82" width="240" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -223,17 +223,17 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.carrier}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="357" y="137" width="140" height="12"/>
+				<reportElement positionType="Float" x="357" y="139" width="140" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{codrivers}.length() == 0) ? $R{report.ddl.none} : $F{codrivers}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="357" y="149" width="140" height="1"/>
+				<reportElement positionType="Float" x="357" y="150" width="140" height="1"/>
 			</line>
 			<textField pattern="">
-				<reportElement positionType="Float" x="357" y="150" width="140" height="12"/>
+				<reportElement positionType="Float" x="357" y="153" width="140" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -390,7 +390,7 @@
 		<band height="25" splitType="Stretch">
 			<componentElement>
 				<reportElement x="2" y="0" width="555" height="25"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="remarksDataset">
 						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{remarksList})]]></dataSourceExpression>

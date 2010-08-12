@@ -8,7 +8,10 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
@@ -37,6 +40,8 @@ public class DDLDataSet {
     public List<HOSVehicleDayData> hosVehicleDayDataList;
     public List<HOSOccupantLog> hosOccupantLogList;
     
+    Map<String, Integer> vehicleNameIDMap;
+    Driver occupant;
     
     public static final int statusIdx = 0;
     public static final int descriptionIdx = 1;
@@ -73,35 +78,19 @@ public class DDLDataSet {
         account = MockData.createMockAccount();
         group = MockData.createMockGroup(account.getAcctID());
         driver = MockData.createMockDriver(account.getAcctID());
-        
+        occupant = MockData.createMockDriver(account.getAcctID(), 20, "Occupant", "Driver");
+
+        vehicleNameIDMap = new HashMap<String, Integer>();
+
         hosRecordList = readInTestDataSet("ddl/" + baseFilename + ".csv", driver);
 
         String values[] = baseFilename.split("_");
         interval = DateTimeUtil.getStartEndInterval(values[1], values[2], "MMddyyyy");
 
         
-        genVehicleDayTestData(driver.getDriverID(), interval.getStart(), interval.getEnd());
         numDays = interval.toPeriod().toStandardDays().getDays() + 1;
         
         hosOccupantLogList = genOccupantLogList(driver.getDriverID(), interval.getStart(), interval.getEnd());
-    }
-
-    private List<HOSVehicleDayData> genVehicleDayTestData(Integer driverID, DateTime startDate, DateTime endDate) {
-        List<HOSVehicleDayData> hosVehicleDayDataList = new ArrayList<HOSVehicleDayData>();
-        for (DateTime day = startDate; day.isBefore(endDate); day = day.plusDays(1)) {
-
-            
-            HOSVehicleDayData data = new HOSVehicleDayData();
-            data.setDay(day.toDate());
-            data.setVehicleID(10);
-            data.setVehicleName("Test Vehicle");
-            data.setMilesDriven(1000l);
-            data.setStartOdometer(150000l);
-            
-            hosVehicleDayDataList.add(data);
-        }
-        
-        return hosVehicleDayDataList;
     }
 
     private List<HOSRecord> readInTestDataSet(String filename, Driver driver) {
@@ -111,7 +100,6 @@ public class DDLDataSet {
         hosVehicleDayDataList = new ArrayList<HOSVehicleDayData>();
         List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
         int cnt = 0;
-        int vehicleCnt = 0;
         BufferedReader in;
         try {
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
@@ -148,42 +136,59 @@ public class DDLDataSet {
                 rec.setTimeZone(TimeZone.getTimeZone(values[tznameIdx]));
                 rec.setTrailerID(values[trailerIdIdx]);
                 rec.setVehicleName(values[unitIdIdx]);
+                rec.setVehicleID(getVehicleID(values[unitIdIdx]));
                 rec.setVehicleOdometer(values[startOdometerIdx] == null || values[startOdometerIdx].isEmpty() ? null : (Long.valueOf(values[startOdometerIdx])*100l));
                 rec.setChangedCnt(0);
                 
-                
-                DateTime day = new DateMidnight(new DateTime(rec.getLogTime().getTime(), DateTimeZone.forTimeZone(rec.getTimeZone()))).toDateTime();
-                HOSVehicleDayData data = vehicleInDay(day, values[vehicleIdIdx]);
-                if (data == null) {
-                    data = new HOSVehicleDayData();
-                    data.setDay(day.toDate());
-                    data.setVehicleID(vehicleCnt);
-                    data.setVehicleName(values[vehicleIdIdx]);
-                    data.setMilesDriven(1000l);
-                    data.setStartOdometer(150000l);
+
+                if (rec.getStatus().equals(HOSStatus.DRIVING)) {
+                    DateTime day = new DateMidnight(new DateTime(rec.getLogTime().getTime(), DateTimeZone.forTimeZone(rec.getTimeZone()))).toDateTime();
+                    HOSVehicleDayData data = vehicleInDay(day, values[unitIdIdx]);
+                    if (data == null) {
+                        
+                        data = new HOSVehicleDayData();
+                        data.setDay(day.toDate());
+                        data.setVehicleID(rec.getVehicleID());
+                        data.setVehicleName(values[unitIdIdx]);
+                        data.setMilesDriven(1000l);
+                        data.setStartOdometer(150000l);
+                        
+                        hosVehicleDayDataList.add(data);
+
                     
-                    hosVehicleDayDataList.add(data);
+                        data = new HOSVehicleDayData();
+                        data.setDay(day.toDate());
+                        data.setVehicleID(rec.getVehicleID()*100);
+                        data.setVehicleName(values[unitIdIdx]+ " TEST");
+                        data.setMilesDriven(100l);
+                        data.setStartOdometer(15000l);
+                        
+                        hosVehicleDayDataList.add(data);
+
+                    }
                 }
-                rec.setVehicleID(vehicleCnt);
-                
-                vehicleCnt++;
-                
   
                 hosRecordList.add(rec);
             }
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         return hosRecordList;
         
+    }
+
+    private Integer getVehicleID(String vehicleName) {
+        Integer id = vehicleNameIDMap.get(vehicleName);
+        if (id == null) {
+            id = vehicleNameIDMap.size() + 1;
+            vehicleNameIDMap.put(vehicleName, id);
+        }
+        return id;
     }
 
     private HOSVehicleDayData vehicleInDay(DateTime day, String vehicleName) {
@@ -199,18 +204,28 @@ public class DDLDataSet {
 
 
     private List<HOSOccupantLog> genOccupantLogList(Integer driverID, DateTime startDate, DateTime endDate) {
-        List<HOSOccupantLog> hosOccupantLogList = new ArrayList<HOSOccupantLog>();
         
-//        HOSOccupantLog hosOccupantLog = new HOSOccupantLog();
-//        hosOccupantLog.setDriverID(11);
-//        hosOccupantLog.setDriverName("Test Occupant");
-//        hosOccupantLog.setVehicleID(10);
-//        hosOccupantLog.setStatus(HOSStatus.ON_DUTY_OCCUPANT);
-//        hosOccupantLog.setTime(startDate.toDate());
-//        hosOccupantLog.setEndTime(startDate.plusHours(8).toDate());
-//        
-//        
-//        hosOccupantLogList.add(hosOccupantLog);
+        List<HOSOccupantLog> hosOccupantLogList = new ArrayList<HOSOccupantLog>();
+
+        // just add an occupant to the 1st driving record
+        HOSRecord lastRec = null;
+        for (HOSRecord rec : hosRecordList) {
+            if (rec.getStatus().equals(HOSStatus.DRIVING)) {
+                HOSOccupantLog hosOccupantLog = new HOSOccupantLog();
+                hosOccupantLog.setDriverID(occupant.getDriverID());
+                hosOccupantLog.setDriverName(occupant.getPerson().getFullNameLastFirst());
+                hosOccupantLog.setVehicleID(rec.getVehicleID());
+                hosOccupantLog.setStatus(HOSStatus.ON_DUTY_OCCUPANT);
+                hosOccupantLog.setLogTime(rec.getLogTime());
+                hosOccupantLog.setEndTime((lastRec == null) ? new Date() : lastRec.getLogTime());
+                hosOccupantLog.setServiceID("Occupant ServiceID");
+                hosOccupantLog.setTrailerID("Occupant TrailerID");
+            
+                hosOccupantLogList.add(hosOccupantLog);
+                break;
+            }
+            lastRec = rec;
+        }
         return hosOccupantLogList;
     }
 }
