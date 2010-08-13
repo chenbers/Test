@@ -15,7 +15,6 @@ import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
 public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCriteria {

@@ -26,6 +26,7 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.NonDOTViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
+import com.inthinc.pro.reports.hos.util.HOSUtil;
 
 public class NonDOTViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria {
 
@@ -42,28 +43,14 @@ public class NonDOTViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         List<Driver> driverList = driverDAO.getDrivers(groupID);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
-        
-        if (driverList != null) {
-            for (Driver driver : driverList) {
-                if (driver.getDot() == null)
-                    continue;
-    //            Date hosLogQueryStartDate = DateUtil.getStartOfDayForDaysBack(parseDate(startDate), RuleSetFactory.getDaysBackForRuleSetType(driverDotRuleType), timeZone);
-    //            Date hosLogQueryEndDate = DateUtil.getEndOfDayForDaysForward(parseDate(endDate), RuleSetFactory.getDaysForwardForRuleSetType(driverDotRuleType), timeZone);
-                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
-                DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-                // TODO:
-    //            List<HOSRecord> hosRecordList = hosDAO.getHosRecords(driver.getDriverID(), new Interval(queryStart, queryEnd));
-                List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
-                driverHOSRecordMap.put(driver, hosRecordList);
-//                List<HOSRec> recListForViolationsCalc = getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT)));
-                
-//                driverHOSRecMap.put(driver, getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT))));
-                
-            }
+        for (Driver driver : driverList) {
+            if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
+                continue;
+            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+            DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
+            DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd)));
         }
-        
-
         initDataSet(interval, topGroup, groupList, driverHOSRecordMap);
 
     }
@@ -83,7 +70,7 @@ public class NonDOTViolationsSummaryReportCriteria extends ViolationsSummaryRepo
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             RuleSetType driverDOTType = driver.getDot();
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
-            List<HOSRec> recListForViolationsCalc = getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
+            List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
 
             ViolationsSummary summary = findSummary(groupHierarchy, topGroup, dataMap, driver.getGroupID());
             if (summary == null) {

@@ -19,15 +19,15 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.reports.hos.model.HosGroupMileage;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class HosRecordDataSet extends BaseDataSet {
     public Account account;
     public Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>>();
-    public List<HosGroupMileage> groupMileageList;
-    public List<HosGroupMileage> groupNoDriverMileageList;
+    public List<HOSGroupMileage> groupMileageList;
+    public List<HOSGroupMileage> groupNoDriverMileageList;
 
 
     public HosRecordDataSet(String basePath, String baseFilename, boolean includeMileage) {
@@ -52,8 +52,8 @@ public class HosRecordDataSet extends BaseDataSet {
     }
 
 
-    private List<HosGroupMileage> readInNoDriverMileage(String filename) {
-        List<HosGroupMileage> mileageList = new ArrayList<HosGroupMileage>();
+    private List<HOSGroupMileage> readInNoDriverMileage(String filename) {
+        List<HOSGroupMileage> mileageList = new ArrayList<HOSGroupMileage>();
         BufferedReader in;
         try {
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
@@ -69,9 +69,9 @@ public class HosRecordDataSet extends BaseDataSet {
                     String groupId = values[0];
                     String unitID = values[1];
                     long mileage = Long.valueOf(values[2].replace(",", "")).longValue() * 100;
-                    HosGroupMileage hosGroupMileage = findGroupInMileageList(mileageList, groupId);
+                    HOSGroupMileage hosGroupMileage = findGroupInMileageList(mileageList, groupId);
                     if (hosGroupMileage == null)
-                        mileageList.add(new HosGroupMileage(calcGroupID(groupIDMap, groupId), mileage));
+                        mileageList.add(new HOSGroupMileage(calcGroupID(groupIDMap, groupId), mileage));
                     else hosGroupMileage.setDistance(hosGroupMileage.getDistance() + mileage);
                 }
             }
@@ -84,15 +84,15 @@ public class HosRecordDataSet extends BaseDataSet {
         }
         return mileageList;
     }
-    private HosGroupMileage findGroupInMileageList(List<HosGroupMileage> mileageList, String groupId) {
+    private HOSGroupMileage findGroupInMileageList(List<HOSGroupMileage> mileageList, String groupId) {
         Integer interalID = calcGroupID(groupIDMap, groupId);
-        for (HosGroupMileage groupMileage : mileageList)
+        for (HOSGroupMileage groupMileage : mileageList)
             if (groupMileage.getGroupID().equals(interalID))
                 return groupMileage;
         return null;
     }
-    private List<HosGroupMileage> readInMileage(String filename) {
-        List<HosGroupMileage> mileageList = new ArrayList<HosGroupMileage>();
+    private List<HOSGroupMileage> readInMileage(String filename) {
+        List<HOSGroupMileage> mileageList = new ArrayList<HOSGroupMileage>();
         BufferedReader in;
         try {
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
@@ -107,7 +107,7 @@ public class HosRecordDataSet extends BaseDataSet {
                         }
                     String groupId = values[0];
                     long mileage = Long.valueOf(values[1].replace(",", "")).longValue() * 100;
-                    mileageList.add(new HosGroupMileage(calcGroupID(groupIDMap, groupId), mileage));
+                    mileageList.add(new HOSGroupMileage(calcGroupID(groupIDMap, groupId), mileage));
                 }
             }
         } catch (FileNotFoundException e) {

@@ -22,12 +22,13 @@ import com.inthinc.hos.violations.DailyViolations;
 import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.HosGroupMileage;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
+import com.inthinc.pro.reports.hos.util.HOSUtil;
 
 public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria {
 
@@ -45,37 +46,24 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         List<Driver> driverList = driverDAO.getDrivers(groupID);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
-        
-        if (driverList != null) {
-            for (Driver driver : driverList) {
-                if (driver.getDot() == null)
-                    continue;
-    //            Date hosLogQueryStartDate = DateUtil.getStartOfDayForDaysBack(parseDate(startDate), RuleSetFactory.getDaysBackForRuleSetType(driverDotRuleType), timeZone);
-    //            Date hosLogQueryEndDate = DateUtil.getEndOfDayForDaysForward(parseDate(endDate), RuleSetFactory.getDaysForwardForRuleSetType(driverDotRuleType), timeZone);
-                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
-                DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-                // TODO:
-    //            List<HOSRecord> hosRecordList = hosDAO.getHosRecords(driver.getDriverID(), new Interval(queryStart, queryEnd));
-                List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
-                driverHOSRecordMap.put(driver, hosRecordList);
-//                List<HOSRec> recListForViolationsCalc = getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT)));
-                
-//                driverHOSRecMap.put(driver, getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT))));
-                
-            }
+        for (Driver driver : driverList) {
+            if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
+                continue;
+            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+            DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
+            DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd)));
         }
         
-        // TODO:
-        List<HosGroupMileage> groupMileageList = new ArrayList<HosGroupMileage>();
-        List<HosGroupMileage> groupNoDriverMileageList = new ArrayList<HosGroupMileage>();
+        List<HOSGroupMileage> groupMileageList = hosDAO.getHOSMileage(groupID, interval, false);
+        List<HOSGroupMileage> groupNoDriverMileageList = hosDAO.getHOSMileage(groupID, interval, true);
 
         initDataSet(interval, topGroup, groupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
 
     }
     
     void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap,
-            List<HosGroupMileage> groupMileageList, List<HosGroupMileage> groupNoDriverMileageList)
+            List<HOSGroupMileage> groupMileageList, List<HOSGroupMileage> groupNoDriverMileageList)
     {
         GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
         List<Group> childGroupList = groupHierarchy.getChildren(topGroup);
@@ -90,7 +78,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             RuleSetType driverDOTType = driver.getDot();
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
-            List<HOSRec> recListForViolationsCalc = getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
+            List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
 
             ViolationsSummary summary = findSummary(groupHierarchy, topGroup, dataMap, driver.getGroupID());
             if (summary == null) {
@@ -107,14 +95,14 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             List<ViolationsData> shiftViolations = new ShiftViolations().getHosViolationsInTimeFrame(
                     interval, driverTimeZone.toTimeZone(),
                     driverDOTType, 
-                    null, // RuleSetType overrideDOTType, TODO 
+                    null, 
                     recListForViolationsCalc);
             updateSummary(summary, shiftViolations);
 
             updateSummaryDriverCount(summary, driver);
         }
         
-        for (HosGroupMileage groupMileage : groupMileageList) {
+        for (HOSGroupMileage groupMileage : groupMileageList) {
             HosViolationsSummary summary = (HosViolationsSummary)findSummary(groupHierarchy, topGroup, dataMap, groupMileage.getGroupID());
             if (summary == null) {
                 continue;
@@ -122,7 +110,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             summary.setTotalMiles(summary.getTotalMiles()+groupMileage.getDistance());
             
         }
-        for (HosGroupMileage groupMileage : groupNoDriverMileageList) {
+        for (HOSGroupMileage groupMileage : groupNoDriverMileageList) {
             HosViolationsSummary summary = (HosViolationsSummary)findSummary(groupHierarchy, topGroup, dataMap, groupMileage.getGroupID());
             if (summary == null) {
                 continue;

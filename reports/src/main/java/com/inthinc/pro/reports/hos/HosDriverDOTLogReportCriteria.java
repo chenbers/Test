@@ -8,13 +8,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.RuleSetFactory;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -24,7 +27,8 @@ import com.inthinc.pro.reports.hos.model.DriverDOTLog;
 public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
 
     private static final Logger logger = Logger.getLogger(HosDriverDOTLogReportCriteria.class);
-    
+
+    private HOSDAO hosDAO;
     private static final String   DISPLAY_DATE_FORMAT     = "yyyy-MM-dd HH:mm:ss z";
     protected DateTimeFormatter displayDateTimeFormatter;
     protected DateTimeFormatter dateTimeFormatter;
@@ -40,32 +44,20 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
     
     public void init(List<Driver> driverList, Interval interval)
     {
-//        Group topGroup = groupDAO.findByID(groupID);
-//        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-//        List<Driver> driverList = driverDAO.getDrivers(groupID);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         
         if (driverList != null) {
             for (Driver driver : driverList) {
-                if (driver.getDot() == null)
+                if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                     continue;
-    //            Date hosLogQueryStartDate = DateUtil.getStartOfDayForDaysBack(parseDate(startDate), RuleSetFactory.getDaysBackForRuleSetType(driverDotRuleType), timeZone);
-    //            Date hosLogQueryEndDate = DateUtil.getEndOfDayForDaysForward(parseDate(endDate), RuleSetFactory.getDaysForwardForRuleSetType(driverDotRuleType), timeZone);
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
-                DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-                // TODO:
-    //            List<HOSRecord> hosRecordList = hosDAO.getHosRecords(driver.getDriverID(), new Interval(queryStart, queryEnd));
-                List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
-                driverHOSRecordMap.put(driver, hosRecordList);
-//                List<HOSRec> recListForViolationsCalc = getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT)));
-                
-//                driverHOSRecMap.put(driver, getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT))));
-                
+                DateTime queryStart = new DateMidnight(interval.getStart(), dateTimeZone).toDateTime();
+                DateTime queryEnd = new DateMidnight(interval.getEnd(), dateTimeZone).plusDays(1).toDateTime();
+                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd)));
             }
         }
         
-//        initDataSet(interval, driverHOSRecordMap);
+        initDataSet(interval, driverHOSRecordMap);
 
     }
     
@@ -75,7 +67,6 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
-//            DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
 
             String driverName = driver.getPerson().getFullNameLastFirst();
             for (HOSRecord hosRecord : entry.getValue()) {
@@ -106,4 +97,12 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
 
     }
     
+    public HOSDAO getHosDAO() {
+        return hosDAO;
+    }
+
+    public void setHosDAO(HOSDAO hosDAO) {
+        this.hosDAO = hosDAO;
+    }
+
 }

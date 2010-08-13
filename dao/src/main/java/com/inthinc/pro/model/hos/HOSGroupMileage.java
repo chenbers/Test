@@ -1,11 +1,13 @@
-package com.inthinc.pro.reports.hos.model;
+package com.inthinc.pro.model.hos;
 
-public class HosGroupMileage {
+import com.inthinc.pro.model.BaseEntity;
+
+public class HOSGroupMileage  extends BaseEntity{
     Integer groupID;
     Long distance;
     
     
-    public HosGroupMileage(Integer groupID, Long distance) {
+    public HOSGroupMileage(Integer groupID, Long distance) {
         super();
         this.groupID = groupID;
         this.distance = distance;
@@ -22,6 +24,5 @@ public class HosGroupMileage {
     public void setDistance(Long distance) {
         this.distance = distance;
     }
-    
-    
+
 }

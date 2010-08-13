@@ -7,29 +7,38 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
 
-public abstract class ViolationsSummaryReportCriteria extends HosRecordReportCriteria {
+public abstract class ViolationsSummaryReportCriteria extends ReportCriteria {
 
     private static final Logger logger = Logger.getLogger(ViolationsSummaryReportCriteria.class);
     
     protected GroupDAO groupDAO;
     protected DriverDAO driverDAO;
+    protected HOSDAO hosDAO;
     
+    protected DateTimeFormatter dateTimeFormatter;
+
     public ViolationsSummaryReportCriteria(ReportType reportType, Locale locale) 
     {
-        super(reportType, locale);
+        super(reportType, "", locale);
+        dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
     
+
     public abstract void init(Integer groupID, Interval interval);
     protected abstract void updateSummaryDriverCount(ViolationsSummary summary, Driver driver);
 
@@ -68,5 +77,31 @@ public abstract class ViolationsSummaryReportCriteria extends HosRecordReportCri
             }
         }
     }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+
+    public HOSDAO getHosDAO() {
+        return hosDAO;
+    }
+
+
+    public void setHosDAO(HOSDAO hosDAO) {
+        this.hosDAO = hosDAO;
+    }
+
 
 }

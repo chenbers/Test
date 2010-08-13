@@ -23,7 +23,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.hos.model.HosGroupUnitMileage;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 import com.inthinc.pro.reports.hos.testData.ZeroMilesDataSet;
 import com.inthinc.pro.reports.util.DateTimeUtil;

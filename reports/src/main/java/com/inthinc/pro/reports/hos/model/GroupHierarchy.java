@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.inthinc.pro.model.Group;
 
@@ -25,7 +24,11 @@ public class GroupHierarchy {
         }
         
     }
-    
+
+    public String getFullName(Integer groupID) {
+        return getFullName(getGroup(groupID));
+    }
+
     public String getFullName(Group group) {
         
         StringBuffer buffer = new StringBuffer();

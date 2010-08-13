@@ -8,12 +8,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.reports.hos.model.HosGroupUnitMileage;
+import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class ZeroMilesDataSet extends BaseDataSet {
     
-    public List<HosGroupUnitMileage> groupUnitNoDriverMileageList;
+    public List<HOSVehicleMileage> groupUnitNoDriverMileageList;
 
     public ZeroMilesDataSet(String basePath, String baseFilename) {
         String values[] = baseFilename.split("_");
@@ -25,8 +25,8 @@ public class ZeroMilesDataSet extends BaseDataSet {
     }
 
 
-    private List<HosGroupUnitMileage> readInNoDriverMileage(String filename) {
-        List<HosGroupUnitMileage> mileageList = new ArrayList<HosGroupUnitMileage>();
+    private List<HOSVehicleMileage> readInNoDriverMileage(String filename) {
+        List<HOSVehicleMileage> mileageList = new ArrayList<HOSVehicleMileage>();
         BufferedReader in;
         try {
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
@@ -42,7 +42,7 @@ public class ZeroMilesDataSet extends BaseDataSet {
                     String groupId = values[0];
                     String unitID = values[1];
                     long mileage = Long.valueOf(values[2].replace(",", "")).longValue() * 100;
-                    mileageList.add(new HosGroupUnitMileage(calcGroupID(groupIDMap, groupId), unitID, mileage));
+                    mileageList.add(new HOSVehicleMileage(calcGroupID(groupIDMap, groupId), unitID, mileage));
                 }
             }
         } catch (FileNotFoundException e) {

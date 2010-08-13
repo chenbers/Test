@@ -51,6 +51,7 @@ import com.inthinc.pro.reports.hos.model.RecapType;
 import com.inthinc.pro.reports.hos.model.RecapUS;
 import com.inthinc.pro.reports.hos.model.RemarkLog;
 import com.inthinc.pro.reports.hos.model.VehicleInfo;
+import com.inthinc.pro.reports.hos.util.HOSUtil;
 import com.inthinc.pro.reports.jasper.ReportUtils;
 import com.inthinc.pro.reports.util.MessageUtil;
 
@@ -103,7 +104,7 @@ public class HosDailyDriverLogReportCriteria {
 
     void initCriteriaList(Interval interval, List<HOSRecord> hosRecordList, List<HOSVehicleDayData> hosVehicleDayData, List<HOSOccupantLog> hosOccupantLogList, Driver driver, Account account, Group group) 
     {
-        HOSAdjustedList adjustedList = getAdjustedListFromLogList(hosRecordList);
+        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
         List<HOSRec> hosRecapList = getRecapList(adjustedList, interval.getEnd().toDate());
         adjustForOccupantTravelTime(hosRecordList, adjustedList, interval.getEnd().toDate());
         Collections.reverse(hosRecordList);
@@ -473,31 +474,6 @@ public class HosDailyDriverLogReportCriteria {
     }
     
     
-    private HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecList)
-    {
-        List<HOSRecAdjusted> adjustedList = new ArrayList<HOSRecAdjusted>();
-        for (HOSRecord hosRec : hosRecList)
-        {
-            if (hosRec.getStatus() == null || !hosRec.getStatus().isGraphable() || hosRec.getDeleted())
-                continue;
-            HOSRecAdjusted hosDDLRec = new HOSRecAdjusted(hosRec.getHosLogID().toString(), 
-                    hosRec.getStatus(), 
-                    hosRec.getLogTime(), 
-                    hosRec.getTimeZone());
-            
-            hosDDLRec.setEdited(hosRec.getEdited() || hosRec.getOrigin().equals(HOSOrigin.PORTAL));
-            hosDDLRec.setServiceID(hosRec.getServiceID());
-            hosDDLRec.setTrailerID(hosRec.getTrailerID());
-            hosDDLRec.setVehicleID(hosRec.getVehicleID());
-            hosDDLRec.setRuleType(hosRec.getDriverDotType());
-
-            adjustedList.add(hosDDLRec);
-
-        }
-        Collections.reverse(adjustedList);
-        return new HOSAdjustedList(adjustedList);
-
-    }
 
     private List<HOSRec> getRecapList(HOSAdjustedList adjustedList, Date endDate) {
         List<HOSRec> hosRecapList = new ArrayList<HOSRec>();

@@ -16,21 +16,6 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
     private HOSStatus status;
     private Long totalAdjustedMinutes;
 
-    public void dump() {
-        System.out.println("new DotHoursRemaining(" +
-                "\"" + groupName + "\"," +
-                "0," +
-                "\"" + driverName + "\"," +
-                "RuleSetType." + dotType.getName() + "," +
-                minutesRemaining + "l," +
-                "\"" + day + "\"," +
-                "new Date(" + dayDate.getTime() + "l)," +
-                "HOSStatus." + status.getName() + "," +
-                totalAdjustedMinutes + "l" +
-                "),"
-                );
-    }
-    
     public DotHoursRemaining(String groupName, Integer driverId, String driverName, RuleSetType dotType)
     {
         super();
@@ -123,14 +108,32 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
 
     @Override
     public int compareTo(DotHoursRemaining o) {
-        // first by driver name and next by day and then by status
-        int cmp = driverName.compareTo(o.getDriverName());
+        // first by group name, then driver name and next by day and then by status
+        int cmp = groupName.compareTo(o.getGroupName());
         if (cmp == 0) {
-            cmp = dayDate.compareTo(o.getDayDate()) * -1;
-            if (cmp == 0) 
-                cmp = status.getCode().compareTo(o.getStatus().getCode());
+            cmp = driverName.compareTo(o.getDriverName());
+            if (cmp == 0) {
+                cmp = dayDate.compareTo(o.getDayDate()) * -1;
+                if (cmp == 0) 
+                    cmp = status.getCode().compareTo(o.getStatus().getCode());
+            }
         }
-        
         return cmp;
     }
+    
+    public void dump() {
+        System.out.println("new DotHoursRemaining(" +
+                "\"" + groupName + "\"," +
+                "0," +
+                "\"" + driverName + "\"," +
+                "RuleSetType." + dotType.getName() + "," +
+                minutesRemaining + "l," +
+                "\"" + day + "\"," +
+                "new Date(" + dayDate.getTime() + "l)," +
+                "HOSStatus." + status.getName() + "," +
+                totalAdjustedMinutes + "l" +
+                "),"
+                );
+    }
+    
 }

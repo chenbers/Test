@@ -69,22 +69,23 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
 
     public void init(Integer groupID, Interval interval)
     {
-/*
- * TODO:
- *              
-        List<HOSRecord> hosRecordList = hosDAO.getHosRecords(driverID, interval, hosStatuses);
-        List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHosVehicleDataByDay(driverID, interval);
-        List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHosOccupantLogs(driverID, interval);
-        Driver driver = driverDAO.findByID(driverID);
-        Account account = accountDAO.findByID(driver.getPerson().getAcctID());
+
+        Group topGroup = groupDAO.findByID(groupID);
+        Account account = accountDAO.findByID(topGroup.getAccountID());
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
+        List<Driver> driverList = driverDAO.getDrivers(groupID);
+        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
+        for (Driver driver : driverList) {
+            if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
+                continue;
+            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+            DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(1);
+            DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).plusDays(1);
+            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd)));
+        }
+
         
-*/        
-        Driver driver = null;
-        Account account = null;
-        Group group = null;
-        Map<Driver, List<HOSRecord>> hosRecordMap = new HashMap<Driver, List<HOSRecord>>();
-        
-//        initDataSet(interval, hosRecordMap);
+        initDataSet(interval, account, topGroup, groupList, driverHOSRecordMap);
     }
     
     void initDataSet(Interval interval, Account account, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)

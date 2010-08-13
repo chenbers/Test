@@ -10,18 +10,24 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.HosGroupUnitMileage;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 
 public class HosZeroMilesReportCriteria extends ReportCriteria {
 
     private static final Logger logger = Logger.getLogger(HosZeroMilesReportCriteria.class);
     protected DateTimeFormatter dateTimeFormatter;
+
+    private GroupDAO groupDAO;
+    private HOSDAO hosDAO;
     
+
     public HosZeroMilesReportCriteria(Locale locale) 
     {
         super(ReportType.HOS_ZERO_MILES, "", locale);
@@ -31,48 +37,23 @@ public class HosZeroMilesReportCriteria extends ReportCriteria {
     
     public void init(Integer groupID, Interval interval)
     {
-/*        
         Group topGroup = groupDAO.findByID(groupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = driverDAO.getDrivers(groupID);
-        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
-        
-        if (driverList != null) {
-            for (Driver driver : driverList) {
-                if (driver.getDot() == null)
-                    continue;
-    //            Date hosLogQueryStartDate = DateUtil.getStartOfDayForDaysBack(parseDate(startDate), RuleSetFactory.getDaysBackForRuleSetType(driverDotRuleType), timeZone);
-    //            Date hosLogQueryEndDate = DateUtil.getEndOfDayForDaysForward(parseDate(endDate), RuleSetFactory.getDaysForwardForRuleSetType(driverDotRuleType), timeZone);
-                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
-                DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-                // TODO:
-    //            List<HOSRecord> hosRecordList = hosDAO.getHosRecords(driver.getDriverID(), new Interval(queryStart, queryEnd));
-                List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
-                driverHOSRecordMap.put(driver, hosRecordList);
-//                List<HOSRec> recListForViolationsCalc = getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT)));
-                
-//                driverHOSRecMap.put(driver, getRecListFromLogList(hosRecordList, queryEnd.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT))));
-                
-            }
-        }
-        
-        List<HosGroupMileage> groupMileageList = new ArrayList<HosGroupMileage>();
-        List<HosGroupMileage> groupNoDriverMileageList = new ArrayList<HosGroupMileage>();
 
-        initDataSet(interval, topGroup, groupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
-*/            
+        List<HOSVehicleMileage>  groupNoDriverMileageList = hosDAO.getHOSVehicleMileage(groupID, interval, true);
+
+        initDataSet(interval, topGroup, groupList,  groupNoDriverMileageList);
     }
     
     void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, 
-            List<HosGroupUnitMileage> groupUnitNoDriverMileageList)
+            List<HOSVehicleMileage> groupUnitNoDriverMileageList)
     {
         GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
          
         List<HosZeroMiles> dataList = new ArrayList<HosZeroMiles>();
-        for (HosGroupUnitMileage zeroMileage : groupUnitNoDriverMileageList) {
+        for (HOSVehicleMileage zeroMileage : groupUnitNoDriverMileageList) {
             
-            dataList.add(new HosZeroMiles(groupHierarchy.getFullName(groupHierarchy.getGroup(zeroMileage.getGroupID())), zeroMileage.getUnitID(), zeroMileage.getDistance().doubleValue()));
+            dataList.add(new HosZeroMiles(groupHierarchy.getFullName(groupHierarchy.getGroup(zeroMileage.getGroupID())), zeroMileage.getVehicleName(), zeroMileage.getDistance().doubleValue()));
             
         }
         Collections.sort(dataList);
@@ -85,4 +66,19 @@ public class HosZeroMilesReportCriteria extends ReportCriteria {
         
     }
 
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public HOSDAO getHosDAO() {
+        return hosDAO;
+    }
+
+    public void setHosDAO(HOSDAO hosDAO) {
+        this.hosDAO = hosDAO;
+    }
 }

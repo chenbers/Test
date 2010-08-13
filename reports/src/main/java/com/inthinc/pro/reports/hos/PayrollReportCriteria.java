@@ -1,68 +1,44 @@
 package com.inthinc.pro.reports.hos;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.Map.Entry;
 
-import javax.imageio.ImageIO;
-
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.adjusted.HOSAdjustedList;
-import com.inthinc.hos.model.DayTotals;
-import com.inthinc.hos.model.HOSOrigin;
-import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
-import com.inthinc.hos.model.HOSRecBase;
-import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.hos.rules.HOSRules;
-import com.inthinc.hos.rules.RuleSetFactory;
-import com.inthinc.hos.util.DateUtil;
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.HosDailyDriverLog;
 import com.inthinc.pro.reports.hos.model.PayrollData;
-import com.inthinc.pro.reports.hos.model.Recap;
-import com.inthinc.pro.reports.hos.model.RecapCanada;
-import com.inthinc.pro.reports.hos.model.RecapCanada2007;
-import com.inthinc.pro.reports.hos.model.RecapType;
-import com.inthinc.pro.reports.hos.model.RecapUS;
-import com.inthinc.pro.reports.hos.model.RemarkLog;
-import com.inthinc.pro.reports.hos.model.VehicleInfo;
-import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
-import com.inthinc.pro.reports.jasper.ReportUtils;
+import com.inthinc.pro.reports.hos.util.HOSUtil;
 import com.inthinc.pro.reports.util.DateTimeUtil;
-import com.inthinc.pro.reports.util.MessageUtil;
 
 public class PayrollReportCriteria extends ReportCriteria {
 
     private Locale locale;
     DateTimeFormatter dateTimeFormatter; 
+    
+    protected AccountDAO accountDAO;
+
+    protected GroupDAO groupDAO;
+    protected DriverDAO driverDAO;
+    protected HOSDAO hosDAO;
+
     
     public PayrollReportCriteria(ReportType reportType, Locale locale) 
     {
@@ -83,7 +59,7 @@ public class PayrollReportCriteria extends ReportCriteria {
         
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         
-        HOSAdjustedList adjustedList = getAdjustedListFromLogList(hosRecordList);
+        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
         Group group = groupHierarchy.getGroup(driver.getGroupID());
         String groupName = groupHierarchy.getFullName(group);
         String groupAddress = group.getAddress() == null ? "" : group.getAddress().getDisplayString();
@@ -112,29 +88,35 @@ public class PayrollReportCriteria extends ReportCriteria {
         return dataList;
     }
 
-    
-    private HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecList)
-    {
-        List<HOSRecAdjusted> adjustedList = new ArrayList<HOSRecAdjusted>();
-        for (HOSRecord hosRec : hosRecList)
-        {
-            if (hosRec.getStatus() == null || !hosRec.getStatus().isGraphable() || hosRec.getDeleted())
-                continue;
-            HOSRecAdjusted hosDDLRec = new HOSRecAdjusted(hosRec.getHosLogID().toString(), 
-                    hosRec.getStatus(), 
-                    hosRec.getLogTime(), 
-                    hosRec.getTimeZone());
-            
-            hosDDLRec.setEdited(hosRec.getEdited() || hosRec.getOrigin().equals(HOSOrigin.PORTAL));
-            hosDDLRec.setServiceID(hosRec.getServiceID());
-            hosDDLRec.setTrailerID(hosRec.getTrailerID());
-            hosDDLRec.setRuleType(hosRec.getDriverDotType());
-
-            adjustedList.add(hosDDLRec);
-
-        }
-        Collections.reverse(adjustedList);
-        return new HOSAdjustedList(adjustedList);
-
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
     }
+
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+
+    public HOSDAO getHosDAO() {
+        return hosDAO;
+    }
+
+    public void setHosDAO(HOSDAO hosDAO) {
+        this.hosDAO = hosDAO;
+    }
+    
 }
