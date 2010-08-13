@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -17,6 +16,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.HOSRec;
+import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
@@ -36,7 +36,6 @@ import com.inthinc.pro.reports.hos.util.HOSUtil;
 
 public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
 
-    private static final Logger logger = Logger.getLogger(ViolationsDetailReportCriteria.class);
     
     protected GroupDAO groupDAO;
     protected DriverDAO driverDAO;
@@ -54,37 +53,84 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
 
+    public void init(Integer groupID, Interval interval)
+    {
+        Group topGroup = groupDAO.findByID(groupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
+        List<Driver> driverList = driverDAO.getDrivers(groupID);
+
+        init(topGroup, groupList, driverList, interval);
+    }
     
-    public void init(List<Driver> driverList, Interval interval)
+    public void init(List<Integer> driverIDList, Interval interval)
+    {
+        Group topGroup = null;
+        List<Group> groupList = null;
+        List<Driver> driverList = new ArrayList<Driver>();
+        for (Integer driverID : driverIDList) {
+            Driver driver = driverDAO.findByID(driverID);
+            if (topGroup == null) {
+                groupList = groupDAO.getGroupsByAcctID(driver.getPerson().getAcctID());
+                for (Group group : groupList) {
+                    if (group.getParentID() == null || group.getParentID() == -1) {
+                        topGroup = group;
+                        break;
+                    }
+                }
+            }
+            driverList.add(driver);
+        }
+        init(topGroup, groupList, driverList, interval);
+    }
+    
+    private void init(Group topGroup, List<Group> groupList, List<Driver> driverList, Interval interval)
     {
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         
         if (driverList != null) {
             for (Driver driver : driverList) {
-                if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
+                if (driver.getDot() == null)
                     continue;
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
                 DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
                 DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd)));
+                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd), getHOSStatusFilterList()));
             }
         }
         
-//        initDataSet(interval, driverHOSRecordMap);
+        initDataSet(interval, topGroup, groupList, driverHOSRecordMap);
 
     }
-    
+
+    protected List<HOSStatus> getHOSStatusFilterList() {
+        List<HOSStatus> statusFilterList = new ArrayList<HOSStatus>();
+        statusFilterList.add(HOSStatus.OFF_DUTY);
+        statusFilterList.add(HOSStatus.SLEEPER); 
+        statusFilterList.add(HOSStatus.DRIVING);
+        statusFilterList.add(HOSStatus.ON_DUTY);
+        statusFilterList.add(HOSStatus.OFF_DUTY_AT_WELL); 
+        statusFilterList.add(HOSStatus.ON_DUTY_OCCUPANT); 
+        statusFilterList.add(HOSStatus.OFF_DUTY_OCCUPANT);
+        statusFilterList.add(HOSStatus.HOS_DERERRAL);
+        return statusFilterList;
+    }
+
     void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
 
         List<ViolationsDetailRaw> violationDetailList = new ArrayList<ViolationsDetailRaw>();
         
+        DateTime currentTime = new DateTime(DateTimeZone.UTC);
+        
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             RuleSetType driverDOTType = driver.getDot();
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
+            if (reportEndDate.isAfterNow())
+                reportEndDate = currentTime;
+            
             List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
 
             // violations
@@ -118,8 +164,6 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
             for (Entry<RuleViolationTypes, Long> violationEntry : violationData.getViolationMap().entrySet()) {
                 if (includeViolation(violationEntry.getKey(), violationEntry.getValue()))
                         violationList.add(new Violation(violationEntry.getKey(), violationEntry.getValue()));
-//System.out.println("adding violation type: " + violationEntry.getKey());                
-                
             }
             if (violationList.isEmpty())
                 continue;

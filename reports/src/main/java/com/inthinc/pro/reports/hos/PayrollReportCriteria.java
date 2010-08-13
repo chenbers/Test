@@ -30,11 +30,9 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class PayrollReportCriteria extends ReportCriteria {
 
-    private Locale locale;
-    DateTimeFormatter dateTimeFormatter; 
+    protected DateTimeFormatter dateTimeFormatter; 
     
     protected AccountDAO accountDAO;
-
     protected GroupDAO groupDAO;
     protected DriverDAO driverDAO;
     protected HOSDAO hosDAO;

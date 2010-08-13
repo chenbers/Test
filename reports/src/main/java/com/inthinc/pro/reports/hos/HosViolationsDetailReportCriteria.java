@@ -3,7 +3,6 @@ package com.inthinc.pro.reports.hos;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
@@ -19,7 +18,6 @@ import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
 public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCriteria {
 
-    private static final Logger logger = Logger.getLogger(HosViolationsDetailReportCriteria.class);
     
     public HosViolationsDetailReportCriteria(Locale locale) 
     {

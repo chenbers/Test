@@ -11,6 +11,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.hos.rules.RuleSetFactory;
+
 public class DateTimeUtil {
     
     public static List<DateTime> getDayList(Interval interval, DateTimeZone dateTimeZone)
@@ -32,6 +34,24 @@ public class DateTimeUtil {
         DateTime startDate = new DateMidnight(fmt.parseDateTime(start)).toDateTime();
         DateTime endDate = new DateMidnight(fmt.parseDateTime(end)).toDateTime().plusDays(1).minusSeconds(1);
         return new Interval(startDate, endDate);
+
+    }
+
+    public static Interval getExpandedInterval(Interval interval, DateTimeZone dateTimeZone, int daysBack, int daysForward)
+    {
+        return new Interval(new DateMidnight(interval.getStart(), dateTimeZone).minusDays(daysBack), new DateMidnight(interval.getEnd(), dateTimeZone).plusDays(daysForward)); 
+
+    }
+
+    public static Interval getInterval(DateTime currentTime, int daysBack, int daysForward)
+    {
+        DateTime start = currentTime;
+        DateTime end = currentTime;
+        if (daysBack != 0) 
+            start = new DateMidnight(currentTime).minusDays(daysBack).toDateTime();
+        if (daysForward != 0) 
+            end = new DateMidnight(currentTime).plusDays(daysForward).toDateTime();
+        return new Interval(start, end); 
 
     }
 

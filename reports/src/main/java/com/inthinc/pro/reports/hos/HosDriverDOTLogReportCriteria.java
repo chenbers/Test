@@ -7,8 +7,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -16,17 +14,16 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
 
-    private static final Logger logger = Logger.getLogger(HosDriverDOTLogReportCriteria.class);
 
     private HOSDAO hosDAO;
     private static final String   DISPLAY_DATE_FORMAT     = "yyyy-MM-dd HH:mm:ss z";
@@ -51,9 +48,8 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
                 if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                     continue;
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                DateTime queryStart = new DateMidnight(interval.getStart(), dateTimeZone).toDateTime();
-                DateTime queryEnd = new DateMidnight(interval.getEnd(), dateTimeZone).plusDays(1).toDateTime();
-                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd)));
+                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 0, 1);
+                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval));
             }
         }
         

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -21,7 +20,6 @@ import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 
 public class HosZeroMilesReportCriteria extends ReportCriteria {
 
-    private static final Logger logger = Logger.getLogger(HosZeroMilesReportCriteria.class);
     protected DateTimeFormatter dateTimeFormatter;
 
     private GroupDAO groupDAO;

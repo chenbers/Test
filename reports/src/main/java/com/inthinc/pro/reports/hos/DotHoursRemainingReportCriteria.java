@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -39,7 +38,6 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class DotHoursRemainingReportCriteria extends ReportCriteria {
 
-    private static final Logger logger = Logger.getLogger(HosDriverDOTLogReportCriteria.class);
     private DriverDAO driverDAO;
     private GroupDAO groupDAO;
     private HOSDAO hosDAO;
@@ -66,8 +64,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria {
         for (Driver driver : driverList) {
             if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                 continue;
-            
-            Interval interval = new Interval(new DateMidnight(currentDate).minusDays(DAYS_BACK+RuleSetFactory.getDaysBackForRuleSetType(driver.getDot())), currentDate); 
+            Interval interval = DateTimeUtil.getInterval(currentDate, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), 0); 
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval));
         }
         

@@ -3,11 +3,11 @@ package com.inthinc.pro.reports.hos;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.hos.model.HOSRec;
+import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
@@ -18,7 +18,6 @@ import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
 public class DrivingTimeViolationsDetailReportCriteria extends ViolationsDetailReportCriteria {
-    private static final Logger logger = Logger.getLogger(DrivingTimeViolationsDetailReportCriteria.class);
 
     public DrivingTimeViolationsDetailReportCriteria(Locale locale) {
         super(ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT, locale);
@@ -43,4 +42,13 @@ public class DrivingTimeViolationsDetailReportCriteria extends ViolationsDetailR
         return super.includeViolation(type, minutes);
         
     }
+
+    @Override
+    protected List<HOSStatus> getHOSStatusFilterList() {
+        List<HOSStatus> statusFilterList = super.getHOSStatusFilterList();
+        statusFilterList.add(HOSStatus.DRIVING_NONDOT);
+        statusFilterList.add(HOSStatus.STOP_DRIVING_NONDOT);
+        return statusFilterList;
+    }
+
 }

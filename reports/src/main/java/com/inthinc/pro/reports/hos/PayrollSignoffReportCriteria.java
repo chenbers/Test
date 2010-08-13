@@ -2,16 +2,12 @@ package com.inthinc.pro.reports.hos;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -19,6 +15,7 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.PayrollData;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
 
@@ -35,9 +32,8 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
         Account account = accountDAO.findByID(topGroup.getAccountID());
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-        DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(1);
-        DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).plusDays(1);
-        List<HOSRecord> driverHOSRecordList = hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd));
+        Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 0, 1);
+        List<HOSRecord> driverHOSRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval);
         initDataSet(interval, account, topGroup, groupList, driver, driverHOSRecordList);
 
     }
