@@ -86,7 +86,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             @Override
             public int compare(SelectItem o1, SelectItem o2) {
 //                return MessageUtil.getMessageString(o1.toString()).toLowerCase().compareTo(MessageUtil.getMessageString(o2.toString()).toLowerCase());
-                return o1.getValue().toString().toLowerCase().compareTo(o2.getValue().toString().toLowerCase());
+                return o1.getLabel().toLowerCase().compareTo(o2.getLabel().toLowerCase());
+//                return o1.getValue().toString().toLowerCase().compareTo(o2.getValue().toString().toLowerCase());
             }
         });
     }
