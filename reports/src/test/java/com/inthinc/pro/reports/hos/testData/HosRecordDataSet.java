@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.joda.time.DateTimeZone;
+
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
@@ -47,7 +49,7 @@ public class HosRecordDataSet extends BaseDataSet {
             groupNoDriverMileageList = readInNoDriverMileage(basePath + baseFilename + "_mileageZero.csv");
         }
         // "vtest_00_07012010_07072010",
-        interval = DateTimeUtil.getStartEndInterval(values[2], values[3], "MMddyyyy");
+        interval = DateTimeUtil.getStartEndInterval(values[2], values[3], "MMddyyyy", DateTimeZone.getDefault());
         numDays = interval.toPeriod().toStandardDays().getDays();
     }
 

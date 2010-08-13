@@ -64,7 +64,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria {
         for (Driver driver : driverList) {
             if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                 continue;
-            Interval interval = DateTimeUtil.getInterval(currentDate, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), 0); 
+            Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDot())); 
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval));
         }
         
@@ -77,7 +77,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria {
 
         List<DotHoursRemaining> dotHoursRemainingList = new ArrayList<DotHoursRemaining>();
 
-        Interval interval = new Interval(new DateMidnight(currentDate.minusDays(14)), new DateMidnight(currentDate).plusDays(1));
+        Interval interval = new Interval(new DateMidnight(currentDate.minusDays(14)), new DateMidnight(currentDate));
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();

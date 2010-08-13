@@ -85,8 +85,7 @@ public class DDLDataSet {
         hosRecordList = readInTestDataSet("ddl/" + baseFilename + ".csv", driver);
 
         String values[] = baseFilename.split("_");
-        interval = DateTimeUtil.getStartEndInterval(values[1], values[2], "MMddyyyy");
-
+        interval = DateTimeUtil.getStartEndInterval(values[1], values[2], "MMddyyyy", DateTimeZone.getDefault());
         
         numDays = interval.toPeriod().toStandardDays().getDays() + 1;
         

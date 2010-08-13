@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTimeZone;
+
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -20,7 +22,7 @@ public class ZeroMilesDataSet extends BaseDataSet {
         readInGroupHierarchy(basePath + baseFilename + "_groups.csv", values[1]);
         groupUnitNoDriverMileageList = readInNoDriverMileage(basePath + baseFilename + "_mileageZero.csv");
         // "vtest_00_07012010_07072010",
-        interval = DateTimeUtil.getStartEndInterval(values[2], values[3], "MMddyyyy");
+        interval = DateTimeUtil.getStartEndInterval(values[2], values[3], "MMddyyyy", DateTimeZone.getDefault());
         numDays = interval.toPeriod().toStandardDays().getDays();
     }
 
