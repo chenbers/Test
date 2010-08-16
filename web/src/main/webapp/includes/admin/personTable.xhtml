@@ -203,6 +203,12 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_dot}" /></f:facet>
       <h:outputText value="#{item.driver.dot}" />
     </rich:column>
+<!-- TODO: DOT                            
+    <rich:column id="dot" rendered="#{personBean.tableColumns['driver_dot'].visible}" sortBy="#{messages[item.driver.driverDOTType]}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_dot}" /></f:facet>
+      <h:outputText value="#{messages[item.driver.driverDOTType]}" />
+    </rich:column>
+-->    
     <rich:column id="RFID" rendered="#{personBean.tableColumns['driver_RFID'].visible}" sortBy="#{item.driver.RFID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_RFID}" /></f:facet>
       <h:outputText value="#{item.driver.RFID}">

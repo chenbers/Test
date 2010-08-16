@@ -155,7 +155,10 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_dot}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.dot}" /></td>
+							<td><h:outputText value="#{personBean.item.driver.dot}" /></td> 
+							<!-- TODO: DOT                            
+                            <td><h:outputText value="#{personBean.item.driver.dot == null ? '' : messages[personBean.item.driver.driverDOTType]}" /></td>
+                             -->
                           </tr>
 
                           <tr>

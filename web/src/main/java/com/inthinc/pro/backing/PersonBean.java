@@ -30,6 +30,7 @@ import org.richfaces.event.DropEvent;
 import org.richfaces.event.DropListener;
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
@@ -940,6 +941,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public List<SelectItem> getStatuses() {
         return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
+    
+    public List<SelectItem> getDotTypes() {
+        return SelectItemUtil.toList(RuleSetType.class, false, RuleSetType.SLB_INTERNAL);
+    }
+
     public void measurementTypeChosenAction(){
     	
     	fuelEfficiencyBean.init(getItem().getMeasurementType());

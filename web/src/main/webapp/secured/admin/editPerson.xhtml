@@ -311,7 +311,16 @@
                             <h:outputText value="#{messages.editPerson_driver_dot}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.driver.dot}" id="editPerson-driver_dot" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
+                            <h:inputText value="#{personBean.item.driver.dot}" id="editPerson-driver_dot" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" /> 
+<!-- TODO: DOT 
+                            <h:selectOneMenu value="#{personBean.item.driver.driverDOTType}" 
+                              id="editPerson-driver_dot" 
+                                onchange="checkMultiple(this)"
+                                converter="SimpleBeanConverter">
+                              <f:selectItems value="#{personBean.dotTypes}"/>
+                            </h:selectOneMenu>
+-->    
+
                           </td>
                         </tr>
                         <tr>
