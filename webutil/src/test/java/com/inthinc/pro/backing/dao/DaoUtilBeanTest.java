@@ -71,7 +71,9 @@ public class DaoUtilBeanTest {
 		new Param("name", String.class, 1, com.inthinc.pro.model.Account.class, "testAccount"),	
 		new Param("status", com.inthinc.pro.model.Status.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),	
 		new Param("unkDriverID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),	
-        new Param("addressID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),   
+        new Param("mailID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),   
+        new Param("billID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),   
+        new Param("hos", com.inthinc.pro.model.AccountHOSType.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(0)),   
 	};
 	
 	List<String>modelClassExcludeList = Arrays.asList(
