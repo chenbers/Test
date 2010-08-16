@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -17,13 +18,16 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountHOSType;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -34,8 +38,10 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     /**
      * 
      */
+    private AddressDAO addressDAO;
     private static final long serialVersionUID = 1L;
     private static final Map<String, TimeZone> TIMEZONES;
+    private static final Map<String, State> STATES;
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;    
     private static final String REQUIRED_KEY = "required";
@@ -64,7 +70,13 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             else
                 TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
         }
-    }      
+        // states
+        STATES = new TreeMap<String, State>();
+        for (final State state : States.getStates().values())
+            STATES.put(state.getName(), state);
+    }
+        
+          
     private PersonDAO personDAO;
     private WMSConfigurationBean wmsConfigurationBean;
 
@@ -100,6 +112,13 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     protected void doSave(List<AccountView> saveItems, boolean create) {
 
         for (final AccountView a : saveItems) {
+            if (a.getAddressID() == null) {
+                Integer addrID = getAddressDAO().create(a.getAcctID(), a.getAddress());
+                a.setAddressID(addrID);
+            }
+            else {
+                getAddressDAO().update(a.getAddress());
+            }
             // Update                            
             getAccountDAO().update(a);           
             personDAO.update(a.getPerson());
@@ -147,15 +166,33 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         return TIMEZONES;
     }
     
+    public Map<String, State> getStates() {
+        return STATES;
+    }
+    
     @Override
     protected List<AccountView> loadItems() {       
         final List<AccountView> items = new ArrayList<AccountView>();
         
-        Person udp = getUnknownDriver().getPerson();
-        Account a = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());        
-        items.add(createAccountView(a,udp));
+        AccountView accountView = loadAccountView();
+        items.add(accountView);
         
         return items;
+    }
+
+    private AccountView loadAccountView() {
+        Person udp = getUnknownDriver().getPerson();
+        Account a = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());  
+        
+        Integer addressID = a.getAddressID();
+        Address address = null;
+        if (addressID == null)
+            address = new Address();
+        else address = getAddressDAO().findByID(addressID);
+        a.setAddress(address);
+
+        AccountView accountView = createAccountView(a,udp);
+        return accountView;
     }
 
     private AccountView createAccountView(Account a,Person udp) {
@@ -177,11 +214,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
     @Override
     protected AccountView revertItem(AccountView editItem) {
-        
-        Person udp = getUnknownDriver().getPerson();
-        Account a = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());  
-        
-        return createAccountView(a,udp);
+        return loadAccountView();
     }
 
     @Override
@@ -260,6 +293,14 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     public TableType getTableType() {
         return null;
     }
+    public AddressDAO getAddressDAO() {
+        return addressDAO;
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
+
     
     public static class AccountView extends Account implements EditItem {
         /**

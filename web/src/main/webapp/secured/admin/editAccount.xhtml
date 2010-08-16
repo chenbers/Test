@@ -315,7 +315,66 @@
                       	
                     </td>
                     					
-                   </tr>                   
+                   </tr>       
+                   
+<!-- TODO: DOT                     
+                    <tr>
+                      <td width="390" valign="top">
+                
+                        <div class="add_section_title">
+                        	<h:outputText value="#{messages.editAccount_address}" />
+                        </div>
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_address_addr1}" /></td>
+                            <td><h:inputText id="editAccount-addr1" value="#{accountBean.item.address.addr1}" 
+                            			onchange="checkMultiple(this)" styleClass="text" size="40"
+		                              	maxlength="126" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_address_addr2}" /></td>
+                            <td><h:inputText id="editAccount-addr2" value="#{accountBean.item.address.addr2}" 
+                            		onchange="checkMultiple(this)" styleClass="text" size="40"
+		                              	maxlength="126" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_address_city}" /></td>
+                            <td><h:inputText id="editAccount-city" value="#{accountBean.item.address.city}" 
+                            		onchange="checkMultiple(this)" styleClass="text" size="40"
+		                              	maxlength="126" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_address_state}" /></td>
+                            <td>
+                            <h:selectOneMenu value="#{accountBean.item.address.state}" id="editAccount-state" 
+                            		onchange="checkMultiple(this)">
+                              <f:selectItem itemLabel="" />
+                              <f:converter  converterId="StateConverter"/>
+                              <f:selectItems value="#{accountBean.states}" />
+                            </h:selectOneMenu>
+                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_address_zip}" /></td>
+                            <td><h:inputText id="editAccount-zip" value="#{accountBean.item.address.zip}" 
+                            		onchange="checkMultiple(this)" styleClass="text" size="40"
+		                              	maxlength="30" />                               
+							</td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="10" valign="top">
+                    	  <h:graphicImage value="/images/x.gif" width="10" />
+                      </td>
+                      <td width="390" valign="top">
+                      </td>					                                              
+                    </tr>                    
+-->                    
+                               
                    
 				</table>
 
