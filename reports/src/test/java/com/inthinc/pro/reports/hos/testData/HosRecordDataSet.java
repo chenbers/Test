@@ -243,7 +243,7 @@ public class HosRecordDataSet extends BaseDataSet {
                     person.setEmpid(employeeId);
                     person.setTimeZone(TimeZone.getTimeZone(timeZoneID));
                     driver.setGroupID(driverGroup.getGroupID());
-                    driver.setDot(RuleSetType.valueOf(dot));
+                    driver.setDot(dot);
                     driver.setBarcode(driverId);
                     driverHOSRecordMap.put(driver, new ArrayList<HOSRecord>());
                 }

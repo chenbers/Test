@@ -1032,17 +1032,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             return team;
         }
 
-        public Double getCostPerHourDollars() {
-            if (getCostPerHour() != null)
-                return ((double) getCostPerHour()) / 100;
-            return null;
-        }
-
-        public void setCostPerHourDollars(Double costPerHourDollars) {
-            if ((costPerHourDollars != null) && (costPerHourDollars > 0))
-                setCostPerHour((int) (costPerHourDollars * 100));
-        }
-
         public String getPassword() {
             return password;
         }

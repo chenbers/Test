@@ -27,13 +27,17 @@ public class Account extends BaseEntity
 
     private AccountAttributes         props;
     
+    @Column(name="mailID")
     private Integer                   addressID;
     
-
+    // not currently used
+    private Integer                   billID;   
 
 
     @Column(updateable=false)
     private Address                   address;
+    
+    private AccountHOSType            hos;
 
     public Account()
     {
@@ -122,6 +126,22 @@ public class Account extends BaseEntity
 
     public void setAddressID(Integer addressID) {
         this.addressID = addressID;
+    }
+
+    public Integer getBillID() {
+        return billID;
+    }
+
+    public void setBillID(Integer billID) {
+        this.billID = billID;
+    }
+
+    public AccountHOSType getHos() {
+        return hos;
+    }
+
+    public void setHos(AccountHOSType hos) {
+        this.hos = hos;
     }
 
     

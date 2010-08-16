@@ -15,8 +15,6 @@ public class Vehicle extends BaseEntity
     private Integer           vehicleID;
 
     private Integer           groupID;
-    // costPerHour?? not in db
-    private Integer           costPerHour;                            // in cents
     private Status   status;
     private String            name;
     private String            make;
@@ -36,6 +34,7 @@ public class Vehicle extends BaseEntity
     private Integer           deviceID;
     
     private Integer           odometer;
+    private Boolean           hos;
 
     public Vehicle()
     {
@@ -60,16 +59,6 @@ public class Vehicle extends BaseEntity
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
-    }
-
-    public Integer getCostPerHour()
-    {
-        return costPerHour;
-    }
-
-    public void setCostPerHour(Integer costPerHour)
-    {
-        this.costPerHour = costPerHour;
     }
 
     public String getName()
@@ -198,14 +187,13 @@ public class Vehicle extends BaseEntity
         this.odometer = odometer;
     }
 
-    public Vehicle(Integer vehicleID, Integer groupID, Integer costPerHour, Status status, String name, String make, String model, 
+    public Vehicle(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, 
             Integer year, String color,
             VehicleType vtype, String vin, Integer weight, String license, State state)
     {
         super();
         this.vehicleID = vehicleID;
         this.groupID = groupID;
-        this.costPerHour = costPerHour;
         this.status = status;
         this.name = name;
         this.make = make;
@@ -239,6 +227,14 @@ public class Vehicle extends BaseEntity
         this.vtype = vtype;
     }
 
+    public Boolean getHos() {
+        return hos;
+    }
+
+    public void setHos(Boolean hos) {
+        this.hos = hos;
+    }
+
     public String getFullName()
     {
         if ((this.year == null) && (this.make == null) && (this.model == null))
@@ -255,7 +251,7 @@ public class Vehicle extends BaseEntity
 
     @Override
     public String toString() {
-        return "Vehicle [VIN=" + VIN + ", color=" + color + ", costPerHour=" + costPerHour + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
+        return "Vehicle [VIN=" + VIN + ", color=" + color + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
                 + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
                 + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + "]";
     }

@@ -160,7 +160,7 @@ public abstract class BaseITData {
         vehicleDAO.setSiloService(siloService);
 
         String name = ((idx == null) ? "" : idx) + "Vehicle" + (driverID == null ? "NO_DRIVER" : group.getName());
-        Vehicle vehicle = new Vehicle(0, group.getGroupID(), 10, Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
+        Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
                     VehicleType.LIGHT, "VIN_" + deviceID, 1000, "UT " + group.getGroupID(), 
                     States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
@@ -263,7 +263,7 @@ public abstract class BaseITData {
         // create a person
         while (retryCount > 0)
 	        try {
-		        person = new Person(0, acctID, ReportTestConst.timeZone, 0, address.getAddrID(), 
+		        person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
 		        		first + "email"+groupID+Util.randomInt(1, 99999)+"@email.com", 
 		        		null, "5555555555", "5555555555", null, null, null, null, null, "emp01", 
 		                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, 

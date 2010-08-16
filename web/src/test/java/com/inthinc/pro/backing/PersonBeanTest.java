@@ -23,7 +23,6 @@ public class PersonBeanTest extends BaseAdminBeanTest<PersonBean.PersonView>
     protected void populate(PersonView editItem, BaseAdminBean<PersonBean.PersonView> adminBean)
     {
         editItem.setTimeZone(TimeZone.getTimeZone("UTC"));
-        editItem.setCostPerHour(1000);
         editItem.setAcctID(1);
         editItem.setEmpid("TK624");
         editItem.setReportsTo("John Doe");

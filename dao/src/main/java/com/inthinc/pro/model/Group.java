@@ -36,6 +36,7 @@ public class Group extends BaseEntity
     private Double            mapLng = -95.8008;
     private Integer           zoneRev;
 
+    @Column(name = "addrID")
     private Integer           addressID;
     
     @Column(updateable=false)

@@ -645,19 +645,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             this.device = device;
         }
 
-        public Double getCostPerHourDollars()
-        {
-            if (getCostPerHour() != null)
-                return ((double) getCostPerHour()) / 100;
-            return null;
-        }
-
-        public void setCostPerHourDollars(Double costPerHourDollars)
-        {
-            if ((costPerHourDollars != null) && (costPerHourDollars > 0))
-                setCostPerHour((int) (costPerHourDollars * 100));
-        }
-
         public boolean isSelected()
         {
             return selected;

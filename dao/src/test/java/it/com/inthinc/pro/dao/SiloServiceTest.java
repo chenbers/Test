@@ -22,6 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -49,6 +50,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
@@ -538,7 +540,7 @@ public class SiloServiceTest {
         find();
 
         // create a users at the fleet level for use by the alerts tests
-        Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(),  "email_" + fleetGroup.getGroupID() + "_" + 1000 + "@yahoo.com", null, "555555555" + 9, "555555555" + 9, null, null, null, null, null,
+        Person person = new Person(0, acctID, TimeZone.getDefault(),  address.getAddrID(),  "email_" + fleetGroup.getGroupID() + "_" + 1000 + "@yahoo.com", null, "555555555" + 9, "555555555" + 9, null, null, null, null, null,
                 "emp" + 1000, null, "title", "dept" , "first", "m", "last", "jr", Gender.MALE, 65, 180, Util.genDate(1959, 8, 30), Status.ACTIVE, MeasurementType.ENGLISH,
                 FuelEfficiencyType.MPG_US, Locale.getDefault());
         person.setUser(new User(0, 0, randomRole(acctID), Status.ACTIVE, "user" + fleetGroup.getGroupID() + "_" + 1000, PASSWORD, fleetGroup.getGroupID()));
@@ -900,6 +902,7 @@ public class SiloServiceTest {
         account = new Account(null, Status.ACTIVE);
         String timeStamp = Calendar.getInstance().getTime().toString();
         account.setAcctName(timeStamp);
+        account.setHos(AccountHOSType.NONE);
         // create
         Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
@@ -914,8 +917,9 @@ public class SiloServiceTest {
         
         Address accountAddress = address(acctID);
 
-        // TODO: uncomment when back end is ready
-//        account.setAddressID(accountAddress.getAddrID());
+        account.setAddressID(accountAddress.getAddrID());
+        account.setHos(AccountHOSType.HOS_SUPPORT);
+        
         // update
         Integer changedCount = accountDAO.update(account);
         assertEquals("Account update count", Integer.valueOf(1), changedCount);
@@ -980,6 +984,14 @@ public class SiloServiceTest {
         regionGroup.setGroupID(groupID);
         // team
         team1Group = new Group(0, acctID, "Team", regionGroup.getGroupID(), GroupType.TEAM, null, "Team 1 Group", 5, new LatLng(0.0, 0.0));
+        AddressHessianDAO addressDAO = new AddressHessianDAO();
+        addressDAO.setSiloService(siloService);
+        // create
+        Address team1Address = new Address(null, "1 Team", null, "City", randomState(), "55555", acctID);
+        Integer addrID = addressDAO.create(acctID, team1Address);
+        team1Address.setAddrID(addrID);
+        team1Group.setAddressID(addrID);
+
         groupID = groupDAO.create(acctID, team1Group);
         assertNotNull(groupID);
         team1Group.setGroupID(groupID);
@@ -1168,8 +1180,9 @@ public class SiloServiceTest {
         assertEquals("vehicle list should be empty", Integer.valueOf(0), new Integer(emptyVehicleList.size()));
         // create
         for (int i = 0; i < VEHICLE_COUNT; i++) {
-            Vehicle vehicle = new Vehicle(0, groupID, 10, Status.INACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
+            Vehicle vehicle = new Vehicle(0, groupID, Status.INACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
                     VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState());
+            vehicle.setHos((i == 0));   // set just 1st to hos 
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
@@ -1186,8 +1199,7 @@ public class SiloServiceTest {
                 assertEquals("Vehicle update count " + vehicle.getName(), Integer.valueOf(1), changedCount);
             }
         }
-        // TODO: find out if we need this field (costPerHour) -- not in the backend
-        String ignoreFields[] = { "costPerHour", "modified" };
+        String ignoreFields[] = { "modified" };
         for (Vehicle vehicle : vehicleList) {
             if (vehicle.getGroupID().equals(groupID)) {
                 Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
@@ -1234,7 +1246,7 @@ public class SiloServiceTest {
         vehicleDAO.setSiloService(siloService);
         // create
         for (int i = 0; i < VEHICLE_COUNT; i++) {
-            Vehicle vehicle = new Vehicle(0, groupID, 10, Status.ACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
+            Vehicle vehicle = new Vehicle(0, groupID, Status.ACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
                     VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState());
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
@@ -1265,7 +1277,7 @@ public class SiloServiceTest {
         
         // create
         for (int i = 0; i < PERSON_COUNT; i++) {
-            Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(),  "email_" + groupID + "_" + i + "@yahoo.com", null, "555555555" + i, "555555555" + i, null, null, null, null, null,
+            Person person = new Person(0, acctID, TimeZone.getDefault(), address.getAddrID(),  "email_" + groupID + "_" + i + "@yahoo.com", null, "555555555" + i, "555555555" + i, null, null, null, null, null,
                     "emp" + i, null, "title" + i, "dept" + i, "first" + i, "m" + i, "last" + i, "jr", Gender.MALE, 65, 180, Util.genDate(1959, 8, 30), Status.ACTIVE, MeasurementType.ENGLISH,
                     FuelEfficiencyType.MPG_US, Locale.getDefault());
             person.setUser(new User(0, 0, randomRole(acctID), Status.ACTIVE, "user" + groupID + "_" + i, PASSWORD, groupID));
@@ -1582,7 +1594,8 @@ public class SiloServiceTest {
         String ignoreFields[] = { "modified", "person", "barcode", "rfid1", "rfid2" };
         for (Person person : groupPersonList) {
             Date expired = Util.genDate(2010, 9, 30);
-            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, null, groupID);
+            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, RuleSetType.US_OIL.getCode(), groupID);
+            
             // create
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
             assertNotNull("driver", driverID);
@@ -1724,7 +1737,8 @@ public class SiloServiceTest {
         Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, randomRole(acctID), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
-        Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111",
+        Person person = new Person(0, acctID, TimeZone.getDefault(), 
+                address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111",
                 "8015552222", "8015554444@texter.com", "8015555555@texter.com", 1, 2, 3, "emp" + groupID, null, "title" + groupID, "dept" + groupID, "first" + groupID, "m"
                         + groupID, "last" + groupID, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
         person.setUser(user);

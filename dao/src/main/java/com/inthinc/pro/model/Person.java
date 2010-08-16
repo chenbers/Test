@@ -21,7 +21,6 @@ public class Person extends BaseEntity implements Comparable<Person> {
     private Integer personID;
     @Column(name = "tzName")
     private TimeZone timeZone;
-    private Integer costPerHour; // in cents
     // contact information
     @Column(name = "addrID")
     private Integer addressID;
@@ -67,7 +66,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
         super();
     }
 
-    public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
+    public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
             String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first, String middle,
             String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType,
             FuelEfficiencyType fuelEfficiencyType, Locale locale) {
@@ -75,7 +74,6 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.acctID = acctID;
         this.personID = personID;
         this.timeZone = timeZone;
-        this.costPerHour = costPerHour;
         this.addressID = addressID;
         this.priEmail = priEmail;
         this.secEmail = secEmail;
@@ -125,14 +123,6 @@ public class Person extends BaseEntity implements Comparable<Person> {
             return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
         else
             return null;
-    }
-
-    public Integer getCostPerHour() {
-        return costPerHour;
-    }
-
-    public void setCostPerHour(Integer costPerHour) {
-        this.costPerHour = costPerHour;
     }
 
     public Address getAddress() {
@@ -463,7 +453,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
 
     @Override
     public String toString() {
-        return "Person [acctID=" + acctID + ", address=" + address + ", addressID=" + addressID + ", costPerHour=" + costPerHour + ", crit=" + crit + ", dept=" + dept + ", dob="
+        return "Person [acctID=" + acctID + ", address=" + address + ", addressID=" + addressID + ", crit=" + crit + ", dept=" + dept + ", dob="
                 + dob + ", empid=" + empid + ", first=" + first + ", fuelEfficiencyType=" + fuelEfficiencyType + ", gender=" + gender + ", height=" + height
                 + ", info=" + info + ", last=" + last + ", locale=" + locale + ", measurementType=" + measurementType + ", middle=" + middle + ", personID=" + personID
                 + ", priEmail=" + priEmail + ", priPhone=" + priPhone + ", priText=" + priText + ", reportsTo=" + reportsTo + ", secEmail=" + secEmail + ", secPhone=" + secPhone

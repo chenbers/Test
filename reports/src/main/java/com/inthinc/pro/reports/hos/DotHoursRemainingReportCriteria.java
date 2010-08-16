@@ -64,7 +64,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria {
         for (Driver driver : driverList) {
             if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                 continue;
-            Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDot())); 
+            Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType())); 
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval));
         }
         
@@ -95,7 +95,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria {
     private void fillInDotHoursRemainingData(List<DotHoursRemaining> dataList, String groupName, Driver driver, List<DateTime> dayList, List<HOSRecord> hosRecordList, DateTime currentDate )
     {
 
-       HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driver.getDot());
+       HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driver.getDriverDOTType());
        HOSAdjustedList hosAdjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
        List<HOSRec> recListForHoursRemainingCalc = HOSUtil.getRecListFromLogList(hosRecordList, currentDate.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT)));
        MinutesRemainingData data = rules.getDOTMinutesRemaining(recListForHoursRemainingCalc, currentDate.toDate());
@@ -121,11 +121,11 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria {
                }
            }
            dataList.add(new DotHoursRemaining(groupName, 
-                   driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDot(),
+                   driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDriverDOTType(),
                    minutesRemaining, 
                    dayFormatter.print(day), day.toDate(), HOSStatus.DRIVING, drivingIncrements*15l));
            dataList.add(new DotHoursRemaining(groupName, 
-                   driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDot(),
+                   driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDriverDOTType(),
                    minutesRemaining,dayFormatter.print(day), day.toDate(), HOSStatus.ON_DUTY, onDutyIncrements*15l));
        }
     }

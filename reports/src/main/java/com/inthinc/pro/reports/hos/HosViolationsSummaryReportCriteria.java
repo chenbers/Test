@@ -50,7 +50,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
                 continue;
             
             DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval));
             
         }
@@ -76,7 +76,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            RuleSetType driverDOTType = driver.getDot();
+            RuleSetType driverDOTType = driver.getDriverDOTType();
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
             List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
 
@@ -137,7 +137,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
 
     @Override
     protected void updateSummaryDriverCount(ViolationsSummary summary, Driver driver) {
-        if (driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT)
+        if (driver.getDot() != null && driver.getDriverDOTType() != RuleSetType.NON_DOT)
             summary.setDriverCnt(summary.getDriverCnt() + 1);
         
     }

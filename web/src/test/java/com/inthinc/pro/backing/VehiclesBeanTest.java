@@ -22,7 +22,6 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
     @Override
     protected void populate(VehicleView editItem, BaseAdminBean<VehiclesBean.VehicleView> adminBean)
     {
-        editItem.setCostPerHour(1000);
         editItem.setStatus(Status.ACTIVE);
         editItem.setName("Vehicle");
         editItem.setMake("Chevy");

@@ -92,8 +92,8 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
                 if (driver.getDot() == null)
                     continue;
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
-                DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+                DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()));
+                DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd), getHOSStatusFilterList()));
             }
         }
@@ -126,7 +126,7 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            RuleSetType driverDOTType = driver.getDot();
+            RuleSetType driverDOTType = driver.getDriverDOTType();
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
             if (reportEndDate.isAfterNow())
                 reportEndDate = currentTime;

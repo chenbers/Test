@@ -163,7 +163,7 @@ public class DataGenerator
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
 
-        vehicle = new Vehicle(0, teamGroup.getGroupID(), 10, Status.ACTIVE, "Test Vehicle", "Make", "Model", 2000, "Red", 
+        vehicle = new Vehicle(0, teamGroup.getGroupID(), Status.ACTIVE, "Test Vehicle", "Make", "Model", 2000, "Red", 
                     VehicleType.LIGHT, "VIN_" + teamGroup.getGroupID(), 1000, "UT " + teamGroup.getGroupID(), 
                     States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(teamGroup.getGroupID(), vehicle);
@@ -260,7 +260,7 @@ public class DataGenerator
         personDAO.setSiloService(siloService);
 
         // create a person
-        Person person = new Person(0, acctID, TimeZone.getDefault(), 0, address.getAddrID(), first + "email"+groupID+"@email.com", null, "5555555555", "5555555555", null, null, null, null, null, "emp01", 
+        Person person = new Person(0, acctID, TimeZone.getDefault(), address.getAddrID(), first + "email"+groupID+"@email.com", null, "5555555555", "5555555555", null, null, null, null, null, "emp01", 
                 null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
 
         Integer personID = personDAO.create(acctID, person);

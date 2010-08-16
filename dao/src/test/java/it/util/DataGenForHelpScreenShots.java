@@ -361,7 +361,7 @@ public class DataGenForHelpScreenShots {
         String make = makes[idx];
         String model = models[idx][Util.randomInt(0, models[idx].length-1)];
         VehicleType vtype = VehicleType.valueOf(Util.randomInt(0, 2));
-        Vehicle vehicle = new Vehicle(0, group.getGroupID(), 10, Status.ACTIVE, make + "_" + model+"_"+deviceID , make, model, Util.randomInt(1995, 2009), "Red", 
+        Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, make + "_" + model+"_"+deviceID , make, model, Util.randomInt(1995, 2009), "Red", 
                     vtype, "VIN_" + deviceID, 1000, "UT " +deviceID, 
                     States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
@@ -539,7 +539,7 @@ public class DataGenForHelpScreenShots {
         personDAO.setSiloService(siloService);
 
         // create a person
-        Person person = new Person(0, acctID, ReportTestConst.timeZone, 0, address.getAddrID(), first + last +groupID+"@email" + Util.randomInt(0, 20) + ".com", null, "5555555555", "5555555555", 
+        Person person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), first + last +groupID+"@email" + Util.randomInt(0, 20) + ".com", null, "5555555555", "5555555555", 
         		null, null, null, null, null, "emp" + Util.randomInt(0, 9999), 
                 null, "title", "dept", first, "", last, "", Util.randomInt(0, 1) == 0 ? Gender.MALE : Gender.FEMALE, 
                 Util.randomInt(60, 75), Util.randomInt(150, 220), DateUtil.getDaysBackDate(new Date(), Util.randomInt(18*365, 50*365)), Status.ACTIVE, 

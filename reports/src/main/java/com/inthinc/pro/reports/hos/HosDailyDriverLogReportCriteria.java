@@ -434,7 +434,7 @@ public class HosDailyDriverLogReportCriteria {
     }
     private RuleSetType getRuleSetTypeForDay(DateTime day, Driver driver, HOSRecBase hosRec)
     {
-        RuleSetType ruleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
+        RuleSetType ruleSetType = (driver != null && driver.getDriverDOTType() != null ? driver.getDriverDOTType() : null);
         if (hosRec != null) {
             ruleSetType =  hosRec.getRuleType();
         }
