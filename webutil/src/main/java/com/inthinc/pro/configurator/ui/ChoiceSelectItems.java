@@ -9,17 +9,18 @@ import java.util.Map;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
+import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
 
 public class ChoiceSelectItems implements Serializable{
     
 	private static final long serialVersionUID = 1L;
 	
 	private Map<Integer,List<SelectItem>> selectItems;
-    
-    public ChoiceSelectItems(List<DeviceSettingDefinitionBean> settingsDefinitions){
+	
+	public void init(){
     	
         selectItems = new HashMap<Integer,List<SelectItem>>();
-        for(DeviceSettingDefinitionBean dsd: settingsDefinitions){
+        for(DeviceSettingDefinitionBean dsd: DeviceSettingDefinitions.getDeviceSettingDefinitions()){
             
             if (dsd.getHasChoices()){
                 

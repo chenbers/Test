@@ -13,11 +13,17 @@ import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Category;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Unit;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
+import com.inthinc.pro.util.DummyMap;
 
 public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefinitionBean>, Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private DeviceSettingDefinition deviceSettingDefinition;
+	private ErrorColor errorColor = new ErrorColor();
+
+	public ErrorColor getErrorColor() {
+		return errorColor;
+	}
 
 	public DeviceSettingDefinitionBean(DeviceSettingDefinition deviceSettingDefinition) {
 
@@ -81,10 +87,10 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 		return deviceSettingDefinition.validate(value);
 	}
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		
+
 		if (!deviceSettingDefinition.validate((String)value)){
 			
-			throw new ValidatorException(new FacesMessage("invalid"));
+			throw new ValidatorException(new FacesMessage("*"));
 		}
 	}
 	@Override
@@ -93,4 +99,13 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 		return this.deviceSettingDefinition.compareTo(o.deviceSettingDefinition);
 	}
 
+	public class ErrorColor extends DummyMap<Integer, String>{
+
+		@Override
+		public String get(Object key) {
+			return validate((String) key)?"white":"pink";
+		}
+
+		
+	}
 }

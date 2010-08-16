@@ -1,18 +1,15 @@
 package com.inthinc.pro.backing.configurator;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.validator.ValidatorException;
 
-import org.richfaces.model.selection.Selection;
+import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.configurator.model.Configuration;
@@ -22,15 +19,17 @@ import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.model.VehicleSettings;
 import com.inthinc.pro.configurator.model.VehicleSettingsByProductType;
-import com.inthinc.pro.configurator.ui.ChoiceSelectItems;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
 
-public class ConfiguratorBean extends BaseBean implements Serializable{
+@KeepAlive(ajaxOnly=true)
+public class ConfiguratorBean implements Serializable{
     
+	private BaseBean baseBean;
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger.getLogger(ConfigurationExtractor.class);
+
     private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-    private ChoiceSelectItems choiceSelectItems;
     private List<DeviceSettingDefinitionBean> differentDeviceSettings;
     private List<DeviceSettingDefinitionBean> displaySettingsDefinitions;
     
@@ -46,23 +45,31 @@ public class ConfiguratorBean extends BaseBean implements Serializable{
 	//configuration-centric
     private ConfigurationSelectionBean configurationSelectionBean;
 	private Configuration selectedConfiguration;
+    private boolean differentOnly;
+	private Integer selectedConfigurationID;
     
-    private Selection selection;
-	private Integer selectedRowKey;
-    
+	public ConfiguratorBean() {
+		super();
+
+		differentDeviceSettings = new ArrayList<DeviceSettingDefinitionBean>();
+		displaySettingsDefinitions = new ArrayList<DeviceSettingDefinitionBean>();
+	}
 	public void init() {
-         
+
         if(configurationSelectionBean.getSelectedGroupId() == null) return;
-        
+        	
+		differentOnly = false;
         displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType());
         
-        choiceSelectItems = new ChoiceSelectItems(deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType()));
         vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(configurationSelectionBean.getSelectedGroupIdValue()));
         
         buildConfigurations();
     }
-    public ConfigurationSelectionBean getConfigurationSelectionBean() {
-		return configurationSelectionBean;
+    public boolean isDifferentOnly() {
+		return differentOnly;
+	}
+	public void setDifferentOnly(boolean differentOnly) {
+		this.differentOnly = differentOnly;
 	}
 	public void setConfigurationSelectionBean(
 			ConfigurationSelectionBean configurationSelectionBean) {
@@ -77,25 +84,14 @@ public class ConfiguratorBean extends BaseBean implements Serializable{
 	public VehicleSetting getSelectedVehicleSetting() {
 		return selectedVehicleSetting;
 	}
-    public Selection getSelection() {
-		return selection;
-	}
-	public void setSelection(Selection selection) {
-		this.selection = selection;
-		
-	}
-
-    public Integer getSelectedRowKey() {
-        return selectedRowKey;
+	public Integer getSelectedConfigurationID() {
+        return selectedConfigurationID;
     }
-    public void setSelectedRowKey(Integer selectedRowKey) {
-        this.selectedRowKey = selectedRowKey;
+    public void setSelectedConfigurationID(Integer selectedConfigurationID) {
+        this.selectedConfigurationID = selectedConfigurationID;
     }
     public List<DeviceSettingDefinitionBean> getDisplaySettingsDefinitions() {
         return displaySettingsDefinitions;
-    }
-    public void setDisplaySettingsDefinitions(List<DeviceSettingDefinitionBean> displaySettingsDefinitions) {
-        this.displaySettingsDefinitions = displaySettingsDefinitions;
     }
     public String displayVehicle(){
     	
@@ -105,48 +101,14 @@ public class ConfiguratorBean extends BaseBean implements Serializable{
     	
     	return null;
     }
-//    public void changeProduct(){
-//        
-//        if(selectedGroupId == null) return;
-//        
-//        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(productType);
-//        
-//        choiceSelectItems = new ChoiceSelectItems(deviceSettingDefinitionsByProductType.getDeviceSettings(productType));
-//        
-//        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(getSelectedGroupIdValue()));
-//        
-//        buildConfigurations();
-//    }
     public void buildConfigurations(){
     	
 //        makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(productType),vehicleSettingsByProductType.getVehicleSettings(productType));
         
         configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettingsByProductType(configurationSelectionBean.getProductType()));
-        validateConfigurationSet();
         displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType());
         differentDeviceSettings = deviceSettingDefinitionsByProductType.deriveReducedSettings(configurationSet.getSettingIDsWithMoreThanOneValue(),configurationSelectionBean.getProductType());
     }
-    private void validateConfigurationSet(){
-    	
-        for( Configuration configuration : configurationSet.getConfigurations()){
-            
-           Map<Integer,String> colors = new HashMap<Integer,String>();
-           Map<Integer,String> messages = new HashMap<Integer,String>();
-           for(DeviceSettingDefinitionBean dsdBean: deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType())){
-         	   	
-                String color = dsdBean.validate(configuration.getValues().get(dsdBean.getSettingID()))?"white":"pink";
-                colors.put(dsdBean.getSettingID(),color);
-                String message = dsdBean.validate(configuration.getValues().get(dsdBean.getSettingID()))?"":"Invalid";
-                messages.put(dsdBean.getSettingID(),message);
-            }
-            configuration.setColors(colors);
-            configuration.setMessages(messages);
-       }
-    }
-//    public void groupChanged(){
-//        
-//        changeProduct();
-//    }
     public void setVehicleSettings(VehicleSettings vehicleSettings) {
         this.vehicleSettings = vehicleSettings;
     }
@@ -158,67 +120,52 @@ public class ConfiguratorBean extends BaseBean implements Serializable{
     public void setDeviceSettingDefinitionsByProductType(DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType) {
         this.deviceSettingDefinitionsByProductType = deviceSettingDefinitionsByProductType;
     }
-    public Object updateSettings(){
-     	
-        Iterator<Object> it = selection.getKeys();
-        while(it.hasNext()){
-        	
-        	Integer rowKey = (Integer)it.next();
-        	Configuration configuration = configurationSet.getConfigurations().get(rowKey);
-        	for(Integer vehicleID : configuration.getVehicleIDs()){
-        		
-        		if (vehicleID.intValue()==1){
-        			vehicleSettings.updateVehicleSettings(vehicleID, configuration.getNewDesiredValues(), getProUser().getUser().getUserID(), "testing"/*configuration.getReason()*/);
-        		}
-        	}
-        }
-        return null;
-    }
-    public void updateConfiguration(){
+    public Object updateConfiguration(){
     	
+    	logger.debug("configurator - updateConfiguration");
+    	selectedConfiguration = configurationSet.getConfigurations().get(selectedConfigurationID);
        	for(Integer vehicleID : selectedConfiguration.getVehicleIDs()){
     		
        		//For testing only update vehicle 1
     		if (vehicleID.intValue()==1){
-    			vehicleSettings.updateVehicleSettings(vehicleID, selectedConfiguration.getNewDesiredValues(), getProUser().getUser().getUserID(), "testing"/*configuration.getReason()*/);
+    			vehicleSettings.updateVehicleSettings(	vehicleID, selectedConfiguration.getNewDesiredValues(), 
+    													baseBean.getProUser().getUser().getUserID(), 
+    													selectedConfiguration.getReason());
     		}
     	}
-
+       	return null;
     }
 
     public void markSetting(ValueChangeEvent valueChangeEvent){
     	
-    	System.out.println("configurator - markSetting");
+    	logger.debug("configurator - markSetting");
     	UIComponent source = (UIComponent)valueChangeEvent.getSource();
-    	String id = source.getClientId(FacesContext.getCurrentInstance());
-
-    	String newValue = (String)valueChangeEvent.getNewValue();
-//    	String oldValue = (String)valueChangeEvent.getOldValue();
     	
     	//extract row and settingID and set in desired settings
-        String[] itemKeys = ((String) id).split(":|-");
-        int row = Integer.parseInt(itemKeys[2]);
-        int settingID =  Integer.parseInt(itemKeys[4]);
-        Configuration configuration = configurationSet.getConfigurations().get(row);
-        configuration.setNewDesiredValue(settingID, (String)newValue);
-//        if (deviceSettingDefinitionsByProductType.getDeviceSetting(productType,settingID).validate(newValue)){
-//        	configuration.getColors().put(settingID, "white");
-//        }
-//        else{
-//        	configuration.getColors().put(settingID, "pink");
-//       	
-//        }
+        String[] itemKeys = extractIdSegments(source.getClientId(FacesContext.getCurrentInstance()));
+        
+        Configuration configuration = configurationSet.getConfigurations().get(extractRow(itemKeys));
+    	String newValue = (String)valueChangeEvent.getNewValue();
+        configuration.setNewDesiredValue(extractSettingID(itemKeys), (String)newValue);
   
+    }
+    private String[] extractIdSegments(String id){
+    	
+    	return ((String)id).split(":|-");
+    }
+    private int extractRow(String[] itemKeys){
+    	
+    	return Integer.parseInt(itemKeys[2]);
+    }
+    private int extractSettingID(String[] itemKeys){
+    	
+    	return  Integer.parseInt(itemKeys[4]);
     }
     public void createConfigurationsFromVehicleSettings(){
         
         ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
    }
 
-    public void editSettings(){
-        
-         selectedConfiguration = getHasConfigurations()?configurationSet.getConfigurations().get(getSelectedRowKey()):null;
-    }
     public void setVehicleSettingsByProductType(VehicleSettingsByProductType vehicleSettingsByProductType) {
         this.vehicleSettingsByProductType = vehicleSettingsByProductType;
     }
@@ -234,36 +181,17 @@ public class ConfiguratorBean extends BaseBean implements Serializable{
     public List<DeviceSettingDefinitionBean> getDifferentDeviceSettings() {
         return differentDeviceSettings;
     }
-    public ChoiceSelectItems getChoiceSelectItems() {
-        return choiceSelectItems;
-    }
-//    public Object displayConfigurations(){
-//    	
-//        if(configurationSelectionBean.getSelectedGroupId() == null) return null;
-//        
-//        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType());
-//        
-//        choiceSelectItems = new ChoiceSelectItems(deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType()));
-//        
-//        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(configurationSelectionBean.getSelectedGroupIdValue()));
-//        
-//        buildConfigurations();
-//
-//    	return "go_configurator";
-//    }
     public boolean getHasConfigurations(){
     	
     	return configurationSet != null && configurationSet.getHasConfigurations();
     }
-	public void validateUserID(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		System.out.println(value.toString());
-		throw new ValidatorException(new FacesMessage("invalid"));
+    
+	public BaseBean getBaseBean() {
+		return baseBean;
 	}
-	public void validateUsername(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		
-		System.out.println(value.toString());
-		throw new ValidatorException(new FacesMessage("invalid"));
-}
+	public void setBaseBean(BaseBean baseBean) {
+		this.baseBean = baseBean;
+	}
 
  }
 //    private void makeupSettings( List<DeviceSettingDefinition> settings, List<VehicleSetting> vehicleSettings){

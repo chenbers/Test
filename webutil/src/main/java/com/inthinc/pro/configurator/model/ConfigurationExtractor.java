@@ -14,20 +14,19 @@ public class ConfigurationExtractor {
 
     public static ConfigurationSet getConfigurations(List<VehicleSetting> vehicleSettings){
 
-    	logger.info("ConfigurationExtractor: start");
         return new ConfigurationSet(createConfigurations(vehicleSettings));
     }
     
     private static List<Configuration> createConfigurations(List<VehicleSetting> vehicleSettings){
  
-    	logger.info("ConfigurationExtractor: createConfigurations");
+    	logger.debug("ConfigurationExtractor: createConfigurations");
         if((vehicleSettings == null) || vehicleSettings.isEmpty()) return Collections.emptyList();
         
         List<Configuration> configurations = new ArrayList<Configuration>();
         
         for(VehicleSetting vehicleSetting : vehicleSettings){
             
-        	logger.info("ConfigurationExtractor: vehicleSetting, vehicleID="+vehicleSetting.getVehicleID());
+        	logger.debug("ConfigurationExtractor: vehicleSetting, vehicleID="+vehicleSetting.getVehicleID());
             configurations = addToMatchingConfiguration(vehicleSetting,configurations);
         }
         return configurations;
@@ -37,23 +36,23 @@ public class ConfigurationExtractor {
         
         for(Configuration configuration : configurations){
             
-            if(vehicleSetting.getCombinedSettings().equals(configuration.getValues())){
+            if(vehicleSetting.getCombinedSettings().equals(configuration.getSettingValues())){
                 
-            	logger.info("ConfigurationExtractor: addToMatchingConfiguration - matching found");
+            	logger.debug("ConfigurationExtractor: addToMatchingConfiguration - matching found");
                 configuration.addVehicleID(vehicleSetting.getVehicleID());
                 return configurations;
             }
         }
-        configurations.add(createNewConfiguration(vehicleSetting));
+        configurations.add(createNewConfiguration(configurations.size()+1, vehicleSetting));
         return configurations;
     }
-    private static Configuration createNewConfiguration(VehicleSetting vehicleSetting){
+    private static Configuration createNewConfiguration(Integer configurationID, VehicleSetting vehicleSetting){
         
-       	logger.info("ConfigurationExtractor: addToMatchingConfiguration - adding new");
+       	logger.debug("ConfigurationExtractor: addToMatchingConfiguration - adding new");
        	
-        Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration(configurationID);
         configuration.addVehicleID(vehicleSetting.getVehicleID());
-        configuration.setValues(vehicleSetting.getCombinedSettings());
+        configuration.setSettingValues(vehicleSetting.getCombinedSettings());
 
         return configuration;
     }

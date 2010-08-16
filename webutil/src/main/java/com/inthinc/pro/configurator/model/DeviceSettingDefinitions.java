@@ -14,12 +14,13 @@ public class DeviceSettingDefinitions implements BaseAppEntity {
     private static Map<String, DeviceSettingDefinitionBean> deviceSettingDefinitions;
     private static List<DeviceSettingDefinitionBean> deviceSettingDefinitionsList;
     
-    private ConfiguratorDAO configuratorDAO;
+	private ConfiguratorDAO configuratorDAO;
 
     public void init(){
 
         List<DeviceSettingDefinition> dsdList = configuratorDAO.getDeviceSettingDefinitions();  
         deviceSettingDefinitions = new HashMap<String,DeviceSettingDefinitionBean>();
+        
         for(DeviceSettingDefinition dsd : dsdList){
             
         	DeviceSettingDefinitionBean dsdBean = new DeviceSettingDefinitionBean(dsd);

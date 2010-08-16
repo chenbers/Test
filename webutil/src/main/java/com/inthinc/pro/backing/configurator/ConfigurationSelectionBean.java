@@ -8,14 +8,12 @@ public class ConfigurationSelectionBean {
     @SuppressWarnings("unused")
 	private Integer productTypeCode; 
 	private ProductType productType;
-    private boolean differentOnly;
     private TreeNavigationBean treeNavigationBean;
     
     public void init(){
     	
     	selectedGroupId = null;
 		productType = ProductType.TIWIPRO_R74;
-		differentOnly = false;
     }
     
 	public TreeNavigationBean getTreeNavigationBean() {
@@ -45,11 +43,4 @@ public class ConfigurationSelectionBean {
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
-	public boolean isDifferentOnly() {
-		return differentOnly;
-	}
-	public void setDifferentOnly(boolean differentOnly) {
-		this.differentOnly = differentOnly;
-	}
-
 }

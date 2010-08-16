@@ -13,23 +13,24 @@ public class ConfigurationSet {
     List<Configuration> configurations;
     List<Integer> settingIDsWithMoreThanOneValue;
     
-//    public ConfigurationSet() {
-//        super();
-//        configurations = new ArrayList<Configuration>();
-//        settingIDsWithMoreThanOneValue = new ArrayList<Integer>();
-//    }    
     public ConfigurationSet(List<Configuration> configurations){
 
         this.configurations = configurations;
         deriveSettingIDsWithMoreThanOneValue();
     }
+    
+    public Configuration getConfiguration(Integer configurationID){
+    	
+    	for(Configuration c:configurations){
+    		
+    		if(c.getConfigurationID() == configurationID) return c;
+    	}
+    	return null;
+    }
     public List<Configuration> getConfigurations() {
         return configurations;
     }
-//    public void setConfigurations(List<Configuration> configurations) {
-//        this.configurations = configurations;
-//        deriveSettingIDsWithMoreThanOneValue();
-//    }
+
     private void deriveSettingIDsWithMoreThanOneValue(){
         
         //Build  a set for each setting 

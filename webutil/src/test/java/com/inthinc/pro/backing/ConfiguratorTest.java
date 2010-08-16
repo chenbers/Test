@@ -18,7 +18,6 @@ import com.inthinc.pro.configurator.model.VehicleSettingsByProductType;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
