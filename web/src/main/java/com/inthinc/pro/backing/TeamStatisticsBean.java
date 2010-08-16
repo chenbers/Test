@@ -255,8 +255,8 @@ public class TeamStatisticsBean extends BaseBean {
         reportCriteria.setMeasurementType(getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
         List<DriverVehicleScoreWrapper> reportDataSet = new ArrayList<DriverVehicleScoreWrapper>();
-        reportDataSet.addAll(this.getDriverStatistics());
         reportDataSet.addAll(this.getDriverTotals());
+        reportDataSet.addAll(this.getDriverStatistics());
         reportCriteria.setMainDataset(reportDataSet);
         return reportCriteria;
     }
