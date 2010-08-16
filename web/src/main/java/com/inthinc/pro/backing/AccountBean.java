@@ -13,16 +13,20 @@ import java.util.TimeZone;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 import com.inthinc.pro.validators.EmailValidator;
 
 public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {   
@@ -242,6 +246,11 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         }
     }    
 
+    public List<SelectItem> getHOSTypes() {
+        return SelectItemUtil.toList(AccountHOSType.class, false, AccountHOSType.EUROPEAN_HOS_SUPPORT);
+    }
+
+    
     @Override
     public String getColumnLabelPrefix() {
         return null;
