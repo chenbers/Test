@@ -9,8 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.backing.ui.CrashHistoryReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
@@ -131,8 +136,17 @@ logger.info("initTableData() - end");
         for (CrashReport cr : crashList) {
             CrashHistoryReportItem reportItem = new CrashHistoryReportItem();
             reportItem.setCrashReportID(cr.getCrashReportID());
-            reportItem.setDate(dateFormatter.format(cr.getDate()));
-            reportItem.setTime(cr.getDate().getTime());
+            
+            // Crash will now show driver time zone info
+            String dateFormatStr = MessageUtil.getMessageString("dateTimeFormat", LocaleBean.getCurrentLocale());
+            DateTimeFormatter fmt = DateTimeFormat.forPattern(dateFormatStr).withLocale(LocaleBean.getCurrentLocale());
+            
+            DateTime dateTime = new DateTime(cr.getDate().getTime(), 
+                    DateTimeZone.forTimeZone(cr.getDriver().getPerson().getTimeZone() == null ? 
+                                TimeZone.getDefault() : cr.getDriver().getPerson().getTimeZone()));
+            reportItem.setDate(fmt.print(dateTime));
+          
+            reportItem.setTime(dateTime.getMillis());
             Driver driver = getCacheBean().getDriverMap().get(cr.getDriverID());
             if (driver == null) {
                 driver = getDriverDAO().findByID(cr.getDriverID());
