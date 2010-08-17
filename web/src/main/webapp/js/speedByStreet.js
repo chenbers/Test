@@ -28,6 +28,10 @@ var cursor;
     var client;
     var row;
     
+//Variables to capture the precise mouse-click lat/lng
+    var preciseLat = null;
+    var preciseLng = null;
+    
  //
  //Streetsegment
  	function StreetSegment(){     
@@ -262,6 +266,9 @@ var cursor;
        }
     }
       function reverseGeocode(lat,lng, fullAddress, markerAtLatLng) {
+    	  
+    	    preciseLat = lat;
+    	    preciseLng = lng;
       
         	if (markerAtLatLng){
           		
@@ -336,8 +343,16 @@ var cursor;
         streetViewPoint = point;
         var fullAddress = place.address;
 //        makeMarker(point);
-                
-        addSegment(point.y, point.x, fullAddress, mapsbs.getZoom(), limit);
+        
+        // If a mouse click, use it, if an address entered, use what google returned
+        if ( preciseLat == null && preciseLng == null ) {
+        	addSegment(point.y, point.x, fullAddress, mapsbs.getZoom(), limit);  
+        } else {
+        	addSegment(preciseLat, preciseLng, fullAddress, mapsbs.getZoom(), limit);
+        	preciseLat = null;
+        	preciseLng = null;
+        }
+      
         
 //        marker.openInfoWindowHtml(place.address + '<br>' +
 ///          '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
