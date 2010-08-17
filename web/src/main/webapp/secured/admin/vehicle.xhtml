@@ -102,6 +102,13 @@
                                 <td width="100"><h:outputText value="#{messages.editVehicle_odometer}" /></td>
                                 <td><h:outputText value="#{vehiclesBean.item.odometer}" /></td>
                               </tr>                              
+	                         <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_DOT}" /></td>
+                                <td><h:outputText value="#{messages[vehiclesBean.item.hos]}" /></td>
+                              </tr>
+                              </ui:fragment>                              
+
                             </table>
 
                           </td>

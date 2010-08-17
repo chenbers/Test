@@ -133,6 +133,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             wmsConfigurationBean.setUrl(a.getProps().getWmsURL());  
             
             getProUser().setAccountAttributes(a.getProps());
+            getProUser().setAccountHOSType(a.getHos());
         }  
     }
 

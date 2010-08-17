@@ -72,6 +72,7 @@ public class ProUserServiceImpl implements UserDetailsService
             
             Account account = accountDAO.findByID(user.getPerson().getAcctID());        
             proUser.setAccountAttributes(account.getProps());
+            proUser.setAccountHOSType(account.getHos());
             
             Driver unknownDriver = driverDAO.findByID(account.getUnkDriverID());
             unknownDriver.getPerson().setDriver(unknownDriver);

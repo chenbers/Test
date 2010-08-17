@@ -20,6 +20,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.LatLng;
@@ -256,5 +257,9 @@ public class BaseBean implements Serializable {
         return (active == null || !active.trim().equals("0"));
         
     }
+	
+	public boolean getAccountIsHOS() {
+	    return getProUser().getAccountHOSType() != null && getProUser().getAccountHOSType() != AccountHOSType.NONE; 
+	}
 	
 }

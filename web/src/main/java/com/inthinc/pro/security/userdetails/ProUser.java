@@ -1,14 +1,13 @@
 package com.inthinc.pro.security.userdetails;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.AccountAttributes;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
@@ -30,6 +29,7 @@ public class ProUser extends org.springframework.security.userdetails.User
     private Driver	unknownDriver;
     private boolean isAdmin;
     private AccountAttributes accountAttributes;
+    private AccountHOSType accountHOSType;
   
     public ProUser(User user, GrantedAuthority[] grantedAuthorities)
     {
@@ -100,6 +100,14 @@ public class ProUser extends org.springframework.security.userdetails.User
 
     public void setAccountAttributes(AccountAttributes accountAttributes) {
         this.accountAttributes = accountAttributes;
+    }
+
+    public AccountHOSType getAccountHOSType() {
+        return accountHOSType;
+    }
+
+    public void setAccountHOSType(AccountHOSType accountHOSType) {
+        this.accountHOSType = accountHOSType;
     }
 
 }

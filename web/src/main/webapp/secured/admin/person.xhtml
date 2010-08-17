@@ -153,14 +153,12 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_certifications}" /></td>
                             <td><h:outputText value="#{personBean.item.driver.certifications}" /></td>
                           </tr>
+	                      <ui:fragment rendered="#{personBean.accountIsHOS}">
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_dot}" /></td>
-							<td><h:outputText value="#{personBean.item.driver.dot}" /></td> 
-							<!-- TODO: DOT                            
                             <td><h:outputText value="#{personBean.item.driver.dot == null ? '' : messages[personBean.item.driver.driverDOTType]}" /></td>
-                             -->
-                          </tr>
-
+    	                  </tr>
+						  </ui:fragment>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_team}" /></td>
                             <td><h:outputText value="#{personBean.item.team.name}" /></td>

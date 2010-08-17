@@ -305,24 +305,22 @@
                             <h:inputText value="#{personBean.item.driver.certifications}" id="editPerson-driver_certifications" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
                           </td>
                         </tr>
+                        <ui:fragment rendered="#{personBean.accountIsHOS}">
                         <tr>
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson-driver_dot" value="#{personBean.updateField['driver.dot']}" />
                             <h:outputText value="#{messages.editPerson_driver_dot}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.driver.dot}" id="editPerson-driver_dot" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" /> 
-<!-- TODO: DOT 
                             <h:selectOneMenu value="#{personBean.item.driver.driverDOTType}" 
                               id="editPerson-driver_dot" 
                                 onchange="checkMultiple(this)"
                                 converter="SimpleBeanConverter">
                               <f:selectItems value="#{personBean.dotTypes}"/>
                             </h:selectOneMenu>
--->    
-
                           </td>
                         </tr>
+                        </ui:fragment>
                         <tr>
                           <td width="100" valign="top">
                              <ui:include src="../../includes/admin/inputLabel.xhtml">
