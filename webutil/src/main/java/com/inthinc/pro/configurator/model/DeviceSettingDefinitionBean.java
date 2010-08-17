@@ -105,7 +105,5 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 		public String get(Object key) {
 			return validate((String) key)?"white":"pink";
 		}
-
-		
 	}
 }

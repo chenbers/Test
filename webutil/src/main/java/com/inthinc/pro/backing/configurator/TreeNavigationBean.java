@@ -5,12 +5,13 @@ package com.inthinc.pro.backing.configurator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.richfaces.model.TreeNode;
 
-import com.inthinc.pro.backing.BaseBean;
+import com.inthinc.pro.backing.UsesBaseBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
@@ -22,31 +23,35 @@ import com.inthinc.pro.model.Group;
  * Backing bean for the drop down tree navigation 
  *
  */
-public class TreeNavigationBean extends BaseBean {
+public class TreeNavigationBean extends UsesBaseBean{
 
 	private static final long serialVersionUID = 1L;
-	
     private GroupDAO groupDAO;
 
-    private Integer groupID;
+    private GroupHierarchy groupHierarchy;
+	private Integer groupID;
     private Group group;
     
-//    private String currentGroupName;
     private NavigationTreeNode<NodeData> navigationTree;
-    
-//    private List<String> selectedNodeChildren = new ArrayList<String>();  
-//    private String nodeTitle;
     
     public void init(){
         
-        if(getUser()!= null){
+        if(getBaseBean().getUser()!= null){
             
-            buildTreeFrom(getUser().getGroupID());
-
-//            currentGroupName=group.getName();
+        	groupHierarchy = getBaseBean().getGroupHierarchy();
+        	groupID = getBaseBean().getUser().getGroupID();
+        	buildTreeFromGroupID();
         }
     }
         
+    public GroupHierarchy getGroupHierarchy() {
+		return groupHierarchy;
+	}
+
+	public void setGroupHierarchy(GroupHierarchy groupHierarchy) {
+		this.groupHierarchy = groupHierarchy;
+	}
+
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
 	}
@@ -63,19 +68,18 @@ public class TreeNavigationBean extends BaseBean {
         return groupID;
     }
     
-    public void buildTreeFrom(Integer groupID)
+    public Object buildTreeFromGroupID()
     {
         // Lets not load a new group if we don't need to
-        if (this.groupID != groupID && groupDAO != null && groupID != 0) // groupID ZERO is for Unknown Driver
+        if (groupDAO != null && groupID != 0) // groupID ZERO is for Unknown Driver
         {
-            group = getGroupHierarchy().getGroup(groupID);
+            group = groupHierarchy.getGroup(groupID);
             
             //build the tree
             navigationTree = new NavigationTreeNode<NodeData>();
-            buildTree(group, getGroupHierarchy(), navigationTree);
+            buildTree(group, groupHierarchy, navigationTree);
         }
-        this.groupID = groupID;
-    
+        return null;
     }
     public void buildTree(Group group, GroupHierarchy groupHierarchy, NavigationTreeNode<NodeData> parentNode) {
     	
@@ -119,18 +123,6 @@ public class TreeNavigationBean extends BaseBean {
             }
         }
     }
-//    public List<String> getSelectedNodeChildren() {
-//        return selectedNodeChildren;
-//    }
-//    public void setSelectedNodeChildren(List<String> selectedNodeChildren) {
-//        this.selectedNodeChildren = selectedNodeChildren;
-//    }
-//    public String getNodeTitle() {
-//        return nodeTitle;
-//    }
-//    public void setNodeTitle(String nodeTitle) {
-//        this.nodeTitle = nodeTitle;
-//    }
     public Group getGroup() {
         return group;
     }
@@ -139,77 +131,18 @@ public class TreeNavigationBean extends BaseBean {
         this.group = group;
     }
     
-    public void setCurrentGroupID(Integer currentGroupID) {
-        
-        if(groupID==null){
+	public void setGroupID(Integer groupID) {
+		this.groupID = groupID;
+	}
+	public void refresh(Integer accountID){
+		
+		List<Group> groups = groupDAO.getGroupsByAcctID(accountID);
+		GroupHierarchy groupHierarchy= new GroupHierarchy(groups);
+		setGroupID(groupHierarchy.getTopGroup().getGroupID());
+		setGroupHierarchy(groupHierarchy);
+		buildTreeFromGroupID();
 
-            buildTreeFrom(getUser().getGroupID());
-        }
-//        currentGroupName = getGroupHierarchy().getGroup(currentGroupID).getName();
-        //find node in the tree and set it selected
-//        openParentPath(getGroupHierarchy().getGroup(currentGroupID));
-     }
-//    public String getCurrentGroupName() {
-//        return currentGroupName;
-//    }
-//    
-//    public void setCurrentGroupName(String currentGroupName) {
-//        this.currentGroupName = currentGroupName;
-//    }
-    
-//    private void openParentPath(Group group){
-//        
-//        navigationTree.closeAll();
-//        
-//        if (group == null) return;
-//        
-//        Group child = group;
-//        Group parent = getGroupHierarchy().getParentGroup(group);
-//        if (parent == null){
-//            
-//            navigationTree.open(child.getGroupID());
-//        }
-//        else{
-//            
-//            while (parent != null){
-//                
-//                navigationTree.open(parent.getGroupID());
-//                parent = getGroupHierarchy().getParentGroup(parent);
-//            }
-//        }
-//    }
-
-//    public void refresh(){
-//
-//        setNavigationTree(new JsTreeRoot(group, getGroupHierarchy()));
-//        openParentPath(group);
-//    }
-//    public class TreeRoot {
-//        
-////        private Map<Integer, NavigationTreeNode<Map<String,String>>> navigationTreeMap;
-//        private NavigationTreeNode<NodeData> navigationTree;
-//        
-//        public TreeRoot(Group group, GroupHierarchy groupHierarchy) {
-//            
-////            navigationTreeMap = new HashMap<Integer,NavigationTreeNode<Map<String,String>>>();
-//            navigationTree = new NavigationTreeNode<NodeData>();
-//            buildTree(group, groupHierarchy, navigationTree);
-//         }
-//
-//         public NavigationTreeNode<NodeData> getNavigationTree() {
-//            return navigationTree;
-//        }
-//
-//        public void setNavigationTree(NavigationTreeNode<NodeData> navigationTree) {
-//            this.navigationTree = navigationTree;
-//        }
-////        private NavigationTreeNode<Map<String,String>> findTreeNode(Integer groupID){
-////            
-////            if (groupID == null) return null;
-////
-////            return navigationTreeMap.get(groupID);
-////            
-////        }
+	}
 	public class NavigationTreeNode<T> implements TreeNode<T>{
 		
         private static final long serialVersionUID = 1L;

@@ -11,20 +11,12 @@
 .selectedGroup {
 	background:#cccccc;
 }
-.error {
-	background-color:#cc0000 !important;
-}
 </style>
 <script type="text/javascript">
 function setGroupSelection(groupId){
 
 	document.getElementById("configurationSelectionForm:selectedGroup").value = groupId;
 }
-/**
- * Set highlight on the elements of the given ids. It basically sets the classname of the elements
- * to 'highlight'. This require at least a CSS style class '.highlight'.
- * @param ids The ids of the elements to be highlighted, comma separated.
- */
 function setHighlight(row, element, message) {
 	
 	var elementBaseName = "configuratorForm:settingList:"+row+":";
@@ -61,6 +53,12 @@ function setHighlight(row, element, message) {
 <rich:panel id="configuration-centric">
 	<h:outputText value="Configuration-centric" styleClass="label"></h:outputText>
 <h:panelGrid columns="2" style="width: 150px">
+	<h:outputText value="Account:" styleClass="label"/>
+	<h:selectOneMenu value="#{configurationSelectionBean.accountID}">
+	<f:selectItems value="#{accountSelectItems.selectItems}"/>
+	<a4j:support event="onchange" action="#{configurationSelectionBean.refreshNavigationTree}" reRender="configuratorGroupRegion"/>
+	</h:selectOneMenu>
+	
 	<h:outputText value="Product:" styleClass="label"></h:outputText>
 	<h:selectOneMenu value="#{configurationSelectionBean.productTypeCode}">
 	<f:selectItems value="#{productSelectItems.selectItems}"/>
@@ -98,14 +96,14 @@ function setHighlight(row, element, message) {
 <ui:define name="util_content">
 
 <div>
-            <h:form id="configuratorForm">
+    <h:form id="configuratorForm">
 
-    	    <rich:panel id="configuratorSettings" >
+  	    <rich:panel id="configuratorSettings" >
     	    <rich:panel style="border: none" rendered="#{configuratorBean.hasConfigurations}">
- 			<h:outputText value="Show only differences:" styleClass="label"></h:outputText>
-			<h:selectBooleanCheckbox value="#{configuratorBean.differentOnly}">
-			<a4j:support event="onchange" reRender="configuratorSettings"/>
-			</h:selectBooleanCheckbox>
+	 			<h:outputText value="Show only differences:" styleClass="label"></h:outputText>
+				<h:selectBooleanCheckbox value="#{configuratorBean.differentOnly}">
+					<a4j:support event="onchange" reRender="configuratorSettings"/>
+				</h:selectBooleanCheckbox>
     	    </rich:panel>   	    
             <rich:dataTable rowKeyVar="rkv" rendered="#{configuratorBean.hasConfigurations}"
                 id="settingList" rows="0" width="100%" 
@@ -119,17 +117,22 @@ function setHighlight(row, element, message) {
                     <f:facet name="header">
                     	<h:outputText styleClass="headerText" value="Actions" />
                     </f:facet>
-             		<a4j:commandLink value="Save" action="#{configuratorBean.updateConfiguration}" 
+                    <h:panelGrid columns="2">
+             		<a4j:commandLink value="Save" action="#{configuratorBean.updateConfiguration}" title="Apply these settings to all the vehicles listed"
              					reRender="configuratorSettings" ajaxSingle="true">
              			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
              		</a4j:commandLink>
-                    
+             		<a4j:commandLink value="Select Vehicles" action="#{configuratorBean.prepareVehicleSelection}" oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
+             					reRender="configuratorSettings,assignVehicles" ajaxSingle="true">
+             			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
+             		</a4j:commandLink>
+                    </h:panelGrid>
                 </rich:column>
                  <rich:column id="count">
                     <f:facet name="header">
                     	<h:outputText styleClass="headerText" value="# of Vehicles" />
                     </f:facet>
-                    <h:outputText value="#{configuration.count}" />
+                    <h:outputText value="#{configuration.count}"/>
                 </rich:column>
 			     <rich:column id="reason">
                    <f:facet name="header">
@@ -197,9 +200,9 @@ function setHighlight(row, element, message) {
                 
              </rich:dataTable>
  	              
-</rich:panel>
-</h:form>
-<a4j:form>
+		</rich:panel>
+	</h:form>
+	<a4j:form>
              <rich:panel id="vehicleEditSettingsRegion" rendered="#{configuratorBean.selectedVehicleID ne null}">
            	<rich:dataGrid id="selectedSettings" value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 
            					columns="6" elements="120" width="600px" rendered="#{configuratorBean.selectedVehicleID ne null}">
@@ -233,7 +236,41 @@ function setHighlight(row, element, message) {
             </f:facet>
         </rich:dataGrid>
         </rich:panel>
-            </a4j:form>
+       </a4j:form>
+        <rich:modalPanel id="assignVehicles" autosized="true" width="450">
+        <f:facet name="header">
+            <h:outputText value="Assign settings in configuration #{configuratorBean.selectedConfigurationID} to selected vehicles" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/images/modal_close.png" id="hidelink"
+                    styleClass="hidelink" />
+                <rich:componentControl for="assignVehicles" attachTo="hidelink"
+                    operation="hide" event="onclick" />
+            </h:panelGroup>
+        </f:facet>
+        <h:form>
+            <h:panelGrid columns="1">
+         <rich:listShuttle sourceValue="#{configuratorBean.vehicleSelectionSource}"
+            targetValue="#{configuratorBean.vehicleSelectionTarget}" var="item" listsHeight="150"
+            sourceListWidth="130" targetListWidth="130" sourceCaptionLabel="Vehicles in Group"
+            targetCaptionLabel="Vehicles to assign">
+            <rich:column>
+                <h:outputText value="#{item}"></h:outputText>
+            </rich:column>
+        </rich:listShuttle>
+                             
+                  <h:panelGrid columns="2">
+                <a4j:commandButton value="Apply Settings"
+                    action="#{configuratorBean.applySettingsToTargetVehicles}"
+                    oncomplete="#{rich:component('assignVehicles')}.hide();" />
+                <a4j:commandButton value="Cancel" immediate="true" 
+                    oncomplete="#{rich:component('assignVehicles')}.hide();" />
+             </h:panelGrid>   
+            </h:panelGrid>
+        </h:form>
+    </rich:modalPanel>
+            
 </div><!-- end page -->
 </ui:define>
 </ui:composition>

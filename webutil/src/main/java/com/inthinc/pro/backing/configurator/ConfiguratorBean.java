@@ -36,7 +36,11 @@ public class ConfiguratorBean implements Serializable{
     private VehicleSettings vehicleSettings = new VehicleSettings();
     private VehicleSettingsByProductType vehicleSettingsByProductType = new VehicleSettingsByProductType();
     
-    private ConfigurationSet configurationSet;
+    private List<String> vehicleSelectionSource = new ArrayList<String>();
+    private List<String> vehicleSelectionTarget = new ArrayList<String>();
+    
+
+	private ConfigurationSet configurationSet;
     
     //vehicle-centric
     private Integer selectedVehicleID;
@@ -49,14 +53,13 @@ public class ConfiguratorBean implements Serializable{
 	private Integer selectedConfigurationID;
     
 	public ConfiguratorBean() {
-		super();
 
 		differentDeviceSettings = new ArrayList<DeviceSettingDefinitionBean>();
 		displaySettingsDefinitions = new ArrayList<DeviceSettingDefinitionBean>();
 	}
 	public void init() {
 
-        if(configurationSelectionBean.getSelectedGroupId() == null) return;
+        if((configurationSelectionBean.getSelectedGroupId() == null) || configurationSelectionBean.getSelectedGroupId().isEmpty()) return;
         	
 		differentOnly = false;
         displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType());
@@ -65,17 +68,26 @@ public class ConfiguratorBean implements Serializable{
         
         buildConfigurations();
     }
-    public boolean isDifferentOnly() {
+
+    public List<String> getVehicleSelectionTarget() {
+		return vehicleSelectionTarget;
+	}
+	public void setVehicleSelectionTarget(List<String> vehicleSelectionTarget) {
+		this.vehicleSelectionTarget = vehicleSelectionTarget;
+	}
+	public boolean isDifferentOnly() {
 		return differentOnly;
 	}
 	public void setDifferentOnly(boolean differentOnly) {
 		this.differentOnly = differentOnly;
 	}
-	public void setConfigurationSelectionBean(
-			ConfigurationSelectionBean configurationSelectionBean) {
+	public void setConfigurationSelectionBean(ConfigurationSelectionBean configurationSelectionBean) {
 		this.configurationSelectionBean = configurationSelectionBean;
 	}
-    public Integer getSelectedVehicleID() {
+    public List<String> getVehicleSelectionSource() {
+		return vehicleSelectionSource;
+	}
+	public Integer getSelectedVehicleID() {
 		return selectedVehicleID;
 	}
 	public void setSelectedVehicleID(Integer selectedVehicleID) {
@@ -87,12 +99,22 @@ public class ConfiguratorBean implements Serializable{
 	public Integer getSelectedConfigurationID() {
         return selectedConfigurationID;
     }
-    public void setSelectedConfigurationID(Integer selectedConfigurationID) {
+    public void setVehicleSelectionSource(List<String> vehicleSelectionSource) {
+		this.vehicleSelectionSource = vehicleSelectionSource;
+	}
+	public void setSelectedConfigurationID(Integer selectedConfigurationID) {
         this.selectedConfigurationID = selectedConfigurationID;
     }
     public List<DeviceSettingDefinitionBean> getDisplaySettingsDefinitions() {
         return displaySettingsDefinitions;
     }
+	public List<String> getSelectedVehicles() {
+		return vehicleSelectionSource;
+	}
+	public void setSelectedVehicles(List<String> selectedVehicles) {
+		this.vehicleSelectionSource = selectedVehicles;
+	}
+
     public String displayVehicle(){
     	
     	if (selectedVehicleID == null) return null;
@@ -136,6 +158,7 @@ public class ConfiguratorBean implements Serializable{
        	return null;
     }
 
+    
     public void markSetting(ValueChangeEvent valueChangeEvent){
     	
     	logger.debug("configurator - markSetting");
@@ -160,6 +183,23 @@ public class ConfiguratorBean implements Serializable{
     private int extractSettingID(String[] itemKeys){
     	
     	return  Integer.parseInt(itemKeys[4]);
+    }
+    
+    public Object applySettingsToTargetVehicles(){
+    	
+    	logger.debug("configurator - applySettingsToTargetVehicles");
+    	selectedConfiguration = configurationSet.getConfigurations().get(selectedConfigurationID-1);
+       	for(String vID : vehicleSelectionTarget){
+    		
+       		//For testing only update vehicle 1
+       		Integer vehicleID = Integer.parseInt(vID);
+    		if (vehicleID==1){
+    			vehicleSettings.updateVehicleSettings(	vehicleID, selectedConfiguration.getLatestDesiredValues(), 
+    													baseBean.getProUser().getUser().getUserID(), 
+    													selectedConfiguration.getReason());
+    		}
+    	}
+       	return null;
     }
     public void createConfigurationsFromVehicleSettings(){
         
@@ -191,6 +231,20 @@ public class ConfiguratorBean implements Serializable{
 	}
 	public void setBaseBean(BaseBean baseBean) {
 		this.baseBean = baseBean;
+	}
+
+	public Object prepareVehicleSelection() {
+
+		vehicleSelectionSource = new ArrayList<String>(vehicleSettingsByProductType.getVehicleSelectItems(configurationSelectionBean.getProductType()));
+		if (selectedConfigurationID != null){
+			vehicleSelectionTarget = new ArrayList<String>();
+	       	for(Integer vehicleID : configurationSet.getConfiguration(selectedConfigurationID).getVehicleIDs()){
+	    		
+	       		vehicleSelectionTarget.add(""+vehicleID);
+	       		vehicleSelectionSource.remove(""+vehicleID);
+	    	}
+		}
+		return null;
 	}
 
  }

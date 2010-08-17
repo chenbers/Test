@@ -1,21 +1,42 @@
 package com.inthinc.pro.backing.configurator;
 
+import com.inthinc.pro.backing.UsesBaseBean;
+import com.inthinc.pro.configurator.ui.AccountSelectItems;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
 
-public class ConfigurationSelectionBean {
+public class ConfigurationSelectionBean extends UsesBaseBean{
 
-    private String selectedGroupId;
+	private Integer accountID;
+	private String selectedGroupId;
     @SuppressWarnings("unused")
 	private Integer productTypeCode; 
 	private ProductType productType;
     private TreeNavigationBean treeNavigationBean;
+    private AccountSelectItems accountSelectItems;
     
-    public void init(){
+	public void init(){
     	
     	selectedGroupId = null;
 		productType = ProductType.TIWIPRO_R74;
+		accountID = getBaseBean().getAccountID();
     }
+	
+    public AccountSelectItems getAccountSelectItems() {
+		return accountSelectItems;
+	}
+
+	public void setAccountSelectItems(AccountSelectItems accountSelectItems) {
+		this.accountSelectItems = accountSelectItems;
+	}
     
+    public Integer getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(Integer accountID) {
+		this.accountID = accountID;
+	}
+
 	public TreeNavigationBean getTreeNavigationBean() {
 		return treeNavigationBean;
 	}
@@ -42,5 +63,11 @@ public class ConfigurationSelectionBean {
 	}
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
+	}
+	
+	public Object refreshNavigationTree(){
+		
+		treeNavigationBean.refresh(accountID);
+		return null;
 	}
 }

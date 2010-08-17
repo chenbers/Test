@@ -12,7 +12,7 @@ public class Configuration{
 	
     private List<Integer> vehicleIDs;
     private Map<Integer,String> settingValues;
-    private Map<Integer,String> desiredValues;
+//    private Map<Integer,String> desiredValues;
     private Map<Integer,String> newDesiredValues;
 	private String reason;
     private List<Entry<Integer,String>> entries;
@@ -23,7 +23,7 @@ public class Configuration{
     	
         vehicleIDs = new ArrayList<Integer>();
         settingValues = new HashMap<Integer,String>();
-        desiredValues = new HashMap<Integer,String>();
+//        desiredValues = new HashMap<Integer,String>();
         newDesiredValues = new HashMap<Integer,String>();
     }
     
@@ -33,7 +33,7 @@ public class Configuration{
 
 	public void setNewDesiredValue(Integer settingID, String value){
     	
-    	if (desiredValues.get(settingID) != null && desiredValues.get(settingID).equals(value)) {
+    	if (settingValues.get(settingID) != null && settingValues.get(settingID).equals(value)) {
     		
     		newDesiredValues.remove(settingID);
     		return;
@@ -43,14 +43,24 @@ public class Configuration{
     public Map<Integer, String> getNewDesiredValues() {
 		return newDesiredValues;
 	}
+    public Map<Integer, String> getLatestDesiredValues() {
+    	
+    	Map<Integer,String> latestDesiredValues = new HashMap<Integer, String>();
+    	
+    	latestDesiredValues.putAll(settingValues);
+//    	latestDesiredValues.putAll(desiredValues);
+    	latestDesiredValues.putAll(newDesiredValues);
+    	
+		return latestDesiredValues;
+	}
 	public Configuration(Configuration configuration){
         
         vehicleIDs = new ArrayList<Integer>(configuration.vehicleIDs);
         settingValues = new HashMap<Integer, String>(configuration.settingValues);
     }
-    public Map<Integer, String> getDesiredValues() {
-		return desiredValues;
-	}
+//    public Map<Integer, String> getDesiredValues() {
+//		return desiredValues;
+//	}
    public String getReason() {
 		return reason;
 	}
