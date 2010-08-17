@@ -47,7 +47,7 @@ public class DeviceItem {
 		this.selected = selected;
 	}
     public String getDeviceSIM() {
-		return deviceSIM;
+		return (deviceSIM == null) ? "" : deviceSIM;
 	}
 	public void setDeviceSIM(String deviceSIM) {
 		this.deviceSIM = deviceSIM;
