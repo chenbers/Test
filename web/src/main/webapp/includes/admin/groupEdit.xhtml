@@ -109,12 +109,61 @@
 						</h:selectOneMenu>
 					</td>
 				</tr>
-
 			</table>
 			
 			<div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 			</td>
 		</tr>
+<!-- TODO: DOT                    
+		
+        <tr>
+			<td width="100%" valign="top">
+					<div class="add_section_title">
+                		<h:outputText value="#{messages.group_summary_address}" />
+                	</div>
+					<table width="500" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.group_address_addr1}" /></td>
+                            <td><h:inputText id="#{context}-addr1" value="#{groupTreeNode.group.address.addr1}" 
+                            			styleClass="text" size="40"
+		                              	maxlength="126" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.group_address_addr2}" /></td>
+                            <td><h:inputText id="#{context}-addr2" value="#{groupTreeNode.group.address.addr2}" 
+                            		styleClass="text" size="40"
+		                              	maxlength="126" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.group_address_city}" /></td>
+                            <td><h:inputText id="#{context}-city" value="#{groupTreeNode.group.address.city}" 
+                            		styleClass="text" size="40"
+		                              	maxlength="126" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.group_address_state}" /></td>
+                            <td>
+                            <h:selectOneMenu value="#{groupTreeNode.group.address.state}" id="#{context}-state" >
+                              <f:selectItem itemLabel="" />
+                              <f:converter  converterId="StateConverter"/>
+                              <f:selectItems value="#{organizationBean.states}" />
+                            </h:selectOneMenu>
+                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.group_address_zip}" /></td>
+                            <td><h:inputText id="#{context}-zip" value="#{groupTreeNode.group.address.zip}" 
+                            		styleClass="text" size="40"	maxlength="30" />                               
+							</td>
+                          </tr>
+                        </table>
+                      </td>
+		</tr>                    
+-->                    
 	</table>
 	</div>
 

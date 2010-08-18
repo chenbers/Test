@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.faces.model.SelectItem;
 
@@ -22,12 +23,15 @@ import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.model.TreeNodeType;
 import com.inthinc.pro.backing.model.UserTreeNodeImpl;
 import com.inthinc.pro.backing.model.VehicleTreeNodeImpl;
+import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
@@ -35,6 +39,7 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.MessageUtil;
 
 @KeepAlive
@@ -58,6 +63,10 @@ public class OrganizationBean extends BaseBean
     private VehicleDAO vehicleDAO;
     private UserDAO userDAO;
     private DeviceDAO deviceDAO;
+    private AddressDAO addressDAO;
+    private ReportDAO reportDAO;
+
+
 
     /*
      * Organization Tree Specific
@@ -95,7 +104,13 @@ public class OrganizationBean extends BaseBean
     private Person selectedPerson;
     private GroupTreeNodeImpl tempGroupTreeNode;
     private Group selectedParentGroup;
-
+    private static final Map<String, com.inthinc.pro.model.State> STATES;
+    static {
+    // states
+    STATES = new TreeMap<String, com.inthinc.pro.model.State>();
+    for (final com.inthinc.pro.model.State state : States.getStates().values())
+        STATES.put(state.getName(), state);
+    }
     public OrganizationBean()
     {
         super();
@@ -213,7 +228,6 @@ public class OrganizationBean extends BaseBean
             setSelectedDeviceTreeNode((DeviceTreeNodeImpl) treeNode);
             break;
         }
-
     }
 
     public void changeExpandListener(NodeExpandedEvent event)
@@ -338,6 +352,7 @@ public class OrganizationBean extends BaseBean
         if (validate((GroupTreeNodeImpl) tempGroupTreeNode))
         {
             copyGroupTreeNode((GroupTreeNodeImpl) tempGroupTreeNode, (GroupTreeNodeImpl) selectedGroupNode, true);
+            selectedGroupNode.getBaseEntity().setAddressID(updateAddress(selectedGroupNode.getBaseEntity()));
             groupDAO.update((Group) selectedGroupNode.getBaseEntity());
             if (selectedParentGroup != null)
             {
@@ -365,6 +380,7 @@ public class OrganizationBean extends BaseBean
         tempGroupTreeNode.setLabel(((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().getName());
         if (validate((GroupTreeNodeImpl) tempGroupTreeNode))
         {
+            ((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().setAddressID(updateAddress(((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity()));
             Integer id = groupDAO.create(getAccountID(), ((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity());
             if (id > 0)
             {
@@ -422,6 +438,7 @@ public class OrganizationBean extends BaseBean
 
     }
 
+
     private void updateUsersGroupHeirarchy()
     {
 //        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
@@ -449,6 +466,7 @@ public class OrganizationBean extends BaseBean
             if (!vehicleList.isEmpty() || !driverList.isEmpty())
             {
                 addErrorMessage(MessageUtil.getMessageString("group_edit_error_division"));
+                
                 return false;
             }
         }
@@ -503,6 +521,19 @@ public class OrganizationBean extends BaseBean
             group.setMapCenter(new LatLng(copyFromGroup.getMapCenter().getLat(), copyFromGroup.getMapCenter().getLng()));
         }
         group.setMapZoom(copyFromGroup.getMapZoom());
+        group.setAddressID(copyFromGroup.getAddressID());
+        Address address = new Address();
+        if (copyFromGroup.getAddress() != null) {
+            Address copyFromAddress = copyFromGroup.getAddress();
+            address.setAddrID(copyFromAddress.getAddrID());
+            address.setAccountID(copyFromAddress.getAccountID());
+            address.setAddr1(copyFromAddress.getAddr1());
+            address.setAddr2(copyFromAddress.getAddr2());
+            address.setCity(copyFromAddress.getCity());
+            address.setState(copyFromAddress.getState());
+            address.setZip(copyFromAddress.getZip());
+        }
+        group.setAddress(address);
         copyToNode.setId(copyFromGroup.getGroupID());
         copyToNode.setLabel(copyFromGroup.getName());
         copyToNode.setTreeNodeType(copyFromNode.getTreeNodeType());
@@ -531,6 +562,7 @@ public class OrganizationBean extends BaseBean
             g.setMapZoom(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getMapZoom());
             g.setMapCenter(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getMapCenter());
         }
+        fetchGroupAddress(g);
 
         GroupTreeNodeImpl newGroupNode = new GroupTreeNodeImpl(g, organizationHierarchy);
         newGroupNode.setDriverDAO(driverDAO);
@@ -605,6 +637,35 @@ public class OrganizationBean extends BaseBean
 
         return selectItemList;
     }
+    private Integer updateAddress(Group group) {
+        Address address = group.getAddress();
+        if (group.getAddressID() == null) {
+            // if any fields are filled in then save it
+            if ((address.getAddr1() != null  && !address.getAddr1().isEmpty()) ||
+                (address.getAddr2() != null  && !address.getAddr2().isEmpty()) ||
+                (address.getCity() != null  && !address.getCity().isEmpty()) ||
+                address.getState() != null ||
+                (address.getZip() != null  && !address.getZip().isEmpty())) {
+                address.setAccountID(group.getAccountID());
+                return getAddressDAO().create(address.getAccountID(), address);
+            }
+            return null;
+        }
+
+        return getAddressDAO().update(address);
+    }
+    
+    private void fetchGroupAddress(Group g) {
+        if (g.getAddressID() == null)
+            g.setAddress(new Address());
+        else if (g.getAddress() == null ){
+            g.setAddress(getAddressDAO().findByID(g.getAddressID()));
+        }
+    }
+    
+    public Map<String, com.inthinc.pro.model.State> getStates() {
+        return STATES;
+    }
 
     public GroupDAO getGroupDAO()
     {
@@ -627,8 +688,13 @@ public class OrganizationBean extends BaseBean
         TreeNodeType type = selectedGroupNode.getTreeNodeType();
         if (type == TreeNodeType.TEAM || type == TreeNodeType.DIVISION || type == TreeNodeType.FLEET)
         {
-            selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getId()).size();
-            selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getId()).size();
+//            selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getId()).size();
+//            selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getId()).size();
+//System.out.println("selectedGroupDriverCount = " + selectedGroupDriverCount);
+//System.out.println("selectedGroupVehicleCount = " + selectedGroupVehicleCount);
+            selectedGroupDriverCount = reportDAO.getDeviceReportCount(selectedGroupNode.getId(), null);
+            selectedGroupVehicleCount = reportDAO.getVehicleReportCount(selectedGroupNode.getId(), null);
+            fetchGroupAddress(selectedGroupNode.getGroup());
         }
 
         if (this.selectedGroupNode != null
@@ -821,4 +887,18 @@ public class OrganizationBean extends BaseBean
         this.treeNavigationBean = treeNavigationBean;
     }
 
+    public AddressDAO getAddressDAO() {
+        return addressDAO;
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
+    public ReportDAO getReportDAO() {
+        return reportDAO;
+    }
+
+    public void setReportDAO(ReportDAO reportDAO) {
+        this.reportDAO = reportDAO;
+    }
 }
