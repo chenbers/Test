@@ -82,8 +82,14 @@
 			TeamTrips.map.addControl(new GMapTypeControl());
 //			TeamTrips.map.addControl(new GOverviewMapControl()); 
 			TeamTrips.map.setMapType(G_NORMAL_MAP);
-			TeamTrips.map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), #{teamCommonBean.group.mapZoom});
-
+			
+			// Check if the zoom level is too large and set it so the page doesn't hang
+			var zoom = #{teamCommonBean.group.mapZoom};			
+			if ( zoom > 15 ) {
+				zoom = 15;
+			}
+				
+			TeamTrips.map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), zoom);
 			initTeamTripsClusters(TeamTrips.map,icons);
 		}
 	}
