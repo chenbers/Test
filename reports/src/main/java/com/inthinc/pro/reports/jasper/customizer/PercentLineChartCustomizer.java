@@ -19,7 +19,5 @@ public class PercentLineChartCustomizer extends JRAbstractChartCustomizer
         
         plot.getRangeAxis().setRange(0.0, 1.0);
 //        plot.getRangeAxis().setStandardTickUnits(NumberAxis.createStandardTickUnits(locale));
-
-    
     }
 }

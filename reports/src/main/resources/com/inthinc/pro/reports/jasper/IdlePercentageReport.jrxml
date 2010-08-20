@@ -2,6 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IdlePercentageReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -68,6 +71,55 @@
 				</chart>
 				<multiAxisPlot>
 					<plot labelRotation="-45.0"/>
+					<axis>
+						<stackedBarChart>
+							<chart customizerClass="com.inthinc.pro.reports.jasper.customizer.StackedbarChartCustomizer">
+								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
+								<chartTitle color="#000000"/>
+								<chartSubtitle color="#000000"/>
+								<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+							</chart>
+							<categoryDataset>
+								<dataset>
+									<datasetRun subDataset="CategorySeriesSubDataset">
+										<datasetParameter name="REPORT_LOCALE">
+											<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+										</datasetParameter>
+										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
+									</datasetRun>
+								</dataset>
+								<categorySeries>
+									<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+									<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+									<valueExpression><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMilesToKilometers($F{value},$P{MEASUREMENT_TYPE})]]></valueExpression>
+									<labelExpression><![CDATA[$F{label}]]></labelExpression>
+								</categorySeries>
+							</categoryDataset>
+							<barPlot isShowLabels="false">
+								<plot backgroundAlpha="0.5" foregroundAlpha="0.5" labelRotation="-45.0">
+									<seriesColor seriesOrder="0" color="#6B9D1B"/>
+									<seriesColor seriesOrder="1" color="#CCCCCC"/>
+								</plot>
+								<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+								<categoryAxisFormat labelRotation="-45.0">
+									<axisFormat>
+										<labelFont>
+											<font size="12"/>
+										</labelFont>
+										<tickLabelFont/>
+									</axisFormat>
+								</categoryAxisFormat>
+								<valueAxisFormat>
+									<axisFormat>
+										<labelFont>
+											<font size="12"/>
+										</labelFont>
+										<tickLabelFont/>
+									</axisFormat>
+								</valueAxisFormat>
+							</barPlot>
+						</stackedBarChart>
+					</axis>
 					<axis position="rightOrBottom">
 						<lineChart>
 							<chart customizerClass="com.inthinc.pro.reports.jasper.customizer.PercentLineChartCustomizer">
@@ -96,7 +148,7 @@
 								<plot labelRotation="-45.0">
 									<seriesColor seriesOrder="0" color="#000000"/>
 								</plot>
-								<categoryAxisFormat>
+								<categoryAxisFormat labelRotation="-45.0">
 									<axisFormat>
 										<labelFont>
 											<font size="12"/>
@@ -116,54 +168,6 @@
 								</valueAxisFormat>
 							</linePlot>
 						</lineChart>
-					</axis>
-					<axis>
-						<stackedBarChart>
-							<chart customizerClass="com.inthinc.pro.reports.jasper.customizer.StackedbarChartCustomizer">
-								<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
-								<chartTitle color="#000000"/>
-								<chartSubtitle color="#000000"/>
-								<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
-							</chart>
-							<categoryDataset>
-								<dataset>
-									<datasetRun subDataset="CategorySeriesSubDataset">
-										<datasetParameter name="REPORT_LOCALE">
-											<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
-										</datasetParameter>
-										<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
-									</datasetRun>
-								</dataset>
-								<categorySeries>
-									<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
-									<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-									<valueExpression><![CDATA[com.inthinc.pro.dao.util.MeasurementConversionUtil.convertMilesToKilometers($F{value},$P{MEASUREMENT_TYPE})]]></valueExpression>
-									<labelExpression><![CDATA[$F{label}]]></labelExpression>
-								</categorySeries>
-							</categoryDataset>
-							<barPlot isShowLabels="false">
-								<plot labelRotation="-45.0">
-									<seriesColor seriesOrder="0" color="#6B9D1B"/>
-									<seriesColor seriesOrder="1" color="#CCCCCC"/>
-								</plot>
-								<categoryAxisFormat>
-									<axisFormat>
-										<labelFont>
-											<font size="12"/>
-										</labelFont>
-										<tickLabelFont/>
-									</axisFormat>
-								</categoryAxisFormat>
-								<valueAxisFormat>
-									<axisFormat>
-										<labelFont>
-											<font size="12"/>
-										</labelFont>
-										<tickLabelFont/>
-									</axisFormat>
-								</valueAxisFormat>
-							</barPlot>
-						</stackedBarChart>
 					</axis>
 				</multiAxisPlot>
 			</multiAxisChart>
