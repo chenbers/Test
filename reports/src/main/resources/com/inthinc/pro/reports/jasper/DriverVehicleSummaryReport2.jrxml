@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="265"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -36,6 +36,7 @@
 	<parameter name="MPG_DUR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="FUEL_EFFICIENCY_TYPE" class="com.inthinc.pro.model.FuelEfficiencyType" isForPrompting="false"/>
 	<background>
 		<band/>
 	</background>
@@ -180,7 +181,7 @@
 				<imageExpression class="java.net.URL"><![CDATA[new java.net.URL($P{MAP_URL})]]></imageExpression>
 			</image>
 			<barChart>
-				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgLineChartCustomizer">
+				<chart isShowLegend="false">
 					<reportElement key="element-2" x="7" y="463" width="451" height="157"/>
 					<chartTitle/>
 					<chartSubtitle/>

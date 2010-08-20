@@ -31,6 +31,10 @@ public class MpgLineChartCustomizer extends JRAbstractChartCustomizer
         plot.setNoDataMessage(MessageUtil.getMessageString("noAvailableData",locale));
         plot.getRangeAxis().setStandardTickUnits(NumberAxis.createStandardTickUnits(locale));
         
+        if (getParameterValue("FUEL_EFFICIENCY_TYPE") != null)
+            plot.getRangeAxis().setLabel(MessageUtil.getMessageString(getParameterValue("FUEL_EFFICIENCY_TYPE").toString(), locale));
+        
+        
         //If all the values of the dataset are zero, then the chart does not by defualt show a range on the y axis. 
         //It simply displays 0.000000 which is not desireable. Here we are checking to see if all values are zero, and if
         //they are, we are setting a default y axis range.
