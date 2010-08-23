@@ -102,7 +102,7 @@ public class TablePref<T>
         boolean found = false;
         for (TablePreference pref : tablePreferenceList)
         {
-            if (pref.getTableType().equals(tablePrefOptions.getTableType()))
+            if (pref.getTableType() != null && pref.getTableType().equals(tablePrefOptions.getTableType()))
             {                
                 int columnCount = tablePrefOptions.getAvailableColumns().size();                
                 // case were we add/delete some columns after some preferences are already saved in backend
