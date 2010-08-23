@@ -69,7 +69,11 @@ public class VehicleSeatBeltBean extends BasePerformanceEventsBean {
             event.setAddressStr(getAddress(event.getLatLng()));
             events.add(new EventReportItem(event, getUser().getPerson().getTimeZone(), getMeasurementType(),dateFormatter));
         }
-        tableStatsBean.reset(ROWCOUNT, events.size());
+        // Commented-out to prevent the page being reset, but the other
+        //  function provided by the call is executed here
+//        tableStatsBean.reset(ROWCOUNT, events.size());
+        tableStatsBean.setTableRowCount(ROWCOUNT);
+        tableStatsBean.setTableSize(events.size());
         sortEvents();
     }
 

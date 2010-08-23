@@ -199,7 +199,12 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         	 eventsListsMap.get(eri.getEvent().getEventType().name()).add(eri);
         }
          
-        tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
+        filteredEvents = eventsListsMap.get(selectedBreakdown);
+        // Commented-out to prevent the page being reset, but the other
+        //  function provided by the call is executed here
+//        tableStatsBean.reset(ROWCOUNT, filteredEvents.size());
+        tableStatsBean.setTableRowCount(ROWCOUNT);
+        tableStatsBean.setTableSize(filteredEvents.size());
     }
 
 }
