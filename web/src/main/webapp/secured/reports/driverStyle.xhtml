@@ -541,15 +541,13 @@ var firstLoad = new Boolean(true);
 
 			<div class="datagrid">
 				<!-- Start Event table --> 
-					<h:form id="driverStyleEventTable">
+					<a4j:form id="driverStyleEventTable" ajaxSubmit="true">
     					<a4j:queue requestDelay="500"/>
 					
-<!--					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"-->
-<!--							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />-->
-						<rich:dataTable value="#{driverStyleBean.filteredEvents}" 
-						id="notificationsTable" var="item" styleClass="datagrid" rowKeyVar="index"
-						rowClasses="tableOdd,tableEven" cellspacing="1" 
-						rows="#{driverStyleBean.tableStatsBean.tableRowCount}" width="100%">
+						<rich:dataTable 
+						value="#{driverStyleBean.filteredEvents}" rowKeyVar="index" 
+						id="notificationsTable" var="item" styleClass="datagrid"
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverStyleBean.tableStatsBean.tableRowCount}" width="100%">
 						
 							<rich:column id="address_column">
 								<f:facet name="header">
@@ -630,13 +628,15 @@ var firstLoad = new Boolean(true);
  									<h:outputText value="#{messages.excluded}" rendered="#{item.event.forgiven == 1}"/>
  							</security:authorize>
     						</rich:column>
-							
+				<f:facet name="footer">				
+					<h:panelGroup>
+    					<rich:datascroller align="center" for="notificationsTable" immediate="true" id="scrollerBottom" page="#{driverStyleBean.tableStatsBean.page}"
+											reRender="notificationsTable,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"
+											renderIfSinglePage="false"/>	
+ 					</h:panelGroup>
+				</f:facet>							
 						</rich:dataTable>
-						
-						<rich:datascroller align="center" for="notificationsTable" immediate="true" id="scrollerBottom" page="#{driverStyleBean.tableStatsBean.page}"
-						reRender="notificationsTable,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"
-						renderIfSinglePage="false"/>
-					</h:form> 
+					</a4j:form> 
 				<!-- End Event table -->
 				</div>
 				</div>
@@ -676,10 +676,10 @@ var firstLoad = new Boolean(true);
 	
         <div class="popupactions">
           <button id="driverStyleNo" type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{driverStyleBean.excludeEventAction}"         				
+          <a4j:commandLink id="driverStyleConfirm" action="#{driverStyleBean.excludeEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel');"
                 			onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" styleClass="left"
-                			eventsQueue="eventTable" reRender="notificationsTable,tableStats,scrollerBottom">
+                			eventsQueue="driverStyleEventTable" reRender="notificationsTable,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="yes">
 	          						<h:outputText value="#{messages.button_yes}" />
