@@ -719,7 +719,7 @@ public class Score {
 		  					(odometerMedium == null ? 0 : odometerMedium.doubleValue())  +
 		  					(odometerLight == null ? 0 : odometerLight.doubleValue());
         if (totalMiles == 0)
-        	return 0;
+        	return 0d;
     	return (totalMpg / (totalMiles/100d));
     }
     public Number getMilesDriven() {
