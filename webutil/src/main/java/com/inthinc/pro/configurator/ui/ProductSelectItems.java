@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class ProductSelectItems {
 	

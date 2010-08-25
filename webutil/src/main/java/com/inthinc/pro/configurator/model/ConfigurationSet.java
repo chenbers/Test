@@ -38,7 +38,7 @@ public class ConfigurationSet {
         
         for(Configuration configuration : configurations){
             
-            for (Entry<Integer,String> setting : configuration.getEntries()){
+            for (Entry<Integer,String> setting : configuration.getSettingsEntries()){
                 
                 if (!differences.containsKey(setting.getKey())){
                     
@@ -67,5 +67,16 @@ public class ConfigurationSet {
     public Integer getConfigurationsSize(){
         
         return configurations == null?0:configurations.size();
+    }
+    public ConfigurationSet getSelectedConfigurations(){
+    	List<Configuration> selectedConfigurations = new ArrayList<Configuration>();
+    	
+    	for (Configuration c : configurations){
+    		
+    		if (c.isSelect()){
+    			selectedConfigurations.add(c);
+    		}
+    	}
+    	return new ConfigurationSet(selectedConfigurations);
     }
 }

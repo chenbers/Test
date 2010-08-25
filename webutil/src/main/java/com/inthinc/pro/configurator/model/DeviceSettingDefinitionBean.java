@@ -9,10 +9,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import com.inthinc.pro.model.configurator.Category;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Category;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.Unit;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
+import com.inthinc.pro.model.configurator.Unit;
+import com.inthinc.pro.model.configurator.VarType;
 import com.inthinc.pro.util.DummyMap;
 
 public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefinitionBean>, Serializable{
@@ -20,16 +20,15 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 	private static final long serialVersionUID = 1L;
 	private DeviceSettingDefinition deviceSettingDefinition;
 	private ErrorColor errorColor = new ErrorColor();
-
-	public ErrorColor getErrorColor() {
-		return errorColor;
-	}
-
+	
 	public DeviceSettingDefinitionBean(DeviceSettingDefinition deviceSettingDefinition) {
 
 		this.deviceSettingDefinition = deviceSettingDefinition;
 	}
 
+	public ErrorColor getErrorColor() {
+		return errorColor;
+	}
 	public boolean isInclude() {
 		return deviceSettingDefinition.isInclude();
 	}
@@ -89,8 +88,7 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
 		if (!deviceSettingDefinition.validate((String)value)){
-			
-			throw new ValidatorException(new FacesMessage("*"));
+			throw new ValidatorException(new FacesMessage("."));
 		}
 	}
 	@Override

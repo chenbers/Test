@@ -1,0 +1,319 @@
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+<ui:define name="scripts">
+<style>
+.selectedGroup {
+	background:#cccccc;
+}
+</style>
+<script type="text/javascript">
+function setGroupSelection(groupId){
+
+	document.getElementById("configurationSelectionForm:selectedGroup").value = groupId;
+}
+function setHighlight(row,column, messages) {
+
+	var errors = document.getElementById("configuratorForm:settingList:"+row+":"+messages).textContent.length > 0;
+
+	var element = document.getElementById("configuratorForm:settingList:"+row+":"+column);
+	element.style.backgroundColor = (errors)?"pink":"white";
+	document.getElementById("configuratorForm:settingList:"+row+":"+messages).textContent = "";
+}
+
+</script>
+</ui:define>
+  	
+<a4j:keepAlive beanName="configuratorBean" ajaxOnly="true"/>
+
+<ui:param name="panelTitle" value="Configurator - Configurations"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="util_leftPanel">
+
+   <ui:include src="configuratorMenu.xhtml"/>
+   
+	<a4j:form id="configurationSelectionForm">
+		<rich:panel id="configuration-centric" style="width:200px">
+			<h:outputText value="Select Configurations" styleClass="label"></h:outputText>
+			<h:panelGrid columns="1">
+				<h:outputText value="Account:" styleClass="label"/>
+				<h:selectOneMenu id="account" value="#{configurationSelectionBean.accountID}" style="width:150px">
+					<f:selectItems value="#{accountSelectItems.selectItems}"/>
+					<a4j:support event="onchange" action="#{configurationSelectionBean.refreshNavigationTree}" 
+								 reRender="configuratorGroupRegion,makeModelYear"/>
+				</h:selectOneMenu>
+	
+				<h:outputText value="Product:" styleClass="label"></h:outputText>
+				<h:selectOneMenu id="productCode" value="#{configurationSelectionBean.productTypeCode}">
+					<f:selectItems value="#{productSelectItems.selectItems}"/>
+				</h:selectOneMenu>
+			</h:panelGrid>
+   			<rich:panel id="configuratorGroupRegion" style="border:none">
+   				<h:inputHidden id="selectedGroup" value="#{configurationSelectionBean.selectedGroupId}"/>
+ 				<rich:tree style="width:150px" switchType="client" 
+                	value="#{treeNavigationBean.navigationTree}" var="item" ajaxKeys="#{null}" nodeFace="#{item.type}">
+		         	<rich:treeNode type="fleet" iconLeaf="/images/ico_truck.png"
+									icon="/images/ico_truck.png" selectedClass="selectedGroup">
+						<a4j:commandLink onclick="setGroupSelection(#{item.attributes['groupid']});" 
+							action="#{configurationSelectionBean.groupChanged}" ajaxSingle="true" process="selectedGroup"
+							reRender="makeModelYear">
+							<h:outputText value="#{item.title}" />
+						</a4j:commandLink>
+					</rich:treeNode>
+					<rich:treeNode type="group"
+						iconLeaf="/images/ico_trucks.png"
+						icon="/images/ico_trucks.png" selectedClass="selectedGroup">
+					<a4j:commandLink onclick="setGroupSelection(#{item.attributes['groupid']});" 
+							action="#{configurationSelectionBean.groupChanged}" ajaxSingle="true" process="selectedGroup"
+							reRender="makeModelYear">
+							<h:outputText value="#{item.title}" />
+						</a4j:commandLink>
+					</rich:treeNode>
+					<rich:treeNode type="team" iconLeaf="/images/ico_team.png"
+						icon="/images/ico_team.png" selectedClass="selectedGroup">
+					<a4j:commandLink onclick="setGroupSelection(#{item.attributes['groupid']});" 
+							action="#{configurationSelectionBean.groupChanged}" ajaxSingle="true" process="selectedGroup"
+							reRender="makeModelYear">
+							<h:outputText value="#{item.title}" />
+						</a4j:commandLink>
+					</rich:treeNode>
+				</rich:tree>
+		    </rich:panel>
+       <h:panelGrid id="makeModelYear" columns="2">
+            <a4j:outputPanel id="makeLabel">
+            <h:outputText value="Make:" rendered="#{!empty configurationSelectionBean.makeList}"/>
+            </a4j:outputPanel>  
+            <a4j:outputPanel id="make">
+            	<h:selectOneMenu id="makes" value="#{configurationSelectionBean.make}" valueChangeListener="#{configurationSelectionBean.makeChanged}"
+            						rendered="#{!empty configurationSelectionBean.makeList}">
+                	<f:selectItems value="#{configurationSelectionBean.makeList}"/>
+                	<a4j:support event="onchange" reRender="model, modelLabel, year, yearLabel" ajaxSingle="true"/>
+            	</h:selectOneMenu>
+            </a4j:outputPanel>
+            <a4j:outputPanel id="modelLabel">
+                <h:outputText value="Model:" rendered="#{!empty configurationSelectionBean.modelList}"/>
+            </a4j:outputPanel>  
+            <a4j:outputPanel id="model">
+                <h:selectOneMenu id="models" value="#{configurationSelectionBean.model}" valueChangeListener="#{configurationSelectionBean.modelChanged}"
+                					rendered="#{!empty configurationSelectionBean.modelList}" >
+                    <f:selectItems value="#{configurationSelectionBean.modelList}"/>
+                <a4j:support event="onchange" reRender="year, yearLabel" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </a4j:outputPanel>
+            <a4j:outputPanel id="yearLabel">
+                <h:outputText value="Year:" rendered="#{!empty configurationSelectionBean.yearList}"/>
+            </a4j:outputPanel>  
+            <a4j:outputPanel id="year">
+                <h:selectOneMenu id="years" value="#{configurationSelectionBean.year}" rendered="#{!empty configurationSelectionBean.yearList}">
+                    <f:selectItems value="#{configurationSelectionBean.yearList}"/>
+                </h:selectOneMenu>
+            </a4j:outputPanel>
+        </h:panelGrid>
+		    
+			<h:commandButton id="getConfigurations" value="Get Configurations" action="go_configuratorConfigurations"/>
+		</rich:panel>
+	</a4j:form>
+   
+</ui:define>
+<ui:define name="util_content">
+
+<div>
+    <h:form id="configuratorForm">
+
+  	    <rich:panel id="configuratorSettings" >
+    	    <rich:panel style="border: none" rendered="#{configuratorBean.hasConfigurations}">
+				<a4j:commandButton value="Compare Selected" action ="#{configuratorBean.compareSelected}" immediate="true" reRender="compareSettings"/>
+    	    </rich:panel>   	    
+            <rich:dataTable rowKeyVar="rkv" rendered="#{configuratorBean.hasConfigurations}"
+                id="settingList" rows="0" width="100%" 
+                value="#{configuratorBean.configurationSet.configurations}" var="configuration">
+            	<rich:column id="include">
+                    <f:facet name="header">
+                    </f:facet>
+                     <h:selectBooleanCheckbox value="#{configuration.select}" >
+                     <a4j:support event="onchange" immediate="true" action="#{configuration.selectAction}" ajaxSingle="true"/>
+                     </h:selectBooleanCheckbox>
+                </rich:column>
+            	<rich:column id="configurationIndex">
+                    <f:facet name="header">
+                    </f:facet>
+                     <h:outputText value="#{configuration.configurationID}" />
+                </rich:column>
+                <rich:column id="actions">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Actions" />
+                    </f:facet>
+                    <h:panelGrid columns="2">
+             		<a4j:commandLink value="Save" action="#{configuratorBean.updateConfiguration}" title="Apply these settings to all the vehicles listed"
+             					reRender="configuratorSettings" ajaxSingle="true">
+             			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
+             		</a4j:commandLink>
+             		<a4j:commandLink value="Select Vehicles" action="#{configuratorBean.prepareVehicleSelection}" oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
+             					reRender="configuratorSettings,assignVehicles" ajaxSingle="true">
+             			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
+             		</a4j:commandLink>
+                    </h:panelGrid>
+                </rich:column>
+                 <rich:column id="count">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="# of Vehicles" />
+                    </f:facet>
+                    <h:outputText value="#{configuration.count}"/>
+                </rich:column>
+			     <rich:column id="reason">
+                   <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Reason" />
+                    </f:facet>
+				 	<rich:inplaceInput id="reasonField"  value="#{configuration.reason}" 
+				 				 showControls="true" selectOnEdit="true" required="true">
+				 				 <a4j:support event="onviewactivated" ajaxSingle="true"/>
+					</rich:inplaceInput>
+			 		<rich:message id="messageTable" for="reasonField" style="color:red" rendered="true" value="ok"/>
+				</rich:column>
+ 				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 
+ 								index="index" id="id#{index}">
+					<f:facet name="header">
+				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
+				 	</f:facet>
+				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices}">
+					 	<rich:inplaceInput id="input-#{setting.settingIDKey}"  value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}" 
+					 				 showControls="true" selectOnEdit="true" 
+					 				 style="background-color:#{setting.errorColor[configuration.editedDesiredValues.editableValues[setting.settingID].value]}"
+					 				 validator="#{setting.validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true" oncomplete="setHighlight(#{rkv},'input-#{setting.settingIDKey}','message-#{setting.settingIDKey}');"/>
+						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="message-#{setting.settingIDKey}" for="input-#{setting.settingIDKey}" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{setting.hasChoices}">
+					 	<rich:inplaceSelect id="select-#{setting.settingID}" name="#{setting.settingID}-#{index}" 
+					 						value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}">
+	
+							<f:selectItems value="#{choiceSelectItems.selectItems[setting.settingID]}" />
+							 <a4j:support event="onviewactivated" ajaxSingle="true"/>
+						</rich:inplaceSelect>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+					</h:panelGrid>					
+				 				 
+				</rich:columns>
+                 
+             </rich:dataTable>
+ 	              
+		</rich:panel>
+	</h:form>
+ 
+    <h:form id="differencesForm">
+
+  	    <rich:panel id="compareSettings" >
+            <rich:dataTable rowKeyVar="rkv" rendered="#{configuratorBean.differentOnly}"
+                id="settingList" rows="0"  
+                value="#{configuratorBean.compareConfigurationSet.configurations}" var="configuration">
+            	<rich:column id="configurationIndex">
+                    <f:facet name="header">
+                    </f:facet>
+                     <h:outputText value="#{configuration.configurationID}" />
+                </rich:column>
+                <rich:column id="actions">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Actions" />
+                    </f:facet>
+                    <h:panelGrid columns="2">
+             		<a4j:commandLink value="Save" action="#{configuratorBean.updateConfiguration}" title="Apply these settings to all the vehicles listed"
+             					reRender="configuratorSettings" ajaxSingle="true">
+             			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
+             		</a4j:commandLink>
+             		<a4j:commandLink value="Select Vehicles" action="#{configuratorBean.prepareVehicleSelection}" oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
+             					reRender="configuratorSettings,assignVehicles" ajaxSingle="true">
+             			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
+             		</a4j:commandLink>
+                    </h:panelGrid>
+                </rich:column>
+                 <rich:column id="count">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="# of Vehicles" />
+                    </f:facet>
+                    <h:outputText value="#{configuration.count}"/>
+                </rich:column>
+			     <rich:column id="reason">
+                   <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Reason" />
+                    </f:facet>
+				 	<rich:inplaceInput id="reasonField"  value="#{configuration.reason}" 
+				 				 showControls="true" selectOnEdit="true" required="true">
+				 				 <a4j:support event="onviewactivated" ajaxSingle="true"/>
+					</rich:inplaceInput>
+			 		<rich:message id="messageTable" for="reasonField" style="color:red" rendered="true" value="ok"/>
+				</rich:column>
+ 				<rich:columns value="#{configuratorBean.differentDeviceSettings}" var="setting" 
+ 								index="index" id="id#{index}">
+					<f:facet name="header">
+				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
+				 	</f:facet>
+				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices}">
+					 	<rich:inplaceInput id="input-#{setting.settingIDKey}"  value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}" 
+					 				 showControls="true" selectOnEdit="true" 
+					 				 style="background-color:#{setting.errorColor[configuration.editedDesiredValues.editableValues[setting.settingID].value]}"
+					 				 validator="#{setting.validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true" oncomplete="setHighlight(#{rkv},'input-#{setting.settingIDKey}','message-#{setting.settingIDKey}');"/>
+						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="message-#{setting.settingIDKey}" for="input-#{setting.settingIDKey}" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{setting.hasChoices}">
+					 	<rich:inplaceSelect id="select-#{setting.settingID}" name="#{setting.settingID}-#{index}" 
+					 						value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}">
+	
+							<f:selectItems value="#{choiceSelectItems.selectItems[setting.settingID]}" />
+							 <a4j:support event="onviewactivated" ajaxSingle="true"/>
+						</rich:inplaceSelect>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+					</h:panelGrid>					
+				 				 
+				</rich:columns>
+                 
+             </rich:dataTable>
+ 	              
+		</rich:panel>
+	</h:form>
+        <rich:modalPanel id="assignVehicles" autosized="true" width="450">
+        <f:facet name="header">
+            <h:outputText value="Assign settings in configuration #{configuratorBean.selectedConfigurationID} to selected vehicles" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/images/modal_close.png" id="hidelink"
+                    styleClass="hidelink" />
+                <rich:componentControl for="assignVehicles" attachTo="hidelink"
+                    operation="hide" event="onclick" />
+            </h:panelGroup>
+        </f:facet>
+        <h:form>
+            <h:panelGrid columns="1">
+         <rich:listShuttle sourceValue="#{configuratorBean.vehicleSelectionSource}"
+            targetValue="#{configuratorBean.vehicleSelectionTarget}" var="item" listsHeight="150"
+            sourceListWidth="130" targetListWidth="130" sourceCaptionLabel="Vehicles in Group"
+            targetCaptionLabel="Vehicles to assign">
+            <rich:column>
+                <h:outputText value="#{item}"></h:outputText>
+            </rich:column>
+        </rich:listShuttle>
+                             
+                  <h:panelGrid columns="2">
+                <a4j:commandButton value="Apply Settings"
+                    action="#{configuratorBean.applySettingsToTargetVehicles}"
+                    oncomplete="#{rich:component('assignVehicles')}.hide();" />
+                <a4j:commandButton value="Cancel" immediate="true" 
+                    oncomplete="#{rich:component('assignVehicles')}.hide();" />
+             </h:panelGrid>   
+            </h:panelGrid>
+        </h:form>
+    </rich:modalPanel>
+            
+</div><!-- end page -->
+</ui:define>
+</ui:composition>

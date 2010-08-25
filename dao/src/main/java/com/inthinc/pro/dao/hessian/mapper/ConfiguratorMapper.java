@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class ConfiguratorMapper extends AbstractMapper {
@@ -78,5 +79,13 @@ public class ConfiguratorMapper extends AbstractMapper {
             vehicleSetting.setDesired((Map<Integer,String>) value);
             vehicleSetting.combineSettings();
         }
+    }
+    @ConvertColumnToField(columnName = "productVer")
+    public void productVerToProductType(VehicleSetting vehicleSetting, Object value)
+    {
+    	if (value instanceof Integer){
+    		
+    		vehicleSetting.setProductType(ProductType.getProductTypeFromVersion((Integer)value));
+    	}
     }
 }

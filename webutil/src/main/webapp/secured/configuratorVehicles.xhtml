@@ -1,0 +1,112 @@
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+<ui:define name="scripts">
+<style>
+.selectedGroup {
+	background:#cccccc;
+}
+</style>
+<script type="text/javascript">
+
+function setHighlight(element, errors) {
+	
+	element.style.backgroundColor = (errors)?"pink":"white";
+}
+
+</script>
+</ui:define>
+  	
+<ui:param name="panelTitle" value="Configurator - Vehicle Settings"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="util_leftPanel">
+   <ui:include src="configuratorMenu.xhtml"/>
+   
+	<a4j:form id="vehicleSelectionForm">
+		<rich:panel id="vehicle-centric">
+			<h:panelGrid columns="1" style="width: 150px">
+				<h:outputText value="Vehicle id:" styleClass="label"></h:outputText>
+				<h:inputText value="#{vehicleSettingsBean.selectedVehicleID}"/>
+				<h:commandButton id="getVehicle" value="Get Vehicle Settings" action="#{vehicleSettingsBean.displayVehicle}"/>
+				<h:outputText value="Reason for changes:" styleClass="label" rendered="#{vehicleSettingsBean.selectedVehicleID != null}"/>
+				<h:inputText value="#{vehicleSettingsBean.reason}" rendered="#{vehicleSettingsBean.selectedVehicleID != null}"/>
+				<h:commandButton id="saveVehicleSettings" value="Save Vehicle Settings" action="#{vehicleSettingsBean.updateVehicle}" 
+									rendered="#{vehicleSettingsBean.selectedVehicleID != null}" reRender="vehicleEditSettingsRegion,vehicle-centric"/>
+				<h:commandButton id="resetVehicleSettings" value="Reset Vehicle Settings" action="#{vehicleSettingsBean.resetDesiredSettings}" 
+									rendered="#{vehicleSettingsBean.selectedVehicleID != null}" reRender="vehicleEditSettingsRegion,vehicle-centric"/>
+				<rich:messages id="messages" style="color: red"/>
+			</h:panelGrid>
+		</rich:panel>
+	</a4j:form>
+</ui:define>
+<ui:define name="util_content">
+
+<div>
+	<a4j:form id="vehicleSettingsForm">
+            <rich:panel id="vehicleEditSettingsRegion" rendered="#{vehicleSettingsBean.selectedVehicleID ne null}">
+           	<rich:dataTable id="selectedSettings" rowKeyVar="rkv" value="#{deviceSettingDefinitionsByProductType.deviceSettingLists[vehicleSettingsBean.selectedVehicleSetting.productType]}" 
+           					var="setting" 
+           					rows="0" width="600px">
+                 <rich:column id="name" sortBy="#{setting.name}">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Setting" />
+                    </f:facet>
+                    <h:outputText value="#{setting.name}"></h:outputText>
+                </rich:column>
+                <rich:column id="id" sortBy="#{setting.settingID}">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="ID" />
+                    </f:facet>
+                   <h:outputText value="#{setting.settingID}"></h:outputText>
+                </rich:column>
+                <rich:column id="category" sortBy="#{setting.category.name}">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Category" />
+                    </f:facet>
+                    <h:outputText value="#{setting.category.name}"></h:outputText>
+                </rich:column>
+                <rich:column id="actual">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Actual" />
+                    </f:facet>
+                     <h:outputText value="#{vehicleSettingsBean.selectedVehicleSetting.actual[setting.settingID]}" />
+                </rich:column>
+                <rich:column id="newdesired">
+                    <f:facet name="header">
+                    	<h:outputText styleClass="headerText" value="Desired" />
+                    </f:facet>
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices}">
+					 	<rich:inplaceInput id="input"  value="#{vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value}" 
+					 				 showControls="true" selectOnEdit="true" 
+					 				 style="background-color:#{setting.errorColor[vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value]}"
+					 				 validator="#{deviceSettingDefinitions.deviceSettingDefinitionsMap[setting.settingIDKey].validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true" oncomplete="setHighlight(this,#{!empty facesContext.maximumSeverity});"/>
+
+						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="message" for="input" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name}" rendered="#{setting.hasChoices}">
+					 	<rich:inplaceSelect id="select" value="#{vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value}">
+	
+							<f:selectItems value="#{choiceSelectItems.selectItems[setting.settingID]}" />
+							<a4j:support event="onviewactivated" ajaxSingle="true"/>
+						</rich:inplaceSelect>
+					 	<h:outputText  value="#{setting.unit.name}"></h:outputText>
+					</h:panelGrid>					
+                </rich:column>
+              <f:facet name="footer">
+                <rich:datascroller></rich:datascroller>
+            </f:facet>
+        </rich:dataTable>
+        </rich:panel>
+       </a4j:form>
+            
+</div><!-- end page -->
+</ui:define>
+</ui:composition>

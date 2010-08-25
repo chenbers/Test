@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class DeviceSettingDefinitionsByProductType {
 
@@ -85,11 +85,17 @@ public class DeviceSettingDefinitionsByProductType {
         return deviceSettingLists.get(key);
     }
 
-    public DeviceSettingDefinitionBean getDeviceSetting(ProductType key, Integer settingID) {
+    public Map<ProductType, List<DeviceSettingDefinitionBean>> getDeviceSettingLists() {
+		return deviceSettingLists;
+	}
+	public DeviceSettingDefinitionBean getDeviceSetting(ProductType key, Integer settingID) {
     	
         return deviceSettings.get(key).get(settingID);
     }
-    
+    public List<Integer> getKeys(ProductType key){
+    	
+    	return new ArrayList<Integer>(deviceSettings.get(key).keySet());
+    }
     public List<DeviceSettingDefinitionBean> getIgnoredSettings(ProductType key) {
     	List<DeviceSettingDefinitionBean> iss = new ArrayList<DeviceSettingDefinitionBean>(ignoredSettings.get(key).values());
     	Collections.sort(iss);
@@ -99,5 +105,21 @@ public class DeviceSettingDefinitionsByProductType {
     public boolean validValue(Integer settingID, String value){
         
         return DeviceSettingDefinitions.getDeviceSettingDefinition(settingID).validate(value);
-    }   
+    }
+//    public EditableMap<Integer, String> getCopyValuesMap(ProductType productType, Map<Integer,String> mapToCopy){
+//    	
+//    	Map<Integer, String> copyMap = new HashMap<Integer,String>();
+//    	
+//    	for(DeviceSettingDefinitionBean dsdb: deviceSettingLists.get(productType)){
+//    		
+//    		if (mapToCopy.get(dsdb.getSettingID()) == null){
+//    			
+//    			copyMap.put(dsdb.getSettingID(),"");
+//    		}
+//    		else {
+//    			copyMap.put(dsdb.getSettingID() ,mapToCopy.get(dsdb.getSettingID()));
+//    		}
+//    	}
+//    	return new EditableMap<Integer,String>(copyMap);
+//    }
 }

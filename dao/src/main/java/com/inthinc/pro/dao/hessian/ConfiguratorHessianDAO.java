@@ -53,8 +53,13 @@ public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefin
 
     @Override
     public List<VehicleSettingHistory> getVehicleSettingsHistory(Integer vehicleID, Date startTime, Date endTime) {
+    	try{
+    		return getMapper().convertToModelObject(getSiloService().getVehicleSettingsHistory(vehicleID, DateUtil.convertDateToSeconds(startTime), DateUtil.convertDateToSeconds(endTime)),VehicleSettingHistory.class);
 
-        return getMapper().convertToModelObject(getSiloService().getVehicleSettingsHistory(vehicleID, DateUtil.convertDateToSeconds(startTime), DateUtil.convertDateToSeconds(endTime)),VehicleSettingHistory.class);
+    	} catch (EmptyResultSetException e) {
+	        return Collections.emptyList();
+	    }
+
     }
 
     @Override

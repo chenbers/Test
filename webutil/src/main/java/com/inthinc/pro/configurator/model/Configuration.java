@@ -1,76 +1,79 @@
 package com.inthinc.pro.configurator.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 public class Configuration{
     
+	private boolean select;
+
 	private Integer configurationID;
 	
     private List<Integer> vehicleIDs;
-    private Map<Integer,String> settingValues;
-//    private Map<Integer,String> desiredValues;
-    private Map<Integer,String> newDesiredValues;
-	private String reason;
-    private List<Entry<Integer,String>> entries;
     
+    private EditableMap<Integer,String> editedDesiredValues;
+	private String reason;
+
+	public boolean isSelect() {
+		return select;
+	}
+	
+	public void setSelect(boolean select) {
+		this.select = select;
+	}
+	public Object selectAction(){
+		
+		select = !select;
+		return null;
+	}
+	public Map<Integer, String> getOriginalValues() {
+		return editedDesiredValues.getOriginalValues();
+	}
+
+	public Map<Integer, String> getDifferencesMap() {
+		return editedDesiredValues.getDifferencesMap();
+	}
+    public Set<Entry<Integer, String>> getSettingsEntries(){
+    	
+    	return editedDesiredValues.getOriginalValues().entrySet();
+    	
+    }
     public Configuration(Integer configurationID) {
     	
     	this.configurationID = configurationID;
     	
         vehicleIDs = new ArrayList<Integer>();
-        settingValues = new HashMap<Integer,String>();
-//        desiredValues = new HashMap<Integer,String>();
-        newDesiredValues = new HashMap<Integer,String>();
     }
     
     public Integer getConfigurationID() {
 		return configurationID;
 	}
-
-	public void setNewDesiredValue(Integer settingID, String value){
+    public void setEditedDesiredValues(EditableMap<Integer, String> editedDesiredValues){
     	
-    	if (settingValues.get(settingID) != null && settingValues.get(settingID).equals(value)) {
-    		
-    		newDesiredValues.remove(settingID);
-    		return;
-    	}
-    	newDesiredValues.put(settingID, value);
+    	this.editedDesiredValues = editedDesiredValues;
     }
-    public Map<Integer, String> getNewDesiredValues() {
-		return newDesiredValues;
-	}
     public Map<Integer, String> getLatestDesiredValues() {
     	
-    	Map<Integer,String> latestDesiredValues = new HashMap<Integer, String>();
-    	
-    	latestDesiredValues.putAll(settingValues);
-//    	latestDesiredValues.putAll(desiredValues);
-    	latestDesiredValues.putAll(newDesiredValues);
-    	
-		return latestDesiredValues;
+		return editedDesiredValues.getLatestValues();
 	}
+	public EditableMap<Integer, String> getEditedDesiredValues() {
+		return editedDesiredValues;
+	}
+
 	public Configuration(Configuration configuration){
         
         vehicleIDs = new ArrayList<Integer>(configuration.vehicleIDs);
-        settingValues = new HashMap<Integer, String>(configuration.settingValues);
+        editedDesiredValues = configuration.getEditedDesiredValues();
     }
-//    public Map<Integer, String> getDesiredValues() {
-//		return desiredValues;
-//	}
    public String getReason() {
 		return reason;
 	}
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-    public void addValue(Integer settingID, String value){
-        
-        settingValues.put(settingID,value);
-    }
     public List<Integer> getVehicleIDs() {
         return vehicleIDs;
     }
@@ -84,23 +87,4 @@ public class Configuration{
     public Integer getCount(){
         return vehicleIDs.size();
     }
-    public List<String> getValuesList(){
-
-        return new ArrayList<String>(settingValues.values());
-    }
-    public List<Entry<Integer,String>> getEntries(){
-        
-       if(entries == null){
-            
-            entries = new ArrayList<Entry<Integer,String>>(settingValues.entrySet());
-        }
-        return entries;
-    }
-    public Map<Integer, String> getSettingValues() {
-		return settingValues;
-	}
-
-	public void setSettingValues(Map<Integer, String> settingValues) {
-		this.settingValues = settingValues;
-	}
 }

@@ -1,0 +1,22 @@
+<ui:composition 
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+	<a4j:form styleClass="menuPanel">
+       <rich:panelMenu mode="server" style="width:200px" iconExpandedGroup="disc" iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
+           iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right">
+           <rich:panelMenuGroup label="Configurator Menu" expanded="true">
+               <rich:panelMenuItem label="Configurations" action="go_configuratorConfigurations" ajaxSingle="false" rendered="#{daoUtilBean.isSuperuser}">
+               </rich:panelMenuItem>
+               <rich:panelMenuItem label="Vehicles" action="go_configuratorVehicles" ajaxSingle="false"  rendered="#{daoUtilBean.isSuperuser}">
+               </rich:panelMenuItem>
+               <rich:panelMenuItem label="Audit Trail" action="go_configuratorAuditTrail" ajaxSingle="false"  rendered="#{baseBean.isSuperuser}">
+               </rich:panelMenuItem>
+           </rich:panelMenuGroup>
+       </rich:panelMenu>
+   </a4j:form>
+</ui:composition>

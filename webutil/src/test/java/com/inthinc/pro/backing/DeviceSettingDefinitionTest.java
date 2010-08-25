@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
+import com.inthinc.pro.model.configurator.VarType;
 
 @Ignore
 public class DeviceSettingDefinitionTest {

@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
-import com.inthinc.pro.model.configurator.VehicleSetting.ProductVersion;
 
 public class VehicleSettingsByProductType {
 
@@ -25,25 +24,20 @@ public class VehicleSettingsByProductType {
         vehicleSettingsByProductType = new HashMap<ProductType,List<VehicleSetting>>();
         vehicleSelectItems = new HashMap<ProductType,List<String>>();
         
-        for (ProductVersion productVersion : ProductVersion.getSet()){
+        for (ProductType productType : ProductType.getSet()){
             
-            vehicleSettingsByProductType.put(getProductType(productVersion),new ArrayList<VehicleSetting>()); 
-            vehicleSelectItems.put(getProductType(productVersion),new ArrayList<String>()); 
+            vehicleSettingsByProductType.put(productType,new ArrayList<VehicleSetting>()); 
+            vehicleSelectItems.put(productType,new ArrayList<String>()); 
         }
     }
     private void distributeSettings(List<VehicleSetting> allVehicleSettings){
 
         for(VehicleSetting vehicleSetting:allVehicleSettings){
             
-            vehicleSettingsByProductType.get(getProductType(vehicleSetting.getProductVer())).add(vehicleSetting);
-            vehicleSelectItems.get(getProductType(vehicleSetting.getProductVer())).add(""+vehicleSetting.getVehicleID());
+            vehicleSettingsByProductType.get(vehicleSetting.getProductType()).add(vehicleSetting);
+            vehicleSelectItems.get(vehicleSetting.getProductType()).add(""+vehicleSetting.getVehicleID());
         }
     }
-    private ProductType getProductType(ProductVersion productVersion){
-        
-        return ProductType.valueOfByVersion(productVersion.getCode());
-    }
-    
     public List<VehicleSetting> getVehicleSettingsByProductType(ProductType key) {
         
         return vehicleSettingsByProductType.get(key);

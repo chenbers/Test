@@ -13,20 +13,20 @@ import com.inthinc.pro.backing.configurator.ConfiguratorBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
-import com.inthinc.pro.configurator.model.VehicleSettings;
+import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
 import com.inthinc.pro.configurator.model.VehicleSettingsByProductType;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.configurator.VarType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.ProductType;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition.VarType;
 
 public class ConfiguratorTest {
     
     private DeviceSettingDefinitions deviceSettingDefinitions;
     private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-    private VehicleSettings vehicleSettings;
+    private VehicleSettingsDAO vehicleSettings;
     private VehicleSettingsByProductType vehicleSettingsByProductType;
     private ConfiguratorBean configuratorBean;
     
@@ -47,7 +47,7 @@ public class ConfiguratorTest {
         
         configuratorBean.setDeviceSettingDefinitionsByProductType(deviceSettingDefinitionsByProductType);
         configuratorBean.init();
-        vehicleSettings = new VehicleSettings();
+        vehicleSettings = new VehicleSettingsDAO();
         vehicleSettings.setConfiguratorDAO(configuratorHessianDAO);
         vehicleSettingsByProductType = new VehicleSettingsByProductType();
         vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(1));

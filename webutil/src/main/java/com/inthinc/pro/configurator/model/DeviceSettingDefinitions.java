@@ -46,4 +46,5 @@ public class DeviceSettingDefinitions implements BaseAppEntity {
         
         return deviceSettingDefinitions;
     }
+    
 }

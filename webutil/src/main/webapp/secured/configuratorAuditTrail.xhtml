@@ -1,0 +1,115 @@
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+<ui:define name="scripts">
+<style>
+.selectedGroup {
+	background:#cccccc;
+}
+</style>
+<script type="text/javascript">
+function setGroupSelection(groupId){
+
+	document.getElementById("configurationSelectionForm:selectedGroup").value = groupId;
+}
+
+</script>
+</ui:define>
+  	
+<a4j:keepAlive beanName="vehicleSettingsHistoryBean" ajaxOnly="true"/>
+
+<ui:param name="panelTitle" value="Configurator - Vehicle Settings History"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="util_leftPanel">
+	<ui:include src="configuratorMenu.xhtml"/>
+	<a4j:form id="vehicleSelectionForm">
+		<rich:panel id="vehicle-centric">
+			<h:outputText value="Select vehicle and time range" styleClass="label"></h:outputText>
+			<h:panelGrid columns="1" style="width: 150px">
+				<h:outputText value="Vehicle id:" styleClass="label"></h:outputText>
+				<h:inputText value="#{vehicleSettingsHistoryBean.vehicleID}"/>
+			</h:panelGrid>
+    	<h:panelGroup >
+		<rich:calendar id="startDate" inputSize="20" value="#{vehicleSettingsHistoryBean.startDate}" currentDate="#{vehicleSettingsHistoryBean.startDate}" 
+					   required="true" requiredMessage="required"
+                       enableManualInput="true" datePattern="MM/dd/yy hh:mm a" timeZone="#{dateFormatBean.timeZone}"/>
+        <rich:message for="startDate" />
+    </h:panelGroup>
+    <h:panelGroup >
+		<rich:calendar id="endDate" inputSize="20" value="#{vehicleSettingsHistoryBean.endDate}" currentDate="#{vehicleSettingsHistoryBean.endDate}" 
+					   required="true" requiredMessage="required"
+                       enableManualInput="true" datePattern="MM/dd/yy hh:mm a" timeZone="#{dateFormatBean.timeZone}"/>
+        <rich:message for="endDate" />
+    </h:panelGroup>
+ 			<h:commandButton id="getVehicleHistory" value="Get Vehicle Settings History" action="#{vehicleSettingsHistoryBean.displayHistory}"/>
+		</rich:panel>
+	</a4j:form>
+          
+</ui:define>
+<ui:define name="util_content">
+<div>
+    <h:form id="historyForm">
+
+ <rich:panel id="history" style="border:none">
+ <rich:dataTable rowKeyVar="rkv" 
+   id="settingsHistory" rows="20" width="100%" 
+   value="#{vehicleSettingsHistoryBean.vehicleSettingHistories}" var="settingHistory">
+   <rich:column id="deviceID">
+       <f:facet name="header">
+       	<h:outputText styleClass="headerText" value="Device ID" />
+       </f:facet>
+       <h:outputText value="#{settingHistory.deviceID}"/>
+   </rich:column>
+   <rich:column id="settingID">
+       <f:facet name="header">
+       	<h:outputText styleClass="headerText" value="Setting ID" />
+       </f:facet>
+       <h:outputText value="#{settingHistory.settingID}"/>
+   </rich:column>
+   <rich:column id="oldValue">
+       <f:facet name="header">
+       	<h:outputText styleClass="headerText" value="Old Value" />
+       </f:facet>
+       <h:outputText value="#{settingHistory.oldValue}"/>
+   </rich:column>
+   <rich:column id="newValue">
+       <f:facet name="header">
+       	<h:outputText styleClass="headerText" value="New Value" />
+       </f:facet>
+       <h:outputText value="#{settingHistory.newValue}"/>
+   </rich:column>
+   <rich:column id="modified">
+       <f:facet name="header">
+       	<h:outputText styleClass="headerText" value="Modified on" />
+       </f:facet>
+       <h:outputText value="#{settingHistory.modified}"/>
+   </rich:column>
+  <rich:column id="reason">
+       <f:facet name="header">
+       	<h:outputText styleClass="headerText" value="Reason" />
+       </f:facet>
+       <h:outputText value="#{settingHistory.reason}"/>
+   </rich:column>
+   
+   <rich:column id="user">
+       <f:facet name="header">
+       	<h:outputText styleClass="headerText" value="Modified by" />
+       </f:facet>
+       <h:outputText value="#{settingHistory.username}"/>
+   </rich:column>
+	<f:facet name="footer">				
+		<h:panelGroup>
+			<rich:datascroller align="center" id="settingsScroller" />
+		</h:panelGroup>
+  	</f:facet>
+ </rich:dataTable>
+ </rich:panel>    
+ </h:form>       
+</div><!-- end page -->
+</ui:define>
+</ui:composition>
