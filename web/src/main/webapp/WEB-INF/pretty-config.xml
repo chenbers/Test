@@ -447,4 +447,13 @@
 		<action>#{accountBean.view}</action>
 	</url-mapping>	
 
+    <url-mapping id="hos">
+        <pattern>/app/hos/#{hosBean.driverID}</pattern>
+        <view-id>/secured/hos/hos.faces</view-id>
+    </url-mapping>  
+    <url-mapping id="hosEdit">
+        <pattern>/app/hosEdit</pattern>
+        <view-id>/secured/hos/hosEdit.faces</view-id>
+    </url-mapping>  
+
 </pretty-config>

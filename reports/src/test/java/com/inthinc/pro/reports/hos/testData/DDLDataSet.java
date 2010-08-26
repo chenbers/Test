@@ -120,7 +120,7 @@ public class DDLDataSet {
                 rec.setDistance(0l);
                 rec.setDriverDotType(RuleSetType.valueOf(Integer.valueOf(values[ruleIdIdx])));
                 rec.setDriverID(driver.getDriverID());
-                rec.setDriverName(driver.getPerson().getFullName());
+//                rec.setDriverName(driver.getPerson().getFullName());
                 rec.setEdited(Boolean.valueOf(values[editedIdx]));
                 rec.setEditUserName(""+values[userIdIdx]);
                 rec.setHosLogID(cnt++);

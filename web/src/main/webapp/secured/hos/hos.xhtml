@@ -1,0 +1,65 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:c="http://java.sun.com/jstl/core"
+	  			xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<ui:define name="scripts">
+		<script type="text/javascript">
+        	function hiliteEditedInTable()
+        	{
+	            jQuery('.rich-table-row:has(td>input[id*="edited"][value*="true"])').addClass("tableEdited");
+        	}
+		</script>
+	</ui:define>
+
+	<ui:param name="homeSelected" value="current" />
+	<ui:param name="helpFile" value="hos.htm" />
+	
+	<ui:define name="content">
+	<div id="wrapper">
+
+<!-- 
+<h:form id="breadcrumbForm">
+	<ul id="grid_nav">
+		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
+		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName}&#160;" />
+            <pretty:link id="driverPerformancePerson" mappingId="driverPerformance">
+               <h:outputText value="#{driverPerformanceBean.driver.person.fullName}"/>
+               <f:param value="#{driverPerformanceBean.driver.driverID}"/>
+            </pretty:link>
+        </li>
+		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
+		
+		<li class="l">
+			<ui:include src="/includes/breadcrumb.xhtml">
+				<ui:param name="groupID" value="#{driverPerformanceBean.driver.groupID}" />
+				<ui:param name="displayLastSeperator" value="true" />
+ 				<ui:param name="context" value="driverPerformance" />
+			</ui:include>
+		</li>
+		<li class="l" style="margin-left: -15px;">
+			<ul id="breadcrumb">
+				<li class="last"><h:outputText value="#{driverPerformanceBean.driver.person.fullNameWithId}" /></li>
+			</ul>
+		</li>
+	</ul>
+</h:form>
+ -->
+ 
+		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+		  <tr>
+		    <td colspan="3" valign="top">
+		   		<ui:include src="/includes/hos/hosLogs.xhtml">	
+		   		</ui:include>
+			</td>
+		  </tr>
+		</table>
+	</div>
+	</ui:define>
+</ui:composition>

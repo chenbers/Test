@@ -3321,3 +3321,9 @@ td.middle select {
 	text-align: center;
 	padding-top: 5px;
 }
+
+.tableEdited {
+	background: #d3d3d3 none repeat-x;
+}
+
+

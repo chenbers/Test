@@ -1,0 +1,129 @@
+<ui:composition 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+	<c:set var="context" value="hosTable"/>		
+         	
+	<rich:jQuery selector="document" query="ready(function(){hiliteEditedInTable();})" />
+     
+    <a4j:region id="hos-table-region">
+    <a4j:form id="hos-table-form">
+     
+      <div class="panel_w">
+        <div class="panel_content">
+          <ul id="grid_nav" style="margin: 0;">
+            <li class="l"><h:commandButton id="#{context}-hosTableEdit" action="#{hosBean['batchEdit']}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></h:commandButton></li>
+            <li class="l text">
+				<a4j:commandLink id="#{context}-hosTableEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+					reRender="editColumnsForm:#{context}-editColumnsGrid">
+					#{messages.button_editColumns}
+				</a4j:commandLink>
+            </li>
+            <li class="r text">
+              <a4j:status 
+				id="tableActionStatus" for="hos-table-region">
+      				<f:facet name="start">
+      					<h:outputText>
+      						<img 
+      							src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" 
+      							align="top" />&#160;</h:outputText>
+      				</f:facet>
+			   </a4j:status>
+            </li>
+          </ul>
+    	  <ui:include src="/includes/table/statsHeader.xhtml">	
+   			<ui:param name="title" value="#{messages.hosLogs_recordCountHeader}" />
+   			<ui:param name="pageData" value="#{hosBean.pageData}" />
+		 </ui:include>
+
+        <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+        <div class="spacer"></div>
+
+        <a4j:outputPanel id="tablePanel">
+        <a4j:region>
+        <div class="datagrid_panel" style="width: 100%">
+
+		<rich:dataTable id="#{context}" value="#{hosBean.items}" var="item" rowKeyVar="index" styleClass="datagrid"
+              rows="#{hosBean.pageData.rowsPerPage}" rowClasses="tableOdd,tableEven"  width="100%" >
+			<rich:column>
+                <f:facet name="header">
+                  <h:selectBooleanCheckbox value="#{hosBean.selectAll}" id="selectAll">
+                    <a4j:support event="onclick" action="#{hosBean.doSelectAll}" ajaxSingle="true" reRender="#{context}" limitToList="true" />
+                  </h:selectBooleanCheckbox>
+                </f:facet>
+                <h:selectBooleanCheckbox id="select" value="#{item.selected}">
+                </h:selectBooleanCheckbox>
+                <h:inputHidden id="edited" value="#{item.edited}"/>
+			</rich:column>
+			<rich:column id="datetime" rendered="#{hosTableColumns.tableColumns['datetime'].visible}" sortBy="#{item.logTime}" sortOrder="DESCENDING">
+			      <f:facet name="header"><h:outputText value="#{messages.hosLogs_datetime}" /></f:facet>
+            	    <h:outputText value="#{item.logTime}">
+                		<f:converter converterId="DateTimeTZConverter"/>
+						<f:attribute name="timeZone" value="#{item.timeZone}"/>
+                		<f:attribute name="pattern" value="#{messages.longDateTimeFormat}"/>
+                	</h:outputText>
+			</rich:column>
+		    <rich:column id="driver" rendered="#{hosTableColumns.tableColumns['driver'].visible}" sortBy="#{item.driverName}">
+		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_driver}" /></f:facet>
+		      <h:outputText value="#{item.driverName}" />
+		    </rich:column>
+		    <rich:column id="vehicle" rendered="#{hosTableColumns.tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}">
+		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_vehicle}" /></f:facet>
+		      <h:outputText value="#{item.vehicleID == null ? messages.hosLogs_webLogin : item.vehicleName}" />
+		    </rich:column>
+		    <rich:column id="service" rendered="#{hosTableColumns.tableColumns['service'].visible}" sortBy="#{item.serviceID}">
+		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_service}" /></f:facet>
+		      <h:outputText value="#{item.serviceID}" />
+		    </rich:column>
+		    <rich:column id="trailer" rendered="#{hosTableColumns.tableColumns['trailer'].visible}" sortBy="#{item.trailerID}">
+		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_trailer}" /></f:facet>
+		      <h:outputText value="#{item.trailerID}" />
+		    </rich:column>
+		    <rich:column id="location" rendered="#{hosTableColumns.tableColumns['location'].visible}" sortBy="#{item.location}">
+		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_location}" /></f:facet>
+		      <h:outputText value="#{item.location}" />
+		    </rich:column>
+		    <rich:column id="status" rendered="#{hosTableColumns.tableColumns['status'].visible}" sortBy="#{item.status.description}">
+      			<f:facet name="header"><h:outputText value="#{messages.hosLogs_status}" /></f:facet>
+      			<h:outputText value="#{messages[item.status.name]}" />
+    		</rich:column>
+            <rich:column>
+                <f:facet name="header">
+                  <h:outputText value=" " />
+                </f:facet>
+                <a4j:htmlCommandLink id="edit" action="#{hosBean['edit']}" value="#{messages.hosLog_edit}">
+                  <f:param name="editID" value="#{item.id}" />
+                </a4j:htmlCommandLink>
+            </rich:column>
+           </rich:dataTable>
+
+          </div>
+    	  <rich:spacer style="display:block" height="5px"/>
+          <rich:datascroller id="#{context}-dataTableScroller" for="#{context}" reRender="hos-table-form:header, #{context}" page="#{hosBean.page}" renderIfSinglePage="false"/>
+          
+          </a4j:region>
+          </a4j:outputPanel>
+        </div>
+      </div>
+      
+    </a4j:form>
+
+    <ui:include src="/includes/columnSelectionPopup.xhtml">
+		<ui:param name="bean" value="#{hosTableColumns}"/>	
+      <ui:param name="reRender" value="#{context}" />
+      <ui:param name="context" value="#{context}" />
+	</ui:include>
+    
+    
+    </a4j:region>
+
+
+</ui:composition>
+

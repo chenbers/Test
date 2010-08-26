@@ -1,0 +1,235 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:c="http://java.sun.com/jstl/core"
+			    xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+	  			xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<ui:define name="scripts">
+		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+	</ui:define>
+
+	<ui:param name="homeSelected" value="current" />
+	<ui:param name="helpFile" value="hos.htm" />
+	
+	<ui:define name="content">
+	<div id="wrapper">
+		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+      <tr>
+        <td valign="top" width="130">
+<!--
+TODO: HOS SIDE NAV?         
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="#{(hosBean.add) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
+            <ui:param name="parentAction" value="go_adminVehicles" />
+            <ui:param name="context" value="editVehicle"/>
+          </ui:include>
+ -->         
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+
+          <a4j:form id="edit-form">
+
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{hosBean.add ? messages.hosLogs_addLog : (hosBean.batchEdit ? messages.hosLogs_editLogs : messages.hosLogs_editLog)}" /></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+              <div class="panel_w">
+                <div class="panel_content">
+
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="r">
+                          <h:commandButton id="editHosLogSave1" action="#{hosBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editHosLogCancel1" action="#{hosBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                        </li>
+                      </ul>
+                        
+                      <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+                        <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                           <dt class="error">
+                              <h:outputFormat value="#{messages.error_validationMsg}">
+                                 <f:param value="${tiwiprofn:getMessageCount()}"/>
+                              </h:outputFormat>
+                           </dt>
+                        </dl>
+                      </ui:fragment>
+                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                      <div class="spacer"></div>
+
+                      <table width="790" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="390" valign="top">
+
+                            <div class="add_section_title"><h:outputText value="#{messages.hosLogs_information}" /></div>
+
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <ui:fragment rendered="#{not hosBean.batchEdit}">
+                              <tr>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{messages.hosLog_date}" />
+                                  <span class="required">*</span>
+                                </td>
+                                <td>
+                                  <rich:message for="editHosLog_date" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            	  <rich:calendar value="#{hosBean.item.logTime}" id="editHosLog_dateTime" 
+                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy"
+                            	  		timeZone="#{hosBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{messages.hosLog_time}" />
+                                  <span class="required">*</span>
+                                </td>
+                                <td>
+						          <ui:include src="/includes/hhmmssTimePicker.xhtml">
+            						<ui:param name="value" value="#{hosBean.item.timeInSec}" />
+            						<ui:param name="formName" value="edit-form"/>
+            						<ui:param name="context" value="hosEdit"/>
+          						  </ui:include>
+                                </td>
+                              </tr>
+                              </ui:fragment>
+                              <tr>
+		                          <td width="100" valign="top">
+		                            <h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="editHosLog_statusBatch" value="#{hosBean.updateField['status']}" />
+		                            <h:outputText value="#{messages.hosLog_status}" />
+	                                <span class="required">*</span>
+		                          </td>
+		                          <td>
+		                            <h:selectOneMenu value="#{hosBean.item.status}" 
+		                              	id="editHosLog_status" 
+		                                onchange="checkMultiple(this)"
+		                                converter="SimpleBeanConverter">
+		                              <f:selectItems value="#{hosBean.statuses}"/>
+		                            </h:selectOneMenu>
+		                          </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_trailer" value="#{hosBean.updateField['trailerID']}" />
+                            	 	<h:outputText value="#{messages.hosLog_trailer}" />
+                                </td>
+                                <td>
+                                  <rich:message for="editHosLog_trailer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{hosBean.item.trailerID}" id="editHosLog_trailer" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="50"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_service" value="#{hosBean.updateField['serviceID']}" />
+                            	 	<h:outputText value="#{messages.hosLog_service}" />
+                                </td>
+                                <td>
+                                  <rich:message for="editHosLog_service" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{hosBean.item.serviceID}" id="editHosLog_service" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="50"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_driver" value="#{hosBean.updateField['driver']}" />
+                            	 	<h:outputText value="#{messages.hosLog_driver}" />
+	                                <span class="required">*</span>
+                                </td>
+                                <td>
+                                  <rich:message for="editHosLog_driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{hosBean.item.driverName}" id="editHosLog_driver" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="50" required="#{(not hosBean.batchEdit) or hosBean.updateField['driver']}"  requiredMessage="#{messages.hosLog_driver_required}"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_vehicle" value="#{hosBean.updateField['vehicle']}" />
+                            	 	<h:outputText value="#{messages.hosLog_vehicle}" />
+                                </td>
+                                <td>
+                                  <rich:message for="editHosLog_vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{hosBean.item.vehicleName}" id="editHosLog_vehicle" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="50"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+                                	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_location" value="#{hosBean.updateField['location']}" />
+                            		<h:outputText value="#{messages.hosLog_location}" />
+                                    <span class="required">*</span>
+                                </td>
+                                <td>
+                                  <rich:message for="editHosLog_location" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{hosBean.item.location}" id="editHosLog_location" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="50" required="#{(not hosBean.batchEdit) or hosBean.updateField['location']}"  requiredMessage="#{messages.hosLog_location_required}"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+								</td>
+								<td>
+                                	<h:outputText value="#{messages.hosLog_location_format}" style="font:italic 11px Verdana,Tahoma,Arial,sans-serif;"/>
+								</td>
+							  </tr>	
+                              <tr>
+		                          <td width="100" valign="top">
+		                            <h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="editHosLog_dotBatch" value="#{hosBean.updateField['driverDotType']}" />
+		                            <h:outputText value="#{messages.hosLog_dot}" />
+	                                <span class="required">*</span>
+		                          </td>
+		                          <td>
+		                            <h:selectOneMenu value="#{hosBean.item.driverDotType}" 
+		                              	id="editHosLog_dot" 
+		                                onchange="checkMultiple(this)"
+		                                converter="SimpleBeanConverter">
+		                              <f:selectItems value="#{hosBean.dots}"/>
+		                            </h:selectOneMenu>
+		                          </td>
+                              </tr>
+
+                            </table>
+
+                          </td>
+                        </tr>
+                      </table>
+
+                      <div class="spacer"></div>
+
+                      <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+
+                      <div class="spacer"></div>
+
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="r">
+                          <h:commandButton id="editHosLogSave2" action="#{hosBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editHosLogCancel2" action="#{hosBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                        </li>
+                      </ul>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+
+            </div>
+            
+          </a4j:form>
+
+          <!-- END PANEL -->
+        </td>
+
+      </tr>
+	</table>
+	</div>
+	</ui:define>
+</ui:composition>

@@ -13,9 +13,11 @@ import com.inthinc.pro.model.BaseEntity;
 @XmlRootElement
 public class HOSRecord extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+    
     private Integer hosLogID;
     private Integer driverID;
-    private String driverName;
+//    private String driverName;
     private RuleSetType driverDotType;
     private Integer vehicleID;
     private String vehicleName;
@@ -39,6 +41,40 @@ public class HOSRecord extends BaseEntity {
     private Boolean deleted;
     private String notificationData;
     private Integer changedCnt;
+    
+    public HOSRecord()
+    {
+        
+    }
+    public HOSRecord(Integer hosLogID, Integer driverID,// String driverName,
+            RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
+            Number vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Long lat, Long lng, Long distance,
+            String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
+        super();
+        this.hosLogID = hosLogID;
+        this.driverID = driverID;
+  //      this.driverName = driverName;
+        this.driverDotType = driverDotType;
+        this.vehicleID = vehicleID;
+        this.vehicleName = vehicleName;
+        this.vehicleIsDOT = vehicleIsDOT;
+        this.vehicleOdometer = vehicleOdometer;
+        this.logTime = logTime;
+        this.addedTime = addedTime;
+        this.timeZone = timeZone;
+        this.status = status;
+        this.origin = origin;
+        this.location = location;
+        this.lat = lat;
+        this.lng = lng;
+        this.distance = distance;
+        this.trailerID = trailerID;
+        this.serviceID = serviceID;
+        this.singleDriver = singleDriver;
+        this.edited = edited;
+        this.editUserName = editUserName;
+        this.deleted = deleted;
+    }
     
     public Integer getChangedCnt() {
         return changedCnt;
@@ -64,12 +100,12 @@ public class HOSRecord extends BaseEntity {
     public void setDriverID(Integer driverID) {
         this.driverID = driverID;
     }
-    public String getDriverName() {
-        return driverName;
-    }
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
-    }
+//    public String getDriverName() {
+//        return driverName;
+//    }
+//    public void setDriverName(String driverName) {
+//        this.driverName = driverName;
+//    }
     public Integer getVehicleID() {
         return vehicleID;
     }
@@ -197,4 +233,31 @@ public class HOSRecord extends BaseEntity {
     public void setVehicleOdometer(Number vehicleOdometer) {
         this.vehicleOdometer = vehicleOdometer;
     }
+
+    public void dump () {
+        System.out.println("new HOSRecord(" +
+        hosLogID + "," + 
+        driverID + "," +
+        "RuleSetType." + driverDotType.getName() + "," +
+        vehicleID + "," +
+        "\"" + vehicleName + "\"," +
+        vehicleIsDOT + "," +
+         vehicleOdometer + "," +
+        "new Date(" + logTime.getTime() + "l)," +
+        "new Date(" + addedTime.getTime() + "l)," +
+        "TimeZone.getTimeZone(\"" + timeZone.getID() + "\")," +
+        "HOSStatus." + status.getName() + "," +
+        "HOSOrigin." + origin.getName() + "," +
+        "\"" + location + "\"," +
+        lat + "," +
+        lng + "," +
+        distance+ "," +
+        "\"" + trailerID+ "\"," +
+        "\"" + serviceID + "\"," +
+        singleDriver + "," +
+        edited + "," +
+        "\"" + editUserName + "\"," +
+        deleted + "),");
+    }
+
 }

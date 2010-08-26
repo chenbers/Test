@@ -630,6 +630,7 @@
   <bean id="vehicleReportTableColumns" class="com.inthinc.pro.table.columns.VehicleReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="deviceReportTableColumns" class="com.inthinc.pro.table.columns.DeviceReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="idlingReportTableColumns" class="com.inthinc.pro.table.columns.IdlingReportTableColumns" scope="request" parent="baseTableColumns" />
+  <bean id="hosTableColumns" class="com.inthinc.pro.table.columns.HosTableColumns" scope="request" parent="baseTableColumns" />
   
 <!--    
   <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">
@@ -640,4 +641,9 @@
   	<property name="defaultSupportContacts" value="${supportContact.default}" />
   </bean>
  
+
+  <bean id="hosBean" class="com.inthinc.pro.backing.HosBean" scope="session" init-method="init">
+  </bean>
+
+
 </beans>

@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+         value: The value to set; in seconds between 0 and 86399.
+
+  Optional Parameters:
+  ==============
+       context: If more than one timePicker is used on a page, must be a unique value for the time picker's ID.
+
+  To use:
+  ==============
+  <ui:include src="/includes/hhmmssTimePicker.xhtml" >
+      <ui:param name="value" value="0"/> 
+      <ui:param name="context" value="mypagename"/> 
+      <ui:param name="formName" value="form"/> 
+  </ui:include>
+  
+-->
+
+<ui:composition>
+		<h:inputHidden id="#{context}_timeValue" value="#{value}" />
+		
+		<div>
+		<rich:inputNumberSpinner id="#{context}_hh"  minValue="1" maxValue="12" inputSize="1" onchange="updateValue()" style="float:left"
+				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;" required="false" immediate="true"  label="Hours">
+			<f:convertNumber type="number" integerOnly="true" />
+		</rich:inputNumberSpinner>
+		<h:outputText value=":" style="float:left; font: 12px Verdana,Arial,Helvetica,sans-serif;"/>
+		<rich:inputNumberSpinner id="#{context}_mm" minValue="0" maxValue="59" inputSize="1" onchange="updateValue()" style="float:left"
+				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;" required="false" immediate="true">
+			<f:convertNumber type="number" integerOnly="true" />
+		</rich:inputNumberSpinner>
+		<h:outputText value=":" style="float:left; font: 12px Verdana,Arial,Helvetica,sans-serif;"/>
+		<rich:inputNumberSpinner id="#{context}_ss" minValue="0" maxValue="59" inputSize="1" onchange="updateValue()" style="float:left"
+				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;" required="false" immediate="true">
+			<f:convertNumber type="number" integerOnly="true" />
+		</rich:inputNumberSpinner>
+		<h:outputText value="&#160;" style="float:left; font: 12px Verdana,Arial,Helvetica,sans-serif;"/>
+		<h:selectOneMenu id="#{context}_am_pm" onchange="updateValue()">
+		    <f:selectItem itemValue="am" itemLabel="#{messages.timePicker_am}" />
+		    <f:selectItem itemValue="pm" itemLabel="#{messages.timePicker_pm}" />
+		</h:selectOneMenu>
+		
+		
+		</div>
+
+
+		<script type="text/javascript">
+		//<![CDATA[
+			jQuery(document).ready(
+					function loadSpinners() {
+						var secs = Number(jQuery("input[name='#{formName}:#{context}_timeValue']")[0].value);
+						var hr = (((secs - (secs % 3600)) / 3600) % 12);
+						jQuery("input[name='#{formName}:#{context}_hh']")[0].value = hr == 0 ? 12 : hr;
+						jQuery("input[name='#{formName}:#{context}_mm']")[0].value = ((secs % 3600) - (secs % 60)) / 60;
+						jQuery("input[name='#{formName}:#{context}_ss']")[0].value = secs % 60;
+						jQuery("select[name='#{formName}:#{context}_am_pm']")[0].value = (secs < 43200) ? 'am' : 'pm';
+					}
+			);
+					
+			function updateValue()
+			{
+                var h = Number(jQuery("input[name='#{formName}:#{context}_hh']")[0].value);
+                var m = Number(jQuery("input[name='#{formName}:#{context}_mm']")[0].value);
+                var s = Number(jQuery("input[name='#{formName}:#{context}_ss']")[0].value);
+                var am_pm = jQuery("select[name='#{formName}:#{context}_am_pm']")[0].value;
+				jQuery("input[name='#{formName}:#{context}_timeValue']")[0].value = (((h == 12 ? 0 : h)+(am_pm == 'am' ? 0 : 12))*3600)+(m*60)+s;
+			}
+			
+		//]]>
+		</script>
+		
+</ui:composition>
+</html>
