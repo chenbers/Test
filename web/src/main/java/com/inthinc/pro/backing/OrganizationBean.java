@@ -692,7 +692,7 @@ public class OrganizationBean extends BaseBean
 //            selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getId()).size();
 //System.out.println("selectedGroupDriverCount = " + selectedGroupDriverCount);
 //System.out.println("selectedGroupVehicleCount = " + selectedGroupVehicleCount);
-            selectedGroupDriverCount = reportDAO.getDeviceReportCount(selectedGroupNode.getId(), null);
+            selectedGroupDriverCount = reportDAO.getDriverReportCount(selectedGroupNode.getId(), null);
             selectedGroupVehicleCount = reportDAO.getVehicleReportCount(selectedGroupNode.getId(), null);
             fetchGroupAddress(selectedGroupNode.getGroup());
         }
