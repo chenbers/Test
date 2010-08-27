@@ -19,7 +19,7 @@ import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
-import com.inthinc.pro.configurator.model.VehicleSettingsByProductType;
+import com.inthinc.pro.configurator.model.VehicleSettings;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -32,8 +32,8 @@ public class ConfigurationExtractorTest {
     private static DeviceSettingDefinitions deviceSettingDefinitions;
     private static DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
 
-    private static VehicleSettingsDAO vehicleSettings;
-    private static VehicleSettingsByProductType vehicleSettingsByProductType;
+    private static VehicleSettingsDAO vehicleSettingsDAO;
+    private static VehicleSettings vehicleSettings;
 
     @BeforeClass
     public static void setUpBefore() throws Exception {
@@ -49,10 +49,10 @@ public class ConfigurationExtractorTest {
         deviceSettingDefinitionsByProductType = new DeviceSettingDefinitionsByProductType();
         deviceSettingDefinitionsByProductType.init();
 
-        vehicleSettings = new VehicleSettingsDAO();
-        vehicleSettings.setConfiguratorDAO(configuratorHessianDAO);
-        vehicleSettingsByProductType = new VehicleSettingsByProductType();
-        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(1));
+        vehicleSettingsDAO = new VehicleSettingsDAO();
+        vehicleSettingsDAO.setConfiguratorDAO(configuratorHessianDAO);
+        vehicleSettings = new VehicleSettings();
+        vehicleSettings.initializeSettings(vehicleSettingsDAO.getVehicleSettings(1));
 
     }
     private void makeupSettingsRandom( List<DeviceSettingDefinitionBean> list, List<VehicleSetting> vehicleSettings){
@@ -164,8 +164,8 @@ public class ConfigurationExtractorTest {
     @Ignore
     @Test
     public void configuratorExtractConfigurationsFromVehicleSettingsNotSameTest(){
-        makeupSettingsRandom(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
-        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74),
+        makeupSettingsRandom(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettings.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
+        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettings.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74),
         		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO_R74));
         
         assertEquals("3 vehicle settings should have returned 3 configurations",3,configurationSet.getConfigurations().size());
@@ -174,8 +174,8 @@ public class ConfigurationExtractorTest {
     @Ignore
     @Test
     public void configuratorExtractConfigurationsFromVehicleSettingsSameTest(){
-        makeupSettingsSame(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
-        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74),
+        makeupSettingsSame(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettings.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
+        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettings.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74),
         		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO_R74));
         assertEquals("3 vehicle settings should have returned 1 configuration",1,configurationSet.getConfigurations().size());
         assertEquals("3 vehicles should be in list",3,configurationSet.getConfigurations().get(0).getVehicleIDs().size());
@@ -184,7 +184,7 @@ public class ConfigurationExtractorTest {
     @Ignore
     @Test
     public void configuratorExtractConfigurationsFromVehicleSettingsRealTest(){
-        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74),
+        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettings.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74),
         		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO_R74));
         assertEquals("3 out of 3 vehicle settings should have returned 3 configuration",3,configurationSet.getConfigurations().size());
         assertEquals("1 vehicles should be in list",1,configurationSet.getConfigurations().get(0).getVehicleIDs().size());

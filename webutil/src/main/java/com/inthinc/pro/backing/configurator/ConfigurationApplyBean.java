@@ -3,7 +3,10 @@ package com.inthinc.pro.backing.configurator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -32,24 +35,31 @@ public class ConfigurationApplyBean extends UsesBaseBean{
     private List<SelectItem> yearList;
     private MakeModelYear makeModelYear;
     private VehicleSettings vehicleSettings;
-
+    private Integer applyToConfigurationID;
+	private Integer selectedVehicleID;
     
-    private List<Integer> vehicleSelectionSource;
-    private List<Integer> vehicleSelectionTarget;
-    
-    private List<Integer> filteredVehicleSelectionSource = new ArrayList<Integer>();
-    private List<Integer> filteredVehicleSelectionTarget = new ArrayList<Integer>();
+//    private List<Integer> vehicleSelectionSource;
+//    private List<Integer> vehicleSelectionTarget;
+//    
+//    private List<Integer> filteredVehicleSelectionSource = new ArrayList<Integer>();
+//    private List<Integer> filteredVehicleSelectionTarget = new ArrayList<Integer>();
         
+	public Integer getSelectedVehicleID() {
+		return selectedVehicleID;
+	}
+	public void setSelectedVehicleID(Integer selectedVehicleID) {
+		this.selectedVehicleID = selectedVehicleID;
+	}
 	public void setVehicleSettingsDAO(VehicleSettingsDAO vehicleSettingsDAO) {
 		this.vehicleSettingsDAO = vehicleSettingsDAO;
 	}
-	public List<Integer> getFilteredVehicleSelectionSource() {
-		return filteredVehicleSelectionSource;
-	}
-
-	public List<Integer> getFilteredVehicleSelectionTarget() {
-		return filteredVehicleSelectionTarget;
-	}
+//	public List<Integer> getFilteredVehicleSelectionSource() {
+//		return filteredVehicleSelectionSource;
+//	}
+//
+//	public List<Integer> getFilteredVehicleSelectionTarget() {
+//		return filteredVehicleSelectionTarget;
+//	}
 	public List<SelectItem> getMakeList() {
 		return makeList;
 	}
@@ -95,6 +105,12 @@ public class ConfigurationApplyBean extends UsesBaseBean{
 		yearList =  new ArrayList<SelectItem>();
 		vehicleSettings = new VehicleSettings();
     }
+    public Integer getApplyToConfigurationID() {
+		return applyToConfigurationID;
+	}
+	public void setApplyToConfigurationID(Integer applyToConfigurationID) {
+		this.applyToConfigurationID = applyToConfigurationID;
+	}
 	
 	public TreeNavigationBean getTreeNavigationBean() {
 		return treeNavigationBean;
@@ -192,24 +208,24 @@ public class ConfigurationApplyBean extends UsesBaseBean{
 		 return makeModelYear.getVehicleIDs(make, model, year);
 		 
 	 }
-    public List<Integer> getVehicleSelectionSource() {
-		return vehicleSelectionSource;
-	}
-    public void setVehicleSelectionSource(List<Integer> vehicleSelectionSource) {
-		this.vehicleSelectionSource = vehicleSelectionSource;
-	}
-	public List<Integer> getSelectedVehicles() {
-		return vehicleSelectionSource;
-	}
-	public void setSelectedVehicles(List<Integer> selectedVehicles) {
-		this.vehicleSelectionSource = selectedVehicles;
-	}
-	   public List<Integer> getVehicleSelectionTarget() {
-			return vehicleSelectionTarget;
-	}
-	public void setVehicleSelectionTarget(List<Integer> vehicleSelectionTarget) {
-		this.vehicleSelectionTarget = vehicleSelectionTarget;
-	}
+//    public List<Integer> getVehicleSelectionSource() {
+//		return vehicleSelectionSource;
+//	}
+//    public void setVehicleSelectionSource(List<Integer> vehicleSelectionSource) {
+//		this.vehicleSelectionSource = vehicleSelectionSource;
+//	}
+//	public List<Integer> getSelectedVehicles() {
+//		return vehicleSelectionSource;
+//	}
+//	public void setSelectedVehicles(List<Integer> selectedVehicles) {
+//		this.vehicleSelectionSource = selectedVehicles;
+//	}
+//	   public List<Integer> getVehicleSelectionTarget() {
+//			return vehicleSelectionTarget;
+//	}
+//	public void setVehicleSelectionTarget(List<Integer> vehicleSelectionTarget) {
+//		this.vehicleSelectionTarget = vehicleSelectionTarget;
+//	}
     public Object applySettingsToTargetVehicles(Configuration selectedConfiguration){
     	
        	for(Integer vehicleID : getVehicleList()){
@@ -240,6 +256,22 @@ public class ConfigurationApplyBean extends UsesBaseBean{
 //    	}
 		return null;
 	}
+    public Object updateVehicle(Configuration selectedConfiguration){
+    	
+		vehicleSettingsDAO.updateVehicleSettings(selectedVehicleID, selectedConfiguration.getLatestDesiredValues(), 
+				 getBaseBean().getProUser().getUser().getUserID(), 
+				 selectedConfiguration.getReason());
+
+		return null;
+    }
+    public Object updateVehicle(Integer vehicleID, Configuration selectedConfiguration){
+    	
+		vehicleSettingsDAO.updateVehicleSettings(vehicleID, selectedConfiguration.getLatestDesiredValues(), 
+				 getBaseBean().getProUser().getUser().getUserID(), 
+				 selectedConfiguration.getReason());
+
+		return null;
+    }
 
 
 }

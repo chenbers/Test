@@ -26,6 +26,7 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
 	}
 	private Integer accountID;
 	private Integer selectedGroupId;
+	private String selectedGroupHierarchy;
     @SuppressWarnings("unused")
 	private Integer productTypeCode; 
 	private ProductType productType;
@@ -128,6 +129,10 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
+    public String getSelectedGroupHierarchy(){
+    	
+    	return treeNavigationBean.getSelectedGroupHierarchy(selectedGroupId);
+    }
 	
 	public Object refreshNavigationTree(){
 		

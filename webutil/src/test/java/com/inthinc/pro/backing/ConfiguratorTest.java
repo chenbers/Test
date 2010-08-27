@@ -14,7 +14,7 @@ import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
-import com.inthinc.pro.configurator.model.VehicleSettingsByProductType;
+import com.inthinc.pro.configurator.model.VehicleSettings;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -27,7 +27,7 @@ public class ConfiguratorTest {
     private DeviceSettingDefinitions deviceSettingDefinitions;
     private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
     private VehicleSettingsDAO vehicleSettings;
-    private VehicleSettingsByProductType vehicleSettingsByProductType;
+    private VehicleSettings vehicleSettingsByProductType;
     private ConfiguratorBean configuratorBean;
     
     @Before
@@ -49,7 +49,7 @@ public class ConfiguratorTest {
         configuratorBean.init();
         vehicleSettings = new VehicleSettingsDAO();
         vehicleSettings.setConfiguratorDAO(configuratorHessianDAO);
-        vehicleSettingsByProductType = new VehicleSettingsByProductType();
+        vehicleSettingsByProductType = new VehicleSettings();
         vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(1));
         makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
 

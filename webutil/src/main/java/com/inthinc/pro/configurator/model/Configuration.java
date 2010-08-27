@@ -62,7 +62,10 @@ public class Configuration{
 	public EditableMap<Integer, String> getEditedDesiredValues() {
 		return editedDesiredValues;
 	}
-
+	public void resetDesiredValues(){
+		
+		editedDesiredValues.reset();
+	}
 	public Configuration(Configuration configuration){
         
         vehicleIDs = new ArrayList<Integer>(configuration.vehicleIDs);

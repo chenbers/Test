@@ -97,4 +97,8 @@ public class EditableMap<K,V> {
     	
 		return editableValues;
 	}
+	public void reset(){
+		
+		createEditableValues();
+	}
 }

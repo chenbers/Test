@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
@@ -118,7 +121,12 @@ public class ConfiguratorBean implements Serializable{
     	}
        	return null;
     }
-
+    public Object resetConfiguration(){
+    	
+    	selectedConfiguration = configurationSet.getConfiguration(selectedConfigurationID);
+    	selectedConfiguration.resetDesiredValues();
+    	return null;
+    }
     public Object compareSelected(){
     	
     	differentOnly = true;
@@ -133,7 +141,21 @@ public class ConfiguratorBean implements Serializable{
     	logger.debug("configurator - applySettingsToTargetVehicles");
     	
     	configurationApplyBean.applySettingsToTargetVehicles(configurationSet.getConfiguration(selectedConfigurationID));
+		FacesMessage message = new FacesMessage();
+		message.setSeverity(FacesMessage.SEVERITY_INFO);
+		message.setSummary("Vehicle settings updated successfully");
+		FacesContext.getCurrentInstance().addMessage("", message);
 
+    	return null;
+    }
+    
+    public Object updateVehicle(){
+
+    	configurationApplyBean.updateVehicle(configurationSet.getConfiguration(selectedConfigurationID));
+		FacesMessage message = new FacesMessage();
+		message.setSeverity(FacesMessage.SEVERITY_INFO);
+		message.setSummary("Vehicle settings updated successfully");
+		FacesContext.getCurrentInstance().addMessage("", message);
     	return null;
     }
 //    public void createConfigurationsFromVehicleSettings(){
@@ -176,6 +198,22 @@ public class ConfiguratorBean implements Serializable{
 														   configurationSelectionBean.getVehicleIDs(),
 														   configurationSet.getConfiguration(selectedConfigurationID).getVehicleIDs()*/);
 		}
+		return null;
+	}
+	public Object applyToConfiguration(){
+		
+		Configuration applyToConfiguration = configurationSet.getConfiguration(configurationApplyBean.getApplyToConfigurationID());
+		if (applyToConfiguration != null){
+			for (Integer vID : applyToConfiguration.getVehicleIDs()){
+				
+		    	configurationApplyBean.updateVehicle(vID,configurationSet.getConfiguration(selectedConfigurationID));
+			}
+		}
+		FacesMessage message = new FacesMessage();
+		message.setSeverity(FacesMessage.SEVERITY_INFO);
+		message.setSummary("Vehicle settings updated successfully");
+		FacesContext.getCurrentInstance().addMessage("", message);
+	
 		return null;
 	}
  }

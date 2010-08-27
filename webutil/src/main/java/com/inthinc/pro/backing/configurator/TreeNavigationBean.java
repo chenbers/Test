@@ -143,6 +143,10 @@ public class TreeNavigationBean extends UsesBaseBean{
 		buildTreeFromGroupID();
 
 	}
+    public String getSelectedGroupHierarchy(Integer groupID){
+    	return groupHierarchy.getFullGroupName(groupID);
+    }
+
 	public class NavigationTreeNode<T> implements TreeNode<T>{
 		
         private static final long serialVersionUID = 1L;
