@@ -13,9 +13,9 @@
 }
 </style>
 <script type="text/javascript">
-function setGroupSelection(groupId){
+function setGroupSelection(groupId, itemId){
 
-	document.getElementById("configurationSelectionForm:selectedGroup").value = groupId;
+	document.getElementById(itemId).value = groupId;
 }
 function setHighlight(row,column, messages) {
 
@@ -59,7 +59,7 @@ function setHighlight(row,column, messages) {
                 	value="#{treeNavigationBean.navigationTree}" var="item" ajaxKeys="#{null}" nodeFace="#{item.type}">
 		         	<rich:treeNode type="fleet" iconLeaf="/images/ico_truck.png"
 									icon="/images/ico_truck.png" selectedClass="selectedGroup">
-						<a4j:commandLink onclick="setGroupSelection(#{item.attributes['groupid']});" 
+						<a4j:commandLink onclick="setGroupSelection(#{item.id},'configurationSelectionForm:selectedGroup');" 
 							action="#{configurationSelectionBean.groupChanged}" ajaxSingle="true" process="selectedGroup"
 							reRender="makeModelYear">
 							<h:outputText value="#{item.title}" />
@@ -68,7 +68,7 @@ function setHighlight(row,column, messages) {
 					<rich:treeNode type="group"
 						iconLeaf="/images/ico_trucks.png"
 						icon="/images/ico_trucks.png" selectedClass="selectedGroup">
-					<a4j:commandLink onclick="setGroupSelection(#{item.attributes['groupid']});" 
+					<a4j:commandLink onclick="setGroupSelection(#{item.id},'configurationSelectionForm:selectedGroup');" 
 							action="#{configurationSelectionBean.groupChanged}" ajaxSingle="true" process="selectedGroup"
 							reRender="makeModelYear">
 							<h:outputText value="#{item.title}" />
@@ -76,7 +76,7 @@ function setHighlight(row,column, messages) {
 					</rich:treeNode>
 					<rich:treeNode type="team" iconLeaf="/images/ico_team.png"
 						icon="/images/ico_team.png" selectedClass="selectedGroup">
-					<a4j:commandLink onclick="setGroupSelection(#{item.attributes['groupid']});" 
+					<a4j:commandLink onclick="setGroupSelection(#{item.id},'configurationSelectionForm:selectedGroup');" 
 							action="#{configurationSelectionBean.groupChanged}" ajaxSingle="true" process="selectedGroup"
 							reRender="makeModelYear">
 							<h:outputText value="#{item.title}" />
@@ -86,30 +86,30 @@ function setHighlight(row,column, messages) {
 		    </rich:panel>
        <h:panelGrid id="makeModelYear" columns="2">
             <a4j:outputPanel id="makeLabel">
-            <h:outputText value="Make:" rendered="#{!empty configurationSelectionBean.makeList}"/>
+            <h:outputText value="Make:"/>
             </a4j:outputPanel>  
             <a4j:outputPanel id="make">
             	<h:selectOneMenu id="makes" value="#{configurationSelectionBean.make}" valueChangeListener="#{configurationSelectionBean.makeChanged}"
-            						rendered="#{!empty configurationSelectionBean.makeList}">
+            						disabled="#{empty configurationSelectionBean.makeList}">
                 	<f:selectItems value="#{configurationSelectionBean.makeList}"/>
                 	<a4j:support event="onchange" reRender="model, modelLabel, year, yearLabel" ajaxSingle="true"/>
             	</h:selectOneMenu>
             </a4j:outputPanel>
             <a4j:outputPanel id="modelLabel">
-                <h:outputText value="Model:" rendered="#{!empty configurationSelectionBean.modelList}"/>
+                <h:outputText value="Model:"/>
             </a4j:outputPanel>  
             <a4j:outputPanel id="model">
                 <h:selectOneMenu id="models" value="#{configurationSelectionBean.model}" valueChangeListener="#{configurationSelectionBean.modelChanged}"
-                					rendered="#{!empty configurationSelectionBean.modelList}" >
+                					disabled="#{empty configurationSelectionBean.modelList}" >
                     <f:selectItems value="#{configurationSelectionBean.modelList}"/>
                 <a4j:support event="onchange" reRender="year, yearLabel" ajaxSingle="true"/>
                 </h:selectOneMenu>
             </a4j:outputPanel>
             <a4j:outputPanel id="yearLabel">
-                <h:outputText value="Year:" rendered="#{!empty configurationSelectionBean.yearList}"/>
+                <h:outputText value="Year:"/>
             </a4j:outputPanel>  
             <a4j:outputPanel id="year">
-                <h:selectOneMenu id="years" value="#{configurationSelectionBean.year}" rendered="#{!empty configurationSelectionBean.yearList}">
+                <h:selectOneMenu id="years" value="#{configurationSelectionBean.year}" disabled="#{empty configurationSelectionBean.yearList}">
                     <f:selectItems value="#{configurationSelectionBean.yearList}"/>
                 </h:selectOneMenu>
             </a4j:outputPanel>
@@ -153,7 +153,7 @@ function setHighlight(row,column, messages) {
              					reRender="configuratorSettings" ajaxSingle="true">
              			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
              		</a4j:commandLink>
-             		<a4j:commandLink value="Select Vehicles" action="#{configuratorBean.prepareVehicleSelection}" oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
+             		<a4j:commandLink value="Apply To..." action="#{configuratorBean.prepareVehicleSelection}" oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
              					reRender="configuratorSettings,assignVehicles" ajaxSingle="true">
              			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
              		</a4j:commandLink>
@@ -227,8 +227,8 @@ function setHighlight(row,column, messages) {
              					reRender="configuratorSettings" ajaxSingle="true">
              			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
              		</a4j:commandLink>
-             		<a4j:commandLink value="Select Vehicles" action="#{configuratorBean.prepareVehicleSelection}" oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
-             					reRender="configuratorSettings,assignVehicles" ajaxSingle="true">
+             		<a4j:commandLink value="Apply to..." action="#{configuratorBean.prepareVehicleSelection}" oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
+             					reRender="configuratorSettings" ajaxSingle="true">
              			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
              		</a4j:commandLink>
                     </h:panelGrid>
@@ -282,7 +282,7 @@ function setHighlight(row,column, messages) {
 	</h:form>
         <rich:modalPanel id="assignVehicles" autosized="true" width="450">
         <f:facet name="header">
-            <h:outputText value="Assign settings in configuration #{configuratorBean.selectedConfigurationID} to selected vehicles" />
+            <h:outputText value="Apply settings in configuration #{configuratorBean.selectedConfigurationID} to selected vehicles" />
         </f:facet>
         <f:facet name="controls">
             <h:panelGroup>
@@ -292,16 +292,70 @@ function setHighlight(row,column, messages) {
                     operation="hide" event="onclick" />
             </h:panelGroup>
         </f:facet>
-        <h:form>
-            <h:panelGrid columns="1">
-         <rich:listShuttle sourceValue="#{configuratorBean.vehicleSelectionSource}"
-            targetValue="#{configuratorBean.vehicleSelectionTarget}" var="item" listsHeight="150"
-            sourceListWidth="130" targetListWidth="130" sourceCaptionLabel="Vehicles in Group"
-            targetCaptionLabel="Vehicles to assign">
-            <rich:column>
-                <h:outputText value="#{item}"></h:outputText>
-            </rich:column>
-        </rich:listShuttle>
+        <h:form id="applySettingsForm">
+   			<rich:panel id="configuratorGroupApply" style="border:none">
+   				<h:inputHidden id="selectedGroupApply" value="#{configurationApplyBean.selectedGroupId}"/>
+ 				<rich:tree style="width:150px" switchType="client" 
+                	value="#{treeNavigationBean.navigationTree}" var="item" ajaxKeys="#{null}" nodeFace="#{item.type}">
+		         	<rich:treeNode type="fleet" iconLeaf="/images/ico_truck.png"
+									icon="/images/ico_truck.png" selectedClass="selectedGroup">
+						<a4j:commandLink onclick="setGroupSelection(#{item.id},'applySettingsForm:selectedGroupApply');" 
+							action="#{configurationApplyBean.groupChanged}" ajaxSingle="true" process="selectedGroupApply"
+							reRender="makeModelYearApply">
+							<h:outputText value="#{item.title}" />
+						</a4j:commandLink>
+					</rich:treeNode>
+					<rich:treeNode type="group"
+						iconLeaf="/images/ico_trucks.png"
+						icon="/images/ico_trucks.png" selectedClass="selectedGroup">
+					<a4j:commandLink onclick="setGroupSelection(#{item.id},'applySettingsForm:selectedGroupApply');" 
+							action="#{configurationApplyBean.groupChanged}" ajaxSingle="true" process="selectedGroupApply"
+							reRender="makeModelYearApply">
+							<h:outputText value="#{item.title}" />
+						</a4j:commandLink>
+					</rich:treeNode>
+					<rich:treeNode type="team" iconLeaf="/images/ico_team.png"
+						icon="/images/ico_team.png" selectedClass="selectedGroup">
+					<a4j:commandLink onclick="setGroupSelection(#{item.id},'applySettingsForm:selectedGroupApply');" 
+							action="#{configurationApplyBean.groupChanged}" ajaxSingle="true" process="selectedGroupApply"
+							reRender="makeModelYearApply">
+							<h:outputText value="#{item.title}" />
+						</a4j:commandLink>
+					</rich:treeNode>
+				</rich:tree>
+		    </rich:panel>
+       <h:panelGrid id="makeModelYearApply" columns="2">
+            <a4j:outputPanel id="makeLabelApply">
+            <h:outputText value="Make:" disabled="#{empty configurationApplyBean.makeList}"/>
+            </a4j:outputPanel>  
+            <a4j:outputPanel id="make">
+            	<h:selectOneMenu id="makesApply" value="#{configurationApplyBean.make}" valueChangeListener="#{configurationApplyBean.makeChanged}"
+            						disabled="#{empty configurationApplyBean.makeList}">
+                	<f:selectItems value="#{configurationApplyBean.makeList}"/>
+                	<a4j:support event="onchange" reRender="modelApply, modelLabelApply, yearApply, yearLabelApply" ajaxSingle="true"/>
+            	</h:selectOneMenu>
+            </a4j:outputPanel>
+            <a4j:outputPanel id="modelLabelApply">
+                <h:outputText value="Model:" />
+            </a4j:outputPanel>  
+            <a4j:outputPanel id="modelApply">
+                <h:selectOneMenu id="modelsApply" value="#{configurationApplyBean.model}" valueChangeListener="#{configurationApplyBean.modelChanged}"
+                					disabled="#{empty configurationApplyBean.modelList}" >
+                    <f:selectItems value="#{configurationApplyBean.modelList}"/>
+                	<a4j:support event="onchange" reRender="yearApply, yearLabelApply" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </a4j:outputPanel>
+            <a4j:outputPanel id="yearLabelApply">
+                <h:outputText value="Year:" />
+            </a4j:outputPanel>  
+            <a4j:outputPanel id="yearApply">
+                <h:selectOneMenu id="yearsApply" value="#{configurationApplyBean.year}" 
+                				valueChangeListener="#{configurationApplyBean.yearChanged}"
+                				disabled="#{empty configurationApplyBean.yearList}">
+                    <f:selectItems value="#{configurationApplyBean.yearList}"/>
+                </h:selectOneMenu>
+            </a4j:outputPanel>
+        </h:panelGrid>
                              
                   <h:panelGrid columns="2">
                 <a4j:commandButton value="Apply Settings"
@@ -310,7 +364,6 @@ function setHighlight(row,column, messages) {
                 <a4j:commandButton value="Cancel" immediate="true" 
                     oncomplete="#{rich:component('assignVehicles')}.hide();" />
              </h:panelGrid>   
-            </h:panelGrid>
         </h:form>
     </rich:modalPanel>
             

@@ -107,8 +107,8 @@ public class TreeNavigationBean extends UsesBaseBean{
             	nodeData.setType("team");
                 break;
         }
-        nodeData.addAttribute("groupid", group.getGroupID().toString());
-        nodeData.addAttribute("id", "navigationTree_"+group.getGroupID());
+        nodeData.setId(group.getGroupID());
+//        nodeData.addAttribute("id", "navigationTree_"+group.getGroupID());
         
         return nodeData;
 
@@ -215,8 +215,16 @@ public class TreeNavigationBean extends UsesBaseBean{
  	}
 	public class NodeData{
 	    
-	    private Map<String, String> attributes;
+		private Integer id;
+
+		private Map<String, String> attributes;
 	    
+	    public Integer getId() {
+			return id;
+		}
+		public void setId(Integer id) {
+			this.id = id;
+		}
         public Map<String, String> getAttributes() {
             return this.attributes;
         }

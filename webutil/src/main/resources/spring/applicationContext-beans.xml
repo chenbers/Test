@@ -44,6 +44,7 @@
 	<bean id="accountSelectItems" class="com.inthinc.pro.configurator.ui.AccountSelectItems" init-method="init"/>
   	<bean id="treeNavigationBean" class="com.inthinc.pro.backing.configurator.TreeNavigationBean" scope="session" init-method="init"/>
   	<bean id="configurationSelectionBean" class="com.inthinc.pro.backing.configurator.ConfigurationSelectionBean" scope="session" init-method="init"/>
+  	<bean id="configurationApplyBean" class="com.inthinc.pro.backing.configurator.ConfigurationApplyBean" scope="session" init-method="init"/>
 
 	<!--  DAO validator beans -->
 	<bean id="baseValidator" class="com.inthinc.pro.backing.dao.validator.BaseValidator" abstract="true"/>

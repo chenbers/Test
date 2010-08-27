@@ -12,9 +12,9 @@ import com.inthinc.pro.model.Vehicle;
 
 public class MakeModelYear {
 	
-    private static final String ANY_MAKE = "Any Make";
-    private static final String ANY_MODEL = "Any Model";
-    private static final String ANY_YEAR = "Any Year";
+    public static final String ANY_MAKE = "Any Make";
+    public static final String ANY_MODEL = "Any Model";
+    public static final String ANY_YEAR = "Any Year";
 
     private Map<String, Map<String, Map<Integer, List<Integer>>>> makeModelYearCombinations;
     
@@ -84,6 +84,9 @@ public class MakeModelYear {
     }
     public List<SelectItem> getModels(String make){
     	
+    	
+    	if(make.equals(ANY_MAKE)) return Collections.emptyList();
+    	
     	List<SelectItem> modelList = new ArrayList<SelectItem>();
         modelList.add(new SelectItem(ANY_MODEL));
         for (String model:makeModelYearCombinations.get(make).keySet()){
@@ -94,6 +97,8 @@ public class MakeModelYear {
     }
     public List<SelectItem> getYears(String make, String model){
     	
+    	if(model.equals(ANY_MODEL)) return Collections.emptyList();
+ 
     	List<SelectItem> yearList = new ArrayList<SelectItem>();
         yearList.add(new SelectItem(ANY_YEAR));
         for (Integer year:makeModelYearCombinations.get(make).get(model).keySet()){
@@ -102,7 +107,7 @@ public class MakeModelYear {
         }
         return yearList;
     }
-    public List<Integer> getVehicleIDs(String make, String model, Integer year){
+    public List<Integer> getVehicleIDs(String make, String model, String year){
     	
     	if(make == null || make.equals(ANY_MAKE)) return Collections.emptyList();
     	
@@ -110,7 +115,10 @@ public class MakeModelYear {
     	
     	if(year == null || year.equals(ANY_YEAR)) return allYearVehicles(make, model);
     	
-    	return makeModelYearCombinations.get(make).get(model).get(year);
+    	List<Integer> vehicleIDs = makeModelYearCombinations.get(make).get(model).get(year);
+    	
+    	if (vehicleIDs == null) return Collections.emptyList();
+    	return vehicleIDs;
      }
     private List<Integer> allYearVehicles(String make, String model){
     	

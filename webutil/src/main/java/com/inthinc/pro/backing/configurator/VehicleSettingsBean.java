@@ -65,8 +65,8 @@ public class VehicleSettingsBean extends UsesBaseBean{
     	return null;
     }
     private void initializeEditedDesiredSettings(){
+    	
     	editedDesiredValues = new EditableMap<Integer,String>(deviceSettingDefinitionsByProductType.getKeys(selectedVehicleSetting.getProductType()),selectedVehicleSetting.getDesired());
- //   	editedDesiredValues = deviceSettingDefinitionsByProductType.getCopyValuesMap(selectedVehicleSetting.getProductType(),selectedVehicleSetting.getDesired());
     }
     public Object updateVehicle(){
     	

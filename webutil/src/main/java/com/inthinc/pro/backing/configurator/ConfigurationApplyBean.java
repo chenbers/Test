@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing.configurator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,28 +8,22 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.backing.UsesBaseBean;
+import com.inthinc.pro.configurator.model.Configuration;
 import com.inthinc.pro.configurator.model.MakeModelYear;
 import com.inthinc.pro.configurator.model.VehicleSettings;
 import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
-import com.inthinc.pro.configurator.ui.AccountSelectItems;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.model.configurator.VehicleSetting;
 
-public class ConfigurationSelectionBean extends UsesBaseBean{
-
+public class ConfigurationApplyBean extends UsesBaseBean{
+	
 	private VehicleSettingsDAO vehicleSettingsDAO;
 	
-	public void setVehicleSettingsDAO(VehicleSettingsDAO vehicleSettingsDAO) {
-		this.vehicleSettingsDAO = vehicleSettingsDAO;
-	}
-	private Integer accountID;
 	private Integer selectedGroupId;
     @SuppressWarnings("unused")
 	private Integer productTypeCode; 
 	private ProductType productType;
     private TreeNavigationBean treeNavigationBean;
-    private AccountSelectItems accountSelectItems;
     private String make;
     private String model;
     private String year;
@@ -39,7 +32,24 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
     private List<SelectItem> yearList;
     private MakeModelYear makeModelYear;
     private VehicleSettings vehicleSettings;
+
     
+    private List<Integer> vehicleSelectionSource;
+    private List<Integer> vehicleSelectionTarget;
+    
+    private List<Integer> filteredVehicleSelectionSource = new ArrayList<Integer>();
+    private List<Integer> filteredVehicleSelectionTarget = new ArrayList<Integer>();
+        
+	public void setVehicleSettingsDAO(VehicleSettingsDAO vehicleSettingsDAO) {
+		this.vehicleSettingsDAO = vehicleSettingsDAO;
+	}
+	public List<Integer> getFilteredVehicleSelectionSource() {
+		return filteredVehicleSelectionSource;
+	}
+
+	public List<Integer> getFilteredVehicleSelectionTarget() {
+		return filteredVehicleSelectionTarget;
+	}
 	public List<SelectItem> getMakeList() {
 		return makeList;
 	}
@@ -80,29 +90,12 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
     	
     	selectedGroupId = null;
 		productType = ProductType.TIWIPRO_R74;
-		accountID = getBaseBean().getAccountID();
 		makeList = new ArrayList<SelectItem>();
 		modelList = new ArrayList<SelectItem>(); 
 		yearList =  new ArrayList<SelectItem>();
 		vehicleSettings = new VehicleSettings();
     }
 	
-    public AccountSelectItems getAccountSelectItems() {
-		return accountSelectItems;
-	}
-
-	public void setAccountSelectItems(AccountSelectItems accountSelectItems) {
-		this.accountSelectItems = accountSelectItems;
-	}
-    
-    public Integer getAccountID() {
-		return accountID;
-	}
-
-	public void setAccountID(Integer accountID) {
-		this.accountID = accountID;
-	}
-
 	public TreeNavigationBean getTreeNavigationBean() {
 		return treeNavigationBean;
 	}
@@ -114,7 +107,6 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
 	}
 	public void setSelectedGroupId(Integer selectedGroupId) {
 		this.selectedGroupId = selectedGroupId;
-		
 	}
     public Integer getProductTypeCode() {
         return productType.getCode();
@@ -129,15 +121,6 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
 		this.productType = productType;
 	}
 	
-	public Object refreshNavigationTree(){
-		
-		treeNavigationBean.refresh(accountID);
-		makeList.clear();
-		modelList.clear();
-		yearList.clear();
-		
-		return null;
-	}
 	public Object groupChanged(){
 		
 		getGroupsVehicleSettings();
@@ -156,7 +139,6 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
 	public void setVehicleSettings(VehicleSettings vehicleSettings) {
 		this.vehicleSettings = vehicleSettings;
 	}
-
 	private void getMakes(){
 		
 		List<Vehicle> vehiclesInGroup = vehicleSettingsDAO.getVehicles(selectedGroupId);
@@ -170,10 +152,6 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
 		makeList = makeModelYear.getMakes();
 		make = MakeModelYear.ANY_MAKE;
 	}
-	public VehicleSettings getVehicleSettings() {
-		return vehicleSettings;
-	}
-
 	private List<Vehicle> removeUnselectedVehicles(List<Vehicle> vehiclesInGroup){
 		
 		Iterator<Vehicle> it = vehiclesInGroup.iterator();
@@ -188,41 +166,80 @@ public class ConfigurationSelectionBean extends UsesBaseBean{
 		}
 		return vehiclesInGroup;
 	}
-	public List<VehicleSetting> filterMakeModelYear(){
+	public void makeChanged(ValueChangeEvent event){
+		 
+		make = (String)event.getNewValue();
+		 
+	    yearList.clear();
 		
-		if (getVehicleList().isEmpty()){
-			
-			return vehicleSettings.getVehicleSettings();
-		}
-		List<VehicleSetting> filteredVehicleSettings = new ArrayList<VehicleSetting>();
-		for (VehicleSetting vs:vehicleSettings.getVehicleSettings()){
-			
-			if (getVehicleList().contains(vs.getVehicleID())){
-				
-				filteredVehicleSettings.add(vs);
-			}
-		}
-		return filteredVehicleSettings;
+	    modelList = makeModelYear.getModels(make);
+	     
 	}
-
-	 public void makeChanged(ValueChangeEvent event){
+	public void modelChanged(ValueChangeEvent event){
 		 
-		 make = (String)event.getNewValue();
+		model = (String)event.getNewValue();
 		 
-         yearList.clear();
-		
-         modelList = makeModelYear.getModels(make);
-     }
-	 public void modelChanged(ValueChangeEvent event){
+		yearList = makeModelYear.getYears(make, model);
 		 
-		 model = (String)event.getNewValue();
-		 		 
-         yearList = makeModelYear.getYears(make, model);
-     }
-	 public List<Integer> getVehicleList(){
+	}
+	public void yearChanged(ValueChangeEvent event){
 		 
-		 if(makeModelYear == null) return Collections.emptyList();
+		 year = (String)event.getNewValue();
+		 
+    }
+	public List<Integer> getVehicleList(){
 		 
 		 return makeModelYear.getVehicleIDs(make, model, year);
+		 
 	 }
+    public List<Integer> getVehicleSelectionSource() {
+		return vehicleSelectionSource;
+	}
+    public void setVehicleSelectionSource(List<Integer> vehicleSelectionSource) {
+		this.vehicleSelectionSource = vehicleSelectionSource;
+	}
+	public List<Integer> getSelectedVehicles() {
+		return vehicleSelectionSource;
+	}
+	public void setSelectedVehicles(List<Integer> selectedVehicles) {
+		this.vehicleSelectionSource = selectedVehicles;
+	}
+	   public List<Integer> getVehicleSelectionTarget() {
+			return vehicleSelectionTarget;
+	}
+	public void setVehicleSelectionTarget(List<Integer> vehicleSelectionTarget) {
+		this.vehicleSelectionTarget = vehicleSelectionTarget;
+	}
+    public Object applySettingsToTargetVehicles(Configuration selectedConfiguration){
+    	
+       	for(Integer vehicleID : getVehicleList()){
+    		
+			vehicleSettingsDAO.updateVehicleSettings(vehicleID, selectedConfiguration.getLatestDesiredValues(), 
+													 getBaseBean().getProUser().getUser().getUserID(), 
+													 selectedConfiguration.getReason());
+    	}
+       	return null;
+    }
+
+	public Object prepareVehicleSelection(ProductType productType/*,List<Integer> vehicleSource, List<Integer> vehicleTarget*/) {
+
+		this.productType = productType;
+//		vehicleSelectionSource = new ArrayList<Integer>(vehicleSource);
+//		vehicleSelectionTarget = new ArrayList<Integer>();
+//       	for(Integer vehicleID : vehicleTarget){
+//    		
+//       		vehicleSelectionTarget.add(vehicleID);
+//       		vehicleSelectionSource.remove(vehicleID);
+//    	}
+//		filteredVehicleSelectionSource = new ArrayList<Integer>(vehicleSource);
+//		filteredVehicleSelectionTarget = new ArrayList<Integer>();
+//       	for(Integer vehicleID : vehicleTarget){
+//    		
+//       		filteredVehicleSelectionTarget.add(vehicleID);
+//       		filteredVehicleSelectionSource.remove(vehicleID);
+//    	}
+		return null;
+	}
+
+
 }
