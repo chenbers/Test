@@ -230,7 +230,7 @@ img {
 
 .panel_title span.email {
 	padding: 0 0 0 20px;
-	background: transparent url(/images/ico_email.png) no-repeat center left;
+	background: transparent url(../images/ico_email.png) no-repeat center left;
 }
 
 .panel_title span.admin {
