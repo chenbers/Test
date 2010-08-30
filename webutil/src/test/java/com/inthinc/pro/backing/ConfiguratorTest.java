@@ -22,12 +22,13 @@ import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.VarType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
+@Ignore
 public class ConfiguratorTest {
     
     private DeviceSettingDefinitions deviceSettingDefinitions;
     private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-    private VehicleSettingsDAO vehicleSettings;
-    private VehicleSettings vehicleSettingsByProductType;
+    private VehicleSettingsDAO vehicleSettingsDAO;
+    private VehicleSettings vehicleSettings;
     private ConfiguratorBean configuratorBean;
     
     @Before
@@ -47,13 +48,14 @@ public class ConfiguratorTest {
         
         configuratorBean.setDeviceSettingDefinitionsByProductType(deviceSettingDefinitionsByProductType);
         configuratorBean.init();
-        vehicleSettings = new VehicleSettingsDAO();
-        vehicleSettings.setConfiguratorDAO(configuratorHessianDAO);
-        vehicleSettingsByProductType = new VehicleSettings();
-        vehicleSettingsByProductType.initializeSettings(vehicleSettings.getVehicleSettings(1));
-        makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettingsByProductType.getVehicleSettingsByProductType(ProductType.TIWIPRO_R74));
+        vehicleSettingsDAO = new VehicleSettingsDAO();
+        vehicleSettingsDAO.setConfiguratorDAO(configuratorHessianDAO);
+        vehicleSettings = new VehicleSettings();
+        vehicleSettings.filterSettings(vehicleSettingsDAO.getVehicleSettings(1), ProductType.TIWIPRO_R74);
 
-        configuratorBean.setVehicleSettingsByProductType(vehicleSettingsByProductType);
+        makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettings.getVehicleSettings());
+
+        configuratorBean.setVehicleSettingsDAO(vehicleSettingsDAO);
     }
     private void makeupSettings( List<DeviceSettingDefinitionBean> settings, List<VehicleSetting> vehicleSettings){
         
@@ -95,11 +97,10 @@ public class ConfiguratorTest {
         }
     }
 
-    @Ignore
     @Test
     public void configuratorCreateConfigurationsFromVehicleSettingsTest(){
         
-        configuratorBean.buildConfigurations();
+//        configuratorBean.buildConfigurations();
         
     }
 }
