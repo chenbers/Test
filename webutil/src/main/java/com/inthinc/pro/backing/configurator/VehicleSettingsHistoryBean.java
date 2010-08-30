@@ -81,7 +81,7 @@ public class VehicleSettingsHistoryBean {
 				vshb.setUsername(user.getUsername());
 			}
 		}
-		makeupData();
+//		makeupData();
 		return null;
 	}
 
