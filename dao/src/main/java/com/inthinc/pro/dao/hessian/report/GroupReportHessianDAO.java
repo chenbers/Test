@@ -105,8 +105,16 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
 
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
-        //a mess of conversion to get it just right for the backend.
-        DateTime intervalToUse = interval.getStart().toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+        //The hessian method being called requires two params, both should be the same midnight value of the day you are trying to indicate.
+        
+        //broken up into multiple lines for ease of reading
+        
+        //get the intervals start DateTime
+        DateTime startDateTime = interval.getStart();
+        //get the timezone of the startDateTime and store the offset
+        int offset = startDateTime.getZone().getOffset(startDateTime);
+        //apply the offset to the startDateTime's underlying millis. Then change the timezone to UTC. Then adjust the millis to the Midnight value.
+        DateTime intervalToUse = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
         return getDriverScores(groupID, intervalToUse, intervalToUse);
     }
 
