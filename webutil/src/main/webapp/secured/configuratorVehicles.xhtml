@@ -34,10 +34,18 @@ function setHighlight(element, errors) {
 				<h:inputText value="#{vehicleSettingsBean.selectedVehicleID}"/>
 				<h:commandButton id="getVehicle" value="Get Vehicle Settings" action="#{vehicleSettingsBean.displayVehicle}"/>
 				<h:outputText value="Reason for changes:" styleClass="label" rendered="#{vehicleSettingsBean.selectedVehicleID != null}"/>
-				<h:inputText value="#{vehicleSettingsBean.reason}" rendered="#{vehicleSettingsBean.selectedVehicleID != null}"/>
-				<h:commandButton id="saveVehicleSettings" value="Save Vehicle Settings" action="#{vehicleSettingsBean.updateVehicle}" 
+				<h:inputText value="#{vehicleSettingsBean.reason}" rendered="#{vehicleSettingsBean.selectedVehicleID != null}" required="true"/>
+				<h:commandButton id="resetVehicleSettings" value="Reset Desired Settings" action="#{vehicleSettingsBean.resetDesiredSettings}" 
+								title="Reset updated settings to original values"
 									rendered="#{vehicleSettingsBean.selectedVehicleID != null}" reRender="vehicleEditSettingsRegion,vehicle-centric"/>
-				<h:commandButton id="resetVehicleSettings" value="Reset Vehicle Settings" action="#{vehicleSettingsBean.resetDesiredSettings}" 
+				<h:commandButton id="clearVehicleSettings" value="Clear Desired Settings" action="#{vehicleSettingsBean.clearDesiredSettings}" 
+								title="Clear desired settings on this page - use Reset Desired Settings to restore values"
+									rendered="#{vehicleSettingsBean.selectedVehicleID != null}" reRender="vehicleEditSettingsRegion,vehicle-centric"/>
+				<h:commandButton id="saveVehicleSettings" value="Save Desired Settings" action="#{vehicleSettingsBean.updateVehicle}" 
+								title="Save updated settings to the database"
+									rendered="#{vehicleSettingsBean.selectedVehicleID != null}" reRender="vehicleEditSettingsRegion,vehicle-centric"/>
+				<h:commandButton id="deleteVehicleSettings" value="Delete Desired Settings" action="#{vehicleSettingsBean.deleteVehicleSettings}" 
+								title="Delete desired settings in the database - take care with this!"
 									rendered="#{vehicleSettingsBean.selectedVehicleID != null}" reRender="vehicleEditSettingsRegion,vehicle-centric"/>
 				<rich:messages id="messages" style="color: red"/>
 			</h:panelGrid>

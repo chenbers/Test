@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.configurator;
+package com.inthinc.pro.configurator.ui;
 
 //import static com.inthinc.pro.backing.BaseBean.logger;
 

@@ -79,7 +79,7 @@ public class EditableMap<K,V> {
 
     public Map<K, V> getLatestValues(){
     	
-    	Map<K, V>latestValues = new HashMap<K,V>();
+    	Map<K, V>latestValues = new HashMap<K,V>(originalValues);
     	Iterator<Entry<K,ValueWrapper<V>>> it = editableValues.entrySet().iterator();
     	
     	while(it.hasNext()){
@@ -89,7 +89,8 @@ public class EditableMap<K,V> {
     	}
     	return latestValues;
     }
-	public Map<K, V> getOriginalValues() {
+    
+    public Map<K, V> getOriginalValues() {
 		return originalValues;
 	}
 
@@ -100,5 +101,38 @@ public class EditableMap<K,V> {
 	public void reset(){
 		
 		createEditableValues();
+	}
+	public void clearNewValues(){
+	    
+        for (K key : editableValues.keySet()){
+            
+            editableValues.get(key).setValue(null);
+        }
+	}
+	public void clearAllValues(){
+	    
+	    clearNewValues();
+	    clearOriginalValues();
+	}
+	private void clearOriginalValues(){
+	    
+        for (K key : originalValues.keySet()){
+            
+            originalValues.put(key,null);
+        }
+	}
+	public boolean equals(EditableMap<K,V> otherEditableMap){
+		
+		return originalValues.equals(otherEditableMap.getOriginalValues());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof EditableMap<?,?>){
+			
+			return equals( (EditableMap<?,?>) obj);
+		}
+		return false;
 	}
 }

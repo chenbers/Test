@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.configurator;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -91,5 +92,31 @@ public class VehicleSettingsBean extends UsesBaseBean{
 		FacesContext.getCurrentInstance().addMessage("", message);
    	
     	return null;
+    }
+    public Object clearDesiredSettings(){
+        
+        editedDesiredValues.clearNewValues();
+        
+        FacesMessage message = new FacesMessage();
+        message.setSeverity(FacesMessage.SEVERITY_INFO);
+        message.setSummary("Settings cleared just on this page - reset will restore");
+        FacesContext.getCurrentInstance().addMessage("", message);
+    
+        return null;
+    }
+    public Object deleteVehicleSettings(){
+        
+        editedDesiredValues.clearAllValues();
+        
+        vehicleSettingsDAO.setVehicleSettings(selectedVehicleSetting.getVehicleID(), new HashMap<Integer,String>(), 
+                getBaseBean().getProUser().getUser().getUserID(), 
+                reason);
+        
+        FacesMessage message = new FacesMessage();
+        message.setSeverity(FacesMessage.SEVERITY_INFO);
+        message.setSummary("Desired settings deleted");
+        FacesContext.getCurrentInstance().addMessage("", message);
+        
+        return null;
     }
 }

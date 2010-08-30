@@ -67,7 +67,7 @@ public class ConfiguratorMapper extends AbstractMapper {
         if (value instanceof Map){
             
             vehicleSetting.setActual((Map<Integer,String>) value);
-            vehicleSetting.combineSettings();
+//            vehicleSetting.combineSettings();
         }
     }
     @SuppressWarnings("unchecked")
@@ -77,7 +77,7 @@ public class ConfiguratorMapper extends AbstractMapper {
         if (value instanceof Map){
             
             vehicleSetting.setDesired((Map<Integer,String>) value);
-            vehicleSetting.combineSettings();
+//            vehicleSetting.combineSettings();
         }
     }
     @ConvertColumnToField(columnName = "productVer")

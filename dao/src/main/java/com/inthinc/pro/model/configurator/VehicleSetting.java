@@ -52,14 +52,16 @@ public class VehicleSetting {
 
 		if (actual != null){
     		
-    		combinedSettings.putAll(getActual());
+    		combinedSettings.putAll(actual);
     	}
     	if (desired != null){
     		
-    		combinedSettings.putAll(getDesired());   		
+    		combinedSettings.putAll(desired);   		
     	}
     }
 	public Map<Integer,String> getCombinedSettings(){
+		
+    	combineSettings();
     	
 		return combinedSettings;
     }

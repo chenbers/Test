@@ -106,11 +106,11 @@ public class DeviceSettingDefinitionsByProductType {
         
         return DeviceSettingDefinitions.getDeviceSettingDefinition(settingID).validate(value);
     }
-//    public EditableMap<Integer, String> getCopyValuesMap(ProductType productType, Map<Integer,String> mapToCopy){
+//    public EditableMap<Integer, String> getCopyValuesMap(ProductType selectedProductType, Map<Integer,String> mapToCopy){
 //    	
 //    	Map<Integer, String> copyMap = new HashMap<Integer,String>();
 //    	
-//    	for(DeviceSettingDefinitionBean dsdb: deviceSettingLists.get(productType)){
+//    	for(DeviceSettingDefinitionBean dsdb: deviceSettingLists.get(selectedProductType)){
 //    		
 //    		if (mapToCopy.get(dsdb.getSettingID()) == null){
 //    			
