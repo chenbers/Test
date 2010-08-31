@@ -7,11 +7,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DrivingTimeViolationsSummary;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
@@ -175,9 +178,19 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
     @Test
     public void gainSummmaryTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
+//int testCaseCnt = 0; {
             HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
                       // HOS VIOLATIONS
-//System.out.println(" " + testCaseCnt);            
+//System.out.println(" " + testCaseCnt);         
+//for (Entry<Driver, List<HOSRecord>> entry : violationsTestData.driverHOSRecordMap.entrySet()) {
+//    Driver driver = entry.getKey();
+//System.out.println("----" + driver.getPerson().getFullNameLastFirst());    
+//    for (HOSRecord rec : entry.getValue()) {
+//        rec.setDriverID(driver.getDriverID());
+//        rec.dump();
+//    }
+//    
+//}
             HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria(Locale.US);
             criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap,
                     violationsTestData.groupMileageList, violationsTestData.groupNoDriverMileageList);

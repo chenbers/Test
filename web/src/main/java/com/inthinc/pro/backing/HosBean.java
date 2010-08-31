@@ -58,6 +58,13 @@ public class HosBean extends BaseBean {
     private boolean               selectAll;
     private Map<String, Boolean> updateField;
 
+    
+    private static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
+    private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
+    private String badDates;
+    private Date startDate;
+    private Date endDate;
+    
     private static final String EDIT_REDIRECT = "pretty:hosEdit";    
     private static final String VIEW_REDIRECT = "pretty:hos";    
 
@@ -71,7 +78,79 @@ public class HosBean extends BaseBean {
         pageData = new PageData();
         page = 0;
         pageData.initPage(page);
+        if ( startDate == null ) {
+            startDate = new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate();
+        }
+        if ( endDate == null ) {
+            endDate = new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(1).toDate();
+        }
+        initInterval();
     }
+
+    // date range stuff
+    public TimeZone getTimeZone()
+    {
+        return timeZone;
+    }
+
+    public String getBadDates() {
+        return badDates;
+    }
+
+    public void setBadDates(String badDates) {
+        this.badDates = badDates;
+    }
+
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+    public Date getEndDate()
+    {
+        return endDate;
+    }
+    
+    public void setStartDate(Date startDate)
+    {
+        this.startDate = startDate;
+        initInterval();
+    }
+    public void setEndDate(Date endDate)
+    {
+        this.endDate = endDate;
+        initInterval();
+    }
+
+    private Interval initInterval() {
+        try {
+            setBadDates(null);
+            if (startDate == null) {
+                setBadDates(MessageUtil.getMessageString("noStartDate",getLocale()));
+                return null;
+            }
+            if (this.endDate == null) {
+                setBadDates(MessageUtil.getMessageString("noEndDate",getLocale()));
+                return null;
+            }
+
+            DateMidnight start = new DateMidnight(new DateTime(startDate.getTime(), dateTimeZone), dateTimeZone);
+            DateTime end = new DateMidnight(endDate.getTime(), dateTimeZone).toDateTime().plusDays(1).minus(1);
+            setInterval(new Interval(start, end));
+            return getInterval();
+        }
+        catch (Exception e) {
+            setBadDates(MessageUtil.getMessageString("endDateBeforeStartDate",getLocale()));
+            return null;
+        }
+    }
+    
+    public void refresh() {
+        
+        if (initInterval() != null) {
+            items = null;
+        }
+    }
+    // end date range stuff
     public List<SelectItem> getStatuses() {
         return SelectItemUtil.toList(HOSStatus.class, false);
     }
@@ -91,7 +170,7 @@ public class HosBean extends BaseBean {
         
         this.driverID = driverID;
     }
-    
+
     public Interval getInterval() {
         return interval;
     }
@@ -286,9 +365,14 @@ public class HosBean extends BaseBean {
         }
 
         public void setTimeInSec(int timeInSec) {
-System.out.println("setTimeInSec: " + timeInSec);            
+            try
+            {
             DateTime dateTime = new DateMidnight(getLogTime(), DateTimeZone.forID(getTimeZone().getID())).toDateTime().plusSeconds(timeInSec);
             setLogTime(dateTime.toDate());
+            }
+            catch (java.lang.NullPointerException e) {
+                e.printStackTrace();
+            }
             
         }
 
@@ -762,7 +846,19 @@ System.out.println("setTimeInSec: " + timeInSec);
         @Override
         public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval) {
             // TODO: filter by driverID, interval
-            return getMockHOSRecords();
+            return filter(getMockHOSRecords(), driverID, interval);
+        }
+
+        private List<HOSRecord> filter(List<HOSRecord> mockHOSRecords, Integer driverID, Interval interval) {
+            List<HOSRecord> filteredList = new ArrayList<HOSRecord>();
+            if (interval != null) {
+                for (HOSRecord rec : getMockHOSRecords()) {
+                    if (interval.contains(rec.getLogTime().getTime())) { // && rec.getDriverID().equals(driverID)) {
+                        filteredList.add(rec);
+                    }
+                }
+            }
+            return filteredList;
         }
 
         @Override
