@@ -26,7 +26,7 @@
     </property>
   </bean>
 
-  <bean id="junkBean" class="com.inthinc.pro.backing.JunkBean" scope="request" init-method="init" />
+  <!-- <bean id="junkBean" class="com.inthinc.pro.junk.JunkBean" scope="request" init-method="init" /> -->
 
   <!-- Global Application Context (singleton scoped) beans -->
   <!--  <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">-->
