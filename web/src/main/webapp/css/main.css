@@ -1,7 +1,7 @@
 body {
 	margin: 10px 0 0 0;
 	padding: 0;
-	background: #080808 url(../images/bg_main.png) repeat-x;
+	background-color: black;
 	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
 }
 
@@ -11,8 +11,8 @@ img {
 
 #header {
 	width: 960px;
-	height: 80px;
-	margin: 0 auto 10px auto;
+	height: 50px;
+	margin: 2px auto;
 }
 
 #logo {
@@ -22,9 +22,21 @@ img {
 	background: url(../images/logo_main.png) no-repeat top left;
 }
 
+#login_header {
+	width: 960px;
+	height: 85px;
+	margin: 2px auto;
+}
+#login_logo {
+	float: left;
+	margin: 0;
+	padding: 0;
+	background: url(../images/logo_main_big.png) no-repeat top left;
+}
+
 #wrapper {
 	width: 960px;
-	margin: 10px auto 20px auto;
+	margin: 5px auto 20px auto;
 	/* background: #fff url(../images/bg_wrapper.png) bottom left repeat-x; */
 	background: #fff;
 }
@@ -462,15 +474,14 @@ img {
 }
 
 .sub_nav {
-	width: 960px;
-	height: 38px;
+	width: 950px;
+	height: 33px;
 	margin: 0 auto 0 auto;
 	background: #090909;
 }
 
 .sub_nav-bg {
 	background: #090909;
-	height: 38px;
 }
 
 .sub_nav-bg ul {
