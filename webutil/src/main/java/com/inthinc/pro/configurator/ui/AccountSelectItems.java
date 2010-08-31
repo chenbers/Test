@@ -2,6 +2,7 @@ package com.inthinc.pro.configurator.ui;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -24,7 +25,7 @@ public class AccountSelectItems implements Serializable {
 		
 		List<Account> accounts = accountDAO.getAllAcctIDs();
 		accountSelectItems = new ArrayList<SelectItem>();
-		
+		Collections.sort(accounts);
 		for(Account account: accounts){
 			
 			accountSelectItems.add(new SelectItem(account.getAcctID(),account.getAcctName()));

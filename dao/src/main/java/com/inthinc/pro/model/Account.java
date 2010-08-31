@@ -8,7 +8,7 @@ import com.inthinc.pro.dao.annotations.SimpleName;
 
 @XmlRootElement
 @SimpleName(simpleName="Acct")
-public class Account extends BaseEntity
+public class Account extends BaseEntity implements Comparable<Account> 
 {
 
     /**
@@ -145,6 +145,12 @@ public class Account extends BaseEntity
     }
 
     
+    @Override
+    public int compareTo(Account otherAccount) {
+        
+        return acctName.compareToIgnoreCase(otherAccount.getAcctName());
+    }
+
     @Override
     public String toString() {
         return "Account [acctID=" + acctID + ", acctName=" + acctName + ", status=" + status + ", unkDriverID=" + unkDriverID + "]";
