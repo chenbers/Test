@@ -1,15 +1,20 @@
 package com.inthinc.pro.reports.jasper;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.exception.ReportRuntimeException;
+
 
 
 import net.sf.jasperreports.engine.JRException;
@@ -72,6 +77,18 @@ public class ReportUtils
         return url.getPath();
         
     }
+    
+    public static Image getLogoImage(String fileName) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(ReportUtils.loadFile(fileName));
+        } catch (IOException e) {
+            logger.error(e);
+        }
+        
+        return img;
+    }
+    
     public static Object getSubReportDir(String subDirectory) {
         
         String path = PACKAGE_PATH + (subDirectory == null ? "" : (subDirectory + "/"));

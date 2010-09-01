@@ -14,6 +14,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -26,6 +28,7 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
 
 
     private HOSDAO hosDAO;
+    private DriverDAO driverDAO;
     private static final String   DISPLAY_DATE_FORMAT     = "yyyy-MM-dd HH:mm:ss z";
     protected DateTimeFormatter displayDateTimeFormatter;
     protected DateTimeFormatter dateTimeFormatter;
@@ -39,6 +42,20 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
         addedTimeFormatter = DateTimeFormat.forPattern("M/d/yy h:mm a").withLocale(locale);
     }
     
+    public void init(Integer groupID, Interval interval)
+    {
+        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        init(driverList, interval);
+        
+    }
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+
     public void init(List<Driver> driverList, Interval interval)
     {
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();

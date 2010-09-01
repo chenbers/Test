@@ -87,7 +87,7 @@ public class JasperReportBuilder
             {
                 reportCriteria.getPramMap().put("REPORT_LOGO", imageInputStream);
             }
-            reportCriteria.getPramMap().put("REPORT_LOGO_URL", ReportUtils.getLogoPath("logo_main.gif"));
+            reportCriteria.getPramMap().put("REPORT_LOGO_IMG", ReportUtils.getLogoImage("logo_main.gif"));
             
             Locale locale = DEFAULT_LOCALE;
             if(reportCriteria.getLocale() != null)

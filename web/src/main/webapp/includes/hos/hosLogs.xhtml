@@ -10,14 +10,27 @@
 
 	<c:set var="context" value="hosTable"/>		
          	
-	<rich:jQuery selector="document" query="ready(function(){hiliteEditedInTable();})" />
-     
     <a4j:region id="hos-table-region">
     <a4j:form id="hos-table-form">
      
       <div class="panel_w">
         <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">
+			<li class="l select">
+                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
+                  <tr>
+				  	<td>#{messages.hosLog_driver}</td>
+			  	 	<td>
+						<h:selectOneMenu value="#{hosBean.driverID}" id="#{context}_driverSelect" style="width:150px;size:auto;">
+							<f:selectItems value="#{hosBean.drivers}" />  
+						</h:selectOneMenu>
+						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 				<ui:param name="selectBoxID" value="hos-table-form:#{context}_driverSelect" />
+						</ui:include>
+					</td>
+					</tr>
+				</table>
+			</li>   
 			<li class="l">   
     			<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 					<tr>
@@ -36,7 +49,7 @@
 			<li class="l"/>
 			<li class="l">
 				<a4j:commandButton id="#{context}_refresh" styleClass="left"
-					reRender="hos-table-form:header, hos-table-form:#{context}, hos-table-form:#{context}-dataTableScroller" 
+					reRender="hos-table-form:dateError, hos-table-form:header, hos-table-form:#{context}, hos-table-form:#{context}-dataTableScroller" 
 					action="#{hosBean.refresh}">
 					<span class="refresh">
     					<h:outputText value="#{messages.refresh}" />
@@ -63,6 +76,10 @@
 			   </a4j:status>
             </li>
           </ul>
+		  <div align="left" style="width: 100%"> 
+			<h:outputText id="dateError"  style="float:left;color:#c44d34" value="#{hosBean.badDates}"/>
+		  </div>
+          
     	  <ui:include src="/includes/table/statsHeader.xhtml">	
    			<ui:param name="title" value="#{messages.hosLogs_recordCountHeader}" />
    			<ui:param name="pageData" value="#{hosBean.pageData}" />
@@ -86,7 +103,6 @@
                 </f:facet>
                 <h:selectBooleanCheckbox id="select" value="#{item.selected}">
                 </h:selectBooleanCheckbox>
-                <h:inputHidden id="edited" value="#{item.edited}"/>
 			</rich:column>
 			<rich:column id="datetime" rendered="#{hosTableColumns.tableColumns['datetime'].visible}" sortBy="#{item.logTime}" sortOrder="DESCENDING">
 			      <f:facet name="header"><h:outputText value="#{messages.hosLogs_datetime}" /></f:facet>
@@ -119,6 +135,10 @@
 		    <rich:column id="status" rendered="#{hosTableColumns.tableColumns['status'].visible}" sortBy="#{item.status.description}">
       			<f:facet name="header"><h:outputText value="#{messages.hosLogs_status}" /></f:facet>
       			<h:outputText value="#{messages[item.status.name]}" />
+    		</rich:column>
+		    <rich:column id="edited" rendered="#{hosTableColumns.tableColumns['edited'].visible}" sortBy="#{item.edited}">
+      			<f:facet name="header"><h:outputText value="#{messages.hosLogs_edited}" /></f:facet>
+      			<h:outputText value="#{messages[item.edited]}" />
     		</rich:column>
             <rich:column>
                 <f:facet name="header">

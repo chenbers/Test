@@ -448,12 +448,20 @@
 	</url-mapping>	
 
     <url-mapping id="hos">
-        <pattern>/app/hos/#{hosBean.driverID}</pattern>
+        <pattern>/app/hos</pattern>
+        <view-id>/secured/hos/hos.faces</view-id>
+    </url-mapping>
+    <url-mapping id="hosLogs">
+        <pattern>/app/hosLogs/#{hosBean.driverID}</pattern>
         <view-id>/secured/hos/hos.faces</view-id>
     </url-mapping>  
     <url-mapping id="hosEdit">
         <pattern>/app/hosEdit</pattern>
         <view-id>/secured/hos/hosEdit.faces</view-id>
+    </url-mapping>  
+    <url-mapping id="hosReports">
+        <pattern>/app/hosReports</pattern>
+        <view-id>/secured/hos/hos.faces</view-id>
     </url-mapping>  
 
 </pretty-config>

@@ -618,8 +618,8 @@ public class PaginationTest {
     		for (RedFlag redFlag : redFlagList) {
     			if (redFlag.getEvent() instanceof ZoneEvent) {
     				ZoneEvent zoneEvent = (ZoneEvent)redFlag.getEvent();
-    				assertNotNull("zone name", zoneEvent.getZoneName());
-    				assertNotNull("zone points", zoneEvent.getZonePoints());
+    				assertNotNull("zone name for zoneEvent " + zoneEvent.getNoteID() + " is null", zoneEvent.getZoneName());
+    				assertNotNull("zone points for zoneEvent " + zoneEvent.getNoteID() + " is null", zoneEvent.getZonePoints());
     			}
     		}
     		

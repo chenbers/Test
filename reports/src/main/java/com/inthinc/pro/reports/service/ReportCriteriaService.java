@@ -33,6 +33,12 @@ public interface ReportCriteriaService
     
     // HOS
     List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric);
-    
     ReportCriteria getHosViolationsSummaryReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getHosViolationsDetailReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getHosDriverDOTLogReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getDotHoursRemainingReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getHosZeroMilesReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getPayrollDetailReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getPayrollSignoffReportCriteria(Integer driverID, Interval interval, Locale locale);
+
 }

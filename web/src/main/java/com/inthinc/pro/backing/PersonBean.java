@@ -415,7 +415,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     @Override
 	public List<String> getAvailableColumns() {
-	    return AVAILABLE_COLUMNS;
+        List<String> cols = AVAILABLE_COLUMNS;
+        if (!getAccountIsHOS()) {
+            cols.remove("driver_dot");
+        }
+        return cols;
 	}
 
 	@Override

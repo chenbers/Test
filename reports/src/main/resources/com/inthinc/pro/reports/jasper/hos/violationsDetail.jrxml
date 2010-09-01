@@ -22,7 +22,7 @@
 	<parameter name="REPORT_END_DATE" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="REPORT_LOGO_URL" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false"/>
 	<parameter name="REPORT_TYPE" class="java.lang.String"/>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="timeStr" class="java.lang.String"/>
@@ -57,7 +57,7 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<imageExpression class="java.lang.String"><![CDATA[$P{REPORT_LOGO_URL}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
 		</band>
 	</title>

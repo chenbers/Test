@@ -22,6 +22,7 @@ public class HosTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS.add("trailer");
         AVAILABLE_COLUMNS.add("service");
         AVAILABLE_COLUMNS.add("location");
+        AVAILABLE_COLUMNS.add("edited");
         AVAILABLE_COLUMNS.add("status");
         
     }

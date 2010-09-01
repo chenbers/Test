@@ -13,15 +13,18 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
@@ -41,8 +44,14 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.DotHoursRemainingReportCriteria;
 import com.inthinc.pro.reports.hos.HosDailyDriverLogReportCriteria;
+import com.inthinc.pro.reports.hos.HosDriverDOTLogReportCriteria;
+import com.inthinc.pro.reports.hos.HosViolationsDetailReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsSummaryReportCriteria;
+import com.inthinc.pro.reports.hos.HosZeroMilesReportCriteria;
+import com.inthinc.pro.reports.hos.PayrollDetailReportCriteria;
+import com.inthinc.pro.reports.hos.PayrollSignoffReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
@@ -63,8 +72,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private ReportDAO reportDAO;
     private GroupReportDAO groupReportDAO;
     private DriverDAO driverDAO;
+    private AccountDAO accountDAO;
+    // temp
+    private HOSDAO hosDAO  = new MockHOSDAO();
     
-	private Locale locale;
+    private Locale locale;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
     
@@ -519,6 +531,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric);
+        hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
+        hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
+        hosDailyDriverLogReportCriteria.setAccountDAO(accountDAO);
+        hosDailyDriverLogReportCriteria.setHosDAO(hosDAO);
         
         hosDailyDriverLogReportCriteria.init(driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -528,12 +544,90 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     @Override
     public ReportCriteria getHosViolationsSummaryReportCriteria(Integer groupID, Interval interval, Locale locale) {
         HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
         criteria.init(groupID, interval);
         return criteria;
     }
 
-
+    @Override
+    public ReportCriteria getHosViolationsDetailReportCriteria(Integer groupID, Interval interval, Locale locale) {
+        
+        HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(groupID, interval);
+        return criteria;
+    }
     
+    @Override
+    public ReportCriteria getHosDriverDOTLogReportCriteria(Integer groupID, Interval interval, Locale locale) {
+        HosDriverDOTLogReportCriteria criteria = new HosDriverDOTLogReportCriteria(locale);
+        
+        criteria.setDriverDAO(driverDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(groupID, interval);
+        return criteria;
+    }
+
+    @Override
+    public ReportCriteria getDotHoursRemainingReportCriteria(Integer groupID, Locale locale)
+    {
+        
+        DotHoursRemainingReportCriteria criteria = new DotHoursRemainingReportCriteria(locale);
+        
+        criteria.setGroupDAO(groupDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(groupID);
+        return criteria;
+    }
+    
+    @Override
+    public ReportCriteria getHosZeroMilesReportCriteria(Integer groupID, Interval interval, Locale locale)
+    {
+        HosZeroMilesReportCriteria criteria = new HosZeroMilesReportCriteria(locale);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(groupID, interval);
+        return criteria;
+        
+    }
+    
+    @Override
+    public ReportCriteria getPayrollDetailReportCriteria(Integer groupID, Interval interval, Locale locale)
+    {
+        PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(groupID, interval);
+        return criteria;
+        
+    }
+    @Override
+    public ReportCriteria getPayrollSignoffReportCriteria(Integer driverID, Interval interval, Locale locale)
+    {
+        PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(driverID, interval);
+        return criteria;
+        
+    }
+
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -629,6 +723,23 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         this.driverDAO = driverDAO;
     }
 
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
+
+
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+
+    public HOSDAO getHosDAO() {
+        return hosDAO;
+    }
+
+
+    public void setHosDAO(HOSDAO hosDAO) {
+        this.hosDAO = hosDAO;
+    }
 
     public void setLocale(Locale locale)
     {
@@ -639,10 +750,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
-
-
-
-
 
 
 }

@@ -22,17 +22,21 @@ import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
@@ -129,7 +133,11 @@ public class EmailReportJob extends QuartzJobBean {
             if (duration == null) {
                 duration = Duration.DAYS;
             }
-            if (reportSchedule.getGroupID() == null) {
+            TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
+            if (timeFrame == null) {
+                timeFrame = TimeFrame.TODAY;
+            }
+            if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP && reportSchedule.getGroupID() == null ) {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
@@ -157,19 +165,46 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), interval, user.getPerson().getLocale(), true));
                     break;
                 case TEAM_STATISTICS_REPORT:
-                	TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
-                	if (timeFrame == null)
-                		timeFrame = TimeFrame.TODAY;
                     reportCriteriaList.add(reportCriteriaService.getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
                     		DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
                 	break;
                 case TEAM_STOPS_REPORT:
-                    TimeFrame timeFrameStops = reportSchedule.getReportTimeFrame();
-                    if (timeFrameStops == null)
-                        timeFrameStops = TimeFrame.TODAY;
-                    reportCriteriaList.add(reportCriteriaService.getTeamStopsReportCriteria(reportSchedule.getGroupID(), timeFrameStops, 
+                    reportCriteriaList.add(reportCriteriaService.getTeamStopsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
                             DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
-                    break;                	
+                    break;     
+                case HOS_DAILY_DRIVER_LOG_REPORT:
+                    reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(reportSchedule.getDriverID(), 
+                            timeFrame.getInterval(), user.getPerson().getLocale(), user.getPerson().getMeasurementType() == MeasurementType.METRIC));
+                    break;
+                    
+                case HOS_VIOLATIONS_SUMMARY_REPORT:
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), 
+                            user.getPerson().getLocale()));
+                    break;
+                case HOS_VIOLATIONS_DETAIL_REPORT:
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), 
+                            user.getPerson().getLocale()));
+                    break;
+                case HOS_DRIVER_DOT_LOG_REPORT:
+                    reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), 
+                            user.getPerson().getLocale()));
+                    break;
+                case DOT_HOURS_REMAINING:
+                    reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(reportSchedule.getGroupID(),  
+                            user.getPerson().getLocale()));
+                    break;
+                case HOS_ZERO_MILES:
+                    reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                            user.getPerson().getLocale()));
+                    break;
+                case PAYROLL_DETAIL:
+                    reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                            user.getPerson().getLocale()));
+                    break;
+                case PAYROLL_SIGNOFF:
+                    reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(reportSchedule.getDriverID(), timeFrame.getInterval(),  
+                            user.getPerson().getLocale()));
+                    break;
                 default:
                     break;
 

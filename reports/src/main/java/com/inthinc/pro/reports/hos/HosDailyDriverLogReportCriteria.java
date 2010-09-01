@@ -508,4 +508,10 @@ public class HosDailyDriverLogReportCriteria {
         this.groupDAO = groupDAO;
     }
 
+    public HOSDAO getHosDAO() {
+        return hosDAO;
+    }
+    public void setHosDAO(HOSDAO hosDAO) {
+        this.hosDAO = hosDAO;
+    }
 }

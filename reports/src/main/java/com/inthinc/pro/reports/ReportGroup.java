@@ -36,15 +36,59 @@ public enum ReportGroup
     TEAM_STATISTICS_REPORT("Team Statistics Report",6,EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.TEAM},
-            ReportType.TEAM_STATISTICS_REPORT);
-        
+            ReportType.TEAM_STATISTICS_REPORT),
+    // HOS -- will need to figure out some sort of role/acct thing
+/*
+ *  TODO: NOT SURE WHERE THESE WILL FIT IN     
+    NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","nonDOTViolations.jrxml", "nonDOTViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
+    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","drivingTimeViolations.jrxml", "drivingTimeViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
+    NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "NON_DOT_VIOLATIONS_DETAIL"),
+    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL"),
+
+    PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollDetail"),
+    PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollSignOff");
+            
+ */
+    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report",7,EntityType.ENTITY_DRIVER,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{}, true,
+            ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
+     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report",8,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            ReportType.HOS_VIOLATIONS_SUMMARY_REPORT),
+     HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report",9,EntityType.ENTITY_GROUP,
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+             ReportType.HOS_VIOLATIONS_DETAIL_REPORT),
+     HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report",10,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            ReportType.HOS_DRIVER_DOT_LOG_REPORT),
+     DOT_HOURS_REMAINING("DOT Time Remaining Report",11,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            ReportType.DOT_HOURS_REMAINING),
+     HOS_ZERO_MILES("HOS Zero Miles Report",12,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            ReportType.HOS_ZERO_MILES),
+     PAYROLL_DETAIL("Driver Hours Report",13,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            ReportType.PAYROLL_DETAIL),
+     PAYROLL_SIGNOFF("Driver Hours Signoff",14,EntityType.ENTITY_DRIVER,
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{}, true,
+             ReportType.PAYROLL_SIGNOFF);
     
     private ReportType[] reports;
     private Integer code;
     private String label;
     private EntityType entityType; //Type of entity this report is bound to
     private CriteriaType[] criterias;
-    
+    private boolean hos;
+
     //GroupTypes These are used to indicate which groups have access to the report as well as which type of groups that this report can be ran against
     private GroupType[] groupTypes; 
    
@@ -57,6 +101,10 @@ public enum ReportGroup
      * @param groupTypes - If entityType is GROUP then this is the list of groups that are acceptable for this report
      * @param reports - List of ReportTypes
      */
+    private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,boolean hos, ReportType... reports){
+        this(label, code, entityType, criterias, groupTypes, reports);
+        this.hos = hos;
+    }
     private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,ReportType... reports){
         this.reports = reports;
         this.label = label;
@@ -64,6 +112,7 @@ public enum ReportGroup
         this.criterias = criterias;
         this.groupTypes = groupTypes;
         this.entityType = entityType;
+        this.hos = false;
     }
     
     /**
@@ -137,6 +186,13 @@ public enum ReportGroup
     public GroupType[] getGroupTypes()
     {
         return groupTypes;
+    }
+    
+    public boolean isHos() {
+        return hos;
+    }
+    public void setHos(boolean hos) {
+        this.hos = hos;
     }
     
     public String getMessageKey(){

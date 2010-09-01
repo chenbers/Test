@@ -10,16 +10,17 @@
                 xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:define name="scripts">
-		<script type="text/javascript">
-        	function hiliteEditedInTable()
-        	{
-	            jQuery('.rich-table-row:has(td>input[id*="edited"][value*="true"])').addClass("tableEdited");
-        	}
-		</script>
 	</ui:define>
 
-	<ui:param name="homeSelected" value="current" />
-	<ui:param name="helpFile" value="hos.htm" />
+	<ui:param name="hosSelected" value="current" />
+	<ui:param name="helpFile" value="" />
+	<ui:param name="context" value="hos" />
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/hos/subNavigation.xhtml">
+			<ui:param name="logsSelected" value="current" />
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</ui:define>
 	
 	<ui:define name="content">
 	<div id="wrapper">

@@ -95,8 +95,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public List<SelectItem> getReportGroups() {
         reportGroups = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
+            if (rt.isHos() && !getAccountIsHOS())
+                continue;
             List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
-            if (getGroupHierarchy().containsGroupTypes(groupTypes)) {
+            if (rt.getEntityType() != EntityType.ENTITY_GROUP || getGroupHierarchy().containsGroupTypes(groupTypes)) {
                 reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             }
         }
@@ -111,10 +113,18 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
             if (item == null || item.getReport() == null)
                 return allGroupUsers;
-            List<GroupType> groupTypes = Arrays.asList(item.getReport().getGroupTypes());
-            for (User user : users) {
-                if (user.getPerson() != null && isUserGroupTypeValid(groupTypes, getGroupHierarchy().getGroup(user.getGroupID()).getType())) 
-                    allGroupUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
+            if (item.getReport().getEntityType() == EntityType.ENTITY_GROUP) {
+                List<GroupType> groupTypes = Arrays.asList(item.getReport().getGroupTypes());
+                for (User user : users) {
+                    if (user.getPerson() != null && isUserGroupTypeValid(groupTypes, getGroupHierarchy().getGroup(user.getGroupID()).getType())) 
+                        allGroupUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
+                }
+            }
+            else if (item.getReport().getEntityType() == EntityType.ENTITY_DRIVER) {
+                for (User user : users) {
+                    if (user.getPerson() != null) 
+                        allGroupUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
+                }
             }
             MiscUtil.sortSelectItems(allGroupUsers);
             
@@ -193,22 +203,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
         return driverMap;
     }
-/*
-    public List<SelectItem> getGroups() {
-        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-        List<Group> groupList = getGroupHierarchy().getGroupList();
-        List<GroupType> acceptableGroupTypes = Arrays.asList(getItem().getReport().getGroupTypes());
-        for (Group group : groupList) {
-            if (acceptableGroupTypes.contains(group.getType())) {
-                selectItemList.add(new SelectItem(group.getGroupID(), group.getName()));
-            }
-        }
-        sort(selectItemList);
-        selectItemList.add(0, new SelectItem(null, ""));
-        return selectItemList;
-    }
-*/    
-    
     public void ownerChangedAction() {
     }
     

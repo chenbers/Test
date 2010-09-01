@@ -14,23 +14,21 @@
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
 	</ui:define>
 
-	<ui:param name="homeSelected" value="current" />
-	<ui:param name="helpFile" value="hos.htm" />
+	<ui:param name="hosSelected" value="current" />
+	<ui:param name="context" value="hosEdit" />
+	<ui:param name="helpFile" value="" />
+		<ui:define name="subnavigation">
+		<ui:include src="/includes/hos/subNavigation.xhtml">
+			<ui:param name="logsSelected" value="current" />
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</ui:define>
+	
 	
 	<ui:define name="content">
 	<div id="wrapper">
-		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+	<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
       <tr>
-        <td valign="top" width="130">
-<!--
-TODO: HOS SIDE NAV?         
-          <ui:include src="/includes/navigation/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="#{(hosBean.add) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
-            <ui:param name="parentAction" value="go_adminVehicles" />
-            <ui:param name="context" value="editVehicle"/>
-          </ui:include>
- -->         
-        </td>
         <td valign="top">
           <!-- START PANEL -->
 
@@ -145,8 +143,12 @@ TODO: HOS SIDE NAV?
                                 </td>
                                 <td>
                                   <rich:message for="editHosLog_driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{hosBean.item.driverName}" id="editHosLog_driver" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="50" required="#{(not hosBean.batchEdit) or hosBean.updateField['driver']}"  requiredMessage="#{messages.hosLog_driver_required}"/>
+	                              <h:selectOneMenu value="#{hosBean.item.driverID}" 
+		                              	id="editHosLog_driver" 
+		                                onchange="checkMultiple(this)"
+		                                required="#{(not hosBean.batchEdit) or hosBean.updateField['driver']}"  requiredMessage="#{messages.hosLog_driver_required}">
+		                              <f:selectItems value="#{hosBean.drivers}"/>
+		                          </h:selectOneMenu>
                                 </td>
                               </tr>
                               <tr>
@@ -156,8 +158,11 @@ TODO: HOS SIDE NAV?
                                 </td>
                                 <td>
                                   <rich:message for="editHosLog_vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{hosBean.item.vehicleName}" id="editHosLog_vehicle" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="50"/>
+	                              <h:selectOneMenu value="#{hosBean.item.vehicleID}" 
+		                              	id="editHosLog_vehicle" 
+		                                onchange="checkMultiple(this)">
+		                              <f:selectItems value="#{hosBean.vehicles}"/>
+		                          </h:selectOneMenu>
                                 </td>
                               </tr>
                               <tr>

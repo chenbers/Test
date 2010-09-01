@@ -305,6 +305,14 @@ jQuery(function(){
                     <pretty:link id="#{context}-navigationAdminSubset" mappingId="admin#{defaultPage}" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
+			<!--  TODO: create an hos role -->
+			<security:authorize ifAnyGranted="ROLE_ADMIN">
+				<li class="nav_button #{hosSelected}">
+					<h:panelGroup rendered="#{treeNavigationBean.accountIsHOS}">
+	                    <pretty:link id="#{context}-navigationHos" mappingId="hos" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_hos}</span></pretty:link>
+	                </h:panelGroup>
+				</li>
+			</security:authorize>
 			<li class="nav_button" style="float:right">
 				<table width="250" border="0" cellspacing="0" cellpadding="0" id="menu_search_box">
 				  <tr>
