@@ -11,15 +11,19 @@ import org.ajax4jsf.model.KeepAlive;
 import com.inthinc.pro.backing.UsesBaseBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.model.EditableMap;
-import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
+import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 @KeepAlive 
 public class VehicleSettingsBean extends UsesBaseBean{
 	
 	private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-	
-	private VehicleSettingsDAO vehicleSettingsDAO;
+
+	protected VehicleDAO vehicleDAO;
+	protected ConfiguratorDAO configuratorDAO;
+
+//	private VehicleSettingsDAO vehicleSettingsDAO;
     private Integer selectedVehicleID;
     private VehicleSetting selectedVehicleSetting;
     private EditableMap<Integer, String> editedDesiredValues;
@@ -53,14 +57,11 @@ public class VehicleSettingsBean extends UsesBaseBean{
 	public VehicleSetting getSelectedVehicleSetting() {
 		return selectedVehicleSetting;
 	}
-    public void setVehicleSettingsDAO(VehicleSettingsDAO vehicleSettingsDAO) {
-        this.vehicleSettingsDAO = vehicleSettingsDAO;
-    }
     public String displayVehicle(){
     	
     	if (selectedVehicleID == null) return null;
     	
-    	selectedVehicleSetting = vehicleSettingsDAO.getVehicleSetting(selectedVehicleID);
+    	selectedVehicleSetting = configuratorDAO.getVehicleSettings(selectedVehicleID);
     	initializeEditedDesiredSettings();
     	
     	return null;
@@ -72,14 +73,17 @@ public class VehicleSettingsBean extends UsesBaseBean{
     public Object updateVehicle(){
     	
         Map<Integer,String> newDesiredValues = editedDesiredValues.getDifferencesMap();
-		vehicleSettingsDAO.updateVehicleSettings(selectedVehicleSetting.getVehicleID(), newDesiredValues, 
-				getBaseBean().getProUser().getUser().getUserID(), 
-				reason);
-		FacesMessage message = new FacesMessage();
-		message.setSeverity(FacesMessage.SEVERITY_INFO);
-		message.setSummary("Vehicle settings updated successfully");
-		FacesContext.getCurrentInstance().addMessage("", message);
+        if(reason == null|| reason.isEmpty() || newDesiredValues.isEmpty() || selectedVehicleSetting.getVehicleID()==null){}
+        else{
 
+            configuratorDAO.updateVehicleSettings(selectedVehicleSetting.getVehicleID(), newDesiredValues, 
+    				                              getBaseBean().getProUser().getUser().getUserID(), 
+    				                              reason);
+    		FacesMessage message = new FacesMessage();
+    		message.setSeverity(FacesMessage.SEVERITY_INFO);
+    		message.setSummary("Vehicle settings updated successfully");
+    		FacesContext.getCurrentInstance().addMessage("", message);
+        }
 		return null;
     }
     public Object resetDesiredSettings(){
@@ -107,16 +111,24 @@ public class VehicleSettingsBean extends UsesBaseBean{
     public Object deleteVehicleSettings(){
         
         editedDesiredValues.clearAllValues();
+        //TODO need to check parameters are ok
+        if(reason == null|| reason.isEmpty() || selectedVehicleSetting.getVehicleID()==null){}
+        else{
+            configuratorDAO.setVehicleSettings(selectedVehicleSetting.getVehicleID(), new HashMap<Integer,String>(), 
+                                               getBaseBean().getProUser().getUser().getUserID(), 
+                                               reason);
         
-        vehicleSettingsDAO.setVehicleSettings(selectedVehicleSetting.getVehicleID(), new HashMap<Integer,String>(), 
-                getBaseBean().getProUser().getUser().getUserID(), 
-                reason);
-        
-        FacesMessage message = new FacesMessage();
-        message.setSeverity(FacesMessage.SEVERITY_INFO);
-        message.setSummary("Desired settings deleted");
-        FacesContext.getCurrentInstance().addMessage("", message);
-        
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_INFO);
+            message.setSummary("Desired settings deleted");
+            FacesContext.getCurrentInstance().addMessage("", message);
+        }
         return null;
+    }
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
+    public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
+        this.configuratorDAO = configuratorDAO;
     }
 }

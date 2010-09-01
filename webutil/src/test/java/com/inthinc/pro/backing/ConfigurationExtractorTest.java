@@ -18,7 +18,6 @@ import com.inthinc.pro.configurator.model.ConfigurationSet;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
-import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
 import com.inthinc.pro.configurator.model.VehicleSettings;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
@@ -32,14 +31,15 @@ public class ConfigurationExtractorTest {
     private static DeviceSettingDefinitions deviceSettingDefinitions;
     private static DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
 
-    private static VehicleSettingsDAO vehicleSettingsDAO;
+    private static ConfiguratorHessianDAO configuratorHessianDAO;
     private static VehicleSettings vehicleSettings;
 
     @BeforeClass
     public static void setUpBefore() throws Exception {
         
         SiloServiceCreator siloServiceCreator = new SiloServiceCreator("dev-pro.inthinc.com",8099);
-        ConfiguratorHessianDAO configuratorHessianDAO = new ConfiguratorHessianDAO();
+        
+        configuratorHessianDAO = new ConfiguratorHessianDAO();
         configuratorHessianDAO.setSiloService(siloServiceCreator.getService());
         configuratorHessianDAO.setMapper(new ConfiguratorMapper());
 
@@ -49,10 +49,8 @@ public class ConfigurationExtractorTest {
         deviceSettingDefinitionsByProductType = new DeviceSettingDefinitionsByProductType();
         deviceSettingDefinitionsByProductType.init();
 
-        vehicleSettingsDAO = new VehicleSettingsDAO();
-        vehicleSettingsDAO.setConfiguratorDAO(configuratorHessianDAO);
         vehicleSettings = new VehicleSettings();
-        vehicleSettings.filterSettings(vehicleSettingsDAO.getVehicleSettings(1), ProductType.TIWIPRO_R74);
+        vehicleSettings.filterSettings(configuratorHessianDAO.getVehicleSettingsByGroupIDDeep(1), ProductType.TIWIPRO_R74);
 
     }
     private void makeupSettingsRandom( List<DeviceSettingDefinitionBean> list, List<VehicleSetting> vehicleSettings){

@@ -34,7 +34,6 @@
 	<bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session"/>
 	<bean id="configuratorBean" class ="com.inthinc.pro.backing.configurator.ConfiguratorBean" scope="request" init-method="init"/>
 	<bean id="vehicleSettingsBean" class ="com.inthinc.pro.backing.configurator.VehicleSettingsBean" scope="request"/>
-	<bean id="vehicleSettingsDAO" class="com.inthinc.pro.configurator.model.VehicleSettingsDAO" scope="request"/>
 	<bean id="deviceSettingDefinitionsByProductType" class="com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType" scope="session" init-method="init"/>
 	<bean id="vehicleSettingsHistoryBean" class ="com.inthinc.pro.backing.configurator.VehicleSettingsHistoryBean" scope="request"/>
 	<!--  UI beans -->

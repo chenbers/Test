@@ -8,14 +8,16 @@ import javax.faces.event.ValueChangeEvent;
 
 import com.inthinc.pro.backing.UsesBaseBean;
 import com.inthinc.pro.configurator.model.VehicleSettings;
-import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
+import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class VehicleFilterBean extends UsesBaseBean{
 
-	protected VehicleSettingsDAO vehicleSettingsDAO;
+	protected VehicleDAO vehicleDAO;
+	protected ConfiguratorDAO configuratorDAO;
 
 	protected SelectedProductType selectedProductType;
 	protected TreeNavigationBean treeNavigationBean;
@@ -40,14 +42,14 @@ public class VehicleFilterBean extends UsesBaseBean{
 	private List<Integer> fetchGroupsVehicleSettingsForProduct() {
 		
 		//Based on VehicleSettings records for group
-	    vehicleSettings.filterSettings(vehicleSettingsDAO.getVehicleSettings(selectedGroupId),selectedProductType.getProductType());
+	    vehicleSettings.filterSettings(configuratorDAO.getVehicleSettingsByGroupIDDeep(selectedGroupId),selectedProductType.getProductType());
 	    
 	    return vehicleSettings.getVehicleIDs();
 	}
 	private void fetchMakesModelsYearsForProduct(List<Integer> selectedVehicleIDs) {
 		
 		//Based on Vehicle records for group
-		makeModelYearSelectItems.createMakeModelYear(filterVehiclesOnProductType(selectedVehicleIDs,vehicleSettingsDAO.getVehicles(selectedGroupId)));
+		makeModelYearSelectItems.createMakeModelYear(filterVehiclesOnProductType(selectedVehicleIDs,vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupId)));
 	}
 	private List<Vehicle> filterVehiclesOnProductType(List<Integer> selectedVehicleIDs, List<Vehicle> vehiclesInGroup) {
 		
@@ -145,10 +147,13 @@ public class VehicleFilterBean extends UsesBaseBean{
 		return makeModelYearSelectItems;
 	}
 
-	public void setVehicleSettingsDAO(VehicleSettingsDAO vehicleSettingsDAO) {
-		this.vehicleSettingsDAO = vehicleSettingsDAO;
-	}
-	public VehicleSettings getVehicleSettings() {
+	public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
+    public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
+        this.configuratorDAO = configuratorDAO;
+    }
+    public VehicleSettings getVehicleSettings() {
 		return vehicleSettings;
 	}
 

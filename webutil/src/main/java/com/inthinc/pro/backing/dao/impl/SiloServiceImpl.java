@@ -981,14 +981,14 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettingsDAO.class)
+    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class)
     public Map<String, Object> setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
 
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettingsDAO.class)
+    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class)
     public Map<String, Object> updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
 
         return null;

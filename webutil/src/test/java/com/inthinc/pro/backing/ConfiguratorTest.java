@@ -13,7 +13,6 @@ import com.inthinc.pro.backing.configurator.ConfiguratorBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
-import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
 import com.inthinc.pro.configurator.model.VehicleSettings;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
@@ -27,7 +26,7 @@ public class ConfiguratorTest {
     
     private DeviceSettingDefinitions deviceSettingDefinitions;
     private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-    private VehicleSettingsDAO vehicleSettingsDAO;
+    private static ConfiguratorHessianDAO configuratorHessianDAO;
     private VehicleSettings vehicleSettings;
     private ConfiguratorBean configuratorBean;
     
@@ -35,7 +34,7 @@ public class ConfiguratorTest {
     public void setUp() throws Exception {
        
         SiloServiceCreator siloServiceCreator = new SiloServiceCreator("dev-pro.inthinc.com",8099);
-        ConfiguratorHessianDAO configuratorHessianDAO = new ConfiguratorHessianDAO();
+        configuratorHessianDAO = new ConfiguratorHessianDAO();
         configuratorHessianDAO.setSiloService(siloServiceCreator.getService());
         configuratorHessianDAO.setMapper(new ConfiguratorMapper());
         
@@ -48,14 +47,12 @@ public class ConfiguratorTest {
         
         configuratorBean.setDeviceSettingDefinitionsByProductType(deviceSettingDefinitionsByProductType);
         configuratorBean.init();
-        vehicleSettingsDAO = new VehicleSettingsDAO();
-        vehicleSettingsDAO.setConfiguratorDAO(configuratorHessianDAO);
         vehicleSettings = new VehicleSettings();
-        vehicleSettings.filterSettings(vehicleSettingsDAO.getVehicleSettings(1), ProductType.TIWIPRO_R74);
+        vehicleSettings.filterSettings(configuratorHessianDAO.getVehicleSettingsByGroupIDDeep(1), ProductType.TIWIPRO_R74);
 
         makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettings.getVehicleSettings());
 
-        configuratorBean.setVehicleSettingsDAO(vehicleSettingsDAO);
+        configuratorBean.setConfiguratorDAO(configuratorHessianDAO);
     }
     private void makeupSettings( List<DeviceSettingDefinitionBean> settings, List<VehicleSetting> vehicleSettings){
         

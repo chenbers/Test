@@ -18,9 +18,9 @@ import com.inthinc.pro.configurator.model.ConfigurationExtractor;
 import com.inthinc.pro.configurator.model.ConfigurationSet;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
-import com.inthinc.pro.configurator.model.VehicleSettingsDAO;
 import com.inthinc.pro.configurator.ui.ConfigurationApplyBean;
 import com.inthinc.pro.configurator.ui.ConfigurationSelectionBean;
+import com.inthinc.pro.dao.ConfiguratorDAO;
 
 @KeepAlive(ajaxOnly=true)
 public class ConfiguratorBean extends UsesBaseBean implements Serializable{
@@ -34,8 +34,8 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     
     private List<DeviceSettingDefinitionBean> differentDeviceSettings;
     
-    private VehicleSettingsDAO vehicleSettingsDAO;    
-
+    protected ConfiguratorDAO configuratorDAO;
+    
 	private ConfigurationSet configurationSet;
 	
 	private ConfigurationSet compareConfigurationSet;
@@ -90,11 +90,16 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     	
     	logger.debug("configurator - updateConfiguration");
     	selectedConfiguration = configurationSet.getConfiguration(selectedConfigurationID);
+    	Map<Integer,String> differencesMap = selectedConfiguration.getDifferencesMap();
        	for(Integer vehicleID : selectedConfiguration.getVehicleIDs()){
     		
-			vehicleSettingsDAO.updateVehicleSettings(vehicleID, selectedConfiguration.getDifferencesMap(), 
-													getBaseBean().getUser().getUserID(), 
-													reason);
+	      if(reason == null|| reason.isEmpty() || differencesMap.isEmpty() || vehicleID==null) {}
+	      else{
+	      
+	          configuratorDAO.updateVehicleSettings(vehicleID, differencesMap, 
+	                                                getBaseBean().getUser().getUserID(), 
+	                                                reason);
+	      }
     	}
        	
        	reinitializeConfigurations();
@@ -195,10 +200,10 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     public List<DeviceSettingDefinitionBean> getDisplaySettingsDefinitions() {
         return displaySettingsDefinitions;
     }
-    public void setVehicleSettingsDAO(VehicleSettingsDAO vehicleSettingsDAO) {
-        this.vehicleSettingsDAO = vehicleSettingsDAO;
-    }
     
+    public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
+        this.configuratorDAO = configuratorDAO;
+    }
     public DeviceSettingDefinitionsByProductType getDeviceSettingDefinitionsByProductType() {
         return deviceSettingDefinitionsByProductType;
     }
@@ -294,7 +299,7 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 //}
 //  private void buildConfigurations(){
 //	
-////    makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType()),vehicleSettingsDAO.getVehicleSettings(1));
+////    makeupSettings(deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType()),vehicleDAO.getVehicleSettings(1));
 //    
 //}
 

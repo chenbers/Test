@@ -25,7 +25,7 @@ public class ConfigurationApplyBean extends VehicleFilterBean{
     	
        	for(Integer vehicleID : getVehicleIDsForMakeModelYear()){
     		
-			vehicleSettingsDAO.updateVehicleSettings(vehicleID, selectedConfiguration.getLatestDesiredValues(), 
+			configuratorDAO.updateVehicleSettings(vehicleID, selectedConfiguration.getLatestDesiredValues(), 
 													 getBaseBean().getProUser().getUser().getUserID(), 
 													 reason);
     	}
@@ -34,15 +34,10 @@ public class ConfigurationApplyBean extends VehicleFilterBean{
     public Object updateVehicle(Map<Integer, String> differenceMap, String reason){
     	
        return  updateVehicle(selectedVehicleID,differenceMap, reason);
-//		vehicleSettingsDAO.updateVehicleSettings(selectedVehicleID, selectedConfiguration.getLatestDesiredValues(), 
-//				 getBaseBean().getProUser().getUser().getUserID(), 
-//				 selectedConfiguration.getReason());
-
-//		return null;
     }
     public Object updateVehicle(Integer vehicleID, Map<Integer, String> differenceMap, String reason){
     	
-		vehicleSettingsDAO.updateVehicleSettings(vehicleID, differenceMap, 
+		configuratorDAO.updateVehicleSettings(vehicleID, differenceMap, 
 				 getBaseBean().getProUser().getUser().getUserID(), 
 				 reason);
 
