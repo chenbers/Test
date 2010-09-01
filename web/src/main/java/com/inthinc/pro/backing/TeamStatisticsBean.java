@@ -21,6 +21,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 @KeepAlive
 public class TeamStatisticsBean extends BaseBean {
@@ -86,16 +87,26 @@ public class TeamStatisticsBean extends BaseBean {
         if (teamCommonBean.getCachedResults().containsKey(key)) {
             driverStatistics = teamCommonBean.getCachedResults().get(key);
 
-            // Not there, grab it
         } else {
-
-            // Get the data
-            // Get the data
-            if (whichMethodToUse()) {
-                driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
-            } else {
-                driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration());
+            // Not there, grab it
+            //  0: day value, start/end day the same
+            //  1: week value, calculate start and add seven
+            //  2: month or year, use duration identifier
+            switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
+                case 0:
+                    driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart());
+                    break;
+                case 1:
+                    driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+                    break;
+                case 2:
+                    driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                            teamCommonBean.getTimeFrame().getAggregationDuration());
+                    break;
             }
+
             cleanData(driverStatistics);
 
             // All set, save so we don't grab the data again
@@ -104,28 +115,6 @@ public class TeamStatisticsBean extends BaseBean {
         return driverStatistics;
     }
 
-    // public void setDriverStatistics(List<DriverVehicleScoreWrapper> driverStatistics) {
-    // this.driverStatistics = driverStatistics;
-    // }
-
-    private boolean whichMethodToUse() {
-
-        if (this.teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) || this.teamCommonBean.getTimeFrame().equals(TimeFrame.MONTH) || this.teamCommonBean.getTimeFrame().equals(TimeFrame.YEAR)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /*
-     * 
-     * private void loadScoreStyles() { for ( DriverVehicleScoreWrapper dvsw: driverStatistics) {
-     * 
-     * // -1 to get the N/A to show if(dvsw.getScore().getOverall()== null){ dvsw.getScore().setOverall(-1); dvsw.setScoreStyle(ScoreBox.GetStyleFromScore( -1,
-     * ScoreBoxSizes.SMALL)); } else{
-     * 
-     * dvsw.setScoreStyle(ScoreBox.GetStyleFromScore( dvsw.getScore().getOverall().intValue(), ScoreBoxSizes.SMALL)); } } }
-     */
     public void cleanData(List<DriverVehicleScoreWrapper> driverStatistics) {
 
         // A place to facilitate sorting and other good things

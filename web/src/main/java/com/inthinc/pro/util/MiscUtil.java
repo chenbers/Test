@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.backing.TeamCommonBean;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Zone;
 
 public class MiscUtil
@@ -100,4 +102,21 @@ public class MiscUtil
         }   
         return inPoly;
     }
+    
+    public static int whichMethodToUse(TeamCommonBean teamCommonBean) {
+        // Assume daily value (0)
+        int rc = 0;
+    
+        // Not daily?
+        if (        teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) ) {
+            return 1;
+            
+        } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.MONTH) || 
+                    teamCommonBean.getTimeFrame().equals(TimeFrame.YEAR) ) {
+            return 2;
+        }
+        
+        return rc;
+    }
+    
 }

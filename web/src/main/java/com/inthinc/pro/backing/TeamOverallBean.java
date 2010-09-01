@@ -17,6 +17,7 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 //@KeepAlive
 public class TeamOverallBean extends BaseBean {
@@ -274,32 +275,31 @@ public class TeamOverallBean extends BaseBean {
     private List<DriverVehicleScoreWrapper> getDriverVehicleScoreList() {
         List<DriverVehicleScoreWrapper> local = teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
         if (local == null) {
-            if ( whichMethodToUse() ) {
-                local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                        teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
-            
-            } else {
-                local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                        teamCommonBean.getTimeFrame().getAggregationDuration());
+            // Not there, grab it
+            //  0: day value, start/end day the same
+            //  1: week value, calculate start and add seven
+            //  2: month or year, use duration identifier
+            switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
+                case 0:
+                    local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart());
+                    break;
+                case 1:
+                    local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+                    break;
+                case 2:
+                    local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                                teamCommonBean.getTimeFrame().getAggregationDuration());
+                    break;
             }
             
             teamCommonBean.getCachedResults().put(teamCommonBean.getTimeFrame().name(), local);
-
 
         }
         return local;
     }
     
-    private boolean whichMethodToUse() {      
-        
-        if (    this.teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) ||
-                this.teamCommonBean.getTimeFrame().equals(TimeFrame.MONTH) ||
-                this.teamCommonBean.getTimeFrame().equals(TimeFrame.YEAR) ) {
-            return false;
-        }
-    
-        return true;
-    }
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
     }

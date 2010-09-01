@@ -30,6 +30,8 @@ public interface GroupReportDAO {
     List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime startTime, DateTime endTime);
 
     List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval);
+    
+    List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, DateTime day);
 
     List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration);
 
