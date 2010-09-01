@@ -368,9 +368,6 @@
   <void property="color"> 
    <string>Red</string> 
   </void> 
-  <void property="costPerHour"> 
-   <object idref="Integer0"/> 
-  </void> 
   <void property="groupID"> 
    <int>2210</int> 
   </void> 
@@ -505,9 +502,6 @@
   <void property="color"> 
    <string>Red</string> 
   </void> 
-  <void property="costPerHour"> 
-   <object idref="Integer0"/> 
-  </void> 
   <void property="groupID"> 
    <int>2211</int> 
   </void> 
@@ -639,9 +633,6 @@
   </void> 
   <void property="color"> 
    <string>Red</string> 
-  </void> 
-  <void property="costPerHour"> 
-   <object idref="Integer0"/> 
   </void> 
   <void property="groupID"> 
    <int>2212</int> 
