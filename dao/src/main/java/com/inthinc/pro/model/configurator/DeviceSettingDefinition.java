@@ -36,10 +36,6 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     }
     public void setSettingID(Integer settingID) {
         this.settingID = settingID;
-//        if (settingID.intValue()== 85){
-//        	regex = Pattern.compile("([0-9]|[1-2][0-9]|30) ([0-9]|[1-2][0-9]|3[0-5]) ([0-9]|[1-3][0-9]|40) ([0-9]|[1-3][0-9]|4[0-5]) ([0-9]|[1-4][0-9]|50) ([5-9]|[1-4][0-9]|5[0-5]) ([1-5][0-9]|60) (1[5-9]|[2-5][0-9]|6[0-5]) ([2-6][0-9]|70) (2[5-9]|[3-6][0-9]|7[0-5]) ([3-7][0-9]|80) (3[5-9]|[4-7][0-9]|8[0-5]) ([4-8][0-9]|90) (4[5-9]|[5-8][0-9]|9[0-5]) ([5-9][0-9]|100)");
-//    		validationMode = new RegexValidationMode();
-//        }
     }
     public String getDescription() {
         return description;
@@ -157,25 +153,6 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
 
             return getVarType().validateValue(getMin(), getMax(), value);
         }
-    }
-    protected class VariableSpeedLimitsValidationMode implements ValidationMode{
-
-		@Override
-		public boolean validate(String value) {
-			
-            if (value == null) return true;
-            
-			String[] speedLimits = value.split(" ");
-			if(speedLimits.length != 15) return false;
-			int mph = 5;
-			for (String speedLimit : speedLimits){
-				
-				if (!VarType.VTINTEGER.checkType(speedLimit)) return false;
-				if (!VarType.VTINTEGER.validateValue(""+Math.max(0, mph-25), ""+(mph+25), speedLimit)) return false;
-				mph+=5;
-			}
-			return true;
-		}
     }
     protected class RegexValidationMode implements ValidationMode{
 
