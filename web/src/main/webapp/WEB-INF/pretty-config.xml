@@ -461,7 +461,7 @@
     </url-mapping>  
     <url-mapping id="hosReports">
         <pattern>/app/hosReports</pattern>
-        <view-id>/secured/hos/hos.faces</view-id>
+        <view-id>/secured/hos/hosReports.faces</view-id>
     </url-mapping>  
 
 </pretty-config>

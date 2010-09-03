@@ -97,8 +97,9 @@ public class JasperReportBuilder
             if (reportCriteria.getReport().getResourceBundle() != null)
                 reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale, reportCriteria.getReport().getResourceBundle()));
             else reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale));
+            
+            reportCriteria.getPramMap().put("SUBREPORT_URL", ReportUtils.getSubReportURL(reportCriteria.getReport().getSubDirectory()));
 
-            reportCriteria.getPramMap().put("SUBREPORT_DIR", ReportUtils.getSubReportDir(reportCriteria.getReport().getSubDirectory()));
             
             // Lets break up the report if the recordsPerReport is set
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset() != null? reportCriteria.getMainDataset() : Collections.EMPTY_LIST);

@@ -120,14 +120,14 @@ public class PaginationTest {
 
 	    		GroupData team = itData.teamGroupData.get(teamIdx);
 	    		Integer eventCount = eventDAO.getEventCount(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), null);
-	    		assertEquals("Unexpected event count for team " + teamIdx + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], eventCount);
+	    		assertEquals("Unexpected event count for team " + team.group.getName() + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], eventCount);
 
 	    		// get all
 	    		PageParams pageParams = new PageParams();
 	    		pageParams.setStartRow(0);
 	    		pageParams.setEndRow(eventCount-1);
 	    		List<Event> eventList = eventDAO.getEventPage(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, EventMapper.getEventTypesInCategory(category), pageParams);
-	    		assertEquals("Unexpected event list count for team " + teamIdx + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
+	    		assertEquals("Unexpected event list count for team " + team.group.getName() + " " + " category " + category, EXPECTED_EVENT_COUNTS.get(category)[teamIdx], Integer.valueOf(eventList.size()));
 	    		
 	    		// check some of the field values
 	    		for (Event event : eventList) {

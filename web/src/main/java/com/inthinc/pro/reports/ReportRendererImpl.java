@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -75,12 +76,32 @@ public class ReportRendererImpl implements ReportRenderer
         
     }
     
+    @Override
+    public String exportReportToString(List<ReportCriteria> reportCriteriaList, FormatType formatType) {
+        
+        Report report = reportCreator.getReport(reportCriteriaList);
+        OutputStream out = null;
+        try {
+              out = new ByteArrayOutputStream();
+              report.exportReportToStream(formatType, out);
+              out.flush();
+              out.close();
+              return out.toString();
+        } catch (IOException e) {
+              // TODO Auto-generated catch block
+//              e.printStackTrace();
+        }
+        
+        return null;
+
+    }
+    
     private void exportToHTML(Report report,FacesContext facesContext)
     {
         HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
         if (report != null)
         {
-            response.setContentType(FormatType.PDF.getContentType());
+            response.setContentType(FormatType.HTML.getContentType());
             response.addHeader("Content-Disposition", "attachment; filename=\"" + FILE_NAME + ".html\"");
 
             OutputStream out = null;

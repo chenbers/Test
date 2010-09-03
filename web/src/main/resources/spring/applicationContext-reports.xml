@@ -11,6 +11,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   </bean>
 
   <bean id="reportCriteriaService" class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
+    <property name="accountDAO" ref="accountDAO" />
     <property name="groupDAO" ref="groupDAO" />
     <property name="scoreDAO" ref="scoreDAO" />
     <property name="mpgDAO" ref="mpgDAO" />

@@ -89,11 +89,11 @@ public class ReportUtils
         return img;
     }
     
-    public static Object getSubReportDir(String subDirectory) {
+    public static Object getSubReportURL(String subDirectory) {
         
         String path = PACKAGE_PATH + (subDirectory == null ? "" : (subDirectory + "/"));
         URL url = ReportUtils.class.getClassLoader().getResource(path);
-        return url.getPath();
+        return url;
         
     }
 

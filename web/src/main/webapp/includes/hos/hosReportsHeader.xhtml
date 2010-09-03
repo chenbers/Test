@@ -1,0 +1,138 @@
+<ui:composition 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+	<c:set var="context" value="hosReports"/>		
+         	
+	<a4j:form id="#{context}_form">
+        <ul id="rpt_nav">
+		<li class="l select">
+			<table border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td>
+						<h:outputText value="#{messages.hosReports_report}"/>
+					</td>
+					<td>
+					<h:selectOneMenu id="#{context}-report" value="#{hosReportsBean.selected}" >
+						<f:selectItems value="#{hosReportsBean.reportGroups}"/> 
+						<a4j:support event="onchange" reRender="#{context}_paramsPanel" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			</table>
+		</li>		
+		<li class="l">
+			<ui:include src="/includes/hos/reportRenderOptions.xhtml">	
+				<ui:param name="context" value="#{context}" />
+				<ui:param name="bean" value="#{hosReportsBean}" />
+				<ui:param name="reRender" value="#{context}_viewPanel" />
+			</ui:include>
+		</li>
+        <li class="r text">
+             <a4j:status 
+				id="#{context}_status" for="#{context}_viewRegion">
+     				<f:facet name="start">
+     					<h:outputText>
+     						<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+     					</h:outputText>
+     				</f:facet>
+		   </a4j:status>
+         </li>
+         </ul>
+        <div class="spacer"></div>
+         <a4j:outputPanel  id="#{context}_paramsPanel">
+		 <a4j:region id="#{context}_paramsRegion">
+         	<ul id="grid_nav" style="margin: 0;">
+				<ui:repeat value="#{hosReportsBean.selectedCriteria}" var="criteria">
+				<h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
+					<li class="l">   
+		   			<table border="0" cellspacing="0" cellpadding="4">
+						<tr>
+		   					<td>								
+		   						<h:outputText value="#{messages.hosReports_dateRange} " />
+							</td>
+		   					<td>            									
+		   						<rich:calendar id="startCalendar" inputSize="10" value="#{hosReportsBean.params.startDate}" 
+		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}"/>
+		   					</td>
+		   					<td>
+		   						<rich:calendar id="endCalendar" inputSize="10" value="#{hosReportsBean.params.endDate}" 
+		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}"/>
+							</td>
+						</tr>
+						<!-- 
+						<tr>
+							<td>
+							  <div align="left" style="width: 100%"> 
+								<h:outputText id="dateError"  style="float:left;color:#c44d34" value="#{hosReportsBean.params.badDates}"/>
+							  </div>
+			  				</td>
+						</tr>
+						 -->
+					</table>
+		  		  </li>
+    			</h:outputText>
+         		</ui:repeat>
+				<h:outputText id="groupInput" rendered="#{hosReportsBean.selectedEntityType eq 'ENTITY_GROUP'}">
+				<li>
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.hosReports_group}"/>
+						</td>
+						<td>
+							<a4j:outputPanel id="groupSelect">
+							<h:selectOneMenu id="#{context}-groupParam" value="#{hosReportsBean.params.groupID}" style="width:200px;">
+								<f:selectItems value="#{hosReportsBean.groups}"/>
+							</h:selectOneMenu>
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+  					 					<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-groupParam" />
+							</ui:include>
+							</a4j:outputPanel>
+							
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
+				<h:outputText id="driverInput" rendered="#{hosReportsBean.selectedEntityType eq 'ENTITY_DRIVER'}">
+				<li>
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.hosReports_driver}"/>
+						</td>
+						<td>
+							<a4j:outputPanel id="driverSelect">
+							<h:selectOneMenu id="#{context}-driverParam" value="#{hosReportsBean.params.driverID}" style="width:200px;">
+								<f:selectItems value="#{hosReportsBean.drivers}"/>
+							</h:selectOneMenu>
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+  					 					<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-driverParam" />
+							</ui:include>
+							</a4j:outputPanel>
+							
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
+           </ul>
+          </a4j:region>
+          </a4j:outputPanel>
+        </a4j:form>
+        <div class="spacer"></div>
+
+        <a4j:outputPanel  id="#{context}_viewPanel">
+		 <a4j:region  id="#{context}_viewRegion">
+			 <h:outputText value="#{hosReportsBean.html}" escape="false" style="background:white;"/>
+		 </a4j:region>
+	</a4j:outputPanel>
+</ui:composition>
+
