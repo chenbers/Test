@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.util.MiscUtil;
 import com.inthinc.pro.model.User;
 
 public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements UserDAO, FindByKey<User>
@@ -50,7 +52,7 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements 
         
         try
         {
-            return getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(groupID), User.class);
+            return MiscUtil.removeInThinc(getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(groupID), User.class));
         }
         catch (EmptyResultSetException e)
         {

@@ -266,14 +266,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             final Person person = i.next();
             if ((person.getDriver() == null) && (getGroupHierarchy().getGroup(person.getUser().getGroupID()) == null)) {
                 i.remove();
-                
-            // Don't let the inthinc support user be shown (so they can't get deleted, modified, etc.)               
-            } else if ( person.getFirst()  != null && person.getFirst().equalsIgnoreCase("first") &&
-                        person.getLast()   != null && person.getLast().equalsIgnoreCase("last") &&
-                        person.getMiddle() != null && person.getMiddle().equalsIgnoreCase("m") &&
-                        person.getSuffix() != null && person.getSuffix().equalsIgnoreCase("jr") ) {
-               i.remove();             
-            }
+            }   
         }
         // convert the people to PersonViews
         final List<PersonView> items = new ArrayList<PersonView>();

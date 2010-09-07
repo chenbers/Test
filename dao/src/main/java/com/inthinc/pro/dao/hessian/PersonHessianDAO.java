@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.util.MiscUtil;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Person;
@@ -172,7 +173,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         List<Person> returnPersonList = new ArrayList<Person>();
         try
         {
-            List<User> userList = getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(userGroupID), User.class);
+            List<User> userList = MiscUtil.removeInThinc(getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(userGroupID), User.class));
             for (User user : userList)
             {
                 user.getPerson().setUser(user);
