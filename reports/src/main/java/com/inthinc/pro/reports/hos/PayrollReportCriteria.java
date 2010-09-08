@@ -2,8 +2,13 @@ package com.inthinc.pro.reports.hos;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -13,6 +18,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSRecAdjusted;
+import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -23,12 +29,17 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
+import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 import com.inthinc.pro.reports.hos.model.PayrollData;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
+import com.inthinc.pro.reports.tabular.Result;
+import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
+import com.inthinc.pro.reports.util.MessageUtil;
 
-public class PayrollReportCriteria extends ReportCriteria {
+public class PayrollReportCriteria extends ReportCriteria implements Tabular {
 
     protected DateTimeFormatter dateTimeFormatter; 
     
@@ -116,5 +127,86 @@ public class PayrollReportCriteria extends ReportCriteria {
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
     }
+    
+    @Override
+    public List<String> getColumnHeaders() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.PAYROLL_DETAIL.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<String> columnHeaders = new ArrayList<String>();
+        for (int i = 1; i <= 8; i++)
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
+        
+        return columnHeaders;
+    }
+
+
+    @Override
+    public List<List<Result>> getTableRows() {
+        List<PayrollData> dataList = (List<PayrollData>)getMainDataset();
+        if (dataList == null || dataList.size()==0)
+            return null;
+        
+        Map<String, Map<Date,Integer[]>> dataMap = new TreeMap<String, Map<Date,Integer[]>>();
+        
+        for (PayrollData data : dataList) {
+            Map<Date,Integer[]> driverData = dataMap.get(data.getDriverName());
+            if (driverData == null) {
+                driverData = new TreeMap<Date, Integer[]>();
+                dataMap.put(data.getDriverName(), driverData);
+            }
+            Integer[] timeData = driverData.get(data.getDay());
+            if (timeData == null) {
+                timeData = new Integer[5];
+                for (int i = 0; i < 5; i++)
+                        timeData[i] = 0;
+                
+                driverData.put(data.getDay(),timeData);
+            }
+                
+            if (data.getStatus()== HOSStatus.OFF_DUTY || data.getStatus() == HOSStatus.OFF_DUTY_OCCUPANT) {
+                timeData[0] = timeData[0]+data.getTotalAdjustedMinutes();
+            }
+            else if (data.getStatus()== HOSStatus.OFF_DUTY_AT_WELL) {
+                timeData[1] = timeData[1]+data.getTotalAdjustedMinutes();
+            }
+            else if (data.getStatus()== HOSStatus.SLEEPER) {
+                timeData[2] = timeData[2]+data.getTotalAdjustedMinutes();
+            }
+            else if (data.getStatus()== HOSStatus.DRIVING) {
+                timeData[3] = timeData[3]+data.getTotalAdjustedMinutes();
+            }
+            else if (data.getStatus()== HOSStatus.ON_DUTY || data.getStatus() == HOSStatus.ON_DUTY_OCCUPANT) {
+                timeData[4] = timeData[4]+data.getTotalAdjustedMinutes();
+            }
+            
+        }        
+        
+        List<List<Result>>records = new ArrayList<List<Result>>();
+        for (Entry<String, Map<Date,Integer[]>> driverEntry : dataMap.entrySet()) {
+            for (Entry<Date, Integer[]> dayEntry : driverEntry.getValue().entrySet()) {
+                List<Result> row = new ArrayList<Result>();
+                row.add(new Result(driverEntry.getKey(), driverEntry.getKey()));
+                row.add(new Result(dateTimeFormatter.print(new DateTime(dayEntry.getKey())), dayEntry.getKey()));
+                long sum = 0;
+                for (int i = 0; i < 5; i++) {
+                    row.add(new Result(Converter.convertMinutesRound15(dayEntry.getValue()[i]), dayEntry.getValue()[i]));
+                    if (i != 0)
+                        sum += dayEntry.getValue()[i];
+                }
+                row.add(new Result(Converter.convertMinutesRound15(sum), sum));
+                records.add(row);
+            }
+        }
+
+        return records;
+        
+        
+    }
+
+
     
 }

@@ -36,17 +36,17 @@ public enum ReportType
     
     // HOS
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),
-    HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hosViolations.jrxml", "hosViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations"),
+    HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hosViolations.jrxml", "hosViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations", null, true),
     NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","nonDOTViolations.jrxml", "nonDOTViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
     DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","drivingTimeViolations.jrxml", "drivingTimeViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
-    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "HOS_VIOLATIONS_DETAIL"),
+    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "HOS_VIOLATIONS_DETAIL", true),
     NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "NON_DOT_VIOLATIONS_DETAIL"),
     DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL"),
-    HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report","driverDotLog.jrxml", "driverDotLogRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.driverDotLog"),
-    DOT_HOURS_REMAINING("DOT Time Remaining","dotHoursRemaining.jrxml", "dotHoursRemainingRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.dotHoursRemaining"),
-    HOS_ZERO_MILES("HOS Zero Miles","hosZeroMiles.jrxml", "hosZeroMilesRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosZeroMiles"),
-    PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollDetail"),
-    PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollSignOff");
+    HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report","driverDotLog.jrxml", "driverDotLogRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.driverDotLog", null, true),
+    DOT_HOURS_REMAINING("DOT Time Remaining","dotHoursRemaining.jrxml", "dotHoursRemainingRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.dotHoursRemaining", null, true),
+    HOS_ZERO_MILES("HOS Zero Miles","hosZeroMiles.jrxml", "hosZeroMilesRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosZeroMiles", null, true),
+    PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollDetail", null, true),
+    PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.payrollSignOff", null, true);
     
     private String prettyTemplate;
     private String rawTemplate;
@@ -54,6 +54,7 @@ public enum ReportType
     private String subDirectory;
     private String resourceBundle;
     private String name;
+    private boolean tabularSupport;
     
     private ReportType(String label,String prettyTemplate){
         this.label = label;
@@ -78,6 +79,10 @@ public enum ReportType
     private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory, String resourceBundle, String name){
         this(label, prettyTemplate, rawTemplate, subDirectory, resourceBundle);
         this.name = name;
+    }
+    private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory, String resourceBundle, String name, boolean tabularSupport){
+        this(label, prettyTemplate, rawTemplate, subDirectory, resourceBundle, name);
+        this.tabularSupport = tabularSupport;
     }
     
     private static final Map<String, ReportType> lookup = new HashMap<String, ReportType>();
@@ -144,9 +149,12 @@ public enum ReportType
         return sb.toString();
     }
 
-    
-    
-    
+    public boolean isTabularSupport() {
+        return tabularSupport;
+    }
 
-  
+    public void setTabularSupport(boolean tabularSupport) {
+        this.tabularSupport = tabularSupport;
+    }
+
 }

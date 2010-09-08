@@ -8,8 +8,19 @@
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
+	<script type="text/javascript">
+	//<![CDATA[
+	
+		function renderHTML(htmlData){
+			if(htmlData){
+				document.getElementById("hosReports_html").innerHTML =htmlData; 
+			} 
+		}
+	//]]>
+	</script>
 	<c:set var="context" value="hosReports"/>		
          	
+	 <a4j:region  id="#{context}_viewRegion">
 	<a4j:form id="#{context}_form">
         <ul id="rpt_nav">
 		<li class="l select">
@@ -21,19 +32,46 @@
 					<td>
 					<h:selectOneMenu id="#{context}-report" value="#{hosReportsBean.selected}" >
 						<f:selectItems value="#{hosReportsBean.reportGroups}"/> 
-						<a4j:support event="onchange" reRender="#{context}_paramsPanel" />
+						<a4j:support event="onchange" reRender="#{context}_paramsPanel,#{context}_options" />
 					</h:selectOneMenu>
 				</td>
 			</tr>
 			</table>
 		</li>		
-		<li class="l">
-			<ui:include src="/includes/hos/reportRenderOptions.xhtml">	
-				<ui:param name="context" value="#{context}" />
-				<ui:param name="bean" value="#{hosReportsBean}" />
-				<ui:param name="reRender" value="#{context}_viewPanel" />
-			</ui:include>
+		<a4j:outputPanel id="#{context}_options">
+		<li class="l" style="margin: 6px;">
+			<span title="#{messages.hosReports_viewTable}">
+				<a4j:commandLink id="#{context}_tableIcon" reRender="#{context}_tableForm,#{context}_viewPanel" oncomplete="renderHTML('')" action="#{hosReportsBean.tabular}"
+								rendered="#{hosReportsBean.tabularSupport and hosReportsBean.selected != null}" styleClass="viewTable"> 
+    					<h:outputText value="#{messages.hosReports_viewTableLink}"/>
+				</a4j:commandLink>    
+			</span>
+			<span title="#{messages.hosReports_renderHTML}">
+				<a4j:commandLink id="#{context}_htmlIcon" oncomplete="renderHTML('#{hosReportsBean.html}')"	action="#{hosReportsBean.htmlReport}"
+								rendered="#{hosReportsBean.selected != null}" styleClass="viewHTML"> 
+    					<h:outputText value="#{messages.hosReports_renderHTMLLink}"/>
+				</a4j:commandLink>    
+			</span>	
+			<span title="#{messages.hosReports_exportPDF}">
+				<h:commandLink id="#{context}_pdfIcon" action="#{hosReportsBean.pdf}"  ajaxSingle="true" rendered="#{hosReportsBean.selected != null}"
+							styleClass="exportPDF"> 
+    					<h:outputText value="#{messages.hosReports_exportPDFLink}"/>
+				</h:commandLink>    
+			</span>	
+			<span title="#{messages.hosReports_exportExcel}">
+				<h:commandLink id="#{context}_excelIcon" action="#{hosReportsBean.excel}"  ajaxSingle="true" rendered="#{hosReportsBean.selected != null}" 
+							styleClass="exportExcel"> 
+    					<h:outputText value="#{messages.hosReports_exportExcelLink}"/>
+				</h:commandLink>    
+			</span>	
+			<span title="#{messages.hosReports_email}">
+				<h:commandLink id="#{context}_emailIcon" ajaxSingle="true" onclick="Richfaces.showModalPanel('#{context}_reportEmailModal');return false;"
+					rendered="#{hosReportsBean.selected != null}" styleClass="email"> 
+    					<h:outputText value="#{messages.hosReports_emailLink}"/>
+				</h:commandLink>    
+			</span>	
 		</li>
+		</a4j:outputPanel>
         <li class="r text">
              <a4j:status 
 				id="#{context}_status" for="#{context}_viewRegion">
@@ -80,7 +118,7 @@
     			</h:outputText>
          		</ui:repeat>
 				<h:outputText id="groupInput" rendered="#{hosReportsBean.selectedEntityType eq 'ENTITY_GROUP'}">
-				<li>
+				<li  class="l">
 		   			<table border="0" cellspacing="0" cellpadding="4">
 					<tr>
 						<td>
@@ -102,7 +140,7 @@
 				</li>
 				</h:outputText>
 				<h:outputText id="driverInput" rendered="#{hosReportsBean.selectedEntityType eq 'ENTITY_DRIVER'}">
-				<li>
+				<li  class="l">
 		   			<table border="0" cellspacing="0" cellpadding="4">
 					<tr>
 						<td>
@@ -127,12 +165,38 @@
           </a4j:region>
           </a4j:outputPanel>
         </a4j:form>
-        <div class="spacer"></div>
+	</a4j:region>
+    <div class="spacer"></div>
 
-        <a4j:outputPanel  id="#{context}_viewPanel">
-		 <a4j:region  id="#{context}_viewRegion">
-			 <h:outputText value="#{hosReportsBean.html}" escape="false" style="background:white;"/>
-		 </a4j:region>
+    <a4j:outputPanel  id="#{context}_viewPanel">
+		<h:panelGroup id="#{context}_html" layout="block" >
+		</h:panelGroup>
 	</a4j:outputPanel>
+	
+	<a4j:form id="#{context}_tableForm">
+		<div class="datagrid_panel" style="width:925px; overflow: auto;">
+			<rich:dataTable rows="10" value="#{hosReportsBean.records}" var="record" id="#{context}_viewTable" align="left" width="100%"
+				styleClass="datagrid rptdatagrid"  rowClasses="tableOdd,tableEven" cellspacing="1" 
+				rendered="#{hosReportsBean.viewType eq 'CSV'}">
+	           	<rich:columns value="#{hosReportsBean.columnHeaders}" var="col" index="index" id="column#{index}" 
+	           			sortBy="#{record[index].sort}" sortOrder="#{hosReportsBean.sortOrder[col]}">
+	               	<f:facet name="header">
+						<h:outputText value="#{col}" escape="false" />
+					</f:facet>
+					<h:outputText value="#{record[index].display}" />
+	               </rich:columns>
+			 	<f:facet name="footer">
+				 	<rich:datascroller id="resultScrollBottom" renderIfSinglePage="false"/>
+			 	</f:facet>
+			</rich:dataTable>
+		</div>
+	</a4j:form>	
+	<h:outputText id="#{context}_emailModalPanel">
+            <ui:include src="/includes/emailReportPopup.xhtml">
+                <ui:param name="id" value="#{context}_reportEmailModal" />
+                <ui:param name="reportBean" value="#{hosReportsBean}" />
+     	 		<ui:param name="context" value="#{context}" />
+            </ui:include>
+    </h:outputText>    
 </ui:composition>
 

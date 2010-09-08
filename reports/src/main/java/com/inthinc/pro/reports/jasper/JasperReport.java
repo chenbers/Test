@@ -1,13 +1,17 @@
 package com.inthinc.pro.reports.jasper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
@@ -61,6 +65,9 @@ public class JasperReport implements Report
             try
             {
             switch (formatType) {
+            case CSV:
+                exportToCsvStream(outputStream, jp);
+                break;
             case EXCEL:
                 exportToExcelStream(outputStream,jp);
                 break;
@@ -78,6 +85,7 @@ public class JasperReport implements Report
             logger.error("Jasper Print is null");
         }
     }
+
 
     @Override
     public void exportReportToEmail(String email, FormatType formatType, String noReplyEmailAddress)
@@ -138,7 +146,22 @@ public class JasperReport implements Report
         exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
         exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, Boolean.FALSE);
+        exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, "");
+        exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "");
+        exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, "");
 
+
+        exporter.exportReport();
+    }
+
+    private void exportToCsvStream(OutputStream outputStream, JasperPrint jp) throws JRException {
+        JRCsvExporter  exporter = new JRCsvExporter ();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
+        
+        exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING , "UTF-8");
+        exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, true);
+        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, outputStream);
+        
         exporter.exportReport();
     }
 

@@ -9,6 +9,7 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="REPORT_PRETTY" class="java.lang.String" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="unitID" class="java.lang.String"/>
 	<field name="totalMilesNoDriver" class="java.lang.Double"/>
@@ -17,17 +18,17 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-51" mode="Opaque" x="0" y="0" width="75" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.1.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-51" mode="Opaque" x="75" y="0" width="75" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.2.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.2.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-42" mode="Opaque" x="150" y="0" width="75" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.3.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.3.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

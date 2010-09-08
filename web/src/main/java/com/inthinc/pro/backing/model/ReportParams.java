@@ -11,7 +11,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.util.MessageUtil;
 
-public class ReportParams {
+public class ReportParams implements Cloneable {
     Date startDate;
     Date endDate;
     String badDates;
@@ -22,6 +22,18 @@ public class ReportParams {
     private static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
     private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
     
+    
+    public ReportParams clone() 
+    {
+        try {
+            return (ReportParams)super.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
     public Locale getLocale() {
         return locale;
     }

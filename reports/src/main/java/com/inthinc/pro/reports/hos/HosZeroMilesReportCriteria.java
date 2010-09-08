@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -15,10 +16,16 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
+import com.inthinc.pro.reports.hos.model.Violation;
+import com.inthinc.pro.reports.hos.model.ViolationsDetail;
+import com.inthinc.pro.reports.tabular.Result;
+import com.inthinc.pro.reports.tabular.Tabular;
+import com.inthinc.pro.reports.util.MessageUtil;
 
-public class HosZeroMilesReportCriteria extends ReportCriteria {
+public class HosZeroMilesReportCriteria extends ReportCriteria implements Tabular {
 
     protected DateTimeFormatter dateTimeFormatter;
 
@@ -79,4 +86,46 @@ public class HosZeroMilesReportCriteria extends ReportCriteria {
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
     }
+    
+
+
+    @Override
+    public List<String> getColumnHeaders() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.HOS_ZERO_MILES.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<String> columnHeaders = new ArrayList<String>();
+        columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.1.tabular"));
+        columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.2.tabular"));
+        columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.3.tabular." + (getUseMetric() ? "metric" : "english")));
+        
+        return columnHeaders;
+    }
+
+
+    @Override
+    public List<List<Result>> getTableRows() {
+        List<HosZeroMiles> dataList = (List<HosZeroMiles>)getMainDataset();
+        if (dataList == null)
+            return null;
+        List<List<Result>>records = new ArrayList<List<Result>>();
+        
+        for (HosZeroMiles detail : dataList) {
+            List<Result> row = new ArrayList<Result>();
+            row.add(new Result(detail.getGroupName(), detail.getGroupName()));
+            row.add(new Result(detail.getUnitID(), detail.getUnitID()));
+            String distanceStr = Converter.convertDistance(detail.getTotalMilesNoDriver(), getUseMetric(), getLocale()); 
+            row.add(new Result(distanceStr, detail.getTotalMilesNoDriver()));
+                
+            records.add(row);
+        }
+
+        return records;
+        
+        
+    }
+
 }

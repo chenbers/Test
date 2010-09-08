@@ -1,5 +1,7 @@
 package com.inthinc.pro.reports.hos.model;
 
+import java.util.Date;
+
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 
@@ -17,6 +19,7 @@ public class DriverDOTLog {
     private HOSOrigin origin;
     private Boolean deleted;
     private Integer changedCnt;
+    private Date date;
     
     public DriverDOTLog()
     {
@@ -127,5 +130,11 @@ public class DriverDOTLog {
     }
     public void setStatus(HOSStatus status) {
         this.status = status;
+    }
+    public Date getDate() {
+        return date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

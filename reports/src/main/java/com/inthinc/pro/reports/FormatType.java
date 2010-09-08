@@ -4,7 +4,8 @@ public enum FormatType
 {
     PDF(".pdf","pdf document","application/pdf"),
     EXCEL(".xls","Excel Document","application/xls"),
-    HTML(".html","HTML Document","");
+    HTML(".html","HTML Document",""),
+    CSV(".csv","CSV Document","");
     
     private String suffix;
     private String label;

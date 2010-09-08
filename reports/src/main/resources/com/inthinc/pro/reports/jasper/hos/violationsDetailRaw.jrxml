@@ -9,6 +9,7 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="REPORT_TYPE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="REPORT_PRETTY" class="java.lang.String" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="employeeId" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
@@ -34,131 +35,131 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="0" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.1.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="35" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.2.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.2.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="70" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.3.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.3.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="105" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.4.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="140" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.5.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.5.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="175" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.6.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="210" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.7.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.7.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="245" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL") || $P{REPORT_TYPE}.equals("DRIVING_TIME_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.8.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="280" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL") || $P{REPORT_TYPE}.equals("DRIVING_TIME_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.9.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="315" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL") || $P{REPORT_TYPE}.equals("DRIVING_TIME_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.10.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.10.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="350" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.11.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.11.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="385" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.12.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.12.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="420" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.13.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.13.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="455" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.14.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.14.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="490" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL") || $P{REPORT_TYPE}.equals("DRIVING_TIME_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.15.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.15.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="525" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL") || $P{REPORT_TYPE}.equals("DRIVING_TIME_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.16.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.16.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="560" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL") || $P{REPORT_TYPE}.equals("DRIVING_TIME_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.17.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.17.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="595" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.18.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.18.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="630" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.19.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.19.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-31" mode="Opaque" x="665" y="0" width="35" height="20">
 					<printWhenExpression><![CDATA[Boolean.valueOf($P{REPORT_TYPE}.equals("HOS_VIOLATIONS_DETAIL"))]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.20.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.20.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-31" mode="Opaque" x="700" y="0" width="142" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.21.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.21.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

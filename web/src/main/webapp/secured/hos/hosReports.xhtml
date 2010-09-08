@@ -11,39 +11,95 @@
 
     <ui:define name="scripts">
        <style>
-ul#rpt_nav {
-	height: 20px;
-	list-style: none;
-	padding: 0;
-	margin: 0 10px 0 10px;
-	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
-}
+	       .rptdatagrid th {
+				text-align: center;
+			}
+       
+			ul#rpt_nav {
+				height: 20px;
+				list-style: none;
+				padding: 0;
+				margin: 0 10px 0 10px;
+				font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+			}
+			
+			ul#rpt_nav li {
+				list-style: none;
+				padding: 2px 4px 2px 2px;
+				margin: 0;
+			}
+			
+			ul#rpt_nav li.text {
+				list-style: none;
+				padding: 12px 5px 0 5px;
+				margin: 0;
+			}
+			
+			ul#rpt_nav li.r {
+				float: right;
+			}
+			
+			ul#rpt_nav li.l {
+				float: left;
+			}
+			
+			ul#rpt_nav li.select {
+				list-style: none;
+				padding: 0px 4px 2px 2px;
+				margin: 0;
+			}
+			
+			ul#rpt_nav a {
+				padding: 2px 13px 2px 13px;
+				text-decoration: none;
+				border-bottom: none;
+				color: #000;
+			}
 
-ul#rpt_nav li {
-	list-style: none;
-	padding: 2px 4px 2px 2px;
-	margin: 0;
-}
+			ul#rpt_nav a:hover,ul#rpt_nav a.active,ul#rpt_nav li a:hover,ul#rpt_nav li a:active {
+				color: #000;
+				text-decoration: underline;
+			}
 
-ul#rpt_nav li.text {
-	list-style: none;
-	padding: 12px 5px 0 5px;
-	margin: 0;
-}
-
-ul#rpt_nav li.r {
-	float: right;
-}
-
-ul#rpt_nav li.l {
-	float: left;
-}
-
-ul#rpt_nav li.select {
-	list-style: none;
-	padding: 0px 4px 2px 2px;
-	margin: 0;
-}
+			ul#rpt_nav a.active,ul#rpt_nav li a.active {
+				font-weight: bold;
+			}
+			
+			#rpt_nav li a.viewTable {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_grid.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.viewHTML {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_legend.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.exportPDF {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_pdfSmall.gif) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.exportExcel {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_excel.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.email {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_email.gif) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
 		</style>
 	</ui:define>
 
@@ -62,7 +118,7 @@ ul#rpt_nav li.select {
 
 		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
 		  <tr>
-		    <td colspan="3" valign="top">
+		    <td valign="top">
 				<div class="panel_w">
     				<div class="panel_content">
 	   					<ui:include src="/includes/hos/hosReportsHeader.xhtml">	

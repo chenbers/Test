@@ -32,7 +32,7 @@ public class ReportUtils
         InputStream in = null;
         try
         {
-            if(formatType != null && formatType.equals(FormatType.EXCEL) && reportType.getRawTemplate() != null)
+            if(formatType != null && (formatType.equals(FormatType.EXCEL) || formatType.equals(FormatType.CSV)) && reportType.getRawTemplate() != null)
                 in = loadFile(reportType.getRawJasper());
             else
                 in = loadFile(reportType.getPrettyJasper());

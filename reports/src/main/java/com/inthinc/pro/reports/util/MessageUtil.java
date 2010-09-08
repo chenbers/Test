@@ -28,7 +28,7 @@ public class MessageUtil
     }
     
 
-    private static String getBundleString(ResourceBundle bundle, String key)
+    public static String getBundleString(ResourceBundle bundle, String key)
     {
         try
         {

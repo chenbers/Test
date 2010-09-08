@@ -34,9 +34,11 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
+import com.inthinc.pro.reports.tabular.Result;
+import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
-public class DotHoursRemainingReportCriteria extends ReportCriteria {
+public class DotHoursRemainingReportCriteria extends ReportCriteria implements Tabular {
 
     private DriverDAO driverDAO;
     private GroupDAO groupDAO;
@@ -152,6 +154,18 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria {
 
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
+    }
+
+    @Override
+    public List<String> getColumnHeaders() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<List<Result>> getTableRows() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 

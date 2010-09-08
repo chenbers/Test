@@ -8,6 +8,7 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="REPORT_PRETTY" class="java.lang.String" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
 	<field name="driverId" class="java.lang.Integer"/>
@@ -21,47 +22,47 @@
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-51" mode="Opaque" x="0" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.1.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-51" mode="Opaque" x="90" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.2.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.2.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-42" mode="Opaque" x="180" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.3.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.3.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-53" mode="Opaque" x="270" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.4.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-77" mode="Opaque" x="360" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.5.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.5.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.6.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-77" mode="Opaque" x="540" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.7.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.7.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-77" mode="Opaque" x="630" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.8.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-77" mode="Opaque" x="720" y="0" width="122" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.9.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
@@ -28,9 +29,12 @@ import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
+import com.inthinc.pro.reports.tabular.Result;
+import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
+import com.inthinc.pro.reports.util.MessageUtil;
 
-public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria {
+public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria implements Tabular {
 
     
     
@@ -139,6 +143,73 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
     protected void updateSummaryDriverCount(ViolationsSummary summary, Driver driver) {
         if (driver.getDot() != null && driver.getDriverDOTType() != RuleSetType.NON_DOT)
             summary.setDriverCnt(summary.getDriverCnt() + 1);
+        
+    }
+
+    @Override
+    public List<String> getColumnHeaders() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<String> columnHeaders = new ArrayList<String>();
+        for (int i = 1; i <=16; i++)
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".rawPRETTY"));
+//        column.1.rawPRETTY=Group<br/>Name
+//        column.2.rawPRETTY=Driving<br/>Rule<br/>0-14 min<br/>over
+//        column.3.rawPRETTY=Driving<br/>Rule<br/>15-29 min<br/>over
+//        column.4.rawPRETTY=Driving<br/>Rule<br/>30+ min<br/>over
+//        column.5.rawPRETTY=On Duty<br/>Rule<br/>0-14 min<br/>over
+//        column.6.rawPRETTY=On Duty<br/>Rule<br/>15-29 min<br/>over
+//        column.7.rawPRETTY=On Duty<br/>Rule<br/>30+ min<br/>over
+//        column.8.rawPRETTY=Cumulative<br/>Rule<br/>0-14 min<br/>over
+//        column.9.rawPRETTY=Cumulative<br/>Rule<br/>15-29 min<br/>over
+//        column.10.rawPRETTY=Cumulative<br/>Rule<br/>30+ min<br/>over
+//        column.11.rawPRETTY=Off Duty<br/>Rule<br/>0-14 min<br/>over
+//        column.12.rawPRETTY=Off Duty<br/>Rule<br/>15-29 min<br/>over
+//        column.13.rawPRETTY=Off Duty<br/>Rule<br/>30+ min<br/>over
+//        column.14.rawPRETTY=Total<br/>Drivers
+//        column.15.rawPRETTY=Total<br/>Miles
+//        column.16.rawPRETTY=Total<br/>Miles<br/>No<br/>Driver
+        
+        return columnHeaders;
+    }
+
+    @Override
+    public List<List<Result>> getTableRows() {
+        
+        List<HosViolationsSummary> dataList = (List<HosViolationsSummary>)getMainDataset();
+        if (dataList == null)
+            return null;
+        
+        List<List<Result>>records = new ArrayList<List<Result>>();
+        
+        for (HosViolationsSummary summary : dataList) {
+            List<Result> row = new ArrayList<Result>();
+            row.add(new Result(summary.getGroupName(), summary.getGroupName()));
+            row.add(new Result(summary.getDriving_1().toString(), summary.getDriving_1()));
+            row.add(new Result(summary.getDriving_2().toString(), summary.getDriving_2()));
+            row.add(new Result(summary.getDriving_3().toString(), summary.getDriving_3()));
+            row.add(new Result(summary.getOnDuty_1().toString(), summary.getOnDuty_1()));
+            row.add(new Result(summary.getOnDuty_2().toString(), summary.getOnDuty_2()));
+            row.add(new Result(summary.getOnDuty_3().toString(), summary.getOnDuty_3()));
+            row.add(new Result(summary.getCumulative_1().toString(), summary.getCumulative_1()));
+            row.add(new Result(summary.getCumulative_2().toString(), summary.getCumulative_2()));
+            row.add(new Result(summary.getCumulative_3().toString(), summary.getCumulative_3()));
+            row.add(new Result(summary.getOffDuty_1().toString(), summary.getOffDuty_1()));
+            row.add(new Result(summary.getOffDuty_2().toString(), summary.getOffDuty_2()));
+            row.add(new Result(summary.getOffDuty_3().toString(), summary.getOffDuty_3()));
+            row.add(new Result(summary.getDriverCnt().toString(), summary.getDriverCnt()));
+            row.add(new Result(summary.getTotalMiles().toString(), summary.getTotalMiles()));
+            row.add(new Result(summary.getTotalMilesNoDriver().toString(), summary.getTotalMilesNoDriver()));
+            
+            records.add(row);
+        }
+
+        return records;
+        
         
     }
 

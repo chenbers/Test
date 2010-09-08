@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import org.joda.time.DateTime;
@@ -21,10 +22,16 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
+import com.inthinc.pro.reports.hos.model.Violation;
+import com.inthinc.pro.reports.hos.model.ViolationsDetail;
+import com.inthinc.pro.reports.tabular.Result;
+import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
+import com.inthinc.pro.reports.util.MessageUtil;
 
-public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
+public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Tabular {
 
 
     private HOSDAO hosDAO;
@@ -96,6 +103,7 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
                 log.setVehicleName(hosRecord.getVehicleName());
                 log.setChangedCnt(hosRecord.getChangedCnt());
                 log.setDeleted(hosRecord.getDeleted());
+                log.setDate(hosRecord.getLogTime());
                 driverDOTLogList.add(log);
             }
         }
@@ -116,6 +124,50 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria {
 
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
+    }
+
+    @Override
+    public List<String> getColumnHeaders() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<String> columnHeaders = new ArrayList<String>();
+        for (int i = 1; i <= 8; i++)
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
+        
+        return columnHeaders;
+    }
+
+    @Override
+    public List<List<Result>> getTableRows() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        List<DriverDOTLog> dataList = (List<DriverDOTLog>)getMainDataset();
+        if (dataList == null)
+            return null;
+        
+        List<List<Result>>records = new ArrayList<List<Result>>();
+        
+        for (DriverDOTLog detail : dataList) {
+            List<Result> row = new ArrayList<Result>();
+            row.add(new Result(detail.getTimeStr(), detail.getDate()));
+            row.add(new Result(detail.getDriverName(), detail.getDriverName()));
+            row.add(new Result(detail.getVehicleName(), detail.getVehicleName()));
+            row.add(new Result(detail.getTrailer(), detail.getTrailer()));
+            row.add(new Result(detail.getService(), detail.getService()));
+            row.add(new Result(detail.getLocation(), detail.getLocation()));
+            String statusStr = MessageUtil.getBundleString(resourceBundle, "status."+detail.getStatus().getCode()); 
+            row.add(new Result(statusStr, statusStr));
+            row.add(new Result(detail.getEditUserName(), detail.getEditUserName()));
+            records.add(row);
+        }
+        return records;
     }
 
 }

@@ -1,9 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,22 +17,25 @@ import org.ajax4jsf.model.KeepAlive;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.ReportParams;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.reports.tabular.Result;
+import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.util.MessageUtil;
 
 @KeepAlive
@@ -46,15 +45,35 @@ public class HosReportsBean extends BaseBean {
     private Map<Integer, ReportGroup> reportGroupMap;
     private Integer selected;
     private ReportParams params;
+    private ReportParams previousParams;
+    
+    private String emailAddress;
     private static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
     private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
 
-    DriverDAO driverDAO;
-    ReportCriteriaService reportCriteriaService;
-    ReportRenderer reportRenderer;
-    String html;
-    List<ReportCriteria> reportCriteriaList;
+    private DriverDAO driverDAO;
+    private AccountDAO accountDAO;
+    private ReportCriteriaService reportCriteriaService;
+    private ReportRenderer reportRenderer;
+    private String html;
+    private List<ReportCriteria> reportCriteriaList;
+
+    private String viewType;
+
+    private List<String> columnHeaders;
+    private List<List<Result>> records;
+    private int recordCount;
+    private Map<String, Object> sortOrder;
+
     
+    public ReportParams getPreviousParams() {
+        return previousParams;
+    }
+
+    public void setPreviousParams(ReportParams previousParams) {
+        this.previousParams = previousParams;
+    }
+
     public List<ReportCriteria> getReportCriteriaList() {
         return reportCriteriaList;
     }
@@ -94,20 +113,55 @@ public class HosReportsBean extends BaseBean {
         params.setEndDate(new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(1).toDate());
         params.setLocale(getUser().getPerson().getLocale());
         params.setGroupID(getUser().getGroupID());
+        
+        previousParams = params.clone();
+        
+        viewType = "";
     }
 
-    public void html()
+    public void htmlReport()
     {
         genReportCriteria(); 
         setHtml("");
         if (reportCriteriaList == null)
             return;
         
+        viewType = FormatType.HTML.name();
+        
         String output = reportRenderer.exportReportToString(reportCriteriaList, FormatType.HTML);
-        if (output != null)
+        if (output != null) {
+            System.out.println("HTML length:" + output.length());
+            
             setHtml(output);
+        }
       
     }
+
+    public void tabular()
+    {
+        genReportCriteria(); 
+        if (reportCriteriaList == null || !getTabularSupport())
+            return;
+        
+        ReportCriteria criteria = reportCriteriaList.get(0);
+        if (!(criteria instanceof Tabular))
+            return;
+        
+        Tabular tabular = (Tabular)criteria;
+        columnHeaders = tabular.getColumnHeaders();
+        records = tabular.getTableRows();
+        recordCount = (records == null) ? 0 : records.size();
+        
+        
+        sortOrder = new HashMap<String, Object>();
+        if (columnHeaders != null) {
+            for (String col : columnHeaders)
+            sortOrder.put(col, Ordering.UNSORTED);
+        }
+        viewType = FormatType.CSV.name();
+    }
+
+    
     public void pdf()
     {
         genReportCriteria();
@@ -117,6 +171,48 @@ public class HosReportsBean extends BaseBean {
         reportRenderer.exportReportToPDF(reportCriteriaList, getFacesContext());
         
     }
+    public void excel()
+    {
+        genReportCriteria();
+        if (reportCriteriaList == null)
+            return;
+        
+        reportRenderer.exportReportToExcel(reportCriteriaList, getFacesContext());
+    }
+    
+    public void emailReport()
+    {
+        genReportCriteria();
+        if (reportCriteriaList == null)
+            return;
+        
+        reportRenderer.exportReportToEmail(reportCriteriaList, getEmailAddress(), getNoReplyEmailAddress());
+        
+        
+    }
+    public String getEmailAddress() {
+        if (emailAddress == null) {
+            emailAddress = getProUser().getUser().getPerson().getPriEmail();
+        }
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getNoReplyEmailAddress() {
+
+        Account acct = accountDAO.findByID(getProUser().getUser().getPerson().getAcctID());
+        String localAddr = acct.getProps().getNoReplyEmail();
+            
+        if ( localAddr != null && localAddr.trim().length() != 0 ) {
+            localAddr = localAddr.trim();
+        }       
+        
+        return localAddr;
+    }
+
     
     private void genReportCriteria()
     {
@@ -124,8 +220,10 @@ public class HosReportsBean extends BaseBean {
             reportCriteriaList = null;
             return;
         }
-        if (reportCriteriaList != null)
+        if (reportCriteriaList != null && params.equals(previousParams))
             return;
+        
+        previousParams = params.clone();
         
         ReportGroup reportGroup = reportGroupMap.get(selected);
         reportCriteriaList = new ArrayList<ReportCriteria>();
@@ -236,6 +334,14 @@ public class HosReportsBean extends BaseBean {
         return reportGroupMap.get(selected).getEntityType();
         
     }
+    public boolean getTabularSupport() {
+        if (selected == null)
+            return false;
+        
+        return reportGroupMap.get(selected).getReports()[0].isTabularSupport();
+        
+        
+    }
     public ReportParams getParams() {
         return params;
     }
@@ -288,6 +394,55 @@ public class HosReportsBean extends BaseBean {
 
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+
+    public List<String> getColumnHeaders() {
+        return (List<String>) (columnHeaders == null ? (Collections.emptyList()) : columnHeaders);
+
+    }
+
+    public void setColumnHeaders(List<String> columnHeaders) {
+        this.columnHeaders = columnHeaders;
+    }
+
+    public List<List<Result>> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<List<Result>> records) {
+        this.records = records;
+    }
+
+    public int getRecordCount() {
+        return recordCount;
+    }
+
+    public void setRecordCount(int recordCount) {
+        this.recordCount = recordCount;
+    }
+
+    public String getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(String viewType) {
+        this.viewType = viewType;
+    }
+
+    public Map<String, Object> getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Map<String, Object> sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     

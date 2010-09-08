@@ -21,8 +21,9 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
+import com.inthinc.pro.reports.tabular.Tabular;
 
-public abstract class ViolationsSummaryReportCriteria extends ReportCriteria {
+public abstract class ViolationsSummaryReportCriteria extends ReportCriteria  {
 
     private static final Logger logger = Logger.getLogger(ViolationsSummaryReportCriteria.class);
     
