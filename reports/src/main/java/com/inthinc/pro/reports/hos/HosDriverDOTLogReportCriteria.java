@@ -14,6 +14,7 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -164,7 +165,8 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Ta
             row.add(new Result(detail.getLocation(), detail.getLocation()));
             String statusStr = MessageUtil.getBundleString(resourceBundle, "status."+detail.getStatus().getCode()); 
             row.add(new Result(statusStr, statusStr));
-            row.add(new Result(detail.getEditUserName(), detail.getEditUserName()));
+            String addedBy = (detail.getOrigin() == HOSOrigin.PORTAL) ? detail.getEditUserName() : MessageUtil.getBundleString(resourceBundle, "origin."+detail.getOrigin().toString());
+            row.add(new Result(addedBy, addedBy));
             records.add(row);
         }
         return records;

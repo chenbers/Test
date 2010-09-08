@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import org.joda.time.DateMidnight;
@@ -31,12 +32,15 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
+import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
+import com.inthinc.pro.reports.util.MessageUtil;
 
 public class DotHoursRemainingReportCriteria extends ReportCriteria implements Tabular {
 
@@ -79,7 +83,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
 
         List<DotHoursRemaining> dotHoursRemainingList = new ArrayList<DotHoursRemaining>();
 
-        Interval interval = new Interval(new DateMidnight(currentDate.minusDays(14)), new DateMidnight(currentDate));
+        Interval interval = new Interval(new DateMidnight(currentDate.minusDays(DAYS_BACK)), new DateMidnight(currentDate));
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
@@ -158,14 +162,67 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
 
     @Override
     public List<String> getColumnHeaders() {
-        // TODO Auto-generated method stub
-        return null;
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.DOT_HOURS_REMAINING.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<String> columnHeaders = new ArrayList<String>();
+        for (int i = 1; i <= 4; i++)
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
+        
+        List<DotHoursRemaining> dataList = (List<DotHoursRemaining>)getMainDataset();
+        int recordsPerDriver = (DAYS_BACK+1)*2;
+        if (dataList == null || dataList.size() < recordsPerDriver)
+            return null;
+        
+        for (int i = 0; i < recordsPerDriver; i+=2) {
+            columnHeaders.add(dataList.get(i).getDay() + "<br/>" + MessageUtil.getBundleString(resourceBundle, "column.5.tabular"));
+            columnHeaders.add(dataList.get(i).getDay() + "<br/>" + MessageUtil.getBundleString(resourceBundle, "column.6.tabular"));
+            
+        }
+        return columnHeaders;
     }
 
     @Override
     public List<List<Result>> getTableRows() {
-        // TODO Auto-generated method stub
-        return null;
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.DOT_HOURS_REMAINING.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<DotHoursRemaining> dataList = (List<DotHoursRemaining>)getMainDataset();
+        if (dataList == null)
+            return null;
+        
+        int recordsPerDriver = (DAYS_BACK+1)*2;
+        List<List<Result>>records = new ArrayList<List<Result>>();
+        if (dataList == null || dataList.size() < recordsPerDriver)
+            return null;
+        
+        List<Result> row = null;
+        for (int i = 0; i < dataList.size(); i++) {
+
+            DotHoursRemaining data = dataList.get(i);
+            
+            if (i % recordsPerDriver == 0) {
+                if (row != null)
+                    records.add(row);
+                row = new ArrayList<Result>();
+                row.add(new Result(data.getGroupName(), data.getGroupName()));
+                row.add(new Result(data.getDriverName(), data.getDriverName()));
+                String ruleSetTypeStr = MessageUtil.getBundleString(resourceBundle, "dot."+data.getDotType().getCode()); 
+                row.add(new Result(ruleSetTypeStr,ruleSetTypeStr));
+                row.add(new Result(Converter.convertMinutes(data.getMinutesRemaining()), data.getMinutesRemaining()));
+            }
+            
+            row.add(new Result(Converter.convertMinutes(data.getTotalAdjustedMinutes()), data.getTotalAdjustedMinutes()));
+        }
+        if (row != null)
+            records.add(row);
+        return records;
     }
 
 

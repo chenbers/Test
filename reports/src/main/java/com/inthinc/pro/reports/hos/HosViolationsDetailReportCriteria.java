@@ -84,7 +84,7 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
         
         for (ViolationsDetail detail : dataList) {
             for (Violation violation : detail.getViolationsList()) {
-            List<Result> row = new ArrayList<Result>();
+                List<Result> row = new ArrayList<Result>();
                 row.add(new Result(detail.getTimeStr(), detail.getNotificationTime()));
                 row.add(new Result(detail.getDriverName(), detail.getDriverName()));
                 row.add(new Result(detail.getVehicleId(), detail.getVehicleId()));
