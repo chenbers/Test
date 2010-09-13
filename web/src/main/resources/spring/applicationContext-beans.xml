@@ -287,6 +287,7 @@
   <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session" init-method="initBean"/>
 
   <bean id="organizationBean" class="com.inthinc.pro.backing.OrganizationBean" scope="request"/>
+  <bean id="messagesBean" class="com.inthinc.pro.backing.MessagesBean" scope="session"/>
 
   <bean id="reportScheduleBean" class="com.inthinc.pro.backing.ReportScheduleBean" scope="session" init-method="initBean"/>
 

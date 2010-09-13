@@ -601,6 +601,18 @@
    <to-view-id>/secured/inthinc/inthincCustomerSupport.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_inbox</from-outcome>
+   <to-view-id>/secured/messages.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule> 
+  <navigation-case>
+   <from-outcome>go_sendMail</from-outcome>
+   <to-view-id>/secured/sendMail.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule> 
  <!-- validators -->
  <validator>
   <validator-id>com.inthinc.pro.validators.RegexValidator</validator-id>

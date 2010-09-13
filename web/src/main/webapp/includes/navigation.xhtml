@@ -284,6 +284,14 @@ jQuery(function(){
 			<li class="nav_button #{notificationsSelected}">
                 <pretty:link id="#{context}-navigationNotifications" mappingId="notifications" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_notifications}</span></pretty:link>
 			</li>
+			
+			
+<!--  			
+			<li class="nav_button #{messagesSelected}">
+                <pretty:link id="#{context}-navigationMessages" mappingId="inbox" styleClass="nav_button_left"><span class="nav_button_right">Messages</span></pretty:link>
+			</li>			
+-->			
+						
 			<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_LIVEFLEETACCESS">
     			<li class="nav_button #{liveFleetSelected}">
                     <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_liveFleet}</span></pretty:link>

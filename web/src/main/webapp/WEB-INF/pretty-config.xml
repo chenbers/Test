@@ -247,6 +247,18 @@
         <view-id>/secured/liveFleet.faces</view-id>
     </url-mapping>
     
+    
+    
+    <url-mapping id="inbox">
+        <pattern>/app/messages/</pattern>
+        <view-id>/secured/messages.faces</view-id>
+    </url-mapping>    
+    <url-mapping id="sendMail">
+        <pattern>/app/sendMail/</pattern>
+        <view-id>/secured/sendMail.faces</view-id>
+        <action onPostback="false">#{messagesBean.loadMailingList}</action>
+    </url-mapping>        
+    
   
     
     <!-- ADMIN MAPPING RULES -->
