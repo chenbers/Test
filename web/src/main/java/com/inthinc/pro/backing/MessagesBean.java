@@ -23,6 +23,7 @@ public class MessagesBean extends OrganizationBean {
     private String messageToSend;
     private String mailingList;
     private List<MessageItem> sentMessages;
+    private Integer pageNumber;
 
     public MessagesBean()
     {
@@ -31,10 +32,15 @@ public class MessagesBean extends OrganizationBean {
         mailingList = new String();
         sendMessageList = new ArrayList<MessageItem>();
         sentMessages = new ArrayList<MessageItem>();
+        pageNumber = 1;
     }
 
     public List<MessageItem> getMessageList() {
         return messageList;
+    }
+    
+    public void setMessageList(List<MessageItem> messageList) {
+        this.messageList = messageList;
     }
     
     public List<MessageItem> getSendMessageList() {
@@ -75,6 +81,14 @@ public class MessagesBean extends OrganizationBean {
 
     public void setSentMessages(List<MessageItem> sentMessages) {
         this.sentMessages = sentMessages;
+    }
+
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     public void doSelectAll() {
@@ -182,6 +196,8 @@ public class MessagesBean extends OrganizationBean {
             }
         }
         
+        this.pageNumber = 1;
+        
         // After send, reset 
         resetMailingList();
         this.mailingList="";
@@ -261,7 +277,7 @@ public class MessagesBean extends OrganizationBean {
         mailingList += sb.toString(); 
     }
     
-    private List <MessageItem> getCurrentSelections(String currentSelections) {
+    public List <MessageItem> getCurrentSelections(String currentSelections) {
         List<MessageItem> tmp = new ArrayList<MessageItem>();
         
         StringTokenizer st = new StringTokenizer(currentSelections,";");
@@ -274,7 +290,7 @@ public class MessagesBean extends OrganizationBean {
         return tmp;
     }
     
-    private boolean currentlySelected(MessageItem candidate,List<MessageItem> current) {
+    public boolean currentlySelected(MessageItem candidate,List<MessageItem> current) {
         for ( MessageItem mi: current ) {
             if ( mi.getToFrom().trim().equalsIgnoreCase(candidate.getToFrom().trim()) ) {
                 return true;
