@@ -10,17 +10,16 @@
 
 	<script type="text/javascript">
 	//<![CDATA[
-	
 		function renderHTML(htmlData){
-			if(htmlData){
-				document.getElementById("hosReports_html").innerHTML =htmlData; 
-			} 
+//			if(htmlData){
+//				document.getElementById("hosReports_html").innerHTML =htmlData; 
+//			}
 		}
 	//]]>
 	</script>
 	<c:set var="context" value="hosReports"/>		
          	
-	 <a4j:region  id="#{context}_viewRegion">
+	<a4j:region  id="#{context}_viewRegion">
 	<a4j:form id="#{context}_form">
         <ul id="rpt_nav">
 		<li class="l select">
@@ -32,7 +31,7 @@
 					<td>
 					<h:selectOneMenu id="#{context}-report" value="#{hosReportsBean.selected}" >
 						<f:selectItems value="#{hosReportsBean.reportGroups}"/> 
-						<a4j:support event="onchange" reRender="#{context}_paramsPanel,#{context}_options" />
+						<a4j:support event="onchange" reRender="#{context}_paramsPanel,#{context}_options,#{context}_tableForm,#{context}_viewPanel" />
 					</h:selectOneMenu>
 				</td>
 			</tr>
@@ -41,13 +40,13 @@
 		<a4j:outputPanel id="#{context}_options">
 		<li class="l" style="margin: 6px;">
 			<span title="#{messages.hosReports_viewTable}">
-				<a4j:commandLink id="#{context}_tableIcon" reRender="#{context}_tableForm,#{context}_viewPanel" oncomplete="renderHTML('')" action="#{hosReportsBean.tabular}"
+				<a4j:commandLink id="#{context}_tableIcon" reRender="#{context}_tableForm,#{context}_viewPanel" action="#{hosReportsBean.tabular}"
 								rendered="#{hosReportsBean.tabularSupport and hosReportsBean.selected != null}" styleClass="viewTable"> 
     					<h:outputText value="#{messages.hosReports_viewTableLink}"/>
 				</a4j:commandLink>    
 			</span>
 			<span title="#{messages.hosReports_renderHTML}">
-				<a4j:commandLink id="#{context}_htmlIcon" oncomplete="renderHTML('#{hosReportsBean.html}')"	action="#{hosReportsBean.htmlReport}"
+				<a4j:commandLink id="#{context}_htmlIcon" reRender="#{context}_tableForm,#{context}_viewPanel" action="#{hosReportsBean.htmlReport}"
 								rendered="#{hosReportsBean.selected != null}" styleClass="viewHTML"> 
     					<h:outputText value="#{messages.hosReports_renderHTMLLink}"/>
 				</a4j:commandLink>    
@@ -170,16 +169,28 @@
 
     <a4j:outputPanel  id="#{context}_viewPanel">
 		<h:panelGroup id="#{context}_html" layout="block" >
+			<h:outputText id="#{context}_htmlText" value="#{hosReportsBean.html}" escape="false" rendered="#{hosReportsBean.viewType eq 'HTML'}"/>
 		</h:panelGroup>
 	</a4j:outputPanel>
 	
 	<a4j:form id="#{context}_tableForm">
 		<div class="datagrid_panel" style="width:925px; overflow: auto;">
-			<rich:dataTable rows="10" value="#{hosReportsBean.records}" var="record" id="#{context}_viewTable" align="left" width="100%"
-				styleClass="datagrid rptdatagrid"  rowClasses="tableOdd,tableEven" cellspacing="1" 
+			<rich:dataTable rows="25" value="#{hosReportsBean.records}" var="record" id="#{context}_viewTable" align="left" width="100%"
+				styleClass="datatable rptdatagrid"  rowClasses="tableOdd,tableEven" cellspacing="1" 
 				rendered="#{hosReportsBean.viewType eq 'CSV'}">
-	           	<rich:columns value="#{hosReportsBean.columnHeaders}" var="col" index="index" id="column#{index}" 
-	           			sortBy="#{record[index].sort}" sortOrder="#{hosReportsBean.sortOrder[col]}">
+	               	<f:facet name="header">
+	       				<rich:subTable styleClass="datatable" width="100%" rows="0">
+	       					<c:forEach items="#{hosReportsBean.columnSummaryHeaders}" var="topcol" >
+	           				<rich:column colspan="#{topcol.colspan}">
+	               				<f:facet name="header">
+									<h:outputText value="#{topcol.header}" escape="false" />
+								</f:facet>
+							</rich:column>
+							</c:forEach>
+						</rich:subTable>
+					</f:facet>
+	           	<rich:columns value="#{hosReportsBean.columnHeaders}" var="col" index="index" id="column#{index}"
+	           			sortBy="#{record[index].sort}" sortOrder="#{hosReportsBean.sortOrder[col]}" >
 	               	<f:facet name="header">
 						<h:outputText value="#{col}" escape="false" />
 					</f:facet>

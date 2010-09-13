@@ -146,6 +146,8 @@ public class JasperReport implements Report
         exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
         exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, Boolean.FALSE);
+System.out.println("Images URI:" + ReportUtils.getImagesURI().toString());      
+        exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, ReportUtils.getImagesURI().toString());
         exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, "");
         exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "");
         exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, "");

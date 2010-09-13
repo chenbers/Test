@@ -21,6 +21,7 @@ import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
+import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.MessageUtil;
@@ -126,6 +127,10 @@ public class HosZeroMilesReportCriteria extends ReportCriteria implements Tabula
         return records;
         
         
+    }
+    @Override
+    public List<ColumnHeader> getColumnSummaryHeaders() {
+        return null;
     }
 
 }

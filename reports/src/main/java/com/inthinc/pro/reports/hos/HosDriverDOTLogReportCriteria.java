@@ -27,6 +27,7 @@ import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
+import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
@@ -170,6 +171,10 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Ta
             records.add(row);
         }
         return records;
+    }
+    @Override
+    public List<ColumnHeader> getColumnSummaryHeaders() {
+        return null;
     }
 
 }

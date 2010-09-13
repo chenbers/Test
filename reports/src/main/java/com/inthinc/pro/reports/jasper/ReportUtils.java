@@ -9,18 +9,15 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.exception.ReportRuntimeException;
-
-
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 public class ReportUtils
 {
@@ -97,4 +94,15 @@ public class ReportUtils
         
     }
 
+    public static Object getImagesURI() {
+        
+        String path = PACKAGE_PATH;
+        try {
+            return ReportUtils.class.getClassLoader().getResource(path).toURI();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
 }

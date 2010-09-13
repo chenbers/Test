@@ -29,6 +29,7 @@ import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
+import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
@@ -156,23 +157,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         
         List<String> columnHeaders = new ArrayList<String>();
         for (int i = 1; i <=16; i++)
-            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".rawPRETTY"));
-//        column.1.rawPRETTY=Group<br/>Name
-//        column.2.rawPRETTY=Driving<br/>Rule<br/>0-14 min<br/>over
-//        column.3.rawPRETTY=Driving<br/>Rule<br/>15-29 min<br/>over
-//        column.4.rawPRETTY=Driving<br/>Rule<br/>30+ min<br/>over
-//        column.5.rawPRETTY=On Duty<br/>Rule<br/>0-14 min<br/>over
-//        column.6.rawPRETTY=On Duty<br/>Rule<br/>15-29 min<br/>over
-//        column.7.rawPRETTY=On Duty<br/>Rule<br/>30+ min<br/>over
-//        column.8.rawPRETTY=Cumulative<br/>Rule<br/>0-14 min<br/>over
-//        column.9.rawPRETTY=Cumulative<br/>Rule<br/>15-29 min<br/>over
-//        column.10.rawPRETTY=Cumulative<br/>Rule<br/>30+ min<br/>over
-//        column.11.rawPRETTY=Off Duty<br/>Rule<br/>0-14 min<br/>over
-//        column.12.rawPRETTY=Off Duty<br/>Rule<br/>15-29 min<br/>over
-//        column.13.rawPRETTY=Off Duty<br/>Rule<br/>30+ min<br/>over
-//        column.14.rawPRETTY=Total<br/>Drivers
-//        column.15.rawPRETTY=Total<br/>Miles
-//        column.16.rawPRETTY=Total<br/>Miles<br/>No<br/>Driver
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
         
         return columnHeaders;
     }
@@ -211,6 +196,23 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         return records;
         
         
+    }
+    @Override
+    public List<ColumnHeader> getColumnSummaryHeaders() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.1.tabularHeader"), 1));
+        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.2to4.tabularHeader"), 3));
+        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.5to7.tabularHeader"), 3));
+        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.8to10.tabularHeader"), 3));
+        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.11to13.tabularHeader"), 3));
+        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.14to16.tabularHeader"), 3));
+        return columnHeaders;
     }
 
 

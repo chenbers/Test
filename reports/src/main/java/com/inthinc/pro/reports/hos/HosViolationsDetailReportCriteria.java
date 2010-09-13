@@ -20,6 +20,7 @@ import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
+import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.MessageUtil;
@@ -102,6 +103,10 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
         return records;
         
         
+    }
+    @Override
+    public List<ColumnHeader> getColumnSummaryHeaders() {
+        return null;
     }
 
 }

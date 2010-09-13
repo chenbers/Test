@@ -7,5 +7,6 @@ public interface Tabular {
     
     List<String> getColumnHeaders();
     List<List<Result>> getTableRows();
+    List<ColumnHeader> getColumnSummaryHeaders();
 
 }

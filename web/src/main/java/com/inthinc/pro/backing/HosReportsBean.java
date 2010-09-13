@@ -34,6 +34,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.util.MessageUtil;
@@ -64,8 +65,10 @@ public class HosReportsBean extends BaseBean {
     private List<List<Result>> records;
     private int recordCount;
     private Map<String, Object> sortOrder;
+    private List<ColumnHeader> columnSummaryHeaders;
 
     
+
     public ReportParams getPreviousParams() {
         return previousParams;
     }
@@ -130,8 +133,6 @@ public class HosReportsBean extends BaseBean {
         
         String output = reportRenderer.exportReportToString(reportCriteriaList, FormatType.HTML);
         if (output != null) {
-            System.out.println("HTML length:" + output.length());
-            
             setHtml(output);
         }
       
@@ -149,6 +150,7 @@ public class HosReportsBean extends BaseBean {
         
         Tabular tabular = (Tabular)criteria;
         columnHeaders = tabular.getColumnHeaders();
+        columnSummaryHeaders = tabular.getColumnSummaryHeaders();
         records = tabular.getTableRows();
         recordCount = (records == null) ? 0 : records.size();
         
@@ -407,6 +409,13 @@ public class HosReportsBean extends BaseBean {
     public List<String> getColumnHeaders() {
         return (List<String>) (columnHeaders == null ? (Collections.emptyList()) : columnHeaders);
 
+    }
+    public List<ColumnHeader> getColumnSummaryHeaders() {
+        return (List<ColumnHeader>) (columnSummaryHeaders == null ? (Collections.emptyList()) : columnSummaryHeaders);
+    }
+
+    public void setColumnSummaryHeaders(List<ColumnHeader> columnSummaryHeaders) {
+        this.columnSummaryHeaders = columnSummaryHeaders;
     }
 
     public void setColumnHeaders(List<String> columnHeaders) {

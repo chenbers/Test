@@ -34,6 +34,7 @@ import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 import com.inthinc.pro.reports.hos.model.PayrollData;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
+import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
@@ -207,6 +208,20 @@ public class PayrollReportCriteria extends ReportCriteria implements Tabular {
         
     }
 
+    @Override
+    public List<ColumnHeader> getColumnSummaryHeaders() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.PAYROLL_DETAIL.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+        columnHeaders.add(new ColumnHeader("", 2));
+        columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.tabularHours"), 6));
+        
+        return columnHeaders;
+    }
 
     
 }

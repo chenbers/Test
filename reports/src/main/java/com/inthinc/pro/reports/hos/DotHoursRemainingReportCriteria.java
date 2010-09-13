@@ -37,6 +37,7 @@ import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
+import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
@@ -172,14 +173,10 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
         for (int i = 1; i <= 4; i++)
             columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
         
-        List<DotHoursRemaining> dataList = (List<DotHoursRemaining>)getMainDataset();
         int recordsPerDriver = (DAYS_BACK+1)*2;
-        if (dataList == null || dataList.size() < recordsPerDriver)
-            return null;
-        
         for (int i = 0; i < recordsPerDriver; i+=2) {
-            columnHeaders.add(dataList.get(i).getDay() + "<br/>" + MessageUtil.getBundleString(resourceBundle, "column.5.tabular"));
-            columnHeaders.add(dataList.get(i).getDay() + "<br/>" + MessageUtil.getBundleString(resourceBundle, "column.6.tabular"));
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.5.tabular"));
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.6.tabular"));
             
         }
         return columnHeaders;
@@ -225,8 +222,28 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
         return records;
     }
 
-
-
+    @Override
+    public List<ColumnHeader> getColumnSummaryHeaders() {
+        ResourceBundle resourceBundle = null;
+        String bundleName = ReportType.DOT_HOURS_REMAINING.getResourceBundle();
+        if (bundleName != null)
+            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
+        else resourceBundle = MessageUtil.getBundle(getLocale());
+        
+        List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+        columnHeaders.add(new ColumnHeader("", 4));
+        
+        List<DotHoursRemaining> dataList = (List<DotHoursRemaining>)getMainDataset();
+        int recordsPerDriver = (DAYS_BACK+1)*2;
+        if (dataList == null || dataList.size() < recordsPerDriver)
+            return null;
+        
+        for (int i = 0; i < recordsPerDriver; i+=2) {
+            columnHeaders.add(new ColumnHeader(dataList.get(i).getDay(), 2));
+            
+        }
+        return columnHeaders;
+    }
 
 }
 
