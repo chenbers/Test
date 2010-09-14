@@ -1387,4 +1387,10 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Map<String, Object> setVehicleDevice(Integer vehicleID, Integer deviceID, Long assignTime) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

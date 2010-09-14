@@ -68,7 +68,7 @@ public class ITDataExt extends BaseITData {
         	team.vehicleList = new ArrayList<Vehicle>();
 
         	for (int i = 0; i < driverVehicleDeviceCount; i++) {
-	        	Device device = createDevice(team.group);
+	        	Device device = createDevice(team.group, assignmentDate);
 	            Driver driver = createDriver(team.group, Integer.valueOf(i));
 	            Vehicle vehicle = createVehicle(team.group, device.getDeviceID(), driver.getDriverID(), Integer.valueOf(i));
 	            writeObject(device);
@@ -82,7 +82,7 @@ public class ITDataExt extends BaseITData {
         }
         // no Driver device/vehicle
         Group noDriverGroup = teamGroupListData.get(0).group;
-        noDriverDevice = createDevice(noDriverGroup);
+        noDriverDevice = createDevice(noDriverGroup, assignmentDate);
         writeObject(noDriverDevice);
         noDriverVehicle = createVehicle(noDriverGroup, noDriverDevice.getDeviceID(), null);
         writeObject(noDriverVehicle);

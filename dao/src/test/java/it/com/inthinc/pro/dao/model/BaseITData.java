@@ -170,14 +170,14 @@ public abstract class BaseITData {
         deviceDAO.setSiloService(siloService);
         vehicleDAO.setDeviceDAO(deviceDAO);
 
-        vehicleDAO.setVehicleDevice(vehicleID, deviceID);
+        vehicleDAO.setVehicleDevice(vehicleID, deviceID, assignmentDate);
         if (driverID != null) 
         	vehicleDAO.setVehicleDriver(vehicleID, driverID, assignmentDate);
 
         return vehicle;
     }
 
-    protected Device createDevice(Group group)
+    protected Device createDevice(Group group, Date assignmentDate)
     {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
@@ -190,10 +190,10 @@ public abstract class BaseITData {
 		        		genNumericID(group.getGroupID(), 15), genNumericID(group.getGroupID(), 19), genNumericID(group.getGroupID(), 10), 
 		        		genNumericID(group.getGroupID(), 10), 
 		        		"5555559876");
-		        
+		        device.setActivated(assignmentDate);
 		        device.setAccel("1100 50 4");
 		        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
-		        System.out.println("device imei " + device.getImei());
+		        System.out.println("device imei " + device.getImei() + " activated date: " + assignmentDate);
 		        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
 		        device.setDeviceID(deviceID);
 		        

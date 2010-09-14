@@ -67,7 +67,7 @@ public class ITData extends BaseITData{
         for (GroupData team : teamGroupData)
         {
         	team.user = createUser(account.getAcctID(), team.group);
-            team.device = createDevice(team.group);
+            team.device = createDevice(team.group, assignmentDate);
             team.driver = createDriver(team.group);
             team.vehicle = createVehicle(team.group, team.device.getDeviceID(), team.driver.getDriverID());
         	writeObject(team.user);
@@ -79,7 +79,7 @@ public class ITData extends BaseITData{
         if (includeUnknown) {
 	        // no Driver device/vehicle
 	        Group noDriverGroup = teamGroupData.get(0).group;
-	        noDriverDevice = createDevice(noDriverGroup);
+	        noDriverDevice = createDevice(noDriverGroup, assignmentDate);
 	        writeObject(noDriverDevice);
 	        noDriverVehicle = createVehicle(noDriverGroup, noDriverDevice.getDeviceID(), null);
 	        writeObject(noDriverVehicle);

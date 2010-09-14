@@ -15,8 +15,10 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer> {
 
     void setVehicleDriver(Integer vehicleID, Integer driverID);
 
-    // only use from test code on dev to generate events in the past
+    // only use these from test code on dev to generate events in the past
     void setVehicleDriver(Integer vehicleID, Integer driverID, Date assignDate);
+    void setVehicleDevice(Integer vehicleID, Integer deviceID, Date assignDate);
+
 
     void setVehicleDevice(Integer vehicleID, Integer deviceID);
 

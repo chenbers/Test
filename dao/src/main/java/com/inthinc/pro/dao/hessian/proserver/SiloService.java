@@ -76,8 +76,9 @@ public interface SiloService extends HessianService
 
 
     // -!!!! WARNING !!!!  ----------
-    // Method is only available on the dev server to allow tests to generate event's in the past.
+    // Methods are only available on the dev server to allow tests to generate event's in the past.
     Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID, Long assignTime ) throws ProDAOException;
+    Map<String, Object> setVehicleDevice(Integer vehicleID, Integer deviceID, Long assignTime ) throws ProDAOException;
     // ----------------------------
 
     
