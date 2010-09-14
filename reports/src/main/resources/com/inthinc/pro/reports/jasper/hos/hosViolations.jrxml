@@ -6,10 +6,10 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="ColumnHeader" isDefault="false" fontName="Arial" fontSize="12" isBold="true" pdfFontName="Helvetica-Bold"/>
-	<style name="Details1" isDefault="false" fontName="Arial" fontSize="12"/>
-	<style name="PageHeader" isDefault="true" fontName="Arial" fontSize="18" isBold="true"/>
-	<style name="PageFooter" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="ColumnHeader" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="Details1" isDefault="false" fontName="SansSerif" fontSize="12"/>
+	<style name="PageHeader" isDefault="true" fontName="SansSerif" fontSize="18" isBold="true"/>
+	<style name="PageFooter" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
 	<style name="FooterRect" isDefault="false" mode="Opaque" forecolor="#CCCCCC" backcolor="#CCCCCC" fill="Solid">
 		<pen lineWidth="0.25" lineStyle="Solid"/>
 	</style>
@@ -367,7 +367,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.3.english}]]></textFieldExpression>
 			</textField>
@@ -382,7 +382,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.3.metric}]]></textFieldExpression>
 			</textField>
@@ -397,7 +397,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.4.metric}]]></textFieldExpression>
 			</textField>
@@ -412,7 +412,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.4.english}]]></textFieldExpression>
 			</textField>
@@ -427,7 +427,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.6.metric}]]></textFieldExpression>
 			</textField>
@@ -442,7 +442,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.6.english}]]></textFieldExpression>
 			</textField>
@@ -455,7 +455,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.7}]]></textFieldExpression>
 			</textField>
@@ -468,7 +468,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.2}]]></textFieldExpression>
 			</textField>
@@ -1028,7 +1028,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.label.1}]]></textFieldExpression>
 			</textField>
@@ -1041,7 +1041,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.label.2}]]></textFieldExpression>
 			</textField>
@@ -1054,7 +1054,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.label.3}]]></textFieldExpression>
 			</textField>
@@ -1067,7 +1067,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.label.4}]]></textFieldExpression>
 			</textField>
@@ -1104,7 +1104,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.label.0}]]></textFieldExpression>
 			</textField>

@@ -8,10 +8,10 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="ColumnHeader" isDefault="false" fontName="Arial" fontSize="12" isBold="true" pdfFontName="Helvetica-Bold"/>
-	<style name="Details1" isDefault="false" fontName="Arial" fontSize="12"/>
-	<style name="PageHeader" isDefault="true" fontName="Arial" fontSize="18" isBold="true"/>
-	<style name="PageFooter" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="ColumnHeader" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="Details1" isDefault="false" fontName="SansSerif" fontSize="12"/>
+	<style name="PageHeader" isDefault="true" fontName="SansSerif" fontSize="18" isBold="true"/>
+	<style name="PageFooter" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
 	<subDataset name="violationsSubDataSet">
 		<field name="type" class="com.inthinc.hos.model.RuleViolationTypes"/>
 		<field name="minutes" class="java.lang.Long"/>
@@ -110,7 +110,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1}]]></textFieldExpression>
 			</textField>
@@ -204,7 +204,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
@@ -250,7 +250,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{timeStr}]]></textFieldExpression>
 			</textField>

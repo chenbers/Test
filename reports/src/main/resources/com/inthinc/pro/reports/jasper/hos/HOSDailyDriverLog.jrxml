@@ -109,7 +109,7 @@
 				</jr:list>
 			</componentElement>
 			<frame>
-				<reportElement x="0" y="68" width="350" height="14">
+				<reportElement x="0" y="68" width="350" height="13">
 					<printWhenExpression><![CDATA[Boolean.valueOf($F{vehicles} == null || $F{vehicles}.isEmpty())]]></printWhenExpression>
 				</reportElement>
 				<staticText>
@@ -207,7 +207,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.driverDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="0" y="131" width="350" height="20"/>
+				<reportElement positionType="Float" x="0" y="131" width="350" height="18"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -224,7 +224,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.carrier}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="357" y="139" width="140" height="12"/>
+				<reportElement positionType="Float" x="357" y="138" width="140" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -289,7 +289,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graphTitleEdited}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="RealSize">
+			<image scaleImage="RealSize" isUsingCache="false">
 				<reportElement positionType="Float" x="0" y="212" width="495" height="50"/>
 				<imageExpression class="java.awt.Image"><![CDATA[$F{correctedGraph}]]></imageExpression>
 			</image>
@@ -302,41 +302,48 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graphTitleOriginal}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="RealSize">
+			<image scaleImage="RealSize" isUsingCache="false">
 				<reportElement positionType="Float" x="0" y="283" width="495" height="50" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
 				<imageExpression class="java.awt.Image"><![CDATA[$F{originalGraph}]]></imageExpression>
 			</image>
-			<rectangle>
-				<reportElement positionType="Float" x="2" y="333" width="110" height="35"/>
-			</rectangle>
-			<textField>
-				<reportElement positionType="Float" x="11" y="338" width="60" height="12"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graph.legend.corrected}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement positionType="Float" x="11" y="353" width="60" height="12"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graph.legend.original}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement positionType="Float" x="76" y="343" width="30" height="1"/>
-				<graphicElement>
-					<pen lineWidth="2.0"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement positionType="Float" x="76" y="358" width="30" height="1"/>
-				<graphicElement>
-					<pen lineWidth="1.0"/>
-				</graphicElement>
-			</line>
+			<frame>
+				<reportElement x="7" y="336" width="114" height="30"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textField>
+					<reportElement positionType="Float" mode="Opaque" x="7" y="2" width="60" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graph.legend.corrected}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement positionType="Float" mode="Opaque" x="7" y="17" width="60" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.graph.legend.original}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="Float" mode="Opaque" x="72" y="7" width="30" height="1"/>
+					<graphicElement>
+						<pen lineWidth="2.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement positionType="Float" mode="Opaque" x="72" y="22" width="30" height="1"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+			</frame>
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" x="7" y="372" width="160" height="15"/>
 				<textElement>
@@ -388,7 +395,7 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="25" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<componentElement>
 				<reportElement x="2" y="0" width="555" height="25"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
@@ -491,26 +498,23 @@
 		</band>
 	</detail>
 	<lastPageFooter>
-		<band height="58" splitType="Prevent">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement positionType="Float" x="0" y="36" width="204" height="22" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
-				</reportElement>
+		<band height="62" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="0" width="97" height="15"/>
 				<textElement>
-					<font size="8"/>
+					<font size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.disclaimer}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.driverSignature}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement positionType="Float" x="342" y="34" width="200" height="1">
-					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement positionType="Float" x="4" y="35" width="200" height="1"/>
-			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="100" y="0" width="110" height="15" isRemoveLineWhenBlank="true"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+			</textField>
 			<textField>
-				<reportElement positionType="Float" x="342" y="0" width="200" height="15">
+				<reportElement positionType="Float" x="342" y="1" width="200" height="15">
 					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -518,19 +522,22 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.adminSignature}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="Float" x="97" y="0" width="110" height="15" isRemoveLineWhenBlank="true"/>
+			<line>
+				<reportElement positionType="Float" x="4" y="35" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="342" y="34" width="200" height="1">
+					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement positionType="Float" x="0" y="37" width="204" height="22" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[($F{edited})]]></printWhenExpression>
+				</reportElement>
 				<textElement>
-					<font size="10" isBold="false"/>
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement positionType="Float" x="2" y="0" width="97" height="15"/>
-				<textElement>
-					<font size="10" isBold="false"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.driverSignature}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.disclaimer}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

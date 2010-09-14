@@ -8,8 +8,8 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
-	<style name="PageHeader" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageFooter" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="PageHeader" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="REPORT_START_DATE" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
