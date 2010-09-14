@@ -91,12 +91,14 @@ public class MessagesBean extends OrganizationBean {
         this.pageNumber = pageNumber;
     }
 
+    /* covered */
     public void doSelectAll() {
         for ( MessageItem mi: messageList ) {
             mi.setSelected(selectAll);
         }
     }
     
+    /* fake data */
     private void initMessages() {
         messageList = new ArrayList<MessageItem>();
         
@@ -178,6 +180,7 @@ public class MessagesBean extends OrganizationBean {
         this.selectAll=Boolean.FALSE;
     }
     
+    /* covered */    
     public void sendMessage() {
         this.sentMessages.clear();
         
@@ -277,6 +280,7 @@ public class MessagesBean extends OrganizationBean {
         mailingList += sb.toString(); 
     }
     
+    /* covered */
     public List <MessageItem> getCurrentSelections(String currentSelections) {
         List<MessageItem> tmp = new ArrayList<MessageItem>();
         
@@ -290,6 +294,7 @@ public class MessagesBean extends OrganizationBean {
         return tmp;
     }
     
+    /* covered */    
     public boolean currentlySelected(MessageItem candidate,List<MessageItem> current) {
         for ( MessageItem mi: current ) {
             if ( mi.getToFrom().trim().equalsIgnoreCase(candidate.getToFrom().trim()) ) {
@@ -299,9 +304,11 @@ public class MessagesBean extends OrganizationBean {
         return false;
     }
     
+    /* covered */    
     public void resetMailingList() {
         // This will clear-out the list and make all the selected messages not selected
         mailingList = "";
+        messageToSend = "";
         
         for ( MessageItem mi: this.messageList ) {
             mi.setSelected(Boolean.FALSE);
@@ -311,6 +318,7 @@ public class MessagesBean extends OrganizationBean {
         this.selectAll = Boolean.FALSE;
     }
     
+    /* covered */    
     public void loadMailingList() {
         this.mailingList = new String();
         
