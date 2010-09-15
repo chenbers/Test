@@ -114,6 +114,7 @@ public class HosReportsBean extends BaseBean {
         params = new ReportParams();
         params.setStartDate(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate());
         params.setEndDate(new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(1).toDate());
+        params.updateInterval();
         params.setLocale(getUser().getPerson().getLocale());
         params.setGroupID(getUser().getGroupID());
         
@@ -218,8 +219,9 @@ public class HosReportsBean extends BaseBean {
     
     private void genReportCriteria()
     {
-        if (selected == null) {
+        if (selected == null || !params.getValid()) {
             reportCriteriaList = null;
+            viewType = "";
             return;
         }
         if (reportCriteriaList != null && params.equals(previousParams))

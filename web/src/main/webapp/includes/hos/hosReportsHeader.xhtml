@@ -8,15 +8,6 @@
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
-	<script type="text/javascript">
-	//<![CDATA[
-		function renderHTML(htmlData){
-//			if(htmlData){
-//				document.getElementById("hosReports_html").innerHTML =htmlData; 
-//			}
-		}
-	//]]>
-	</script>
 	<c:set var="context" value="hosReports"/>		
          	
 	<a4j:region  id="#{context}_viewRegion">
@@ -40,32 +31,38 @@
 		<a4j:outputPanel id="#{context}_options">
 		<li class="l" style="margin: 6px;">
 			<span title="#{messages.hosReports_viewTable}">
-				<a4j:commandLink id="#{context}_tableIcon" reRender="#{context}_tableForm,#{context}_viewPanel" action="#{hosReportsBean.tabular}"
-								rendered="#{hosReportsBean.tabularSupport and hosReportsBean.selected != null}" styleClass="viewTable"> 
+				<a4j:commandLink id="#{context}_tableIcon" 
+					reRender="#{context}_tableForm,#{context}_viewPanel" 
+					action="#{hosReportsBean.tabular}"
+					rendered="#{hosReportsBean.tabularSupport and hosReportsBean.selected != null and hosReportsBean.params.valid}" 
+					styleClass="viewTable"> 
     					<h:outputText value="#{messages.hosReports_viewTableLink}"/>
 				</a4j:commandLink>    
 			</span>
 			<span title="#{messages.hosReports_renderHTML}">
-				<a4j:commandLink id="#{context}_htmlIcon" reRender="#{context}_tableForm,#{context}_viewPanel" action="#{hosReportsBean.htmlReport}"
-								rendered="#{hosReportsBean.selected != null}" styleClass="viewHTML"> 
+				<a4j:commandLink id="#{context}_htmlIcon" action="#{hosReportsBean.htmlReport}"
+								reRender="#{context}_tableForm,#{context}_viewPanel" 
+								rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" styleClass="viewHTML"> 
     					<h:outputText value="#{messages.hosReports_renderHTMLLink}"/>
 				</a4j:commandLink>    
 			</span>	
 			<span title="#{messages.hosReports_exportPDF}">
-				<h:commandLink id="#{context}_pdfIcon" action="#{hosReportsBean.pdf}"  ajaxSingle="true" rendered="#{hosReportsBean.selected != null}"
-							styleClass="exportPDF"> 
+				<h:commandLink id="#{context}_pdfIcon" action="#{hosReportsBean.pdf}" ajaxSingle="true"  
+							rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" styleClass="exportPDF"> 
     					<h:outputText value="#{messages.hosReports_exportPDFLink}"/>
 				</h:commandLink>    
 			</span>	
 			<span title="#{messages.hosReports_exportExcel}">
-				<h:commandLink id="#{context}_excelIcon" action="#{hosReportsBean.excel}"  ajaxSingle="true" rendered="#{hosReportsBean.selected != null}" 
+				<h:commandLink id="#{context}_excelIcon" action="#{hosReportsBean.excel}"  ajaxSingle="true" 
+								rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" 
 							styleClass="exportExcel"> 
     					<h:outputText value="#{messages.hosReports_exportExcelLink}"/>
 				</h:commandLink>    
 			</span>	
 			<span title="#{messages.hosReports_email}">
-				<h:commandLink id="#{context}_emailIcon" ajaxSingle="true" onclick="Richfaces.showModalPanel('#{context}_reportEmailModal');return false;"
-					rendered="#{hosReportsBean.selected != null}" styleClass="email"> 
+				<h:commandLink id="#{context}_emailIcon" ajaxSingle="true" 
+						onclick="Richfaces.showModalPanel('#{context}_reportEmailModal');return false;"
+						rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" styleClass="email"> 
     					<h:outputText value="#{messages.hosReports_emailLink}"/>
 				</h:commandLink>    
 			</span>	
@@ -96,22 +93,23 @@
 							</td>
 		   					<td>            									
 		   						<rich:calendar id="startCalendar" inputSize="10" value="#{hosReportsBean.params.startDate}" 
-		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}"/>
+		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}" showFooter="false">  
+										<a4j:support event="onchanged" reRender="#{context}_paramsPanelError,#{context}_options" 
+											ajaxSingle="true" limitToList="true" 
+											action="#{hosReportsBean.params.updateInterval}"/>
+											
+								</rich:calendar>
+									
 		   					</td>
 		   					<td>
 		   						<rich:calendar id="endCalendar" inputSize="10" value="#{hosReportsBean.params.endDate}" 
-		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}"/>
+		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}" showFooter="false">
+										<a4j:support event="onchanged" reRender="#{context}_paramsPanelError,#{context}_options" 
+										ajaxSingle="true" limitToList="true" 
+										action="#{hosReportsBean.params.updateInterval}"/>
+								</rich:calendar>
 							</td>
 						</tr>
-						<!-- 
-						<tr>
-							<td>
-							  <div align="left" style="width: 100%"> 
-								<h:outputText id="dateError"  style="float:left;color:#c44d34" value="#{hosReportsBean.params.badDates}"/>
-							  </div>
-			  				</td>
-						</tr>
-						 -->
 					</table>
 		  		  </li>
     			</h:outputText>
@@ -162,14 +160,20 @@
 				</h:outputText>
            </ul>
           </a4j:region>
-          </a4j:outputPanel>
+         </a4j:outputPanel>
+         <a4j:outputPanel  id="#{context}_paramsPanelError">
+		     <div class="spacer"></div>
+			 <h:outputText id="paramsError"  style="float:left;color:#c44d34" value="#{hosReportsBean.params.errorMsg}" rendered="#{hosReportsBean.params.errorMsg != null}"/>
+	         <div class="spacer"></div>
+         </a4j:outputPanel>
         </a4j:form>
 	</a4j:region>
     <div class="spacer"></div>
 
     <a4j:outputPanel  id="#{context}_viewPanel">
 		<h:panelGroup id="#{context}_html" layout="block" >
-			<h:outputText id="#{context}_htmlText" value="#{hosReportsBean.html}" escape="false" rendered="#{hosReportsBean.viewType eq 'HTML'}"/>
+			<h:outputText id="#{context}_htmlText" value="#{hosReportsBean.html}" escape="false" 
+						rendered="#{hosReportsBean.viewType eq 'HTML'}"/>
 		</h:panelGroup>
 	</a4j:outputPanel>
 	

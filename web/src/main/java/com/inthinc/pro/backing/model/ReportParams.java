@@ -14,26 +14,18 @@ import com.inthinc.pro.util.MessageUtil;
 public class ReportParams implements Cloneable {
     Date startDate;
     Date endDate;
+    Interval interval;
     String badDates;
     Integer groupID;
     Integer driverID;
     Locale locale;
+    Boolean valid;
+
     // TODO: Figure out timezone 
     private static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
     private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
     
     
-    public ReportParams clone() 
-    {
-        try {
-            return (ReportParams)super.clone();
-        } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-        
-    }
     public Locale getLocale() {
         return locale;
     }
@@ -45,12 +37,14 @@ public class ReportParams implements Cloneable {
     }
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+     //   initInterval();
     }
     public Date getEndDate() {
         return endDate;
     }
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+     //   initInterval();
     }
     public Integer getGroupID() {
         return groupID;
@@ -66,25 +60,39 @@ public class ReportParams implements Cloneable {
     }
     
     public Interval getInterval() {
+        return interval;
+    }
+    public void setInterval(Interval interval) {
+        this.interval = interval;
+    }
+    public void updateInterval()
+    {
         try {
             setBadDates(null);
             if (startDate == null) {
                 setBadDates(MessageUtil.getMessageString("noStartDate",getLocale()));
-                return null;
+                interval = null;
             }
             if (this.endDate == null) {
                 setBadDates(MessageUtil.getMessageString("noEndDate",getLocale()));
-                return null;
+                interval = null;
             }
 
             DateMidnight start = new DateMidnight(new DateTime(startDate.getTime(), dateTimeZone), dateTimeZone);
             DateTime end = new DateMidnight(endDate.getTime(), dateTimeZone).toDateTime().plusDays(1).minus(1);
-            return new Interval(start, end);
+            interval =  new Interval(start, end);
         }
         catch (Exception e) {
             setBadDates(MessageUtil.getMessageString("endDateBeforeStartDate",getLocale()));
-            return null;
+            interval = null;
         }
+    }
+    public Boolean getValid() {
+System.out.println("getValid() " + (badDates == null));        
+        return (badDates == null);
+    }
+    public void setValid(Boolean valid) {
+        this.valid = valid;
     }
 
     public String getBadDates() {
@@ -93,6 +101,19 @@ public class ReportParams implements Cloneable {
     public void setBadDates(String badDates) {
         this.badDates = badDates;
     }
-
+    public String getErrorMsg() {
+        return badDates;
+    }
+    public ReportParams clone() 
+    {
+        try {
+            return (ReportParams)super.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
 
 }
