@@ -550,8 +550,8 @@ public class SiloServiceTest {
         assertNotNull(personID);
         
         
-        zoneAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID());
-        redFlagAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID());
+        zoneAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID(),person.getUser().getUserID());
+        redFlagAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID(),person.getUser().getUserID());
         
         superuser(team1Group.getGroupID());
     }
@@ -581,7 +581,7 @@ public class SiloServiceTest {
         assertTrue("not superuser", !isSuperuser);
 	}
 
-	private void redFlagAlertProfiles(Integer acctID, Integer fleetGroupID, Integer groupID) {
+	private void redFlagAlertProfiles(Integer acctID, Integer fleetGroupID, Integer groupID, Integer fleetUserID) {
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
         redFlagAlertDAO.setSiloService(siloService);
         
@@ -589,8 +589,6 @@ public class SiloServiceTest {
         userDAO.setSiloService(siloService);
         List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
         Integer userID = groupUserList.get(0).getUserID();
-        List<User> fleetUserList = userDAO.getUsersInGroupHierarchy(fleetGroupID);
-        Integer fleetUserID = fleetUserList.get(0).getUserID();
         
         List<Boolean> dayOfWeek = new ArrayList<Boolean>();
         for (int i = 0; i < 7; i++)
@@ -713,7 +711,7 @@ public class SiloServiceTest {
         assertEquals("Red flag alert should have deleted status after delete", Status.DELETED, returnedRedFlagAlert.getStatus());
     }
 
-    private void zoneAlertProfiles(Integer acctID, Integer fleetGroupID, Integer groupID) {
+    private void zoneAlertProfiles(Integer acctID, Integer fleetGroupID, Integer groupID, Integer fleetUserID) {
         ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
         zoneDAO.setSiloService(siloService);
         
@@ -722,10 +720,6 @@ public class SiloServiceTest {
         List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
         Integer userID = groupUserList.get(0).getUserID();
         
-        List<User> fleetUserList = userDAO.getUsersInGroupHierarchy(fleetGroupID);
-        Integer fleetUserID = fleetUserList.get(0).getUserID();
-        
-
         // create a zone to use
         Integer zoneID = createZone(acctID, groupID, "Zone With Alerts", zoneDAO);
         
