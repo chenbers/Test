@@ -131,7 +131,7 @@ public class HosReportsBean extends BaseBean {
         
         viewType = FormatType.HTML.name();
         
-        String output = reportRenderer.exportReportToString(reportCriteriaList, FormatType.HTML);
+        String output = reportRenderer.exportReportToString(reportCriteriaList, FormatType.HTML, getFacesContext());
         if (output != null) {
             setHtml(output);
         }
@@ -279,9 +279,6 @@ public class HosReportsBean extends BaseBean {
 
         }
         
-
-        // TODO: MOVE THIS to renderer class
-//        setReport(JasperReport.getInstance(reportCriteriaList));
 
     }
     

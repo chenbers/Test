@@ -1,9 +1,6 @@
 package com.inthinc.pro.reports.jasper;
 
-import java.io.File;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +26,6 @@ import com.inthinc.pro.reports.mail.ReportMailerImpl;
 
 public class JasperReport implements Report
 {
-
     private static final String FILE_NAME = "tiwiPRO_Report";
     private static final Logger logger = Logger.getLogger(JasperReport.class);
     private JasperReportBuilder reportBuilder;
@@ -59,7 +55,6 @@ public class JasperReport implements Report
     @Override
     public void exportReportToStream(FormatType formatType, OutputStream outputStream) 
     {
-        byte[] data = null;
         JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
         if(jp != null)
         {
@@ -141,20 +136,18 @@ public class JasperReport implements Report
         jexcelexporter.exportReport();
     }
     
-    private void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint) throws JRException
+    public void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint) throws JRException
+    {
+        exportToHtmlStream(out, jasperPrint, null);
+    }
+    public void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint, String imagesURIStr) throws JRException
     {   
         JRHtmlExporter exporter = new JRHtmlExporter();
         exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
         exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, Boolean.FALSE);
-        
-        File imagesTempDir = getHTMLImagesDirectory();
-        if (imagesTempDir != null) {
-
-            exporter.setParameter(JRHtmlExporterParameter.IS_OUTPUT_IMAGES_TO_DIR, Boolean.TRUE);
-            exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR_NAME, imagesTempDir.getAbsolutePath());
-            exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, imagesTempDir.toURI().toASCIIString());
-        }
+        if (imagesURIStr != null)
+            exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, imagesURIStr);
         exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, "");
         exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "");
         exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, "");
@@ -162,30 +155,6 @@ public class JasperReport implements Report
         exporter.exportReport();
     }
     
-    private File getHTMLImagesDirectory() {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        System.out.println("tmpDir = " + tmpDir);
-        if (tmpDir != null) {
-            File tmpDirectory = new File(tmpDir + "rpt" + randomInt(1, 999999));
-            int retryCnt = 0;
-            while (tmpDirectory.exists() && retryCnt < 100) {
-                tmpDirectory = new File(tmpDir + "rpt" + randomInt(1, 999999));
-                retryCnt++;
-            }
-            if (retryCnt == 100)
-                return null;
-            
-            tmpDirectory.mkdir();
-            tmpDirectory.deleteOnExit();
-            return tmpDirectory;
-        }
-        return null;
-    }
-    private int randomInt(int min, int max)
-    {
-        return (int) (Math.random() * ((max - min) + 1)) + min;
-    }
-
     private void exportToCsvStream(OutputStream outputStream, JasperPrint jp) throws JRException {
         JRCsvExporter  exporter = new JRCsvExporter ();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);

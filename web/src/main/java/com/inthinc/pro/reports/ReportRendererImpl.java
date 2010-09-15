@@ -6,15 +6,20 @@ import java.io.OutputStream;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.DashboardReportBean;
+import com.inthinc.pro.reports.jasper.JasperReport;
 
 public class ReportRendererImpl implements ReportRenderer
 {
-    private static final Logger logger = Logger.getLogger(DashboardReportBean.class);
+    private static final Logger logger = Logger.getLogger(ReportRendererImpl.class);
     private static final String FILE_NAME = "tiwiPRO_Report";
     
     @SuppressWarnings("unchecked")
@@ -77,24 +82,47 @@ public class ReportRendererImpl implements ReportRenderer
     }
     
     @Override
-    public String exportReportToString(List<ReportCriteria> reportCriteriaList, FormatType formatType) {
+    public String exportReportToString(List<ReportCriteria> reportCriteriaList, FormatType formatType, FacesContext facesContext) {
         
         Report report = reportCreator.getReport(reportCriteriaList);
         OutputStream out = null;
         try {
               out = new ByteArrayOutputStream();
-              report.exportReportToStream(formatType, out);
+              if (formatType == FormatType.HTML)
+                  exportHTMLReportToStream(report, out, facesContext);
+              else report.exportReportToStream(formatType, out);
               out.flush();
               out.close();
               return out.toString();
         } catch (IOException e) {
-              // TODO Auto-generated catch block
-//              e.printStackTrace();
+            logger.error(e);
+        } catch (JRException e) {
+            logger.error(e);
         }
         
         return null;
 
     }
+
+    private String exportHTMLReportToStream(Report report, OutputStream out, FacesContext facesContext) throws JRException {
+        if (!(report instanceof JasperReport))
+            return null;
+        
+        JasperReport jasperReport = (JasperReport)report;
+        
+        JasperPrint jp = jasperReport.getReportBuilder().buildReport(jasperReport.getReportCriteriaList(), FormatType.HTML);
+        if(jp != null)
+        {
+            HttpServletRequest request = ((HttpServletRequest)facesContext.getExternalContext().getRequest()); 
+            request.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jp);
+            String imagesURIStr = request.getContextPath()+"/images?image=";
+            jasperReport.exportToHtmlStream(out, jp, imagesURIStr);
+        }
+        
+        return null;
+
+    }
+
     
     private void exportToHTML(Report report,FacesContext facesContext)
     {

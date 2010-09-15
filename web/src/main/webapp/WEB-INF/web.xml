@@ -172,6 +172,21 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
+	<!--
+		This is serve up images for jasperreports when viewed as html in the web site.
+	-->
+	<servlet>
+		<servlet-name>ImageServlet</servlet-name>
+		<servlet-class>
+			net.sf.jasperreports.j2ee.servlets.ImageServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImageServlet</servlet-name>
+		<url-pattern>/images</url-pattern>
+	</servlet-mapping>
+
 	<!-- extension mapping -->
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>

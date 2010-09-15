@@ -22,6 +22,6 @@ public interface ReportRenderer
     
     public void exportReportToHTML(List<ReportCriteria> reportCriteriaList,FacesContext facesContext);
     
-    public String exportReportToString(List<ReportCriteria> reportCriteriaList, FormatType formatType);
+    public String exportReportToString(List<ReportCriteria> reportCriteriaList, FormatType formatType, FacesContext facesContext);
 
 }
