@@ -32,32 +32,30 @@
 				</table>
 			</li>   
 			<li class="l">   
-    			<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-					<tr>
-    					<td>								
-    						<h:outputText value="#{messages.hosLogs_dateRange} " />
-						</td>
-    					<td>            									
-    						<rich:calendar id="startCalendar" inputSize="10" value="#{hosBean.startDate}" datePattern="#{messages.dateFormat}" timeZone="#{hosBean.timeZone}"/>
-    					</td>
-    					<td>
-    						<rich:calendar id="endCalendar" inputSize="10" value="#{hosBean.endDate}" datePattern="#{messages.dateFormat}" timeZone="#{hosBean.timeZone}"/>
-						</td>
-					</tr>
-				</table>
+				<ui:include src="/includes/component/dateRange.xhtml" >
+					<ui:param name="dateRange" value="#{hosBean.dateRange}"/> 
+   					<ui:param name="reRenderList" value="#{context}_dateError"/> 
+				</ui:include>
 			</li>
 			<li class="l"/>
 			<li class="l">
-				<a4j:commandButton id="#{context}_refresh" styleClass="left"
-					reRender="hos-table-form:dateError, hos-table-form:header, hos-table-form:#{context}, hos-table-form:#{context}-dataTableScroller" 
-					action="#{hosBean.refresh}">
+				<a4j:commandButton id="#{context}_refresh" action="#{hosBean.refresh}" styleClass="left" 
+					reRender="hos-table-form:header, hos-table-form:#{context}, hos-table-form:#{context}-dataTableScroller" >
 					<span class="refresh">
     					<h:outputText value="#{messages.refresh}" />
 					</span>
 				</a4j:commandButton>
 			</li>  
-            <li class="l"><h:commandButton id="#{context}-hosTableAdd" action="#{hosBean['add']}" styleClass="left"><span class="add"><h:outputText value="#{messages.button_add}" /></span></h:commandButton></li>
-            <li class="l"><h:commandButton id="#{context}-hosTableEdit" action="#{hosBean['batchEdit']}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></h:commandButton></li>
+            <li class="l">
+            	<h:commandButton id="#{context}-hosTableAdd" action="#{hosBean['add']}" styleClass="left">
+            		<span class="add"><h:outputText value="#{messages.button_add}" /></span>
+				</h:commandButton>
+			</li>
+            <li class="l">
+            	<h:commandButton id="#{context}-hosTableEdit" action="#{hosBean['batchEdit']}" styleClass="left">
+            		<span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span>
+            	</h:commandButton>
+            </li>
             <li class="l text">
 				<a4j:commandLink id="#{context}-hosTableEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
 					reRender="editColumnsForm:#{context}-editColumnsGrid">
@@ -76,9 +74,12 @@
 			   </a4j:status>
             </li>
           </ul>
-		  <div align="left" style="width: 100%"> 
-			<h:outputText id="dateError"  style="float:left;color:#c44d34" value="#{hosBean.badDates}"/>
-		  </div>
+         <a4j:outputPanel  id="#{context}_dateError">
+			<div align="left" style="width: 100%"> 
+				<h:outputText id="dateError"  style="float:left;color:#c44d34" value="#{hosBean.dateRange.badDates}" rendered="#{hosBean.dateRange.badDates != null}"/>
+		    </div>
+         </a4j:outputPanel>
+		  
           
     	  <ui:include src="/includes/table/statsHeader.xhtml">	
    			<ui:param name="title" value="#{messages.hosLogs_recordCountHeader}" />

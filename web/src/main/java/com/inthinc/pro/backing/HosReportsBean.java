@@ -9,14 +9,10 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.model.KeepAlive;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -49,8 +45,6 @@ public class HosReportsBean extends BaseBean {
     private ReportParams previousParams;
     
     private String emailAddress;
-    private static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
-    private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
 
     private DriverDAO driverDAO;
     private AccountDAO accountDAO;
@@ -67,6 +61,13 @@ public class HosReportsBean extends BaseBean {
     private Map<String, Object> sortOrder;
     private List<ColumnHeader> columnSummaryHeaders;
 
+    public void init()
+    {
+        params = new ReportParams(getUser().getPerson().getLocale());
+        params.setGroupID(getUser().getGroupID());
+        previousParams = params.clone();
+        viewType = "";
+    }
     
 
     public ReportParams getPreviousParams() {
@@ -109,19 +110,6 @@ public class HosReportsBean extends BaseBean {
         this.reportCriteriaService = reportCriteriaService;
     }
 
-    public void init()
-    {
-        params = new ReportParams();
-        params.setStartDate(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate());
-        params.setEndDate(new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(1).toDate());
-        params.updateInterval();
-        params.setLocale(getUser().getPerson().getLocale());
-        params.setGroupID(getUser().getGroupID());
-        
-        previousParams = params.clone();
-        
-        viewType = "";
-    }
 
     public void htmlReport()
     {
@@ -237,19 +225,19 @@ public class HosReportsBean extends BaseBean {
         switch (reportGroup.getReports()[0]) {
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(params.getDriverID(), 
-                        params.getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
+                        params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
                 break;
                 
             case HOS_VIOLATIONS_SUMMARY_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(params.getGroupID(), params.getInterval(), 
+                reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(params.getGroupID(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 break;
             case HOS_VIOLATIONS_DETAIL_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(params.getGroupID(), params.getInterval(), 
+                reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(params.getGroupID(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 break;
             case HOS_DRIVER_DOT_LOG_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(params.getGroupID(), params.getInterval(), 
+                reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(params.getGroupID(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 break;
             case DOT_HOURS_REMAINING:
@@ -257,15 +245,15 @@ public class HosReportsBean extends BaseBean {
                         params.getLocale()));
                 break;
             case HOS_ZERO_MILES:
-                reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(params.getGroupID(), params.getInterval(),  
+                reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             case PAYROLL_DETAIL:
-                reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(params.getGroupID(), params.getInterval(),  
+                reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             case PAYROLL_SIGNOFF:
-                reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(params.getDriverID(), params.getInterval(),  
+                reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             default:
@@ -282,10 +270,6 @@ public class HosReportsBean extends BaseBean {
         }
         
 
-    }
-    
-    public TimeZone getTimeZone() {
-        return timeZone;
     }
 
     public List<SelectItem> getReportGroups() {

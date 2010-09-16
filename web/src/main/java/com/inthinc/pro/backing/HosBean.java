@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -18,12 +17,11 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -32,11 +30,7 @@ import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.hos.HOSGroupMileage;
-import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleDayData;
-import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
@@ -49,7 +43,6 @@ public class HosBean extends BaseBean {
     private static final long serialVersionUID = 1L;
 
     private Integer driverID;
-    private Interval interval;
     private Driver driver;
     private HOSDAO hosDAO;
     private DriverDAO driverDAO;
@@ -58,7 +51,7 @@ public class HosBean extends BaseBean {
     private int page;
     private List<SelectItem> drivers;
     private List<SelectItem> vehicles;
-    
+    private DateRange dateRange;
     
     protected HosLogView item;
     protected List<HosLogView> items;
@@ -66,12 +59,6 @@ public class HosBean extends BaseBean {
     private boolean               selectAll;
     private Map<String, Boolean> updateField;
 
-    
-    private static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
-    private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(timeZone);
-    private String badDates;
-    private Date startDate;
-    private Date endDate;
     
     private static final String EDIT_REDIRECT = "pretty:hosEdit";    
     private static final String VIEW_REDIRECT = "pretty:hos";    
@@ -125,75 +112,20 @@ public class HosBean extends BaseBean {
         pageData = new PageData();
         page = 0;
         pageData.initPage(page);
-        if ( startDate == null ) {
-            startDate = new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate();
-        }
-        if ( endDate == null ) {
-            endDate = new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(1).toDate();
-        }
-        initInterval();
+        dateRange = new DateRange(getLocale());
     }
 
-    // date range stuff
-    public TimeZone getTimeZone()
-    {
-        return timeZone;
+    public DateRange getDateRange() {
+        return dateRange;
     }
 
-    public String getBadDates() {
-        return badDates;
+    public void setDateRange(DateRange dateRange) {
+        this.dateRange = dateRange;
     }
 
-    public void setBadDates(String badDates) {
-        this.badDates = badDates;
-    }
-
-    public Date getStartDate()
-    {
-        return startDate;
-    }
-    public Date getEndDate()
-    {
-        return endDate;
-    }
-    
-    public void setStartDate(Date startDate)
-    {
-        this.startDate = startDate;
-        initInterval();
-    }
-    public void setEndDate(Date endDate)
-    {
-        this.endDate = endDate;
-        initInterval();
-    }
-
-    private Interval initInterval() {
-        try {
-            setBadDates(null);
-            if (startDate == null) {
-                setBadDates(MessageUtil.getMessageString("noStartDate",getLocale()));
-                return null;
-            }
-            if (this.endDate == null) {
-                setBadDates(MessageUtil.getMessageString("noEndDate",getLocale()));
-                return null;
-            }
-
-            DateMidnight start = new DateMidnight(new DateTime(startDate.getTime(), dateTimeZone), dateTimeZone);
-            DateTime end = new DateMidnight(endDate.getTime(), dateTimeZone).toDateTime().plusDays(1).minus(1);
-            setInterval(new Interval(start, end));
-            return getInterval();
-        }
-        catch (Exception e) {
-            setBadDates(MessageUtil.getMessageString("endDateBeforeStartDate",getLocale()));
-            return null;
-        }
-    }
-    
     public void refresh() {
         
-        if (initInterval() != null) {
+        if (dateRange.getInterval() != null) {
             items = null;
         }
     }
@@ -210,7 +142,16 @@ public class HosBean extends BaseBean {
         return driverID;
     }
     public void setDriverID(Integer driverID) {
-        if ((this.driverID == null && driverID != null) || !this.driverID.equals(driverID)) {
+        
+        if (this.driverID == null) {
+            if (driverID != null) {
+                this.driverID = driverID;
+                loadDriver(driverID);
+                items = null;
+            }
+            return;
+        }
+        if (!this.driverID.equals(driverID)) {
             loadDriver(driverID);
             items = null;
         }
@@ -218,13 +159,6 @@ public class HosBean extends BaseBean {
         this.driverID = driverID;
     }
 
-    public Interval getInterval() {
-        return interval;
-    }
-
-    public void setInterval(Interval interval) {
-        this.interval = interval;
-    }
 
     public Driver getDriver() {
         return driver;
@@ -351,7 +285,7 @@ public class HosBean extends BaseBean {
         this.selectAll = selectAll;
     }
     protected List<HosLogView> loadItems() {
-        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), getInterval());
+        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), dateRange.getInterval());
         LinkedList<HosLogView> items = new LinkedList<HosLogView>();
         for (final HOSRecord rec : plainRecords)
             items.add(createLogView(rec));
@@ -435,6 +369,9 @@ public class HosBean extends BaseBean {
     
     public String add()
     {
+        if (driverID == null)
+            return "";
+        
         batchEdit = false;
         item = createAddItem();
         item.setSelected(false);

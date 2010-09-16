@@ -86,31 +86,10 @@
 				<ui:repeat value="#{hosReportsBean.selectedCriteria}" var="criteria">
 				<h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
 					<li class="l">   
-		   			<table border="0" cellspacing="0" cellpadding="4">
-						<tr>
-		   					<td>								
-		   						<h:outputText value="#{messages.hosReports_dateRange} " />
-							</td>
-		   					<td>            									
-		   						<rich:calendar id="startCalendar" inputSize="10" value="#{hosReportsBean.params.startDate}" 
-		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}" showFooter="false">  
-										<a4j:support event="onchanged" reRender="#{context}_paramsPanelError,#{context}_options" 
-											ajaxSingle="true" limitToList="true" 
-											action="#{hosReportsBean.params.updateInterval}"/>
-											
-								</rich:calendar>
-									
-		   					</td>
-		   					<td>
-		   						<rich:calendar id="endCalendar" inputSize="10" value="#{hosReportsBean.params.endDate}" 
-		   							datePattern="#{messages.dateFormat}" timeZone="#{hosReportsBean.timeZone}" showFooter="false">
-										<a4j:support event="onchanged" reRender="#{context}_paramsPanelError,#{context}_options" 
-										ajaxSingle="true" limitToList="true" 
-										action="#{hosReportsBean.params.updateInterval}"/>
-								</rich:calendar>
-							</td>
-						</tr>
-					</table>
+					<ui:include src="/includes/component/dateRange.xhtml" >
+						<ui:param name="dateRange" value="#{hosReportsBean.params.dateRange}"/> 
+      					<ui:param name="reRenderList" value="#{context}_paramsPanelError,#{context}_options"/> 
+  					</ui:include>
 		  		  </li>
     			</h:outputText>
          		</ui:repeat>
