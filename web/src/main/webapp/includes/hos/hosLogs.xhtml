@@ -11,10 +11,8 @@
 	<c:set var="context" value="hosTable"/>		
          	
     <a4j:region id="hos-table-region">
-    <a4j:form id="hos-table-form">
+    	<a4j:form id="hos-table-form">
      
-      <div class="panel_w">
-        <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">
 			<li class="l select">
                 <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_group_box">
@@ -155,11 +153,8 @@
     	  <rich:spacer style="display:block" height="5px"/>
           <rich:datascroller id="#{context}-dataTableScroller" for="#{context}" reRender="hos-table-form:header, #{context}" page="#{hosBean.page}" renderIfSinglePage="false"/>
           
-          </a4j:region>
-          </a4j:outputPanel>
-        </div>
-      </div>
-      
+    	</a4j:region>
+		</a4j:outputPanel>
     </a4j:form>
 
     <ui:include src="/includes/columnSelectionPopup.xhtml">

@@ -194,6 +194,13 @@ public enum ReportGroup
     public void setHos(boolean hos) {
         this.hos = hos;
     }
+    public boolean isTabularSupport() {
+        for (int i = 0; i < getReports().length; i++)
+            if (getReports()[i].isTabularSupport())
+                return true;
+        
+        return false;
+    }
     
     public String getMessageKey(){
     	

@@ -1,0 +1,100 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+         params: Instance of the com.inthinc.pro.backing.ui.ReportParams class.
+
+  Optional Parameters:
+  ==============
+       context: If more than one dateRange used on a page, must be a unique value for the dateRange's ID.
+         reRenderList: comma separated list of components to reRerender on date range change
+
+  To use:
+  ==============
+  <ui:include src="/includes/component/reportParams.xhtml" >
+      <ui:param name="context" value="mypagename"/> 
+      <ui:param name="params" value="#{backingBean.params}"/> 
+      <ui:param name="reRenderList" value="comp1,comp2"/> 
+  </ui:include>
+  
+-->
+
+<ui:composition>
+
+	<a4j:outputPanel  id="#{context}_paramsPanel">
+		<a4j:region id="#{context}_paramsRegion">
+         	<ul id="grid_nav" style="margin: 0;">
+				<ui:repeat value="#{params.selectedCriteria}" var="criteria">
+				<h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
+					<li class="l">   
+					<ui:include src="/includes/component/dateRange.xhtml" >
+						<ui:param name="dateRange" value="#{params.dateRange}"/> 
+      					<ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
+  					</ui:include>
+		  		  </li>
+    			</h:outputText>
+         		</ui:repeat>
+				<h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
+				<li  class="l">
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.hosReports_group}"/>
+						</td>
+						<td>
+							<a4j:outputPanel id="groupSelect">
+							<h:selectOneMenu id="#{context}-groupParam" value="#{params.groupID}" style="width:200px;">
+								<f:selectItems value="#{params.groups}"/>
+								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+							</h:selectOneMenu>
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+  					 					<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-groupParam" />
+							</ui:include>
+							</a4j:outputPanel>
+							
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
+				<h:outputText id="driverInput" rendered="#{params.selectedEntityType eq 'ENTITY_DRIVER'}">
+				<li  class="l">
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.hosReports_driver}"/>
+						</td>
+						<td>
+							<a4j:outputPanel id="driverSelect">
+							<h:selectOneMenu id="#{context}-driverParam" value="#{params.driverID}" style="width:200px;">
+								<f:selectItems value="#{params.drivers}"/>
+								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+							</h:selectOneMenu>
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+								<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-driverParam" />
+							</ui:include>
+							</a4j:outputPanel>
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
+           </ul>
+          </a4j:region>
+         </a4j:outputPanel>
+         <a4j:outputPanel  id="#{context}_paramsPanelError">
+		     <div class="spacer"></div>
+			 <h:outputText id="paramsError"  style="float:left;color:#c44d34" value="#{params.errorMsg}" rendered="#{params.errorMsg != null}"/>
+	         <div class="spacer"></div>
+         </a4j:outputPanel>
+
+
+</ui:composition>
+</html>

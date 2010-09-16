@@ -304,6 +304,11 @@ img {
 	background: transparent url(../images/ico_spd_limit.png) no-repeat center left;
 }
 
+.panel_title span.hos {
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_trucks.png) no-repeat center left;
+}
+
 .panel_title .ajax_status {
 	vertical-align: top;
 	padding-right: 10px;

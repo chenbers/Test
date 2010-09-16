@@ -22,7 +22,7 @@
 					<td>
 					<h:selectOneMenu id="#{context}-report" value="#{hosReportsBean.selected}" >
 						<f:selectItems value="#{hosReportsBean.reportGroups}"/> 
-						<a4j:support event="onchange" reRender="#{context}_paramsPanel,#{context}_options,#{context}_tableForm,#{context}_viewPanel" />
+						<a4j:support event="onchange" reRender="#{context}_form,#{context}_tableForm,#{context}_viewPanel" />
 					</h:selectOneMenu>
 				</td>
 			</tr>
@@ -34,7 +34,7 @@
 				<a4j:commandLink id="#{context}_tableIcon" 
 					reRender="#{context}_tableForm,#{context}_viewPanel" 
 					action="#{hosReportsBean.tabular}"
-					rendered="#{hosReportsBean.tabularSupport and hosReportsBean.selected != null and hosReportsBean.params.valid}" 
+					rendered="#{hosReportsBean.params.reportGroup != null and hosReportsBean.params.reportGroup.tabularSupport and hosReportsBean.params.valid}" 
 					styleClass="viewTable"> 
     					<h:outputText value="#{messages.hosReports_viewTableLink}"/>
 				</a4j:commandLink>    
@@ -80,77 +80,17 @@
          </li>
          </ul>
         <div class="spacer"></div>
-         <a4j:outputPanel  id="#{context}_paramsPanel">
-		 <a4j:region id="#{context}_paramsRegion">
-         	<ul id="grid_nav" style="margin: 0;">
-				<ui:repeat value="#{hosReportsBean.selectedCriteria}" var="criteria">
-				<h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
-					<li class="l">   
-					<ui:include src="/includes/component/dateRange.xhtml" >
-						<ui:param name="dateRange" value="#{hosReportsBean.params.dateRange}"/> 
-      					<ui:param name="reRenderList" value="#{context}_paramsPanelError,#{context}_options"/> 
-  					</ui:include>
-		  		  </li>
-    			</h:outputText>
-         		</ui:repeat>
-				<h:outputText id="groupInput" rendered="#{hosReportsBean.selectedEntityType eq 'ENTITY_GROUP'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.hosReports_group}"/>
-						</td>
-						<td>
-							<a4j:outputPanel id="groupSelect">
-							<h:selectOneMenu id="#{context}-groupParam" value="#{hosReportsBean.params.groupID}" style="width:200px;">
-								<f:selectItems value="#{hosReportsBean.groups}"/>
-							</h:selectOneMenu>
-							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-  					 					<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-groupParam" />
-							</ui:include>
-							</a4j:outputPanel>
-							
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-				<h:outputText id="driverInput" rendered="#{hosReportsBean.selectedEntityType eq 'ENTITY_DRIVER'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.hosReports_driver}"/>
-						</td>
-						<td>
-							<a4j:outputPanel id="driverSelect">
-							<h:selectOneMenu id="#{context}-driverParam" value="#{hosReportsBean.params.driverID}" style="width:200px;">
-								<f:selectItems value="#{hosReportsBean.drivers}"/>
-							</h:selectOneMenu>
-							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-  					 					<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-driverParam" />
-							</ui:include>
-							</a4j:outputPanel>
-							
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-           </ul>
-          </a4j:region>
-         </a4j:outputPanel>
-         <a4j:outputPanel  id="#{context}_paramsPanelError">
-		     <div class="spacer"></div>
-			 <h:outputText id="paramsError"  style="float:left;color:#c44d34" value="#{hosReportsBean.params.errorMsg}" rendered="#{hosReportsBean.params.errorMsg != null}"/>
-	         <div class="spacer"></div>
-         </a4j:outputPanel>
+		<ui:include src="/includes/component/reportParams.xhtml" >
+			<ui:param name="context" value="#{context}"/> 
+			<ui:param name="params" value="#{hosReportsBean.params}"/> 
+      		<ui:param name="reRenderList" value="#{context}_options"/> 
+  		</ui:include>
         </a4j:form>
 	</a4j:region>
     <div class="spacer"></div>
 
     <a4j:outputPanel  id="#{context}_viewPanel">
-		<h:panelGroup id="#{context}_html" layout="block" >
+		<h:panelGroup id="#{context}_html" layout="block">
 			<h:outputText id="#{context}_htmlText" value="#{hosReportsBean.html}" escape="false" 
 						rendered="#{hosReportsBean.viewType eq 'HTML'}"/>
 		</h:panelGroup>

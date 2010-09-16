@@ -115,19 +115,28 @@
 	
 	<ui:define name="content">
 	<div id="wrapper">
-
-		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
-		  <tr>
-		    <td valign="top">
-				<div class="panel_w">
-    				<div class="panel_content">
-	   					<ui:include src="/includes/hos/hosReportsHeader.xhtml">	
-   						</ui:include>
-   					</div>
-   				</div>
+	<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+		<tr>
+			<td valign="top">
+				<div class="">
+					<div class="panel_nw">
+						<div class="panel_title">
+							<span class="hos">#{messages.hos_reportsTitle}</span>
+						</div>
+					</div>
+					<div class="panel_w">
+	    				<div class="panel_content">
+		   					<ui:include src="/includes/hos/hosReportsContent.xhtml">	
+	   						</ui:include>
+	   					</div>
+	   					<div class="panel_sw">
+							<div class="panel_statusbar"/>
+						</div>
+					</div>
+				</div>
 			</td>
 		  </tr>
-		</table>
+	</table>
 	</div>
 	</ui:define>
 </ui:composition>

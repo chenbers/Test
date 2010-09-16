@@ -1,9 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -15,16 +13,11 @@ import javax.faces.model.SelectItem;
 import org.ajax4jsf.model.KeepAlive;
 import org.richfaces.model.Ordering;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
-import com.inthinc.pro.backing.model.ReportParams;
+import com.inthinc.pro.backing.ui.ReportParams;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
@@ -37,6 +30,8 @@ import com.inthinc.pro.util.MessageUtil;
 
 @KeepAlive
 public class HosReportsBean extends BaseBean {
+    
+    private static final long serialVersionUID = 224700504785842562L;
     
     private List<SelectItem> reportGroups;
     private Map<Integer, ReportGroup> reportGroupMap;
@@ -64,7 +59,9 @@ public class HosReportsBean extends BaseBean {
     public void init()
     {
         params = new ReportParams(getUser().getPerson().getLocale());
-        params.setGroupID(getUser().getGroupID());
+        params.setGroupHierarchy(getGroupHierarchy());
+        params.setDriverList(driverDAO.getAllDrivers(getUser().getGroupID()));
+//        params.setGroupID(getUser().getGroupID());
         previousParams = params.clone();
         viewType = "";
     }
@@ -130,7 +127,7 @@ public class HosReportsBean extends BaseBean {
     public void tabular()
     {
         genReportCriteria(); 
-        if (reportCriteriaList == null || !getTabularSupport())
+        if (reportCriteriaList == null || params.getReportGroup() == null || !params.getReportGroup().isTabularSupport())
             return;
         
         ReportCriteria criteria = reportCriteriaList.get(0);
@@ -304,28 +301,10 @@ public class HosReportsBean extends BaseBean {
 
     public void setSelected(Integer selected) {
         this.selected = selected;
-    }
-    
-    public List<CriteriaType> getSelectedCriteria() {
-        if (selected == null)
-            return new ArrayList<CriteriaType>();
+        this.viewType = "";
+        reportCriteriaList = null;
         
-        return Arrays.asList(reportGroupMap.get(selected).getCriterias());
-    }
-    
-    public EntityType getSelectedEntityType() {
-        if (selected == null)
-            return null;
-        return reportGroupMap.get(selected).getEntityType();
-        
-    }
-    public boolean getTabularSupport() {
-        if (selected == null)
-            return false;
-        
-        return reportGroupMap.get(selected).getReports()[0].isTabularSupport();
-        
-        
+        params.setReportGroup(reportGroupMap.get(selected));
     }
     public ReportParams getParams() {
         return params;
@@ -334,45 +313,6 @@ public class HosReportsBean extends BaseBean {
     public void setParams(ReportParams params) {
         this.params = params;
     }
-
-    protected final static String BLANK_SELECTION = "&#160;";
-
-    protected static void sort(List<SelectItem> selectItemList) {
-        Collections.sort(selectItemList, new Comparator<SelectItem>() {
-            @Override
-            public int compare(SelectItem o1, SelectItem o2) {
-                return o1.getLabel().toLowerCase().compareTo(
-                        o2.getLabel().toLowerCase());
-            }
-        });
-    }
-
-    public List<SelectItem> getGroups() {
-        List<SelectItem> groups = new ArrayList<SelectItem>();
-        for (final Group group : getGroupHierarchy().getGroupList()) {
-            String fullName = getGroupHierarchy().getFullGroupName(
-                    group.getGroupID());
-            if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
-                fullName = fullName.substring(0, fullName.length()
-                        - GroupHierarchy.GROUP_SEPERATOR.length());
-            }
-
-            groups.add(new SelectItem(group.getGroupID(), fullName));
-
-        }
-        sort(groups);
-
-        return groups;
-    }
-    public List<SelectItem> getDrivers() {
-        List<SelectItem> drivers = new ArrayList<SelectItem>();
-        List<Driver> driverList = driverDAO.getAllDrivers(getUser().getGroupID());
-        for (Driver driver : driverList) {
-            drivers.add(new SelectItem(driver.getDriverID(), driver.getPerson().getFullName()));
-        }
-        return drivers;
-    }
-
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
@@ -389,10 +329,12 @@ public class HosReportsBean extends BaseBean {
         this.accountDAO = accountDAO;
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> getColumnHeaders() {
         return (List<String>) (columnHeaders == null ? (Collections.emptyList()) : columnHeaders);
 
     }
+    @SuppressWarnings("unchecked")
     public List<ColumnHeader> getColumnSummaryHeaders() {
         return (List<ColumnHeader>) (columnSummaryHeaders == null ? (Collections.emptyList()) : columnSummaryHeaders);
     }
