@@ -311,6 +311,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             }
   
             dump("DDL", testCaseCnt, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
+            dump("DDL", testCaseCnt, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.HTML);
         }
     }
 
