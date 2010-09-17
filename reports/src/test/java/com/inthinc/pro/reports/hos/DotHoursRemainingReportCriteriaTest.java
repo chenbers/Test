@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
 import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;

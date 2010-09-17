@@ -15,6 +15,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DrivingTimeViolationsSummary;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;

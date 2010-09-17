@@ -1,4 +1,4 @@
-package com.inthinc.pro.reports.hos;
+package com.inthinc.pro.reports;
 
 import static org.junit.Assert.*;
 

@@ -1,4 +1,4 @@
-package com.inthinc.pro.reports.hos;
+package com.inthinc.pro.reports.performance;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,9 +12,12 @@ import org.junit.Test;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.hos.model.PayrollData;
 import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
+import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
+import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
+import com.inthinc.pro.reports.performance.model.PayrollData;
 
 
 public class PayrollCriteriaTest extends BaseUnitTest {

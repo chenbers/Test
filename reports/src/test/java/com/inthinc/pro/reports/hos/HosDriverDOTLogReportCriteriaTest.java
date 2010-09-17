@@ -16,6 +16,7 @@ import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
 import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;

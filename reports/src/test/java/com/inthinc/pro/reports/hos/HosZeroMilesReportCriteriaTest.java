@@ -22,6 +22,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 import com.inthinc.pro.reports.hos.testData.ZeroMilesDataSet;

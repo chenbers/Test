@@ -1,8 +1,7 @@
-package com.inthinc.pro.reports.hos;
+package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,9 +30,8 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.HosZeroMiles;
-import com.inthinc.pro.reports.hos.model.PayrollData;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
+import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;

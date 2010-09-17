@@ -1,4 +1,4 @@
-package com.inthinc.pro.reports.hos;
+package com.inthinc.pro.reports.performance;
 
 import java.util.Collections;
 import java.util.Date;
@@ -14,7 +14,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.PayrollData;
+import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
