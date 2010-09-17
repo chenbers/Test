@@ -50,7 +50,7 @@
 						</td>
 						<td>
 							<a4j:outputPanel id="groupSelect">
-							<h:selectOneMenu id="#{context}-groupParam" value="#{params.groupID}" style="width:200px;">
+							<h:selectOneMenu id="#{context}-groupParam" value="#{params.groupID}" style="width:200px;size:auto;">
 								<f:selectItems value="#{params.groups}"/>
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectOneMenu>
@@ -73,7 +73,7 @@
 						</td>
 						<td>
 							<a4j:outputPanel id="driverSelect">
-							<h:selectOneMenu id="#{context}-driverParam" value="#{params.driverID}" style="width:200px;">
+							<h:selectOneMenu id="#{context}-driverParam" value="#{params.driverID}" style="width:200px;size:auto;">
 								<f:selectItems value="#{params.drivers}"/>
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectOneMenu>
