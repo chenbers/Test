@@ -22,7 +22,7 @@ public class BaseUnitTest {
     public static final String BASE_PATH = "c:/reportDump/";
     
     // switch to true to get a file dump of the report for debug/test
-    public static final boolean DUMP_TO_FILE = true;
+    public static final boolean DUMP_TO_FILE = false;
     @Test
     public void dummy() {
         assertTrue(true);
