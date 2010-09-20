@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 
 
 
-public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO, GenericDAO<HOSRecord, Integer>  {
+public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
     private static final Logger logger = Logger.getLogger(HOSJDBCDAO.class);
     
@@ -105,8 +105,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO, GenericDAO<HOS
     }
 
     @Override
-    public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly) throws SQLException {
-        // TODO Auto-generated method stub
+    public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly)  {
 
         Connection conn = null;
         CallableStatement statement = null;
@@ -160,8 +159,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO, GenericDAO<HOS
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
             logger.error("sql hosLog", e);
-            throw e;
-
+            return null;
         }   // end catch
         finally
         { // clean up and release the connection

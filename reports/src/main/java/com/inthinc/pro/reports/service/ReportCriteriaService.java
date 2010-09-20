@@ -38,6 +38,9 @@ public interface ReportCriteriaService
     ReportCriteria getHosDriverDOTLogReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getDotHoursRemainingReportCriteria(Integer groupID, Locale locale);
     ReportCriteria getHosZeroMilesReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getHosEditsReportCriteria(Integer groupID, Interval interval, Locale locale);
+
+    // Performance
     ReportCriteria getPayrollDetailReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getPayrollSignoffReportCriteria(Integer driverID, Interval interval, Locale locale);
 

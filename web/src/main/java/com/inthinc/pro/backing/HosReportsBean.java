@@ -245,6 +245,12 @@ public class HosReportsBean extends BaseBean {
                 reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
+            case HOS_EDITS:
+                reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+                
+// The payroll reports will move to a different part of the UI                
             case PAYROLL_DETAIL:
                 reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));

@@ -84,7 +84,7 @@ public class HosDailyDriverLogReportCriteria {
         Driver driver = driverDAO.findByID(driverID);
         Account account = accountDAO.findByID(driver.getPerson().getAcctID());
         Group group = groupDAO.findByID(driver.getGroupID());
-        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval);
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval, false);
         List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, interval);
         List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, interval);
         

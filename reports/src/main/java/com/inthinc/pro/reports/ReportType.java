@@ -45,6 +45,7 @@ public enum ReportType
     HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report","driverDotLog.jrxml", "driverDotLogRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.driverDotLog", null, true),
     DOT_HOURS_REMAINING("DOT Time Remaining","dotHoursRemaining.jrxml", "dotHoursRemainingRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.dotHoursRemaining", null, true),
     HOS_ZERO_MILES("HOS Zero Miles","hosZeroMiles.jrxml", "hosZeroMilesRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosZeroMiles", null, true),
+    HOS_EDITS("HOS Edits","hosEdits.jrxml", "hosEditsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosEdits", null, true),
 
     // Performance
     PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollDetail", null, true),

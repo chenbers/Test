@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -285,7 +286,8 @@ public class HosBean extends BaseBean {
         this.selectAll = selectAll;
     }
     protected List<HosLogView> loadItems() {
-        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), dateRange.getInterval());
+        
+        List<HOSRecord> plainRecords = plainRecords = hosDAO.getHOSRecords(getDriverID(), dateRange.getInterval(), true);
         LinkedList<HosLogView> items = new LinkedList<HosLogView>();
         for (final HOSRecord rec : plainRecords)
             items.add(createLogView(rec));

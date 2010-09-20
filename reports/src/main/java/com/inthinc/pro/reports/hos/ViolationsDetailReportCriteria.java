@@ -94,12 +94,20 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
                 DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()));
                 DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
-                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd), getHOSStatusFilterList()));
+                driverHOSRecordMap.put(driver, getFilteredList(hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd), false), getHOSStatusFilterList()));
             }
         }
         
         initDataSet(interval, topGroup, groupList, driverHOSRecordMap);
 
+    }
+
+    private List<HOSRecord> getFilteredList(List<HOSRecord> hosRecords, List<HOSStatus> hosStatusFilterList) {
+        List<HOSRecord> filteredList = new ArrayList<HOSRecord>();
+        for (HOSRecord hosRecord : hosRecords)
+            if (hosStatusFilterList.contains(hosRecord.getStatus()))
+                    filteredList.add(hosRecord);
+        return filteredList;
     }
 
     protected List<HOSStatus> getHOSStatusFilterList() {

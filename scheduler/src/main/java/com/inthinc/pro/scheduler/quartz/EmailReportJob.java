@@ -197,6 +197,10 @@ public class EmailReportJob extends QuartzJobBean {
                     reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
+                case HOS_EDITS:
+                    reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                            user.getPerson().getLocale()));
+                    break;
                 case PAYROLL_DETAIL:
                     reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));

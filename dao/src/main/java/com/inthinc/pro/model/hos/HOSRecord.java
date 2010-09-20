@@ -49,6 +49,7 @@ public class HOSRecord extends BaseEntity {
     private String vehicleLicense;
     private Boolean tripReportFlag;
     private Boolean tripInspectionFlag;
+    private Date dateLastUpdated;
     
     public HOSRecord()
     {
@@ -306,6 +307,12 @@ public class HOSRecord extends BaseEntity {
     }
     public void setTripInspectionFlag(Boolean tripInspectionFlag) {
         this.tripInspectionFlag = tripInspectionFlag;
+    }
+    public Date getDateLastUpdated() {
+        return dateLastUpdated;
+    }
+    public void setDateLastUpdated(Date dateLastUpdated) {
+        this.dateLastUpdated = dateLastUpdated;
     }
     public void dump () {
         System.out.println("new HOSRecord(" +

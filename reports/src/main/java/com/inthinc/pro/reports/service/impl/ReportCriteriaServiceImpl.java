@@ -47,6 +47,7 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.DotHoursRemainingReportCriteria;
 import com.inthinc.pro.reports.hos.HosDailyDriverLogReportCriteria;
 import com.inthinc.pro.reports.hos.HosDriverDOTLogReportCriteria;
+import com.inthinc.pro.reports.hos.HosEditsReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsDetailReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.hos.HosZeroMilesReportCriteria;
@@ -600,6 +601,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
         
     }
+
+    @Override
+    public ReportCriteria getHosEditsReportCriteria(Integer groupID, Interval interval, Locale locale) {
+        HosEditsReportCriteria criteria  = new HosEditsReportCriteria(locale);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(groupID, interval);
+        return criteria;
+    }
+
     
     @Override
     public ReportCriteria getPayrollDetailReportCriteria(Integer groupID, Interval interval, Locale locale)
@@ -750,6 +763,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
 
 
 }

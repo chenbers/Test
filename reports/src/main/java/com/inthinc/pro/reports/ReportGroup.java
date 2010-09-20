@@ -73,11 +73,18 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
             ReportType.HOS_ZERO_MILES),
-     PAYROLL_DETAIL("Driver Hours Report",13,EntityType.ENTITY_GROUP,
+     HOS_EDITS("HOS Edits",13,EntityType.ENTITY_GROUP,
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+             ReportType.HOS_EDITS),
+                    
+                    
+     // Performance                    
+     PAYROLL_DETAIL("Driver Hours Report",14,EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
             ReportType.PAYROLL_DETAIL),
-     PAYROLL_SIGNOFF("Driver Hours Signoff",14,EntityType.ENTITY_DRIVER,
+     PAYROLL_SIGNOFF("Driver Hours Signoff",15,EntityType.ENTITY_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{}, true,
              ReportType.PAYROLL_SIGNOFF);

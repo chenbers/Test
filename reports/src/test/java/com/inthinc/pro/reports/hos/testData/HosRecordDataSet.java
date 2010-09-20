@@ -180,6 +180,7 @@ public class HosRecordDataSet extends BaseDataSet {
                     hosRecord.setLocation(location);
                     hosRecord.setEditUserName(userID);
                     hosRecord.setOriginalLocation(originalLocation);
+                    hosRecord.setDateLastUpdated(dateAdded);
                     hosRecordList.add(hosRecord);
                 }
             }

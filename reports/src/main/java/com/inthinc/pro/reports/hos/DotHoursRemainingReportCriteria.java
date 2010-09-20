@@ -35,7 +35,6 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
@@ -72,7 +71,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
             if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                 continue;
             Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType())); 
-            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval));
+            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval, true));
         }
         
         initDataSet(topGroup, groupList, driverHOSRecordMap, currentDate);
