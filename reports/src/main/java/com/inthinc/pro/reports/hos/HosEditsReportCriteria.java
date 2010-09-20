@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import org.joda.time.DateTime;
@@ -30,6 +31,7 @@ import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
+import com.inthinc.pro.reports.util.MessageUtil;
 
 public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
 
@@ -156,48 +158,42 @@ public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
     @Override
     public List<String> getColumnHeaders() {
         List<String> columnHeaders = new ArrayList<String>();
-/*        
         ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle();
+        String bundleName = ReportType.HOS_EDITS.getResourceBundle();
         if (bundleName != null)
             resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
         else resourceBundle = MessageUtil.getBundle(getLocale());
         
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= 7; i++)
             columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
-*/        
         return columnHeaders;
     }
 
     @Override
     public List<List<Result>> getTableRows() {
         List<List<Result>>records = new ArrayList<List<Result>>();
-        
-/*        
         ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle();
+        String bundleName = ReportType.HOS_EDITS.getResourceBundle();
         if (bundleName != null)
             resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
         else resourceBundle = MessageUtil.getBundle(getLocale());
-        List<DriverDOTLog> dataList = (List<DriverDOTLog>)getMainDataset();
+        
+        List<HosEdit> dataList = (List<HosEdit>)getMainDataset();
         if (dataList == null)
             return null;
         
-        for (DriverDOTLog detail : dataList) {
+        for (HosEdit hosEdit : dataList) {
             List<Result> row = new ArrayList<Result>();
-            row.add(new Result(detail.getTimeStr(), detail.getDate()));
-            row.add(new Result(detail.getDriverName(), detail.getDriverName()));
-            row.add(new Result(detail.getVehicleName(), detail.getVehicleName()));
-            row.add(new Result(detail.getTrailer(), detail.getTrailer()));
-            row.add(new Result(detail.getService(), detail.getService()));
-            row.add(new Result(detail.getLocation(), detail.getLocation()));
-            String statusStr = MessageUtil.getBundleString(resourceBundle, "status."+detail.getStatus().getCode()); 
+            row.add(new Result(hosEdit.getGroupName(), hosEdit.getGroupName()));
+            row.add(new Result(hosEdit.getDriverName(), hosEdit.getDriverName()));
+            row.add(new Result(hosEdit.getEmployeeID(), hosEdit.getEmployeeID()));
+            String statusStr = MessageUtil.getBundleString(resourceBundle, "status."+hosEdit.getStatus().getCode()); 
             row.add(new Result(statusStr, statusStr));
-            String addedBy = (detail.getOrigin() == HOSOrigin.PORTAL) ? detail.getEditUserName() : MessageUtil.getBundleString(resourceBundle, "origin."+detail.getOrigin().toString());
-            row.add(new Result(addedBy, addedBy));
+            row.add(new Result(hosEdit.getLogTime(), hosEdit.getLogDate()));
+            row.add(new Result(hosEdit.getAdjustedTime(), hosEdit.getLogDate()));
+            row.add(new Result(hosEdit.getEditUserName(), hosEdit.getEditUserName()));
             records.add(row);
         }
-*/        
         return records;
     }
     @Override
