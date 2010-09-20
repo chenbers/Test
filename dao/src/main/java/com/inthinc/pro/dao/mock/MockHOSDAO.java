@@ -10,6 +10,7 @@ import org.joda.time.Interval;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
@@ -17,7 +18,7 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 
-public class MockHOSDAO implements HOSDAO {
+public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
     List<HOSRecord> plainRecords;
     
     private List<HOSRecord> getMockHOSRecords() {
@@ -229,7 +230,7 @@ public class MockHOSDAO implements HOSDAO {
     }
 
     @Override
-    public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval) {
+    public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly) {
         // TODO: filter by driverID, interval
         return filter(getMockHOSRecords(), driverID, interval);
     }
@@ -247,11 +248,6 @@ public class MockHOSDAO implements HOSDAO {
         return filteredList;
     }
 
-    @Override
-    public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, List<HOSStatus> statusFilterList) {
-        // TODO: filter by driverID, interval, status
-        return getMockHOSRecords();
-    }
 
     @Override
     public List<HOSVehicleDayData> getHOSVehicleDataByDay(Integer driverID, Interval interval) {

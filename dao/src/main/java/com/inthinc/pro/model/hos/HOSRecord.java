@@ -17,6 +17,7 @@ public class HOSRecord extends BaseEntity {
     
     private Integer hosLogID;
     private Integer driverID;
+    private Integer noteID;
 //    private String driverName;
     private RuleSetType driverDotType;
     private Integer vehicleID;
@@ -29,18 +30,25 @@ public class HOSRecord extends BaseEntity {
     private HOSStatus status;
     private HOSOrigin origin;
     private String location;
-    private Long lat;
-    private Long lng;
+    private Float lat;
+    private Float lng;
     private Long distance;
     private String trailerID;
     private String serviceID;
     private Boolean singleDriver;
     private Boolean edited;
+    private Integer editUserID;
     private String editUserName;
     private String originalLocation;
     private Boolean deleted;
     private String notificationData;
     private Integer changedCnt;
+    private Float truckGallons;
+    private Float trailerGallons;
+    private String employeeID;
+    private String vehicleLicense;
+    private Boolean tripReportFlag;
+    private Boolean tripInspectionFlag;
     
     public HOSRecord()
     {
@@ -48,7 +56,7 @@ public class HOSRecord extends BaseEntity {
     }
     public HOSRecord(Integer hosLogID, Integer driverID,// String driverName,
             RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
-            Number vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Long lat, Long lng, Long distance,
+            Number vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
             String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
         super();
         this.hosLogID = hosLogID;
@@ -89,7 +97,14 @@ public class HOSRecord extends BaseEntity {
         this.deleted = deleted;
     }
     public String getNotificationData() {
-        return notificationData;
+//        return notificationData;
+        String data = status.toString(); 
+
+        if (status == HOSStatus.FUEL_STOP)
+            data += "Vehicle Gallons: " + getTruckGallons() + " Trailer Gallons: " + getTrailerGallons();
+        
+        return data;
+        
     }
     public void setNotificationData(String notificationData) {
         this.notificationData = notificationData;
@@ -148,16 +163,16 @@ public class HOSRecord extends BaseEntity {
     public void setLocation(String location) {
         this.location = location;
     }
-    public Long getLat() {
+    public Float getLat() {
         return lat;
     }
-    public void setLat(Long lat) {
+    public void setLat(Float lat) {
         this.lat = lat;
     }
-    public Long getLng() {
+    public Float getLng() {
         return lng;
     }
-    public void setLng(Long lng) {
+    public void setLng(Float lng) {
         this.lng = lng;
     }
     public Long getDistance() {
@@ -234,6 +249,64 @@ public class HOSRecord extends BaseEntity {
         this.vehicleOdometer = vehicleOdometer;
     }
 
+    public Float getTruckGallons() {
+        return truckGallons;
+    }
+    
+    public void setTruckGallons(Float truckGallons) {
+        this.truckGallons = truckGallons;
+    }
+    
+    public Float getTrailerGallons() {
+        return trailerGallons;
+    }
+
+    public void setTrailerGallons(Float trailerGallons) {
+        this.trailerGallons = trailerGallons;
+    }
+
+    public Integer getNoteID() {
+        return noteID;
+    }
+    public void setNoteID(Integer noteID) {
+        this.noteID = noteID;
+    }
+    
+    public String getEmployeeID() {
+        return employeeID;
+    }
+    public void setEmployeeID(String employeeID) {
+        this.employeeID = employeeID;
+    }
+
+    public String getVehicleLicense() {
+        return vehicleLicense;
+    }
+  
+    public void setVehicleLicense(String vehicleLicense) {
+        this.vehicleLicense = vehicleLicense;
+    }
+    
+  
+    public Integer getEditUserID() {
+        return editUserID;
+    }
+    public void setEditUserID(Integer editUserID) {
+        this.editUserID = editUserID;
+    }
+
+    public Boolean getTripReportFlag() {
+        return tripReportFlag;
+    }
+    public void setTripReportFlag(Boolean tripReportFlag) {
+        this.tripReportFlag = tripReportFlag;
+    }
+    public Boolean getTripInspectionFlag() {
+        return tripInspectionFlag;
+    }
+    public void setTripInspectionFlag(Boolean tripInspectionFlag) {
+        this.tripInspectionFlag = tripInspectionFlag;
+    }
     public void dump () {
         System.out.println("new HOSRecord(" +
         hosLogID + "," + 
