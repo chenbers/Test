@@ -130,11 +130,7 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Ta
 
     @Override
     public List<String> getColumnHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
         for (int i = 1; i <= 8; i++)
@@ -145,11 +141,7 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Ta
 
     @Override
     public List<List<Result>> getTableRows() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.HOS_DRIVER_DOT_LOG_REPORT.getResourceBundle(getLocale());
         List<DriverDOTLog> dataList = (List<DriverDOTLog>)getMainDataset();
         if (dataList == null)
             return null;

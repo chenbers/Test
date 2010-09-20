@@ -158,11 +158,7 @@ public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
     @Override
     public List<String> getColumnHeaders() {
         List<String> columnHeaders = new ArrayList<String>();
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_EDITS.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.HOS_EDITS.getResourceBundle(getLocale());
         
         for (int i = 1; i <= 7; i++)
             columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
@@ -172,11 +168,7 @@ public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
     @Override
     public List<List<Result>> getTableRows() {
         List<List<Result>>records = new ArrayList<List<Result>>();
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_EDITS.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.HOS_EDITS.getResourceBundle(getLocale());
         
         List<HosEdit> dataList = (List<HosEdit>)getMainDataset();
         if (dataList == null)

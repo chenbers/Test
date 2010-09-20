@@ -92,11 +92,7 @@ public class HosZeroMilesReportCriteria extends ReportCriteria implements Tabula
 
     @Override
     public List<String> getColumnHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_ZERO_MILES.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.HOS_ZERO_MILES.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
         columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.1.tabular"));

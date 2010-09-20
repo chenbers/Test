@@ -149,11 +149,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
 
     @Override
     public List<String> getColumnHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
         for (int i = 1; i <=16; i++)
@@ -199,11 +195,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
     }
     @Override
     public List<ColumnHeader> getColumnSummaryHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle(getLocale());
         
         List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
         columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.1.tabularHeader"), 1));

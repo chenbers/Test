@@ -162,11 +162,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
 
     @Override
     public List<String> getColumnHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.DOT_HOURS_REMAINING.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.DOT_HOURS_REMAINING.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
         for (int i = 1; i <= 4; i++)
@@ -183,11 +179,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
 
     @Override
     public List<List<Result>> getTableRows() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.DOT_HOURS_REMAINING.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.DOT_HOURS_REMAINING.getResourceBundle(getLocale());
         
         List<DotHoursRemaining> dataList = (List<DotHoursRemaining>)getMainDataset();
         if (dataList == null)
@@ -223,11 +215,6 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
 
     @Override
     public List<ColumnHeader> getColumnSummaryHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.DOT_HOURS_REMAINING.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
         
         List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
         columnHeaders.add(new ColumnHeader("", 4));

@@ -18,7 +18,6 @@ public class HOSRecord extends BaseEntity {
     private Integer hosLogID;
     private Integer driverID;
     private Integer noteID;
-//    private String driverName;
     private RuleSetType driverDotType;
     private Integer vehicleID;
     private String vehicleName;
@@ -41,7 +40,6 @@ public class HOSRecord extends BaseEntity {
     private String editUserName;
     private String originalLocation;
     private Boolean deleted;
-    private String notificationData;
     private Integer changedCnt;
     private Float truckGallons;
     private Float trailerGallons;
@@ -62,7 +60,6 @@ public class HOSRecord extends BaseEntity {
         super();
         this.hosLogID = hosLogID;
         this.driverID = driverID;
-  //      this.driverName = driverName;
         this.driverDotType = driverDotType;
         this.vehicleID = vehicleID;
         this.vehicleName = vehicleName;
@@ -97,31 +94,21 @@ public class HOSRecord extends BaseEntity {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
-    public String getNotificationData() {
-//        return notificationData;
-        String data = status.toString(); 
-
-        if (status == HOSStatus.FUEL_STOP)
-            data += "Vehicle Gallons: " + getTruckGallons() + " Trailer Gallons: " + getTrailerGallons();
-        
-        return data;
-        
-    }
-    public void setNotificationData(String notificationData) {
-        this.notificationData = notificationData;
-    }
+//    public String getNotificationData() {
+//        String data = status.toString(); 
+//
+//        if (status == HOSStatus.FUEL_STOP)
+//            data += "Vehicle Gallons: " + getTruckGallons() + " Trailer Gallons: " + getTrailerGallons();
+//        
+//        return data;
+//        
+//    }
     public Integer getDriverID() {
         return driverID;
     }
     public void setDriverID(Integer driverID) {
         this.driverID = driverID;
     }
-//    public String getDriverName() {
-//        return driverName;
-//    }
-//    public void setDriverName(String driverName) {
-//        this.driverName = driverName;
-//    }
     public Integer getVehicleID() {
         return vehicleID;
     }

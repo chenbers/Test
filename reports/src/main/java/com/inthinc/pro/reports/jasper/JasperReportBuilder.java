@@ -94,10 +94,7 @@ public class JasperReportBuilder
             {
                 locale = reportCriteria.getLocale();
             }
-            if (reportCriteria.getReport().getResourceBundle() != null)
-                reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale, reportCriteria.getReport().getResourceBundle()));
-            else reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, MessageUtil.getBundle(locale));
-            
+            reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, reportCriteria.getReport().getResourceBundle(locale));
             reportCriteria.getPramMap().put("SUBREPORT_URL", ReportUtils.getSubReportURL(reportCriteria.getReport().getSubDirectory()));
 
             

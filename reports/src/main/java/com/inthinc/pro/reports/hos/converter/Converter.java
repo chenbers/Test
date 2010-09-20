@@ -55,44 +55,6 @@ public class Converter {
         }
     }
 
-
-    public static final String GALLONS = "Gallons:";
-    // format is Vehicle Gallons: ## Trailer Gallons: ##  convert to
-    //           Vehicle Liters: ## Trailer Liters: ##
-    public static String convertRemarkDescription(String description, Locale locale) {
-        int index = description.indexOf(GALLONS);
-        String litersLabel = MessageUtil.getMessageString("report.hos.liters", locale);
-        if (index != -1)
-        {
-            StringBuffer newDescription = new StringBuffer();
-            String[] strList = description.trim().split("\\s");
-            for (int i = 0; i < strList.length; i++) {
-                if (strList[i].compareTo(GALLONS) == 0) {
-                    newDescription.append(" ");
-                    newDescription.append(litersLabel);
-                    if (i+1 < strList.length) {
-                        try {
-                            Number liters = MeasurementConversionUtil.fromGallonsToLiters(new Double(strList[i+1]));
-                            newDescription.append(" ");
-                            newDescription.append(liters.toString());
-                        }
-                        catch (NumberFormatException ex) {
-                        }
-                        i++;
-                    }
-                }
-                else {
-                    newDescription.append(" ");
-                    newDescription.append(strList[i]);
-                }
-            }
-            
-            return newDescription.toString();
-        }
-        return description;
-    }
-    
-    
     public static String convertMinutes(Long minutes) {
         
         if (minutes == null)

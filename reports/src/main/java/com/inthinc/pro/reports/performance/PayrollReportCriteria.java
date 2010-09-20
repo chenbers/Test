@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import net.sf.jasperreports.engine.JRParameter;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -129,11 +131,7 @@ public class PayrollReportCriteria extends ReportCriteria implements Tabular {
     
     @Override
     public List<String> getColumnHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.PAYROLL_DETAIL.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
+        ResourceBundle resourceBundle = ReportType.PAYROLL_DETAIL.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
         for (int i = 1; i <= 8; i++)
@@ -208,12 +206,8 @@ public class PayrollReportCriteria extends ReportCriteria implements Tabular {
 
     @Override
     public List<ColumnHeader> getColumnSummaryHeaders() {
-        ResourceBundle resourceBundle = null;
-        String bundleName = ReportType.PAYROLL_DETAIL.getResourceBundle();
-        if (bundleName != null)
-            resourceBundle = MessageUtil.getBundle(getLocale(), bundleName);
-        else resourceBundle = MessageUtil.getBundle(getLocale());
-        
+        ResourceBundle resourceBundle = ReportType.PAYROLL_DETAIL.getResourceBundle(getLocale());
+
         List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
         columnHeaders.add(new ColumnHeader("", 2));
         columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.tabularHours"), 6));

@@ -3,12 +3,14 @@ package com.inthinc.pro.reports.hos;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
@@ -35,6 +37,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -72,6 +75,8 @@ public class HosDailyDriverLogReportCriteria {
     private Boolean defaultUseMetric;
     
     private DateTimeFormatter dateTimeFormatter; 
+    
+
 
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
     {
@@ -332,8 +337,29 @@ public class HosDailyDriverLogReportCriteria {
         remarkLog.setLocation(hosRecord.getLocation());
         remarkLog.setOriginalLocation(hosRecord.getOriginalLocation());
         remarkLog.setStartOdometer(hosRecord.getVehicleOdometer()); 
-        remarkLog.setStatusDescription((hosRecord.getNotificationData() != null) ? (" " + hosRecord.getNotificationData()) : "");
+        remarkLog.setStatusDescription(getStatusDescription(hosRecord));
         return remarkLog;
+    }
+    
+    private String getStatusDescription(HOSRecord hosRecord) {
+        
+        String statusString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status."+hosRecord.getStatus().getCode()); 
+
+        if (hosRecord.getStatus() == HOSStatus.FUEL_STOP) {
+            if (defaultUseMetric) {
+                String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription.METRIC");
+                return statusString + " " + MessageFormat.format(formatString, new Object[] {hosRecord.getTruckGallons(),hosRecord.getTrailerGallons()});
+            }
+            else {
+                String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription");
+                return statusString + " " + MessageFormat.format(formatString, new Object[] {
+                        MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTruckGallons()),
+                        MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTrailerGallons())});
+            }
+        }
+        
+        return statusString;
+
     }
 
     private List<HOSOccupantLog> getOccupantLogsForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> hosOccupantLogList) {

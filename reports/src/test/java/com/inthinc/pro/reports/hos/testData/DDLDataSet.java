@@ -120,14 +120,12 @@ public class DDLDataSet {
                 rec.setDistance(0l);
                 rec.setDriverDotType(RuleSetType.valueOf(Integer.valueOf(values[ruleIdIdx])));
                 rec.setDriverID(driver.getDriverID());
-//                rec.setDriverName(driver.getPerson().getFullName());
                 rec.setEdited(Boolean.valueOf(values[editedIdx]));
                 rec.setEditUserName(""+values[userIdIdx]);
                 rec.setHosLogID(cnt++);
                 rec.setLocation(values[tmpLocationIdx]);
                 rec.setLogTime(dateFormat.parse(values[logTimeIdx]));
                 rec.setAddedTime(dateFormat.parse(values[dateAddedIdx]));
-                rec.setNotificationData(values[descriptionIdx]);
                 rec.setOrigin(values[originIdx] == null || values[originIdx].isEmpty() ? HOSOrigin.UNKNOWN : HOSOrigin.valueOf(Integer.valueOf(values[originIdx])));
                 rec.setOriginalLocation(values[originalLocationIdx]);
                 rec.setServiceID(values[serviceIdIdx]);
@@ -138,6 +136,8 @@ public class DDLDataSet {
                 rec.setVehicleID(getVehicleID(values[unitIdIdx]));
                 rec.setVehicleOdometer(values[startOdometerIdx] == null || values[startOdometerIdx].isEmpty() ? null : (Long.valueOf(values[startOdometerIdx])*100l));
                 rec.setChangedCnt(0);
+                rec.setTrailerGallons(0f);
+                rec.setTruckGallons(0f);
                 
 
                 if (rec.getStatus().equals(HOSStatus.DRIVING)) {

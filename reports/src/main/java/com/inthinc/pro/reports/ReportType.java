@@ -2,7 +2,11 @@ package com.inthinc.pro.reports;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
+
+import com.inthinc.pro.reports.util.MessageUtil;
 
 public enum ReportType
 {
@@ -55,7 +59,7 @@ public enum ReportType
     private String rawTemplate;
     private String label;
     private String subDirectory;
-    private String resourceBundle;
+    private String resourceBundleName;
     private String name;
     private boolean tabularSupport;
     
@@ -74,9 +78,9 @@ public enum ReportType
         this.subDirectory = subDirectory;
     }
 
-    private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory, String resourceBundle){
+    private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory, String resourceBundleName){
         this(label, prettyTemplate, rawTemplate, subDirectory);
-        this.resourceBundle = resourceBundle;
+        this.resourceBundleName = resourceBundleName;
     }
     
     private ReportType(String label,String prettyTemplate, String rawTemplate, String subDirectory, String resourceBundle, String name){
@@ -131,8 +135,8 @@ public enum ReportType
         return subDirectory;
     }
 
-    public String getResourceBundle() {
-        return resourceBundle;
+    public String getResourceBundleName() {
+        return resourceBundleName;
     }
     public String getName() {
         return name;
@@ -158,6 +162,12 @@ public enum ReportType
 
     public void setTabularSupport(boolean tabularSupport) {
         this.tabularSupport = tabularSupport;
+    }
+    
+    public ResourceBundle getResourceBundle(Locale locale) {
+        if (resourceBundleName != null)
+            return MessageUtil.getBundle(locale, resourceBundleName);
+        else return MessageUtil.getBundle(locale);
     }
 
 }
