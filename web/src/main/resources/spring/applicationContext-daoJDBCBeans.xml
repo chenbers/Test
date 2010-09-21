@@ -9,7 +9,7 @@ default-autowire="byName">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
 
-  <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
+  <bean id="hosDAOX" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
 
   <!-- DAO -->
   <!--

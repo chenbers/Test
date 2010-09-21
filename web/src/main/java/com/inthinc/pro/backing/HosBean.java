@@ -66,7 +66,7 @@ public class HosBean extends BaseBean {
 
     public HosBean() {
         super();
-//        hosDAO = new MockHOSDAO();
+        hosDAO = new MockHOSDAO();
     }
     
     public List<SelectItem> getDrivers() {
