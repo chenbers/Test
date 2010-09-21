@@ -80,11 +80,15 @@ public enum ReportGroup
                     
                     
      // Performance                    
-     PAYROLL_DETAIL("Driver Hours Report",14,EntityType.ENTITY_GROUP,
+     PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP,
+                     new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+                     new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+                     ReportType.PAYROLL_SUMMARY),
+     PAYROLL_DETAIL("Payroll Report Driver Detail",15,EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
             ReportType.PAYROLL_DETAIL),
-     PAYROLL_SIGNOFF("Driver Hours Signoff",15,EntityType.ENTITY_DRIVER,
+     PAYROLL_SIGNOFF("Payroll Report Driver Signoff",16,EntityType.ENTITY_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{}, true,
              ReportType.PAYROLL_SIGNOFF);

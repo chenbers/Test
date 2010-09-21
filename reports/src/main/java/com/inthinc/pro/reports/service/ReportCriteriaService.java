@@ -43,5 +43,6 @@ public interface ReportCriteriaService
     // Performance
     ReportCriteria getPayrollDetailReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getPayrollSignoffReportCriteria(Integer driverID, Interval interval, Locale locale);
+    ReportCriteria getPayrollSummaryReportCriteria(Integer groupID, Interval interval, Locale locale);
 
 }

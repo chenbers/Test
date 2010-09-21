@@ -56,6 +56,7 @@ import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
+import com.inthinc.pro.reports.performance.PayrollSummaryReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.reports.util.ReportUtil;
@@ -640,6 +641,20 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
         
     }
+
+    @Override
+    public ReportCriteria getPayrollSummaryReportCriteria(Integer groupID, Interval interval, Locale locale) {
+        PayrollSummaryReportCriteria criteria = new PayrollSummaryReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(groupID, interval);
+        return criteria;
+    }
+
+
 
     public void setGroupDAO(GroupDAO groupDAO)
     {

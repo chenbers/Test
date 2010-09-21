@@ -286,7 +286,7 @@ public class HosBean extends BaseBean {
     }
     protected List<HosLogView> loadItems() {
         
-        List<HOSRecord> plainRecords = plainRecords = hosDAO.getHOSRecords(getDriverID(), dateRange.getInterval(), true);
+        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), dateRange.getInterval(), true);
         LinkedList<HosLogView> items = new LinkedList<HosLogView>();
         for (final HOSRecord rec : plainRecords)
             items.add(createLogView(rec));

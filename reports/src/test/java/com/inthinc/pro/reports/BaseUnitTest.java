@@ -16,6 +16,7 @@ import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportCreator;
+import com.inthinc.pro.reports.tabular.Result;
 
 public class BaseUnitTest {
     
@@ -64,6 +65,18 @@ public class BaseUnitTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    protected void dumpTabularData(List<List<Result>> tablularData) {
+        
+        for (List<Result> row : tablularData) {
+            System.out.print("  {");
+                for (Result result : row) {
+                    System.out.print("\"" + result.getDisplay() + "\", "); 
+                }
+            System.out.println("  },");
+        }
+        
     }
 
 }

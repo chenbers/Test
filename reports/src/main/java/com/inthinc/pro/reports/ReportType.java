@@ -53,7 +53,8 @@ public enum ReportType
 
     // Performance
     PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollDetail", null, true),
-    PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSignOff", null, true);
+    PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSignOff", null, true),
+    PAYROLL_SUMMARY("Driver Hours Summary","payrollSummary.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSummary", null, true);
     
     private String prettyTemplate;
     private String rawTemplate;

@@ -251,6 +251,10 @@ public class HosReportsBean extends BaseBean {
                 break;
                 
 // The payroll reports will move to a different part of the UI                
+            case PAYROLL_SUMMARY:
+                reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
             case PAYROLL_DETAIL:
                 reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));

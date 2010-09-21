@@ -7,7 +7,6 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
-	<parameter name="REPORT_PRETTY" class="java.lang.String" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="driving_1" class="java.lang.Integer"/>
 	<field name="driving_2" class="java.lang.Integer"/>
@@ -31,82 +30,82 @@
 				<textElement>
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.1.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.1.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="105" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.2.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.2.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="150" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.3.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.3.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="195" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="240" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.5.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.5.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="285" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="330" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.7.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.7.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="375" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="420" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="465" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.10.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.10.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-54" x="510" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.11.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.11.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-55" x="555" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.12.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.12.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-56" x="600" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.13.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.13.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="645" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.14.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.14.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="690" y="0" width="45" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.15.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.15.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
 				<reportElement key="textField" x="735" y="0" width="107" height="19" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.16.raw"+$P{REPORT_PRETTY})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.16.raw")]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

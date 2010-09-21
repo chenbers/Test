@@ -23,20 +23,17 @@ import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
-import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
@@ -207,6 +204,10 @@ public class EmailReportJob extends QuartzJobBean {
                     break;
                 case PAYROLL_SIGNOFF:
                     reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(reportSchedule.getDriverID(), timeFrame.getInterval(),  
+                            user.getPerson().getLocale()));
+                    break;
+                case PAYROLL_SUMMARY:
+                    reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 default:
