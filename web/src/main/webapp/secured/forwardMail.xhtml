@@ -4,64 +4,51 @@
               xmlns:h="http://java.sun.com/jsf/html"
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:pretty="http://ocpsoft.com/prettyfaces"
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:t="http://myfaces.apache.org/tomahawk"
               xmlns:security="http://pro.tiwi.com/jsf/security">
 
   <ui:param name="messagesSelected" value="current" />
-  <ui:param name="context" value="sendMail" />
+  <ui:param name="context" value="messages" />
   
   <ui:param name="title" value="#{messages.adminHeader_people}"/>
   
   <ui:define name="scripts">
-      <script type="text/javascript">
-      // the following are not used
-      function setFocus(e, picker)
-      {
-        if (!e)
-          e = window.event;
-        var target;
-        if (e.target)
-          target = e.target;
-        else if (e.srcElement)
-          target = e.srcElement;
-        if (target == picker)
-          document.getElementById('display-form:toList').focus();
-      }
-        function changeComplete()
-        {
-          	var input = document.getElementById('display-form:toList');
-          	input.focus();
-        }
-      </script>
-  </ui:define>  
-  
+    	<style>
+			.replyStyle {
+				padding-bottom: 20px;
+				color: #000000;
+				background: transparent  url(#{request.contextPath}/images/btn_email.png) left no-repeat;
+				text-indent: 10px;
+			}			
+		</style>
+  </ui:define>
+
   <ui:define name="content">
 
-    <table width="800" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
       <td valign="top" width="130">
         <ui:include src="/includes/navigation/messagesSideNav.xhtml">
-          <ui:param name="selectedAction" value="go_sendMail" />
-          <ui:param name="parentAction" value="go_sendMail" />
-          <ui:param name="context" value="sendMail"/>
+          <ui:param name="selectedAction" value="go_forward" />
+          <ui:param name="parentAction" value="go_forward" />
+          <ui:param name="context" value="forward"/>
         </ui:include>
       </td>
       <td valign="top">
-      
+        <!-- START PANEL -->
           <div class="">
 
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="admin"><h:outputText value="Send Mail" /></span>
+                <span class="admin"><h:outputText value="Forward Mail" /></span>
                 <span class="panel_links">
                 </span>
               </div>
-            </div>      
-      
-      
+            </div>
+
 		<a4j:form id="display-form">
-		
 		<table width="800" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 			<tr>
 				<td valign="top">
@@ -70,66 +57,59 @@
 							<div class="panel_w">
 								<div class="panel_content">		
 			<!-- List of things to select -->	
-									<table width="790" align="center" style="margin: 0 auto 0 auto;">									
+									<table width="800" align="center" style="margin: 0 auto 0 auto;">									
 						
 										<tr>
-
+											
 										<td valign="top">
 											
                      						<div class="add_section_title">
                        							<h:outputText value="To" />
                      						</div>
 											<br></br>
-											<!--  
-											<h:inputTextarea id="toList" value="#{messagesBean.mailingList}" rows="50" cols="50" disabled="false"
-												style="width:380px;height:150px;margin-left:10px;overflow-y:scroll" />
-                            				-->
-											<rich:pickList sourceListWidth="338px" targetListWidth="338px" value="#{messagesBean.selectedList}">
-												<f:selectItems value="#{messagesBean.selectFromList}"/>
-											</rich:pickList>                            							
+
+											<!-- start type ahead -->
+                            				<h:inputTextarea value="#{messagesBean.sendTo}" id="sendTo" styleClass="text" rows="50" cols="50"
+                            					style="width:780px;height:250px;margin-left:10px;overflow-y:scroll" />
+                            				<rich:suggestionbox for="sendTo" suggestionAction="#{messagesBean.autoComplete}" 
+                            					var="personName" tokens=";" nothingLabel="No e-mail addressess found" ignoreDupResponses="true">
+                       							<a4j:support event="onselect"  >
+ 													<f:setPropertyActionListener value="#{personName}" target="#{messagesBean.sendTo}" />
+ 												</a4j:support> 	
+                              					<h:column>
+                              						<h:outputText value="#{personName}"/>
+                              					</h:column>
+                            				</rich:suggestionbox>
+                            				<!-- end type ahead -->
                             				
-										</td>
-										
-										</tr>
-												
-										<tr>
-										
-										<td>											
-                     						<div class="add_section_title">
-                       							<h:outputText value="Message" />
-                     						</div>
-											<br></br>
-											
-											<h:inputTextarea id="msgText" value="#{messagesBean.messageToSend}" 
-												style="width:770px;height:90px;margin-left:10px" />
-											<br></br>
-										</td>
-										
-										</tr>
-										
-										<tr>
-										
-										<td>								
+                            				<br></br>
+                            				<br></br>					
 											
 											<h:panelGroup id="buttonPanel">
 												<ul id="grid_nav_dark">
 
 													<li class="r">
-														<a4j:commandButton id="send" styleClass="left" action="#{messagesBean.sendMessage}"
-															reRender="#{context}-sendList,#{context}-sendListBottomScroller,display-form:toList,display-form:msgText"
+														<a4j:commandButton id="send" styleClass="left" action="#{messagesBean.forwardMessage}" 
+															reRender="display-form,#{context}-sendList,#{context}-sendListBottomScroller"
 															oncomplete="javascript:Richfaces.showModalPanel('summary')">
 															<span class="email">
-																<h:outputText value="Send" />
+																<h:outputText value="Save" />
 															</span>
 														</a4j:commandButton>
 													</li>
-																									
+													
+													<li class="r">
+														<a4j:commandButton id="reset" styleClass="left" action="#{messagesBean.resetSendTo}" reRender="display-form">
+															<span class="refresh">
+																<h:outputText value="Reset" />
+															</span>
+														</a4j:commandButton>
+													</li>													
 				
 												</ul>
 											</h:panelGroup>
 										</td>
-										
-										</tr>
+									</tr>
 
 								</table>										
 							</div>
@@ -143,21 +123,31 @@
 			</tr>
 			
 		</table>	
-			
 		</a4j:form>
 		
-	</div>	
+					
+		<div class="panel_sw">
+			<div class="panel_statusbar"></div>
+		</div>	
+		
+	 </div>
+	 
+	 </td>
+	 
+	 </tr>
+	 
+	 </table>
 		
     <rich:modalPanel id="summary" headerClass="popupHeader" controlsClass="popupControls" 
     	width="500" height="140" autosized="true" resizeable="false" zindex="2001">
       	<f:facet name="header">
-        	<h:outputText value="Summary of Message Send" />
+        	<h:outputText value="E-mail List" />
       	</f:facet>
       	<f:facet name="controls">
         	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('summary')" />
       	</f:facet>
 
-      	<div class="popupsubtitle"><h:outputText value="The following are the results of your message send." /></div>
+      	<div class="popupsubtitle"><h:outputText value="The following will receive text messages from the team devices." /></div>
 
       	<h:form id="confirmCloseSummary">
           									
@@ -166,26 +156,12 @@
             rowClasses="tableOdd,tableEven" 
  			cellspacing="1" rows="5" width="100%">
  										 		
-            <rich:column width="30%">
+            <rich:column width="100%">
                 <f:facet name="header">
-                  	<h:outputText value="Entity"/>
+                  	<h:outputText value="E-mail"/>
                 </f:facet>
-                <h:outputText id="entity" value="#{item.entity}"/>
-            </rich:column>
-            
-            <rich:column width="30%">
-                <f:facet name="header">
-                  	<h:outputText value="Date"/>
-                </f:facet>
-                <h:outputText id="date" value="#{item.sendDate}"/>
-            </rich:column>
-            
-            <rich:column width="40%">
-                <f:facet name="header">
-                  	<h:outputText value="Result"/>
-                </f:facet>
-                <h:outputText id="result" value="#{item.result}"/>
-            </rich:column>            
+                <h:outputText id="entity" value="#{item.toFrom}"/>
+            </rich:column>       
                               		
         </rich:dataTable>	
         
@@ -203,12 +179,8 @@
 
       </h:form>
 
-    </rich:modalPanel>		
- 	       
-        </td>
-
-      </tr>
-    </table>
+    </rich:modalPanel>						
+		
   </ui:define>
 
 </ui:composition>

@@ -4,19 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.TimeZone;
 
-import org.richfaces.event.NodeSelectedEvent;
+import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.backing.model.BaseTreeNodeImpl;
+import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MessageItem;
-import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 
-public class MessagesBean extends OrganizationBean {
+public class MessagesBean extends BaseBean {
     private List<MessageItem> messageList;
     private List<MessageItem> sendMessageList;
     private Boolean selectAll;
@@ -24,15 +27,30 @@ public class MessagesBean extends OrganizationBean {
     private String mailingList;
     private List<MessageItem> sentMessages;
     private Integer pageNumber;
+    private List<String> autoComplete;
+    private String sendTo;
+    private List<SelectItem> selectFromList;
+    private List<Integer> selectedList;
+    private List<Driver> drivers;
+    
+    private PersonDAO personDAO;
+    private GroupDAO groupDAO;
+    private DriverDAO driverDAO;
+    private DeviceDAO deviceDAO;
+    private VehicleDAO vehicleDAO;
 
     public MessagesBean()
     {
-        super();
-        initMessages();
+//        initMessages();
+        
         mailingList = new String();
+        messageList = new ArrayList<MessageItem>();
         sendMessageList = new ArrayList<MessageItem>();
         sentMessages = new ArrayList<MessageItem>();
+        autoComplete = new ArrayList<String>();
         pageNumber = 1;
+        selectFromList = new ArrayList<SelectItem>();
+        selectedList = new ArrayList<Integer>();
     }
 
     public List<MessageItem> getMessageList() {
@@ -91,66 +109,115 @@ public class MessagesBean extends OrganizationBean {
         this.pageNumber = pageNumber;
     }
 
-    /* covered */
+    public String getSendTo() {
+        return sendTo;
+    }
+
+    public void setSendTo(String sendTo) {
+        this.sendTo = sendTo;
+    }
+
+    public List<SelectItem> getSelectFromList() {
+        
+        // Determine the logged-in users team, then grab their mates
+        if ( this.selectFromList.size() == 0 ) {
+            Person p = personDAO.findByID(this.getProUser().getUser().getPersonID());
+            drivers = driverDAO.getAllDrivers(p.getDriver().getGroupID());
+            
+            // Add the device, if one associated, "None" if not
+            for ( Driver d: drivers ) {
+                SelectItem si = new SelectItem();
+                si.setLabel(getName(d));
+                si.setValue(d.getDriverID());
+                selectFromList.add(si);
+            }
+        }
+        return selectFromList;
+    }
+    
+    private String getName(Driver d) {
+        Vehicle v = null;
+        try {
+            v = vehicleDAO.findByDriverID(d.getDriverID());
+        } catch (Exception e) {
+            System.out.println("Exception is: " + e.getLocalizedMessage());
+        }
+
+        String name = d.getPerson().getFullName();
+        if ( v != null && v.getDeviceID() != null ) {
+            Device dev = deviceDAO.findByID(v.getDeviceID());
+            name +=  "(" + dev.getName() + ")";
+        } else {
+            name += "(None)";
+        }
+        
+        return name;
+    }
+
+    public void setSelectFromList(List<SelectItem> selectFromList) {
+        this.selectFromList = selectFromList;
+    }
+
+    public List<Integer> getSelectedList() {
+        return selectedList;
+    }
+
+    public void setSelectedList(List<Integer> selectedList) {
+        this.selectedList = selectedList;
+    }
+
+    public List<Driver> getDrivers() {
+        return drivers;
+    }
+
+    public void setDrivers(List<Driver> drivers) {
+        this.drivers = drivers;
+    }
+
+    public PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
+    public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
+    }
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
+
     public void doSelectAll() {
         for ( MessageItem mi: messageList ) {
             mi.setSelected(selectAll);
         }
-    }
-    
-    /* fake data */
-    private void initMessages() {
-        messageList = new ArrayList<MessageItem>();
-        
-        MessageItem mi = new MessageItem();
-        
-        mi.setToFrom("Device 1117");
-        mi.setMessage("Battery low.");
-        mi.setSendDate(new Date(2010,6,23));
-        mi.setTimeZone(TimeZone.getDefault());
-        mi.setSelected(Boolean.FALSE);
-        messageList.add(mi);
-        mi = new MessageItem();
-        
-        mi.setToFrom("User 001");
-        mi.setMessage("Need to change e-mail.");
-        mi.setSendDate(new Date(2010,7,4));
-        mi.setTimeZone(TimeZone.getDefault());
-        mi.setSelected(Boolean.FALSE);
-        messageList.add(mi);
-        mi = new MessageItem();
-        
-        mi.setToFrom("Driver 7891");
-        mi.setMessage("Out of hours.");
-        mi.setSendDate(new Date(2010,8,28));
-        mi.setTimeZone(TimeZone.getDefault());
-        mi.setSelected(Boolean.FALSE);
-        messageList.add(mi);
-        mi = new MessageItem(); 
-        
-        mi.setToFrom("Device 6701");
-        mi.setMessage("Crash detected.");
-        mi.setSendDate(new Date(2010,9,1));
-        mi.setTimeZone(TimeZone.getDefault()); 
-        mi.setSelected(Boolean.FALSE);
-        messageList.add(mi);
-        mi = new MessageItem();     
-        
-        mi.setToFrom("User 710");
-        mi.setMessage("Please send user manual.");
-        mi.setSendDate(new Date(2010,4,8));
-        mi.setTimeZone(TimeZone.getDefault());
-        mi.setSelected(Boolean.FALSE);
-        messageList.add(mi);
-        mi = new MessageItem();  
-        
-        mi.setToFrom("Driver 9810");
-        mi.setMessage("Send emergency services.");
-        mi.setSendDate(new Date(2010,1,14));
-        mi.setTimeZone(TimeZone.getDefault());
-        mi.setSelected(Boolean.FALSE);
-        messageList.add(mi);
-        mi = new MessageItem();     
     }
     
     public void removeSelected() {
@@ -176,35 +243,35 @@ public class MessagesBean extends OrganizationBean {
     }
     
     public void refreshList() {
-        initMessages();
+//        initMessages();
         this.selectAll=Boolean.FALSE;
     }
-    
-    /* covered */    
+        
     public void sendMessage() {
         this.sentMessages.clear();
         
-        StringTokenizer st = new StringTokenizer(this.mailingList,";");
-        while (st.hasMoreTokens()) {
-            String tok = st.nextToken();
-            
-            // Last check for duplicates, in case they used a cut/paste buffer
-            if ( !alreadySent(tok) ) {
-                MessageItem mi = new MessageItem();
-                mi.setSendDate(new Date());
-                mi.setEntity(tok);
-                mi.setResult("Successfully sent");
-                mi.setToFrom(tok);
-                this.sentMessages.add(mi);
+        for ( Integer dID: this.selectedList ) {
+            MessageItem mi = new MessageItem();
+            mi.setSendDate(new Date());
+            Driver d = getDriver(dID);
+            mi.setEntity(d.getPerson().getFullName());
+        
+            // We would try the forward command here.  Add any error that happened while trying the forward command
+            //  to augment the error of no device associated.
+            mi.setResult((getName(d).indexOf("None") == -1)?"Successful":"No device associated, not sent");
+            this.sentMessages.add(mi);
+        }
+    }
+    
+    private Driver getDriver(Integer id) {
+        
+        for ( Driver d: this.drivers ) {
+            if( d.getDriverID().equals(id) ) {
+                return d;
             }
         }
         
-        this.pageNumber = 1;
-        
-        // After send, reset 
-        resetMailingList();
-        this.mailingList="";
-        this.messageToSend="";
+        return null;
     }
     
     private boolean alreadySent(String tok) {
@@ -217,94 +284,49 @@ public class MessagesBean extends OrganizationBean {
         return false;
     }
     
-    private void createList( BaseTreeNodeImpl btni) {
-        Object obj = btni.getBaseEntity();
-        MessageItem mi = new MessageItem();
+    private void createSentMessageList(String list) {
+        this.sentMessages.clear();
         
-        if (        obj instanceof Driver ) {
-            mi.setEntity("Driver: " + btni.getLabel());
-            mi.setResult("Driver>Vehicle>Device");
-            mi.setToFrom(btni.getLabel());
+        StringTokenizer st = new StringTokenizer(list,";");
+        while (st.hasMoreTokens()) {
+            String tok = st.nextToken();
             
-        } else if ( obj instanceof Vehicle ) {
-            mi.setEntity("Vehicle: " + btni.getLabel());
-            mi.setResult("Vehicle>Device");
-            mi.setToFrom(btni.getLabel());            
-            
-        } else if ( obj instanceof Device ) {
-            mi.setEntity("Device: "+ btni.getLabel());
-            mi.setResult("Done");
-            mi.setToFrom(btni.getLabel());            
-            
-        } else if ( obj instanceof User ) {
-            mi.setEntity("User: " + btni.getLabel());
-            mi.setResult("User>Driver>Vehicle>Device");
-            mi.setToFrom(btni.getLabel());            
-            
-        } else if ( obj instanceof Group ) {
-            List<BaseTreeNodeImpl> kids = btni.getChildrenNodes();
-            for ( BaseTreeNodeImpl kid: kids ) {
-                createList(kid);
+            // Last check for duplicates
+            if ( (!alreadySent(tok)) && (tok.trim().length() != 0) ) {
+                MessageItem mi = new MessageItem();
+                mi.setSendDate(new Date());
+                mi.setEntity(tok);
+                mi.setResult("Successfully sent");
+                mi.setToFrom(tok);
+                this.sentMessages.add(mi);
             }
-        }
-        
-        mi.setSendDate(new Date());
-        
-        // Only load non-group "things"
-        boolean group = obj instanceof Group;
-        if ( !group ) {
-            sendMessageList.add(mi);
-        }
+        }        
     }
-    
-    public void selectNode(NodeSelectedEvent event) {
-        super.selectNode(event);
-        
-        this.sendMessageList.clear();
 
-        // Create a list of "things" to consider
-        createList(this.getSelectedTreeNode()); 
-        
-        // Create list of current selections so as not to duplicate
-        List<MessageItem> current = getCurrentSelections(this.mailingList);
-        
-        // Create string of additions to current list
-        StringBuffer sb = new StringBuffer();
-        for(MessageItem mi: sendMessageList) {
-            if ( !currentlySelected(mi,current) ) {
-                sb.append(mi.getToFrom().trim());
-                sb.append(";");
-            }
-        }
-        
-        mailingList += sb.toString(); 
-    }
-    
-    /* covered */
     public List <MessageItem> getCurrentSelections(String currentSelections) {
         List<MessageItem> tmp = new ArrayList<MessageItem>();
         
-        StringTokenizer st = new StringTokenizer(currentSelections,";");
-        while (st.hasMoreTokens()) {
-            MessageItem mi = new MessageItem();
-            mi.setToFrom(st.nextToken().trim());
-            tmp.add(mi);
+        if ( currentSelections != null && currentSelections.length() != 0 ) {
+            StringTokenizer st = new StringTokenizer(currentSelections,";");
+            while (st.hasMoreTokens()) {
+                MessageItem mi = new MessageItem();
+                mi.setToFrom(st.nextToken().trim());
+                tmp.add(mi);
+            }
         }
         
         return tmp;
     }
-    
-    /* covered */    
-    public boolean currentlySelected(MessageItem candidate,List<MessageItem> current) {
+       
+    public boolean currentlySelected(String candidate,List<MessageItem> current) {
         for ( MessageItem mi: current ) {
-            if ( mi.getToFrom().trim().equalsIgnoreCase(candidate.getToFrom().trim()) ) {
+            if ( mi.getToFrom().trim().equalsIgnoreCase(candidate.trim()) ) {
                 return true;
             }
         }
         return false;
     }
-    
-    /* covered */    
+       
     public void resetMailingList() {
         // This will clear-out the list and make all the selected messages not selected
         mailingList = "";
@@ -317,41 +339,82 @@ public class MessagesBean extends OrganizationBean {
         this.sendMessageList.clear(); 
         this.selectAll = Boolean.FALSE;
     }
-    
-    /* covered */    
+       
     public void loadMailingList() {
-        this.mailingList = new String();
-        
+
         // Anything selected from the inbox?  If so, load as selected drivers.
-        StringBuffer sb = new StringBuffer();
-        for ( MessageItem mi: this.messageList ) {
-            if ( mi.getSelected() ) {
-                sb.append(mi.getToFrom().trim());
-                sb.append(";");
+        if ( this.messageList.size() > 0 ) {
+            StringBuffer sb = new StringBuffer();
+            for ( MessageItem mi: this.messageList ) {
+                if ( mi.getSelected() ) {
+                    sb.append(mi.getToFrom().trim());
+                    sb.append(";");
+                }
             }
-        }
-        
-        if ( !sb.toString().isEmpty() ) {
-            this.mailingList = sb.toString();
+
+            if ( !sb.toString().isEmpty() ) {
+                this.mailingList = sb.toString();
+            }
+        } else {
+            this.mailingList = new String();
         }
     }
     
-    public List<String> findPeople(Object event) {
-        final List<String> results = new ArrayList<String>();
+    public List<String> autoComplete(Object suggest) {
         
-        // Get the last typed-in value
-        String name = event.toString().trim().toLowerCase();
-       
-        // Any suggestions?
-        if (name.length() > 0) {
-
-            for ( MessageItem mi: this.messageList ) {
-                if ( mi.getToFrom().toLowerCase().contains(name) ) {
-                    results.add(mi.getToFrom() + ";");
-                }
+        // Initialize the complete suggestion list
+        if ( autoComplete.size() == 0 ) {
+            autoComplete = loadAutoComplete();
+        }
+        
+        String pref = (String)suggest;
+        ArrayList<String> result = new ArrayList<String>();
+        
+        // Create list of current selections so as not to duplicate
+        List<MessageItem> current = getCurrentSelections(this.sendTo);        
+        
+        for ( String email: autoComplete ) {
+            if ( email.toLowerCase().indexOf(pref) == 0 && !currentlySelected(email.toLowerCase(),current) ) {
+                result.add(email + ";");
             }
         }
         
-        return results;
-    }    
+        return result;
+    }
+                
+    public void resetSendTo() {
+        this.sendTo = "";
+    }
+
+    public void forwardMessage() {
+        
+        // the "create..." will prepare a no duplicate, no blank list to send
+        this.createSentMessageList(this.sendTo);
+        
+        // prep to start again
+        this.sendTo = "";
+    }
+    
+    private List<String> loadAutoComplete() {
+        List<String> tmp = new ArrayList<String>();
+        
+        // Get all the groups then find the top level one
+        Integer grpID = 0;
+        List<Group> grps = groupDAO.getGroupsByAcctID(this.getProUser().getUser().getPerson().getAcctID());
+        for ( Group g: grps ) {
+            if ( g.getParentID() == 0 ) {
+                grpID = g.getGroupID();
+                break;
+            }
+        }
+        
+        // Get all the people in the account
+        List<Person> people = personDAO.getPeopleInGroupHierarchy(grpID);
+        for (Person person : people) {
+            if ( person.getPriEmail() != null && person.getPriEmail().length() != 0 )
+                tmp.add(person.getPriEmail());
+        }  
+        
+        return tmp;
+    }
 }

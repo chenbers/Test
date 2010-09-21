@@ -613,6 +613,12 @@
    <to-view-id>/secured/sendMail.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule> 
+ <navigation-rule> 
+  <navigation-case>
+   <from-outcome>go_forwardMail</from-outcome>
+   <to-view-id>/secured/forwardMail.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>  
  <!-- validators -->
  <validator>
   <validator-id>com.inthinc.pro.validators.RegexValidator</validator-id>

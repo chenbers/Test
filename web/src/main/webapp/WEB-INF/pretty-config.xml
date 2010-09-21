@@ -257,7 +257,11 @@
         <pattern>/app/sendMail/</pattern>
         <view-id>/secured/sendMail.faces</view-id>
         <action onPostback="false">#{messagesBean.loadMailingList}</action>
-    </url-mapping>        
+    </url-mapping>   
+    <url-mapping id="forwardMail">
+        <pattern>/app/forwardMail/</pattern>
+        <view-id>/secured/forwardMail.faces</view-id>
+    </url-mapping>          
     
   
     
