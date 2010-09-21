@@ -1,33 +1,26 @@
 package com.inthinc.pro.dao.jdbc;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.HOSDAO;
-import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
-//import com.inthinc.pro.model.hos.HOSVehicleDriverSchedule;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
-
-//import org.apache.commons.lang.NotImplementedException;
-
-import java.sql.Connection;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-
-import org.apache.log4j.Logger;
 
 
 

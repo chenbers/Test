@@ -66,7 +66,7 @@ public class HosBean extends BaseBean {
 
     public HosBean() {
         super();
-        hosDAO = new MockHOSDAO();
+//        hosDAO = new MockHOSDAO();
     }
     
     public List<SelectItem> getDrivers() {
@@ -285,9 +285,11 @@ public class HosBean extends BaseBean {
         this.selectAll = selectAll;
     }
     protected List<HosLogView> loadItems() {
+        LinkedList<HosLogView> items = new LinkedList<HosLogView>();
+        if (getDriverID() == null)
+            return items;
         
         List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), dateRange.getInterval(), true);
-        LinkedList<HosLogView> items = new LinkedList<HosLogView>();
         for (final HOSRecord rec : plainRecords)
             items.add(createLogView(rec));
         return items;

@@ -1,17 +1,14 @@
 package com.inthinc.pro.dao.jdbc;
 
-import javax.sql.DataSource;
+import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.io.Serializable;
+import java.sql.Statement;
 
-
-
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public abstract class GenericJDBCDAO implements Serializable
 {
@@ -21,8 +18,9 @@ public abstract class GenericJDBCDAO implements Serializable
     private static final long serialVersionUID = 1L;
     
     private static final Logger logger = Logger.getLogger(GenericJDBCDAO.class);
-    private static DriverManagerDataSource dataSource;
+    private DataSource dataSource;
     
+
 
     @SuppressWarnings("unchecked")
     public GenericJDBCDAO()
@@ -31,20 +29,16 @@ public abstract class GenericJDBCDAO implements Serializable
 
 
     
-    public static DataSource getRealDataSource() {
+    public DataSource getDataSource() {
         
-        return GenericJDBCDAO.dataSource;
+        return dataSource;
     }    
 
-    public void setDatasource(DriverManagerDataSource dataSource)
-    {
-        GenericJDBCDAO.dataSource = dataSource;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-
-
-
-    public static Connection getConnection() throws NullPointerException, SQLException
+    public Connection getConnection() throws NullPointerException, SQLException
     {
         try {
             return dataSource.getConnection();
