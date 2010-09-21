@@ -287,7 +287,6 @@
   <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session" init-method="initBean"/>
 
   <bean id="organizationBean" class="com.inthinc.pro.backing.OrganizationBean" scope="request"/>
-  <bean id="messagesBean" class="com.inthinc.pro.backing.MessagesBean" scope="session"/>
 
   <bean id="reportScheduleBean" class="com.inthinc.pro.backing.ReportScheduleBean" scope="session" init-method="initBean"/>
 
@@ -296,6 +295,14 @@
   <bean id="zoneAlertsBean" class="com.inthinc.pro.backing.ZoneAlertsBean" scope="session" init-method="initBean"/>
 
   <bean id="redFlagAlertsBean" class="com.inthinc.pro.backing.RedFlagAlertsBean" scope="session" init-method="initBean"/>
+  
+  <bean id="messagesBean" class="com.inthinc.pro.backing.MessagesBean" scope="session">
+  	<property name="personDAO" ref="personDAO"></property>  
+  	<property name="groupDAO" ref="groupDAO"></property> 
+  	<property name="driverDAO" ref="driverDAO"></property>   
+  	<property name="deviceDAO" ref="deviceDAO"></property>	
+  	<property name="vehicleDAO" ref="vehicleDAO"></property>  	 
+  </bean>
 
   <bean id="customRolesBean" class="com.inthinc.pro.backing.CustomRolesBean" scope="session" init-method="initBean">
     <property name="roleDAO" ref="roleDAO"></property>
