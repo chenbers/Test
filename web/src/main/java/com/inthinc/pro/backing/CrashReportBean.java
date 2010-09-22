@@ -9,6 +9,7 @@ import java.util.TimeZone;
 
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.CrashReportDAO;
@@ -27,6 +28,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
+@KeepAlive
 public class CrashReportBean extends BaseBean {
 
     /**
