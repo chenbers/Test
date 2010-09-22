@@ -145,6 +145,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setTrailerGallons(resultSet.getFloat(22));
                 hosRecord.setTripReportFlag(resultSet.getBoolean(23));
                 hosRecord.setTripInspectionFlag(resultSet.getBoolean(24));
+                hosRecord.setVehicleName(resultSet.getString(25));
                
                 recordList.add(hosRecord);
             }
@@ -232,21 +233,19 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hoslog_createFromAdminPortal(?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_createFromAdminPortal(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getDriverID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setTimestamp(3, new Timestamp(hosRecord.getLogTime().getTime()));
             statement.setString(4, hosRecord.getTimeZone().getID());
             statement.setInt(5, hosRecord.getStatus().getCode());
             statement.setInt(6, hosRecord.getDriverDotType().getCode());
-            statement.setString(7, hosRecord.getEmployeeID());
-            statement.setBoolean(8, hosRecord.getVehicleIsDOT());
-            statement.setLong(9, hosRecord.getVehicleOdometer().longValue());
-            statement.setString(10, hosRecord.getTrailerID());
-            statement.setString(11, hosRecord.getServiceID());
-            statement.setString(12, hosRecord.getLocation());
-            statement.setInt(13, hosRecord.getEditUserID());
-//            statement.setString(15, hosRecord.getEditUserName());
+            statement.setString(7, hosRecord.getTrailerID());
+            statement.setString(8, hosRecord.getServiceID());
+            statement.setString(9, hosRecord.getLocation());
+            
+            //hosRecord.setEditUserID(1);
+            statement.setInt(10, hosRecord.getEditUserID());
 
             resultSet = statement.executeQuery();
 
@@ -368,7 +367,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hoslog_update(?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getHosLogID());
             statement.setInt(2, hosRecord.getDriverID());
             statement.setInt(3, hosRecord.getVehicleID());
@@ -376,15 +375,14 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(5, hosRecord.getTimeZone().getID());
             statement.setInt(6, hosRecord.getStatus().getCode());
             statement.setInt(7, hosRecord.getDriverDotType().getCode());
-            statement.setString(8, hosRecord.getEmployeeID());
-            statement.setBoolean(9, hosRecord.getVehicleIsDOT());
-            statement.setLong(10, hosRecord.getVehicleOdometer().longValue());
-            statement.setInt(11, hosRecord.getOrigin().getCode());
-            statement.setString(12, hosRecord.getTrailerID());
-            statement.setString(13, hosRecord.getServiceID());
-            statement.setString(14, hosRecord.getLocation());
-            statement.setInt(15, hosRecord.getEditUserID());
+            statement.setString(8, hosRecord.getTrailerID());
+            statement.setString(9, hosRecord.getServiceID());
+            statement.setString(10, hosRecord.getLocation());
 
+//            hosRecord.setEditUserID(1);
+            statement.setInt(11, hosRecord.getEditUserID());
+
+            
             statement.executeUpdate();
 
         }   // end try
