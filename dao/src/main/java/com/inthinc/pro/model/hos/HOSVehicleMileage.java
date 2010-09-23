@@ -11,6 +11,9 @@ public class HOSVehicleMileage  extends BaseEntity{
         this.vehicleName = vehicleName;
         this.distance = distance;
     }
+    public HOSVehicleMileage() {
+        // TODO Auto-generated constructor stub
+    }
     public Integer getGroupID() {
         return groupID;
     }

@@ -12,6 +12,9 @@ public class HOSGroupMileage  extends BaseEntity{
         this.groupID = groupID;
         this.distance = distance;
     }
+    public HOSGroupMileage() {
+        // TODO Auto-generated constructor stub
+    }
     public Integer getGroupID() {
         return groupID;
     }

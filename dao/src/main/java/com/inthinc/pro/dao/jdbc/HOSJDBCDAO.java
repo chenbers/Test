@@ -34,14 +34,97 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
     @Override
     public List<HOSGroupMileage> getHOSMileage(Integer groupID, Interval interval, Boolean noDriver) {
-        // TODO Auto-generated method stub
-        return null;
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+
+        ArrayList<HOSGroupMileage> recordList = new ArrayList<HOSGroupMileage>();
+        
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_getMileageByGroup(?, ?, ?)}");
+            statement.setInt(1, groupID);
+            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
+            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
+            
+            resultSet = statement.executeQuery();
+
+            HOSGroupMileage hosRecord = null;
+            while (resultSet.next())
+            {
+                hosRecord = new HOSGroupMileage();
+
+                hosRecord.setGroupID(resultSet.getInt(1));
+                hosRecord.setDistance(resultSet.getLong(2));
+
+                recordList.add(hosRecord);
+                
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            logger.error("sql hosLog", e);
+            //throw e;
+            return null;
+
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return recordList;
     }
 
     @Override
     public List<HOSVehicleMileage> getHOSVehicleMileage(Integer groupID, Interval interval, Boolean noDriver) {
-        // TODO Auto-generated method stub
-        return null;
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+
+        ArrayList<HOSVehicleMileage> recordList = new ArrayList<HOSVehicleMileage>();
+        
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_getMileageByGroup(?, ?, ?)}");
+            statement.setInt(1, groupID);
+            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
+            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
+            
+            resultSet = statement.executeQuery();
+
+            HOSVehicleMileage hosRecord = null;
+            while (resultSet.next())
+            {
+                hosRecord = new HOSVehicleMileage();
+
+                hosRecord.setGroupID(resultSet.getInt(1));
+                hosRecord.setVehicleName(resultSet.getString(2));
+                hosRecord.setDistance(resultSet.getLong(3));
+
+                recordList.add(hosRecord);
+                
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            logger.error("sql hosLog", e);
+            //throw e;
+            return null;
+
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return recordList;
     }
 
     
