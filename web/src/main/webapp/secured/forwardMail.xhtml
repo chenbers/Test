@@ -10,7 +10,7 @@
               xmlns:security="http://pro.tiwi.com/jsf/security">
 
   <ui:param name="messagesSelected" value="current" />
-  <ui:param name="context" value="messages" />
+  <ui:param name="context" value="forwardMail" />
   
   <ui:param name="title" value="#{messages.adminHeader_people}"/>
   
@@ -42,7 +42,7 @@
 
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="admin"><h:outputText value="Forward Mail" /></span>
+                <span class="admin"><h:outputText value="Forward Messages" /></span>
                 <span class="panel_links">
                 </span>
               </div>
@@ -97,7 +97,7 @@
 															</span>
 														</a4j:commandButton>
 													</li>
-													
+													<!--  
 													<li class="r">
 														<a4j:commandButton id="reset" styleClass="left" action="#{messagesBean.resetSendTo}" reRender="display-form">
 															<span class="refresh">
@@ -105,7 +105,7 @@
 															</span>
 														</a4j:commandButton>
 													</li>													
-				
+													-->
 												</ul>
 											</h:panelGroup>
 										</td>
@@ -160,7 +160,7 @@
                 <f:facet name="header">
                   	<h:outputText value="E-mail"/>
                 </f:facet>
-                <h:outputText id="entity" value="#{item.toFrom}"/>
+                <h:outputText id="entity" value="#{item}"/>
             </rich:column>       
                               		
         </rich:dataTable>	

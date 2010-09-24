@@ -360,6 +360,8 @@ public interface SiloService extends HessianService
 
     Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
     
+    List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID);
+    Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException;
     
     // Report Schedules
     

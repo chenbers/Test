@@ -598,6 +598,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public Map<String, Object> updateRedFlagAlert(Integer redFlagAlertID, Map<String, Object> redFlagAlertMap) throws ProDAOException {
         return createReturnValue("count", 1);
     }
+    
+    @Override
+    public List<Map<String, Object>> getTextMsgAlertsByAcctID(Integer accountID) {
+        return null;
+    }    
 
     @Override
     public Map<String, Object> createAcct(Integer siloID, Map<String, Object> acctMap) throws ProDAOException {
@@ -1391,6 +1396,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> setVehicleDevice(Integer vehicleID, Integer deviceID, Long assignTime) throws ProDAOException {
         // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException {
         return null;
     }
 }

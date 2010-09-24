@@ -46,7 +46,7 @@
             <ui:include src="verticalLeftTab.xhtml">
                <ui:param name="mappingId" value="sendMail"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_sendMail') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="Send Mail"/>
+               <ui:param name="value" value="Send Message"/>
                <ui:param name="context" value="#{context}-vlt-sendMail"/>
            </ui:include>
           </td>
@@ -59,8 +59,8 @@
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
                <ui:param name="mappingId" value="forwardMail"/>
-               <ui:param name="tabSelected" value="#{(selectedAction == 'go_forwardMail') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="Forward Mail"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_forward') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="Forward Messages"/>
                <ui:param name="context" value="#{context}-vlt-forwardMail"/>
            </ui:include>
           </td>

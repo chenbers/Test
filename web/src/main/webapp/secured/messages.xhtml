@@ -62,15 +62,46 @@
 									<table width="800" align="center" style="margin: 0 auto 0 auto;">
 								
 										<tr>
-											<td colspan="2" valign="top">
-												
+											<td valign="top">
+												<table>
+													<!--  <tr>
+														<td>
+                     										<div class="add_section_title">
+                       											<h:outputText value="Team to Display Messages For" />
+                     										</div>
+                     									</td>
+													</tr> -->	
+													<tr>	
+														<td>									
+															<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:200px;size:auto;">
+																<f:selectItems value="#{messagesBean.teams}" />  
+															</h:selectOneMenu>
+														</td>
+													</tr>
+													<tr>
+														<td align="center">
+															<a4j:commandButton id="refresh" styleClass="left" action="#{messagesBean.refreshList}" 
+																reRender="display-form:#{context},display-form:#{context}-bottomScroller">
+																<span class="refresh">
+																	<h:outputText value="Refresh Inbox" />
+																</span>
+															</a4j:commandButton>
+														</td>
+													</tr>
+												</table>
+											</td>
+											<td>
+												<rich:spacer width="50px" height="10px"/>
+											</td>
+											<td valign="top" >
+												<rich:spacer width="50px" height="10px"/>
 											    <a4j:outputPanel id="tablePanel">
           											<a4j:region>
           									
 														<rich:dataTable id="#{context}" value="#{messagesBean.messageList}" var="item"                                    	 
                                      	    					styleClass="datagrid filterabledatagrid" 
                                      	   		 				rowClasses="tableOdd,tableEven" 
- 												 				cellspacing="1" rows="5" width="100%">
+ 												 				cellspacing="1" rows="5" width="530px">
  										 		
               												<rich:column width="10%">
                 												<f:facet name="header">
@@ -119,30 +150,12 @@
 											</td>
 										</tr>
 										<tr>
-											<td >
+											<td colspan="3">
 												<br></br>
 												<h:panelGroup id="viewButtonPanel">
 													<ul id="grid_nav_dark">
-													
-														<li class="r">
-															<a4j:commandButton id="viewDelete" styleClass="left" action="#{messagesBean.removeSelected}" 
-																reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-																<span class="delete">
-																	<h:outputText value="Delete Selected" />
-																</span>
-															</a4j:commandButton>
-														</li>
 
-														<li class="r">
-															<a4j:commandButton id="refresh" styleClass="left" action="#{messagesBean.refreshList}" 
-																reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-																<span class="refresh"><h:outputText
-																	value="Refresh List" />
-																</span>
-															</a4j:commandButton>
-														</li>
-
-														<li class="l text">
+														<li class="r text">
 															<pretty:link id="reply" mappingId="sendMail" >												
                         											<h:outputText value="Reply To Selected"/>                     							
                      										</pretty:link>	
@@ -151,14 +164,7 @@
 													</ul>
 												</h:panelGroup>
 											</td>
-										</tr>	
-										<tr>
-											<td colspan="2">
-												<br />
-											</td>
-										
 										</tr>																		
-
 
 								</table>										
 							</div>
@@ -184,92 +190,7 @@
 	 
 	 </tr>
 	 
-	 </table>
-		
-		
-    <rich:modalPanel id="summary" headerClass="popupHeader" controlsClass="popupControls" 
-    	width="500" height="140" autosized="true" resizeable="false" zindex="2001">
-      	<f:facet name="header">
-        	<h:outputText value="Summary of Message Send" />
-      	</f:facet>
-      	<f:facet name="controls">
-        	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('summary')" />
-      	</f:facet>
-
-      	<div class="popupsubtitle"><h:outputText value="The following are the results of your message send." /></div>
-
-      	<h:form id="confirmCloseSummary">
-          									
-        <rich:dataTable id="#{context}-sentList" value="#{messagesBean.sendMessageList}" var="item"                                    	 
-        	styleClass="datagrid filterabledatagrid" 
-            rowClasses="tableOdd,tableEven" 
- 			cellspacing="1" rows="5" width="100%">
- 										 		
-            <rich:column width="30%">
-                <f:facet name="header">
-                  	<h:outputText value="Entity"/>
-                </f:facet>
-                <h:outputText id="entity" value="#{item.entity}"/>
-            </rich:column>
-            
-            <rich:column width="30%">
-                <f:facet name="header">
-                  	<h:outputText value="Date"/>
-                </f:facet>
-                <h:outputText id="date" value="#{item.sendDate}"/>
-            </rich:column>
-            
-            <rich:column width="40%">
-                <f:facet name="header">
-                  	<h:outputText value="Result"/>
-                </f:facet>
-                <h:outputText id="result" value="#{item.result}"/>
-            </rich:column>            
-                              		
-        </rich:dataTable>	
-        
-        <rich:datascroller for="#{context}-sentList" id="#{context}-sentListBottomScroller">
-        </rich:datascroller>
-        
-        <div class="popupactions">
-          <button id="#{context}-confirmDeleteCancel" type="submit" class="left" onclick="Richfaces.hideModalPanel('summary'); return false;">
-          	<span class="ok">
-          		<h:outputText value="#{messages.button_ok}" />
-          	</span>
-          </button>
-        </div>        
-
-      </h:form>
-
-    </rich:modalPanel>		
-    
-    <rich:modalPanel id="reply" headerClass="popupHeader" controlsClass="popupControls" 
-    	width="500" height="140" autosized="true" resizeable="false" zindex="2001">
-      	<f:facet name="header">
-        	<h:outputText value="Reply to Selected Message(s)" />
-      	</f:facet>
-      	<f:facet name="controls">
-        	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('reply')" />
-      	</f:facet>
-
-      	<div class="popupsubtitle"><h:outputText value="Please enter your message below." /></div>
-
-      	<h:form id="confirmCloseReply">
-          									
-
-
-        
-        <div class="popupactions">
-          <button id="#{context}-confirmDeleteCancel" type="submit" class="left" onclick="Richfaces.hideModalPanel('reply'); return false;">
-          	<span class="ok">
-          		<h:outputText value="#{messages.button_ok}" />
-          	</span>
-          </button>
-        </div>        
-
-      </h:form>
-
-    </rich:modalPanel>				
+	 </table>	
 		
   </ui:define>
 

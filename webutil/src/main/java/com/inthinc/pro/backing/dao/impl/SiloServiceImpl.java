@@ -1000,4 +1000,16 @@ public class SiloServiceImpl implements SiloService {
 
         return null;
     }
+    
+    @Override
+    @MethodDescription(description = "Create a new text message alert.", crudType=CrudType.CREATE, modelClass=com.inthinc.pro.model.TextMsgAlert.class)    
+    public Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) {
+        return null;
+    }
+    
+    @Override
+    @MethodDescription(description = "Fetches a text message alert.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class) 
+    public List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID) {
+        return null;
+    }
 }
