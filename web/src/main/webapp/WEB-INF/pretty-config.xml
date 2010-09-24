@@ -262,7 +262,10 @@
         <pattern>/app/forwardMail/</pattern>
         <view-id>/secured/forwardMail.faces</view-id>
     </url-mapping>          
-    
+    <url-mapping id="sentMail">
+        <pattern>/app/sentMail/</pattern>
+        <view-id>/secured/sentMail.faces</view-id>
+    </url-mapping>    
   
     
     <!-- ADMIN MAPPING RULES -->

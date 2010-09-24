@@ -63,7 +63,7 @@
 								
 										<tr>
 											<td valign="top">
-												<table>
+												<table border="0">
 													<!--  <tr>
 														<td>
                      										<div class="add_section_title">
@@ -72,14 +72,33 @@
                      									</td>
 													</tr> -->	
 													<tr>	
-														<td>									
-															<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:200px;size:auto;">
+														<td colspan="2">									
+															<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:230px;size:auto;">
 																<f:selectItems value="#{messagesBean.teams}" />  
 															</h:selectOneMenu>
 														</td>
 													</tr>
+                                    				<tr>
+                                        				<td>#{messages.drivertrip_start_date}</td>
+                                        				<td>
+                                        					<a4j:outputPanel id="calendarStart" layout="block">
+                                            					<rich:calendar value="#{driverTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                            						timeZone="#{driverTripsBean.timeZone}"
+                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" />
+                                        					</a4j:outputPanel>
+                                        				</td>                                        
+                                    				</tr>
+                                    				<tr>
+                                        				<td>#{messages.drivertrip_end_date}</td>
+                                        				<td>
+                                        					<a4j:outputPanel id="calendarEnd" layout="block">
+                                            					<rich:calendar value="#{driverTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                            						timeZone="#{driverTripsBean.timeZone}"
+                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" />
+                                        					</a4j:outputPanel></td>                                        
+                                    				</tr>													
 													<tr>
-														<td align="center">
+														<td colspan="2" align="center">
 															<a4j:commandButton id="refresh" styleClass="left" action="#{messagesBean.refreshList}" 
 																reRender="display-form:#{context},display-form:#{context}-bottomScroller">
 																<span class="refresh">
@@ -91,7 +110,7 @@
 												</table>
 											</td>
 											<td>
-												<rich:spacer width="50px" height="10px"/>
+												<rich:spacer width="15px" height="10px"/>
 											</td>
 											<td valign="top" >
 												<rich:spacer width="50px" height="10px"/>
@@ -103,7 +122,7 @@
                                      	   		 				rowClasses="tableOdd,tableEven" 
  												 				cellspacing="1" rows="5" width="530px">
  										 		
-              												<rich:column width="10%">
+              												<rich:column width="2%">
                 												<f:facet name="header">
                   													<h:selectBooleanCheckbox  id="selectAll" value="#{messagesBean.selectAll}">
                     													<a4j:support event="onclick" action="#{messagesBean.doSelectAll}" ajaxSingle="true" reRender="display-form:#{context}" limitToList="true" />
@@ -114,7 +133,7 @@
                 												</h:selectBooleanCheckbox>
               												</rich:column>
  												
-                                     		   				<rich:column id="date" width="20%" sortBy="#{item.sendDate}" sortOrder="DESCENDING"> 
+                                     		   				<rich:column id="date" width="15%" sortBy="#{item.sendDate}" sortOrder="DESCENDING"> 
                                     	        				<f:facet name="header">
 	                               		                 			<h:outputText value="Sent" />                             
                                      		       				</f:facet>
@@ -126,7 +145,7 @@
                                                 	
                                         					</rich:column>
                                         		
-                                        					<rich:column id="toFrom" width="20%"> 
+                                        					<rich:column id="toFrom" width="15%"> 
                                           		  				<f:facet name="header">
 	                                       		         			<h:outputText value="From" />                             
                                             					</f:facet>
@@ -134,7 +153,7 @@
                                         		
                                         					</rich:column>
                                         		
-                                        					<rich:column id="msg" width="50%"> 
+                                        					<rich:column id="msg" width="68%"> 
                                           		  				<f:facet name="header">
 	                                      		          			<h:outputText value="Message" />                             
                                             					</f:facet>                                            		
