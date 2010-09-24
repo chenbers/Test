@@ -301,7 +301,8 @@
   	<property name="groupDAO" ref="groupDAO"></property> 
   	<property name="driverDAO" ref="driverDAO"></property>   
   	<property name="deviceDAO" ref="deviceDAO"></property>	
-  	<property name="vehicleDAO" ref="vehicleDAO"></property>  	 
+  	<property name="vehicleDAO" ref="vehicleDAO"></property>  
+  	<property name="textMsgAlertDAO" ref="textMsgAlertDAO"></property>	 
   </bean>
 
   <bean id="customRolesBean" class="com.inthinc.pro.backing.CustomRolesBean" scope="session" init-method="initBean">
