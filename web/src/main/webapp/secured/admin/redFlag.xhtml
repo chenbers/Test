@@ -112,7 +112,14 @@
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editRedFlag_type}" /></td>
                             <td>
-                              <c:set var="typeMessage" value="redFlag_#{redFlagAlertsBean.item.type}" />
+                              <c:set var="typeMessage" value="#{redFlagAlertsBean.item.type}" />
+                              <h:outputText value="#{messages[typeMessage]}" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></td>
+                            <td>
+                              <c:set var="typeMessage" value="#{redFlagAlertsBean.item.severityLevel}" />
                               <h:outputText value="#{messages[typeMessage]}" />
                             </td>
                           </tr>
@@ -147,7 +154,7 @@
                     <tr>
                       <td>
 
-                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'speed'}">
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'ALERT_TYPE_SPEEDING'}">
 
                           <table width="100%" border="0" cellpadding="2" cellspacing="0">
                             <tr class="datagrid">
@@ -178,9 +185,6 @@
                                     <h:outputText value=" " />
                                     <h:outputText value="mph" converter="MeasurementTextConverter" />
                                   </td>
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value="#{messages[redFlagAlertsBean.item.speedLevels[index]]}" />
-                                  </td>
                                 </tr>
                                 <c:set var="row" value="#{row + 1}" />
                               </c:if>
@@ -189,13 +193,12 @@
 
                         </h:panelGroup>
 
-                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'drivingStyle'}">
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'ALERT_TYPE_AGGRESSIVE_DRIVING'}">
 
                           <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr class="datagrid">
                               <th width="100"><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                               <th width="200" colspan="2"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
-                              <th><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                             </tr>
                             <c:set var="row" value="#{0}" />
                             <c:forEach begin="1" var="index" end="4">
@@ -231,10 +234,6 @@
                                     <c:set var="sensitivityLevel" value="editRedFlag_severity#{redFlagAlertsBean.item[sensitivityItem]}" />
                                     <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
                                   </td>
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <c:set var="notificationLevel" value="#{sensitivityItem}Level" />
-                                    <h:outputText value="#{messages[redFlagAlertsBean.item[notificationLevel]]}" />
-                                  </td>
                                 </tr>
                                 <c:set var="row" value="#{row + 1}" />
                               </c:if>
@@ -243,81 +242,18 @@
 
                         </h:panelGroup>
 
-                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'seatBelt'}">
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type != 'ALERT_TYPE_SPEEDING' and redFlagAlertsBean.item.type != 'ALERT_TYPE_AGGRESSIVE_DRIVING' and redFlagAlertsBean.item.type != null}">
 
                           <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                             <tr>
                               <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                             </tr>
                             <tr class="tableEven">
-                              <td><h:outputText value="#{messages.editRedFlag_seatBelt}" /></td>
-                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.seatBeltLevel]}" /></td>
+                              <c:set var="mp" value="editRedFlag_#{redFlagAlertsBean.item.type.description}" />
+                              <td><h:outputText value="#{messages[mp]}" /></td>
                             </tr>
                           </table>
-
                         </h:panelGroup>
-                        
-                         <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'crash'}">
-
-                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                            <tr>
-                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                            </tr>
-                            <tr class="tableEven">
-                              <td><h:outputText value="#{messages.editRedFlag_crash}" /></td>
-                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.crashLevel]}" /></td>
-                            </tr>
-                          </table>
-
-                        </h:panelGroup>
-                        
-                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'tampering'}">
-
-                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                            <tr>
-                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                            </tr>
-                            <tr class="tableEven">
-                              <td><h:outputText value="#{messages.editRedFlag_tampering}" /></td>
-                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.tamperingLevel]}" /></td>
-                            </tr>
-                          </table>
-
-                        </h:panelGroup>
-                        
-                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'lowBattery'}">
-
-                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                            <tr>
-                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                            </tr>
-                            <tr class="tableEven">
-                              <td><h:outputText value="#{messages.editRedFlag_lowBattery}" /></td>
-                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.lowBatteryLevel]}" /></td>
-                            </tr>
-                          </table>
-
-                        </h:panelGroup>
-
-                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'noDriver'}">
-
-                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                            <tr>
-                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                            </tr>
-                            <tr class="tableEven">
-                              <td><h:outputText value="#{messages.editRedFlag_noDriver}" /></td>
-                              <td><h:outputText value="#{messages[redFlagAlertsBean.item.noDriverLevel]}" /></td>
-                            </tr>
-                          </table>
-
-                        </h:panelGroup>
-
                       </td>
                     </tr>
                   </table>

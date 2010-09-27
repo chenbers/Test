@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 
@@ -17,12 +18,12 @@ public class RedFlagsAlertMapper extends AbstractMapper
 
         if (value instanceof String)
         {
-            Integer[] speedSettingsArray = new Integer[15];
+            Integer[] speedSettingsArray = new Integer[Device.NUM_SPEEDS];
             
             String[] list = ((String)value).split(" ");
             for (int i = 0; i < list.length; i++)
             {
-                if (i == 15)
+                if (i == speedSettingsArray.length)
                     break;
                 try
                 {
@@ -30,14 +31,14 @@ public class RedFlagsAlertMapper extends AbstractMapper
                 }
                 catch (NumberFormatException ex)
                 {
-                    speedSettingsArray[i] = 0;
+                    speedSettingsArray[i] = null;
                 }
             }
             
             
-            for (int i = list.length; i < 15; i++)
+            for (int i = list.length; i < speedSettingsArray.length; i++)
             {
-                speedSettingsArray[i] = 0;
+                speedSettingsArray[i] = null;
             }
             
             redFlagAlert.setSpeedSettings(speedSettingsArray);
@@ -52,60 +53,11 @@ public class RedFlagsAlertMapper extends AbstractMapper
             StringBuffer buf = new StringBuffer();
             for (Integer setting : redFlagAlert.getSpeedSettings())
             {
-                buf.append(setting + " ");
+                if (setting!=null)
+                    buf.append(setting);
+                buf.append(" ");
             }
             ((Map<String, Object>)value).put("speedSettings", buf.toString());
-        }
-    }
-
-
-    @ConvertColumnToField(columnName = "speedLevels")
-    public void speedLevelsToModel(RedFlagAlert redFlagAlert, Object value)
-    {
-        if (redFlagAlert == null || value == null)
-            return;
-
-        if (value instanceof String)
-        {
-            RedFlagLevel[] speedLevelsArray = new RedFlagLevel[15];
-            
-            String[] list = ((String)value).split(" ");
-            for (int i = 0; i < list.length; i++)
-            {
-                if (i == 15)
-                    break;
-                try
-                {
-                    speedLevelsArray[i] = RedFlagLevel.valueOf(Integer.valueOf(list[i]));
-                }
-                catch (NumberFormatException ex)
-                {
-                    speedLevelsArray[i] = RedFlagLevel.NONE;
-                }
-            }
-            
-            
-            for (int i = list.length; i < 15; i++)
-            {
-                speedLevelsArray[i] = RedFlagLevel.NONE;
-            }
-            
-            redFlagAlert.setSpeedLevels(speedLevelsArray);
-            
-        }
-    }
-
-    @ConvertFieldToColumn(fieldName = "speedLevels")
-    public void speedLevelsToColumn(RedFlagAlert redFlagAlert, Object value)
-    {
-        if (Map.class.isInstance(value) && (redFlagAlert.getSpeedLevels() != null))
-        {
-            StringBuffer buf = new StringBuffer();
-            for (RedFlagLevel level : redFlagAlert.getSpeedLevels())
-            {
-                buf.append(level.getCode() + " ");
-            }
-            ((Map<String, Object>)value).put("speedLevels", buf.toString());
         }
     }
 }

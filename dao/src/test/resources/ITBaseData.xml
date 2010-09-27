@@ -647,12 +647,17 @@
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="type"> 
+   <object id="RedFlagLevel0" class="com.inthinc.pro.model.AlertMessageType" method="valueOf"> 
+    <string>ALERT_TYPE_SEATBELT</string> 
+   </object> 
+  </void> 
   <void property="accountID"> 
    <int>912</int> 
   </void> 
-  <void property="crashLevel"> 
+  <void property="severityLevel"> 
    <object id="RedFlagLevel0" class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
-    <string>NONE</string> 
+    <string>CRITICAL</string> 
    </object> 
   </void> 
   <void property="dayOfWeek"> 
@@ -699,31 +704,11 @@
   <void property="groupIDs"> 
    <object idref="ArrayList4"/> 
   </void> 
-  <void property="hardAccelerationLevel"> 
-   <object idref="RedFlagLevel0"/> 
-  </void> 
-  <void property="hardBrakeLevel"> 
-   <object idref="RedFlagLevel0"/> 
-  </void> 
-  <void property="hardTurnLevel"> 
-   <object idref="RedFlagLevel0"/> 
-  </void> 
-  <void property="hardVerticalLevel"> 
-   <object idref="RedFlagLevel0"/> 
-  </void> 
-  <void property="lowBatteryLevel"> 
-   <object idref="RedFlagLevel0"/> 
-  </void> 
   <void property="name"> 
    <string>Red Flag Alert Profile</string> 
   </void> 
   <void property="redFlagAlertID"> 
    <int>1855</int> 
-  </void> 
-  <void property="seatBeltLevel"> 
-   <object class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
-    <string>CRITICAL</string> 
-   </object> 
   </void> 
   <void property="startTOD"> 
    <int>0</int> 
@@ -733,9 +718,6 @@
   </void> 
   <void property="stopTOD"> 
    <int>1439</int> 
-  </void> 
-  <void property="tamperingLevel"> 
-   <object idref="RedFlagLevel0"/> 
   </void> 
  </object> 
 </java> 

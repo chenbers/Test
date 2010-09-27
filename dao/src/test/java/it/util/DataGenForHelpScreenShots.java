@@ -32,6 +32,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -273,7 +274,7 @@ public class DataGenForHelpScreenShots {
         List<String> emailList = new ArrayList<String>();
         emailList.add("test@email.com");
         // speeding alert
-        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, 
+        RedFlagAlert redFlagAlert = new RedFlagAlert(AlertMessageType.ALERT_TYPE_SEATBELT, acctID, 
         		fleetUser.getUserID(),
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time
@@ -283,9 +284,8 @@ public class DataGenForHelpScreenShots {
                 null, // vehicleTypeIDs
                 null,
                 emailList, // emailTo
-                null, null, null, null, null, null,
-                RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
-                RedFlagLevel.CRITICAL, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+                null, null, null, null, null,
+                RedFlagLevel.CRITICAL);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);

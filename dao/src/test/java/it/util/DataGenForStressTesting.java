@@ -44,6 +44,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -248,53 +249,48 @@ public class DataGenForStressTesting {
         redFlagAlertDAO.setSiloService(siloService);
 
         // speeding alert (5 mph over any speed, WARNING level)
-        RedFlagAlert redFlagAlert = initRedFlagAlert("Speeding");
+        RedFlagAlert redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING);
         redFlagAlert.setSpeedSettings(new Integer[] {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,});
-        redFlagAlert.setSpeedLevels(new RedFlagLevel[] {RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,
-        							RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,
-        							RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,RedFlagLevel.WARNING,}); 
+        redFlagAlert.setSeverityLevel(RedFlagLevel.WARNING);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // aggressive driving all  (level 1)  CRITICAL
-        redFlagAlert = initRedFlagAlert("Aggressive Driving");
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING);
         redFlagAlert.setHardAcceleration(Integer.valueOf(1));
-        redFlagAlert.setHardAccelerationLevel(RedFlagLevel.CRITICAL);
         redFlagAlert.setHardBrake(Integer.valueOf(1));
-        redFlagAlert.setHardBrakeLevel(RedFlagLevel.CRITICAL);
         redFlagAlert.setHardTurn(Integer.valueOf(1));
-        redFlagAlert.setHardTurnLevel(RedFlagLevel.CRITICAL);
         redFlagAlert.setHardVertical(Integer.valueOf(1));
-        redFlagAlert.setHardVerticalLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.CRITICAL);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // seat belt INFO
-        redFlagAlert = initRedFlagAlert("Seat belt");
-        redFlagAlert.setSeatBeltLevel(RedFlagLevel.INFO);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SEATBELT);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // crash CRITICAL
-        redFlagAlert = initRedFlagAlert("Crash");
-        redFlagAlert.setCrashLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_CRASH);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.CRITICAL);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
         
         // tampering INFO
-        redFlagAlert = initRedFlagAlert("Tampering");
-        redFlagAlert.setTamperingLevel(RedFlagLevel.INFO);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_TAMPERING);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
         
         // low battery INFO
-        redFlagAlert = initRedFlagAlert("Low Battery");
-        redFlagAlert.setLowBatteryLevel(RedFlagLevel.INFO);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_LOW_BATTERY);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
     }
 
 
-    private RedFlagAlert initRedFlagAlert(String typeStr) {
+    private RedFlagAlert initRedFlagAlert(AlertMessageType type) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(account.getAcctID(), 
+    	RedFlagAlert redFlagAlert = new RedFlagAlert(type, account.getAcctID(), 
     		fleetUser.getUserID(),
-    		typeStr + " Red Flag", typeStr + " Red Flag Description", 0,
+    		type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
             anyTeam(),
@@ -304,9 +300,8 @@ public class DataGenForStressTesting {
             notifyPersonList(),
             null, // emailTo
             null, null,
-            null, null, null, null,
-            RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
-            RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+            null, null, null,
+            RedFlagLevel.NONE);
     	return redFlagAlert;
     }
 	private void addRedFlagAlert(RedFlagAlert redFlagAlert,
@@ -455,7 +450,7 @@ public class DataGenForStressTesting {
         List<String> emailList = new ArrayList<String>();
         emailList.add("test@email.com");
         // speeding alert
-        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, 
+        RedFlagAlert redFlagAlert = new RedFlagAlert(AlertMessageType.ALERT_TYPE_SEATBELT, acctID, 
         		fleetUser.getUserID(),
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time
@@ -465,9 +460,8 @@ public class DataGenForStressTesting {
                 null, // vehicleTypeIDs
                 null,
                 emailList, // emailTo
-                null, null, null, null, null, null,
-                RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, 
-                RedFlagLevel.CRITICAL, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE, RedFlagLevel.NONE);
+                null, null, null, null, null,
+                RedFlagLevel.CRITICAL);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);

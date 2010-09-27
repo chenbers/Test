@@ -42,6 +42,7 @@ import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.EventType;
@@ -269,26 +270,29 @@ public class AlertMessagesTest {
     }
     
     private EventType getEventType(RedFlagAlert redFlagAlert) {
-            if (redFlagAlert.getSeatBeltLevel() != null && redFlagAlert.getSeatBeltLevel() != RedFlagLevel.NONE)
-            	return EventType.SEATBELT;
-            else if (redFlagAlert.getHardAccelerationLevel() != null && redFlagAlert.getHardAccelerationLevel() != RedFlagLevel.NONE)
-            	return EventType.HARD_ACCEL;
-            else if (redFlagAlert.getHardBrakeLevel() != null && redFlagAlert.getHardBrakeLevel() != RedFlagLevel.NONE)
-            	return EventType.HARD_BRAKE;
-            else if (redFlagAlert.getHardVerticalLevel() != null && redFlagAlert.getHardVerticalLevel() != RedFlagLevel.NONE)
-            	return EventType.HARD_VERT;
-            else if (redFlagAlert.getHardTurnLevel() != null && redFlagAlert.getHardTurnLevel() != RedFlagLevel.NONE)
-            	return EventType.HARD_TURN;
-            else if (redFlagAlert.getCrashLevel() != null && redFlagAlert.getCrashLevel() != RedFlagLevel.NONE)
-            	return EventType.CRASH;
-            else if (redFlagAlert.getTamperingLevel() != null && redFlagAlert.getTamperingLevel() != RedFlagLevel.NONE)
-            	return EventType.TAMPERING;
-            else if (redFlagAlert.getLowBatteryLevel() != null && redFlagAlert.getLowBatteryLevel() != RedFlagLevel.NONE)
-            	return EventType.LOW_BATTERY;
-            else if (redFlagAlert.getNoDriverLevel() != null && redFlagAlert.getNoDriverLevel() != RedFlagLevel.NONE)
-            	return EventType.NO_DRIVER;
-            else
-            	return EventType.SPEEDING;
+            switch (redFlagAlert.getType())
+            {
+                case ALERT_TYPE_SEATBELT:
+                    return EventType.SEATBELT;
+                case ALERT_TYPE_HARD_ACCELL:    
+                    return EventType.HARD_ACCEL;
+                case ALERT_TYPE_HARD_BRAKE:    
+                    return EventType.HARD_BRAKE;
+                case ALERT_TYPE_HARD_BUMP:    
+                    return EventType.HARD_VERT;
+                case ALERT_TYPE_HARD_TURN:    
+                    return EventType.HARD_TURN;
+                case ALERT_TYPE_CRASH:    
+                    return EventType.CRASH;
+                case ALERT_TYPE_TAMPERING:    
+                    return EventType.TAMPERING;
+                case ALERT_TYPE_LOW_BATTERY:    
+                    return EventType.LOW_BATTERY;
+                case ALERT_TYPE_NO_DRIVER:    
+                    return EventType.NO_DRIVER;                
+                default:
+                    return EventType.SPEEDING;
+            }
     }
 
     private static void modZoneAlertPref(int type, ZoneAlert zoneAlert) {

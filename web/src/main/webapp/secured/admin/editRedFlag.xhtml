@@ -101,6 +101,22 @@
                                 maxlength="64" />
                             </td>
                           </tr>
+
+                          <tr>
+                            <td width="105" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_editRedFlag-severityLevel" value="#{redFlagAlertsBean.updateField['severityLevel']}" />
+                              <h:outputText value="#{messages.editRedFlag_notification}" />
+                            </td>
+                            <td>
+								<h:selectOneMenu id="severityLevel" value="#{redFlagAlertsBean.item.severityLevel}" onchange="checkMultiple(this);">
+                                      <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
+                                      <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
+                                      <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
+                                </h:selectOneMenu>
+                            </td>
+                          </tr>
+                          
+                          <h:outputText value="#{messages.editRedFlag_notification}" />
 							<tr>
 								<td width="115" valign="top">
 									<ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -229,31 +245,37 @@
 
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td width="130" valign="top">
-                        <h:selectOneRadio id="type" value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="left_tab_table" enabledClass="radioitem"
-                           onchange="checkMultiple('type')">
+                      <td width="160" valign="top">
+                        <h:selectOneMenu id="type" value="#{redFlagAlertsBean.item.type}" onchange="checkMultiple('type')">
                           <a4j:support event="onclick" reRender="editRedFlagType" limitToList="true" />
-                          <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
-                          <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
-                          <f:selectItem itemValue="seatBelt" itemLabel="#{messages.redFlag_seatBelt}" />
-                          <f:selectItem itemValue="crash" itemLabel="#{messages.redFlag_crash}" />
-                          <f:selectItem itemValue="tampering" itemLabel="#{messages.redFlag_tampering}" />
-                          <f:selectItem itemValue="lowBattery" itemLabel="#{messages.redFlag_lowBattery}" />
-                          <f:selectItem itemValue="noDriver" itemLabel="#{messages.redFlag_noDriver}" />
-                        </h:selectOneRadio>
+                          <f:selectItem itemValue="" itemLabel="#{messages.editRedFlag_notype}" />
+                          <f:selectItem itemValue="ALERT_TYPE_SPEEDING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_SPEEDING']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_AGGRESSIVE_DRIVING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_SEATBELT" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_SEATBELT']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_CRASH" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_CRASH']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_TAMPERING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_TAMPERING']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_LOW_BATTERY" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_LOW_BATTERY']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_NO_DRIVER" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_NO_DRIVER']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_OFFHOUR" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_OFFHOUR']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_HOS_VIOLATON" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_HOS_VIOLATON']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_THEFT" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_THEFT']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_RPM" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_RPM']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_HEADLIGHT" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_HEADLIGHT']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_WIRELINE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_WIRELINE']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_SEEING_MACHINES" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_SEEING_MACHINES']}" />
+                        </h:selectOneMenu>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="650" valign="top">
                         <rich:message id="message" for="editRedFlagType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 						<a4j:outputPanel id="editRedFlagType">
                         <a4j:outputPanel id="editRedFlag-speed">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'speed'}" id="speedPanel">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'ALERT_TYPE_SPEEDING'}" id="speedPanel">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0">
                               <tr class="datagrid">
                                 <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                               </tr>
                               <c:forEach begin="0" var="index" end="14">
                                 <c:set var="id" value="speed#{index}" />
@@ -275,13 +297,6 @@
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                      <h:outputText value=" " />
                                      <h:outputText value="mph" converter="MeasurementTextConverter"/>
-                                  </td>
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectOneMenu id="#{id}Severity" value="#{redFlagAlertsBean.item.speedLevels[index]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple('type'); document.getElementById(id + 'Selected').checked = true;">
-                                      <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                      <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                      <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
-                                    </h:selectOneMenu>
                                   </td>
                                 </tr>
                               </c:forEach>
@@ -318,7 +333,7 @@
                         </a4j:outputPanel>
 
                         <a4j:outputPanel id="drivingStyle">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'drivingStyle'}">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'ALERT_TYPE_AGGRESSIVE_DRIVING'}">
 
                             <script type="text/javascript">
                               var sensitivities = new Array();
@@ -332,7 +347,6 @@
                               <tr class="datagrid">
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                               </tr>
                               <c:forEach begin="1" var="index" end="4">
                                 <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
@@ -369,11 +383,6 @@
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
-                                    <h:selectOneMenu id="#{sensitivityItem}Severity" value="#{redFlagAlertsBean.item[sensitivityLevel]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple('type'); document.getElementById(id + 'Selected').checked = true;">
-                                      <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                      <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                      <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
-                                    </h:selectOneMenu>
                                   </td>
                                 </tr>
                               </c:forEach>
@@ -382,133 +391,24 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
 
-                        <a4j:outputPanel id="editRedFlag-safety">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'seatBelt'}">
+                        <a4j:outputPanel id="editRedFlag-other">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type != 'ALERT_TYPE_SPEEDING' and redFlagAlertsBean.item.type != 'ALERT_TYPE_AGGRESSIVE_DRIVING' and redFlagAlertsBean.item.type != null}">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                               </tr>
                               <tr class="tableEven">
                                 <td>
-                                  <h:outputText value="#{messages.editRedFlag_seatBelt}" />
-                                </td>
-                                <td>
-                                  <h:selectOneMenu id="seatBeltLevelSeverity" value="#{redFlagAlertsBean.item.seatBeltLevel}" onchange="checkMultiple('type')">
-                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
-                                  </h:selectOneMenu>
+                                  <c:set var="mp" value="editRedFlag_#{redFlagAlertsBean.item.type.description}" />
+                                  <h:outputText value="#{messages[mp]}" />
                                 </td>
                               </tr>
                             </table>
 
                           </h:panelGroup>
                         </a4j:outputPanel>
-                        
-                       <rich:message for="crash" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                        <a4j:outputPanel id="crash">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'crash'}">
 
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                              </tr>
-                              <tr class="tableEven">
-                                <td>
-                                  <h:outputText value="#{messages.editRedFlag_crash}" />
-                                </td>
-                                <td>
-                                  <h:selectOneMenu id="crashLevelSeverity" value="#{redFlagAlertsBean.item.crashLevel}" onchange="checkMultiple('type')">
-                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
-                                  </h:selectOneMenu>
-                                </td>
-                              </tr>
-                            </table>
-
-                          </h:panelGroup>
-                        </a4j:outputPanel>
-                        
-                       <rich:message for="tampering" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                        <a4j:outputPanel id="tampering">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'tampering'}">
-
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                              </tr>
-                              <tr class="tableEven">
-                                <td>
-                                  <h:outputText value="#{messages.editRedFlag_tampering}" />
-                                </td>
-                                <td>
-                                  <h:selectOneMenu id="tamperingLevelSeverity" value="#{redFlagAlertsBean.item.tamperingLevel}" onchange="checkMultiple('type')">
-                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
-                                  </h:selectOneMenu>
-                                </td>
-                              </tr>
-                            </table>
-
-                          </h:panelGroup>
-                        </a4j:outputPanel>
-                        
-                       <rich:message for="lowBattery" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                        <a4j:outputPanel id="lowBattery">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'lowBattery'}">
-
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                              </tr>
-                              <tr class="tableEven">
-                                <td>
-                                  <h:outputText value="#{messages.editRedFlag_lowBattery}" />
-                                </td>
-                                <td>
-                                  <h:selectOneMenu id="lowBatteryLevelSeverity" value="#{redFlagAlertsBean.item.lowBatteryLevel}" onchange="checkMultiple('type')">
-                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
-                                  </h:selectOneMenu>
-                                </td>
-                              </tr>
-                            </table>
-
-                          </h:panelGroup>
-                        </a4j:outputPanel>
-                       <rich:message for="noDriver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                        <a4j:outputPanel id="noDriver">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'noDriver'}">
-
-                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
-                              <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                                <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
-                              </tr>
-                              <tr class="tableEven">
-                                <td>
-                                  <h:outputText value="#{messages.editRedFlag_noDriver}" />
-                                </td>
-                                <td>
-                                  <h:selectOneMenu id="noDriverLevelSeverity" value="#{redFlagAlertsBean.item.noDriverLevel}" onchange="checkMultiple('type')">
-                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
-                                  </h:selectOneMenu>
-                                </td>
-                              </tr>
-                            </table>
-
-                          </h:panelGroup>
-                        </a4j:outputPanel>
 						</a4j:outputPanel>
                       </td>
                     </tr>

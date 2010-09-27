@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
@@ -73,6 +74,10 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     private RedFlagAlertView createRedFlagAlertView(RedFlagAlert flag) {
         final RedFlagAlertView flagView = new RedFlagAlertView();
         flagView.setAnytime(true);
+        flagView.setHardAccelerationSelected(!flag.isHardAccelerationNull());
+        flagView.setHardBrakeSelected(!flag.isHardBrakeNull());
+        flagView.setHardTurnSelected(!flag.isHardTurnNull());
+        flagView.setHardVerticalSelected(!flag.isHardVerticalNull());
         BeanUtils.copyProperties(flag, flagView);
         if (flagView.getStartTOD() == null)
             flagView.setStartTOD(BaseAlert.MIN_TOD);
@@ -128,8 +133,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         final RedFlagAlertView item = super.getItem();
         if (item.getSpeedSettings() == null)
             item.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
-        if (item.getSpeedLevels() == null)
-            item.setSpeedLevels(new RedFlagLevel[Device.NUM_SPEEDS]);
         return item;
     }
 
@@ -157,145 +160,37 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         
         if (isBatchEdit()) {
             boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
-            updateField.put("speedLevels", updateType);
+            updateField.put("severityLevel", updateType);
             updateField.put("speedSettings", updateType);
-            updateField.put("hardAccelerationLevel", updateType);
-            updateField.put("hardBrakeLevel", updateType);
-            updateField.put("hardTurnLevel", updateType);
-            updateField.put("hardVerticalLevel", updateType);
             updateField.put("hardAcceleration", updateType);
             updateField.put("hardBrake", updateType);
             updateField.put("hardTurn", updateType);
             updateField.put("hardVertical", updateType);
-            updateField.put("seatBeltLevel", updateType);
-            updateField.put("crashLevel", updateType);
-            updateField.put("lowBatteryLevel", updateType);
-            updateField.put("tamperingLevel", updateType);
-            updateField.put("noDriverLevel", updateType);
             if (updateField.get("anytime")) {
                 updateField.put("startTOD", true);
                 updateField.put("stopTOD", true);
             }
         }
         // null out unselected items
-        if (getItem().getType().equals("speed")) {
-            for (int i = 0; i < getItem().getSpeedLevels().length; i++)
-                if (!getItem().getSpeedSelected()[i])
-                    getItem().getSpeedLevels()[i] = RedFlagLevel.NONE;
-            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
-            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
-            getItem().setHardTurnLevel(RedFlagLevel.NONE);
-            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
-            getItem().setHardAccelerationSelected(false);
-            getItem().setHardBrakeSelected(false);
-            getItem().setHardTurnSelected(false);
-            getItem().setHardVerticalSelected(false);
-            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
-            getItem().setCrashLevel(RedFlagLevel.NONE);
-            getItem().setTamperingLevel(RedFlagLevel.NONE);
+        if (AlertMessageType.ALERT_TYPE_SPEEDING.equals(getItem().getType())) {
+            Boolean selected[]=this.getItem().getSpeedSelected();
+            Integer settings[]=this.getItem().getSpeedSettings();
+            for (int i=0; i<selected.length; i++)
+            {
+                if (!selected[i])
+                    settings[i]=null;
+            }
+            getItem().setSpeedSettings(settings);
         }
-        else if (getItem().getType().equals("drivingStyle")) {
-            getItem().setSpeedSettings(null);
-            getItem().setSpeedLevels(null);
-            getItem().setSpeedSelected(null);
-            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
-            getItem().setCrashLevel(RedFlagLevel.NONE);
-            getItem().setTamperingLevel(RedFlagLevel.NONE);
-            getItem().setLowBatteryLevel(RedFlagLevel.NONE);
-            getItem().setNoDriverLevel(RedFlagLevel.NONE);
+        else if (AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING.equals(getItem().getType())) {
             if (!getItem().isHardAccelerationSelected())
-                getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
-            if (!getItem().isHardBrakeSelected())
-                getItem().setHardBrakeLevel(RedFlagLevel.NONE);
+                getItem().setHardAcceleration(null);
             if (!getItem().isHardTurnSelected())
-                getItem().setHardTurnLevel(RedFlagLevel.NONE);
+                getItem().setHardTurn(null);
+            if (!getItem().isHardBrakeSelected())
+                getItem().setHardBrake(null);
             if (!getItem().isHardVerticalSelected())
-                getItem().setHardVerticalLevel(RedFlagLevel.NONE);
-        }
-        else if (getItem().getType().equals("seatBelt")) {
-            getItem().setSpeedSettings(null);
-            getItem().setSpeedLevels(null);
-            getItem().setSpeedSelected(null);
-            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
-            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
-            getItem().setHardTurnLevel(RedFlagLevel.NONE);
-            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
-            getItem().setHardAccelerationSelected(false);
-            getItem().setHardBrakeSelected(false);
-            getItem().setHardTurnSelected(false);
-            getItem().setHardVerticalSelected(false);
-            getItem().setCrashLevel(RedFlagLevel.NONE);
-            getItem().setTamperingLevel(RedFlagLevel.NONE);
-            getItem().setLowBatteryLevel(RedFlagLevel.NONE);
-            getItem().setNoDriverLevel(RedFlagLevel.NONE);
-        }
-        else if (getItem().getType().equals("crash")) {
-            getItem().setSpeedSettings(null);
-            getItem().setSpeedLevels(null);
-            getItem().setSpeedSelected(null);
-            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
-            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
-            getItem().setHardTurnLevel(RedFlagLevel.NONE);
-            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
-            getItem().setHardAccelerationSelected(false);
-            getItem().setHardBrakeSelected(false);
-            getItem().setHardTurnSelected(false);
-            getItem().setHardVerticalSelected(false);
-            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
-            getItem().setTamperingLevel(RedFlagLevel.NONE);
-            getItem().setLowBatteryLevel(RedFlagLevel.NONE);
-            getItem().setNoDriverLevel(RedFlagLevel.NONE);
-        }
-        else if (getItem().getType().equals("tampering")) {
-            getItem().setSpeedSettings(null);
-            getItem().setSpeedLevels(null);
-            getItem().setSpeedSelected(null);
-            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
-            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
-            getItem().setHardTurnLevel(RedFlagLevel.NONE);
-            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
-            getItem().setHardAccelerationSelected(false);
-            getItem().setHardBrakeSelected(false);
-            getItem().setHardTurnSelected(false);
-            getItem().setHardVerticalSelected(false);
-            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
-            getItem().setCrashLevel(RedFlagLevel.NONE);
-            getItem().setLowBatteryLevel(RedFlagLevel.NONE);
-            getItem().setNoDriverLevel(RedFlagLevel.NONE);
-        }
-        else if (getItem().getType().equals("lowBattery")) {
-            getItem().setSpeedSettings(null);
-            getItem().setSpeedLevels(null);
-            getItem().setSpeedSelected(null);
-            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
-            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
-            getItem().setHardTurnLevel(RedFlagLevel.NONE);
-            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
-            getItem().setHardAccelerationSelected(false);
-            getItem().setHardBrakeSelected(false);
-            getItem().setHardTurnSelected(false);
-            getItem().setHardVerticalSelected(false);
-            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
-            getItem().setCrashLevel(RedFlagLevel.NONE);
-            getItem().setTamperingLevel(RedFlagLevel.NONE);
-            getItem().setNoDriverLevel(RedFlagLevel.NONE);
-        }
-        else if (getItem().getType().equals("noDriver")) {
-            getItem().setSpeedSettings(null);
-            getItem().setSpeedLevels(null);
-            getItem().setSpeedSelected(null);
-            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
-            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
-            getItem().setHardTurnLevel(RedFlagLevel.NONE);
-            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
-            getItem().setHardAccelerationSelected(false);
-            getItem().setHardBrakeSelected(false);
-            getItem().setHardTurnSelected(false);
-            getItem().setHardVerticalSelected(false);
-            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
-            getItem().setCrashLevel(RedFlagLevel.NONE);
-            getItem().setTamperingLevel(RedFlagLevel.NONE);
-            getItem().setLowBatteryLevel(RedFlagLevel.NONE);
+                getItem().setHardVertical(null);
         }
         return super.save();
     }
@@ -322,7 +217,13 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             valid = false;
         }
   
-        if ("speed".equals(saveItem.getType()) && this.getUpdateField().get("speedLevels")){
+        if (saveItem.getType() == null)
+        {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeTypeMessage"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+            valid=false;
+        }
+        if (AlertMessageType.ALERT_TYPE_SPEEDING.equals(saveItem.getType())){
         	boolean speedValid = false;
         	for(int i=0;i< saveItem.getSpeedSelected().length; i++){
         		
@@ -336,7 +237,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                 
         	}
         }
-        else if ("drivingStyle".equals(saveItem.getType())){
+        else if (AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING.equals(saveItem.getType())){
         	 
         	boolean styleValid = saveItem.isHardAccelerationSelected() 
         						|| saveItem.isHardBrakeSelected() 
@@ -364,15 +265,12 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                 flag.setSpeedSelected(null);
                 if (flag.getSpeedSettings() == null)
                     flag.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
-                if (flag.getSpeedLevels() == null || (flag.getSpeedLevels().length > 0 && flag.getSpeedLevels()[0] == null))
-                    flag.setSpeedLevels(new RedFlagLevel[Device.NUM_SPEEDS]);
                 final Map<String, Boolean> updateField = getUpdateField();
                 for (final String key : updateField.keySet())
                     if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true)) {
                         final int index = Integer.parseInt(key.substring(5));
                         flag.getSpeedSettings()[index] = getItem().getSpeedSettings()[index];
-                        flag.getSpeedLevels()[index] = getItem().getSpeedLevels()[index];
-                    }
+                     }
             }
             if (flag.isAnytime()) {
                 flag.setStartTOD(BaseAlert.MIN_TOD);
@@ -381,7 +279,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             // since getItem auto-creates the below, null 'em here before saving
             if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
                 flag.setSpeedSettings(null);
-                flag.setSpeedLevels(null);
             }
             if (create)
                 flag.setRedFlagAlertID(redFlagAlertDAO.create(getAccountID(), flag));
@@ -422,8 +319,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         private Boolean anytime;
         @Column(updateable = false)
         private boolean selected;
-        @Column(updateable = false)
-        private String type;
         @Column(updateable = false)
         private Boolean[] speedSelected;
         @Column(updateable = false)
@@ -467,35 +362,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             }
         }
 
-        public String getType() {
-            if (type == null) {
-                if (getSeatBeltLevel() != null && getSeatBeltLevel() != RedFlagLevel.NONE)
-                    type = "seatBelt";
-                else if (isHardAccelerationSelected() || isHardBrakeSelected() || isHardTurnSelected() || isHardVerticalSelected())
-                    type = "drivingStyle";
-                else if (getCrashLevel() != null && getCrashLevel() != RedFlagLevel.NONE)
-                    type = "crash";
-                else if (getTamperingLevel() != null && getTamperingLevel() != RedFlagLevel.NONE)
-                    type = "tampering";
-                else if (getLowBatteryLevel() != null && getLowBatteryLevel() != RedFlagLevel.NONE)
-                    type = "lowBattery";
-                else if (getNoDriverLevel() != null && getNoDriverLevel() != RedFlagLevel.NONE)
-                    type = "noDriver";
-                else
-                    type = "speed";
-            }
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
         public Boolean[] getSpeedSelected() {
-            if ((speedSelected == null) && (getSpeedLevels() != null)) {
+            if ((speedSelected == null)) {
                 speedSelected = new Boolean[Device.NUM_SPEEDS];
-                for (int i = 0; i < speedSelected.length; i++)
-                    speedSelected[i] = (getSpeedLevels()[i] != null) && (getSpeedLevels()[i] != RedFlagLevel.NONE);
+                for (int i = 0; i < speedSelected.length && getSpeedSettings()!=null; i++)
+                    speedSelected[i] = getSpeedSettings()[i]!=null;
             }
             return speedSelected;
         }
@@ -505,10 +376,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         }
 
         public boolean isHardAccelerationSelected() {
-            if (hardAccelerationSelected == null) {
-                final RedFlagLevel level = super.getHardAccelerationLevel();
-                hardAccelerationSelected = (level != null) && (level != RedFlagLevel.NONE);
-            }
             return hardAccelerationSelected;
         }
 
@@ -517,10 +384,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         }
 
         public boolean isHardBrakeSelected() {
-            if (hardBrakeSelected == null) {
-                final RedFlagLevel level = super.getHardBrakeLevel();
-                hardBrakeSelected = (level != null) && (level != RedFlagLevel.NONE);
-            }
             return hardBrakeSelected;
         }
 
@@ -529,10 +392,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         }
 
         public boolean isHardTurnSelected() {
-            if (hardTurnSelected == null) {
-                final RedFlagLevel level = super.getHardTurnLevel();
-                hardTurnSelected = (level != null) && (level != RedFlagLevel.NONE);
-            }
             return hardTurnSelected;
         }
 
@@ -541,10 +400,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         }
 
         public boolean isHardVerticalSelected() {
-            if (hardVerticalSelected == null) {
-                final RedFlagLevel level = super.getHardVerticalLevel();
-                hardVerticalSelected = (level != null) && (level != RedFlagLevel.NONE);
-            }
             return hardVerticalSelected;
         }
 
@@ -553,32 +408,10 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         }
 
         @Override
-        public RedFlagLevel getHardAccelerationLevel() {
-            if (!isHardAccelerationSelected())
-                return RedFlagLevel.NONE;
-            return super.getHardAccelerationLevel();
+        public RedFlagLevel getSeverityLevel() {
+            return super.getSeverityLevel();
         }
 
-        @Override
-        public RedFlagLevel getHardBrakeLevel() {
-            if (!isHardBrakeSelected())
-                return RedFlagLevel.NONE;
-            return super.getHardBrakeLevel();
-        }
-
-        @Override
-        public RedFlagLevel getHardTurnLevel() {
-            if (!isHardTurnSelected())
-                return RedFlagLevel.NONE;
-            return super.getHardTurnLevel();
-        }
-
-        @Override
-        public RedFlagLevel getHardVerticalLevel() {
-            if (!isHardVerticalSelected())
-                return RedFlagLevel.NONE;
-            return super.getHardVerticalLevel();
-        }
 
         public boolean isSelected() {
             return selected;

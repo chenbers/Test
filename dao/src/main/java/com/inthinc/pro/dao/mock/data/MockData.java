@@ -849,34 +849,25 @@ public class MockData {
             }
             final int type = randomInt(0, 2);
             if (type == 0) {
-                flag.setHardBrakeLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
-                flag.setHardAccelerationLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
-                flag.setHardTurnLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
-                flag.setHardVerticalLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
-                if (flag.getHardBrakeLevel() != RedFlagLevel.NONE)
-                    flag.setHardBrake(randomInt(0, 2));
-                if (flag.getHardAccelerationLevel() != RedFlagLevel.NONE)
-                    flag.setHardAcceleration(randomInt(0, 2));
-                if (flag.getHardTurnLevel() != RedFlagLevel.NONE)
-                    flag.setHardTurn(randomInt(0, 2));
-                if (flag.getHardVerticalLevel() != RedFlagLevel.NONE)
-                    flag.setHardVertical(randomInt(0, 2));
+                flag.setType(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING);
+                flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
+                flag.setHardBrake(randomInt(0, 2));
+                flag.setHardAcceleration(randomInt(0, 2));
+                flag.setHardTurn(randomInt(0, 2));
+                flag.setHardVertical(randomInt(0, 2));
             }
             else if (type == 1) {
-                final RedFlagLevel[] speedLevels = new RedFlagLevel[Device.NUM_SPEEDS];
-                for (int j = 0; j < speedLevels.length; j++)
-                    speedLevels[j] = RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)];
-                flag.setSpeedLevels(speedLevels);
+                flag.setType(AlertMessageType.ALERT_TYPE_SPEEDING);
+                flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
                 final Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
                 for (int j = 0; j < speedSettings.length; j++)
-                    if (speedLevels[j] != RedFlagLevel.NONE)
-                        speedSettings[j] = randomInt(0, 5) * 5;
-                    else
-                        speedSettings[j] = 0;
+                    speedSettings[j] = randomInt(0, 5) * 5;
                 flag.setSpeedSettings(speedSettings);
             }
-            else
-                flag.setSeatBeltLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
+            else {
+                flag.setType(AlertMessageType.ALERT_TYPE_SEATBELT);
+                flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
+            }
             // groups
             if (randomInt(0, 1) == 1) {
                 final ArrayList<Integer> groupIDs = new ArrayList<Integer>();

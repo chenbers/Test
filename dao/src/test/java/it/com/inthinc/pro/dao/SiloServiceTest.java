@@ -52,6 +52,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -599,21 +600,15 @@ public class SiloServiceTest {
         notifyPersonIDs.add(this.personList.get(0).getPersonID());
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
         Integer[] speedSettings = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80 };
-        RedFlagLevel[] speedLevels = new RedFlagLevel[15];
-        for (int i = 0; i < 15; i++)
-            if (i / 2 == 0)
-                speedLevels[i] = RedFlagLevel.CRITICAL;
-            else
-                speedLevels[i] = RedFlagLevel.INFO;
-        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, userID, 
+
+        RedFlagAlert redFlagAlert = new RedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING,acctID, userID, 
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
                 null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, speedLevels, 10, 10, 10, 10, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING,
-                RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.NONE);
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL);
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setRedFlagAlertID(redFlagAlertID);
@@ -628,18 +623,11 @@ public class SiloServiceTest {
         redFlagAlert.setHardBrake(20);
         redFlagAlert.setHardTurn(20);
         redFlagAlert.setHardVertical(20);
-        redFlagAlert.setHardAccelerationLevel(RedFlagLevel.CRITICAL);
-        redFlagAlert.setHardBrakeLevel(RedFlagLevel.CRITICAL);
-        redFlagAlert.setHardTurnLevel(RedFlagLevel.CRITICAL);
-        redFlagAlert.setHardVerticalLevel(RedFlagLevel.CRITICAL);
-        redFlagAlert.setSeatBeltLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.CRITICAL);
         Integer[] newSpeedSettings = new Integer[15];
-        RedFlagLevel[] newSpeedLevels = new RedFlagLevel[15];
         for (int i = 0; i < 15; i++) {
             newSpeedSettings[i] = 99;
-            newSpeedLevels[i] = RedFlagLevel.WARNING;
         }
-        redFlagAlert.setSpeedLevels(newSpeedLevels);
         redFlagAlert.setSpeedSettings(newSpeedSettings);
         Integer changedCount = redFlagAlertDAO.update(redFlagAlert);
         assertEquals("Red Flag alert update count", Integer.valueOf(1), changedCount);
@@ -669,15 +657,14 @@ public class SiloServiceTest {
         assertEquals(1, groupRedFlagAlertList.size());
         Util.compareObjects(redFlagAlert, groupRedFlagAlertList.get(0), ignoreFields);
         
-        RedFlagAlert fleetRedFlagAlert = new RedFlagAlert(acctID, fleetUserID, 
+        RedFlagAlert fleetRedFlagAlert = new RedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING,acctID, fleetUserID, 
                 "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
                 null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, speedLevels, 10, 10, 10, 10, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING,
-                RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.WARNING, RedFlagLevel.NONE);
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL);
         Integer fleetRedFlagAlertID = redFlagAlertDAO.create(acctID, fleetRedFlagAlert);
         fleetRedFlagAlert.setRedFlagAlertID(fleetRedFlagAlertID);
         userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(fleetUserID);

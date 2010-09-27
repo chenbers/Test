@@ -28,7 +28,7 @@
     </rich:column>
     <rich:column id="type" rendered="#{redFlagAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_type}" /></f:facet>
-      <c:set var="typeMessage" value="redFlag_#{item.type}" />
+      <c:set var="typeMessage" value="#{item.type}" />
       <h:outputText value="#{messages[typeMessage]}" />
     </rich:column>
     <rich:column id="status" rendered="#{redFlagAlertsBean.tableColumns['status'].visible}" sortBy="#{item.status}">
