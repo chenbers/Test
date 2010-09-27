@@ -23,6 +23,7 @@ public class HOSRecord extends BaseEntity {
     private String vehicleName;
     private Boolean vehicleIsDOT;
     private Number vehicleOdometer;
+    private Date originalLogTime;
     private Date logTime;
     private Date addedTime;
     private TimeZone timeZone;
@@ -132,6 +133,12 @@ public class HOSRecord extends BaseEntity {
     }
     public void setLogTime(Date logTime) {
         this.logTime = logTime;
+    }
+    public Date getOriginalLogTime() {
+        return originalLogTime;
+    }
+    public void setOriginalLogTime(Date originalLogTime) {
+        this.originalLogTime = originalLogTime;
     }
     public Date getAddedTime() {
         return addedTime;
