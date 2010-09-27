@@ -229,7 +229,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setTripReportFlag(resultSet.getBoolean(23));
                 hosRecord.setTripInspectionFlag(resultSet.getBoolean(24));
                 hosRecord.setVehicleName(resultSet.getString(25));
-               
+                hosRecord.setOriginalLogTime(resultSet.getTimestamp(26));
                 recordList.add(hosRecord);
             }
         }   // end try
