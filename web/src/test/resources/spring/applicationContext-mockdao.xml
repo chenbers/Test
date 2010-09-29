@@ -10,4 +10,7 @@ default-autowire="byName">
     <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
       <property name="mapServerURLString" value="${mapserver.geonames.url}"/>
     </bean>
+    
+      <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>
+    
 </beans>
