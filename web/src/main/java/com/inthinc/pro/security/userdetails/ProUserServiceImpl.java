@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Status;
@@ -57,10 +58,12 @@ public class ProUserServiceImpl implements UserDetailsService
                 throw new UsernameNotFoundException("Username could not be found");
             } 
             
+            Account account = accountDAO.findByID(user.getPerson().getAcctID());        
+            
             user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
 
             boolean isAdmin = userIsAdmin(user);
-            ProUser proUser = new ProUser(user, getGrantedAuthorities(user, isAdmin));
+            ProUser proUser = new ProUser(user, getGrantedAuthorities(user, isAdmin, account.getHos() == AccountHOSType.HOS_SUPPORT ));
             proUser.setAdmin(isAdmin);
             
             Group topGroup = groupDAO.findByID(user.getGroupID());
@@ -69,10 +72,10 @@ public class ProUserServiceImpl implements UserDetailsService
             
             List<Zone> zoneList = zoneDAO.getZones(user.getPerson().getAcctID());
             proUser.setZones(zoneList);
-            
-            Account account = accountDAO.findByID(user.getPerson().getAcctID());        
+
             proUser.setAccountAttributes(account.getProps());
             proUser.setAccountHOSType(account.getHos());
+            
             
             Driver unknownDriver = driverDAO.findByID(account.getUnkDriverID());
             unknownDriver.getPerson().setDriver(unknownDriver);
@@ -146,7 +149,7 @@ public class ProUserServiceImpl implements UserDetailsService
 		this.driverDAO = driverDAO;
 	}
 
-    private GrantedAuthority[] getGrantedAuthorities(User user, boolean isAdmin){
+    private GrantedAuthority[] getGrantedAuthorities(User user, boolean isAdmin, boolean isAccountHOS){
 		
 		//TODO make an enum for all role related things
 		
@@ -170,6 +173,9 @@ public class ProUserServiceImpl implements UserDetailsService
 			
 			//Will cover all access points
 			grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+			if (isAccountHOS)
+	            grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_HOSADMIN"));
+			
 		}
 		else if (!user.getAccessPoints().isEmpty()){
 			
