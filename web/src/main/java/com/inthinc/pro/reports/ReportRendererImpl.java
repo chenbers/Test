@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.jasper.JasperReport;
 
+
 public class ReportRendererImpl implements ReportRenderer
 {
     private static final Logger logger = Logger.getLogger(ReportRendererImpl.class);
@@ -115,7 +116,7 @@ public class ReportRendererImpl implements ReportRenderer
         {
             HttpServletRequest request = ((HttpServletRequest)facesContext.getExternalContext().getRequest()); 
             request.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jp);
-            String imagesURIStr = request.getContextPath()+"/images?image=";
+            String imagesURIStr = request.getContextPath()+"/images?x=" + System.identityHashCode(jp) + "&image=";
             jasperReport.exportToHtmlStream(out, jp, imagesURIStr);
         }
         

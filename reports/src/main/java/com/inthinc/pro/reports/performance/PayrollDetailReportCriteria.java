@@ -37,7 +37,7 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
         Group topGroup = groupDAO.findByID(groupID);
         Account account = accountDAO.findByID(topGroup.getAccountID());
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = driverDAO.getDrivers(groupID);
+        List<Driver> driverList = getDriverDAO().getDrivers(groupID);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
             if (driver.getDot() == null)
@@ -50,6 +50,31 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
         
         initDataSet(interval, account, topGroup, groupList, driverHOSRecordMap);
     }
+
+    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
+    {
+
+        Group topGroup = groupDAO.findByID(userGroupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
+        Account account = accountDAO.findByID(topGroup.getAccountID());
+        
+        
+        List<Group> reportGroupList = this.getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        List<Driver> driverList = this.getReportDriverList(reportGroupList);
+        
+        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
+        for (Driver driver : driverList) {
+            if (driver.getDot() == null)
+                continue;
+            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
+            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
+        }
+
+        
+        initDataSet(interval, account, topGroup, groupList, driverHOSRecordMap);
+    }
+    
     
     void initDataSet(Interval interval, Account account, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {

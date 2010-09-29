@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.hos;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,16 +18,12 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
-import com.inthinc.pro.reports.hos.model.Violation;
-import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
@@ -51,9 +48,12 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Ta
         addedTimeFormatter = DateTimeFormat.forPattern("M/d/yy h:mm a").withLocale(locale);
     }
     
-    public void init(Integer groupID, Interval interval)
+    public void init(Integer driverID, Interval interval)
     {
-        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        List<Driver> driverList = new ArrayList<Driver>();
+
+        driverList.add(driverDAO.findByID(driverID));
+
         init(driverList, interval);
         
     }
@@ -91,7 +91,10 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Ta
             Driver driver = entry.getKey();
 
             String driverName = driver.getPerson().getFullNameLastFirst();
-            for (HOSRecord hosRecord : entry.getValue()) {
+            List<HOSRecord> hosRecordList = entry.getValue();
+            Collections.sort(hosRecordList);
+
+            for (HOSRecord hosRecord : hosRecordList) {
                 DriverDOTLog log = new DriverDOTLog();
                 log.setDriverName(driverName);
                 log.setOrigin(hosRecord.getOrigin());

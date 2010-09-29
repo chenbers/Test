@@ -179,11 +179,11 @@ public class EmailReportJob extends QuartzJobBean {
                             user.getPerson().getLocale()));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), 
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(user.getGroupID(), reportSchedule.getDriverID(), timeFrame.getInterval(), 
                             user.getPerson().getLocale()));
                     break;
                 case HOS_DRIVER_DOT_LOG_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), 
+                    reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(reportSchedule.getDriverID(), timeFrame.getInterval(), 
                             user.getPerson().getLocale()));
                     break;
                 case DOT_HOURS_REMAINING:

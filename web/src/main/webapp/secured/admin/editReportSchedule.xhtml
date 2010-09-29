@@ -249,7 +249,7 @@
 									</tr>
 								</h:outputText>
 							</ui:repeat>
-							<h:outputText id="groupInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP'}">
+							<h:outputText id="groupInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST'}">
 								<tr>
 									<td width="100" valign="top">
 										<h:outputText value="#{messages.reportSchedule_group}"/>
@@ -270,7 +270,7 @@
 									</td>
 								</tr>
 							</h:outputText>
-							<h:outputText id="driverInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER'}">
+							<h:outputText id="driverInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER'}">
 									<tr>
 										<td width="100" valign="top">
 											<h:outputText value="#{messages.reportSchedule_driver}"/>

@@ -3,8 +3,10 @@ package com.inthinc.pro.reports.performance;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.junit.Ignore;
@@ -392,7 +394,8 @@ public class PayrollCriteriaTest extends BaseUnitTest {
         for (Entry<Driver, List<HOSRecord>> entry : testData.driverHOSRecordMap.entrySet()) {
             
             Driver driver = entry.getKey();
-            criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, driver, entry.getValue());
+            Map<Driver,List<HOSRecord>> oneDriverMap = new HashMap<Driver,List<HOSRecord>>();
+            criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, oneDriverMap);
 
             if (driver.getPerson().getLast().startsWith("Giem")) {
                 int eCnt = 0;

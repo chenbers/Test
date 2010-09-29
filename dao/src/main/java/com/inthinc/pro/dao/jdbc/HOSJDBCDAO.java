@@ -212,7 +212,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(6)));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(7)));
                 hosRecord.setVehicleIsDOT(resultSet.getBoolean(8));
-                hosRecord.setVehicleOdometer(resultSet.getInt(9));
+                hosRecord.setVehicleOdometer(Long.valueOf(resultSet.getInt(9)));
                 hosRecord.setOrigin(HOSOrigin.valueOf(resultSet.getInt(10)));
                 hosRecord.setTrailerID(resultSet.getString(11));
                 hosRecord.setServiceID(resultSet.getString(12));
@@ -260,11 +260,12 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?, ?)}");
+//            statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?)}");
             statement.setInt(1, driverID);
             statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
             statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
-            statement.setBoolean(4, true); //driverStatusOnly
+ //           statement.setBoolean(4, true); //driverStatusOnly
             
             resultSet = statement.executeQuery();
 
@@ -318,7 +319,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_createFromAdminPortal(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getDriverID());
-            statement.setInt(2, hosRecord.getVehicleID());
+            statement.setInt(2, hosRecord.getVehicleID() == null ? 0 : hosRecord.getVehicleID());
             statement.setTimestamp(3, new Timestamp(hosRecord.getLogTime().getTime()));
             statement.setString(4, hosRecord.getTimeZone().getID());
             statement.setInt(5, hosRecord.getStatus().getCode());
@@ -408,7 +409,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(6)));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(7)));
                 hosRecord.setVehicleIsDOT(resultSet.getBoolean(8));
-                hosRecord.setVehicleOdometer(resultSet.getInt(9));
+                hosRecord.setVehicleOdometer(Long.valueOf(resultSet.getInt(9)));
                 hosRecord.setOrigin(HOSOrigin.valueOf(resultSet.getInt(10)));
                 hosRecord.setTrailerID(resultSet.getString(11));
                 hosRecord.setServiceID(resultSet.getString(12));
@@ -453,7 +454,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement = conn.prepareCall("{call hos_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getHosLogID());
             statement.setInt(2, hosRecord.getDriverID());
-            statement.setInt(3, hosRecord.getVehicleID());
+            statement.setInt(3, hosRecord.getVehicleID() == null ? 0 : hosRecord.getVehicleID());
             statement.setTimestamp(4, new Timestamp(hosRecord.getLogTime().getTime()));
             statement.setString(5, hosRecord.getTimeZone().getID());
             statement.setInt(6, hosRecord.getStatus().getCode());

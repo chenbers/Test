@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
@@ -221,47 +222,61 @@ public class HosReportsBean extends BaseBean {
 
         switch (reportGroup.getReports()[0]) {
             case HOS_DAILY_DRIVER_LOG_REPORT:
-                reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(params.getDriverID(), 
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(params.getDriverID(), 
                         params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
+                else
+                    reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(getUser().getGroupID(), 
+                            params.getGroupIDList(), 
+                            params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
                 break;
                 
             case HOS_VIOLATIONS_SUMMARY_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(params.getGroupID(), params.getDateRange().getInterval(), 
+                reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 break;
             case HOS_VIOLATIONS_DETAIL_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(params.getGroupID(), params.getDateRange().getInterval(), 
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getUser().getGroupID(), params.getDriverID(), params.getDateRange().getInterval(), 
                         params.getLocale()));
+                else
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getUser().getGroupID(), 
+                            params.getGroupIDList(), params.getDateRange().getInterval(), 
+                            params.getLocale()));
                 break;
             case HOS_DRIVER_DOT_LOG_REPORT:
-                reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(params.getGroupID(), params.getDateRange().getInterval(), 
+                reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(params.getDriverID(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 break;
             case DOT_HOURS_REMAINING:
-                reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(params.getGroupID(),  
+                reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(getUser().getGroupID(), params.getGroupIDList(),  
                         params.getLocale()));
                 break;
             case HOS_ZERO_MILES:
-                reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             case HOS_EDITS:
-                reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
                 
 // The payroll reports will move to a different part of the UI                
             case PAYROLL_SUMMARY:
-                reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             case PAYROLL_DETAIL:
-                reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             case PAYROLL_SIGNOFF:
-                reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
+                else
+                    reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                            params.getLocale()));
                 break;
             default:
                 break;

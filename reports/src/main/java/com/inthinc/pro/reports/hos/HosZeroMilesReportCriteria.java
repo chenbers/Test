@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
+import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
@@ -26,7 +27,7 @@ import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.MessageUtil;
 
-public class HosZeroMilesReportCriteria extends ReportCriteria implements Tabular {
+public class HosZeroMilesReportCriteria extends GroupListReportCriteria implements Tabular {
 
     protected DateTimeFormatter dateTimeFormatter;
 
@@ -36,7 +37,7 @@ public class HosZeroMilesReportCriteria extends ReportCriteria implements Tabula
 
     public HosZeroMilesReportCriteria(Locale locale) 
     {
-        super(ReportType.HOS_ZERO_MILES, "", locale);
+        super(ReportType.HOS_ZERO_MILES, locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
 
     }
@@ -50,6 +51,21 @@ public class HosZeroMilesReportCriteria extends ReportCriteria implements Tabula
 
         initDataSet(interval, topGroup, groupList,  groupNoDriverMileageList);
     }
+
+    public void init(Integer userGroupID, List<Integer>groupIDList, Interval interval)
+    {
+        Group topGroup = groupDAO.findByID(userGroupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
+
+        List<Group> reportGroupList = this.getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        List<HOSVehicleMileage>  groupNoDriverMileageList = new ArrayList<HOSVehicleMileage>(); 
+            
+        for (Group reportGroup : reportGroupList)
+            groupNoDriverMileageList.addAll(hosDAO.getHOSVehicleMileage(reportGroup.getGroupID(), interval, true));
+
+        initDataSet(interval, topGroup, groupList,  groupNoDriverMileageList);
+    }
+
     
     void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, 
             List<HOSVehicleMileage> groupUnitNoDriverMileageList)

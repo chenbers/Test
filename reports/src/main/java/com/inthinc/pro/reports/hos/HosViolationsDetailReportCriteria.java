@@ -82,7 +82,7 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
                 row.add(new Result(detail.getDriverName(), detail.getDriverName()));
                 row.add(new Result(detail.getVehicleId(), detail.getVehicleId()));
                 row.add(new Result(detail.getGroupName(), detail.getGroupName()));
-                String violationTypeStr = MessageUtil.getBundleString(resourceBundle, "Violation."+violation.getType().getName()); 
+                String violationTypeStr = MessageUtil.getBundleString(resourceBundle, "violation."+violation.getType().getName()); 
                 row.add(new Result(violationTypeStr, violationTypeStr));
                 row.add(new Result(Converter.convertMinutes(violation.getMinutes()), violation.getMinutes()));
                 String ruleSetTypeStr = MessageUtil.getBundleString(resourceBundle, detail.getRuleType().getName()); 

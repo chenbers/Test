@@ -46,7 +46,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandButton id="editHosLogSave1" action="#{hosBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:commandButton id="editHosLogDelete1" action="#{hosBean.delete}" styleClass="left" rendered="#{not hosBean.add and not hosBean.batchEdit and hosBean.item.canDelete}"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editHosLogSave1" action="#{hosBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
                           <h:outputText value=" " /><h:commandButton id="editHosLogCancel1" action="#{hosBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
@@ -214,7 +215,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandButton id="editHosLogSave2" action="#{hosBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:commandButton id="editHosLogDelete2" action="#{hosBean.delete}" styleClass="left" rendered="#{not hosBean.add and not hosBean.batchEdit and hosBean.item.canDelete}"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editHosLogSave2" action="#{hosBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
                           <h:outputText value=" " /><h:commandButton id="editHosLogCancel2" action="#{hosBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>

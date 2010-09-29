@@ -33,16 +33,25 @@ public interface ReportCriteriaService
     
     // HOS
     List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric);
+    List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric);
     ReportCriteria getHosViolationsSummaryReportCriteria(Integer groupID, Interval interval, Locale locale);
-    ReportCriteria getHosViolationsDetailReportCriteria(Integer groupID, Interval interval, Locale locale);
-    ReportCriteria getHosDriverDOTLogReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getHosViolationsSummaryReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
+    ReportCriteria getHosViolationsDetailReportCriteria(Integer userGroupID, Integer driverID, Interval interval, Locale locale);
+    ReportCriteria getHosViolationsDetailReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
+    ReportCriteria getHosDriverDOTLogReportCriteria(Integer driverID, Interval interval, Locale locale);
     ReportCriteria getDotHoursRemainingReportCriteria(Integer groupID, Locale locale);
+    ReportCriteria getDotHoursRemainingReportCriteria(Integer userGroupID, List<Integer> groupIDList, Locale locale);
     ReportCriteria getHosZeroMilesReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getHosZeroMilesReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
     ReportCriteria getHosEditsReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getHosEditsReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
 
     // Performance
     ReportCriteria getPayrollDetailReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getPayrollDetailReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
     ReportCriteria getPayrollSignoffReportCriteria(Integer driverID, Interval interval, Locale locale);
+    ReportCriteria getPayrollSignoffReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
     ReportCriteria getPayrollSummaryReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getPayrollSummaryReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
 
 }

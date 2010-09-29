@@ -9,24 +9,35 @@ import java.util.Locale;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.Logger;
+
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 
 public class ReportParams implements Cloneable {
     
     private DateRange dateRange;
     private Integer groupID;
+    private List<String> groupIDSelectList;
     private Integer driverID;
     private Locale locale;
     private ReportGroup reportGroup;
-
+    private ReportParamType paramType;
+    
+    
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
+    
+    private static final Logger logger = Logger.getLogger(ReportParams.class);
+    
     
     public ReportParams(Locale locale)
     {
@@ -54,6 +65,24 @@ public class ReportParams implements Cloneable {
     public void setDriverID(Integer driverID) {
         this.driverID = driverID;
     }
+    public List<Integer> getGroupIDList() {
+        if (groupIDSelectList == null)
+            return null;
+        
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        for (String groupIDStr : groupIDSelectList) {
+            try {
+                groupIDList.add(Integer.valueOf(groupIDStr));
+            }
+            catch (NumberFormatException ex) {
+                logger.error(ex);
+                
+            }
+        }
+        return groupIDList;
+    }
+
+
     
     public Boolean getValid() {
         
@@ -77,6 +106,17 @@ public class ReportParams implements Cloneable {
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP && getGroupID() == null) 
             return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         
+        if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST && getGroupIDSelectList() == null) 
+            return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
+        
+        if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
+            if (getParamType() == null || getParamType() == ReportParamType.NONE)
+                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale());
+            else if (getParamType() == ReportParamType.DRIVER && getDriverID() == null)
+                    return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale());
+            else if (getParamType() == ReportParamType.GROUPS && getGroupIDSelectList() == null)
+                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
+        }
         
         return null;
     }
@@ -128,7 +168,7 @@ public class ReportParams implements Cloneable {
         List<SelectItem> groups = new ArrayList<SelectItem>();
         if (getGroupHierarchy() == null)
             return groups;
-        groups.add(new SelectItem(null, BLANK_SELECTION));
+//        groups.add(new SelectItem(null, BLANK_SELECTION));
         for (final Group group : getGroupHierarchy().getGroupList()) {
             String fullName = getGroupHierarchy().getFullGroupName(
                     group.getGroupID());
@@ -154,6 +194,11 @@ public class ReportParams implements Cloneable {
         }
         return drivers;
     }
+    
+    public List<SelectItem> getReportParamTypes() {
+        return SelectItemUtil.toList(ReportParamType.class, true, ReportParamType.NONE);
+    }
+
 
     public List<Driver> getDriverList() {
         return driverList;
@@ -169,6 +214,22 @@ public class ReportParams implements Cloneable {
 
     public void setGroupHierarchy(GroupHierarchy groupHierarchy) {
         this.groupHierarchy = groupHierarchy;
+    }
+
+    public List<String> getGroupIDSelectList() {
+        return groupIDSelectList;
+    }
+
+    public void setGroupIDSelectList(List<String> groupIDSelectList) {
+        this.groupIDSelectList = groupIDSelectList;
+    }
+
+    public ReportParamType getParamType() {
+        return paramType;
+    }
+
+    public void setParamType(ReportParamType paramType) {
+        this.paramType = paramType;
     }
 
     

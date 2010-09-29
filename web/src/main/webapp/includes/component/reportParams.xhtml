@@ -27,6 +27,13 @@
 -->
 
 <ui:composition>
+	<link rel="STYLESHEET" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/jsDropdown/ui.dropdownchecklist.standalone.css"/>
+		
+	<a4j:loadStyle src="/css/jsDropdown/ui.dropdownchecklist.standalone.css"/>
+	<a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.1-min.js"/>
+	<a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
+	<script type="text/javascript">
+	</script>
 
 	<a4j:outputPanel  id="#{context}_paramsPanel">
 		<a4j:region id="#{context}_paramsRegion">
@@ -51,11 +58,12 @@
 						<td>
 							<a4j:outputPanel id="groupSelect">
 							<h:selectOneMenu id="#{context}-groupParam" value="#{params.groupID}" style="width:200px;size:auto;">
+								<f:selectItem itemLabel="" itemValue="#{null}"/>
 								<f:selectItems value="#{params.groups}"/>
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectOneMenu>
 							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-  					 					<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-groupParam" />
+  					 					<ui:param name="selectBoxID" value="#{context}_form:{context}-groupParam" />
 							</ui:include>
 							</a4j:outputPanel>
 							
@@ -64,6 +72,7 @@
 					</table>
 				</li>
 				</h:outputText>
+				
 				<h:outputText id="driverInput" rendered="#{params.selectedEntityType eq 'ENTITY_DRIVER'}">
 				<li  class="l">
 		   			<table border="0" cellspacing="0" cellpadding="4">
@@ -78,7 +87,7 @@
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectOneMenu>
 							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-								<ui:param name="selectBoxID" value="#{context}_paramsForm:{context}-driverParam" />
+								<ui:param name="selectBoxID" value="#{context}_form:{context}-driverParam" />
 							</ui:include>
 							</a4j:outputPanel>
 						</td>
@@ -86,6 +95,62 @@
 					</table>
 				</li>
 				</h:outputText>
+				<h:outputText id="groupListInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST'}">
+				<li  class="l">
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.hosReports_groups}"/>
+						</td>
+						<td>
+							<a4j:outputPanel id="groupListSelect">
+							<h:selectManyMenu id="#{context}groupListParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto">
+								<f:selectItems value="#{params.groups}"/>
+								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+							</h:selectManyMenu>
+							</a4j:outputPanel>
+							<rich:jQuery selector="##{context}_form\\:#{context}groupListParam" timing="onload" query="dropdownchecklist({ icon: {}, width: 200,maxDropHeight: 150})"/>
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
+				<h:outputText id="grouporDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_OR_DRIVER'}">
+				<li  class="l">
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.hosReports_groupsOrDriver}"/>
+						</td>
+						<td>
+							<h:selectOneMenu  id="grouporDriverSelection" value="#{params.paramType}" >  
+								<f:selectItems value="#{params.reportParamTypes}"/>
+								<a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel,#{context}_form:groupSelectPanel"/>
+							</h:selectOneMenu>
+						</td>
+						<td>							
+							<a4j:outputPanel id="driverSelectPanel">
+							<h:selectOneMenu id="#{context}-groupDriverParam" value="#{params.driverID}" style="width:200px;size:auto;" rendered="#{params.paramType eq 'DRIVER'}">
+								<f:selectItems value="#{params.drivers}"/>
+								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+							</h:selectOneMenu>
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+								<ui:param name="selectBoxID" value="#{context}_form:{context}-groupDriverParam" />
+							</ui:include>
+							</a4j:outputPanel>							
+							<a4j:outputPanel id="groupSelectPanel">
+							<h:selectManyMenu id="#{context}groupDriverListParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto" rendered="#{params.paramType eq 'GROUPS'}">
+								<f:selectItems value="#{params.groups}"/>
+								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+							</h:selectManyMenu>
+							<rich:jQuery selector="##{context}_form\\:#{context}groupDriverListParam" timing="onload" query="dropdownchecklist({ icon: {}, width: 200,maxDropHeight: 150})"/>
+							</a4j:outputPanel>							
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
+					
            </ul>
           </a4j:region>
          </a4j:outputPanel>

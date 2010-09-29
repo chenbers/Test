@@ -14,4 +14,12 @@
         <constructor-arg value="${proxy.siloDataAccessHost}" />
         <constructor-arg value="${proxy.siloDataAccessPort}" />
     </bean>
+    
+	<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+	  <property name="url" value="${jdbc.mysql.url}"/>
+	  <property name="username" value="${jdbc.mysql.username}"/>
+	  <property name="password" value="${jdbc.mysql.password}"/>
+	</bean>
+    
 </beans>

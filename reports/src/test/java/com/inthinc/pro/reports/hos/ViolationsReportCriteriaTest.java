@@ -179,7 +179,6 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
     @Test
     public void gainSummmaryTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//int testCaseCnt = 0; {
             HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
                       // HOS VIOLATIONS
 //System.out.println(" " + testCaseCnt);         

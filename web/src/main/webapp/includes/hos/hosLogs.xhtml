@@ -117,7 +117,7 @@
 		    </rich:column>
 		    <rich:column id="vehicle" rendered="#{hosTableColumns.tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}">
 		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_vehicle}" /></f:facet>
-		      <h:outputText value="#{item.vehicleID == null ? messages.hosLogs_webLogin : item.vehicleName}" />
+		      <h:outputText value="#{item.isWebLogin ? messages.hosLogs_webLogin : item.vehicleName}" />
 		    </rich:column>
 		    <rich:column id="service" rendered="#{hosTableColumns.tableColumns['service'].visible}" sortBy="#{item.serviceID}">
 		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_service}" /></f:facet>

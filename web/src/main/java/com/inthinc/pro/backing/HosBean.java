@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.ui.DateRange;
@@ -27,7 +28,6 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
-import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -66,7 +66,7 @@ public class HosBean extends BaseBean {
 
     public HosBean() {
         super();
-        hosDAO = new MockHOSDAO();
+
     }
     
     public List<SelectItem> getDrivers() {
@@ -285,6 +285,8 @@ public class HosBean extends BaseBean {
         this.selectAll = selectAll;
     }
     protected List<HosLogView> loadItems() {
+logger.info("in loadItems()");
+
         LinkedList<HosLogView> items = new LinkedList<HosLogView>();
         if (getDriverID() == null)
             return items;
@@ -368,6 +370,13 @@ public class HosBean extends BaseBean {
             
         }
 
+        public boolean getCanDelete() {
+            return getOrigin() != HOSOrigin.DEVICE;
+        }
+
+        public boolean getIsWebLogin() {
+            return getOrigin() == HOSOrigin.KIOSK;
+        }
     }
     
     public String add()
@@ -385,6 +394,19 @@ public class HosBean extends BaseBean {
         return EDIT_REDIRECT;
     }
 
+    public String delete()
+    {
+        
+        List<HosLogView> selected = getSelectedItems();
+        if (selected.size() != 1) 
+            return VIEW_REDIRECT;   //shouldn't happen
+        
+        HosLogView delItem = selected.get(0);
+        hosDAO.deleteByID(delItem.getId());
+        items.remove(delItem);
+        
+        return VIEW_REDIRECT;
+    }
     
     private HosLogView createAddItem() {
         HOSRecord hosRecord = new HOSRecord();
@@ -392,7 +414,6 @@ public class HosBean extends BaseBean {
         hosRecord.setLogTime(new Date());
         hosRecord.setDriverID(driverID);
         hosRecord.setDriverDotType(driver.getDriverDOTType());
-        hosRecord.setEdited(false);
         
         return createLogView(hosRecord);
     }
@@ -489,8 +510,6 @@ public class HosBean extends BaseBean {
         try
         {
             doSave(selected, add);
-            if (items == null)
-                getItems();
         }
         catch (HessianException e)
         {
@@ -502,10 +521,12 @@ public class HosBean extends BaseBean {
 
         if (add)
         {
-//            items.add(item);
-            items = null;
-            getItems();
+        //    items = null;
+            items.add(item);
         }
+        
+//        if (items == null)
+//            getItems();
 
         // deselect all edited items
         for (HosLogView  item : getSelectedItems())
@@ -563,9 +584,13 @@ public class HosBean extends BaseBean {
     protected void doSave(List<HosLogView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
+        
+        Integer editUserID = getUser().getUserID();
 
         for (HosLogView log : saveItems)
         {
+            log.setEditUserID(editUserID);
+            log.setEdited(true);
             if (create)
                 log.setHosLogID(hosDAO.create(getDriverID(), log));
             else

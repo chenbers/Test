@@ -24,13 +24,12 @@ import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
@@ -42,9 +41,8 @@ import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
-public class DotHoursRemainingReportCriteria extends ReportCriteria implements Tabular {
+public class DotHoursRemainingReportCriteria extends GroupListReportCriteria implements Tabular {
 
-    private DriverDAO driverDAO;
     private GroupDAO groupDAO;
     private HOSDAO hosDAO;
 
@@ -54,7 +52,7 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
     public static final int     DAYS_BACK=14;
     
     public DotHoursRemainingReportCriteria(Locale locale) {
-        super(ReportType.DOT_HOURS_REMAINING, "", locale);
+        super(ReportType.DOT_HOURS_REMAINING, locale);
         dayFormatter = DateTimeFormat.forPattern("MM/dd/yy").withLocale(locale);
     }
     
@@ -62,8 +60,28 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
     {
         Group topGroup = groupDAO.findByID(groupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
+
+        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+
+        initDataSet(groupHierarchy, driverList);
         
+    }
+    public void init(Integer userGroupID, List<Integer> groupIDList) {
+        Group topGroup = groupDAO.findByID(userGroupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
+
+        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+        
+        List<Group> reportGroupList = getReportGroupList(groupIDList, groupHierarchy);
+                    
+        List<Driver> driverList = getReportDriverList(reportGroupList);
+        
+        initDataSet(groupHierarchy, driverList);
+        
+    }
+
+    private void initDataSet(GroupHierarchy groupHierarchy, List<Driver> driverList) {
         DateTime currentDate = new DateTime(); 
         
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
@@ -74,13 +92,18 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval, true));
         }
         
-        initDataSet(topGroup, groupList, driverHOSRecordMap, currentDate);
+        initDataSet(groupHierarchy, driverHOSRecordMap, currentDate);
+        
     }
 
-    void initDataSet(Group topGroup, List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime currentDate)
-    {
+    void initDataSet(Group topGroup, List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime currentDate) {
         GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+        initDataSet(groupHierarchy, driverHOSRecordMap, currentDate);
+        
+    }
 
+    void initDataSet(GroupHierarchy groupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime currentDate)
+    {
         List<DotHoursRemaining> dotHoursRemainingList = new ArrayList<DotHoursRemaining>();
 
         Interval interval = new Interval(new DateMidnight(currentDate.minusDays(DAYS_BACK)), new DateMidnight(currentDate));
@@ -88,7 +111,10 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
-            fillInDotHoursRemainingData(dotHoursRemainingList, groupHierarchy.getFullName(driver.getGroupID()), driver, dayList, entry.getValue(), currentDate);
+            List<HOSRecord> hosRecordList = entry.getValue();
+            Collections.sort(hosRecordList);
+
+            fillInDotHoursRemainingData(dotHoursRemainingList, groupHierarchy.getFullName(driver.getGroupID()), driver, dayList, hosRecordList, currentDate);
         }
     
 
@@ -136,14 +162,6 @@ public class DotHoursRemainingReportCriteria extends ReportCriteria implements T
        }
     }
     
-    public DriverDAO getDriverDAO() {
-        return driverDAO;
-    }
-
-    public void setDriverDAO(DriverDAO driverDAO) {
-        this.driverDAO = driverDAO;
-    }
-
     public GroupDAO getGroupDAO() {
         return groupDAO;
     }

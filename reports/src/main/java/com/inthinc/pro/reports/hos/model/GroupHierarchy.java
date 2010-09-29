@@ -8,7 +8,9 @@ import java.util.Map;
 import com.inthinc.pro.model.Group;
 
 public class GroupHierarchy {
+
     Map<Integer, Group> groupMap;
+    Group topGroup;
 
     public GroupHierarchy()
     {
@@ -22,7 +24,8 @@ public class GroupHierarchy {
         for(Group group:descendentsList){
             groupMap.put(group.getGroupID(), group);
         }
-        
+
+        topGroup = parentGroup;
     }
 
     public String getFullName(Integer groupID) {
@@ -72,4 +75,13 @@ public class GroupHierarchy {
             return null;
         return getTopAncestor(parent, ancestorList);
     }
+
+    public Group getTopGroup() {
+        return topGroup;
+    }
+
+    public void setTopGroup(Group topGroup) {
+        this.topGroup = topGroup;
+    }
+
 }

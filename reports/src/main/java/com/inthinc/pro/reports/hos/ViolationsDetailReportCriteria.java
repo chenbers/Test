@@ -27,6 +27,7 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
@@ -34,11 +35,10 @@ import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 import com.inthinc.pro.reports.hos.util.HOSUtil;
 
-public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
+public abstract class ViolationsDetailReportCriteria extends GroupListReportCriteria {
 
     
     protected GroupDAO groupDAO;
-    protected DriverDAO driverDAO;
     protected HOSDAO hosDAO;
 
     private static final String   DISPLAY_DATE_FORMAT     = "MM/dd/yy HH:mm z";
@@ -48,19 +48,32 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
     
     public ViolationsDetailReportCriteria(ReportType reportType, Locale locale) 
     {
-        super(reportType, "", locale);
+        super(reportType, locale);
         displayDateTimeFormatter = DateTimeFormat.forPattern(DISPLAY_DATE_FORMAT).withLocale(locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
 
-    public void init(Integer groupID, Interval interval)
+    public void init(Integer userGroupID, Integer driverID, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(groupID);
+        Group topGroup = groupDAO.findByID(userGroupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = driverDAO.getDrivers(groupID);
+        List<Driver> driverList = new ArrayList<Driver>();
 
+        driverList.add(getDriverDAO().findByID(driverID));
         init(topGroup, groupList, driverList, interval);
     }
+    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
+    {
+        Group topGroup = groupDAO.findByID(userGroupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
+        
+        List<Group> reportGroupList = getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        List<Driver> reportDriverList = getReportDriverList(reportGroupList);
+
+
+        init(topGroup, groupList, reportDriverList, interval);
+    }
+    
     
     public void init(List<Integer> driverIDList, Interval interval)
     {
@@ -68,7 +81,7 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
         List<Group> groupList = null;
         List<Driver> driverList = new ArrayList<Driver>();
         for (Integer driverID : driverIDList) {
-            Driver driver = driverDAO.findByID(driverID);
+            Driver driver = getDriverDAO().findByID(driverID);
             if (topGroup == null) {
                 groupList = groupDAO.getGroupsByAcctID(driver.getPerson().getAcctID());
                 for (Group group : groupList) {
@@ -94,7 +107,12 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
                 DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()));
                 DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
-                driverHOSRecordMap.put(driver, getFilteredList(hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd), false), getHOSStatusFilterList()));
+                
+                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd), false);
+                Collections.sort(hosRecordList);
+
+
+                driverHOSRecordMap.put(driver, getFilteredList(hosRecordList, getHOSStatusFilterList()));
             }
         }
         
@@ -203,13 +221,6 @@ public abstract class ViolationsDetailReportCriteria extends ReportCriteria {
         this.groupDAO = groupDAO;
     }
 
-    public DriverDAO getDriverDAO() {
-        return driverDAO;
-    }
-
-    public void setDriverDAO(DriverDAO driverDAO) {
-        this.driverDAO = driverDAO;
-    }
 
     public HOSDAO getHosDAO() {
         return hosDAO;

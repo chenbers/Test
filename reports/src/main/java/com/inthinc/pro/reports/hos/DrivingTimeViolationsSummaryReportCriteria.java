@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.hos;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +43,7 @@ public class DrivingTimeViolationsSummaryReportCriteria extends ViolationsSummar
     {
         Group topGroup = groupDAO.findByID(groupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = driverDAO.getDrivers(groupID);
+        List<Driver> driverList = getDriverDAO().getDrivers(groupID);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
             if (driver.getDot() == null)
@@ -71,9 +72,13 @@ public class DrivingTimeViolationsSummaryReportCriteria extends ViolationsSummar
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             RuleSetType driverDOTType = driver.getDriverDOTType();
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
-            List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
+            
+            List<HOSRecord> hosRecordList = entry.getValue();
+            Collections.sort(hosRecordList);
 
-            ViolationsSummary summary = findSummary(groupHierarchy, topGroup, dataMap, driver.getGroupID());
+            List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(hosRecordList, reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
+
+            ViolationsSummary summary = findSummary(groupHierarchy, dataMap, driver.getGroupID());
             if (summary == null) {
                 continue;
             }

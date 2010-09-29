@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.hos;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +18,12 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.util.DateUtil;
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosEdit;
@@ -33,12 +33,11 @@ import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
-public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
+public class HosEditsReportCriteria extends GroupListReportCriteria implements Tabular {
 
 
     private HOSDAO hosDAO;
     private GroupDAO groupDAO;
-    private DriverDAO driverDAO;
     private static final String   DISPLAY_DATE_FORMAT     = "yyyy-MM-dd HH:mm";
     protected DateTimeFormatter displayDateTimeFormatter;
     protected DateTimeFormatter dateTimeFormatter;
@@ -46,7 +45,7 @@ public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
 
     
     public HosEditsReportCriteria(Locale locale) {
-        super(ReportType.HOS_EDITS, "", locale);
+        super(ReportType.HOS_EDITS, locale);
         displayDateTimeFormatter = DateTimeFormat.forPattern(DISPLAY_DATE_FORMAT).withLocale(locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         addedTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS").withLocale(locale);
@@ -57,12 +56,27 @@ public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
         Group topGroup = groupDAO.findByID(groupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
 
-        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
-        init(topGroup, groupList, driverList, interval);
+        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+
+        List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
+        init(groupHierarchy, driverList, interval);
+        
+    }
+    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
+    {
+        Group topGroup = groupDAO.findByID(userGroupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
+
+        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+        
+        List<Group> reportGroupList = getReportGroupList(groupIDList, groupHierarchy);
+                    
+        List<Driver> driverList = getReportDriverList(reportGroupList);
+        init(groupHierarchy, driverList, interval);
         
     }
 
-    public void init(Group topGroup, List<Group> groupList, List<Driver> driverList, Interval interval)
+    public void init(GroupHierarchy groupHierarchy, List<Driver> driverList, Interval interval)
     {
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         
@@ -75,22 +89,32 @@ public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false));
             }
         }
-        initDataSet(topGroup, groupList, interval, driverHOSRecordMap);
+        initDataSet(groupHierarchy, interval, driverHOSRecordMap);
 
     }
     
     void initDataSet(Group topGroup, List<Group> groupList, Interval interval, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);  
+        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+        initDataSet(groupHierarchy, interval, driverHOSRecordMap);
+    }
+    
+    void initDataSet(GroupHierarchy groupHierarchy, Interval interval, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    {
+        
         
         List<HosEdit> hosEditList = new ArrayList<HosEdit>();
+        
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             String driverGroupName = groupHierarchy.getFullName(driver.getGroupID());
             String driverName = driver.getPerson().getFullNameLastFirst();
-            for (HOSRecord hosRecord : entry.getValue()) {
+            List<HOSRecord> hosRecordList = entry.getValue();
+            Collections.sort(hosRecordList);
+
+            for (HOSRecord hosRecord : hosRecordList) {
                 if (hosRecord.getEditUserName() == null || hosRecord.getEditUserName().isEmpty())
                     continue;
                 HosEdit hosEdit = new HosEdit();
@@ -140,13 +164,6 @@ public class HosEditsReportCriteria extends ReportCriteria implements Tabular {
         this.hosDAO = hosDAO;
     }
 
-    public DriverDAO getDriverDAO() {
-        return driverDAO;
-    }
-
-    public void setDriverDAO(DriverDAO driverDAO) {
-        this.driverDAO = driverDAO;
-    }
     public GroupDAO getGroupDAO() {
         return groupDAO;
     }

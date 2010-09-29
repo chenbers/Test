@@ -11,7 +11,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.BaseEntity;
 
 @XmlRootElement
-public class HOSRecord extends BaseEntity {
+public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
 
     private static final long serialVersionUID = 1L;
     
@@ -22,7 +22,7 @@ public class HOSRecord extends BaseEntity {
     private Integer vehicleID;
     private String vehicleName;
     private Boolean vehicleIsDOT;
-    private Number vehicleOdometer;
+    private Long vehicleOdometer;
     private Date originalLogTime;
     private Date logTime;
     private Date addedTime;
@@ -56,7 +56,7 @@ public class HOSRecord extends BaseEntity {
     }
     public HOSRecord(Integer hosLogID, Integer driverID,// String driverName,
             RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
-            Number vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
+            Long vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
             String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
         super();
         this.hosLogID = hosLogID;
@@ -237,10 +237,10 @@ public class HOSRecord extends BaseEntity {
     public void setHosLogID(Integer hosLogID) {
         this.hosLogID = hosLogID;
     }
-    public Number getVehicleOdometer() {
+    public Long getVehicleOdometer() {
         return vehicleOdometer;
     }
-    public void setVehicleOdometer(Number vehicleOdometer) {
+    public void setVehicleOdometer(Long vehicleOdometer) {
         this.vehicleOdometer = vehicleOdometer;
     }
 
@@ -332,6 +332,11 @@ public class HOSRecord extends BaseEntity {
         edited + "," +
         "\"" + editUserName + "\"," +
         deleted + "),");
+    }
+    @Override
+    public int compareTo(HOSRecord o) {
+        // natural order is log time descending (most recent first)
+        return (o.getLogTime().compareTo(getLogTime()));
     }
 
 }

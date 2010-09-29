@@ -28,6 +28,7 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
@@ -40,19 +41,18 @@ import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
-public class PayrollReportCriteria extends ReportCriteria implements Tabular {
+public class PayrollReportCriteria extends GroupListReportCriteria implements Tabular {
 
     protected DateTimeFormatter dateTimeFormatter; 
     
     protected AccountDAO accountDAO;
     protected GroupDAO groupDAO;
-    protected DriverDAO driverDAO;
     protected HOSDAO hosDAO;
 
     
     public PayrollReportCriteria(ReportType reportType, Locale locale) 
     {
-        super(reportType, "", locale);
+        super(reportType, locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
 
@@ -111,14 +111,6 @@ public class PayrollReportCriteria extends ReportCriteria implements Tabular {
 
     public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
-    }
-
-    public DriverDAO getDriverDAO() {
-        return driverDAO;
-    }
-
-    public void setDriverDAO(DriverDAO driverDAO) {
-        this.driverDAO = driverDAO;
     }
 
     public HOSDAO getHosDAO() {
