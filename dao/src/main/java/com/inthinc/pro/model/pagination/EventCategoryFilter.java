@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.inthinc.pro.model.EventType;
+import com.inthinc.pro.model.event.EventType;
 
 
 public class EventCategoryFilter implements TableFilterFactory{

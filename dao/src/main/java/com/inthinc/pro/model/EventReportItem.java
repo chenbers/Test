@@ -8,6 +8,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.model.event.Event;
+
 
 public class EventReportItem implements Comparable<EventReportItem> {
 

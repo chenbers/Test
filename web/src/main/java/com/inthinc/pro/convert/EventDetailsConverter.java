@@ -4,7 +4,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
 
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.util.MessageUtil;
 
 public class EventDetailsConverter extends BaseConverter

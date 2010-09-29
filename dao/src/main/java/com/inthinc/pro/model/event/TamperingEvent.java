@@ -1,4 +1,4 @@
-package com.inthinc.pro.model;
+package com.inthinc.pro.model.event;
 
 import java.util.Date;
 

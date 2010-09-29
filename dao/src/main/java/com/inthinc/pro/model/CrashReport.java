@@ -6,6 +6,7 @@ import java.util.List;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
+import com.inthinc.pro.model.event.FullEvent;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

@@ -3,7 +3,7 @@ package com.inthinc.pro.dao.hessian.mapper;
 import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.RedFlag;
 
 public class RedFlagHessianMapper extends AbstractMapper

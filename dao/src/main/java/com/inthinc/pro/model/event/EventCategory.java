@@ -1,10 +1,12 @@
-package com.inthinc.pro.model;
+package com.inthinc.pro.model.event;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.model.BaseEnum;
 
 @XmlRootElement
 public enum EventCategory implements BaseEnum

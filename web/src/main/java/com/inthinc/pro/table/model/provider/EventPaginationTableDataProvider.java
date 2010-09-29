@@ -6,9 +6,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.pagination.PageParams;
 
 public class EventPaginationTableDataProvider  extends BaseNotificationPaginationDataProvider<Event> {

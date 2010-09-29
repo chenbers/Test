@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.service.DriverService;

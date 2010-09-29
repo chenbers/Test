@@ -15,11 +15,11 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.AggressiveDrivingEvent;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.SeatBeltEvent;
-import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.SeatBeltEvent;
+import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.scoring.Calculator;
 
 public class ExtractDataBean {

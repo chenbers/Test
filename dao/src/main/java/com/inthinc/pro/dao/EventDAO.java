@@ -3,7 +3,7 @@ package com.inthinc.pro.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 

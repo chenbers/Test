@@ -10,11 +10,11 @@ import org.junit.Test;
 
 import com.inthinc.pro.backing.BaseBeanTest;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.EventType;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.Vehicle;
 
 public class EventDisplayTest extends BaseBeanTest

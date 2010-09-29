@@ -17,9 +17,9 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.security.Roles;
 

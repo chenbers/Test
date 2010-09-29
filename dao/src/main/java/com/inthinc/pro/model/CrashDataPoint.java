@@ -3,6 +3,7 @@ package com.inthinc.pro.model;
 import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.event.FullEvent;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

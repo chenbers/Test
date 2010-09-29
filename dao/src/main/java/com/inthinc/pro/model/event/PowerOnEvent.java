@@ -1,4 +1,4 @@
-package com.inthinc.pro.model;
+package com.inthinc.pro.model.event;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

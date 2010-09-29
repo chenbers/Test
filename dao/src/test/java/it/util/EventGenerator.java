@@ -11,21 +11,21 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.AggressiveDrivingEvent;
-import com.inthinc.pro.model.DeviceLowBatteryEvent;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.FullEvent;
-import com.inthinc.pro.model.IdleEvent;
-import com.inthinc.pro.model.IgnitionOffEvent;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.DeviceLowBatteryEvent;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.FullEvent;
+import com.inthinc.pro.model.event.IdleEvent;
+import com.inthinc.pro.model.event.IgnitionOffEvent;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.LowBatteryEvent;
-import com.inthinc.pro.model.SeatBeltEvent;
-import com.inthinc.pro.model.SpeedingEvent;
-import com.inthinc.pro.model.TamperingEvent;
-import com.inthinc.pro.model.ZoneArrivalEvent;
-import com.inthinc.pro.model.ZoneDepartureEvent;
-import com.inthinc.pro.model.ZoneEvent;
+import com.inthinc.pro.model.event.LowBatteryEvent;
+import com.inthinc.pro.model.event.SeatBeltEvent;
+import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.TamperingEvent;
+import com.inthinc.pro.model.event.ZoneArrivalEvent;
+import com.inthinc.pro.model.event.ZoneDepartureEvent;
+import com.inthinc.pro.model.event.ZoneEvent;
 
 
 public class EventGenerator

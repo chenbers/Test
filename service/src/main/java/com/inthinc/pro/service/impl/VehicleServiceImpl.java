@@ -16,7 +16,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Trip;

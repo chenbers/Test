@@ -280,7 +280,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Fetches the notification or event by its ID.", 
-    				crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Event.class,
+    				crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
 					mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
     public Map<String, Object> getNote(@DaoParam(name = "noteID", validator=ValidatorType.NOTE) Long noteID) {
         return null;
@@ -288,7 +288,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Fetches the notification or event for the specified driver closest to the specifed location, in the timeframe.", 
-    					crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Event.class,
+    					crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
 						mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
     public Map<String, Object> getNoteNearLoc(@DaoParam(name = "driverID", validator=ValidatorType.DRIVER) Integer driverID, 
     		@DaoParam(name = "latitude") Double lat, 
@@ -300,7 +300,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Fetches notes associated with this driver, within the specified timeframe (start, stop)and note types to be fetched.", 
-    						crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Event.class,
+    						crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
     						mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
     public List<Map<String, Object>> getDriverNote(@DaoParam(name = "driverID", validator=ValidatorType.DRIVER) Integer driverID,
             @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
@@ -319,7 +319,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Fetches the last 'N' most recent notes for this group. (optional)typeList would contain a list of note types to be fetched.", 
-    					crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Event.class,
+    					crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
     					mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
     public List<Map<String, Object>> getRecentNotes(@DaoParam(name = "groupID", validator=ValidatorType.GROUP) Integer groupID, @DaoParam(name = "count") Integer eventCnt,
             @DaoParam(name = "types", type=com.inthinc.pro.backing.dao.ui.EventTypeList.class, inputDesc = "event types") Integer[] types) throws ProDAOException {
@@ -418,7 +418,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Fetches notes associated with this vehicle, within the specified timeframe (start, stop). (optional)typeList would contain a list of note types to be fetched.", 
-    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Event.class,
+    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
 			mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
     public List<Map<String, Object>> getVehicleNote(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE) Integer vehicleID,
             @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
@@ -742,7 +742,7 @@ public class SiloServiceImpl implements SiloService {
 	}
 	@Override
     @MethodDescription(description = "Get a subset of driver Events for the specifed group and time frame.", 
-    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Event.class,
+    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
 			mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
 	public List<Map<String, Object>> getDriverEventPage(
 			@DaoParam(name = "groupID", validator=ValidatorType.GROUP) Integer groupID, 
@@ -768,7 +768,7 @@ public class SiloServiceImpl implements SiloService {
 
 	@Override
     @MethodDescription(description = "Get a subset of Red flags for the specifed group and time frame.", 
-    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Event.class,
+    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
 			mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
 	public List<Map<String, Object>> getRedFlagsPage(@DaoParam(name = "groupID", validator=ValidatorType.GROUP)Integer groupID,
             @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,

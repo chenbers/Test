@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.model.event.Event;
 
 @XmlRootElement
 public class Trip extends BaseEntity {
@@ -23,7 +24,7 @@ public class Trip extends BaseEntity {
     private String startAddressStr;
     private String endAddressStr;
 
-    @Column(name = "events", type = com.inthinc.pro.model.Event.class, updateable = false)
+    @Column(name = "events", type = com.inthinc.pro.model.event.Event.class, updateable = false)
     private List<Event> events;
 
     private TripStatus status;

@@ -1,9 +1,10 @@
-package com.inthinc.pro.model;
+package com.inthinc.pro.model.event;
 
 import java.text.MessageFormat;
 import java.util.Date;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

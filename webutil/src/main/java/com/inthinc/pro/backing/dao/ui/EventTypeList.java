@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.event.EventMapper;
 
 public class EventTypeList implements PickList{
 

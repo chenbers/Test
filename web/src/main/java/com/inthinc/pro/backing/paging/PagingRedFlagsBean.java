@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.LocaleBean;
-import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;

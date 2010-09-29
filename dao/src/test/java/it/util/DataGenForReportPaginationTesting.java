@@ -21,8 +21,8 @@ import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventMapper;
 
 public class DataGenForReportPaginationTesting extends DataGenForTesting {
 	

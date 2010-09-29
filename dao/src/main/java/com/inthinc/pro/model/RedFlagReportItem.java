@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.util.Locale;
+import com.inthinc.pro.model.event.Event;
 
 public class RedFlagReportItem extends EventReportItem {
 

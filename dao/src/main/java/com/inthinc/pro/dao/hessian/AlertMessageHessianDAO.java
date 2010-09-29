@@ -20,24 +20,24 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.LowBatteryEvent;
+import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.NoAddressFoundException;
-import com.inthinc.pro.model.NoDriverEvent;
+import com.inthinc.pro.model.event.NoDriverEvent;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.SeatBeltEvent;
-import com.inthinc.pro.model.SpeedingEvent;
-import com.inthinc.pro.model.TamperingEvent;
+import com.inthinc.pro.model.event.SeatBeltEvent;
+import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.TamperingEvent;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneArrivalEvent;
-import com.inthinc.pro.model.ZoneDepartureEvent;
+import com.inthinc.pro.model.event.ZoneArrivalEvent;
+import com.inthinc.pro.model.event.ZoneDepartureEvent;
 
 public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Integer> implements AlertMessageDAO {
     

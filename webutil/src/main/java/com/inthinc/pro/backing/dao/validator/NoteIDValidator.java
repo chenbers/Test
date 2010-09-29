@@ -2,7 +2,7 @@ package com.inthinc.pro.backing.dao.validator;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.Group;
 
 public class NoteIDValidator extends DefaultValidator {

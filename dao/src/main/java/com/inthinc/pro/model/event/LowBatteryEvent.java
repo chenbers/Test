@@ -1,30 +1,30 @@
-package com.inthinc.pro.model;
+package com.inthinc.pro.model.event;
 
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class DeviceLowBatteryEvent extends Event
+public class LowBatteryEvent extends Event
 {
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     
-    public DeviceLowBatteryEvent()
+    public LowBatteryEvent()
     {
         super();
     }
     
-    public DeviceLowBatteryEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    public LowBatteryEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
     }
     
     public EventType getEventType()
     {
-        return EventType.DEVICE_LOW_BATTERY;
+        return EventType.LOW_BATTERY;
     }   
     
     public EventCategory getEventCategory()
@@ -33,4 +33,3 @@ public class DeviceLowBatteryEvent extends Event
     }
 
 }
-

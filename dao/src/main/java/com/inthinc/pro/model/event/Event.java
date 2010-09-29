@@ -1,4 +1,4 @@
-package com.inthinc.pro.model;
+package com.inthinc.pro.model.event;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +11,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.BaseEntity;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Vehicle;
 
 @XmlRootElement
 public class Event extends BaseEntity implements Comparable<Event>, Serializable

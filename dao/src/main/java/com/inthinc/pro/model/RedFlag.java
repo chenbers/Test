@@ -5,6 +5,7 @@ import java.util.TimeZone;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.event.Event;
 
 @XmlRootElement
 public class RedFlag extends BaseEntity

@@ -1,4 +1,4 @@
-package com.inthinc.pro.model;
+package com.inthinc.pro.model.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.model.AggressiveDrivingEventType;
 import com.inthinc.pro.model.pagination.EventCategoryFilter;
 
 @XmlRootElement

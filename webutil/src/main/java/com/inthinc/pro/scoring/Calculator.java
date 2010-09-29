@@ -2,11 +2,11 @@ package com.inthinc.pro.scoring;
 
 import java.util.List;
 
-import com.inthinc.pro.model.AggressiveDrivingEvent;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventType;
-import com.inthinc.pro.model.SeatBeltEvent;
-import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.SeatBeltEvent;
+import com.inthinc.pro.model.event.SpeedingEvent;
 // import com.inthinc.pro.scoring.model.OverallScoreDetails;
 
 public class Calculator {

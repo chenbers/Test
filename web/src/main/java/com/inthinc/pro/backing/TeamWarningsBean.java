@@ -12,8 +12,8 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.Vehicle;
 
 public class TeamWarningsBean extends BaseBean

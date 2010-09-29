@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Alert;
-import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlagLevel;

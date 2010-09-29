@@ -6,7 +6,7 @@ import java.util.List;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.reports.ReportCriteria;
 
 @KeepAlive

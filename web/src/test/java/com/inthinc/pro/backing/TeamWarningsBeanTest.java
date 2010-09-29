@@ -13,9 +13,9 @@ import org.junit.Test;
 
 import com.inthinc.pro.backing.ui.EventDisplay;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.Vehicle;
 
 public class TeamWarningsBeanTest extends BaseBeanTest

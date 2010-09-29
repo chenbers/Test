@@ -3,7 +3,7 @@ package com.inthinc.pro.backing.ui;
 import org.junit.Test;
 
 import com.inthinc.pro.backing.BaseBeanTest;
-import com.inthinc.pro.model.EventType;
+import com.inthinc.pro.model.event.EventType;
 
 public class EventTypeIconsTest extends BaseBeanTest {
 

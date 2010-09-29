@@ -11,8 +11,8 @@ import java.util.List;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventMapper;
 
 public abstract class DataGenForTesting  {
 
