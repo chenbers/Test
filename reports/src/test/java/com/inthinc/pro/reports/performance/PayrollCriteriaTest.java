@@ -392,9 +392,10 @@ public class PayrollCriteriaTest extends BaseUnitTest {
         PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(Locale.US);
         
         for (Entry<Driver, List<HOSRecord>> entry : testData.driverHOSRecordMap.entrySet()) {
-            
             Driver driver = entry.getKey();
+            
             Map<Driver,List<HOSRecord>> oneDriverMap = new HashMap<Driver,List<HOSRecord>>();
+            oneDriverMap.put(driver, entry.getValue());
             criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, oneDriverMap);
 
             if (driver.getPerson().getLast().startsWith("Giem")) {
