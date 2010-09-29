@@ -58,8 +58,26 @@
 								<div class="panel_content">		
 			<!-- List of things to select -->	
 									<table width="800" align="center" style="margin: 0 auto 0 auto;">									
-						
+										
 										<tr>
+										
+										<td valign="top">
+                     						<div class="add_section_title">
+                       							<h:outputText value="Select Group" />
+                     						</div>
+											<br></br>																										
+											<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:230px;size:auto;">
+												<f:selectItems value="#{messagesBean.teams}" />  
+											</h:selectOneMenu>
+											<br></br>
+							
+											<a4j:commandButton id="find" styleClass="left" action="#{messagesBean.getFowardMessage}" reRender="display-form:sendTo">
+												<span class="email">
+													<h:outputText value="Get E-mail List" />
+												</span>
+											</a4j:commandButton>
+													
+										</td>
 											
 										<td valign="top">
 											
@@ -70,7 +88,7 @@
 
 											<!-- start type ahead -->
                             				<h:inputTextarea value="#{messagesBean.sendTo}" id="sendTo" styleClass="text" rows="50" cols="50"
-                            					style="width:780px;height:250px;margin-left:10px;overflow-y:scroll" />
+                            					style="width:480px;height:250px;margin-left:10px;overflow-y:scroll" />
                             				<rich:suggestionbox for="sendTo" suggestionAction="#{messagesBean.autoComplete}" 
                             					var="personName" tokens=";" nothingLabel="No e-mail addressess found" ignoreDupResponses="true">
                        							<a4j:support event="onselect"  >
@@ -81,10 +99,14 @@
                               					</h:column>
                             				</rich:suggestionbox>
                             				<!-- end type ahead -->
-                            				
-                            				<br></br>
-                            				<br></br>					
+			
 											
+
+										</td>
+									</tr>
+									
+									<tr>
+										<td colspan="2">
 											<h:panelGroup id="buttonPanel">
 												<ul id="grid_nav_dark">
 
@@ -107,8 +129,11 @@
 													</li>													
 													-->
 												</ul>
-											</h:panelGroup>
+											</h:panelGroup>										
+										
+										
 										</td>
+									
 									</tr>
 
 								</table>										

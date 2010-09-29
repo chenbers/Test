@@ -75,22 +75,48 @@
 										<tr>
 
 										<td valign="top">
-
+                     						<div class="add_section_title">
+                       							<h:outputText value="Drivers" />
+                     						</div>
+											<br></br>
 											<!--  
 											<h:inputTextarea id="toList" value="#{messagesBean.mailingList}" rows="50" cols="50" disabled="false"
 												style="width:380px;height:150px;margin-left:10px;overflow-y:scroll" />
                             				-->
-											<rich:pickList sourceListWidth="338px" targetListWidth="338px" value="#{messagesBean.selectedList}">
-												<f:selectItems value="#{messagesBean.selectFromList}"/>
-											</rich:pickList>                            							
-                            				
+                            				  
+											<rich:pickList sourceListWidth="100px" showButtonsLabel="false" id="driverList"
+												targetListWidth="100px" value="#{messagesBean.driverSelectedList}">
+												<f:selectItems value="#{messagesBean.driverSelectFromList}"/>
+											</rich:pickList> 
+										</td>	  
+											
+										<td valign="top">
+                     						<div class="add_section_title">
+                       							<h:outputText value="Vehicles" />
+                     						</div>
+											<br></br>										
+											<rich:pickList sourceListWidth="100px" showButtonsLabel="false" id="vehicleList"
+												targetListWidth="100px" value="#{messagesBean.vehicleSelectedList}">
+												<f:selectItems value="#{messagesBean.vehicleSelectFromList}"/>
+											</rich:pickList> 
+										</td>
+											
+										<td valign="top">	
+                     						<div class="add_section_title">
+                       							<h:outputText value="Groups" />
+                     						</div>
+											<br></br>																					                       							                           				
+											<rich:pickList sourceListWidth="100px" showButtonsLabel="false" id="groupList"
+												targetListWidth="100px" value="#{messagesBean.groupSelectedList}">
+												<f:selectItems value="#{messagesBean.groupSelectFromList}"/>
+											</rich:pickList>                             				
 										</td>
 										
 										</tr>
 												
 										<tr>
 										
-										<td>											
+										<td colspan="3">											
                      						<div class="add_section_title">
                        							<h:outputText value="Message" />
                      						</div>
@@ -105,14 +131,14 @@
 										
 										<tr>
 										
-										<td>								
+										<td colspan="3">								
 											
 											<h:panelGroup id="buttonPanel">
 												<ul id="grid_nav_dark">
 
 													<li class="r">
 														<a4j:commandButton id="send" styleClass="left" action="#{messagesBean.sendMessage}"
-															reRender="#{context}-sendList,#{context}-sendListBottomScroller,display-form:toList,display-form:msgText"
+															reRender="#{context}-sendList,#{context}-sendListBottomScroller,display-form:toList,display-form:msgText,display-form:driverList,display-form:vehicleList,display-form:groupList"
 															oncomplete="javascript:Richfaces.showModalPanel('summary')">
 															<span class="email">
 																<h:outputText value="Send" />

@@ -42,7 +42,7 @@
 
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="admin"><h:outputText value="Sent Mail" /></span>
+                <span class="admin"><h:outputText value="Sent Messages" /></span>
                 <span class="panel_links">
                 </span>
               </div>
@@ -103,7 +103,7 @@
 															<a4j:commandButton id="refresh" styleClass="left" action="#{messagesBean.refreshList}" 
 																reRender="display-form:#{context},display-form:#{context}-bottomScroller">
 																<span class="refresh">
-																	<h:outputText value="Refresh Inbox" />
+																	<h:outputText value="Refresh" />
 																</span>
 															</a4j:commandButton>
 														</td>
@@ -122,17 +122,6 @@
                                      	    					styleClass="datagrid filterabledatagrid" 
                                      	   		 				rowClasses="tableOdd,tableEven" 
  												 				cellspacing="1" rows="5" width="530px">
- 										 		
-              												<rich:column width="10%">
-                												<f:facet name="header">
-                  													<h:selectBooleanCheckbox  id="selectAll" value="#{messagesBean.selectAll}">
-                    													<a4j:support event="onclick" action="#{messagesBean.doSelectAll}" ajaxSingle="true" reRender="display-form:#{context}" limitToList="true" />
-                  													</h:selectBooleanCheckbox>
-                												</f:facet>
-                												<h:selectBooleanCheckbox id="select" value="#{item.selected}">
-                  													<a4j:support event="onclick" reRender="confirmDelete" limitToList="true" />
-                												</h:selectBooleanCheckbox>
-              												</rich:column>
  												
                                      		   				<rich:column id="date" width="20%" sortBy="#{item.sendDate}" sortOrder="DESCENDING"> 
                                     	        				<f:facet name="header">
@@ -148,13 +137,13 @@
                                         		
                                         					<rich:column id="toFrom" width="20%"> 
                                           		  				<f:facet name="header">
-	                                       		         			<h:outputText value="From" />                             
+	                                       		         			<h:outputText value="To" />                             
                                             					</f:facet>
                                         						<h:outputText value="#{item.toFrom}"/>
                                         		
                                         					</rich:column>
                                         		
-                                        					<rich:column id="msg" width="50%"> 
+                                        					<rich:column id="msg" width="60%"> 
                                           		  				<f:facet name="header">
 	                                      		          			<h:outputText value="Message" />                             
                                             					</f:facet>                                            		
@@ -168,23 +157,7 @@
                                         			</a4j:region>
                                         		</a4j:outputPanel>
 											</td>
-										</tr>
-										<tr>
-											<td colspan="3">
-												<br></br>
-												<h:panelGroup id="viewButtonPanel">
-													<ul id="grid_nav_dark">
-
-														<li class="r text">
-															<pretty:link id="reply" mappingId="sendMail" >												
-                        											<h:outputText value="Reply To Selected"/>                     							
-                     										</pretty:link>	
-														</li>
-																																
-													</ul>
-												</h:panelGroup>
-											</td>
-										</tr>																		
+										</tr>													
 
 								</table>										
 							</div>

@@ -246,9 +246,7 @@
         <pattern>/app/liveFleet</pattern>
         <view-id>/secured/liveFleet.faces</view-id>
     </url-mapping>
-    
-    
-    
+        
     <url-mapping id="inbox">
         <pattern>/app/messages/</pattern>
         <view-id>/secured/messages.faces</view-id>

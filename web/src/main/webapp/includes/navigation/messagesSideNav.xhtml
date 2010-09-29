@@ -39,6 +39,7 @@
           </td>
         </tr>
         <!-- </security:authorize>  -->
+        
         <!-- Send Mail
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VEHICLESACCESS"> -->
         <tr>
@@ -51,24 +52,8 @@
            </ui:include>
           </td>
         </tr>
-        <!--  </security:authorize>  -->
         
-        <!-- Forward Mail
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VEHICLESACCESS"> -->
-        <tr>
-          <td valign="top">
-            <ui:include src="verticalLeftTab.xhtml">
-               <ui:param name="mappingId" value="forwardMail"/>
-               <ui:param name="tabSelected" value="#{(selectedAction == 'go_forward') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="Settings"/>
-               <ui:param name="context" value="#{context}-vlt-forwardMail"/>
-           </ui:include>
-          </td>
-        </tr>
-        <!--  </security:authorize>  -->
-        
-        
-        <!-- Forward Mail
+        <!-- Sent Mail
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VEHICLESACCESS"> -->
         <tr>
           <td valign="top">
@@ -80,7 +65,24 @@
            </ui:include>
           </td>
         </tr>
+        <!--  </security:authorize>  -->              
+        
+        <!-- Forward Mail
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VEHICLESACCESS"> -->
+        <!--  
+        <tr>
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="mappingId" value="forwardMail"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_forward') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="Settings"/>
+               <ui:param name="context" value="#{context}-vlt-forwardMail"/>
+           </ui:include>
+          </td>
+        </tr>
+        -->
         <!--  </security:authorize>  -->        
+          
        </table>
 
     </h:form>

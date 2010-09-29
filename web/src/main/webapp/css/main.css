@@ -592,6 +592,15 @@ img {
 	margin: 0 0 0 8px;
 }
 
+#horz_nav li a.tb-messages {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_email.png) no-repeat center
+		left;
+	text-decoration: none;
+	color: #fff;
+	margin: 0 0 0 8px;
+}
+
 #horz_nav li a.tb-help {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_help.png) no-repeat center left;

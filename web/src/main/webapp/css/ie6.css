@@ -46,6 +46,10 @@ ul#grid_nav li.divider {
 #horz_nav li a.tb-account {
 	background: url(../images/ico_account.gif) no-repeat 5px 50%;
 	}
+	
+#horz_nav li a.tb-messages {
+	background: url(../images/ico_email.gif) no-repeat 5px 50%;
+	}	
 
 #horz_nav li a.tb-help {
 	background: url(../images/ico_help.gif) no-repeat 5px 50%;
