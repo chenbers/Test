@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -17,6 +18,8 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandID;
+import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MessageItem;
 import com.inthinc.pro.model.Vehicle;
@@ -26,7 +29,8 @@ public class MessagesBean extends BaseBean {
     protected final static String BLANK_SELECTION = "&#160;";    
     
     private List<MessageItem> messageList;
-    private List<MessageItem> sendMessageList;
+    private List<MessageItem> sentMessageList;
+    private List<String> sendMessageList;
     private Boolean selectAll;
     private String messageToSend;
     private String mailingList;
@@ -40,6 +44,8 @@ public class MessagesBean extends BaseBean {
     private List<Integer> vehicleSelectedList;
     private List<Integer> groupSelectedList;    
     private Integer selectedGroupID;
+    private Date startDate;
+    private Date endDate;    
     
     private PersonDAO personDAO;
     private GroupDAO groupDAO;
@@ -52,7 +58,8 @@ public class MessagesBean extends BaseBean {
     {
         mailingList = new String();
         messageList = new ArrayList<MessageItem>();
-        sendMessageList = new ArrayList<MessageItem>();
+        sendMessageList = new ArrayList<String>();
+        sentMessageList = new ArrayList<MessageItem>();
         sentMessages = new ArrayList<String>();
         pageNumber = 1;
         
@@ -74,13 +81,21 @@ public class MessagesBean extends BaseBean {
         this.messageList = messageList;
     }
     
-    public List<MessageItem> getSendMessageList() {
+    public List<String> getSendMessageList() {
         return sendMessageList;
     }
 
-    public void setSendMessageList(List<MessageItem> sendMessageList) {
+    public void setSendMessageList(List<String> sendMessageList) {
         this.sendMessageList = sendMessageList;
     }
+    
+    public List<MessageItem> getSentMessageList() {
+        return sentMessageList;
+    }
+
+    public void setSentMessageList(List<MessageItem> sentMessageList) {
+        this.sentMessageList = sentMessageList;
+    }    
 
     public Boolean getSelectAll() {
         return selectAll;
@@ -132,6 +147,7 @@ public class MessagesBean extends BaseBean {
 
     public List<SelectItem> getDriverSelectFromList() {
         
+        // Do filter here to check for associated device to be waysmart?
         if ( this.driverSelectFromList.size() == 0 ) {
             List<Driver> drivers = driverDAO.getAllDrivers(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
             
@@ -151,6 +167,7 @@ public class MessagesBean extends BaseBean {
 
     public List<SelectItem> getVehicleSelectFromList() {
         
+        // Do filter here to check for associated device to be waysmart?        
         if ( this.vehicleSelectFromList.size() == 0 ) {
             List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
             
@@ -261,96 +278,109 @@ public class MessagesBean extends BaseBean {
     }
 
     public void doSelectAll() {
-        for ( MessageItem mi: messageList ) {
-            mi.setSelected(selectAll);
-        }
+        // Will need to set selected whatever model objects Dave H
+        //  creates 
     }
     
-    public void refreshList() {
-//        The select of inbox values goes here
+    public void refreshInbox() {
+//        The select of Inbox values goes here, when Dave H has method ready 
+        this.messageList.clear();
         
         this.selectAll=Boolean.FALSE;
     }
+    
+    public void refreshSent() {
+//        The select of Sent values goes here, when Dave H has method ready
+        this.sentMessageList.clear();
+        
+        this.selectAll=Boolean.FALSE;
+    }    
         
     public void sendMessage() {
-        this.sentMessages.clear();
+        
+        // Send the message by way of forward command to the device
+        this.sendMessageList.clear();
         
         // Drivers
         for ( Integer d: this.driverSelectedList ) {
-            Vehicle v = vehicleDAO.findByDriverID(d);
-            if ( v.getDeviceID() != null ) {
-                Device dev = deviceDAO.findByID(v.getDeviceID());
-                
-                // Populate this with id and payload
-//                ForwardCommand fwdCmd = new ForwardCommand();
-//                deviceDAO.queueForwardCommand(dev.getDeviceID(), fwdCmd);
-                this.sentMessages.add(dev.getName());
-            } else {
-                this.sentMessages.add("No device found");
-            }
+            sendDriver(d);
         }
         
         // Vehicles
         for ( Integer v: this.vehicleSelectedList ) {
-            Vehicle veh = vehicleDAO.findByID(v);
-            if ( veh.getDeviceID() != null ) {
-                Device dev = deviceDAO.findByID(veh.getDeviceID());
-                
-                // Populate this with id and payload
-//                ForwardCommand fwdCmd = new ForwardCommand();
-//                deviceDAO.queueForwardCommand(dev.getDeviceID(), fwdCmd);                
-                this.sentMessages.add(dev.getName());
-            } else {
-                this.sentMessages.add("No device found");
-            }            
+            sendVehicle(v);
         }
         
-        // Groups, careful here, need to recurse the group hierarchy for a selected group across
-        //  drivers and vehicles and devices or?
-        for ( Integer g: this.groupSelectedList ) {
-            
-            // Populate this with id and payload
-//            ForwardCommand fwdCmd = new ForwardCommand();
-//            deviceDAO.queueForwardCommand(dev.getDeviceID(), fwdCmd);            
+        // Groups, careful here, need to recurse the group hierarchy 
+        for ( Integer grp: this.groupSelectedList ) {
+             List<Group> sub = groupDAO.getGroupHierarchy(this.getProUser().getUser().getPerson().getAcctID(), grp);
+             for ( Group subGrp: sub ) {
+                 
+                 // Drivers
+                 List<Driver> grpDrv = driverDAO.getAllDrivers(subGrp.getGroupID());
+                 for ( Driver d: grpDrv) {
+                     sendDriver(d.getDriverID());
+                 }
+                 // Vehicles
+                 List<Vehicle> grpVeh = vehicleDAO.getVehiclesInGroup(subGrp.getGroupID());
+                 for ( Vehicle v: grpVeh) {
+                     sendVehicle(v.getVehicleID());
+                 }                 
+             }
+      
         }
 
+        // Prep for next interaction
         this.messageToSend = "";
         this.driverSelectedList = new ArrayList<Integer>();
         this.vehicleSelectedList = new ArrayList<Integer>();
         this.groupSelectedList = new ArrayList<Integer>();
     }
-       
-    public void resetMailingList() {
-        // This will clear-out the list and make all the selected messages not selected
-        mailingList = "";
-        messageToSend = "";
+    
+    private void sendDriver(Integer d) {
+        Driver drv = driverDAO.findByID(d);
+        Vehicle v = vehicleDAO.findByDriverID(d);
         
-        for ( MessageItem mi: this.messageList ) {
-            mi.setSelected(Boolean.FALSE);
-        }
+        if ( v.getDeviceID() != null ) {
+            Device dev = deviceDAO.findByID(v.getDeviceID());
+            
+            // Send it
+//            ForwardCommand fwdCmd = new ForwardCommand(
+//                    0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED);
+//            deviceDAO.queueForwardCommand(dev.getDeviceID(), fwdCmd);
+            
+            this.sendMessageList.add("Message sent to driver " + drv.getPerson().getFullName() + " (Device: " + dev.getName() + ")");
+        } else {
+            this.sendMessageList.add("No device found for driver: " + drv.getPerson().getFullName());
+        }        
+    }
+    
+    private void sendVehicle(Integer v) {
+        Vehicle veh = vehicleDAO.findByID(v);
         
-        this.sendMessageList.clear(); 
-        this.selectAll = Boolean.FALSE;
+        if ( veh.getDeviceID() != null ) {
+            Device dev = deviceDAO.findByID(veh.getDeviceID());
+            
+            // Send it
+//            ForwardCommand fwdCmd = new ForwardCommand(
+//                    0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED);
+//            deviceDAO.queueForwardCommand(dev.getDeviceID(), fwdCmd);  
+            
+            this.sendMessageList.add("Message sent to vehicle " + veh.getFullName() + " (Device:" +dev.getName() + ")" );
+        } else {
+            this.sendMessageList.add("No device found for vehicle: " + veh.getFullName());
+        }                  
     }
        
     public void loadMailingList() {
-
-        // Anything selected from the inbox?  If so, load as selected drivers.
-        if ( this.messageList.size() > 0 ) {
-            StringBuffer sb = new StringBuffer();
-            for ( MessageItem mi: this.messageList ) {
-                if ( mi.getSelected() ) {
-                    sb.append(mi.getToFrom().trim());
-                    sb.append(";");
-                }
-            }
-
-            if ( !sb.toString().isEmpty() ) {
-                this.mailingList = sb.toString();
-            }
-        } else {
-            this.mailingList = new String();
-        }
+        // Load either the driver or vehicle selection, go with whatever you find first
+        
+        // Over the selected messages
+        //  Get associated deviceID
+        //  Match a driver, add to driverselectedlit
+        //  If not, match a vehicle, add to vehicleselectedlist
+        //  If not ?
+        
     }
 
     protected static void sort(List<SelectItem> selectItemList) {
@@ -390,5 +420,21 @@ public class MessagesBean extends BaseBean {
 
     public void setSelectedGroupID(Integer selectedGroupID) {
         this.selectedGroupID = selectedGroupID;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

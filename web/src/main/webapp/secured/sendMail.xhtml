@@ -34,6 +34,21 @@
           	input.focus();
         }
       </script>
+		<style>
+      		.rich-picklist-source-cell{
+        		font-weight:normal;
+        		font-size: 9px;
+			}
+      		.rich-picklist-source-cell-active{
+        		font-weight:normal;
+        		font-size: 9px;
+			}	
+      		.rich-picklist-source-cell-selected{
+        		font-weight:normal;
+        		font-size: 9px;
+			}						
+		</style>
+
   </ui:define>  
   
   <ui:define name="content">
@@ -84,8 +99,8 @@
 												style="width:380px;height:150px;margin-left:10px;overflow-y:scroll" />
                             				-->
                             				  
-											<rich:pickList sourceListWidth="100px" showButtonsLabel="false" id="driverList"
-												targetListWidth="100px" value="#{messagesBean.driverSelectedList}">
+											<rich:pickList sourceListWidth="110px" showButtonsLabel="false" id="driverList"
+												targetListWidth="110px" value="#{messagesBean.driverSelectedList}">
 												<f:selectItems value="#{messagesBean.driverSelectFromList}"/>
 											</rich:pickList> 
 										</td>	  
@@ -123,7 +138,7 @@
 											<br></br>
 											
 											<h:inputTextarea id="msgText" value="#{messagesBean.messageToSend}" 
-												style="width:770px;height:90px;margin-left:10px" />
+												style="font-size:12px;width:770px;height:90px;margin-left:10px" />
 											<br></br>
 										</td>
 										
@@ -183,7 +198,7 @@
 
       	<h:form id="confirmCloseSummary">
           									
-        <rich:dataTable id="#{context}-sendList" value="#{messagesBean.sentMessages}" var="item"                                    	 
+        <rich:dataTable id="#{context}-sendList" value="#{messagesBean.sendMessageList}" var="item"                                    	 
         	styleClass="datagrid filterabledatagrid" 
             rowClasses="tableOdd,tableEven" 
  			cellspacing="1" rows="5" width="100%">

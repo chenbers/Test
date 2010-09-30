@@ -82,8 +82,8 @@
                                         				<td>#{messages.drivertrip_start_date}</td>
                                         				<td>
                                         					<a4j:outputPanel id="calendarStart" layout="block">
-                                            					<rich:calendar value="#{driverTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-                                            						timeZone="#{driverTripsBean.timeZone}"
+                                            					<rich:calendar value="#{messagesBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                            						timeZone=""
                                                 					showApplyButton="false" cellWidth="24px" cellHeight="22px" />
                                         					</a4j:outputPanel>
                                         				</td>                                        
@@ -92,15 +92,15 @@
                                         				<td>#{messages.drivertrip_end_date}</td>
                                         				<td>
                                         					<a4j:outputPanel id="calendarEnd" layout="block">
-                                            					<rich:calendar value="#{driverTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-                                            						timeZone="#{driverTripsBean.timeZone}"
+                                            					<rich:calendar value="#{messagesBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                            						timeZone=""
                                                 					showApplyButton="false" cellWidth="24px" cellHeight="22px" />
                                         					</a4j:outputPanel></td>                                        
                                     				</tr>													
 													
 													<tr>
 														<td colspan="2" align="center">
-															<a4j:commandButton id="refresh" styleClass="left" action="#{messagesBean.refreshList}" 
+															<a4j:commandButton id="refresh" styleClass="left" action="#{messagesBean.refreshSent}" 
 																reRender="display-form:#{context},display-form:#{context}-bottomScroller">
 																<span class="refresh">
 																	<h:outputText value="Refresh" />
@@ -118,7 +118,7 @@
 											    <a4j:outputPanel id="tablePanel">
           											<a4j:region>
           									
-														<rich:dataTable id="#{context}" value="#{messagesBean.messageList}" var="item"                                    	 
+														<rich:dataTable id="#{context}" value="#{messagesBean.sentMessageList}" var="item"                                    	 
                                      	    					styleClass="datagrid filterabledatagrid" 
                                      	   		 				rowClasses="tableOdd,tableEven" 
  												 				cellspacing="1" rows="5" width="530px">
