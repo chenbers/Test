@@ -179,9 +179,10 @@ public class DataGenerator
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         
-        device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device", genNumericID(account.getAcctID(), 15), genNumericID(account.getAcctID(), 19), genNumericID(account.getAcctID(), 10), "5555551234", "5555559876");
+        device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device", genNumericID(account.getAcctID(), 15), genNumericID(account.getAcctID(), 19), genNumericID(account.getAcctID(), 10), "5555551234");
+//        , "5555559876");
         
-        device.setAccel("1100 50 4");
+//        device.setAccel("1100 50 4");
         Integer deviceID = deviceDAO.create(account.getAcctID(), device);
         device.setDeviceID(deviceID);
         

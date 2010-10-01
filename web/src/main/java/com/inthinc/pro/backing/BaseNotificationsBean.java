@@ -79,21 +79,26 @@ public abstract class BaseNotificationsBean<T extends NotificationReportItem<T>>
     private CacheBean cacheBean;
 
     private Map<String, Integer>  teams;
-    public Map<String, Integer> getTeams() {
-    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-	    for (final Group group : getGroupHierarchy().getGroupList())
-//	    	if (group.getType() == GroupType.TEAM) {
-	    {
-	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
-	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
-	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
-	    		}
-	    			
-	    		teams.put(fullName, group.getGroupID());
-	    	}
-	    
-	    return teams;
+    
+    public TreeMap<String, Integer> getTeams(){
+        return getGroupHierarchy().getTeams();
     }
+
+//    public Map<String, Integer> getTeams() {
+//    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+//	    for (final Group group : getGroupHierarchy().getGroupList())
+////	    	if (group.getType() == GroupType.TEAM) {
+//	    {
+//	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
+//	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+//	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+//	    		}
+//	    			
+//	    		teams.put(fullName, group.getGroupID());
+//	    	}
+//	    
+//	    return teams;
+//    }
 
     private Map<String, Integer> daysBackSel;
     public Map<String, Integer> getDaysBackSel() {

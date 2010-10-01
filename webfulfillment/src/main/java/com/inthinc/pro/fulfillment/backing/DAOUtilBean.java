@@ -380,7 +380,7 @@ public class DAOUtilBean implements PhaseListener {
 				deviceDAO.deleteByID(device.getDeviceID());
 				device.setAccountID(shipAccountID);
 
-				device.setEphone(null);
+//				device.setEphone(null);
 				deviceDAO.create(shipAccountID, device);
 				setSuccessMsg("Device " + serialNum
 						+ " successfully moved to account: "
@@ -406,7 +406,7 @@ public class DAOUtilBean implements PhaseListener {
 				deviceDAO.deleteByID(device.getDeviceID());
 				device.setAccountID(selectedAccountID);
 
-				device.setEphone(null);
+//				device.setEphone(null);
 				deviceDAO.create(selectedAccountID, device);
 				setSuccessMsg("Device " + serialNum
 						+ " successfully assigned to account: "

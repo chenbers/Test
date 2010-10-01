@@ -6,7 +6,7 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
-import com.inthinc.pro.model.SensitivityType;
+import com.inthinc.pro.model.configurator.SensitivityType;
 
 
 public class DeviceSensitivityMapping implements BaseAppEntity
@@ -24,7 +24,7 @@ public class DeviceSensitivityMapping implements BaseAppEntity
 	
 	public void init()
 	{
-		sensitivityMapping = deviceDAO.getSensitivityForwardCommandMapping();
+//		sensitivityMapping = deviceDAO.getSensitivityForwardCommandMapping();
 	}
 
 	public Integer getForwardCommandCmdID(SensitivityType setting)

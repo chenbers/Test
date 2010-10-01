@@ -3,10 +3,11 @@ package com.inthinc.pro.model;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-
-import javax.xml.bind.annotation.XmlRootElement;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 
 @XmlRootElement
 public class RedFlagAlert extends BaseAlert {
@@ -80,8 +81,8 @@ public class RedFlagAlert extends BaseAlert {
 
     public void setSpeedSettings(Integer[] speedSettings) {
         this.speedSettings = speedSettings;
-        if ((speedSettings != null) && (speedSettings.length != Device.NUM_SPEEDS))
-            throw new IllegalArgumentException("speedSettings.length must be " + Device.NUM_SPEEDS);
+        if ((speedSettings != null) && (speedSettings.length != VehicleSetting.NUM_SPEEDS))
+            throw new IllegalArgumentException("speedSettings.length must be " + VehicleSetting.NUM_SPEEDS);
     }
 
     public Boolean isHardAccelerationNull(){

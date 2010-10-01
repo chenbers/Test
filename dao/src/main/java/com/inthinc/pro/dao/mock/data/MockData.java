@@ -22,7 +22,6 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
@@ -32,22 +31,17 @@ import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.event.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.DriveQMetric;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
-import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Occurrence;
@@ -57,20 +51,26 @@ import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.event.SeatBeltEvent;
-import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.event.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
+import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.DeviceLowBatteryEvent;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.IdleEvent;
+import com.inthinc.pro.model.event.LowBatteryEvent;
+import com.inthinc.pro.model.event.SeatBeltEvent;
+import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.TamperingEvent;
 
 public class MockData {
 
@@ -859,7 +859,7 @@ public class MockData {
             else if (type == 1) {
                 flag.setType(AlertMessageType.ALERT_TYPE_SPEEDING);
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
-                final Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
+                final Integer[] speedSettings = new Integer[VehicleSetting.NUM_SPEEDS];
                 for (int j = 0; j < speedSettings.length; j++)
                     speedSettings[j] = randomInt(0, 5) * 5;
                 flag.setSpeedSettings(speedSettings);
@@ -1105,16 +1105,16 @@ public class MockData {
         device.setImei(imei);
         device.setSim(sim);
         device.setPhone(phone);
-        device.setEphone(ephone);
+//        device.setEphone(ephone);
         device.setActivated(activated);
-        device.setHardBrake(randomInt(0, 2));
-        device.setHardAcceleration(randomInt(0, 2));
-        device.setHardTurn(randomInt(0, 2));
-        device.setHardVertical(randomInt(0, 2));
-        final Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
-        for (int i = 0; i < speedSettings.length; i++)
-            speedSettings[i] = randomInt(0, 5) * 5;
-        device.setSpeedSettings(speedSettings);
+//        device.setHardBrake(randomInt(0, 2));
+//        device.setHardAcceleration(randomInt(0, 2));
+//        device.setHardTurn(randomInt(0, 2));
+//        device.setHardVertical(randomInt(0, 2));
+//        final Integer[] speedSettings = new Integer[Vehicle.NUM_SPEEDS];
+//        for (int i = 0; i < speedSettings.length; i++)
+//            speedSettings[i] = randomInt(0, 5) * 5;
+//        device.setSpeedSettings(speedSettings);
         return device;
     }
 

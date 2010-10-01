@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,9 @@ import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.SensitivityForwardCommandMapping;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+import com.inthinc.pro.model.configurator.SensitivityType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.VehicleSettingHistory;
 
@@ -66,5 +69,17 @@ public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefin
     public VehicleSetting getVehicleSettings(Integer vehicleID) {
 
         return getMapper().convertToModelObject(getSiloService().getVehicleSettings(vehicleID), VehicleSetting.class);
+    }
+
+    @Override
+    public Map<SensitivityType, SensitivityForwardCommandMapping> getSensitivityMaps()
+    {
+        Map<SensitivityType, SensitivityForwardCommandMapping> returnMap = new HashMap<SensitivityType, SensitivityForwardCommandMapping>();
+        List<SensitivityForwardCommandMapping> list = getMapper().convertToModelObject(getSiloService().getSensitivityMaps(), SensitivityForwardCommandMapping.class);
+        for (SensitivityForwardCommandMapping s : list)
+        {
+            returnMap.put(s.getSetting(), s);
+        }
+        return returnMap;
     }
 }

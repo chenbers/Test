@@ -10,9 +10,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+
 @Ignore
+
 public class ConfiguratorHessianDAOTest {
 
     ConfiguratorHessianDAO configuratorHessianDAO;
@@ -20,7 +22,7 @@ public class ConfiguratorHessianDAOTest {
     @Before
     public void setUp() throws Exception {
         configuratorHessianDAO = new ConfiguratorHessianDAO();
-        configuratorHessianDAO.setSiloService(new SiloServiceCreator().getService());
+        configuratorHessianDAO.setSiloService(new SiloServiceCreator("dev-pro.inthinc.com", 8099).getService());
     }
 
     @After
@@ -32,5 +34,4 @@ public class ConfiguratorHessianDAOTest {
        List<DeviceSettingDefinition> deviceSettingDefinitions = configuratorHessianDAO.getDeviceSettingDefinitions();
        assertTrue("No deviceSettingDefinitions were found", deviceSettingDefinitions.size() > 0);
     }
-
 }

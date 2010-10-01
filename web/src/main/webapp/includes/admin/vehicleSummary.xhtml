@@ -25,6 +25,10 @@
                       
                  <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
                     <tr>
+                     <td width="100"><h:outputText value="#{messages.vehiclesHeader_productVersion}" /></td>
+                     <td><h:outputText value="#{vehicle.vehicleSettingAdapter.productType.name}" /></td>
+                   </tr>
+                    <tr>
                      <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
                      <td><h:outputText value="#{vehicle.VIN}" /></td>
                    </tr>
@@ -80,6 +84,13 @@
                     <tr>
                       <td width="100"><h:outputText value="#{messages.organization_assignedDriver}:" /></td>
                       <td><h:outputText value="#{driver.person.fullName}" /></td>
+                    </tr>
+                  </table>
+                 <div class="add_section_title"><h:outputText value="#{messages.organization_deviceAssignments}" /></div>
+                  <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductVersion}" /></td>
+                     <td><h:outputText value="#{vehicle.vehicleSettingAdapter.productType.name}" /></td>
                     </tr>
                     <tr>
                       <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>

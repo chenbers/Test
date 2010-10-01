@@ -320,9 +320,9 @@ public class DataGenForHelpScreenShots {
 //        
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
-        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
-        mapping.setDeviceDAO(deviceDAO);
-        mapping.init();
+//        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
+//        mapping.setDeviceDAO(deviceDAO);
+//        mapping.init();
 
         
     }
@@ -395,10 +395,11 @@ public class DataGenForHelpScreenShots {
         
         Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
         		genNumericID(uniqueID, 15), genNumericID(uniqueID, 19), genNumericID(uniqueID, 10), 
-        		genNumericID(uniqueID, 10), 
-        		"5555559876");
+        		genNumericID(uniqueID, 10));
+//        , 
+//        		"5555559876");
         
-        device.setAccel("1100 50 4");
+//        device.setAccel("1100 50 4");
         Integer deviceID = deviceDAO.create(account.getAcctID(), device);
         device.setDeviceID(deviceID);
         

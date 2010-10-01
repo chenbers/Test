@@ -84,6 +84,30 @@
          <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
       </h:outputFormat>
     </rich:column>    
+    <rich:column id="productVersion" rendered="#{vehiclesBean.tableColumns['productVersion'].visible}" sortBy="#{item.vehicleSettingAdapter.productType.name}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_productVersion}" /></f:facet>
+      <h:outputText value="#{item.vehicleSettingAdapter.productType.name}" />
+    </rich:column>
+    <rich:column id="DOT" rendered="#{vehiclesBean.tableColumns['DOT'].visible}" sortBy="#{item.dot}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_DOT}" /></f:facet>
+      <h:outputText value="#{item.dot}" />
+    </rich:column>
+    <rich:column id="IFTA" rendered="#{vehiclesBean.tableColumns['IFTA'].visible}" sortBy="#{item.ifta}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_IFTA}" /></f:facet>
+      <h:outputText value="#{item.ifta eq null?'':item.ifta}" />
+    </rich:column>
+    <rich:column id="zoneType" rendered="#{vehiclesBean.tableColumns['zoneType'].visible}" sortBy="#{item.zoneType}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_zoneType}" /></f:facet>
+      <h:outputText value="#{item.zoneType eq null?'':item.zoneType}" />
+    </rich:column>
+    <rich:column id="warrantyStart" rendered="#{vehiclesBean.tableColumns['warrantyStart'].visible}" sortBy="#{item.warrantyStart}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_warrantyStart}" /></f:facet>
+      <h:outputText value="#{item.warrantyStart eq null?'':item.warrantyStart}" />
+    </rich:column>
+    <rich:column id="warrantyStop" rendered="#{vehiclesBean.tableColumns['warrantyStop'].visible}" sortBy="#{item.warrantyStop}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_warrantyStop}" /></f:facet>
+      <h:outputText value="#{item.warrantyStop eq null?'':item.warrantyStop}" />
+    </rich:column>
   </ui:define>
 
 </ui:composition>

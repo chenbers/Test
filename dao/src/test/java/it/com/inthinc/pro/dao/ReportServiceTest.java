@@ -191,9 +191,9 @@ public class ReportServiceTest {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
 
-        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
-        mapping.setDeviceDAO(deviceDAO);
-        mapping.init();
+//        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
+//        mapping.setDeviceDAO(deviceDAO);
+//        mapping.init();
 
     }
 

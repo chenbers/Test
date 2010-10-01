@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.model.configurator.SensitivityType;
+
 @XmlRootElement
 public class SensitivityForwardCommandMapping
 {
 	private SensitivityType setting;
+    
 	private Integer fwdCmd;
 	private List<String> values;
 	

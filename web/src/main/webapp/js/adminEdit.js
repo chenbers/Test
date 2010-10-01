@@ -74,7 +74,35 @@ function checkMultiple(item) {
 		span.style.display = "inline";
 	}
 }
+function getCurrentValueLabel(currentValue , defaultValue, settingsCount)
+{
+    if(currentValue > settingsCount)
+    {
+        return getLabel("custom",0);
+    }
+    if(currentValue > defaultValue)
+    {
+        var positive = currentValue - defaultValue;
+        return getLabel("more", positive);
+    }
+    if(currentValue == defaultValue)
+    {
+       return getLabel("average",0);
+    }
 
+    var negative = defaultValue - currentValue;
+    return getLabel("less",negative);
+   
+}
+function getAutologoffLabel(sliderValue){
+	
+	if (sliderValue == 0) return getAutologoffLabelText(0,0);
+	if (sliderValue < 12) return getAutologoffLabelText(sliderValue*5,1);
+	if (sliderValue == 12) return getAutologoffLabelText(1,2);
+	if (sliderValue == 30) return getAutologoffLabelText(0,4);
+	if (sliderValue > 12) return getAutologoffLabelText(sliderValue-11,3);
+	return null;
+}
 function adminSetCheckbox(item,formType,formContext,formIndex) {
 //	alert("adminSetCheckbox: formContext " + formContext + " formType: " + formType + " formIndex: " + formIndex);
 //	This function is similar to the above but is a substitute that should work

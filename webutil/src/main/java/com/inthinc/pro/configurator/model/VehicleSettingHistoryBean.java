@@ -34,7 +34,8 @@ public class VehicleSettingHistoryBean {
 	}
 
 	public String getOldValue() {
-		return vehicleSettingHistory.getOldValue();
+	    
+		return vehicleSettingHistory.getOldValue()==null?"":vehicleSettingHistory.getOldValue();
 	}
 
 	public String getReason() {

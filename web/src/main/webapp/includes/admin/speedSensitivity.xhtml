@@ -22,7 +22,7 @@
   To use:
   ==============
   <ui:include src="/includes/speedSensitivity.xhtml">
-    <ui:param name="device" value="#{myBean.device}" />
+    <ui:param name="vehicleSettingAdapter" value="#{myBean.vehicleSettingAdapter}" />
     <ui:param name="disabled" value="true" />
     <ui:param name="context" value="#{context}-pageName"/> 
   </ui:include>
@@ -30,7 +30,7 @@
   -->
   
 
-    <c:if test="empty device">
+    <c:if test="empty vehicleSettingAdapter">
       <c:set var="disabled" value="true" />
     </c:if>
 	    <div class="msg">
@@ -60,7 +60,7 @@
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="#{id}" value="#{device.speedSettings[index]}" width="250"
+                                          id="#{id}" value="#{vehicleSettingAdapter.speedSettings[index]}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
@@ -107,21 +107,12 @@
                           <td width="390" valign="top">
 
                             <script type="text/javascript">
-                              function getCurrentValueLabel(currentValue , defaultValue)
-                              {
-                                  if(currentValue > defaultValue)
-                                  {
-                                      var positive = currentValue - defaultValue;
-                                      return "#{messages.editDevice_more} (+" + positive + ")";
-                                  }
-                                  if(currentValue == defaultValue)
-                                  {
-                                     return "#{messages.editDevice_average}";
-                                  }
+                              function getLabel(valueLabel, addon){
 
-                                  var negative = defaultValue - currentValue;
-                                  return "#{messages.editDevice_less} (-" + negative + ")";
-                                 
+                                  if (valueLabel == 'custom') return "#{messages.editDevice_custom}";
+                                  if (valueLabel == "more") return "#{messages.editDevice_more} (+" + addon + ")";
+                                  if (valueLabel == "average") return "#{messages.editDevice_average}";
+                                  if (valueLabel == "less") return "#{messages.editDevice_less} (-" + addon + ")";
                               }
                             </script>
 
@@ -134,7 +125,8 @@
                                 <th colspan="3"><h:outputText value="#{messages.editDevice_sensitivitySettingHeader}"  /></th>
                               </tr>
                               
-                              <a4j:repeat id="sensitivity" value="#{devicesBean.sensitivityTypes}" var="sensitivityType" rowKeyVar="index">
+                              <ui:param name="settingCounts" value="#{batchEdit?SensitivityType.bySettingID:vehicleSettingManager.settingCounts[vehicleSettingAdapter.vehicleID]}"/>
+                              <a4j:repeat id="sensitivity" value="#{vehicleSettingManager.sensitivityTypes}" var="sensitivityType" rowKeyVar="index">
                                  <c:set var="sensitivityItem" value="#{(sensitivityType == 'HARD_ACCEL_SETTING') ? 'hardAcceleration' : ((sensitivityType == 'HARD_BRAKE_SETTING') ? 'hardBrake' : ((sensitivityType == 'HARD_TURN_SETTING') ? 'hardTurn' : 'hardVertical'))}" />
                                  <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                      <td></td>
@@ -143,7 +135,7 @@
                                        <span id="#{sensitivityItem}Level" style="font-weight:bold">
                                        </span>
                                        <script type="text/javascript">
-                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{device[sensitivityItem]},#{sensitivityType.defaultSetting});
+                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{vehicleSettingAdapter[sensitivityItem]},#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});
                                        </script>
                                      </td>
                                      <td></td>
@@ -157,15 +149,16 @@
                                           <h:outputText value="#{messages.editDevice_sensitivity1}" />
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                       <rich:inputNumberSlider id="#{context}-#{sensitivityItem}" 
+                                        <rich:inputNumberSlider id="#{context}-#{sensitivityItem}" 
                                              disabled="#{disabled}" 
-                                             value="#{device[sensitivityItem]}" 
+                                             value="#{vehicleSettingAdapter[sensitivityItem]}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
-                                             showInput="false" minValue="1" maxValue="#{sensitivityType.settingsCount}" 
+                                             showInput="false" minValue="1" 
+                                             maxValue="#{settingCounts[sensitivityType.settingID]}" 
                                              barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{sensitivityType.settingsCount}.png')"
-                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
-                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
                                     </td>
                                     <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                           <h:outputText value="#{messages.editDevice_sensitivity5}" />

@@ -33,6 +33,8 @@ import com.inthinc.pro.util.MiscUtil;
  */
 public abstract class BaseAdminBean<T extends EditItem> extends BaseBean implements TablePrefOptions<T>
 {
+    private static final long serialVersionUID = 1L;
+
     protected static final Logger logger        = LogManager.getLogger(BaseAdminBean.class);
 
     private List<Group>           allGroups;

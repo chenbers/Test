@@ -1,0 +1,125 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+
+  <!-- 
+  Required Parameters:
+  ======================
+          device: The device to show the settings for.
+
+  Optional Parameters:
+  ======================
+          disabled: Whether the number sliders are disabled for input or not.
+         batchEdit: Whether the device is being batch-edited.
+       updateField: A map of field name to boolean values for which fields to update; required if batchEdit
+                    is true.
+
+  To use:
+  ==============
+  <ui:include src="/includes/speedSensitivity.xhtml">
+    <ui:param name="vehicleSettingAdapter" value="#{myBean.vehicleSettingAdapter}" />
+    <ui:param name="disabled" value="true" />
+    <ui:param name="context" value="#{context}-pageName"/> 
+  </ui:include>
+
+  -->
+  
+
+    <c:if test="empty vehicleSettingAdapter">
+      <c:set var="disabled" value="true" />
+    </c:if>
+	    <div class="msg">
+			<p id="info">
+				<h:outputText  id="editMessage1" value="#{messages.editDevice_speedSensitivityInfo}"/>
+			</p>
+		</div>
+                      <table width="790" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="390" valign="top">
+
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_speedNotification}" /></div>
+                            <div class="spacer"></div>
+<!--40 - 90 mph for max speed slider-->
+<!--0 - 25 mph speed buffer for all speed limits (match positive tiwipro)-->
+<!--5 - 40 mph severe speeding and disabled (= 0)-->
+<!--WS820_maxSpeedSlider=Maximum Speed-->
+<!--WS820_speedBuffer=Speed Buffer-->
+<!--WS820_severeSpeeding=Severe Speeding-->
+                            <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                              <tr class="datagrid">
+                                <th><h:outputText value="#{messages.WS820_maxSpeedSlider}" /></th>
+                                <th colspan="2"><h:outputText value="#{messages.WS820_maxSpeedSlider}" /></th>
+                              </tr>
+                                <tr>
+                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{id}" value="#{updateField[id]}" />
+                                    <h:outputText value="40" converter="MphToKphLabelConverter"/>
+                                  </td>
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
+                                          id="#{id}" value="#{vehicleSettingAdapter.maxSpeed}" width="250"
+                                          converter="MphToKphConverter"
+                                          showToolTip="false" showBoundaryValues="false" 
+                                          minValue="${tiwiprofn:convertMphToKph(40)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1" 
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
+                                  </td>
+                                  <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                                    <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
+                                  </td>
+                                </tr>
+                               <tr class="datagrid">
+                                <th><h:outputText value="#{messages.WS820_speedBuffer}" /></th>
+                                <th colspan="2"><h:outputText value="#{messages.WS820_speedBuffer}" /></th>
+                              </tr>
+                                 <tr>
+                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{id}" value="#{updateField[id]}" />
+                                    <h:outputText value="0" converter="MphToKphLabelConverter"/>
+                                  </td>
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
+                                          id="#{id}" value="#{vehicleSettingAdapter.speedBuffer}" width="250"
+                                          converter="MphToKphConverter"
+                                          showToolTip="false" showBoundaryValues="false" 
+                                          minValue="${tiwiprofn:convertMphToKph(0)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
+                                  </td>
+                                  <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                                    <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
+                                  </td>
+                                </tr>
+                              <tr class="datagrid">
+                                <th><h:outputText value="#{messages.WS820_severeSpeeding}" /></th>
+                                <th colspan="2"><h:outputText value="#{messages.WS820_severeSpeeding}" /></th>
+                              </tr>
+                                 <tr >
+                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{id}" value="#{updateField[id]}" />
+                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
+                                  </td>
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
+                                          id="#{id}" value="#{vehicleSettingAdapter.severeSpeeding}" width="250"
+                                          converter="MphToKphConverter"
+                                          showToolTip="false" showBoundaryValues="false" 
+                                          minValue="${tiwiprofn:convertMphToKph(0)}" maxValue="${tiwiprofn:convertMphToKph(40)}" step="1" 
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
+                                  </td>
+                                  <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                                    <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
+                                  </td>
+                                </tr>
+                              
+                             
+                            </table>
+
+                          </td>
+                        </tr>
+                      </table>
+
+</ui:composition>

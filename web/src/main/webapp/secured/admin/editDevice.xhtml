@@ -133,25 +133,6 @@
                                 </td>
                               </tr>
                               </ui:fragment>
-                              <tr>
-                                <td width="100" valign="top">
-                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
-                                       <ui:param name="required" value="TRUE"/>
-                                       <ui:param name="for" value="editDevice-ephone"/>
-                                       <ui:param name="fieldName" value="ephone"/>
-                                       <ui:param name="editBean" value="#{devicesBean}"/>
-                                       <ui:param name="label" value="#{messages.editDevice_ephone}"/>
-       									<ui:param name="context" value="editDeviceEPhone" />
-                                  </ui:include>
-                                </td>
-                                <td>
-                                  <h:message for="editDevice-ephone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" >
-                                  </h:message>
-                                  <h:inputText value="#{devicesBean.item.ephone}" id="editDevice-ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22">  
-                                  </h:inputText>
-                                </td>
-                              </tr>
                             </table>
 
                           </td>
@@ -178,24 +159,7 @@
                                   </h:selectOneMenu>
                                 </td>
                               </tr>
-                              <tr>
-                                <td width="100" valign="top">
-                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
-                                       <ui:param name="required" value="FALSE"/>
-                                       <ui:param name="for" value="editDevice-autoLogoff"/>
-                                       <ui:param name="fieldName" value="autoLogoff"/>
-                                       <ui:param name="editBean" value="#{devicesBean}"/>
-                                       <ui:param name="label" value="#{messages.editDevice_autoLogoff}"/>
-       									<ui:param name="context" value="editDeviceAutoLogoff" />
-                                  </ui:include>
-                                </td>
-                                <td>
-                                  <h:selectOneMenu value="#{devicesBean.item.autoLogoff}" id="editDevice-autoLogoff" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
-                                    <f:selectItems value="#{devicesBean.autoLogoffs}" />
-                                  </h:selectOneMenu>
-                                </td>
-                              </tr>
-                            </table>
+                             </table>
 
                             <ui:fragment rendered="#{not devicesBean.batchEdit}">
                             <div class="spacer"></div>
@@ -219,13 +183,13 @@
                         </tr>
                       </table>
 
-                      <div class="spacer"></div>
+<!--                      <div class="spacer"></div>-->
 
-                      <div><h:outputText value="#{messages.editDevice_speedSensitivityTab}" /></div>
+<!--                      <div><h:outputText value="#{messages.editDevice_speedSensitivityTab}" /></div>-->
 
                       <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 
-                      <div class="spacer"></div>
+<!--                      <div class="spacer"></div>-->
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
@@ -236,36 +200,36 @@
 
                     </rich:tab>
 
-                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}" ontabenter="reRenderTab()" ontableave="reRenderTab()">
-                     
-                      <a4j:region>
-                         <a4j:jsFunction name="reRenderTab" reRender="speeedSettingsPanel"></a4j:jsFunction>
-                         <ul id="grid_nav" style="margin: 0;">
-                           <li class="r">
-                             <h:commandButton id="editDeviceSave3" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                             <h:outputText value=" " /><h:commandButton id="editDeviceCancel3" action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                           </li>
-                         </ul>
-   
-                         <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
-                         <h:panelGroup id="speeedSettingsPanel">
-                            <ui:include src="../../includes/admin/speedSensitivity.xhtml">
-                              <ui:param name="device" value="#{devicesBean.item}" />
-                              <ui:param name="batchEdit" value="#{devicesBean.batchEdit}" />
-                              <ui:param name="updateField" value="#{devicesBean.updateField}" />
-                              <ui:param name="context" value="editDevice" />
-	                          <ui:param name="formName" value="edit-form"/>
-                            </ui:include>
-                         </h:panelGroup>
-   
-                         <ul id="grid_nav" style="margin: 0;">
-                           <li class="r">
-                             <h:commandButton id="editDeviceSave4" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                             <h:outputText value=" " /><h:commandButton id="editDeviceCancel4" action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                           </li>
-                         </ul>
-                   	  </a4j:region>
-                    </rich:tab>
+<!--                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}" ontabenter="reRenderTab()" ontableave="reRenderTab()">-->
+<!--                     -->
+<!--                      <a4j:region>-->
+<!--                         <a4j:jsFunction name="reRenderTab" reRender="speeedSettingsPanel"></a4j:jsFunction>-->
+<!--                         <ul id="grid_nav" style="margin: 0;">-->
+<!--                           <li class="r">-->
+<!--                             <h:commandButton id="editDeviceSave3" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>-->
+<!--                             <h:outputText value=" " /><h:commandButton id="editDeviceCancel3" action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>-->
+<!--                           </li>-->
+<!--                         </ul>-->
+<!--   -->
+<!--                         <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />-->
+<!--                         <h:panelGroup id="speeedSettingsPanel">-->
+<!--                            <ui:include src="../../includes/admin/speedSensitivity.xhtml">-->
+<!--                              <ui:param name="device" value="#{devicesBean.item}" />-->
+<!--                              <ui:param name="batchEdit" value="#{devicesBean.batchEdit}" />-->
+<!--                              <ui:param name="updateField" value="#{devicesBean.updateField}" />-->
+<!--                              <ui:param name="context" value="editDevice" />-->
+<!--	                          <ui:param name="formName" value="edit-form"/>-->
+<!--                            </ui:include>-->
+<!--                         </h:panelGroup>-->
+<!--   -->
+<!--                         <ul id="grid_nav" style="margin: 0;">-->
+<!--                           <li class="r">-->
+<!--                             <h:commandButton id="editDeviceSave4" action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>-->
+<!--                             <h:outputText value=" " /><h:commandButton id="editDeviceCancel4" action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>-->
+<!--                           </li>-->
+<!--                         </ul>-->
+<!--                   	  </a4j:region>-->
+<!--                    </rich:tab>-->
                      
                   </rich:tabPanel>
 

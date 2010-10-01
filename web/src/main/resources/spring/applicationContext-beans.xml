@@ -38,13 +38,13 @@
   <bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init">
     <property name="timeZoneDAO" ref="timeZoneDAO"></property>
   </bean>
-  <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
-    <property name="deviceDAO" ref="deviceDAO"></property>
-  </bean>
+<!--  <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">-->
+<!--    <property name="deviceDAO" ref="deviceDAO"></property>-->
+<!--  </bean>-->
   <bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init">
     <property name="roleDAO" ref="roleDAO"></property>
   </bean>
-
+  <bean id="sensitivityMapping" class="com.inthinc.pro.model.app.SensitivityMapping" init-method="init">  </bean>	
   <!-- Backing Beans -->
   <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean"></bean>
   <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
@@ -283,6 +283,7 @@
   </bean>
 
   <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session" init-method="initBean"/>
+  <bean id="vehicleFactory" class="com.inthinc.pro.backing.model.VehicleFactory" scope="session"/>
 
   <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session" init-method="initBean"/>
 

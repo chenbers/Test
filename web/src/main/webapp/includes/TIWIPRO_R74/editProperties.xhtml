@@ -1,0 +1,58 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+
+               <tr>
+                <td width="100" valign="top">
+                  <ui:include src="../../includes/admin/inputLabel.xhtml">
+                       <ui:param name="required" value="TRUE"/>
+                       <ui:param name="for" value="editVehicle-ephone"/>
+                       <ui:param name="fieldName" value="ephone"/>
+                       <ui:param name="editBean" value="#{vehiclesBean}"/>
+                       <ui:param name="label" value="#{messages.editDevice_ephone}"/>
+					   <ui:param name="context" value="editVehicleEPhone" />
+                  </ui:include>
+                </td>
+                <td>
+                  <h:message for="editVehicle-ephone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" >
+                  </h:message>
+                  <h:inputText value="#{vehiclesBean.item.vehicleSettingAdapter.properties['ephone']}" id="editVehicle-ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
+                    maxlength="22">  
+                  </h:inputText>
+                </td>
+              </tr>
+             <tr>
+                <td width="100" valign="top">
+                  <ui:include src="../../includes/admin/inputLabel.xhtml">
+                       <ui:param name="required" value="FALSE"/>
+                       <ui:param name="for" value="editVehicle-autoLogoff"/>
+                       <ui:param name="fieldName" value="autoLogoff"/>
+                       <ui:param name="editBean" value="#{vehiclesBean}"/>
+                       <ui:param name="label" value="#{messages.editDevice_autoLogoff}"/>
+					   <ui:param name="context" value="editVehicleAutoLogoff" />
+                  </ui:include>
+                </td>
+                <td>
+                      <rich:inputNumberSlider id="editVehicle-autoLogoff" 
+                             value="#{vehiclesBean.item.vehicleSettingAdapter.properties['autoLogoffSlider']}" 
+                             showToolTip="false" showBoundaryValues="false" 
+                             handleSelectedClass="handleSelected"
+                             showInput="false" minValue="0" maxValue="30" 
+                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('edit-form:autologoffLabel').innerHTML = getAutologoffLabel(this.value);adminSetCheckbox(this.mainTable.id,'style','autologoff','#{context}-update_','')"
+                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id);document.getElementById('edit-form:autologoffLabel').innerHTML = getAutologoffLabel(this.value);adminSetCheckbox(this.mainTable.id,'autologoff','#{context}-update_','')" >
+
+                      </rich:inputNumberSlider>
+                </td>
+                </tr><tr>
+                <td></td>
+                <td>
+                	<h:outputText id="autologoffLabel" value="#{vehiclesBean.item.vehicleSettingAdapter.properties['autologoffDisplayString']}"/>
+                </td>
+              </tr>
+ 
+</ui:composition>

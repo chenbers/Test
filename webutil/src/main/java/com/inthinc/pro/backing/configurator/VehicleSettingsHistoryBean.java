@@ -9,15 +9,16 @@ import org.ajax4jsf.model.KeepAlive;
 import com.inthinc.pro.backing.dao.DateFormatBean;
 import com.inthinc.pro.configurator.model.VehicleSettingHistoryBean;
 import com.inthinc.pro.dao.ConfiguratorDAO;
-import com.inthinc.pro.dao.hessian.UserHessianDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.configurator.VehicleSettingHistory;
 @KeepAlive
 public class VehicleSettingsHistoryBean {
 
 	private ConfiguratorDAO configuratorDAO;
-	private UserHessianDAO userHessianDAO;
-	private List<VehicleSettingHistoryBean> vehicleSettingHistories;
+	private UserDAO userDAO;
+
+    private List<VehicleSettingHistoryBean> vehicleSettingHistories;
 	
 	private Integer vehicleID;
 	private Date startDate;
@@ -68,18 +69,23 @@ public class VehicleSettingsHistoryBean {
 	public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
 		this.configuratorDAO = configuratorDAO;
 	}
-	
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
 	public Object displayHistory(){
 		
+        vehicleSettingHistories = new ArrayList<VehicleSettingHistoryBean>();
 		List<VehicleSettingHistory> vehicleSettingTrail = configuratorDAO.getVehicleSettingsHistory(vehicleID, startDate, endDate);
 		for (VehicleSettingHistory vsh:vehicleSettingTrail){
 			
 			VehicleSettingHistoryBean vshb = new VehicleSettingHistoryBean();
 			vshb.setVehicleSettingHistory(vsh);
-			User user = userHessianDAO.findByID(vsh.getUserID());
+			User user = userDAO.findByID(vsh.getUserID());
 			if(user != null){
 				vshb.setUsername(user.getUsername());
 			}
+            vehicleSettingHistories.add(vshb);
 		}
 //		makeupData();
 		return null;

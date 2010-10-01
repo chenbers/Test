@@ -34,7 +34,7 @@ function setHighlight(element, errors) {
 				<h:inputText value="#{vehicleSettingsBean.selectedVehicleID}"/>
 				<h:commandButton id="getVehicle" value="Get Vehicle Settings" action="#{vehicleSettingsBean.displayVehicle}"/>
 				<h:outputText value="Reason for changes:" styleClass="label" rendered="#{vehicleSettingsBean.selectedVehicleID != null}"/>
-				<h:inputText value="#{vehicleSettingsBean.reason}" rendered="#{vehicleSettingsBean.selectedVehicleID != null}" required="true"/>
+				<h:inputText id="reason" value="#{vehicleSettingsBean.reason}" rendered="#{vehicleSettingsBean.selectedVehicleID != null}" />
 				<h:commandButton id="resetVehicleSettings" value="Reset Desired Settings" action="#{vehicleSettingsBean.resetDesiredSettings}" 
 								title="Reset updated settings to original values"
 									rendered="#{vehicleSettingsBean.selectedVehicleID != null}" reRender="vehicleEditSettingsRegion,vehicle-centric"/>

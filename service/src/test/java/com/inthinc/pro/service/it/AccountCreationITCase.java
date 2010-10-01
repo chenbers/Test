@@ -444,14 +444,14 @@ public class AccountCreationITCase extends BaseITCase {
         Device device = new Device();
         device.setAccountID(account.getAcctID());
 //        device.setAutoLogoff(AutoLogoff.OFF);
-        device.setEphone("IT_EPHONE" + randomInt);
+//        device.setEphone("IT_EPHONE" + randomInt);
         device.setImei("IT_IMEI" + randomInt);
         device.setName("IT_Device" + randomInt);
         device.setPhone("IT_PHONE" + randomInt);
         device.setStatus(DeviceStatus.NEW);
         device.setSim("IT_SIM" + randomInt);
         device.setSerialNum("IT_SN" + randomInt);
-        device.setAutoLogoff(AutoLogoff.ON);
+//        device.setAutoLogoff(AutoLogoff.ON);
         
         ClientRequest request = new ClientRequest(url + "/device", clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, device);
@@ -462,19 +462,19 @@ public class AccountCreationITCase extends BaseITCase {
     }
     
     private Device updateDevice(Device device) throws Exception {
-        device.setAutoLogoff(AutoLogoff.ON);
-        device.setEphone(device.getEphone() + "Update");
+//        device.setAutoLogoff(AutoLogoff.ON);
+//        device.setEphone(device.getEphone() + "Update");
         device.setImei(device.getImei() + "Update");
         device.setName(device.getName() + "Update");
         device.setPhone(device.getPhone() + "Update");
         device.setStatus(DeviceStatus.ACTIVE);
         device.setSim(device.getSim() + "Update");
         device.setSerialNum(device.getSerialNum() + "Update");
-        device.setHardAcceleration(10);
-        device.setHardBrake(10);
-        device.setHardTurn(10);
-        device.setHardVertical(15);
-        device.setSpeedSettings(new Integer[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 });
+//        device.setHardAcceleration(10);
+//        device.setHardBrake(10);
+//        device.setHardTurn(10);
+//        device.setHardVertical(15);
+//        device.setSpeedSettings(new Integer[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 });
         
 
         ClientRequest request = new ClientRequest(url + "/device", clientExecutor);

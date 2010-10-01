@@ -25,9 +25,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.jasypt.util.password.PasswordEncryptor;
-import org.richfaces.component.Dropzone;
-import org.richfaces.event.DropEvent;
-import org.richfaces.event.DropListener;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.RuleSetType;
@@ -44,7 +41,6 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.State;
@@ -904,18 +900,22 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     
     }
 
-    public Map<String, Integer> getTeams() {
-    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-	    for (final Group group : getGroupHierarchy().getGroupList())
-	    	if (group.getType() == GroupType.TEAM) {
-	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
-	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
-	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
-	    		}
-	    		teams.put(fullName, group.getGroupID());
-    	}
-	    return teams;
+    public TreeMap<String, Integer> getTeams(){
+        return getGroupHierarchy().getTeams();
     }
+
+//    public Map<String, Integer> getTeams() {
+//    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+//	    for (final Group group : getGroupHierarchy().getGroupList())
+//	    	if (group.getType() == GroupType.TEAM) {
+//	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
+//	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+//	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+//	    		}
+//	    		teams.put(fullName, group.getGroupID());
+//    	}
+//	    return teams;
+//    }
 
     public Map<String, TimeZone> getTimeZones() {
         return TIMEZONES;

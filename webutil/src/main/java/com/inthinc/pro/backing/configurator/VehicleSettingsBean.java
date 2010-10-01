@@ -23,7 +23,6 @@ public class VehicleSettingsBean extends UsesBaseBean{
 	protected VehicleDAO vehicleDAO;
 	protected ConfiguratorDAO configuratorDAO;
 
-//	private VehicleSettingsDAO vehicleSettingsDAO;
     private Integer selectedVehicleID;
     private VehicleSetting selectedVehicleSetting;
     private EditableMap<Integer, String> editedDesiredValues;
@@ -73,13 +72,27 @@ public class VehicleSettingsBean extends UsesBaseBean{
     public Object updateVehicle(){
     	
         Map<Integer,String> newDesiredValues = editedDesiredValues.getDifferencesMap();
-        if(reason == null|| reason.isEmpty() || newDesiredValues.isEmpty() || selectedVehicleSetting.getVehicleID()==null){}
-        else{
+        FacesMessage message = new FacesMessage();
+        
+        if(reason == null|| reason.isEmpty()){
+            
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please add a reason for your changes");
+            FacesContext.getCurrentInstance().addMessage("", message);
+            
+        }
+        else if (newDesiredValues.isEmpty() || selectedVehicleSetting.getVehicleID()==null){
+            
+            message.setSeverity(FacesMessage.SEVERITY_INFO);
+            message.setSummary("No changes have been added");
+            FacesContext.getCurrentInstance().addMessage("", message);
+        }
+        else {
 
             configuratorDAO.updateVehicleSettings(selectedVehicleSetting.getVehicleID(), newDesiredValues, 
     				                              getBaseBean().getProUser().getUser().getUserID(), 
     				                              reason);
-    		FacesMessage message = new FacesMessage();
+            //Need to update the edited values in case the
     		message.setSeverity(FacesMessage.SEVERITY_INFO);
     		message.setSummary("Vehicle settings updated successfully");
     		FacesContext.getCurrentInstance().addMessage("", message);

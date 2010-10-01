@@ -18,10 +18,8 @@ import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.SensitivityType;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
@@ -30,10 +28,11 @@ import com.inthinc.pro.util.SelectItemUtil;
 /**
  * @author David Gileadi
  */
+@SuppressWarnings("serial")
 public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 7 };
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 6 };
     static
     {
         // available columns
@@ -44,7 +43,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("sim");
         AVAILABLE_COLUMNS.add("serialNum");
         AVAILABLE_COLUMNS.add("phone");
-        AVAILABLE_COLUMNS.add("ephone");
+//        AVAILABLE_COLUMNS.add("ephone");
         AVAILABLE_COLUMNS.add("status");
         
     }
@@ -67,14 +66,14 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         this.vehiclesBean = vehiclesBean;
     }
     
-    public List<SensitivityType> getSensitivityTypes(){
-        List<SensitivityType> sensitivityTypeList = new ArrayList<SensitivityType>();
-        sensitivityTypeList.add(SensitivityType.HARD_VERT_SETTING);
-        sensitivityTypeList.add(SensitivityType.HARD_ACCEL_SETTING);
-        sensitivityTypeList.add(SensitivityType.HARD_BRAKE_SETTING);
-        sensitivityTypeList.add(SensitivityType.HARD_TURN_SETTING);
-        return sensitivityTypeList;
-    }
+//    public List<SensitivityType> getSensitivityTypes(){
+//        List<SensitivityType> sensitivityTypeList = new ArrayList<SensitivityType>();
+//        sensitivityTypeList.add(SensitivityType.HARD_VERT_SETTING);
+//        sensitivityTypeList.add(SensitivityType.HARD_ACCEL_SETTING);
+//        sensitivityTypeList.add(SensitivityType.HARD_BRAKE_SETTING);
+//        sensitivityTypeList.add(SensitivityType.HARD_TURN_SETTING);
+//        return sensitivityTypeList;
+//    }
 
     @Override
     protected List<DeviceView> loadItems()
@@ -104,8 +103,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setSelected(false);
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
-        if (device.getEphone() != null)
-            deviceView.setEphone(MiscUtil.formatPhone(device.getEphone()));
+//        if (device.getEphone() != null)
+//            deviceView.setEphone(MiscUtil.formatPhone(device.getEphone()));
         return deviceView;
     }
 
@@ -197,7 +196,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public List<VehicleView> getVehicles()
     {
-        return vehiclesBean.getItems();
+        return vehiclesBean.getPlainVehicles();
     }
 
     public void chooseVehicle()
@@ -228,27 +227,25 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         boolean valid = true;
         final String required = "required";
-        // Ephone
-        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
-        {
-            if (deviceView.getEphone() == null || deviceView.getEphone().equals(""))
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString(required);
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:editDevice-ephone", message);
-            }
-//            else if (deviceView.getEphone() != null && !deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")
-//            		&& !deviceView.getPhone().matches("\\+\\d*"))
-            else if(deviceView.getEphone() != null && 
-            		((deviceView.getEphone().length() >22) || (MiscUtil.unformatPhone(deviceView.getEphone()).length() > 15)) )
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:editDevice-ephone", message);
-            }
-        }
+//        // Ephone
+//        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
+//        {
+//            if (deviceView.getEphone() == null || deviceView.getEphone().equals(""))
+//            {
+//                valid = false;
+//                final String summary = MessageUtil.getMessageString(required);
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                getFacesContext().addMessage("edit-form:editDevice-ephone", message);
+//            }
+//            else if(deviceView.getEphone() != null && 
+//            		((deviceView.getEphone().length() >22) || (MiscUtil.unformatPhone(deviceView.getEphone()).length() > 15)) )
+//            {
+//                valid = false;
+//                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                getFacesContext().addMessage("edit-form:editDevice-ephone", message);
+//            }
+//        }
         // Name
         if ((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
         {
@@ -349,19 +346,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final DeviceView device : saveItems)
         {
-//            device.setPhone(MiscUtil.unformatPhone(device.getPhone()));
-//            device.setEphone(MiscUtil.unformatPhone(device.getEphone()));
-            // if batch editing, copy individual speed settings by hand
-            if (isBatchEdit())
-            {
-                final Map<String, Boolean> updateField = getUpdateField();
-                for (final String key : updateField.keySet())
-                    if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true))
-                    {
-                        final int index = Integer.parseInt(key.substring(5));
-                        device.getSpeedSettings()[index] = getItem().getSpeedSettings()[index];
-                    }
-            }
             if (create)
                 device.setDeviceID(deviceDAO.create(getAccountID(), device));
             else
@@ -394,7 +378,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     private void setVehicleDevice(Integer vehicleID, Integer deviceID)
     {
-        for (final VehicleView vehicle : getVehicles())
+        for (final Vehicle vehicle : getVehicles())
             if (vehicleID.equals(vehicle.getVehicleID()))
             {
                 vehicle.setDeviceID(deviceID);
@@ -425,10 +409,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return SelectItemUtil.toList(DeviceStatus.class, false, DeviceStatus.DELETED);
     }
 
-    public List<SelectItem> getAutoLogoffs()
-    {
-        return SelectItemUtil.toList(AutoLogoff.class, false);
-    }
+//    public List<SelectItem> getAutoLogoffs()
+//    {
+//        return SelectItemUtil.toList(AutoLogoff.class, false);
+//    }
     
     @Override
     public void resetList()
@@ -476,12 +460,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
 
         @Override
-        public String getEphone()
-        {
-            return MiscUtil.formatPhone(super.getEphone());
-        }
-
-        @Override
         public String getPhone()
         {
             return MiscUtil.formatPhone(super.getPhone());
@@ -512,31 +490,3 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
     }
 }
-  /*
-    
-    private List<Vehicle> vehicleList;
-    private List<Device> accountDeviceList;
-    private List<DeviceReportItem> deviceList;
-
-    public void init()
-    {
-        vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
-        accountDeviceList = deviceDAO.getDevicesByAcctID(getAccountID());
-        deviceList = new ArrayList<DeviceReportItem>();
-        for (Device device : accountDeviceList)
-        {
-            for (Vehicle vehicle : vehicleList)
-            {
-                if (vehicle.getDeviceID().equals(device.getDeviceID()))
-                {
-                    DeviceReportItem item = new DeviceReportItem();
-                    item.setDevice(device);
-                    item.setVehicle(vehicle);
-                    deviceList.add(item);
-                }
-            }
-        }
-    }
-
-
-*/

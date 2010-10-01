@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -15,7 +17,7 @@ public class Vehicle extends BaseEntity
     private Integer           vehicleID;
 
     private Integer           groupID;
-    private Status   status;
+    private Status            status;
     private String            name;
     private String            make;
     private String            model;
@@ -35,10 +37,60 @@ public class Vehicle extends BaseEntity
     
     private Integer           odometer;
     private Boolean           hos;
-
+    
+    private Boolean           dot;
+    private Boolean           ifta;
+    private Integer           zoneType; //1=light, 2=heavy -TODO make enum for this
+    private Date              warrantyStart;
+    private Date              warrantyStop;
+    
     public Vehicle()
     {
         super();
+    }
+
+    public Boolean getDot() {
+        return dot;
+    }
+
+    public void setDot(Boolean dot) {
+        this.dot = dot;
+    }
+
+    public Boolean getIfta() {
+        return ifta;
+    }
+
+    public void setIfta(Boolean ifta) {
+        this.ifta = ifta;
+    }
+
+    public Integer getZoneType() {
+        return zoneType;
+    }
+
+    public void setZoneType(Integer zoneType) {
+        this.zoneType = zoneType;
+    }
+
+    public Date getWarrantyStart() {
+        return warrantyStart;
+    }
+
+    public void setWarrantyStart(Date warrantyStart) {
+        this.warrantyStart = warrantyStart;
+    }
+
+    public Date getWarrantyStop() {
+        return warrantyStop;
+    }
+
+    public void setWarrantyStop(Date warrantyStop) {
+        this.warrantyStop = warrantyStop;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
     public Integer getVehicleID()
@@ -253,6 +305,12 @@ public class Vehicle extends BaseEntity
     public String toString() {
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
                 + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
-                + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + "]";
+                + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + ", hos="+ hos+
+                ", dot="+dot+
+                ", ifta="+ifta+
+                ", zoneType="+zoneType+
+                ", warrantyStart="+warrantyStart.toString()+
+                ", warrantyStop="+warrantyStop.toString()+
+               "]";
     }
 }

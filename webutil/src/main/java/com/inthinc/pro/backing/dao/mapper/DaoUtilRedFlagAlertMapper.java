@@ -4,13 +4,13 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
-import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
-import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class DaoUtilRedFlagAlertMapper extends DaoUtilMapper {
 	
-    @ConvertColumnToField(columnName = "speedSettings")
+	private static final long serialVersionUID = 1L;
+	@ConvertColumnToField(columnName = "speedSettings")
     public void speedSettingsToModel(RedFlagAlert redFlagAlert, Object value)
     {
         if (redFlagAlert == null || value == null)
@@ -18,7 +18,7 @@ public class DaoUtilRedFlagAlertMapper extends DaoUtilMapper {
 
         if (value instanceof String)
         {
-            Integer[] speedSettingsArray = new Integer[Device.NUM_SPEEDS];
+            Integer[] speedSettingsArray = new Integer[VehicleSetting.NUM_SPEEDS];
             
             String[] list = ((String)value).split(" ");
             for (int i = 0; i < list.length; i++)

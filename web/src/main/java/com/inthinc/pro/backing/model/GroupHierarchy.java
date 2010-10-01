@@ -233,5 +233,21 @@ public class GroupHierarchy implements Serializable
     	}
     	
     	return groupHierarchicalList;
-    }    
+    }
+    
+    public TreeMap<String, Integer> getTeams()
+    {        
+        final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+        for (final Group group : getGroupList())
+            if (group.getType() == GroupType.TEAM) {
+                String fullName = getFullGroupName(group.getGroupID());
+                if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
+                    fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
+                }
+                teams.put(fullName, group.getGroupID());
+        }
+        return teams;
+        
+    }
+
 }

@@ -10,6 +10,21 @@
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="title" value="#{messages.adminHeader_vehicles}"/>
+   <ui:define name="scripts">
+      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+      <script type="text/javascript">
+        function getAutologoffLabelText(value,valueLabel){
+			switch (valueLabel){
+				case 0: return "#{messages.AutologoffSetting_disabled}";
+				case 1: return value+" #{messages.AutologoffSetting_minutes}";
+				case 2: return value+" #{messages.AutologoffSetting_hour}";
+				case 3: return value+" #{messages.AutologoffSetting_hours}";
+				case 4: return "#{messages.AutologoffSetting_max}";
+			}
+            return "";
+        }
+      </script>
+  </ui:define>
   
   <ui:define name="content">
 
@@ -102,6 +117,7 @@
                                 <td width="100"><h:outputText value="#{messages.editVehicle_odometer}" /></td>
                                 <td><h:outputText value="#{vehiclesBean.item.odometer}" /></td>
                               </tr>                              
+                              <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/properties.xhtml"/>
 	                         <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_DOT}" /></td>
@@ -148,6 +164,18 @@
                                 </td>
                               </tr>
                             </table>
+                           <div class="spacer"></div>
+                 <div class="add_section_title"><h:outputText value="#{messages.organization_deviceAssignments}" /></div>
+                  <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductVersion}" /></td>
+                     <td><h:outputText value="#{vehiclesBean.item.vehicleSettingAdapter.productType.name}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
+                      <td><h:outputText value="#{vehiclesBean.item.device.name}" /></td>
+                    </tr>
+                  </table>
 
                           </td>
                         </tr>
@@ -168,15 +196,16 @@
    
                          <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
    
-                         <ui:fragment rendered="#{empty vehiclesBean.item.device}">
+                         <ui:fragment rendered="#{empty vehiclesBean.item.vehicleSettingAdapter}">
                            <div class="msg" >
                              <p class="warning"><h:outputText value="#{messages.vehicle_noDevice}" /></p>
                            </div>
                          </ui:fragment>
                          <h:panelGroup id="speeedSettingsPanel">
-                            <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
-                              <ui:include src="../../includes/admin/speedSensitivity.xhtml">
-                                <ui:param name="device" value="#{vehiclesBean.item.device}" />
+                            <ui:fragment rendered="#{not empty vehiclesBean.item.vehicleSettingAdapter}">
+                              <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/speedSensitivity.xhtml">
+                                <ui:param name="vehicleSettingAdapter" value="#{vehiclesBean.item.vehicleSettingAdapter}" />
+                                <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
                                 <ui:param name="disabled" value="true" />
                               <ui:param name="context" value="vehicle" />
                               </ui:include>

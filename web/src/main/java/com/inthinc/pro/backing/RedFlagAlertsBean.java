@@ -20,6 +20,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView> implements Serializable{
@@ -132,7 +133,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     public RedFlagAlertView getItem() {
         final RedFlagAlertView item = super.getItem();
         if (item.getSpeedSettings() == null)
-            item.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
+            item.setSpeedSettings(new Integer[VehicleSetting.NUM_SPEEDS]);
         return item;
     }
 
@@ -264,7 +265,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             if (isBatchEdit()) {
                 flag.setSpeedSelected(null);
                 if (flag.getSpeedSettings() == null)
-                    flag.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
+                    flag.setSpeedSettings(new Integer[VehicleSetting.NUM_SPEEDS]);
                 final Map<String, Boolean> updateField = getUpdateField();
                 for (final String key : updateField.keySet())
                     if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true)) {
@@ -364,7 +365,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public Boolean[] getSpeedSelected() {
             if ((speedSelected == null)) {
-                speedSelected = new Boolean[Device.NUM_SPEEDS];
+                speedSelected = new Boolean[VehicleSetting.NUM_SPEEDS];
                 for (int i = 0; i < speedSelected.length && getSpeedSettings()!=null; i++)
                     speedSelected[i] = getSpeedSettings()[i]!=null;
             }

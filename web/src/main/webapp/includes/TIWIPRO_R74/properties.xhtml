@@ -1,0 +1,19 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+
+    <tr>
+     <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
+     <td><h:outputText value="#{vehiclesBean.item.vehicleSettingAdapter.properties['ephone']}" /></td>
+   </tr>
+   <tr>
+     <td width="100"><h:outputText value="#{messages.editDevice_autoLogoff}" /></td>
+     <td><c:set var="autoLogoff" value="#{vehiclesBean.item.vehicleSettingAdapter.properties['autoLogoffSlider'] eq 0?'AutologoffSetting_disabled':vehiclesBean.item.vehicleSettingAdapter.properties['autoLogoffSlider']}" /><h:outputText value="#{messages[autoLogoff]}" /></td>
+   </tr>
+ 
+</ui:composition>

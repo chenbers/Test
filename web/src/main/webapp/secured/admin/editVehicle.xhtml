@@ -13,6 +13,18 @@
   <ui:param name="title" value="#{vehiclesBean.add ? messages.adminHeader_addVehicle : (vehiclesBean.batchEdit ? messages.adminHeader_editVehicles : messages.adminHeader_editVehicle)}"/>
   <ui:define name="scripts">
       <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+      <script type="text/javascript">
+        function getAutologoffLabelText(value,valueLabel){
+			switch (valueLabel){
+				case 0: return "#{messages.AutologoffSetting_disabled}";
+				case 1: return value+" #{messages.AutologoffSetting_minutes}";
+				case 2: return value+" #{messages.AutologoffSetting_hour}";
+				case 3: return value+" #{messages.AutologoffSetting_hours}";
+				case 4: return "#{messages.AutologoffSetting_max}";
+			}
+            return "";
+        }
+      </script>
   </ui:define>
   
   <ui:define name="content">
@@ -231,7 +243,15 @@
                                 </td>
                               </tr>
 	                         </ui:fragment>
-
+                         <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/editProperties.xhtml">
+                         	 <ui:param name="vehiclesBean" value="#{vehiclesBean}"/>
+                             <ui:param name="vehicleSettingAdapter" value="#{vehiclesBean.item.vehicleSettingAdapter}" />
+                             <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
+                             <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
+                             <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
+                             <ui:param name="context" value="editVehicle" />
+                             <ui:param name="formName" value="edit-form"/>
+						 </ui:include>
                             </table>
 
                           </td>
@@ -317,6 +337,18 @@
                               </tr>
                               </ui:fragment>
                             </table>
+                           <div class="spacer"></div>
+                 <div class="add_section_title"><h:outputText value="#{messages.organization_deviceAssignments}" /></div>
+                  <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductVersion}" /></td>
+                     <td><h:outputText value="#{vehiclesBean.item.vehicleSettingAdapter.productType.name}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
+                      <td><h:outputText value="#{vehiclesBean.item.device.name}" /></td>
+                    </tr>
+                  </table>
 
                           </td>
                         </tr>
@@ -353,22 +385,23 @@
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
                      
                       
-                      <ui:fragment rendered="#{empty vehiclesBean.item.device}">
-                        <div class="msg" >
-                          <p class="warning"><h:outputText value="#{messages.editVehicle_noDevice}" /></p>
-                        </div>
-                      </ui:fragment>
+<!--                      <ui:fragment rendered="#{empty vehiclesBean.item.vehicleSettingAdapter.properties['speedSettings']}">-->
+<!--                        <div class="msg" >-->
+<!--                          <p class="warning"><h:outputText value="#{messages.editVehicle_noDevice}" /></p>-->
+<!--                        </div>-->
+<!--                      </ui:fragment>-->
                       
                        <h:panelGroup id="speeedSettingsPanel">
-                         <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
-                           <ui:include src="../../includes/admin/speedSensitivity.xhtml">
-                             <ui:param name="device" value="#{vehiclesBean.item.device}" />
+<!--                         <ui:fragment rendered="#{not empty vehiclesBean.item.vehicleSettingAdapter.properties['speedSettings']}">-->
+                         <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/speedSensitivity.xhtml">
+                             <ui:param name="vehicleSettingAdapter" value="#{vehiclesBean.item.vehicleSettingAdapter}" />
+                             <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
                              <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
                              <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
                              <ui:param name="context" value="editVehicle" />
                              <ui:param name="formName" value="edit-form"/>
                            </ui:include>
-                         </ui:fragment>
+<!--                         </ui:fragment>-->
                       </h:panelGroup>
 
                       <ul id="grid_nav" style="margin: 0;">
