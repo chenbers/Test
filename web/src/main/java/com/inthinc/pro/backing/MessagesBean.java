@@ -153,7 +153,7 @@ public class MessagesBean extends BaseBean {
             
             for ( Driver d: drivers ) {
                 SelectItem si = new SelectItem();
-                si.setLabel(d.getPerson().getFullName());
+                si.setLabel(d.getPerson().getFullName()!=null?d.getPerson().getFullName():"Unnamed driver");
                 si.setValue(d.getDriverID());
                 driverSelectFromList.add(si);
             }
@@ -173,7 +173,7 @@ public class MessagesBean extends BaseBean {
             
             for (Vehicle v: vehicles ) {
                 SelectItem si = new SelectItem();
-                si.setLabel(v.getFullName());
+                si.setLabel(v.getFullName() != null?v.getFullName():"Unnamed vehicle");
                 si.setValue(v.getVehicleID());
                 vehicleSelectFromList.add(si);
             }
@@ -193,7 +193,7 @@ public class MessagesBean extends BaseBean {
             
             for ( Group g: groups ) {
                 SelectItem si = new SelectItem();
-                si.setLabel(g.getName());
+                si.setLabel(g.getName()!=null?g.getName():"Unnamed group");
                 si.setValue(g.getGroupID());
                 groupSelectFromList.add(si);
             }
