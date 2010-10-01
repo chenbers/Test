@@ -1,0 +1,136 @@
+<ui:composition 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+	<c:set var="context" value="hosReports"/>		
+         	
+	<a4j:region  id="#{context}_viewRegion">
+	<a4j:form id="#{context}_form">
+        <ul id="rpt_nav">
+		<li class="l select">
+			<table border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td>
+						<h:outputText value="#{messages.hosReports_report}"/>
+					</td>
+					<td>
+					<h:selectOneMenu id="#{context}-report" value="#{hosReportsBean.selected}" style="width:250px;size:auto;">
+						<f:selectItems value="#{hosReportsBean.reportGroups}"/> 
+						<a4j:support event="onchange" reRender="#{context}_form,#{context}_tableForm,#{context}_viewPanel" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			</table>
+		</li>		
+		<a4j:outputPanel id="#{context}_options">
+		<li class="l" style="margin: 6px;">
+			<span title="#{messages.hosReports_viewTable}">
+				<a4j:commandLink id="#{context}_tableIcon" 
+					reRender="#{context}_tableForm,#{context}_viewPanel" 
+					action="#{hosReportsBean.tabular}"
+					rendered="#{hosReportsBean.params.reportGroup != null and hosReportsBean.params.reportGroup.tabularSupport and hosReportsBean.params.valid}" 
+					styleClass="viewTable"> 
+    					<h:outputText value="#{messages.hosReports_viewTableLink}"/>
+				</a4j:commandLink>    
+			</span>
+			<span title="#{messages.hosReports_renderHTML}">
+				<a4j:commandLink id="#{context}_htmlIcon" action="#{hosReportsBean.htmlReport}"
+								reRender="#{context}_tableForm,#{context}_viewPanel" 
+								rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" styleClass="viewHTML"> 
+    					<h:outputText value="#{messages.hosReports_renderHTMLLink}"/>
+				</a4j:commandLink>    
+			</span>	
+			<span title="#{messages.hosReports_exportPDF}">
+				<h:commandLink id="#{context}_pdfIcon" action="#{hosReportsBean.pdf}" ajaxSingle="true"  
+							rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" styleClass="exportPDF"> 
+    					<h:outputText value="#{messages.hosReports_exportPDFLink}"/>
+				</h:commandLink>    
+			</span>	
+			<span title="#{messages.hosReports_exportExcel}">
+				<h:commandLink id="#{context}_excelIcon" action="#{hosReportsBean.excel}"  ajaxSingle="true" 
+								rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" 
+							styleClass="exportExcel"> 
+    					<h:outputText value="#{messages.hosReports_exportExcelLink}"/>
+				</h:commandLink>    
+			</span>	
+			<span title="#{messages.hosReports_email}">
+				<h:commandLink id="#{context}_emailIcon" ajaxSingle="true" 
+						onclick="Richfaces.showModalPanel('#{context}_reportEmailModal');return false;"
+						rendered="#{hosReportsBean.selected != null and hosReportsBean.params.valid}" styleClass="email"> 
+    					<h:outputText value="#{messages.hosReports_emailLink}"/>
+				</h:commandLink>    
+			</span>	
+		</li>
+		</a4j:outputPanel>
+        <li class="r text">
+             <a4j:status 
+				id="#{context}_status" for="#{context}_viewRegion">
+     				<f:facet name="start">
+     					<h:outputText>
+     						<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+     					</h:outputText>
+     				</f:facet>
+		   </a4j:status>
+         </li>
+         </ul>
+        <div class="spacer"></div>
+		<ui:include src="/includes/component/reportParams.xhtml" >
+			<ui:param name="context" value="#{context}"/> 
+			<ui:param name="params" value="#{hosReportsBean.params}"/> 
+      		<ui:param name="reRenderList" value="#{context}_options"/> 
+  		</ui:include>
+        </a4j:form>
+	</a4j:region>
+    <div class="spacer"></div>
+
+    <a4j:outputPanel  id="#{context}_viewPanel">
+		<h:panelGroup id="#{context}_html" layout="block">
+			<h:outputText id="#{context}_htmlText" value="#{hosReportsBean.html}" escape="false" 
+						rendered="#{hosReportsBean.viewType eq 'HTML'}"/>
+		</h:panelGroup>
+	</a4j:outputPanel>
+	
+	<a4j:form id="#{context}_tableForm">
+		<div class="datagrid_panel" style="width:925px; overflow: auto;">
+			<rich:dataTable rows="25" value="#{hosReportsBean.records}" var="record" id="#{context}_viewTable" align="left" width="100%"
+				styleClass="datatable rptdatagrid"  rowClasses="tableOdd,tableEven" cellspacing="1" 
+				rendered="#{hosReportsBean.viewType eq 'CSV'}">
+	               	<f:facet name="header">
+	       				<rich:subTable styleClass="datatable" width="100%" rows="0">
+	       					<c:forEach items="#{hosReportsBean.columnSummaryHeaders}" var="topcol" >
+	           				<rich:column colspan="#{topcol.colspan}">
+	               				<f:facet name="header">
+									<h:outputText value="#{topcol.header}" escape="false" />
+								</f:facet>
+							</rich:column>
+							</c:forEach>
+						</rich:subTable>
+					</f:facet>
+	           	<rich:columns value="#{hosReportsBean.columnHeaders}" var="col" index="index" id="column#{index}"
+	           			sortBy="#{record[index].sort}" sortOrder="#{hosReportsBean.sortOrder[col]}" >
+	               	<f:facet name="header">
+						<h:outputText value="#{col}" escape="false" />
+					</f:facet>
+					<h:outputText value="#{record[index].display}" />
+	               </rich:columns>
+			 	<f:facet name="footer">
+				 	<rich:datascroller id="resultScrollBottom" renderIfSinglePage="false"/>
+			 	</f:facet>
+			</rich:dataTable>
+		</div>
+	</a4j:form>	
+	<h:outputText id="#{context}_emailModalPanel">
+            <ui:include src="/includes/emailReportPopup.xhtml">
+                <ui:param name="id" value="#{context}_reportEmailModal" />
+                <ui:param name="reportBean" value="#{hosReportsBean}" />
+     	 		<ui:param name="context" value="#{context}" />
+            </ui:include>
+    </h:outputText>    
+</ui:composition>
+

@@ -6,6 +6,7 @@ import java.util.Locale;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -53,5 +54,7 @@ public interface ReportCriteriaService
     ReportCriteria getPayrollSignoffReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
     ReportCriteria getPayrollSummaryReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getPayrollSummaryReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
+    ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale);
 
+    
 }

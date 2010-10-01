@@ -88,7 +88,11 @@ public enum ReportGroup
      PAYROLL_SIGNOFF("Payroll Report Driver Signoff",16,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{}, true,
-             ReportType.PAYROLL_SIGNOFF);
+             ReportType.PAYROLL_SIGNOFF),             
+     TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP,
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+             ReportType.TEN_HOUR_DAY_VIOLATIONS);
     
     private ReportType[] reports;
     private Integer code;

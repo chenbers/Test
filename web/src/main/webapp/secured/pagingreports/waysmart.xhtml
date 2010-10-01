@@ -1,0 +1,142 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:c="http://java.sun.com/jstl/core"
+	  			xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+    <ui:define name="scripts">
+       <style>
+	       .rptdatagrid th {
+				text-align: center;
+			}
+       
+			ul#rpt_nav {
+				height: 20px;
+				list-style: none;
+				padding: 0;
+				margin: 0 10px 0 10px;
+				font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+			}
+			
+			ul#rpt_nav li {
+				list-style: none;
+				padding: 2px 4px 2px 2px;
+				margin: 0;
+			}
+			
+			ul#rpt_nav li.text {
+				list-style: none;
+				padding: 12px 5px 0 5px;
+				margin: 0;
+			}
+			
+			ul#rpt_nav li.r {
+				float: right;
+			}
+			
+			ul#rpt_nav li.l {
+				float: left;
+			}
+			
+			ul#rpt_nav li.select {
+				list-style: none;
+				padding: 0px 4px 2px 2px;
+				margin: 0;
+			}
+			
+			ul#rpt_nav a {
+				padding: 2px 13px 2px 13px;
+				text-decoration: none;
+				border-bottom: none;
+				color: #000;
+			}
+
+			ul#rpt_nav a:hover,ul#rpt_nav a.active,ul#rpt_nav li a:hover,ul#rpt_nav li a:active {
+				color: #000;
+				text-decoration: underline;
+			}
+
+			ul#rpt_nav a.active,ul#rpt_nav li a.active {
+				font-weight: bold;
+			}
+			
+			#rpt_nav li a.viewTable {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_grid.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.viewHTML {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_legend.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.exportPDF {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_pdfSmall.gif) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.exportExcel {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_excel.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+			#rpt_nav li a.email {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_email.gif) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+			}
+		</style>
+	</ui:define>
+
+	<ui:param name="hosSelected" value="current" />
+	<ui:param name="helpFile" value="" />
+	<ui:param name="context" value="hosReports" />
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/hos/subNavigation.xhtml">
+			<ui:param name="reportsSelected" value="current" />
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</ui:define>
+	
+	<ui:define name="content">
+	<div id="wrapper">
+	<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+		<tr>
+			<td valign="top">
+				<div class="">
+					<div class="panel_nw">
+						<div class="panel_title">
+							<span class="hos">#{messages.waysmart_reportsTitle}</span>
+						</div>
+					</div>
+					<div class="panel_w">
+	    				<div class="panel_content">
+		   					<ui:include src="/includes/performance/performanceReportsContent.xhtml">	
+	   						</ui:include>
+	   					</div>
+					</div>
+   					<div class="panel_sw">
+						<div class="panel_statusbar"/>
+					</div>
+				</div>
+			</td>
+		  </tr>
+	</table>
+	</div>
+	</ui:define>
+</ui:composition>

@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
@@ -56,6 +57,7 @@ import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSummaryReportCriteria;
+import com.inthinc.pro.reports.performance.TenHoursViolationReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.reports.util.ReportUtil;
@@ -759,6 +761,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
     }
 
+    
+    @Override
+    public ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale) {
+        TenHoursViolationReportCriteria criteria = new TenHoursViolationReportCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setMockWaysmartDao(new MockWaysmartDAO());
+               
+        criteria.init(groupID, interval);
+        return criteria;
+    }
+    
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;

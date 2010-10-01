@@ -157,6 +157,11 @@
         <view-id>/secured/pagingreports/devices.faces</view-id>
         <action onPostback="false">#{pagingDeviceReportBean.allAction}</action>
     </url-mapping>
+    <url-mapping id="waysmartReport">
+        <pattern>/app/reports/waysmartReport</pattern>
+        <view-id>/secured/pagingreports/waysmart.faces</view-id>
+        <action onPostback="false">#{pagingWaysmartReportBean.allAction}</action>
+    </url-mapping>
     <url-mapping id="devicesReportWithCriteria">
         <pattern>/app/reports/devicesReport/</pattern>
         <view-id>/secured/pagingreports/devices.faces</view-id>
