@@ -19,6 +19,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.hos.violations.NonDOTShiftViolations;
+import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -26,7 +27,6 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.NonDOTViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
-import com.inthinc.pro.reports.hos.util.HOSUtil;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class NonDOTViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria {

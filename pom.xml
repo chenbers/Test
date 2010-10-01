@@ -58,8 +58,8 @@
 		<module>service</module>
 		<module>reports</module>
 		<module>webfulfillment</module>
-<!--    <module>hoskiosk</module> -->
-  </modules>
+	    <module>hoskiosk</module> 
+   </modules>
 	<properties>
 		<compileSource>1.6</compileSource>
 		<skipUT>false</skipUT>

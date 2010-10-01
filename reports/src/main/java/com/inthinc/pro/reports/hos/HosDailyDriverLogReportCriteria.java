@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
@@ -37,6 +36,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
@@ -55,7 +55,6 @@ import com.inthinc.pro.reports.hos.model.RecapType;
 import com.inthinc.pro.reports.hos.model.RecapUS;
 import com.inthinc.pro.reports.hos.model.RemarkLog;
 import com.inthinc.pro.reports.hos.model.VehicleInfo;
-import com.inthinc.pro.reports.hos.util.HOSUtil;
 import com.inthinc.pro.reports.jasper.ReportUtils;
 import com.inthinc.pro.reports.util.MessageUtil;
 

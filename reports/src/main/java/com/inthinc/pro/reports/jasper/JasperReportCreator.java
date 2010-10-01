@@ -6,6 +6,11 @@ import com.inthinc.pro.reports.mail.ReportMailer;
 public class JasperReportCreator extends ReportCreator<JasperReport>
 {
 
+    public JasperReportCreator()
+    {
+        super();
+    }
+    
     public JasperReportCreator(ReportMailer reportMailer)
     {
         super(reportMailer);

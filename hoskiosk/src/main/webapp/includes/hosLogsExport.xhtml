@@ -1,0 +1,38 @@
+<ui:composition 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich">
+
+	<a4j:form>
+    	<table width="100%" border="0" cellspacing="2" cellpadding="0">
+			<tr>
+                <td align="center">
+  					<h:commandButton id="exportButton" action="#{hosDriverKioskBean.exportLogs}" styleClass="left">
+                       	<span class="save"><h:outputText value="#{messages.hosLogsExport_save}" /></span>
+                    </h:commandButton>
+					<rich:spacer height="10"/>  					
+                </td>
+			</tr>
+			<tr>
+                <td>
+                	<h:outputText value="#{messages.hosLogsExport_instTitle}" style="font-weight: bold"/>
+                	<div class="spacer"></div>
+       				<ol>
+       					<li><h:outputText value="#{messages.hosLogsExport_inst1}" escape="false"/></li>
+       					<li><h:outputText value="#{messages.hosLogsExport_inst2}" escape="false" /></li>
+       					<li><h:outputText value="#{messages.hosLogsExport_inst3}" escape="false" /></li>
+       					<li><h:outputText value="#{messages.hosLogsExport_inst4}" escape="false" /></li>
+       					<li><h:outputText value="#{messages.hosLogsExport_inst5}" escape="false" /></li>
+       				</ol>
+				</td>
+			</tr>
+		</table>
+	</a4j:form>
+    					
+
+</ui:composition>
+

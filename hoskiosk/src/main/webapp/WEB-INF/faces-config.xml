@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+ 
+  <component>
+  <component-type>conditionalCSS</component-type>
+  <component-class>com.inthinc.pro.backing.ui.UIConditionalCSS</component-class>
+ </component>
+  <component>
+  <component-type>javax.faces.HtmlCommandButton</component-type>
+  <component-class>com.inthinc.pro.backing.ui.CommandButton</component-class>
+ </component>
+ 
+ <!-- converters -->
+ <converter>
+  <converter-id>MinutesConverter</converter-id>
+  <converter-class>com.inthinc.pro.convert.MinutesConverter</converter-class>
+ </converter>
+
+  <!-- =========== FULL CONFIGURATION FILE ================================== -->
+ <application>
+  <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+  <locale-config>
+   <default-locale>en</default-locale>
+   <supported-locale>en_US</supported-locale>
+  </locale-config>
+  <resource-bundle>
+   <base-name>com.inthinc.pro.resources.Messages</base-name>
+   <var>messages</var>
+  </resource-bundle>
+  <message-bundle>com.inthinc.pro.resources.Messages</message-bundle>
+  <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+ </application>
+</faces-config>

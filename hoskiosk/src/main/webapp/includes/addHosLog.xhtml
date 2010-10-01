@@ -1,0 +1,56 @@
+<ui:composition 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich">
+
+	<div class="add_section_title"><h:outputText value="#{messages.hosStatus_change}" /></div>
+	<div class="spacer"></div>
+	<a4j:form>
+    	<table width="100%" border="0" cellspacing="2" cellpadding="0">
+			<tr>
+            	<td width="100">
+                	<h:outputText value="#{messages.hosLog_status}" />
+				</td>
+                <td>
+                       <h:commandButton id="hosAddLogLogOnDuty" action="#{hosDriverKioskBean.setStatusOnDuty}" styleClass="left" >
+                       	<span class="onDuty"><h:outputText value="#{messages.hosLog_statusOnDutyNotDriving}" /></span>
+                       	<a4j:support event="onclick" reRender="#{reRenderList}"/>
+                       </h:commandButton>
+                       <h:commandButton id="hosAddLogLogOff" action="#{hosDriverKioskBean.setStatusOffDuty}" styleClass="left">
+                       	<span class="offDuty"><h:outputText value="#{messages.hosLog_statusOffDuty}" /></span>
+                       	<a4j:support event="onclick" reRender="#{reRenderList}"/>
+                       </h:commandButton>
+                </td>
+			</tr>
+			<tr>
+				<td width="100">
+                	<h:outputText value="#{messages.hosLog_location}" />
+                    <span class="required">*</span>
+				</td>
+                <td>
+                	<rich:message for="hosLog_location" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                    	<h:inputText value="#{hosDriverKioskBean.location}" id="hosLog_location" styleClass="text" size="30"
+                               maxlength="50" required="true" requiredMessage="#{messages.hosLog_location_required}"/>
+				</td>
+			</tr>
+            <tr>
+   	        	<td width="100"/>
+				<td>
+           	    	<h:outputText value="#{messages.hosLog_location_format}" style="font:italic 11px Verdana,Tahoma,Arial,sans-serif;"/>
+				</td>
+			</tr>	
+            <tr>
+				<td width="100">							
+		    		<div class="required-key"><h:outputText value="#{messages.required_key}" /></div>
+				</td>
+			</tr>							                      
+		</table>
+	</a4j:form>
+    					
+
+</ui:composition>
+

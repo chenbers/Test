@@ -16,6 +16,13 @@ public class ReportCreator<T extends Report>
     private ReportMailer reportMailer;
     
     @SuppressWarnings("unchecked")
+    public ReportCreator()
+    {
+        this.reportMailer = null;
+        reportType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+    
+    @SuppressWarnings("unchecked")
     public ReportCreator(ReportMailer reportMailer)
     {
         this.reportMailer = reportMailer;

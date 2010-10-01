@@ -20,12 +20,14 @@ import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.MinutesData;
 import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -34,7 +36,6 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.util.HOSUtil;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
@@ -134,6 +135,14 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
        if (data == null) {
            return;
        }
+//       System.out.println("driver: " + driver.getDriverID());
+//       MinutesData minutesData = rules.getDOTMinutes();
+//       System.out.println("OffDutyMinutes " + minutesData.getOffDutyMinutes());
+//       System.out.println("DrivingMinutes " + minutesData.getOnDutyDrivingMinutes());
+//       System.out.println("OnDutyNotDrivingMinutes " + minutesData.getOnDutyNotDrivingMinutes());
+//       System.out.println("OnDutyMinutes " + minutesData.getOnDutyMinutes());
+
+       
        long minutesRemaining = data.getAllDOTMinutesRemaining();
        
        for (DateTime day : dayList)

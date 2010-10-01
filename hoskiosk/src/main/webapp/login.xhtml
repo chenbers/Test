@@ -1,0 +1,105 @@
+<ui:composition template="/template/layout.xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="header">
+  		<ui:include src="/includes/loginHeader.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+   
+	<div class="" style="width: 300px; margin: 50px auto 50px auto;">
+	<div class="panel_nw">
+		<div class="panel_title"><span class="login">#{messages.login_title}</span></div>
+	</div>
+      
+    <c:if test="#{hosDriverKioskBean.proUserLoggedIn}">
+       <rich:modalPanel id="logoutDialogPanel" headerClass="popupHeader" controlsClass="popupControls" 
+            height="50" autosized="true" resizeable="false" zindex="2000" width="300">
+          <f:facet name="header">
+            <h:outputText value="#{messages.login_open_session}"/>
+          </f:facet>
+         <f:facet name="controls">
+            <h:outputLink style="padding:5px" value="#{facesContext.externalContext.requestContextPath}/logout">#{messages.login_logout}</h:outputLink>
+         </f:facet>
+          <p>
+            <h:outputFormat value="#{messages.login_currently_logged_in}" escape="false">
+               <f:param value="#{hosDriverKioskBean.person.fullName}"/>
+            </h:outputFormat>
+          </p>
+          
+          <p>
+            <h:outputText value="#{messages.login_otherwise} "/>
+            <h:outputLink styleClass="tb-logout" value="#{facesContext.externalContext.requestContextPath}/kiosk">#{messages.login_return_home}.</h:outputLink>
+          </p>
+         
+      </rich:modalPanel> 
+      <script type="text/javascript">
+               Richfaces.showModalPanel('logoutDialogPanel');
+      </script>
+   </c:if>
+   
+	<div class="panel_w">
+	  <div class="panel_content">
+		<form id="loginForm" action="#{facesContext.externalContext.requestContextPath}/security_filter" method="post">
+		<table width="100%" border="0" cellspacing="0" cellpadding="4">
+		  <tr>
+			<td><h:outputText value="#{messages.login_driverID}:"/></td>
+			<td><h:inputText id="j_username" styleClass="txt" tabindex="1" /></td>
+		  </tr>
+		  <tr>
+			<td><h:outputText value="#{messages.login_lastName}:"/></td>
+			<td><h:inputText id="j_password" styleClass="txt" tabindex="2" /></td>
+		  </tr>
+		  <tr>
+			<td colspan="2" align="center"><button id="loginLogin" type="submit" tabindex="3" class="left"><span class="login">#{messages.login_button}</span></button></td>
+			</tr>
+		</table>
+		</form>
+	  </div>
+	</div>
+	<div class="panel_sw">
+		<div class="panel_statusbar"></div>
+	</div>
+	</div>
+  
+  
+	<rich:jQuery selector="document" query="ready(function(){if (#{empty authErrorBean.errorMessage}) jQuery('#j_username').focus()})"/>
+	</ui:define>
+	
+	<ui:define name="errorPopup">
+	<rich:modalPanel id="errorPanel" headerClass="popupHeader" controlsClass="popupControls" 
+				showWhenRendered="#{not empty authErrorBean.errorMessage}"  
+				 height="50" autosized="true" resizeable="false" zindex="2000" width="300"
+				onshow="document.getElementById('loginErrorForm:loginOk').focus();">
+		<f:facet name="header">
+		      <h:outputText value="#{messages.login_error_title}"/>
+		</f:facet>
+		<f:facet name="controls">
+				<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('errorPanel')" />
+		</f:facet>
+		<p>
+		      <h:outputText value="#{messages[authErrorBean.errorMessage]}" escape="false"/>
+		</p>
+		    
+		<a4j:form id="loginErrorForm">
+				<div class="popupactions">
+		        <h:commandButton id="loginOk" 
+            		oncomplete="Richfaces.hideModalPanel('errorPanel');jQuery('#j_username').focus();" 
+            		styleClass="left">
+            		<span class="ok">
+              			<h:outputText value="#{messages.button_ok}" />
+            		</span>
+          		</h:commandButton>
+        		</div>
+		</a4j:form>
+	</rich:modalPanel> 
+	</ui:define>   
+   
+
+</ui:composition>

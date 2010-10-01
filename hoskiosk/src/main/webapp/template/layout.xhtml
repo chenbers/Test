@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:v="urn:schemas-microsoft-com:vml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:tiwi="http://pro.tiwi.com/jsf">
+
+<f:view contentType="text/html"> 
+<f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages" />
+
+<head>
+
+<c:set var="titleText" value="#{title} - #{messages.title}"/>
+<title>#{title ne null ? titleText : messages.title}</title>
+<link media="screen" type="text/css" href="#{request.contextPath}/css/richfaces.css" rel="stylesheet" />
+<link media="screen" type="text/css" href="#{request.contextPath}/css/main.css" rel="stylesheet" />
+
+<tiwi:conditionalCSS browserVersion="IE 6">
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/ie6.css" />
+<style type="text/css">
+.tree_back, .recent_back {
+	width: auto;
+}
+</style>
+</tiwi:conditionalCSS>
+
+<tiwi:conditionalCSS browserVersion="IE 7">
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/ie7.css" />
+<style type="text/css">
+.tree_back, .recent_back {
+	width: auto;
+}
+</style>
+</tiwi:conditionalCSS>
+
+
+<link rel="icon" href="#{request.contextPath}/favicon.ico" type="image/x-icon"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<ui:insert name="scripts" />
+
+</head>
+<body>
+     <script type="text/javascript"></script>
+
+    <ui:insert name="header">
+        <ui:include src="/includes/header.xhtml">
+        </ui:include>
+    </ui:insert>
+
+    <div id="wrapper">
+    	<div class="wrapper_top"/>
+    	<ui:insert name="content"/>
+	    <div class="wrapper_bottom"/>
+    </div>
+    
+    <ui:insert name="errorPopup"/>
+
+</body>
+</f:view>
+</html>

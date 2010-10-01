@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+default-autowire="byName">
+    <bean id="siloServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator">
+        <constructor-arg value="${proxy.siloDataAccessHost}" />
+        <constructor-arg value="${proxy.siloDataAccessPort}" />
+    </bean>
+    <bean id="reportServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator">
+        <constructor-arg value="${proxy.siloDataAccessHost}" />
+        <constructor-arg value="${proxy.siloDataAccessPort}" />
+    </bean>
+	<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+	  <property name="url" value="${jdbc.mysql.url}"/>
+	  <property name="username" value="${jdbc.mysql.username}"/>
+	  <property name="password" value="${jdbc.mysql.password}"/>
+	</bean>
+</beans>

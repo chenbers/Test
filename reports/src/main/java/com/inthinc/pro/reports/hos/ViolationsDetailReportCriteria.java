@@ -24,6 +24,7 @@ import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -33,7 +34,6 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
-import com.inthinc.pro.reports.hos.util.HOSUtil;
 
 public abstract class ViolationsDetailReportCriteria extends GroupListReportCriteria {
 

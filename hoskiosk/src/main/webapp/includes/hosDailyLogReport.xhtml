@@ -1,0 +1,43 @@
+<ui:composition 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich">
+
+	<a4j:form>
+    	<table width="100%" border="0" cellspacing="2" cellpadding="0">
+			<tr>
+                <td>
+					<ui:include src="/includes/component/dateRange.xhtml" >
+						<ui:param name="dateRange" value="#{hosDriverKioskBean.dateRange}"/> 
+      					<ui:param name="reRenderList" value="dateRangeError"/> 
+  					</ui:include>
+  					<div class="spacer"></div>
+  					
+                </td>
+			</tr>
+            <tr>
+                <td align="center">
+		         <a4j:outputPanel  id="dateRangeError">
+			 		<h:outputText id="paramsError"  style="float:left;color:#c44d34" value="#{messages[hosDriverKioskBean.dateRange.badDates]}" rendered="#{hosDriverKioskBean.dateRange.badDates != null}"/>
+         		</a4j:outputPanel>
+				</td>						                      
+			</tr>	
+			
+			<tr>
+                <td align="center">
+       				<div class="spacer"></div>
+                       <h:commandButton id="printReport" action="#{hosDriverKioskBean.printDailyDriverLogReport}" styleClass="left">
+                       	<span class="print"><h:outputText value="#{messages.hosDriverDailyLogReport_printReport}" /></span>
+                       </h:commandButton>
+				</td>
+			</tr>
+		</table>
+	</a4j:form>
+    					
+
+</ui:composition>
+

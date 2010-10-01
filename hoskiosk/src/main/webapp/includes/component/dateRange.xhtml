@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+         dateRange: Instance of the com.inthinc.pro.backing.ui.DateRange class.
+
+  Optional Parameters:
+  ==============
+       context: If more than one dateRange used on a page, must be a unique value for the dateRange's ID.
+         reRenderList: comma separated list of components to reRerender on date range change
+
+  To use:
+  ==============
+  <ui:include src="/includes/component/dateRange.xhtml" >
+      <ui:param name="context" value="mypagename"/> 
+      <ui:param name="dateRange" value="#{backingBean.dateRange}"/> 
+      <ui:param name="reRenderList" value="comp1,comp2"/> 
+  </ui:include>
+  
+-->
+
+<ui:composition>
+
+<table border="0" cellspacing="0" cellpadding="4">
+	<tr>
+		<td>								
+			<h:outputText value="#{messages.dateRange_label} " />
+		</td>
+		<td>            									
+			<rich:calendar id="#{context}_startCalendar" inputSize="10" value="#{dateRange.startDate}" 
+						datePattern="#{messages.dateFormat}" timeZone="#{dateRange.timeZone}" showFooter="false">  
+				<a4j:support event="onchanged" reRender="#{reRenderList}" 
+						ajaxSingle="true" limitToList="true" 
+						action="#{dateRange.updateInterval}"/>
+						
+			</rich:calendar>
+				
+		</td>
+		<td>
+			<rich:calendar id="#{context}_endCalendar" inputSize="10" value="#{dateRange.endDate}" 
+						datePattern="#{messages.dateFormat}" timeZone="#{dateRange.timeZone}" showFooter="false">
+				<a4j:support event="onchanged" reRender="#{reRenderList}" 
+						ajaxSingle="true" limitToList="true" 
+						action="#{dateRange.updateInterval}"/>
+			</rich:calendar>
+		</td>
+	</tr>
+</table>
+
+</ui:composition>
+</html>

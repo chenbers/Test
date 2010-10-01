@@ -1,0 +1,39 @@
+<ui:composition 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich">
+
+	<div class="add_section_title"><h:outputText value="#{messages.hosStatus_currentInfo}" /></div>
+	<div class="spacer"></div>
+	<table width="100%" border="0" cellspacing="2" cellpadding="0">
+		<tr>
+	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentStatus}" /></td>
+	        <td>
+	        	<h:outputText value="#{messages[hosDriverKioskBean.hosCurrentStatus.status.name]}" />
+	        </td>
+		</tr>
+		<tr>
+	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentStatusMinutes}" /></td>
+	        <td>
+	        	<h:outputText value="#{hosDriverKioskBean.hosCurrentStatus.statusMinutes}" converter="MinutesConverter" />
+	        </td>
+		</tr>
+		<tr>
+	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentOnDutyMinutes}" /></td>
+	        <td>
+	        	<h:outputText value="#{hosDriverKioskBean.hosCurrentStatus.onDutyMinutes}" converter="MinutesConverter" />
+	        </td>
+		</tr>
+		<tr>
+	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentMinutesAvailable}" /></td>
+	        <td>
+	        	<h:outputText value="#{hosDriverKioskBean.hosCurrentStatus.onDutyAvailableMinutes}" converter="MinutesConverter" />
+	        </td>
+		</tr>
+	</table>
+</ui:composition>
+

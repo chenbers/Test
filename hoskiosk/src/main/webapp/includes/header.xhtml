@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	            
+    <div id="header">
+        <h:form id="headerForm">
+			<div id="logo">
+              <h:graphicImage width="115px" height="55px" value="/images/x.gif" style="border:none" />
+            </div>
+            <div id="horz_nav">
+            <ul>
+                <li class="l text"><h:outputLink styleClass="tb-logout" value="#{facesContext.externalContext.requestContextPath}/logout">#{messages.header_logout}</h:outputLink></li>
+            </ul>
+            </div>
+        </h:form>
+    </div>
+
+
+</ui:composition>
