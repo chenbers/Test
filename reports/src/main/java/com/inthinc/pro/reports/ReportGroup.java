@@ -48,50 +48,52 @@ public enum ReportGroup
  */
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report",7,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{}, true,
+            new GroupType[]{}, ReportCategory.HOS,
             ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
      HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report",8,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.HOS_VIOLATIONS_SUMMARY_REPORT),
      HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report",9,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
              ReportType.HOS_VIOLATIONS_DETAIL_REPORT),
      HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report",10,EntityType.ENTITY_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.HOS_DRIVER_DOT_LOG_REPORT),
      DOT_HOURS_REMAINING("DOT Time Remaining Report",11,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.DOT_HOURS_REMAINING),
      HOS_ZERO_MILES("HOS Zero Miles Report",12,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.HOS_ZERO_MILES),
      HOS_EDITS("HOS Edits",13,EntityType.ENTITY_GROUP_LIST,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
              ReportType.HOS_EDITS),
                     
-                    
+     // FIXME Performance category should be set to 'ReportCategory.Performance'  
      // Performance                    
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
                      new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-                     new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+                     new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
                      ReportType.PAYROLL_SUMMARY),
      PAYROLL_DETAIL("Payroll Report Driver Detail",15,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.PAYROLL_DETAIL),
      PAYROLL_SIGNOFF("Payroll Report Driver Signoff",16,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{}, true,
-             ReportType.PAYROLL_SIGNOFF),             
+             new GroupType[]{}, ReportCategory.HOS,
+             ReportType.PAYROLL_SIGNOFF),       
+             
+     // Waysmart        
      TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, true,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Waysmart,
              ReportType.TEN_HOUR_DAY_VIOLATIONS);
     
     private ReportType[] reports;
@@ -99,7 +101,7 @@ public enum ReportGroup
     private String label;
     private EntityType entityType; //Type of entity this report is bound to
     private CriteriaType[] criterias;
-    private boolean hos;
+    private ReportCategory reportCategory;
 
     //GroupTypes These are used to indicate which groups have access to the report as well as which type of groups that this report can be ran against
     private GroupType[] groupTypes; 
@@ -112,11 +114,14 @@ public enum ReportGroup
      * @param criterias - List of Criterias
      * @param groupTypes - If entityType is GROUP then this is the list of groups that are acceptable for this report
      * @param reports - List of ReportTypes
+     * @param reportCategory - Category of the report
      */
-    private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,boolean hos, ReportType... reports){
+    
+    private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,ReportCategory reportCategory, ReportType... reports){
         this(label, code, entityType, criterias, groupTypes, reports);
-        this.hos = hos;
+        this.reportCategory = reportCategory;
     }
+    
     private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,ReportType... reports){
         this.reports = reports;
         this.label = label;
@@ -124,7 +129,6 @@ public enum ReportGroup
         this.criterias = criterias;
         this.groupTypes = groupTypes;
         this.entityType = entityType;
-        this.hos = false;
     }
     
     /**
@@ -201,11 +205,9 @@ public enum ReportGroup
     }
     
     public boolean isHos() {
-        return hos;
+        return (ReportCategory.HOS == this.getReportCategory());
     }
-    public void setHos(boolean hos) {
-        this.hos = hos;
-    }
+    
     public boolean isTabularSupport() {
         for (int i = 0; i < getReports().length; i++)
             if (getReports()[i].isTabularSupport())
@@ -225,5 +227,13 @@ public enum ReportGroup
         sb.append(".");
         sb.append(this.name());
         return sb.toString();
+    }
+    public boolean isWaysmart() {
+        
+        return (ReportCategory.Waysmart == this.getReportCategory());
+    }
+
+    private ReportCategory getReportCategory() {
+        return reportCategory;
     }
 }
