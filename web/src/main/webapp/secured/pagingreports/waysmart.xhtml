@@ -126,7 +126,9 @@
 					</div>
 					<div class="panel_w">
 	    				<div class="panel_content">
-		   					<ui:include src="/includes/performance/performanceReportsContent.xhtml">	
+		   					<ui:include src="/includes/reports/reportsContent.xhtml">
+		   						<ui:param name="context" value="waysmartReports"/> 
+		   						<ui:param name="reportsBean" value="#{waysmartReportsBean}"/> 
 	   						</ui:include>
 	   					</div>
 					</div>
