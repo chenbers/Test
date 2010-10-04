@@ -341,7 +341,7 @@ public class MessagesBean extends BaseBean {
         Driver drv = driverDAO.findByID(d);
         Vehicle v = vehicleDAO.findByDriverID(d);
         
-        if ( v.getDeviceID() != null ) {
+        if ( v != null && v.getDeviceID() != null ) {
             Device dev = deviceDAO.findByID(v.getDeviceID());
             
             // Send it
@@ -358,7 +358,7 @@ public class MessagesBean extends BaseBean {
     private void sendVehicle(Integer v) {
         Vehicle veh = vehicleDAO.findByID(v);
         
-        if ( veh.getDeviceID() != null ) {
+        if ( veh != null && veh.getDeviceID() != null ) {
             Device dev = deviceDAO.findByID(veh.getDeviceID());
             
             // Send it
