@@ -11,25 +11,25 @@
 	<div class="spacer"></div>
 	<table width="100%" border="0" cellspacing="2" cellpadding="0">
 		<tr>
-	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentStatus}" /></td>
+	    	<td width="200" height="25"><h:outputText value="#{messages.hosStatus_currentStatus}" /></td>
 	        <td>
 	        	<h:outputText value="#{messages[hosDriverKioskBean.hosCurrentStatus.status.name]}" />
 	        </td>
 		</tr>
 		<tr>
-	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentStatusMinutes}" /></td>
+	    	<td width="200" height="25"><h:outputText value="#{messages.hosStatus_currentStatusMinutes}" /></td>
 	        <td>
 	        	<h:outputText value="#{hosDriverKioskBean.hosCurrentStatus.statusMinutes}" converter="MinutesConverter" />
 	        </td>
 		</tr>
 		<tr>
-	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentOnDutyMinutes}" /></td>
+	    	<td width="200" height="25"><h:outputText value="#{messages.hosStatus_currentOnDutyMinutes}" /></td>
 	        <td>
 	        	<h:outputText value="#{hosDriverKioskBean.hosCurrentStatus.onDutyMinutes}" converter="MinutesConverter" />
 	        </td>
 		</tr>
 		<tr>
-	    	<td width="150" height="25"><h:outputText value="#{messages.hosStatus_currentMinutesAvailable}" /></td>
+	    	<td width="200" height="25"><h:outputText value="#{messages.hosStatus_currentMinutesAvailable}" /></td>
 	        <td>
 	        	<h:outputText value="#{hosDriverKioskBean.hosCurrentStatus.onDutyAvailableMinutes}" converter="MinutesConverter" />
 	        </td>

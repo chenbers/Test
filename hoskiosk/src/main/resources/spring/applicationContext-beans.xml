@@ -17,12 +17,8 @@
 			</list>
 		</property>
 	</bean>
-	<!-- Global Application Context (singleton scoped) beans -->
-	<bean id="states" class="com.inthinc.pro.model.app.States" init-method="init" />
-	<bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init" />
-	<bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init" />
 
 	<!-- Backing Beans -->
-	<bean id="hosDriverKioskBean" class="com.inthinc.pro.backing.HOSDriverKioskBean"/>
+	<bean id="hosDriverKioskBean" class="com.inthinc.pro.backing.HOSDriverKioskBean" scope="session"/>
 	
 </beans>

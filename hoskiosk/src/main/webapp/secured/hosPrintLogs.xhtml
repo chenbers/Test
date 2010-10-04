@@ -1,0 +1,50 @@
+<ui:composition template="/template/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:pretty="http://ocpsoft.com/prettyfaces"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:t="http://myfaces.apache.org/tomahawk"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  	<ui:define name="content">
+  	
+  	<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+      <td valign="top" width="130">
+        <ui:include src="/includes/hosDriverSideNav.xhtml">
+          <ui:param name="selectedAction" value="go_print" />
+          <ui:param name="context" value="print"/>
+        </ui:include>
+      </td>
+      <td valign="top">
+		<div class="">
+ 			<div class="panel_nw">
+ 				<div class="panel_title">
+ 					<span>#{messages.hosDriverDailyLogReport}</span>  
+				</div>
+			</div>	
+ 			<div class="panel_w">
+            	<div class="panel_content">
+					<rich:spacer height="10"/>
+                 	<table width="100%" border="0" cellspacing="2" cellpadding="0">
+					<tr>
+                    	<td valign="top">
+							<ui:include src="/includes/hosDailyLogReport.xhtml">
+                 			</ui:include>
+						</td>
+					</tr>
+					</table>
+				</div>
+   			</div>
+ 			<div class="panel_sw">
+ 				<div class="panel_statusbar"></div>
+ 			</div>
+		</div>
+      </td>
+      </tr>
+      </table>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,65 @@
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+   				xmlns:security="http://pro.tiwi.com/jsf/security"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:tiwipro="http://pro.tiwi.com/jsf">
+
+<!-- 
+  Parameters:
+  ==============
+    selectedAction: The action that's selected; may be a child action.
+           context: The current page name, purpose is to give id attributes in tags in the included page(s) unique values for testing
+  To use:
+  ==============
+  <ui:include src="/includes/navigation/adminSideNav.xhtml">
+    <ui:param name="selectedAction" value="action2_a" />
+    
+    <ui:param name="context" value="pageName"/> 
+  </ui:include>
+ -->
+  <ui:composition>
+    <h:form id="side-nav-form">
+      
+      <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+        <tr>
+          <td valign="top">
+                <ui:include src="verticalLeftTab.xhtml">
+                  <ui:param name="mappingId" value="current"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_current') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="Current Status"/>
+                  <ui:param name="context" value="#{context}-currentStatus"/>
+               </ui:include>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="mappingId" value="print"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_print') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="Print Logs"/>
+               <ui:param name="context" value="#{context}-printReport"/>
+           </ui:include>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="mappingId" value="export"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_export') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="Export Logs"/>
+               <ui:param name="context" value="#{context}-exportLogs"/>
+           </ui:include>
+          </td>
+        </tr>
+          
+       </table>
+
+    </h:form>
+
+  </ui:composition>
+</html>
+

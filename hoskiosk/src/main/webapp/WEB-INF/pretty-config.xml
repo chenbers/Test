@@ -12,4 +12,17 @@
 		<pattern>/kiosk</pattern>
 		<view-id>/secured/hosDriver.faces</view-id>
 	</url-mapping>
+    <url-mapping id="current">
+        <pattern>/current</pattern>
+        <view-id>/secured/hosCurrentStatus.faces</view-id>
+    </url-mapping>    
+    <url-mapping id="print">
+        <pattern>/print</pattern>
+        <view-id>/secured/hosPrintLogs.faces</view-id>
+    </url-mapping>    
+    <url-mapping id="export">
+        <pattern>/export</pattern>
+        <view-id>/secured/hosExportLogs.faces</view-id>
+    </url-mapping>    
+
 </pretty-config>

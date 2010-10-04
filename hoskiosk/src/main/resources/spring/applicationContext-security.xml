@@ -12,7 +12,11 @@
     <beans:bean id="proFilter" class="org.springframework.security.ui.webapp.AuthenticationProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />
         <beans:property name="authenticationFailureUrl" value="/login" />
+        <!-- 
         <beans:property name="defaultTargetUrl" value="/secured/hosDriver.faces" />
+        <beans:property name="defaultTargetUrl" value="/secured/hosCurrentStatus.faces" />
+         -->
+        <beans:property name="defaultTargetUrl" value="/current" />
         <beans:property name="filterProcessesUrl" value="/security_filter" />
         <beans:property name="alwaysUseDefaultTargetUrl" value="true" />
         <custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
@@ -43,9 +47,6 @@
     <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
         <beans:property name="personDAO" ref="personDAO"/>
         <beans:property name="driverDAO" ref="driverDAO"/>
-<!--         
-        <beans:property name="accountBackingBean" ref="accountBackingBean"/>
- -->        
     </beans:bean>
 
     <!--  Password encryption  (none)-->

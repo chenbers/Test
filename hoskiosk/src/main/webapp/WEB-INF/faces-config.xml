@@ -17,6 +17,27 @@
   <converter-id>MinutesConverter</converter-id>
   <converter-class>com.inthinc.pro.convert.MinutesConverter</converter-class>
  </converter>
+ 
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_current</from-outcome>
+   <to-view-id>/secured/hosCurrentStatus.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_print</from-outcome>
+   <to-view-id>/secured/hosPrintLogs.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_export</from-outcome>
+   <to-view-id>/secured/hosExportLogs.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ 
+ 
 
   <!-- =========== FULL CONFIGURATION FILE ================================== -->
  <application>

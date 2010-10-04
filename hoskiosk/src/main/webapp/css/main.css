@@ -2,7 +2,7 @@ body {
 	margin: 10px 0 0 0;
 	padding: 0;
 	background-color: black;
-	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 }
 
 img {
@@ -116,7 +116,7 @@ img {
 .panel_content {
 	background: #fff;
 	color: #333;
-	font: normal 10px Verdana, Tahoma, Arial, sans-serif;
+	font: normal 12px Verdana, Tahoma, Arial, sans-serif;
 	/*overflow: hidden;  */
 	padding: 5px;
 	border-right: 1px solid #e1e1e1;
@@ -131,7 +131,7 @@ img {
 }
 
 .panel_content_right {
-	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	position: absolute;
 	top: 7px;
 	right: 8px;
@@ -529,7 +529,7 @@ h2 {
 
 /* ADMIN SECTION -- GET YOUR ADD ON ... */
 .add_section_title {
-	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
+	font: bold 12px Verdana, Arial, Helvetica, sans-serif;
 	border-bottom: 1px solid #333;
 	padding: 5px;
 	text-align: left;
@@ -542,10 +542,11 @@ span.required {
 .required-key {
 	color: #990000;
 	text-align: left;
+	font-size: 10px;
 }
 
 input.text,select.text {
-	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 }
 
@@ -650,3 +651,115 @@ input.text,select.text {
 	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
 	color: red;
 }
+
+#export_list ol {
+	padding: 0;
+	margin: 0 10px 0 10px;
+	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+}
+
+#export_list ol li {
+	padding-bottom: 10px;
+	margin-left: 10px;
+}
+
+/* EXPANDABLE SIDE TABS */
+dl.vl_tab_off {
+	width: 129px;
+	margin: 0;
+	background: url(../images/ls_tab_off_bottom.png) no-repeat bottom left;
+}
+
+dl.vl_tab_off dt {
+	padding: 2px;
+	margin: 0;
+	background: url(../images/ls_tab_off_top.png) no-repeat;
+}
+
+dl.vl_tab_on {
+	width: 129px;
+	margin: 0;
+	background: url(../images/ls_tab_on_bottom.png) no-repeat bottom left;
+}
+
+dl.vl_tab_on dt {
+	padding: 2px;
+	margin: 0;
+	background: url(../images/ls_tab_on_top.png) no-repeat;
+}
+
+dd {
+	margin: 0;
+	padding: 0 5px 5px 5px;
+}
+
+dl.vl_tab_on a {
+	color: #000000;
+	text-decoration: none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-size-adjust: none;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+}
+
+dl.vl_tab_off a {
+	color: #000000;
+	text-decoration: none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-size-adjust: none;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+}
+
+div.ls_tab_sub_on {
+	-x-system-font: none;
+	background: #EBFFCA;
+	color: black;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	line-height: normal;
+	padding: 8px 0 8px 8px;
+	text-decoration: none;
+}
+
+div.ls_tab_sub_off {
+	-x-system-font: none;
+	background: none;
+	color: black;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	line-height: normal;
+	padding: 8px 0 8px 8px;
+	text-decoration: none;
+}
+
+div.ls_tab_sub_on a {
+	color: black;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+div.ls_tab_sub_off a {
+	color: black;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	text-decoration: none;
+}
+

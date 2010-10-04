@@ -3,10 +3,14 @@ package com.inthinc.pro.hos;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.inthinc.hos.model.HOSOrigin;
+import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -25,29 +29,42 @@ public class HOSLogExporter extends HOSBase {
             return;
         
 
+        writeHOSDriverStateHistoryToStream(os, hosRecordList);
+    }
+
+    void writeHOSDriverStateHistoryToStream(OutputStream os, List<HOSRecord> hosRecordList) throws IOException {
+
+    
         DataOutputStream out = new DataOutputStream(os);
         for (HOSRecord hosRecord : hosRecordList) {
-            out.writeShort((short) 120); // packet length
-            byte driverState = (byte) (hosRecord.getStatus().getCode() & 0x003f);
-            out.writeInt(driverState);
-            out.writeByte((byte) 1); // version
-            out.writeInt((int) (hosRecord.getLogTime().getTime() / 1000));
-            out.writeByte((byte) 0x01); // flags - hardcode to always having gps lock
-
-            double position = (hosRecord.getLng() == null) ? 0.0 : ((hosRecord.getLng() < 0.0) ? (hosRecord.getLng() + 360.0) / 360.0 : hosRecord.getLng() / 360.0);
-            writePosition(out, position);
-
-            position = (hosRecord.getLat() == null) ? 0.0 : (-(hosRecord.getLat() - 90.0) / 180.0);
-            writePosition(out, position);
-
-            out.writeInt(hosRecord.getDistance() == null ? 0 : hosRecord.getDistance().intValue());
-
-            // TODO: GAIN unitID -- which field is same?
-            writePaddedString(out, hosRecord.getVehicleName(), 18);
-            writePaddedString(out, hosRecord.getTrailerID(), 16);
-            writePaddedString(out, hosRecord.getServiceID(), 32);
-            writePaddedString(out, hosRecord.getLocation(), 32);
+            addRecordToStream(out, hosRecord);
         }
+        // gain adds this record to the end of the list on export
+        addRecordToStream(out, new HOSRecord(0, 0, RuleSetType.NON_DOT, 0, "", true, 14l, new Date(948842477000l), null, null, HOSStatus.OFF_DUTY, HOSOrigin.PORTAL, "", 0f, 0f, 0l, "","",false, false, "", false));
+    }
+
+
+    private void addRecordToStream(DataOutputStream out, HOSRecord hosRecord) throws IOException {
+        out.writeShort((short) 120); // packet length
+        byte driverState = (byte) (hosRecord.getStatus().getCode() & 0x003f);
+        out.writeInt(driverState);
+        out.writeByte((byte) 1); // version
+        out.writeInt((int) (hosRecord.getLogTime().getTime() / 1000));
+        out.writeByte((byte) 0x01); // flags - hardcode to always having gps lock
+
+        double position = (hosRecord.getLng() == null) ? 0.0 : ((hosRecord.getLng() < 0.0) ? (hosRecord.getLng() + 360.0) / 360.0 : hosRecord.getLng() / 360.0);
+        writePosition(out, position);
+
+        position = (hosRecord.getLat() == null) ? 0.0 : (-(hosRecord.getLat() - 90.0) / 180.0);
+        writePosition(out, position);
+
+        out.writeInt(hosRecord.getDistance() == null ? 0 : hosRecord.getDistance().intValue());
+
+        // TODO: GAIN unitID -- which field is same?
+        writePaddedString(out, hosRecord.getVehicleName(), 18);
+        writePaddedString(out, hosRecord.getTrailerID(), 16);
+        writePaddedString(out, hosRecord.getServiceID(), 32);
+        writePaddedString(out, hosRecord.getLocation(), 32);
     }
 
     private void writePosition(DataOutputStream out, double position) throws IOException {

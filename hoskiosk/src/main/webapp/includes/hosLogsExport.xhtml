@@ -14,13 +14,18 @@
   					<h:commandButton id="exportButton" action="#{hosDriverKioskBean.exportLogs}" styleClass="left">
                        	<span class="save"><h:outputText value="#{messages.hosLogsExport_save}" /></span>
                     </h:commandButton>
+                </td>
+			</tr>
+			<tr>
+                <td align="center">
 					<rich:spacer height="10"/>  					
                 </td>
 			</tr>
 			<tr>
                 <td>
-                	<h:outputText value="#{messages.hosLogsExport_instTitle}" style="font-weight: bold"/>
-                	<div class="spacer"></div>
+                	<h:outputText value="#{messages.hosLogsExport_instTitle}" style="font-weight: bold; font-size: 14px;"/><br/>
+					<rich:spacer height="20"/>  					
+		            <div id="export_list">
        				<ol>
        					<li><h:outputText value="#{messages.hosLogsExport_inst1}" escape="false"/></li>
        					<li><h:outputText value="#{messages.hosLogsExport_inst2}" escape="false" /></li>
@@ -28,6 +33,7 @@
        					<li><h:outputText value="#{messages.hosLogsExport_inst4}" escape="false" /></li>
        					<li><h:outputText value="#{messages.hosLogsExport_inst5}" escape="false" /></li>
        				</ol>
+       				</div>
 				</td>
 			</tr>
 		</table>
