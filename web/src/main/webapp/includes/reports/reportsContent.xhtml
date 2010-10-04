@@ -10,7 +10,9 @@
 
 	<a4j:region  id="#{context}_viewRegion">
 	<a4j:form id="#{context}_form">
-        <ul id="rpt_nav">
+	<table  width="920" border="0" cellspacing="0" cellpadding="0"><tr><td>
+		<div class="rpt_nav">
+        <ul>
 		<li class="l select">
 			<table border="0" cellspacing="0" cellpadding="4">
 				<tr>
@@ -26,8 +28,10 @@
 			</tr>
 			</table>
 		</li>		
-		<a4j:outputPanel id="#{context}_options">
-		<li class="l" style="margin: 6px;">
+		</ul>
+		<a4j:outputPanel id="#{context}options">
+        <ul>
+		<li class="l" >
 			<span title="#{messages.reports_viewTable}">
 				<a4j:commandLink id="#{context}_tableIcon" 
 					reRender="#{context}_tableForm,#{context}_viewPanel" 
@@ -65,7 +69,9 @@
 				</h:commandLink>    
 			</span>	
 		</li>
+		</ul>
 		</a4j:outputPanel>
+		<ul>
         <li class="r text">
              <a4j:status 
 				id="#{context}_status" for="#{context}_viewRegion">
@@ -77,11 +83,13 @@
 		   </a4j:status>
          </li>
          </ul>
-        <div class="spacer"></div>
+         </div>
+         </td></tr></table>
+        <rich:spacer height="10" style="display:block;clear:right;"/>
 		<ui:include src="/includes/reports/reportParams.xhtml" >
 			<ui:param name="context" value="#{context}"/> 
 			<ui:param name="params" value="#{reportsBean.params}"/> 
-      		<ui:param name="reRenderList" value="#{context}_options"/> 
+      		<ui:param name="reRenderList" value="#{context}options"/> 
   		</ui:include>
         </a4j:form>
 	</a4j:region>

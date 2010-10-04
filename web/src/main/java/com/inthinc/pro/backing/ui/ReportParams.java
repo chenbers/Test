@@ -106,7 +106,7 @@ public class ReportParams implements Cloneable {
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP && getGroupID() == null) 
             return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         
-        if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST && getGroupIDSelectList() == null) 
+        if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0)) 
             return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
@@ -230,6 +230,14 @@ public class ReportParams implements Cloneable {
 
     public void setParamType(ReportParamType paramType) {
         this.paramType = paramType;
+        if (paramType == ReportParamType.NONE) {
+            this.setGroupIDSelectList(null);
+            this.setDriverID(null);
+        }
+        if (this.paramType == ReportParamType.DRIVER)
+            this.setGroupIDSelectList(null);
+        if (this.paramType == ReportParamType.GROUPS)
+            this.setDriverID(null);
     }
 
     

@@ -3351,3 +3351,94 @@ td.middle select {
 }
 
 
+.rptdatagrid th {
+	text-align: center;
+}
+       
+.rpt_nav ul{
+				height: 24px;
+				list-style: none;
+				padding: 0;
+				/* margin: 0 10px 0 10px; */
+				margin: 0;
+				font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+				float: left;
+}
+.rpt_nav ul li {
+				list-style: none;
+				padding: 2px 4px 2px 2px; 
+				margin: 0;
+}
+			
+.rpt_nav ul li.text {
+				list-style: none;
+				padding: 12px 5px 0 5px;
+				margin: 0;
+}
+			
+.rpt_nav ul li.r {
+				float: right;
+}
+			
+.rpt_nav ul li.l {
+				float: left;
+				margin: 6px;
+}
+			
+.rpt_nav ul li.select {
+				list-style: none;
+				padding: 0px 4px 2px 2px;
+				margin: 0;
+}
+			
+.rpt_nav ul a {
+				padding: 2px 13px 2px 13px;
+				text-decoration: none;
+				border-bottom: none;
+				color: #000;
+}
+
+.rpt_nav ul a:hover,.rpt_nav ul a.active,.rpt_nav ul li a:hover,.rpt_nav ul li a:active {
+				color: #000;
+				text-decoration: underline;
+}
+
+.rpt_nav ul a.active,.rpt_nav ul li a.active {
+				font-weight: bold;
+}
+			
+.rpt_nav li a.viewTable {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_grid.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+}
+.rpt_nav li a.viewHTML {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_legend.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+}
+.rpt_nav li a.exportPDF {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_pdfSmall.gif) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+}
+.rpt_nav li a.exportExcel {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_excel.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+}
+.rpt_nav li a.email {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../images/ico_email.gif) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+}

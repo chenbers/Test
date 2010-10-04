@@ -27,9 +27,7 @@
 -->
 
 <ui:composition>
-	<link rel="STYLESHEET" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/jsDropdown/ui.dropdownchecklist.standalone.css"/>
-		
-	<a4j:loadStyle src="/css/jsDropdown/ui.dropdownchecklist.standalone.css"/>
+	<a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
 	<a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.1-min.js"/>
 	<a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
 	<script type="text/javascript">
@@ -109,8 +107,10 @@
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectManyMenu>
 							</a4j:outputPanel>
-							<rich:jQuery selector="##{context}_form\\:#{context}groupListParam" timing="onload" query="dropdownchecklist({ icon: {}, width: 200,maxDropHeight: 150})"/>
-						</td>
+							<rich:jQuery selector="##{context}_form\\:#{context}groupListParam" timing="onload" 
+							query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+														width: 200,maxDropHeight: 150})"/>
+								</td>
 					</tr>
 					</table>
 				</li>
@@ -125,25 +125,29 @@
 						<td>
 							<h:selectOneMenu  id="grouporDriverSelection" value="#{params.paramType}" >  
 								<f:selectItems value="#{params.reportParamTypes}"/>
-								<a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel,#{context}_form:groupSelectPanel"/>
+								<a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel,#{context}_form:groupSelectPanel,#{context}_paramsPanelError,#{reRenderList}"/>
 							</h:selectOneMenu>
 						</td>
 						<td>							
 							<a4j:outputPanel id="driverSelectPanel">
-							<h:selectOneMenu id="#{context}-groupDriverParam" value="#{params.driverID}" style="width:200px;size:auto;" rendered="#{params.paramType eq 'DRIVER'}">
+							<h:selectOneMenu id="#{context}-groupDriverParam" value="#{params.driverID}" style="width:200px;size:auto;"  rendered="#{params.paramType eq 'DRIVER'}">
 								<f:selectItems value="#{params.drivers}"/>
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectOneMenu>
+<!-- 							
 							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 								<ui:param name="selectBoxID" value="#{context}_form:{context}-groupDriverParam" />
 							</ui:include>
+ -->							
 							</a4j:outputPanel>							
 							<a4j:outputPanel id="groupSelectPanel">
 							<h:selectManyMenu id="#{context}groupDriverListParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto" rendered="#{params.paramType eq 'GROUPS'}">
 								<f:selectItems value="#{params.groups}"/>
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectManyMenu>
-							<rich:jQuery selector="##{context}_form\\:#{context}groupDriverListParam" timing="onload" query="dropdownchecklist({ icon: {}, width: 200,maxDropHeight: 150})"/>
+							<rich:jQuery selector="##{context}_form\\:#{context}groupDriverListParam" timing="onload" 
+									query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+														width: 200,maxDropHeight: 150})"/>
 							</a4j:outputPanel>							
 						</td>
 					</tr>
