@@ -230,8 +230,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 occupantLog.setDriverID(resultSet.getInt(1));
                 occupantLog.setDriverName(resultSet.getString(2));
                 occupantLog.setVehicleID(resultSet.getInt(3));
-                occupantLog.setLogTime(resultSet.getTimestamp(4, Calendar.getInstance(TimeZone.getTimeZone("UTC"))));
-                occupantLog.setEndTime(resultSet.getTimestamp(5, Calendar.getInstance(TimeZone.getTimeZone("UTC"))));
+                occupantLog.setLogTime(resultSet.getTimestamp(4));
+                occupantLog.setEndTime(resultSet.getTimestamp(5));
                 occupantLog.setServiceID(resultSet.getString(6));
                 occupantLog.setTrailerID(resultSet.getString(7));
                 
@@ -269,8 +269,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getFullRecords(?, ?, ?, ?)}");
             statement.setInt(1, driverID);
-            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
-            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
+            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
             statement.setBoolean(4, driverStatusOnly);
             
             resultSet = statement.executeQuery();
@@ -282,7 +282,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setHosLogID(resultSet.getInt(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
-                hosRecord.setLogTime(resultSet.getTimestamp(4, Calendar.getInstance(TimeZone.getTimeZone("UTC"))));
+                hosRecord.setLogTime(resultSet.getDate(4));
                 hosRecord.setTimeZone(TimeZone.getTimeZone(resultSet.getString(5)));
                 hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(6)));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(7)));
@@ -340,8 +340,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 //            statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?, ?)}");
             statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?)}");
             statement.setInt(1, driverID);
-            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
-            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
+            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
  //           statement.setBoolean(4, true); //driverStatusOnly
             
             resultSet = statement.executeQuery();
