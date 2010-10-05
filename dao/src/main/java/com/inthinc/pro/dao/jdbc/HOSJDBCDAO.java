@@ -665,9 +665,9 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
             
             if (resultSet.next()) {
-                driverLogin.setDriverID(resultSet.getInt(3));
-                driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(4)));
-                driverLogin.setTimezoneID(resultSet.getString(5));
+                driverLogin.setDriverID(resultSet.getInt(1));
+                driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(2)));
+                driverLogin.setTimezoneID(resultSet.getString(3));
             }
 
         }   // end try
