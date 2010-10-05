@@ -24,8 +24,10 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.model.TenHoursViolation;
 import com.inthinc.pro.reports.hos.testData.MockData;
 
 public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
@@ -46,11 +48,19 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         
         Interval interval = new Interval(new Date().getTime() - 3600, new Date().getTime());
         reportCriteria.init(mockGroupID, interval);
+        List mainDataSet = reportCriteria.getMainDataset();
         
         assertEquals(ReportType.TEN_HOUR_DAY_VIOLATIONS, reportCriteria.getReport());
-        assertNotNull(reportCriteria.getMainDataset());
-
-        assertTrue(reportCriteria.getMainDataset().size() > 0);
+        assertNotNull(mainDataSet);
+        assertTrue(mainDataSet.size() > 0);
+        assertTrue(mainDataSet.get(0) instanceof TenHoursViolation );
+        TenHoursViolation tenHourViolation = (TenHoursViolation)mainDataSet.get(0);
+        assertEquals("Driver lastName, Driver firstName", tenHourViolation.getDriverName() );
+        assertEquals("Fleet Group", tenHourViolation.getGroupName() );
+        assertEquals(12.0d, (double)tenHourViolation.getHoursThisDay(), 0.000001d );
+        assertEquals("11", tenHourViolation.getVehicleID() );
+        
+        
     }
     
     class MockAccountDAO implements AccountDAO {
@@ -98,7 +108,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         Driver driver;
         
         MockDriverDAO(Integer groupID) {
-            driver = MockData.createMockDriver(groupID, 2, "Driver", "2");
+            driver = MockData.createMockDriver(groupID, 2, "Driver firstName", "Driver lastName");
             driver.setGroupID(groupID);
         }
         
@@ -106,9 +116,9 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         public Driver findByPersonID(Integer personID) {
             return null;
         }
-
+        
         @Override
-        public List<Driver> getAllDrivers(Integer groupID) {
+        public List<Driver> getDrivers(Integer groupID) {
             return null;
         }
 
@@ -123,7 +133,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         }
 
         @Override
-        public List<Driver> getDrivers(Integer groupID) {
+        public List<Driver> getAllDrivers(Integer groupID) {
             List<Driver> list = new ArrayList<Driver>();
             list.add(driver);
             return list;
