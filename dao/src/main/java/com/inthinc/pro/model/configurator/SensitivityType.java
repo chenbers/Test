@@ -144,14 +144,5 @@ public enum SensitivityType implements BaseEnum
     {
         return defaultSetting;
     }
-//    public List<String> getValues(){
-//        
-//        return SensitivityMapping.getSensitivityMapping().get(this).getValues();
-//    }
-//    public Integer getForwardCommand(){
-//        
-//        return SensitivityMapping.getSensitivityMapping().get(this).getFwdCmd();
-//    }
-
 }
 

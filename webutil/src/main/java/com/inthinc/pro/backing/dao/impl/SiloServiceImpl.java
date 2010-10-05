@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -1012,4 +1011,11 @@ public class SiloServiceImpl implements SiloService {
     public List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID) {
         return null;
     }
+
+	@Override
+    @MethodDescription(description = "Fetches the list of all the sensitivity slider values.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.SensitivitySliderValues.class)
+	public List<Map<String, Object>> getSensitivitySliderValues() {
+		return null;
+	}
+    
 }

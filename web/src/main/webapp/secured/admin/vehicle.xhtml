@@ -169,7 +169,7 @@
                   <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                     <tr>
                      <td width="100"><h:outputText value="#{messages.editVehicle_ProductVersion}" /></td>
-                     <td><h:outputText value="#{vehiclesBean.item.vehicleSettingAdapter.productType.name}" /></td>
+                     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.name}" /></td>
                     </tr>
                     <tr>
                       <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
@@ -196,15 +196,15 @@
    
                          <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
    
-                         <ui:fragment rendered="#{empty vehiclesBean.item.vehicleSettingAdapter}">
+                         <ui:fragment rendered="#{empty vehiclesBean.item.editableVehicleSettings}">
                            <div class="msg" >
                              <p class="warning"><h:outputText value="#{messages.vehicle_noDevice}" /></p>
                            </div>
                          </ui:fragment>
                          <h:panelGroup id="speeedSettingsPanel">
-                            <ui:fragment rendered="#{not empty vehiclesBean.item.vehicleSettingAdapter}">
+                            <ui:fragment rendered="#{not empty vehiclesBean.item.editableVehicleSettings}">
                               <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/speedSensitivity.xhtml">
-                                <ui:param name="vehicleSettingAdapter" value="#{vehiclesBean.item.vehicleSettingAdapter}" />
+                                <ui:param name="editableVehicleSettings" value="#{vehiclesBean.item.editableVehicleSettings}" />
                                 <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
                                 <ui:param name="disabled" value="true" />
                               <ui:param name="context" value="vehicle" />

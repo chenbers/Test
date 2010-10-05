@@ -22,7 +22,7 @@
   To use:
   ==============
   <ui:include src="/includes/speedSensitivity.xhtml">
-    <ui:param name="vehicleSettingAdapter" value="#{myBean.vehicleSettingAdapter}" />
+    <ui:param name="editableVehicleSettings" value="#{myBean.editableVehicleSettings}" />
     <ui:param name="disabled" value="true" />
     <ui:param name="context" value="#{context}-pageName"/> 
   </ui:include>
@@ -30,7 +30,7 @@
   -->
   
 
-    <c:if test="empty vehicleSettingAdapter">
+    <c:if test="empty editableVehicleSettings">
       <c:set var="disabled" value="true" />
     </c:if>
 	    <div class="msg">
@@ -62,7 +62,7 @@
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="#{id}" value="#{vehicleSettingAdapter.maxSpeed}" width="250"
+                                          id="#{id}" value="#{editableVehicleSettings.maxSpeed}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(40)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1" 
@@ -83,7 +83,7 @@
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="#{id}" value="#{vehicleSettingAdapter.speedBuffer}" width="250"
+                                          id="#{id}" value="#{editableVehicleSettings.speedBuffer}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(0)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
@@ -104,7 +104,7 @@
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="#{id}" value="#{vehicleSettingAdapter.severeSpeeding}" width="250"
+                                          id="#{id}" value="#{editableVehicleSettings.severeSpeeding}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(0)}" maxValue="${tiwiprofn:convertMphToKph(40)}" step="1" 

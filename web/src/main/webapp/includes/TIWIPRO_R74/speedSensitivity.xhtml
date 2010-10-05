@@ -22,7 +22,7 @@
   To use:
   ==============
   <ui:include src="/includes/speedSensitivity.xhtml">
-    <ui:param name="vehicleSettingAdapter" value="#{myBean.vehicleSettingAdapter}" />
+    <ui:param name="editableVehicleSettings" value="#{myBean.editableVehicleSettings}" />
     <ui:param name="disabled" value="true" />
     <ui:param name="context" value="#{context}-pageName"/> 
   </ui:include>
@@ -30,7 +30,7 @@
   -->
   
 
-    <c:if test="empty vehicleSettingAdapter">
+    <c:if test="empty editableVehicleSettings">
       <c:set var="disabled" value="true" />
     </c:if>
 	    <div class="msg">
@@ -60,7 +60,7 @@
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="#{id}" value="#{vehicleSettingAdapter.properties['speedSettings'][index]}" width="250"
+                                          id="#{id}" value="#{vehiclesBean.item.tiwiproEditableVehicleSettings.speedSettings[index]}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
@@ -125,8 +125,9 @@
                                 <th colspan="3"><h:outputText value="#{messages.editDevice_sensitivitySettingHeader}"  /></th>
                               </tr>
                               
-                              <ui:param name="settingCounts" value="#{batchEdit?vehicleSettingManager.properties['defaultSettings']:vehicleSettingManager.properties['settingCounts'][vehicleSettingAdapter.vehicleID]}"/>
-                              <a4j:repeat id="sensitivity" value="#{vehicleSettingManager.properties['sensitivities']}" var="sensitivityType" rowKeyVar="index">
+<!--                              <ui:param name="settingCounts" value="#{batchEdit?vehiclesBean.item.tiwiproSettingManager.defaultSettings:vehiclesBean.item.tiwiproSettingManager.settingCounts}"/>-->
+                              <ui:param name="settingCounts" value="#{vehiclesBean.item.tiwiproSettingManager.settingCounts}"/>
+                              <a4j:repeat id="sensitivity" value="#{vehiclesBean.item.tiwiproSettingManager.sensitivities}" var="sensitivityType" rowKeyVar="index">
                                  <c:set var="sensitivityItem" value="#{(sensitivityType == 'HARD_ACCEL_SETTING') ? 'hardAcceleration' : ((sensitivityType == 'HARD_BRAKE_SETTING') ? 'hardBrake' : ((sensitivityType == 'HARD_TURN_SETTING') ? 'hardTurn' : 'hardVertical'))}" />
                                  <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                      <td></td>
@@ -135,7 +136,7 @@
                                        <span id="#{sensitivityItem}Level" style="font-weight:bold">
                                        </span>
                                        <script type="text/javascript">
-                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{vehicleSettingAdapter.properties[sensitivityItem]},#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});
+                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{vehiclesBean.item.tiwiproEditableVehicleSettings[sensitivityItem]},#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});
                                        </script>
                                      </td>
                                      <td></td>
@@ -151,7 +152,7 @@
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <rich:inputNumberSlider id="#{context}-#{sensitivityItem}" 
                                              disabled="#{disabled}" 
-                                             value="#{vehicleSettingAdapter.properties[sensitivityItem]}" 
+                                             value="#{vehiclesBean.item.tiwiproEditableVehicleSettings[sensitivityItem]}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
                                              showInput="false" minValue="1" 

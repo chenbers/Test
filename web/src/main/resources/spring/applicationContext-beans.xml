@@ -45,6 +45,7 @@
     <property name="roleDAO" ref="roleDAO"></property>
   </bean>
   <bean id="sensitivityMapping" class="com.inthinc.pro.model.app.SensitivityMapping" init-method="init">  </bean>	
+  <bean id="sensitivitySliderValuesMapping" class="com.inthinc.pro.model.app.SensitivitySliderValuesMapping" init-method="init">  </bean>
   <!-- Backing Beans -->
   <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean"></bean>
   <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
@@ -62,7 +63,9 @@
   <bean id="unsubscribeBean" class="com.inthinc.pro.backing.UnsubscribeBean" scope="request">
     <property name="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
   </bean>
-
+  <!-- Admin beans -->
+  <bean id="waySmartSettingsAndSliders" class="com.inthinc.pro.backing.model.WaySmartSettingsAndSliders" init-method="init"></bean>	
+  
   <!-- Navigation bean -->
   <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
     <property name="durationBean" ref="navigationDurationBean" />

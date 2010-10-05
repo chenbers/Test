@@ -48,7 +48,8 @@ import com.inthinc.pro.model.ZoneAlert;
 
 public class SiloServiceMockImpl extends AbstractServiceMockImpl implements SiloService {
 
-    private static final long serialVersionUID = 2995830460382195043L;
+
+	private static final long serialVersionUID = 2995830460382195043L;
     private static final Logger logger = Logger.getLogger(SiloServiceMockImpl.class);
 
     // helper method
@@ -1403,4 +1404,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException {
         return null;
     }
+    
+    @Override
+	public List<Map<String, Object>> getSensitivitySliderValues() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

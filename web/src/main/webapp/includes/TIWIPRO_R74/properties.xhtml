@@ -9,11 +9,11 @@
 
     <tr>
      <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
-     <td><h:outputText value="#{vehiclesBean.item.vehicleSettingAdapter.properties['ephone']}" /></td>
+     <td><h:outputText value="#{vehiclesBean.item.tiwiproEditableVehicleSettings.ephone}" /></td>
    </tr>
    <tr>
      <td width="100"><h:outputText value="#{messages.editDevice_autoLogoff}" /></td>
-     <td><c:set var="autoLogoff" value="#{vehiclesBean.item.vehicleSettingAdapter.properties['autoLogoffSlider'] eq 0?'AutologoffSetting_disabled':vehiclesBean.item.vehicleSettingAdapter.properties['autoLogoffSlider']}" /><h:outputText value="#{messages[autoLogoff]}" /></td>
+     <td><c:set var="autoLogoff" value="#{vehiclesBean.item.tiwiproEditableVehicleSettings.autoLogoffSlider eq 0?'AutologoffSetting_disabled':vehiclesBean.item.tiwiproEditableVehicleSettings.autoLogoffSlider}" /><h:outputText value="#{messages[autoLogoff]}" /></td>
    </tr>
  
 </ui:composition>

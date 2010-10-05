@@ -107,7 +107,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private TreeMap<Integer, Boolean>             driverAssigned;
     
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
-
+    
     private CacheBean cacheBean;
     
     public CacheBean getCacheBean() {
@@ -117,7 +117,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 	public void setCacheBean(CacheBean cacheBean) {
 		this.cacheBean = cacheBean;
 	}
-
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
@@ -205,7 +204,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
         checkForSettings(vehicle.getVehicleID());
-        vehicleView.setVehicleSettingAdapter(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+        vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
 
         return vehicleView;
     }
@@ -393,7 +392,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public String save()
     {
         // prefix the sensitivity settings with "device." x
-        // prefix the sensitivity settings with "vehicleSettingAdapter."
+        // prefix the sensitivity settings with "editableVehicleSettings."
         final Map<String, Boolean> updateField = getUpdateField();
         Map<String,Boolean> tempUpdateField = new HashMap<String, Boolean>();
         
@@ -404,7 +403,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             {
                 if (key.startsWith("hard"))
                 {
-                    tempUpdateField.put("vehicleSettingAdapter." + key,  updateField.get(key));
+                    tempUpdateField.put("editableVehicleSettings." + key,  updateField.get(key));
                 }
             }
             
@@ -439,7 +438,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         boolean valid = true;
         final String required = "required";
         // Required fields check
-        valid = vehicleView.getVehicleSettingAdapter().validateSaveItems(context, isBatchEdit(), getUpdateField());
+        valid = vehicleView.getEditableVehicleSettings().validateSaveItems(context, isBatchEdit(), getUpdateField());
 
         if(vehicleView.getMake() == null || vehicleView.getMake().equals("")
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("make"))))
@@ -499,12 +498,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 
                 vehicle.setVehicleID(vehicleDAO.create(vehicle.getGroupID(), vehicle));
                 vehicleSettingManagers.get(vehicle.getVehicleID()).setVehicleSettings(vehicle.getVehicleID(),
-                                                         vehicle.getVehicleSettingAdapter(), 
+                                                         vehicle.getEditableVehicleSettings(), 
                                                          this.getUserID(), "portal update");
             }
             else{
                 vehicleDAO.update(vehicle);
-                vehicleSettingManagers.get(vehicle.getVehicleID()).updateVehicleSettings(isBatchEdit(),getUpdateField(),vehicle.getVehicleID(),vehicle.getVehicleSettingAdapter(),
+                vehicleSettingManagers.get(vehicle.getVehicleID()).updateVehicleSettings(isBatchEdit(),getUpdateField(),vehicle.getVehicleID(),vehicle.getEditableVehicleSettings(),
                                                             this.getUserID(), "portal update");
             }
             vehicle.setOldGroupID(vehicle.getGroupID());
@@ -524,7 +523,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 //                        if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true))
 //                        {
 //                            final int index = Integer.parseInt(key.substring(5));
-//                            vehicle.getVehicleSettingAdapter().getSpeedSettings()[index] = getItem().getVehicleSettingAdapter().getSpeedSettings()[index];
+//                            vehicle.geteditableVehicleSettings().getSpeedSettings()[index] = getItem().geteditableVehicleSettings().getSpeedSettings()[index];
 //                        }
 //                }
 
@@ -629,15 +628,45 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         @Column(updateable = false)
         private Device            device;
         @Column(updateable = false)
-        private VehicleSettingAdapter vehicleSettingAdapter;
+        private EditableVehicleSettings editableVehicleSettings;
         @Column(updateable = false)
         private boolean           selected;
 
-        public void setVehicleSettingAdapter(VehicleSettingAdapter vehicleSettingAdapter) {
-            this.vehicleSettingAdapter = vehicleSettingAdapter;
+        public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
+            this.editableVehicleSettings = editableVehicleSettings;
         }
-        public VehicleSettingAdapter getVehicleSettingAdapter() {
-            return vehicleSettingAdapter;
+        public EditableVehicleSettings getEditableVehicleSettings() {
+            return editableVehicleSettings;
+        }
+        public TiwiproEditableVehicleSettings getTiwiproEditableVehicleSettings(){
+       	 
+        	if ( editableVehicleSettings instanceof TiwiproEditableVehicleSettings){
+        		return (TiwiproEditableVehicleSettings) editableVehicleSettings;
+        	}
+        	return null;
+        }
+        public WaySmartEditableVehicleSettings getWaySmartEditableVehicleSettings(){
+            
+            if ( editableVehicleSettings instanceof WaySmartEditableVehicleSettings){
+                return (WaySmartEditableVehicleSettings) editableVehicleSettings;
+            }
+            return null;
+        }
+        public TiwiproSettingManager getTiwiproSettingManager(){
+            
+            if(bean.getVehicleSettingManagers().get(getVehicleID()) instanceof TiwiproSettingManager) {
+                
+                return (TiwiproSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
+            }
+            else return null;
+        }
+        public WaySmartSettingManager getWaySmartSettingManager(){
+            
+            if(bean.getVehicleSettingManagers().get(getVehicleID()) instanceof WaySmartSettingManager) {
+                
+                return (WaySmartSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
+            }
+            else return null;
         }
         public Integer getId()
         {
@@ -646,7 +675,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public String getProductVersion() {
             
-            return vehicleSettingAdapter.getProductType().toString();
+            return editableVehicleSettings.getProductType().toString();
         }
         @Override
         public Integer getWeight()
@@ -734,4 +763,5 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             this.selected = selected;
         }
     }
+
 }

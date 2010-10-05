@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
+import com.inthinc.pro.model.SensitivitySliderValues;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.SensitivityType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
@@ -19,4 +20,5 @@ public interface ConfiguratorDAO extends GenericDAO<DeviceSettingDefinition, Int
     public void updateVehicleSettings(Integer vehicleID, Map<Integer,String> setMap, Integer userID, String reason);
     public List<VehicleSettingHistory> getVehicleSettingsHistory(Integer vehicleID, Date startTime, Date endTime);
     public Map<SensitivityType, SensitivityForwardCommandMapping> getSensitivityMaps();
+    public Map<Integer, SensitivitySliderValues> getSensitivitySliderValues();
 }

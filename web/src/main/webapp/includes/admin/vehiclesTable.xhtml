@@ -84,9 +84,9 @@
          <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
       </h:outputFormat>
     </rich:column>    
-    <rich:column id="productVersion" rendered="#{vehiclesBean.tableColumns['productVersion'].visible}" sortBy="#{item.vehicleSettingAdapter.productType.name}">
+    <rich:column id="productVersion" rendered="#{vehiclesBean.tableColumns['productVersion'].visible}" sortBy="#{item.editableVehicleSettings.productType.name}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_productVersion}" /></f:facet>
-      <h:outputText value="#{item.vehicleSettingAdapter.productType.name}" />
+      <h:outputText value="#{item.editableVehicleSettings.productType.name}" />
     </rich:column>
     <rich:column id="DOT" rendered="#{vehiclesBean.tableColumns['DOT'].visible}" sortBy="#{item.dot}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_DOT}" /></f:facet>

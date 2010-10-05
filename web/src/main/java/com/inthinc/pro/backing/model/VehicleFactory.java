@@ -13,7 +13,6 @@ import com.inthinc.pro.model.configurator.VehicleSetting;
 public class VehicleFactory {
     
     private ConfiguratorDAO configuratorDAO;
-//    private VehicleDAO      vehicleDAO;
 
     public Map<Integer, VehicleSettingManager> initSettings(Integer groupID){
         
@@ -63,11 +62,4 @@ public class VehicleFactory {
     public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
         this.configuratorDAO = configuratorDAO;
     }
-//    public VehicleDAO getVehicleDAO() {
-//        return vehicleDAO;
-//    }
-//    
-//    public void setVehicleDAO(VehicleDAO vehicleDAO) {
-//        this.vehicleDAO = vehicleDAO;
-//    }
 }

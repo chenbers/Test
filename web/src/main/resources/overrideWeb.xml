@@ -7,7 +7,8 @@
         	classpath:spring/applicationContext-appBeans.xml;
         	classpath:spring/applicationContext-beans.xml;
         	classpath:spring/applicationContext-dao.xml;
-        	classpath:spring/applicationContext-daoBeans.xml;
+        	classpath:spring/applicationContext-daoHessianBeans.xml;
+        	classpath:spring/applicationContext-daoJDBCBeans.xml;
         	classpath:spring/applicationContext-reports.xml;
         	classpath:spring/applicationContext-sbs.xml;
         	classpath:spring/applicationContext-security.xml;

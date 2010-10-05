@@ -11,7 +11,7 @@ public class NumberUtil
 	
 	/**
 	 * No one likes to use exceptions for flow control. For now we'll isolate this case to this method, so that it's not spread
-	 * througout our application.
+	 * throughout our application.
 	 * 
 	 * @param str 
 	 * @return if the passed in value is an integer.
@@ -28,4 +28,24 @@ public class NumberUtil
 	        return false;
 	    }
 	}
+	/**
+	 * No one likes to use exceptions for flow control. For now we'll isolate this case to this method, so that it's not spread
+	 * throughout our application.
+	 * 
+	 * @param str 
+	 * Convert string to integer.  If it isn't an integer just return 0
+	 */
+    public static final Integer convertString(String integerValue) {
+        
+        if (integerValue == null) return 0;
+        
+        try {
+            
+            return Integer.parseInt(integerValue);
+        }
+        catch(NumberFormatException nfe){
+            
+            return 0;
+        }
+   }
 }

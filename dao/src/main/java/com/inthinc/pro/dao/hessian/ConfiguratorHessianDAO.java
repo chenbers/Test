@@ -11,6 +11,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
+import com.inthinc.pro.model.SensitivitySliderValues;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.SensitivityType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
@@ -18,7 +19,7 @@ import com.inthinc.pro.model.configurator.VehicleSettingHistory;
 
 public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefinition, Integer> implements ConfiguratorDAO {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     public ConfiguratorHessianDAO() {
         super();
@@ -82,4 +83,17 @@ public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefin
         }
         return returnMap;
     }
+    @Override
+	public Map<Integer, SensitivitySliderValues> getSensitivitySliderValues() {
+
+        Map<Integer, SensitivitySliderValues> returnMap = new HashMap<Integer, SensitivitySliderValues>();
+        List<SensitivitySliderValues> list = getMapper().convertToModelObject(getSiloService().getSensitivitySliderValues(), SensitivitySliderValues.class);
+        for (SensitivitySliderValues s : list)
+        {
+            returnMap.put(s.getSettingID(), s);
+        }
+        return returnMap;
+	}
+
+
 }

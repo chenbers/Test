@@ -7,33 +7,33 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import com.inthinc.pro.model.app.SensitivityMapping;
-import com.inthinc.pro.model.configurator.SensitivityType;
+import com.inthinc.pro.model.SensitivitySliderValues;
+import com.inthinc.pro.model.app.SensitivitySliderValuesMapping;
 
 public class SettingsAndSliders {
     
     private static final Integer CUSTOM_SLIDER = 99;
-    protected List<SensitivityType> sensitivityTypes;
+    protected List<SensitivitySliderValues> sensitivitySliderValues;
     
-    public Integer getSlider(Map<SensitivityType,String> settings){
+    public Integer getSlider(Map<Integer,String> settings){
         
         if (settings == null || settings.isEmpty()) return CUSTOM_SLIDER;
         
         Integer slider = CUSTOM_SLIDER;
-        Set<Entry<SensitivityType,String>> settingEntries = settings.entrySet();
-        SensitivityType firstSetting = settings.keySet().iterator().next();
-        Integer sliderCount = SensitivityMapping.getSensitivityForwardCommandMapping(firstSetting).getValues().size();
+        Set<Entry<Integer,String>> settingEntries = settings.entrySet();
+        Integer firstSetting = settings.keySet().iterator().next();
+        Integer sliderCount = SensitivitySliderValuesMapping.getSensitivitySliderValues().get(firstSetting).getValues().size();
 
         for(int i=0;i<sliderCount;i++){
              
             boolean match = true;
             slider = i+1;
-            for (Entry<SensitivityType,String> settingEntry : settingEntries){
+            for (Entry<Integer,String> settingEntry : settingEntries){
                 
-                SensitivityType sensitivityType = settingEntry.getKey(); //settingID
+                Integer settingID = settingEntry.getKey(); //settingID
                 String settingValue = settingEntry.getValue();//setting value
                 
-                match = match && SensitivityMapping.getSensitivityForwardCommandMapping(sensitivityType).getValues().get(i).equals(settingValue);
+                match = match && SensitivitySliderValuesMapping.getSensitivitySliderValues().get(settingID).getValues().get(i).equals(settingValue);
                 
                 if (!match){
                      
@@ -47,22 +47,22 @@ public class SettingsAndSliders {
      
     public SettingsAndSliders() {
         super();
-        sensitivityTypes = new ArrayList<SensitivityType>();
+        sensitivitySliderValues = new ArrayList<SensitivitySliderValues>();
     }
-    public void setSensitivityTypes(List<SensitivityType> sensitivityTypes) {
-        this.sensitivityTypes = sensitivityTypes;
-    }
-
-    public List<SensitivityType> getSensitivityTypes() {
-        return sensitivityTypes;
+    public void setSensitivitySliderValues(List<SensitivitySliderValues> sensitivityTypes) {
+        this.sensitivitySliderValues = sensitivityTypes;
     }
 
-    public Map<SensitivityType, String> getSettings(Integer slider) {
+    public List<SensitivitySliderValues> getSensitivitySliderValues() {
+        return sensitivitySliderValues;
+    }
+
+    public Map<Integer, String> getSettings(Integer slider) {
         
-        Map<SensitivityType, String> settings = new HashMap<SensitivityType, String>();
-        for(SensitivityType sensitivityType : sensitivityTypes){
+        Map<Integer, String> settings = new HashMap<Integer, String>();
+        for(SensitivitySliderValues ssv : sensitivitySliderValues){
             
-            settings.put(sensitivityType, SensitivityMapping.getSensitivityForwardCommandMapping(sensitivityType).getValues().get(slider));
+            settings.put(ssv.getSettingID(), SensitivitySliderValuesMapping.getSensitivitySliderValues().get(ssv.getSettingID()).getValues().get(slider));
         }
         return settings;
     }
