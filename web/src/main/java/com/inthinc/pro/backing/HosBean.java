@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -376,6 +377,11 @@ logger.info("in loadItems()");
 
         public boolean getIsWebLogin() {
             return getOrigin() == HOSOrigin.KIOSK;
+        }
+        
+        public String getTimezoneName() {
+//            return getTimeZone().getDisplayName(false, TimeZone.SHORT);
+            return getTimeZone().getID();
         }
     }
     

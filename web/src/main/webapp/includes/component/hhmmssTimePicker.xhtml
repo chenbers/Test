@@ -21,6 +21,7 @@
       <ui:param name="value" value="0"/> 
       <ui:param name="context" value="mypagename"/> 
       <ui:param name="formName" value="form"/> 
+      <ui:param name="timezoneName" value="timezoneName"/> 
   </ui:include>
   
 -->
@@ -48,7 +49,8 @@
 		    <f:selectItem itemValue="am" itemLabel="#{messages.timePicker_am}" />
 		    <f:selectItem itemValue="pm" itemLabel="#{messages.timePicker_pm}" />
 		</h:selectOneMenu>
-		
+		<h:outputText value="&#160;" style="float:left; font: 12px Verdana,Arial,Helvetica,sans-serif;"/>
+		<h:outputText value="#{timezoneName}" style="float:left; font: 10px Verdana,Arial,Helvetica,sans-serif; padding-top:4px;"/>
 		
 		</div>
 

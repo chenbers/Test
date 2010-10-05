@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
@@ -79,6 +80,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private AccountDAO accountDAO;
     private HOSDAO hosDAO;
     private WaysmartDAO waysmartDAO;
+    private AddressDAO addressDAO;
     
     private Locale locale;
 
@@ -539,6 +541,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
         hosDailyDriverLogReportCriteria.setAccountDAO(accountDAO);
         hosDailyDriverLogReportCriteria.setHosDAO(hosDAO);
+        hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
         
         hosDailyDriverLogReportCriteria.init(driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -551,6 +554,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
         hosDailyDriverLogReportCriteria.setAccountDAO(accountDAO);
         hosDailyDriverLogReportCriteria.setHosDAO(hosDAO);
+        hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
         
         hosDailyDriverLogReportCriteria.init(userGroupID, groupIDList, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -936,6 +940,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      */
     public WaysmartDAO getWaysmartDAO() {
         return waysmartDAO;
+    }
+
+    public AddressDAO getAddressDAO() {
+        return addressDAO;
+    }
+
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
     }
 
 

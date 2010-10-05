@@ -11,14 +11,13 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.model.GroupHierarchy;
-import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.CriteriaType;
+import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -192,6 +191,7 @@ public class ReportParams implements Cloneable {
         for (Driver driver : getDriverList()) {
             drivers.add(new SelectItem(driver.getDriverID(), driver.getPerson().getFullName()));
         }
+        sort(drivers);
         return drivers;
     }
     

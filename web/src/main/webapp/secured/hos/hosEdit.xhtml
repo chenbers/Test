@@ -91,9 +91,10 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-						          <ui:include src="/includes/hhmmssTimePicker.xhtml">
+						          <ui:include src="/includes/component/hhmmssTimePicker.xhtml">
             						<ui:param name="value" value="#{hosBean.item.timeInSec}" />
             						<ui:param name="formName" value="edit-form"/>
+            						<ui:param name="timezoneName" value="#{hosBean.item.timezoneName}"/>
             						<ui:param name="context" value="hosEdit"/>
           						  </ui:include>
                                 </td>

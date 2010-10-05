@@ -24,6 +24,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="driverDAO" ref="driverDAO"/>
     <property name="hosDAO" ref="hosDAO"/>
     <property name="waysmartDAO" ref="waysmartDAO"/>
+    <property name="addressDAO" ref="addressDAO" />
   </bean>
 
 </beans>

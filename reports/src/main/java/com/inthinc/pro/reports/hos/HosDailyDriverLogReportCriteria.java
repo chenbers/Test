@@ -33,12 +33,14 @@ import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
@@ -63,6 +65,7 @@ public class HosDailyDriverLogReportCriteria {
     private static final Logger logger = Logger.getLogger(HosDailyDriverLogReportCriteria.class);
     
     private AccountDAO accountDAO;
+    private AddressDAO addressDAO;
     private DriverDAO driverDAO;
     private GroupDAO groupDAO;
     private HOSDAO hosDAO;
@@ -74,7 +77,8 @@ public class HosDailyDriverLogReportCriteria {
     private Locale locale;
     private Boolean defaultUseMetric;
     
-    private DateTimeFormatter dateTimeFormatter; 
+    private DateTimeFormatter dateTimeFormatter;
+    private Address terminalAddress;
     
 
 
@@ -143,6 +147,9 @@ public class HosDailyDriverLogReportCriteria {
     {
         Driver driver = driverDAO.findByID(driverID);
         Account account = accountDAO.findByID(driver.getPerson().getAcctID());
+        if (account.getAddress() == null && account.getAddressID() != null) {
+            account.setAddress(addressDAO.findByID(account.getAddressID()));
+        }
         Group group = groupDAO.findByID(driver.getGroupID());
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval, false);
         List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, interval);
@@ -601,4 +608,20 @@ public class HosDailyDriverLogReportCriteria {
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
     }
+    public AddressDAO getAddressDAO() {
+        return addressDAO;
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
+
+    public Address getTerminalAddress() {
+        return terminalAddress;
+    }
+
+    public void setTerminalAddress(Address terminalAddress) {
+        this.terminalAddress = terminalAddress;
+    }
+
 }
