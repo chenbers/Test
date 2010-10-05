@@ -115,7 +115,7 @@ public class HosEditsReportCriteria extends GroupListReportCriteria implements T
             Collections.sort(hosRecordList);
 
             for (HOSRecord hosRecord : hosRecordList) {
-                if (hosRecord.getEditUserName() == null || hosRecord.getEditUserName().isEmpty())
+                if (hosRecord.getEditUserName() == null || hosRecord.getEditUserName().isEmpty() || !interval.contains(hosRecord.getLogTime().getTime()))
                     continue;
                 HosEdit hosEdit = new HosEdit();
                 hosEdit.setDriverName(driverName);

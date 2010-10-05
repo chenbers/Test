@@ -312,7 +312,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
+            logger.error("hos_getFullRecords(" + driverID + ", " + interval+ ")", e);
             return null;
         }   // end catch
         finally

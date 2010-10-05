@@ -32,15 +32,19 @@ public class GroupListReportCriteria extends ReportCriteria {
     protected List<Group> getReportGroupList(List<Integer> groupIDList, GroupHierarchy groupHierarchy) {
         List<Group> reportGroupList = new ArrayList<Group>();
         for (Integer groupID : groupIDList) {
-            Group group = groupHierarchy.getGroup(groupID);
-            if (group != null && !reportGroupList.contains(group))
-                reportGroupList.add(group);
-            List<Group> childGroupList = groupHierarchy.getChildren(group);
-            for (Group childGroup : childGroupList)
-                if (!reportGroupList.contains(childGroup))
-                    reportGroupList.add(childGroup);
+            addGroupAndChildren(groupHierarchy, reportGroupList, groupID);
         }
         return reportGroupList;
+    }
+
+    private void addGroupAndChildren(GroupHierarchy groupHierarchy, List<Group> reportGroupList, Integer groupID) {
+        Group group = groupHierarchy.getGroup(groupID);
+        if (group != null && !reportGroupList.contains(group))
+            reportGroupList.add(group);
+        List<Group> childGroupList = groupHierarchy.getChildren(group);
+        for (Group childGroup : childGroupList) {
+            addGroupAndChildren(groupHierarchy, reportGroupList, childGroup.getGroupID());
+        }
     }
 
     public DriverDAO getDriverDAO() {

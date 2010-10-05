@@ -62,8 +62,11 @@ public abstract class ViolationsSummaryReportCriteria extends GroupListReportCri
         }
         ViolationsSummary summary = dataMap.get(topAncestor.getGroupID());
         if (summary == null) {
-            logger.error("HosViolationsSummary  is null for group: " + groupID);
-            return null;
+            summary = dataMap.get(groupID);
+            if (summary == null) {
+                logger.error("HosViolationsSummary  is null for group: " + groupID);
+                return null;
+            }
         }
         return summary;
     }

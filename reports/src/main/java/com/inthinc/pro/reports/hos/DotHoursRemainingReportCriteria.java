@@ -113,6 +113,9 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
             Driver driver = entry.getKey();
             List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
             List<HOSRecord> hosRecordList = entry.getValue();
+            if (hosRecordList == null) {
+                hosRecordList = new ArrayList<HOSRecord>();
+            }
             Collections.sort(hosRecordList);
 
             fillInDotHoursRemainingData(dotHoursRemainingList, groupHierarchy.getFullName(driver.getGroupID()), driver, dayList, hosRecordList, currentDate);

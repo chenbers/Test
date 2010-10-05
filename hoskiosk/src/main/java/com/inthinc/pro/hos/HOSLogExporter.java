@@ -46,34 +46,25 @@ public class HOSLogExporter extends HOSBase {
 
     private void addRecordToStream(DataOutputStream out, HOSRecord hosRecord) throws IOException {
         out.writeShort((short) 120); // packet length
-System.out.println("after writeShort " + out.size());        
         byte driverState = (byte) (hosRecord.getStatus().getCode() & 0x003f);
         out.writeInt(driverState);
-System.out.println("after writeInt " + out.size());        
         out.writeByte((byte) 1); // version
-System.out.println("after writeByte " + out.size());        
         out.writeInt(Long.valueOf(hosRecord.getLogTime().getTime() / 1000l).intValue());
-System.out.println("after writeInt " + out.size());        
         out.writeByte((byte) 0x01); // flags - hardcode to always having gps lock
-System.out.println("after writeByte " + out.size());        
 
         double position = (hosRecord.getLng() == null) ? 0.0 : ((hosRecord.getLng() < 0.0) ? (hosRecord.getLng() + 360.0) / 360.0 : hosRecord.getLng() / 360.0);
         writePosition(out, position);
-        System.out.println("after writePosition " + out.size());        
 
         position = (hosRecord.getLat() == null) ? 0.0 : (-(hosRecord.getLat() - 90.0) / 180.0);
         writePosition(out, position);
-        System.out.println("after writePosition " + out.size());        
 
         out.writeInt(hosRecord.getDistance() == null ? 0 : hosRecord.getDistance().intValue());
-        System.out.println("after writeInt " + out.size());        
 
         // TODO: GAIN unitID -- which field is same?
         writePaddedString(out, hosRecord.getVehicleName(), 18);
         writePaddedString(out, hosRecord.getTrailerID(), 16);
         writePaddedString(out, hosRecord.getServiceID(), 32);
         writePaddedString(out, hosRecord.getLocation(), 32);
-System.out.println("size at end " + out.size());        
     }
 
     private void writePosition(DataOutputStream out, double position) throws IOException {
