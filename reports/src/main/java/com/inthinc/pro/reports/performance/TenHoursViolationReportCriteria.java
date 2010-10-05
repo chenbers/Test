@@ -1,7 +1,6 @@
 package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -16,7 +15,6 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -42,14 +40,24 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     //protected WaysmartDAO waysmartDao;
     protected MockWaysmartDAO mockWaysmartDao;
 
+    /**
+     * Getter for mockWaysmartDao property. The mock of Waysmart DAO 
+     */
     public MockWaysmartDAO getMockWaysmartDao() {
         return mockWaysmartDao;
     }
 
+    /**
+     * Setter for mockWaysmartDao property. The mock of Waysmart DAO 
+     */
     public void setMockWaysmartDao(MockWaysmartDAO mockWaysmartDao) {
         this.mockWaysmartDao = mockWaysmartDao;
     }
 
+    /**
+     * Constructor
+     * @param locale Local settings of the user - internationalization 
+     */
     public TenHoursViolationReportCriteria(Locale locale) 
     {
         super(ReportType.TEN_HOUR_DAY_VIOLATIONS, "", locale);
@@ -81,11 +89,17 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         setMainDataset(violationList);
     }
     
+    /**
+     * Retrieve all report data and pass them to a Map.
+     * 
+     * @param groupeID ID of the group chosen by the user
+     * @param interval Interval chosen by the user 
+     */
     public void init(Integer groupID, Interval interval)
     {
         Group topGroup = groupDAO.findByID(groupID);
        // Account account = accountDAO.findByID(topGroup.getAccountID());
-        List<Driver> driverList = driverDAO.getDrivers(groupID);
+        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>> ();
         for (Driver driver : driverList) {
@@ -103,25 +117,44 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         initDataSet(topGroup, groupList, interval, violationRecordMap);
     }
 
+    /**
+     * Getter for accountDAO property. 
+     */
     public AccountDAO getAccountDAO() {
         return accountDAO;
     }
 
+    /**
+     * Setter for accountDAO property. 
+     */
     public void setAccountDAO(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
+    
+    /**
+     * Getter for groupDAO property. 
+     */
     public GroupDAO getGroupDAO() {
         return groupDAO;
     }
 
+    /**
+     * Setter for groupDAO property. 
+     */
     public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
 
+    /**
+     * Getter for driverDAO property. 
+     */
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
 
+    /**
+     * Setter for driverDAO property. 
+     */
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }

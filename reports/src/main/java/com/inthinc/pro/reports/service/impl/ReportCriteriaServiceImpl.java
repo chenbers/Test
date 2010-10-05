@@ -761,7 +761,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
     }
 
-    
+    /**
+     * Provide all data criteria inlcuding layout and data.
+     * 
+     * @param  groupeID ID of the group chosen by the user
+     * @param  interval Interval chosen by the user
+     * @param  locale Local settings of the user - internationalization 
+     * @return criteria all report criteria including layout and data 
+     */ 
     @Override
     public ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale) {
         TenHoursViolationReportCriteria criteria = new TenHoursViolationReportCriteria(locale);
