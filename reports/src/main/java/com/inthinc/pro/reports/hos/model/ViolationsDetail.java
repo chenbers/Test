@@ -2,6 +2,7 @@ package com.inthinc.pro.reports.hos.model;
 
 import java.util.Date;
 import java.util.List;
+
 import com.inthinc.hos.model.RuleSetType;
 
 public class ViolationsDetail implements Comparable<ViolationsDetail> {

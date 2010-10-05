@@ -92,7 +92,11 @@ public enum ReportGroup
      TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
-             ReportType.TEN_HOUR_DAY_VIOLATIONS);
+             ReportType.TEN_HOUR_DAY_VIOLATIONS),
+    DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+            ReportType.DRIVER_HOURS);
     
     private ReportType[] reports;
     private Integer code;

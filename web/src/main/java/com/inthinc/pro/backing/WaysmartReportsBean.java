@@ -51,8 +51,6 @@ public class WaysmartReportsBean extends ReportsBean {
         ReportGroup reportGroup = reportGroupMap.get(getSelected());
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         
-        // todo: make calls to reportCriteria service using the params class
-
         switch (reportGroup.getReports()[0]) {
             case TEN_HOUR_DAY_VIOLATIONS:
                 reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
@@ -74,11 +72,15 @@ public class WaysmartReportsBean extends ReportsBean {
                     reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                             params.getLocale()));
                 break;
-
+            
+            case DRIVER_HOURS:
+                reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
             default:
                 break;
-
         }
+        
         for (ReportCriteria reportCriteria : reportCriteriaList) {
             reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
             reportCriteria.setLocale(getUser().getPerson().getLocale());

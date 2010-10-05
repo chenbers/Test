@@ -24,8 +24,8 @@ import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.report.WaysmartDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
@@ -54,6 +54,7 @@ import com.inthinc.pro.reports.hos.HosZeroMilesReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
+import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSummaryReportCriteria;
@@ -77,6 +78,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private DriverDAO driverDAO;
     private AccountDAO accountDAO;
     private HOSDAO hosDAO;
+    private WaysmartDAO waysmartDAO;
     
     private Locale locale;
 
@@ -775,12 +777,27 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
-        criteria.setMockWaysmartDao(new MockWaysmartDAO());
+        criteria.setWaysmartDao(waysmartDAO);
                
         criteria.init(groupID, interval);
         return criteria;
     }
     
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getDriverHoursReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale)
+     */
+    @Override
+    public ReportCriteria getDriverHoursReportCriteria(Integer groupID, Interval interval, Locale locale) {
+    	DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setWaysmartDao(waysmartDAO);
+               
+        criteria.init(groupID, interval);
+        return criteria;
+    }
+
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -854,45 +871,73 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		return reportDAO;
 	}
 
-    public void setReportDAO(ReportDAO reportDAO) {
+    public void setReportDAO(ReportDAO reportDAO) 
+    {
 		this.reportDAO = reportDAO;
 	}
 
-	public GroupReportDAO getGroupReportDAO() {
+	public GroupReportDAO getGroupReportDAO() 
+	{
 		return groupReportDAO;
 	}
 
 
-	public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
+	public void setGroupReportDAO(GroupReportDAO groupReportDAO) 
+	{
 		this.groupReportDAO = groupReportDAO;
 	}
 
-    public DriverDAO getDriverDAO() {
+    public DriverDAO getDriverDAO() 
+    {
         return driverDAO;
     }
 
 
-    public void setDriverDAO(DriverDAO driverDAO) {
+    public void setDriverDAO(DriverDAO driverDAO) 
+    {
         this.driverDAO = driverDAO;
     }
 
-    public AccountDAO getAccountDAO() {
+    public AccountDAO getAccountDAO() 
+    {
         return accountDAO;
     }
 
 
-    public void setAccountDAO(AccountDAO accountDAO) {
+    public void setAccountDAO(AccountDAO accountDAO) 
+    {
         this.accountDAO = accountDAO;
     }
 
-    public HOSDAO getHosDAO() {
+    public HOSDAO getHosDAO() 
+    {
         return hosDAO;
     }
 
 
-    public void setHosDAO(HOSDAO hosDAO) {
+    public void setHosDAO(HOSDAO hosDAO) 
+    {
         this.hosDAO = hosDAO;
     }
+
+    /**
+     * Setter for WaysmartDAO.
+     * @param waysmartDAO the DAO to set
+     */
+    public void setWaysmartDAO(WaysmartDAO waysmartDAO) 
+    {
+        this.waysmartDAO = waysmartDAO;
+    }
+
+
+    /**
+     * Getter for WaysmartDAO.
+     * @return the waysmartDAO
+     */
+    public WaysmartDAO getWaysmartDAO() {
+        return waysmartDAO;
+    }
+
 
     public void setLocale(Locale locale)
     {
@@ -903,6 +948,4 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
-
-
 }

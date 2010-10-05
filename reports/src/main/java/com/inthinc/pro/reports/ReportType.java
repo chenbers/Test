@@ -56,7 +56,8 @@ public enum ReportType
     PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSignOff", null, true),
     PAYROLL_SUMMARY("Driver Hours Summary","payrollSummary.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSummary", null, true),
     
-    TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations","tenHourDayViolations.jrxml","tenHourDayViolationsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.tenHourDayViolations", null, false);
+    TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations","tenHourDayViolations.jrxml","tenHourDayViolationsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.tenHourDayViolations", null, false),
+    DRIVER_HOURS("Driver Hours","driverHoursReport.jrxml","driverHoursReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverHoursReport", null, false);
     
     private String prettyTemplate;
     private String rawTemplate;

@@ -9,11 +9,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;

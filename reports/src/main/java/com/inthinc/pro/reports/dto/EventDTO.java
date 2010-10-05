@@ -4,8 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.event.Event;
 
 public class EventDTO
 {

@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.mock.MockWaysmartDAO;
+import com.inthinc.pro.dao.report.WaysmartDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.TenHoursViolationRecord;
@@ -30,28 +31,19 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     private static final String START_DATE_PARAM = "startDate";
     private static final String END_DATE_PARAM = "endDate";
     private static final String LOGO_PARAM = "logoImageURL";
-  //  private static final String LOGO_URL = "teksystems.png";
     protected DateTimeFormatter dateTimeFormatter; 
     
     protected AccountDAO accountDAO;
     protected GroupDAO groupDAO;
     protected DriverDAO driverDAO;
-   // protected HOSDAO hosDAO;
-    //protected WaysmartDAO waysmartDao;
-    protected MockWaysmartDAO mockWaysmartDao;
+    protected WaysmartDAO waysmartDao;
 
-    /**
-     * Getter for mockWaysmartDao property. The mock of Waysmart DAO 
-     */
-    public MockWaysmartDAO getMockWaysmartDao() {
-        return mockWaysmartDao;
+    public WaysmartDAO getWaysmartDao() {
+        return waysmartDao;
     }
 
-    /**
-     * Setter for mockWaysmartDao property. The mock of Waysmart DAO 
-     */
-    public void setMockWaysmartDao(MockWaysmartDAO mockWaysmartDao) {
-        this.mockWaysmartDao = mockWaysmartDao;
+    public void setWaysmartDao(WaysmartDAO waysmartDao) {
+        this.waysmartDao = waysmartDao;
     }
 
     /**
@@ -105,7 +97,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         for (Driver driver : driverList) {
             DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
-            List<TenHoursViolationRecord> violationList = mockWaysmartDao.getTenHoursViolations(driver.getDriverID(), queryInterval);
+            List<TenHoursViolationRecord> violationList = waysmartDao.getTenHoursViolations(driver.getDriverID(), queryInterval);
             if (!violationList.isEmpty()) {
                 violationRecordMap.put(driver, violationList);
             }

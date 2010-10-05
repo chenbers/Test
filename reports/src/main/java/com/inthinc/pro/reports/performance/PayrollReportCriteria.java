@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import net.sf.jasperreports.engine.JRParameter;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -21,7 +19,6 @@ import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.dao.AccountDAO;
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
@@ -30,7 +27,6 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;

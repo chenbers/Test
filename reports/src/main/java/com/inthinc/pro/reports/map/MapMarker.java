@@ -1,7 +1,7 @@
 package com.inthinc.pro.reports.map;
 
-import java.io.*;
-import java.util.regex.*;
+import java.io.Serializable;
+import java.util.regex.Pattern;
 
 /**
  * {latitude} (required) specifies a latitudinal value with precision to 6 decimal places.

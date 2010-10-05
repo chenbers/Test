@@ -28,7 +28,6 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.exception.ReportPagingException;
 import com.inthinc.pro.reports.exception.ReportRuntimeException;
 import com.inthinc.pro.reports.model.ChartData;
-import com.inthinc.pro.reports.util.MessageUtil;
 
 public class JasperReportBuilder
 {

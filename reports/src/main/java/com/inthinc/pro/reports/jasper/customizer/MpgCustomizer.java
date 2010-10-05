@@ -3,14 +3,14 @@ package com.inthinc.pro.reports.jasper.customizer;
 
 import java.util.Locale;
 
+import net.sf.jasperreports.engine.JRAbstractChartCustomizer;
+import net.sf.jasperreports.engine.JRChart;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 
 import com.inthinc.pro.reports.util.MessageUtil;
-
-import net.sf.jasperreports.engine.JRAbstractChartCustomizer;
-import net.sf.jasperreports.engine.JRChart;
 
 public class MpgCustomizer extends JRAbstractChartCustomizer
 {

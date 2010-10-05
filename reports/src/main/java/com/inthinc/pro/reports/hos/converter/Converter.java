@@ -13,7 +13,6 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.pro.dao.util.MathUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.reports.util.MessageUtil;
 
 public class Converter {
     

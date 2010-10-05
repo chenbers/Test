@@ -1,13 +1,19 @@
 package com.inthinc.pro.reports.map;
 
 
-import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.methods.*;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.methods.GetMethod;
 
 import com.inthinc.pro.model.LatLng;
-
-import java.io.*;
-import java.util.List;
 
 /**
  * MapLookup

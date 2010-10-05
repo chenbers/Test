@@ -8,8 +8,6 @@ import net.sf.jasperreports.engine.JRChart;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.StandardTickUnitSource;
-import org.jfree.chart.axis.TickUnitSource;
 import org.jfree.chart.plot.CategoryPlot;
 
 import com.inthinc.pro.reports.util.MessageUtil;

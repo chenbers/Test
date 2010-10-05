@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.inthinc.pro.model.BaseEnum;
 
 public enum SeverityType implements BaseEnum
