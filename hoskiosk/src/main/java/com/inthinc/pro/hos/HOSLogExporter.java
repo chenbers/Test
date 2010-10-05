@@ -49,7 +49,7 @@ public class HOSLogExporter extends HOSBase {
         byte driverState = (byte) (hosRecord.getStatus().getCode() & 0x003f);
         out.writeInt(driverState);
         out.writeByte((byte) 1); // version
-        out.writeInt((int) (hosRecord.getLogTime().getTime() / 1000));
+        out.writeInt(Long.valueOf(hosRecord.getLogTime().getTime() / 1000l).intValue());
         out.writeByte((byte) 0x01); // flags - hardcode to always having gps lock
 
         double position = (hosRecord.getLng() == null) ? 0.0 : ((hosRecord.getLng() < 0.0) ? (hosRecord.getLng() + 360.0) / 360.0 : hosRecord.getLng() / 360.0);
