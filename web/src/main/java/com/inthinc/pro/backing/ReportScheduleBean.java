@@ -95,7 +95,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public List<SelectItem> getReportGroups() {
         reportGroups = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
-            if (rt.isHos() && !getAccountIsHOS())
+            if (rt.isDotIfta() && !getAccountIsHOS())
                 continue;
             List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
             if (rt.getEntityType() != EntityType.ENTITY_GROUP || getGroupHierarchy().containsGroupTypes(groupTypes)) {

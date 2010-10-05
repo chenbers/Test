@@ -48,52 +48,50 @@ public enum ReportGroup
  */
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report",7,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{}, ReportCategory.HOS,
+            new GroupType[]{}, ReportCategory.DOT_IFTA,
             ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
      HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report",8,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
             ReportType.HOS_VIOLATIONS_SUMMARY_REPORT),
      HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report",9,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.HOS_VIOLATIONS_DETAIL_REPORT),
      HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report",10,EntityType.ENTITY_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
             ReportType.HOS_DRIVER_DOT_LOG_REPORT),
      DOT_HOURS_REMAINING("DOT Time Remaining Report",11,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
             ReportType.DOT_HOURS_REMAINING),
      HOS_ZERO_MILES("HOS Zero Miles Report",12,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
             ReportType.HOS_ZERO_MILES),
      HOS_EDITS("HOS Edits",13,EntityType.ENTITY_GROUP_LIST,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.HOS_EDITS),
                     
-     // FIXME Performance category should be set to 'ReportCategory.Performance'  
      // Performance                    
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
                      new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-                     new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+                     new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
                      ReportType.PAYROLL_SUMMARY),
      PAYROLL_DETAIL("Payroll Report Driver Detail",15,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             ReportType.PAYROLL_DETAIL),
      PAYROLL_SIGNOFF("Payroll Report Driver Signoff",16,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{}, ReportCategory.HOS,
+             new GroupType[]{}, ReportCategory.Performance,
              ReportType.PAYROLL_SIGNOFF),       
-             
-     // Waysmart        
+     
      TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Waysmart,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
              ReportType.TEN_HOUR_DAY_VIOLATIONS);
     
     private ReportType[] reports;
@@ -204,8 +202,8 @@ public enum ReportGroup
         return groupTypes;
     }
     
-    public boolean isHos() {
-        return (ReportCategory.HOS == this.getReportCategory());
+    public boolean isDotIfta() {
+        return (ReportCategory.DOT_IFTA == this.getReportCategory());
     }
     
     public boolean isTabularSupport() {
@@ -228,9 +226,9 @@ public enum ReportGroup
         sb.append(this.name());
         return sb.toString();
     }
-    public boolean isWaysmart() {
+    public boolean isPerformance() {
         
-        return (ReportCategory.Waysmart == this.getReportCategory());
+        return (ReportCategory.Performance == this.getReportCategory());
     }
 
     private ReportCategory getReportCategory() {

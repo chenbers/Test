@@ -85,7 +85,7 @@ public class WaysmartReportsBean extends ReportsBean {
         
         List<SelectItem> reportGroups = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
-            if (!rt.isWaysmart())
+            if (!rt.isPerformance())
                 continue;
             reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             reportGroupMap.put(rt.getCode(), rt);

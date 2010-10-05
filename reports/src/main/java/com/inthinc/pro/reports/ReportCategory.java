@@ -2,9 +2,9 @@ package com.inthinc.pro.reports;
 
 public enum ReportCategory {
 
-        HOS(1, "HOS category"),
-        Waysmart(2, "Waysmart Category"),
-        Performance(3, "Performance Category");
+        DOT_IFTA(1, "DOT/IFTA"),
+        Performance(2, "Performance"),
+        Asset(3, "Asset");
         
         /**
          * 
