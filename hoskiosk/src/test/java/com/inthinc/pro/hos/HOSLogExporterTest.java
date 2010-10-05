@@ -45,12 +45,12 @@ public class HOSLogExporterTest {
         
         try {
             exporter.writeHOSDriverStateHistoryToStream(os, Arrays.asList(testdata));
+            os.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        byte[] genBytes = os.toString().getBytes();
+        byte[] genBytes = ((ByteArrayOutputStream)os).toByteArray();
         DataInputStream dInput = new DataInputStream(Thread.currentThread().getContextClassLoader().getResourceAsStream(EXPECTED_EXPORTED_FILE));
         try {
             byte[] expectedBytes = new byte[dInput.available()];
