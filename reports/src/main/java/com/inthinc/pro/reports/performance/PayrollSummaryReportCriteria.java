@@ -88,7 +88,7 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
-            dataList.addAll(getDriverPayrollData(interval, groupHierarchy, currentTime, entry.getKey(), entry.getValue()));
+            dataList.addAll(getDriverPayrollData(interval, groupHierarchy, currentTime, entry.getKey(), entry.getValue() == null ? new ArrayList<HOSRecord>() : entry.getValue()));
 
         }
         
