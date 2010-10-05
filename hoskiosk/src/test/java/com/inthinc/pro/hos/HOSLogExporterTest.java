@@ -55,9 +55,25 @@ public class HOSLogExporterTest {
         try {
             byte[] expectedBytes = new byte[dInput.available()];
             dInput.readFully(expectedBytes);
-            assertEquals("generated size does not match expected", expectedBytes.length, genBytes.length);
             System.out.println("expected len " + expectedBytes.length);
             System.out.println("gen len " + genBytes.length);
+            System.out.println("expected");
+            for (int i = 0; i < expectedBytes.length; i++) {
+                if ((i+1) % 10 == 0 )
+                    System.out.println(expectedBytes[i]);
+                else System.out.print(expectedBytes[i] + " ");
+            }
+            System.out.println();
+            System.out.println("gen");
+            for (int i = 0; i < genBytes.length; i++) {
+                if ((i+1) % 10 == 0 )
+                    System.out.println(genBytes[i]);
+                else System.out.print(genBytes[i] + " ");
+            }
+
+            
+            
+//            assertEquals("generated size does not match expected", expectedBytes.length, genBytes.length);
             
             for (int i = 0; i < expectedBytes.length; i++) {
                 if (expectedBytes[i] != genBytes[i]) {
