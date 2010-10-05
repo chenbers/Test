@@ -6,26 +6,37 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
+import com.inthinc.pro.model.hos.HOSOccupantHistory;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
+import com.inthinc.pro.model.hos.HOSOccupantInfo;
 
 
 
 public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(HOSJDBCDAO.class);
     
     /**
@@ -125,6 +136,70 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         } // end finally
 
         return recordList;
+    }
+    
+    public List<HOSOccupantHistory> getHOSOccupantLogs(String commAddress, String employeeId) {
+        HOSDriverLogin driverLogin = getDriverForEmpid(commAddress, employeeId);
+        return getHOSOccupantLogs(driverLogin);
+    }
+
+    public List<HOSOccupantHistory> getHOSOccupantLogs(HOSDriverLogin driverLogin) {
+        final RuleSetType dotType = driverLogin.getDriverDotType();
+
+        final int daysback = ( dotType == RuleSetType.CANADA_2007_OIL  || dotType == RuleSetType.CANADA_2007_60_DEGREES_OIL) ? -24 : -14;
+
+        TimeZone driverTz = TimeZone.getTimeZone("MST7MDT");  //default
+        if (!driverLogin.getTimezoneID().equals(""))
+            driverTz = TimeZone.getTimeZone(driverLogin.getTimezoneID());
+
+        
+        GregorianCalendar startDayCalendar = new GregorianCalendar();
+        startDayCalendar.setTimeZone(driverTz);
+        startDayCalendar.setTime(new Date());
+        startDayCalendar.add(Calendar.DATE, daysback);
+        int startDayOfYear = startDayCalendar.get(Calendar.DAY_OF_YEAR);
+        
+        Interval interval = new Interval(startDayCalendar.getTime().getTime(), new Date().getTime());
+        final List<HOSOccupantLog> recordList = getHOSOccupantLogs(driverLogin.getDriverID(), interval);
+        
+        startDayCalendar.set(startDayCalendar.get(Calendar.YEAR), startDayCalendar.get(Calendar.MONTH), startDayCalendar.get(Calendar.DATE), 0, 0, 0);
+        GregorianCalendar endDayCalendar = new GregorianCalendar();
+        endDayCalendar.setTimeZone(driverTz);
+        endDayCalendar.setTime(startDayCalendar.getTime());
+        endDayCalendar.add(Calendar.DATE, 1);
+        GregorianCalendar startLogTimeCalendar = new GregorianCalendar();
+        startLogTimeCalendar.setTimeZone(driverTz);
+        GregorianCalendar endLogTimeCalendar = new GregorianCalendar();
+        endLogTimeCalendar.setTimeZone(driverTz);
+        List<Integer> occupantDuplicateCheckList = new ArrayList<Integer>();
+        List<HOSOccupantHistory> occupantHistoryList = new ArrayList<HOSOccupantHistory>();
+
+        for (int i = daysback; i <= 0; i++)
+        {
+            for (HOSOccupantLog occupantLog: recordList)
+            {
+                startLogTimeCalendar.setTime(occupantLog.getLogTime());
+                endLogTimeCalendar.setTime(occupantLog.getEndTime());
+
+                //if the dates for the log fit in the given day.
+                if ((startLogTimeCalendar.after(startDayCalendar) && startLogTimeCalendar.before(endDayCalendar))
+                    || (endLogTimeCalendar.after(startDayCalendar) && endLogTimeCalendar.before(endDayCalendar))
+                    || (startLogTimeCalendar.before(startDayCalendar) && endLogTimeCalendar.after(endDayCalendar)))
+                {
+                    if (occupantDuplicateCheckList.indexOf(occupantLog.getDriverID()) == -1)
+                    {
+                        occupantDuplicateCheckList.add(occupantLog.getDriverID());
+                        occupantHistoryList.add(new HOSOccupantHistory((i * -1), occupantLog.getDriverID(), startDayOfYear));
+                    }
+                }
+            }
+            occupantDuplicateCheckList.clear();
+            startDayCalendar.add(Calendar.DATE, 1);
+            endDayCalendar.add(Calendar.DATE, 1);
+        }
+        
+        return occupantHistoryList;
+        
     }
 
     
@@ -230,6 +305,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setTripInspectionFlag(resultSet.getBoolean(24));
                 hosRecord.setVehicleName(resultSet.getString(25));
                 hosRecord.setOriginalLogTime(resultSet.getTimestamp(26));
+                hosRecord.setVehicleLicense(resultSet.getString(27));
+                hosRecord.setEmployeeID(resultSet.getString(28));
                 recordList.add(hosRecord);
             }
         }   // end try
@@ -328,7 +405,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(8, hosRecord.getServiceID());
             statement.setString(9, hosRecord.getLocation());
             
-            //hosRecord.setEditUserID(1);
+            hosRecord.setEditUserID(1);
             statement.setInt(10, hosRecord.getEditUserID());
 
             resultSet = statement.executeQuery();
@@ -463,7 +540,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(9, hosRecord.getServiceID());
             statement.setString(10, hosRecord.getLocation());
 
-//            hosRecord.setEditUserID(1);
+            hosRecord.setEditUserID(1);
             statement.setInt(11, hosRecord.getEditUserID());
 
             
@@ -483,5 +560,230 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             close(conn);
         } // end finally
         return hosRecord.getHosLogID();
+    }
+
+    public HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer) 
+    {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        HOSDriverLogin driverLogin = new HOSDriverLogin(0, 0, 0);
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_isValidLogin(?, ?, ?, ?, ?)}");
+            statement.setString(1, commAddress);
+            statement.setString(2, employeeId);
+            statement.setTimestamp(3, new Timestamp(loginTime));
+            statement.setBoolean(4, occupantFlag);
+            statement.setInt(5, odometer);
+            
+            resultSet = statement.executeQuery();
+
+            
+            if (resultSet.next()) {
+                driverLogin.setAcctID(resultSet.getInt(1));
+                driverLogin.setDeviceID(resultSet.getInt(2));
+                driverLogin.setDriverID(resultSet.getInt(3));
+                driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(4)));
+                driverLogin.setTimezoneID(resultSet.getString(5));
+                driverLogin.setCurrentVehicleID(resultSet.getInt(6));
+                driverLogin.setCurrentOcupantFlag(resultSet.getBoolean(7));
+                driverLogin.setCurrentDeviceID(resultSet.getInt(8));
+                driverLogin.setCurrentAddress(resultSet.getString(9));
+                driverLogin.setVehicleDotType(RuleSetType.valueOf(resultSet.getInt(10)));
+            }
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            logger.error("sql hosLog", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return driverLogin;
+    }
+
+    public HOSDriverLogin getDriverForEmpid(String commAddress, String employeeId) 
+    {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        HOSDriverLogin driverLogin = new HOSDriverLogin(0, 0, 0);
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_getDriverForEmpid(?, ?)}");
+            statement.setString(1, commAddress);
+            statement.setString(2, employeeId);
+            
+            resultSet = statement.executeQuery();
+
+            
+            if (resultSet.next()) {
+                driverLogin.setAcctID(resultSet.getInt(1));
+                driverLogin.setDeviceID(resultSet.getInt(2));
+                driverLogin.setDriverID(resultSet.getInt(3));
+                driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(4)));
+                driverLogin.setTimezoneID(resultSet.getString(5));
+            }
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            logger.error("sql hosLog", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return driverLogin;
+    }
+
+    public HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName) 
+    {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        HOSDriverLogin driverLogin = new HOSDriverLogin(0, 0, 0);
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_getDriverForEmpidLastname(?, ?)}");
+            statement.setString(1, employeeId);
+            statement.setString(2, lastName);
+            
+            resultSet = statement.executeQuery();
+
+            
+            if (resultSet.next()) {
+                driverLogin.setDriverID(resultSet.getInt(3));
+                driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(4)));
+                driverLogin.setTimezoneID(resultSet.getString(5));
+            }
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            logger.error("sql hosLog", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return driverLogin;
+    }
+
+    
+    public List<HOSRecord> getHOSRecordsForCommAddress(String address, List<HOSRecord> paramList)  
+    {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        List<HOSRecord> recordList = new ArrayList<HOSRecord>();
+        List<HOSRecord> finalRecordList = new ArrayList<HOSRecord>();
+        
+        Integer driverID;
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_getDriverIDForCommAddress(?)}");
+            statement.setString(1, address);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next())
+            {
+                driverID = resultSet.getInt(1);
+    
+                //Grab the min/max dates from the list to use for call.
+                Date startDate = new Date();
+                Date endDate = new Date(0L);
+                for (HOSRecord record : paramList)
+                {
+                    if (record.getLogTime().before(startDate))
+                        startDate = record.getLogTime();
+                    
+                    if (record.getLogTime().after(endDate))
+                        startDate = record.getLogTime();
+                }
+                
+                Interval interval = new Interval(startDate.getTime(), endDate.getTime(), DateTimeZone.UTC);
+                recordList = getHOSRecords(driverID, interval, true);
+
+                //filter out the records that were contained in the date interval for the 
+                //driver but weren't in params list.
+                for (HOSRecord record : recordList) {
+                    for (HOSRecord param : paramList) {
+                        if (record.getLogTime() == param.getLogTime() 
+                            && record.getStatus() == param.getStatus())
+                        {
+                            finalRecordList.add(record);
+                        }
+                    }
+                }
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            logger.error("sql hosLog", e);
+            return null;
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return finalRecordList;
+    }
+
+    public HOSOccupantInfo getOccupantInfo(Integer driverID) {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+
+        HOSOccupantInfo occupantInfo = null;
+        
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_getOccupantInfo(?)}");
+            statement.setInt(1, driverID);
+            
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next())
+            {
+                
+                occupantInfo = new HOSOccupantInfo();
+                occupantInfo.setFullName(resultSet.getString(1));
+                occupantInfo.setEmpId(resultSet.getString(2));
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            logger.error("sql hosLog", e);
+            return null;
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return occupantInfo;
     }
 }

@@ -15,7 +15,7 @@ public class HOSOccupantLog extends BaseEntity {
     private HOSStatus   status;
     private String      trailerID;
     private String      serviceID;
-    
+
     public String getTrailerID() {
         return trailerID;
     }
