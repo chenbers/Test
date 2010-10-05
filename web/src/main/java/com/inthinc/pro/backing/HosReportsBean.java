@@ -80,23 +80,6 @@ public class HosReportsBean extends ReportsBean {
                         params.getLocale()));
                 break;
                 
-// The payroll reports will move to a different part of the UI                
-            case PAYROLL_SUMMARY:
-                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                break;
-            case PAYROLL_DETAIL:
-                reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                break;
-            case PAYROLL_SIGNOFF:
-                if (params.getParamType() == ReportParamType.DRIVER )
-                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                else
-                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                            params.getLocale()));
-                break;
             default:
                 break;
 

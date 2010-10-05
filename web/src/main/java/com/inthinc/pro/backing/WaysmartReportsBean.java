@@ -13,6 +13,7 @@ import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.backing.ui.ReportParams;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
@@ -57,10 +58,21 @@ public class WaysmartReportsBean extends ReportsBean {
                 reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
-            
-            case HOS_EDITS:
-                reportCriteriaList.add(getReportCriteriaService().getHosEditsReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+            case PAYROLL_SUMMARY:
+                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
+                break;
+            case PAYROLL_DETAIL:
+                reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+            case PAYROLL_SIGNOFF:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                else
+                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                            params.getLocale()));
                 break;
 
             default:
