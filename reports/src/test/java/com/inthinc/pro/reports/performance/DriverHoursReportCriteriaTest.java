@@ -49,7 +49,6 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
         assertEquals(ReportType.DRIVER_HOURS, reportCriteria.getReport());
         assertNotNull(reportCriteria.getMainDataset());
 
-        assertTrue(reportCriteria.getMainDataset().size() > 0);
     }
     
     class MockAccountDAO implements AccountDAO {

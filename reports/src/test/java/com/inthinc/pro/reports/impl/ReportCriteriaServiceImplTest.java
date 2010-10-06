@@ -55,7 +55,6 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         assertNotNull(criteria);
         assertEquals(Locale.US,criteria.getLocale());
         assertNotNull(criteria.getMainDataset());
-        assertTrue(criteria.getMainDataset().size() > 0);
     }
 
     // TODO Move these classes to mock package

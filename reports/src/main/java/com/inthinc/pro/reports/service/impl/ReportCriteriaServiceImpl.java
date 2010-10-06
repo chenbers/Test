@@ -768,7 +768,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     /**
-     * Provide all data criteria inlcuding layout and data.
+     * Provide all data criteria including layout and data.
      * 
      * @param  groupeID ID of the group chosen by the user
      * @param  interval Interval chosen by the user
