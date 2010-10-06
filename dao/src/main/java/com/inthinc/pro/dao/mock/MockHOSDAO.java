@@ -12,6 +12,8 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -292,6 +294,13 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
             }
         }
         return null;
+    }
+
+    @Override
+    public HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName) {
+        HOSDriverLogin hosDriverLogin = new HOSDriverLogin();
+        hosDriverLogin.setDriverID(130);
+        return hosDriverLogin;
     }
     
 }

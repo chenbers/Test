@@ -19,6 +19,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.hos.HOSDriverLogin;
 
 
 public class ProUserServiceImpl implements UserDetailsService
@@ -27,11 +28,21 @@ public class ProUserServiceImpl implements UserDetailsService
     
     private PersonDAO personDAO;
     private DriverDAO driverDAO;
+    private HOSDriverLogin hosDriverLogin;
     
+
+    public HOSDriverLogin getHosDriverLogin() {
+        return hosDriverLogin;
+    }
+
+    public void setHosDriverLogin(HOSDriverLogin hosDriverLogin) {
+        this.hosDriverLogin = hosDriverLogin;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String employeeID) throws UsernameNotFoundException, DataAccessException
     {
-        logger.info("ProUserServiceImpl:loadUserByUsername " + employeeID);
+        logger.debug("ProUserServiceImpl:loadUserByUsername " + employeeID);
         
         try
         {
@@ -40,7 +51,7 @@ public class ProUserServiceImpl implements UserDetailsService
               {
                   throw new UsernameNotFoundException("Driver could not be found");
               } 
-            logger.info("driver is found");
+            logger.debug("driver is found");
             return new ProUser(driver, getGrantedAuthorities(driver) );
         }
         catch (EmptyResultSetException ex)
@@ -52,25 +63,19 @@ public class ProUserServiceImpl implements UserDetailsService
     private Driver lookup(String employeeID)
     {
         logger.debug("lookup: " + employeeID);
+        
+        if (hosDriverLogin == null)
+            return null;
 
-        // TODO:  should be looking up by employeeID (not personID)
-        Integer personID = null;
-        try {
-            personID = Integer.valueOf(employeeID);
-        }
-        catch (NumberFormatException ex) {
-            return null;
-        }
-        Person person = personDAO.findByID(personID);
-        if (person == null)
-            return null;
-            
-        Driver driver = driverDAO.findByPersonID(personID);
+        Driver driver = driverDAO.findByID(hosDriverLogin.getDriverID());
         if (driver == null)
             return null;
-        driver.setPerson(person);
-        return driver;
         
+        Person person = personDAO.findByID(driver.getPersonID());
+        driver.setPerson(person);
+        
+        return driver;
+
     }
 
 
