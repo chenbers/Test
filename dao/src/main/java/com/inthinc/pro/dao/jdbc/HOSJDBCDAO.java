@@ -104,7 +104,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_getMileageByGroup(?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_getVehicleMileageByGroup(?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
             statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
@@ -403,15 +403,14 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement = conn.prepareCall("{call hos_createFromAdminPortal(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getDriverID());
             statement.setInt(2, hosRecord.getVehicleID() == null ? 0 : hosRecord.getVehicleID());
-            statement.setTimestamp(3, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+//            statement.setTimestamp(3, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+            statement.setLong(3, hosRecord.getLogTime().getTime());
             statement.setString(4, hosRecord.getTimeZone().getID());
             statement.setInt(5, hosRecord.getStatus().getCode());
             statement.setInt(6, hosRecord.getDriverDotType().getCode());
             statement.setString(7, hosRecord.getTrailerID());
             statement.setString(8, hosRecord.getServiceID());
             statement.setString(9, hosRecord.getLocation());
-            
-            hosRecord.setEditUserID(1);
             statement.setInt(10, hosRecord.getEditUserID());
 
             resultSet = statement.executeQuery();
@@ -554,15 +553,14 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setInt(1, hosRecord.getHosLogID());
             statement.setInt(2, hosRecord.getDriverID());
             statement.setInt(3, hosRecord.getVehicleID() == null ? 0 : hosRecord.getVehicleID());
-            statement.setTimestamp(4, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+//            statement.setTimestamp(4, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+            statement.setLong(4, hosRecord.getLogTime().getTime());
             statement.setString(5, hosRecord.getTimeZone().getID());
             statement.setInt(6, hosRecord.getStatus().getCode());
             statement.setInt(7, hosRecord.getDriverDotType().getCode());
             statement.setString(8, hosRecord.getTrailerID());
             statement.setString(9, hosRecord.getServiceID());
             statement.setString(10, hosRecord.getLocation());
-
-            hosRecord.setEditUserID(1);
             statement.setInt(11, hosRecord.getEditUserID());
 
             
