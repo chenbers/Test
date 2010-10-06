@@ -42,6 +42,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.ForwardCommandType;
@@ -177,8 +178,8 @@ public class DAOUtilBean implements PhaseListener {
 			calendar.setTime(endDate);
 			calendar.add(Calendar.MONTH, -1);
 			Date startDate = calendar.getTime();
-			List<Integer> eventTypes = new LinkedList<Integer>();
-			eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
+			List<NoteType> eventTypes = new LinkedList<NoteType>();
+			eventTypes.add(NoteType.POWER_ON);
 			List<Event> events = eventDAO.getEventsForVehicle(vehicleID,
 					startDate, endDate, eventTypes, 1);
 
@@ -191,11 +192,11 @@ public class DAOUtilBean implements PhaseListener {
 			if (!events.isEmpty()) {
 				Event event = events.get(0);
 				messageList.add("OTA OK - First Event "
-						+ EventMapper.getEventType(event.getType()) + " "
+						+ event.getType() + " "
 						+ event.getTime());
 				event = events.get(events.size() - 1);
 				messageList.add("OTA OK - Last Event "
-						+ EventMapper.getEventType(event.getType()) + " "
+						+ event.getType() + " "
 						+ event.getTime());
 			} else {
 				messageList
@@ -299,7 +300,7 @@ public class DAOUtilBean implements PhaseListener {
 	
 	public List<String> getVehicleNotes()
 	{
-		List<Map<String, Object>> notes = null;
+		List<Event> events = null;
 		List<String> noteList = new ArrayList<String>();
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		
@@ -317,25 +318,23 @@ public class DAOUtilBean implements PhaseListener {
 			//TODO EMU file, make, model year
 			//TODO Firmware Version
 			device.getFirmwareVersion();
-
-			Integer[] types={
-					EventMapper.TIWIPRO_EVENT_IGNITION_ON
-					, EventMapper.TIWIPRO_EVENT_IGNITION_OFF
-					, EventMapper.TIWIPRO_EVENT_UNPLUGGED
-					, EventMapper.TIWIPRO_EVENT_POWER_ON};
+			List<NoteType> types = new ArrayList<NoteType>();
+	        types.add(NoteType.IGNITION_ON);
+            types.add(NoteType.IGNITION_OFF);
+            types.add(NoteType.UNPLUGGED);
+            types.add(NoteType.POWER_ON);
 			try {
-				Vehicle v;
-				notes = siloServiceCreator.getService().getVehicleNote(vehicle.getVehicleID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), new Integer(1), types);
-				for(Iterator<Map<String, Object>> iter = notes.iterator(); iter.hasNext();)
+				events = eventDAO.getEventsForVehicle(vehicle.getVehicleID(), startDate, endDate, types, 1);
+				for(Event e: events)
 				{
-					Map<String, Object> note = iter.next();
 					String msg="";
-					msg+=" " + sdf.format(note.get("time"));
-					msg+=" " + getNoteTypeName((Integer)note.get("type"));
-					msg+=" " + this.getGoogleMapLink((Double)note.get("lat"), (Double)note.get("lng"));
-					msg+=" " + note.get("lng");
-					msg+=" " + note.get("attrMap").toString();
-					msg+=" " + note.toString();
+					msg+=" " + sdf.format(e.getTime());
+					msg+=" " + e.getType();
+					msg+=" " + this.getGoogleMapLink((Double)e.getLatitude(), (Double)e.getLongitude());
+					msg+=" " + e.getLatitude();
+                    msg+=" " + e.getLongitude();
+					msg+=" " + e.getAttrMap().toString();
+					msg+=" " + e.toString();
 					noteList.add(0, msg);
 				}
 					
@@ -348,22 +347,6 @@ public class DAOUtilBean implements PhaseListener {
 		return noteList;
 	}
 	
-	private static String getNoteTypeName(Integer key)
-	{
-		switch (key)
-		{
-		case EventMapper.TIWIPRO_EVENT_IGNITION_ON:
-			return "IGNITION_ON";
-		case EventMapper.TIWIPRO_EVENT_IGNITION_OFF:
-			return "IGNITION_OFF";
-		case EventMapper.TIWIPRO_EVENT_UNPLUGGED:
-			return "UNPLUGGED";
-		case EventMapper.TIWIPRO_EVENT_POWER_ON:
-			return "POWER_ON";
-		}
-		return key.toString();
-	}
-
 	public void rmaDeviceAction() {
 		reInitAction();
 		loadDevice();

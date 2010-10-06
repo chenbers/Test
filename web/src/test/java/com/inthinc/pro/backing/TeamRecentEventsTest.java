@@ -12,6 +12,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 
@@ -32,7 +33,7 @@ public class TeamRecentEventsTest extends BaseBeanTest
         List<EventDisplay> eventList = teamRecentEventsBean.getRecentEvents();
         
         assertTrue(eventList.size() <= 5);
-        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
+        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.VIOLATION);
 
         for (EventDisplay eventDisplay : eventList)
         {
@@ -46,21 +47,21 @@ public class TeamRecentEventsTest extends BaseBeanTest
         }
 
         Event event = new AggressiveDrivingEvent();
-        event.setType(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+        event.setType(NoteType.NOTEEVENT);
         event.setTime(new Date());
         EventDisplay eventDisplay = new EventDisplay(event);
         teamRecentEventsBean.setSelectedEvent(eventDisplay);
         assertEquals("go_reportDriverStyle", teamRecentEventsBean.detailsAction());
         
         event = new SeatBeltEvent();
-        event.setType(EventMapper.TIWIPRO_EVENT_SEATBELT);
+        event.setType(NoteType.SEATBELT);
         event.setTime(new Date());
         eventDisplay = new EventDisplay(event);
         teamRecentEventsBean.setSelectedEvent(eventDisplay);
         assertEquals("go_reportDriverSeatBelt", teamRecentEventsBean.detailsAction());
         
         event = new SpeedingEvent();
-        event.setType(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+        event.setType(NoteType.SPEEDING_EX3);
         event.setTime(new Date());
         eventDisplay = new EventDisplay(event);
         teamRecentEventsBean.setSelectedEvent(eventDisplay);

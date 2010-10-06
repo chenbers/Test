@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
+import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.TablePreference;
 
 public class EventHessianMapper extends AbstractMapper
@@ -66,9 +68,15 @@ public class EventHessianMapper extends AbstractMapper
     {
         if (type == Event.class)
         {
-            Class<?> eventType = EventMapper.getEventType((Integer) map.get("type"));
-            if (eventType != null)
-                return type.cast(super.convertToModelObject(map, eventType));
+            NoteType noteType = NoteType.valueOf((Integer) map.get("type"));
+            if (noteType != null && noteType.getEventClass()!=null)
+            {
+                E e = type.cast(super.convertToModelObject(map, noteType.getEventClass()));
+                Event event=(Event) e;
+                event.setEventType(noteType.getEventType());
+                event.setEventCategory((EventCategory)noteType.getEventCategories().toArray()[0]);
+                return e;
+            }
             else
                 return super.convertToModelObject(map, type);
         }

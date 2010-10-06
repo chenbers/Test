@@ -19,11 +19,11 @@ public class FullEvent extends Event
 	{
 		super();
 	}
-	public FullEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+	public FullEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
 	{
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
 	}
-	public FullEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
+	public FullEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
 		    	Integer deltaX, Integer deltaY, Integer deltaZ, Integer speedLimit)
 	{
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

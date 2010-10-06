@@ -13,7 +13,7 @@ public class RollOverEvent extends Event
 	{
 		super();
 	}
-	public RollOverEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+	public RollOverEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
 	{
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
 	}

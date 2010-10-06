@@ -21,6 +21,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
@@ -111,13 +112,13 @@ public class DriverPerformanceBean extends BasePerformanceBean
     {
         if ((violationEventsMap == null) ||violationEventsMap.isEmpty())
         {
-            List<Integer> types = new ArrayList<Integer>();
-            types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
-            types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-            types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-            types.add(EventMapper.TIWIPRO_EVENT_IDLE);
-            types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
-            types.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
+            List<NoteType> types = new ArrayList<NoteType>();
+            types.add(NoteType.SPEEDING_EX3);
+            types.add(NoteType.SEATBELT);
+            types.add(NoteType.NOTEEVENT);
+            types.add(NoteType.IDLE);
+            types.add(NoteType.UNPLUGGED);
+            types.add(NoteType.UNPLUGGED_ASLEEP);
             
             List<Event>violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, getShowExcludedEvents() );
             violationEventsMap = new LinkedHashMap<Long,Event>();

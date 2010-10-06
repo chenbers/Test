@@ -21,7 +21,7 @@ public class SeatBeltEvent extends Event
         super();
     }
 
-    public SeatBeltEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude, Integer avgSpeed,
+    public SeatBeltEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude, Integer avgSpeed,
             Integer topSpeed, Integer distance)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

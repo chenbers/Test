@@ -17,6 +17,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -93,8 +94,8 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         setDateFormatter();
         
         List<Event> tempEvents = new ArrayList<Event>();
-        List<Integer> types = new ArrayList<Integer>();
-        types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+        List<NoteType> types = new ArrayList<NoteType>();
+        types.add(NoteType.NOTEEVENT);
 
         tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types, getShowExcludedEvents());
         events = new ArrayList<EventReportItem>();

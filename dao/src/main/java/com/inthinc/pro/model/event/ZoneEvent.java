@@ -29,7 +29,7 @@ public abstract class ZoneEvent extends Event {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ZoneEvent(Long noteID, Integer vehicleID, Integer type, Date time,
+	public ZoneEvent(Long noteID, Integer vehicleID, NoteType type, Date time,
 			Integer speed, Integer odometer, Double latitude, Double longitude, Integer zoneID) {
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
         this.zoneID = zoneID;

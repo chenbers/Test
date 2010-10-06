@@ -22,7 +22,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 
 public class DataGenForReportPaginationTesting extends DataGenForTesting {
 	
@@ -170,7 +170,7 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
 		for (GroupListData data : teamGroupData)
 		{
 
-			Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,
+			Event testEvent = new Event(0l, 0, NoteType.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,
                     new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 			for (Device device : data.deviceList) {
 				if (!genTestEvent(mcmSim, testEvent, device.getImei()))

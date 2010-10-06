@@ -16,6 +16,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -65,8 +66,8 @@ public class DriverSeatBeltBean extends BasePerformanceEventsBean
     protected void initEvents()
     {
         setDateFormatter();
-        List<Integer> types = new ArrayList<Integer>();
-        types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+        List<NoteType> types = new ArrayList<NoteType>();
+        types.add(NoteType.SEATBELT);
 
         List<Event> tempEvents = new ArrayList<Event>();
         tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types, getShowExcludedEvents());

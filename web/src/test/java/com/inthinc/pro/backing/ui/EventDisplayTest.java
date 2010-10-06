@@ -13,6 +13,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.Vehicle;
@@ -47,7 +48,7 @@ public class EventDisplayTest extends BaseBeanTest
         tzFormat.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
         Date eventDate = tzFormat.parse(nowDateStr);
 
-        Event event = new SpeedingEvent(100l, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, 
+        Event event = new SpeedingEvent(100l, vehicle.getVehicleID(), NoteType.SPEEDING_EX3, 
                 eventDate,
                 70, 50, 33.0089, -117.1100, 90, 75,
                 65, 70, 50);

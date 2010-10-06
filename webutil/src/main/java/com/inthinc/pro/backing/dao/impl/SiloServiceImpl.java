@@ -749,7 +749,7 @@ public class SiloServiceImpl implements SiloService {
             @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
             @DaoParam(name = "showExcluded", type=Boolean.class, inputDesc = "show excluded events") Integer includeForgiven,
             @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams,
-            @DaoParam(name = "types", type=com.inthinc.pro.backing.dao.ui.EventTypeList.class, inputDesc = "event types") Integer[] types) {
+            @DaoParam(name = "types", type=com.inthinc.pro.backing.dao.ui.EventTypeList.class, inputDesc = "note types") Integer[] types) {
 		return null;
 	}
 
@@ -761,7 +761,7 @@ public class SiloServiceImpl implements SiloService {
             @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
             @DaoParam(name = "showExcluded", type=Boolean.class, inputDesc = "show excluded events") Integer includeForgiven,
             @DaoParam(name = "filterList", inputDesc = "Not Implemented -- enter any value") List<Map<String, Object>> filterList, 
-            @DaoParam(name = "types", type=com.inthinc.pro.backing.dao.ui.EventTypeList.class, inputDesc = "event types") Integer[] types) { 
+            @DaoParam(name = "types", type=com.inthinc.pro.backing.dao.ui.EventTypeList.class, inputDesc = "note types") Integer[] types) { 
 		return null;
 	}
 

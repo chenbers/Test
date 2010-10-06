@@ -14,7 +14,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -92,8 +92,8 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
         setDateFormatter();
 
         List<Event> tempEvents = new ArrayList<Event>();
-        List<Integer> types = new ArrayList<Integer>();
-        types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+        List<NoteType> types = new ArrayList<NoteType>();
+        types.add(NoteType.SPEEDING_EX3);
 
         tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types,getShowExcludedEvents());
         events = new ArrayList<EventReportItem>();

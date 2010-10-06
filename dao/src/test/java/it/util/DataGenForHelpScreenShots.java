@@ -37,7 +37,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
@@ -632,7 +632,7 @@ System.out.println("Waiting for imei: " + imei);
 
 			for (Device device : data.deviceList)
 			{
-				Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,//EventMapper.TIWIPRO_EVENT_LOCATION,
+				Event testEvent = new Event(0l, 0, NoteType.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,//NoteType.LOCATION,
 	                    new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 				if (!genTestEvent(mcmSim, testEvent, device.getImei()))
 				{

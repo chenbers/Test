@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.scoring.Calculator;
@@ -78,14 +79,14 @@ public class ExtractDataBean {
 				buffer.append(",");
 				buffer.append(event.getType());
 				buffer.append(",");
-				if (event.getType().equals(EventMapper.TIWIPRO_EVENT_SEATBELT)) {
+				if (event.getType().equals(NoteType.SEATBELT)) {
 					SeatBeltEvent sbEvent = (SeatBeltEvent)event;
 					buffer.append(sbEvent.getSpeed());
 					buffer.append(",");
 					buffer.append(sbEvent.getDistance());
 					buffer.append(",,,,"); // no speed limit or delta x,y,z
 				}
-				else if (event.getType().equals(EventMapper.TIWIPRO_EVENT_NOTEEVENT)) {
+				else if (event.getType().equals(NoteType.NOTEEVENT)) {
 					AggressiveDrivingEvent adEvent = (AggressiveDrivingEvent)event;
 					buffer.append(adEvent.getSpeed());
 					buffer.append(",,");	// no distance
@@ -97,7 +98,7 @@ public class ExtractDataBean {
 					buffer.append(",");
 					buffer.append(adEvent.getDeltaZ());
 				}
-				else if (event.getType().equals(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3)) {
+				else if (event.getType().equals(NoteType.SPEEDING_EX3)) {
 					SpeedingEvent speedingEvent = (SpeedingEvent)event;
 					buffer.append(speedingEvent.getTopSpeed());
 					buffer.append(",");
@@ -175,7 +176,7 @@ public class ExtractDataBean {
 
     	endDate = new Date();
     	startDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.convertDateToSeconds(endDate), daysBack, "US/Mountain"));
-		List<Integer> eventTypes = new ArrayList<Integer>();
+		List<NoteType> eventTypes = new ArrayList<NoteType>();
 
 		List<Event> eventList = null;
 		if (type.equals("DRIVER")) {

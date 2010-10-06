@@ -49,6 +49,7 @@ import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.FullEvent;
 import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.event.NoDriverEvent;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.event.SeatBeltEvent;
@@ -205,7 +206,7 @@ public class AlertMessagesTest {
 	        String noDriverDeviceIMEI = itData.noDriverDevice.getImei();
 	        
 	        if (!genEvent(noDriverDeviceIMEI, eventType))
-	            fail("Unable to generate seatbelt event");
+	            fail("Unable to generate no driver event");
 	        if (pollForMessages("Red Flag Alert Groups Set"))
 	        	anyAlertsFound = true;
     	}
@@ -455,10 +456,10 @@ public class AlertMessagesTest {
         System.out.println("ZoneID: " + zoneID);
         Event event = null;
         if (eventType.equals(EventType.ZONES_ARRIVAL))
-        	event = new ZoneArrivalEvent(0l, 0, EventMapper.TIWIPRO_EVENT_WSZONES_ARRIVAL_EX, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f),
+        	event = new ZoneArrivalEvent(0l, 0, NoteType.WSZONES_ARRIVAL_EX, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f),
                 zoneID);
         else 
-        	event = new ZoneDepartureEvent(0l, 0, EventMapper.TIWIPRO_EVENT_WSZONES_DEPARTURE_EX, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f),
+        	event = new ZoneDepartureEvent(0l, 0, NoteType.WSZONES_DEPARTURE_EX, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f),
                 zoneID);
         return genEvent(event, imei);
     }
@@ -480,34 +481,34 @@ public class AlertMessagesTest {
  */
 //System.out.println("genEvent: " + eventType);    	
     	if (eventType.equals(EventType.SEATBELT) )
-    			event = new SeatBeltEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SEATBELT, new Date(), 60, 1000, 
+    			event = new SeatBeltEvent(0l, 0, NoteType.SEATBELT, new Date(), 60, 1000, 
     					new Double(40.704246f), new Double(-111.948613f), 80, 100, 20);
     	else if (eventType.equals(EventType.HARD_VERT) )
-			event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT, new Date(), 60, 1000, 
+			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 80, 11, -22, -33, 30);
     	else if (eventType.equals(EventType.HARD_ACCEL) )
-			event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT, new Date(), 60, 1000, 
+			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 80, 100, -20, 0, 40);
     	else if (eventType.equals(EventType.HARD_BRAKE) )
-			event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT, new Date(), 60, 1000, 
+			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 80, -25, 22, -13, 50);
     	else if (eventType.equals(EventType.HARD_TURN) )
-			event = new AggressiveDrivingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NOTEEVENT, new Date(), 60, 1000, 
+			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 80, 24, -22, -21, 60);
     	else if (eventType.equals(EventType.CRASH) )
-			event = new FullEvent(0l, 0, EventMapper.TIWIPRO_EVENT_FULLEVENT, new Date(), 60, 1000, 
+			event = new FullEvent(0l, 0, NoteType.FULLEVENT, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 80, 24, -22, -21);
     	else if (eventType.equals(EventType.TAMPERING) )
-			event = new TamperingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_UNPLUGGED, new Date(), 60, 1000, 
+			event = new TamperingEvent(0l, 0, NoteType.UNPLUGGED, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f));
     	else if (eventType.equals(EventType.LOW_BATTERY) )
-			event = new LowBatteryEvent(0l, 0, EventMapper.TIWIPRO_EVENT_LOW_BATTERY, new Date(), 60, 1000, 
+			event = new LowBatteryEvent(0l, 0, NoteType.LOW_BATTERY, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f));
     	else if (eventType.equals(EventType.NO_DRIVER) )
-			event = new NoDriverEvent(0l, 0, EventMapper.TIWIPRO_EVENT_NO_DRIVER, new Date(), 60, 1000, 
+			event = new NoDriverEvent(0l, 0, NoteType.NO_DRIVER, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f));
     	else if (eventType.equals(EventType.SPEEDING) )
-			event = new SpeedingEvent(0l, 0, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, new Date(), 100, 1000, 
+			event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 100, 80, 70, 100, 100);
     	
     	return genEvent(event, imei);

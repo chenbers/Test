@@ -17,4 +17,6 @@ public interface Mapper extends Serializable
     Map<String, Object> convertToMap(Object modelObject);
 
     List<Map<String, Object>> convertList(List<?> list);
+    
+    Integer[] convertEnumList(List<?> list);
 }

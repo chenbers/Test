@@ -39,7 +39,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer odometer;
     private Integer speed;
     private Date time;
-    private Integer type;
+    private NoteType type;
     
     @Column(updateable = false)
     private Vehicle vehicle;
@@ -77,14 +77,15 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
     
-
-
+    private EventType eventType=EventType.UNKNOWN;
+    private EventCategory defaultEventCategory = EventCategory.NONE;
+    
 	public Event()
     {
         super();
     }
 
-    public Event(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    public Event(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
     {
         super();
         this.noteID = noteID;
@@ -128,7 +129,12 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @XmlElement
     public EventType getEventType()
     {
-        return EventType.UNKNOWN;
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType)
+    {
+        this.eventType=eventType;
     }
 
     public Integer getForgiven()
@@ -178,7 +184,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         return time;
     }
 
-    public Integer getType()
+    public NoteType getType()
     {
         return type;
     }
@@ -250,7 +256,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         this.time = time;
     }
 
-    public void setType(Integer type)
+    public void setType(NoteType type)
     {
         this.type = type;
     }
@@ -288,7 +294,12 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @XmlElement
     public EventCategory getEventCategory()
     {
-        return EventCategory.NONE;
+        return defaultEventCategory;
+    }
+    
+    public void setEventCategory(EventCategory eventCategory)
+    {
+        this.defaultEventCategory=eventCategory;
     }
     
     /**
@@ -450,5 +461,10 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 
 	public void setAttrMap(Map<Object, Object> attrMap) {
 		this.attrMap = attrMap;
+	}
+	
+	public boolean isWaysmartOnly()
+	{
+	    return false;
 	}
 }

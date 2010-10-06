@@ -26,7 +26,7 @@ public class SpeedingEvent extends Event
         super();
     }
 
-    public SpeedingEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude, Integer topSpeed,
+    public SpeedingEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude, Integer topSpeed,
             Integer avgSpeed, Integer speedLimit, Integer distance, Integer avgRPM)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

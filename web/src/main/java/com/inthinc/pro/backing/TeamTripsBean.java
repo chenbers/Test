@@ -22,6 +22,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
@@ -435,10 +436,10 @@ public class TeamTripsBean extends BaseBean {
 		}
 		private List<Event> loadViolations( ) {
 	        	
-            List<Integer> violationEventTypeList = new ArrayList<Integer>();
-            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
-            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+            List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
+            violationEventTypeList.add(NoteType.SPEEDING_EX3);
+            violationEventTypeList.add(NoteType.SEATBELT);
+            violationEventTypeList.add(NoteType.NOTEEVENT);
             return eventDAO.getEventsForDriver(driverID, 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 
@@ -446,8 +447,8 @@ public class TeamTripsBean extends BaseBean {
 		}
 		private List<Event> loadIdles( ) {
 
-            List<Integer> idleTypes = new ArrayList<Integer>();
-            idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+            List<NoteType> idleTypes = new ArrayList<NoteType>();
+            idleTypes.add(NoteType.IDLE);
             
             return eventDAO.getEventsForDriver(driverID,
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
@@ -457,9 +458,9 @@ public class TeamTripsBean extends BaseBean {
 		}
 		private List<Event> loadTampers( ) {
 			
-            List<Integer> tamperEventTypeList = new ArrayList<Integer>();
-            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
-            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
+            List<NoteType> tamperEventTypeList = new ArrayList<NoteType>();
+            tamperEventTypeList.add(NoteType.UNPLUGGED);
+            tamperEventTypeList.add(NoteType.UNPLUGGED_ASLEEP);
 
             return eventDAO.getEventsForDriver(driverID,
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
@@ -526,7 +527,7 @@ public class TeamTripsBean extends BaseBean {
 		        }
 		    	startEvent.setTime(trip.getStartTime());
 		    	startEvent.setNoteID(trip.getStartTime().getTime());
-		    	startEvent.setType(-1);
+		    	startEvent.setType(NoteType.TRIP_START);
 		    	startEventItem = new EventItem();
 		    	startEventItem.eventID = startEvent.getNoteID();
 		    	startEventItem.latLng = new LatLng(startEvent.getLatitude(), startEvent.getLongitude());
@@ -546,11 +547,11 @@ public class TeamTripsBean extends BaseBean {
 		        endEvent.setNoteID(trip.getEndTime().getTime());
 		        if (trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS)){
 		        	
-		        	endEvent.setType(-2);
+		        	endEvent.setType(NoteType.TRIP_INPROGRESS);
 		        }
 		        else {
 		        	
-		        	endEvent.setType(-3);
+		        	endEvent.setType(NoteType.TRIP_END);
 		        }
 		        
 		    	endEventItem = new EventItem();
@@ -816,17 +817,11 @@ public class TeamTripsBean extends BaseBean {
 			//set driver's name
 			driverID = event.getDriverID();
 			setDriverName(driversTripsMap.get(driverID).getDriverName());
-			if(event.getType() == -1){
+			if(event.getType() == NoteType.TRIP_START
+			   || event.getType() == NoteType.TRIP_INPROGRESS
+			   || event.getType() == NoteType.TRIP_END){
 				
-				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString("TRIP_START")));
-			}
-			else if (event.getType() == -2){
-				
-				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString("TRIP_INPROGRESS")));
-			}
-			else if (event.getType() == -3){
-				
-				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString("TRIP_END")));
+				setEventName(MessageUtil.getMessageString(MessageUtil.getMessageString(event.getType().toString())));
 			}
 			else {
 				

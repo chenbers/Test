@@ -12,7 +12,7 @@ import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 
 public abstract class DataGenForTesting  {
 
@@ -106,7 +106,7 @@ public abstract class DataGenForTesting  {
 		for (GroupData data : teamGroupData)
 		{
 
-			Event testEvent = new Event(0l, 0, EventMapper.TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,
+			Event testEvent = new Event(0l, 0, NoteType.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,
                     new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 			if (!genTestEvent(mcmSim, testEvent, data.device.getImei()))
 			{

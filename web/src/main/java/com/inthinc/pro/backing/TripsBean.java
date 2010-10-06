@@ -2,10 +2,8 @@ package com.inthinc.pro.backing;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,8 +26,8 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.IdleEvent;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
@@ -152,15 +150,15 @@ public class TripsBean extends BaseBean {
 
     public void initViolations(Date start, Date end) {
         if (violationEvents.isEmpty()) {
-            List<Integer> violationEventTypeList = new ArrayList<Integer>();
-            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
-            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-            violationEventTypeList.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-            List<Integer> idleTypes = new ArrayList<Integer>();
-            idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-            List<Integer> tamperEventTypeList = new ArrayList<Integer>();
-            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED);
-            tamperEventTypeList.add(EventMapper.TIWIPRO_EVENT_UNPLUGGED_ASLEEP);
+            List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
+            violationEventTypeList.add(NoteType.SPEEDING_EX3);
+            violationEventTypeList.add(NoteType.SEATBELT);
+            violationEventTypeList.add(NoteType.NOTEEVENT);
+            List<NoteType> idleTypes = new ArrayList<NoteType>();
+            idleTypes.add(NoteType.IDLE);
+            List<NoteType> tamperEventTypeList = new ArrayList<NoteType>();
+            tamperEventTypeList.add(NoteType.UNPLUGGED);
+            tamperEventTypeList.add(NoteType.UNPLUGGED_ASLEEP);
             if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
             	
                 violationEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, getShowExcludedEvents());
@@ -233,8 +231,8 @@ public class TripsBean extends BaseBean {
             totalDriveSeconds += tempLong.intValue();
         }
         // Get events over date picker date range
-        List<Integer> idleTypes = new ArrayList<Integer>();
-        idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+        List<NoteType> idleTypes = new ArrayList<NoteType>();
+        idleTypes.add(NoteType.IDLE);
         List<Event> tmpIdleEvents = new ArrayList<Event>();
         if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
             tmpIdleEvents = eventDAO.getEventsForDriver(identifiableEntityBean.getId(), getStartDate(), getEndDate(), idleTypes, getShowExcludedEvents());

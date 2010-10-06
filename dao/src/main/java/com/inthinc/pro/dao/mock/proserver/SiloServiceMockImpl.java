@@ -33,6 +33,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
@@ -832,8 +833,8 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
     @Override
     public Map<String, Object> getNoteNearLoc(Integer driverID, Double lat, Double lng, Long startDate, Long endDate) {
-        return getDriverNote(driverID, startDate, endDate, 0, new Integer[] { EventType.SPEEDING.getCode() }).size() > 0 ? getDriverNote(driverID, startDate, endDate, 0,
-                new Integer[] { EventType.SPEEDING.getCode() }).get(0) : null;
+        return getDriverNote(driverID, startDate, endDate, 0, new Integer[] { NoteType.SPEEDING_EX3.getCode() }).size() > 0 ? getDriverNote(driverID, startDate, endDate, 0,
+                new Integer[] { NoteType.SPEEDING_EX3.getCode() }).get(0) : null;
     }
 
     @Override

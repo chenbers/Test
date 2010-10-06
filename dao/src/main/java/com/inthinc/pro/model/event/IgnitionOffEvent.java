@@ -13,7 +13,7 @@ public class IgnitionOffEvent extends Event
 	{
 		super();
 	}
-	public IgnitionOffEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
+	public IgnitionOffEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
 						Integer mpg, Integer mpgDistance, Integer driveTime)
 	{
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

@@ -5,25 +5,26 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.NoteType;
 
 
 public class EventCategoryFilter implements TableFilterFactory{
 	private EventType key;
-	private List<Integer> typeList;
+	private List<NoteType> typeList;
 	private List<Integer> aggTypeList;
 	
 	
 	public EventCategoryFilter() {
 		
 	}
-	public EventCategoryFilter(EventType key, List<Integer> typeList,
+	public EventCategoryFilter(EventType key, List<NoteType> typeList,
 			List<Integer> aggTypeList) {
 		super();
 		this.key = key;
 		this.typeList = typeList;
 		this.aggTypeList = aggTypeList;
 	}
-	public EventCategoryFilter(EventType key, Integer[] typeArray, Integer[] aggTypeArray) {
+	public EventCategoryFilter(EventType key, NoteType[] typeArray, Integer[] aggTypeArray) {
 		super();
 		this.key = key;
 		if (typeArray == null)
@@ -46,12 +47,12 @@ public class EventCategoryFilter implements TableFilterFactory{
 	}
 
 
-	public List<Integer> getTypeList() {
+	public List<NoteType> getTypeList() {
 		return typeList;
 	}
 
 
-	public void setTypeList(List<Integer> typeList) {
+	public void setTypeList(List<NoteType> typeList) {
 		this.typeList = typeList;
 	}
 

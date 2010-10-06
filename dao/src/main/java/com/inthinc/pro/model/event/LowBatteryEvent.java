@@ -17,7 +17,7 @@ public class LowBatteryEvent extends Event
         super();
     }
     
-    public LowBatteryEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    public LowBatteryEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
     }

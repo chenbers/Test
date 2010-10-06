@@ -16,7 +16,7 @@ public class TamperingEvent extends Event{
         super();
     }
     
-    public TamperingEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    public TamperingEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
     }

@@ -19,7 +19,7 @@ import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.security.Roles;
 
@@ -68,7 +68,7 @@ public class EventHessianDAOTest
         // One speeding event will be invalid so not counted, but should be compensated for
         assertEquals(5, eventList.size());
         
-        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
+        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.VIOLATION);
         // make sure they are in descending order by date
         for (int i = 0 ; i < 4; i++)
         {
@@ -84,7 +84,7 @@ public class EventHessianDAOTest
         
         for(Event event : eventList)
         {
-            Class<?> eventType = EventMapper.getEventType(event.getType());
+            Class<?> eventType = event.getType().getEventClass();
             assertTrue("The Event was not properly constructed as the " + eventType.getSimpleName() + " subclass", eventType.isAssignableFrom(event.getClass()));
         }
 
@@ -100,7 +100,7 @@ public class EventHessianDAOTest
         assertNotNull(eventList);
         assertEquals(5, eventList.size());
 
-        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.WARNING);
+        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.WARNING);
         
         // make sure they are in decending order by date
         for (int i = 0 ; i < 4; i++)
@@ -126,7 +126,7 @@ public class EventHessianDAOTest
         
         assertNotNull(eventList);
         
-        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
+        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.VIOLATION);
         // make sure they are in decending order by date
         for (Event event : eventList)
         {
@@ -135,7 +135,7 @@ public class EventHessianDAOTest
         
         for(Event event : eventList)
         {
-            Class<?> eventType = EventMapper.getEventType(event.getType());
+            Class<?> eventType = event.getType().getEventClass();
             assertTrue("The Event was not properly constructed as the " + eventType.getSimpleName() + " subclass", eventType.isAssignableFrom(event.getClass()));
         }
 

@@ -68,6 +68,7 @@ import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.LowBatteryEvent;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.TamperingEvent;
@@ -592,7 +593,7 @@ public class MockData {
 
     private int addWarnings(Driver driver, Vehicle vehicle, LatLng loc, int idOffset) {
         Date date = DateUtil.convertTimeInSecondsToDate(baseTimeSec - randomInt(1, 2880));
-        Event event = new LowBatteryEvent((long) idOffset + 1, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
+        Event event = new LowBatteryEvent((long) idOffset + 1, vehicle.getVehicleID(), NoteType.LOW_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
                 .getLat(), loc.getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
@@ -606,7 +607,7 @@ public class MockData {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
         }
-        event = new DeviceLowBatteryEvent((long) idOffset + 2, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_TIWI_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
+        event = new DeviceLowBatteryEvent((long) idOffset + 2, vehicle.getVehicleID(), NoteType.LOW_TIWI_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
                 .getLat(), loc.getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
@@ -620,7 +621,7 @@ public class MockData {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
         }
-        event = new TamperingEvent((long) idOffset + 3, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_UNPLUGGED, date, randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc
+        event = new TamperingEvent((long) idOffset + 3, vehicle.getVehicleID(), NoteType.UNPLUGGED, date, randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc
                 .getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
@@ -661,7 +662,7 @@ public class MockData {
             double lng = trip.getRoute().get(addressIdx).getLng();
             switch (eventCategory) {
                 case 1:
-                    event = new SeatBeltEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_SEATBELT, date, randomInt(15, 70), randomInt(10, 50), lat, lng, randomInt(50,
+                    event = new SeatBeltEvent(id, vehicle.getVehicleID(), NoteType.SEATBELT, date, randomInt(15, 70), randomInt(10, 50), lat, lng, randomInt(50,
                             70), randomInt(70, 90), randomInt(5, 20));
                     event.setAddressStr(addressStr[randomInt(0, 2)]);
                     event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
@@ -692,7 +693,7 @@ public class MockData {
                         deltaVz = -21;
                     }
                     int severity = randomInt(1, 5);
-                    event = new AggressiveDrivingEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_NOTEEVENT, date, randomInt(15, 70), randomInt(10, 50), lat, lng,
+                    event = new AggressiveDrivingEvent(id, vehicle.getVehicleID(), NoteType.NOTEEVENT, date, randomInt(15, 70), randomInt(10, 50), lat, lng,
                             randomInt(50, 70), deltaVx, deltaVy, deltaVz, severity);
                     event.setAddressStr(addressStr[randomInt(0, 2)]);
                     break;
@@ -709,14 +710,14 @@ public class MockData {
                     	avgSpeed = randomInt(speedLimit, 80);
                     	topSpeed = randomInt(avgSpeed, 100);
                 	}
-                    event = new SpeedingEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, date, randomInt(15, 70), randomInt(10, 50), lat, lng, topSpeed,
+                    event = new SpeedingEvent(id, vehicle.getVehicleID(), NoteType.SPEEDING_EX3, date, randomInt(15, 70), randomInt(10, 50), lat, lng, topSpeed,
                             avgSpeed, speedLimit, randomInt(5, 70), randomInt(10, 50));
                     event.setAddressStr(addressStr[randomInt(0, 2)]);
                     break;
                 case 4:
                     int lowIdle = randomInt(55, 500);
                     int highIdle = randomInt(55, 200);
-                    event = new IdleEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_IDLE, date, randomInt(15, 70), randomInt(10, 50), lat, lng, lowIdle, highIdle);
+                    event = new IdleEvent(id, vehicle.getVehicleID(), NoteType.IDLE, date, randomInt(15, 70), randomInt(10, 50), lat, lng, lowIdle, highIdle);
                     event.setAddressStr(addressStr[randomInt(0, 2)]);
                     break;
             }

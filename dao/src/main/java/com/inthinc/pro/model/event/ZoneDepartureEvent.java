@@ -15,7 +15,7 @@ public class ZoneDepartureEvent extends ZoneEvent
         super();
     }
 
-    public ZoneDepartureEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed,
+    public ZoneDepartureEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed,
             Integer odometer, Double latitude, Double longitude, Integer zoneID)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude, zoneID);

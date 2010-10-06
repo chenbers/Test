@@ -29,7 +29,7 @@ public class AggressiveDrivingEvent extends Event
         super();
     }
 
-    public AggressiveDrivingEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed,
+    public AggressiveDrivingEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed,
             Integer odometer, Double latitude, Double longitude, Integer avgSpeed, Integer deltaX, Integer deltaY,
             Integer deltaZ, Integer severity)
     {

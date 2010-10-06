@@ -62,6 +62,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandDef;
 import com.inthinc.pro.model.ForwardCommandID;
@@ -323,7 +324,7 @@ public class SiloServiceTest {
         // year time frame from today back
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
-        List<Event> result = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION),
+        List<Event> result = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, NoteType.getNoteTypesInCategory(EventCategory.VIOLATION),
                 EventDAO.EXCLUDE_FORGIVEN);
         assertNotNull(result);
         if (result != null) {
@@ -334,11 +335,11 @@ public class SiloServiceTest {
             if (size > 0) {
                 Event e = result.get(0);
                 eventDAO.forgive(e.getDriverID(), e.getNoteID());
-                List<Event> newResult = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION),
+                List<Event> newResult = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, NoteType.getNoteTypesInCategory(EventCategory.VIOLATION),
                         EventDAO.EXCLUDE_FORGIVEN);
                 assertEquals("list size should be 1 less after forgive", (size - 1), newResult.size());
                 eventDAO.unforgive(e.getDriverID(), e.getNoteID());
-                newResult = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION),
+                newResult = eventDAO.getEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, NoteType.getNoteTypesInCategory(EventCategory.VIOLATION),
                         EventDAO.EXCLUDE_FORGIVEN);
                 assertEquals("list size should be same after forgive/unforgive", size, newResult.size());
             }
@@ -355,8 +356,8 @@ public class SiloServiceTest {
         // year time frame from today back
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
-        List<Integer> type = new ArrayList<Integer>();
-        type.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+        List<NoteType> type = new ArrayList<NoteType>();
+        type.add(NoteType.SPEEDING_EX3);
         List<Event> result = eventDAO.getEventsForVehicle(TESTING_VEHICLE_ID, startDate, endDate, type, EventDAO.EXCLUDE_FORGIVEN);
         assertNotNull(result);
         if (result != null) {
@@ -412,24 +413,24 @@ public class SiloServiceTest {
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
         List<Event> violationEventsList = eventDAO.getViolationEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventDAO.EXCLUDE_FORGIVEN);
         assertTrue("expected some events to be returned", violationEventsList.size() > 0);
-        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), violationEventsList, startDate, endDate);
+        validateEvents(NoteType.getNoteTypesInCategory(EventCategory.VIOLATION), violationEventsList, startDate, endDate);
         List<Event> warningEventsList = eventDAO.getWarningEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventDAO.EXCLUDE_FORGIVEN);
         // TODO: ask David to generate some of these types
         // assertTrue("expected some events to be returned", warningEventsList.size() > 0);
-        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), warningEventsList, startDate, endDate);
+        validateEvents(NoteType.getNoteTypesInCategory(EventCategory.WARNING), warningEventsList, startDate, endDate);
         List<Event> recentEventsList = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
         // assertTrue("expected some events to be returned", (recentEventsList.size() >= 0 && recentEventsList.size() < 6));
-        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), recentEventsList);
+        validateEvents(NoteType.getNoteTypesInCategory(EventCategory.VIOLATION), recentEventsList);
         int listSize = recentEventsList.size();
         List<Event> recentWarningsList = eventDAO.getMostRecentWarnings(TESTING_GROUP_ID, 5);
         // TODO: ask David to generate some of these types
         // assertTrue("expected some events to be returned", (recentWarningsList.size() > 0 && recentWarningsList.size() < 6));
-        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), recentWarningsList);
+        validateEvents(NoteType.getNoteTypesInCategory(EventCategory.WARNING), recentWarningsList);
         recentEventsList = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
         assertEquals(listSize, recentEventsList.size());
     }
 
-    private void validateEvents(List<Integer> expectedTypes, List<Event> eventList, Date startDate, Date endDate) {
+    private void validateEvents(List<NoteType> expectedTypes, List<Event> eventList, Date startDate, Date endDate) {
         for (Event violation : eventList) {
             assertTrue(expectedTypes.contains(violation.getType()));
             assertTrue(startDate.before(violation.getTime()));
@@ -437,7 +438,7 @@ public class SiloServiceTest {
         }
     }
 
-    private void validateEvents(List<Integer> expectedTypes, List<Event> eventList) {
+    private void validateEvents(List<NoteType> expectedTypes, List<Event> eventList) {
         for (Event violation : eventList) {
             assertTrue(expectedTypes.contains(violation.getType()));
         }

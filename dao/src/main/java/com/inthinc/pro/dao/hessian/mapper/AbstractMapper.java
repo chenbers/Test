@@ -334,6 +334,11 @@ public abstract class AbstractMapper implements Mapper
         final Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String, Object>>();
         return convertToMap(modelObject, handled, false);
     }
+    
+    public Integer[] convertToArray(Object value)
+    {
+        return (Integer[])this.convertToHessian(value, null, null, false);
+    }
 
     protected Map<String, Object> convertToMap(Object modelObject, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
     {
@@ -512,6 +517,20 @@ public abstract class AbstractMapper implements Mapper
         return value;
     }
 
+    public Integer[] convertEnumList(List<?> list)
+    {
+        if (list==null)
+            return new Integer[0];
+        Integer[] intArray= new Integer[list.size()];
+        int i=0;
+        for (Object e : list)
+        {
+            intArray[i]=((BaseEnum)e).getCode();
+            i++;
+        }
+        return intArray;
+    }
+    
     public List<Map<String, Object>> convertList(List<?> list)
     {
         final Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String, Object>>();

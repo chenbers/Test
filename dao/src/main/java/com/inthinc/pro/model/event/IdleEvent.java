@@ -24,7 +24,7 @@ public class IdleEvent extends Event
 	{
 		super();
 	}
-	public IdleEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
+	public IdleEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
 						Integer lowIdle, Integer highIdle)
 	{
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

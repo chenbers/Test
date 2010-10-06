@@ -15,7 +15,7 @@ import com.inthinc.pro.backing.ui.EventDisplay;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.Vehicle;
 
 public class TeamWarningsBeanTest extends BaseBeanTest
@@ -37,7 +37,7 @@ public class TeamWarningsBeanTest extends BaseBeanTest
         
         assertTrue(eventList.size() <= 5);
         
-        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.WARNING);
+        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.WARNING);
         for (EventDisplay eventDisplay : eventList)
         {
             Event event = eventDisplay.getEvent();
