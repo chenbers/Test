@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -18,6 +17,9 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.HOSOrigin;
@@ -64,6 +66,7 @@ public class HosBean extends BaseBean {
     private static final String EDIT_REDIRECT = "pretty:hosEdit";    
     private static final String VIEW_REDIRECT = "pretty:hos";    
     protected final static String BLANK_SELECTION = "&#160;";
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss z");
 
     public HosBean() {
         super();
@@ -113,9 +116,8 @@ public class HosBean extends BaseBean {
         pageData = new PageData();
         page = 0;
         pageData.initPage(page);
-        dateRange = new DateRange(getLocale());
         // use the timezone of the logged on user for date range
-        dateRange.setTimeZone(this.getDateTimeZone().toTimeZone());
+        dateRange = new DateRange(getLocale(), getDateTimeZone().toTimeZone());
     }
 
     public DateRange getDateRange() {
@@ -294,9 +296,12 @@ logger.info("in loadItems()");
         if (getDriverID() == null)
             return items;
         
-        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), dateRange.getInterval(), true);
-        for (final HOSRecord rec : plainRecords)
-            items.add(createLogView(rec));
+        Interval interval = dateRange.getInterval();
+        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), interval, true);
+        for (final HOSRecord rec : plainRecords) {
+            if (interval.contains(rec.getLogTime().getTime()))
+                    items.add(createLogView(rec));
+        }
         return items;
     }
     

@@ -31,15 +31,20 @@ public class DateRange implements Cloneable {
 
     
     public DateRange(Locale locale) {
-        this.locale = locale;
+        this(locale, defaultTimeZone);
+
         
+    }
+    public DateRange(Locale locale, TimeZone timeZone) {
+        this.locale = locale;
+        this.timeZone = timeZone;
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(getTimeZone());
         setStartDate(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone).toDate());
         setEndDate(new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(1).toDate());
         updateInterval();
-
-        
     }
+
+    
     public TimeZone getTimeZone() {
         if (timeZone == null)
             return defaultTimeZone;
@@ -98,6 +103,7 @@ public class DateRange implements Cloneable {
             DateMidnight start = new DateMidnight(new DateTime(startDate.getTime(), dateTimeZone), dateTimeZone);
             DateTime end = new DateMidnight(endDate.getTime(), dateTimeZone).toDateTime().plusDays(1).minus(1);
             interval =  new Interval(start, end);
+            
         }
         catch (Exception e) {
             setBadDates(MessageUtil.getMessageString("dateRange_endDateBeforeStartDate",getLocale()));
