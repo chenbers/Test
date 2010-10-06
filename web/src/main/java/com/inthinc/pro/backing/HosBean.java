@@ -298,6 +298,8 @@ logger.info("in loadItems()");
         
         Interval interval = dateRange.getInterval();
         List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), interval, true);
+        if (plainRecords == null)
+            return items;
         for (final HOSRecord rec : plainRecords) {
             if (interval.contains(rec.getLogTime().getTime()))
                     items.add(createLogView(rec));
