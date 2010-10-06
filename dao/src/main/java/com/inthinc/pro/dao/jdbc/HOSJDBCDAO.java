@@ -285,7 +285,10 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setHosLogID(resultSet.getInt(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
-                hosRecord.setLogTime(resultSet.getTimestamp(4));
+//                hosRecord.setLogTime(resultSet.getTimestamp(4));
+                long ms = resultSet.getLong(4);
+                hosRecord.setLogTime(new Date(ms));
+
                 hosRecord.setTimeZone(TimeZone.getTimeZone(resultSet.getString(5)));
                 hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(6)));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(7)));
