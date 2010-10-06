@@ -114,6 +114,8 @@ public class HosBean extends BaseBean {
         page = 0;
         pageData.initPage(page);
         dateRange = new DateRange(getLocale());
+        // use the timezone of the logged on user for date range
+        dateRange.setTimeZone(this.getDateTimeZone().toTimeZone());
     }
 
     public DateRange getDateRange() {
