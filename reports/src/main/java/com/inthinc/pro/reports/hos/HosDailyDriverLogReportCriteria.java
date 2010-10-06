@@ -78,7 +78,6 @@ public class HosDailyDriverLogReportCriteria {
     private Boolean defaultUseMetric;
     
     private DateTimeFormatter dateTimeFormatter;
-    private Address terminalAddress;
     
 
 
@@ -94,7 +93,8 @@ public class HosDailyDriverLogReportCriteria {
         Group topGroup = groupDAO.findByID(userGroupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
 
-        List<Group> reportGroupList = this.getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+        List<Group> reportGroupList = this.getReportGroupList(groupIDList, groupHierarchy);
         List<Driver> reportDriverList = this.getReportDriverList(reportGroupList);
 
         Account account = null;
@@ -103,7 +103,11 @@ public class HosDailyDriverLogReportCriteria {
         for (Driver driver : reportDriverList) {
             if (account == null)
                 account = accountDAO.findByID(driver.getPerson().getAcctID());
+                if (account.getAddress() == null && account.getAddressID() != null) {
+                    account.setAddress(addressDAO.findByID(account.getAddressID()));
+                }
                 Group group = groupDAO.findByID(driver.getGroupID());
+                group.setAddress(getTerminalAddress(group, groupHierarchy)); 
                 Integer driverID = driver.getDriverID();
                 List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval, false);
                 List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, interval);
@@ -116,6 +120,18 @@ public class HosDailyDriverLogReportCriteria {
         criteriaList = groupCriteriaList;
     }
     
+    private Address getTerminalAddress(Group group, GroupHierarchy groupHierarchy) {
+        if (group.getAddress() == null && group.getAddressID() != null) {
+            return addressDAO.findByID(group.getAddressID());
+        }
+        Group parentGroup = groupHierarchy.getGroup(group.getParentID());
+        
+        if (parentGroup != null)
+            return getTerminalAddress(parentGroup, groupHierarchy);
+        
+        return null;
+    }
+
     protected List<Driver> getReportDriverList(List<Group> reportGroupList) {
         List<Driver> driverList = new ArrayList<Driver>();
         for (Group group : reportGroupList)
@@ -151,6 +167,9 @@ public class HosDailyDriverLogReportCriteria {
             account.setAddress(addressDAO.findByID(account.getAddressID()));
         }
         Group group = groupDAO.findByID(driver.getGroupID());
+        if (group.getAddress() == null && group.getAddressID() != null) {
+            group.setAddress(addressDAO.findByID(group.getAddressID()));
+        }
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval, false);
         List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, interval);
         List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, interval);
@@ -616,12 +635,5 @@ public class HosDailyDriverLogReportCriteria {
         this.addressDAO = addressDAO;
     }
 
-    public Address getTerminalAddress() {
-        return terminalAddress;
-    }
-
-    public void setTerminalAddress(Address terminalAddress) {
-        this.terminalAddress = terminalAddress;
-    }
 
 }

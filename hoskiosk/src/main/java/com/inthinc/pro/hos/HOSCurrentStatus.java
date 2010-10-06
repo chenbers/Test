@@ -5,6 +5,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.inthinc.hos.model.HOSRec;
+import com.inthinc.hos.model.HOSStats;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.MinutesData;
 import com.inthinc.hos.model.MinutesRemainingData;
@@ -63,16 +64,13 @@ public class HOSCurrentStatus extends HOSBase {
         RuleSetType driverRuleSetType = driver.getDriverDOTType();
         List<HOSRec> recListForHoursRemainingCalc = HOSUtil.getRecListFromLogList(hosRecordList, currentDate.toDate(), true);
         HOSRules hosRules =  RuleSetFactory.getRulesForRuleSetType(driverRuleSetType); 
-        MinutesRemainingData minutesRemainingData = hosRules.getDOTMinutesRemaining(recListForHoursRemainingCalc, currentDate.toDate());
-        long currentStatusMin = hosRules.getCurrentStatusMinutes();
-
-        MinutesData minutesData = hosRules.getDOTMinutes();
-
-        HOSRec lastRec = (recListForHoursRemainingCalc.size() == 0) ? null : recListForHoursRemainingCalc.get(0); 
-        setStatus(lastRec == null ? HOSStatus.OFF_DUTY : lastRec.getStatus());
+        
+        HOSStats hosStats = hosRules.getHOSStats(recListForHoursRemainingCalc, currentDate.toDate());
+        long currentStatusMin = hosStats.getCurrentStatusMinutes();
+        setStatus(hosStats.getCurrentStatus());
         setStatusMinutes(currentStatusMin);
-        setOnDutyMinutes(minutesData.getOnDutyMinutes());
-        setOnDutyAvailableMinutes(minutesRemainingData.getOnDutyDOTMinutesRemaining());
+        setOnDutyMinutes(hosStats.getOnDutyMinutes());
+        setOnDutyAvailableMinutes(hosStats.getOnDutyDOTMinutesRemaining());
         
     }
 }
