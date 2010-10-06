@@ -58,6 +58,7 @@ import com.inthinc.pro.reports.hos.model.RecapUS;
 import com.inthinc.pro.reports.hos.model.RemarkLog;
 import com.inthinc.pro.reports.hos.model.VehicleInfo;
 import com.inthinc.pro.reports.jasper.ReportUtils;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
 public class HosDailyDriverLogReportCriteria {
@@ -79,6 +80,7 @@ public class HosDailyDriverLogReportCriteria {
     
     private DateTimeFormatter dateTimeFormatter;
     
+    private static int MAX_RULESET_DAYSBACK = 24;
 
 
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
@@ -99,6 +101,9 @@ public class HosDailyDriverLogReportCriteria {
 
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
+
+        
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
         
         for (Driver driver : reportDriverList) {
             if (account == null)
@@ -109,9 +114,9 @@ public class HosDailyDriverLogReportCriteria {
                 Group group = groupDAO.findByID(driver.getGroupID());
                 group.setAddress(getTerminalAddress(group, groupHierarchy)); 
                 Integer driverID = driver.getDriverID();
-                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval, false);
-                List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, interval);
-                List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, interval);
+                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
+                List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, expandedInterval);
+                List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
         
                 initCriteriaList(interval, hosRecordList, hosVehicleDayData, hosOccupantLogList, driver, account, group);
                 groupCriteriaList.addAll(criteriaList);
@@ -170,9 +175,11 @@ public class HosDailyDriverLogReportCriteria {
         if (group.getAddress() == null && group.getAddressID() != null) {
             group.setAddress(addressDAO.findByID(group.getAddressID()));
         }
-        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, interval, false);
-        List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, interval);
-        List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, interval);
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
+
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
+        List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, expandedInterval);
+        List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
         
         initCriteriaList(interval, hosRecordList, hosVehicleDayData, hosOccupantLogList, driver, account, group);
     }
@@ -454,7 +461,9 @@ public class HosDailyDriverLogReportCriteria {
                         hosRecord.getStatus().equals(HOSStatus.ON_DUTY) ||
                         hosRecord.getStatus().equals(HOSStatus.ON_DUTY_OCCUPANT) ||
                         hosRecord.getStatus().equals(HOSStatus.SLEEPER)) {
+//System.out.println("HOSRECORD: " + hosRecord.getLogTimeDate() + " " + hosRecord.getTotalRealMinutes() + " " + hosRecord.getVehicleID());                    
                     for (HOSOccupantLog hosOccupantLog :  hosOccupantLogList) {
+//System.out.println("HOSOccupantLog: " + hosOccupantLog.getLogTime() + " " + hosOccupantLog.getEndTime()+ " " + hosOccupantLog.getVehicleID());                    
                         if (hosOccupantLog.getVehicleID().equals(hosRecord.getVehicleID()) && timesOverlap(hosRecord, hosOccupantLog)) 
                             dayOccupantLogList.add(hosOccupantLog);                
                     }
@@ -467,6 +476,8 @@ public class HosDailyDriverLogReportCriteria {
         Interval driverInterval = new Interval(new DateTime(hosRecord.getLogTimeDate()), 
                                                 new DateTime(hosRecord.getLogTimeDate()).plusMinutes((int)hosRecord.getTotalRealMinutes()));
         Interval occupantInterval = new Interval(new DateTime(hosOccupantLog.getLogTime()), new DateTime(hosOccupantLog.getEndTime()));
+//System.out.println("driverInterval: " + driverInterval);                    
+//System.out.println("occupantInterval: " + occupantInterval);                    
         return driverInterval.overlaps(occupantInterval);
     }
 
