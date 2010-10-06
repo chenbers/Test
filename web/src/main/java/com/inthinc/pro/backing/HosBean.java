@@ -402,9 +402,10 @@ logger.info("in loadItems()");
         batchEdit = false;
         item = createAddItem();
         item.setSelected(false);
-
-        for (HosLogView item : getSelectedItems())
-            item.setSelected(false);
+        
+        if (items != null)
+            for (HosLogView item : getSelectedItems())
+                item.setSelected(false);
 
         return EDIT_REDIRECT;
     }
