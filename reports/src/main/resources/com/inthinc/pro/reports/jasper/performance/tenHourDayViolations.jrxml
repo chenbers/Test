@@ -208,7 +208,7 @@
 	</columnHeader>
 	<detail>
 		<band height="17" splitType="Stretch">
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="MM/dd/yy" isBlankWhenNull="false">
 				<reportElement key="textField" x="0" y="0" width="157" height="17" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
