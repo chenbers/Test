@@ -11,25 +11,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
-import org.joda.time.Interval;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
+import com.inthinc.pro.model.hos.HOSOccupantInfo;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
-import com.inthinc.pro.model.hos.HOSOccupantInfo;
 
 
 
@@ -78,10 +78,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            //throw e;
-            return null;
-
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -126,10 +123,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            //throw e;
-            return null;
-
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -243,9 +237,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            //throw e;
-            return null;
+            throw new ProDAOException(statement.toString(), e);
 
         }   // end catch
         finally
@@ -321,8 +313,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("hos_getFullRecords(" + driverID + ", " + interval+ ")", e);
-            return null;
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -378,10 +369,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            //throw e;
-            return null;
-
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -423,10 +411,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            //throw e;
-            return null;
-
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -454,8 +439,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            return null;
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -530,8 +514,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            return null;
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -572,10 +555,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            return -1;
-            //throw e;
-
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -620,7 +600,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -659,7 +639,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -696,7 +676,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -759,8 +739,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            return null;
+            throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -795,11 +774,9 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 occupantInfo.setEmpId(resultSet.getString(2));
             }
         }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            return null;
-        }   // end catch
+        catch (SQLException e) { 
+            throw new ProDAOException(statement.toString(), e);
+        } 
         finally
         { // clean up and release the connection
             close(resultSet);
