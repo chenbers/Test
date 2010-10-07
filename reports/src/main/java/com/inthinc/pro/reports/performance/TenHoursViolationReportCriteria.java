@@ -20,7 +20,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.report.WaysmartDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.hos.TenHoursViolationRecord;
+import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.GroupHierarchy;

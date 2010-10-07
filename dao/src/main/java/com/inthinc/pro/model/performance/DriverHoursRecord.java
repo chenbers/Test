@@ -1,4 +1,4 @@
-package com.inthinc.pro.model.hos;
+package com.inthinc.pro.model.performance;
 
 import java.util.Date;
 

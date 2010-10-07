@@ -9,16 +9,18 @@ import java.util.Map;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.report.WaysmartDAO;
-import com.inthinc.pro.model.hos.DriverHoursRecord;
-import com.inthinc.pro.model.hos.TenHoursViolationRecord;
+import com.inthinc.pro.model.performance.DriverHoursRecord;
+import com.inthinc.pro.model.performance.TenHoursViolationRecord;
+import com.inthinc.pro.model.performance.VehicleUsageRecord;
 
 public class MockWaysmartDAO implements WaysmartDAO {
      
     private Map<Integer, List<TenHoursViolationRecord>> tenHoursViolationMap; 
     private Map<Integer, List<DriverHoursRecord>> driverHoursMap;
+    private Map<Integer, List<VehicleUsageRecord>> vehicleUsageMap;
     
     /** 
-     * {@inheritDoc}}
+     * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.WaysmartDAO#getTenHoursViolations(java.lang.Integer, org.joda.time.Interval)
      */
     @Override
@@ -45,7 +47,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
     }
 
     /** 
-     * {@inheritDoc}}
+     * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.WaysmartDAO#getDriverHours(java.lang.Integer, org.joda.time.Interval)
      */
     @Override
@@ -70,6 +72,33 @@ public class MockWaysmartDAO implements WaysmartDAO {
         }
         return filter;
     }
+
+    /** 
+     * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.WaysmartDAO#getVehicleUsage(java.lang.Integer, org.joda.time.Interval)
+     */
+    @Override
+    public List<VehicleUsageRecord> getVehicleUsage(Integer driverID, Interval interval) {
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(interval.getStart().getYearOfEra(), interval.getStart().getMonthOfYear()-1, 
+                interval.getStart().getDayOfMonth()+1,0,0,0);
+        
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(interval.getEnd().getYearOfEra(), interval.getEnd().getMonthOfYear()-1, 
+                interval.getEnd().getDayOfMonth(),0,0,0);
+
+        List<VehicleUsageRecord> filter = new ArrayList<VehicleUsageRecord>();
+        List<VehicleUsageRecord> list = this.getVehicleUsageData(driverID);
+        if (list != null) {
+            for (VehicleUsageRecord rec : list) {
+                if (rec.getDay().after(startDate.getTime())
+                        && rec.getDay().before(endDate.getTime())) {
+                    filter.add(rec);
+                }
+            }
+        }
+        return filter;
+    }
     
     /* returns the mocked data set for TenHoursViolation report */
     private List<TenHoursViolationRecord> getTenHoursViolationData(Integer driverID) {
@@ -79,6 +108,9 @@ public class MockWaysmartDAO implements WaysmartDAO {
             tenHoursViolationMap.put(2905,this.createRecords(2905, 1));
             tenHoursViolationMap.put(2906,this.createRecords(2906, 2));
             tenHoursViolationMap.put(2907,this.createRecords(2907, 3));
+            tenHoursViolationMap.put(2907,this.createRecords(2907, 4));
+            tenHoursViolationMap.put(5555,this.createRecords(5555, 4));
+            tenHoursViolationMap.put(5583,this.createRecords(5583, 1));
         }
         return this.tenHoursViolationMap.get(driverID);
     }
@@ -88,10 +120,10 @@ public class MockWaysmartDAO implements WaysmartDAO {
         List<TenHoursViolationRecord> list = new ArrayList<TenHoursViolationRecord>();
         TenHoursViolationRecord rec = new TenHoursViolationRecord();
         Calendar c = Calendar.getInstance();
-        c.set(2010, 0, id+1, 0, 0, 0);
+        c.set(2010, 8, id+1, 0, 0, 0);
         rec.setDate(c.getTime());
         rec.setVehicleID(11+id*3);
-        rec.setHoursThisDay((12+id*3));
+        rec.setHoursThisDay((10+id));
         rec.setDriverID(driverId);
         list.add(rec);
         return list;
@@ -104,7 +136,8 @@ public class MockWaysmartDAO implements WaysmartDAO {
             driverHoursMap.put(2905, this.createList(2905, 4.4, 1.3, 1.4));
             driverHoursMap.put(2906, this.createList(2906, 3.1, 3.8, 1.4));
             driverHoursMap.put(2907, this.createList(2907, 0.0, 4.0, 1.6));
-            driverHoursMap.put(5555, this.createList(5555, 2.0, 3.0, 4.0));
+            driverHoursMap.put(5555, this.createList(5555, 2.0, 3.0, 4.0, 5.0));
+            driverHoursMap.put(5583, this.createList(5583, 9.5, 0.0, 3.0, 6.0));
         }
         return this.driverHoursMap.get(driverID);
     }
@@ -123,4 +156,13 @@ public class MockWaysmartDAO implements WaysmartDAO {
         }
         return list;
     }
+
+    private List<VehicleUsageRecord> getVehicleUsageData(Integer driverID) {
+        if (this.vehicleUsageMap == null) {
+            vehicleUsageMap = new HashMap<Integer, List<VehicleUsageRecord>>();
+            // TODO Add mock data
+        }
+        return this.vehicleUsageMap.get(driverID);
+    }
+
 }
