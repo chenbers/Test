@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 public class ProAuthenticationProcessingFilter extends AuthenticationProcessingFilter
@@ -41,7 +41,7 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
 
     private String getTargetUrlFromGroupHierarchy(GroupHierarchy groupHierarchy)
     {
-        GroupLevel groupLevel = groupHierarchy.getGroupLevel(groupHierarchy.getTopGroup());
+        GroupLevel groupLevel = GroupLevel.getGroupLevel(groupHierarchy.getTopGroup());
 
         return groupLevel.getUrl() + "?groupID=" + groupHierarchy.getTopGroup().getGroupID().toString();
 

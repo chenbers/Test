@@ -7,6 +7,7 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Vehicle;
 
 public class DriverTreeNodeImpl extends BaseTreeNodeImpl<Driver>

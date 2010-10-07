@@ -12,9 +12,9 @@ import java.util.Map.Entry;
 import org.richfaces.model.TreeNode;
 
 import com.inthinc.pro.backing.UsesBaseBean;
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 /**
  * TreeNavigationBean
  * 

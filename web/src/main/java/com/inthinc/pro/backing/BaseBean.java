@@ -14,7 +14,6 @@ import org.joda.time.DateTimeZone;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.map.AddressLookup;
@@ -23,6 +22,7 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;

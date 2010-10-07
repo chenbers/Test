@@ -5,9 +5,9 @@ import java.text.DateFormat;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.LocaleBean;
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.Zone;

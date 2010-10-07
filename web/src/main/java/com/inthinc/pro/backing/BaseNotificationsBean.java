@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.NotificationReportItem;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.dao.DriverDAO;
@@ -21,6 +20,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;

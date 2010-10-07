@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Zone;

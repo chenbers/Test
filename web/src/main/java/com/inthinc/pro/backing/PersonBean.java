@@ -28,7 +28,6 @@ import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
@@ -41,6 +40,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.State;

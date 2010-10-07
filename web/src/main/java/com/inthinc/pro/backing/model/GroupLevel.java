@@ -4,6 +4,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.inthinc.pro.model.Group;
+
 public enum GroupLevel
 {
     FLEET(1, "FLEET", "/secured/groupOverview", "go_home"), 
@@ -71,5 +73,19 @@ public enum GroupLevel
     public String getDescription(){
     	return this.description;
     }
+    
+    public static GroupLevel getGroupLevel(Group group)
+    {
+        GroupLevel groupLevel = GroupLevel.DIVISION;
+        switch(group.getType())
+        {
+        case FLEET: groupLevel = GroupLevel.FLEET;break;
+        case DIVISION: groupLevel = GroupLevel.DIVISION;break;
+        case TEAM: groupLevel = GroupLevel.TEAM;break;
+        }
+
+        return groupLevel;
+    }
+
 
 }

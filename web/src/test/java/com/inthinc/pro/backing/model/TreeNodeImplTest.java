@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 
 import static org.junit.Assert.*;
 

@@ -140,13 +140,13 @@ public class NavigationBean extends BaseBean
 
     public String groupPageAction()
     {        
-        GroupLevel groupLevel = getGroupHierarchy().getGroupLevel(group);
+        GroupLevel groupLevel = GroupLevel.getGroupLevel(group);
         return groupLevel.getLocation();
     }
 
     public String homeAction()
     {
-        GroupLevel groupLevel = getGroupHierarchy().getGroupLevel(getGroupHierarchy().getTopGroup());
+        GroupLevel groupLevel = GroupLevel.getGroupLevel(getGroupHierarchy().getTopGroup());
         setGroupID(getGroupHierarchy().getTopGroup().getGroupID());
 
         return groupLevel.getLocation();

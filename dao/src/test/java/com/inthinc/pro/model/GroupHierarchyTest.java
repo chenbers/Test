@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.model;
+package com.inthinc.pro.model;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,16 +9,14 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 
-import com.inthinc.pro.backing.BaseBeanTest;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 
 public class GroupHierarchyTest{
 
-    private static final Logger logger = Logger.getLogger(BaseBeanTest.class);
-    protected ApplicationContext applicationContext;
+    private static final Logger logger = Logger.getLogger(GroupHierarchyTest.class);
     private GroupHierarchy groupHierarchy;
     private List<Group> list;
     private int groupID;
@@ -88,14 +86,6 @@ public class GroupHierarchyTest{
 
 	}
 
-	@Test
-	public void testGetGroupLevelInteger() {
-
-		Group topGroup = groupHierarchy.getTopGroup();
-		assertEquals(groupHierarchy.getGroupLevel(topGroup.getGroupID()),GroupLevel.FLEET);
-		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(1).getGroupID()),GroupLevel.DIVISION);
-		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(6).getGroupID()),GroupLevel.TEAM);
-	}
 
 	@Test
 	public void testGetGroup() {
@@ -106,20 +96,6 @@ public class GroupHierarchyTest{
 		assertEquals(groupHierarchy.getGroup(123),null);
 	}
 
-	@Test
-	public void testGetGroupLevelGroup() {
-		Group topGroup = groupHierarchy.getTopGroup();
-		assertEquals(groupHierarchy.getGroupLevel(topGroup),GroupLevel.FLEET);
-		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(1)),GroupLevel.DIVISION);
-		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(6)),GroupLevel.TEAM);
-	}
-
-//	@Test
-//	public void testGroupHasChildren(){
-//		
-//		assertEquals(true, groupHierarchy.groupHasChildren(groupHierarchy.getGroup(2)));
-//		assertEquals(false,groupHierarchy.groupHasChildren(groupHierarchy.getGroup(6)));
-//	}
 	
 	@Test
 	public void testGetChildren(){

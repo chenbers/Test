@@ -14,13 +14,13 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.security.AccessDeniedException;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.User;

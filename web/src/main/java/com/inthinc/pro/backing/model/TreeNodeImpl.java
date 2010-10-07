@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.BaseEntity;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -101,7 +102,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
 
     public GroupLevel getGroupLevel()
     {
-        return groupHierarchyUtil.getGroupLevel(this.group);
+        return GroupLevel.getGroupLevel(this.group);
     }
 
     public Group getGroup()

@@ -14,9 +14,9 @@ import org.richfaces.event.DropEvent;
 import org.richfaces.event.NodeSelectedEvent;
 
 import com.inthinc.pro.backing.model.BaseTreeNodeImpl;
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 

@@ -11,10 +11,10 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.reports.ReportGroup;

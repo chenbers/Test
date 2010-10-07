@@ -3,8 +3,8 @@ package com.inthinc.pro.backing;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.SuperuserDAO;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;

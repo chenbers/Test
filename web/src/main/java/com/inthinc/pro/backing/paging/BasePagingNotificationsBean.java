@@ -12,13 +12,13 @@ import java.util.Map;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.backing.BaseBean;
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.pagination.EventCategoryFilter;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;

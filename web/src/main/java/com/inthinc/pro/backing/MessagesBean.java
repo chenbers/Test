@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -21,6 +20,7 @@ import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MessageItem;
 import com.inthinc.pro.model.Vehicle;
 

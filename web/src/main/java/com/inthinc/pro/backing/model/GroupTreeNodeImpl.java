@@ -11,6 +11,7 @@ import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -259,8 +260,9 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
 
     public GroupLevel getGroupLevel()
     {
-        return groupHierarchy.getGroupLevel(this.baseEntity);
+        return GroupLevel.getGroupLevel(this.baseEntity);
     }
+    
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
