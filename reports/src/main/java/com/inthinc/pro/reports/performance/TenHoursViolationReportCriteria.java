@@ -1,6 +1,8 @@
 package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +17,6 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.dao.report.WaysmartDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -38,14 +39,19 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     protected DriverDAO driverDAO;
     protected WaysmartDAO waysmartDao;
 
-    public WaysmartDAO getWaysmartDao() {
-        return waysmartDao;
-    }
+	private class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
 
-    public void setWaysmartDao(WaysmartDAO waysmartDao) {
-        this.waysmartDao = waysmartDao;
-    }
-
+		@Override
+		public int compare(TenHoursViolation o1, TenHoursViolation o2) {
+			int groupNamesComparison = o1.getGroupName().compareTo(o2.getGroupName());
+			
+			// If Group Names are equal, then we compare the Driver Names
+			if (groupNamesComparison == 0)
+				return o1.getDriverName().compareTo(o2.getDriverName());
+			else
+				return groupNamesComparison;
+		}}    
+    
     /**
      * Constructor
      * @param locale Local settings of the user - internationalization 
@@ -78,6 +84,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
                 violationList.add(bean);
             }
         }
+		Collections.sort(violationList, new TenHoursViolationComparator());        
         setMainDataset(violationList);
     }
     
@@ -150,4 +157,14 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
     }
+
+    public WaysmartDAO getWaysmartDao() {
+        return waysmartDao;
+    }
+
+    public void setWaysmartDao(WaysmartDAO waysmartDao) {
+        this.waysmartDao = waysmartDao;
+    }
+
+
 }

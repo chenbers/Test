@@ -1,6 +1,8 @@
 package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -36,10 +38,6 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	protected DriverDAO driverDAO;
 	protected WaysmartDAO waysmartDao;
 
-	public void setWaysmartDao(WaysmartDAO waysmartDao) {
-		this.waysmartDao = waysmartDao;
-	}
-
 	/**
 	 * Constructor to initiate the report type and locale.
 	 * @param locale
@@ -50,6 +48,19 @@ public class DriverHoursReportCriteria extends ReportCriteria {
         dayFormatter = DateTimeFormat.forPattern(DriverHoursReportCriteria.DAY_FORMAT).withLocale(locale);
 	}
 
+	private class DriverHoursComparator implements Comparator<DriverHours> {
+
+		@Override
+		public int compare(DriverHours o1, DriverHours o2) {
+			int groupNamesComparison = o1.getGroupName().compareTo(o2.getGroupName());
+			
+			// If Group Names are equal, then we compare the Driver Names
+			if (groupNamesComparison == 0)
+				return o1.getDriverName().compareTo(o2.getDriverName());
+			else
+				return groupNamesComparison;
+		}}
+	
 	void initDataSet(Group topGroup, List<Group> groupList, Interval interval,
 			Map<Driver, List<DriverHoursRecord>> recordMap) {
 		GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
@@ -70,6 +81,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 				driverHoursList.add(bean);
 			}
 		}
+		Collections.sort(driverHoursList, new DriverHoursComparator());
 		setMainDataset(driverHoursList);
 	}
 
@@ -101,4 +113,10 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	public void setDriverDAO(DriverDAO driverDAO) {
 		this.driverDAO = driverDAO;
 	}
+
+	public void setWaysmartDao(WaysmartDAO waysmartDao) {
+		this.waysmartDao = waysmartDao;
+	}
+
+
 }
