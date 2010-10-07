@@ -7,8 +7,6 @@ import org.joda.time.DateTime;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSStats;
 import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.hos.model.MinutesData;
-import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;

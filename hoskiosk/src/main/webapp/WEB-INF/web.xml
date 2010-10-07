@@ -170,5 +170,17 @@
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
-
+	<!-- Error Pages -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.faces</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/error/403.faces</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.faces</location>
+	</error-page>
 </web-app>

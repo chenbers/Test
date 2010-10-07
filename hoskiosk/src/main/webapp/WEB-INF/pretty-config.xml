@@ -9,19 +9,19 @@
 	</url-mapping>
 
 	<url-mapping id="kiosk">
-		<pattern>/kiosk</pattern>
+		<pattern>/app/kiosk</pattern>
 		<view-id>/secured/hosDriver.faces</view-id>
 	</url-mapping>
     <url-mapping id="current">
-        <pattern>/current</pattern>
+        <pattern>/app/current</pattern>
         <view-id>/secured/hosCurrentStatus.faces</view-id>
     </url-mapping>    
     <url-mapping id="print">
-        <pattern>/print</pattern>
+        <pattern>/app/print</pattern>
         <view-id>/secured/hosPrintLogs.faces</view-id>
     </url-mapping>    
     <url-mapping id="export">
-        <pattern>/export</pattern>
+        <pattern>/app/export</pattern>
         <view-id>/secured/hosExportLogs.faces</view-id>
     </url-mapping>    
 

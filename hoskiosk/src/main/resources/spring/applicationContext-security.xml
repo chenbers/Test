@@ -5,14 +5,14 @@
     <http auto-config="false" session-fixation-protection="newSession" entry-point-ref="authenticationProcessingFilterEntryPoint">
         <!--  error if user logs in concurrently (only one login allowed at a time)  -->
         <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
-        <intercept-url pattern="/secured/**" access="ROLE_DRIVER" />
+        <intercept-url pattern="/app/**" access="ROLE_DRIVER" />
         <logout logout-success-url="/login" logout-url="/logout" />
     </http>
 
     <beans:bean id="proFilter" class="com.inthinc.pro.security.KioskAuthenticationProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />
         <beans:property name="authenticationFailureUrl" value="/login" />
-        <beans:property name="defaultTargetUrl" value="/current" />
+        <beans:property name="defaultTargetUrl" value="/app/current" />
         <beans:property name="filterProcessesUrl" value="/security_filter" />
         <beans:property name="alwaysUseDefaultTargetUrl" value="true" />
         <beans:property name="userDetailsService" ref="userDetailsService" />
