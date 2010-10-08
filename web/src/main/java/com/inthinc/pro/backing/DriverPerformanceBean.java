@@ -22,6 +22,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
@@ -39,79 +40,72 @@ import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
 @KeepAlive
-public class DriverPerformanceBean extends BasePerformanceBean
-{
+public class DriverPerformanceBean extends BasePerformanceBean {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -2678124055694144485L;
+    private static final long serialVersionUID = -2678124055694144485L;
 
-//	private static final Logger logger          = Logger.getLogger(DriverPerformanceBean.class);
+    // private static final Logger logger = Logger.getLogger(DriverPerformanceBean.class);
 
-    private ScoreDAO            scoreDAO;
-    private MpgDAO              mpgDAO;
-    private EventDAO            eventDAO;
-    
-    private DurationBean        coachDurationBean;
-    private DurationBean        mpgDurationBean;
-    private DurationBean        speedDurationBean;
-    private DurationBean        styleDurationBean;
-    private DurationBean        seatBeltDurationBean;
-    
-    //Driver Bean Dependencies
-    private DriverSpeedBean     driverSpeedBean;
-    private DriverStyleBean     driverStyleBean;
-    private DriverSeatBeltBean  driverSeatBeltBean;
-    private CrashSummary	 	crashSummary;
+    private ScoreDAO scoreDAO;
+    private MpgDAO mpgDAO;
+    private EventDAO eventDAO;
 
-	private TripDisplay         lastTrip;
-    private List<Event>			tamperEvents;
-    private Integer             overallScore;
-    private String              overallScoreHistory;
-    private String              overallScoreStyle;
-    private String              mpgHistory;
-    private String              coachingHistory;
-    private Boolean             hasLastTrip;
-    private Boolean 			tripMayExist;
+    private DurationBean coachDurationBean;
+    private DurationBean mpgDurationBean;
+    private DurationBean speedDurationBean;
+    private DurationBean styleDurationBean;
+    private DurationBean seatBeltDurationBean;
 
-	protected Long selectedViolationID;
+    // Driver Bean Dependencies
+    private DriverSpeedBean driverSpeedBean;
+    private DriverStyleBean driverStyleBean;
+    private DriverSeatBeltBean driverSeatBeltBean;
+    private CrashSummary crashSummary;
 
-	protected Map<Long,Event> violationEventsMap;
-    
-    private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";    
-    
+    private TripDisplay lastTrip;
+    private List<Event> tamperEvents;
+    private Integer overallScore;
+    private String overallScoreHistory;
+    private String overallScoreStyle;
+    private String mpgHistory;
+    private String coachingHistory;
+    private Boolean hasLastTrip;
+    private Boolean tripMayExist;
+
+    protected Long selectedViolationID;
+
+    protected Map<Long, Event> violationEventsMap;
+
+    private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";
+
     public DriverPerformanceBean() {
-		super();
-		tripMayExist = true;
-	}
-    
+        super();
+        tripMayExist = true;
+    }
+
     @Override
-    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
-    {
+    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType) {
         return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
 
-    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
-    {
+    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType) {
         return this.getPerformanceDataBean().getTrendDaily(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
-    
-    protected Integer initAverageScore(ScoreType scoreType, Duration duration)
-    {
-		ScoreableEntity se = getPerformanceDataBean().getAverageScore(getDriver().getDriverID(), EntityType.ENTITY_DRIVER, duration, scoreType);
+
+    protected Integer initAverageScore(ScoreType scoreType, Duration duration) {
+        ScoreableEntity se = getPerformanceDataBean().getAverageScore(getDriver().getDriverID(), EntityType.ENTITY_DRIVER, duration, scoreType);
         if (se != null && se.getScore() != null)
             return se.getScore();
         else
             return -1;
     }
-    
 
     // INIT VIOLATIONS
-    public void initViolations(Date start, Date end)
-    {
-        if ((violationEventsMap == null) ||violationEventsMap.isEmpty())
-        {
+    public void initViolations(Date start, Date end) {
+        if ((violationEventsMap == null) || violationEventsMap.isEmpty()) {
             List<NoteType> types = new ArrayList<NoteType>();
             types.add(NoteType.SPEEDING_EX3);
             types.add(NoteType.SEATBELT);
@@ -119,128 +113,108 @@ public class DriverPerformanceBean extends BasePerformanceBean
             types.add(NoteType.IDLE);
             types.add(NoteType.UNPLUGGED);
             types.add(NoteType.UNPLUGGED_ASLEEP);
-            
-            List<Event>violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, getShowExcludedEvents() );
-            violationEventsMap = new LinkedHashMap<Long,Event>();
+
+            List<Event> violationEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, types, getShowExcludedEvents());
+            violationEventsMap = new LinkedHashMap<Long, Event>();
 
             // Lookup Addresses for events and add to map
-            for (Event event : violationEvents)
-            {
-            	String address = "";
-            	try {
-            		address = getAddressLookup().getAddress(event.getLatitude(), event.getLongitude());            		
-            	}
-            	catch (NoAddressFoundException nafe){
-            	
-            		address = MessageUtil.getMessageString(nafe.getMessage());
-            	}
-                event.setAddressStr(address);
-                if ( event.getAddressStr() == null ) {
-                    event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(),
-                            new LatLng(event.getLatitude(),event.getLongitude())));
+            for (Event event : violationEvents) {
+                String address = "";
+                try {
+                    address = getAddressLookup().getAddress(event.getLatitude(), event.getLongitude());
+                } catch (NoAddressFoundException nafe) {
+
+                    address = MessageUtil.getMessageString(nafe.getMessage());
                 }
-                
+                event.setAddressStr(address);
+                if (event.getAddressStr() == null) {
+                    event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(event.getLatitude(), event.getLongitude())));
+                }
+
                 violationEventsMap.put(event.getNoteID(), event);
             }
-            selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
+            selectedViolationID = violationEvents.size() > 0 ? violationEvents.get(0).getNoteID() : null;
         }
     }
-    
+
     public List<Event> getTamperEvents() {
-		return tamperEvents;
-	}
+        return tamperEvents;
+    }
 
-	public void setTamperEvents(List<Event> tamperEvents) {
-		this.tamperEvents = tamperEvents;
-	}
+    public void setTamperEvents(List<Event> tamperEvents) {
+        this.tamperEvents = tamperEvents;
+    }
 
-	// OVERALL SCORE properties
-    public Integer getOverallScore()
-    {
+    // OVERALL SCORE properties
+    public Integer getOverallScore() {
         setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
 
         return overallScore;
     }
 
-    public void setOverallScore(Integer overallScore)
-    {
+    public void setOverallScore(Integer overallScore) {
         this.overallScore = overallScore;
         setOverallScoreStyle(ScoreBox.GetStyleFromScore(overallScore, ScoreBoxSizes.MEDIUM));
     }
 
-    public String getOverallScoreHistory()
-    {
-    	if (durationBean.getDuration() == Duration.DAYS){
-    		
-            setOverallScoreHistory(createFusionMultiLineDefDays(getDriver().getDriverID(), ScoreType.SCORE_OVERALL));   		
-    	}
-    	else{
-    		
-    		setOverallScoreHistory(createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_OVERALL));
-    	}
+    public String getOverallScoreHistory() {
+        if (durationBean.getDuration() == Duration.DAYS) {
+
+            setOverallScoreHistory(createFusionMultiLineDefDays(getDriver().getDriverID(), ScoreType.SCORE_OVERALL));
+        } else {
+
+            setOverallScoreHistory(createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_OVERALL));
+        }
         return overallScoreHistory;
     }
 
-    public void setOverallScoreHistory(String overallScoreHistory)
-    {
+    public void setOverallScoreHistory(String overallScoreHistory) {
         this.overallScoreHistory = overallScoreHistory;
     }
 
-    public String getOverallScoreStyle()
-    {
-        if (overallScoreStyle == null)
-        {
+    public String getOverallScoreStyle() {
+        if (overallScoreStyle == null) {
             setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         }
         return overallScoreStyle;
     }
 
-    public void setOverallScoreStyle(String overallScoreStyle)
-    {
-        if ( overallScoreStyle.equalsIgnoreCase("null") ) {
+    public void setOverallScoreStyle(String overallScoreStyle) {
+        if (overallScoreStyle.equalsIgnoreCase("null")) {
             this.overallScoreStyle = null;
             return;
         }
-        
+
         this.overallScoreStyle = overallScoreStyle;
     }
 
     // COACHING properties
-    public String getCoachingHistory()
-    {
+    public String getCoachingHistory() {
         setCoachingHistory(createCoachingChart(getDriver().getDriverID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         return coachingHistory;
     }
 
-    public void setCoachingHistory(String coachingHistory)
-    {
+    public void setCoachingHistory(String coachingHistory) {
         this.coachingHistory = coachingHistory;
     }
 
     // LAST TRIP
-    public TripDisplay getLastTrip()
-    {
-        if (lastTrip == null && tripMayExist)
-        {
+    public TripDisplay getLastTrip() {
+        if (lastTrip == null && tripMayExist) {
             Trip tempTrip = driverBean.getDriverDAO().getLastTrip(getDriver().getDriverID());
 
-            if (tempTrip != null && tempTrip.getRoute().size() > 0)
-            {
+            if (tempTrip != null && tempTrip.getRoute().size() > 0) {
                 hasLastTrip = true;
                 TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup());
-                if ( trip.getStartAddress() == null ) {
-                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
-                            trip.getBeginningPoint()));
+                if (trip.getStartAddress() == null) {
+                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), trip.getBeginningPoint()));
                 }
-                if ( trip.getEndAddress() == null ) {
-                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
-                            new LatLng(trip.getEndPointLat(),trip.getEndPointLng())));
-                }                
+                if (trip.getEndAddress() == null) {
+                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(trip.getEndPointLat(), trip.getEndPointLng())));
+                }
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
-            }
-            else
-            {
+            } else {
                 hasLastTrip = false;
             }
             tripMayExist = false;
@@ -249,77 +223,69 @@ public class DriverPerformanceBean extends BasePerformanceBean
         return lastTrip;
     }
 
-    public void setLastTrip(TripDisplay lastTrip)
-    {
+    public void setLastTrip(TripDisplay lastTrip) {
         this.lastTrip = lastTrip;
     }
 
     // DAO PROPERTIES
-    public ScoreDAO getScoreDAO()
-    {
+    public ScoreDAO getScoreDAO() {
         return scoreDAO;
     }
 
-    public void setScoreDAO(ScoreDAO scoreDAO)
-    {
+    public void setScoreDAO(ScoreDAO scoreDAO) {
         this.scoreDAO = scoreDAO;
     }
 
-    public MpgDAO getMpgDAO()
-    {
+    public MpgDAO getMpgDAO() {
         return mpgDAO;
     }
 
-    public void setMpgDAO(MpgDAO mpgDAO)
-    {
+    public void setMpgDAO(MpgDAO mpgDAO) {
         this.mpgDAO = mpgDAO;
     }
 
-    public EventDAO getEventDAO()
-    {
+    public EventDAO getEventDAO() {
         return eventDAO;
     }
 
-    public void setEventDAO(EventDAO eventDAO)
-    {
+    public void setEventDAO(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
     }
 
     // MPG PROPERTIES
-    public String getMpgHistory()
-    {
+    public String getMpgHistory() {
         if (mpgHistory == null)
             mpgHistory = this.createMpgLineDef();
 
         return mpgHistory;
     }
 
-    public void setMpgHistory(String mpgHistory)
-    {
+    public void setMpgHistory(String mpgHistory) {
         this.mpgHistory = mpgHistory;
     }
 
-    private String createMpgLineDef()
-    {
+    private String createMpgLineDef() {
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
-        List<String> catLabelList = GraphicUtil.createDateLabelList(mpgEntities, mpgDurationBean.getDuration(),getLocale());
+        List<String> catLabelList = GraphicUtil.createDateLabelList(mpgEntities, mpgDurationBean.getDuration(), getLocale());
 
         StringBuffer sb = new StringBuffer();
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
         sb.append(multiLineChart.getControlParameters());
-        //Set up y axis
+        // Set up y axis
         int yAxisName = sb.indexOf("yAxisName");
-        sb.replace(yAxisName+10, yAxisName+11, "'"+MessageUtil.getMessageString(getFuelEfficiencyType()+"_Miles_Per_Gallon"));
+        sb.replace(yAxisName + 10, yAxisName + 11, "'" + MessageUtil.getMessageString(getFuelEfficiencyType() + "_Miles_Per_Gallon"));
         Float lightValues[] = new Float[mpgEntities.size()];
         Float medValues[] = new Float[mpgEntities.size()];
         Float heavyValues[] = new Float[mpgEntities.size()];
         int count = 0;
         sb.append(multiLineChart.getCategoriesStart());
-        for (MpgEntity entity : mpgEntities)
-        {
-            lightValues[count] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
-            medValues[count] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
-            heavyValues[count] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(), getMeasurementType(),getFuelEfficiencyType()).floatValue();
+        for (MpgEntity entity : mpgEntities) {
+            lightValues[count] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getLightValue(), getMeasurementType(), getFuelEfficiencyType())
+                    .floatValue();
+            medValues[count] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getMediumValue(), getMeasurementType(), getFuelEfficiencyType())
+                    .floatValue();
+            heavyValues[count] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMpgToFuelEfficiencyType(entity.getHeavyValue(), getMeasurementType(), getFuelEfficiencyType())
+                    .floatValue();
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(count)));
             count++;
 
@@ -333,18 +299,16 @@ public class DriverPerformanceBean extends BasePerformanceBean
         sb.append(multiLineChart.getClose());
         return sb.toString();
     }
-    
-    public List<CategorySeriesData> createMpgJasperDef()
-    {
+
+    public List<CategorySeriesData> createMpgJasperDef() {
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
 
-//        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/, getLocale());
+        // List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(),MessageUtil.getMessageString("shortDateFormat") /*"M/dd"*/, getLocale());
         List<String> monthList = GraphicUtil.createDateLabelList(mpgEntities, mpgDurationBean.getDuration(), MessageUtil.getMessageString("shortDateFormat"), getLocale());
 
         int count = 0;
-        for (MpgEntity me : mpgEntities)
-        {
+        for (MpgEntity me : mpgEntities) {
             chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_light"), monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
             chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_medium"), monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
             chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_heavy"), monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
@@ -354,12 +318,11 @@ public class DriverPerformanceBean extends BasePerformanceBean
         return chartDataList;
     }
 
-    public List<ReportCriteria> buildReportCriteria()
-    {
+    public List<ReportCriteria> buildReportCriteria() {
         List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
         Integer driverID = getDriver().getDriverID();
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName(),getLocale());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         reportCriteria.setMeasurementType(getPerson().getMeasurementType());
         reportCriteria.setFuelEfficiencyType(getPerson().getFuelEfficiencyType());
@@ -388,46 +351,44 @@ public class DriverPerformanceBean extends BasePerformanceBean
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getDriver().getPerson().getFullName());
+        reportCriteria.addParameter("ENABLE_GOOGLE_MAPS", enableGoogleMapsInReports);
 
-        // Should a print of the driver performance page be attempted with no last trip, 
-        //  the report will error
-        String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
-        reportCriteria.addParameter("MAP_URL", imageUrlDef);
-        reportCriteria.addParameter("START_TIME", MessageUtil.getMessageString(NO_LAST_TRIP_FOUND));
-        reportCriteria.addParameter("START_LOCATION", "");
-        reportCriteria.addParameter("END_TIME", "");
-        reportCriteria.addParameter("END_LOCATION", "");
-        
-        if (lastTrip != null)
-        {
+        if (lastTrip != null) {
             reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
             reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
             reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
 
-            // Need to have approximately 60 location pairs for the server to accept the encoded url
-            int routePtsCnt = lastTrip.getRoute().size();
-            int tossOut = Math.round(((float)routePtsCnt/(float)40));
-            if ( tossOut < 1 ) {
-                tossOut = 1;
-            }
-            
-            // The algorithm will always get the first point, add the last
-            List<LatLng> local = new ArrayList<LatLng>();
-            int cnt = 0;
-            for ( LatLng ll: lastTrip.getRoute() ) {
-                if ( (cnt % tossOut) == 0 ) {
-                    local.add(ll);
+            if (enableGoogleMapsInReports) {
+                // Need to have approximately 60 location pairs for the server to accept the encoded url
+                int routePtsCnt = lastTrip.getRoute().size();
+                int tossOut = Math.round(((float) routePtsCnt / (float) 40));
+                if (tossOut < 1) {
+                    tossOut = 1;
                 }
-                cnt++;
-            }
-            local.add(lastTrip.getRouteLastStep());
 
-            String imageUrl = MapLookup.getMap(250,200,local, 
-                    new MapMarker(local.get(0).getLat(),              local.get(0).getLng()            ,MapMarker.MarkerColor.green), 
-                    new MapMarker(local.get(local.size()-1).getLat(),local.get(local.size()-1).getLng(),MapMarker.MarkerColor.red));            
-            reportCriteria.addParameter("MAP_URL", imageUrl);
+                // The algorithm will always get the first point, add the last
+                List<LatLng> local = new ArrayList<LatLng>();
+                int cnt = 0;
+                for (LatLng ll : lastTrip.getRoute()) {
+                    if ((cnt % tossOut) == 0) {
+                        local.add(ll);
+                    }
+                    cnt++;
+                }
+                local.add(lastTrip.getRouteLastStep());
+
+                String imageUrl = MapLookup.getMap(250, 200, local, new MapMarker(local.get(0).getLat(), local.get(0).getLng(), MapMarker.MarkerColor.green), new MapMarker(local.get(local.size() - 1)
+                        .getLat(), local.get(local.size() - 1).getLng(), MapMarker.MarkerColor.red));
+                reportCriteria.addParameter("MAP_URL", imageUrl);
+            }
+        } else {
+            Group vehicleGroup = getGroupHierarchy().getGroup(getVehicle().getGroupID());
+            String imageUrlDef = MapLookup.getMap(vehicleGroup.getMapLat(), vehicleGroup.getMapLng(), 250, 200);
+            // String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
+            reportCriteria.addParameter("MAP_URL", imageUrlDef);
         }
+        
         reportCriteria.addChartDataSet(createMpgJasperDef());
         reportCriteria.addChartDataSet(createSingleJasperDefCoaching(driverID, coachDurationBean.getDuration()));
         reportCriteria.addParameter("COACH_DUR", coachDurationBean.getDuration().toString());
@@ -437,181 +398,161 @@ public class DriverPerformanceBean extends BasePerformanceBean
         return tempCriteria;
     }
 
-    public DurationBean getSpeedDurationBean()
-    {
+    public DurationBean getSpeedDurationBean() {
         return speedDurationBean;
     }
 
-    public void setSpeedDurationBean(DurationBean speedDurationBean)
-    {
+    public void setSpeedDurationBean(DurationBean speedDurationBean) {
         this.speedDurationBean = speedDurationBean;
     }
 
-    public DurationBean getStyleDurationBean()
-    {
+    public DurationBean getStyleDurationBean() {
         return styleDurationBean;
     }
 
-    public void setStyleDurationBean(DurationBean styleDurationBean)
-    {
+    public void setStyleDurationBean(DurationBean styleDurationBean) {
         this.styleDurationBean = styleDurationBean;
     }
 
-    public DurationBean getSeatBeltDurationBean()
-    {
+    public DurationBean getSeatBeltDurationBean() {
         return seatBeltDurationBean;
     }
 
-    public void setSeatBeltDurationBean(DurationBean seatBeltDurationBean)
-    {
+    public void setSeatBeltDurationBean(DurationBean seatBeltDurationBean) {
         this.seatBeltDurationBean = seatBeltDurationBean;
     }
 
-    public DurationBean getCoachDurationBean()
-    {
+    public DurationBean getCoachDurationBean() {
         return coachDurationBean;
     }
 
-    public void setCoachDurationBean(DurationBean coachDurationBean)
-    {
+    public void setCoachDurationBean(DurationBean coachDurationBean) {
         this.coachDurationBean = coachDurationBean;
     }
 
-    public DurationBean getMpgDurationBean()
-    {
+    public DurationBean getMpgDurationBean() {
         return mpgDurationBean;
     }
 
-    public Duration getMpgDuration(){
-    	
-    	return mpgDurationBean.getDuration();
+    public Duration getMpgDuration() {
+
+        return mpgDurationBean.getDuration();
     }
-    public void setMpgDuration(Duration mpgDuration)
-    {
+
+    public void setMpgDuration(Duration mpgDuration) {
         this.mpgDurationBean.setDuration(mpgDuration);
         mpgHistory = null;
 
     }
-    
-    public void setMpgDurationBean(DurationBean mpgDurationBean)
-    {
+
+    public void setMpgDurationBean(DurationBean mpgDurationBean) {
         this.mpgDurationBean = mpgDurationBean;
         mpgHistory = null;
 
     }
 
-    public Boolean getHasLastTrip()
-    {
-//        if (this.lastTrip == null)
-//            this.getLastTrip();
+    public Boolean getHasLastTrip() {
+        // if (this.lastTrip == null)
+        // this.getLastTrip();
 
         return hasLastTrip;
     }
 
-    public void setHasLastTrip(Boolean hasLastTrip)
-    {
+    public void setHasLastTrip(Boolean hasLastTrip) {
         this.hasLastTrip = hasLastTrip;
     }
+
     @Override
-    public void exportReportToPdf()
-    {
+    public void exportReportToPdf() {
         getReportRenderer().exportReportToPDF(buildReportCriteria(), getFacesContext());
     }
 
     @Override
-    public void emailReport()
-    {
+    public void emailReport() {
         getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
-
-    public void setDriverSpeedBean(DriverSpeedBean driverSpeedBean)
-    {
+    public void setDriverSpeedBean(DriverSpeedBean driverSpeedBean) {
         this.driverSpeedBean = driverSpeedBean;
     }
 
-    public DriverSpeedBean getDriverSpeedBean()
-    {
+    public DriverSpeedBean getDriverSpeedBean() {
         return driverSpeedBean;
     }
 
-    public void setDriverStyleBean(DriverStyleBean driverStyleBean)
-    {
+    public void setDriverStyleBean(DriverStyleBean driverStyleBean) {
         this.driverStyleBean = driverStyleBean;
     }
 
-    public DriverStyleBean getDriverStyleBean()
-    {
+    public DriverStyleBean getDriverStyleBean() {
         return driverStyleBean;
     }
 
-    public void setDriverSeatBeltBean(DriverSeatBeltBean driverBeltBean)
-    {
+    public void setDriverSeatBeltBean(DriverSeatBeltBean driverBeltBean) {
         this.driverSeatBeltBean = driverBeltBean;
     }
 
-    public DriverSeatBeltBean getDriverSeatBeltBean()
-    {
+    public DriverSeatBeltBean getDriverSeatBeltBean() {
         return driverSeatBeltBean;
     }
 
-	@Override
-	public void setDuration(Duration duration) {
-		// TODO Auto-generated method stub
-		
-	}
-	public CrashSummary getCrashSummary() {
+    @Override
+    public void setDuration(Duration duration) {
+    // TODO Auto-generated method stub
 
-		if (crashSummary == null)
-		{
-			crashSummary = scoreDAO.getDriverCrashSummaryData(getDriverID());
-		}
-		return crashSummary;
-	}
+    }
 
-	public void setCrashSummary(CrashSummary crashSummary) {
-		this.crashSummary = crashSummary;
-	}
+    public CrashSummary getCrashSummary() {
 
-	public List<Event> getViolationEvents() {
-		if ((violationEventsMap == null) || violationEventsMap.isEmpty()){
-			getLastTrip();
-		}
-	    return new ArrayList<Event>(violationEventsMap.values());
-	}
+        if (crashSummary == null) {
+            crashSummary = scoreDAO.getDriverCrashSummaryData(getDriverID());
+        }
+        return crashSummary;
+    }
 
-	public void setViolationEvents(List<Event> violationEvents) {
-		
-		violationEventsMap = new LinkedHashMap<Long,Event>();
-			for (Event event : violationEvents)
-	        {
-	            violationEventsMap.put(event.getNoteID(), event);
-	        }
-	        selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
-		}
-	//
-	//	public Event getSelectedViolation() {
-	//		return selectedViolation;
-	//	}
-	//
-	//	public void setSelectedViolation(Event selectedViolation) {
-	//		this.selectedViolation = selectedViolation;
-	//	}
+    public void setCrashSummary(CrashSummary crashSummary) {
+        this.crashSummary = crashSummary;
+    }
 
-	public Long getSelectedViolationID() {
-		return selectedViolationID;
-	}
+    public List<Event> getViolationEvents() {
+        if ((violationEventsMap == null) || violationEventsMap.isEmpty()) {
+            getLastTrip();
+        }
+        return new ArrayList<Event>(violationEventsMap.values());
+    }
 
-	public void setSelectedViolationID(Long selectedViolationID) {
-		this.selectedViolationID = selectedViolationID;
-	}
+    public void setViolationEvents(List<Event> violationEvents) {
 
-	public Map<Long, Event> getViolationEventsMap() {
-		return violationEventsMap;
-	}
+        violationEventsMap = new LinkedHashMap<Long, Event>();
+        for (Event event : violationEvents) {
+            violationEventsMap.put(event.getNoteID(), event);
+        }
+        selectedViolationID = violationEvents.size() > 0 ? violationEvents.get(0).getNoteID() : null;
+    }
 
-	public void setViolationEventsMap(Map<Long, Event> violationEventsMap) {
-		this.violationEventsMap = violationEventsMap;
-	}
+    //
+    // public Event getSelectedViolation() {
+    // return selectedViolation;
+    // }
+    //
+    // public void setSelectedViolation(Event selectedViolation) {
+    // this.selectedViolation = selectedViolation;
+    // }
+
+    public Long getSelectedViolationID() {
+        return selectedViolationID;
+    }
+
+    public void setSelectedViolationID(Long selectedViolationID) {
+        this.selectedViolationID = selectedViolationID;
+    }
+
+    public Map<Long, Event> getViolationEventsMap() {
+        return violationEventsMap;
+    }
+
+    public void setViolationEventsMap(Map<Long, Event> violationEventsMap) {
+        this.violationEventsMap = violationEventsMap;
+    }
 
 }

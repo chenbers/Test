@@ -471,6 +471,7 @@
     <property name="driverBean" ref="driverBean" />
     <property name="vehicleBean" ref="vehicleBean" />
     <property name="performanceDataBean" ref="performanceDataBean" />
+    <property name="enableGoogleMapsInReports" value="${enableGoogleMapsInReports}"/>
   </bean>
 
   <bean id="basePerformanceEventsBean" class="com.inthinc.pro.backing.BasePerformanceEventBean" scope="request" parent="basePerformanceBean">

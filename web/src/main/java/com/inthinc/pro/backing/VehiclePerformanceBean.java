@@ -23,14 +23,15 @@ import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.map.MapLookup;
@@ -485,7 +486,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
         tempCriteria.add(reportCriteria);
 
-        // Page 2
+     // Page 2
         reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName(), getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
@@ -494,45 +495,42 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());
+        reportCriteria.addParameter("ENABLE_GOOGLE_MAPS", enableGoogleMapsInReports);
 
-        // Should a print of the vehicle performance page be attempted with no last trip, 
-        //  the report will error
-        String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
-        reportCriteria.addParameter("MAP_URL", imageUrlDef);
-        reportCriteria.addParameter("START_TIME", MessageUtil.getMessageString(NO_LAST_TRIP_FOUND));
-        reportCriteria.addParameter("START_LOCATION", "");
-        reportCriteria.addParameter("END_TIME", "");
-        reportCriteria.addParameter("END_LOCATION", "");        
-
-        if (lastTrip != null)
-        {
+        if (lastTrip != null) {
             reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
             reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
             reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
 
-            // Need to have approximately 60 location pairs for the server to accept the encoded url
-            int routePtsCnt = lastTrip.getRoute().size();
-            int tossOut = Math.round(((float)routePtsCnt/(float)40));
-            if ( tossOut < 1 ) {
-                tossOut = 1;
-            }
-            
-            // The algorithm will always get the first point, add the last            
-            List<LatLng> local = new ArrayList<LatLng>();
-            int cnt = 0;
-            for ( LatLng ll: lastTrip.getRoute() ) {
-                if ( (cnt % tossOut) == 0 ) {
-                    local.add(ll);
+            if (enableGoogleMapsInReports) {
+                // Need to have approximately 60 location pairs for the server to accept the encoded url
+                int routePtsCnt = lastTrip.getRoute().size();
+                int tossOut = Math.round(((float) routePtsCnt / (float) 40));
+                if (tossOut < 1) {
+                    tossOut = 1;
                 }
-                cnt++;
-            }
-            local.add(lastTrip.getRouteLastStep());            
 
-            String imageUrl = MapLookup.getMap(250,200,local, 
-                    new MapMarker(local.get(0).getLat(),              local.get(0).getLng()            ,MapMarker.MarkerColor.green), 
-                    new MapMarker(local.get(local.size()-1).getLat(),local.get(local.size()-1).getLng(),MapMarker.MarkerColor.red));            
-            reportCriteria.addParameter("MAP_URL", imageUrl);
+                // The algorithm will always get the first point, add the last
+                List<LatLng> local = new ArrayList<LatLng>();
+                int cnt = 0;
+                for (LatLng ll : lastTrip.getRoute()) {
+                    if ((cnt % tossOut) == 0) {
+                        local.add(ll);
+                    }
+                    cnt++;
+                }
+                local.add(lastTrip.getRouteLastStep());
+
+                String imageUrl = MapLookup.getMap(250, 200, local, new MapMarker(local.get(0).getLat(), local.get(0).getLng(), MapMarker.MarkerColor.green), new MapMarker(local.get(local.size() - 1)
+                        .getLat(), local.get(local.size() - 1).getLng(), MapMarker.MarkerColor.red));
+                reportCriteria.addParameter("MAP_URL", imageUrl);
+            }
+        } else {
+            Group vehicleGroup = getGroupHierarchy().getGroup(getVehicle().getGroupID());
+            String imageUrlDef = MapLookup.getMap(vehicleGroup.getMapLat(), vehicleGroup.getMapLng(), 250, 200);
+            // String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
+            reportCriteria.addParameter("MAP_URL", imageUrlDef);
         }
         reportCriteria.addChartDataSet(createMpgJasperDef());
         reportCriteria.addChartDataSet(createSingleJasperDefCoaching(id, coachDurationBean.getDuration()));

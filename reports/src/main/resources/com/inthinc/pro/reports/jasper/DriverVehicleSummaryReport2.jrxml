@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="265"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -37,6 +37,7 @@
 	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="FUEL_EFFICIENCY_TYPE" class="com.inthinc.pro.model.FuelEfficiencyType" isForPrompting="false"/>
+	<parameter name="ENABLE_GOOGLE_MAPS" class="java.lang.Boolean" isForPrompting="false"/>
 	<background>
 		<band/>
 	</background>
@@ -69,52 +70,11 @@
 	</title>
 	<pageHeader>
 		<band height="626">
-			<lineChart>
-				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgLineChartCustomizer">
-					<reportElement key="element-1" x="7" y="276" width="451" height="150"/>
-					<chartTitle/>
-					<chartSubtitle/>
-					<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
-				</chart>
-				<categoryDataset>
-					<dataset resetType="None">
-						<datasetRun subDataset="mpgDataSet">
-							<datasetParameter name="USE_METRIC">
-								<datasetParameterExpression><![CDATA[$P{USE_METRIC}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="REPORT_LOCALE">
-								<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
-							</datasetParameter>
-							<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
-						</datasetRun>
-					</dataset>
-					<categorySeries>
-						<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-						<valueExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{value},$P{USE_METRIC}, $P{REPORT_LOCALE})]]></valueExpression>
-						<labelExpression><![CDATA[$F{label}]]></labelExpression>
-					</categorySeries>
-				</categoryDataset>
-				<linePlot>
-					<plot labelRotation="-45.0">
-						<seriesColor seriesOrder="0" color="#B1D1DC"/>
-						<seriesColor seriesOrder="1" color="#C8A1D1"/>
-						<seriesColor seriesOrder="2" color="#A8C634"/>
-					</plot>
-					<categoryAxisFormat labelRotation="-45.0">
-						<axisFormat>
-							<labelFont/>
-							<tickLabelFont/>
-						</axisFormat>
-					</categoryAxisFormat>
-					<valueAxisFormat>
-						<axisFormat>
-							<labelFont/>
-							<tickLabelFont/>
-						</axisFormat>
-					</valueAxisFormat>
-				</linePlot>
-			</lineChart>
+			<rectangle>
+				<reportElement x="7" y="7" width="269" height="236" backcolor="#B1D1DC">
+					<printWhenExpression><![CDATA[!$P{ENABLE_GOOGLE_MAPS}]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-8" x="285" y="7" width="72" height="20"/>
 				<textElement>
@@ -156,30 +116,26 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvsummary.coaching.events}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-4" x="368" y="35" width="157" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{START_TIME}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="368" y="48" width="157" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{START_LOCATION}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-6" x="368" y="76" width="157" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{END_TIME}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-7" x="368" y="89" width="157" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{END_LOCATION}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement key="image-1" x="7" y="7" width="269" height="236"/>
-				<imageExpression class="java.net.URL"><![CDATA[new java.net.URL($P{MAP_URL})]]></imageExpression>
-			</image>
 			<barChart>
 				<chart isShowLegend="false">
 					<reportElement key="element-2" x="7" y="463" width="451" height="157"/>
@@ -207,8 +163,7 @@
 					<plot labelRotation="-45.0">
 						<seriesColor seriesOrder="0" color="#A8C634"/>
 					</plot>
-					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
-					<categoryAxisFormat labelRotation="-45.0">
+					<categoryAxisFormat>
 						<axisFormat>
 							<labelFont/>
 							<tickLabelFont/>
@@ -222,6 +177,13 @@
 					</valueAxisFormat>
 				</barPlot>
 			</barChart>
+			<textField>
+				<reportElement x="38" y="48" width="204" height="42">
+					<printWhenExpression><![CDATA[!$P{ENABLE_GOOGLE_MAPS}]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.google_maps_disabled}]]></textFieldExpression>
+			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-10" x="262" y="257" width="196" height="16"/>
 				<textElement textAlignment="Right"/>
@@ -232,10 +194,71 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{COACH_DUR}.toString())]]></textFieldExpression>
 			</textField>
+			<lineChart>
+				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgLineChartCustomizer">
+					<reportElement key="element-1" x="7" y="276" width="451" height="150"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="None">
+						<datasetRun subDataset="mpgDataSet">
+							<datasetParameter name="USE_METRIC">
+								<datasetParameterExpression><![CDATA[$P{USE_METRIC}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="REPORT_LOCALE">
+								<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+						<valueExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{value},$P{USE_METRIC}, $P{REPORT_LOCALE})]]></valueExpression>
+						<labelExpression><![CDATA[$F{label}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot labelRotation="-45.0">
+						<seriesColor seriesOrder="0" color="#B1D1DC"/>
+						<seriesColor seriesOrder="1" color="#C8A1D1"/>
+						<seriesColor seriesOrder="2" color="#A8C634"/>
+					</plot>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+			<image>
+				<reportElement key="image-1" x="7" y="7" width="269" height="236">
+					<printWhenExpression><![CDATA[$P{ENABLE_GOOGLE_MAPS}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression class="java.net.URL"><![CDATA[new java.net.URL($P{MAP_URL})]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-8" x="368" y="7" width="157" height="20">
+					<printWhenExpression><![CDATA[$P{START_TIME} == null || $P{START_TIME}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.no_last_trip_found}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band splitType="Prevent"/>
+		<band isSplitAllowed="false"/>
 	</columnHeader>
 	<detail>
 		<band/>
