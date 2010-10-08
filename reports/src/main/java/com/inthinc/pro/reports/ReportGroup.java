@@ -96,7 +96,12 @@ public enum ReportGroup
     DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
-            ReportType.DRIVER_HOURS);
+            ReportType.DRIVER_HOURS),
+    
+    VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+            ReportType.VEHICLE_USAGE);
     
     private ReportType[] reports;
     private Integer code;

@@ -55,6 +55,7 @@ public interface ReportCriteriaService
     ReportCriteria getPayrollSummaryReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale);
     ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getDriverHoursReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getVehicleUsageReportCriteria(Integer id, Interval interval, Locale locale, boolean group);
 
     
 }

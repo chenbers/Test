@@ -60,6 +60,7 @@ import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSummaryReportCriteria;
 import com.inthinc.pro.reports.performance.TenHoursViolationReportCriteria;
+import com.inthinc.pro.reports.performance.VehicleUsageReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.reports.util.ReportUtil;
@@ -772,8 +773,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * 
      * @param  groupeID ID of the group chosen by the user
      * @param  interval Interval chosen by the user
-     * @param  locale Local settings of the user - internationalization 
-     * @return criteria all report criteria including layout and data 
+     * @param  locale   Local settings of the user - internationalization 
+     * @return criteria All report criteria including layout and data 
      */ 
     @Override
     public ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale) {
@@ -799,6 +800,26 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.setWaysmartDao(waysmartDAO);
                
         criteria.init(groupID, interval);
+        return criteria;
+    }
+
+    /**
+     * Provide all data criteria including layout and data.
+     * 
+     * @param  id       ID of the group chosen by the user
+     * @param  interval Interval chosen by the user
+     * @param  locale   Local settings of the user - internationalization 
+     * @param  group    Indicating if type of ID is group or driver 
+     * @return criteria All report criteria including layout and data 
+     */ 
+    @Override
+    public ReportCriteria getVehicleUsageReportCriteria(Integer id, Interval interval, Locale locale, boolean group) {
+        VehicleUsageReportCriteria criteria = new VehicleUsageReportCriteria(locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setWaysmartDao(waysmartDAO);
+               
+        criteria.init(id, interval, group);
         return criteria;
     }
 
@@ -961,4 +982,5 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
 }

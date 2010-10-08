@@ -91,8 +91,8 @@ public class MockWaysmartDAO implements WaysmartDAO {
         List<VehicleUsageRecord> list = this.getVehicleUsageData(driverID);
         if (list != null) {
             for (VehicleUsageRecord rec : list) {
-                if (rec.getDay().after(startDate.getTime())
-                        && rec.getDay().before(endDate.getTime())) {
+                if (rec.getDate().after(startDate.getTime())
+                        && rec.getDate().before(endDate.getTime())) {
                     filter.add(rec);
                 }
             }

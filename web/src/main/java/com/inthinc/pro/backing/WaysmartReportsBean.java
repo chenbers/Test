@@ -77,6 +77,15 @@ public class WaysmartReportsBean extends ReportsBean {
                 reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
+                
+            case VEHICLE_USAGE:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(getReportCriteriaService().getVehicleUsageReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
+                        params.getLocale(), false ));
+                else
+                    reportCriteriaList.add(getReportCriteriaService().getVehicleUsageReportCriteria(params.getGroupIDList().get(0), params.getDateRange().getInterval(),  
+                            params.getLocale(), true ));
+                break;
             default:
                 break;
         }
