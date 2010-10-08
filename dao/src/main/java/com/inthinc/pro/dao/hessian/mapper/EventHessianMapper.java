@@ -73,8 +73,6 @@ public class EventHessianMapper extends AbstractMapper
             {
                 E e = type.cast(super.convertToModelObject(map, noteType.getEventClass()));
                 Event event=(Event) e;
-                event.setEventType(noteType.getEventType());
-                event.setEventCategory((EventCategory)noteType.getEventCategories().toArray()[0]);
                 return e;
             }
             else

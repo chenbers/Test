@@ -520,7 +520,9 @@ public abstract class AbstractMapper implements Mapper
     public Integer[] convertEnumList(List<?> list)
     {
         if (list==null)
-            return new Integer[0];
+            return null;
+        if (list.size()==0)
+            return null;
         Integer[] intArray= new Integer[list.size()];
         int i=0;
         for (Object e : list)

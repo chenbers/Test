@@ -76,10 +76,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer deviceID;
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
-    
-    private EventType eventType=EventType.UNKNOWN;
-    private EventCategory defaultEventCategory = EventCategory.NONE;
-    
+        
 	public Event()
     {
         super();
@@ -129,12 +126,9 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @XmlElement
     public EventType getEventType()
     {
-        return eventType;
-    }
-
-    public void setEventType(EventType eventType)
-    {
-        this.eventType=eventType;
+        if (type==null || type.getEventType()==null)
+            return EventType.UNKNOWN;
+        return type.getEventType();
     }
 
     public Integer getForgiven()
@@ -294,12 +288,11 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @XmlElement
     public EventCategory getEventCategory()
     {
-        return defaultEventCategory;
-    }
-    
-    public void setEventCategory(EventCategory eventCategory)
-    {
-        this.defaultEventCategory=eventCategory;
+        //TODO having a 1:1 here makes no sense since its really a 1:M
+        EventCategory eventCategory = EventCategory.NONE;
+        if (type.getEventCategories().size()>0)
+            eventCategory = (EventCategory)type.getEventCategories().toArray()[0]; 
+        return eventCategory;
     }
     
     /**
