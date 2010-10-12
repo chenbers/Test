@@ -1,15 +1,14 @@
 package com.inthinc.pro.reports.hos.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class VehicleUsage {
     private String  driver;
     private String  vehicle;
-    private Timestamp date;
+    private Date date;
     private String zoneName;
-    private Timestamp timeEntered;
-    private Timestamp timeExited;
+    private Date timeEntered;
+    private Date timeExited;
     private Integer mileage;
     private Integer totalMiles;
     private Integer jobUse;
@@ -18,7 +17,7 @@ public class VehicleUsage {
 
     public VehicleUsage(){}
 
-    public VehicleUsage(String driver, String vehicle, Timestamp date, String zoneName, Timestamp timeEntered, Timestamp timeExited, Integer mileage, Integer totalMiles, Integer jobUse,
+    public VehicleUsage(String driver, String vehicle, Date date, String zoneName, Date timeEntered, Date timeExited, Integer mileage, Integer totalMiles, Integer jobUse,
             Integer companyUse, Integer personalUse) {
         this.driver = driver;
         this.vehicle = vehicle;
@@ -51,11 +50,11 @@ public class VehicleUsage {
         this.vehicle = vehicle;
     }
 
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -67,19 +66,19 @@ public class VehicleUsage {
         this.zoneName = zoneName;
     }
 
-    public Timestamp getTimeEntered() {
+    public Date getTimeEntered() {
         return timeEntered;
     }
 
-    public void setTimeEntered(Timestamp timeEntered) {
+    public void setTimeEntered(Date timeEntered) {
         this.timeEntered = timeEntered;
     }
 
-    public Timestamp getTimeExited() {
+    public Date getTimeExited() {
         return timeExited;
     }
 
-    public void setTimeExited(Timestamp timeExited) {
+    public void setTimeExited(Date timeExited) {
         this.timeExited = timeExited;
     }
 

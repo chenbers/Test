@@ -14,7 +14,6 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.report.WaysmartDAO;
@@ -28,12 +27,10 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 
 
 public class VehicleUsageReportCriteria extends ReportCriteria {
-    private static final String START_DATE_PARAM = "startDate";
-    private static final String END_DATE_PARAM = "endDate";
-    private static final String LOGO_PARAM = "logoImageURL";
+    private static final String START_DATE_PARAM = "REPORT_START_DATE";
+    private static final String END_DATE_PARAM = "REPORT_END_DATE";
     protected DateTimeFormatter dateTimeFormatter; 
     
-    protected AccountDAO accountDAO;
     protected GroupDAO groupDAO;
     protected DriverDAO driverDAO;
     protected WaysmartDAO waysmartDao;
@@ -63,10 +60,19 @@ public class VehicleUsageReportCriteria extends ReportCriteria {
         for (Entry<Driver, List<VehicleUsageRecord>> entry : recordMap.entrySet()) {
             Driver driver = entry.getKey();
             for (VehicleUsageRecord rec : entry.getValue()) {
-                VehicleUsage bean = new VehicleUsage();
-                bean.setDate(rec.getDate());
-                bean.setDriver(driver.getPerson().getFullNameLastFirst());
-                bean.setVehicle(rec.getVehicle().toString());
+                VehicleUsage bean = new VehicleUsage(
+                        driver.getPerson().getFirst() + " " + driver.getPerson().getLast(), 
+                        rec.getVehicle(), 
+                        rec.getDate(), 
+                        rec.getZoneName(), 
+                        rec.getTimeEntered(), 
+                        rec.getTimeExited(), 
+                        rec.getMileage(), 
+                        rec.getTotalMiles(), 
+                        rec.getJobUse(), 
+                        rec.getCompanyUse(), 
+                        rec.getPersonalUse()
+                );
                 
                 violationList.add(bean);
             }
@@ -87,50 +93,36 @@ public class VehicleUsageReportCriteria extends ReportCriteria {
         List<Driver> driverList;
         Map<Driver, List<VehicleUsageRecord>> vehicleUsageRecordMap = new HashMap<Driver, List<VehicleUsageRecord>> ();
         
-        addParameter(VehicleUsageReportCriteria.START_DATE_PARAM, dateTimeFormatter.print(interval.getStart()));
-        addParameter(VehicleUsageReportCriteria.END_DATE_PARAM,   dateTimeFormatter.print(interval.getEnd()));
+        addParameter(VehicleUsageReportCriteria.START_DATE_PARAM, 
+                dateTimeFormatter.print(interval.getStart()));
+        addParameter(VehicleUsageReportCriteria.END_DATE_PARAM,   
+                dateTimeFormatter.print(interval.getEnd()));
         
         if(group) {
             Group topGroup = groupDAO.findByID(id);
-            driverList = driverDAO.getAllDrivers(id);
-            List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-            for (Driver driver : driverList) {
-                this.getVehicleUsageRecord(driver, interval, vehicleUsageRecordMap);
+            if (topGroup != null) {
+                driverList = driverDAO.getAllDrivers(topGroup.getGroupID());
+                for (Driver driver : driverList) {
+                    vehicleUsageRecordMap.put(driver, this.getVehicleUsageRecord(driver, interval));
+                   
+                }
             }
-        }
-        else {
+        } else {
             Driver driver = driverDAO.findByID(id);
-            this.getVehicleUsageRecord(driver, interval, vehicleUsageRecordMap);         
+            vehicleUsageRecordMap.put(driver, this.getVehicleUsageRecord(driver, interval));         
         }
         initDataSet(interval, vehicleUsageRecordMap);
-
-        
     }
     
-    private void getVehicleUsageRecord(Driver driver, Interval interval,Map<Driver, List<VehicleUsageRecord>> vehicleUsageRecordMap  )
+    private List<VehicleUsageRecord> getVehicleUsageRecord(Driver driver, Interval interval)
     {
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
         List<VehicleUsageRecord> vehicleUsageList = waysmartDao.getVehicleUsage(driver.getDriverID(), queryInterval);
-        if (!vehicleUsageList.isEmpty()) {
-            vehicleUsageRecordMap.put(driver, vehicleUsageList);
-        }
+        
+        return vehicleUsageList;
     }
 
-    /**
-     * Getter for accountDAO property. 
-     */
-    public AccountDAO getAccountDAO() {
-        return accountDAO;
-    }
-
-    /**
-     * Setter for accountDAO property. 
-     */
-    public void setAccountDAO(AccountDAO accountDAO) {
-        this.accountDAO = accountDAO;
-    }
-    
     /**
      * Getter for groupDAO property. 
      */

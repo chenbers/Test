@@ -1,7 +1,9 @@
 package com.inthinc.pro.dao.mock;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,13 +120,13 @@ public class MockWaysmartDAO implements WaysmartDAO {
     /* create new records for TenHoursViolation report */
     private List<TenHoursViolationRecord> createRecords(Integer driverId, Integer id) {
         List<TenHoursViolationRecord> list = new ArrayList<TenHoursViolationRecord>();
+        
         TenHoursViolationRecord rec = new TenHoursViolationRecord();
-        Calendar c = Calendar.getInstance();
-        c.set(2010, 8, id+1, 0, 0, 0);
-        rec.setDate(c.getTime());
+        rec.setDate(this.createDate(2010, 8, id+1, 0, 0));
         rec.setVehicleID(11+id*3);
         rec.setHoursThisDay((10+id));
         rec.setDriverID(driverId);
+        
         list.add(rec);
         return list;
     }
@@ -133,23 +135,21 @@ public class MockWaysmartDAO implements WaysmartDAO {
     private List<DriverHoursRecord> getDriverHoursData(Integer driverID) {
         if (this.driverHoursMap == null) {
             driverHoursMap = new HashMap<Integer, List<DriverHoursRecord>>();
-            driverHoursMap.put(2905, this.createList(2905, 4.4, 1.3, 1.4));
-            driverHoursMap.put(2906, this.createList(2906, 3.1, 3.8, 1.4));
-            driverHoursMap.put(2907, this.createList(2907, 0.0, 4.0, 1.6));
-            driverHoursMap.put(5555, this.createList(5555, 2.0, 3.0, 4.0, 5.0));
-            driverHoursMap.put(5583, this.createList(5583, 9.5, 0.0, 3.0, 6.0));
+            driverHoursMap.put(2905, this.createDriverHoursList(2905, 4.4, 1.3, 1.4));
+            driverHoursMap.put(2906, this.createDriverHoursList(2906, 3.1, 3.8, 1.4));
+            driverHoursMap.put(2907, this.createDriverHoursList(2907, 0.0, 4.0, 1.6));
+            driverHoursMap.put(5555, this.createDriverHoursList(5555, 2.0, 3.0, 4.0, 5.0));
+            driverHoursMap.put(5583, this.createDriverHoursList(5583, 9.5, 0.0, 3.0, 6.0));
         }
         return this.driverHoursMap.get(driverID);
     }
 
-    private List<DriverHoursRecord> createList(Integer driverId, Double... d) {
+    private List<DriverHoursRecord> createDriverHoursList(Integer driverId, Double... d) {
         List<DriverHoursRecord> list = new ArrayList<DriverHoursRecord>();
         
         for (int i = 0; i < d.length; i++) {
             DriverHoursRecord rec = new DriverHoursRecord();
-            Calendar c = Calendar.getInstance();
-            c.set(2010, 8, i+1, 0, 0, 0);
-            rec.setDate(c.getTime());
+            rec.setDate(this.createDate(2010, 8, i+1, 0, 0));
             rec.setDriverID(driverId);
             rec.setHoursThisDay(d[i]);
             list.add(rec);
@@ -160,9 +160,29 @@ public class MockWaysmartDAO implements WaysmartDAO {
     private List<VehicleUsageRecord> getVehicleUsageData(Integer driverID) {
         if (this.vehicleUsageMap == null) {
             vehicleUsageMap = new HashMap<Integer, List<VehicleUsageRecord>>();
-            // TODO Add mock data
+            List<VehicleUsageRecord> driver1 = new ArrayList<VehicleUsageRecord>();
+            driver1.add(new VehicleUsageRecord("2906", "100", createDate(2010, 1, 1, 0, 0), 
+                    "Zone1", null, createDate(2010, 1, 1, 2, 0), 5000, null, null, null, null));
+            driver1.add(new VehicleUsageRecord("2906", "100", createDate(2010, 1, 1, 0, 0) , 
+                    "Zone2", createDate(2010, 1, 1, 2, 30), createDate(2010, 1, 1, 2, 30), 5009, 9, 2, 3, 4));
+            driver1.add(new VehicleUsageRecord("2906", "100", createDate(2010, 1, 1, 0, 0) , 
+                    "Zone3", createDate(2010, 1, 1, 2, 40), createDate(2010, 1, 1, 2, 40), 5027, 18, 5, 6, 7));
+
+            List<VehicleUsageRecord> driver2 = new ArrayList<VehicleUsageRecord>();
+            driver2.add(new VehicleUsageRecord("2905", "100", createDate(2010, 1, 1, 0, 0), 
+                    "Zone4", null, createDate(2010, 1, 1, 5, 0), 5027, null, null, null, null));
+            driver2.add(new VehicleUsageRecord("2905", "100", createDate(2010, 1, 1, 0, 0) , 
+                    "Zone5", createDate(2010, 1, 1, 6, 0), createDate(2010, 1, 1, 6, 0), 5087, 60, 10, 20, 30));
+            vehicleUsageMap.put(2906, driver1);
+            vehicleUsageMap.put(2905, driver2);
         }
         return this.vehicleUsageMap.get(driverID);
     }
 
+    // just create a date
+    private Date createDate(int year, int month, int day, int hour, int min) {
+        Calendar c = Calendar.getInstance();
+        c.set(year, month-1, day, hour, min, 0);
+        return c.getTime();
+    }
 }
