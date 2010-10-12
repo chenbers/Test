@@ -20,7 +20,6 @@ import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.hos.model.MinutesData;
 import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
@@ -30,12 +29,12 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
@@ -57,32 +56,11 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
         dayFormatter = DateTimeFormat.forPattern("MM/dd/yy").withLocale(locale);
     }
     
-    public void init(Integer groupID)
-    {
-        Group topGroup = groupDAO.findByID(groupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
-
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-
-        initDataSet(groupHierarchy, driverList);
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList) {
         
-    }
-    public void init(Integer userGroupID, List<Integer> groupIDList) {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        
-        List<Group> reportGroupList = getReportGroupList(groupIDList, groupHierarchy);
-                    
+        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
-        
-        initDataSet(groupHierarchy, driverList);
-        
-    }
 
-    private void initDataSet(GroupHierarchy groupHierarchy, List<Driver> driverList) {
         DateTime currentDate = new DateTime(); 
         
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
@@ -93,17 +71,11 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval, true));
         }
         
-        initDataSet(groupHierarchy, driverHOSRecordMap, currentDate);
+        initDataSet(accountGroupHierarchy, driverHOSRecordMap, currentDate);
         
     }
 
-    void initDataSet(Group topGroup, List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime currentDate) {
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        initDataSet(groupHierarchy, driverHOSRecordMap, currentDate);
-        
-    }
-
-    void initDataSet(GroupHierarchy groupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime currentDate)
+    void initDataSet(GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap, DateTime currentDate)
     {
         List<DotHoursRemaining> dotHoursRemainingList = new ArrayList<DotHoursRemaining>();
 
@@ -118,7 +90,7 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
             }
             Collections.sort(hosRecordList);
 
-            fillInDotHoursRemainingData(dotHoursRemainingList, groupHierarchy.getFullName(driver.getGroupID()), driver, dayList, hosRecordList, currentDate);
+            fillInDotHoursRemainingData(dotHoursRemainingList, getFullGroupName(accountGroupHierarchy, driver.getGroupID()), driver, dayList, hosRecordList, currentDate);
         }
     
 

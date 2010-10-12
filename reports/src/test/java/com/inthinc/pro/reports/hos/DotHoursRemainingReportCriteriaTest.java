@@ -249,7 +249,7 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
       for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
             DotHoursRemainingReportCriteria dotHoursRemainingReportCriteria = new DotHoursRemainingReportCriteria(Locale.US);
-            dotHoursRemainingReportCriteria.initDataSet(testData.topGroup, testData.groupList, testData.driverHOSRecordMap, new DateTime(testCaseCurrentDate[testCaseCnt].getTime()));
+            dotHoursRemainingReportCriteria.initDataSet(testData.getGroupHierarchy(), testData.driverHOSRecordMap, new DateTime(testCaseCurrentDate[testCaseCnt].getTime()));
             
             List<DotHoursRemaining> dataList= dotHoursRemainingReportCriteria.getMainDataset();
 //            System.out.println("{");

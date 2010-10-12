@@ -30,7 +30,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
+import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.hos.model.TenHoursViolation;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -85,7 +85,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         	
         	DateTimeZone dtzMock;
         	DateTimeUtil dtuMock;
-        	GroupHierarchy groupHierarchyMock;
+        	GroupHierarchyForReports groupHierarchyMock;
         	
            {
               groupDAOMock.findByID(GROUP_ID); returns(groupMock);
@@ -105,7 +105,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
               
               waysmartDAOMock.getTenHoursViolations(anyInt, INTERVAL); returns(getViolationList());
             
-              new GroupHierarchy(groupMock, groupList); // We expect this constructor to be called,
+              new GroupHierarchyForReports(groupMock, groupList); // We expect this constructor to be called,
               groupHierarchyMock.getFullName(GROUP_ID); returns(GROUP_FULL_NAME); // and then this method.
            }
            

@@ -15,9 +15,10 @@ import org.joda.time.Interval;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
+import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -28,13 +29,12 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
     {
         super(ReportType.PAYROLL_SIGNOFF, locale);
     }
-    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        Account account = accountDAO.findByID(topGroup.getAccountID());
+        Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
+
         
-        List<Group> reportGroupList = getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : reportDriverList) {
@@ -44,35 +44,32 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
             driverHOSRecordMap.put(driver, driverHOSRecordList);
         }
         
-        initDataSet(interval, account, topGroup, groupList, driverHOSRecordMap);
+        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
 
     }
 
-    public void init(Integer driverID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
     {
+        Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
         Driver driver = getDriverDAO().findByID(driverID);
-        Group topGroup = groupDAO.findByID(driver.getGroupID());
-        Account account = accountDAO.findByID(topGroup.getAccountID());
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 0, 1);
         List<HOSRecord> driverHOSRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         driverHOSRecordMap.put(driver, driverHOSRecordList);
-        initDataSet(interval, account, topGroup, groupList, driverHOSRecordMap);
+        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
 
     }
     
-    void initDataSet(Interval interval, Account account, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         super.initDataSet(interval, account);
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
 
         Date currentTime = new Date();
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
         
-            List<PayrollData> driverDataList = getDriverPayrollData(interval, groupHierarchy, currentTime, entry.getKey(), entry.getValue());
+            List<PayrollData> driverDataList = getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue());
             Collections.sort(driverDataList);
             dataList.addAll(driverDataList);
         }

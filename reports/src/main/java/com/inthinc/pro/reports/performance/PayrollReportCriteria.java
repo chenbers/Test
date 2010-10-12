@@ -25,11 +25,11 @@ import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
@@ -67,7 +67,7 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
         
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
         Group group = groupHierarchy.getGroup(driver.getGroupID());
-        String groupName = groupHierarchy.getFullName(group);
+        String groupName = getFullGroupName(groupHierarchy, group.getGroupID());
         String groupAddress = group.getAddress() == null ? "" : group.getAddress().getDisplayString();
         
         String driverName = driver.getPerson().getFullNameLastFirst();

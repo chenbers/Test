@@ -42,24 +42,25 @@ public class HosReportsBean extends ReportsBean {
         switch (reportGroup.getReports()[0]) {
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
-                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(params.getDriverID(), 
+                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), 
                         params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
                 else
-                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getUser().getGroupID(), 
+                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(),  
                             params.getGroupIDList(), 
                             params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
                 break;
                 
             case HOS_VIOLATIONS_SUMMARY_REPORT:
-                reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 break;
             case HOS_VIOLATIONS_DETAIL_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
-                    reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getUser().getGroupID(), params.getDriverID(), params.getDateRange().getInterval(), 
+                    reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
+                       params.getDriverID(), params.getDateRange().getInterval(), 
                         params.getLocale()));
                 else
-                    reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getUser().getGroupID(), 
+                    reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
                             params.getGroupIDList(), params.getDateRange().getInterval(), 
                             params.getLocale()));
                 break;
@@ -68,15 +69,15 @@ public class HosReportsBean extends ReportsBean {
                         params.getLocale()));
                 break;
             case DOT_HOURS_REMAINING:
-                reportCriteriaList.add(getReportCriteriaService().getDotHoursRemainingReportCriteria(getUser().getGroupID(), params.getGroupIDList(),  
+                reportCriteriaList.add(getReportCriteriaService().getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(),  
                         params.getLocale()));
                 break;
             case HOS_ZERO_MILES:
-                reportCriteriaList.add(getReportCriteriaService().getHosZeroMilesReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getHosZeroMilesReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             case HOS_EDITS:
-                reportCriteriaList.add(getReportCriteriaService().getHosEditsReportCriteria(getUser().getGroupID(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getHosEditsReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
                 

@@ -24,10 +24,10 @@ import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
@@ -44,37 +44,9 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
     {
         super(ReportType.HOS_VIOLATIONS_SUMMARY_REPORT, locale);
     }
-    
-    public void init(Integer groupID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(groupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = getDriverDAO().getDrivers(groupID);
-        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
-        for (Driver driver : driverList) {
-            if (driver.getDot() == null)
-                continue;
-            
-            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
-            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
-            
-        }
-        
-        List<HOSGroupMileage> groupMileageList = hosDAO.getHOSMileage(groupID, interval, false);
-        List<HOSGroupMileage> groupNoDriverMileageList = hosDAO.getHOSMileage(groupID, interval, true);
-
-        initDataSet(interval, topGroup, groupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
-
-    }
-    
-    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
-    {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        
-        List<Group> reportGroupList = getReportGroupList(groupIDList, groupHierarchy);
+        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
@@ -95,29 +67,17 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             groupNoDriverMileageList.addAll(hosDAO.getHOSMileage(reportGroup.getGroupID(), interval, true));
         }
 
-        initDataSet(interval, groupHierarchy, reportGroupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
+        initDataSet(interval, accountGroupHierarchy, reportGroupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
         
     }
 
-    void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap,
-            List<HOSGroupMileage> groupMileageList, List<HOSGroupMileage> groupNoDriverMileageList) {
-        
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        List<Group> reportGroupList = groupHierarchy.getChildren(topGroup);
-        
-        reportGroupList.add(0, topGroup);
-
-        initDataSet(interval, groupHierarchy, reportGroupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
-
-    }
-    
     void initDataSet(Interval interval, GroupHierarchy groupHierarchy,  List<Group> reportGroupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap,
             List<HOSGroupMileage> groupMileageList, List<HOSGroupMileage> groupNoDriverMileageList)
     {
         
         Map<Integer, HosViolationsSummary> dataMap = new TreeMap<Integer, HosViolationsSummary>();
         for (Group group : reportGroupList) {
-            dataMap.put(group.getGroupID(), new HosViolationsSummary(groupHierarchy.getFullName(group)));
+            dataMap.put(group.getGroupID(), new HosViolationsSummary(getFullGroupName(groupHierarchy, group.getGroupID())));
         }
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();

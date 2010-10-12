@@ -43,12 +43,12 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosDailyDriverLog;
 import com.inthinc.pro.reports.hos.model.Recap;
 import com.inthinc.pro.reports.hos.model.RecapCanada;
@@ -90,14 +90,10 @@ public class HosDailyDriverLogReportCriteria {
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
 
-    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        List<Group> reportGroupList = this.getReportGroupList(groupIDList, groupHierarchy);
-        List<Driver> reportDriverList = this.getReportDriverList(reportGroupList);
+        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
+        List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
@@ -112,7 +108,7 @@ public class HosDailyDriverLogReportCriteria {
                     account.setAddress(addressDAO.findByID(account.getAddressID()));
                 }
                 Group group = groupDAO.findByID(driver.getGroupID());
-                group.setAddress(getTerminalAddress(group, groupHierarchy)); 
+                group.setAddress(getTerminalAddress(group, accountGroupHierarchy)); 
                 Integer driverID = driver.getDriverID();
                 List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
                 List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, expandedInterval);
@@ -157,14 +153,16 @@ public class HosDailyDriverLogReportCriteria {
         if (group != null && !reportGroupList.contains(group))
             reportGroupList.add(group);
         List<Group> childGroupList = groupHierarchy.getChildren(group);
-        for (Group childGroup : childGroupList) {
-            addGroupAndChildren(groupHierarchy, reportGroupList, childGroup.getGroupID());
+        if (childGroupList != null) {
+            for (Group childGroup : childGroupList) {
+                addGroupAndChildren(groupHierarchy, reportGroupList, childGroup.getGroupID());
+            }
         }
     }
 
 
 
-    public void init(Integer driverID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
     {
         Driver driver = driverDAO.findByID(driverID);
         Account account = accountDAO.findByID(driver.getPerson().getAcctID());

@@ -15,9 +15,10 @@ import org.joda.time.Interval;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
+import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -29,35 +30,12 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
         super(ReportType.PAYROLL_DETAIL, locale);
     }
 
-    public void init(Integer groupID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
     {
 
-        Group topGroup = groupDAO.findByID(groupID);
-        Account account = accountDAO.findByID(topGroup.getAccountID());
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = getDriverDAO().getDrivers(groupID);
-        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
-        for (Driver driver : driverList) {
-            if (driver.getDot() == null)
-                continue;
-            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
-            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
-        }
+        Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
 
-        
-        initDataSet(interval, account, topGroup, groupList, driverHOSRecordMap);
-    }
-
-    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
-    {
-
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        Account account = accountDAO.findByID(topGroup.getAccountID());
-        
-        
-        List<Group> reportGroupList = this.getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        List<Group> reportGroupList = this.getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = this.getReportDriverList(reportGroupList);
         
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
@@ -68,23 +46,21 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
             Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
         }
-
         
-        initDataSet(interval, account, topGroup, groupList, driverHOSRecordMap);
+        initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
     }
     
     
-    void initDataSet(Interval interval, Account account, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         super.initDataSet(interval, account);
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
 
         Date currentTime = new Date();
         
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
-            dataList.addAll(getDriverPayrollData(interval, groupHierarchy, currentTime, entry.getKey(), entry.getValue()));
+            dataList.addAll(getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue()));
 
         }
         

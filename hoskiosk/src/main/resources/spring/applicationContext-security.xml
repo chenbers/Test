@@ -45,6 +45,7 @@
     <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
         <beans:property name="personDAO" ref="personDAO"/>
         <beans:property name="driverDAO" ref="driverDAO"/>
+        <beans:property name="groupDAO" ref="groupDAO"/>
     </beans:bean>
 
     <!--  Password encryption  (none)-->

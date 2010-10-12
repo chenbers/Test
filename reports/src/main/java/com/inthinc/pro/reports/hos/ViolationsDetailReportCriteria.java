@@ -26,10 +26,10 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
@@ -51,50 +51,24 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
 
-    public void init(Integer userGroupID, Integer driverID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         List<Driver> driverList = new ArrayList<Driver>();
 
         driverList.add(getDriverDAO().findByID(driverID));
-        init(topGroup, groupList, driverList, interval);
+        initDrivers(accountGroupHierarchy, driverList, interval);
     }
-    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        
-        List<Group> reportGroupList = getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 
 
-        init(topGroup, groupList, reportDriverList, interval);
+        initDrivers(accountGroupHierarchy, reportDriverList, interval);
     }
     
     
-    public void init(List<Integer> driverIDList, Interval interval)
-    {
-        Group topGroup = null;
-        List<Group> groupList = null;
-        List<Driver> driverList = new ArrayList<Driver>();
-        for (Integer driverID : driverIDList) {
-            Driver driver = getDriverDAO().findByID(driverID);
-            if (topGroup == null) {
-                groupList = groupDAO.getGroupsByAcctID(driver.getPerson().getAcctID());
-                for (Group group : groupList) {
-                    if (group.getParentID() == null || group.getParentID() == -1) {
-                        topGroup = group;
-                        break;
-                    }
-                }
-            }
-            driverList.add(driver);
-        }
-        init(topGroup, groupList, driverList, interval);
-    }
-    
-    private void init(Group topGroup, List<Group> groupList, List<Driver> driverList, Interval interval)
+    private void initDrivers(GroupHierarchy accountGroupHierarchy, List<Driver> driverList, Interval interval)
     {
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         
@@ -114,7 +88,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
             }
         }
         
-        initDataSet(interval, topGroup, groupList, driverHOSRecordMap);
+        initDataSet(interval, accountGroupHierarchy, driverHOSRecordMap);
 
     }
 
@@ -139,10 +113,8 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
         return statusFilterList;
     }
 
-    void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    void initDataSet(Interval interval, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-
         List<ViolationsDetailRaw> violationDetailList = new ArrayList<ViolationsDetailRaw>();
         
         DateTime currentTime = new DateTime(DateTimeZone.UTC);
@@ -158,7 +130,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
             List<HOSRec> recListForViolationsCalc = HOSUtil.getRecListFromLogList(entry.getValue(), reportEndDate.toDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
 
             // violations
-            addDriverViolations(interval, groupHierarchy, violationDetailList, driver, driverTimeZone, driverDOTType, recListForViolationsCalc);
+            addDriverViolations(interval, accountGroupHierarchy, violationDetailList, driver, driverTimeZone, driverDOTType, recListForViolationsCalc);
 
         }
         Collections.sort(violationDetailList);
@@ -173,7 +145,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
     }
 
 
-    protected abstract void addDriverViolations(Interval interval, GroupHierarchy groupHierarchy, List<ViolationsDetailRaw> violationDetailList, 
+    protected abstract void addDriverViolations(Interval interval, GroupHierarchy accountGroupHierarchy, List<ViolationsDetailRaw> violationDetailList, 
             Driver driver, DateTimeZone driverTimeZone,
             RuleSetType driverDOTType, List<HOSRec> recListForViolationsCalc);
 
@@ -194,7 +166,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
             ViolationsDetailRaw hosViolationsDetail = new ViolationsDetailRaw();
             hosViolationsDetail.setDriverName(driver.getPerson().getFullNameLastFirst());
             hosViolationsDetail.setEmployeeId(driver.getPerson().getEmpid());
-            hosViolationsDetail.setGroupName(groupHierarchy.getFullName(groupHierarchy.getGroup(driver.getGroupID())));
+            hosViolationsDetail.setGroupName(getFullGroupName(groupHierarchy, driver.getGroupID()));
             hosViolationsDetail.setNotificationTime(violationData.getHosViolationRec().getLogTimeDate());
             hosViolationsDetail.setVehicleId(violationData.getHosViolationRec().getVehicleID());
             hosViolationsDetail.setRuleType(violationData.getHosViolationRec().getRuleType());

@@ -67,8 +67,11 @@ public class ProUserServiceImpl implements UserDetailsService
             proUser.setAdmin(isAdmin);
             
             Group topGroup = groupDAO.findByID(user.getGroupID());
-            List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), user.getGroupID());                  
+            List<Group> accountGroupList = groupDAO.getGroupsByAcctID(topGroup.getAccountID());
+            proUser.setAccountGroupHierarchy(new GroupHierarchy(accountGroupList));
+            List<Group> groupList = getUserGroupList(accountGroupList, user.getGroupID());                  
             proUser.setGroupHierarchy(new GroupHierarchy(groupList));
+            
             
             List<Zone> zoneList = zoneDAO.getZones(user.getPerson().getAcctID());
             proUser.setZones(zoneList);
@@ -88,6 +91,35 @@ public class ProUserServiceImpl implements UserDetailsService
             throw new UsernameNotFoundException("Username could not be found");
         }
     }
+
+    private List<Group> getUserGroupList(List<Group> accountGroupList, Integer groupID) {
+        List <Group> groupList = new ArrayList<Group>();
+        for (Group group : accountGroupList)
+        {
+            if (group.getGroupID().equals(groupID))
+            {
+                groupList.add(group);
+                addChildren(accountGroupList, groupList, group.getGroupID());
+                break;
+            }
+        }
+
+        return groupList;
+    }
+    
+    private void addChildren(List<Group> allGroups , List<Group> groupList, Integer parentID)
+    {
+        for (Group group : allGroups)
+        {
+            if (group.getParentID().equals(parentID))
+            {
+                groupList.add(group);
+                addChildren(allGroups, groupList, group.getGroupID());
+            }
+        }
+        
+    }
+
 
     private User lookup(String username)
     {

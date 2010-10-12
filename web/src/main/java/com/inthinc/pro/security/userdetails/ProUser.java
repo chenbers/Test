@@ -25,6 +25,7 @@ public class ProUser extends org.springframework.security.userdetails.User
 
     private User user;
     private GroupHierarchy groupHierarchy;
+    private GroupHierarchy accountGroupHierarchy;
     private List<Zone>     zones;
     private Driver	unknownDriver;
     private boolean isAdmin;
@@ -70,6 +71,15 @@ public class ProUser extends org.springframework.security.userdetails.User
     {
         this.groupHierarchy = groupHierarchy;
     }
+
+    public GroupHierarchy getAccountGroupHierarchy() {
+        return accountGroupHierarchy;
+    }
+
+    public void setAccountGroupHierarchy(GroupHierarchy accountGroupHierarchy) {
+        this.accountGroupHierarchy = accountGroupHierarchy;
+    }
+
     public List<Zone> getZones() {
         return zones;
     }

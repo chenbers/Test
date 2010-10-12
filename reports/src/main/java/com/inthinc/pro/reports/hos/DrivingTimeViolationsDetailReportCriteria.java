@@ -13,8 +13,8 @@ import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
 public class DrivingTimeViolationsDetailReportCriteria extends ViolationsDetailReportCriteria {
@@ -22,13 +22,14 @@ public class DrivingTimeViolationsDetailReportCriteria extends ViolationsDetailR
     public DrivingTimeViolationsDetailReportCriteria(Locale locale) {
         super(ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT, locale);
     }
+    
 
     @Override
-    protected void addDriverViolations(Interval interval, GroupHierarchy groupHierarchy, List<ViolationsDetailRaw> violationDetailList, Driver driver, DateTimeZone driverTimeZone,
+    protected void addDriverViolations(Interval interval, GroupHierarchy accountGroupHierarchy, List<ViolationsDetailRaw> violationDetailList, Driver driver, DateTimeZone driverTimeZone,
             RuleSetType driverDOTType, List<HOSRec> recListForViolationsCalc) {
         List<ViolationsData> shiftViolations = new ShiftViolations().getHosViolationsInTimeFrame(interval, driverTimeZone.toTimeZone(), driverDOTType, RuleSetType.SLB_INTERNAL,
                 recListForViolationsCalc);
-        addViolations(violationDetailList, driver, shiftViolations, groupHierarchy);
+        addViolations(violationDetailList, driver, shiftViolations, accountGroupHierarchy);
     }
 
     @Override

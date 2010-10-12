@@ -33,6 +33,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -536,7 +537,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }    
 
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -544,12 +545,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         hosDailyDriverLogReportCriteria.setHosDAO(hosDAO);
         hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
         
-        hosDailyDriverLogReportCriteria.init(driverID, interval);
+        hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
         
     }
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy,  List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -557,54 +558,43 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         hosDailyDriverLogReportCriteria.setHosDAO(hosDAO);
         hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
         
-        hosDailyDriverLogReportCriteria.init(userGroupID, groupIDList, interval);
+        hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
         
     }
 
     @Override
-    public ReportCriteria getHosViolationsSummaryReportCriteria(Integer groupID, Interval interval, Locale locale) {
+    public ReportCriteria getHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
         HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria (locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(groupID, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
 
     @Override
-    public ReportCriteria getHosViolationsSummaryReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale) {
-        HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria (locale);
-        criteria.setDriverDAO(driverDAO);
-        criteria.setGroupDAO(groupDAO);
-        criteria.setHosDAO(hosDAO);
-               
-        criteria.init(userGroupID, groupIDList, interval);
-        return criteria;
-    }
-
-    @Override
-    public ReportCriteria getHosViolationsDetailReportCriteria(Integer userGroupID, Integer driverID, Interval interval, Locale locale) {
+    public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
         
         HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria (locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(userGroupID, driverID, interval);
+        criteria.init(accountGroupHierarchy, driverID, interval);
         return criteria;
     }
     
     @Override
-    public ReportCriteria getHosViolationsDetailReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale) {
+    public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
         
         HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria (locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(userGroupID, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
     
@@ -619,105 +609,57 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
     }
 
+    
+
     @Override
-    public ReportCriteria getDotHoursRemainingReportCriteria(Integer groupID, Locale locale)
-    {
-        
+    public ReportCriteria getDotHoursRemainingReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Locale locale) {
         DotHoursRemainingReportCriteria criteria = new DotHoursRemainingReportCriteria(locale);
         
         criteria.setGroupDAO(groupDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(groupID);
-        return criteria;
-    }
-
-    @Override
-    public ReportCriteria getDotHoursRemainingReportCriteria(Integer userGroupID, List<Integer> groupIDList, Locale locale) {
-        DotHoursRemainingReportCriteria criteria = new DotHoursRemainingReportCriteria(locale);
-        
-        criteria.setGroupDAO(groupDAO);
-        criteria.setDriverDAO(driverDAO);
-        criteria.setHosDAO(hosDAO);
-               
-        criteria.init(userGroupID, groupIDList);
+        criteria.init(accountGroupHierarchy, groupIDList);
         return criteria;
     }
 
     
     @Override
-    public ReportCriteria getHosZeroMilesReportCriteria(Integer groupID, Interval interval, Locale locale)
-    {
+    public ReportCriteria getHosZeroMilesReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
         HosZeroMilesReportCriteria criteria = new HosZeroMilesReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(groupID, interval);
-        return criteria;
-        
-    }
-    
-    @Override
-    public ReportCriteria getHosZeroMilesReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale) {
-        HosZeroMilesReportCriteria criteria = new HosZeroMilesReportCriteria(locale);
-        criteria.setGroupDAO(groupDAO);
-        criteria.setHosDAO(hosDAO);
-               
-        criteria.init(userGroupID, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
 
+
     @Override
-    public ReportCriteria getHosEditsReportCriteria(Integer groupID, Interval interval, Locale locale) {
+    public ReportCriteria getHosEditsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
         HosEditsReportCriteria criteria  = new HosEditsReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(groupID, interval);
-        return criteria;
-    }
-
-    @Override
-    public ReportCriteria getHosEditsReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale) {
-        HosEditsReportCriteria criteria  = new HosEditsReportCriteria(locale);
-        criteria.setGroupDAO(groupDAO);
-        criteria.setDriverDAO(driverDAO);
-        criteria.setHosDAO(hosDAO);
-               
-        criteria.init(userGroupID, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
     
     @Override
-    public ReportCriteria getPayrollDetailReportCriteria(Integer groupID, Interval interval, Locale locale)
-    {
+    public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
         PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(groupID, interval);
-        return criteria;
-        
-    }
-    
-    @Override
-    public ReportCriteria getPayrollDetailReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale) {
-        PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(locale);
-        criteria.setAccountDAO(accountDAO);
-        criteria.setDriverDAO(driverDAO);
-        criteria.setGroupDAO(groupDAO);
-        criteria.setHosDAO(hosDAO);
-               
-        criteria.init(userGroupID, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
     
     @Override
-    public ReportCriteria getPayrollSignoffReportCriteria(Integer driverID, Interval interval, Locale locale)
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale)
     {
         PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
@@ -725,12 +667,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(driverID, interval);
+        criteria.init(accountGroupHierarchy, driverID, interval);
         return criteria;
         
     }
     @Override
-    public ReportCriteria getPayrollSignoffReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale)
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale)
     {
         PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
@@ -738,33 +680,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(userGroupID, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
         
     }
 
+
     @Override
-    public ReportCriteria getPayrollSummaryReportCriteria(Integer groupID, Interval interval, Locale locale) {
+    public ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
         PayrollSummaryReportCriteria criteria = new PayrollSummaryReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
                
-        criteria.init(groupID, interval);
-        return criteria;
-    }
-
-
-    @Override
-    public ReportCriteria getPayrollSummaryReportCriteria(Integer userGroupID, List<Integer> groupIDList, Interval interval, Locale locale) {
-        PayrollSummaryReportCriteria criteria = new PayrollSummaryReportCriteria(locale);
-        criteria.setAccountDAO(accountDAO);
-        criteria.setDriverDAO(driverDAO);
-        criteria.setGroupDAO(groupDAO);
-        criteria.setHosDAO(hosDAO);
-               
-        criteria.init(userGroupID, groupIDList, interval);
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
 

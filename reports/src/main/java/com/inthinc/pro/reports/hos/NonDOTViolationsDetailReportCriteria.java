@@ -11,8 +11,8 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.violations.NonDOTShiftViolations;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
 public class NonDOTViolationsDetailReportCriteria extends ViolationsDetailReportCriteria {
@@ -27,7 +27,7 @@ public class NonDOTViolationsDetailReportCriteria extends ViolationsDetailReport
     
 
     @Override
-    protected void addDriverViolations(Interval interval, GroupHierarchy groupHierarchy, List<ViolationsDetailRaw> violationDetailList, 
+    protected void addDriverViolations(Interval interval, GroupHierarchy accountGroupHierarchy, List<ViolationsDetailRaw> violationDetailList, 
             Driver driver, DateTimeZone driverTimeZone,
             RuleSetType driverDOTType, List<HOSRec> recListForViolationsCalc) {
             // violations
@@ -36,7 +36,7 @@ public class NonDOTViolationsDetailReportCriteria extends ViolationsDetailReport
                     driverDOTType, 
                     null,  
                     recListForViolationsCalc);
-            addViolations(violationDetailList, driver, shiftViolations, groupHierarchy);
+            addViolations(violationDetailList, driver, shiftViolations, accountGroupHierarchy);
     }
 
 }

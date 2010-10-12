@@ -37,7 +37,7 @@ public class HosEditsReportCriteriaTest extends BaseUnitTest {
       for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
             HosEditsReportCriteria hosEditsReportCriteria = new HosEditsReportCriteria(Locale.US);
-            hosEditsReportCriteria.initDataSet(testData.topGroup, testData.groupList, testData.interval, testData.driverHOSRecordMap);
+            hosEditsReportCriteria.initDataSet(testData.getGroupHierarchy(), testData.interval, testData.driverHOSRecordMap);
             
             List<HosEdit> dataList= hosEditsReportCriteria.getMainDataset();
 //            System.out.println("{");

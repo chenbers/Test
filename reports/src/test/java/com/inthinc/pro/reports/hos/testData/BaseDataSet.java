@@ -13,6 +13,7 @@ import java.util.Map;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 
 public class BaseDataSet {
     
@@ -69,10 +70,20 @@ public class BaseDataSet {
     protected Integer calcGroupID(Map<String, Integer> groupIdMap, String gainGroupID) {
         Integer groupID = groupIDMap.get(gainGroupID);
         if (groupID == null) {
-            groupID = groupIDMap.size();
+            groupID = groupIDMap.size()+1;
             groupIDMap.put(gainGroupID, groupID);
         }
         return groupID;
+    }
+    public GroupHierarchy getGroupHierarchy()
+    {
+        List<Group> hierarchyGroupList = new ArrayList<Group>();
+        hierarchyGroupList.add(topGroup);
+        for (Group group : groupList)
+            hierarchyGroupList.add(group);
+        
+        return new GroupHierarchy(hierarchyGroupList);
+        
     }
 
 }

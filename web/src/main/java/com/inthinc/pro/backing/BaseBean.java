@@ -87,6 +87,9 @@ public class BaseBean implements Serializable {
     public GroupHierarchy getGroupHierarchy() {
         return getProUser().getGroupHierarchy();
     }
+    public GroupHierarchy getAccountGroupHierarchy() {
+        return getProUser().getAccountGroupHierarchy();
+    }
     public Integer getAccountID() {
         return getProUser().getGroupHierarchy().getTopGroup().getAccountID();
     }

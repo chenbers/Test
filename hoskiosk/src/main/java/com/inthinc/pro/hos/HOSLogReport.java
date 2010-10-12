@@ -7,21 +7,25 @@ import java.util.List;
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
 public class HOSLogReport extends HOSBase{
 
-    public HOSLogReport(HOSDAO hosDAO) {
+    private GroupHierarchy groupHierarchy;
+    public HOSLogReport(HOSDAO hosDAO, GroupHierarchy groupHierarchy) {
         super(hosDAO);
+        this.groupHierarchy = groupHierarchy;
     }
 
     public List<ReportCriteria>  generateReport(ReportCriteriaService reportCriteriaService, Driver driver, DateRange dateRange) {
         
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-        reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(driver.getDriverID(), 
-                        dateRange.getInterval(), driver.getPerson().getLocale(), driver.getPerson().getMeasurementType() == MeasurementType.METRIC));
+        reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(groupHierarchy, driver.getDriverID(), 
+                        dateRange.getInterval(), driver.getPerson().getLocale(), 
+                        driver.getPerson().getMeasurementType() == MeasurementType.METRIC));
         for (ReportCriteria reportCriteria : reportCriteriaList) {
             reportCriteria.setReportDate(new Date(), driver.getPerson().getTimeZone());
             reportCriteria.setLocale(driver.getPerson().getLocale());

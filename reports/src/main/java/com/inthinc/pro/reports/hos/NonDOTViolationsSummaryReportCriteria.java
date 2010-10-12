@@ -22,9 +22,9 @@ import com.inthinc.hos.violations.NonDOTShiftViolations;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.NonDOTViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
 import com.inthinc.pro.reports.util.DateTimeUtil;
@@ -37,32 +37,33 @@ public class NonDOTViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         super(ReportType.NON_DOT_VIOLATIONS_SUMMARY_REPORT, locale);
     }
     
-    public void init(Integer groupID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(groupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-        List<Driver> driverList = getDriverDAO().getDrivers(groupID);
+        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
+        List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
             if (driver.getDot() == null)
                 continue;
+            
             DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
             driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
+            
         }
-        initDataSet(interval, topGroup, groupList, driverHOSRecordMap);
+        
 
+        initDataSet(interval, accountGroupHierarchy, reportGroupList, driverHOSRecordMap);
+        
     }
-    
-    void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+
+  
+    void initDataSet(Interval interval, GroupHierarchy groupHierarchy,  List<Group> reportGroupList,  Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        List<Group> childGroupList = groupHierarchy.getChildren(topGroup);
         
         Map<Integer, NonDOTViolationsSummary> dataMap = new TreeMap<Integer, NonDOTViolationsSummary>();
-        dataMap.put(topGroup.getGroupID(), new NonDOTViolationsSummary(topGroup.getName()));
-        for (Group group : childGroupList) {
-            dataMap.put(group.getGroupID(), new NonDOTViolationsSummary(groupHierarchy.getFullName(group)));
+        for (Group group : reportGroupList) {
+            dataMap.put(group.getGroupID(), new NonDOTViolationsSummary(getFullGroupName(groupHierarchy, group.getGroupID())));
         }
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();

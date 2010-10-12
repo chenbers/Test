@@ -7,17 +7,17 @@ import java.util.Map;
 
 import com.inthinc.pro.model.Group;
 
-public class GroupHierarchy {
+public class GroupHierarchyForReports {
 
     Map<Integer, Group> groupMap;
     Group topGroup;
 
-    public GroupHierarchy()
+    public GroupHierarchyForReports()
     {
         groupMap = new HashMap<Integer,Group>();
     }
     
-    public GroupHierarchy(Group parentGroup, List<Group> descendentsList)
+    public GroupHierarchyForReports(Group parentGroup, List<Group> descendentsList)
     {
         groupMap = new HashMap<Integer,Group>();
         groupMap.put(parentGroup.getGroupID(), parentGroup);

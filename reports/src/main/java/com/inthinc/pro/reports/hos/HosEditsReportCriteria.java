@@ -22,10 +22,10 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosEdit;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
@@ -51,33 +51,12 @@ public class HosEditsReportCriteria extends GroupListReportCriteria implements T
         addedTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS").withLocale(locale);
     }
     
-    public void init(Integer groupID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(groupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-
-        List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
-        init(groupHierarchy, driverList, interval);
-        
-    }
-    public void init(Integer userGroupID, List<Integer> groupIDList, Interval interval)
-    {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        
-        List<Group> reportGroupList = getReportGroupList(groupIDList, groupHierarchy);
+        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
                     
         List<Driver> driverList = getReportDriverList(reportGroupList);
-        init(groupHierarchy, driverList, interval);
-        
-    }
 
-    public void init(GroupHierarchy groupHierarchy, List<Driver> driverList, Interval interval)
-    {
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         
         if (driverList != null) {
@@ -89,27 +68,18 @@ public class HosEditsReportCriteria extends GroupListReportCriteria implements T
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false));
             }
         }
-        initDataSet(groupHierarchy, interval, driverHOSRecordMap);
+        initDataSet(accountGroupHierarchy, interval, driverHOSRecordMap);
 
     }
     
-    void initDataSet(Group topGroup, List<Group> groupList, Interval interval, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
+    void initDataSet(GroupHierarchy accountGroupHierarchy, Interval interval, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
-        
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
-        initDataSet(groupHierarchy, interval, driverHOSRecordMap);
-    }
-    
-    void initDataSet(GroupHierarchy groupHierarchy, Interval interval, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
-    {
-        
-        
         List<HosEdit> hosEditList = new ArrayList<HosEdit>();
         
         
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
-            String driverGroupName = groupHierarchy.getFullName(driver.getGroupID());
+            String driverGroupName = getFullGroupName(accountGroupHierarchy, driver.getGroupID());
             String driverName = driver.getPerson().getFullNameLastFirst();
             List<HOSRecord> hosRecordList = entry.getValue();
             Collections.sort(hosRecordList);

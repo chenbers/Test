@@ -3,6 +3,7 @@ package com.inthinc.pro.security.userdetails;
 import org.springframework.security.GrantedAuthority;
 
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Status;
 
 public class ProUser extends org.springframework.security.userdetails.User
@@ -16,6 +17,7 @@ public class ProUser extends org.springframework.security.userdetails.User
 //    private static final Logger logger = Logger.getLogger(ProUser.class);
 
     private Driver driver;
+    private GroupHierarchy accountGroupHierarchy;
   
     public ProUser(Driver driver, GrantedAuthority[] grantedAuthorities) throws IllegalArgumentException
     {
@@ -36,6 +38,14 @@ public class ProUser extends org.springframework.security.userdetails.User
 
     public void setDriver(Driver driver) {
         this.driver = driver;
+    }
+
+    public GroupHierarchy getAccountGroupHierarchy() {
+        return accountGroupHierarchy;
+    }
+
+    public void setAccountGroupHierarchy(GroupHierarchy accountGroupHierarchy) {
+        this.accountGroupHierarchy = accountGroupHierarchy;
     }
 
 }

@@ -23,7 +23,7 @@ import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.DriverHours;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
+import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class DriverHoursReportCriteria extends ReportCriteria {
@@ -63,7 +63,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	
 	void initDataSet(Group topGroup, List<Group> groupList, Interval interval,
 			Map<Driver, List<DriverHoursRecord>> recordMap) {
-		GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
+		GroupHierarchyForReports groupHierarchy = new GroupHierarchyForReports(topGroup, groupList);
 
 		List<DriverHours> driverHoursList = new ArrayList<DriverHours>();
 

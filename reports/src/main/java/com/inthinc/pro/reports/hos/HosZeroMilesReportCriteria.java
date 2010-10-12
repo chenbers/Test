@@ -13,11 +13,11 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
@@ -39,40 +39,27 @@ public class HosZeroMilesReportCriteria extends GroupListReportCriteria implemen
 
     }
     
-    public void init(Integer groupID, Interval interval)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer>groupIDList, Interval interval)
     {
-        Group topGroup = groupDAO.findByID(groupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
 
-        List<HOSVehicleMileage>  groupNoDriverMileageList = hosDAO.getHOSVehicleMileage(groupID, interval, true);
-
-        initDataSet(interval, topGroup, groupList,  groupNoDriverMileageList);
-    }
-
-    public void init(Integer userGroupID, List<Integer>groupIDList, Interval interval)
-    {
-        Group topGroup = groupDAO.findByID(userGroupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
-
-        List<Group> reportGroupList = this.getReportGroupList(groupIDList, new GroupHierarchy(topGroup, groupList));
+        List<Group> reportGroupList = this.getReportGroupList(groupIDList, accountGroupHierarchy);
         List<HOSVehicleMileage>  groupNoDriverMileageList = new ArrayList<HOSVehicleMileage>(); 
             
         for (Group reportGroup : reportGroupList)
             groupNoDriverMileageList.addAll(hosDAO.getHOSVehicleMileage(reportGroup.getGroupID(), interval, true));
 
-        initDataSet(interval, topGroup, groupList,  groupNoDriverMileageList);
+        initDataSet(interval, accountGroupHierarchy,  groupNoDriverMileageList);
     }
 
     
-    void initDataSet(Interval interval, Group topGroup,  List<Group> groupList, 
+    void initDataSet(Interval interval, GroupHierarchy accountGroupHierarchy, 
             List<HOSVehicleMileage> groupUnitNoDriverMileageList)
     {
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);
          
         List<HosZeroMiles> dataList = new ArrayList<HosZeroMiles>();
         for (HOSVehicleMileage zeroMileage : groupUnitNoDriverMileageList) {
             
-            dataList.add(new HosZeroMiles(groupHierarchy.getFullName(groupHierarchy.getGroup(zeroMileage.getGroupID())), zeroMileage.getVehicleName(), zeroMileage.getDistance().doubleValue()));
+            dataList.add(new HosZeroMiles(getFullGroupName(accountGroupHierarchy, zeroMileage.getGroupID()), zeroMileage.getVehicleName(), zeroMileage.getDistance().doubleValue()));
             
         }
         Collections.sort(dataList);

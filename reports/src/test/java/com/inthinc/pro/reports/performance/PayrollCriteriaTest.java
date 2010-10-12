@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
@@ -18,8 +17,6 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
-import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
-import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.Result;
 
@@ -356,7 +353,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
             HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
             
             PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(Locale.US);
-            criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, testData.driverHOSRecordMap);
+            criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
             List<PayrollData> dataList = criteria.getMainDataset();
             int eCnt = 0;
             for (PayrollData data : dataList) {
@@ -396,7 +393,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
             
             Map<Driver,List<HOSRecord>> oneDriverMap = new HashMap<Driver,List<HOSRecord>>();
             oneDriverMap.put(driver, entry.getValue());
-            criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, oneDriverMap);
+            criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), oneDriverMap);
 
             if (driver.getPerson().getLast().startsWith("Giem")) {
                 int eCnt = 0;
@@ -441,7 +438,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
         HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
         
         PayrollSummaryReportCriteria criteria = new PayrollSummaryReportCriteria(Locale.US);
-        criteria.initDataSet(testData.interval, testData.account, testData.topGroup, testData.groupList, testData.driverHOSRecordMap);
+        criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
         List<PayrollData> dataList = criteria.getMainDataset();
         int eCnt = 0;
         for (PayrollData data : dataList) {

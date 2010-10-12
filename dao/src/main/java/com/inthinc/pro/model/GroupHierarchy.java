@@ -85,7 +85,11 @@ public class GroupHierarchy implements Serializable
         
     }
     
-    public String getFullGroupName(Integer groupID)
+    public String getFullGroupName(Integer groupID) {
+        return getFullGroupName(groupID, GROUP_SEPERATOR);
+    }
+    
+    public String getFullGroupName(Integer groupID, String separator)
     {
     	StringBuilder builder = new StringBuilder();
     	Group group = groupMap.get(groupID);
@@ -93,10 +97,10 @@ public class GroupHierarchy implements Serializable
     	    return "";
     	if (group.getParentID() != null && group.getParentID().intValue() != 0)
     	{
-    		builder.append(getFullGroupName(group.getParentID()));
+    		builder.append(getFullGroupName(group.getParentID(), separator));
     	}
     	builder.append(group.getName());
-    	builder.append(GROUP_SEPERATOR);
+    	builder.append(separator);
         return builder.toString();
     }
     public List<Group> getChildren(Group parent){

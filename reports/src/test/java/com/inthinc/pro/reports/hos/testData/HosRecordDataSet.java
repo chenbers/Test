@@ -20,6 +20,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSRecord;

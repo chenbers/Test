@@ -23,7 +23,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
+import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.hos.model.TenHoursViolation;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -65,7 +65,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     void initDataSet(Group topGroup, List<Group> groupList, Interval interval, 
             Map<Driver, List<TenHoursViolationRecord>> recordMap)
     {
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, groupList);  
+        GroupHierarchyForReports groupHierarchy = new GroupHierarchyForReports(topGroup, groupList);  
         
         List<TenHoursViolation> violationList = new ArrayList<TenHoursViolation>();
         

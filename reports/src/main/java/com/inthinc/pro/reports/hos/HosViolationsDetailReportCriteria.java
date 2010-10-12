@@ -14,9 +14,9 @@ import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.violations.DailyViolations;
 import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
-import com.inthinc.pro.reports.hos.model.GroupHierarchy;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
@@ -35,21 +35,21 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
 
     
     @Override
-    protected void addDriverViolations(Interval interval, GroupHierarchy groupHierarchy, List<ViolationsDetailRaw> violationDetailList, 
+    protected void addDriverViolations(Interval interval, GroupHierarchy accountGroupHierarchy, List<ViolationsDetailRaw> violationDetailList, 
             Driver driver, DateTimeZone driverTimeZone,
             RuleSetType driverDOTType, List<HOSRec> recListForViolationsCalc) {
         List<ViolationsData> dailyViolations = new DailyViolations().getDailyHosViolationsForReport(interval,
                 driverTimeZone.toTimeZone(),
                 driverDOTType, 
                 recListForViolationsCalc);
-        addViolations(violationDetailList, driver, dailyViolations, groupHierarchy);
+        addViolations(violationDetailList, driver, dailyViolations, accountGroupHierarchy);
 
         List<ViolationsData> shiftViolations = new ShiftViolations().getHosViolationsInTimeFrame(
                 interval, driverTimeZone.toTimeZone(),
                 driverDOTType, 
                 null,  
                 recListForViolationsCalc);
-        addViolations(violationDetailList, driver, shiftViolations, groupHierarchy);
+        addViolations(violationDetailList, driver, shiftViolations, accountGroupHierarchy);
     }
 
 

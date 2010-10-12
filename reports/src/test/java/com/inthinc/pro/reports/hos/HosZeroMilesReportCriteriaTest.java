@@ -2,31 +2,15 @@ package com.inthinc.pro.reports.hos;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
 import com.inthinc.pro.reports.hos.testData.ZeroMilesDataSet;
-import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class HosZeroMilesReportCriteriaTest extends BaseUnitTest {
     public static final String DATA_PATH = "violations/";
@@ -58,7 +42,7 @@ public class HosZeroMilesReportCriteriaTest extends BaseUnitTest {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             ZeroMilesDataSet violationsTestData = new ZeroMilesDataSet(DATA_PATH, testCaseName[testCaseCnt]);
             HosZeroMilesReportCriteria criteria = new HosZeroMilesReportCriteria(Locale.US);
-            criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.groupUnitNoDriverMileageList);
+            criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.groupUnitNoDriverMileageList);
             List<HosZeroMiles> dataList = criteria.getMainDataset();
             int eCnt = 0;
             for (HosZeroMiles hosZeroMiles : dataList) {

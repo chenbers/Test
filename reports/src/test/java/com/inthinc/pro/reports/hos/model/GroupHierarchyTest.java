@@ -38,7 +38,7 @@ public class GroupHierarchyTest {
     
     @Test
     public void hierarchy() {
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, desendantList);
+        GroupHierarchyForReports groupHierarchy = new GroupHierarchyForReports(topGroup, desendantList);
         
         List<Group>childList = groupHierarchy.getChildren(topGroup);
         assertEquals("expected 3 children", 3, childList.size());
@@ -54,7 +54,7 @@ public class GroupHierarchyTest {
     }
     @Test
     public void fullname() {
-        GroupHierarchy groupHierarchy = new GroupHierarchy(topGroup, desendantList);
+        GroupHierarchyForReports groupHierarchy = new GroupHierarchyForReports(topGroup, desendantList);
         
         String fullname = groupHierarchy.getFullName(greatgrandChildGroup1_3_1);
         assertEquals("group fullname", "TOP->CHILD 1->GRANDCHILD 3->GREATGRANDCHILD 3 1", fullname);

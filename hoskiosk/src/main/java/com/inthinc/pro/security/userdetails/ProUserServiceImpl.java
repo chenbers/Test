@@ -14,9 +14,12 @@ import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
@@ -28,6 +31,7 @@ public class ProUserServiceImpl implements UserDetailsService
     
     private PersonDAO personDAO;
     private DriverDAO driverDAO;
+    private GroupDAO groupDAO;
     private HOSDriverLogin hosDriverLogin;
     
 
@@ -52,7 +56,14 @@ public class ProUserServiceImpl implements UserDetailsService
                   throw new UsernameNotFoundException("Driver could not be found");
               } 
             logger.debug("driver is found");
-            return new ProUser(driver, getGrantedAuthorities(driver) );
+            ProUser proUser =  new ProUser(driver, getGrantedAuthorities(driver) );
+            
+            Group topGroup = groupDAO.findByID(driver.getGroupID());
+            List<Group> accountGroupList = groupDAO.getGroupsByAcctID(topGroup.getAccountID());
+            proUser.setAccountGroupHierarchy(new GroupHierarchy(accountGroupList));
+
+            
+            return proUser;
         }
         catch (EmptyResultSetException ex)
         {
@@ -104,6 +115,14 @@ public class ProUserServiceImpl implements UserDetailsService
 
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
     }
 
 }

@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -18,11 +20,14 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
@@ -51,11 +56,14 @@ public class EmailReportJob extends QuartzJobBean {
     private ReportCriteriaService reportCriteriaService;
     private ReportScheduleDAO reportScheduleDAO;
     private UserDAO userDAO;
+    private GroupDAO groupDAO;
     private AccountDAO accountDAO;
 
     private String webContextPath;
     private String encryptPassword;
     private StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
+
+    private Map<Integer, GroupHierarchy> accountGroupHierarchyMap;
 
     private static final long ONE_MINUTE = 60000L;
     private static final DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT"));
@@ -138,6 +146,7 @@ public class EmailReportJob extends QuartzJobBean {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
+            List<Integer> groupIDList = new ArrayList<Integer>();
             switch (reportGroup.getReports()[i]) {
                 case OVERALL_SCORE:
                     reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
@@ -170,16 +179,17 @@ public class EmailReportJob extends QuartzJobBean {
                             DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
                     break;     
                 case HOS_DAILY_DRIVER_LOG_REPORT:
-                    reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(reportSchedule.getDriverID(), 
+                    reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), 
                             timeFrame.getInterval(), user.getPerson().getLocale(), user.getPerson().getMeasurementType() == MeasurementType.METRIC));
                     break;
                     
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), 
+                    groupIDList.add(reportSchedule.getGroupID());
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(), 
                             user.getPerson().getLocale()));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(user.getGroupID(), reportSchedule.getDriverID(), timeFrame.getInterval(), 
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), timeFrame.getInterval(), 
                             user.getPerson().getLocale()));
                     break;
                 case HOS_DRIVER_DOT_LOG_REPORT:
@@ -187,27 +197,32 @@ public class EmailReportJob extends QuartzJobBean {
                             user.getPerson().getLocale()));
                     break;
                 case DOT_HOURS_REMAINING:
-                    reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(reportSchedule.getGroupID(),  
+                    groupIDList.add(reportSchedule.getGroupID());
+                    reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList,  
                             user.getPerson().getLocale()));
                     break;
                 case HOS_ZERO_MILES:
-                    reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                    groupIDList.add(reportSchedule.getGroupID());
+                    reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 case HOS_EDITS:
-                    reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                    groupIDList.add(reportSchedule.getGroupID());
+                    reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 case PAYROLL_DETAIL:
-                    reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                    groupIDList.add(reportSchedule.getGroupID());
+                    reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 case PAYROLL_SIGNOFF:
-                    reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(reportSchedule.getDriverID(), timeFrame.getInterval(),  
+                    reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 case PAYROLL_SUMMARY:
-                    reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                    groupIDList.add(reportSchedule.getGroupID());
+                    reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 default:
@@ -452,6 +467,15 @@ public class EmailReportJob extends QuartzJobBean {
         this.accountDAO = accountDAO;
     }
 
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+
     public void setWebContextPath(String webContextPath) {
         this.webContextPath = webContextPath;
     }
@@ -467,5 +491,25 @@ public class EmailReportJob extends QuartzJobBean {
     public String getEncryptPassword() {
         return encryptPassword;
     }
+    public Map<Integer, GroupHierarchy> getAccountGroupHierarchyMap() {
+        if (accountGroupHierarchyMap == null)
+            accountGroupHierarchyMap = new HashMap<Integer, GroupHierarchy>();
+        return accountGroupHierarchyMap;
+    }
+
+    public void setAccountGroupHierarchyMap(Map<Integer, GroupHierarchy> accountGroupHierarchyMap) {
+        this.accountGroupHierarchyMap = accountGroupHierarchyMap;
+    }
+    
+    public GroupHierarchy getAccountGroupHierarchy(Integer accountID) {
+        Map<Integer, GroupHierarchy> map = getAccountGroupHierarchyMap();
+        if (map.get(accountID) == null) {
+            List<Group> groupList = groupDAO.getGroupsByAcctID(accountID);
+            map.put(accountID, new GroupHierarchy(groupList));
+        }
+        
+        return map.get(accountID);
+    }
+
 
 }

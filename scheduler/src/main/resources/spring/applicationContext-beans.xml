@@ -58,6 +58,7 @@
 				<entry key="reportScheduleDAO" value-ref="reportScheduleDAO"/>
 				<entry key="userDAO" value-ref="userDAO"/>
 				<entry key="accountDAO" value-ref="accountDAO"/>
+				<entry key="groupDAO" value-ref="groupDAO"/>
 				<entry key="webContextPath" value="${contextPath.web}"/>
 				<entry key="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
 			</map>

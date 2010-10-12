@@ -192,7 +192,8 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
 //    
 //}
             HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria(Locale.US);
-            criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap,
+            criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(),
+                    violationsTestData.getGroupHierarchy().getGroupList(), violationsTestData.driverHOSRecordMap,
                     violationsTestData.groupMileageList, violationsTestData.groupNoDriverMileageList);
             List<HosViolationsSummary> dataList = criteria.getMainDataset();
             assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsExpectedData[testCaseCnt].length, dataList.size());
@@ -219,7 +220,8 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             dump("hosViolationsSummaryTest", testCaseCnt + 1, criteria, FormatType.EXCEL);
             // NON-DOT VIOLATIONS
             NonDOTViolationsSummaryReportCriteria nonDOTCriteria = new NonDOTViolationsSummaryReportCriteria(Locale.US);
-            nonDOTCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+            nonDOTCriteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(),
+                    violationsTestData.getGroupHierarchy().getGroupList(), violationsTestData.driverHOSRecordMap);
             dump("nonDOTViolationsTest", testCaseCnt + 1, nonDOTCriteria, FormatType.PDF);
             dump("notDOTViolationsTest", testCaseCnt + 1, nonDOTCriteria, FormatType.EXCEL);
             List<NonDOTViolationsSummary> nonDOTDataList = nonDOTCriteria.getMainDataset();
@@ -232,7 +234,8 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             }
             // DrivingTime VIOLATIONS
             DrivingTimeViolationsSummaryReportCriteria drivingTimeCriteria = new DrivingTimeViolationsSummaryReportCriteria(Locale.US);
-            drivingTimeCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+            drivingTimeCriteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(),
+                    violationsTestData.getGroupHierarchy().getGroupList(),  violationsTestData.driverHOSRecordMap);
             dump("drivingViolationsTest", testCaseCnt + 1, drivingTimeCriteria, FormatType.PDF);
             dump("drivingViolationsTest", testCaseCnt + 1, drivingTimeCriteria, FormatType.EXCEL);
             List<DrivingTimeViolationsSummary> drivingTimeDataList = drivingTimeCriteria.getMainDataset();
@@ -254,7 +257,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
             // HOS VIOLATIONS
             HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(Locale.US);
-            criteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+            criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.driverHOSRecordMap);
             List<ViolationsDetail> dataList = criteria.getMainDataset();
             // for (HosViolationsDetail data : dataList)
             // data.dump();
@@ -267,7 +270,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             dump("hosViolationsDetailTest", testCaseCnt + 1, criteria, FormatType.EXCEL);
             // NON-DOT VIOLATIONS
             NonDOTViolationsDetailReportCriteria nonDOTCriteria = new NonDOTViolationsDetailReportCriteria(Locale.US);
-            nonDOTCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+            nonDOTCriteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.driverHOSRecordMap);
             dataList = nonDOTCriteria.getMainDataset();
             // for (ViolationsDetail data : dataList)
             // data.dump();
@@ -279,7 +282,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             dump("nonDOTViolationsDetailTest", testCaseCnt + 1, nonDOTCriteria, FormatType.EXCEL);
             // Driving Time VIOLATIONS
             DrivingTimeViolationsDetailReportCriteria drivingTimeCriteria = new DrivingTimeViolationsDetailReportCriteria(Locale.US);
-            drivingTimeCriteria.initDataSet(violationsTestData.interval, violationsTestData.topGroup, violationsTestData.groupList, violationsTestData.driverHOSRecordMap);
+            drivingTimeCriteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.driverHOSRecordMap);
             dataList = drivingTimeCriteria.getMainDataset();
             eCnt = 0;
             for (ViolationsDetail s : dataList) {

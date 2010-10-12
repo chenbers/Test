@@ -62,7 +62,7 @@ public class HOSDriverKioskBean extends BaseBean {
     
     public void printDailyDriverLogReport() {
         if (dateRange.getBadDates() == null) {
-            List<ReportCriteria> reportCriteriaList = new HOSLogReport(hosDAO).generateReport(getReportCriteriaService(), getDriver(), dateRange);
+            List<ReportCriteria> reportCriteriaList = new HOSLogReport(hosDAO, getProUser().getAccountGroupHierarchy()).generateReport(getReportCriteriaService(), getDriver(), dateRange);
             reportRenderer.exportReportToPDF(reportCriteriaList, FacesContext.getCurrentInstance());
         }
         
