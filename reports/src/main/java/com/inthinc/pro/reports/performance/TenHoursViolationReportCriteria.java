@@ -39,7 +39,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     protected DriverDAO driverDAO;
     protected WaysmartDAO waysmartDao;
 
-	private class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
+	class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
 
 		@Override
 		public int compare(TenHoursViolation o1, TenHoursViolation o2) {
