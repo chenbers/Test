@@ -98,7 +98,7 @@ public enum ReportGroup
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             ReportType.DRIVER_HOURS),
     
-    VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
+    VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             ReportType.VEHICLE_USAGE);

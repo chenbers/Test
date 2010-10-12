@@ -116,6 +116,14 @@ public class ReportParams implements Cloneable {
             else if (getParamType() == ReportParamType.GROUPS && getGroupIDSelectList() == null)
                 return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         }
+        if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_OR_DRIVER) {
+            if (getParamType() == null || getParamType() == ReportParamType.NONE)
+                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale());
+            else if (getParamType() == ReportParamType.DRIVER && getDriverID() == null)
+                    return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale());
+            else if (getParamType() == ReportParamType.GROUPS && getGroupID() == null)
+                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
+        }
         
         return null;
     }
@@ -151,7 +159,7 @@ public class ReportParams implements Cloneable {
     }
     
 //    protected final static String BLANK_SELECTION = "&#160;";
-    protected final static String BLANK_SELECTION = "";
+    protected final static String BLANK_SELECTION = "<Select>";
 
     protected static void sort(List<SelectItem> selectItemList) {
         Collections.sort(selectItemList, new Comparator<SelectItem>() {
