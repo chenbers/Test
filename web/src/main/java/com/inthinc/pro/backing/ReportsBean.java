@@ -49,7 +49,7 @@ public abstract class ReportsBean extends BaseBean {
 
     
     protected abstract void genReportCriteria();
-    public abstract List<SelectItem> getReportGroups();
+    public abstract List<? extends SelectItem> getReportGroups();
     protected abstract Map<Integer, ReportGroup> getReportGroupMap();
 
     

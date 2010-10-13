@@ -2,9 +2,9 @@ package com.inthinc.pro.reports;
 
 public enum ReportCategory {
 
-        DOT_IFTA(1, "DOT/IFTA"),
-        Performance(2, "Performance"),
-        Asset(3, "Asset");
+        DOT_IFTA(1, "DOT/IFTA", "Department of Transport / International Fuel Tax Agreement"),
+        Performance(2, "Performance", "Performance, including payroll"),
+        Asset(3, "Asset", "Asset");
         
         /**
          * 
@@ -12,21 +12,30 @@ public enum ReportCategory {
          * @param code - Code to be stored in the DB
          */
         
-        private ReportCategory(Integer code, String label) {
+        private ReportCategory(Integer code, String label, String description) {
             this.code = code;
             this.label = label;
+            this.description = description;
         }
         private Integer code;
         private String label;
+        private String description;
         
         
         public Integer getCode() {
             return code;
         }
         
-        public String getLable() {
+        public String getLabel() {
             return label;
         }
         
+        public String getDescription(){
+        	return description;
+        }
         
+        @Override
+        public String toString(){
+        	return getLabel();
+        }
 }

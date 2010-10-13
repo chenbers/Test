@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.backing.ui.ReportParams;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ReportParamType;
+import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
@@ -109,19 +111,39 @@ public class WaysmartReportsBean extends ReportsBean {
 
     }
 
-    public List<SelectItem> getReportGroups() {
+    public List<SelectItemGroup> getReportGroups() {
+
+    	// The map between and item and its ID
         reportGroupMap = new HashMap<Integer, ReportGroup>();
         
-        List<SelectItem> reportGroups = new ArrayList<SelectItem>();
+        // The items and groups of the UI list
+        List<SelectItemGroup> itemGroups = new ArrayList<SelectItemGroup>();
+
+        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
+        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
+        
+        itemGroups.add(new SelectItemGroup(ReportCategory.DOT_IFTA.getLabel(), 
+        		ReportCategory.Performance.getDescription(), false, getItemsByCategory(ReportCategory.DOT_IFTA)));
+
+        
+        //items.add(0, new SelectItem(null, ""));
+
+        return itemGroups;
+    }
+
+    /**
+     * Returns all the report types pertaining to a given Report Category. 
+     * @param category Category of reports
+     * @return Array of report types as Faces SelectItems
+     */
+	private SelectItem[] getItemsByCategory(ReportCategory category) {
+        List<SelectItem> items = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
-            if (!rt.isPerformance() && !rt.isDotIfta())
-                continue;
-            reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
+            if (!rt.isCategory(category)) continue;
+            items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             reportGroupMap.put(rt.getCode(), rt);
         }
-//        sort(reportGroups);
-        reportGroups.add(0, new SelectItem(null, ""));
-        return reportGroups;
-    }
+		return items.toArray(new SelectItem[0]);
+	}
 
 }

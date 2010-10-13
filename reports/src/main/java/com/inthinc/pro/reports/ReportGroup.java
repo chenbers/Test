@@ -76,10 +76,7 @@ public enum ReportGroup
              ReportType.HOS_EDITS),
              
              
-             
-             
     // DOT/IFTA
-                     
      MILEAGE_BY_VEHICLE("Mileage by vehicle", 20, EntityType.ENTITY_GROUP_LIST,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
@@ -223,10 +220,6 @@ public enum ReportGroup
         return groupTypes;
     }
     
-    public boolean isDotIfta() {
-        return (ReportCategory.DOT_IFTA == this.getReportCategory());
-    }
-    
     public boolean isTabularSupport() {
         for (int i = 0; i < getReports().length; i++)
             if (getReports()[i].isTabularSupport())
@@ -247,12 +240,21 @@ public enum ReportGroup
         sb.append(this.name());
         return sb.toString();
     }
-    public boolean isPerformance() {
-        
-        return (ReportCategory.Performance == this.getReportCategory());
-    }
 
     private ReportCategory getReportCategory() {
         return reportCategory;
     }
+    
+    public boolean isPerformance() {
+        return isCategory(ReportCategory.Performance);
+    }
+
+    public boolean isDotIfta() {
+        return isCategory(ReportCategory.DOT_IFTA);
+    }
+    
+    public boolean isCategory(ReportCategory category){
+    	return (category == this.getReportCategory());
+    }
+    
 }
