@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.report.WaysmartDAO;
@@ -53,6 +54,7 @@ import com.inthinc.pro.reports.hos.HosEditsReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsDetailReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.hos.HosZeroMilesReportCriteria;
+import com.inthinc.pro.reports.ifta.MileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
@@ -83,6 +85,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private HOSDAO hosDAO;
     private WaysmartDAO waysmartDAO;
     private AddressDAO addressDAO;
+    private StateMileageDAO stateMileageDAO;
     
     private Locale locale;
 
@@ -753,6 +756,20 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
+     */
+    public ReportCriteria getMileageByVehicleReportCriteria(Integer groupId, Interval interval, Locale locale, boolean iftaOnly) 
+    {
+        MileageByVehicleReportCriteria criteria = new MileageByVehicleReportCriteria(locale);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setStateMileageDAO(stateMileageDAO);
+               
+        criteria.init(groupId, interval, iftaOnly);
+        return criteria;
+    }
+    
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -900,6 +917,22 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     public void setAddressDAO(AddressDAO addressDAO) {
         this.addressDAO = addressDAO;
+    }
+
+    /**
+     * The stateMileageDAO setter.
+     * @param stateMileageDAO the stateMileageDAO to set
+     */
+    public void setStateMileageDAO(StateMileageDAO stateMileageDAO) {
+        this.stateMileageDAO = stateMileageDAO;
+    }
+
+    /**
+     * The stateMileageDAO getter.
+     * @return the stateMileageDAO
+     */
+    public StateMileageDAO getStateMileageDAO() {
+        return stateMileageDAO;
     }
 
 

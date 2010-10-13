@@ -38,6 +38,8 @@ public class ReportCriteria
 
     public static final String SUB_DATASET = "SUB_DATASET";
     public static final String RECORD_COUNT = "RECORD_COUNT";
+    public static final String REPORT_START_DATE = "REPORT_START_DATE";
+    public static final String REPORT_END_DATE = "REPORT_END_DATE";
     
     private int subsetIndex = 1;
     

@@ -38,6 +38,9 @@ public enum ReportType
     TEAM_STATISTICS_REPORT("Team Statistics Report","TeamStatisticsReport.jrxml","TeamStatisticsReportRaw.jrxml"),
     TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml"),
     
+    // DOT/IFTA
+    MILEAGE_BY_VEHICLE("Mileage By Vehicle","mileageByVehicleReport.jrxml","mileageByVehicleReport.jrxml", "ifta", "com.inthinc.pro.reports.jasper.ifta.i18n.mileageByVehicle"),
+    
     // HOS
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),
     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hosViolations.jrxml", "hosViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations", null, true),

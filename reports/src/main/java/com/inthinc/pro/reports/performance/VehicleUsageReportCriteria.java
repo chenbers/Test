@@ -27,8 +27,6 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 
 
 public class VehicleUsageReportCriteria extends ReportCriteria {
-    private static final String START_DATE_PARAM = "REPORT_START_DATE";
-    private static final String END_DATE_PARAM = "REPORT_END_DATE";
     protected DateTimeFormatter dateTimeFormatter; 
     
     protected GroupDAO groupDAO;
@@ -93,10 +91,8 @@ public class VehicleUsageReportCriteria extends ReportCriteria {
         List<Driver> driverList;
         Map<Driver, List<VehicleUsageRecord>> vehicleUsageRecordMap = new HashMap<Driver, List<VehicleUsageRecord>> ();
         
-        addParameter(VehicleUsageReportCriteria.START_DATE_PARAM, 
-                dateTimeFormatter.print(interval.getStart()));
-        addParameter(VehicleUsageReportCriteria.END_DATE_PARAM,   
-                dateTimeFormatter.print(interval.getEnd()));
+        addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
+        addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
         
         if(group) {
             Group topGroup = groupDAO.findByID(id);

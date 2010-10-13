@@ -31,6 +31,8 @@ public interface ReportCriteriaService
     ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
     ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
     
+    // DOT
+    ReportCriteria getMileageByVehicleReportCriteria(Integer groupId, Interval interval, Locale locale, boolean dotOnly);
     
     // HOS
     List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric);
@@ -53,6 +55,5 @@ public interface ReportCriteriaService
     ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getDriverHoursReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getVehicleUsageReportCriteria(Integer id, Interval interval, Locale locale, boolean group);
-
     
 }
