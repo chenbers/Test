@@ -74,8 +74,19 @@ public enum ReportGroup
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.HOS_EDITS),
-                    
-     // Performance                    
+             
+             
+             
+             
+    // DOT/IFTA
+                     
+     MILEAGE_BY_VEHICLE("Mileage by vehicle", 20, EntityType.ENTITY_GROUP_LIST,   
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             ReportType.MILEAGE_BY_VEHICLE),
+    
+     // Performance    
+             
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
                      new CriteriaType[]{CriteriaType.TIMEFRAME}, 
                      new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
@@ -102,6 +113,7 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             ReportType.VEHICLE_USAGE);
+
     
     private ReportType[] reports;
     private Integer code;

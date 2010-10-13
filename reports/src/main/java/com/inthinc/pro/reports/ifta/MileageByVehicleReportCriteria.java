@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.ifta;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,10 +50,13 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
      * @param interval the date period
      * @param iftaOnly the flag to consider only IFTA 
      */
-    public void init(Integer groupId, Interval interval, boolean dotOnly) {
+    public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        List<StateMileage> list = new ArrayList<StateMileage>();
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
-        List<StateMileage> list = stateMileageDAO.getMileageByVehicle(groupId, interval, dotOnly);
+        for (Integer groupID : groupIDList) {
+             list.addAll(stateMileageDAO.getMileageByVehicle(groupID, interval, dotOnly));
+        }      
         initDataSet(interval, list);
     }
 
@@ -89,5 +93,5 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
      */
     public void setStateMileageDAO(StateMileageDAO stateMileageDAO) {
         this.stateMileageDAO = stateMileageDAO;
-    }    
+    }   
 }

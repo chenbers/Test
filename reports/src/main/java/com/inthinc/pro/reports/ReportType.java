@@ -39,7 +39,7 @@ public enum ReportType
     TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml"),
     
     // DOT/IFTA
-    MILEAGE_BY_VEHICLE("Mileage By Vehicle","mileageByVehicleReport.jrxml","mileageByVehicleReport.jrxml", "ifta", "com.inthinc.pro.reports.jasper.ifta.i18n.mileageByVehicle"),
+    MILEAGE_BY_VEHICLE("Mileage By Vehicle","mileageByVehicle.jrxml","mileageByVehicle.jrxml", "ifta", "com.inthinc.pro.reports.jasper.ifta.i18n.mileageByVehicle"),
     
     // HOS
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),
@@ -62,6 +62,7 @@ public enum ReportType
     TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations","tenHourDayViolations.jrxml","tenHourDayViolationsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.tenHourDayViolations", null, false),
     DRIVER_HOURS("Driver Hours","driverHoursReport.jrxml","driverHoursReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverHoursReport", null, false), 
     VEHICLE_USAGE("Vehicle usage","vehicleUsageReport.jrxml","vehicleUsageReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.vehicleUsageReport", null, false);
+    
     
     private String prettyTemplate;
     private String rawTemplate;

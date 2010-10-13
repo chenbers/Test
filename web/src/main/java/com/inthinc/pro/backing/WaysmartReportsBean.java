@@ -86,6 +86,12 @@ public class WaysmartReportsBean extends ReportsBean {
                     reportCriteriaList.add(getReportCriteriaService().getVehicleUsageReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
                             params.getLocale(), true ));
                 break;
+                
+            case MILEAGE_BY_VEHICLE:
+                    reportCriteriaList.add(getReportCriteriaService().getMileageByVehicleReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
+                            params.getLocale(), true ));
+                break;
+                
             default:
                 break;
         }
@@ -108,7 +114,7 @@ public class WaysmartReportsBean extends ReportsBean {
         
         List<SelectItem> reportGroups = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
-            if (!rt.isPerformance())
+            if (!rt.isPerformance() && !rt.isDotIfta())
                 continue;
             reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             reportGroupMap.put(rt.getCode(), rt);
