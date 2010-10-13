@@ -41,6 +41,8 @@ public class ReportCriteria
     public static final String REPORT_START_DATE = "REPORT_START_DATE";
     public static final String REPORT_END_DATE = "REPORT_END_DATE";
     
+    public static final String GROUP_SEPARATOR="->";
+
     private int subsetIndex = 1;
     
     

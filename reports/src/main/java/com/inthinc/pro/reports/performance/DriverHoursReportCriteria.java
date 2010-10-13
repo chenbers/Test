@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -18,13 +17,12 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
-import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.DriverHours;
-import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class DriverHoursReportCriteria extends ReportCriteria {
     private static final String DATE_FORMAT = "MM/dd/yyyy";
@@ -61,16 +59,19 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 				return groupNamesComparison;
 		}}
 	
-	void initDataSet(Group topGroup, List<Group> groupList, Interval interval,
+	void initDataSet(GroupHierarchy groupHierarchy, Interval interval,
 			Map<Driver, List<DriverHoursRecord>> recordMap) {
-		GroupHierarchyForReports groupHierarchy = new GroupHierarchyForReports(topGroup, groupList);
 
 		List<DriverHours> driverHoursList = new ArrayList<DriverHours>();
 
 		for (Entry<Driver, List<DriverHoursRecord>> entry : recordMap.entrySet()) {
 			Driver driver = entry.getKey();
-			String driverGroupName = groupHierarchy.getFullName(driver
-					.getGroupID());
+			String driverGroupName = groupHierarchy.getFullGroupName(driver
+					.getGroupID(), GROUP_SEPARATOR);
+	        if (driverGroupName.endsWith(GROUP_SEPARATOR)) {
+	            driverGroupName = driverGroupName.substring(0, driverGroupName.length() - GROUP_SEPARATOR.length());
+	        }
+			
 			for (DriverHoursRecord rec : entry.getValue()) {
 				DriverHours bean = new DriverHours();
 				bean.setGroupName(driverGroupName);
@@ -101,7 +102,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 		addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
 		addParameter(DriverHoursReportCriteria.END_DATE_PARAM,	dateTimeFormatter.print(interval.getEnd()));
 
-		initDataSet(topGroup, groupList, interval, driverHoursRecordMap);
+		initDataSet(new GroupHierarchy(groupList), interval, driverHoursRecordMap);
 	}
 
 	public void setGroupDAO(GroupDAO groupDAO) {

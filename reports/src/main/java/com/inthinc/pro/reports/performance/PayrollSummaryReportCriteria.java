@@ -7,15 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -23,12 +19,10 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
-import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.util.DateTimeUtil;
-import com.inthinc.pro.reports.util.MessageUtil;
 
 public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
 

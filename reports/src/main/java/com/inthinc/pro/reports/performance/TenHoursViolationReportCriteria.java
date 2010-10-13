@@ -18,11 +18,11 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
-import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
 
@@ -60,23 +60,25 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
 
-    void initDataSet(Group topGroup, List<Group> groupList, Interval interval, 
+    void initDataSet(GroupHierarchy groupHierarchy, Interval interval, 
             Map<Driver, List<TenHoursViolationRecord>> recordMap)
     {
-        GroupHierarchyForReports groupHierarchy = new GroupHierarchyForReports(topGroup, groupList);  
         
         List<TenHoursViolation> violationList = new ArrayList<TenHoursViolation>();
         
         for (Entry<Driver, List<TenHoursViolationRecord>> entry : recordMap.entrySet()) {
             Driver driver = entry.getKey();
-            String driverGroupName = groupHierarchy.getFullName(driver.getGroupID());
+            String driverGroupName = groupHierarchy.getFullGroupName(driver.getGroupID(), GROUP_SEPARATOR);
+            if (driverGroupName.endsWith(GROUP_SEPARATOR)) {
+                driverGroupName = driverGroupName.substring(0, driverGroupName.length() - GROUP_SEPARATOR.length());
+            }
             for (TenHoursViolationRecord rec : entry.getValue()) {
                 TenHoursViolation bean = new TenHoursViolation();
                 bean.setGroupName(driverGroupName);
                 bean.setDate(rec.getDate());
                 bean.setDriverName(driver.getPerson().getFullNameLastFirst());
                 bean.setEmployeeID(driver.getPerson().getEmpid());
-                bean.setVehicleID(rec.getVehicleID().toString());
+                bean.setVehicleID(rec.getVehicleID() == null ? "" : rec.getVehicleID().toString());
                 bean.setHoursThisDay(rec.getHoursThisDay().doubleValue());
                 
                 violationList.add(bean);
@@ -109,7 +111,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         addParameter(TenHoursViolationReportCriteria.END_DATE_PARAM,   dateTimeFormatter.print(interval.getEnd()));
        // addParameter(TenHoursViolationReportCriteria.LOGO_PARAM, TenHoursViolationReportCriteria.LOGO_URL);
 
-        initDataSet(topGroup, groupList, interval, violationRecordMap);
+        initDataSet(new GroupHierarchy(groupList), interval, violationRecordMap);
     }
 
     /**

@@ -69,4 +69,14 @@ public class TenHoursViolation {
         this.hoursThisDay = hoursThisDay;
     }
 
+    public void dump() {
+        System.out.println("new TenHoursViolation(" +
+                "\""+ groupName + "\"," +
+                "new Date("+ date.getTime() + ")," +
+                "\""+ driverName + "\"," +
+                "\""+ vehicleID + "\"," +
+                "\""+ employeeID + "\"," +
+                hoursThisDay + ")," );
+    }
+
 }

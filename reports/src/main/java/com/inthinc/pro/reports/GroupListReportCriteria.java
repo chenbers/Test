@@ -8,12 +8,10 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 
 public class GroupListReportCriteria extends ReportCriteria {
     
     private DriverDAO driverDAO;
-    private static final String GROUP_SEPARATOR="->";
 
     public GroupListReportCriteria(ReportType reportType, Locale locale) {
         super(reportType, "", locale);
@@ -39,23 +37,6 @@ public class GroupListReportCriteria extends ReportCriteria {
         return driverList;
     }
 
-    protected List<Group> getReportGroupList(List<Integer> groupIDList, GroupHierarchyForReports groupHierarchy) {
-        List<Group> reportGroupList = new ArrayList<Group>();
-        for (Integer groupID : groupIDList) {
-            addGroupAndChildren(groupHierarchy, reportGroupList, groupID);
-        }
-        return reportGroupList;
-    }
-
-    private void addGroupAndChildren(GroupHierarchyForReports groupHierarchy, List<Group> reportGroupList, Integer groupID) {
-        Group group = groupHierarchy.getGroup(groupID);
-        if (group != null && !reportGroupList.contains(group))
-            reportGroupList.add(group);
-        List<Group> childGroupList = groupHierarchy.getChildren(group);
-        for (Group childGroup : childGroupList) {
-            addGroupAndChildren(groupHierarchy, reportGroupList, childGroup.getGroupID());
-        }
-    }
     protected List<Group> getReportGroupList(List<Integer> groupIDList, GroupHierarchy groupHierarchy) {
         List<Group> reportGroupList = new ArrayList<Group>();
         for (Integer groupID : groupIDList) {

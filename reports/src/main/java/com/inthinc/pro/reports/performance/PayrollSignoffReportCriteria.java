@@ -18,7 +18,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 

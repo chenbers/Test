@@ -49,5 +49,12 @@ public class DriverHours {
         this.hours = hoursThisDay;
     }
 
+    public void dump() {
+        System.out.println("new DriverHours(" +
+                "\""+ groupName + "\"," +
+                "\""+ date + "\"," +
+                "\""+ driverName + "\"," +
+                hours + ")," );
+    }
 
 }

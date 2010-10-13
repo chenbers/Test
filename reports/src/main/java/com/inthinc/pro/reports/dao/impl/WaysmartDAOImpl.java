@@ -24,12 +24,17 @@ public class WaysmartDAOImpl implements WaysmartDAO {
 
     private HOSDAO hosDAO;
     private static final long TEN_HOURS_IN_MINUTES = 600l;    
+    
     @Override
     public List<DriverHoursRecord> getDriverHours(Driver driver, Interval queryInterval) {
         DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(queryInterval, driverTimeZone, 1, 1); 
 
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), expandedInterval, true);
+        return getDriverHoursList(driver, queryInterval, driverTimeZone, hosRecordList);
+    }
+
+    private List<DriverHoursRecord> getDriverHoursList(Driver driver, Interval queryInterval, DateTimeZone driverTimeZone, List<HOSRecord> hosRecordList) {
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
 
         List<DateTime> dayList = DateTimeUtil.getDayList(queryInterval, driverTimeZone);
@@ -56,14 +61,32 @@ public class WaysmartDAOImpl implements WaysmartDAO {
         
         return driverHoursRecordList;
     }
-
+    
+    // entry point for unit testing
+    public List<DriverHoursRecord> getDriverHours(Driver driver, Interval queryInterval, List<HOSRecord> hosRecordList) {
+        DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+        return getDriverHoursList(driver, queryInterval, driverTimeZone, hosRecordList);
+    }
 
     @Override
     public List<TenHoursViolationRecord> getTenHoursViolations(Driver driver, Interval queryInterval) {
         DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(queryInterval, driverTimeZone, 1, 1); 
-
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), expandedInterval, true);
+
+        return getTenHourViolationsList(driver, queryInterval, driverTimeZone, expandedInterval, hosRecordList, TEN_HOURS_IN_MINUTES);
+    }
+
+    // entry point for unit testing
+    public List<TenHoursViolationRecord> getTenHoursViolations(Driver driver, Interval queryInterval, List<HOSRecord> hosRecordList, long violationMinutesLevel) {
+        DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(queryInterval, driverTimeZone, 1, 1); 
+
+        return getTenHourViolationsList(driver, queryInterval, driverTimeZone, expandedInterval, hosRecordList, violationMinutesLevel);
+    }
+
+    private List<TenHoursViolationRecord> getTenHourViolationsList(Driver driver, Interval queryInterval, 
+                    DateTimeZone driverTimeZone, Interval expandedInterval, List<HOSRecord> hosRecordList, long violationMinutesLevel) {
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
 
         List<DateTime> dayList = DateTimeUtil.getDayList(queryInterval, driverTimeZone);
@@ -86,7 +109,7 @@ public class WaysmartDAOImpl implements WaysmartDAO {
                 }
             }
             
-            if (drivingMinutes > TEN_HOURS_IN_MINUTES) {
+            if (drivingMinutes > violationMinutesLevel) {
                 TenHoursViolationRecord tenHoursViolationRecord = new TenHoursViolationRecord();
                 tenHoursViolationRecord.setDate(day.toDate());
                 tenHoursViolationRecord.setDriverID(driver.getDriverID());

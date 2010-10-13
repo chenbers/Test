@@ -27,10 +27,10 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
-import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -85,7 +85,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         	
         	DateTimeZone dtzMock;
         	DateTimeUtil dtuMock;
-        	GroupHierarchyForReports groupHierarchyMock;
+        	GroupHierarchy groupHierarchyMock;
         	
            {
               groupDAOMock.findByID(GROUP_ID); returns(groupMock);
@@ -105,8 +105,8 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
               
               waysmartDAOMock.getTenHoursViolations(driverMock, INTERVAL); returns(getViolationList());
             
-              new GroupHierarchyForReports(groupMock, groupList); // We expect this constructor to be called,
-              groupHierarchyMock.getFullName(GROUP_ID); returns(GROUP_FULL_NAME); // and then this method.
+              new GroupHierarchy(groupList); // We expect this constructor to be called,
+              groupHierarchyMock.getFullGroupName(GROUP_ID); returns(GROUP_FULL_NAME); // and then this method.
            }
            
            // Helper method
