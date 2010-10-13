@@ -1011,6 +1011,30 @@ public class SiloServiceImpl implements SiloService {
     public List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID) {
         return null;
     }
+    
+    @Override
+    @MethodDescription(description = "Get a subset of text message alerts for the specifed group and time frame.", 
+    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class
+			//,mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class
+			)
+	public List<Map<String, Object>> getTextMsgPage(
+			@DaoParam(name = "groupID", validator=ValidatorType.GROUP)Integer groupID,
+            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+            List<Map<String, Object>> filterList,
+            @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) throws ProDAOException {
+		return null;
+	}
+
+	@Override
+    @MethodDescription(description = "Get a count of Red Flags for the specifed group and time frame.", crudType=CrudType.READ) 
+	public Map<String, Object> getTextMsgCount(
+			@DaoParam(name = "groupID", validator=ValidatorType.GROUP)Integer groupID,
+            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+            List<Map<String, Object>> filterList) {
+		return null;
+	}
 
 	@Override
     @MethodDescription(description = "Fetches the list of all the sensitivity slider values.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.SensitivitySliderValues.class)
