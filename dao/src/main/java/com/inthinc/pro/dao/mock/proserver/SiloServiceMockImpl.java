@@ -1412,4 +1412,16 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 		return null;
 	}
 
+    @Override
+    public Map<String, Object> getTextMsgCount(Integer groupID, Long startDate, Long endDate, List<Map<String, Object>> filterList) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getTextMsgPage(Integer groupID, Long startDate, Long endDate, List<Map<String, Object>> filterList, Map<String, Object> pageParams) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
