@@ -12,10 +12,10 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.ForwardCommandSpool;
 
-public class ForwardCommandSpoolWaysmartIridiumDAO  extends GenericJDBCDAO {
+public class FwdCmdSpoolWSHttpJDBCDAO  extends GenericJDBCDAO {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger logger = Logger.getLogger(ForwardCommandSpoolWaysmartIridiumDAO.class);
+    private static final Logger logger = Logger.getLogger(FwdCmdSpoolWSHttpJDBCDAO.class);
 
     
     public Integer add(ForwardCommandSpool forwardCommandSpool) {
@@ -27,9 +27,9 @@ public class ForwardCommandSpoolWaysmartIridiumDAO  extends GenericJDBCDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call ws_addIridiumForwardCommandSpool(?, ?, ?, ?)}");
-            statement.setInt(1, forwardCommandSpool.getForwardCommandID());
-            statement.setBytes(2, forwardCommandSpool.getData());
+            statement = conn.prepareCall("{call ws_addHttpForwardCommandSpool(?, ?, ?, ?)}");
+            statement.setInt(1, forwardCommandSpool.getIntData());
+            statement.setString(2, forwardCommandSpool.getStrData());
             statement.setInt(3, forwardCommandSpool.getCommand());
             statement.setString(4, forwardCommandSpool.getAddress());
             
@@ -65,7 +65,7 @@ public class ForwardCommandSpoolWaysmartIridiumDAO  extends GenericJDBCDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call ws_fetchIridiumForwardCommandSpool(?)}");
+            statement = conn.prepareCall("{call ws_fetchHttpForwardCommandSpool(?)}");
             statement.setString(1, address);
             
             resultSet = statement.executeQuery();
@@ -76,10 +76,10 @@ public class ForwardCommandSpoolWaysmartIridiumDAO  extends GenericJDBCDAO {
                 record = new ForwardCommandSpool();
                 
                 record.setForwardCommandSpoolID(resultSet.getInt(1));
-                record.setForwardCommandID(resultSet.getInt(2));
+                record.setDeviceID(resultSet.getInt(2));
                 record.setCommand(resultSet.getInt(3));
-                record.setData(resultSet.getBytes(4));
-                record.setLength(resultSet.getInt(5));
+                record.setIntData(resultSet.getInt(4));
+                record.setStrData(resultSet.getString(5));
                 record.setTimeSubmitted(resultSet.getTimestamp(6));
 
                 recordList.add(record);
@@ -103,15 +103,15 @@ public class ForwardCommandSpoolWaysmartIridiumDAO  extends GenericJDBCDAO {
         return recordList;
     }
 
-    public void update(Integer iridiumForwardCommandSpoolID, Boolean processedSuccessfully) {
+    public void update(Integer forwardCommandSpoolID, Boolean processedSuccessfully) {
         Connection conn = null;
         CallableStatement statement = null;
 
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call ws_updateIridiumForwardCommandSpool(?, ?)}");
-            statement.setInt(1, iridiumForwardCommandSpoolID);
+            statement = conn.prepareCall("{call ws_updateHttpForwardCommandSpool(?, ?)}");
+            statement.setInt(1, forwardCommandSpoolID);
             statement.setBoolean(2, processedSuccessfully);
             
             statement.executeUpdate();
