@@ -67,21 +67,6 @@
   
   <url>http://maven.apache.org</url>
   <dependencies>
-	<dependency>
-		<!-- JMockit MUST appear before JUnit -->
-	   <groupId>mockit</groupId>
-	   <artifactId>jmockit</artifactId>
-	</dependency>  
-    <dependency>
-	   <groupId>com.sun</groupId>
-	   <artifactId>tools</artifactId>
-	</dependency>	  
-	<dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.5</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
          <groupId>com.inthinc.pro.dao</groupId>
          <artifactId>dao</artifactId>
