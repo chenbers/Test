@@ -356,7 +356,7 @@ public class Device extends BaseEntity
      * @return true if device can receive a text message, otherwise false
      */
     public boolean isTextMsgReceiveCapable() {
-        // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implementedï
+        // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implemented
         final Integer TYPE_WAYSMART820 = 2;
         return (this.productVer.equals(TYPE_WAYSMART820));
     }
