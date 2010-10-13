@@ -25,6 +25,11 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         return null;
     }
     
+    public List<StateMileage> getStateMileageByGroup(Integer groupID, Interval interval, Boolean dotOnly)
+    {
+        return null;
+    }
+    
     public List<StateMileage> getStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly)
     {
         return null;

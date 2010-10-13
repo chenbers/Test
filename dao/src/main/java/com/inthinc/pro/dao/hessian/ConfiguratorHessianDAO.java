@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
@@ -86,11 +87,18 @@ public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefin
     @Override
 	public Map<Integer, SensitivitySliderValues> getSensitivitySliderValues() {
 
+
         Map<Integer, SensitivitySliderValues> returnMap = new HashMap<Integer, SensitivitySliderValues>();
+        try {
         List<SensitivitySliderValues> list = getMapper().convertToModelObject(getSiloService().getSensitivitySliderValues(), SensitivitySliderValues.class);
         for (SensitivitySliderValues s : list)
         {
             returnMap.put(s.getSettingID(), s);
+        }
+        }
+        catch (ProxyException ex) {
+            if (ex.getErrorCode() != 422)
+                throw ex;
         }
         return returnMap;
 	}
