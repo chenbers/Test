@@ -150,6 +150,7 @@ public class MessagesBean extends BaseBean {
     public List<SelectItem> getDriverSelectFromList() {
         
         // Do filter here to check for associated device to be waysmart?
+        //TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
         if ( this.driverSelectFromList.size() == 0 ) {
             List<Driver> drivers = driverDAO.getAllDrivers(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
             
@@ -169,13 +170,12 @@ public class MessagesBean extends BaseBean {
 
     public List<SelectItem> getVehicleSelectFromList() {
         
-        // Do filter here to check for associated device to be waysmart?        
+        // Do filter here to check for associated device to be waysmart? 
+        //TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
         if ( this.vehicleSelectFromList.size() == 0 ) {
             List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
             
             for (Vehicle v: vehicles ) {
-            	//Device dev = deviceDAO.findByID(v.getDeviceID());
-            	//can only filter devices AFTER the device has been determined... messages are sent to groups/vehicles/drivers via devices (only)
                 SelectItem si = new SelectItem();
                 si.setLabel(v.getFullName() != null?v.getFullName():"Unnamed vehicle");
                 si.setValue(v.getVehicleID());
@@ -290,8 +290,7 @@ public class MessagesBean extends BaseBean {
         this.messageList.clear();
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
         Integer txtMsgCount = textMsgAlertDAO.getTextMsgCount(selectedGroupID, startDate, endDate, filterList);
-        //PageParams pageParams = new PageParams(0, 100, new TableSortField(SortOrder.ASCENDING, "sendDate"), filterList);
-        PageParams pageParams = new PageParams();
+        PageParams pageParams = new PageParams(); //TODO: jwimmer: question: is there another mechanism for grabbing PageParams for the page this bean is backing?
         startDate = (startDate!=null? startDate: new Date());
         this.messageList.addAll(textMsgAlertDAO.getTextMsgPage(selectedGroupID, startDate, endDate, filterList, pageParams));
         
@@ -310,63 +309,79 @@ public class MessagesBean extends BaseBean {
         this.selectAll=Boolean.FALSE;
     }
        
-    public void sendMessage() {
-        Set<Integer> deviceSendList = new HashSet<Integer>();
-        
-        // Send the message by way of forward command to the device
-        this.sendMessageList.clear();
-        
-        // Drivers
-        for ( Integer d: this.driverSelectedList ) {
-            //sendDriver(d);
-            
+    private Set<Integer> getDevicesForDrivers() {
+        Set<Integer> results = new HashSet<Integer>();
+        for (Integer d : this.driverSelectedList) {
             Vehicle v = vehicleDAO.findByDriverID(d);
-            if ( v != null && v.getDeviceID() != null ) {
-                deviceSendList.add(v.getDeviceID());
+            if (v != null && v.getDeviceID() != null) {
+                results.add(v.getDeviceID());
             }
         }
-        
-        // Vehicles
-        for ( Integer vID: this.vehicleSelectedList ) {
-            //sendVehicle(vID);
-            
+        return results;
+    }
+
+    private Set<Integer> getDevicesForVehicles() {
+        Set<Integer> results = new HashSet<Integer>();
+        for (Integer vID : this.vehicleSelectedList) {
             Vehicle v = vehicleDAO.findByID(vID);
-            if ( v != null && v.getDeviceID() != null ) {
-                deviceSendList.add(v.getDeviceID());
-            }           
+            if (v != null && v.getDeviceID() != null) {
+                results.add(v.getDeviceID());
+            }
         }
-        
-        // Groups, careful here, need to recurse the group hierarchy 
-        for ( Integer grp: this.groupSelectedList ) {
-             List<Group> sub = groupDAO.getGroupHierarchy(this.getProUser().getUser().getPerson().getAcctID(), grp);
-             for ( Group subGrp: sub ) {
-                 
-                 // Drivers
-                 List<Driver> grpDrv = driverDAO.getAllDrivers(subGrp.getGroupID());
-                 for ( Driver d: grpDrv) {
-                     //sendDriver(d.getDriverID());
-                     Vehicle v = vehicleDAO.findByDriverID(d.getDriverID());
-                     if ( v != null && v.getDeviceID() != null ) {
-                         deviceSendList.add(v.getDeviceID());
-                     }
-                 }
-                 // Vehicles
-                 List<Vehicle> grpVeh = vehicleDAO.getVehiclesInGroup(subGrp.getGroupID());
-                 for ( Vehicle v: grpVeh) {
-                     //sendVehicle(v.getVehicleID());
-                     
-                     if ( v != null && v.getDeviceID() != null ) {
-                         deviceSendList.add(v.getDeviceID());
-                     }                      
-                 }                 
-             }
+        return results;
+    }
+
+    private Set<Integer> getDevicesForGroups() {
+        Set<Integer> results = new HashSet<Integer>();
+        for (Integer grp : this.groupSelectedList) {
+            List<Group> sub = groupDAO.getGroupHierarchy(this.getProUser().getUser().getPerson().getAcctID(), grp);
+            for (Group subGrp : sub) {
+
+                // Drivers
+                List<Driver> grpDrv = driverDAO.getAllDrivers(subGrp.getGroupID());
+                for (Driver d : grpDrv) {
+                    // sendDriver(d.getDriverID());
+                    Vehicle v = vehicleDAO.findByDriverID(d.getDriverID());
+                    if (v != null && v.getDeviceID() != null) {
+                        results.add(v.getDeviceID());
+                    }
+                }
+                // Vehicles
+                List<Vehicle> grpVeh = vehicleDAO.getVehiclesInGroup(subGrp.getGroupID());
+                for (Vehicle v : grpVeh) {
+                    // sendVehicle(v.getVehicleID());
+
+                    if (v != null && v.getDeviceID() != null) {
+                        results.add(v.getDeviceID());
+                    }
+                }
+            }
         }
-        
-        //send to each device
-        for(Integer devID: deviceSendList){
+        return results;
+    }
+
+    /**
+     * Sends <code>this.messageToSend</code> once to each device for all selected drivers/vehicles/groups.
+     */
+    public void sendMessage() {
+        Set<Integer> deviceSendList = new HashSet<Integer>();
+
+        // Send the message by way of forward command to the device
+        this.sendMessageList.clear();
+
+        // Drivers
+        deviceSendList.addAll(getDevicesForDrivers());
+
+        // Vehicles
+        deviceSendList.addAll(getDevicesForVehicles());
+
+        // Groups, careful here, need to recurse the group hierarchy
+        deviceSendList.addAll(getDevicesForGroups());
+        // send to each device
+        for (Integer devID : deviceSendList) {
             sendDevice(devID);
         }
-        
+
         // Prep for next interaction
         this.messageToSend = "";
         this.driverSelectedList = new ArrayList<Integer>();
@@ -375,7 +390,7 @@ public class MessagesBean extends BaseBean {
     }
      
     /**
-     * Sends <code>this.messageToSend</code> to the device with <code>devID</code>. Adds <code>this.sendMessageList</code> 
+     * Sends <code>this.messageToSend</code> to the device with <code>devID</code>. Adds <code>this.sendMessageList</code> notifications for each device.
      * 
      * @param devID
      */
@@ -400,7 +415,7 @@ public class MessagesBean extends BaseBean {
         }
 
         if (!success) {
-            this.sendMessageList.add("No device"); //TODO: jwimmer: question: do we want a message or an error log? here
+            this.sendMessageList.add("No device"); // TODO: jwimmer: question: do we want a message or an error log? here
         }
     }
        
