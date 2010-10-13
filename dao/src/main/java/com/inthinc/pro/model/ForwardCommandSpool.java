@@ -9,14 +9,17 @@ public class ForwardCommandSpool extends BaseEntity {
      */
     private static final long serialVersionUID = 1L;
     private Integer forwardCommandSpoolID;
+    private Integer deviceID;
     private String address;
     private Integer forwardCommandID;
     private Integer command;
     private byte[] data;
-    private Integer length;
+    private String strData;
+    private Integer intData;
     Boolean processed;
     Date timeSubmitted;
     Date timeProcessed;
+
     
     public ForwardCommandSpool() 
     {
@@ -27,7 +30,10 @@ public class ForwardCommandSpool extends BaseEntity {
         this.forwardCommandID = forwardCommandID;
         this.command = command;
         this.address = address;
-
+        this.strData = strData;
+        this.intData = intData;
+        
+/*
         if (strData != null)
         {
             int len = strData.getBytes().length+1;
@@ -41,7 +47,6 @@ public class ForwardCommandSpool extends BaseEntity {
             dataBytes[len-1] = 0x0;
             
             this.data = dataBytes;
-            this.length = len;
             
         }
         else
@@ -55,9 +60,8 @@ public class ForwardCommandSpool extends BaseEntity {
             intData = intData >>> 8;
             dataBytes[0] = (byte) (intData & 0x000000FF);
             this.data = dataBytes;
-            this.length = 4;
         }
-        
+*/        
     }
 
     public Integer getForwardCommandSpoolID() {
@@ -67,6 +71,22 @@ public class ForwardCommandSpool extends BaseEntity {
     public void setForwardCommandSpoolID(Integer forwardCommandSpoolID) {
         this.forwardCommandSpoolID = forwardCommandSpoolID;
     }
+    
+    public String getStrData() {
+        return strData;
+    }
+
+    public void setStrData(String strData) {
+        this.strData = strData;
+    }
+
+    public Integer getIntData() {
+        return intData;
+    }
+
+    public void setIntData(Integer intData) {
+        this.intData = intData;
+    }
 
     public String getAddress() {
         return address;
@@ -74,6 +94,14 @@ public class ForwardCommandSpool extends BaseEntity {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Integer getDeviceID() {
+        return deviceID;
+    }
+
+    public void setDeviceID(Integer deviceID) {
+        this.deviceID = deviceID;
     }
 
     public Integer getForwardCommandID() {
@@ -100,13 +128,6 @@ public class ForwardCommandSpool extends BaseEntity {
         this.data = data;
     }
 
-    public Integer getLength() {
-        return length;
-    }
-
-    public void setLength(Integer length) {
-        this.length = length;
-    }
 
     public Boolean getProcessed() {
         return processed;
