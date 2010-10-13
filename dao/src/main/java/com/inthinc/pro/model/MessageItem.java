@@ -5,16 +5,28 @@ import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 @XmlRootElement
 public class MessageItem {
     private Boolean selected;
+    @Column(name = "time")
     private Date sendDate;
-    private String toFrom;
-    private String message;
+    @Column(name = "driverID")
+    private Integer fromDriverID;
+    @Column(name = "vehicleID")
+    private Integer fromVehicleID;
+    private String to;
+    @Column(name = "driverName")
+    private String from;
+    private String message;  //TODO: jwimmer: wire to messageText once Dave Harry sends that across 
     private TimeZone timeZone;
     private String result;
     private String entity;
     
+    public Boolean isSelected() {
+        return selected!=null?selected:false;
+    }
     public Boolean getSelected() {
         return selected;
     }
@@ -27,11 +39,11 @@ public class MessageItem {
     public void setSendDate(Date sendDate) {
         this.sendDate = sendDate;
     }
-    public String getToFrom() {
-        return toFrom;
+    public String getTo() {
+        return to;
     }
-    public void setToFrom(String toFrom) {
-        this.toFrom = toFrom;
+    public void setTo(String to) {
+        this.to = to;
     }
     public String getMessage() {
         return message;
@@ -56,6 +68,24 @@ public class MessageItem {
     }
     public void setEntity(String entity) {
         this.entity = entity;
+    }
+    public void setFrom(String from) {
+        this.from = from;
+    }
+    public String getFrom() {
+        return from;
+    }
+    public void setFromDriverID(Integer fromDriverID) {
+        this.fromDriverID = fromDriverID;
+    }
+    public Integer getFromDriverID() {
+        return fromDriverID;
+    }
+    public void setFromVehicleID(Integer fromVehicleID) {
+        this.fromVehicleID = fromVehicleID;
+    }
+    public Integer getFromVehicleID() {
+        return fromVehicleID;
     }
 }
 
