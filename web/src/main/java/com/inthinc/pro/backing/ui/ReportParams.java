@@ -113,7 +113,7 @@ public class ReportParams implements Cloneable {
                 return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale());
             else if (getParamType() == ReportParamType.DRIVER && getDriverID() == null)
                     return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale());
-            else if (getParamType() == ReportParamType.GROUPS && getGroupIDSelectList() == null)
+            else if (getParamType() == ReportParamType.GROUPS && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0))
                 return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         }
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_OR_DRIVER) {

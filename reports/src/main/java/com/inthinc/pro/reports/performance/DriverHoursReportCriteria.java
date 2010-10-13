@@ -95,9 +95,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 		    if (driver == null) {
 		        continue;
 		    }
-			DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-			Interval queryInterval = DateTimeUtil.getExpandedInterval(interval,	dateTimeZone, 1, 1);
-			List<DriverHoursRecord> driverHoursList = waysmartDao.getDriverHours(driver, queryInterval);
+			List<DriverHoursRecord> driverHoursList = waysmartDao.getDriverHours(driver, interval);
 			driverHoursRecordMap.put(driver, driverHoursList);
 		}
 		addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));

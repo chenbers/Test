@@ -513,9 +513,9 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="104" splitType="Stretch">
+		<band height="98" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-3" x="316" y="60" width="465" height="40"/>
+				<reportElement key="textField-3" x="316" y="58" width="465" height="35"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -528,13 +528,13 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.title}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line" x="0" y="103" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="line" x="0" y="96" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
 			</line>
 			<line>
 				<reportElement key="line" x="0" y="3" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
 			</line>
 			<image scaleImage="RetainShape">
-				<reportElement key="image-1" x="3" y="55" width="51" height="47"/>
+				<reportElement key="image-1" x="3" y="55" width="300" height="40"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

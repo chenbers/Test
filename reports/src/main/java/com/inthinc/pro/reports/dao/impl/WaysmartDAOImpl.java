@@ -23,7 +23,7 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 public class WaysmartDAOImpl implements WaysmartDAO {
 
     private HOSDAO hosDAO;
-    
+    private static final long TEN_HOURS_IN_MINUTES = 600l;    
     @Override
     public List<DriverHoursRecord> getDriverHours(Driver driver, Interval queryInterval) {
         DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
@@ -59,10 +59,54 @@ public class WaysmartDAOImpl implements WaysmartDAO {
 
 
     @Override
-    public List<TenHoursViolationRecord> getTenHoursViolations(Integer driverID, Interval queryInterval) {
-        // TODO Auto-generated method stub
+    public List<TenHoursViolationRecord> getTenHoursViolations(Driver driver, Interval queryInterval) {
+        DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(queryInterval, driverTimeZone, 1, 1); 
+
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), expandedInterval, true);
+        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
+
+        List<DateTime> dayList = DateTimeUtil.getDayList(queryInterval, driverTimeZone);
+        
+        List<TenHoursViolationRecord> tenHoursViolationRecordList = new ArrayList<TenHoursViolationRecord>();
+        
+        DateTime currentTime = new DateTime();
+        for (DateTime day : dayList) {
+
+            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime.toDate(), true);
+            Long drivingMinutes = 0l;
+            Integer vehicleID = null;
+            String vehicleName = null;
+            for (HOSRecAdjusted hosRec : logListForDay) {
+                if (hosRec.getStatus() == HOSStatus.DRIVING) {
+                    drivingMinutes += hosRec.getTotalRealMinutes();
+                    vehicleID = hosRec.getVehicleID();
+                    if (vehicleID != null)
+                        vehicleName = findVehicleName(hosRecordList, vehicleID);
+                }
+            }
+            
+            if (drivingMinutes > TEN_HOURS_IN_MINUTES) {
+                TenHoursViolationRecord tenHoursViolationRecord = new TenHoursViolationRecord();
+                tenHoursViolationRecord.setDate(day.toDate());
+                tenHoursViolationRecord.setDriverID(driver.getDriverID());
+                tenHoursViolationRecord.setHoursThisDay(drivingMinutes/60.0);
+                tenHoursViolationRecord.setVehicleID(vehicleID);
+                tenHoursViolationRecord.setVehicleName(vehicleName);
+                tenHoursViolationRecordList.add(tenHoursViolationRecord);
+            }
+        }
+        
+        return tenHoursViolationRecordList;
+    }
+
+    private String findVehicleName(List<HOSRecord> hosRecordList, Integer vehicleID) {
+        for (HOSRecord hosRecord : hosRecordList)
+            if (hosRecord.getVehicleID() != null && hosRecord.getVehicleID().equals(vehicleID))
+                return hosRecord.getVehicleName();
         return null;
     }
+
 
     @Override
     public List<VehicleUsageRecord> getVehicleUsage(Integer driverID, Interval interval) {

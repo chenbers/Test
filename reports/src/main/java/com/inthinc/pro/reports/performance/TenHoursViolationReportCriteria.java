@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -25,7 +24,6 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
-import com.inthinc.pro.reports.util.DateTimeUtil;
 
 
 public class TenHoursViolationReportCriteria extends ReportCriteria {
@@ -102,9 +100,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>> ();
         for (Driver driver : driverList) {
-            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
-            List<TenHoursViolationRecord> violationList = waysmartDao.getTenHoursViolations(driver.getDriverID(), queryInterval);
+            List<TenHoursViolationRecord> violationList = waysmartDao.getTenHoursViolations(driver, interval);
             if (!violationList.isEmpty()) {
                 violationRecordMap.put(driver, violationList);
             }

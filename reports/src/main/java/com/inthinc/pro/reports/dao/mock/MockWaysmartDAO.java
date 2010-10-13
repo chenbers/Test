@@ -1,6 +1,5 @@
 package com.inthinc.pro.reports.dao.mock;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,7 +26,8 @@ public class MockWaysmartDAO implements WaysmartDAO {
      * @see com.inthinc.pro.reports.dao.WaysmartDAO#getTenHoursViolations(java.lang.Integer, org.joda.time.Interval)
      */
     @Override
-    public List<TenHoursViolationRecord> getTenHoursViolations(Integer driverID, Interval interval) {
+    public List<TenHoursViolationRecord> getTenHoursViolations(Driver driver, Interval interval) {
+        Integer driverID = driver.getDriverID();
         Calendar startDate = Calendar.getInstance();
         startDate.set(interval.getStart().getYearOfEra(), interval.getStart().getMonthOfYear()-1, 
                 interval.getStart().getDayOfMonth()+1, 0, 0, 0);

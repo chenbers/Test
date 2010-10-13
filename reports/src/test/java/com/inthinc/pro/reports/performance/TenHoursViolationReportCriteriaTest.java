@@ -103,7 +103,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
               dtzMock.forTimeZone((TimeZone)any); returns(dtzMock);
               dtuMock.getExpandedInterval(INTERVAL, dtzMock, 1, 1); returns(INTERVAL);
               
-              waysmartDAOMock.getTenHoursViolations(anyInt, INTERVAL); returns(getViolationList());
+              waysmartDAOMock.getTenHoursViolations(driverMock, INTERVAL); returns(getViolationList());
             
               new GroupHierarchyForReports(groupMock, groupList); // We expect this constructor to be called,
               groupHierarchyMock.getFullName(GROUP_ID); returns(GROUP_FULL_NAME); // and then this method.

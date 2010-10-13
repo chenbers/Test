@@ -17,7 +17,7 @@ public interface WaysmartDAO {
      * @param queryInterval the period 
      * @return a list of TenHoursViolationRecord for the specified driver and period
      */
-    List<TenHoursViolationRecord> getTenHoursViolations(Integer driverID, Interval queryInterval);
+    List<TenHoursViolationRecord> getTenHoursViolations(Driver driver, Interval queryInterval);
     /**
      * Returns the Driver hours per day.
      * @param driverID the driver ID

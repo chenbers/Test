@@ -35,7 +35,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="63" splitType="Stretch">
+		<band height="42" splitType="Stretch">
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-36" x="313" y="0" width="465" height="40"/>
 				<box>
@@ -50,7 +50,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[str("report.title."+$P{REPORT_TYPE})]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape">
-				<reportElement key="image-1" x="2" y="0" width="51" height="47"/>
+				<reportElement key="image-1" x="2" y="0" width="300" height="40"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

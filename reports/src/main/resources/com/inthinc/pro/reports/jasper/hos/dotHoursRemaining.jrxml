@@ -492,7 +492,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.title}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape">
-				<reportElement key="image-1" x="4" y="2" width="51" height="47"/>
+				<reportElement key="image-1" x="4" y="2" width="300" height="40"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

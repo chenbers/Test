@@ -125,7 +125,7 @@
 						<td>
 							<h:selectOneMenu  id="grouporDriverSelection" value="#{params.paramType}" >  
 								<f:selectItems value="#{params.reportParamTypes}"/>
-								<a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel,#{context}_form:groupSelectPanel,#{context}_paramsPanelError,#{reRenderList}"/>
+								<a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel,#{context}_form:groupListSelectPanel,#{context}_paramsPanelError,#{reRenderList}"/>
 							</h:selectOneMenu>
 						</td>
 						<td>							

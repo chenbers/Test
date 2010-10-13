@@ -269,9 +269,9 @@ new DecimalFormat("00").format($V{totalHours}.intValue()%60))]]></textFieldExpre
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="104" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="316" y="60" width="465" height="40"/>
+				<reportElement key="textField-3" x="316" y="63" width="465" height="32"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -284,7 +284,7 @@ new DecimalFormat("00").format($V{totalHours}.intValue()%60))]]></textFieldExpre
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.title}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line" x="0" y="103" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="line" x="0" y="98" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
 			</line>
 			<line>
 				<reportElement key="line" x="0" y="3" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -316,7 +316,7 @@ new DecimalFormat("00").format($V{totalHours}.intValue()%60))]]></textFieldExpre
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{CUSTOMER_ADDRESS}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape">
-				<reportElement key="image-1" x="3" y="56" width="51" height="47"/>
+				<reportElement key="image-1" x="3" y="56" width="300" height="40"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
