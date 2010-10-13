@@ -361,6 +361,8 @@ public interface SiloService extends HessianService
     Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
     
     List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID);
+    List<Map<String,Object>> getTextMsgPage(Integer groupID, Long startDate, Long endDate,  List<Map<String, Object>> filterList, Map<String, Object> pageParams );
+    Map<String, Object> getTextMsgCount(Integer groupID, Long startDate, Long endDate,  List<Map<String, Object>> filterList);
     Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException;
     
     // Report Schedules
