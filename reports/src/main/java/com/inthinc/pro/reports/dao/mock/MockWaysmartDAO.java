@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.mock;
+package com.inthinc.pro.reports.dao.mock;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -10,10 +10,11 @@ import java.util.Map;
 
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.report.WaysmartDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.model.performance.VehicleUsageRecord;
+import com.inthinc.pro.reports.dao.WaysmartDAO;
 
 public class MockWaysmartDAO implements WaysmartDAO {
      
@@ -23,7 +24,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
     
     /** 
      * {@inheritDoc}
-     * @see com.inthinc.pro.dao.report.WaysmartDAO#getTenHoursViolations(java.lang.Integer, org.joda.time.Interval)
+     * @see com.inthinc.pro.reports.dao.WaysmartDAO#getTenHoursViolations(java.lang.Integer, org.joda.time.Interval)
      */
     @Override
     public List<TenHoursViolationRecord> getTenHoursViolations(Integer driverID, Interval interval) {
@@ -50,10 +51,11 @@ public class MockWaysmartDAO implements WaysmartDAO {
 
     /** 
      * {@inheritDoc}
-     * @see com.inthinc.pro.dao.report.WaysmartDAO#getDriverHours(java.lang.Integer, org.joda.time.Interval)
+     * @see com.inthinc.pro.reports.dao.WaysmartDAO#getDriverHours(java.lang.Integer, org.joda.time.Interval)
      */
     @Override
-    public List<DriverHoursRecord> getDriverHours(Integer driverID, Interval interval) {
+    public List<DriverHoursRecord> getDriverHours(Driver driver, Interval interval) {
+        Integer driverID = driver.getDriverID();
         Calendar startDate = Calendar.getInstance();
         startDate.set(interval.getStart().getYearOfEra(), interval.getStart().getMonthOfYear()-1, 
                 interval.getStart().getDayOfMonth()+1,0,0,0);
@@ -77,7 +79,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
 
     /** 
      * {@inheritDoc}
-     * @see com.inthinc.pro.dao.report.WaysmartDAO#getVehicleUsage(java.lang.Integer, org.joda.time.Interval)
+     * @see com.inthinc.pro.reports.dao.WaysmartDAO#getVehicleUsage(java.lang.Integer, org.joda.time.Interval)
      */
     @Override
     public List<VehicleUsageRecord> getVehicleUsage(Integer driverID, Interval interval) {

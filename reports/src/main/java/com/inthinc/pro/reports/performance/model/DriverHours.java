@@ -1,4 +1,4 @@
-package com.inthinc.pro.reports.hos.model;
+package com.inthinc.pro.reports.performance.model;
 
 public class DriverHours {
     private String groupName;

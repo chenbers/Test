@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
@@ -21,6 +20,7 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.hos.testData.MockData;
 import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
 

@@ -16,13 +16,13 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.report.WaysmartDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.performance.VehicleUsageRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.VehicleUsage;
+import com.inthinc.pro.reports.dao.WaysmartDAO;
+import com.inthinc.pro.reports.performance.model.VehicleUsage;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 

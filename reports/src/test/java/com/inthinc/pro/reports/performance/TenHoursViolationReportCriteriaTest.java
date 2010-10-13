@@ -25,13 +25,13 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.report.WaysmartDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.hos.model.GroupHierarchyForReports;
-import com.inthinc.pro.reports.hos.model.TenHoursViolation;
+import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 

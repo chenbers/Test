@@ -1,9 +1,10 @@
-package com.inthinc.pro.dao.report;
+package com.inthinc.pro.reports.dao;
 
 import java.util.List;
 
 import org.joda.time.Interval;
 
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.model.performance.VehicleUsageRecord;
@@ -23,7 +24,7 @@ public interface WaysmartDAO {
      * @param queryInterval the period
      * @return a list of DriverHoursRecord for the specified driver and period
      */
-    List<DriverHoursRecord> getDriverHours(Integer driverID, Interval queryInterval);
+    List<DriverHoursRecord> getDriverHours(Driver driver, Interval queryInterval);
     
     List<VehicleUsageRecord> getVehicleUsage(Integer driverID, Interval interval);
     
