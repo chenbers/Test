@@ -70,6 +70,7 @@ public class Device extends BaseEntity
     @Column(name="witnessVer", updateable = false)
     private Integer	witnessVersion;
     private String emuMd5;
+    private Integer productVer;
     
 
 	public Device()
@@ -348,4 +349,23 @@ public class Device extends BaseEntity
 	public void setEmuMd5(String emuMd5) {
 		this.emuMd5 = emuMd5;
 	}
+
+    /**
+     * Is this device capable of receiving a text message?
+     * 
+     * @return true if device can receive a text message, otherwise false
+     */
+    public boolean isTextMsgReceiveCapable() {
+        // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implementedï
+        final Integer TYPE_WAYSMART820 = 2;
+        return (this.productVer.equals(TYPE_WAYSMART820));
+    }
+
+    public void setProductVer(Integer productVer) {
+        this.productVer = productVer;
+    }
+
+    public Integer getProductVer() {
+        return productVer;
+    }
 }
