@@ -6,7 +6,7 @@ import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.TablePreference;
-import com.inthinc.pro.model.configurator.SensitivityType;
+import com.inthinc.pro.model.configurator.SettingType;
 
 public class DeviceMapper extends AbstractMapper
 {

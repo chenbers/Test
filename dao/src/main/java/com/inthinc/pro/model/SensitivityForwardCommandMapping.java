@@ -2,12 +2,12 @@ package com.inthinc.pro.model;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
-import com.inthinc.pro.model.configurator.SensitivityType;
+import com.inthinc.pro.model.configurator.SettingType;
 
 @XmlRootElement
 public class SensitivityForwardCommandMapping
 {
-	private SensitivityType setting;
+	private SettingType setting;
 	private Integer fwdCmd;
 	private List<String> values;
 	
@@ -16,17 +16,17 @@ public class SensitivityForwardCommandMapping
 	{
 		
 	}
-	public SensitivityForwardCommandMapping(SensitivityType setting, Integer fwdCmd, List<String> values)
+	public SensitivityForwardCommandMapping(SettingType setting, Integer fwdCmd, List<String> values)
 	{
 		this.setting = setting;
 		this.fwdCmd = fwdCmd;
 		this.values = values;
 	}
-	public SensitivityType getSetting()
+	public SettingType getSetting()
 	{
 		return setting;
 	}
-	public void setSetting(SensitivityType setting)
+	public void setSetting(SettingType setting)
 	{
 		this.setting = setting;
 	}

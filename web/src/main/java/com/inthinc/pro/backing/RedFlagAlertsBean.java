@@ -16,11 +16,10 @@ import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseAlert;
-import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView> implements Serializable{
@@ -133,7 +132,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     public RedFlagAlertView getItem() {
         final RedFlagAlertView item = super.getItem();
         if (item.getSpeedSettings() == null)
-            item.setSpeedSettings(new Integer[VehicleSetting.NUM_SPEEDS]);
+            item.setSpeedSettings(new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS]);
         return item;
     }
 
@@ -265,7 +264,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             if (isBatchEdit()) {
                 flag.setSpeedSelected(null);
                 if (flag.getSpeedSettings() == null)
-                    flag.setSpeedSettings(new Integer[VehicleSetting.NUM_SPEEDS]);
+                    flag.setSpeedSettings(new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS]);
                 final Map<String, Boolean> updateField = getUpdateField();
                 for (final String key : updateField.keySet())
                     if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true)) {
@@ -365,7 +364,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public Boolean[] getSpeedSelected() {
             if ((speedSelected == null)) {
-                speedSelected = new Boolean[VehicleSetting.NUM_SPEEDS];
+                speedSelected = new Boolean[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
                 for (int i = 0; i < speedSelected.length && getSpeedSettings()!=null; i++)
                     speedSelected[i] = getSpeedSettings()[i]!=null;
             }

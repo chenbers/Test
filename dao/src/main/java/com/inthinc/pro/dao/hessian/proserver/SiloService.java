@@ -430,9 +430,9 @@ public interface SiloService extends HessianService
     
     // Configurator
     List<Map<String, Object>> getSettingDefs();
-    Map<String,Object> getVehicleSettings(int vehicleID);
-    List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(int groupID);
-    List<Map<String, Object>> getVehicleSettingsHistory(int vehicleID, long startTime, long endTime);
+    Map<String,Object> getVehicleSettings(Integer vehicleID);
+    List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(Integer groupID);
+    List<Map<String, Object>> getVehicleSettingsHistory(Integer vehicleID, Long startTime, Long endTime);
     Map<String, Object> setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason);
     Map<String, Object> updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason);
     List<Map<String, Object>> getSensitivitySliderValues();

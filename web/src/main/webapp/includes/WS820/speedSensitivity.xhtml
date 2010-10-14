@@ -134,9 +134,9 @@
                               </tr>
                               
 <!--                              <ui:param name="settingCounts" value="#{batchEdit?vehicleSettingManager.properties['defaultSettings']:vehicleSettingManager.properties['settingCounts'][editableVehicleSettings.vehicleID]}"/>-->
-                              <ui:param name="settingCounts" value="#{vehiclesBean.item.waySmartSettingManager.settingCounts}"/>
-                              <a4j:repeat id="sensitivity" value="#{vehiclesBean.item.waySmartSettingManager.sensitivities}" var="sensitivityType" rowKeyVar="index">
-                                 <c:set var="sensitivityItem" value="#{(sensitivityType == 'HARD_ACCEL_SETTING') ? 'hardAcceleration' : ((sensitivityType == 'HARD_BRAKE_SETTING') ? 'hardBrake' : ((sensitivityType == 'HARD_TURN_SETTING') ? 'hardTurn' : 'hardVertical'))}" />
+                              <ui:param name="settingCounts" value="#{vehiclesBean.waySmartSettingManagerLocator[vehiclesBean.item.vehicleID].adjustedSettingCounts}"/>
+                              <a4j:repeat id="sensitivity" value="#{vehiclesBean.waySmartSettingManagerLocator[vehiclesBean.item.vehicleID].sensitivities}" var="sensitivityType" rowKeyVar="index">
+                                 <c:set var="sensitivityItem" value="#{(sensitivityType == 'HARD_ACCEL_SLIDER') ? 'hardAcceleration' : ((sensitivityType == 'HARD_BRAKE_SLIDER') ? 'hardBrake' : ((sensitivityType == 'HARD_TURN_SLIDER') ? 'hardTurn' : 'hardVertical'))}" />
                                  <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                      <td></td>
                                      <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
@@ -144,15 +144,18 @@
                                        <span id="#{sensitivityItem}Level" style="font-weight:bold">
                                        </span>
                                        <script type="text/javascript">
-                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{vehiclesBean.item.waySmartEditableVehicleSettings[sensitivityItem]},#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});
+                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{vehiclesBean.item.waySmartEditableVehicleSettings[sensitivityItem]},
+													                      								#{vehiclesBean.waySmartSettingManagerLocator[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
+													                       								#{settingCounts[sensitivityType]});
                                        </script>
                                      </td>
                                      <td></td>
                                  </tr>
                                  <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update#{index}" value="#{updateField[sensitivityItem]}" />
-                                       <h:outputText value="#{messages[sensitivityType]}" />
+     									<ui:param name="messageKey" value="editDevice_#{sensitivityItem}"/>
+                                        <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update#{index}" value="#{updateField[sensitivityItem]}" />
+                                       <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                           <h:outputText value="#{messages.editDevice_sensitivity1}" />
@@ -164,10 +167,16 @@
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
                                              showInput="false" minValue="1" 
-                                             maxValue="#{settingCounts[sensitivityType.settingID]}" 
-                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{sensitivityType.settingsCount}.png')"
-                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
-                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting},#{sensitivityType.settingsCount});adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
+                                             maxValue="#{settingCounts[sensitivityType]}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{vehiclesBean.waySmartSettingManagerLocator[vehiclesBean.item.vehicleID].settingCounts[sensitivityType]}.png')"
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,
+                                             								#{vehiclesBean.waySmartSettingManagerLocator[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
+                                             								#{settingCounts[sensitivityType]});
+                                             								adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,
+                                             								#{vehiclesBean.waySmartSettingManagerLocator[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
+                                             								#{settingCounts[sensitivityType]});
+                                             								adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
                                     </td>
                                     <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                           <h:outputText value="#{messages.editDevice_sensitivity5}" />

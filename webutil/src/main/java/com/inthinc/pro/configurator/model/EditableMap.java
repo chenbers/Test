@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 public class EditableMap<K,V> {
 
-	public Map<K,V> originalValues;
-	public Map<K,ValueWrapper<V>> editableValues;
+	private Map<K,V> originalValues;
+	private Map<K,ValueWrapper<V>> editableValues;
 	
 	
     public EditableMap(List<K> keySource, Map<K,V> originalValues){
@@ -121,6 +121,17 @@ public class EditableMap<K,V> {
             originalValues.put(key,null);
         }
 	}
+    public void update(){
+        Iterator<Entry<K,V>> it = originalValues.entrySet().iterator();
+        while(it.hasNext()){
+            
+            Entry<K, V> originalValueEntry = it.next();
+            
+            V editedValue = editableValues.get(originalValueEntry.getKey()).getValue();
+                            
+            originalValues.put(originalValueEntry.getKey(), editedValue);
+        }
+    }
 	public boolean equals(EditableMap<K,V> otherEditableMap){
 		
 		return originalValues.equals(otherEditableMap.getOriginalValues());

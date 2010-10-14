@@ -182,7 +182,7 @@ function setHighlight(row,column, messages) {
                     <f:facet name="header">
                     	<h:outputText styleClass="headerText" value="# of Vehicles" />
                     </f:facet>
-                    <h:outputText value="#{configuration.count}"/>
+                    <h:outputText value="#{configuration.count}" title="Vehicle IDs - #{configuration.vehicleIDsString}"/>
                 </rich:column>
 <!--			     <rich:column id="reason">-->
 <!--                   <f:facet name="header">-->
@@ -420,7 +420,8 @@ function setHighlight(row,column, messages) {
 				
 				<a4j:commandButton id="applyGroupConfigurationSettings" value="Apply Configuration to Group"
 				     				action="#{configuratorBean.applySettingsToTargetVehicles}"
-									reRender="configuratorSettings"/>
+									reRender="configuratorSettings" 
+									oncomplete="#{rich:component('applyConfigurationToGroup')}.hide();"/>
 				<a4j:commandButton id="applyGroupcancelConfigurationSettings" value="Cancel" 
 									oncomplete="#{rich:component('applyConfigurationToGroup')}.hide();"/>
 			 <rich:messages id="applyGroupMessages" style="color: red"/>
@@ -452,7 +453,8 @@ function setHighlight(row,column, messages) {
 				
 				<a4j:commandButton id="applyConfigurationConfigurationSettings" value="Apply Configuration to Configuration"
 				     				action="#{configuratorBean.applyToConfiguration}"
-									reRender="configuratorSettings"/>
+									reRender="configuratorSettings"
+									oncomplete="#{rich:component('applyConfigurationToConfiguration')}.hide();"/>
 				<a4j:commandButton id="applyConfigurationcancelConfigurationSettings" value="Cancel" 
 									oncomplete="#{rich:component('applyConfigurationToConfiguration')}.hide();"/>
 			 <rich:messages id="applyConfigurationMessages" style="color: red"/>
@@ -484,7 +486,7 @@ function setHighlight(row,column, messages) {
 				
 				<a4j:commandButton id="applyVehicleConfigurationSettings" value="Apply Configuration to Vehicle"
 				     				action="#{configuratorBean.updateVehicle}"  
-									reRender="configuratorSettings"/>
+									reRender="configuratorSettings" oncomplete="#{rich:component('applyConfigurationToVehicle')}.hide();"/>
 				<a4j:commandButton id="applyVehiclecancelConfigurationSettings" value="Cancel" 
 									oncomplete="#{rich:component('applyConfigurationToVehicle')}.hide();"/>
 			 <rich:messages id="applyVehicleMessages" style="color: red"/>
@@ -516,7 +518,8 @@ function setHighlight(row,column, messages) {
 				
 				<a4j:commandButton id="saveConfigurationSettings" value="Save Configuration"
 				     				action="#{configuratorBean.updateConfiguration}" 
-									reRender="configuratorSettings"/>
+									reRender="configuratorSettings" 
+									oncomplete="#{rich:component('saveConfiguration')}.hide();"/>
 				<a4j:commandButton id="cancelConfigurationSettings" value="Cancel" 
 									oncomplete="#{rich:component('saveConfiguration')}.hide();"/>
 			 <rich:messages id="messages" style="color: red"/>

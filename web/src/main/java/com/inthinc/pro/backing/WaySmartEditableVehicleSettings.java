@@ -1,7 +1,7 @@
 package com.inthinc.pro.backing;
 
 import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.model.configurator.SensitivityType;
+import com.inthinc.pro.model.configurator.SettingType;
 
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 	
@@ -36,23 +36,23 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 
     private void setHardAcceleration(Integer hardAcceleration) {
         
-        this.hardAcceleration = hardAcceleration==null?SensitivityType.WS_HARD_ACCEL_SETTING.getDefaultSetting():
-                                hardAcceleration==99?SensitivityType.WS_HARD_ACCEL_SETTING.getSettingsCount()+1:hardAcceleration;
+        this.hardAcceleration = hardAcceleration==null?SettingType.WS_HARD_ACCEL_SETTING.getDefaultSetting():
+                                hardAcceleration==99?SettingType.WS_HARD_ACCEL_SETTING.getSettingsCount()+1:hardAcceleration;
      }
      private void setHardBrake(Integer hardBrake) {
          
-    	 this.hardBrake = hardBrake==null?SensitivityType.WS_HARD_BRAKE_SETTING.getDefaultSetting():
-                          hardBrake==99?SensitivityType.WS_HARD_BRAKE_SETTING.getSettingsCount()+1:hardBrake;
+    	 this.hardBrake = hardBrake==null?SettingType.WS_HARD_BRAKE_SETTING.getDefaultSetting():
+                          hardBrake==99?SettingType.WS_HARD_BRAKE_SETTING.getSettingsCount()+1:hardBrake;
      }
      private void setHardTurn(Integer hardTurn) {
 
-    	 this.hardTurn = hardTurn==null?SensitivityType.WS_HARD_TURN_SETTING.getDefaultSetting():
-                         hardTurn==99?SensitivityType.WS_HARD_TURN_SETTING.getSettingsCount()+1:hardTurn;
+    	 this.hardTurn = hardTurn==null?SettingType.WS_HARD_TURN_SETTING.getDefaultSetting():
+                         hardTurn==99?SettingType.WS_HARD_TURN_SETTING.getSettingsCount()+1:hardTurn;
      }
      private void setHardVertical(Integer hardVertical) {
              
-    	 this.hardVertical = hardVertical==null?SensitivityType.WS_HARD_VERT_SETTING.getDefaultSetting():
-                             hardVertical==99?SensitivityType.WS_HARD_VERT_SETTING.getSettingsCount()+1:hardVertical;
+    	 this.hardVertical = hardVertical==null?SettingType.WS_HARD_VERT_SETTING.getDefaultSetting():
+                             hardVertical==99?SettingType.WS_HARD_VERT_SETTING.getSettingsCount()+1:hardVertical;
      }
 
     public Integer getSpeedLimit() {
@@ -87,28 +87,28 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 
 	public Integer getHardAcceleration() {
         if (hardAcceleration == null)
-            return SensitivityType.WS_HARD_ACCEL_SETTING.getDefaultSetting();
+            return SettingType.WS_HARD_ACCEL_SETTING.getDefaultSetting();
         return hardAcceleration;
 	}
 
 
 	public Integer getHardBrake() {
         if (hardBrake == null)
-            return SensitivityType.WS_HARD_BRAKE_SETTING.getDefaultSetting();
+            return SettingType.WS_HARD_BRAKE_SETTING.getDefaultSetting();
         return hardBrake;
 	}
 
 
 	public Integer getHardTurn() {
         if (hardTurn == null)
-            return SensitivityType.WS_HARD_TURN_SETTING.getDefaultSetting();
+            return SettingType.WS_HARD_TURN_SETTING.getDefaultSetting();
         return hardTurn;
 	}
 
 
 	public Integer getHardVertical() {
         if (hardVertical == null)
-            return SensitivityType.WS_HARD_VERT_SETTING.getDefaultSetting();
+            return SettingType.WS_HARD_VERT_SETTING.getDefaultSetting();
         return hardVertical;
 	}
 

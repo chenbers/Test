@@ -1366,19 +1366,19 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> getVehicleSettings(int vehicleID) {
+    public Map<String, Object> getVehicleSettings(Integer vehicleID) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(int groupID) {
+    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(Integer groupID) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getVehicleSettingsHistory(int vehicleID, long startTime, long endTime) {
+    public List<Map<String, Object>> getVehicleSettingsHistory(Integer vehicleID, Long startTime, Long endTime) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -1411,7 +1411,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 		// TODO Auto-generated method stub
 		return null;
 	}
-
     @Override
     public Map<String, Object> getTextMsgCount(Integer groupID, Long startDate, Long endDate, List<Map<String, Object>> filterList) {
         // TODO Auto-generated method stub

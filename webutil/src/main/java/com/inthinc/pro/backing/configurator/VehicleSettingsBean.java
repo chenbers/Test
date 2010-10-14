@@ -61,7 +61,17 @@ public class VehicleSettingsBean extends UsesBaseBean{
     	if (selectedVehicleID == null) return null;
     	
     	selectedVehicleSetting = configuratorDAO.getVehicleSettings(selectedVehicleID);
-    	initializeEditedDesiredSettings();
+    	if (selectedVehicleSetting == null){
+
+    	    FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("No vehicle exists with that ID");
+            FacesContext.getCurrentInstance().addMessage("", message);
+       	}
+    	else{
+    	    
+    	    initializeEditedDesiredSettings();
+    	}
     	
     	return null;
     }
@@ -92,10 +102,12 @@ public class VehicleSettingsBean extends UsesBaseBean{
             configuratorDAO.updateVehicleSettings(selectedVehicleSetting.getVehicleID(), newDesiredValues, 
     				                              getBaseBean().getProUser().getUser().getUserID(), 
     				                              reason);
-            //Need to update the edited values in case the
     		message.setSeverity(FacesMessage.SEVERITY_INFO);
     		message.setSummary("Vehicle settings updated successfully");
     		FacesContext.getCurrentInstance().addMessage("", message);
+
+            //Need to update the edited values in case the user decides to make further changes
+    		editedDesiredValues.update();
         }
 		return null;
     }

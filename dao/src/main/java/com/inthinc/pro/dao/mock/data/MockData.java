@@ -61,11 +61,10 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
-import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.event.NoteType;
@@ -860,7 +859,7 @@ public class MockData {
             else if (type == 1) {
                 flag.setType(AlertMessageType.ALERT_TYPE_SPEEDING);
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
-                final Integer[] speedSettings = new Integer[VehicleSetting.NUM_SPEEDS];
+                final Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
                 for (int j = 0; j < speedSettings.length; j++)
                     speedSettings[j] = randomInt(0, 5) * 5;
                 flag.setSpeedSettings(speedSettings);

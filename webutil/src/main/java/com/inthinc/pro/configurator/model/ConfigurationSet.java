@@ -23,7 +23,7 @@ public class ConfigurationSet {
     	
     	for(Configuration c:configurations){
     		
-    		if(c.getConfigurationID() == configurationID) return c;
+    		if(c.getConfigurationID().intValue() == configurationID.intValue()) return c;
     	}
     	return null;
     }

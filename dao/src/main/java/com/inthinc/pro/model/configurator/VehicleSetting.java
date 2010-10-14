@@ -3,20 +3,23 @@ package com.inthinc.pro.model.configurator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VehicleSetting {
+import com.inthinc.pro.dao.annotations.Column;
 
-    public static final int NUM_SPEEDS = 15;
-    public static final Integer DEFAULT_SPEED_SETTING = 0;    
-    public static final String DEFAULT_SPEED_SET = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-    public static final Integer[] SPEED_LIMITS = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75};
+public class VehicleSetting {
     
     private Integer vehicleID;
     private Integer deviceID;
+    @Column (name="productVer")
     private ProductType productType;
     private Map<Integer, String> desired;
     private Map<Integer, String> actual;
+    @Column(updateable=false)
     private Map<Integer, String> combinedSettings;
        
+	public VehicleSetting() {
+	    
+        combinedSettings = new HashMap<Integer,String>();
+    }
     public Integer getVehicleID() {
         return vehicleID;
     }
@@ -35,7 +38,7 @@ public class VehicleSetting {
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
-	public Map<Integer, String> getDesired() {
+    public Map<Integer, String> getDesired() {
         return desired;
     }
     public void setDesired(Map<Integer, String> desired) {

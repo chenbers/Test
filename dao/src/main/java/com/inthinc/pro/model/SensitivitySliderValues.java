@@ -18,9 +18,12 @@ public class SensitivitySliderValues {
 	private Integer maxFirmwareVersion;
 	@Column (name="fwdCmd")
 	private Integer forwardCommand;
+	@Column (name="fwdcmdname")
+	private String forwardCommandName;
     private List<String> values;
+    private Integer defaultValueIndex;
 	
-	public List<String> getValues() {
+    public List<String> getValues() {
         return values;
     }
     public void setValues(List<String> values) {
@@ -68,4 +71,16 @@ public class SensitivitySliderValues {
 	public void setForwardCommand(Integer forwardCommand) {
 		this.forwardCommand = forwardCommand;
 	}
+    public Integer getDefaultValueIndex() {
+        return defaultValueIndex;
+    }
+    public void setDefaultValueIndex(Integer defaultValueIndex) {
+        this.defaultValueIndex = defaultValueIndex;
+    }
+    public String getForwardCommandName() {
+        return forwardCommandName;
+    }
+    public void setForwardCommandName(String forwardCommandName) {
+        this.forwardCommandName = forwardCommandName;
+    }
 }

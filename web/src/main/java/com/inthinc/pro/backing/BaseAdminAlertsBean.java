@@ -158,7 +158,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         if ((allVehicles == null) && (vehiclesBean != null))
         {
-            final List<VehicleView> vehicles = vehiclesBean.getItems();
+//            final List<VehicleView> vehicles = vehiclesBean.getItems();
+            final List<VehicleView> vehicles = getVehicles();
             allVehicles = new ArrayList<SelectItem>(vehicles.size());
             for (final Vehicle vehicle : vehicles)
                 allVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
@@ -183,7 +184,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     protected List<SelectItem> getAllVehicles(Integer groupID)
     {
     	List<Group> subGroupList = getGroupHierarchy().getSubGroupList(groupID);
-    	final List<VehicleView> vehicles = vehiclesBean.getItems();
+//    	final List<VehicleView> vehicles = vehiclesBean.getItems();
+      final List<VehicleView> vehicles = getVehicles();
     	List<SelectItem> groupVehicles = new ArrayList<SelectItem>();
         for (final Vehicle vehicle : vehicles) {
         	for (Group group : subGroupList) {
@@ -197,6 +199,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return groupVehicles;
     }
 
+    public List<VehicleView> getVehicles()
+    {
+        return vehiclesBean.getPlainVehicles();
+    }
     protected List<SelectItem> getAllDrivers(Integer groupID)
     {
         final List<Driver> drivers = driverDAO.getAllDrivers(groupID);

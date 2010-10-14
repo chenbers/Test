@@ -3,10 +3,13 @@ package com.inthinc.pro.backing.model;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.dao.ConfiguratorDAO;
-import com.inthinc.pro.model.configurator.SensitivityType;
+import com.inthinc.pro.model.configurator.SettingType;
+import com.inthinc.pro.model.configurator.Slider;
+import com.inthinc.pro.model.configurator.SliderType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public abstract class VehicleSettingManager {
@@ -14,45 +17,40 @@ public abstract class VehicleSettingManager {
     protected static final Integer CUSTOM_SLIDER_VALUE = 99;
 	protected ConfiguratorDAO configuratorDAO;
     protected VehicleSetting  vehicleSetting;
-	protected Map<Integer, Integer> defaultSettings;
-	protected List<SensitivityType> sensitivities;
-	protected Map<Integer,Map<SensitivityType,Integer>> settingCounts;
+    protected VehicleSensitivitySliders vehicleSensitivitySliders;
+    protected Map<SliderType,Integer> adjustedSettingCounts;
         
     protected VehicleSettingManager(ConfiguratorDAO configuratorDAO, VehicleSetting vehicleSetting) {
 
         this.configuratorDAO = configuratorDAO;
         this.vehicleSetting = vehicleSetting;
+        vehicleSensitivitySliders = new VehicleSensitivitySliders(vehicleSetting.getProductType(), 0, 1000000);
         
-        defaultSettings = SensitivityType.getDefaultSettings();
-        sensitivities = SensitivityType.getSensitivities();
-        settingCounts = new HashMap<Integer,Map<SensitivityType,Integer>>();
+        adjustedSettingCounts = new HashMap<SliderType,Integer>();
     }
-
+    
     public abstract void init();
-
     public abstract Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings);
-
     public abstract Map<Integer, String> evaluateChangedSettings(Boolean batchEdit, Map<String, Boolean> updateField, Integer vehicleID, EditableVehicleSettings editableVehicleSettings);
-
     public abstract void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason);
-
     public abstract void updateVehicleSettings(boolean batchEdit, Map<String, Boolean> updateField, Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason);
+
 
     public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
         this.configuratorDAO = configuratorDAO;
     }
+    
 
-
-	public Map<Integer, Integer> getDefaultSettings() {
-		return defaultSettings;
+	public Map<SliderType, Integer> getDefaultSettings() {
+		return vehicleSensitivitySliders.getDefaultSettings();
 	}
 
-	public List<SensitivityType> getSensitivities() {
-		return sensitivities;
+	public List<SliderType> getSensitivities() {
+		return SliderType.getSensitivities();
 	}
 
-	public Map<Integer,Map<SensitivityType,Integer>> getSettingCounts() {
-		return settingCounts;
+	public Map<SliderType, Integer> getSettingCounts() {
+		return vehicleSensitivitySliders.getSettingCounts();
 	}
 
 	public EditableVehicleSettings associateSettings(Integer vehicleID) {
@@ -60,15 +58,54 @@ public abstract class VehicleSettingManager {
 	    if (vehicleSetting == null){
 	        
 	        return createDefaultValues(vehicleID); 
-	
 	    }
 	    else {
 	        return createFromExistingValues(vehicleSetting);
 	    }
 	}
+	
     protected abstract EditableVehicleSettings createDefaultValues(Integer vehicleID);
     protected abstract EditableVehicleSettings createFromExistingValues(VehicleSetting vs);
     
+    protected Map<SliderType,Integer> adjustedSettingCountsToAllowForCustomValues(Integer hardVertical, Integer hardTurn, Integer hardAcceleration, Integer hardBrake) {
+    	   
+	   	Map<SliderType,Integer> settingCount = new HashMap<SliderType,Integer>();
+        
+        settingCount.put(SliderType.HARD_ACCEL_SLIDER, vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_ACCEL_SLIDER)+(hardAcceleration==CUSTOM_SLIDER_VALUE?1:0));
+        settingCount.put(SliderType.HARD_BRAKE_SLIDER, vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_BRAKE_SLIDER)+(hardBrake==CUSTOM_SLIDER_VALUE?1:0));
+        settingCount.put(SliderType.HARD_TURN_SLIDER,  vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_TURN_SLIDER)+(hardTurn==CUSTOM_SLIDER_VALUE?1:0));
+        settingCount.put(SliderType.HARD_BUMP_SLIDER,  vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_BUMP_SLIDER)+(hardVertical==CUSTOM_SLIDER_VALUE?1:0));
+
+        return settingCount;
+    }
+
+    protected Map<Integer,String> getSensitivityValue(SliderType sliderType, Integer sliderValue) {
+           
+           return vehicleSensitivitySliders.getSensitivitySliderSettings(sliderType).getSettingValuesFromSliderValue(sliderValue);
+       }
+
+    protected Map<Integer, String> getVehiclSettingsForSliderSettingIDs(VehicleSetting vehicleSetting,Slider slider){
+        
+        Map<Integer, String> vehicleSettings = new HashMap<Integer, String>();
+        
+        Set<Integer> settingIDs = slider.getSettingIDsForThisSlider();
+        
+        for(Integer settingID :settingIDs){
+            
+            vehicleSettings.put(settingID, vehicleSetting.getCombined(settingID));
+        }
+        return vehicleSettings;
+    }
+
+    protected Integer extractSliderValue(SliderType sliderType, Map<Integer, String> settings) {
+        
+        if (settings == null) {
+    
+            return getDefaultSettings().get(sliderType);
+        }
+        return vehicleSensitivitySliders.getSensitivitySliderSettings(sliderType).getSliderValueFromSettings(settings);
+    }
+
     public abstract class DesiredSettings{
 
         protected Map<Integer, String> desiredSettings;
@@ -82,14 +119,14 @@ public abstract class VehicleSettingManager {
             return desiredSettings;
         }
 
-        public boolean isDifferent(SensitivityType setting, String newValue, String oldValue) {
+        public boolean isDifferent(String newValue, String oldValue) {
         
            if(((oldValue != null) && (newValue == null)) ||
                 ((oldValue == null) && (newValue != null)) || 
                 (!oldValue.equals(newValue))) return true;
            return false;
         }
-        public abstract void addSettingIfNeeded(SensitivityType setting,String newValue, String oldValue); 
+        public abstract void addSettingIfNeeded(SettingType setting,String newValue, String oldValue); 
       }
       public class ChangedSettings extends DesiredSettings{
           
@@ -105,14 +142,14 @@ public abstract class VehicleSettingManager {
           }
 
           @Override
-          public void addSettingIfNeeded(SensitivityType setting,String newValue, String oldValue){
+          public void addSettingIfNeeded(SettingType setting,String newValue, String oldValue){
               
-           if(isRequested(setting) && isDifferent(setting,newValue,oldValue)){
+           if(isRequested(setting) && isDifferent(newValue,oldValue)){
                
                desiredSettings.put(setting.getSettingID(), newValue);
            }
         }
-        private boolean isRequested(SensitivityType setting){
+        private boolean isRequested(SettingType setting){
             
             if (!batchEdit) return true;
             if (updateField.get("editableVehicleSettings."+setting.getPropertyName())){
@@ -124,13 +161,16 @@ public abstract class VehicleSettingManager {
       public class NewSettings extends DesiredSettings{
 
         @Override
-        public void addSettingIfNeeded(SensitivityType setting,String newValue, String oldValue){
+        public void addSettingIfNeeded(SettingType setting,String newValue, String oldValue){
               
-            if(isDifferent(setting,newValue,oldValue)){
+            if(isDifferent(newValue,oldValue)){
                
                desiredSettings.put(setting.getSettingID(), newValue);
             }
          }
       }
+    public Map<SliderType, Integer> getAdjustedSettingCounts() {
+        return adjustedSettingCounts;
+    }
 
 }

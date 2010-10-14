@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.inthinc.pro.model.BaseEnum;
 
 @XmlRootElement
-public enum SensitivityType implements BaseEnum
+public enum SettingType implements BaseEnum
 {
     HARD_ACCEL_SETTING(1,157,10,5, "hardAcceleration"),
     HARD_BRAKE_SETTING(2,158,10,5, "hardBrake"),
@@ -55,7 +55,7 @@ public enum SensitivityType implements BaseEnum
     private int           code;
     private String        propertyName;
 
-    private SensitivityType(int code, int settingID, Integer settingsCount,Integer defaultSetting, String propertyName)
+    private SettingType(int code, int settingID, Integer settingsCount,Integer defaultSetting, String propertyName)
     {
         this.code = code;
         this.settingID = settingID;
@@ -65,24 +65,24 @@ public enum SensitivityType implements BaseEnum
     }
 
 
-    private static final Map<Integer, SensitivityType> lookup = new HashMap<Integer, SensitivityType>();
+    private static final Map<Integer, SettingType> lookup = new HashMap<Integer, SettingType>();
     static
     {
-        for (SensitivityType p : EnumSet.allOf(SensitivityType.class))
+        for (SettingType p : EnumSet.allOf(SettingType.class))
         {
             lookup.put(p.code, p);
         }
     }
 
-    private static final Map<Integer, SensitivityType> bySettingID = new HashMap<Integer, SensitivityType>();
+    private static final Map<Integer, SettingType> bySettingID = new HashMap<Integer, SettingType>();
     static
     {
-        for (SensitivityType p : EnumSet.allOf(SensitivityType.class))
+        for (SettingType p : EnumSet.allOf(SettingType.class))
         {
             bySettingID.put(p.settingID, p);
         }
     }
-    public static Map<Integer, SensitivityType> getBySettingID(){
+    public static Map<Integer, SettingType> getBySettingID(){
         
         return bySettingID;
     }
@@ -90,7 +90,7 @@ public enum SensitivityType implements BaseEnum
         
         Map<Integer, Integer> defaultSettings = new HashMap<Integer, Integer>();
         
-        for (SensitivityType p : EnumSet.allOf(SensitivityType.class))
+        for (SettingType p : EnumSet.allOf(SettingType.class))
         {
             defaultSettings.put(p.settingID, p.defaultSetting);
         }
@@ -109,16 +109,16 @@ public enum SensitivityType implements BaseEnum
         return propertyName;
     }
 
-    public static SensitivityType valueOf(Integer code)
+    public static SettingType valueOf(Integer code)
     {
         return lookup.get(code);
     }
-    public static SensitivityType getBySettingID(Integer settingID){
+    public static SettingType getBySettingID(Integer settingID){
         return bySettingID.get(settingID);
     }
-    public static List<SensitivityType> getSensitivities(){
+    public static List<SettingType> getSensitivities(){
         
-       List<SensitivityType> sensitivityTypes = new ArrayList<SensitivityType>();
+       List<SettingType> sensitivityTypes = new ArrayList<SettingType>();
        sensitivityTypes.add(HARD_ACCEL_SETTING);
        sensitivityTypes.add(HARD_BRAKE_SETTING);
        sensitivityTypes.add(HARD_TURN_SETTING);

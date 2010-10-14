@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class DeviceSettingDefinition implements Comparable<DeviceSettingDefinition>{
-    
+
     @ID
     private Integer settingID;
     private String name;

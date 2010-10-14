@@ -9,7 +9,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
+import com.inthinc.pro.model.SensitivitySliderValues;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class DaoUtilConfiguratorMapper extends DaoUtilMapper {
@@ -64,6 +66,8 @@ public class DaoUtilConfiguratorMapper extends DaoUtilMapper {
     @ConvertColumnToField(columnName = "actual")
     public void actualToModel(VehicleSetting vehicleSetting, Object value)
     {
+        if (vehicleSetting == null || value == null) return;
+        
         if (value instanceof Map){
             
             vehicleSetting.setActual((Map<Integer,String>) value);
@@ -73,9 +77,30 @@ public class DaoUtilConfiguratorMapper extends DaoUtilMapper {
     @ConvertColumnToField(columnName = "desired")
     public void desiredToModel(VehicleSetting vehicleSetting, Object value)
     {
+        if (vehicleSetting == null || value == null) return;
+        
         if (value instanceof Map){
             
             vehicleSetting.setDesired((Map<Integer,String>) value);
+        }
+    }
+    @ConvertColumnToField(columnName = "productVer")
+    public void productVerToProductType(VehicleSetting vehicleSetting, Object value)
+    {
+        if (vehicleSetting == null || value == null) return;
+        if (value instanceof Integer){
+            
+            vehicleSetting.setProductType(ProductType.getProductTypeFromVersion((Integer)value));
+        }
+    }
+    @ConvertColumnToField(columnName = "productType")
+    public void productTypeToProductType(SensitivitySliderValues sensitivitySliderValues, Object value)
+    {
+       if (sensitivitySliderValues == null || value == null) return;
+       
+       if (value instanceof Integer){
+            
+            sensitivitySliderValues.setProductType(ProductType.getProductTypeFromVersion((Integer)value));
         }
     }
 }

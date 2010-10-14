@@ -13,6 +13,7 @@ public class Configuration{
 	private Integer configurationID;
 	
     private List<Integer> vehicleIDs;
+    private String vehicleIDsString="";
     
     private EditableMap<Integer,String> editedDesiredValues;
 	private String reason;
@@ -85,9 +86,19 @@ public class Configuration{
     }
     public void addVehicleID(Integer vehicleID){
         vehicleIDs.add(vehicleID);
+        vehicleIDsString+=vehicleID+",";
     }
 
     public Integer getCount(){
         return vehicleIDs.size();
+    }
+    
+    public String getVehicleIDsString(){
+        
+        if (vehicleIDsString.isEmpty()) return vehicleIDsString;
+        StringBuilder vehicleIDsStringBuilder = new StringBuilder(vehicleIDsString);
+        
+        vehicleIDsStringBuilder.setLength(vehicleIDsStringBuilder.length()-1);
+        return vehicleIDsStringBuilder.toString();
     }
 }

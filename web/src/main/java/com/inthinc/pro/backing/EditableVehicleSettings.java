@@ -10,7 +10,7 @@ public abstract class EditableVehicleSettings {
 
 
     //This is for the different settings that have to be displayed for different products on the Admin->vehicle pages
-    //Implementors should just have instance variables/getters/setters for the settings from the vehicle settings record that
+    //Extenders should just have instance variables/getters/setters for the settings from the vehicle settings record that
     //a customer can change on the vehicle page.
 	
     private Integer     vehicleID;

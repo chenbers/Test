@@ -296,9 +296,6 @@
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.Device"> 
-  <void property="accel"> 
-   <string>1100 50 4</string> 
-  </void> 
   <void property="accountID"> 
    <int>353</int> 
   </void> 
@@ -436,9 +433,6 @@
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.Device"> 
-  <void property="accel"> 
-   <string>1100 50 4</string> 
-  </void> 
   <void property="accountID"> 
    <int>353</int> 
   </void> 
@@ -571,9 +565,6 @@
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.Device"> 
-  <void property="accel"> 
-   <string>1100 50 4</string> 
-  </void> 
   <void property="accountID"> 
    <int>353</int> 
   </void> 
@@ -678,9 +669,6 @@
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.Device"> 
-  <void property="accel"> 
-   <string>1100 50 4</string> 
-  </void> 
   <void property="accountID"> 
    <int>353</int> 
   </void> 
@@ -689,9 +677,6 @@
   </void> 
   <void property="emuMd5"> 
    <string>696d6acbc199d607a5704642c67f4d86</string> 
-  </void> 
-  <void property="ephone"> 
-   <string>5555559876</string> 
   </void> 
   <void property="imei"> 
    <string>915067670927588</string> 

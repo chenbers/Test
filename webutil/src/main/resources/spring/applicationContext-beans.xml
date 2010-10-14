@@ -23,7 +23,7 @@
 	<bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init" />
 	<bean id="deviceSettingDefinitions" class="com.inthinc.pro.configurator.model.DeviceSettingDefinitions" init-method="init"/>
 	<bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init" />
-
+	
 	<!-- Backing Beans -->
 	<bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init" scope="session"/>
 	<bean id="dateFormatBean" class="com.inthinc.pro.backing.dao.DateFormatBean" scope="session" />

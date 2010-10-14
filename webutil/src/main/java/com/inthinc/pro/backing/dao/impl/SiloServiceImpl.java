@@ -10,6 +10,7 @@ import com.inthinc.pro.backing.dao.model.CrudType;
 import com.inthinc.pro.backing.dao.validator.ValidatorType;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
+@SuppressWarnings("serial")
 public class SiloServiceImpl implements SiloService {
     @Override
     @MethodDescription(description = "Creates a new account.", crudType=CrudType.CREATE)
@@ -964,37 +965,42 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Fetches the vehicle settings for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
-    public Map<String, Object> getVehicleSettings(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE) int vehicleID) {
+    @MethodDescription(description = "Fetches the vehicle settings for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilConfiguratorMapper.class)
+    public Map<String, Object> getVehicleSettings(@DaoParam(name = "vehicleID") Integer vehicleID) {
 
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Fetches the vehicle settings for group hierarchy.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class)
-    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(@DaoParam(name = "groupID", validator=ValidatorType.GROUP) int groupID) {
+    @MethodDescription(description = "Fetches the vehicle settings for group hierarchy.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSetting.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilConfiguratorMapper.class)
+    public List<Map<String, Object>> getVehicleSettingsByGroupIDDeep(@DaoParam(name = "groupID") Integer groupID) {
 
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Fetches the vehicle settings history for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSettingHistory.class)
-    public List<Map<String, Object>> getVehicleSettingsHistory(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE)int vehicleID, 
-            @DaoParam(name = "startTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long startTime, 
-            @DaoParam(name = "endTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")long endTime) {
+    @MethodDescription(description = "Fetches the vehicle settings history for one vehicle.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.configurator.VehicleSettingHistory.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilConfiguratorMapper.class)
+    public List<Map<String, Object>> getVehicleSettingsHistory(@DaoParam(name = "vehicleID", validator=ValidatorType.VEHICLE)Integer vehicleID, 
+            @DaoParam(name = "startTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")Long startTime, 
+            @DaoParam(name = "endTime", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm")Long endTime) {
 
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class)
+    @MethodDescription(description = "Set the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilConfiguratorMapper.class)
     public Map<String, Object> setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
 
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class)
+    @MethodDescription(description = "Update the device settings for a vehicle.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.configurator.model.VehicleSettings.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilConfiguratorMapper.class)
     public Map<String, Object> updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason) {
 
         return null;
@@ -1037,7 +1043,8 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-    @MethodDescription(description = "Fetches the list of all the sensitivity slider values.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.SensitivitySliderValues.class)
+    @MethodDescription(description = "Fetches the list of all the sensitivity slider values.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.SensitivitySliderValues.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilConfiguratorMapper.class)
 	public List<Map<String, Object>> getSensitivitySliderValues() {
 		return null;
 	}

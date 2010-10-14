@@ -2,6 +2,7 @@ package com.inthinc.pro.configurator.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,7 +17,9 @@ public class ConfigurationExtractor {
 
         return new ConfigurationSet(createConfigurations(vehicleSettings, productSettings));
     }
-    
+    /*
+     * Destroys the vehicleSettings list as it iterates through to save space
+     */
     private static List<Configuration> createConfigurations(List<VehicleSetting> vehicleSettings, List<Integer> productSettings){
  
     	logger.debug("ConfigurationExtractor: createConfigurations");
@@ -24,15 +27,19 @@ public class ConfigurationExtractor {
         
         List<Configuration> configurations = new ArrayList<Configuration>();
         
-        for(VehicleSetting vehicleSetting : vehicleSettings){
+        Iterator<VehicleSetting> vehicleSettingIterator = vehicleSettings.iterator();
+        while(vehicleSettingIterator.hasNext()){
             
-        	logger.debug("ConfigurationExtractor: vehicleSetting, vehicleID="+vehicleSetting.getVehicleID());
-            configurations = addToMatchingConfiguration(vehicleSetting,productSettings,configurations);
+            VehicleSetting vehicleSetting = vehicleSettingIterator.next(); 
+            logger.debug("ConfigurationExtractor: vehicleSetting, vehicleID="+vehicleSetting.getVehicleID());
+            addToMatchingConfiguration(vehicleSetting,productSettings,configurations);
+            
+            vehicleSettingIterator.remove();
         }
         return configurations;
      }
     
-    private static List<Configuration> addToMatchingConfiguration(VehicleSetting vehicleSetting, List<Integer> productSettings,List<Configuration> configurations){
+    private static void addToMatchingConfiguration(VehicleSetting vehicleSetting, List<Integer> productSettings,List<Configuration> configurations){
         
   	  	EditableMap<Integer, String> editedDesiredValues = new EditableMap<Integer,String>(productSettings, vehicleSetting.getCombinedSettings());
         for(Configuration configuration : configurations){
@@ -41,11 +48,9 @@ public class ConfigurationExtractor {
                 
             	logger.debug("ConfigurationExtractor: addToMatchingConfiguration - matching found");
                 configuration.addVehicleID(vehicleSetting.getVehicleID());
-                return configurations;
             }
         }
         configurations.add(createNewConfiguration(vehicleSetting.getVehicleID(),configurations.size()+1, editedDesiredValues));
-        return configurations;
     }
     private static Configuration createNewConfiguration(Integer vehicleID, Integer configurationID, EditableMap<Integer, String> editedDesiredValues){
         

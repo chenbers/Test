@@ -38,7 +38,8 @@ public class DevicesBeanTest extends BaseAdminBeanTest<DevicesBean.DeviceView>
     @Override
     protected String[] getBatchUpdateFields()
     {
-        return new String[] { "name", "ephone" };
+//        return new String[] { "name", "ephone" };
+            return new String[]{};
     }
     
     @Test

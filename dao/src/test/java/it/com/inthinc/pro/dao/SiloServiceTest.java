@@ -96,7 +96,7 @@ import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
-import com.inthinc.pro.model.configurator.SensitivityType;
+import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
@@ -162,7 +162,7 @@ public class SiloServiceTest {
     @Test
     @Ignore
     public void testDeviceSensitivityMapping() {
-        for (SensitivityType type : SensitivityType.values()) {
+        for (SettingType type : SettingType.values()) {
             assertNotNull(DeviceSensitivityMapping.getForwardCommand(type, 1));
         }
     }
@@ -1076,7 +1076,7 @@ public class SiloServiceTest {
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
         }
         // find
-        String ignoreFields[] = { "modified", "baseID" };  
+        String ignoreFields[] = { "modified", "baseID"};  
         for (Device device : deviceList) {
             Device returnedDevice = deviceDAO.findByID(device.getDeviceID());
             Util.compareObjects(device, returnedDevice, ignoreFields);

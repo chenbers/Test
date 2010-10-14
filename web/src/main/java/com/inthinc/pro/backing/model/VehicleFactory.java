@@ -24,6 +24,7 @@ public class VehicleFactory {
                 case WS820:
                     vehicleSettingManagers.put(vehicleSetting.getVehicleID(),  new WaySmartSettingManager(configuratorDAO,vehicleSetting));
                     break;
+                case TIWIPRO_R71:
                 case TIWIPRO_R74:
                     vehicleSettingManagers.put(vehicleSetting.getVehicleID(),  new TiwiproSettingManager(configuratorDAO,vehicleSetting));
                     break;

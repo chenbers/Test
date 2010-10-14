@@ -32,6 +32,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.util.DummyMap;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -107,9 +108,25 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private TreeMap<Integer, Boolean>             driverAssigned;
     
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
+    private WaySmartSettingManagerLocator<Integer,WaySmartSettingManager> waySmartSettingManagerLocator;
+    private TiwiproSettingManagerLocator<Integer,TiwiproSettingManager> tiwiproSettingManagerLocator;
     
     private CacheBean cacheBean;
     
+    @Override
+    public void initBean() {
+
+        super.initBean();
+        waySmartSettingManagerLocator = new WaySmartSettingManagerLocator<Integer,WaySmartSettingManager>(this);
+        tiwiproSettingManagerLocator = new TiwiproSettingManagerLocator<Integer,TiwiproSettingManager>(this);
+    }
+    public WaySmartSettingManagerLocator<Integer, WaySmartSettingManager> getWaySmartSettingManagerLocator() {
+        return waySmartSettingManagerLocator;
+    }
+
+    public TiwiproSettingManagerLocator<Integer,TiwiproSettingManager> getTiwiproSettingManagerLocator() {
+        return tiwiproSettingManagerLocator;
+    }
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -169,6 +186,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         for (final Vehicle vehicle : plainVehicles)
         {
             VehicleView view = createVehicleView(vehicle);
+            checkForSettings(vehicle.getVehicleID());
+            view.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+
             view.setDevice(devices.get(vehicle.getDeviceID()));
             items.add(view);   
         }
@@ -203,8 +223,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
-        checkForSettings(vehicle.getVehicleID());
-        vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
 
         return vehicleView;
     }
@@ -294,7 +312,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         final Vehicle vehicle = new Vehicle();
         vehicle.setStatus(Status.ACTIVE);
         //TODO decide how to create add item
-        return createVehicleView(vehicle);
+        VehicleView vehicleView = createVehicleView(vehicle);
+        checkForSettings(vehicle.getVehicleID());
+        vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+        return vehicleView;
     }
 
     @Override
@@ -484,7 +505,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         //TODO decide how to revert an item
 
-        return createVehicleView(vehicleDAO.findByID(vehicleView.getVehicleID()));
+        VehicleView view = createVehicleView(vehicleDAO.findByID(vehicleView.getVehicleID()));
+        checkForSettings(vehicleView.getVehicleID());
+        view.setEditableVehicleSettings(vehicleSettingManagers.get(vehicleView.getVehicleID()).associateSettings(vehicleView.getVehicleID()));
+        return view;
     }
 
     @Override
@@ -652,19 +676,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
             return null;
         }
-        public TiwiproSettingManager getTiwiproSettingManager(){
+        public VehicleSettingManager getTiwiproSettingManager(){
             
             if(bean.getVehicleSettingManagers().get(getVehicleID()) instanceof TiwiproSettingManager) {
                 
-                return (TiwiproSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
+                return (VehicleSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
             }
             else return null;
         }
-        public WaySmartSettingManager getWaySmartSettingManager(){
+        public VehicleSettingManager getWaySmartSettingManager(){
             
             if(bean.getVehicleSettingManagers().get(getVehicleID()) instanceof WaySmartSettingManager) {
                 
-                return (WaySmartSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
+                return (VehicleSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
             }
             else return null;
         }
@@ -763,5 +787,46 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             this.selected = selected;
         }
     }
+    public class TiwiproSettingManagerLocator<K, V> extends DummyMap<Integer, TiwiproSettingManager>{
 
+        private VehiclesBean vehiclesBean;
+        
+        public TiwiproSettingManagerLocator(VehiclesBean vehiclesBean) {
+            super();
+            this.vehiclesBean = vehiclesBean;
+        }
+
+        @Override
+        public TiwiproSettingManager get(Object key) {
+            
+            if (!(key instanceof Integer)) return null;
+            
+            if (vehiclesBean.getVehicleSettingManagers().get(key) instanceof TiwiproSettingManager){
+                return (TiwiproSettingManager) vehiclesBean.getVehicleSettingManagers().get(key);
+            }
+            return null;
+        }
+        
+    }
+    public class WaySmartSettingManagerLocator<K, V> extends DummyMap<Integer, WaySmartSettingManager>{
+
+        private VehiclesBean vehiclesBean;
+        
+        public WaySmartSettingManagerLocator(VehiclesBean vehiclesBean) {
+            super();
+            this.vehiclesBean = vehiclesBean;
+        }
+
+        @Override
+        public WaySmartSettingManager get(Object key) {
+            
+            if (!(key instanceof Integer)) return null;
+            
+            if (vehiclesBean.getVehicleSettingManagers().get(key) instanceof WaySmartSettingManager){
+                return (WaySmartSettingManager) vehiclesBean.getVehicleSettingManagers().get(key);
+            }
+            return null;
+        }
+        
+    }
 }

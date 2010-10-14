@@ -89,21 +89,27 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     public Object updateConfiguration(){
     	
     	logger.debug("configurator - updateConfiguration");
+    	
+    	if (reason == null|| reason.isEmpty()) return null;
+    	
     	selectedConfiguration = configurationSet.getConfiguration(selectedConfigurationID);
+    	if ((selectedConfiguration == null) || selectedConfiguration.getVehicleIDs().isEmpty()) return null;
+    	
     	Map<Integer,String> differencesMap = selectedConfiguration.getDifferencesMap();
+    	
+    	if (differencesMap.isEmpty()) return null;
+    	
        	for(Integer vehicleID : selectedConfiguration.getVehicleIDs()){
     		
-	      if(reason == null|| reason.isEmpty() || differencesMap.isEmpty() || vehicleID==null) {}
-	      else{
+       	    if(vehicleID!=null) {
 	      
-	          configuratorDAO.updateVehicleSettings(vehicleID, differencesMap, 
+       	        configuratorDAO.updateVehicleSettings(vehicleID, differencesMap, 
 	                                                getBaseBean().getUser().getUserID(), 
 	                                                reason);
-	      }
+       	    }
     	}
-       	
-       	reinitializeConfigurations();
-       	
+        reinitializeConfigurations();
+        
        	return null;
     }
     public Object applySettingsToTargetVehicles(){

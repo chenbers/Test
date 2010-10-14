@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.ReferenceEntity;
 
+@SuppressWarnings("serial")
 public class DaoUtilMapper extends BaseUtilMapper {
 
 	@Override
@@ -131,12 +132,18 @@ public class DaoUtilMapper extends BaseUtilMapper {
                 else
                 {
                 	Object entryValue = entry.getValue();
-                    Class<?> fieldType = entryValue.getClass();
-                    if (Boolean.class.isAssignableFrom(fieldType) || Number.class.isAssignableFrom(fieldType) || String.class.isAssignableFrom(fieldType)
-                            || Character.class.isAssignableFrom(fieldType) || Date.class.isAssignableFrom(fieldType) || TimeZone.class.isAssignableFrom(fieldType)
-                            || fieldType.isEnum())
-                    	valueMap.put(entry.getKey(), entryValue);
-                    else valueMap.put(entry.getKey(), convertToMap(entry.getValue(), handled, includeNonUpdateables));
+                	if (entryValue == null){
+                	    valueMap.put(entry.getKey(),null); 
+                	}
+                	else{
+                	    
+                        Class<?> fieldType = entryValue.getClass();
+                        if (Boolean.class.isAssignableFrom(fieldType) || Number.class.isAssignableFrom(fieldType) || String.class.isAssignableFrom(fieldType)
+                                || Character.class.isAssignableFrom(fieldType) || Date.class.isAssignableFrom(fieldType) || TimeZone.class.isAssignableFrom(fieldType)
+                                || fieldType.isEnum())
+                        	valueMap.put(entry.getKey(), entryValue);
+                        else valueMap.put(entry.getKey(), convertToMap(entry.getValue(), handled, includeNonUpdateables));
+                	}
                 }
             }
             value = valueMap;

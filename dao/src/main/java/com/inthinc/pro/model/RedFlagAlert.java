@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 
 @XmlRootElement
 public class RedFlagAlert extends BaseAlert {
@@ -81,8 +81,8 @@ public class RedFlagAlert extends BaseAlert {
 
     public void setSpeedSettings(Integer[] speedSettings) {
         this.speedSettings = speedSettings;
-        if ((speedSettings != null) && (speedSettings.length != VehicleSetting.NUM_SPEEDS))
-            throw new IllegalArgumentException("speedSettings.length must be " + VehicleSetting.NUM_SPEEDS);
+        if ((speedSettings != null) && (speedSettings.length != TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS))
+            throw new IllegalArgumentException("speedSettings.length must be " + TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS);
     }
 
     public Boolean isHardAccelerationNull(){
