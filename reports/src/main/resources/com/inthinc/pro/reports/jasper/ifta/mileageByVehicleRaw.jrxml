@@ -61,13 +61,13 @@
 	</columnHeader>
 	<detail>
 		<band height="18">
-			<staticText>
+			<textField>
 				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="256" height="17" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[$F{groupName}]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="373" y="0" width="117" height="17" backcolor="#FFFFFF"/>
 				<box>

@@ -58,14 +58,17 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
      * @param iftaOnly the flag to consider only IFTA 
      */
     public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        List<StateMileage> list = new ArrayList<StateMileage>();
+        List<StateMileage> dataList = new ArrayList<StateMileage>();
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
         addParameter("units", units);
         for (Integer groupID : groupIDList) {
-             list.addAll(stateMileageDAO.getMileageByVehicle(groupID, interval, dotOnly));
+            List<StateMileage> list = stateMileageDAO.getMileageByVehicle(groupID, interval, dotOnly);
+            if (list != null) {
+                dataList.addAll(list);
+            }
         }      
-        initDataSet(interval, list);
+        initDataSet(interval, dataList);
     }
 
     /**
@@ -79,11 +82,12 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
         for (StateMileage item : records) {
             MileageByVehicle rec = new MileageByVehicle();
             rec.setVehicle(item.getVehicleName());
-            
+            rec.setState(item.getStateName());
+            rec.setGroupName(item.getGroupName());
+
             if (units.equals(UNITS_ENGLISH))
                 rec.setTotal(Double.valueOf(item.getMiles()));
             //else rec.setTotal(Double.valueOf(item.getKilometers()));
-            rec.setGroupName(item.getGroupName());
             dataList.add(rec);
         }
         Collections.sort(dataList, new MileageByVehicleComparator());        

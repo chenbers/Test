@@ -90,18 +90,24 @@ public class MockStateMileageDAO implements StateMileageDAO {
             List<StateMileage> list = new ArrayList<StateMileage>();
             
             StateMileage bean = new StateMileage();
-            bean.setGroupName(groupID.toString());
-            bean.setVehicleName("257547"); bean.setMiles(1684L);
+            bean.setGroupName(groupID.toString()); 
+            bean.setStateName("Distance");
+            bean.setVehicleName("257547"); 
+            bean.setMiles(1684L);
             list.add(bean);
             
             bean = new StateMileage();
-            bean.setGroupName(groupID.toString());
-            bean.setVehicleName("217547"); bean.setMiles(1685L);
+            bean.setGroupName(groupID.toString()); 
+            bean.setStateName("Distance");
+            bean.setVehicleName("217547"); 
+            bean.setMiles(1685L);
             list.add(bean);
             
             bean = new StateMileage();
-            bean.setGroupName(groupID.toString());
-            bean.setVehicleName("1575789"); bean.setMiles(1686L);
+            bean.setGroupName(groupID.toString()); 
+            bean.setStateName("Distance");
+            bean.setVehicleName("1575789"); 
+            bean.setMiles(1686L);
             list.add(bean);
             
             mileageByVehicle.put(groupID, list);
