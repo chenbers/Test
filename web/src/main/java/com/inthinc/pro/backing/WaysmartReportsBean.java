@@ -111,22 +111,24 @@ public class WaysmartReportsBean extends ReportsBean {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<SelectItemGroup> getReportGroups() {
 
     	// The map between and item and its ID
         reportGroupMap = new HashMap<Integer, ReportGroup>();
         
-        // The items and groups of the UI list
+        // The items categorized in groups to be shown in the UI list
         List<SelectItemGroup> itemGroups = new ArrayList<SelectItemGroup>();
 
+        itemGroups.add(getBlankGroup());
+        
         itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
         		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
         
         itemGroups.add(new SelectItemGroup(ReportCategory.DOT_IFTA.getLabel(), 
         		ReportCategory.Performance.getDescription(), false, getItemsByCategory(ReportCategory.DOT_IFTA)));
-
-        
-        //items.add(0, new SelectItem(null, ""));
 
         return itemGroups;
     }
@@ -144,6 +146,18 @@ public class WaysmartReportsBean extends ReportsBean {
             reportGroupMap.put(rt.getCode(), rt);
         }
 		return items.toArray(new SelectItem[0]);
+	}
+	
+	/**
+	 * Produces an group with a single item, which is a blank item.
+	 * In the UI it shows as one blank line.
+	 * 
+	 * @return A group with one blank item.
+	 */
+	private SelectItemGroup getBlankGroup(){
+        SelectItem[] items = new SelectItem[1]; 
+        items[0] = new SelectItem(null, "");
+        return new SelectItemGroup("","",false,items);		
 	}
 
 }

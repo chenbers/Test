@@ -49,6 +49,13 @@ public abstract class ReportsBean extends BaseBean {
 
     
     protected abstract void genReportCriteria();
+    
+    /**
+     * Returns the Items to be shown in the Reports Item List.
+     * These items can be divided in groups by using SelectItemGroup.
+     *  
+     * @return A list of items or groups of items to be shown.
+     */
     public abstract List<? extends SelectItem> getReportGroups();
     protected abstract Map<Integer, ReportGroup> getReportGroupMap();
 

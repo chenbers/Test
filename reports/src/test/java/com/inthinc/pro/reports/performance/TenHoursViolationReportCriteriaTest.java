@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import mockit.Cascading;
 import mockit.Expectations;
@@ -30,6 +29,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.util.DateTimeUtil;
@@ -83,8 +83,6 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         	// In that case, execution and order must be verified in the Verifications() block.
         	// In this example we have one @NonStrict Mock object: driverMock
         	
-        	DateTimeZone dtzMock;
-        	DateTimeUtil dtuMock;
         	GroupHierarchy groupHierarchyMock;
         	
            {
@@ -98,15 +96,11 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         	  List<Group> groupList = new ArrayList<Group>();
               groupDAOMock.getGroupHierarchy(ACCOUNT_ID, GROUP_ID); returns(groupList);
 
-              driverMock.getGroupID(); returns(GROUP_ID);
-              
-              dtzMock.forTimeZone((TimeZone)any); returns(dtzMock);
-              dtuMock.getExpandedInterval(INTERVAL, dtzMock, 1, 1); returns(INTERVAL);
-              
               waysmartDAOMock.getTenHoursViolations(driverMock, INTERVAL); returns(getViolationList());
-            
+
               new GroupHierarchy(groupList); // We expect this constructor to be called,
-              groupHierarchyMock.getFullGroupName(GROUP_ID); returns(GROUP_FULL_NAME); // and then this method.
+              driverMock.getGroupID(); returns(GROUP_ID); 
+              groupHierarchyMock.getFullGroupName(GROUP_ID, ReportCriteria.GROUP_SEPARATOR); returns(GROUP_FULL_NAME); // and then this method.
            }
            
            // Helper method
@@ -132,7 +126,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
            {
         	   // All the strict expectations were already verified automatically
                driverMock.getGroupID();
-               driverMock.getPerson(); times = 3;
+               driverMock.getPerson(); times = 2;
            }
          };
 
