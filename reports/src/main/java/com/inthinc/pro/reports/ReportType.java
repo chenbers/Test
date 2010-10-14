@@ -40,6 +40,7 @@ public enum ReportType
     
     // DOT/IFTA
     MILEAGE_BY_VEHICLE("Mileage By Vehicle","mileageByVehicle.jrxml","mileageByVehicleRaw.jrxml", "ifta", "com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage"),
+    STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS("State mileage by vehicle road status","stateMileageByVehicleRoadStatus.jrxml","stateMileageByVehicleRoadStatusRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
     
     // HOS
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),

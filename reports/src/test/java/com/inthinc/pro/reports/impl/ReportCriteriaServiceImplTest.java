@@ -32,6 +32,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     
     // Mocks
     private Integer mockGroupId = 1;
+    private List<Integer> listGroupID = new ArrayList<Integer>();
     
     /**
      * Constructor to initialize the test fields.
@@ -51,6 +52,20 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     public void testGetDriverHoursReportCriteria() {
         ReportCriteria criteria = serviceSUT.getDriverHoursReportCriteria(mockGroupId,
                 new Interval(new Date().getTime() - 3000, new Date().getTime()), Locale.US);
+        
+        assertNotNull(criteria);
+        assertEquals(Locale.US,criteria.getLocale());
+        assertNotNull(criteria.getMainDataset());
+    }
+    
+    /**
+     * Test for getStateMileageByVehicleRoadStatusReportCriteria method.
+     */
+    @Test
+    public void testGetStateMileageByVehicleRoadStatusReportCriteria() {
+        boolean isIfta = true;
+        ReportCriteria criteria = serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(listGroupID,
+                new Interval(new Date().getTime() - 3000, new Date().getTime()), Locale.US, isIfta);
         
         assertNotNull(criteria);
         assertEquals(Locale.US,criteria.getLocale());

@@ -55,6 +55,7 @@ import com.inthinc.pro.reports.hos.HosViolationsDetailReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.hos.HosZeroMilesReportCriteria;
 import com.inthinc.pro.reports.ifta.MileageByVehicleReportCriteria;
+import com.inthinc.pro.reports.ifta.StateMileageByVehicleRoadStatusReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
@@ -769,6 +770,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(groupIDList, interval, iftaOnly);
         return criteria;
     }
+ 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
+     */
+    public ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly) 
+    {
+        StateMileageByVehicleRoadStatusReportCriteria criteria = new StateMileageByVehicleRoadStatusReportCriteria(locale);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setStateMileageDAO(stateMileageDAO);
+               
+        criteria.init(groupIDList, interval, iftaOnly);
+        return criteria;
+    }
+    
     
     public void setGroupDAO(GroupDAO groupDAO)
     {
