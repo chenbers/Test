@@ -10,6 +10,7 @@ import java.util.Map;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.model.performance.VehicleUsageRecord;
@@ -20,6 +21,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
     private Map<Integer, List<TenHoursViolationRecord>> tenHoursViolationMap; 
     private Map<Integer, List<DriverHoursRecord>> driverHoursMap;
     private Map<Integer, List<VehicleUsageRecord>> vehicleUsageMap;
+    private List<StateMileage> mileageByVehicleMap;
     
     /** 
      * {@inheritDoc}
@@ -103,7 +105,39 @@ public class MockWaysmartDAO implements WaysmartDAO {
         }
         return filter;
     }
+
+    /**
+     * @{inherit-doc}
+     * @see com.inthinc.pro.dao.report.WaysmartDAO#getMileageByVehicle(java.lang.Integer, org.joda.time.Interval)
+     */
+//    @Override
+//    public VehicleMileageRecord getMileageByVehicle(Integer vehicleID, Interval interval) {
+//        Calendar startDate = Calendar.getInstance();
+//        startDate.set(interval.getStart().getYearOfEra(), interval.getStart().getMonthOfYear()-1, 
+//                interval.getStart().getDayOfMonth()+1,0,0,0);
+//        
+//        Calendar endDate = Calendar.getInstance();
+//        endDate.set(interval.getEnd().getYearOfEra(), interval.getEnd().getMonthOfYear()-1, 
+//                interval.getEnd().getDayOfMonth(),0,0,0);
+//
+//        StateMileage record = this.getVehicleMileageData(vehicleID);
+//        return record;
+//    }
     
+    /**
+     * @param vehicleID
+     * @return
+     */
+//    private StateMileage getVehicleMileageData(Integer vehicleID) {
+//        if (this.vehicleMileageMap == null) {
+//            vehicleMileageMap = new HashMap<Integer, StateMileage>();
+//            vehicleMileageMap.put(1, new StateMileage("257547", 1684));
+//            vehicleMileageMap.put(2, new StateMileage("1", 1685));
+//            vehicleMileageMap.put(3, new StateMileage("2", 1686));
+//        }
+//        return this.vehicleMileageMap.get(vehicleID);
+//    }
+
     /* returns the mocked data set for TenHoursViolation report */
     private List<TenHoursViolationRecord> getTenHoursViolationData(Integer driverID) {
         if (tenHoursViolationMap == null) {

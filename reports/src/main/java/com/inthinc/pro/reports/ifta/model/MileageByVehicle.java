@@ -6,7 +6,8 @@ package com.inthinc.pro.reports.ifta.model;
 public class MileageByVehicle {
 
     private String vehicle;
-    private Double distance;
+    private String state;
+    private Double total;
     private String groupName;
     /**
      * Default constructor.
@@ -25,8 +26,30 @@ public class MileageByVehicle {
      * The distance getter.
      * @return the distance
      */
-    public Double getDistance() {
-        return this.distance;
+    public Double getTotal() {
+        return this.total;
+    }
+    /**
+     * The state getter.
+     * @return the state
+     */
+    public String getState() {
+        return state;
+    }
+    /**
+     * The groupName getter.
+     * @return the groupName
+     */
+    public String getGroupName() {
+        return this.groupName;
+    }
+
+    /**
+     * The state setter.
+     * @param state the state to set
+     */
+    public void setState(String state) {
+        this.state = state;
     }
     /**
      * The vehicle setter.
@@ -37,18 +60,10 @@ public class MileageByVehicle {
     }
     /**
      * The distance setter.
-     * @param distance the distance to set
+     * @param total the distance to set
      */
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-
-    /**
-     * The groupName getter.
-     * @return the groupName
-     */
-    public String getGroupName() {
-        return this.groupName;
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     /**

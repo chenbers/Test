@@ -22,8 +22,9 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
  * Report Criteria for MileageByVehicle report.
  */
 public class MileageByVehicleReportCriteria extends ReportCriteria {
+    private static final String UNITS_ENGLISH = "english";
     protected DateTimeFormatter dateTimeFormatter; 
-
+    protected String units;
     protected GroupDAO groupDAO;
     protected StateMileageDAO stateMileageDAO;
 
@@ -34,6 +35,12 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
     public MileageByVehicleReportCriteria(Locale locale) {
         super(ReportType.MILEAGE_BY_VEHICLE, "", locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
+        
+        if (locale.getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+            units = UNITS_ENGLISH;
+        } else {
+            units = "metric";
+        }
     }
 
     /**
@@ -54,6 +61,7 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
         List<StateMileage> list = new ArrayList<StateMileage>();
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+        addParameter("units", units);
         for (Integer groupID : groupIDList) {
              list.addAll(stateMileageDAO.getMileageByVehicle(groupID, interval, dotOnly));
         }      
@@ -71,7 +79,10 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
         for (StateMileage item : records) {
             MileageByVehicle rec = new MileageByVehicle();
             rec.setVehicle(item.getVehicleName());
-            rec.setDistance(Double.valueOf(item.getMiles()));
+            
+            if (units.equals(UNITS_ENGLISH))
+                rec.setTotal(Double.valueOf(item.getMiles()));
+            //else rec.setTotal(Double.valueOf(item.getKilometers()));
             rec.setGroupName(item.getGroupName());
             dataList.add(rec);
         }

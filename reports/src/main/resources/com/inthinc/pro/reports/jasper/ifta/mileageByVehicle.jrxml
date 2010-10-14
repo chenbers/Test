@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mileageByVehicle" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="mileageByVehicle">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mileageByVehicle" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="stateMileage">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
@@ -28,11 +28,11 @@
 	</parameter>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="vehicle" class="java.lang.String"/>
-	<field name="State" class="java.lang.String"/>
-	<field name="Total" class="java.lang.Double"/>
+	<field name="state" class="java.lang.String"/>
+	<field name="total" class="java.lang.Double"/>
 	<sortField name="groupName"/>
 	<variable name="SUM_Total_1" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
 	<group name="dummy">
 		<groupExpression><![CDATA[$P{iftaVehiclesOnly}]]></groupExpression>
@@ -183,7 +183,7 @@
 					</rowGroup>
 					<columnGroup name="State" height="17" totalPosition="End" headerPosition="Center">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{State}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{state}]]></bucketExpression>
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents mode="Transparent">
@@ -233,7 +233,7 @@
 						</crosstabTotalColumnHeader>
 					</columnGroup>
 					<measure name="Total_Sum" class="java.lang.Double" calculation="Sum">
-						<measureExpression><![CDATA[$F{Total}]]></measureExpression>
+						<measureExpression><![CDATA[$F{total}]]></measureExpression>
 					</measure>
 					<crosstabCell width="50" height="15">
 						<cellContents mode="Transparent">
