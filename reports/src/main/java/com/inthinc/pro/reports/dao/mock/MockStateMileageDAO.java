@@ -1,7 +1,6 @@
 package com.inthinc.pro.reports.dao.mock;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +15,8 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
  * Mock for StateMileageDAO.
  */
 public class MockStateMileageDAO implements StateMileageDAO {
-
-    private Map<Integer, List<StateMileage>> mileageByVehicle;
+    private static final String STATE = "Distance";
+    private static final String MOCK_GROUP_NAME = "Stub Group Name ";
 
     /**
      * Default constructor.
@@ -42,7 +41,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
-        return this.getMileageByVehicleData(groupID);
+        return this.getData(groupID);
     }
 
     /**
@@ -81,68 +80,36 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getStateMileageByVehicleRoad(Integer groupID, Interval interval, Boolean dotOnly) {
-        return this.getStateMileageByVehicleRoadStatusData(groupID);
+        return this.getData(groupID);
     }
 
-    private List<StateMileage> getMileageByVehicleData(Integer groupID) {
-        if (this.mileageByVehicle == null) {
-            // only the first call adds data
-            mileageByVehicle = new HashMap<Integer, List<StateMileage>>();
-            List<StateMileage> list = new ArrayList<StateMileage>();
-            
-            StateMileage bean = new StateMileage();
-            bean.setGroupName(groupID.toString()); 
-            bean.setStateName("Distance");
-            bean.setVehicleName("257547"); 
-            bean.setMiles(1684L);
-            list.add(bean);
-            
-            bean = new StateMileage();
-            bean.setGroupName(groupID.toString()); 
-            bean.setStateName("Distance");
-            bean.setVehicleName("217547"); 
-            bean.setMiles(1685L);
-            list.add(bean);
-            
-            bean = new StateMileage();
-            bean.setGroupName(groupID.toString()); 
-            bean.setStateName("Distance");
-            bean.setVehicleName("1575789"); 
-            bean.setMiles(1686L);
-            list.add(bean);
-            
-            mileageByVehicle.put(groupID, list);
-        }
-        return this.mileageByVehicle.get(groupID);
+    private List<StateMileage> getData(Integer groupID) {
+        List<StateMileage> list = new ArrayList<StateMileage>();
+        
+        StateMileage bean = new StateMileage();
+        bean.setGroupName(MOCK_GROUP_NAME + groupID); 
+        bean.setStateName(STATE);
+        bean.setVehicleName("257547"); 
+        bean.setMiles(1684L);
+        list.add(bean);
+        
+        bean = new StateMileage();
+        bean.setGroupName(MOCK_GROUP_NAME + groupID); 
+        bean.setStateName(STATE);
+        bean.setVehicleName("217547"); 
+        bean.setMiles(1685L);
+        list.add(bean);
+        
+        bean = new StateMileage();
+        bean.setGroupName(MOCK_GROUP_NAME + groupID); 
+        bean.setStateName(STATE);
+        bean.setVehicleName("1575789"); 
+        bean.setMiles(1686L);
+        list.add(bean);
+        
+        return list;
     }
     
-    private List<StateMileage> getStateMileageByVehicleRoadStatusData(Integer groupID) {
-        if (this.mileageByVehicle == null) {
-            // only the first call adds data
-            mileageByVehicle = new HashMap<Integer, List<StateMileage>>();
-            List<StateMileage> list = new ArrayList<StateMileage>();
-            
-            StateMileage bean = new StateMileage();
-            bean.setGroupName(groupID.toString());
-            bean.setVehicleName("257547"); bean.setMiles(1684L);
-            list.add(bean);
-            
-            bean = new StateMileage();
-            bean.setGroupName(groupID.toString());
-            bean.setVehicleName("217547"); bean.setMiles(1685L);
-            list.add(bean);
-            
-            bean = new StateMileage();
-            bean.setGroupName(groupID.toString());
-            bean.setVehicleName("1575789"); bean.setMiles(1686L);
-            list.add(bean);
-            
-            mileageByVehicle.put(groupID, list);
-        }
-        return this.mileageByVehicle.get(groupID);
-    }
-    
-
     public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
         List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
         

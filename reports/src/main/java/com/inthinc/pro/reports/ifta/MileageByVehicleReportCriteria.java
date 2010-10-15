@@ -1,6 +1,5 @@
 package com.inthinc.pro.reports.ifta;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,6 +12,8 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -22,7 +23,6 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
  * Report Criteria for MileageByVehicle report.
  */
 public class MileageByVehicleReportCriteria extends ReportCriteria {
-    private static final String UNITS_ENGLISH = "english";
     protected DateTimeFormatter dateTimeFormatter; 
     protected String units;
     protected GroupDAO groupDAO;
@@ -35,12 +35,18 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
     public MileageByVehicleReportCriteria(Locale locale) {
         super(ReportType.MILEAGE_BY_VEHICLE, "", locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
-        
-        if (locale.getLanguage().equals(Locale.ENGLISH.getLanguage())) {
-            units = UNITS_ENGLISH;
-        } else {
-            units = "metric";
-        }
+        setMeasurementType(MeasurementType.ENGLISH);
+    }
+
+    /**
+     * @{inherit-doc}
+     * @see com.inthinc.pro.reports.ReportCriteria#setMeasurementType(com.inthinc.pro.model.MeasurementType)
+     */
+    @Override
+    public void setMeasurementType(MeasurementType measurementType) {
+        super.setMeasurementType(measurementType);
+        if (measurementType != null)
+            units = measurementType.toString();
     }
 
     /**
@@ -58,10 +64,11 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
      * @param iftaOnly the flag to consider only IFTA 
      */
     public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        List<StateMileage> dataList = new ArrayList<StateMileage>();
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
         addParameter("units", units);
+
+        List<StateMileage> dataList = new ArrayList<StateMileage>();
         for (Integer groupID : groupIDList) {
             List<StateMileage> list = stateMileageDAO.getMileageByVehicle(groupID, interval, dotOnly);
             if (list != null) {
@@ -84,17 +91,15 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
             rec.setVehicle(item.getVehicleName());
             rec.setState(item.getStateName());
             rec.setGroupName(item.getGroupName());
-
-            if (units.equals(UNITS_ENGLISH))
-                rec.setTotal(Double.valueOf(item.getMiles()));
-            //else rec.setTotal(Double.valueOf(item.getKilometers()));
+            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
+                        item.getMiles(), getMeasurementType()).doubleValue());
             dataList.add(rec);
         }
         Collections.sort(dataList, new MileageByVehicleComparator());        
         setMainDataset(dataList);
     }
 
-    private class MileageByVehicleComparator implements Comparator<MileageByVehicle> {
+    class MileageByVehicleComparator implements Comparator<MileageByVehicle> {
 
         @Override
         public int compare(MileageByVehicle o1, MileageByVehicle o2) {
