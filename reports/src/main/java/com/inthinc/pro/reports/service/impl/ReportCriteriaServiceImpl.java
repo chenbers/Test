@@ -751,7 +751,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         VehicleUsageReportCriteria criteria = new VehicleUsageReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
-        criteria.setWaysmartDao(waysmartDAO);
+        criteria.setWaysmartDAO(waysmartDAO);
                
         criteria.init(id, interval, group);
         return criteria;
