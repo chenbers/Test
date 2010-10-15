@@ -46,7 +46,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
         dayFormatter = DateTimeFormat.forPattern(DriverHoursReportCriteria.DAY_FORMAT).withLocale(locale);
 	}
 
-	private class DriverHoursComparator implements Comparator<DriverHours> {
+	class DriverHoursComparator implements Comparator<DriverHours> {
 
 		@Override
 		public int compare(DriverHours o1, DriverHours o2) {

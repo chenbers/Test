@@ -5,220 +5,164 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import mockit.Cascading;
+import mockit.Expectations;
+import mockit.Mocked;
+import mockit.NonStrict;
+import mockit.Verifications;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.Interval;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
-import com.inthinc.pro.reports.hos.testData.MockData;
+import com.inthinc.pro.reports.dao.WaysmartDAO;
+import com.inthinc.pro.reports.performance.model.DriverHours;
+
 
 public class DriverHoursReportCriteriaTest extends BaseUnitTest {
-    private DriverHoursReportCriteria reportCriteria; 
     
-    private Integer mockGroupID = 1;
+    // Constant values
+    private final Integer ACCOUNT_ID = new Integer(1);
+    private final Integer GROUP_ID = new Integer(2);
+    private final Double HOURS_THIS_DAY = new Double(7);
+    private final String GROUP_FULL_NAME = "Group Full Name";
+    private final Locale LOCALE = Locale.US;
+    private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     
-    @Test
-    public void testCasesForDriverHoursReport(){
-        reportCriteria = new DriverHoursReportCriteria(Locale.US);
-
-        assertTrue(reportCriteria instanceof ReportCriteria);
-        
-        reportCriteria.setDriverDAO(new MockDriverDAO(mockGroupID));
-        reportCriteria.setGroupDAO(new MockGroupDAO(mockGroupID));
-        reportCriteria.setWaysmartDAO(new MockWaysmartDAO());
-        
-        Interval interval = new Interval(new Date().getTime() - 3600, new Date().getTime());
-        reportCriteria.init(mockGroupID, interval);
-        
-        assertEquals(ReportType.DRIVER_HOURS, reportCriteria.getReport());
-        assertNotNull(reportCriteria.getMainDataset());
-
-    }
+    // JMockit mocks
+    @Mocked private Group groupMock;
+    @NonStrict @Cascading private Driver driverMock;
+    @Mocked private DriverDAO driverDAOMock; 
+    @Mocked private GroupDAO groupDAOMock; 
+    @Mocked private WaysmartDAO waysmartDAOMock; 
     
-    class MockAccountDAO implements AccountDAO {
+	// The System Under Test
+	private DriverHoursReportCriteria reportCriteriaSUT = new DriverHoursReportCriteria(LOCALE); 
 
-        private static final long serialVersionUID = 1L;
-        private Account account = MockData.createMockAccount();
-
-        @Override
-        public Integer create(Account entity) {
-            return entity.getAcctID();
-        }
-
-        @Override
-        public List<Account> getAllAcctIDs() {
-            List<Account> list = new ArrayList<Account>();
-            list.add(account);
-            return list;
-        }
-
-        @Override
-        public Integer create(Integer id, Account entity) {
-            account.setAcctID(id);
-            return id;
-        }
-
-        @Override
-        public Integer deleteByID(Integer id) {
-            return id;
-        }
-
-        @Override
-        public Account findByID(Integer id) {
-            account.setAcctID(id);
-            return account;
-        }
-
-        @Override
-        public Integer update(Account entity) {
-            return null;
-        }
-        
-    }
     
-    class MockDriverDAO implements DriverDAO {
-        Driver driver;
+	/**
+	 * Tests the init method of the DriverHoursReportCriteria class.
+	 */
+	@Test
+    public void testInitWithMocks(){
+
+		// General initializations
+        reportCriteriaSUT.setDriverDAO(driverDAOMock);
+        reportCriteriaSUT.setGroupDAO(groupDAOMock);
+        reportCriteriaSUT.setWaysmartDAO(waysmartDAOMock);
+
+        // JMockit Documentation:
+        // http://jmockit.googlecode.com/svn/trunk/www/tutorial/BehaviorBasedTesting.html
+        //
+        //------------------------------------------------------------------
+        // 1. First declare what we expect from the mocks during the test 
+        new Expectations(){
+
+        	// This class includes Strict Expectations.
+            // Strict expectations define the behavior of the mocks and automatically verify execution and order during the test run.
+            
+        	// Non-strict expectations define behavior only and are defined as a NonStrictExpectations() class. 
+        	// In that case, execution and order must be verified in the Verifications() block.
+        	// In this example we have one @NonStrict Mock object: driverMock
+        	
+        	GroupHierarchy groupHierarchyMock; 
+        	  // Local mock, only used in the Expectations block
+        	  // Some other mocks in this example could also be local
         
-        MockDriverDAO(Integer groupID) {
-            driver = MockData.createMockDriver(groupID, 2, "Driver", "2");
-            driver.setGroupID(groupID);
-        }
+           {
+              groupDAOMock.findByID(GROUP_ID); returns(groupMock);
+
+              List<Driver> driverList = new ArrayList<Driver>(); driverList.add(driverMock);
+              driverDAOMock.getAllDrivers(GROUP_ID); returns(driverList);
+
+        	  groupMock.getAccountID();  returns(ACCOUNT_ID);
+        	  groupMock.getGroupID();  returns(GROUP_ID);
+        	  List<Group> groupList = new ArrayList<Group>();
+              groupDAOMock.getGroupHierarchy(ACCOUNT_ID, GROUP_ID); returns(groupList);
+
+              waysmartDAOMock.getDriverHours(driverMock, INTERVAL); returns(getHoursList());
+
+              new GroupHierarchy(groupList); // We expect this constructor to be called,
+              driverMock.getGroupID(); returns(GROUP_ID); 
+              groupHierarchyMock.getFullGroupName(GROUP_ID, ReportCriteria.GROUP_SEPARATOR); returns(GROUP_FULL_NAME); // and then this method.
+           }
+           
+           // Helper method
+           private List<DriverHoursRecord> getHoursList(){
+        	   List<DriverHoursRecord> hoursList = new ArrayList<DriverHoursRecord>();
+        	   DriverHoursRecord hours = new DriverHoursRecord(); 
+        	   hours.setDate(new Date());
+        	   hours.setHoursThisDay(HOURS_THIS_DAY); 
+               hoursList.add(hours);
+               
+               return hoursList;
+           }
+           
+        };
         
-        @Override
-        public Driver findByPersonID(Integer personID) {
-            return null;
-        }
+        //------------------------------------------------------------------
+        // 2. Second, we run the actual method to be tested
+        reportCriteriaSUT.init(GROUP_ID, INTERVAL);
+    	
+        //------------------------------------------------------------------
+        // 3. Third we verify the results
+        new Verifications()
+        {
+           {
+        	   // All the strict expectations were already verified automatically
+               driverMock.getGroupID();
+               driverMock.getPerson(); 
+           }
+         };
 
-        @Override
-        public List<Driver> getAllDrivers(Integer groupID) {
-            List<Driver> list = new ArrayList<Driver>();
-            list.add(driver);
-            return list;
-        }
+       // We can also perform regular JUnit assertions
+       List<DriverHours> driverHoursList = reportCriteriaSUT.getMainDataset();
+	   assertNotNull(driverHoursList);
+	   assertTrue(driverHoursList.size() == 1);
+	   DriverHours driverHours = driverHoursList.get(0);
+	   assertEquals(driverHours.getGroupName(), GROUP_FULL_NAME);
+	   assertEquals(driverHours.getHours(), HOURS_THIS_DAY);
 
-        @Override
-        public Integer getDriverIDByBarcode(String barcode) {
-            return null;
-        }
+    }    
+    
+	/**
+	 * Tests that the sort order produced by the Comparator is correct.
+	 */
+	@Test
+	public void testComparatorSort(){
+		DriverHours[] hoursArray = new DriverHours[3];
+		hoursArray[0] = getHours("GroupB", "DriverX"); 
+		hoursArray[1] = getHours("GroupA", "DriverZ"); 
+		hoursArray[2] = getHours("GroupA", "DriverY"); 
 
-        @Override
-        public List<DriverLocation> getDriverLocations(Integer groupID) {
-            return null;
-        }
+		List<DriverHours> hoursList = Arrays.asList(hoursArray.clone());
+		Collections.sort(hoursList, reportCriteriaSUT.new DriverHoursComparator());
 
-        @Override
-        public List<Driver> getDrivers(Integer groupID) {
-            List<Driver> list = new ArrayList<Driver>();
-            list.add(driver);
-            return list;
-        }
-
-        @Override
-        public LastLocation getLastLocation(Integer driverID) {
-            return null;
-        }
-
-        @Override
-        public Trip getLastTrip(Integer driverID) {
-            return null;
-        }
-
-        @Override
-        public List<Long> getRfidsByBarcode(String barcode) {
-            return null;
-        }
-
-        @Override
-        public List<DriverStops> getStops(Integer driverID, Interval interval) {
-            return null;
-        }
-
-        @Override
-        public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate) {
-            return null;
-        }
-
-        @Override
-        public List<Trip> getTrips(Integer driverID, Interval interval) {
-            return null;
-        }
-
-        @Override
-        public Integer create(Integer id, Driver entity) {
-            return null;
-        }
-
-        @Override
-        public Integer deleteByID(Integer id) {
-            return null;
-        }
-
-        @Override
-        public Driver findByID(Integer id) {
-            return null;
-        }
-
-        @Override
-        public Integer update(Driver entity) {
-            return null;
-        }        
-    }
-
-    class MockGroupDAO implements GroupDAO {
-        Group group = null;
-        
-        MockGroupDAO(Integer id){
-            group = MockData.createMockGroup(id);
-        }
-
-        @Override
-        public List<Group> getGroupHierarchy(Integer acctID, Integer groupID) {
-            List<Group> list = new ArrayList<Group>();
-            list.add(MockData.createMockGroup(1));
-            return list;
-        }
-
-        @Override
-        public List<Group> getGroupsByAcctID(Integer acctID) {
-            return null;
-        }
-
-        @Override
-        public Integer create(Integer id, Group entity) {
-            return null;
-        }
-
-        @Override
-        public Integer deleteByID(Integer id) {
-            return null;
-        }
-
-        @Override
-        public Group findByID(Integer id) {
-            group.setGroupID(id);
-            return group;
-        }
-
-        @Override
-        public Integer update(Group entity) {
-            return null;
-        }
-        
-    }
+		// verify the correct order
+		assertTrue(EqualsBuilder.reflectionEquals(hoursArray[2], hoursList.get(0))); //AY
+		assertTrue(EqualsBuilder.reflectionEquals(hoursArray[1], hoursList.get(1))); //AZ
+		assertTrue(EqualsBuilder.reflectionEquals(hoursArray[0], hoursList.get(2))); //BX
+	}
+	
+	private DriverHours getHours(String groupName, String driverName){
+		DriverHours hours = new DriverHours();
+		hours.setGroupName(groupName);
+		hours.setDriverName(driverName);
+		return hours;
+	}
+    
 }
