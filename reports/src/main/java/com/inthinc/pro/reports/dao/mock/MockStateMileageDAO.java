@@ -17,6 +17,7 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 public class MockStateMileageDAO implements StateMileageDAO {
     private static final String STATE = "Distance";
     private static final String MOCK_GROUP_NAME = "Stub Group Name ";
+    private static final String MOCK_prefix = "STUB ";
 
     /**
      * Default constructor.
@@ -80,7 +81,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getStateMileageByVehicleRoad(Integer groupID, Interval interval, Boolean dotOnly) {
-        return this.getData(groupID);
+        return this.getDataBis(groupID);
     }
 
     private List<StateMileage> getData(Integer groupID) {
@@ -107,6 +108,49 @@ public class MockStateMileageDAO implements StateMileageDAO {
         bean.setMiles(1686L);
         list.add(bean);
         
+        return list;
+    }
+    
+    private List<StateMileage> getDataBis(Integer groupID) {
+        // only the first call adds data
+        List<StateMileage> list = new ArrayList<StateMileage>();
+        
+        StateMileage bean = new StateMileage();
+        bean.setGroupName(MOCK_prefix + "Rockies->Grand Junction->Grand Junction Maintenance Crews"); 
+        bean.setVehicleName(MOCK_prefix + "10026217");
+        bean.setStateName(MOCK_prefix + "Colorado");
+        bean.setOnRoadFlag(true);
+        bean.setMonth("February");
+        bean.setMiles(3108L);
+        list.add(bean);
+        
+        bean = new StateMileage();
+        bean.setGroupName(MOCK_prefix + "Rockies->Grand Junction->Grand Junction Maintenance Crews"); 
+        bean.setVehicleName(MOCK_prefix + "11077461");
+        bean.setStateName(MOCK_prefix + "Colorado");
+        bean.setOnRoadFlag(true);
+        bean.setMonth("February");
+        bean.setMiles(4484L);
+        list.add(bean);
+        
+        bean = new StateMileage();
+        bean.setGroupName(MOCK_prefix + "Rockies->Grand Junction->Grand Junction Maintenance Crews"); 
+        bean.setVehicleName(MOCK_prefix + "11187740");
+        bean.setStateName(MOCK_prefix + "Colorado");
+        bean.setOnRoadFlag(true);
+        bean.setMonth("February");
+        bean.setMiles(1817L);
+        list.add(bean);
+        
+        bean = new StateMileage();
+        bean.setGroupName(MOCK_prefix + "Rockies->Grand Junction->Grand Junction Maintenance Crews->Grand Junction E-Tech Crew"); 
+        bean.setVehicleName(MOCK_prefix + "10740909");
+        bean.setStateName(MOCK_prefix + "New Mexico");
+        bean.setOnRoadFlag(false);
+        bean.setMonth("February");
+        bean.setMiles(827L);
+        list.add(bean);  
+   
         return list;
     }
     

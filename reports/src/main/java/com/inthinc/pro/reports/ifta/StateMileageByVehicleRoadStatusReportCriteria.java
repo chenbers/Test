@@ -76,9 +76,18 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
     void initDataSet(Interval interval, List<StateMileage> records)
     {   
         List<StateMileageByVehicleRoadStatus> dataList = new ArrayList<StateMileageByVehicleRoadStatus>();
+        String roadStatus = "";
         for (StateMileage item : records) {
             StateMileageByVehicleRoadStatus rec = new StateMileageByVehicleRoadStatus();
             rec.setVehicle(item.getVehicleName());
+            if(item.isOnRoadFlag())
+                 roadStatus = "On-Road";
+            else
+                roadStatus = "Off-Road";  
+            
+            rec.setRoadStatus(roadStatus);
+            rec.setState(item.getStateName());
+            
             rec.setGroupName(item.getGroupName());
             if (units.equals(UNITS_ENGLISH))
                 rec.setTotal(Double.valueOf(item.getMiles()));

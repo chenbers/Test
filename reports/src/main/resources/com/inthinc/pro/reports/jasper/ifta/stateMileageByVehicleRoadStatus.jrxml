@@ -59,7 +59,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$R{column1}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="false">
 								<reportElement key="textField-13" x="102" y="20" width="94" height="24"/>
@@ -72,7 +72,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$R{column2}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.String"><![CDATA[$R{column.2}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabHeaderCell>
