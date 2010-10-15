@@ -65,7 +65,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
                new DriverHoursReportCriteria(Locale.US); 
                criteriaMock.setDriverDAO((DriverDAO)any); 
                criteriaMock.setGroupDAO((GroupDAO)any);
-               criteriaMock.setWaysmartDao((WaysmartDAO)any);           
+               criteriaMock.setWaysmartDAO((WaysmartDAO)any);           
                criteriaMock.init(mockGroupId, interval);
                
            }

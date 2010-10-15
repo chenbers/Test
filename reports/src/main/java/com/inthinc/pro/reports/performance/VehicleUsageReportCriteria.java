@@ -31,7 +31,7 @@ public class VehicleUsageReportCriteria extends ReportCriteria {
     
     protected GroupDAO groupDAO;
     protected DriverDAO driverDAO;
-    protected WaysmartDAO waysmartDao;
+    protected WaysmartDAO waysmartDAO;
 
 	private class VehicleUsageComparator implements Comparator<VehicleUsage> {
 
@@ -114,7 +114,7 @@ public class VehicleUsageReportCriteria extends ReportCriteria {
     {
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
-        List<VehicleUsageRecord> vehicleUsageList = waysmartDao.getVehicleUsage(driver.getDriverID(), queryInterval);
+        List<VehicleUsageRecord> vehicleUsageList = waysmartDAO.getVehicleUsage(driver.getDriverID(), queryInterval);
         
         return vehicleUsageList;
     }
@@ -147,12 +147,12 @@ public class VehicleUsageReportCriteria extends ReportCriteria {
         this.driverDAO = driverDAO;
     }
 
-    public WaysmartDAO getWaysmartDao() {
-        return waysmartDao;
+    public WaysmartDAO getWaysmartDAO() {
+        return waysmartDAO;
     }
 
-    public void setWaysmartDao(WaysmartDAO waysmartDao) {
-        this.waysmartDao = waysmartDao;
+    public void setWaysmartDAO(WaysmartDAO waysmartDao) {
+        this.waysmartDAO = waysmartDao;
     }
 
 

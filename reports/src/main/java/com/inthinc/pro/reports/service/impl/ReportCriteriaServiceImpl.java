@@ -716,7 +716,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
-        criteria.setWaysmartDao(waysmartDAO);
+        criteria.setWaysmartDAO(waysmartDAO);
                
         criteria.init(groupID, interval);
         return criteria;
@@ -731,7 +731,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     	DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
-        criteria.setWaysmartDao(waysmartDAO);
+        criteria.setWaysmartDAO(waysmartDAO);
                
         criteria.init(groupID, interval);
         return criteria;

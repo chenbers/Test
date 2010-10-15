@@ -18,7 +18,6 @@ import mockit.NonStrict;
 import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.Test;
 
@@ -32,7 +31,6 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
-import com.inthinc.pro.reports.util.DateTimeUtil;
 
 
 public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
@@ -61,13 +59,12 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 	 * Tests the init method of the TenHoursViolationReportCriteria class.
 	 */
 	@Test
-    @SuppressWarnings("static-access")
     public void testInitWithMocks(){
 
 		// General initializations
         reportCriteriaSUT.setDriverDAO(driverDAOMock);
         reportCriteriaSUT.setGroupDAO(groupDAOMock);
-        reportCriteriaSUT.setWaysmartDao(waysmartDAOMock);
+        reportCriteriaSUT.setWaysmartDAO(waysmartDAOMock);
 
         // JMockit Documentation:
         // http://jmockit.googlecode.com/svn/trunk/www/tutorial/BehaviorBasedTesting.html
@@ -83,8 +80,10 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         	// In that case, execution and order must be verified in the Verifications() block.
         	// In this example we have one @NonStrict Mock object: driverMock
         	
-        	GroupHierarchy groupHierarchyMock;
-        	
+        	GroupHierarchy groupHierarchyMock; 
+        	  // Local mock, only used in the Expectations block
+        	  // Some other mocks in this example could also be local
+        
            {
               groupDAOMock.findByID(GROUP_ID); returns(groupMock);
 
@@ -130,6 +129,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
            }
          };
 
+       // We can also perform regular JUnit assertions
        List<TenHoursViolation> tenHourViolations = reportCriteriaSUT.getMainDataset();
 	   assertNotNull(tenHourViolations);
 	   assertTrue(tenHourViolations.size() == 1);

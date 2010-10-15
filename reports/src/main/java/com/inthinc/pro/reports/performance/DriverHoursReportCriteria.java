@@ -34,7 +34,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 
 	protected GroupDAO groupDAO;
 	protected DriverDAO driverDAO;
-	protected WaysmartDAO waysmartDao;
+	protected WaysmartDAO waysmartDAO;
 
 	/**
 	 * Constructor to initiate the report type and locale.
@@ -96,7 +96,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 		    if (driver == null) {
 		        continue;
 		    }
-			List<DriverHoursRecord> driverHoursList = waysmartDao.getDriverHours(driver, interval);
+			List<DriverHoursRecord> driverHoursList = waysmartDAO.getDriverHours(driver, interval);
 			driverHoursRecordMap.put(driver, driverHoursList);
 		}
 		addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
@@ -113,8 +113,8 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 		this.driverDAO = driverDAO;
 	}
 
-	public void setWaysmartDao(WaysmartDAO waysmartDao) {
-		this.waysmartDao = waysmartDao;
+	public void setWaysmartDAO(WaysmartDAO waysmartDao) {
+		this.waysmartDAO = waysmartDao;
 	}
 
 

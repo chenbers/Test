@@ -41,7 +41,7 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
         
         reportCriteria.setDriverDAO(new MockDriverDAO(mockGroupID));
         reportCriteria.setGroupDAO(new MockGroupDAO(mockGroupID));
-        reportCriteria.setWaysmartDao(new MockWaysmartDAO());
+        reportCriteria.setWaysmartDAO(new MockWaysmartDAO());
         
         Interval interval = new Interval(new Date().getTime() - 3600, new Date().getTime());
         reportCriteria.init(mockGroupID, interval);

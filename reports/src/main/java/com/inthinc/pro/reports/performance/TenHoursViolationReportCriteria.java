@@ -35,7 +35,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     protected AccountDAO accountDAO;
     protected GroupDAO groupDAO;
     protected DriverDAO driverDAO;
-    protected WaysmartDAO waysmartDao;
+    protected WaysmartDAO waysmartDAO;
 
 	class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
 
@@ -102,7 +102,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroup.getGroupID());
         Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>> ();
         for (Driver driver : driverList) {
-            List<TenHoursViolationRecord> violationList = waysmartDao.getTenHoursViolations(driver, interval);
+            List<TenHoursViolationRecord> violationList = waysmartDAO.getTenHoursViolations(driver, interval);
             if (!violationList.isEmpty()) {
                 violationRecordMap.put(driver, violationList);
             }
@@ -156,12 +156,12 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         this.driverDAO = driverDAO;
     }
 
-    public WaysmartDAO getWaysmartDao() {
-        return waysmartDao;
+    public WaysmartDAO getWaysmartDAO() {
+        return waysmartDAO;
     }
 
-    public void setWaysmartDao(WaysmartDAO waysmartDao) {
-        this.waysmartDao = waysmartDao;
+    public void setWaysmartDAO(WaysmartDAO waysmartDao) {
+        this.waysmartDAO = waysmartDao;
     }
 
 
