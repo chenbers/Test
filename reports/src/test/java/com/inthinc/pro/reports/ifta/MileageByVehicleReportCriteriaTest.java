@@ -66,7 +66,7 @@ public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
             // Non-strict expectations define behavior only and are defined as a NonStrictExpectations() class. 
             // In that case, execution and order must be verified in the Verifications() block.
             // In this example we have one @NonStrict Mock object: driverMock
-            
+            @Mocked({"convertMilesToKilometers"})
             MeasurementConversionUtil measurementUtilMock;
            {
               stateMileageDAOMock.getMileageByVehicle(GROUP_ID, INTERVAL, false); returns(getData());
