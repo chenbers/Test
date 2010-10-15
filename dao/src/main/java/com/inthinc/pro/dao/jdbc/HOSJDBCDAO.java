@@ -277,10 +277,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setHosLogID(resultSet.getInt(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
-//                hosRecord.setLogTime(resultSet.getTimestamp(4));
                 long ms = resultSet.getLong(4);
                 hosRecord.setLogTime(new Date(ms));
-
                 hosRecord.setTimeZone(TimeZone.getTimeZone(resultSet.getString(5)));
                 hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(6)));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(7)));
@@ -302,10 +300,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setTripReportFlag(resultSet.getBoolean(23));
                 hosRecord.setTripInspectionFlag(resultSet.getBoolean(24));
                 hosRecord.setVehicleName(resultSet.getString(25));
-//                hosRecord.setOriginalLogTime(resultSet.getTimestamp(26));
                 ms = resultSet.getLong(26);
                 hosRecord.setOriginalLogTime(new Date(ms));
-
                 hosRecord.setVehicleLicense(resultSet.getString(27));
                 hosRecord.setEmployeeID(resultSet.getString(28));
                 recordList.add(hosRecord);
@@ -473,23 +469,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setHosLogID(resultSet.getInt(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
-//                hosRecord.setLogTime(resultSet.getTimestamp(4, Calendar.getInstance(TimeZone.getTimeZone("UTC"))));
-//                hosRecord.setLogTime(resultSet.getTimestamp(4));                
                 long ms = resultSet.getLong(4);
-                logger.info("Logtime MS1: " + ms);
-                
                 hosRecord.setLogTime(new Date(ms));
-
-    logger.info("Logtime MS2: " + hosRecord.getLogTime().getTime());
-                
-    final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    logger.info("Logtime UTC: " + dateFormat.format(hosRecord.getLogTime()));
-    System.out.println("Logtime UTC: " + dateFormat.format(hosRecord.getLogTime()));
-    dateFormat.setTimeZone(TimeZone.getTimeZone("MST7MDT"));
-    logger.info("Logtime MST7MDT: " + dateFormat.format(hosRecord.getLogTime()));
-    System.out.println("Logtime MST7MDT: " + dateFormat.format(hosRecord.getLogTime()));
-/*                
                 hosRecord.setTimeZone(TimeZone.getTimeZone(resultSet.getString(5)));
                 hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(6)));
                 hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(7)));
@@ -510,7 +491,12 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setTrailerGallons(resultSet.getFloat(22));
                 hosRecord.setTripReportFlag(resultSet.getBoolean(23));
                 hosRecord.setTripInspectionFlag(resultSet.getBoolean(24));
- */           }
+                hosRecord.setVehicleName(resultSet.getString(25));
+                ms = resultSet.getLong(26);
+                hosRecord.setOriginalLogTime(new Date(ms));
+                hosRecord.setVehicleLicense(resultSet.getString(27));
+                hosRecord.setEmployeeID(resultSet.getString(28));
+           }
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
