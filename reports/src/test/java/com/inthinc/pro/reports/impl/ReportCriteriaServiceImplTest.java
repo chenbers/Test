@@ -1,17 +1,18 @@
 package com.inthinc.pro.reports.impl;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import mockit.VerificationsInOrder;
 
 import org.joda.time.Interval;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
@@ -19,9 +20,11 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.BaseUnitTest;
-import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.hos.testData.MockData;
+import com.inthinc.pro.reports.ifta.StateMileageByVehicleRoadStatusReportCriteria;
+import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
 
 /**
@@ -49,28 +52,52 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
      * Test for getDriverHoursReportCriteria method.
      */
     @Test
-    public void testGetDriverHoursReportCriteria() {
-        ReportCriteria criteria = serviceSUT.getDriverHoursReportCriteria(mockGroupId,
-                new Interval(new Date().getTime() - 3000, new Date().getTime()), Locale.US);
+    public void testGetDriverHoursReportCriteria(final DriverHoursReportCriteria criteriaMock) {
         
-        assertNotNull(criteria);
-        assertEquals(Locale.US,criteria.getLocale());
-        assertNotNull(criteria.getMainDataset());
+       final Interval interval =  new Interval(new Date().getTime() - 3000, new Date().getTime());
+
+       
+       serviceSUT.getDriverHoursReportCriteria(mockGroupId, interval, Locale.US);
+       
+       
+       new VerificationsInOrder(){
+           {
+               new DriverHoursReportCriteria(Locale.US); 
+               criteriaMock.setDriverDAO((DriverDAO)any); 
+               criteriaMock.setGroupDAO((GroupDAO)any);
+               criteriaMock.setWaysmartDao((WaysmartDAO)any);           
+               criteriaMock.init(mockGroupId, interval);
+               
+           }
+       };
+       
+        
     }
     
     /**
      * Test for getStateMileageByVehicleRoadStatusReportCriteria method.
      */
     @Test
-    public void testGetStateMileageByVehicleRoadStatusReportCriteria() {
-        boolean isIfta = true;
-        ReportCriteria criteria = serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(listGroupID,
-                new Interval(new Date().getTime() - 3000, new Date().getTime()), Locale.US, isIfta);
+    public void testGetStateMileageByVehicleRoadStatusReportCriteria(final StateMileageByVehicleRoadStatusReportCriteria criteriaMock) {
+        final Boolean isIfta = true;
+        final Interval interval =  new Interval(new Date().getTime() - 3000, new Date().getTime());
+
+        listGroupID.add(1);
+        serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(listGroupID, interval, Locale.US, isIfta);
+         
+        new VerificationsInOrder(){
+            {
+                new StateMileageByVehicleRoadStatusReportCriteria(Locale.US); 
+                criteriaMock.setGroupDAO((GroupDAO)any);
+                criteriaMock.setStateMileageDAO((StateMileageDAO)any);           
+                criteriaMock.init(listGroupID, interval, isIfta);
+                
+            }
+        };
         
-        assertNotNull(criteria);
-        assertEquals(Locale.US,criteria.getLocale());
-        assertNotNull(criteria.getMainDataset());
-    }
+         
+     }
+
 
     // TODO Move these classes to mock package
     class MockDriverDAO implements DriverDAO {
