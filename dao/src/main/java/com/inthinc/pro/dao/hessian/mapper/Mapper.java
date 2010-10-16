@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.hessian.mapper;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ public interface Mapper extends Serializable
     Map<String, Object> convertToMap(Object modelObject);
 
     List<Map<String, Object>> convertList(List<?> list);
-    
-    Integer[] convertEnumList(List<?> list);
+
+    <E> E[] convertToArray(Collection<?> modelObjectCollection, Class<E> type);
+
+    Object[] convertToArray(Collection<?> modelObjectCollection);
 }

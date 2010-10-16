@@ -35,7 +35,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypes = getMapper().convertEnumList(NoteType.getNoteTypesInCategory(EventCategory.VIOLATION));
+            Integer[] eventTypes = getMapper().convertToArray(NoteType.getNoteTypesInCategory(EventCategory.VIOLATION), Integer.class);
 
             //TODO Temporarily added arbitrary 10 to hopefully be able to get the eventCount of valid events back after the clean
             List <Event> eventList = Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount+10, eventTypes), Event.class));
@@ -55,7 +55,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypes = getMapper().convertEnumList(NoteType.getNoteTypesInCategory(EventCategory.WARNING));
+            Integer[] eventTypes = getMapper().convertToArray(NoteType.getNoteTypesInCategory(EventCategory.WARNING), Integer.class);
             return getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount, eventTypes), Event.class);
         }
         catch (EmptyResultSetException e)
@@ -69,7 +69,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypes = getMapper().convertEnumList(NoteType.getNoteTypesInCategory(EventCategory.EMERGENCY));
+            Integer[] eventTypes = getMapper().convertToArray(NoteType.getNoteTypesInCategory(EventCategory.EMERGENCY), Integer.class);
             return getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount, eventTypes), Event.class);
         }
         catch (EmptyResultSetException e)
@@ -83,7 +83,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypesArray = getMapper().convertEnumList(noteTypes);
+            Integer[] eventTypesArray = getMapper().convertToArray(noteTypes, Integer.class);
 
             return Event.cleanEvents(getMapper().convertToModelObject(
                     getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, eventTypesArray),
@@ -100,7 +100,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypesArray = getMapper().convertEnumList(types);
+            Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
 
             return Event.cleanEvents(getMapper()
                     .convertToModelObject(
@@ -203,7 +203,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 		try {
 			return getChangedCount(getSiloService().getDriverEventCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
 									includeForgiven, getMapper().convertList(filters), 
-									getMapper().convertEnumList(noteTypes)));
+									getMapper().convertToArray(noteTypes, Integer.class)));
 		}
         catch (EmptyResultSetException e)
         {
@@ -220,7 +220,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 		try {
 			return getMapper().convertToModelObject(getSiloService().getDriverEventPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
 									includeForgiven, getMapper().convertToMap(pageParams), 
-									getMapper().convertEnumList(noteTypes)), Event.class);
+									getMapper().convertToArray(noteTypes, Integer.class)), Event.class);
 		}
 		catch (EmptyResultSetException e)
 		{
