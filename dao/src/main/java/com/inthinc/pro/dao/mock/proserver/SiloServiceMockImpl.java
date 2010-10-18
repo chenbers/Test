@@ -284,6 +284,8 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         List<Event> allEventsForGroup = new ArrayList<Event>();
 
         List<Object> typeList = new ArrayList<Object>();
+        for (Integer type : types)
+            typeList.add(NoteType.valueOf(type));
         Collections.addAll(typeList, types);
         for (Driver driver : drivers) {
             SearchCriteria searchCriteria = new SearchCriteria();
