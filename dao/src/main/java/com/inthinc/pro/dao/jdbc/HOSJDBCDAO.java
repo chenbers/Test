@@ -4,8 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -227,8 +225,10 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 occupantLog.setDriverID(resultSet.getInt(1));
                 occupantLog.setDriverName(resultSet.getString(2));
                 occupantLog.setVehicleID(resultSet.getInt(3));
-                occupantLog.setLogTime(resultSet.getTimestamp(4));
-                occupantLog.setEndTime(resultSet.getTimestamp(5));
+                long ms = resultSet.getLong(4);
+                occupantLog.setLogTime(new Date(ms));
+                ms = resultSet.getLong(5);                
+                occupantLog.setEndTime(new Date(ms));
                 occupantLog.setServiceID(resultSet.getString(6));
                 occupantLog.setTrailerID(resultSet.getString(7));
                 
@@ -336,12 +336,10 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-//            statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?, ?)}");
             statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?)}");
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
- //           statement.setBoolean(4, true); //driverStatusOnly
             
             resultSet = statement.executeQuery();
 
@@ -354,7 +352,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
                 hosRecord.setVehicleID(resultSet.getInt(1));
                 hosRecord.setVehicleName(resultSet.getString(2));
-                hosRecord.setDay(resultSet.getTimestamp(3));
+                long ms = resultSet.getLong(26);
+                hosRecord.setDay(new Date(ms));
                 hosRecord.setStartOdometer(resultSet.getLong(4));
                 stopOdometer = resultSet.getLong(5);
 
@@ -393,7 +392,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement = conn.prepareCall("{call hos_createFromAdminPortal(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getDriverID());
             statement.setInt(2, hosRecord.getVehicleID() == null ? 0 : hosRecord.getVehicleID());
-//            statement.setTimestamp(3, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
             statement.setLong(3, hosRecord.getLogTime().getTime());
             statement.setString(4, hosRecord.getTimeZone().getID());
             statement.setInt(5, hosRecord.getStatus().getCode());
@@ -568,7 +566,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement = conn.prepareCall("{call hos_isValidLogin(?, ?, ?, ?, ?)}");
             statement.setString(1, commAddress);
             statement.setString(2, employeeId);
-            statement.setTimestamp(3, new Timestamp(loginTime));
+            statement.setLong(3, loginTime);
             statement.setBoolean(4, occupantFlag);
             statement.setInt(5, odometer);
             
