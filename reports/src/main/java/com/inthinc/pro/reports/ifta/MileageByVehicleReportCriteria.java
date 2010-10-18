@@ -7,54 +7,23 @@ import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 
 /**
  * Report Criteria for MileageByVehicle report.
  */
-public class MileageByVehicleReportCriteria extends ReportCriteria {
-    protected DateTimeFormatter dateTimeFormatter; 
-    protected String units;
-    protected GroupDAO groupDAO;
-    protected StateMileageDAO stateMileageDAO;
+public class MileageByVehicleReportCriteria extends DOTReportCriteria {
 
     /**
      * Default constructor.
      * @param locale
      */
     public MileageByVehicleReportCriteria(Locale locale) {
-        super(ReportType.MILEAGE_BY_VEHICLE, "", locale);
-        dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
-        setMeasurementType(MeasurementType.ENGLISH);
-    }
-
-    /**
-     * @{inherit-doc}
-     * @see com.inthinc.pro.reports.ReportCriteria#setMeasurementType(com.inthinc.pro.model.MeasurementType)
-     */
-    @Override
-    public void setMeasurementType(MeasurementType measurementType) {
-        super.setMeasurementType(measurementType);
-        if (measurementType != null)
-            units = measurementType.toString();
-    }
-
-    /**
-     * Setter for Group DAO. 
-     * @param groupDAO
-     */
-    public void setGroupDAO(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
+        super(ReportType.MILEAGE_BY_VEHICLE, locale);
     }
 
     /**
@@ -63,11 +32,10 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
      * @param interval the date period
      * @param iftaOnly the flag to consider only IFTA 
      */
+    @Override
     public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
-        addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
-        addParameter("units", units);
-
+        super.init(groupIDList, interval, dotOnly);
+        
         List<StateMileage> dataList = new ArrayList<StateMileage>();
         for (Integer groupID : groupIDList) {
             List<StateMileage> list = stateMileageDAO.getMileageByVehicle(groupID, interval, dotOnly);
@@ -79,7 +47,7 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
     }
 
     /**
-     * Populate the dataset with data.
+     * Populate the data set with data.
      * @param interval
      * @param recordMap
      */
@@ -106,12 +74,4 @@ public class MileageByVehicleReportCriteria extends ReportCriteria {
                 return o1.getVehicle().compareTo(o2.getVehicle());
         }
     }
-
-    /**
-     * The StateMileageDAO setter.
-     * @param stateMileageDAO the DAO to set
-     */
-    public void setStateMileageDAO(StateMileageDAO stateMileageDAO) {
-        this.stateMileageDAO = stateMileageDAO;
-    }   
 }

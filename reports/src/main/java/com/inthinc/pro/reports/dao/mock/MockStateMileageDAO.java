@@ -1,9 +1,7 @@
 package com.inthinc.pro.reports.dao.mock;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.Interval;
 
@@ -15,7 +13,9 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
  * Mock for StateMileageDAO.
  */
 public class MockStateMileageDAO implements StateMileageDAO {
-    private static final String STATE = "Distance";
+    private static final String DISTANCE = "Distance";
+    private static final String STATE_1 = "Florida";
+    private static final String STATE_2 = "Ohio";
     private static final String MOCK_GROUP_NAME = "Stub Group Name ";
     private static final String MOCK_prefix = "STUB ";
 
@@ -23,7 +23,6 @@ public class MockStateMileageDAO implements StateMileageDAO {
      * Default constructor.
      */
     public MockStateMileageDAO() {
-    // TODO Auto-generated constructor stub
     }
 
     /**
@@ -32,8 +31,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getFuelStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
-        // TODO Add method body
-        return null;
+        return this.getData(groupID);
     }
 
     /**
@@ -51,8 +49,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getStateMileageByGroup(Integer groupID, Interval interval, Boolean dotOnly) {
-        // TODO Add method body
-        return null;
+        return this.getData(groupID);
     }
 
     /**
@@ -61,8 +58,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getStateMileageByGroupAndMonth(Integer groupID, Interval interval, Boolean dotOnly) {
-        // TODO Add method body
-        return null;
+        return this.getData(groupID);
     }
 
     /**
@@ -71,8 +67,11 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
-        // TODO Add method body
-        return null;
+        List<StateMileage> list = new ArrayList<StateMileage>();        
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1500L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_2, "217547", 1600L));
+        
+        return list;
     }
 
     /**
@@ -87,26 +86,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
     private List<StateMileage> getData(Integer groupID) {
         List<StateMileage> list = new ArrayList<StateMileage>();
         
-        StateMileage bean = new StateMileage();
-        bean.setGroupName(MOCK_GROUP_NAME + groupID); 
-        bean.setStateName(STATE);
-        bean.setVehicleName("257547"); 
-        bean.setMiles(1684L);
-        list.add(bean);
-        
-        bean = new StateMileage();
-        bean.setGroupName(MOCK_GROUP_NAME + groupID); 
-        bean.setStateName(STATE);
-        bean.setVehicleName("217547"); 
-        bean.setMiles(1685L);
-        list.add(bean);
-        
-        bean = new StateMileage();
-        bean.setGroupName(MOCK_GROUP_NAME + groupID); 
-        bean.setStateName(STATE);
-        bean.setVehicleName("1575789"); 
-        bean.setMiles(1686L);
-        list.add(bean);
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "257547", 1684L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "217547", 1685L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "1575789", 1686L));
         
         return list;
     }
@@ -153,7 +135,16 @@ public class MockStateMileageDAO implements StateMileageDAO {
    
         return list;
     }
-    
+
+    /* creates a new instance of StateMileage */
+    private StateMileage newInstance(String groupName, String state, String vehicle, Long miles) {
+        StateMileage bean = new StateMileage();
+        bean.setGroupName(groupName); 
+        bean.setStateName(state);
+        bean.setVehicleName(vehicle); 
+        bean.setMiles(miles);
+        return bean;
+    }
     public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
         List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
         

@@ -82,6 +82,11 @@ public enum ReportGroup
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.MILEAGE_BY_VEHICLE),
              
+     STATE_MILEAGE_BY_VEHICLE("State Mileage By Vehicle", 21, EntityType.ENTITY_GROUP_LIST,   
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             ReportType.STATE_MILEAGE_BY_VEHICLE),
+             
      STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS("State mileage by vehicle road status", 21, EntityType.ENTITY_GROUP_LIST,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,

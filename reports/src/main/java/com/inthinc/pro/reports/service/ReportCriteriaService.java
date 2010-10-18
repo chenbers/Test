@@ -33,6 +33,7 @@ public interface ReportCriteriaService
     
     // DOT IFTA
     ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean dotOnly);
+    ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly);
     ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean dotOnly);
    
     // HOS

@@ -23,6 +23,7 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.hos.testData.MockData;
+import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleRoadStatusReportCriteria;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
@@ -98,6 +99,28 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
          
      }
 
+    /**
+     * Test for getStateMileageByVehicleReportCriteria method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetStateMileageByVehicleReportCriteria(final StateMileageByVehicleReportCriteria criteriaMock) {
+        final Boolean isIfta = true;
+        final Interval interval =  new Interval(new Date().getTime() - 16000, new Date().getTime());
+
+        List<Integer> groupIDs = new ArrayList<Integer>();
+        groupIDs.add(1);
+        serviceSUT.getStateMileageByVehicleReportCriteria(groupIDs, interval, Locale.US, isIfta);
+         
+        new VerificationsInOrder(){
+            {
+                new StateMileageByVehicleReportCriteria(Locale.US); 
+                criteriaMock.setGroupDAO((GroupDAO)any);
+                criteriaMock.setStateMileageDAO((StateMileageDAO)any);           
+                criteriaMock.init((List<Integer>)any, interval, isIfta);
+            }
+        };
+     }
 
     // TODO Move these classes to mock package
     class MockDriverDAO implements DriverDAO {
