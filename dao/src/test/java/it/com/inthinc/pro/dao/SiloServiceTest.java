@@ -1019,7 +1019,6 @@ public class SiloServiceTest {
 		
 		//Create some accessPoints
 		List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
-		accessPoints.add(new AccessPoint(1,15));
 		accessPoints.add(new AccessPoint(2,15));
 		accessPoints.add(new AccessPoint(3,15));
 		
