@@ -59,8 +59,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getMileageByGroup(?, ?, ?)}");
             statement.setInt(1, groupID);
-            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
-            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
+            statement.setLong(2, interval.getStartMillis());
+            statement.setLong(3, interval.getEndMillis());
             
             resultSet = statement.executeQuery();
 
@@ -103,8 +103,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getVehicleMileageByGroup(?, ?, ?)}");
             statement.setInt(1, groupID);
-            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
-            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
+            statement.setLong(2, interval.getStartMillis());
+            statement.setLong(3, interval.getEndMillis());
             
             resultSet = statement.executeQuery();
 
@@ -215,8 +215,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getHOSOccupantLogsForDriverVehicle(?, ?, ?)}");
             statement.setInt(1, driverID);
-            statement.setLong(2, interval.getStartMillis()/1000);
-            statement.setLong(3, interval.getEndMillis()/1000 );
+            statement.setLong(2, interval.getStartMillis());
+            statement.setLong(3, interval.getEndMillis());
             
             resultSet = statement.executeQuery();
 
@@ -339,8 +339,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 //            statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?, ?)}");
             statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?)}");
             statement.setInt(1, driverID);
-            statement.setTimestamp(2, new Timestamp(interval.getStartMillis()));
-            statement.setTimestamp(3, new Timestamp(interval.getEndMillis()));
+            statement.setLong(2, interval.getStartMillis());
+            statement.setLong(3, interval.getEndMillis());
  //           statement.setBoolean(4, true); //driverStatusOnly
             
             resultSet = statement.executeQuery();
