@@ -1,6 +1,8 @@
 package com.inthinc.pro.model.pagination;
 
-public class TableFilterField {
+import java.io.Serializable;
+
+public class TableFilterField implements Serializable{
 
 	private String field;
 	private Object filter;	
