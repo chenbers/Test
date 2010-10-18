@@ -77,10 +77,6 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
     {   
         List<StateMileageByVehicleRoadStatus> dataList = new ArrayList<StateMileageByVehicleRoadStatus>();
         String roadStatus = "";
-        
-        if(!records.isEmpty())
-            addParameter(ReportCriteria.REPORT_EMPTY,"");
-        
         for (StateMileage item : records) {
             StateMileageByVehicleRoadStatus rec = new StateMileageByVehicleRoadStatus();
             rec.setVehicle(item.getVehicleName());
