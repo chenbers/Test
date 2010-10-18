@@ -1,9 +1,10 @@
 package com.inthinc.pro.model.pagination;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class PageParams {
+public class PageParams  implements Serializable {
 	
 	private Integer startRow;
 	private Integer endRow;

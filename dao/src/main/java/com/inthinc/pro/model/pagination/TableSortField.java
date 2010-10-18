@@ -1,6 +1,8 @@
 package com.inthinc.pro.model.pagination;
 
-public class TableSortField {
+import java.io.Serializable;
+
+public class TableSortField  implements Serializable{
 	
 	private SortOrder order;
 	private String field;

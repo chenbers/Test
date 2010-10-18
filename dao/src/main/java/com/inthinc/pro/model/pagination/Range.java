@@ -1,9 +1,10 @@
 package com.inthinc.pro.model.pagination;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Range implements TableFilterFactory {
+public class Range implements TableFilterFactory, Serializable {
 
 	private Number min;
 	private Number max;
