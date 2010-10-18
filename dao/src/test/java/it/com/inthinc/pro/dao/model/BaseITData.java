@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -29,6 +30,7 @@ import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Device;
@@ -60,6 +62,7 @@ public abstract class BaseITData {
 	public Group fleetGroup;
 	public User fleetUser;
 	public Group districtGroup;
+	public User districtUser;
 	public Integer startDateInSec;
 	public int totalDays;
 	public Zone zone;
@@ -140,7 +143,7 @@ public abstract class BaseITData {
         Date expired = Util.genDate(2012, 9, 30);
         
         Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l"+person.getPersonID(), 
-                                        States.getStateByAbbrev("UT"), "ABCD", expired, null, null, group.getGroupID());
+                                        States.getStateByAbbrev("UT"), "ABCD", expired, null, RuleSetType.US_OIL.getCode(), group.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
         driver.setDriverID(driverID);
@@ -162,18 +165,20 @@ public abstract class BaseITData {
 
         String name = ((idx == null) ? "" : idx) + "Vehicle" + (driverID == null ? "NO_DRIVER" : group.getName());
         Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
-                    VehicleType.LIGHT, "VIN_" + deviceID, 1000, "UT " + group.getGroupID(), 
+                    VehicleType.LIGHT, "VIN_" + (deviceID==null? Util.randomInt(1000, 30000) : deviceID), 1000, "UT " + group.getGroupID(), 
                     States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
         vehicle.setVehicleID(vehicleID);
-        
-        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
-        deviceDAO.setSiloService(siloService);
-        vehicleDAO.setDeviceDAO(deviceDAO);
 
-        vehicleDAO.setVehicleDevice(vehicleID, deviceID, assignmentDate);
-        if (driverID != null) 
-        	vehicleDAO.setVehicleDriver(vehicleID, driverID, assignmentDate);
+        if (deviceID != null) {
+            DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+            deviceDAO.setSiloService(siloService);
+            vehicleDAO.setDeviceDAO(deviceDAO);
+            vehicleDAO.setVehicleDevice(vehicleID, deviceID, assignmentDate);
+            if (driverID != null) 
+                vehicleDAO.setVehicleDriver(vehicleID, driverID, assignmentDate);
+        }
+
 
         return vehicle;
     }
@@ -292,8 +297,10 @@ public abstract class BaseITData {
         
         account = new Account(null, Status.ACTIVE);
         String timeStamp = Calendar.getInstance().getTime().toString();
-        account.setAcctName("TEST " + timeStamp.substring(15));
-System.out.println("acct name: " + "TEST " + timeStamp.substring(15));        
+System.out.println(timeStamp);        
+        account.setAcctName("TEST " + timeStamp.substring(11));
+        account.setHos(AccountHOSType.HOS_SUPPORT);
+System.out.println("acct name: " + "TEST " + timeStamp.substring(11));        
 
         // create
         Integer siloID = TESTING_SILO;

@@ -62,6 +62,9 @@ public class ITData extends BaseITData{
         fleetUser = createUser(account.getAcctID(), fleetGroup);
         writeObject(fleetUser);
 
+        districtUser = createUser(account.getAcctID(), districtGroup);
+        writeObject(districtUser);
+
         // User at team level
         System.out.println("Team Level");
         for (GroupData team : teamGroupData)
@@ -69,6 +72,7 @@ public class ITData extends BaseITData{
         	team.user = createUser(account.getAcctID(), team.group);
             team.device = createDevice(team.group, assignmentDate);
             team.driver = createDriver(team.group);
+//            team.vehicle = createVehicle(team.group, null, team.driver.getDriverID());
             team.vehicle = createVehicle(team.group, team.device.getDeviceID(), team.driver.getDriverID());
         	writeObject(team.user);
             writeObject(team.device);
@@ -155,6 +159,7 @@ public class ITData extends BaseITData{
                 teamGroupData.add(groupData);
             }
             fleetUser = getNext(xmlDecoder, User.class);
+            districtUser = getNext(xmlDecoder, User.class);
             for (int i = GOOD; i <= BAD; i++) {
                 GroupData groupData = teamGroupData.get(i);
                 groupData.user = getNext(xmlDecoder, User.class);
