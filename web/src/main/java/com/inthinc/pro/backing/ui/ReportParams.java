@@ -30,6 +30,7 @@ public class ReportParams implements Cloneable {
     private Locale locale;
     private ReportGroup reportGroup;
     private ReportParamType paramType;
+    private Boolean isIfta;
     
     
     List<Driver> driverList;
@@ -80,9 +81,15 @@ public class ReportParams implements Cloneable {
         }
         return groupIDList;
     }
-
-
     
+    public Boolean getIsIfta() {
+        return isIfta;
+    }
+
+    public void setIsIfta(Boolean isIfta) {
+        this.isIfta = isIfta;
+    }
+
     public Boolean getValid() {
         
         return getErrorMsg() == null;
@@ -105,7 +112,7 @@ public class ReportParams implements Cloneable {
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP && getGroupID() == null) 
             return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         
-        if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0)) 
+        if ( (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_AND_IFTA  ) && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0)) 
             return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
@@ -261,5 +268,7 @@ public class ReportParams implements Cloneable {
         }
         
     }
+
+
 
 }

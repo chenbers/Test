@@ -186,6 +186,31 @@
 					</table>
 				</li>
 				</h:outputText>
+				
+				<h:outputText id="groupListAndIftaInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
+				<li  class="l">
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.reports_groups}"/>
+						</td>
+						<td>
+							<a4j:outputPanel id="groupListAndIftaSelect">
+							<h:selectManyMenu id="#{context}groupListAndIftaParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto">
+								<f:selectItems value="#{params.groups}"/>
+								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+							</h:selectManyMenu>
+							<h:outputText value="#{messages.reports_ifta_only}"/>
+							<h:selectBooleanCheckbox id="ifta" value="#{params.isIfta}" />
+							</a4j:outputPanel>
+							<rich:jQuery selector="##{context}_form\\:#{context}groupListAndIftaParam" timing="onload" 
+							query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+														width: 200,maxDropHeight: 150})"/>
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
 					
            </ul>
           </a4j:region>

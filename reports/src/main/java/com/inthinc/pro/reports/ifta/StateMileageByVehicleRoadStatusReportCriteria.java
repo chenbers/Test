@@ -77,6 +77,10 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
     {   
         List<StateMileageByVehicleRoadStatus> dataList = new ArrayList<StateMileageByVehicleRoadStatus>();
         String roadStatus = "";
+        
+        if(!records.isEmpty())
+            addParameter(ReportCriteria.REPORT_EMPTY,"");
+        
         for (StateMileage item : records) {
             StateMileageByVehicleRoadStatus rec = new StateMileageByVehicleRoadStatus();
             rec.setVehicle(item.getVehicleName());
@@ -102,7 +106,12 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
 
         @Override
        public int compare(StateMileageByVehicleRoadStatus o1, StateMileageByVehicleRoadStatus o2) {
-               return o1.getVehicle().compareTo(o2.getVehicle());
+           int comparaison = o1.getGroupName().compareTo(o2.getGroupName());     
+           
+           if( comparaison == 0)        
+               comparaison = o1.getVehicle().compareTo(o2.getVehicle());
+           
+           return comparaison;
        }
    }
 

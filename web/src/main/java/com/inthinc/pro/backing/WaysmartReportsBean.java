@@ -96,7 +96,7 @@ public class WaysmartReportsBean extends ReportsBean {
 
             case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
                 reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleRoadStatusReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale(), true ));
+                        params.getLocale(), params.getIsIfta() ));
             break;
                 
             default:
