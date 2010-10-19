@@ -19,6 +19,12 @@ public class IntegrationConfig extends Properties
     public final static String MCM_HOST = "mcmDataAccessHost";
     public final static String MCM_PORT = "mcmDataAccessPort";
     public final static String MAP_SERVER_URL = "mapserver.geonames.url";
+    
+    public final static String JDBC_DRIVER_CLASS_NAME = "jdbc.mysql.driverClassName";
+    public final static String JDBC_MYSQL_URL = "jdbc.mysql.url";
+    public final static String JDBC_MYSQL_USERNAME = "jdbc.mysql.username";
+    public final static String JDBC_MYSQL_PASSWORD = "jdbc.mysql.password";
+
 
     public IntegrationConfig()
     {
