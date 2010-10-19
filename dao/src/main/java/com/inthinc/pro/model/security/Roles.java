@@ -1,5 +1,6 @@
 package com.inthinc.pro.model.security;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,8 +10,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.RoleDAO;
 
-public class Roles {
+public class Roles implements Serializable{
 	
+    private static final long serialVersionUID = 1L;
     Logger logger = Logger.getLogger(Roles.class);
     private List<Role> roleList;
     private Map<Integer, Role> roleMapById;

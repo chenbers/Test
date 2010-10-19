@@ -1,10 +1,13 @@
 package com.inthinc.pro.model.security;
 
+import java.io.Serializable;
+
 import com.inthinc.pro.dao.annotations.ID;
 
-public class SiteAccessPoint {
+public class SiteAccessPoint implements Serializable {
 	
-	@ID
+    private static final long serialVersionUID = 1L;
+    @ID
 	private Integer accessPtID;
 	private Integer sortValue;
 	private String msgKey;

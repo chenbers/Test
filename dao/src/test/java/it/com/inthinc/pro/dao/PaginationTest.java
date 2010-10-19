@@ -27,13 +27,12 @@ import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.event.ZoneEvent;
-import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
@@ -63,8 +62,8 @@ public class PaginationTest {
     private static Integer[] EXPECTED_RED_FLAG_COUNTS = {
     	Integer.valueOf(7),
     	Integer.valueOf(7),
-    	Integer.valueOf(16),
-    	Integer.valueOf(30),
+        Integer.valueOf(16),
+        Integer.valueOf(30),
 
     };
 
@@ -99,14 +98,10 @@ public class PaginationTest {
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
-
-//        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
-//        mapping.setDeviceDAO(deviceDAO);
-//        mapping.init();
-
     }
 
     @Test
+    //@Ignore
     public void events() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
     	eventDAO.setSiloService(siloService);
@@ -162,6 +157,7 @@ public class PaginationTest {
     }
     
     @Test
+    //@Ignore
     public void eventsSorts() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
     	eventDAO.setSiloService(siloService);
@@ -255,6 +251,7 @@ public class PaginationTest {
     }
 
     @Test
+    //@Ignore
     public void eventsFilters() {
     	EventHessianDAO eventDAO = new EventHessianDAO();
     	eventDAO.setSiloService(siloService);
@@ -353,6 +350,7 @@ public class PaginationTest {
     }    	
 
     @Test
+    //@Ignore
     public void eventsFilterByNoteID() {
        	EventHessianDAO eventDAO = new EventHessianDAO();
        	eventDAO.setSiloService(siloService);
@@ -389,6 +387,7 @@ public class PaginationTest {
     }
 
     @Test
+    //@Ignore
     public void redFlags() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -445,6 +444,7 @@ public class PaginationTest {
 	}
 
     @Test
+    //@Ignore
     public void redFlagSorts() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -533,6 +533,7 @@ public class PaginationTest {
     }
 
     @Test
+    //@Ignore
     public void redFlagFilters() {
 
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
@@ -594,6 +595,7 @@ public class PaginationTest {
     }
 
     @Test
+    //@Ignore
     public void redFlagZones() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);

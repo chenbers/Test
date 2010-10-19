@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.RedFlagHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
@@ -33,6 +34,9 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
 	@Override
 	public List<RedFlag> getRedFlagPage(Integer groupID, Date startDate, Date endDate,
 			Integer includeForgiven, PageParams pageParams) {
+	    
+        pageParams.setFilterList(fixFilters(pageParams.getFilterList()));
+
         try
         {
             List<RedFlag> redFlagList = getMapper().convertToModelObject(getSiloService().getRedFlagsPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, getMapper().convertToMap(pageParams)), RedFlag.class);
@@ -50,8 +54,8 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
 		
         try
         {
-            if (filterList == null)
-            	filterList = new ArrayList<TableFilterField>();
+            filterList = fixFilters(filterList);
+
             return getChangedCount(getSiloService().getRedFlagsCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), includeForgiven, getMapper().convertList(filterList)));
             
         }
@@ -60,5 +64,20 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
             return 0;
         }
 	}
+	
+	   private List<TableFilterField> fixFilters(List<TableFilterField> filters)
+	    {
+	        if (filters == null)
+	            return new ArrayList<TableFilterField>();
+	        
+	        for (TableFilterField tableFilterField : filters)
+	                if (tableFilterField.getFilter() instanceof List<?>) {
+	                    tableFilterField.setFilter(getMapper().convertToArray((List<?>)tableFilterField.getFilter(), Integer.class));
+	                }
+	                    
+	                
+	        return filters;
+	    }
+
 
 }

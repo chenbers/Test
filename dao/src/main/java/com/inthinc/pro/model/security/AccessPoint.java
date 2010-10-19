@@ -1,12 +1,12 @@
 package com.inthinc.pro.model.security;
 
-import com.inthinc.pro.model.app.SiteAccessPoints;
+import java.io.Serializable;
 
 
-public class AccessPoint {
+public class AccessPoint implements Serializable{
 		
-
-	private Integer accessPtID;
+    private static final long serialVersionUID = 1L;
+    private Integer accessPtID;
 	private Integer mode;
 	
 	public AccessPoint() {

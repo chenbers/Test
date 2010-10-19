@@ -272,7 +272,7 @@ public abstract class BaseITData {
 	        try {
 		        person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
 		        		first + "email"+groupID+Util.randomInt(1, 99999)+"@email.com", 
-		        		null, "5555555555", "5555555555", null, null, null, null, null, "emp01", 
+		        		null, "5555555555", "5555555555", null, null, null, null, null, "emp_"+groupID+"_"+Util.randomInt(1, 99999), 
 		                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, 
 		                MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
 		        person.setCrit(1);

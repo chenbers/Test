@@ -197,8 +197,9 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 			List<TableFilterField> filters) {
 		
 
-		if (filters == null)
-           	filters = new ArrayList<TableFilterField>();
+	    filters = fixFilters(filters);
+		
+		
 
 		try {
 			return getChangedCount(getSiloService().getDriverEventCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
@@ -217,6 +218,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 			Integer includeForgiven, List<NoteType> noteTypes,
 			PageParams pageParams) {
 
+	    pageParams.setFilterList(fixFilters(pageParams.getFilterList()));
 		try {
 			return getMapper().convertToModelObject(getSiloService().getDriverEventPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
 									includeForgiven, getMapper().convertToMap(pageParams), 
@@ -229,4 +231,16 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 		
 	}
 
+	private List<TableFilterField> fixFilters(List<TableFilterField> filters)
+	{
+	    if (filters == null)
+            return new ArrayList<TableFilterField>();
+	    
+	    for (TableFilterField tableFilterField : filters)
+	        if (tableFilterField.getFilter() instanceof List<?>) {
+	            tableFilterField.setFilter(getMapper().convertToArray((List<?>)tableFilterField.getFilter(), Integer.class));
+	        }
+	            
+        return filters;
+	}
 }
