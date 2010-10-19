@@ -91,9 +91,14 @@ public enum ReportGroup
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS),
-    
-     // Performance    
+
+     STATE_MILEAGE_FUEL_BY_VEHICLE("State Mileage Fuel By Vehicle", 23, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             ReportType.STATE_MILEAGE_FUEL_BY_VEHICLE),
              
+             
+     // Performance    
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
                      new CriteriaType[]{CriteriaType.TIMEFRAME}, 
                      new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,

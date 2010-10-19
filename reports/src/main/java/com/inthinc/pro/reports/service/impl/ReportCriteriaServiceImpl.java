@@ -58,6 +58,7 @@ import com.inthinc.pro.reports.hos.HosZeroMilesReportCriteria;
 import com.inthinc.pro.reports.ifta.MileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleRoadStatusReportCriteria;
+import com.inthinc.pro.reports.ifta.StateMileageFuelByVehicleReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
@@ -778,6 +779,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * {@inheritDoc}
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
+    @Override
     public ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly) 
     {
         StateMileageByVehicleRoadStatusReportCriteria criteria = new StateMileageByVehicleRoadStatusReportCriteria(locale);
@@ -802,7 +804,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(groupIDList, interval, iftaOnly);
         return criteria;
     }
-    
+
+  
+	@Override
+	public ReportCriteria getStateMileageFuelByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly) {
+		StateMileageFuelByVehicleReportCriteria criteria = new StateMileageFuelByVehicleReportCriteria(locale);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setStateMileageDAO(stateMileageDAO);
+               
+        criteria.init(groupIDList, interval, iftaOnly);
+        return criteria;
+	}
+
+
     
     public void setGroupDAO(GroupDAO groupDAO)
     {
@@ -979,5 +993,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
 
 }

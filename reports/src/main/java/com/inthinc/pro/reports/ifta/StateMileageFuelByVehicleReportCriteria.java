@@ -11,19 +11,19 @@ import org.joda.time.Interval;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
 
 /**
- * Report Criteria for StateMileageByVehicle report.
+ * Report Criteria for StateMileageFuelByVehicle report.
  */
-public class StateMileageByVehicleReportCriteria extends DOTReportCriteria {
+public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
 
     /**
      * Default constructor.
      * @param locale
      */
-    public StateMileageByVehicleReportCriteria(Locale locale) {
-        super(ReportType.STATE_MILEAGE_BY_VEHICLE, locale);
+    public StateMileageFuelByVehicleReportCriteria(Locale locale) {
+        super(ReportType.STATE_MILEAGE_FUEL_BY_VEHICLE, locale);
     }
 
     /**
@@ -38,13 +38,12 @@ public class StateMileageByVehicleReportCriteria extends DOTReportCriteria {
 
         List<StateMileage> dataList = new ArrayList<StateMileage>();
         for (Integer groupID : groupIDList) {
-            List<StateMileage> list = stateMileageDAO.getStateMileageByVehicle(groupID, interval, dotOnly);
+            List<StateMileage> list = stateMileageDAO.getFuelStateMileageByVehicle(groupID, interval, dotOnly);
             if (list != null) {
                 dataList.addAll(list);
             }
         }      
         initDataSet(dataList);
-        
     }
 
     /**
@@ -55,25 +54,29 @@ public class StateMileageByVehicleReportCriteria extends DOTReportCriteria {
      */
     void initDataSet(List<StateMileage> records)
     {   
-        List<MileageByVehicle> dataList = new ArrayList<MileageByVehicle>();
+        List<StateMileageFuelByVehicle> dataList = new ArrayList<StateMileageFuelByVehicle>();
         for (StateMileage item : records) {
-            MileageByVehicle rec = new MileageByVehicle();
-            rec.setVehicle(item.getVehicleName());
-            rec.setState(item.getStateName());
+        	StateMileageFuelByVehicle rec = new StateMileageFuelByVehicle();
             rec.setGroupName(item.getGroupName());
-            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
-                        item.getMiles(), getMeasurementType()).doubleValue());
+            rec.setVehicle(item.getVehicleName());
+            rec.setMonth(item.getMonth());
+            rec.setState(item.getStateName());
+            rec.setTotalMiles(MeasurementConversionUtil.convertMilesToKilometers(
+                    item.getMiles(), getMeasurementType()).doubleValue());
+            rec.setTotalTruckGas(item.getTruckGallons().doubleValue());
+            rec.setTotalTrailerGas(item.getTrailerGallons().doubleValue());
+            rec.setMileage(item.getMiles().doubleValue());
             dataList.add(rec);
         }
-        Collections.sort(dataList, new StateMileageByVehicleComparator());        
+        Collections.sort(dataList, new StateMileageFuelByVehicleComparator());        
         setMainDataset(dataList);
     }
 
     /* Comparator for StateMileageByVehicle report */
-    class StateMileageByVehicleComparator implements Comparator<MileageByVehicle> {
+    class StateMileageFuelByVehicleComparator implements Comparator<StateMileageFuelByVehicle> {
 
         @Override
-        public int compare(MileageByVehicle o1, MileageByVehicle o2) {
+        public int compare(StateMileageFuelByVehicle o1, StateMileageFuelByVehicle o2) {
             int equal = o1.getGroupName().compareTo(o2.getGroupName());
             if (equal == 0) {
                 return o1.getVehicle().compareTo(o2.getVehicle());                

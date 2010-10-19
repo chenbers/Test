@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import mockit.Expectations;
 import mockit.Mocked;
+import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.Interval;
@@ -96,6 +97,13 @@ public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
         //------------------------------------------------------------------
         // 3. Third we verify the results
 
+        new Verifications(){
+        	{
+        		stateMileageDAOMock.getMileageByVehicle(GROUP_ID, INTERVAL, false); times=2;
+        	}
+        	
+        };
+        
        List<MileageByVehicle> dataSet = reportCriteriaSUT.getMainDataset();
        assertNotNull(dataSet);
        assertTrue(dataSet.size() == 1);

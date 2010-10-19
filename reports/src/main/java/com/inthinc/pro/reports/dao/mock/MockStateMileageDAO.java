@@ -97,6 +97,13 @@ public class MockStateMileageDAO implements StateMileageDAO {
         return this.getDataBis(groupID, interval, dotOnly);
     }
 
+    /* ^
+     * |  Mocked methods
+     * --------------------------------------------------------------------------------------
+     * |  Helper Methods
+     * v
+     */
+    
     private List<StateMileage> getData(Integer groupID) {
         List<StateMileage> list = new ArrayList<StateMileage>();
         
