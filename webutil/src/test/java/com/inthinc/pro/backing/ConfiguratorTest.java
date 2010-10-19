@@ -45,7 +45,7 @@ public class ConfiguratorTest {
         deviceSettingDefinitionsByProductType = new DeviceSettingDefinitionsByProductType();
         deviceSettingDefinitionsByProductType.init();
         
-        configuratorBean.setDeviceSettingDefinitionsByProductType(deviceSettingDefinitionsByProductType);
+//        configuratorBean.setDeviceSettingDefinitionsByProductType(deviceSettingDefinitionsByProductType);
         configuratorBean.init();
         vehicleSettings = new VehicleSettings();
         vehicleSettings.filterSettings(configuratorHessianDAO.getVehicleSettingsByGroupIDDeep(1), ProductType.TIWIPRO_R74);
