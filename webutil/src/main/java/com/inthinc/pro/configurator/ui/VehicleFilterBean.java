@@ -25,7 +25,11 @@ public class VehicleFilterBean extends UsesBaseBean{
 	protected VehicleSettings vehicleSettings;
 	protected List<VehicleSetting> filteredVehicleSettings;
 	protected MakeModelYearSelectItems makeModelYearSelectItems;
-
+	
+	protected List<Vehicle> filteredVehicles;
+	protected List<Integer> makeModelYearVehicleIDs;
+	protected int nextVehicleIndex;
+	protected VehicleSetting nextVehicleSetting;
 	public void init(){
 		
     	selectedGroupId = null;
@@ -65,6 +69,77 @@ public class VehicleFilterBean extends UsesBaseBean{
 		}
 		return vehiclesInGroup;
 	}
+	public void setupVehicleIterator(){
+	    
+	    List<Vehicle> groupVehicles = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupId);
+	    
+	    //filter on make model year from vehicle record
+	    makeModelYearSelectItems.createMakeModelYear(groupVehicles);
+	    //iterate through getting vehicle settings til we get the first with the right product
+        makeModelYearVehicleIDs = makeModelYearSelectItems.getVehicleIDsForSelectedMakeModelYear();
+        if (makeModelYearVehicleIDs.isEmpty()){
+            
+            makeModelYearVehicleIDs = getAllVehicleIDs(groupVehicles);
+        }
+        
+        setupFirstVehicle();
+    }
+	private List<Integer> getAllVehicleIDs(List<Vehicle>groupVehicles){
+	    
+	    List<Integer> vehicleIDs = new ArrayList<Integer>();
+	    for (Vehicle v:groupVehicles){
+	        
+	        vehicleIDs.add(v.getVehicleID());
+	    }
+	    return vehicleIDs;
+	}
+	private void setupFirstVehicle(){
+	    
+        nextVehicleIndex = 0;
+        nextVehicleSetting = null;
+        for(int i = 0; i< makeModelYearVehicleIDs.size(); i++){
+            
+            int vehicleID = makeModelYearVehicleIDs.get(i);
+            VehicleSetting vs = configuratorDAO.getVehicleSettings(vehicleID);
+           
+            if (vs != null && vs.getProductType().equals(selectedProductType.getProductType())){
+                
+                nextVehicleSetting = vs;
+                nextVehicleIndex = i;
+                return;
+            }
+        }
+	}
+
+	public VehicleSetting getNextVehicle(){
+	    
+	    if (nextVehicleSetting == null) return null;
+        VehicleSetting returnVehicleSetting = nextVehicleSetting;
+        
+        lineUpNextVehicle();
+        
+        return returnVehicleSetting;
+	}
+	private void lineUpNextVehicle(){
+	    
+        for(int i = ++nextVehicleIndex; i< makeModelYearVehicleIDs.size(); i++){
+            
+            int vehicleID = makeModelYearVehicleIDs.get(i);
+            VehicleSetting vs = configuratorDAO.getVehicleSettings(vehicleID);
+           
+            if (vs != null && vs.getProductType().equals(selectedProductType.getProductType())){
+                
+                nextVehicleSetting = vs;
+                nextVehicleIndex = i;
+                return;
+            }
+        }
+        nextVehicleIndex = -1;
+        nextVehicleSetting = null;
+	}
+	public Boolean hasNextVehicle(){
+	    return nextVehicleSetting != null;
+	}
 	public List<VehicleSetting> filterMakeModelYear() {
 		
 		List<Integer> makeModelYearVehicleIDs = makeModelYearSelectItems.getVehicleIDsForSelectedMakeModelYear();
@@ -82,10 +157,10 @@ public class VehicleFilterBean extends UsesBaseBean{
 		}
 		return filteredVehicleSettings;
 	}
-	
+
 	// Value change listeners
 	public void makeChanged(ValueChangeEvent event) {
-		
+		if((String)event.getNewValue() == null) return; 
 		makeModelYearSelectItems.makeChanged((String)event.getNewValue());
 	}
 	public void modelChanged(ValueChangeEvent event) {

@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.ConfiguratorMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.SensitivitySliderValues;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.configurator.VehicleSettingHistory;
@@ -75,18 +77,22 @@ public class ConfiguratorHessianDAO extends GenericHessianDAO<DeviceSettingDefin
         }
 
     }
+    @Override
+    public List<Integer> getVehicleIDsByGroupIDDeep(Integer groupID) {
+        try {
+            List<Vehicle> vehicles = getMapper().convertToModelObject(getSiloService().getVehiclesByGroupIDDeep(groupID), Vehicle.class);
+            List<Integer> vehicleIDs = new ArrayList<Integer>();
+            for(Vehicle vehicle:vehicles){
+                
+                vehicleIDs.add(vehicle.getVehicleID());
+            }
+            return vehicleIDs;
+            
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+    }
 
-//    @Override
-//    public Map<SensitivityType, SensitivityForwardCommandMapping> getSensitivityMaps()
-//    {
-//        Map<SensitivityType, SensitivityForwardCommandMapping> returnMap = new HashMap<SensitivityType, SensitivityForwardCommandMapping>();
-//        List<SensitivityForwardCommandMapping> list = getMapper().convertToModelObject(getSiloService().getSensitivityMaps(), SensitivityForwardCommandMapping.class);
-//        for (SensitivityForwardCommandMapping s : list)
-//        {
-//            returnMap.put(s.getSetting(), s);
-//        }
-//        return returnMap;
-//    }
     @Override
 	public List<SensitivitySliderValues> getSensitivitySliderValues() {
 

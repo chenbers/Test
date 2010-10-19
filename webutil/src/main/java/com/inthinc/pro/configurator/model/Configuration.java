@@ -1,6 +1,7 @@
 package com.inthinc.pro.configurator.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,15 +9,27 @@ import java.util.Map.Entry;
 
 public class Configuration{
     
-	private boolean select;
+    private boolean select;
+	private String messageDigest5;
 
-	private Integer configurationID;
+    private Integer configurationID;
 	
     private List<Integer> vehicleIDs;
     private String vehicleIDsString="";
     
     private EditableMap<Integer,String> editedDesiredValues;
 	private String reason;
+	
+    public Configuration (Integer vehicleID, Integer configurationID, 
+            EditableMap<Integer, String> editedDesiredValues,
+            String editedDesiredValuesMD5){
+
+        this.configurationID = configurationID;
+        vehicleIDs = new ArrayList<Integer>();
+        addVehicleID(vehicleID);
+        this.editedDesiredValues = editedDesiredValues;
+        this.messageDigest5 = editedDesiredValuesMD5;
+    }
 
 	public boolean isSelect() {
 		return select;
@@ -30,7 +43,15 @@ public class Configuration{
 		select = !select;
 		return null;
 	}
-	public Map<Integer, String> getOriginalValues() {
+    
+    public String getMessageDigest5() {
+        return messageDigest5;
+    }
+
+    public void setMessageDigest5(String messageDigest5) {
+        this.messageDigest5 = messageDigest5;
+    }
+    public Map<Integer, String> getOriginalValues() {
 		return editedDesiredValues.getOriginalValues();
 	}
 
@@ -71,6 +92,7 @@ public class Configuration{
         
         vehicleIDs = new ArrayList<Integer>(configuration.vehicleIDs);
         editedDesiredValues = configuration.getEditedDesiredValues();
+        messageDigest5 = configuration.getMessageDigest5();
     }
    public String getReason() {
 		return reason;

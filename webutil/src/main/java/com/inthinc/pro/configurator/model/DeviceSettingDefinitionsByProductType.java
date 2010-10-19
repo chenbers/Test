@@ -10,9 +10,14 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 public class DeviceSettingDefinitionsByProductType {
 
+    //For comparison
     private Map<ProductType, Map<Integer,DeviceSettingDefinitionBean>> deviceSettings;
     private Map<ProductType, Map<Integer,DeviceSettingDefinitionBean>> ignoredSettings;
     private Map<ProductType, List<DeviceSettingDefinitionBean>> deviceSettingLists;
+    
+    //For vehicles
+    private Map<ProductType, Map<Integer,DeviceSettingDefinitionBean>> vehicleDeviceSettings;
+    private Map<ProductType, List<DeviceSettingDefinitionBean>> vehicleDeviceSettingLists;
     
     public void init(){
         
@@ -26,11 +31,17 @@ public class DeviceSettingDefinitionsByProductType {
        deviceSettingLists = new HashMap<ProductType, List<DeviceSettingDefinitionBean>>();
        ignoredSettings = new HashMap<ProductType, Map<Integer,DeviceSettingDefinitionBean>>();
        
+       vehicleDeviceSettings = new HashMap<ProductType, Map<Integer,DeviceSettingDefinitionBean>>();
+       vehicleDeviceSettingLists = new HashMap<ProductType, List<DeviceSettingDefinitionBean>>();
+       
        for (ProductType productType : ProductType.getSet()){
             
             deviceSettings.put(productType,new HashMap<Integer,DeviceSettingDefinitionBean>()); 
             deviceSettingLists.put(productType, new ArrayList<DeviceSettingDefinitionBean>());
             ignoredSettings.put(productType,new HashMap<Integer,DeviceSettingDefinitionBean>()); 
+
+            vehicleDeviceSettings.put(productType,new HashMap<Integer,DeviceSettingDefinitionBean>()); 
+            vehicleDeviceSettingLists.put(productType, new ArrayList<DeviceSettingDefinitionBean>());
        }
     }
     private void distributeSettings(){
@@ -44,7 +55,10 @@ public class DeviceSettingDefinitionsByProductType {
 
     	for (ProductType productType :ProductType.getSet()){
             
-            if (productType.maskBitSet(dsdBean.getProductMask())){
+            if (productType.isForProduct(dsdBean.getProductMask())){
+                
+                vehicleDeviceSettings.get(productType).put(dsdBean.getSettingID(),dsdBean);
+                vehicleDeviceSettingLists.get(productType).add(dsdBean);
                 
                 if(dsdBean.isInclude()){
                     
@@ -63,6 +77,16 @@ public class DeviceSettingDefinitionsByProductType {
     		
     		Collections.sort(deviceSettingList);
     	}
+        for( List<DeviceSettingDefinitionBean> vehicleDeviceSettingList : vehicleDeviceSettingLists.values()){
+            
+            Collections.sort(vehicleDeviceSettingList);
+        }
+    }
+    public Map<ProductType, Map<Integer, DeviceSettingDefinitionBean>> getVehicleDeviceSettings() {
+        return vehicleDeviceSettings;
+    }
+    public Map<ProductType, List<DeviceSettingDefinitionBean>> getVehicleDeviceSettingLists() {
+        return vehicleDeviceSettingLists;
     }
     public List<DeviceSettingDefinitionBean> deriveReducedSettings(List<Integer> settingIDsWithMoreThanOneValue,ProductType productType){
         
@@ -93,10 +117,14 @@ public class DeviceSettingDefinitionsByProductType {
         return deviceSettings.get(key).get(settingID);
     }
     public List<Integer> getKeys(ProductType key){
+        
+    	List<Integer> keys = new ArrayList<Integer>(deviceSettings.get(key).keySet());
+    	Collections.sort(keys);
     	
-    	return new ArrayList<Integer>(deviceSettings.get(key).keySet());
+    	return keys;
     }
     public List<DeviceSettingDefinitionBean> getIgnoredSettings(ProductType key) {
+        
     	List<DeviceSettingDefinitionBean> iss = new ArrayList<DeviceSettingDefinitionBean>(ignoredSettings.get(key).values());
     	Collections.sort(iss);
     	
@@ -106,20 +134,4 @@ public class DeviceSettingDefinitionsByProductType {
         
         return DeviceSettingDefinitions.getDeviceSettingDefinition(settingID).validate(value);
     }
-//    public EditableMap<Integer, String> getCopyValuesMap(ProductType selectedProductType, Map<Integer,String> mapToCopy){
-//    	
-//    	Map<Integer, String> copyMap = new HashMap<Integer,String>();
-//    	
-//    	for(DeviceSettingDefinitionBean dsdb: deviceSettingLists.get(selectedProductType)){
-//    		
-//    		if (mapToCopy.get(dsdb.getSettingID()) == null){
-//    			
-//    			copyMap.put(dsdb.getSettingID(),"");
-//    		}
-//    		else {
-//    			copyMap.put(dsdb.getSettingID() ,mapToCopy.get(dsdb.getSettingID()));
-//    		}
-//    	}
-//    	return new EditableMap<Integer,String>(copyMap);
-//    }
 }

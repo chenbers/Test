@@ -35,7 +35,11 @@ function setHighlight(row,column, messages) {
 <ui:define name="util_leftPanel">
 
    <ui:include src="configuratorMenu.xhtml"/>
-   
+<!-- 
+
+	Configurator Selection Form
+	
+ -->   
 	<a4j:form id="configurationSelectionForm">
 		<rich:panel id="configuration-centric" style="width:200px">
 			<a4j:status id="configuratorStatus">
@@ -129,12 +133,18 @@ function setHighlight(row,column, messages) {
             </a4j:outputPanel>
         </h:panelGrid>
 		    
-			<h:commandButton id="getConfigurations" value="Get Configurations" action="#{configurationSelectionBean.fetchConfigurations}"/>
+			<h:commandButton id="getConfigurations" value="Get Configurations" action="#{configuratorBean.fetchConfigurations}"/>
 		</rich:panel>
 	</a4j:form>
    
 </ui:define>
 <ui:define name="util_content">
+
+<!-- 
+
+	Configurations Form
+	
+ -->   
 
 <div>
     <h:form id="configuratorForm">
@@ -184,17 +194,7 @@ function setHighlight(row,column, messages) {
                     </f:facet>
                     <h:outputText value="#{configuration.count}" title="Vehicle IDs - #{configuration.vehicleIDsString}"/>
                 </rich:column>
-<!--			     <rich:column id="reason">-->
-<!--                   <f:facet name="header">-->
-<!--                    	<h:outputText styleClass="headerText" value="Reason" />-->
-<!--                    </f:facet>-->
-<!--				 	<rich:inplaceInput id="reasonField"  value="#{configuration.reason}" -->
-<!--				 				 showControls="true" selectOnEdit="true" required="true">-->
-<!--				 				 <a4j:support event="onviewactivated" ajaxSingle="true"/>-->
-<!--					</rich:inplaceInput>-->
-<!--			 		<rich:message id="messageTable" for="reasonField" style="color:red" rendered="true" value="ok"/>-->
-<!--				</rich:column>-->
- 				<rich:columns value="#{configuratorBean.displaySettingsDefinitions}" var="setting" 
+ 				<rich:columns value="#{deviceSettingDefinitionsByProductType.deviceSettingLists[configurationSelectionBean.productType]}" var="setting" 
  								index="index" id="id#{index}">
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
@@ -225,17 +225,23 @@ function setHighlight(row,column, messages) {
  	              
 		</rich:panel>
 	</h:form>
+
+<!-- 
+
+	Configuration Differences Form
+	
+ -->   
  
     <h:form id="differencesForm">
 
   	    <rich:panel id="compareSettings" >
   	    
-    	    <rich:panel style="border: none" rendered="#{configuratorBean.differentOnly}">
+    	    <rich:panel style="border: none" rendered="#{comparedConfigurations.populated}">
 				<a4j:commandButton value="Dismiss" action ="#{configuratorBean.clearSelected}" immediate="true" reRender="compareSettings"/>
     	    </rich:panel>   	    
-            <rich:dataTable rowKeyVar="rkv" rendered="#{configuratorBean.differentOnly}"
+            <rich:dataTable rowKeyVar="rkv" rendered="#{comparedConfigurations.populated}"
                 id="settingList" rows="0"  
-                value="#{configuratorBean.compareConfigurationSet.configurations}" var="configuration">
+                value="#{comparedConfigurations.compareConfigurationSet.configurations}" var="configuration">
             	<rich:column id="configurationIndex">
                     <f:facet name="header">
                     </f:facet>
@@ -247,30 +253,14 @@ function setHighlight(row,column, messages) {
                     </f:facet>
                     <h:outputText value="#{configuration.count}"/>
                 </rich:column>
- 				<rich:columns value="#{configuratorBean.differentDeviceSettings}" var="setting" 
+ 				<rich:columns rendered="#{comparedConfigurations.populated}" value="#{comparedConfigurations.differentDeviceSettings}" var="setting" 
  								index="index" id="id#{index}">
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
 				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" >
 					 		<h:outputText  value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}"></h:outputText>
-<!--					 	<rich:inplaceInput id="input-#{setting.settingIDKey}"  value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}" -->
-<!--					 				 showControls="true" selectOnEdit="true" -->
-<!--					 				 style="background-color:#{setting.errorColor[configuration.editedDesiredValues.editableValues[setting.settingID].value]}"-->
-<!--					 				 validator="#{setting.validate}" >-->
-<!--					 		<a4j:support event="onviewactivated" ajaxSingle="true" oncomplete="setHighlight(#{rkv},'input-#{setting.settingIDKey}','message-#{setting.settingIDKey}');"/>-->
-<!--						</rich:inplaceInput>-->
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
-<!-- 					 		<rich:message id="message-#{setting.settingIDKey}" for="input-#{setting.settingIDKey}" style="color:red" rendered="true" value="ok"/>-->
-<!--					</h:panelGrid>					-->
-<!--				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{setting.hasChoices}">-->
-<!--					 	<rich:inplaceSelect id="select-#{setting.settingID}" name="#{setting.settingID}-#{index}" -->
-<!--					 						value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}">-->
-<!--	-->
-<!--							<f:selectItems value="#{choiceSelectItems.selectItems[setting.settingID]}" />-->
-<!--							 <a4j:support event="onviewactivated" ajaxSingle="true"/>-->
-<!--						</rich:inplaceSelect>-->
-<!--					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>-->
 					</h:panelGrid>					
 				 				 
 				</rich:columns>
@@ -279,6 +269,11 @@ function setHighlight(row,column, messages) {
  	              
 		</rich:panel>
 	</h:form>
+<!-- 
+
+	Assign Configurations Modal Panel
+	
+ -->   
         <rich:modalPanel id="assignVehicles" autosized="true" width="450">
         <f:facet name="header">
             <h:outputText value="Apply settings in configuration #{configuratorBean.selectedConfigurationID} to selected vehicles" />

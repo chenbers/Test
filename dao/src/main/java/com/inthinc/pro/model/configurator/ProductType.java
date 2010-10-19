@@ -61,7 +61,7 @@ public enum ProductType implements BaseEnum
         
         return version;
     }
-    public boolean maskBitSet(Integer mask){
+    public boolean isForProduct(Integer mask){
         
         return  (mask & code)==code;
     }

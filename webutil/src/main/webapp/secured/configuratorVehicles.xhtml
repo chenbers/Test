@@ -68,7 +68,7 @@ function setHighlight(element, errors) {
 <div>
 	<a4j:form id="vehicleSettingsForm">
             <rich:panel id="vehicleEditSettingsRegion" rendered="#{vehicleSettingsBean.selectedVehicleID ne null}">
-           	<rich:dataTable id="selectedSettings" rowKeyVar="rkv" value="#{deviceSettingDefinitionsByProductType.deviceSettingLists[vehicleSettingsBean.selectedVehicleSetting.productType]}" 
+           	<rich:dataTable id="selectedSettings" rowKeyVar="rkv" value="#{deviceSettingDefinitionsByProductType.vehicleDeviceSettingLists[vehicleSettingsBean.selectedVehicleSetting.productType]}" 
            					var="setting" 
            					rows="0" width="600px">
                  <rich:column id="name" sortBy="#{setting.name}">

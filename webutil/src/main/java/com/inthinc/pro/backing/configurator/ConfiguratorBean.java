@@ -1,8 +1,7 @@
 package com.inthinc.pro.backing.configurator;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,14 +12,14 @@ import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.UsesBaseBean;
+import com.inthinc.pro.configurator.model.ComparedConfigurations;
 import com.inthinc.pro.configurator.model.Configuration;
 import com.inthinc.pro.configurator.model.ConfigurationExtractor;
 import com.inthinc.pro.configurator.model.ConfigurationSet;
-import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
-import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.ui.ConfigurationApplyBean;
 import com.inthinc.pro.configurator.ui.ConfigurationSelectionBean;
 import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 
 @KeepAlive(ajaxOnly=true)
 public class ConfiguratorBean extends UsesBaseBean implements Serializable{
@@ -28,22 +27,16 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(ConfigurationExtractor.class);
 
-    private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-
-    private List<DeviceSettingDefinitionBean> displaySettingsDefinitions;
-    
-    private List<DeviceSettingDefinitionBean> differentDeviceSettings;
-    
+    private ConfigurationExtractor configurationExtractor;
     protected ConfiguratorDAO configuratorDAO;
     
 	private ConfigurationSet configurationSet;
 	
-	private ConfigurationSet compareConfigurationSet;
+	private ComparedConfigurations comparedConfigurations;
     
-	//configuration-centric
+    //configuration-centric
     private ConfigurationSelectionBean configurationSelectionBean;
 	private Configuration selectedConfiguration;
-    private boolean differentOnly;
 	private Integer selectedConfigurationID;
     
 	private Set<Integer> configurationToUpdate;
@@ -53,19 +46,13 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	
 	public ConfiguratorBean() {
 
-		displaySettingsDefinitions = new ArrayList<DeviceSettingDefinitionBean>();
-		differentDeviceSettings = new ArrayList<DeviceSettingDefinitionBean>();
 	}
 	public void init() {
 
         if((configurationSelectionBean.getSelectedGroupId() == null) ) return;
         	
-		differentOnly = false;
-		
-        displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(configurationSelectionBean.getProductType());
+        configurationSet = configurationExtractor.getConfigurations();
         
-        configurationSet = ConfigurationExtractor.getConfigurations(configurationSelectionBean.getFilteredVehicleSettings(),
-							deviceSettingDefinitionsByProductType.getKeys(configurationSelectionBean.getProductType()));
     }
 
 	//
@@ -85,6 +72,11 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 		message.setSummary(messageText);
 		FacesContext.getCurrentInstance().addMessage("", message);
 		
+	}
+	public Object fetchConfigurations(){
+	    
+	    init();
+	    return "go_configuratorConfigurations";
 	}
     public Object updateConfiguration(){
     	
@@ -127,9 +119,8 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     
     public Object updateVehicle(){
         
-        Map<Integer, String> actualDesiredDifferences = configurationSelectionBean.getVehicleDifferences(configurationApplyBean.getSelectedVehicleID(), configurationSet.getConfiguration(selectedConfigurationID));
+        Map<Integer, String> actualDesiredDifferences = getVehicleDifferences();
 
-//    	configurationApplyBean.updateVehicle(configurationSet.getConfiguration(selectedConfigurationID));
         configurationApplyBean.updateVehicle(actualDesiredDifferences, reason);
  
     	makeMessage("Vehicle settings updated successfully");
@@ -146,7 +137,7 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 			
 			for (Integer vID : applyToConfiguration.getVehicleIDs()){
 				
-		        Map<Integer, String> actualDesiredDifferences = configurationSelectionBean.getVehicleDifferences(configurationApplyBean.getSelectedVehicleID(), configurationSet.getConfiguration(selectedConfigurationID));
+		        Map<Integer, String> actualDesiredDifferences = getVehicleDifferences();
 		    	configurationApplyBean.updateVehicle(vID,actualDesiredDifferences,reason);
 			}
 		}
@@ -157,6 +148,26 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
        	return null;
 	}
 	
+    private Map<Integer,String> getVehicleDifferences(){
+        
+        Integer vehicleID = configurationApplyBean.getSelectedVehicleID();
+        Configuration selectedConfiguration = configurationSet.getConfiguration(selectedConfigurationID);
+        Map<Integer, String> differenceMap = new HashMap<Integer, String>();
+        VehicleSetting vehicleSetting = configurationSelectionBean.getVehicleSettings().getVehicleSettings().get(vehicleID);
+        
+        Map<Integer, String> combinedVehicleSettings = vehicleSetting.getCombinedSettings();
+        Map<Integer, String> configurationSettings  = selectedConfiguration.getLatestDesiredValues();
+        
+        for (Integer settingID : configurationSettings.keySet()){
+            
+            if ((configurationSettings.get(settingID) != null) &&
+                 !configurationSettings.get(settingID).equals(combinedVehicleSettings.get(settingID))){
+                
+                differenceMap.put(settingID, configurationSettings.get(settingID));
+            }
+        }
+        return differenceMap;
+    }
     public Object resetConfiguration(){
     	
     	selectedConfiguration = configurationSet.getConfiguration(selectedConfigurationID);
@@ -166,33 +177,25 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     }
     public Object compareSelected(){
     	
-    	differentOnly = true;
-    	compareConfigurationSet = configurationSet.getSelectedConfigurations();
-    	differentDeviceSettings = deviceSettingDefinitionsByProductType.deriveReducedSettings(compareConfigurationSet.getSettingIDsWithMoreThanOneValue(),configurationSelectionBean.getProductType());
+    	comparedConfigurations.init(configurationSet.getSelectedConfigurations());
 
     	return null;
     }
     
     public Object clearSelected(){
     	
-    	differentOnly = false;
-    	compareConfigurationSet = null;
+    	comparedConfigurations.clear();
 
     	return null;
     }
 	//Getter and setters
-	public ConfigurationSet getCompareConfigurationSet() {
-		return compareConfigurationSet;
-	}
+
+    public void setConfigurationExtractor(ConfigurationExtractor configurationExtractor) {
+        this.configurationExtractor = configurationExtractor;
+    }
 
 	public void setConfigurationApplyBean(ConfigurationApplyBean configurationApplyBean) {
 		this.configurationApplyBean = configurationApplyBean;
-	}
-	public boolean isDifferentOnly() {
-		return differentOnly;
-	}
-	public void setDifferentOnly(boolean differentOnly) {
-		this.differentOnly = differentOnly;
 	}
 	public void setConfigurationSelectionBean(ConfigurationSelectionBean configurationSelectionBean) {
 		this.configurationSelectionBean = configurationSelectionBean;
@@ -203,21 +206,10 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	public void setSelectedConfigurationID(Integer selectedConfigurationID) {
         this.selectedConfigurationID = selectedConfigurationID;
     }
-    public List<DeviceSettingDefinitionBean> getDisplaySettingsDefinitions() {
-        return displaySettingsDefinitions;
-    }
     
     public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
         this.configuratorDAO = configuratorDAO;
     }
-    public DeviceSettingDefinitionsByProductType getDeviceSettingDefinitionsByProductType() {
-        return deviceSettingDefinitionsByProductType;
-    }
-
-    public void setDeviceSettingDefinitionsByProductType(DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType) {
-        this.deviceSettingDefinitionsByProductType = deviceSettingDefinitionsByProductType;
-    }
-
     public Configuration getSelectedConfiguration() {
 		return selectedConfiguration;
 	}
@@ -231,9 +223,13 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     	
     	return configurationSet != null && configurationSet.getHasConfigurations();
     }
-	public List<DeviceSettingDefinitionBean> getDifferentDeviceSettings() {
-		return differentDeviceSettings;
-	}
+    public void setComparedConfigurations(ComparedConfigurations comparedConfigurations) {
+        this.comparedConfigurations = comparedConfigurations;
+    }
+
+    public ComparedConfigurations getComparedConfigurations() {
+        return comparedConfigurations;
+    }
 	public Set<Integer> getConfigurationToUpdate() {
 		return configurationToUpdate;
 	}

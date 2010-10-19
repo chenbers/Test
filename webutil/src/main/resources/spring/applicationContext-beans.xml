@@ -35,7 +35,10 @@
 	<bean id="configuratorBean" class ="com.inthinc.pro.backing.configurator.ConfiguratorBean" scope="request" init-method="init"/>
 	<bean id="vehicleSettingsBean" class ="com.inthinc.pro.backing.configurator.VehicleSettingsBean" scope="request"/>
 	<bean id="deviceSettingDefinitionsByProductType" class="com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType" scope="session" init-method="init"/>
+ 	<bean id="comparedConfigurations" class="com.inthinc.pro.configurator.model.ComparedConfigurations" scope="session" />
+ 	<bean id="configurationExtractor" class="com.inthinc.pro.configurator.model.ConfigurationExtractor" scope="session"/>
 	<bean id="vehicleSettingsHistoryBean" class ="com.inthinc.pro.backing.configurator.VehicleSettingsHistoryBean" scope="request"/>
+	
 	<!--  UI beans -->
 	<bean id="productSelectItems" class="com.inthinc.pro.configurator.ui.ProductSelectItems"/>
 	<bean id="choiceSelectItems" class="com.inthinc.pro.configurator.ui.ChoiceSelectItems" init-method="init" />
@@ -43,7 +46,7 @@
 	<bean id="vehicleFilterBean" class="com.inthinc.pro.configurator.ui.VehicleFilterBean" scope="session"/>
   	<bean id="treeNavigationBean" class="com.inthinc.pro.configurator.ui.TreeNavigationBean" scope="session" init-method="init"/>
   	<bean id="configurationSelectionBean" class="com.inthinc.pro.configurator.ui.ConfigurationSelectionBean" parent="vehicleFilterBean" scope="session" init-method="init"/>
-  	<bean id="configurationApplyBean" class="com.inthinc.pro.configurator.ui.ConfigurationApplyBean" parent="vehicleFilterBean" scope="session" init-method="init"/>
+   	<bean id="configurationApplyBean" class="com.inthinc.pro.configurator.ui.ConfigurationApplyBean" parent="vehicleFilterBean" scope="session" init-method="init"/>
 	<bean id="selectedProductType" class="com.inthinc.pro.configurator.ui.SelectedProductType" scope="session"/>
 	
 	<!--  DAO validator beans -->
