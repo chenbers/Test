@@ -217,6 +217,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setLong(3, interval.getEndMillis());
             
             resultSet = statement.executeQuery();
+System.out.println("statment: " + statement.toString());            
 
             while (resultSet.next())
             {
@@ -325,6 +326,23 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return recordList;
     }
 
+    @Override
+    public List<HOSRecord> getHOSRecordsFilteredByInterval(Integer driverID, Interval interval, Boolean driverStatusOnly) {
+        List<HOSRecord> hosRecordList = getHOSRecords(driverID, interval, driverStatusOnly);
+        if (hosRecordList == null)
+            return null;
+        System.out.println("original list size: " + hosRecordList.size());
+        
+        List<HOSRecord> hosFilteredRecordList = new ArrayList<HOSRecord>();
+        for (HOSRecord rec : hosRecordList)
+            if (interval.contains(rec.getLogTime().getTime()))
+                hosFilteredRecordList.add(rec);
+        
+        
+        return hosFilteredRecordList;
+        
+        
+    }
 
     @Override
     public List<HOSVehicleDayData> getHOSVehicleDataByDay(Integer driverID, Interval interval) {
@@ -776,4 +794,5 @@ System.out.println("statement " + statement.toString());
 
         return occupantInfo;
     }
+
 }

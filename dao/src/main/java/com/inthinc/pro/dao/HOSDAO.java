@@ -14,6 +14,7 @@ import com.inthinc.pro.model.hos.HOSVehicleMileage;
 public interface HOSDAO extends GenericDAO<HOSRecord, Integer> {
     
     List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly);
+    List<HOSRecord> getHOSRecordsFilteredByInterval(Integer driverID, Interval interval, Boolean driverStatusOnly);
     List<HOSVehicleDayData> getHOSVehicleDataByDay(Integer driverID, Interval interval);
     List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval);
     List<HOSGroupMileage> getHOSMileage(Integer groupID, Interval interval, Boolean noDriver);

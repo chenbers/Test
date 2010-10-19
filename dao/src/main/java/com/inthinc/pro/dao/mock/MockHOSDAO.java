@@ -302,5 +302,20 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
         hosDriverLogin.setDriverID(130);
         return hosDriverLogin;
     }
+
+    @Override
+    public List<HOSRecord> getHOSRecordsFilteredByInterval(Integer driverID, Interval interval, Boolean driverStatusOnly) {
+        List<HOSRecord> hosRecordList = getHOSRecords(driverID, interval, driverStatusOnly);
+        if (hosRecordList == null)
+            return null;
+        
+        List<HOSRecord> hosFilteredRecordList = new ArrayList<HOSRecord>();
+        for (HOSRecord rec : hosRecordList)
+            if (interval.contains(rec.getLogTime().getTime()))
+                hosFilteredRecordList.add(rec);
+        
+        
+        return hosFilteredRecordList;
+    }
     
 }
