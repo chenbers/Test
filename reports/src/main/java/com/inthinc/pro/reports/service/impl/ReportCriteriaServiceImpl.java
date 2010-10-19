@@ -35,6 +35,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.IdlePercentItem;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -762,6 +763,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * {@inheritDoc}
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
+    @Override
     public ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly) 
     {
         MileageByVehicleReportCriteria criteria = new MileageByVehicleReportCriteria(locale);
@@ -788,14 +790,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getStateMileageByVehicleReportCriteria(java.util.List<java.lang.Integer>, org.joda.time.Interval, java.util.Locale, boolean)
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getStateMileageByVehicleReportCriteria(java.util.List, org.joda.time.Interval, java.util.Locale, boolean)
      */
-    public ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly) 
+    @Override
+    public ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) 
     {
         StateMileageByVehicleReportCriteria criteria = new StateMileageByVehicleReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
-               
+        criteria.setMeasurementType(type);
         criteria.init(groupIDList, interval, iftaOnly);
         return criteria;
     }

@@ -8,6 +8,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.ReportCriteria;
 
@@ -33,7 +34,7 @@ public interface ReportCriteriaService
     
     // DOT IFTA
     ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean dotOnly);
-    ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly);
+    ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
     ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean dotOnly);
    
     // HOS

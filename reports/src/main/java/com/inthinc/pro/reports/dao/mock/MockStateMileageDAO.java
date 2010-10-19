@@ -72,6 +72,18 @@ public class MockStateMileageDAO implements StateMileageDAO {
         List<StateMileage> list = new ArrayList<StateMileage>();        
         list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1500L));
         list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_2, "217547", 1600L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_2", "217547", 1600L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_3", "213547", 1602L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_4", "217547", 1600L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "VERY LONG STATE NAME", "21547", 1640L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_6", "217547", 1600L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_7", "217227", 1605L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_8", "217547", 1200L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_9", "237547", 1600L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_10", "217547", 1100L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_12", "217567", 1640L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_11", "217347", 1260L));
+        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_13", "217546", 1507L));
         
         return list;
     }

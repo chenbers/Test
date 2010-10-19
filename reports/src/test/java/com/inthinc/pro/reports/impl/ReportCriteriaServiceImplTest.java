@@ -18,6 +18,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
@@ -110,7 +111,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(1);
-        serviceSUT.getStateMileageByVehicleReportCriteria(groupIDs, interval, Locale.US, isIfta);
+        serviceSUT.getStateMileageByVehicleReportCriteria(groupIDs, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
          
         new VerificationsInOrder(){
             {
