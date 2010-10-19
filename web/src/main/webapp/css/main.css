@@ -309,6 +309,11 @@ img {
 	background: transparent url(../images/ico_hos.png) no-repeat center left;
 }
 
+.panel_title span.textmsg {
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_txt_msg.png) no-repeat center left;
+}
+
 .panel_title .ajax_status {
 	vertical-align: top;
 	padding-right: 10px;
@@ -778,7 +783,15 @@ span.search {
 }
 
 span.refresh {
-	background: url(../images/btn_refresh.png) left no-repeat;
+	background: url(../images/btn_refresh.png) left no-repeat; 
+}
+
+span.filter {
+	background: url(../images/ico_apply_filter.png) left no-repeat;
+}
+
+span.remove {
+	background: url(../images/ico_remove_filter.png) left no-repeat;
 }
 
 span.back {
@@ -903,6 +916,12 @@ ul#grid_nav li.r {
 	float: right;
 }
 
+ul#grid_nav li.vcentered {
+	padding-left: 7px;
+	height:3em;
+	line-height:3em;	
+}
+	
 ul#grid_nav li.l {
 	float: left;
 }
@@ -2831,6 +2850,24 @@ table.clearit td {
 	margin: 0; */
 }
 
+/* Text msg inbox table */
+table.inbox {
+	border-spacing: 0px;
+	
+}
+table.inbox td.inbox {
+	padding: 7px;
+}
+table.inbox td h1 {
+	color: #333;
+	font: bold 12px "Trebuchet MS", Verdana, Tahoma, Arial, sans-serif;
+	height: 31px;
+	margin: 0 0 0 15px;
+	padding: 6px 0 0 0;
+	margin-left: 10px;
+	position: relative;
+
+}	
 /* The following was being applied to ALL tables.
 table {
 	border: 0;
