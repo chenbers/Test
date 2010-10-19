@@ -85,7 +85,8 @@ public class DaoUtilBeanTest {
 			"getRedFlagsCount",
 			"getRfidsForBarcode",
 			"getSensitivityMaps",	// TODO
-			"getID"
+			"getID",
+			"getTextMsgCount"
 	);
 
 	@Before

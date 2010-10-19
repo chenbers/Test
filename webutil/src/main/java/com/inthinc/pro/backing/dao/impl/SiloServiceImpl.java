@@ -1014,7 +1014,7 @@ public class SiloServiceImpl implements SiloService {
     
     @Override
     @MethodDescription(description = "Fetches a text message alert.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class) 
-    public List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID) {
+    public List<Map<String,Object>> getTextMsgAlertsByAcctID(@DaoParam(name = "acctID") Integer acctID) {
         return null;
     }
     
@@ -1033,7 +1033,7 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-    @MethodDescription(description = "Get a count of Red Flags for the specifed group and time frame.", crudType=CrudType.READ) 
+    @MethodDescription(description = "Get a count of Text messages for the specifed group and time frame.", crudType=CrudType.READ) 
 	public Map<String, Object> getTextMsgCount(
 			@DaoParam(name = "groupID", validator=ValidatorType.GROUP)Integer groupID,
             @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
