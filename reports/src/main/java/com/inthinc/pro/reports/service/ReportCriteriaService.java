@@ -33,7 +33,7 @@ public interface ReportCriteriaService
     ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
     
     // DOT IFTA
-    ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean dotOnly);
+    ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
     ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
     ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean dotOnly);
 	ReportCriteria getStateMileageFuelByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean dotOnly);

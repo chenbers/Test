@@ -765,12 +765,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
-    public ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly) 
+    public ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean iftaOnly) 
     {
         MileageByVehicleReportCriteria criteria = new MileageByVehicleReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
-               
+        criteria.setMeasurementType(measurementType);
+        
         criteria.init(groupIDList, interval, iftaOnly);
         return criteria;
     }

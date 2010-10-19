@@ -34,9 +34,9 @@
 			<band height="30" splitType="Stretch"/>
 		</groupHeader>
 		<groupFooter>
-			<band height="50" splitType="Stretch">
+			<band height="131" splitType="Stretch">
 				<crosstab>
-					<reportElement key="crosstab-1" x="2" y="2" width="776" height="47"/>
+					<reportElement key="crosstab-1" x="2" y="2" width="776" height="129"/>
 					<crosstabHeaderCell>
 						<cellContents mode="Transparent">
 							<box>

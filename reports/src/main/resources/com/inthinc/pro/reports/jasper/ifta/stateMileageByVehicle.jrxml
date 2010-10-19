@@ -51,7 +51,7 @@
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<bottomPen lineWidth="0.0" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineColor="#000000"/>
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField isBlankWhenNull="false">
@@ -140,7 +140,7 @@
 						<crosstabRowHeader>
 							<cellContents mode="Transparent">
 								<box>
-									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<bottomPen lineWidth="0.0" lineColor="#000000"/>
 									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -193,7 +193,7 @@
 								<box>
 									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineColor="#000000"/>
+									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -216,7 +216,7 @@
 								<box>
 									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineColor="#000000"/>
+									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textField isBlankWhenNull="false">
@@ -241,7 +241,7 @@
 					<crosstabCell width="50" height="15">
 						<cellContents mode="Transparent">
 							<box>
-								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<bottomPen lineWidth="0.0" lineColor="#000000"/>
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -268,7 +268,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="50" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="50" height="15" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
