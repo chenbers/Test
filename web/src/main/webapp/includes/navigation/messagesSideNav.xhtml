@@ -33,8 +33,9 @@
                 <ui:include src="verticalLeftTab.xhtml">
                   <ui:param name="mappingId" value="inbox"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_inbox') ? 'true' : 'false'}"/>
-                  <ui:param name="value" value="Inbox"/>
+                  <ui:param name="value" value="#{messages.txtMsg_inbox}"/>
                   <ui:param name="context" value="#{context}-vlt-inbox"/>
+                  <ui:param name="iconFileName" value="ico_txt_msg_inbox.png"/>
                </ui:include>
           </td>
         </tr>
@@ -47,8 +48,9 @@
             <ui:include src="verticalLeftTab.xhtml">
                <ui:param name="mappingId" value="sendMail"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_sendMail') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="Send Message"/>
+               <ui:param name="value" value="#{messages.txtMsg_compose}"/>
                <ui:param name="context" value="#{context}-vlt-sendMail"/>
+               <ui:param name="iconFileName" value="ico_txt_msg_compose.png"/>
            </ui:include>
           </td>
         </tr>
@@ -60,8 +62,9 @@
             <ui:include src="verticalLeftTab.xhtml">
                <ui:param name="mappingId" value="sentMail"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_sentMail') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="Sent Messages"/>
+               <ui:param name="value" value="#{messages.txtMsg_sent}"/>
                <ui:param name="context" value="#{context}-vlt-sentMail"/>
+               <ui:param name="iconFileName" value="ico_txt_msg_sent.png"/>
            </ui:include>
           </td>
         </tr>
