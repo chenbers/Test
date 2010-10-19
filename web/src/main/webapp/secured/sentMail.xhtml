@@ -42,7 +42,7 @@
 
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="admin"><h:outputText value="Sent Messages" /></span>
+                <span class="textmsg"><h:outputText value="#{messages.txtMsg_title}: #{messages.txtMsg_sentTitle}" /></span>
                 <span class="panel_links">
                 </span>
               </div>
@@ -63,58 +63,57 @@
 								
 										<tr>
 											<td valign="top">
-												<table>
-													<!--  <tr>
-														<td>
-                     										<div class="add_section_title">
-                       											<h:outputText value="Team to Display Messages For" />
-                     										</div>
-                     									</td>
-													</tr> -->	
-													<tr>	
-														<td colspan="2">									
-															<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:230px;size:auto;">
-																<f:selectItems value="#{messagesBean.teams}" />  
-															</h:selectOneMenu>
-														</td>
-													</tr>
-                                    				<tr>
-                                        				<td>#{messages.drivertrip_start_date}</td>
-                                        				<td>
-                                        					<a4j:outputPanel id="calendarStart" layout="block">
-                                            					<rich:calendar value="#{messagesBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-                                            						timeZone=""
-                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" />
-                                        					</a4j:outputPanel>
-                                        				</td>                                        
-                                    				</tr>
-                                    				<tr>
-                                        				<td>#{messages.drivertrip_end_date}</td>
-                                        				<td>
-                                        					<a4j:outputPanel id="calendarEnd" layout="block">
-                                            					<rich:calendar value="#{messagesBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-                                            						timeZone=""
-                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" />
-                                        					</a4j:outputPanel></td>                                        
-                                    				</tr>													
-													
-													<tr>
-														<td colspan="2" align="center">
-															<a4j:commandButton id="refresh" styleClass="left" action="#{messagesBean.refreshSent}" 
-																reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-																<span class="refresh">
-																	<h:outputText value="Refresh" />
-																</span>
-															</a4j:commandButton>
-														</td>
-													</tr>
-												</table>
+												<ul id="grid_nav" style="margin: 0;">
+													<li class="l panel_title vcentered" style="background-image: none;">#{messages.txtMsg_filterTitle}</li>
+													<li class="l vcentered" >
+														<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:75px;size:auto;margin-top:7px;float:right;">
+																	<f:selectItems value="#{messagesBean.teams}" />  
+																</h:selectOneMenu></li>
+													<li class="l vcentered">#{messages.drivertrip_legend_start}: 
+																<a4j:outputPanel id="calendarStart" layout="inline">
+	                                            					<rich:calendar value="#{messagesBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+	                                            						timeZone=""
+	                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" inputSize="12" />
+	                                        					</a4j:outputPanel></li>
+													<li class="l vcentered">#{messages.drivertrip_legend_end}: 
+														<a4j:outputPanel id="calendarEnd" layout="inline">
+	                                            					<rich:calendar value="#{messagesBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+	                                            						timeZone=""
+	                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" inputSize="12" />
+	                                        					</a4j:outputPanel></li>
+													<li class="l vcentered" ><a4j:commandButton id="refresh" styleClass="left filter" action="#{messagesBean.refreshInbox}" 
+																	reRender="display-form:#{context},display-form:#{context}-bottomScroller">
+																	<span class="refresh">
+																		#{messages.txtMsg_applyFilter}
+																	</span>
+																</a4j:commandButton> &#160; </li>
+													<li class="l vcentered"></li>
+													<li class="l vcentered"><a4j:commandButton id="remove" styleClass="left remove" action="#{messagesBean.removeSelected}" 
+																	reRender="display-form:#{context},display-form:#{context}-bottomScroller">
+																	<span class="refresh">
+																		#{messages.txtMsg_remove}
+																	</span>
+																</a4j:commandButton> &#160; </li>
+													<li class="l vcentered"></li>      							
+												</ul>
+												
 											</td>
-											<td>
-												<rich:spacer width="15px" height="10px"/>
-											</td>
+											</tr>
+											<tr>
 											<td valign="top" >
 												<rich:spacer width="50px" height="10px"/>
+												<table width="800" class="inbox" cellspacing="0">
+													<tr>
+														<td class="inbox" style="border-right:1px solid #E1E1E1; border-bottom:1px solid #E1E1E1;">#{messages.txtMsg_inbox}</td>
+														<td class="inbox" style="border-bottom:1px solid #E1E1E1;">#{messagesBean.messageListCount} #{messages.txtMsg_messages}</td>
+													</tr>
+													<tr>
+														<td class="inbox" style="border-right:1px solid #E1E1E1; vertical-align: top;">
+															<pretty:link id="reply" mappingId="sendMail" >												
+                        										<img align="left" style="padding-right: 10px;" src="/web/images/ico_txt_msg_reply.png"/> #{messages.txtMsg_replyLink}
+                     										</pretty:link>	
+                     									</td>
+														<td class="inbox">
 											    <a4j:outputPanel id="tablePanel">
           											<a4j:region>
           									
@@ -156,6 +155,9 @@
                                         	
                                         			</a4j:region>
                                         		</a4j:outputPanel>
+                                        		</td>
+                                        		</tr>
+                                        		</table>
 											</td>
 										</tr>													
 

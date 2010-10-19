@@ -68,7 +68,7 @@
 
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="admin"><h:outputText value="Send Message" /></span>
+                <span class="textmsg"><h:outputText value="#{messages.txtMsg_title}: #{messages.txtMsg_composeTitle}" /></span>
                 <span class="panel_links">
                 </span>
               </div>
@@ -89,9 +89,9 @@
 						
 										<tr>
 
-										<td valign="top">
+										<td valign="top" width="360px">
                      						<div class="add_section_title">
-                       							<h:outputText value="Drivers" />
+                       							<h:outputText value="#{messages.group_drivers}" />
                      						</div>
 											<br></br>
 											<!--  
@@ -99,49 +99,48 @@
 												style="width:380px;height:150px;margin-left:10px;overflow-y:scroll" />
                             				-->
                             				  
-											<rich:pickList sourceListWidth="110px" showButtonsLabel="false" id="driverList"
-												targetListWidth="110px" value="#{messagesBean.driverSelectedList}">
-												<f:selectItems value="#{messagesBean.driverSelectFromList}"/>
-											</rich:pickList> 
-										</td>	  
-											
-										<td valign="top">
-                     						<div class="add_section_title">
-                       							<h:outputText value="Vehicles" />
-                     						</div>
-											<br></br>										
-											<rich:pickList sourceListWidth="100px" showButtonsLabel="false" id="vehicleList"
-												targetListWidth="100px" value="#{messagesBean.vehicleSelectedList}">
-												<f:selectItems value="#{messagesBean.vehicleSelectFromList}"/>
+											<rich:pickList sourceListWidth="150px" listsHeight="80px" showButtonsLabel="false" id="driverList"
+												targetListWidth="150px" value="#{messagesBean.driverSelectedList}">
+												<f:selectItems value="#{messagesBean.driverSelectFromList}"  size="5"/>
 											</rich:pickList> 
 										</td>
-											
-										<td valign="top">	
-                     						<div class="add_section_title">
-                       							<h:outputText value="Groups" />
-                     						</div>
-											<br></br>																					                       							                           				
-											<rich:pickList sourceListWidth="100px" showButtonsLabel="false" id="groupList"
-												targetListWidth="100px" value="#{messagesBean.groupSelectedList}">
-												<f:selectItems value="#{messagesBean.groupSelectFromList}"/>
-											</rich:pickList>                             				
+										<td rowspan="3">
+											<rich:spacer width="35px" height="10px"/>
 										</td>
-										
-										</tr>
-												
-										<tr>
-										
-										<td colspan="3">											
+										<td rowspan="3" width="390px" style="vertical-align: top;">											
                      						<div class="add_section_title">
-                       							<h:outputText value="Message" />
+                       							<h:outputText value="#{messages.txtMsg_composeTitle}" />
                      						</div>
 											<br></br>
 											
 											<h:inputTextarea id="msgText" value="#{messagesBean.messageToSend}" 
-												style="font-size:12px;width:770px;height:90px;margin-left:10px" />
+												style="font-size:12px;width:350px;height:300px;margin-left:10px" />
 											<br></br>
+										</td>	  
+										</tr>
+										<tr>
+										<td valign="top">
+                     						<div class="add_section_title">
+                       							<h:outputText value="#{messages.VEHILCES}" />
+                     						</div>
+											<br></br>										
+											<rich:pickList sourceListWidth="150px" listsHeight="80px" showButtonsLabel="false" id="vehicleList"
+												targetListWidth="150px" value="#{messagesBean.vehicleSelectedList}">
+												<f:selectItems value="#{messagesBean.vehicleSelectFromList}"/>
+											</rich:pickList> 
 										</td>
-										
+										</tr>
+										<tr>
+										<td valign="top">	
+                     						<div class="add_section_title">
+                       							<h:outputText value="#{messages.GROUPS}" />
+                     						</div>
+											<br></br>																					                       							                           				
+											<rich:pickList sourceListWidth="150px" listsHeight="80px" showButtonsLabel="false" id="groupList"
+												targetListWidth="150px" value="#{messagesBean.groupSelectedList}">
+												<f:selectItems value="#{messagesBean.groupSelectFromList}"/>
+											</rich:pickList>                             				
+										</td>
 										</tr>
 										
 										<tr>
