@@ -264,9 +264,10 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getFullRecords(?, ?, ?, ?)}");
             statement.setInt(1, driverID);
-            statement.setLong(2, interval.getStartMillis()/1000);
-            statement.setLong(3, interval.getEndMillis()/1000 );
+            statement.setLong(2, interval.getStartMillis());
+            statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, driverStatusOnly);
+            System.out.println(statement.toString());
             
             resultSet = statement.executeQuery();
 
@@ -352,7 +353,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
                 hosRecord.setVehicleID(resultSet.getInt(1));
                 hosRecord.setVehicleName(resultSet.getString(2));
-                long ms = resultSet.getLong(26);
+                long ms = resultSet.getLong(3);
                 hosRecord.setDay(new Date(ms));
                 hosRecord.setStartOdometer(resultSet.getLong(4));
                 stopOdometer = resultSet.getLong(5);
