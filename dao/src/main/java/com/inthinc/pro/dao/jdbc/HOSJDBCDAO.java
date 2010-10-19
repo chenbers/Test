@@ -341,7 +341,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
-            
+System.out.println("statement " + statement.toString());            
             resultSet = statement.executeQuery();
 
             long stopOdometer;
@@ -358,7 +358,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setStartOdometer(resultSet.getLong(4));
                 stopOdometer = resultSet.getLong(5);
 
-                milesDriven = (stopOdometer > hosRecord.getStartOdometer()) ? 0 : (stopOdometer - hosRecord.getStartOdometer());
+                milesDriven = (stopOdometer > hosRecord.getStartOdometer()) ? (stopOdometer - hosRecord.getStartOdometer()) : 0;
                 
                 hosRecord.setMilesDriven(milesDriven);
                 
