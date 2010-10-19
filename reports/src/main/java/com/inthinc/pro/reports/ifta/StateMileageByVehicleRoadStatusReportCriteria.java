@@ -98,6 +98,7 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
         setMainDataset(dataList);
     }
 
+    // Sorting done based on Group name and Vehicle ID
     private class StateMileageByVehicleRoadStatusComparator implements Comparator<StateMileageByVehicleRoadStatus> {
 
         @Override
