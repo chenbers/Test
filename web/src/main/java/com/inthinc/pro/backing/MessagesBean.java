@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -71,10 +72,23 @@ public class MessagesBean extends BaseBean {
         vehicleSelectedList = new ArrayList<Integer>();
         
         groupSelectFromList = new ArrayList<SelectItem>();
-        groupSelectedList = new ArrayList<Integer>();        
+        groupSelectedList = new ArrayList<Integer>();  
+        
+        //default values for start/end dates
+        Calendar tempDate = Calendar.getInstance();
+        tempDate.roll(Calendar.DATE, -7);
+        this.setEndDate(endDate != null? endDate: new Date());
+        this.setStartDate(startDate!=null? startDate: tempDate.getTime());
     }
     
-
+    public Integer getMessageListCount(){
+        return (messageList!=null)?messageList.size():0;
+    }
+    
+    public Integer getSentMessageListCount(){
+        return (sentMessageList!=null)?sentMessageList.size():0;
+    }
+    
     public List<MessageItem> getMessageList() {
         return messageList;
     }
@@ -289,12 +303,20 @@ public class MessagesBean extends BaseBean {
     public void refreshInbox() { 
         this.messageList.clear();
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-        Integer txtMsgCount = textMsgAlertDAO.getTextMsgCount(selectedGroupID, startDate, endDate, filterList);
+        //Integer txtMsgCount = textMsgAlertDAO.getTextMsgCount(selectedGroupID, startDate, endDate, filterList);
         PageParams pageParams = new PageParams(); //TODO: jwimmer: question: is there another mechanism for grabbing PageParams for the page this bean is backing?
-        startDate = (startDate!=null? startDate: new Date());
-        this.messageList.addAll(textMsgAlertDAO.getTextMsgPage(selectedGroupID, startDate, endDate, filterList, pageParams));
-        
+        if(selectedGroupID != null)
+            this.messageList.addAll(textMsgAlertDAO.getTextMsgPage(selectedGroupID, startDate, endDate, filterList, pageParams));
         this.selectAll=Boolean.FALSE;
+    }
+    
+    /**
+     * Performs a soft delete on the selected messages
+     */
+    public void removeSelected() {
+        //TODO: clarify: jwimmer: SHOULD we allow users to soft delete sent messages as well?  pro: easier for users to navigate/manage their sent box; con: was already sent... may mislead users into thinking they can UN-send a message?
+        
+        //TODO: jwimmer: implement
     }
     
     public void refreshSent() {
@@ -450,6 +472,7 @@ public class MessagesBean extends BaseBean {
         SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
         blankItem.setEscape(false);
         teams.add(blankItem);
+        boolean defaultMissing = true;
         for (final Group group : getGroupHierarchy().getGroupList()) {
             String fullName = getGroupHierarchy().getFullGroupName(
                     group.getGroupID());
@@ -459,7 +482,11 @@ public class MessagesBean extends BaseBean {
             }
 
             teams.add(new SelectItem(group.getGroupID(), fullName));
-
+            
+            if(defaultMissing) {
+                selectedGroupID = group.getGroupID();
+                defaultMissing = false;
+            }
         }
         sort(teams);
 
