@@ -29,6 +29,11 @@ public abstract class VehicleSettingManager {
         adjustedSettingCounts = new HashMap<SliderType,Integer>();
     }
     
+    public VehicleSettingManager() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
     public abstract void init();
     public abstract Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings);
     public abstract Map<Integer, String> evaluateChangedSettings(Boolean batchEdit, Map<String, Boolean> updateField, Integer vehicleID, EditableVehicleSettings editableVehicleSettings);

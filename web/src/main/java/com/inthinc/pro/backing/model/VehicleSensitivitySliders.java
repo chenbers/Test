@@ -17,6 +17,10 @@ public class VehicleSensitivitySliders {
     private Map<SliderType, Integer> defaultSettings;
     private Map<SliderType, Integer> settingCounts;
     
+    protected VehicleSensitivitySliders() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
     public VehicleSensitivitySliders(ProductType productType, int minFirmwareVersion, int maxFirmwareVersion){
        
         createSliders(productType,minFirmwareVersion, maxFirmwareVersion);
@@ -69,6 +73,9 @@ public class VehicleSensitivitySliders {
    }
    
    public Integer getSettingsCount(SliderType sliderType){
+       if(settingsAndSlidersMap == null ||settingsAndSlidersMap.get(sliderType) == null) {
+           return 0;
+       }
        Iterator<Integer> it = settingsAndSlidersMap.get(sliderType).getSettingsForThisSlider().keySet().iterator();
        if (it.hasNext()){
            

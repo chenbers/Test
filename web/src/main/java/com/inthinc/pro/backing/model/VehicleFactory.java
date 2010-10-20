@@ -45,12 +45,12 @@ public class VehicleFactory {
 //                    vehicleSetting.getDesired().put(1234, "4");//hard_accel_deltav
 //
 //                    vehicleSettingManagers.put(vehicleSetting.getVehicleID(),  new WaySmartSettingManager(configuratorDAO,vehicleSetting));
-//                    vehicleSetting.setProductType(ProductType.UNKNOWN);
-//                    vehicleSettingManagers.put(vehicleSetting.getVehicleID(),  new UnknownSettingManager(configuratorDAO,vehicleSetting));
+                    vehicleSetting.setProductType(ProductType.UNKNOWN);
+                    vehicleSettingManagers.put(vehicleSetting.getVehicleID(),  new UnknownSettingManager(configuratorDAO,vehicleSetting));
                     
                     //Temporarily turn these into tiwipros
-                    vehicleSetting.setProductType(ProductType.TIWIPRO_R74);
-                    vehicleSettingManagers.put(vehicleSetting.getVehicleID(),  new TiwiproSettingManager(configuratorDAO,vehicleSetting));
+//                    vehicleSetting.setProductType(ProductType.TIWIPRO_R74);
+//                    vehicleSettingManagers.put(vehicleSetting.getVehicleID(),  new TiwiproSettingManager(configuratorDAO,vehicleSetting));
                     
             }
         }

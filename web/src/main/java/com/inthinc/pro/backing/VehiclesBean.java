@@ -16,6 +16,7 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.model.UnknownSettingManager;
 import com.inthinc.pro.backing.model.VehicleFactory;
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -32,6 +33,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.DummyMap;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -110,7 +112,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
     private WaySmartSettingManagerLocator<Integer,WaySmartSettingManager> waySmartSettingManagerLocator;
     private TiwiproSettingManagerLocator<Integer,TiwiproSettingManager> tiwiproSettingManagerLocator;
-    
+
     private CacheBean cacheBean;
     
     @Override
@@ -521,9 +523,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if (create){
                 
                 vehicle.setVehicleID(vehicleDAO.create(vehicle.getGroupID(), vehicle));
-                vehicleSettingManagers.get(vehicle.getVehicleID()).setVehicleSettings(vehicle.getVehicleID(),
-                                                         vehicle.getEditableVehicleSettings(), 
-                                                         this.getUserID(), "portal update");
+//                vehicleSettingManagers.get(vehicle.getVehicleID()).setVehicleSettings(vehicle.getVehicleID(),
+//                                                         vehicle.getEditableVehicleSettings(), 
+//                                                         this.getUserID(), "portal update");
             }
             else{
                 vehicleDAO.update(vehicle);
@@ -824,6 +826,27 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             
             if (vehiclesBean.getVehicleSettingManagers().get(key) instanceof WaySmartSettingManager){
                 return (WaySmartSettingManager) vehiclesBean.getVehicleSettingManagers().get(key);
+            }
+            return null;
+        }
+        
+    }
+    public class UnknownSettingManagerLocator<K, V> extends DummyMap<Integer, UnknownSettingManager>{
+
+        private VehiclesBean vehiclesBean;
+        
+        public UnknownSettingManagerLocator(VehiclesBean vehiclesBean) {
+            super();
+            this.vehiclesBean = vehiclesBean;
+        }
+
+        @Override
+        public UnknownSettingManager get(Object key) {
+            
+            if (!(key instanceof Integer)) return null;
+            
+            if (vehiclesBean.getVehicleSettingManagers().get(key) instanceof UnknownSettingManager){
+                return (UnknownSettingManager) vehiclesBean.getVehicleSettingManagers().get(key);
             }
             return null;
         }
