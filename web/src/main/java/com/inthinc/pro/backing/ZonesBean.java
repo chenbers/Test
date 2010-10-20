@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -18,6 +20,9 @@ import org.ajax4jsf.model.KeepAlive;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
+import com.inthinc.pro.model.zone.option.ZoneOption;
+import com.inthinc.pro.model.zone.option.type.OptionValue;
 import com.inthinc.pro.util.FormUtil;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -42,7 +47,7 @@ public class ZonesBean extends BaseBean
         this.zoneAlertDAO = zoneAlertDAO;
     }
 
-    public void LoadZones()
+    public void loadZones()
     {
         zones = zoneDAO.getZones(getAccountID());
         if (zones.isEmpty())
@@ -62,7 +67,7 @@ public class ZonesBean extends BaseBean
     {
         if (zones == null)
         {
-            LoadZones();
+            loadZones();
         }
         return zones;
     }
@@ -71,7 +76,7 @@ public class ZonesBean extends BaseBean
     {
         if (zoneIDs == null)
         {
-            LoadZones();
+            loadZones();
         }
 
         return zoneIDs;
@@ -107,27 +112,29 @@ public class ZonesBean extends BaseBean
     /**
      * Called when the user chooses to add an item.
      */
-    public void add()
+    public String add()
     {
         item = new Zone();
         item.setCreated(new Date());
         editing = true;
         helpFile = "Admin_Add_Zone.htm";
+        return "adminEditZone";
     }
 
     /**
      * Called when the user chooses to edit an item.
      */
-    public void edit()
+    public String edit()
     {
         editing = true;
         helpFile = "Admin_Add_Zone.htm";
+        return "adminEditZone";
     }
 
     /**
      * Called when the user chooses to cancel editing.
      */
-    public void cancelEdit()
+    public String cancelEdit()
     {
         editing = false;
         helpFile = "Zones.htm";
@@ -136,17 +143,19 @@ public class ZonesBean extends BaseBean
         
         UIComponent uiComponent = FacesContext.getCurrentInstance().getViewRoot().findComponent("zones-form");
         FormUtil.resetForm((UIForm)uiComponent);
+        
+        return "adminZones";
     }
     
    
     /**
      * Called when the user clicks to save changes when adding or editing.
      */
-    public void save()
+    public String save()
     {
         // validate
         if (!validate())
-            return;
+            return null;
 
         final boolean add = isAdd();
 
@@ -180,7 +189,9 @@ public class ZonesBean extends BaseBean
         
         // reload the zones for the account that are carried by proUser
         getProUser().setZones(zones);
-    }
+
+        return "adminZones";
+}
 
     /**
      * Called when the user chooses to delete one or more selected items.
@@ -319,5 +330,30 @@ public class ZonesBean extends BaseBean
         zones = null;
     }
     
+    public Map<ZoneAvailableOption, OptionValue> getOptionsMap()
+    {
+        Map<ZoneAvailableOption, OptionValue> optionsMap = new HashMap<ZoneAvailableOption, OptionValue>();
+        List<ZoneOption> options = item.getOptions();
+        for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
+        {
+            OptionValue value = availOption.getDefaultValue();
+            if (options != null) {
+                for (ZoneOption zoneOption : options) {
+                    if (zoneOption.getOption() == availOption) {
+                        value = zoneOption.getValue();
+                    }
+                }
+            }
+            optionsMap.put(availOption, value);
+        }
+        return optionsMap;
+    }
+
+
+    
+    public ZoneAvailableOption[] getAvailableZoneOptions()
+    {
+        return ZoneAvailableOption.values();
+    }
     
 }

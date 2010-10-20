@@ -1,11 +1,15 @@
 package com.inthinc.pro.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
+import com.inthinc.pro.model.zone.option.ZoneOption;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,6 +29,8 @@ public class Zone extends BaseEntity
     @Column(name = "latLng", type = LatLng.class)
     private List<LatLng>      points;
     private Integer           groupID;
+    
+    private List<ZoneOption>    options;
     
     public Zone()
     {
@@ -149,4 +155,13 @@ public class Zone extends BaseEntity
     {
         this.groupID = groupID;
     }
+
+    public List<ZoneOption> getOptions() {
+        return options;
+    }
+    public void setOptions(List<ZoneOption> options) {
+        this.options = options;
+    }
+    
+
 }

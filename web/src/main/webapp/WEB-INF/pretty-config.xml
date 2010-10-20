@@ -428,6 +428,10 @@
 		<pattern>/app/admin/zones</pattern>
 		<view-id>/secured/admin/zones.faces</view-id>
 	</url-mapping>
+	<url-mapping id="adminEditZone">
+		<pattern>/app/admin/editZone</pattern>
+		<view-id>/secured/admin/editZone.faces</view-id>
+	</url-mapping>
 	
 	<url-mapping id="adminorganizationAccess">
 		<pattern>/app/admin/organization</pattern>

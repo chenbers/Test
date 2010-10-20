@@ -292,7 +292,7 @@
 
   <bean id="reportScheduleBean" class="com.inthinc.pro.backing.ReportScheduleBean" scope="session" init-method="initBean"/>
 
-  <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="request"/>
+  <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session"/>
 
   <bean id="zoneAlertsBean" class="com.inthinc.pro.backing.ZoneAlertsBean" scope="session" init-method="initBean"/>
 
