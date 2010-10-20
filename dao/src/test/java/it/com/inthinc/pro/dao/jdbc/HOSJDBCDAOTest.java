@@ -286,14 +286,14 @@ System.out.println("numHosRecords " + numHosRecords);
         DateTime dayStartUTC = new DateMidnight(genDataStartDate, DateTimeZone.UTC).toDateTime();
         
         Interval queryInterval = new Interval(new DateMidnight(dayStartUTC).minusDays(1), new DateMidnight(dayStartUTC).toDateTime().minusSeconds(1));
-System.out.println("queryInterval: " + queryInterval);
+//System.out.println("queryInterval: " + queryInterval);
         List<HOSVehicleDayData> vehicleDayDataRecords = hosDAO.getHOSVehicleDataByDay(testDriver.getDriverID(), queryInterval);
         assertTrue("expected 1 record for 1 day/1 driver", vehicleDayDataRecords.size() == 1);
         HOSVehicleDayData rec = vehicleDayDataRecords.get(0);
         assertEquals("vehicleName", testVehicle.getName(), rec.getVehicleName());
         assertEquals("vehicleID", testVehicle.getVehicleID(), rec.getVehicleID());
-System.out.println("DAY: " + new DateTime(rec.getDay(), DateTimeZone.UTC) + " ms: " + rec.getDay().getTime());
-        assertEquals("day", queryInterval.getStart().toDate(), rec.getDay());
+//System.out.println("DAY: " + new DateTime(rec.getDay(), DateTimeZone.UTC) + " ms: " + rec.getDay().getTime());
+        assertTrue("returned day day is within interval", queryInterval.contains(rec.getDay().getTime()));
         assertEquals("odometer ", Long.valueOf(DataGenForHOSTesting.LOGIN_ODOMETER), rec.getStartOdometer());
         Long expectedMiles = Long.valueOf(DataGenForHOSTesting.LOGOUT_ODOMETER-DataGenForHOSTesting.LOGIN_ODOMETER);
         assertEquals("miles ", expectedMiles, rec.getMilesDriven());
