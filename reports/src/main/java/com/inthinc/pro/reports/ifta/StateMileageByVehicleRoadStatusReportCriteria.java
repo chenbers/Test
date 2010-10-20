@@ -5,13 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-
 import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -20,25 +17,14 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 /**
  * Report Criteria for MileageByVehicle report.
  */
-public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteria {
-    protected DateTimeFormatter dateTimeFormatter; 
-    private static final String UNITS_ENGLISH = "english";
-    protected String units;
-    protected GroupDAO groupDAO;
-    protected StateMileageDAO stateMileageDAO;
+public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCriteria {
 
     /**
      * Default constructor.
      * @param locale
      */
     public StateMileageByVehicleRoadStatusReportCriteria(Locale locale) {
-        super(ReportType.STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS, "", locale);
-        dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
-        if (locale.getLanguage().equals(Locale.ENGLISH.getLanguage())) {
-            units = UNITS_ENGLISH;
-        } else {
-            units = "metric";
-        }
+        super(ReportType.STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS, locale);
     }
 
     /**
@@ -56,10 +42,8 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
      * @param iftaOnly the flag to consider only IFTA 
      */
     public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        super.init(groupIDList, interval, dotOnly);
         List<StateMileage> list = new ArrayList<StateMileage>();
-        addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
-        addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
-        addParameter("units", units);
         for (Integer groupID : groupIDList) {
             List<StateMileage> listTmp = stateMileageDAO.getStateMileageByVehicleRoad(groupID, interval, dotOnly);
             if (listTmp != null)
@@ -89,8 +73,8 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
             rec.setState(item.getStateName());
             
             rec.setGroupName(item.getGroupName());
-            if (units.equals(UNITS_ENGLISH))
-                rec.setTotal(Double.valueOf(item.getMiles()));
+            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
+                    item.getMiles(), getMeasurementType()).doubleValue());
             dataList.add(rec);
         }
         
@@ -99,7 +83,7 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends ReportCriteri
     }
 
     // Sorting done based on Group name and Vehicle ID
-    private class StateMileageByVehicleRoadStatusComparator implements Comparator<StateMileageByVehicleRoadStatus> {
+    class StateMileageByVehicleRoadStatusComparator implements Comparator<StateMileageByVehicleRoadStatus> {
 
         @Override
        public int compare(StateMileageByVehicleRoadStatus o1, StateMileageByVehicleRoadStatus o2) {

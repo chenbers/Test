@@ -83,15 +83,17 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     public void testGetStateMileageByVehicleRoadStatusReportCriteria(final StateMileageByVehicleRoadStatusReportCriteria criteriaMock) {
         final Boolean isIfta = true;
         final Interval interval =  new Interval(new Date().getTime() - 3000, new Date().getTime());
+        final MeasurementType type = MeasurementType.ENGLISH;
 
         listGroupID.add(1);
-        serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(listGroupID, interval, Locale.US, isIfta);
+        serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(listGroupID, interval, Locale.US, type, isIfta);
          
         new VerificationsInOrder(){
             {
                 new StateMileageByVehicleRoadStatusReportCriteria(Locale.US); 
                 criteriaMock.setGroupDAO((GroupDAO)any);
-                criteriaMock.setStateMileageDAO((StateMileageDAO)any);           
+                criteriaMock.setStateMileageDAO((StateMileageDAO)any); 
+                criteriaMock.setMeasurementType(type); 
                 criteriaMock.init(listGroupID, interval, isIfta);
                 
             }

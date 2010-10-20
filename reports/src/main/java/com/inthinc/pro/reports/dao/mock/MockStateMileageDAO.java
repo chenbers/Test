@@ -125,8 +125,8 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010,9,10);
         date = calendar.getTime();
 
-        if(interval.contains(date.getTime())){ 
-            bean.setGroupName(MOCK_PREFIX + "Rockies->Grand Junction->Grand Junction Maintenance Crews" + groupID); 
+        if(interval.contains(date.getTime()) && 1504 == groupID ){ 
+            bean.setGroupName(MOCK_PREFIX + "FLEET"); 
             bean.setVehicleName(MOCK_PREFIX + "10026217");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -138,9 +138,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010,9,11);
         date = calendar.getTime();
         
-        if(interval.contains(date.getTime())){ 
+        if(interval.contains(date.getTime()) && 1504 == groupID ){ 
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "Rockies->Grand Junction->Grand Junction Maintenance Crews" + groupID); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET"); 
             bean.setVehicleName(MOCK_PREFIX + "11077461");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -152,9 +152,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010,9,12);
         date = calendar.getTime();
         
-        if(interval.contains(date.getTime())){ 
+        if(interval.contains(date.getTime()) && 1504 == groupID ){ 
             bean = new StateMileage();   
-            bean.setGroupName(MOCK_PREFIX + "Rockies->Grand Junction->Grand Junction Maintenance Crews" + groupID); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET"); 
             bean.setVehicleName(MOCK_PREFIX + "11187740");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -166,9 +166,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010,9,13);
         date = calendar.getTime();
         
-        if(interval.contains(date.getTime()) ){ 
+        if(interval.contains(date.getTime()) && 1505 == groupID  ){ 
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "Rockies->Grand Junction->Grand Junction Maintenance Crews->Grand Junction E-Tech Crew" + groupID); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION"); 
             bean.setVehicleName(MOCK_PREFIX + "10740909");
             bean.setStateName(MOCK_PREFIX + "New Mexico");
             bean.setOnRoadFlag(false);
@@ -180,9 +180,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010,9,14);
         date = calendar.getTime();
         
-        if(interval.contains(date.getTime()) && !isDotIfta){ 
+        if(interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID){ 
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "Pro->Small Junction->Small Junction Improvememt Teams->Small Junction Z-Tech Team" + groupID); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION"); 
             bean.setVehicleName(MOCK_PREFIX + "12345678");
             bean.setStateName(MOCK_PREFIX + "South Dakota");
             bean.setOnRoadFlag(false);
@@ -194,9 +194,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010,9,15);
         date = calendar.getTime();
         
-        if(interval.contains(date.getTime()) && !isDotIfta){ 
+        if(interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID){ 
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "Pro->Small Junction->Small Junction Improvememt Teams -> W-Team" + groupID); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION"); 
             bean.setVehicleName(MOCK_PREFIX + "87654321");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(false);
@@ -208,9 +208,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010,9,15);
         date = calendar.getTime();
         
-        if(interval.contains(date.getTime()) && !isDotIfta){ 
+        if(interval.contains(date.getTime()) && !isDotIfta && 1506 == groupID){ 
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "Pro->Small Junction->Small Junction Improvememt Teams -> W-Team" + groupID); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION - GOOD"); 
             bean.setVehicleName(MOCK_PREFIX + "87654320");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(true);
@@ -231,14 +231,5 @@ public class MockStateMileageDAO implements StateMileageDAO {
         bean.setMiles(miles);
         return bean;
     }
-    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
-        List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
-        
-        StateMileageByVehicleRoadStatus bean = new StateMileageByVehicleRoadStatus();
-        bean.setGroupName(groupID.toString());
-        bean.setVehicle("257547"); 
-        list.add(bean);
-        
-        return list;
-    }
+
 }
