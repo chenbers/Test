@@ -107,12 +107,7 @@ public class WaysmartReportsBean extends ReportsBean {
             case STATE_MILEAGE_FUEL_BY_VEHICLE:
                 reportCriteriaList.add(getReportCriteriaService().getStateMileageFuelByVehicleReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale(), params.getIsIfta() ));
-                break;            
-
-            case STATE_MILEAGE_COMPARE_BY_GROUP:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageCompareByGroupReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale(), params.getIsIfta() ));
-                break;            
+                break;                     
             
             default:
                 break;
