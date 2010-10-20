@@ -39,7 +39,6 @@ public class StateMileageByVehicleReportCriteriaTest extends BaseUnitTest {
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     
     // JMockit mocks
-    @Mocked private StateMileageDAO stateMileageDAOMock; 
     
     // The System Under Test
     private StateMileageByVehicleReportCriteria reportCriteriaSUT = new StateMileageByVehicleReportCriteria(LOCALE); 
@@ -50,7 +49,7 @@ public class StateMileageByVehicleReportCriteriaTest extends BaseUnitTest {
      */
     @Test
     @SuppressWarnings({ "unchecked", "static-access" })
-    public void testInitWithMocks(){
+    public void testInitWithMocks(final StateMileageDAO stateMileageDAOMock){
 
         // General initializations
         reportCriteriaSUT.setStateMileageDAO(stateMileageDAOMock);
