@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="786"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -27,7 +27,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.group.raw}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="256" y="0" width="117" height="15" forecolor="#000000"/>
@@ -40,7 +40,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.2}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.vehicle.raw}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="607" y="0" width="117" height="15" forecolor="#000000"/>
@@ -53,7 +53,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.total}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.total.raw}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="373" y="0" width="117" height="15" forecolor="#000000"/>
@@ -66,7 +66,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.state}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.state.raw}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="490" y="0" width="117" height="15" forecolor="#000000"/>
@@ -79,7 +79,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.roadStatus}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.roadStatus.raw}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
