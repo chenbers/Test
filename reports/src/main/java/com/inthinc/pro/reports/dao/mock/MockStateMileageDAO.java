@@ -3,13 +3,14 @@ package com.inthinc.pro.reports.dao.mock;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.model.StateMileage;
-import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 
 /**
  * Mock for StateMileageDAO.
@@ -20,6 +21,8 @@ public class MockStateMileageDAO implements StateMileageDAO {
     private static final String STATE_2 = "Ohio";
     private static final String MOCK_GROUP_NAME = "Stub Group Name ";
     private static final String MOCK_PREFIX = "STUB ";
+	private static final String MOCK_MONTH_AUG = "Aug, 2010";
+	private static final String MOCK_MONTH_SEP = "Sep, 2010";
 
     /**
      * Default constructor.
@@ -33,7 +36,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getFuelStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
-        return this.getData(groupID);
+        return this.getFuelStateMileageByVehicleData(groupID, interval, dotOnly);
     }
 
     /**
@@ -232,4 +235,65 @@ public class MockStateMileageDAO implements StateMileageDAO {
         return bean;
     }
 
+    private List<StateMileage> getFuelStateMileageByVehicleData(Integer groupID, Interval interval, Boolean dotOnly) {
+
+        List<StateMileage> list = new ArrayList<StateMileage>();
+    	
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance(); 
+        calendar.set(2010,9,19);
+        date = calendar.getTime();
+
+        if(interval.contains(date.getTime())){ 
+        	list.addAll(getFuelList(MOCK_MONTH_AUG));
+        	list.addAll(getFuelList(MOCK_MONTH_SEP));
+        }
+		return list;
+	}
+    
+    
+    List<StateMileage> getFuelList(String month){
+        List<StateMileage> list = new ArrayList<StateMileage>();
+        
+        String[] states = {"CO", "MT", "ND", "NM", "SD", "TX", "UT", "WY"};
+        Map<String, Map<String, Long>> milesByStateMonth = getFuelMilesMap();  
+        
+        // For each state add a bean with the specified miles for that state and months
+        for(String state : states){
+        	list.add(getFuelBean(state, milesByStateMonth.get(month).get(state), month));
+        }	    
+	    return list;
+    }
+    
+    private Map<String, Map<String, Long>> getFuelMilesMap() {
+    	//Map<Month, Map<state, Long>>
+    	Map<String, Map<String, Long>> milesByStateMonth = new HashMap<String,Map<String, Long>>();
+    	Map<String, Long> mapAug = new HashMap<String, Long>();
+    	Map<String, Long> mapSep = new HashMap<String, Long>();
+    	
+    	milesByStateMonth.put(MOCK_MONTH_AUG, mapAug);
+    	milesByStateMonth.put(MOCK_MONTH_SEP, mapSep);
+    	
+    	mapAug.put("CO", 328L);
+    	mapAug.put("NM", 664L);
+    	mapSep.put("CO", 2L);
+    	mapSep.put("NM", 326L);
+
+    	return milesByStateMonth;
+	}
+
+	private StateMileage getFuelBean(String stateName, Long miles, String month){
+    	StateMileage bean = new StateMileage();
+        bean.setGroupName(MOCK_PREFIX + "Rockies->Grand Junction->Grand Junction PE Crews"); 
+        bean.setVehicleName("10001794");
+        bean.setMonth(month);
+        bean.setStateName(stateName);
+        bean.setMiles(miles == null ? 0L : miles);
+        bean.setTruckGallons(0F);
+        bean.setTrailerGallons(0F);  
+        
+        return bean;
+    }
+    
+    
 }

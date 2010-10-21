@@ -65,6 +65,7 @@ public abstract class ReportsBean extends BaseBean {
         params = new ReportParams(getUser().getPerson().getLocale());
         params.setGroupHierarchy(getGroupHierarchy());
         params.setDriverList(driverDAO.getAllDrivers(getUser().getGroupID()));
+        params.setIsIfta(false);
         previousParams = params.clone();
         viewType = "";
     }

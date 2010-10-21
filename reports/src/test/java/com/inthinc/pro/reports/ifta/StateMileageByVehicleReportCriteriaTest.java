@@ -49,7 +49,7 @@ public class StateMileageByVehicleReportCriteriaTest extends BaseUnitTest {
      */
     @Test
     @SuppressWarnings({ "unchecked", "static-access" })
-    public void testInitWithMocks(final StateMileageDAO stateMileageDAOMock){
+    public void testInit(final StateMileageDAO stateMileageDAOMock){
 
         // General initializations
         reportCriteriaSUT.setStateMileageDAO(stateMileageDAOMock);

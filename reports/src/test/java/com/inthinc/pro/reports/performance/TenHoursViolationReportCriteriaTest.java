@@ -59,7 +59,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 	 * Tests the init method of the TenHoursViolationReportCriteria class.
 	 */
 	@Test
-    public void testInitWithMocks(){
+    public void testInit(){
 
 		// General initializations
         reportCriteriaSUT.setDriverDAO(driverDAOMock);

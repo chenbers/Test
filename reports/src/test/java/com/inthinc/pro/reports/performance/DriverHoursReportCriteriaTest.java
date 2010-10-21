@@ -58,7 +58,7 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
 	 * Tests the init method of the DriverHoursReportCriteria class.
 	 */
 	@Test
-    public void testInitWithMocks(){
+    public void testInit(){
 
 		// General initializations
         reportCriteriaSUT.setDriverDAO(driverDAOMock);

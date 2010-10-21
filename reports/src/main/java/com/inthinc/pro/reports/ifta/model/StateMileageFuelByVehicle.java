@@ -12,7 +12,7 @@ public class StateMileageFuelByVehicle {
 	private Double totalMiles;
 	private Double totalTruckGas;
 	private Double totalTrailerGas;
-	private Double mileage;
+
 	/**
 	 * @return the groupName
 	 */
@@ -96,18 +96,6 @@ public class StateMileageFuelByVehicle {
 	 */
 	public void setTotalTrailerGas(Double totalTrailerGas) {
 		this.totalTrailerGas = totalTrailerGas;
-	}
-	/**
-	 * @return the mileage
-	 */
-	public Double getMileage() {
-		return mileage;
-	}
-	/**
-	 * @param mileage the mileage to set
-	 */
-	public void setMileage(Double mileage) {
-		this.mileage = mileage;
 	}
 	
 	

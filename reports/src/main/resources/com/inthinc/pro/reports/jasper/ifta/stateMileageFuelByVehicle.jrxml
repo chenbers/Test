@@ -11,38 +11,28 @@
 	<style name="PageFooter" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="CrosstabCell" isDefault="false" fontName="Arial"/>
 	<style name="CrosstabLabel" isDefault="false" fontName="Arial" isBold="true"/>
-	<parameter name="logoImageURL" class="java.lang.String" isForPrompting="false">
+	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false">
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
 	</parameter>
 	<parameter name="units" class="java.lang.String">
 		<defaultValueExpression><![CDATA["english"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="startDate" class="java.lang.String">
+	<parameter name="REPORT_START_DATE" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="endDate" class="java.lang.String">
+	<parameter name="REPORT_END_DATE" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="groupId" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="customerId" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="iftaVehiclesOnly" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
 	</parameter>
-	<queryString>
-		<![CDATA[exec report_jasper_stateMileageGasByVehicle $P{customerId}, $P{groupId}, $P{startDate}, $P{endDate}, $P{units}, $P{iftaVehiclesOnly}]]>
-	</queryString>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="vehicle" class="java.lang.String"/>
 	<field name="month" class="java.lang.String"/>
-	<field name="State" class="java.lang.String"/>
+	<field name="state" class="java.lang.String"/>
 	<field name="totalMiles" class="java.lang.Double"/>
 	<field name="totalTruckGas" class="java.lang.Double"/>
 	<field name="totalTrailerGas" class="java.lang.Double"/>
-	<field name="mileage" class="java.lang.Double"/>
 	<sortField name="groupName"/>
 	<variable name="SUM_Total_1" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{totalMiles}]]></variableExpression>
@@ -117,19 +107,19 @@
 								<textField isBlankWhenNull="false">
 									<reportElement key="textField-13" x="0" y="5" width="67" height="16"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression class="java.lang.String"><![CDATA["Total " + $V{vehicle}]]></textFieldExpression>
+									<textFieldExpression class="java.lang.String"><![CDATA["Total "]]></textFieldExpression>
 								</textField>
 							</cellContents>
 						</crosstabTotalRowHeader>
 					</rowGroup>
-					<columnGroup name="State" height="25" totalPosition="End" headerPosition="Center">
+					<columnGroup name="State" height="29" totalPosition="End" headerPosition="Center">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{State}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{state}]]></bucketExpression>
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents mode="Transparent">
 								<textField isBlankWhenNull="false">
-									<reportElement key="textField" x="0" y="0" width="34" height="25"/>
+									<reportElement key="textField" x="0" y="0" width="34" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
 								</textField>
@@ -143,7 +133,7 @@
 									<text><![CDATA[Static Text]]></text>
 								</staticText>
 								<staticText>
-									<reportElement key="staticText-1" x="1" y="1" width="30" height="23"/>
+									<reportElement key="staticText-1" x="1" y="0" width="30" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<text><![CDATA[Total]]></text>
 								</staticText>
@@ -192,7 +182,7 @@
 					<crosstabCell width="34" height="30" rowTotalGroup="vehicle">
 						<cellContents mode="Transparent">
 							<textField isBlankWhenNull="false">
-								<reportElement key="textField-15" x="1" y="3" width="32" height="15"/>
+								<reportElement key="textField-15" x="1" y="8" width="32" height="15"/>
 								<textElement textAlignment="Center"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
@@ -201,7 +191,7 @@
 					<crosstabCell width="35" height="30" rowTotalGroup="vehicle" columnTotalGroup="State">
 						<cellContents mode="Transparent">
 							<textField isBlankWhenNull="false">
-								<reportElement key="textField-15" x="1" y="3" width="32" height="15"/>
+								<reportElement key="textField-15" x="1" y="8" width="32" height="15"/>
 								<textElement textAlignment="Center"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
@@ -258,24 +248,24 @@
 							<cellContents/>
 						</crosstabTotalRowHeader>
 					</rowGroup>
-					<columnGroup name="State" height="25" totalPosition="End" headerPosition="Center">
+					<columnGroup name="State" height="29" totalPosition="End" headerPosition="Center">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{State}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{state}]]></bucketExpression>
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isBlankWhenNull="false">
-									<reportElement key="textField" x="15" y="0" width="35" height="13"/>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+									<reportElement key="textField" x="17" y="0" width="35" height="15"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
 								</textField>
 								<textField isBlankWhenNull="false">
-									<reportElement key="textField-16" x="2" y="12" width="28" height="13"/>
+									<reportElement key="textField-16" x="2" y="16" width="28" height="13"/>
 									<textElement/>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "kms" : "miles"]]></textFieldExpression>
 								</textField>
 								<textField isBlankWhenNull="false">
-									<reportElement key="textField-16" x="36" y="11" width="28" height="13"/>
+									<reportElement key="textField-16" x="36" y="16" width="28" height="13"/>
 									<textElement/>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "km/li" : "mi/gal"]]></textFieldExpression>
 								</textField>
@@ -284,12 +274,12 @@
 						<crosstabTotalColumnHeader>
 							<cellContents mode="Transparent">
 								<textField isBlankWhenNull="false">
-									<reportElement key="textField-16" x="38" y="0" width="35" height="23"/>
+									<reportElement key="textField-16" x="38" y="6" width="35" height="23"/>
 									<textElement verticalAlignment="Bottom"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "km/li" : "mi/gal"]]></textFieldExpression>
 								</textField>
 								<textField isBlankWhenNull="false">
-									<reportElement key="textField-16" x="1" y="0" width="33" height="23"/>
+									<reportElement key="textField-16" x="1" y="6" width="33" height="23"/>
 									<textElement verticalAlignment="Bottom"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "kms" : "miles"]]></textFieldExpression>
 								</textField>
@@ -303,7 +293,7 @@
 						<measureExpression><![CDATA[$F{totalMiles}]]></measureExpression>
 					</measure>
 					<measure name="totalMileage_Sum" class="java.lang.Double">
-						<measureExpression><![CDATA[new java.lang.Double(  ($F{totalMiles}.doubleValue()) /($F{totalTruckGas}.doubleValue()) )]]></measureExpression>
+						<measureExpression><![CDATA[($F{totalTruckGas}.doubleValue() == 0F) ? null : new java.lang.Double(  ($F{totalMiles}.doubleValue()) /($F{totalTruckGas}.doubleValue()) )]]></measureExpression>
 					</measure>
 					<crosstabCell width="68" height="16">
 						<cellContents mode="Transparent">
@@ -326,10 +316,10 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField pattern="###0.00" isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="true">
 								<reportElement key="textField-16" x="38" y="1" width="36" height="15"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[new java.lang.Double($V{totalMiles_Sum}.doubleValue()/$V{totalTruckGas_Sum}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Double"><![CDATA[($V{totalTruckGas_Sum}.doubleValue() == 0F) ? null :new java.lang.Double($V{totalMiles_Sum}.doubleValue()/$V{totalTruckGas_Sum}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -354,10 +344,10 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField pattern="###0.00" isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="true">
 								<reportElement key="textField-16" x="37" y="7" width="37" height="15"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[new java.lang.Double($V{totalMiles_Sum}.doubleValue()/$V{totalTruckGas_Sum}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Double"><![CDATA[($V{totalTruckGas_Sum}.doubleValue() == 0F) ? null :new java.lang.Double($V{totalMiles_Sum}.doubleValue()/$V{totalTruckGas_Sum}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -382,7 +372,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField pattern="###0.00" isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="true">
 								<reportElement key="textField-16" x="38" y="1" width="35" height="29"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMileage_Sum}]]></textFieldExpression>
@@ -399,14 +389,14 @@
 						<cellContents mode="Transparent"/>
 					</whenNoDataCell>
 				</crosstab>
-				<textField isBlankWhenNull="false">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 					<reportElement key="textField-13" x="197" y="16" width="181" height="28"/>
 					<textElement>
 						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[($P{units}.contains( "metric" )) ? "Power Fuel Purchases (Litres)" : "Power Fuel Purchases (Gallons)"]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="false">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 					<reportElement key="textField-14" x="567" y="16" width="159" height="28"/>
 					<textElement>
 						<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -451,14 +441,14 @@
 							<cellContents/>
 						</crosstabTotalRowHeader>
 					</rowGroup>
-					<columnGroup name="State" height="25" totalPosition="End" headerPosition="Center">
+					<columnGroup name="State" height="29" totalPosition="End" headerPosition="Center">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{State}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{state}]]></bucketExpression>
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isBlankWhenNull="false">
-									<reportElement key="textField" x="0" y="0" width="34" height="25"/>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+									<reportElement key="textField" x="0" y="0" width="34" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
 								</textField>
@@ -466,8 +456,8 @@
 						</crosstabColumnHeader>
 						<crosstabTotalColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isBlankWhenNull="false">
-									<reportElement key="textField" x="0" y="0" width="35" height="25"/>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+									<reportElement key="textField" x="0" y="0" width="35" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA["State total"]]></textFieldExpression>
 								</textField>
@@ -541,7 +531,7 @@
 						<cellContents mode="Transparent"/>
 					</whenNoDataCell>
 				</crosstab>
-				<textField isBlankWhenNull="false">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 					<reportElement key="textField-15" x="424" y="16" width="117" height="28"/>
 					<textElement>
 						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -558,7 +548,7 @@
 		<band height="50" splitType="Stretch">
 			<image scaleImage="RetainShape">
 				<reportElement key="image-1" x="2" y="5" width="300" height="42">
-					<printWhenExpression><![CDATA[new Boolean($P{logoImageURL} != null)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean($P{REPORT_LOGO_IMG} != null)]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -566,7 +556,7 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<imageExpression class="java.lang.String"><![CDATA[$P{logoImageURL}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-9" x="316" y="5" width="465" height="40">
@@ -617,7 +607,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{startDate} + " to " + $P{endDate}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_START_DATE} + " to " + $P{REPORT_END_DATE}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
