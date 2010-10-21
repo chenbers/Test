@@ -63,7 +63,17 @@ public class MockStateMileageDAO implements StateMileageDAO {
      */
     @Override
     public List<StateMileage> getStateMileageByGroupAndMonth(Integer groupID, Interval interval, Boolean dotOnly) {
-        return this.getData(groupID);
+        List<StateMileage> list = new ArrayList<StateMileage>();
+        StateMileage bean = newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1500L);
+        bean.setMonth("October");
+        list.add(bean);
+        bean = newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1540L);
+        bean.setMonth("September");
+        list.add(bean);
+        bean = newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "224547", 1360L);
+        bean.setMonth("October");
+        list.add(bean);
+        return list;
     }
 
     /**

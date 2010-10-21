@@ -19,7 +19,7 @@ import com.inthinc.pro.reports.ReportType;
 /**
  * ReportCriteria parent class for DOT/IFTA reports.
  */
-public class DOTReportCriteria extends ReportCriteria {
+public abstract class DOTReportCriteria extends ReportCriteria {
     protected DateTimeFormatter dateTimeFormatter; 
     protected String units;
     protected GroupDAO groupDAO;
@@ -27,7 +27,8 @@ public class DOTReportCriteria extends ReportCriteria {
 
     /**
      * Default constructor.
-     * @param locale
+     * @param reportType the report type
+     * @param locale the user Locale
      */
     public DOTReportCriteria(ReportType reportType, Locale locale) {
         super(reportType, "", locale);
@@ -36,7 +37,7 @@ public class DOTReportCriteria extends ReportCriteria {
     }
 
     /**
-     * @{inherit-doc}
+     * {@inheritDoc}
      * @see com.inthinc.pro.reports.ReportCriteria#setMeasurementType(com.inthinc.pro.model.MeasurementType)
      */
     @Override

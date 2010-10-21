@@ -24,6 +24,7 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.hos.testData.MockData;
+import com.inthinc.pro.reports.ifta.StateMileageByMonthReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleRoadStatusReportCriteria;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
@@ -118,6 +119,29 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         new VerificationsInOrder(){
             {
                 new StateMileageByVehicleReportCriteria(Locale.US); 
+                criteriaMock.setGroupDAO((GroupDAO)any);
+                criteriaMock.setStateMileageDAO((StateMileageDAO)any);           
+                criteriaMock.init((List<Integer>)any, interval, isIfta);
+            }
+        };
+     }
+
+    /**
+     * Test for getStateMileageByMonthReportCriteria method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetStateMileageByMonthReportCriteria(final StateMileageByMonthReportCriteria criteriaMock) {
+        final Boolean isIfta = true;
+        final Interval interval =  new Interval(new Date().getTime() - 16000, new Date().getTime());
+
+        List<Integer> groupIDsMock = new ArrayList<Integer>();
+        groupIDsMock.add(1);
+        serviceSUT.getStateMileageByMonthReportCriteria(groupIDsMock, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
+         
+        new VerificationsInOrder(){
+            {
+                new StateMileageByMonthReportCriteria(Locale.US); 
                 criteriaMock.setGroupDAO((GroupDAO)any);
                 criteriaMock.setStateMileageDAO((StateMileageDAO)any);           
                 criteriaMock.init((List<Integer>)any, interval, isIfta);

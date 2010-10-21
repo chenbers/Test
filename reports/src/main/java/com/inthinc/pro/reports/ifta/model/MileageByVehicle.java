@@ -8,6 +8,7 @@ public class MileageByVehicle {
     private String vehicle;
     private String state;
     private Double total;
+    private String month;
     private String groupName;
     /**
      * Default constructor.
@@ -42,6 +43,22 @@ public class MileageByVehicle {
      */
     public String getGroupName() {
         return this.groupName;
+    }
+
+    /**
+     * The month getter.
+     * @return the month
+     */
+    public String getMonth() {
+        return month;
+    }
+
+    /**
+     * The month setter.
+     * @param month the month to set
+     */
+    public void setMonth(String month) {
+        this.month = month;
     }
 
     /**

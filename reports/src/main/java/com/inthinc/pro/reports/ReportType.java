@@ -43,6 +43,7 @@ public enum ReportType
     STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS("State Mileage By Vehicle Road Status","stateMileageByVehicleRoadStatus.jrxml","stateMileageByVehicleRoadStatusRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
     STATE_MILEAGE_BY_VEHICLE("State Mileage By Vehicle","stateMileageByVehicle.jrxml","stateMileageByVehicleRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
     STATE_MILEAGE_FUEL_BY_VEHICLE("State Mileage Fuel By Vehicle","stateMileageFuelByVehicle.jrxml","stateMileageFuelByVehicleRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
+    STATE_MILEAGE_BY_MONTH("State Mileage By Month","stateMileageByMonth.jrxml","stateMileageByMonthRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
     
     // HOS
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),

@@ -27,15 +27,27 @@ public class WaysmartReportsBean extends ReportsBean {
     
     private Map<Integer, ReportGroup> reportGroupMap;
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.backing.ReportsBean#getReportGroupMap()
+     */
     @Override
     public Map<Integer, ReportGroup> getReportGroupMap() {
         return reportGroupMap;
     }
 
+    /**
+     * The setter for reportGroupMap.
+     * @param reportGroupMap
+     */
     public void setReportGroupMap(Map<Integer, ReportGroup> reportGroupMap) {
         this.reportGroupMap = reportGroupMap;
     }    
     
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.backing.ReportsBean#genReportCriteria()
+     */
     @Override
     public void genReportCriteria()
     {
@@ -109,6 +121,12 @@ public class WaysmartReportsBean extends ReportsBean {
                         params.getLocale(), params.getIsIfta() ));
                 break;                     
             
+            case STATE_MILEAGE_BY_MONTH:
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageByMonthReportCriteria(
+                        params.getGroupIDList(), params.getDateRange().getInterval(), params.getLocale(), 
+                        getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
+                break;
+
             default:
                 break;
         }
@@ -128,6 +146,7 @@ public class WaysmartReportsBean extends ReportsBean {
 
     /**
      * {@inheritDoc}
+     * @see com.inthinc.pro.backing.ReportsBean#getReportGroups()
      */
     public List<SelectItemGroup> getReportGroups() {
 

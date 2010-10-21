@@ -97,6 +97,11 @@ public enum ReportGroup
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.STATE_MILEAGE_FUEL_BY_VEHICLE),
              
+     STATE_MILEAGE_BY_MONTH("State Mileage By Month", 24, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             ReportType.STATE_MILEAGE_BY_MONTH),
+                     
              
      // Performance    
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
