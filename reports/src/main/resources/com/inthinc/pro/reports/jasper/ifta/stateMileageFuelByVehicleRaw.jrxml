@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stateMileageFuelByVehicleRaw" pageWidth="795" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="735" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" resourceBundle="stateMileage" isIgnorePagination="true">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="groupName" class="java.lang.String"/>
+	<field name="vehicle" class="java.lang.String"/>
+	<field name="month" class="java.lang.String"/>
+	<field name="state" class="java.lang.String"/>
+	<field name="totalMiles" class="java.lang.Double"/>
+	<field name="totalTruckGas" class="java.lang.Double"/>
+	<field name="totalTrailerGas" class="java.lang.Double"/>
+	<field name="mileage" class="java.lang.Double"/>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="81" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.group.raw}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="0" width="84" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.vehicle.raw}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="165" y="0" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.month.raw}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="248" y="0" width="59" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.state.raw}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="307" y="0" width="73" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.totalMiles.raw}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="74" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.totalTruckGas.raw}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="0" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.totalTrailerGas.raw}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="525" y="0" width="80" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.mileage.raw}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="81" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="81" y="0" width="84" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{month}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="248" y="0" width="59" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{state}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="307" y="0" width="73" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalMiles}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="380" y="0" width="74" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalTruckGas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="454" y="0" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalTrailerGas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="525" y="0" width="80" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{mileage}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

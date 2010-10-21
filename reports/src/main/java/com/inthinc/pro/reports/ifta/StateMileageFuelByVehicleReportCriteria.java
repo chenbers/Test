@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
@@ -63,25 +64,39 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
             rec.setState(item.getStateName());
             rec.setTotalMiles(MeasurementConversionUtil.convertMilesToKilometers(
                     item.getMiles(), getMeasurementType()).doubleValue());
-            rec.setTotalTruckGas(item.getTruckGallons().doubleValue());
-            rec.setTotalTrailerGas(item.getTrailerGallons().doubleValue());
+            
+            Double totalTruckGas = item.getTruckGallons().doubleValue();
+            Double totalTrailerGas = item.getTrailerGallons().doubleValue();
+            if (getMeasurementType().equals(MeasurementType.METRIC)){
+            	totalTruckGas = MeasurementConversionUtil.fromGallonsToLiters(totalTruckGas).doubleValue();
+            	totalTrailerGas = MeasurementConversionUtil.fromGallonsToLiters(totalTrailerGas).doubleValue();
+            }
+            rec.setTotalTruckGas(totalTruckGas);
+            rec.setTotalTrailerGas(totalTrailerGas);
+            rec.setMileage(rec.getTotalMiles()); // Verify. Not getting mileage from Back End
+
             dataList.add(rec);
         }
-        Collections.sort(dataList, new StateMileageFuelByVehicleComparator());        
+        Collections.sort(dataList, new StateMileageFuelByVehicleComparator());         
         setMainDataset(dataList);
     }
 
-    /* Comparator for StateMileageByVehicle report */
+    /**
+     *  Comparator for StateMileageByVehicle report 
+     */
     class StateMileageFuelByVehicleComparator implements Comparator<StateMileageFuelByVehicle> {
 
         @Override
         public int compare(StateMileageFuelByVehicle o1, StateMileageFuelByVehicle o2) {
-            int equal = o1.getGroupName().compareTo(o2.getGroupName());
-            if (equal == 0) {
-                return o1.getVehicle().compareTo(o2.getVehicle());                
-            } else {
-                return equal;
-            }
+            int comparison = 0; 
+            
+            // If they are equal, keep comparing other attribs
+            if ((comparison = o1.getGroupName().compareTo(o2.getGroupName())) == 0)
+                if ((comparison = o1.getVehicle().compareTo(o2.getVehicle())) == 0)
+                    if ((comparison = o1.getMonth().compareTo(o2.getMonth())) == 0)
+	                    comparison = o1.getState().compareTo(o2.getState());
+            return comparison;
+
         }
     }
 }

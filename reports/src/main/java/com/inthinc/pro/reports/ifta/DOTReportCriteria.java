@@ -44,7 +44,7 @@ public abstract class DOTReportCriteria extends ReportCriteria {
     public void setMeasurementType(MeasurementType measurementType) {
         super.setMeasurementType(measurementType);
         if (measurementType != null)
-            units = measurementType.name();
+            units = measurementType.name().toLowerCase();
     }
 
     /**

@@ -809,11 +809,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
   
 	@Override
-	public ReportCriteria getStateMileageFuelByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, boolean iftaOnly) {
+	public ReportCriteria getStateMileageFuelByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) {
 		StateMileageFuelByVehicleReportCriteria criteria = new StateMileageFuelByVehicleReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
-               
+        criteria.setMeasurementType(type);
         criteria.init(groupIDList, interval, iftaOnly);
         return criteria;
 	}
