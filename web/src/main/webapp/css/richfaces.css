@@ -77,7 +77,8 @@
 	padding: 4px 1px;
 	}
 
-.datatable.rich-table th.rich-table-subheadercell, .datatable.rich-table td.rich-subtable-headercell {
+.datatable.rich-table th.rich-table-subheadercell, .datatable.rich-table td.rich-subtable-headercell 
+ {
 	font: bold 9px Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 	border: 1px solid #8BAD37;
@@ -116,6 +117,7 @@
 	color: #333;
 }
 
+
 /* Poor old Internet Explorer 6 has a bug that means we can't use background images for the table rows
    as it trys to download the image each and every time that it is used (which means a 1000 row table
    will produce 1000 http requests for the image in question) */
@@ -125,4 +127,22 @@
 
 .datatable.rich-table td[class~="alt"] {
 	background: #CADF9A url(../images/col_alt.jpg) no-repeat !important;
+}
+
+.rich-stglpanel-header
+ {
+	font: bold 9px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	border: 1px solid #8BAD37;
+	background: #8EAF3C url(../images/bg_header.jpg) no-repeat;
+	vertical-align: middle;
+	text-align: center;
+	letter-spacing: 0px;
+	white-space: normal;
+	padding: 4px 1px;
+}
+
+.rich-stglpanel-body {
+	font: normal 9px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
 }

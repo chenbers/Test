@@ -89,6 +89,7 @@
                         </li>
                         <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
                           <li class="l"><h:commandButton id="zonesEdit" action="#{zonesBean.edit}" reRender="displayZone,zoneName,zoneAddress,headerForm" oncomplete="showZone(true)" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton></li>
+                          <li class="l"><a4j:commandButton id="zonesClone" action="#{zonesBean.cloneZone}" reRender="displayZone,zoneName,zoneAddress,headerForm" oncomplete="showZone(true)" styleClass="left"><span class="add"><h:outputText value="#{messages.zones_clone}" /></span></a4j:commandButton></li>
                           <li class="l"><button id="zonesSubmit" type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
                         </ui:fragment>
                         <li class="r">

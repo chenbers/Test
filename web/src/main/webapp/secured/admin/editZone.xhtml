@@ -14,6 +14,15 @@
   <ui:param name="title" value="#{messages.adminHeader_zones}"/>
   
   <ui:define name="scripts">
+  	<style>
+  		.col1 {
+  			width: 95%;
+  		}
+  		.col2 {
+  			width: 5%;
+  			vertical-align:top;
+  		}
+  	</style>
     <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
     <a4j:loadScript src="/js/mapGeocode.js" />
     <a4j:loadScript src="/js/drawZone.js" />
@@ -123,15 +132,51 @@
 					
                   <div class="spacer"></div>
 
-                  <h:panelGroup styleClass="map-border" layout="block">
-                  
-                    <div id="map-canvas" style="height:100%;height:700px;border:0"></div>
-                    <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
-                      <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
-                      <div id="circle-outline" style="display:none"></div>
-                    </div>
-                  </h:panelGroup>
+				  <h:panelGrid columns="2" width="100%" columnClasses="col1,col2">
+	                  <h:panelGroup styleClass="map-border" layout="block">
+	                    <div id="map-canvas" style="height:100%;height:600px;border:0"></div>
+	                    <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
+	                      <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
+	                      <div id="circle-outline" style="display:none"></div>
+	                    </div>
+	                  </h:panelGroup>
+<!--                   <a4j:outputPanel id="editZoneOptions">  -->
+                  <rich:simpleTogglePanel id="editZoneOptions" switchType="client" style="float:right;" opened="true">
+                    <h:panelGroup>
+                    	<table width="270" border="0" cellspacing="2" cellpadding="4" align="left">
+                    
+                    	<a4j:repeat value="#{zonesBean.availableZoneOptions}" var="option" id="zoneOptions">
+	                        <tr>
+	                          <td width="160" valign="center">
+				                <h:outputText value="#{messages[option.name]}:" />
+	                          </td>
+	                          <td>
+	                            <h:selectOneMenu value="#{zonesBean.optionsMap[option]}" id="vehicleType" 
+	                            	rendered="#{option.optionType eq 'VEHICLE_TYPE'}">
+    	                    		<f:selectItems value="#{zonesBean.vehicleTypeSelectItems}"/>
+                            	</h:selectOneMenu>                              	                           	
+	                            <h:inputText value="#{zonesBean.optionsMap[option]}" id="int" 
+	                            	styleClass="text" size="5" maxlength="3"
+	                            	rendered="#{option.optionType eq 'INTEGER'}"/>
+	                            <h:selectOneMenu value="#{zonesBean.optionsMap[option]}" id="onOff" 
+	                            	rendered="#{option.optionType eq 'OFF_ON'}">
+    	                    		<f:selectItems value="#{zonesBean.offOnSelectItems}"/>
+                            	</h:selectOneMenu>                              	                           	
+	                            <h:selectOneMenu value="#{zonesBean.optionsMap[option]}" id="onOffDevice" 
+	                            	rendered="#{option.optionType eq 'OFF_ON_DEVICE'}">
+    	                    		<f:selectItems value="#{zonesBean.offOnDeviceSelectItems}"/>
+                            	</h:selectOneMenu>   
+	                          </td>
+	                        </tr>
+                    	</a4j:repeat>
+                    	</table>
+                         <a4j:commandButton id="reset" action="#{zonesBean.reset}" onclick="stopDrawing()" 
+                         				reRender="editZone,headerForm" styleClass="left"><span class="back"><h:outputText value="#{messages.zones_reset}" /></span></a4j:commandButton>
+					</h:panelGroup>
+<!-- 				   </a4j:outputPanel>  -->
+</rich:simpleTogglePanel>
 
+				  </h:panelGrid>
                 </a4j:form>
 
                 <script type="text/javascript">

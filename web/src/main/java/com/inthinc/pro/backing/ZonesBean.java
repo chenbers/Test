@@ -22,9 +22,13 @@ import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
 import com.inthinc.pro.model.zone.option.ZoneOption;
+import com.inthinc.pro.model.zone.option.type.OffOn;
+import com.inthinc.pro.model.zone.option.type.OffOnDevice;
 import com.inthinc.pro.model.zone.option.type.OptionValue;
+import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 import com.inthinc.pro.util.FormUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 
 @KeepAlive
 public class ZonesBean extends BaseBean
@@ -349,11 +353,31 @@ public class ZonesBean extends BaseBean
         return optionsMap;
     }
 
-
-    
     public ZoneAvailableOption[] getAvailableZoneOptions()
     {
         return ZoneAvailableOption.values();
     }
+    public List<SelectItem> getOffOnSelectItems()
+    {
+        return SelectItemUtil.toList(OffOn.class, false);
+    }
+    public List<SelectItem> getOffOnDeviceSelectItems()
+    {
+        return SelectItemUtil.toList(OffOnDevice.class, false);
+    }
+    public List<SelectItem> getVehicleTypeSelectItems()
+    {
+        return SelectItemUtil.toList(ZoneVehicleType.class, false);
+    }
     
+    public void reset()
+    {
+        
+    }
+
+    public void cloneZone()
+    {
+        
+    }
+
 }
