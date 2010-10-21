@@ -16,4 +16,9 @@ public enum ZoneOptionType {
     {
         this.clazz = clazz;
     }
+    
+//    public OptionValue getOptionValue(Integer value)
+//    {
+//        
+//    }
 }

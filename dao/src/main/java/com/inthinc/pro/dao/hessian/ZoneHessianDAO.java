@@ -6,10 +6,15 @@ import java.util.List;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.dao.hessian.mapper.ZoneOptionsMapper;
 import com.inthinc.pro.model.Zone;
 
 public class ZoneHessianDAO extends GenericHessianDAO<Zone, Integer> implements ZoneDAO
 {
+    public ZoneHessianDAO() {
+        super();
+        super.setMapper(new ZoneOptionsMapper());
+    }
     @Override
     public List<Zone> getZones(Integer accountID)
     {

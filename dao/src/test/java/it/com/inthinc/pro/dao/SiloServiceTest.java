@@ -95,6 +95,10 @@ import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
+import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
+import com.inthinc.pro.model.zone.option.ZoneOption;
+import com.inthinc.pro.model.zone.option.ZoneOptionType;
+import com.inthinc.pro.model.zone.option.type.OffOnDevice;
 
 public class SiloServiceTest {
     private static final Logger logger = Logger.getLogger(SiloServiceTest.class);
@@ -491,7 +495,6 @@ public class SiloServiceTest {
         zones(acctID, team1Group.getGroupID());
         System.out.println("Admin - zones done");
     	
-        
         // devices
         devices(acctID);
         System.out.println("Admin - devices done");
@@ -831,6 +834,15 @@ public class SiloServiceTest {
         points.add(new LatLng(40.70f, -111.95f));
         points.add(new LatLng(40.723871753812f, -111.92932452647742f));
         zone.setPoints(points);
+        
+        List<ZoneOption> options = new ArrayList<ZoneOption>();
+        
+        for (ZoneAvailableOption zoneAvailableOption : ZoneAvailableOption.values()) {
+            options.add(new ZoneOption(zoneAvailableOption, zoneAvailableOption.getDefaultValue()));
+        }
+        zone.setOptions(options);
+        
+        
         // create
         Integer zoneID = zoneDAO.create(acctID, zone);
         assertNotNull(zoneID);
@@ -848,6 +860,12 @@ public class SiloServiceTest {
         points.add(new LatLng(40.71f, -111.93f));
         points.add(new LatLng(40.723871753812f, -111.92932452647742f));
         zone.setPoints(points);
+        for (ZoneOption zoneOption : zone.getOptions()) {
+            // set 3 state options to off state
+            if (zoneOption.getOption().getOptionType() == ZoneOptionType.OFF_ON_DEVICE)
+                zoneOption.setValue(OffOnDevice.OFF);
+            
+        }
         Integer changedCount = zoneDAO.update(zone);
         assertEquals("Zone update count", Integer.valueOf(1), changedCount);
         // find/compare after update

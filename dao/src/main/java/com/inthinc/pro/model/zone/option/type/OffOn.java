@@ -1,5 +1,11 @@
 package com.inthinc.pro.model.zone.option.type;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.inthinc.pro.model.TableType;
+
 public enum OffOn implements OptionValue {
     OFF(0, "OFF"),
     ON(1, "ON");
@@ -12,6 +18,17 @@ public enum OffOn implements OptionValue {
         this.code = code;
         this.name = name;
     }
+    
+    private static final Map<Integer, OffOn> lookup = new HashMap<Integer, OffOn>();
+    static
+    {
+        for (OffOn p : EnumSet.allOf(OffOn.class))
+        {
+            lookup.put(p.code, p);
+        }
+    }
+
+
     public void setName(String name) {
         this.name = name;
     }
@@ -34,5 +51,8 @@ public enum OffOn implements OptionValue {
     public String toString()
     {
         return getName();
+    }
+    static public OptionValue valueOf(Integer value) {
+        return lookup.get(value);
     }
 }

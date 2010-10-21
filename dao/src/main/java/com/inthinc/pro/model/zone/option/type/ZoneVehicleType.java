@@ -1,5 +1,9 @@
 package com.inthinc.pro.model.zone.option.type;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 public enum ZoneVehicleType implements OptionValue {
     ALL(0, "ALL"),
     LIGHT(1, "LIGHT"),
@@ -12,6 +16,15 @@ public enum ZoneVehicleType implements OptionValue {
         this.code = code;
         this.name = name;
     }
+    private static final Map<Integer, ZoneVehicleType> lookup = new HashMap<Integer, ZoneVehicleType>();
+    static
+    {
+        for (ZoneVehicleType p : EnumSet.allOf(ZoneVehicleType.class))
+        {
+            lookup.put(p.code, p);
+        }
+    }
+
     public int getCode() {
         return code;
     }
@@ -32,5 +45,8 @@ public enum ZoneVehicleType implements OptionValue {
     @Override
     public String toString() {
         return name;
+    }
+    static public OptionValue valueOf(Integer value) {
+        return lookup.get(value);
     }
 }
