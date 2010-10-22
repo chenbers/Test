@@ -20,6 +20,7 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
 
     /**
      * Default constructor.
+     * 
      * @param locale
      */
     public StateMileageCompareByGroupReportCriteria(Locale locale) {
@@ -28,9 +29,13 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
 
     /**
      * Initiate the DataSet and the parameters for the report.
-     * @param groupId the groupId chosen by the user
-     * @param interval the date period
-     * @param iftaOnly the flag to consider only DOT/IFTA 
+     * 
+     * @param groupId
+     *            the groupId chosen by the user
+     * @param interval
+     *            the date period
+     * @param iftaOnly
+     *            the flag to consider only DOT/IFTA
      */
     @Override
     public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
@@ -42,28 +47,27 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
             if (list != null) {
                 dataList.addAll(list);
             }
-        }      
+        }
         initDataSet(dataList);
     }
 
     /**
-     * Populate the data set with data.
-     * Copy the fields from the record returned from the Back End to the fields in the beans to be used by Jasper.
+     * Populate the data set with data. Copy the fields from the record returned from the Back End to the fields in the beans to be used by Jasper.
      * 
-     * @param records The records retrieved from the Back End
+     * @param records
+     *            The records retrieved from the Back End
      */
-    void initDataSet(List<StateMileage> records)
-    {   
+    void initDataSet(List<StateMileage> records) {
         List<StateMileageCompareByGroup> dataList = new ArrayList<StateMileageCompareByGroup>();
         for (StateMileage item : records) {
             StateMileageCompareByGroup rec = new StateMileageCompareByGroup();
             rec.setGroupName(item.getGroupName());
             rec.setState(item.getStateName());
-            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
-                    item.getMiles(), getMeasurementType()).doubleValue());
+            rec.setMonth(item.getMonth());
+            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(item.getMiles(), getMeasurementType()).doubleValue());
             dataList.add(rec);
         }
-        Collections.sort(dataList, new StateMileageCompareByGroupComparator());        
+        Collections.sort(dataList, new StateMileageCompareByGroupComparator());
         setMainDataset(dataList);
     }
 
@@ -72,7 +76,17 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
 
         @Override
         public int compare(StateMileageCompareByGroup o1, StateMileageCompareByGroup o2) {
-            return o1.getGroupName().compareTo(o2.getGroupName());
+            int sortOrder = o1.getGroupName().compareTo(o2.getGroupName());
+
+            if (sortOrder == 0) {
+                sortOrder = o1.getMonth().compareTo(o2.getMonth());
+
+                if (sortOrder == 0) {
+                    sortOrder = o1.getState().compareTo(o2.getState());
+                }
+            }
+
+            return sortOrder;
         }
     }
 }
