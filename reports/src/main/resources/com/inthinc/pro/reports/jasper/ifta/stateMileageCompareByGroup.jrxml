@@ -8,8 +8,8 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
-	<style name="PageHeader" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageFooter" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageHeader" fontName="Arial" fontSize="12" isBold="true"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false">
 		<parameterDescription><![CDATA[Company logo gif file path.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
@@ -59,7 +59,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1}]]></textFieldExpression>
 							</textField>
@@ -86,7 +86,7 @@
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="12"/>
+										<font fontName="SansSerif" size="12"/>
 									</textElement>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{groupName}]]></textFieldExpression>
 								</textField>
@@ -109,7 +109,7 @@
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="12"/>
+										<font fontName="SansSerif" size="12"/>
 									</textElement>
 									<textFieldExpression class="java.lang.String"><![CDATA[$R{total}]]></textFieldExpression>
 								</textField>
@@ -137,7 +137,7 @@
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+										<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 									</textElement>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
 								</textField>
@@ -160,7 +160,7 @@
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+										<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 									</textElement>
 									<textFieldExpression class="java.lang.String"><![CDATA[$R{total}]]></textFieldExpression>
 								</textField>
@@ -187,7 +187,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="12"/>
+									<font fontName="SansSerif" size="12"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
@@ -210,7 +210,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="12"/>
+									<font fontName="SansSerif" size="12"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
@@ -233,7 +233,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="12"/>
+									<font fontName="SansSerif" size="12"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
@@ -256,7 +256,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="12"/>
+									<font fontName="SansSerif" size="12"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
@@ -360,7 +360,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -373,7 +373,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.confidential}]]></textFieldExpression>
 			</textField>
@@ -386,7 +386,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{footer.page}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
@@ -399,7 +399,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="12" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
