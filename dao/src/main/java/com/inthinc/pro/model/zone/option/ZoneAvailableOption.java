@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
-import com.inthinc.pro.model.zone.option.type.IntegerValue;
+import com.inthinc.pro.model.zone.option.type.SpeedValue;
 import com.inthinc.pro.model.zone.option.type.OffOn;
 import com.inthinc.pro.model.zone.option.type.OffOnDevice;
 import com.inthinc.pro.model.zone.option.type.OptionValue;
@@ -13,7 +13,7 @@ import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 
 public enum ZoneAvailableOption implements BaseEnum {
     VEHICLE_TYPE(1, "VEHICLE_TYPE", ZoneOptionType.VEHICLE_TYPE, ZoneVehicleType.ALL, true),
-    SPEED_LIMIT(2, "SPEED_LIMIT", ZoneOptionType.INTEGER, new IntegerValue(0), true),
+    SPEED_LIMIT(2, "SPEED_LIMIT", ZoneOptionType.SPEED, new SpeedValue(0), true),
     CAUTION_AREA(3, "CAUTION_AREA", ZoneOptionType.OFF_ON, OffOn.ON, true),
     REPORT_ON_ARRIVAL_DEPARTURE(4, "REPORT_ON_ARRIVAL_DEPARTURE", ZoneOptionType.OFF_ON, OffOn.ON, false),
     MONITOR_IDLE(5, "MONITOR_IDLE", ZoneOptionType.OFF_ON, OffOn.ON, true),
@@ -94,8 +94,8 @@ public enum ZoneAvailableOption implements BaseEnum {
     }
 
     static public OptionValue convertOptionValue(ZoneOptionType zoneOptionType, Integer value) { 
-        if (zoneOptionType == ZoneOptionType.INTEGER)
-            return IntegerValue.valueOf(value);
+        if (zoneOptionType == ZoneOptionType.SPEED)
+            return SpeedValue.valueOf(value);
         if (zoneOptionType == ZoneOptionType.OFF_ON)
             return OffOn.valueOf(value);
         if (zoneOptionType == ZoneOptionType.OFF_ON_DEVICE)

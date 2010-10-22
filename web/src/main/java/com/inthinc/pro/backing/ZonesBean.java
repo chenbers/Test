@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.model.KeepAlive;
-
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -164,6 +162,8 @@ public class ZonesBean extends BaseBean
         final boolean add = isAdd();
 
         final FacesContext context = FacesContext.getCurrentInstance();
+        
+        item.setOptions(getOptionsFromMap());
 
         if (add)
         {
@@ -184,15 +184,12 @@ public class ZonesBean extends BaseBean
         if (add)
         {
             zones.add(item);
-            sortZones();
         }
-        zoneIDs = null;
 
         editing = false;
         helpFile = "Zones.htm";
-        
-        // reload the zones for the account that are carried by proUser
-        getProUser().setZones(zones);
+
+        reloadZones();
 
         return "adminZones";
 }
@@ -202,7 +199,6 @@ public class ZonesBean extends BaseBean
      */
     public void delete()
     {
-        final FacesContext context = FacesContext.getCurrentInstance();
 
         zoneAlertDAO.deleteByZoneID(item.getZoneID());
 
@@ -211,14 +207,13 @@ public class ZonesBean extends BaseBean
         // add a message
         final String summary = MessageUtil.formatMessageString("zone_deleted", item.getName());
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+        final FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, message);
 
         zones.remove(item);
-        zoneIDs = null;
         item = null;
+        reloadZones();
         
-        // reload the zones for the account that are carried by proUser
-        getProUser().setZones(zones);        
     }
 
     public Integer getItemID()
@@ -333,25 +328,17 @@ public class ZonesBean extends BaseBean
         zoneIDs = null;
         zones = null;
     }
-    
-    public Map<ZoneAvailableOption, OptionValue> getOptionsMap()
+    private List<ZoneOption> getOptionsFromMap() 
     {
-        Map<ZoneAvailableOption, OptionValue> optionsMap = new HashMap<ZoneAvailableOption, OptionValue>();
-        List<ZoneOption> options = item.getOptions();
+        List<ZoneOption> options = new ArrayList<ZoneOption>();
+        Map<ZoneAvailableOption, OptionValue> optionsMap = getItem().getOptionsMap();
         for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
         {
-            OptionValue value = availOption.getDefaultValue();
-            if (options != null) {
-                for (ZoneOption zoneOption : options) {
-                    if (zoneOption.getOption() == availOption) {
-                        value = zoneOption.getValue();
-                    }
-                }
-            }
-            optionsMap.put(availOption, value);
+            options.add(new ZoneOption(availOption, optionsMap.get(availOption)));
         }
-        return optionsMap;
+        return options;
     }
+
 
     public ZoneAvailableOption[] getAvailableZoneOptions()
     {
@@ -370,14 +357,68 @@ public class ZonesBean extends BaseBean
         return SelectItemUtil.toList(ZoneVehicleType.class, false);
     }
     
-    public void reset()
+    public String reset()
     {
+        
+        if (isAdd()) {
+            item = new Zone();
+            item.setCreated(new Date());
+        }
+        else {
+            zones.remove(item);
+            item = zoneDAO.findByID(item.getZoneID());
+            zones.add(item);
+            
+        }
+        
+        return "adminEditZone";
         
     }
 
     public void cloneZone()
     {
-        
+        Zone clonedZone = item.clone();
+        clonedZone.setName(constructCloneName(item.getName()));
+
+        // add a message
+        final String summary = MessageUtil.formatMessageString("zone_cloned", item.getName(), clonedZone.getName());
+        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+        final FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, message);
+
+        item = clonedZone;
+        item.setGroupID(getUser().getGroupID());
+        item.setZoneID(zoneDAO.create(getAccountID(), item));
+        zones.add(item);
+        reloadZones();
     }
 
+    private String constructCloneName(String name) {
+        for (int cnt = 1; cnt < 100; cnt++) {
+            String cloneName = name + "(" + cnt + ")";
+            if (!nameFound(cloneName))
+                return cloneName;
+        }
+        return name;
+    }
+
+    private boolean nameFound(String cloneName) {
+        for (Zone zone : zones) {
+            if (zone.getName().equalsIgnoreCase(cloneName))
+                return true;
+        }
+        return false;
+    }
+    private void reloadZones() {
+        sortZones();
+        zoneIDs = new ArrayList<SelectItem>();
+        for(final Zone zone: getZones())
+        {
+            zoneIDs.add(new SelectItem(zone.getZoneID(),zone.getName()));
+        }
+        
+        // reload the zones for the account that are carried by proUser
+        getProUser().setZones(zones);
+        
+    }
 }

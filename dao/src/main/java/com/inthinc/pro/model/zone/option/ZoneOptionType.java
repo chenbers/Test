@@ -6,7 +6,7 @@ import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 
 public enum ZoneOptionType {
     
-    INTEGER(Integer.class),
+    SPEED(Integer.class),
     OFF_ON(OffOn.class),
     OFF_ON_DEVICE(OffOnDevice.class),
     VEHICLE_TYPE(ZoneVehicleType.class);

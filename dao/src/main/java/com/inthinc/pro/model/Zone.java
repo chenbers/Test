@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
 import com.inthinc.pro.model.zone.option.ZoneOption;
-
-import javax.xml.bind.annotation.XmlRootElement;
+import com.inthinc.pro.model.zone.option.type.OptionValue;
 
 @XmlRootElement
-public class Zone extends BaseEntity
+public class Zone extends BaseEntity implements Cloneable
 {
     @Column(updateable = false)
     private static final long serialVersionUID = 7505601232108995094L;
@@ -31,6 +32,9 @@ public class Zone extends BaseEntity
     private Integer           groupID;
     
     private List<ZoneOption>    options;
+    
+    @Column(updateable = false)
+    private Map<ZoneAvailableOption, OptionValue> optionsMap;
     
     public Zone()
     {
@@ -164,4 +168,40 @@ public class Zone extends BaseEntity
     }
     
 
+    public Map<ZoneAvailableOption, OptionValue> getOptionsMap() {
+        if (optionsMap == null)
+            initOptionsMap();
+        return optionsMap;
+    }
+    
+    private void initOptionsMap() {
+        optionsMap = new HashMap<ZoneAvailableOption, OptionValue>();
+        List<ZoneOption> options = getOptions();
+        for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
+        {
+            OptionValue value = availOption.getDefaultValue();
+            if (options != null) {
+                for (ZoneOption zoneOption : options) {
+                    if (zoneOption.getOption() == availOption) {
+                        value = ZoneAvailableOption.convertOptionValue(availOption.getOptionType(), zoneOption.getValue().getValue());
+                    }
+                }
+            }
+            optionsMap.put(availOption, value);
+        }
+    }
+    public void setOptionsMap(Map<ZoneAvailableOption, OptionValue> optionsMap) {
+        this.optionsMap = optionsMap;
+    }
+
+    public Zone clone() {
+        try {
+            return (Zone)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+    
 }

@@ -1,11 +1,11 @@
 package com.inthinc.pro.model.zone.option.type;
 
 
-public class IntegerValue implements OptionValue {
+public class SpeedValue implements OptionValue {
 
     private Integer value;
     
-    public IntegerValue(Integer value) {
+    public SpeedValue(Integer value) {
         this.value = value;
     }
     
@@ -30,7 +30,7 @@ public class IntegerValue implements OptionValue {
     }
 
     static public OptionValue valueOf(Integer value) {
-        return new IntegerValue(value);
+        return new SpeedValue(value);
     }
 
 }

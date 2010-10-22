@@ -33,8 +33,9 @@
     </script>
   </ui:define>
   
+  
   <ui:define name="content">
-    <t:saveState value="#{zonesBean}"></t:saveState>
+	<a4j:region id="main">
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
@@ -51,7 +52,11 @@
               <div class="panel_title">
                 <span class="zones"><h:outputText value="#{messages.adminHeader_zones}" /></span>
                 <span class="panel_links">
-                  
+					<a4j:status id="refresh_ajax_status" for="main">
+						<f:facet name="start">
+							<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+						</f:facet>
+					</a4j:status>
                 </span>
               </div>
             </div>
@@ -132,8 +137,8 @@
                 				<f:facet name="header">
 				                <h:outputText value="#{messages.zoneOptionValue}" />
 				                </f:facet>
-				                <h:outputText value="#{messages[zonesBean.optionsMap[option].name]}"  rendered="#{zonesBean.optionsMap[option].name != null}"/>
-				                <h:outputText value="#{zonesBean.optionsMap[option]}"  rendered="#{zonesBean.optionsMap[option].name == null}"/>
+				                <h:outputText value="#{messages[zonesBean.item.optionsMap[option].name]}"  rendered="#{zonesBean.item.optionsMap[option].name != null}"/>
+				                <h:outputText value="#{zonesBean.item.optionsMap[option]}"  rendered="#{zonesBean.item.optionsMap[option].name == null}"/>
 				              </rich:column>
               				<rich:column>
                 				<f:facet name="header">
@@ -269,7 +274,7 @@
 
       </tr>
     </table>
-
+	</a4j:region>
   </ui:define>
 
 </ui:composition>

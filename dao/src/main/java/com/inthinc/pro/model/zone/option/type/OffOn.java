@@ -4,8 +4,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.inthinc.pro.model.TableType;
-
 public enum OffOn implements OptionValue {
     OFF(0, "OFF"),
     ON(1, "ON");
