@@ -27,11 +27,10 @@ public class MockStateMileageDAO implements StateMileageDAO {
     /**
      * Default constructor.
      */
-    public MockStateMileageDAO() {
-    }
+    public MockStateMileageDAO() {}
 
     /**
-     * @{inherit-doc}
+     * @{inherit-doc
      * @see com.inthinc.pro.dao.StateMileageDAO#getFuelStateMileageByVehicle(java.lang.Integer, org.joda.time.Interval, java.lang.Boolean)
      */
     @Override
@@ -40,7 +39,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
     }
 
     /**
-     * @{inherit-doc}
+     * @{inherit-doc
      * @see com.inthinc.pro.dao.StateMileageDAO#getMileageByVehicle(java.lang.Integer, org.joda.time.Interval, java.lang.Boolean)
      */
     @Override
@@ -49,16 +48,17 @@ public class MockStateMileageDAO implements StateMileageDAO {
     }
 
     /**
-     * @{inherit-doc}
+     * @{inherit-doc
      * @see com.inthinc.pro.dao.StateMileageDAO#getStateMileageByGroup(java.lang.Integer, org.joda.time.Interval, java.lang.Boolean)
      */
     @Override
     public List<StateMileage> getStateMileageByGroup(Integer groupID, Interval interval, Boolean dotOnly) {
-        return this.getData(groupID);
+        return this.getStateMileageByGroupData(groupID, interval, dotOnly);
+        // return this.getDataBis(groupID, interval, dotOnly);
     }
 
     /**
-     * @{inherit-doc}
+     * @{inherit-doc
      * @see com.inthinc.pro.dao.StateMileageDAO#getStateMileageByGroupAndMonth(java.lang.Integer, org.joda.time.Interval, java.lang.Boolean)
      */
     @Override
@@ -77,12 +77,12 @@ public class MockStateMileageDAO implements StateMileageDAO {
     }
 
     /**
-     * @{inherit-doc}
+     * @{inherit-doc
      * @see com.inthinc.pro.dao.StateMileageDAO#getStateMileageByVehicle(java.lang.Integer, org.joda.time.Interval, java.lang.Boolean)
      */
     @Override
     public List<StateMileage> getStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
-        List<StateMileage> list = new ArrayList<StateMileage>();        
+        List<StateMileage> list = new ArrayList<StateMileage>();
         list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1500L));
         list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_2, "217547", 1600L));
         list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_2", "217547", 1600L));
@@ -97,12 +97,12 @@ public class MockStateMileageDAO implements StateMileageDAO {
         list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_12", "217567", 1640L));
         list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_11", "217347", 1260L));
         list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_13", "217546", 1507L));
-        
+
         return list;
     }
 
     /**
-     * @{inherit-doc}
+     * @{inherit-doc
      * @see com.inthinc.pro.dao.StateMileageDAO#getStateMileageByVehicleRoad(java.lang.Integer, org.joda.time.Interval, java.lang.Boolean)
      */
     @Override
@@ -110,36 +110,185 @@ public class MockStateMileageDAO implements StateMileageDAO {
         return this.getDataBis(groupID, interval, dotOnly);
     }
 
-    /* ^
-     * |  Mocked methods
-     * --------------------------------------------------------------------------------------
-     * |  Helper Methods
-     * v
+    /*
+     * ^ | Mocked methods -------------------------------------------------------------------------------------- | Helper Methods v
      */
-    
+
     private List<StateMileage> getData(Integer groupID) {
         List<StateMileage> list = new ArrayList<StateMileage>();
-        
+
         list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "257547", 1684L));
         list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "217547", 1685L));
         list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "1575789", 1686L));
-        
+
         return list;
     }
-    
+
+    private List<StateMileage> getStateMileageByGroupData(Integer groupID, Interval interval, Boolean dotIftaOnly) {
+        // only the first call adds data
+        List<StateMileage> list = new ArrayList<StateMileage>();
+
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+
+        /*
+         * 2010-10-10 ==================================================================================================
+         */
+        calendar.set(2010, 9, 10);
+        date = calendar.getTime();
+
+        if (interval.contains(date.getTime())) {
+            /*
+             * FLEET group =============================================================================================
+             */
+            if (1504 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle A", "Colorado", 750));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle B", "Utah", 250L));
+                }
+
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle C", "Pennsylvanya", 500L));
+            }
+
+            /*
+             * FLEET-DIVISION group ====================================================================================
+             */
+            if (1505 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDA", "Colorado", 250L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDB", "Utah", 500L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDC", "Utah", 750));
+                }
+
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDD", "Idaho", 250L));
+            }
+
+            /*
+             * FLEET-DIVISION-GOOD group ===============================================================================
+             */
+            if (1506 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGA", "California", 250L));
+                }
+
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGB", "Idaho", 500L));
+            }
+        }
+        
+        /*
+         * 2010-10-09 ==================================================================================================
+         */
+        calendar.set(2010, 9, 9);
+        date = calendar.getTime();
+        
+        if (interval.contains(date.getTime())) {
+            /*
+             * FLEET group =============================================================================================
+             */
+            if (1504 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle A", "Idaho", 250L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle B", "California", 500L));
+                }
+                
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle C", "Utah", 500L));
+            }
+            
+            /*
+             * FLEET-DIVISION group ====================================================================================
+             */
+            if (1505 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDA", "Iowa", 250L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDB", "California", 500L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDC", "Idaho", 500));
+                }
+                
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDD", "Colorado", 250L));
+            }
+            
+            /*
+             * FLEET-DIVISION-GOOD group ===============================================================================
+             */
+            if (1506 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGA", "Illinois", 250L));
+                }
+                
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGB", "Utah", 1000L));
+            }
+        }
+
+        /*
+         * 2010-10-08 ==================================================================================================
+         */
+        calendar.set(2010, 9, 8);
+        date = calendar.getTime();
+        
+        if (interval.contains(date.getTime())) {
+            /*
+             * FLEET group =============================================================================================
+             */
+            if (1504 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle A", "Georgia", 750L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle B", "South Carolina", 1000L));
+                }
+                
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle C", "Colorado", 750L));
+            }
+            
+            /*
+             * FLEET-DIVISION group ====================================================================================
+             */
+            if (1505 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDA", "Nevada", 250L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDB", "Nevada", 250L));
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDC", "Idaho", 500L));
+                }
+                
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDD", "Pennsylvanya", 250L));
+            }
+            
+            /*
+             * FLEET-DIVISION-GOOD group ===============================================================================
+             */
+            if (1506 == groupID) {
+                if (!dotIftaOnly) {
+                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGA", "Nevada", 250L));
+                }
+                
+                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGB", "Idaho", 500L));
+            }
+        }
+
+        return list;
+    }
+
+    private StateMileage createStateMileageByGroupBean(String fleetName, String vehicleName, String stateName, long miles) {
+        StateMileage bean;
+        bean = new StateMileage();
+        bean.setGroupName(fleetName);
+        bean.setVehicleName(vehicleName);
+        bean.setStateName(stateName);
+        bean.setMiles(miles);
+        return bean;
+    }
+
     private List<StateMileage> getDataBis(Integer groupID, Interval interval, Boolean isDotIfta) {
         // only the first call adds data
         List<StateMileage> list = new ArrayList<StateMileage>();
-        
+
         StateMileage bean = new StateMileage();
-        
+
         Date date = new Date();
-        Calendar calendar = Calendar.getInstance(); 
-        calendar.set(2010,9,10);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2010, 9, 10);
         date = calendar.getTime();
 
-        if(interval.contains(date.getTime()) && 1504 == groupID ){ 
-            bean.setGroupName(MOCK_PREFIX + "FLEET"); 
+        if (interval.contains(date.getTime()) && 1504 == groupID) {
+            bean.setGroupName(MOCK_PREFIX + "FLEET");
             bean.setVehicleName(MOCK_PREFIX + "10026217");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -147,13 +296,13 @@ public class MockStateMileageDAO implements StateMileageDAO {
             bean.setMiles(3108L);
             list.add(bean);
         }
-        
-        calendar.set(2010,9,11);
+
+        calendar.set(2010, 9, 11);
         date = calendar.getTime();
-        
-        if(interval.contains(date.getTime()) && 1504 == groupID ){ 
+
+        if (interval.contains(date.getTime()) && 1504 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET"); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET");
             bean.setVehicleName(MOCK_PREFIX + "11077461");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -161,13 +310,13 @@ public class MockStateMileageDAO implements StateMileageDAO {
             bean.setMiles(4484L);
             list.add(bean);
         }
-        
-        calendar.set(2010,9,12);
+
+        calendar.set(2010, 9, 12);
         date = calendar.getTime();
-        
-        if(interval.contains(date.getTime()) && 1504 == groupID ){ 
-            bean = new StateMileage();   
-            bean.setGroupName(MOCK_PREFIX + "FLEET"); 
+
+        if (interval.contains(date.getTime()) && 1504 == groupID) {
+            bean = new StateMileage();
+            bean.setGroupName(MOCK_PREFIX + "FLEET");
             bean.setVehicleName(MOCK_PREFIX + "11187740");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -175,72 +324,72 @@ public class MockStateMileageDAO implements StateMileageDAO {
             bean.setMiles(1817L);
             list.add(bean);
         }
-        
-        calendar.set(2010,9,13);
+
+        calendar.set(2010, 9, 13);
         date = calendar.getTime();
-        
-        if(interval.contains(date.getTime()) && 1505 == groupID  ){ 
+
+        if (interval.contains(date.getTime()) && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION"); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION");
             bean.setVehicleName(MOCK_PREFIX + "10740909");
             bean.setStateName(MOCK_PREFIX + "New Mexico");
             bean.setOnRoadFlag(false);
             bean.setMonth("February");
             bean.setMiles(827L);
-            list.add(bean);  
+            list.add(bean);
         }
-        
-        calendar.set(2010,9,14);
+
+        calendar.set(2010, 9, 14);
         date = calendar.getTime();
-        
-        if(interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID){ 
+
+        if (interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION"); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION");
             bean.setVehicleName(MOCK_PREFIX + "12345678");
             bean.setStateName(MOCK_PREFIX + "South Dakota");
             bean.setOnRoadFlag(false);
             bean.setMonth("February");
             bean.setMiles(827L);
-            list.add(bean);  
+            list.add(bean);
         }
-        
-        calendar.set(2010,9,15);
+
+        calendar.set(2010, 9, 15);
         date = calendar.getTime();
-        
-        if(interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID){ 
+
+        if (interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION"); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION");
             bean.setVehicleName(MOCK_PREFIX + "87654321");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(false);
             bean.setMonth("February");
             bean.setMiles(927L);
-            list.add(bean);  
+            list.add(bean);
         }
-        
-        calendar.set(2010,9,15);
+
+        calendar.set(2010, 9, 15);
         date = calendar.getTime();
-        
-        if(interval.contains(date.getTime()) && !isDotIfta && 1506 == groupID){ 
+
+        if (interval.contains(date.getTime()) && !isDotIfta && 1506 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION - GOOD"); 
+            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION - GOOD");
             bean.setVehicleName(MOCK_PREFIX + "87654320");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(true);
             bean.setMonth("February");
             bean.setMiles(1027L);
-            list.add(bean);  
+            list.add(bean);
         }
-   
+
         return list;
     }
-    
+
     /* creates a new instance of StateMileage */
     private StateMileage newInstance(String groupName, String state, String vehicle, Long miles) {
         StateMileage bean = new StateMileage();
-        bean.setGroupName(groupName); 
+        bean.setGroupName(groupName);
         bean.setStateName(state);
-        bean.setVehicleName(vehicle); 
+        bean.setVehicleName(vehicle);
         bean.setMiles(miles);
         return bean;
     }

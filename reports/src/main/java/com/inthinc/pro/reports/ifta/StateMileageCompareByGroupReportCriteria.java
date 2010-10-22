@@ -1,0 +1,78 @@
+package com.inthinc.pro.reports.ifta;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+
+import org.joda.time.Interval;
+
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.StateMileage;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
+
+/**
+ * Report Criteria for StateMileageFuelByVehicle report.
+ */
+public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria {
+
+    /**
+     * Default constructor.
+     * @param locale
+     */
+    public StateMileageCompareByGroupReportCriteria(Locale locale) {
+        super(ReportType.STATE_MILEAGE_COMPARE_BY_GROUP, locale);
+    }
+
+    /**
+     * Initiate the DataSet and the parameters for the report.
+     * @param groupId the groupId chosen by the user
+     * @param interval the date period
+     * @param iftaOnly the flag to consider only DOT/IFTA 
+     */
+    @Override
+    public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        super.init(groupIDList, interval, dotOnly);
+
+        List<StateMileage> dataList = new ArrayList<StateMileage>();
+        for (Integer groupID : groupIDList) {
+            List<StateMileage> list = stateMileageDAO.getStateMileageByGroup(groupID, interval, dotOnly);
+            if (list != null) {
+                dataList.addAll(list);
+            }
+        }      
+        initDataSet(dataList);
+    }
+
+    /**
+     * Populate the data set with data.
+     * Copy the fields from the record returned from the Back End to the fields in the beans to be used by Jasper.
+     * 
+     * @param records The records retrieved from the Back End
+     */
+    void initDataSet(List<StateMileage> records)
+    {   
+        List<StateMileageCompareByGroup> dataList = new ArrayList<StateMileageCompareByGroup>();
+        for (StateMileage item : records) {
+            StateMileageCompareByGroup rec = new StateMileageCompareByGroup();
+            rec.setGroupName(item.getGroupName());
+            rec.setState(item.getStateName());
+            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
+                    item.getMiles(), getMeasurementType()).doubleValue());
+            dataList.add(rec);
+        }
+        Collections.sort(dataList, new StateMileageCompareByGroupComparator());        
+        setMainDataset(dataList);
+    }
+
+    /* Comparator for StateMileageByVehicle report */
+    class StateMileageCompareByGroupComparator implements Comparator<StateMileageCompareByGroup> {
+
+        @Override
+        public int compare(StateMileageCompareByGroup o1, StateMileageCompareByGroup o2) {
+            return o1.getGroupName().compareTo(o2.getGroupName());
+        }
+    }
+}

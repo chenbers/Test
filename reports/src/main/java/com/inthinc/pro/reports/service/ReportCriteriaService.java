@@ -37,6 +37,7 @@ public interface ReportCriteriaService
     ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
     ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
 	ReportCriteria getStateMileageFuelByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
+	ReportCriteria getStateMileageCompareByGroupReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean isIfta);
     ReportCriteria getStateMileageByMonthReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
 
     // HOS
@@ -60,5 +61,4 @@ public interface ReportCriteriaService
     ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getDriverHoursReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getVehicleUsageReportCriteria(Integer id, Interval interval, Locale locale, boolean group);
-    
 }

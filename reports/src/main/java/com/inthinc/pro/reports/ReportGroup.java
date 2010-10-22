@@ -96,11 +96,16 @@ public enum ReportGroup
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.STATE_MILEAGE_FUEL_BY_VEHICLE),
-             
+     
      STATE_MILEAGE_BY_MONTH("State Mileage By Month", 24, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
              ReportType.STATE_MILEAGE_BY_MONTH),
+
+     STATE_MILEAGE_COMPARE_BY_GROUP("Group Comparison By State/Province", 25, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             ReportType.STATE_MILEAGE_COMPARE_BY_GROUP),
                      
              
      // Performance    

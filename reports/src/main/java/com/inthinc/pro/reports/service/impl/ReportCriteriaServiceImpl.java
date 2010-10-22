@@ -59,6 +59,7 @@ import com.inthinc.pro.reports.ifta.MileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByMonthReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleRoadStatusReportCriteria;
+import com.inthinc.pro.reports.ifta.StateMileageCompareByGroupReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageFuelByVehicleReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
@@ -818,6 +819,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
 	}
 
+	@Override
+	public ReportCriteria getStateMileageCompareByGroupReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) {
+	    StateMileageCompareByGroupReportCriteria criteria = new StateMileageCompareByGroupReportCriteria(locale);
+	    criteria.setGroupDAO(groupDAO);
+	    criteria.setStateMileageDAO(stateMileageDAO);
+	    
+	    criteria.setMeasurementType(type);
+	    criteria.init(groupIDList, interval, iftaOnly);
+	    return criteria;
+	}
+
     /**
      * {@inheritDoc}
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getStateMileageByVehicleReportCriteria(java.util.List, org.joda.time.Interval, java.util.Locale, boolean)
@@ -1011,6 +1023,4 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
-
-
 }

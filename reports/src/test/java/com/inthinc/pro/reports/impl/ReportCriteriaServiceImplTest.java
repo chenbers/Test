@@ -27,6 +27,7 @@ import com.inthinc.pro.reports.hos.testData.MockData;
 import com.inthinc.pro.reports.ifta.StateMileageByMonthReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleRoadStatusReportCriteria;
+import com.inthinc.pro.reports.ifta.StateMileageCompareByGroupReportCriteria;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
 
@@ -35,11 +36,11 @@ import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
  */
 public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     private ReportCriteriaServiceImpl serviceSUT;
-    
+
     // Mocks
     private Integer mockGroupId = 1;
     private List<Integer> listGroupID = new ArrayList<Integer>();
-    
+
     /**
      * Constructor to initialize the test fields.
      */
@@ -56,52 +57,48 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
      */
     @Test
     public void testGetDriverHoursReportCriteria(final DriverHoursReportCriteria criteriaMock) {
-        
-       final Interval interval =  new Interval(new Date().getTime() - 3000, new Date().getTime());
 
-       
-       serviceSUT.getDriverHoursReportCriteria(mockGroupId, interval, Locale.US);
-       
-       
-       new VerificationsInOrder(){
-           {
-               new DriverHoursReportCriteria(Locale.US); 
-               criteriaMock.setDriverDAO((DriverDAO)any); 
-               criteriaMock.setGroupDAO((GroupDAO)any);
-               criteriaMock.setWaysmartDAO((WaysmartDAO)any);           
-               criteriaMock.init(mockGroupId, interval);
-               
-           }
-       };
-       
-        
+        final Interval interval = new Interval(new Date().getTime() - 3000, new Date().getTime());
+
+        serviceSUT.getDriverHoursReportCriteria(mockGroupId, interval, Locale.US);
+
+        new VerificationsInOrder() {
+            {
+                new DriverHoursReportCriteria(Locale.US);
+                criteriaMock.setDriverDAO((DriverDAO) any);
+                criteriaMock.setGroupDAO((GroupDAO) any);
+                criteriaMock.setWaysmartDAO((WaysmartDAO) any);
+                criteriaMock.init(mockGroupId, interval);
+
+            }
+        };
+
     }
-    
+
     /**
      * Test for getStateMileageByVehicleRoadStatusReportCriteria method.
      */
     @Test
     public void testGetStateMileageByVehicleRoadStatusReportCriteria(final StateMileageByVehicleRoadStatusReportCriteria criteriaMock) {
         final Boolean isIfta = true;
-        final Interval interval =  new Interval(new Date().getTime() - 3000, new Date().getTime());
+        final Interval interval = new Interval(new Date().getTime() - 3000, new Date().getTime());
         final MeasurementType type = MeasurementType.ENGLISH;
 
         listGroupID.add(1);
         serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(listGroupID, interval, Locale.US, type, isIfta);
-         
-        new VerificationsInOrder(){
+
+        new VerificationsInOrder() {
             {
-                new StateMileageByVehicleRoadStatusReportCriteria(Locale.US); 
-                criteriaMock.setGroupDAO((GroupDAO)any);
-                criteriaMock.setStateMileageDAO((StateMileageDAO)any); 
-                criteriaMock.setMeasurementType(type); 
+                new StateMileageByVehicleRoadStatusReportCriteria(Locale.US);
+                criteriaMock.setGroupDAO((GroupDAO) any);
+                criteriaMock.setStateMileageDAO((StateMileageDAO) any);
+                criteriaMock.setMeasurementType(type);
                 criteriaMock.init(listGroupID, interval, isIfta);
-                
+
             }
         };
-        
-         
-     }
+
+    }
 
     /**
      * Test for getStateMileageByVehicleReportCriteria method.
@@ -110,21 +107,21 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     @Test
     public void testGetStateMileageByVehicleReportCriteria(final StateMileageByVehicleReportCriteria criteriaMock) {
         final Boolean isIfta = true;
-        final Interval interval =  new Interval(new Date().getTime() - 16000, new Date().getTime());
+        final Interval interval = new Interval(new Date().getTime() - 16000, new Date().getTime());
 
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(1);
         serviceSUT.getStateMileageByVehicleReportCriteria(groupIDs, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
-         
-        new VerificationsInOrder(){
+
+        new VerificationsInOrder() {
             {
-                new StateMileageByVehicleReportCriteria(Locale.US); 
-                criteriaMock.setGroupDAO((GroupDAO)any);
-                criteriaMock.setStateMileageDAO((StateMileageDAO)any);           
-                criteriaMock.init((List<Integer>)any, interval, isIfta);
+                new StateMileageByVehicleReportCriteria(Locale.US);
+                criteriaMock.setGroupDAO((GroupDAO) any);
+                criteriaMock.setStateMileageDAO((StateMileageDAO) any);
+                criteriaMock.init((List<Integer>) any, interval, isIfta);
             }
         };
-     }
+    }
 
     /**
      * Test for getStateMileageByMonthReportCriteria method.
@@ -133,31 +130,55 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     @Test
     public void testGetStateMileageByMonthReportCriteria(final StateMileageByMonthReportCriteria criteriaMock) {
         final Boolean isIfta = true;
-        final Interval interval =  new Interval(new Date().getTime() - 16000, new Date().getTime());
+        final Interval interval = new Interval(new Date().getTime() - 16000, new Date().getTime());
 
         List<Integer> groupIDsMock = new ArrayList<Integer>();
         groupIDsMock.add(1);
         serviceSUT.getStateMileageByMonthReportCriteria(groupIDsMock, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
-         
-        new VerificationsInOrder(){
+
+        new VerificationsInOrder() {
             {
-                new StateMileageByMonthReportCriteria(Locale.US); 
-                criteriaMock.setGroupDAO((GroupDAO)any);
-                criteriaMock.setStateMileageDAO((StateMileageDAO)any);           
-                criteriaMock.init((List<Integer>)any, interval, isIfta);
+                new StateMileageByMonthReportCriteria(Locale.US);
+                criteriaMock.setGroupDAO((GroupDAO) any);
+                criteriaMock.setStateMileageDAO((StateMileageDAO) any);
+                criteriaMock.init((List<Integer>) any, interval, isIfta);
             }
         };
-     }
+    }
+
+    /**
+     * Test for getStateMileageByMonthReportCriteria method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetStateMileageCompareByGroupReportCriteria(final StateMileageCompareByGroupReportCriteria criteriaMock) {
+        final Boolean isIfta = true;
+        final Interval interval = new Interval(new Date().getTime() - 16000, new Date().getTime());
+
+        List<Integer> groupIDsMock = new ArrayList<Integer>();
+        groupIDsMock.add(1);
+        serviceSUT.getStateMileageCompareByGroupReportCriteria(groupIDsMock, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
+
+        new VerificationsInOrder() {
+            {
+                new StateMileageCompareByGroupReportCriteria(Locale.US);
+                criteriaMock.setGroupDAO((GroupDAO) any);
+                criteriaMock.setStateMileageDAO((StateMileageDAO) any);
+                criteriaMock.setMeasurementType(MeasurementType.ENGLISH);
+                criteriaMock.init((List<Integer>) any, interval, isIfta);
+            }
+        };
+    }
 
     // TODO Move these classes to mock package
     class MockDriverDAO implements DriverDAO {
         Driver driver;
-        
+
         MockDriverDAO(Integer groupID) {
             driver = MockData.createMockDriver(groupID, 2, "Driver", "2");
             driver.setGroupID(groupID);
         }
-        
+
         @Override
         public Driver findByPersonID(Integer personID) {
             return null;
@@ -235,13 +256,13 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         @Override
         public Integer update(Driver entity) {
             return null;
-        }        
+        }
     }
 
     class MockGroupDAO implements GroupDAO {
         Group group = null;
-        
-        MockGroupDAO(Integer id){
+
+        MockGroupDAO(Integer id) {
             group = MockData.createMockGroup(id);
         }
 
@@ -277,6 +298,6 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         public Integer update(Group entity) {
             return null;
         }
-        
+
     }
 }
