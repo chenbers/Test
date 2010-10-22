@@ -25,31 +25,40 @@ public class ForwardCommandSpool extends BaseEntity {
     {
     }
     
-    public ForwardCommandSpool(Integer forwardCommandID, String strData, Integer intData, Integer command, String address) 
+    public ForwardCommandSpool(Integer forwardCommandID, String strData, Integer command, String address) 
     {
         this.forwardCommandID = forwardCommandID;
         this.command = command;
         this.address = address;
         this.strData = strData;
-        this.intData = intData;
+        this.intData = null;
         
-/*
         if (strData != null)
         {
-            int len = strData.getBytes().length+1;
+            int len = strData.getBytes().length;
             byte[] dataBytes = new byte[len];
             
             byte[] strDataBytes = strData.getBytes(); 
-            for (int i = 0; i < len-1; i++)
+            for (int i = 0; i < len; i++)
             {
                 dataBytes[i] = strDataBytes[i];
             }
-            dataBytes[len-1] = 0x0;
+            dataBytes[len] = 0x0;
             
             this.data = dataBytes;
             
         }
-        else
+    }
+
+    public ForwardCommandSpool(Integer forwardCommandID, Integer intData, Integer command, String address) 
+    {
+        this.forwardCommandID = forwardCommandID;
+        this.command = command;
+        this.address = address;
+        this.intData = intData;
+        this.strData = null;
+        
+        if (intData != null)
         {
             byte[] dataBytes = new byte[4];
             dataBytes[3] = (byte) (intData & 0x000000FF);
@@ -61,9 +70,19 @@ public class ForwardCommandSpool extends BaseEntity {
             dataBytes[0] = (byte) (intData & 0x000000FF);
             this.data = dataBytes;
         }
-*/        
     }
 
+    public ForwardCommandSpool(Integer forwardCommandID, byte[] data, Integer command, String address) 
+    {
+        this.forwardCommandID = forwardCommandID;
+        this.command = command;
+        this.address = address;
+        this.intData = null;
+        this.strData = null;
+        this.data = data;
+    }
+
+    
     public Integer getForwardCommandSpoolID() {
         return forwardCommandSpoolID;
     }
