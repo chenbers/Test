@@ -82,6 +82,10 @@ public class DataGenForHOSTesting extends DataGenForTesting {
 
             resultSet = statement.executeQuery();
         }   // end try
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
         finally
         { // clean up and release the connection
             resultSet.close();
@@ -108,6 +112,10 @@ public class DataGenForHOSTesting extends DataGenForTesting {
 
             resultSet = statement.executeQuery();
         }   // end try
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
         finally
         { // clean up and release the connection
             resultSet.close();

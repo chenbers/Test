@@ -37,7 +37,7 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 
-@Ignore
+//@Ignore
 public class HOSJDBCDAOTest extends BaseJDBCTest{
     private static ITData itData;
     private static SiloService siloService;
@@ -362,13 +362,9 @@ System.out.println("queryInterval: " + queryInterval);
         assertTrue("expected 1 occupant record for 1 day/1 driver", occupantLogRecords.size() == 1);
         HOSOccupantLog rec = occupantLogRecords.get(0);
         assertEquals("driverID", testOccupant.getDriverID(), rec.getDriverID());
-        assertEquals("driverName", testOccupant.getPerson().getFullName(), rec.getDriverName());
+        assertEquals("driverName", testOccupant.getPerson().getFirst() + " " + testOccupant.getPerson().getLast(), rec.getDriverName());
         assertEquals("vehicleID", testVehicle.getVehicleID(), rec.getVehicleID());
-//System.out.println("DAY: " + new DateTime(rec.getDay(), DateTimeZone.UTC) + " ms: " + rec.getDay().getTime());
-//        assertEquals("day", queryInterval.getStart().toDate(), rec.getDay());
-//        assertEquals("odometer ", Long.valueOf(DataGenForHOSTesting.LOGIN_ODOMETER), rec.getStartOdometer());
-//        Long expectedMiles = Long.valueOf(DataGenForHOSTesting.LOGOUT_ODOMETER-DataGenForHOSTesting.LOGIN_ODOMETER);
-//        assertEquals("miles ", expectedMiles, rec.getMilesDriven());
+        assertTrue("returned day day is within interval", queryInterval.contains(rec.getLogTime().getTime()) || queryInterval.contains(rec.getEndTime().getTime()));
         
     }
     
