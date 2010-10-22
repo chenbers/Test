@@ -19,7 +19,8 @@ public class MessageItem {
     private String to;
     @Column(name = "driverName")
     private String from;
-    private String message;  //TODO: jwimmer: wire to messageText once Dave Harry sends that across 
+    @Column(name = "textMsg")
+    private String message;  
     private TimeZone timeZone;
     private String result;
     private String entity;
