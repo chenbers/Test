@@ -25,6 +25,11 @@ public class BaseUnitTest {
     // switch to true to get a file dump of the report for debug/test
     public static final boolean DUMP_TO_FILE = false;
     
+    @Test
+    public void dummy() {
+        assertTrue(true);
+    }
+    
     protected void dump(String prefix, int testCaseCnt, ReportCriteria reportCriteria, FormatType formatType) {
         // remove comments to get pdf or xls dump of report
         ReportCreator<JasperReport> reportCreator = new JasperReportCreator(null);
