@@ -334,10 +334,12 @@ jQuery(function(){
                     <td class="middle">
                       <h:selectOneMenu id="#{context}-navigationRedirectTo" value="#{searchCoordinationBean.navigation}" styleClass="text" >
                         <f:selectItem itemLabel="#{messages.navigation_searchDrivers}" itemValue="1"/>                         
-                                      <f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>  
-                                      <f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>
                         <f:selectItem itemLabel="#{messages.navigation_searchVehicles}" itemValue="2"/>  
+                        <f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>
+                        <f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>  
+					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WAYSMARTACCESS">
                         <f:selectItem itemLabel="#{messages.navigation_searchWaysmart}" itemValue="5"/>           
+					</security:authorize>
                       </h:selectOneMenu>
                     </td>
 					<td class="middle" width="25" align="center">

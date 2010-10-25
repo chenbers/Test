@@ -3,6 +3,7 @@
     xmlns:rich="http://richfaces.org/rich" 
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:iwi="http://pro.tiwi.com/jsf" 
+  	xmlns:security="http://pro.tiwi.com/jsf/security"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:c="http://java.sun.com/jstl/core"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
@@ -23,10 +24,11 @@
                    <li class="#{devicesSelected}">
                          <pretty:link id="#{context}-devicesReport" mappingId="devicesReport"><span>#{messages.subNavigation_devices}</span></pretty:link>
                    </li>
+					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WAYSMARTACCESS">
                    <li class="#{waysmartSelected}">
                          <pretty:link id="#{context}-waysmartReport" mappingId="waysmartReport"><span>#{messages.subNavigation_waysmart}</span></pretty:link>
                    </li>
-                   
+					</security:authorize>                   
                </ul>
            </div>
        </div>

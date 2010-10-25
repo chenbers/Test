@@ -15,6 +15,7 @@
         <intercept-url pattern="/app/hos/**" access="ROLE_HOSADMIN, ROLE_HOSACCESS" />
         <intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_ADMIN, ROLE_CRASHREPORTACCESS" />
        	<intercept-url pattern="/app/liveFleet" access="ROLE_ADMIN, ROLE_LIVEFLEETACCESS" />                
+       	<intercept-url pattern="/app/reports/waysmartReport/**" access="ROLE_ADMIN, ROLE_WAYSMARTACCESS" />                
         <intercept-url pattern="/secured/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
         <intercept-url pattern="/secured/**" access="ROLE_ADMIN, ROLE_NORMAL" />
         <intercept-url pattern="/app/**" access="ROLE_ADMIN, ROLE_NORMAL" />
