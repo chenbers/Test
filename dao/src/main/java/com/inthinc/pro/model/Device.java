@@ -359,10 +359,16 @@ public class Device extends BaseEntity
      */
     public boolean isTextMsgReceiveCapable() {
         // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implemented
-        final Integer TYPE_WAYSMART820 = 2;
+
         //TODO: Jacquie added this to temporarily get the tests to pass - will make this always retrn false
         this.productVer = ProductType.TIWIPRO_R74.getCode();
-        return (this.productVer.equals(TYPE_WAYSMART820));
+        
+        return (this.productVer != null && this.productVer.equals(ProductType.WS820.getCode()));
+    }
+    
+    public boolean isCrashTraceAppletCapable(){
+        //TODO: jwimmer: another stopgap until a better way to determine device capabilities is implemented
+        return (this.productVer != null && this.productVer.equals(ProductType.WS820.getCode()));
     }
 
     public void setProductVer(Integer productVer) {
