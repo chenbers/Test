@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.faces.model.SelectItem;
@@ -19,6 +21,9 @@ import com.inthinc.pro.dao.TextMsgAlertDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandID;
+import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MessageItem;
@@ -55,6 +60,8 @@ public class MessagesBean extends BaseBean {
     private DeviceDAO deviceDAO;
     private VehicleDAO vehicleDAO;
     private TextMsgAlertDAO textMsgAlertDAO;
+    
+    private ResourceBundle resourceMessages = ResourceBundle.getBundle("com.inthinc.pro.resources.Messages", getLocale());
     
     public MessagesBean()
     {
@@ -170,7 +177,7 @@ public class MessagesBean extends BaseBean {
             
             for ( Driver d: drivers ) {
                 SelectItem si = new SelectItem();
-                si.setLabel(d.getPerson().getFullName()!=null?d.getPerson().getFullName():"Unnamed driver");
+                si.setLabel(d.getPerson().getFullName()!=null?d.getPerson().getFullName(): resourceMessages.getString("unknown_driver"));
                 si.setValue(d.getDriverID());
                 driverSelectFromList.add(si);
             }
@@ -191,7 +198,7 @@ public class MessagesBean extends BaseBean {
             
             for (Vehicle v: vehicles ) {
                 SelectItem si = new SelectItem();
-                si.setLabel(v.getFullName() != null?v.getFullName():"Unnamed vehicle");
+                si.setLabel(v.getFullName() != null?v.getFullName(): resourceMessages.getString("unknown_vehicle"));
                 si.setValue(v.getVehicleID());
                 vehicleSelectFromList.add(si);
             }
@@ -211,7 +218,7 @@ public class MessagesBean extends BaseBean {
             
             for ( Group g: groups ) {
                 SelectItem si = new SelectItem();
-                si.setLabel(g.getName()!=null?g.getName():"Unnamed group");
+                si.setLabel(g.getName()!=null?g.getName():resourceMessages.getString("unknown_group"));
                 si.setValue(g.getGroupID());
                 groupSelectFromList.add(si);
             }
@@ -315,7 +322,7 @@ public class MessagesBean extends BaseBean {
      */
     public void removeSelected() {
         //TODO: clarify: jwimmer: SHOULD we allow users to soft delete sent messages as well?  pro: easier for users to navigate/manage their sent box; con: was already sent... may mislead users into thinking they can UN-send a message?
-        
+        //TODO: jwimmer: waiting on Grady to hear whether this was intended as removeSelectedMessages?  or just removeFilter from list view?
         //TODO: jwimmer: implement
     }
     
@@ -338,6 +345,10 @@ public class MessagesBean extends BaseBean {
             if (v != null && v.getDeviceID() != null) {
                 results.add(v.getDeviceID());
             }
+            else
+            {   
+                this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgDriverNoDevice"), driverDAO.findByID(d).getPerson().getFullName()));
+            }
         }
         return results;
     }
@@ -348,6 +359,10 @@ public class MessagesBean extends BaseBean {
             Vehicle v = vehicleDAO.findByID(vID);
             if (v != null && v.getDeviceID() != null) {
                 results.add(v.getDeviceID());
+            }
+            else
+            {
+                this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgVehicleNoDevice"), v.getFullName()));
             }
         }
         return results;
@@ -362,7 +377,6 @@ public class MessagesBean extends BaseBean {
                 // Drivers
                 List<Driver> grpDrv = driverDAO.getAllDrivers(subGrp.getGroupID());
                 for (Driver d : grpDrv) {
-                    // sendDriver(d.getDriverID());
                     Vehicle v = vehicleDAO.findByDriverID(d.getDriverID());
                     if (v != null && v.getDeviceID() != null) {
                         results.add(v.getDeviceID());
@@ -371,8 +385,6 @@ public class MessagesBean extends BaseBean {
                 // Vehicles
                 List<Vehicle> grpVeh = vehicleDAO.getVehiclesInGroup(subGrp.getGroupID());
                 for (Vehicle v : grpVeh) {
-                    // sendVehicle(v.getVehicleID());
-
                     if (v != null && v.getDeviceID() != null) {
                         results.add(v.getDeviceID());
                     }
@@ -424,20 +436,19 @@ public class MessagesBean extends BaseBean {
                 Vehicle v = vehicleDAO.findByID(dev.getVehicleID());
                 Driver d = driverDAO.findByID(v.getDriverID());
                 if (dev.isTextMsgReceiveCapable()) {
-                    // ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED);
+                     //ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED);
                     // deviceDAO.queueForwardCommand(devID, fwdCmd);
 
-                    this.sendMessageList.add("Message sent to driver " + d.getPerson().getFullName() + " (Vehicle: " + v.getFullName() + ") (Device: " + dev.getName() + ")");
+                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgSuccess"), d.getPerson().getFullName(), v.getFullName(), dev.getName() ));
                 } else {
-                    this.sendMessageList.add("Device: (" + dev.getName() + ") associated with driver " + d.getPerson().getFullName() + " (Vehicle: " + v.getFullName()
-                            + "), is not capable of receiving Text Messages");
+                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgNotCapable"), dev.getName() , d.getPerson().getFullName(), v.getFullName()));
                 }
                 success = true;
             }
         }
 
         if (!success) {
-            this.sendMessageList.add("No device"); // TODO: jwimmer: question: do we want a message or an error log? here
+            this.sendMessageList.add(resourceMessages.getString("txtMsg_noDevice")); // TODO: jwimmer: question: do we want a message or an error log? here; 
         }
     }
        
