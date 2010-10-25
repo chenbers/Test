@@ -231,18 +231,6 @@
                                   </h:inputText>
                                 </td>
                               </tr>
-	                          <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
-                              <tr>
-                                <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-HOS" value="#{vehiclesBean.updateField['hos']}" />
-                                  <h:outputText value="#{messages.editVehicle_DOT}"/>
-                                </td>
-                                
-                                <td>                                       
-                                  <h:selectBooleanCheckbox id="editVehicle-HOS" value="#{vehiclesBean.item.hos}" />
-                                </td>
-                              </tr>
-	                         </ui:fragment>
                          <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/editProperties.xhtml">
                          	 <ui:param name="vehiclesBean" value="#{vehiclesBean}"/>
                              <ui:param name="editableVehicleSettings" value="#{vehiclesBean.item.editableVehicleSettings}" />
@@ -399,6 +387,7 @@
                              <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
                              <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
                              <ui:param name="context" value="editVehicle" />
+                             <ui:param name="disabled" value="false"/>
                              <ui:param name="formName" value="edit-form"/>
                            </ui:include>
 <!--                         </ui:fragment>-->

@@ -6,12 +6,14 @@ public class UnknownEditableVehicleSettings extends EditableVehicleSettings {
 
     public UnknownEditableVehicleSettings() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public UnknownEditableVehicleSettings(Integer vehicleID) {
         super(vehicleID, ProductType.UNKNOWN);
-        // TODO Auto-generated constructor stub
     }
 
+    public UnknownEditableVehicleSettings getSelf(){
+        return this;
+    }
+                                                   
 }

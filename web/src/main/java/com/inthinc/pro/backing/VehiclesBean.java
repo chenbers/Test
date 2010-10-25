@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,6 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.model.UnknownSettingManager;
 import com.inthinc.pro.backing.model.VehicleFactory;
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -34,7 +34,6 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.util.DummyMap;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -51,7 +50,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private static final Map<String, String>      YEARS;
     private static final Map<String, State>       STATES;
     private Map<Integer, Device>                  devices;
-    private VehicleFactory                        vehicleFactory;
 
     static
     {
@@ -109,9 +107,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
     
+    private ProductType   batchProductChoice;
+    
+    // Stuff to do with vehicleSettings for the device
+    private VehicleFactory                        vehicleFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
-    private WaySmartSettingManagerLocator<Integer,WaySmartSettingManager> waySmartSettingManagerLocator;
-    private TiwiproSettingManagerLocator<Integer,TiwiproSettingManager> tiwiproSettingManagerLocator;
 
     private CacheBean cacheBean;
     
@@ -119,16 +119,51 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public void initBean() {
 
         super.initBean();
-        waySmartSettingManagerLocator = new WaySmartSettingManagerLocator<Integer,WaySmartSettingManager>(this);
-        tiwiproSettingManagerLocator = new TiwiproSettingManagerLocator<Integer,TiwiproSettingManager>(this);
     }
-    public WaySmartSettingManagerLocator<Integer, WaySmartSettingManager> getWaySmartSettingManagerLocator() {
-        return waySmartSettingManagerLocator;
+    @Override
+    public void doSelectAll() {
+
+        if (batchProductChoice == null){
+            
+             super.doSelectAll();
+        }
+        else{
+            
+            for(VehicleView vehicleView : filteredItems){
+                                   
+                vehicleView.setSelected(selectAll && vehicleView.editableVehicleSettings.getProductType().equals(batchProductChoice));
+            }
+        }
     }
 
-    public TiwiproSettingManagerLocator<Integer,TiwiproSettingManager> getTiwiproSettingManagerLocator() {
-        return tiwiproSettingManagerLocator;
+    @Override
+    public boolean isSelectAll() {
+        
+         if (batchProductChoice == null || getFilteredItems().size() == 0){
+        
+            return super.isSelectAll();
+        }
+        else{
+                
+            for(VehicleView vehicleView : filteredItems){
+                
+                if (!vehicleView.isSelected() && vehicleView.editableVehicleSettings.getProductType().equals(batchProductChoice))
+                    return false;
+            }
+            return true;
+        }
     }
+    public boolean isBatchProductChoice(ProductType productType){
+        
+        return batchProductChoice == null || batchProductChoice.equals(productType);
+    }
+//    public WaySmartSettingManagerLocator<Integer, WaySmartSettingManager> getWaySmartSettingManagerLocator() {
+//        return waySmartSettingManagerLocator;
+//    }
+//
+//    public TiwiproSettingManagerLocator<Integer,TiwiproSettingManager> getTiwiproSettingManagerLocator() {
+//        return tiwiproSettingManagerLocator;
+//    }
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -181,7 +216,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
        // Get all the settings 
         
-        vehicleSettingManagers = vehicleFactory.initSettings(getUser().getGroupID());
+        vehicleSettingManagers = vehicleFactory.retrieveVehicleSettings(getUser().getGroupID());
         
         // Wrap Vehicles and Devices
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
@@ -196,6 +231,17 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         return items;
+    }
+    private void checkForSettings(Integer vehicleID){
+        
+        if(vehicleSettingManagers.get(vehicleID) == null && !isBatchEdit()){
+            
+            vehicleSettingManagers.put(vehicleID, vehicleFactory.getUnknownSettingManager(vehicleID));
+        }
+        else if(vehicleSettingManagers.get(vehicleID) == null && isBatchEdit()){
+            
+            vehicleSettingManagers.put(vehicleID, vehicleFactory.getSettingManager(batchProductChoice,vehicleID));
+        }
     }
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
@@ -227,13 +273,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setSelected(false);
 
         return vehicleView;
-    }
-    private void checkForSettings(Integer vehicleID){
-       
-        if(vehicleSettingManagers.get(vehicleID) == null){
-            
-            vehicleSettingManagers.put(vehicleID, vehicleFactory.getUnknownSettingManager(vehicleID));
-        }
     }
     @Override
     public String fieldValue(VehicleView vehicle, String column)
@@ -313,6 +352,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setStatus(Status.ACTIVE);
+        vehicle.setVehicleID(-1);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
         checkForSettings(vehicle.getVehicleID());
@@ -603,6 +643,35 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return SelectItemUtil.toList(VehicleType.class, false);
     }
 
+    public List<SelectItem> getProductTypesSelectItems(){
+        
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        for (ProductType e : EnumSet.allOf(ProductType.class))
+        {
+               selectItemList.add(new SelectItem(e,e.getName()));
+        }
+        selectItemList.add(0, new SelectItem(null,MessageUtil.getMessageString("VehicleSelectProduct")));
+        return selectItemList;
+    }
+    public ProductType getBatchProductChoice() {
+        return batchProductChoice;
+    }
+    public void setBatchProductChoice(ProductType batchProductChoice) {
+        this.batchProductChoice = batchProductChoice;
+    }
+    public List<SelectItem> getZoneTypeSelectItems()
+    {
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+
+        for (VehicleType p : EnumSet.allOf(VehicleType.class))
+        {
+            SelectItem selectItem = new SelectItem(p.getCode(),MessageUtil.getMessageString(p.toString()));
+            selectItemList.add(selectItem);
+        }
+
+        return selectItemList;
+    }
+
     public Map<String, State> getStates()
     {
         return STATES;
@@ -663,36 +732,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         public EditableVehicleSettings getEditableVehicleSettings() {
             return editableVehicleSettings;
-        }
-        public TiwiproEditableVehicleSettings getTiwiproEditableVehicleSettings(){
-       	 
-        	if ( editableVehicleSettings instanceof TiwiproEditableVehicleSettings){
-        		return (TiwiproEditableVehicleSettings) editableVehicleSettings;
-        	}
-        	return null;
-        }
-        public WaySmartEditableVehicleSettings getWaySmartEditableVehicleSettings(){
-            
-            if ( editableVehicleSettings instanceof WaySmartEditableVehicleSettings){
-                return (WaySmartEditableVehicleSettings) editableVehicleSettings;
-            }
-            return null;
-        }
-        public VehicleSettingManager getTiwiproSettingManager(){
-            
-            if(bean.getVehicleSettingManagers().get(getVehicleID()) instanceof TiwiproSettingManager) {
-                
-                return (VehicleSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
-            }
-            else return null;
-        }
-        public VehicleSettingManager getWaySmartSettingManager(){
-            
-            if(bean.getVehicleSettingManagers().get(getVehicleID()) instanceof WaySmartSettingManager) {
-                
-                return (VehicleSettingManager) bean.getVehicleSettingManagers().get(getVehicleID());
-            }
-            else return null;
         }
         public Integer getId()
         {
@@ -786,70 +825,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public void setSelected(boolean selected)
         {
-            this.selected = selected;
+            this.selected = selected && bean.isBatchProductChoice(editableVehicleSettings.getProductType());
         }
-    }
-    public class TiwiproSettingManagerLocator<K, V> extends DummyMap<Integer, TiwiproSettingManager>{
-
-        private VehiclesBean vehiclesBean;
-        
-        public TiwiproSettingManagerLocator(VehiclesBean vehiclesBean) {
-            super();
-            this.vehiclesBean = vehiclesBean;
-        }
-
-        @Override
-        public TiwiproSettingManager get(Object key) {
-            
-            if (!(key instanceof Integer)) return null;
-            
-            if (vehiclesBean.getVehicleSettingManagers().get(key) instanceof TiwiproSettingManager){
-                return (TiwiproSettingManager) vehiclesBean.getVehicleSettingManagers().get(key);
-            }
-            return null;
-        }
-        
-    }
-    public class WaySmartSettingManagerLocator<K, V> extends DummyMap<Integer, WaySmartSettingManager>{
-
-        private VehiclesBean vehiclesBean;
-        
-        public WaySmartSettingManagerLocator(VehiclesBean vehiclesBean) {
-            super();
-            this.vehiclesBean = vehiclesBean;
-        }
-
-        @Override
-        public WaySmartSettingManager get(Object key) {
-            
-            if (!(key instanceof Integer)) return null;
-            
-            if (vehiclesBean.getVehicleSettingManagers().get(key) instanceof WaySmartSettingManager){
-                return (WaySmartSettingManager) vehiclesBean.getVehicleSettingManagers().get(key);
-            }
-            return null;
-        }
-        
-    }
-    public class UnknownSettingManagerLocator<K, V> extends DummyMap<Integer, UnknownSettingManager>{
-
-        private VehiclesBean vehiclesBean;
-        
-        public UnknownSettingManagerLocator(VehiclesBean vehiclesBean) {
-            super();
-            this.vehiclesBean = vehiclesBean;
-        }
-
-        @Override
-        public UnknownSettingManager get(Object key) {
-            
-            if (!(key instanceof Integer)) return null;
-            
-            if (vehiclesBean.getVehicleSettingManagers().get(key) instanceof UnknownSettingManager){
-                return (UnknownSettingManager) vehiclesBean.getVehicleSettingManagers().get(key);
-            }
-            return null;
-        }
-        
     }
 }

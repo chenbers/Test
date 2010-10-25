@@ -12,7 +12,9 @@ import com.inthinc.pro.model.configurator.SliderType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class VehicleSensitivitySliders {
-    
+
+    protected static final Integer CUSTOM_SLIDER_VALUE = 99;
+
     private Map<SliderType, Slider> settingsAndSlidersMap;
     private Map<SliderType, Integer> defaultSettings;
     private Map<SliderType, Integer> settingCounts;
@@ -67,6 +69,18 @@ public class VehicleSensitivitySliders {
         defaultSettings.put(SliderType.HARD_TURN_SLIDER, settingsAndSlidersMap.get(SliderType.HARD_TURN_SLIDER).getDefaultValueIndex());
         defaultSettings.put(SliderType.HARD_BUMP_SLIDER, settingsAndSlidersMap.get(SliderType.HARD_BUMP_SLIDER).getDefaultValueIndex());
     }
+    public Map<SliderType,Integer> adjustedSettingCountsToAllowForCustomValues(Integer hardVertical, Integer hardTurn, Integer hardAcceleration, Integer hardBrake) {
+        
+        Map<SliderType,Integer> settingCount = new HashMap<SliderType,Integer>();
+        
+        settingCount.put(SliderType.HARD_ACCEL_SLIDER, getSettingsCount(SliderType.HARD_ACCEL_SLIDER)+(hardAcceleration > getSettingsCount(SliderType.HARD_ACCEL_SLIDER)?1:0));
+        settingCount.put(SliderType.HARD_BRAKE_SLIDER, getSettingsCount(SliderType.HARD_BRAKE_SLIDER)+(hardBrake > getSettingsCount(SliderType.HARD_BRAKE_SLIDER)?1:0));
+        settingCount.put(SliderType.HARD_TURN_SLIDER,  getSettingsCount(SliderType.HARD_TURN_SLIDER)+(hardTurn > getSettingsCount(SliderType.HARD_TURN_SLIDER)?1:0));
+        settingCount.put(SliderType.HARD_BUMP_SLIDER,  getSettingsCount(SliderType.HARD_BUMP_SLIDER)+(hardVertical > getSettingsCount(SliderType.HARD_BUMP_SLIDER)?1:0));
+
+        return settingCount;
+    }
+
     public Slider getSensitivitySliderSettings(SliderType sliderType){
        
        return settingsAndSlidersMap.get(sliderType);

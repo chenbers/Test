@@ -193,7 +193,7 @@ public abstract class BaseITData {
 //		        		"5555559876");
 		        
 //		        device.setAccel("1100 50 4");
-		        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
+//		        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
 		        System.out.println("device imei " + device.getImei());
 		        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
 		        device.setDeviceID(deviceID);

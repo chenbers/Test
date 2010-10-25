@@ -60,7 +60,7 @@
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="#{id}" value="#{vehiclesBean.item.tiwiproEditableVehicleSettings.speedSettings[index]}" width="250"
+                                          id="#{id}" value="#{vehiclesBean.item.editableVehicleSettings.self.speedSettings[index]}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
@@ -126,8 +126,9 @@
                               </tr>
                               
 <!--                              <ui:param name="settingCounts" value="#{batchEdit?vehiclesBean.item.tiwiproSettingManager.defaultSettings:vehiclesBean.item.tiwiproSettingManager.settingCounts}"/>-->
-                              <ui:param name="settingCounts" value="#{vehiclesBean.tiwiproSettingManagerLocator[vehiclesBean.item.vehicleID].adjustedSettingCounts}"/>
-                              <a4j:repeat id="sensitivity" value="#{vehiclesBean.tiwiproSettingManagerLocator[vehiclesBean.item.vehicleID].sensitivities}" var="sensitivityType" rowKeyVar="index">
+                              <ui:param name="adjustedSettingCounts" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].adjustedSettingCounts}"/>
+                              <ui:param name="settingCounts" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].settingCounts}"/>
+                              <a4j:repeat id="sensitivity" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].sensitivities}" var="sensitivityType" rowKeyVar="index">
                                  <c:set var="sensitivityItem" value="#{(sensitivityType == 'HARD_ACCEL_SLIDER') ? 'hardAcceleration' : ((sensitivityType == 'HARD_BRAKE_SLIDER') ? 'hardBrake' : ((sensitivityType == 'HARD_TURN_SLIDER') ? 'hardTurn' : 'hardVertical'))}" />
                                  <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                      <td></td>
@@ -136,8 +137,8 @@
                                        <span id="#{sensitivityItem}Level" style="font-weight:bold">
                                        </span>
                                        <script type="text/javascript">
-                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{vehiclesBean.item.tiwiproEditableVehicleSettings[sensitivityItem]},
-                                                   								#{vehiclesBean.tiwiproSettingManagerLocator[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
+                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.self[sensitivityItem]},
+                                                   								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
                                                    								#{settingCounts[sensitivityType]});
                                        </script>
                                      </td>
@@ -155,18 +156,18 @@
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <rich:inputNumberSlider id="#{context}-#{sensitivityItem}" 
                                              disabled="#{disabled}" 
-                                             value="#{vehiclesBean.item.tiwiproEditableVehicleSettings[sensitivityItem]}" 
+                                             value="#{vehiclesBean.item.editableVehicleSettings.self[sensitivityItem]}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
                                              showInput="false" minValue="1" 
-                                             maxValue="#{settingCounts[sensitivityType]}" 
-                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{vehiclesBean.tiwiproSettingManagerLocator[vehiclesBean.item.vehicleID].settingCounts[sensitivityType]}.png')"
-                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,
-                                             								#{vehiclesBean.tiwiproSettingManagerLocator[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
+                                             maxValue="#{adjustedSettingCounts[sensitivityType]}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].settingCounts[sensitivityType]}.png')"
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.self[sensitivityItem]},
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
                                              								#{settingCounts[sensitivityType]});
                                              								adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
-                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,
-                                             						#{vehiclesBean.tiwiproSettingManagerLocator[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.self[sensitivityItem]},
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].defaultSettings[sensitivityType]},
                                              						#{settingCounts[sensitivityType]});
                                              						adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
                                     </td>

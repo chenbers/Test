@@ -21,7 +21,7 @@
                 <td>
                   <h:message for="editVehicle-ephone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" >
                   </h:message>
-                  <h:inputText value="#{vehiclesBean.item.tiwiproEditableVehicleSettings.ephone}" id="editVehicle-ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
+                  <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.self.ephone}" id="editVehicle-ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
                     maxlength="22">  
                   </h:inputText>
                 </td>
@@ -39,7 +39,7 @@
                 </td>
                 <td>
                       <rich:inputNumberSlider id="editVehicle-autoLogoff" 
-                             value="#{vehiclesBean.item.tiwiproEditableVehicleSettings.autoLogoffSlider}" 
+                             value="#{vehiclesBean.item.editableVehicleSettings.self.autoLogoffSlider}" 
                              showToolTip="false" showBoundaryValues="false" 
                              handleSelectedClass="handleSelected"
                              showInput="false" minValue="0" maxValue="30" 
@@ -51,7 +51,7 @@
                 </tr><tr>
                 <td></td>
                 <td>
-                	<h:outputText id="autologoffLabel" value="#{vehiclesBean.item.tiwiproEditableVehicleSettings.autologoffDisplayString}"/>
+                	<h:outputText id="autologoffLabel" value="#{vehiclesBean.item.editableVehicleSettings.self.autologoffDisplayString}"/>
                 </td>
               </tr>
  

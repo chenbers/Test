@@ -72,6 +72,14 @@
       <div class="panel_w">
         <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">
+       		<ui:fragment rendered="#{context == 'vehiclesTable'}">
+	            <li class="l">
+	                <h:selectOneMenu style="margin-top: 7px" value="#{vehiclesBean.batchProductChoice}" id="editVehicle-productChoice" converter="SimpleBeanConverter">
+	                  <f:selectItems value="#{vehiclesBean.productTypesSelectItems}" />
+	                  <a4j:support event="onchange" reRender="#{context}" />
+	                </h:selectOneMenu>
+	            </li>
+            </ui:fragment>
             <li class="l"><a4j:commandButton id="#{context}-adminTableDelete" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
             <li class="l"><h:commandButton id="#{context}-adminTableEdit" action="#{editorBean['batchEdit']}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></h:commandButton></li>
             <li class="l">
@@ -133,7 +141,7 @@
                   </h:selectBooleanCheckbox>
                 </f:facet>
                 <h:selectBooleanCheckbox id="select" value="#{item.selected}">
-                  <a4j:support event="onclick" reRender="confirmDelete" limitToList="true" />
+                  <a4j:support event="onclick" reRender="select,confirmDelete" limitToList="true" />
                 </h:selectBooleanCheckbox>
               </rich:column>
               <ui:insert name="columns" />

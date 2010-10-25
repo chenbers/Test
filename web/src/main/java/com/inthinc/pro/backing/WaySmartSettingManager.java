@@ -14,14 +14,18 @@ import com.inthinc.pro.model.configurator.VehicleSetting;
 public class WaySmartSettingManager extends VehicleSettingManager {
 
 	
-    public WaySmartSettingManager(ConfiguratorDAO configuratorDAO, VehicleSetting vehicleSetting) {
+    public WaySmartSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, VehicleSetting vehicleSetting) {
         
-        super(configuratorDAO,vehicleSetting);
+        super(configuratorDAO,productType, vehicleSetting);
 
     }
     @Override
     public void init() {
  
+    }
+    
+    public WaySmartSettingManager getThis(){
+        return this;
     }
     protected EditableVehicleSettings createDefaultValues(Integer vehicleID){
         
@@ -48,7 +52,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Integer hardAcceleration = extractSliderValue(SliderType.HARD_ACCEL_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_ACCEL_SLIDER)));
         Integer hardBrake = extractSliderValue(SliderType.HARD_BRAKE_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_BRAKE_SLIDER)));
 
-        adjustedSettingCounts = adjustedSettingCountsToAllowForCustomValues(hardVertical,hardTurn,hardAcceleration,hardBrake);
+        adjustedSettingCounts = vehicleSensitivitySliders.adjustedSettingCountsToAllowForCustomValues(hardVertical,hardTurn,hardAcceleration,hardBrake);
         return new WaySmartEditableVehicleSettings(vs.getVehicleID(), speedLimit,speedBuffer,severeSpeed, 
                                           hardAcceleration, hardBrake, hardTurn,hardVertical);
     }

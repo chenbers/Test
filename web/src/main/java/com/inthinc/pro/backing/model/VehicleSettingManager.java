@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.Slider;
 import com.inthinc.pro.model.configurator.SliderType;
@@ -14,24 +15,22 @@ import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public abstract class VehicleSettingManager {
 
-    protected static final Integer CUSTOM_SLIDER_VALUE = 99;
 	protected ConfiguratorDAO configuratorDAO;
     protected VehicleSetting  vehicleSetting;
     protected VehicleSensitivitySliders vehicleSensitivitySliders;
     protected Map<SliderType,Integer> adjustedSettingCounts;
         
-    protected VehicleSettingManager(ConfiguratorDAO configuratorDAO, VehicleSetting vehicleSetting) {
+    protected VehicleSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, VehicleSetting vehicleSetting) {
 
         this.configuratorDAO = configuratorDAO;
         this.vehicleSetting = vehicleSetting;
-        vehicleSensitivitySliders = new VehicleSensitivitySliders(vehicleSetting.getProductType(), 0, 1000000);
+        vehicleSensitivitySliders = new VehicleSensitivitySliders(productType, 0, 1000000);
         
         adjustedSettingCounts = new HashMap<SliderType,Integer>();
     }
     
     public VehicleSettingManager() {
-        super();
-        // TODO Auto-generated constructor stub
+
     }
 
     public abstract void init();
@@ -72,17 +71,6 @@ public abstract class VehicleSettingManager {
     protected abstract EditableVehicleSettings createDefaultValues(Integer vehicleID);
     protected abstract EditableVehicleSettings createFromExistingValues(VehicleSetting vs);
     
-    protected Map<SliderType,Integer> adjustedSettingCountsToAllowForCustomValues(Integer hardVertical, Integer hardTurn, Integer hardAcceleration, Integer hardBrake) {
-    	   
-	   	Map<SliderType,Integer> settingCount = new HashMap<SliderType,Integer>();
-        
-        settingCount.put(SliderType.HARD_ACCEL_SLIDER, vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_ACCEL_SLIDER)+(hardAcceleration==CUSTOM_SLIDER_VALUE?1:0));
-        settingCount.put(SliderType.HARD_BRAKE_SLIDER, vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_BRAKE_SLIDER)+(hardBrake==CUSTOM_SLIDER_VALUE?1:0));
-        settingCount.put(SliderType.HARD_TURN_SLIDER,  vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_TURN_SLIDER)+(hardTurn==CUSTOM_SLIDER_VALUE?1:0));
-        settingCount.put(SliderType.HARD_BUMP_SLIDER,  vehicleSensitivitySliders.getSettingsCount(SliderType.HARD_BUMP_SLIDER)+(hardVertical==CUSTOM_SLIDER_VALUE?1:0));
-
-        return settingCount;
-    }
 
     protected Map<Integer,String> getSensitivityValue(SliderType sliderType, Integer sliderValue) {
            
@@ -110,7 +98,11 @@ public abstract class VehicleSettingManager {
         }
         return vehicleSensitivitySliders.getSensitivitySliderSettings(sliderType).getSliderValueFromSettings(settings);
     }
+    public Map<SliderType, Integer> getAdjustedSettingCounts() {
+        return adjustedSettingCounts;
+   }
 
+    public abstract VehicleSettingManager getThis();
     public abstract class DesiredSettings{
 
         protected Map<Integer, String> desiredSettings;
@@ -131,38 +123,48 @@ public abstract class VehicleSettingManager {
                 (!oldValue.equals(newValue))) return true;
            return false;
         }
-        public abstract void addSettingIfNeeded(SettingType setting,String newValue, String oldValue); 
+        public abstract void addSettingIfNeeded(SettingType setting,String newValue, String oldValue);
+        public abstract void addSliderIfNeeded(SettingType setting,String newValue, String oldValue);
       }
       public class ChangedSettings extends DesiredSettings{
           
-          private Boolean batchEdit;
-          private Map<String, Boolean> updateField;
+         private Boolean batchEdit;
+         private Map<String, Boolean> updateField;
           
-          public ChangedSettings(Boolean batchEdit, Map<String, Boolean> updateField) {
-
+         public ChangedSettings(Boolean batchEdit, Map<String, Boolean> updateField) {
+    
             super();
-                
+                    
             this.batchEdit = batchEdit;
             this.updateField = updateField;
-          }
-
-          @Override
-          public void addSettingIfNeeded(SettingType setting,String newValue, String oldValue){
+         }
+    
+         @Override
+         public void addSettingIfNeeded(SettingType setting,String newValue, String oldValue){
               
-           if(isRequested(setting) && isDifferent(newValue,oldValue)){
+             if(isRequested(setting) && isDifferent(newValue,oldValue)){
                
-               desiredSettings.put(setting.getSettingID(), newValue);
-           }
-        }
-        private boolean isRequested(SettingType setting){
+                 desiredSettings.put(setting.getSettingID(), newValue);
+             }
+         }
+         @Override
+         public void addSliderIfNeeded(SettingType setting, String newValue, String oldValue) {
+
+             if(isRequested(setting) && newValue!=null && isDifferent(newValue,oldValue)){
+                 
+                 desiredSettings.put(setting.getSettingID(), newValue);
+             }
+              
+         }
+         private boolean isRequested(SettingType setting){
             
             if (!batchEdit) return true;
             if (updateField.get("editableVehicleSettings."+setting.getPropertyName())){
                 return true;
             }
             return false;
-        }
-      }
+         }
+       }
       public class NewSettings extends DesiredSettings{
 
         @Override
@@ -173,9 +175,14 @@ public abstract class VehicleSettingManager {
                desiredSettings.put(setting.getSettingID(), newValue);
             }
          }
-      }
-    public Map<SliderType, Integer> getAdjustedSettingCounts() {
-        return adjustedSettingCounts;
-    }
+      @Override
+      public void addSliderIfNeeded(SettingType setting, String newValue, String oldValue) {
 
+          if(newValue!=null && isDifferent(newValue,oldValue)){
+              
+              desiredSettings.put(setting.getSettingID(), newValue);
+          }
+           
+      }
+   }
 }

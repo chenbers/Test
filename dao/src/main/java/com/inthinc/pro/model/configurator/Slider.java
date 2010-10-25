@@ -39,9 +39,9 @@ public class Slider {
     }
     public Integer getSliderValueFromSettings(Map<Integer,String> settings){
         
-        if (settings == null || settings.isEmpty()) return CUSTOM_SLIDER_VALUE;
+        if (settings == null || settings.isEmpty()) return sliderPositionCount+1;
         
-        Integer sliderValue = CUSTOM_SLIDER_VALUE;
+        Integer sliderValue = sliderPositionCount+1;
         Set<Entry<Integer,String>> settingEntries = settings.entrySet();
 
         for(int i=0;i<sliderPositionCount;i++){
@@ -62,7 +62,7 @@ public class Slider {
             }
             if (match) return sliderValue;
         }
-        return CUSTOM_SLIDER_VALUE;
+        return sliderPositionCount+1;
     }
      
     public SliderKey getSliderKey() {
@@ -77,9 +77,11 @@ public class Slider {
         this.settingsForThisSlider = settingsForThisSlider;
     }
 
-    public Map<Integer, String> getSettingValuesFromSliderValue(Integer slider) {
+    public Map<Integer, String> getSettingValuesFromSliderValue(Integer sliderValue) {
         
         Map<Integer, String> settings = new HashMap<Integer, String>();
+        
+        if (sliderValue > settingsForThisSlider.entrySet().size()) return settings;
         
         Iterator<Entry<Integer,SensitivitySliderValues>> settingsEntrySetIterator = settingsForThisSlider.entrySet().iterator();
         
@@ -87,7 +89,7 @@ public class Slider {
             
             Entry<Integer,SensitivitySliderValues> settingsEntry= settingsEntrySetIterator.next();
             
-            settings.put(settingsEntry.getValue().getSettingID(), settingsEntry.getValue().getValues().get(slider));
+            settings.put(settingsEntry.getValue().getSettingID(), settingsEntry.getValue().getValues().get(sliderValue-1));
         }
         return settings;
     }

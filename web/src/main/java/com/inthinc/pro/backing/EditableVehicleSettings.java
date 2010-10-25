@@ -10,7 +10,7 @@ public abstract class EditableVehicleSettings {
 
 
     //This is for the different settings that have to be displayed for different products on the Admin->vehicle pages
-    //Extenders should just have instance variables/getters/setters for the settings from the vehicle settings record that
+    //sub classes should just have instance variables/getters/setters for the settings from the vehicle settings record that
     //a customer can change on the vehicle page.
 	
     private Integer     vehicleID;
@@ -38,8 +38,14 @@ public abstract class EditableVehicleSettings {
         return productType;
     }
 
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
     public boolean validateSaveItems(FacesContext context, boolean isBatchEdit, Map<String, Boolean> updateField){
     	
     	return true;
     }
+    
+    public abstract EditableVehicleSettings getSelf();
 }

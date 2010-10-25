@@ -47,7 +47,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected T                   item;
     private Integer               itemID;
     private boolean               batchEdit;
-    private boolean               selectAll;
+    protected boolean               selectAll;
     private Map<String, Boolean>  updateField;
     protected TablePreferenceDAO  tablePreferenceDAO;
     protected TablePreference     tablePreference;
@@ -607,7 +607,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     /**
      * @return An item that the user can edit. Either returns a new item to be added, a single item to be edited, or an item that represents multiple items being batch edited.
      */
-    @SuppressWarnings("unchecked")
     public T getItem()
     {
         if (item == null)

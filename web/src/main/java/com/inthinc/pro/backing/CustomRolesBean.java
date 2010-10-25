@@ -16,7 +16,6 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.PersonBean.PersonView;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.TableType;
@@ -33,7 +32,6 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
     private static final long serialVersionUID = 1L;
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0 };
-    private static final String REQUIRED_KEY = "required";
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
@@ -41,7 +39,6 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         
     }
     private RoleDAO roleDAO;
-    private SiteAccessPoints siteAccessPoints;
     
     @Override
     protected List<CustomRoleView> loadItems() {
@@ -142,9 +139,6 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         if (result != null) {
             items = null;
             getItems();
-//            final String summary = MessageUtil.getMessageString("editCustomRoles");
-//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
-//            FacesContext.getCurrentInstance().addMessage(null, message);
         }               
         
         return result;
@@ -240,6 +234,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         private LinkedHashMap<Integer,AccessPointView> accessPointSelection;
         private boolean allAccessPointsSelected = false;
         
+        @SuppressWarnings("serial")
         public static class AccessPointView extends AccessPoint {
 
         	
@@ -372,14 +367,6 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 		
 	}
 
-//	public SiteAccessPoints getSiteAccessPoints() {
-//		return siteAccessPoints;
-//	}
-//
-//	public void setSiteAccessPoints(SiteAccessPoints siteAccessPoints) {
-//		this.siteAccessPoints = siteAccessPoints;
-//	}
-	
 	public Map<Integer,SiteAccessPoint> getAccessPointMap(){
 		
 		return SiteAccessPoints.getAccessPointMap();

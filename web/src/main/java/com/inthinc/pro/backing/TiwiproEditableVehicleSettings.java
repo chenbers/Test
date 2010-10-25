@@ -21,7 +21,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 	private Integer hardBrake;
 	private Integer hardTurn;
     private Integer hardVertical;
-    
+     
     public TiwiproEditableVehicleSettings() {
         super();
     }
@@ -39,6 +39,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         setHardBrake(hardBrake);
         setHardTurn(hardTurn);
         setHardVertical(hardVertical);
+        
     }
     
     public void setSpeedSettings(Integer[] speedSettings) {
@@ -110,19 +111,19 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         return hardVertical;
 	}
 
-	private void setHardAcceleration(Integer hardAcceleration) {
+	public void setHardAcceleration(Integer hardAcceleration) {
         
        this.hardAcceleration = hardAcceleration;
     }
-    private void setHardBrake(Integer hardBrake) {
+	public void setHardBrake(Integer hardBrake) {
         
         this.hardBrake = hardBrake;
     }
-    private void setHardTurn(Integer hardTurn) {
+	public void setHardTurn(Integer hardTurn) {
 
         this.hardTurn = hardTurn;
     }
-    private void setHardVertical(Integer hardVertical) {
+	public void setHardVertical(Integer hardVertical) {
             
         this.hardVertical = hardVertical;
     }
@@ -179,5 +180,9 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
         context.addMessage("edit-form:editDevice-ephone", message);
 
+    }
+    
+    public TiwiproEditableVehicleSettings getSelf(){
+        return this;
     }
 }
