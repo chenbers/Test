@@ -1,192 +1,179 @@
-<ui:composition template="/layout/layout.xhtml" 
-              xmlns="http://www.w3.org/1999/xhtml" 
-              xmlns:ui="http://java.sun.com/jsf/facelets"
-              xmlns:h="http://java.sun.com/jsf/html"
-              xmlns:rich="http://richfaces.org/rich"
-              xmlns:a4j="http://richfaces.org/a4j"
-              xmlns:pretty="http://ocpsoft.com/prettyfaces"
-              xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:t="http://myfaces.apache.org/tomahawk"
-              xmlns:security="http://pro.tiwi.com/jsf/security">
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
 
-  <ui:param name="messagesSelected" value="current" />
-  <ui:param name="context" value="messages" />
-  
-  <ui:param name="title" value="#{messages.adminHeader_people}"/>
-  
-  <ui:define name="scripts">
-    	<style>
-			.replyStyle {
-				padding-bottom: 20px;
-				color: #000000;
-				background: transparent  url(#{request.contextPath}/images/btn_email.png) left no-repeat;
-				text-indent: 10px;
-			}			
-		</style>
-  </ui:define>
+	<ui:param name="messagesSelected" value="current" />
+	<ui:param name="context" value="messages" />
+	<ui:param name="title" value="#{messages.txtMsgHeader_base}: #{messages.txtMsg_sentTitle}" />
 
-  <ui:define name="content">
-
-    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-      <tr>
-      <td valign="top" width="130">
-        <ui:include src="/includes/navigation/messagesSideNav.xhtml">
-          <ui:param name="selectedAction" value="go_sentMail" />
-          <ui:param name="parentAction" value="go_sentMail" />
-          <ui:param name="context" value="sentMail"/>
-        </ui:include>
-      </td>
-      <td valign="top">
-        <!-- START PANEL -->
-          <div class="">
-
-            <div class="panel_nw">
-              <div class="panel_title">
-                <span class="textmsg"><h:outputText value="#{messages.txtMsg_title}: #{messages.txtMsg_sentTitle}" /></span>
-                <span class="panel_links">
-                </span>
-              </div>
-            </div>
-
-		<a4j:form id="display-form">
-		
-		<table width="800" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+	<ui:define name="scripts">
+		<style>
+.replyStyle {
+	padding-bottom: 20px;
+	color: #000000;
+	background: transparent url(#{request.contextPath}/images/btn_email.png)
+		left no-repeat;
+	text-indent: 10px;
+}
+</style>
+	</ui:define>
+	<ui:define name="content">
+		<table width="920" border="0" cellspacing="0" cellpadding="0"
+			align="center" style="margin: 0 auto 0 auto;">
 			<tr>
-				<td valign="top">
+				<td valign="top" width="130"><ui:include
+					src="/includes/navigation/messagesSideNav.xhtml">
+					<ui:param name="selectedAction" value="go_sentMail" />
+					<ui:param name="parentAction" value="go_sentMail" />
+					<ui:param name="context" value="sentMail" />
+				</ui:include></td>
+				<td valign="top"><!-- START PANEL -->
+				<div class="">
 
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="textmsg"><h:outputText value="#{messages.txtMsgHeader_base}: #{messages.txtMsg_sentTitle}" /></span>
+						<span class="panel_links"> </span>
+					</div>
+				</div>
 
-
+				<a4j:form id="display-form">
+					<table width="800" border="0" cellspacing="0" cellpadding="0"
+						align="center" style="margin: 0 auto 0 auto;">
+						<tr>
+							<td valign="top">
 							<div class="panel_w">
-								<div class="panel_content">		
-			<!-- List of things to select -->	
-									<table width="800" align="center" style="margin: 0 auto 0 auto;">
-								
+							<div class="panel_content"><!-- List of things to select -->
+							<table width="800" align="center" style="margin: 0 auto 0 auto;">
+								<tr>
+									<td valign="top">
+									<ul id="grid_nav" style="margin: 0;">
+										<li class="l panel_title vcentered" style="background-image: none;">#{messages.txtMsg_filterTitle}</li>
+										<li class="l vcentered">
+											<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:75px;size:auto;margin-top:7px;float:right;">
+												<f:selectItems value="#{messagesBean.teams}" />
+											</h:selectOneMenu>
+										</li>
+										<li class="l vcentered">#{messages.drivertrip_legend_start}:
+											<a4j:outputPanel id="calendarStart" layout="inline">
+												<rich:calendar value="#{messagesBean.startDate}"
+													locale="en/US" popup="true" immediate="true"
+													datePattern="#{messages.dateFormat}" timeZone=""
+													showApplyButton="false" cellWidth="24px" cellHeight="22px"
+													inputSize="12" />
+											</a4j:outputPanel>
+										</li>
+										<li class="l vcentered">#{messages.drivertrip_legend_end}:
+											<a4j:outputPanel id="calendarEnd" layout="inline">
+												<rich:calendar value="#{messagesBean.endDate}" locale="en/US"
+													popup="true" immediate="true"
+													datePattern="#{messages.dateFormat}" timeZone=""
+													showApplyButton="false" cellWidth="24px" cellHeight="22px"
+													inputSize="12" />
+											</a4j:outputPanel>
+										</li>
+										<li class="l vcentered">
+											<a4j:commandButton id="refresh"
+												styleClass="left filter"
+												action="#{messagesBean.refreshInbox}"
+												reRender="display-form:#{context},display-form:#{context}-bottomScroller">
+												<span class="refresh"> #{messages.txtMsg_applyFilter}
+												</span>
+											</a4j:commandButton> &#160;
+										</li>
+										<li class="l vcentered"></li>
+										<li class="l vcentered">
+											<a4j:commandButton id="remove"
+												styleClass="left remove"
+												action="#{messagesBean.removeSelected}"
+												reRender="display-form:#{context},display-form:#{context}-bottomScroller">
+												<span class="refresh"> #{messages.txtMsg_remove} </span>
+											</a4j:commandButton> &#160;
+										</li>
+										<li class="l vcentered"></li>
+									</ul>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top"><rich:spacer width="50px" height="10px" />
+									<table width="800" class="inbox" cellspacing="0">
 										<tr>
-											<td valign="top">
-												<ul id="grid_nav" style="margin: 0;">
-													<li class="l panel_title vcentered" style="background-image: none;">#{messages.txtMsg_filterTitle}</li>
-													<li class="l vcentered" >
-														<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:75px;size:auto;margin-top:7px;float:right;">
-																	<f:selectItems value="#{messagesBean.teams}" />  
-																</h:selectOneMenu></li>
-													<li class="l vcentered">#{messages.drivertrip_legend_start}: 
-																<a4j:outputPanel id="calendarStart" layout="inline">
-	                                            					<rich:calendar value="#{messagesBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-	                                            						timeZone=""
-	                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" inputSize="12" />
-	                                        					</a4j:outputPanel></li>
-													<li class="l vcentered">#{messages.drivertrip_legend_end}: 
-														<a4j:outputPanel id="calendarEnd" layout="inline">
-	                                            					<rich:calendar value="#{messagesBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-	                                            						timeZone=""
-	                                                					showApplyButton="false" cellWidth="24px" cellHeight="22px" inputSize="12" />
-	                                        					</a4j:outputPanel></li>
-													<li class="l vcentered" ><a4j:commandButton id="refresh" styleClass="left filter" action="#{messagesBean.refreshInbox}" 
-																	reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-																	<span class="refresh">
-																		#{messages.txtMsg_applyFilter}
-																	</span>
-																</a4j:commandButton> &#160; </li>
-													<li class="l vcentered"></li>
-													<li class="l vcentered"><a4j:commandButton id="remove" styleClass="left remove" action="#{messagesBean.removeSelected}" 
-																	reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-																	<span class="refresh">
-																		#{messages.txtMsg_remove}
-																	</span>
-																</a4j:commandButton> &#160; </li>
-													<li class="l vcentered"></li>      							
-												</ul>
-												
-											</td>
-											</tr>
-											<tr>
-											<td valign="top" >
-												<rich:spacer width="50px" height="10px"/>
-												<table width="800" class="inbox" cellspacing="0">
-													<tr>
-														<td class="inbox" style="border-right:1px solid #E1E1E1; border-bottom:1px solid #E1E1E1;">#{messages.txtMsg_inbox}</td>
-														<td class="inbox" style="border-bottom:1px solid #E1E1E1;">#{messagesBean.messageListCount} #{messages.txtMsg_messages}</td>
-													</tr>
-													<tr>
-														<td class="inbox" style="border-right:1px solid #E1E1E1; vertical-align: top;">
-															<pretty:link id="reply" mappingId="sendMail" >												
-                        										<img align="left" style="padding-right: 10px;" src="/web/images/ico_txt_msg_reply.png"/> #{messages.txtMsg_replyLink}
-                     										</pretty:link>	
-                     									</td>
-														<td class="inbox">
-											    <a4j:outputPanel id="tablePanel">
-          											<a4j:region>
-          									
-														<rich:dataTable id="#{context}" value="#{messagesBean.sentMessageList}" var="item"                                    	 
-                                     	    					styleClass="datagrid filterabledatagrid" 
-                                     	   		 				rowClasses="tableOdd,tableEven" 
- 												 				cellspacing="1" rows="5" width="530px">
- 												
-                                     		   				<rich:column id="date" width="20%" sortBy="#{item.sendDate}" sortOrder="DESCENDING"> 
-                                    	        				<f:facet name="header">
-	                               		                 			<h:outputText value="Sent" />                             
-                                     		       				</f:facet>
-																<h:outputText value="#{item.sendDate}">
-                													<f:converter converterId="DateTimeTZConverter"/>
-																	<f:attribute name="timeZone" value="#{item.timeZone}"/>
-          															<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
-          														</h:outputText>                                            		
-                                                	
-                                        					</rich:column>
-                                        		
-                                        					<rich:column id="to" width="20%"> 
-                                          		  				<f:facet name="header">
-	                                       		         			<h:outputText value="To" />                             
-                                            					</f:facet>
-                                        						<h:outputText value="#{item.to}"/>
-                                        		
-                                        					</rich:column>
-                                        		
-                                        					<rich:column id="msg" width="60%"> 
-                                          		  				<f:facet name="header">
-	                                      		          			<h:outputText value="Message" />                             
-                                            					</f:facet>                                            		
-                                            					<h:outputText value="#{item.message}"/>
-                                                	
-                                        					</rich:column>                                        		
-                                        				</rich:dataTable>	
-                                        				<rich:datascroller for="#{context}" id="#{context}-bottomScroller">
-                                        				</rich:datascroller>
-                                        	
-                                        			</a4j:region>
-                                        		</a4j:outputPanel>
-                                        		</td>
-                                        		</tr>
-                                        		</table>
-											</td>
-										</tr>													
+											<td class="inbox"
+												style="border-right: 1px solid #E1E1E1; border-bottom: 1px solid #E1E1E1;">#{messages.txtMsg_inbox}</td>
+											<td class="inbox" style="border-bottom: 1px solid #E1E1E1;">#{messagesBean.messageListCount}
+											#{messages.txtMsg_messages}</td>
+										</tr>
+										<tr>
+											<td class="inbox" style="border-right: 1px solid #E1E1E1; vertical-align: top;">
+												<pretty:link id="reply" mappingId="sendMail">
+													<img align="left" style="padding-right: 10px;" src="/web/images/ico_txt_msg_reply.png" /> 
+													#{messages.txtMsg_replyLink}
+	                     						</pretty:link>
+                     						</td>
+											<td class="inbox"><a4j:outputPanel id="tablePanel">
+												<a4j:region>
+													<rich:dataTable id="#{context}"
+														value="#{messagesBean.sentMessageList}" var="item"
+														styleClass="datagrid filterabledatagrid"
+														rowClasses="tableOdd,tableEven" cellspacing="1" rows="5"
+														width="530px">
 
-								</table>										
+														<rich:column id="date" width="20%"
+															sortBy="#{item.sendDate}" sortOrder="DESCENDING">
+															<f:facet name="header">
+																<h:outputText value="#{messages.txtMsg_sent}" />
+															</f:facet>
+															<h:outputText value="#{item.sendDate}">
+																<f:converter converterId="DateTimeTZConverter" />
+																<f:attribute name="timeZone" value="#{item.timeZone}" />
+																<f:attribute name="pattern"
+																	value="#{messages.dateTimeFormat}" />
+															</h:outputText>
+														</rich:column>
+
+														<rich:column id="to" width="20%">
+															<f:facet name="header">
+																<h:outputText value="#{messages.txtMsg_addressedTo}" />
+															</f:facet>
+															<h:outputText value="#{item.to}" />
+														</rich:column>
+
+														<rich:column id="msg" width="60%">
+															<f:facet name="header">
+																<h:outputText value="#{messages.txtMsg_addressedTo}" />
+															</f:facet>
+															<h:outputText value="#{item.message}" />
+														</rich:column>
+													</rich:dataTable>
+													<rich:datascroller for="#{context}"
+														id="#{context}-bottomScroller">
+													</rich:datascroller>
+												</a4j:region>
+											</a4j:outputPanel></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+							</table>
 							</div>
-						</div>
-
-
-
+							</div>
+							</td>
+						</tr>
+					</table>
+				</a4j:form>
+				<div class="panel_sw">
+				<div class="panel_statusbar"></div>
+				</div>
+				</div>
 				</td>
 			</tr>
-			
-		</table>	
-			
-		</a4j:form>
-		
-					
-		<div class="panel_sw">
-			<div class="panel_statusbar"></div>
-		</div>	
-		
-	 </div>
-	 
-	 </td>
-	 
-	 </tr>
-	 
-	 </table>	
-		
-  </ui:define>
-
+		</table>
+	</ui:define>
 </ui:composition>

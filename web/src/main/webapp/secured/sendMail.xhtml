@@ -1,236 +1,184 @@
-<ui:composition template="/layout/layout.xhtml" 
-              xmlns="http://www.w3.org/1999/xhtml" 
-              xmlns:ui="http://java.sun.com/jsf/facelets"
-              xmlns:h="http://java.sun.com/jsf/html"
-              xmlns:rich="http://richfaces.org/rich"
-              xmlns:a4j="http://richfaces.org/a4j"
-              xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:t="http://myfaces.apache.org/tomahawk"
-              xmlns:security="http://pro.tiwi.com/jsf/security">
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
 
-  <ui:param name="messagesSelected" value="current" />
-  <ui:param name="context" value="sendMail" />
-  
-  <ui:param name="title" value="#{messages.adminHeader_people}"/>
-  
-  <ui:define name="scripts">
-      <script type="text/javascript">
-      // the following are not used
-      function setFocus(e, picker)
-      {
-        if (!e)
-          e = window.event;
-        var target;
-        if (e.target)
-          target = e.target;
-        else if (e.srcElement)
-          target = e.srcElement;
-        if (target == picker)
-          document.getElementById('display-form:toList').focus();
-      }
-        function changeComplete()
-        {
-          	var input = document.getElementById('display-form:toList');
-          	input.focus();
-        }
-      </script>
-		<style>
-      		.rich-picklist-source-cell{
-        		font-weight:normal;
-        		font-size: 9px;
-			}
-      		.rich-picklist-source-cell-active{
-        		font-weight:normal;
-        		font-size: 9px;
-			}	
-      		.rich-picklist-source-cell-selected{
-        		font-weight:normal;
-        		font-size: 9px;
-			}						
-		</style>
+	<ui:param name="messagesSelected" value="current" />
+	<ui:param name="context" value="sendMail" />
+	<ui:param name="title" value="#{messages.txtMsgHeader_base}: #{messages.txtMsg_composeTitle}" />
 
-  </ui:define>  
-  
-  <ui:define name="content">
+	<ui:define name="scripts">
+<style>
+.rich-picklist-source-cell {
+	font-weight: normal;
+	font-size: 9px;
+}
 
-    <table width="800" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-      <tr>
-      <td valign="top" width="130">
-        <ui:include src="/includes/navigation/messagesSideNav.xhtml">
-          <ui:param name="selectedAction" value="go_sendMail" />
-          <ui:param name="parentAction" value="go_sendMail" />
-          <ui:param name="context" value="sendMail"/>
-        </ui:include>
-      </td>
-      <td valign="top">
-      
-          <div class="">
+.rich-picklist-source-cell-active {
+	font-weight: normal;
+	font-size: 9px;
+}
 
-            <div class="panel_nw">
-              <div class="panel_title">
-                <span class="textmsg"><h:outputText value="#{messages.txtMsg_title}: #{messages.txtMsg_composeTitle}" /></span>
-                <span class="panel_links">
-                </span>
-              </div>
-            </div>      
-      
-      
-		<a4j:form id="display-form">
-		
-		<table width="800" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+.rich-picklist-source-cell-selected {
+	font-weight: normal;
+	font-size: 9px;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="content">
+		<table width="800" border="0" cellspacing="0" cellpadding="0"
+			align="center" style="margin: 0 auto 0 auto;">
 			<tr>
+				<td valign="top" width="130"><ui:include
+					src="/includes/navigation/messagesSideNav.xhtml">
+					<ui:param name="selectedAction" value="go_sendMail" />
+					<ui:param name="parentAction" value="go_sendMail" />
+					<ui:param name="context" value="sendMail" />
+				</ui:include></td>
 				<td valign="top">
 
+				<div class="">
+					<div class="panel_nw">
+					<div class="panel_title"><span class="textmsg"><h:outputText
+						value="#{messages.txtMsgHeader_base}: #{messages.txtMsg_composeTitle}" /></span>
+					<span class="panel_links"> </span></div>
+				</div>
 
+				<a4j:form id="display-form">
+					<table width="800" border="0" cellspacing="0" cellpadding="0"
+						align="center" style="margin: 0 auto 0 auto;">
+						<tr>
+							<td valign="top">
 							<div class="panel_w">
-								<div class="panel_content">		
-			<!-- List of things to select -->	
-									<table width="790" align="center" style="margin: 0 auto 0 auto;">									
-						
-										<tr>
-
-										<td valign="top" width="360px">
-                     						<div class="add_section_title">
-                       							<h:outputText value="#{messages.group_drivers}" />
-                     						</div>
-											<br></br>
-											<!--  
-											<h:inputTextarea id="toList" value="#{messagesBean.mailingList}" rows="50" cols="50" disabled="false"
-												style="width:380px;height:150px;margin-left:10px;overflow-y:scroll" />
-                            				-->
-                            				  
-											<rich:pickList sourceListWidth="150px" listsHeight="80px" showButtonsLabel="false" id="driverList"
-												targetListWidth="150px" value="#{messagesBean.driverSelectedList}">
-												<f:selectItems value="#{messagesBean.driverSelectFromList}"  size="5"/>
-											</rich:pickList> 
-										</td>
-										<td rowspan="3">
-											<rich:spacer width="35px" height="10px"/>
-										</td>
-										<td rowspan="3" width="390px" style="vertical-align: top;">											
-                     						<div class="add_section_title">
-                       							<h:outputText value="#{messages.txtMsg_composeTitle}" />
-                     						</div>
-											<br></br>
-											
-											<h:inputTextarea id="msgText" value="#{messagesBean.messageToSend}" 
-												style="font-size:12px;width:350px;height:300px;margin-left:10px" />
-											<br></br>
-										</td>	  
-										</tr>
-										<tr>
-										<td valign="top">
-                     						<div class="add_section_title">
-                       							<h:outputText value="#{messages.VEHILCES}" />
-                     						</div>
-											<br></br>										
-											<rich:pickList sourceListWidth="150px" listsHeight="80px" showButtonsLabel="false" id="vehicleList"
-												targetListWidth="150px" value="#{messagesBean.vehicleSelectedList}">
-												<f:selectItems value="#{messagesBean.vehicleSelectFromList}"/>
-											</rich:pickList> 
-										</td>
-										</tr>
-										<tr>
-										<td valign="top">	
-                     						<div class="add_section_title">
-                       							<h:outputText value="#{messages.GROUPS}" />
-                     						</div>
-											<br></br>																					                       							                           				
-											<rich:pickList sourceListWidth="150px" listsHeight="80px" showButtonsLabel="false" id="groupList"
-												targetListWidth="150px" value="#{messagesBean.groupSelectedList}">
-												<f:selectItems value="#{messagesBean.groupSelectFromList}"/>
-											</rich:pickList>                             				
-										</td>
-										</tr>
-										
-										<tr>
-										
-										<td colspan="3">								
-											
-											<h:panelGroup id="buttonPanel">
-												<ul id="grid_nav_dark">
-
-													<li class="r">
-														<a4j:commandButton id="send" styleClass="left" action="#{messagesBean.sendMessage}"
-															reRender="#{context}-sendList,#{context}-sendListBottomScroller,display-form:toList,display-form:msgText,display-form:driverList,display-form:vehicleList,display-form:groupList"
-															oncomplete="javascript:Richfaces.showModalPanel('summary')">
-															<span class="email">
-																<h:outputText value="Send" />
-															</span>
-														</a4j:commandButton>
-													</li>
-																									
-				
-												</ul>
-											</h:panelGroup>
-										</td>
-										
-										</tr>
-
-								</table>										
+							<div class="panel_content"><!-- List of things to select -->
+							<table width="790" align="center" style="margin: 0 auto 0 auto;">
+								<tr>
+									<td valign="top" width="360px">
+										<div class="add_section_title"><h:outputText
+											value="#{messages.group_drivers}" /></div>
+										<br></br>
+										<rich:pickList
+											sourceListWidth="150px" listsHeight="80px"
+											showButtonsLabel="false" id="driverList"
+											targetListWidth="150px"
+											value="#{messagesBean.driverSelectedList}">
+											<f:selectItems value="#{messagesBean.driverSelectFromList}" size="5" />
+										</rich:pickList>
+									</td>
+									<td rowspan="3"><rich:spacer width="35px" height="10px" />
+									</td>
+									<td rowspan="3" width="390px" style="vertical-align: top;">
+										<div class="add_section_title"><h:outputText
+											value="#{messages.txtMsg_composeTitle}" /></div>
+										<br></br>
+	
+										<h:inputTextarea id="msgText"
+											value="#{messagesBean.messageToSend}"
+											style="font-size:12px;width:350px;height:300px;margin-left:10px" />
+										<br></br>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top">
+										<div class="add_section_title"><h:outputText
+											value="#{messages.VEHICLES}" /></div>
+										<br></br>
+										<rich:pickList sourceListWidth="150px" listsHeight="80px"
+											showButtonsLabel="false" id="vehicleList"
+											targetListWidth="150px"
+											value="#{messagesBean.vehicleSelectedList}">
+											<f:selectItems value="#{messagesBean.vehicleSelectFromList}" />
+										</rich:pickList>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top">
+										<div class="add_section_title"><h:outputText
+											value="#{messages.GROUPS}" /></div>
+										<br></br>
+										<rich:pickList sourceListWidth="150px" listsHeight="80px"
+											showButtonsLabel="false" id="groupList"
+											targetListWidth="150px"
+											value="#{messagesBean.groupSelectedList}">
+											<f:selectItems value="#{messagesBean.groupSelectFromList}" />
+										</rich:pickList>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3"><h:panelGroup id="buttonPanel">
+										<ul id="grid_nav_dark">
+											<li class="r"><a4j:commandButton id="send"
+												styleClass="left" action="#{messagesBean.sendMessage}"
+												reRender="#{context}-sendList,#{context}-sendListBottomScroller,display-form:toList,display-form:msgText,display-form:driverList,display-form:vehicleList,display-form:groupList"
+												oncomplete="javascript:Richfaces.showModalPanel('summary')">
+												<span class="email"> <h:outputText value="#{messages.txtMsg_sendMsg}" /> </span>
+											</a4j:commandButton></li>
+										</ul>
+									</h:panelGroup></td>
+								</tr>
+							</table>
 							</div>
+							</div>
+							<div class="panel_sw">
+							<div class="panel_statusbar"></div>
+							</div>
+							</td>
+						</tr>
+					</table>
+				</a4j:form></div>
+
+				<rich:modalPanel id="summary" headerClass="popupHeader"
+					controlsClass="popupControls" width="500" height="140"
+					autosized="true" resizeable="false" zindex="2001">
+					<f:facet name="header">
+						<h:outputText value="#{messages.txtMsg_sendMsgSummary}" />
+					</f:facet>
+					<f:facet name="controls">
+						<h:graphicImage value="/images/modal_close.png"
+							style="cursor:pointer"
+							onclick="Richfaces.hideModalPanel('summary')" />
+					</f:facet>
+
+					<div class="popupsubtitle"><h:outputText
+						value="#{messages.txtMsg_sendMsgSummaryDetail}" /></div>
+
+					<h:form id="confirmCloseSummary">
+						<rich:dataTable id="#{context}-sendList"
+							value="#{messagesBean.sendMessageList}" var="item"
+							styleClass="datagrid filterabledatagrid"
+							rowClasses="tableOdd,tableEven" cellspacing="1" rows="5"
+							width="100%">
+
+							<rich:column width="100%">
+								<f:facet name="header">
+									<h:outputText value="To" />
+								</f:facet>
+								<h:outputText id="entity" value="#{item}" />
+							</rich:column>
+						</rich:dataTable>
+
+						<rich:datascroller for="#{context}-sendList"
+							id="#{context}-sendListBottomScroller"
+							page="#{messagesBean.pageNumber}">
+						</rich:datascroller>
+
+						<div class="popupactions">
+						<button id="#{context}-confirmDeleteCancel" type="submit"
+							class="left"
+							onclick="Richfaces.hideModalPanel('summary'); return false;">
+						<span class="ok"> <h:outputText
+							value="#{messages.button_ok}" /> </span></button>
 						</div>
-					
-				
-					<div class="panel_sw">
-						<div class="panel_statusbar"></div>
-					</div>
-				</td>
+
+					</h:form>
+				</rich:modalPanel></td>
 			</tr>
-			
-		</table>	
-			
-		</a4j:form>
-		
-	</div>	
-		
-    <rich:modalPanel id="summary" headerClass="popupHeader" controlsClass="popupControls" 
-    	width="500" height="140" autosized="true" resizeable="false" zindex="2001">
-      	<f:facet name="header">
-        	<h:outputText value="Summary of Message Send" />
-      	</f:facet>
-      	<f:facet name="controls">
-        	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('summary')" />
-      	</f:facet>
-
-      	<div class="popupsubtitle"><h:outputText value="The following are the results of your message send." /></div>
-
-      	<h:form id="confirmCloseSummary">
-          									
-        <rich:dataTable id="#{context}-sendList" value="#{messagesBean.sendMessageList}" var="item"                                    	 
-        	styleClass="datagrid filterabledatagrid" 
-            rowClasses="tableOdd,tableEven" 
- 			cellspacing="1" rows="5" width="100%">
- 										 		
-            <rich:column width="100%">
-                <f:facet name="header">
-                  	<h:outputText value="To"/>
-                </f:facet>
-                <h:outputText id="entity" value="#{item}"/>
-            </rich:column> 
-                              		
-        </rich:dataTable>	
-        
-        <rich:datascroller for="#{context}-sendList" 
-        	id="#{context}-sendListBottomScroller" page="#{messagesBean.pageNumber}">
-        </rich:datascroller>
-        
-        <div class="popupactions">
-          <button id="#{context}-confirmDeleteCancel" type="submit" class="left" onclick="Richfaces.hideModalPanel('summary'); return false;">
-          	<span class="ok">
-          		<h:outputText value="#{messages.button_ok}" />
-          	</span>
-          </button>
-        </div>        
-
-      </h:form>
-
-    </rich:modalPanel>		
- 	       
-        </td>
-
-      </tr>
-    </table>
-  </ui:define>
-
+		</table>
+	</ui:define>
 </ui:composition>
