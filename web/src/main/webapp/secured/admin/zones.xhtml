@@ -173,10 +173,6 @@
                     return false;
                   }
 
-                  function storeOutline()
-                  {
-                    document.getElementById("zones-form:points").value = toOutlineString(getPolygonOutline());
-                  }
 
                   function cancelEdit()
                   {
@@ -188,25 +184,6 @@
                     document.getElementById("zones-form:points").value = outline;
                   }
 
-                  function select(type)
-                  {
-                    applyImage("hand", type);
-                    applyImage("rectangle", type);
-                    applyImage("circle", type);
-                    applyImage("polygon", type);
-
-                    if (type != "hand")
-                      map.clearOverlays();
-                  }
-
-                  function applyImage(type, selectedType)
-                  {
-                    var image = document.getElementById("zones-form:" + type + "_b");
-                    if (type == selectedType)
-                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + "_on.png";
-                    else
-                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + ".png";
-                  }
 
                   function bodyLoad()
                   {
@@ -222,24 +199,6 @@
 	        	        map.enableScrollWheelZoom();
 	
 						addListeners();
-                      GEvent.addListener(drawZone, "startZone", function(type)
-                      {
-                        select(type);
-                      });
-                      GEvent.addListener(drawZone, "endZone", function(type, points)
-                      {
-                        select("hand");
-                        storeOutline();
-                      });
-                      GEvent.addListener(drawZone, "cancelZone", function(type)
-                      {
-                        showZone(true);
-                        select("hand");
-                      });
-                      GEvent.addListener(drawZone, "updateZone", function(points)
-                      {
-                        storeOutline();
-                      });
 
                       if (!showZone(false))
                         showAddress("4225 West Lake Park Blvd. Suite 100 West Valley City UT 84120");

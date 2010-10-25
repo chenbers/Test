@@ -22,6 +22,14 @@
   			width: 5%;
   			vertical-align:top;
   		}
+		.latLngText {
+			color: #336699;
+			background-color: transparent;
+			font-family: Verdana, Arial;
+			font-weight: bold;
+			font-size: xx-small;
+			border-style:none;	
+		}
   	</style>
     <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
     <a4j:loadScript src="/js/mapGeocode.js" />
@@ -118,7 +126,6 @@
                           </table>
                         </li>
                         <li class="l">
-                        
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                             <tr>
                               <td><h:outputText value="#{messages.zones_address}" /></td>
@@ -129,6 +136,16 @@
                           </table>
                         </li>
                         <li class="l"><button id="zonesSearch" type="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
+                        <li class="l">
+                          <table border="0" cellspacing="0" cellpadding="4" style="margin: 3px 0 0;">
+                            <tr>
+                              <td><h:outputText value="#{messages.longitude}"/></td>
+                              <td><input id="lng" type="text" readonly="readonly" class="latLngText" size="8"/></td>
+                              <td><h:outputText value="#{messages.latitude}"/></td>
+                              <td><input id="lat" type="text" readonly="readonly" class="latLngText" size="8"/></td>
+                            </tr>
+                          </table>
+						</li>	
                       </ul>
 						
                     </h:panelGroup>
@@ -180,6 +197,7 @@
 					</rich:simpleTogglePanel>
 				  </h:panelGrid>
                 </a4j:form>
+
 
                 <script type="text/javascript">
                   function clearOutline()
@@ -236,6 +254,12 @@
                       image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + ".png";
                   }
 
+                  function updateCoordinates(lng, lat)
+                  {
+                    document.getElementById("lng").value = (Math.round(lng*10000.0)/10000.0).toString();
+                    document.getElementById("lat").value = (Math.round(lat*10000.0)/10000.0).toString();
+                  }
+
                   function bodyLoad()
                   {
                     if (GBrowserIsCompatible())
@@ -268,6 +292,9 @@
                       {
                         storeOutline();
                       });
+                      GEvent.addListener(map, "mousemove", function(latLng) {
+                  		updateCoordinates(latLng.lng(), latLng.lat());
+	                  	});
 
                       if (!showZone(false))
                         showAddress("4225 West Lake Park Blvd. Suite 100 West Valley City UT 84120");
