@@ -403,7 +403,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2010, 9, 19);
+        calendar.set(2010, 8, 19);
         date = calendar.getTime();
 
         if (interval.contains(date.getTime())) {
