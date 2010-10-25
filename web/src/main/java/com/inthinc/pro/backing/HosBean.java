@@ -26,12 +26,17 @@ import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.ui.DateRange;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandID;
+import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.table.PageData;
@@ -50,6 +55,7 @@ public class HosBean extends BaseBean {
     private HOSDAO hosDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
+    private DeviceDAO deviceDAO;
     private PageData pageData;
     private int page;
     private List<SelectItem> drivers;
@@ -61,8 +67,8 @@ public class HosBean extends BaseBean {
     private boolean               batchEdit;
     private boolean               selectAll;
     private Map<String, Boolean> updateField;
+    private String sendLogsMsg;
 
-    
     private static final String EDIT_REDIRECT = "pretty:hosEdit";    
     private static final String VIEW_REDIRECT = "pretty:hos";    
     protected final static String BLANK_SELECTION = "&#160;";
@@ -147,6 +153,7 @@ public class HosBean extends BaseBean {
         return driverID;
     }
     public void setDriverID(Integer driverID) {
+        setSendLogsMsg(null);
         
         if (this.driverID == null) {
             if (driverID != null) {
@@ -198,6 +205,14 @@ public class HosBean extends BaseBean {
 
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
+    }
+
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
     }
 
 
@@ -664,7 +679,48 @@ logger.info("in loadItems()");
         this.page = page;
         pageData.initPage(page, getItems().size());
     }
+    
+    public String getSendLogsMsg() {
+        return sendLogsMsg;
+    }
 
+    public void setSendLogsMsg(String sendLogsMsg) {
+        this.sendLogsMsg = sendLogsMsg;
+    }
+
+    public void sendLogs() {
+        setSendLogsMsg(null);
+
+        if (this.getDriverID() == null) {
+            setSendLogsMsg("hosSendLogsToDevice.noDriver");
+            return;
+        }
+        
+        Vehicle vehicle = vehicleDAO.findByDriverID(getDriverID());
+        if (vehicle == null) {
+            setSendLogsMsg("hosSendLogsToDevice.noVehicle");
+            return;
+        }
+
+        if (vehicle.getDeviceID() == null) {
+            setSendLogsMsg("hosSendLogsToDevice.noDevice");
+            return;
+            
+        }
+        Device device = deviceDAO.findByID(vehicle.getDeviceID());
+        if (device == null) {
+            setSendLogsMsg("hosSendLogsToDevice.noDevice");
+            return;
+            
+        }
+        
+        ForwardCommand forwardCommand = new ForwardCommand();
+        forwardCommand.setCmd(ForwardCommandID.DOWNLOAD_HOS_LOGS);
+        forwardCommand.setStatus(ForwardCommandStatus.STATUS_QUEUED);
+        deviceDAO.queueForwardCommand(vehicle.getDeviceID(), forwardCommand);
+
+        setSendLogsMsg("hosSendLogsToDevice.success");
+    }
 }
 
     

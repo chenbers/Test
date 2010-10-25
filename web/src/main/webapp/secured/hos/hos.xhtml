@@ -41,6 +41,16 @@
 					<div class="panel_nw">
 						<div class="panel_title">
 							<span class="hos">#{messages.hos_logsTitle}</span>
+							<a4j:status style="float:right" 
+								id="tableActionStatus" for="hos-table-region">
+      				<f:facet name="start">
+      					<h:outputText>
+      						<img 
+      							src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" 
+      							align="top" />&#160;</h:outputText>
+      				</f:facet>
+			   </a4j:status>
+							
 						</div>
 					</div>
 					<div class="panel_w">

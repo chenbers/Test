@@ -58,6 +58,7 @@ public interface ForwardCommandID
 
     public static Integer GET_VERSION_INFO = 174;
 
+    public static Integer DOWNLOAD_HOS_LOGS = 217;
     public static Integer IGNORE_RAMP_SPEED_ENABLE = 230;
     public static Integer IGNORE_RAMP_SPEED_DISABLE = 231;
 

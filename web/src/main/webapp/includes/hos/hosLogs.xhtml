@@ -20,13 +20,9 @@
 				  	<td>#{messages.hosLog_driver}</td>
 			  	 	<td>
 						<h:selectOneMenu value="#{hosBean.driverID}" id="#{context}_driverSelect" style="width:130px;size:auto;">
-							<f:selectItems value="#{hosBean.drivers}" />  
+							<f:selectItems value="#{hosBean.drivers}" />
+							<a4j:support reRender="#{context}-hosSendLogsStatus" event="onchange"/>  
 						</h:selectOneMenu>
-<!-- 						
-						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-   			 				<ui:param name="selectBoxID" value="hos-table-form:#{context}_driverSelect" />
-						</ui:include>
- -->						
 					</td>
 					</tr>
 				</table>
@@ -56,22 +52,23 @@
             		<span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span>
             	</h:commandButton>
             </li>
-            <li class="l text">
-				<a4j:commandLink id="#{context}-hosTableEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
-					reRender="editColumnsForm:#{context}-editColumnsGrid">
-					#{messages.button_editColumns}
+            <li class="r text">
+				<span title="#{messages.hosSendLogsToDevice}">
+				<a4j:commandLink id="#{context}-hosSendLogs"  
+					title="#{messages.hosSendLogsToDevice}"  
+					reRender="#{context}-hosSendLogsStatus" action="#{hosBean.sendLogs}"> 
+	     					<h:graphicImage value="/images/ico_email.png"/>
 				</a4j:commandLink>
+				</span>	
             </li>
             <li class="r text">
-              <a4j:status 
-				id="tableActionStatus" for="hos-table-region">
-      				<f:facet name="start">
-      					<h:outputText>
-      						<img 
-      							src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" 
-      							align="top" />&#160;</h:outputText>
-      				</f:facet>
-			   </a4j:status>
+				<span title="#{messages.button_editColumns}">
+				<a4j:commandLink id="#{context}-hosTableEditColumns"  
+					title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+					reRender="editColumnsForm:#{context}-editColumnsGrid">
+	     					<h:graphicImage value="/images/ico_edit_columns.png"/>
+				</a4j:commandLink>
+				</span>	
             </li>
           </ul>
          <a4j:outputPanel  id="#{context}_dateError">
@@ -80,6 +77,12 @@
 		    </div>
          </a4j:outputPanel>
 		  
+         <a4j:outputPanel  id="#{context}-hosSendLogsStatus">
+			<div align="left" style="width: 100%"> 
+				<h:outputText id="sendLogsError"  style="float:left;color:#c44d34" value="#{messages[hosBean.sendLogsMsg]}" rendered="#{hosBean.sendLogsMsg != null}"/>
+		    </div>
+         </a4j:outputPanel>
+          
           
     	  <ui:include src="/includes/table/statsHeader.xhtml">	
    			<ui:param name="title" value="#{messages.hosLogs_recordCountHeader}" />
