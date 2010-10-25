@@ -31,6 +31,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.HOSJDBCDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -343,6 +344,21 @@ System.out.println("numHosRecords " + numHosRecords);
         
 
     }
+    
+    @Test
+    public void getDriverForEmpIdLastName() {
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+
+        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        
+        HOSDriverLogin driverLogin = hosDAO.getDriverForEmpidLastName(testDriver.getPerson().getEmpid(), testDriver.getPerson().getLast());
+        
+        assertEquals("driverID", testDriver.getDriverID(), driverLogin.getDriverID());
+        
+    }
+
     @Test
     public void hosOccupantLogsTest() {
         HOSDAO hosDAO = new HOSJDBCDAO();
@@ -357,7 +373,6 @@ System.out.println("numHosRecords " + numHosRecords);
         DateTime dayStartUTC = new DateMidnight(genDataStartDate, DateTimeZone.UTC).toDateTime();
         
         Interval queryInterval = new Interval(new DateMidnight(dayStartUTC).minusDays(1), new DateMidnight(dayStartUTC).toDateTime().minusSeconds(1));
-System.out.println("queryInterval: " + queryInterval);
         List<HOSOccupantLog> occupantLogRecords = hosDAO.getHOSOccupantLogs(testDriver.getDriverID(), queryInterval);
         assertTrue("expected 1 occupant record for 1 day/1 driver", occupantLogRecords.size() == 1);
         HOSOccupantLog rec = occupantLogRecords.get(0);
