@@ -73,7 +73,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
             }
             rec.setTotalTruckGas(totalTruckGas);
             rec.setTotalTrailerGas(totalTrailerGas);
-            rec.setMileage(rec.getTotalMiles()); // Verify. Not getting mileage from Back End
+            rec.setMileage(getMileage(rec.getTotalMiles(), totalTruckGas));
 
             dataList.add(rec);
         }
@@ -82,6 +82,27 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
     }
 
     /**
+     * Calculates the mileage as totalMiles / totalTruckGas
+     * 
+     * Based on the GAIN stored procedure:
+     * 
+     * CASE WHEN gas.totalTruckGas = 0 THEN 0
+ 	 * ELSE round(coalesce(miles.totalMiles/gas.totalTruckGas, 0), 2)
+     * END  mileage
+     * 
+     * @param totalMiles The total miles driven
+     * @param totalTruckGas The amount of gas for the truck 
+     * @return The mileage
+     */
+    Double getMileage(Double totalMiles, Double totalTruckGas) {
+		double mileage = 0F;
+		if (totalTruckGas != 0){
+			mileage = Math.round((totalMiles / totalTruckGas) * 100.0) / 100.0;
+		}
+		return mileage;
+	}
+
+	/**
      *  Comparator for StateMileageByVehicle report 
      */
     class StateMileageFuelByVehicleComparator implements Comparator<StateMileageFuelByVehicle> {

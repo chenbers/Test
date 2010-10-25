@@ -135,6 +135,25 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	}
 	
 	/**
+	 * Test the mileage calculation.
+	 */
+	@Test
+	public void testMileageCalculation(){
+		final Double zero = new Double(0);
+		final Double totalMiles = new Double(500);
+		final Double totalTruckGas = new Double(123);
+		
+		// When Total truck Gas is zero, we should return zero
+		assertEquals(reportCriteriaSUT.getMileage(totalMiles, zero), zero);
+		
+		// In other cases we return totalMiles / totalTruckGas rounded to 2 decimals
+		Double mileage = reportCriteriaSUT.getMileage(totalMiles, totalTruckGas);
+		assertEquals(mileage, new Double(Math.round((totalMiles / totalTruckGas) * 100.0) / 100.0));
+	}
+	
+	
+	
+	/**
 	 * Verifies if the list was sorted correctly.
 	 * 
 	 * @param listToSort The list to verify
