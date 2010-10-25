@@ -33,8 +33,6 @@ public class Zone extends BaseEntity implements Cloneable
     
     private List<ZoneOption>    options;
     
-    @Column(updateable = false)
-    private Map<ZoneAvailableOption, OptionValue> optionsMap;
     
     public Zone()
     {
@@ -169,13 +167,7 @@ public class Zone extends BaseEntity implements Cloneable
     
 
     public Map<ZoneAvailableOption, OptionValue> getOptionsMap() {
-        if (optionsMap == null)
-            initOptionsMap();
-        return optionsMap;
-    }
-    
-    private void initOptionsMap() {
-        optionsMap = new HashMap<ZoneAvailableOption, OptionValue>();
+        Map<ZoneAvailableOption, OptionValue> optionsMap = new HashMap<ZoneAvailableOption, OptionValue>();
         List<ZoneOption> options = getOptions();
         for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
         {
@@ -189,10 +181,9 @@ public class Zone extends BaseEntity implements Cloneable
             }
             optionsMap.put(availOption, value);
         }
+        return optionsMap;
     }
-    public void setOptionsMap(Map<ZoneAvailableOption, OptionValue> optionsMap) {
-        this.optionsMap = optionsMap;
-    }
+    
 
     public Zone clone() {
         try {
