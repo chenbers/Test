@@ -1,22 +1,23 @@
 package com.inthinc.pro.reports;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.junit.Test;
 
-import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.Report;
-import com.inthinc.pro.reports.ReportCreator;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportCreator;
 import com.inthinc.pro.reports.tabular.Result;
+import com.inthinc.pro.reports.util.MessageUtil;
 
 public class BaseUnitTest {
     
@@ -79,5 +80,38 @@ public class BaseUnitTest {
         }
         
     }
-
+    
+    /**
+     * Retrieve the list of missing keys within a resource bundle.
+     * @param keys  The list of keys to check within the resource bundle
+     * @param resourceBundleName The resource bundle name
+     * @param locale the user locale settings
+     * 
+     * @return List of missing keys or null if no keys are missing within the resource bundle
+     */
+    protected List checkResourceBundleKeys(String[] keys, String resourceBundleName, Locale locale){
+        List missingKeys = new ArrayList(); 
+     
+        if(locale == null || keys == null | resourceBundleName == null) {
+            missingKeys.add("invalid parameters");
+        }
+        if (missingKeys.isEmpty()){
+            ResourceBundle rb = MessageUtil.getBundle(locale, resourceBundleName);
+            if(rb == null){
+                missingKeys.add("invalid resource bundle");
+            }
+            else {
+                for(String key : keys){
+                    try{ 
+                        rb.getString(key);                  
+                    }
+                    catch(MissingResourceException e){
+                        missingKeys.add(key);
+                    }                  
+                }
+            }
+        }    
+        return missingKeys;
+    }
+    
 }
