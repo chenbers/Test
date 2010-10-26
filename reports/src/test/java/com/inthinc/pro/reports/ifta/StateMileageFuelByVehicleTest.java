@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,6 +24,8 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
@@ -41,6 +44,12 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
     private final Locale LOCALE = Locale.US;	
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     
+    private Group[] groupList = {
+            new Group(GROUP_ID, 1, GROUP_NAME_1, 0),
+            new Group(GROUP_ID2, 1, GROUP_NAME_2, GROUP_ID)
+    };
+    private GroupHierarchy groupHierarchy = new GroupHierarchy(Arrays.asList(groupList));
+
 	private StateMileageFuelByVehicleReportCriteria reportCriteriaSUT = new StateMileageFuelByVehicleReportCriteria(LOCALE);
 
 	// General initializations
@@ -68,7 +77,7 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
         
         // Run the test
         assertNull(reportCriteriaSUT.getMainDataset());
-        reportCriteriaSUT.init(GROUP_ID_LIST, INTERVAL, false);
+        reportCriteriaSUT.init(groupHierarchy, GROUP_ID_LIST, INTERVAL, false);
         assertNotNull(reportCriteriaSUT.getMainDataset());
 	}
 	
@@ -80,12 +89,13 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	public void testInitDataSet()
 	{
 		List<StateMileage> records = new ArrayList<StateMileage>();
-		StateMileage record1 = getStateMileageItem(GROUP_NAME_1);
-		StateMileage record2 = getStateMileageItem(GROUP_NAME_2);
+		StateMileage record1 = getStateMileageItem(GROUP_ID);
+		StateMileage record2 = getStateMileageItem(GROUP_ID2);
 		records.add(record1);
 		records.add(record2);
 
 		reportCriteriaSUT.setMeasurementType(MeasurementType.ENGLISH);
+		reportCriteriaSUT.setAccountGroupHierarchy(groupHierarchy);
 		
 		// Run the test
 		reportCriteriaSUT.initDataSet(records);
@@ -106,12 +116,13 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	public void testInitDataSetWithMetric()
 	{
 		List<StateMileage> records = new ArrayList<StateMileage>();
-		StateMileage record1 = getStateMileageItem(GROUP_NAME_1);
-		StateMileage record2 = getStateMileageItem(GROUP_NAME_2);
+		StateMileage record1 = getStateMileageItem(GROUP_ID);
+		StateMileage record2 = getStateMileageItem(GROUP_ID2);
 		records.add(record1);
 		records.add(record2);
 
 		reportCriteriaSUT.setMeasurementType(MeasurementType.METRIC);
+        reportCriteriaSUT.setAccountGroupHierarchy(groupHierarchy);
 		
 		// Run the test
 		reportCriteriaSUT.initDataSet(records);
@@ -129,6 +140,8 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	 */
 	@Test
 	public void testComparatorSort(){
+	    reportCriteriaSUT.setAccountGroupHierarchy(groupHierarchy);
+
 		List<StateMileageFuelByVehicle> listToSort = getListToSort();
 		Collections.sort(listToSort, reportCriteriaSUT.new StateMileageFuelByVehicleComparator());
 		isSorted(listToSort);
@@ -179,7 +192,8 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	 * @return true if previous must in fact be before curr
 	 */
 	private boolean before(StateMileageFuelByVehicle prev, StateMileageFuelByVehicle curr) {
-		boolean groupNameOK = Integer.valueOf(prev.getGroupName()) <= Integer.valueOf(curr.getGroupName());
+//TODO: fix the groupName check	    
+		boolean groupNameOK = Integer.valueOf(prev.getGroupID()) <= Integer.valueOf(curr.getGroupID());
 		boolean vehicleOK = Integer.valueOf(prev.getVehicle()) <= Integer.valueOf(curr.getVehicle());
 		boolean monthOK = Integer.valueOf(prev.getMonth()) <= Integer.valueOf(curr.getMonth());
 		boolean stateOK = Integer.valueOf(prev.getState()) <= Integer.valueOf(curr.getState());
@@ -198,7 +212,7 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 		// Generates the 16 combinations of the 4 attributes
 		for (int i = 0; i <= 15; i++){
 			StateMileageFuelByVehicle bean = new StateMileageFuelByVehicle();
-			bean.setGroupName(String.valueOf(i / 8));
+			bean.setGroupID(i / 8);
 			bean.setVehicle(String.valueOf(i / 4));
 			bean.setMonth(String.valueOf(i / 2));
 			bean.setState(String.valueOf(i / 1));
@@ -253,7 +267,7 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	 */
 	private boolean recordCorrectlyCopiedIntoBean(StateMileageFuelByVehicle bean, StateMileage record) {
 		return new EqualsBuilder()
-	        .append(bean.getGroupName(), record.getGroupName())
+	        .append(bean.getGroupID(), record.getGroupID())
 	        .append(bean.getVehicle(), record.getVehicleName())
 	        .append(bean.getMonth(), record.getMonth())
 	        .append(bean.getState(), record.getStateName())
@@ -263,9 +277,9 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	        .isEquals();
 	}
 
-	private StateMileage getStateMileageItem(String groupName) {
+	private StateMileage getStateMileageItem(Integer groupID) {
 		StateMileage sm = new StateMileage();
-		sm.setGroupName(groupName);
+		sm.setGroupID(groupID);
 		sm.setVehicleName("VN");
 		sm.setMonth("October, 2010");
 		sm.setStateName("UT");

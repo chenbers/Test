@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +18,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Trip;
@@ -40,6 +42,10 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     // Mocks
     private Integer mockGroupId = 1;
     private List<Integer> listGroupID = new ArrayList<Integer>();
+    private Group[] groupList = {
+            new Group(mockGroupId, 1, "Mock Group", 0)
+    };
+    private GroupHierarchy groupHierarchy = new GroupHierarchy(Arrays.asList(groupList));
 
     /**
      * Constructor to initialize the test fields.
@@ -85,7 +91,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         final MeasurementType type = MeasurementType.ENGLISH;
 
         listGroupID.add(1);
-        serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(listGroupID, interval, Locale.US, type, isIfta);
+        serviceSUT.getStateMileageByVehicleRoadStatusReportCriteria(groupHierarchy, listGroupID, interval, Locale.US, type, isIfta);
 
         new VerificationsInOrder() {
             {
@@ -93,7 +99,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
                 criteriaMock.setGroupDAO((GroupDAO) any);
                 criteriaMock.setStateMileageDAO((StateMileageDAO) any);
                 criteriaMock.setMeasurementType(type);
-                criteriaMock.init(listGroupID, interval, isIfta);
+                criteriaMock.init(groupHierarchy, listGroupID, interval, isIfta);
 
             }
         };
@@ -111,14 +117,14 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         List<Integer> groupIDs = new ArrayList<Integer>();
         groupIDs.add(1);
-        serviceSUT.getStateMileageByVehicleReportCriteria(groupIDs, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
+        serviceSUT.getStateMileageByVehicleReportCriteria(groupHierarchy, groupIDs, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
 
         new VerificationsInOrder() {
             {
                 new StateMileageByVehicleReportCriteria(Locale.US);
                 criteriaMock.setGroupDAO((GroupDAO) any);
                 criteriaMock.setStateMileageDAO((StateMileageDAO) any);
-                criteriaMock.init((List<Integer>) any, interval, isIfta);
+                criteriaMock.init(groupHierarchy, (List<Integer>) any, interval, isIfta);
             }
         };
     }
@@ -134,14 +140,14 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         List<Integer> groupIDsMock = new ArrayList<Integer>();
         groupIDsMock.add(1);
-        serviceSUT.getStateMileageByMonthReportCriteria(groupIDsMock, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
+        serviceSUT.getStateMileageByMonthReportCriteria(groupHierarchy, groupIDsMock, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
 
         new VerificationsInOrder() {
             {
                 new StateMileageByMonthReportCriteria(Locale.US);
                 criteriaMock.setGroupDAO((GroupDAO) any);
                 criteriaMock.setStateMileageDAO((StateMileageDAO) any);
-                criteriaMock.init((List<Integer>) any, interval, isIfta);
+                criteriaMock.init(groupHierarchy, (List<Integer>) any, interval, isIfta);
             }
         };
     }
@@ -157,7 +163,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         List<Integer> groupIDsMock = new ArrayList<Integer>();
         groupIDsMock.add(1);
-        serviceSUT.getStateMileageCompareByGroupReportCriteria(groupIDsMock, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
+        serviceSUT.getStateMileageCompareByGroupReportCriteria(groupHierarchy, groupIDsMock, interval, Locale.US, MeasurementType.ENGLISH, isIfta);
 
         new VerificationsInOrder() {
             {
@@ -165,7 +171,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
                 criteriaMock.setGroupDAO((GroupDAO) any);
                 criteriaMock.setStateMileageDAO((StateMileageDAO) any);
                 criteriaMock.setMeasurementType(MeasurementType.ENGLISH);
-                criteriaMock.init((List<Integer>) any, interval, isIfta);
+                criteriaMock.init(groupHierarchy, (List<Integer>) any, interval, isIfta);
             }
         };
     }

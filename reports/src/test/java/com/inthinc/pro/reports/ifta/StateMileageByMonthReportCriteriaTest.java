@@ -20,6 +20,8 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
@@ -41,6 +43,11 @@ public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
     private final Locale LOCALE = Locale.US;
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     
+    private Group[] groupList = {
+            new Group(GROUP_ID, 1, GROUP_FULL_NAME, 0)
+    };
+    private GroupHierarchy groupHierarchy = new GroupHierarchy(Arrays.asList(groupList));
+
     // JMockit mocks
     
     // The System Under Test
@@ -81,7 +88,7 @@ public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
                StateMileage bean = new StateMileage(); 
                bean.setMonth(MONTH); 
                bean.setStateName(STATE);
-               bean.setGroupName(GROUP_FULL_NAME);
+               bean.setGroupID(GROUP_ID);
                bean.setMiles(MILES);
                
                list.add(bean);
@@ -92,7 +99,7 @@ public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
         
         //------------------------------------------------------------------
         // 2. Second, we run the actual method to be tested
-        reportCriteriaSUT.init(GROUP_IDS, INTERVAL, false);
+        reportCriteriaSUT.init(groupHierarchy, GROUP_IDS, INTERVAL, false);
         
         //------------------------------------------------------------------
         // 3. Third we verify the results

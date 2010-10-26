@@ -767,14 +767,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
-    public ReportCriteria getMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean iftaOnly) 
+    public ReportCriteria getMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean iftaOnly) 
     {
         MileageByVehicleReportCriteria criteria = new MileageByVehicleReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
         criteria.setMeasurementType(measurementType);
         
-        criteria.init(groupIDList, interval, iftaOnly);
+        criteria.init(accountGroupHierarchy, groupIDList, interval, iftaOnly);
         return criteria;
     }
  
@@ -783,13 +783,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
-    public ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale,  MeasurementType type, boolean iftaOnly) 
+    public ReportCriteria getStateMileageByVehicleRoadStatusReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale,  MeasurementType type, boolean iftaOnly) 
     {
         StateMileageByVehicleRoadStatusReportCriteria criteria = new StateMileageByVehicleRoadStatusReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
         criteria.setMeasurementType(type);
-        criteria.init(groupIDList, interval, iftaOnly);
+        criteria.init(accountGroupHierarchy,groupIDList, interval, iftaOnly);
         return criteria;
     }
     
@@ -798,35 +798,35 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getStateMileageByVehicleReportCriteria(java.util.List, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
-    public ReportCriteria getStateMileageByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) 
+    public ReportCriteria getStateMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) 
     {
         StateMileageByVehicleReportCriteria criteria = new StateMileageByVehicleReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
         criteria.setMeasurementType(type);
-        criteria.init(groupIDList, interval, iftaOnly);
+        criteria.init(accountGroupHierarchy, groupIDList, interval, iftaOnly);
         return criteria;
     }
 
   
 	@Override
-	public ReportCriteria getStateMileageFuelByVehicleReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) {
+	public ReportCriteria getStateMileageFuelByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) {
 		StateMileageFuelByVehicleReportCriteria criteria = new StateMileageFuelByVehicleReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
         criteria.setMeasurementType(type);
-        criteria.init(groupIDList, interval, iftaOnly);
+        criteria.init(accountGroupHierarchy, groupIDList, interval, iftaOnly);
         return criteria;
 	}
 
 	@Override
-	public ReportCriteria getStateMileageCompareByGroupReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) {
+	public ReportCriteria getStateMileageCompareByGroupReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) {
 	    StateMileageCompareByGroupReportCriteria criteria = new StateMileageCompareByGroupReportCriteria(locale);
 	    criteria.setGroupDAO(groupDAO);
 	    criteria.setStateMileageDAO(stateMileageDAO);
 	    
 	    criteria.setMeasurementType(type);
-	    criteria.init(groupIDList, interval, iftaOnly);
+	    criteria.init(accountGroupHierarchy, groupIDList, interval, iftaOnly);
 	    return criteria;
 	}
 
@@ -835,14 +835,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getStateMileageByVehicleReportCriteria(java.util.List, org.joda.time.Interval, java.util.Locale, boolean)
      */
     @Override
-    public ReportCriteria getStateMileageByMonthReportCriteria(List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) 
+    public ReportCriteria getStateMileageByMonthReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) 
     {
         // TODO Implement it
         StateMileageByMonthReportCriteria criteria = new StateMileageByMonthReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
         criteria.setMeasurementType(type);
-        criteria.init(groupIDList, interval, iftaOnly);
+        criteria.init(accountGroupHierarchy, groupIDList, interval, iftaOnly);
         return criteria;
     }
 

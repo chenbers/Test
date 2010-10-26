@@ -103,33 +103,33 @@ public class WaysmartReportsBean extends ReportsBean {
                 break;
                 
             case MILEAGE_BY_VEHICLE:
-                    reportCriteriaList.add(getReportCriteriaService().getMileageByVehicleReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
+                    reportCriteriaList.add(getReportCriteriaService().getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                             params.getLocale(), getUser().getPerson().getMeasurementType(), true));
                 break;
 
             case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleRoadStatusReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale(), getUser().getPerson().getMeasurementType() , params.getIsIfta() ));
                 break;
 
             case STATE_MILEAGE_BY_VEHICLE:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
 
             case STATE_MILEAGE_FUEL_BY_VEHICLE:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageFuelByVehicleReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;                     
             
             case STATE_MILEAGE_COMPARE_BY_GROUP:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageCompareByGroupReportCriteria(params.getGroupIDList(), params.getDateRange().getInterval(), 
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
                         params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;  
                 
             case STATE_MILEAGE_BY_MONTH:
                 reportCriteriaList.add(getReportCriteriaService().getStateMileageByMonthReportCriteria(
-                        params.getGroupIDList(), params.getDateRange().getInterval(), params.getLocale(), 
+                        getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), params.getLocale(), 
                         getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
 

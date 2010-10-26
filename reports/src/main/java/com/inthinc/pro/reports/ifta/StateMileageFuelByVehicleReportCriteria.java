@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportType;
@@ -34,8 +35,8 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
      * @param iftaOnly the flag to consider only DOT/IFTA 
      */
     @Override
-    public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        super.init(groupIDList, interval, dotOnly);
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        super.init(accountGroupHierarchy, groupIDList, interval, dotOnly);
 
         List<StateMileage> dataList = new ArrayList<StateMileage>();
         for (Integer groupID : groupIDList) {
@@ -58,7 +59,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
         List<StateMileageFuelByVehicle> dataList = new ArrayList<StateMileageFuelByVehicle>();
         for (StateMileage item : records) {
         	StateMileageFuelByVehicle rec = new StateMileageFuelByVehicle();
-            rec.setGroupName(item.getGroupName());
+            rec.setGroupID(item.getGroupID());
             rec.setVehicle(item.getVehicleName());
             rec.setMonth(item.getMonth());
             rec.setState(item.getStateName());
@@ -112,7 +113,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
             int comparison = 0; 
             
             // If they are equal, keep comparing other attribs
-            if ((comparison = o1.getGroupName().compareTo(o2.getGroupName())) == 0)
+            if ((comparison = getFullGroupName(o1.getGroupID()).compareTo(getFullGroupName(o2.getGroupID()))) == 0)
                 if ((comparison = o1.getVehicle().compareTo(o2.getVehicle())) == 0)
                     if ((comparison = o1.getMonth().compareTo(o2.getMonth())) == 0)
 	                    comparison = o1.getState().compareTo(o2.getState());

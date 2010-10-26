@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
@@ -38,8 +39,8 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
      *            the flag to consider only DOT/IFTA
      */
     @Override
-    public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        super.init(groupIDList, interval, dotOnly);
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        super.init(accountGroupHierarchy, groupIDList, interval, dotOnly);
 
         List<StateMileage> dataList = new ArrayList<StateMileage>();
         for (Integer groupID : groupIDList) {
@@ -61,7 +62,7 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
         List<StateMileageCompareByGroup> dataList = new ArrayList<StateMileageCompareByGroup>();
         for (StateMileage item : records) {
             StateMileageCompareByGroup rec = new StateMileageCompareByGroup();
-            rec.setGroupName(item.getGroupName());
+            rec.setGroupName(getFullGroupName(item.getGroupID()));
             rec.setState(item.getStateName());
             rec.setMonth(item.getMonth());
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(item.getMiles(), getMeasurementType()).doubleValue());

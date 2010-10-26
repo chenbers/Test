@@ -12,6 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -24,7 +25,7 @@ public abstract class DOTReportCriteria extends ReportCriteria {
     protected String units;
     protected GroupDAO groupDAO;
     protected StateMileageDAO stateMileageDAO;
-
+    protected GroupHierarchy accountGroupHierarchy;
     /**
      * Default constructor.
      * @param reportType the report type
@@ -34,6 +35,14 @@ public abstract class DOTReportCriteria extends ReportCriteria {
         super(reportType, "", locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         setMeasurementType(MeasurementType.ENGLISH);
+    }
+
+    public GroupHierarchy getAccountGroupHierarchy() {
+        return accountGroupHierarchy;
+    }
+
+    public void setAccountGroupHierarchy(GroupHierarchy accountGroupHierarchy) {
+        this.accountGroupHierarchy = accountGroupHierarchy;
     }
 
     /**
@@ -61,10 +70,11 @@ public abstract class DOTReportCriteria extends ReportCriteria {
      * @param interval the date period
      * @param iftaOnly the flag to consider only IFTA 
      */
-    public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
         addParameter("units", units);
+        this.accountGroupHierarchy = accountGroupHierarchy;
     }
 
     /**
@@ -74,4 +84,16 @@ public abstract class DOTReportCriteria extends ReportCriteria {
     public void setStateMileageDAO(StateMileageDAO stateMileageDAO) {
         this.stateMileageDAO = stateMileageDAO;
     }   
+    
+    public String getFullGroupName(Integer groupID) {
+        if (accountGroupHierarchy == null)
+            return "";
+        String fullName = accountGroupHierarchy.getFullGroupName(groupID, GROUP_SEPARATOR);
+        if (fullName.endsWith(GROUP_SEPARATOR)) {
+            fullName = fullName.substring(0, fullName.length() - GROUP_SEPARATOR.length());
+        }
+        return fullName;
+
+    }
+
 }

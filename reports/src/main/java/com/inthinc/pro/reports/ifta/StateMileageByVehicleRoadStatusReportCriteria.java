@@ -9,6 +9,7 @@ import org.joda.time.Interval;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -41,8 +42,8 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCrit
      * @param interval the date period
      * @param iftaOnly the flag to consider only IFTA 
      */
-    public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        super.init(groupIDList, interval, dotOnly);
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        super.init(accountGroupHierarchy, groupIDList, interval, dotOnly);
         List<StateMileage> list = new ArrayList<StateMileage>();
         for (Integer groupID : groupIDList) {
             List<StateMileage> listTmp = stateMileageDAO.getStateMileageByVehicleRoad(groupID, interval, dotOnly);
@@ -72,7 +73,7 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCrit
             rec.setRoadStatus(roadStatus);
             rec.setState(item.getStateName());
             
-            rec.setGroupName(item.getGroupName());
+            rec.setGroupName(getFullGroupName(item.getGroupID()));
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
                     item.getMiles(), getMeasurementType()).doubleValue());
             dataList.add(rec);

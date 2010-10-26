@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
@@ -33,8 +34,8 @@ public class MileageByVehicleReportCriteria extends DOTReportCriteria {
      * @param iftaOnly the flag to consider only IFTA 
      */
     @Override
-    public void init(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        super.init(groupIDList, interval, dotOnly);
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        super.init(accountGroupHierarchy, groupIDList, interval, dotOnly);
         
         List<StateMileage> dataList = new ArrayList<StateMileage>();
         for (Integer groupID : groupIDList) {
@@ -58,7 +59,7 @@ public class MileageByVehicleReportCriteria extends DOTReportCriteria {
             MileageByVehicle rec = new MileageByVehicle();
             rec.setVehicle(item.getVehicleName());
             rec.setState(item.getStateName());
-            rec.setGroupName(item.getGroupName());
+            rec.setGroupName(getFullGroupName(item.getGroupID()));
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
                         item.getMiles(), getMeasurementType()).doubleValue());
             dataList.add(rec);

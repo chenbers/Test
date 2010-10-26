@@ -24,6 +24,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
     private static final String MOCK_PREFIX = "STUB ";
     private static final String MOCK_MONTH_AUG = "Aug, 2010";
     private static final String MOCK_MONTH_SEP = "Sep, 2010";
+    private static final Integer MOCK_FLEET_GROUP_ID = 1; 
 
     private SimpleDateFormat monthOnlyDateFormat = new SimpleDateFormat("MMMM");
 
@@ -271,7 +272,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
     private StateMileage createStateMileageByGroupBean(String fleetName, String vehicleName, String stateName, long miles, Date date) {
         StateMileage bean;
         bean = new StateMileage();
-        bean.setGroupName(fleetName);
+        bean.setGroupID(MOCK_FLEET_GROUP_ID);
         bean.setVehicleName(vehicleName);
         bean.setStateName(stateName);
         bean.setMiles(miles);
@@ -291,7 +292,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
         date = calendar.getTime();
 
         if (interval.contains(date.getTime()) && 1504 == groupID) {
-            bean.setGroupName(MOCK_PREFIX + "FLEET");
+            bean.setGroupID(MOCK_FLEET_GROUP_ID);
             bean.setVehicleName(MOCK_PREFIX + "10026217");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -305,7 +306,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && 1504 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET");
+            bean.setGroupID(MOCK_FLEET_GROUP_ID);
             bean.setVehicleName(MOCK_PREFIX + "11077461");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -319,7 +320,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && 1504 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET");
+            bean.setGroupID(MOCK_FLEET_GROUP_ID);
             bean.setVehicleName(MOCK_PREFIX + "11187740");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -333,7 +334,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION");
+            bean.setGroupID(MOCK_FLEET_GROUP_ID);
             bean.setVehicleName(MOCK_PREFIX + "10740909");
             bean.setStateName(MOCK_PREFIX + "New Mexico");
             bean.setOnRoadFlag(false);
@@ -347,7 +348,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION");
+            bean.setGroupID(MOCK_FLEET_GROUP_ID);
             bean.setVehicleName(MOCK_PREFIX + "12345678");
             bean.setStateName(MOCK_PREFIX + "South Dakota");
             bean.setOnRoadFlag(false);
@@ -361,7 +362,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION");
+            bean.setGroupID(MOCK_FLEET_GROUP_ID);
             bean.setVehicleName(MOCK_PREFIX + "87654321");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(false);
@@ -375,7 +376,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && !isDotIfta && 1506 == groupID) {
             bean = new StateMileage();
-            bean.setGroupName(MOCK_PREFIX + "FLEET - DIVISION - GOOD");
+            bean.setGroupID(MOCK_FLEET_GROUP_ID);
             bean.setVehicleName(MOCK_PREFIX + "87654320");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(true);
@@ -390,7 +391,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
     /* creates a new instance of StateMileage */
     private StateMileage newInstance(String groupName, String state, String vehicle, Long miles) {
         StateMileage bean = new StateMileage();
-        bean.setGroupName(groupName);
+        bean.setGroupID(MOCK_FLEET_GROUP_ID);
         bean.setStateName(state);
         bean.setVehicleName(vehicle);
         bean.setMiles(miles);
@@ -445,7 +446,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
     private StateMileage getFuelBean(String stateName, Long miles, String month) {
         StateMileage bean = new StateMileage();
-        bean.setGroupName(MOCK_PREFIX + "Rockies->Grand Junction->Grand Junction PE Crews");
+        bean.setGroupID(MOCK_FLEET_GROUP_ID);
         bean.setVehicleName("10001794");
         bean.setMonth(month);
         bean.setStateName(stateName);
