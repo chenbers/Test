@@ -18,7 +18,7 @@ public class StateMileage extends BaseEntity
     public String getGroupID() {
         return groupID;
     }
-    public void setGroupId(String groupID) {
+    public void setGroupID(String groupID) {
         this.groupID = groupID;
     }
     public String getVehicleName() {
