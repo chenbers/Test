@@ -17,7 +17,7 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.model.VehicleFactory;
+import com.inthinc.pro.backing.model.VehicleSettingsFactory;
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -110,7 +110,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private ProductType   batchProductChoice;
     
     // Stuff to do with vehicleSettings for the device
-    private VehicleFactory                        vehicleFactory;
+    private VehicleSettingsFactory                        vehicleSettingsFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
 
     private CacheBean cacheBean;
@@ -157,13 +157,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         return batchProductChoice == null || batchProductChoice.equals(productType);
     }
-//    public WaySmartSettingManagerLocator<Integer, WaySmartSettingManager> getWaySmartSettingManagerLocator() {
-//        return waySmartSettingManagerLocator;
-//    }
-//
-//    public TiwiproSettingManagerLocator<Integer,TiwiproSettingManager> getTiwiproSettingManagerLocator() {
-//        return tiwiproSettingManagerLocator;
-//    }
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -216,7 +209,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
        // Get all the settings 
         
-        vehicleSettingManagers = vehicleFactory.retrieveVehicleSettings(getUser().getGroupID());
+        vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID());
         
         // Wrap Vehicles and Devices
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
@@ -236,11 +229,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         if(vehicleSettingManagers.get(vehicleID) == null && !isBatchEdit()){
             
-            vehicleSettingManagers.put(vehicleID, vehicleFactory.getUnknownSettingManager(vehicleID));
+            vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getUnknownSettingManager(vehicleID));
         }
         else if(vehicleSettingManagers.get(vehicleID) == null && isBatchEdit()){
             
-            vehicleSettingManagers.put(vehicleID, vehicleFactory.getSettingManager(batchProductChoice,vehicleID));
+            vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchProductChoice,vehicleID));
         }
     }
     
@@ -248,14 +241,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return vehicleSettingManagers;
     }
 
-    public VehicleFactory getVehicleFactory() {
-        return vehicleFactory;
-    }
 
-    public void setVehicleFactory(VehicleFactory vehicleFactory) {
-        this.vehicleFactory = vehicleFactory;
+    public VehicleSettingsFactory getVehicleSettingsFactory() {
+        return vehicleSettingsFactory;
     }
-
+    public void setVehicleSettingsFactory(VehicleSettingsFactory vehicleSettingsFactory) {
+        this.vehicleSettingsFactory = vehicleSettingsFactory;
+    }
     /**
      * Creates a VehicleView object from the given Vehicle object.
      * 
@@ -352,7 +344,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setStatus(Status.ACTIVE);
-        vehicle.setVehicleID(-1);
+//        vehicle.setVehicleID(-1);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
         checkForSettings(vehicle.getVehicleID());

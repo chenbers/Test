@@ -10,7 +10,7 @@ import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
-public class VehicleFactory {
+public class VehicleSettingsFactory {
     
     private ConfiguratorDAO configuratorDAO;
 
