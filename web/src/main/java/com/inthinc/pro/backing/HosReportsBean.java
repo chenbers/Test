@@ -20,7 +20,6 @@ import com.inthinc.pro.util.MessageUtil;
 
 @KeepAlive
 public class HosReportsBean extends ReportsBean {
-    Map<Integer, ReportGroup> reportGroupMap;
     
     @Override
     protected void genReportCriteria()
@@ -103,7 +102,7 @@ public class HosReportsBean extends ReportsBean {
         
         List<SelectItem> reportGroups = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
-            if (!rt.isDotIfta())
+            if (!rt.isHOS())
                 continue;
             reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             reportGroupMap.put(rt.getCode(), rt);

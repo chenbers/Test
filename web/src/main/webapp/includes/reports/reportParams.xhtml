@@ -154,6 +154,7 @@
 					</table>
 				</li>
 				</h:outputText>
+				
 				<h:outputText id="groupOrDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_OR_DRIVER'}">
 				<li  class="l">
 		   			<table border="0" cellspacing="0" cellpadding="4">
@@ -200,12 +201,16 @@
 								<f:selectItems value="#{params.groups}"/>
 								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
 							</h:selectManyMenu>
-							<h:outputText value="#{messages.reports_ifta_only}"/>
-							<h:selectBooleanCheckbox id="ifta" value="#{params.isIfta}" />
 							</a4j:outputPanel>
 							<rich:jQuery selector="##{context}_form\\:#{context}groupListAndIftaParam" timing="onload" 
 							query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
 														width: 200,maxDropHeight: 150})"/>
+						</td>
+						<td>
+							<h:outputText value="#{messages.reports_ifta_only}"/>						
+						</td>
+						<td>
+							<h:selectBooleanCheckbox id="ifta" value="#{params.isIfta}" />
 						</td>
 					</tr>
 					</table>

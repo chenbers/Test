@@ -48,63 +48,63 @@ public enum ReportGroup
  */
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report",7,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{}, ReportCategory.DOT_IFTA,
+            new GroupType[]{}, ReportCategory.HOS,
             ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
      HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report",8,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.HOS_VIOLATIONS_SUMMARY_REPORT),
      HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report",9,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
              ReportType.HOS_VIOLATIONS_DETAIL_REPORT),
      HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report",10,EntityType.ENTITY_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.HOS_DRIVER_DOT_LOG_REPORT),
      DOT_HOURS_REMAINING("DOT Time Remaining Report",11,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.DOT_HOURS_REMAINING),
      HOS_ZERO_MILES("HOS Zero Miles Report",12,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
             ReportType.HOS_ZERO_MILES),
      HOS_EDITS("HOS Edits",13,EntityType.ENTITY_GROUP_LIST,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
              ReportType.HOS_EDITS),
              
              
-    // DOT/IFTA
+    // IFTA
      MILEAGE_BY_VEHICLE("Mileage by vehicle", 20, EntityType.ENTITY_GROUP_LIST,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
              ReportType.MILEAGE_BY_VEHICLE),
              
      STATE_MILEAGE_BY_VEHICLE("State Mileage By Vehicle", 21, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
              ReportType.STATE_MILEAGE_BY_VEHICLE),
              
      STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS("State mileage by vehicle road status", 22, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
              ReportType.STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS),
 
      STATE_MILEAGE_FUEL_BY_VEHICLE("State Mileage Fuel By Vehicle", 23, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
              ReportType.STATE_MILEAGE_FUEL_BY_VEHICLE),
      
      STATE_MILEAGE_BY_MONTH("State Mileage By Month", 24, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
              ReportType.STATE_MILEAGE_BY_MONTH),
 
      STATE_MILEAGE_COMPARE_BY_GROUP("Group Comparison By State/Province", 25, EntityType.ENTITY_GROUP_LIST_AND_IFTA,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DOT_IFTA,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
              ReportType.STATE_MILEAGE_COMPARE_BY_GROUP),
                      
              
@@ -274,8 +274,12 @@ public enum ReportGroup
         return isCategory(ReportCategory.Performance);
     }
 
-    public boolean isDotIfta() {
-        return isCategory(ReportCategory.DOT_IFTA);
+    public boolean isIfta() {
+        return isCategory(ReportCategory.IFTA);
+    }
+    
+    public boolean isHOS() {
+        return isCategory(ReportCategory.HOS);
     }
     
     public boolean isCategory(ReportCategory category){

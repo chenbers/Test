@@ -42,7 +42,7 @@ public class WaysmartReportsBeanTest {
 		checkGroupIncludesOnlyCategory(groupList.get(1), ReportCategory.Performance);
 
 		// The third group includes the DOT/IFTA items
-		checkGroupIncludesOnlyCategory(groupList.get(2), ReportCategory.DOT_IFTA);
+		checkGroupIncludesOnlyCategory(groupList.get(2), ReportCategory.IFTA);
 	}
 	
 	/**

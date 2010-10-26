@@ -143,6 +143,16 @@ img {
 	position: relative;
 }
 
+.panel_title span.overall_report_description {
+	background: transparent;
+	color: #333;
+	font: 11px "Trebuchet MS", Verdana, Tahoma, Arial, sans-serif;
+	height: 31px;
+    margin-left: 55%;
+	padding: 6px 0 0 0;
+	text-align: right;
+}
+
 .panel_title span.login {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_key.png) no-repeat center left;
@@ -3478,4 +3488,8 @@ td.middle select {
 				text-decoration: none;
 				color: #000;
 				margin: 0 0 0 8px;
+}
+
+#report_description{
+				padding: 8px 0 0 55px;
 }

@@ -3,7 +3,10 @@ package com.inthinc.pro.backing;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.faces.model.SelectItem;
 
@@ -46,6 +49,8 @@ public abstract class ReportsBean extends BaseBean {
     private int recordCount;
     private Map<String, Object> sortOrder;
     private List<ColumnHeader> columnSummaryHeaders;
+    
+    Map<Integer, ReportGroup> reportGroupMap;
 
     
     protected abstract void genReportCriteria();
@@ -58,6 +63,7 @@ public abstract class ReportsBean extends BaseBean {
      */
     public abstract List<? extends SelectItem> getReportGroups();
     protected abstract Map<Integer, ReportGroup> getReportGroupMap();
+    protected abstract void setReportGroupMap(Map<Integer, ReportGroup> reportGroupMap);
 
     
     public void init()
@@ -204,10 +210,33 @@ public abstract class ReportsBean extends BaseBean {
         
         return localAddr;
     }
-
     
+    /**
+     * Returns report description based on the appropriate resource bundle (the report is selected by the user) 
+     * The key in the resource bundle is build from the ReportGroup enum (converted to String). 
+     * From this string, we change all "_" to "." character.
+     * If the key is not found in the rb, then null is returned.
+     *  
+     * @return The report description or null if report description key not found.
+     */
 
-    
+    public String getReportDescription(){
+        String res = null;
+        if(reportGroupMap != null){
+            ReportGroup reportGroup = reportGroupMap.get(getSelected());
+            if(reportGroup != null){
+                ResourceBundle rb = reportGroup.getReports()[0].getResourceBundle(Locale.US);
+                try {
+                    res = rb.getString("description." + reportGroup.getReports()[0].toString().toLowerCase().replaceAll("_","."));
+                }
+                catch (MissingResourceException e){
+                    res = null;
+                }
+            }
+        }
+        return res;
+    }
+ 
     public Integer getSelected() {
         return selected;
     }

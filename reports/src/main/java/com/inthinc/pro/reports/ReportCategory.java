@@ -2,9 +2,10 @@ package com.inthinc.pro.reports;
 
 public enum ReportCategory {
 
-        DOT_IFTA(1, "DOT/IFTA", "Department of Transport / International Fuel Tax Agreement"),
+        IFTA(1, "IFTA", "International Fuel Tax Agreement"),
         Performance(2, "Performance", "Performance, including payroll"),
-        Asset(3, "Asset", "Asset");
+        Asset(3, "Asset", "Asset"),
+        HOS(4,"HOS", "Hour of services");
         
         /**
          * 

@@ -166,7 +166,7 @@ public class ReportParams implements Cloneable {
     }
     
 //    protected final static String BLANK_SELECTION = "&#160;";
-    protected final static String BLANK_SELECTION = "<Select>";
+    protected final static String BLANK_SELECTION = " ";
 
     protected static void sort(List<SelectItem> selectItemList) {
         Collections.sort(selectItemList, new Comparator<SelectItem>() {

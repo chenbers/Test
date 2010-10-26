@@ -24,8 +24,8 @@
 						<f:selectItems value="#{reportsBean.reportGroups}"/> 
 						<a4j:support event="onchange" reRender="#{context}_form,#{context}_tableForm,#{context}_viewPanel" />
 					</h:selectOneMenu>
-				</td>
-			</tr>
+				    </td>
+			    </tr>
 			</table>
 		</li>		
 		</ul>
@@ -85,6 +85,9 @@
          </ul>
          </div>
          </td></tr></table>
+        <div id="report_description">
+        	<h:outputText value="#{reportsBean.reportDescription}"/>
+        </div>  
         <rich:spacer height="10" style="display:block;clear:right;"/>
 		<ui:include src="/includes/reports/reportParams.xhtml" >
 			<ui:param name="context" value="#{context}"/> 

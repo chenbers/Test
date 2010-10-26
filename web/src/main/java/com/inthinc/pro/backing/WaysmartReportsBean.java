@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
@@ -24,8 +27,6 @@ import com.inthinc.pro.util.MessageUtil;
 public class WaysmartReportsBean extends ReportsBean {
 
     private static final long serialVersionUID = 224700504785842562L;
-    
-    private Map<Integer, ReportGroup> reportGroupMap;
 
     /**
      * {@inheritDoc}
@@ -166,11 +167,12 @@ public class WaysmartReportsBean extends ReportsBean {
         itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
         		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
         
-        itemGroups.add(new SelectItemGroup(ReportCategory.DOT_IFTA.getLabel(), 
-        		ReportCategory.Performance.getDescription(), false, getItemsByCategory(ReportCategory.DOT_IFTA)));
+        itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
+        		ReportCategory.Performance.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
 
         return itemGroups;
     }
+    
 
     /**
      * Returns all the report types pertaining to a given Report Category. 
