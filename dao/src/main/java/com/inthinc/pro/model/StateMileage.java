@@ -4,7 +4,7 @@ public class StateMileage extends BaseEntity
 {
     private static final long serialVersionUID = -5095660906917230045L;
 
-    private String groupID;
+    private Integer groupID;
     private String vehicleName;
     private String stateName;
     private Boolean onRoadFlag;
@@ -15,10 +15,10 @@ public class StateMileage extends BaseEntity
     
     
     
-    public String getGroupID() {
+    public Integer getGroupID() {
         return groupID;
     }
-    public void setGroupID(String groupID) {
+    public void setGroupID(Integer groupID) {
         this.groupID = groupID;
     }
     public String getVehicleName() {
