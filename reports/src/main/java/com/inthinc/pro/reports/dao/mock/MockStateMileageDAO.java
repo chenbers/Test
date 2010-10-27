@@ -20,11 +20,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
     private static final String DISTANCE = "Distance";
     private static final String STATE_1 = "Florida";
     private static final String STATE_2 = "Ohio";
-    private static final String MOCK_GROUP_NAME = "Stub Group Name ";
     private static final String MOCK_PREFIX = "STUB ";
     private static final String MOCK_MONTH_AUG = "Aug, 2010";
     private static final String MOCK_MONTH_SEP = "Sep, 2010";
-    private static final Integer MOCK_FLEET_GROUP_ID = 1; 
 
     private SimpleDateFormat monthOnlyDateFormat = new SimpleDateFormat("MMMM");
 
@@ -67,13 +65,13 @@ public class MockStateMileageDAO implements StateMileageDAO {
     @Override
     public List<StateMileage> getStateMileageByGroupAndMonth(Integer groupID, Interval interval, Boolean dotOnly) {
         List<StateMileage> list = new ArrayList<StateMileage>();
-        StateMileage bean = newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1500L);
+        StateMileage bean = newInstance(groupID, STATE_1, "257547", 1500L);
         bean.setMonth("October");
         list.add(bean);
-        bean = newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1540L);
+        bean = newInstance(groupID, STATE_1, "257547", 1540L);
         bean.setMonth("September");
         list.add(bean);
-        bean = newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "224547", 1360L);
+        bean = newInstance(groupID, STATE_1, "224547", 1360L);
         bean.setMonth("October");
         list.add(bean);
         return list;
@@ -86,20 +84,20 @@ public class MockStateMileageDAO implements StateMileageDAO {
     @Override
     public List<StateMileage> getStateMileageByVehicle(Integer groupID, Interval interval, Boolean dotOnly) {
         List<StateMileage> list = new ArrayList<StateMileage>();
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_1, "257547", 1500L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, STATE_2, "217547", 1600L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_2", "217547", 1600L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_3", "213547", 1602L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_4", "217547", 1600L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "VERY LONG STATE NAME", "21547", 1640L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_6", "217547", 1600L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_7", "217227", 1605L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_8", "217547", 1200L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_9", "237547", 1600L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_10", "217547", 1100L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_12", "217567", 1640L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_11", "217347", 1260L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, "STATE_13", "217546", 1507L));
+        list.add(newInstance(groupID, STATE_1, "257547", 1500L));
+        list.add(newInstance(groupID, STATE_2, "217547", 1600L));
+        list.add(newInstance(groupID, "STATE_2", "217547", 1600L));
+        list.add(newInstance(groupID, "STATE_3", "213547", 1602L));
+        list.add(newInstance(groupID, "STATE_4", "217547", 1600L));
+        list.add(newInstance(groupID, "VERY LONG STATE NAME", "21547", 1640L));
+        list.add(newInstance(groupID, "STATE_6", "217547", 1600L));
+        list.add(newInstance(groupID, "STATE_7", "217227", 1605L));
+        list.add(newInstance(groupID, "STATE_8", "217547", 1200L));
+        list.add(newInstance(groupID, "STATE_9", "237547", 1600L));
+        list.add(newInstance(groupID, "STATE_10", "217547", 1100L));
+        list.add(newInstance(groupID, "STATE_12", "217567", 1640L));
+        list.add(newInstance(groupID, "STATE_11", "217347", 1260L));
+        list.add(newInstance(groupID, "STATE_13", "217546", 1507L));
 
         return list;
     }
@@ -120,9 +118,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
     private List<StateMileage> getData(Integer groupID) {
         List<StateMileage> list = new ArrayList<StateMileage>();
 
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "257547", 1684L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "217547", 1685L));
-        list.add(newInstance(MOCK_GROUP_NAME + groupID, DISTANCE, "1575789", 1686L));
+        list.add(newInstance(groupID, DISTANCE, "257547", 1684L));
+        list.add(newInstance(groupID, DISTANCE, "217547", 1685L));
+        list.add(newInstance(groupID, DISTANCE, "1575789", 1686L));
 
         return list;
     }
@@ -146,11 +144,11 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1504 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle A", "Colorado", 750, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle B", "Utah", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle A", "Colorado", 750, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle B", "Utah", 250L, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle C", "Pennsylvanya", 500L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle C", "Pennsylvanya", 500L, date));
             }
 
             /*
@@ -158,12 +156,12 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1505 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDA", "Colorado", 250L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDB", "Utah", 500L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDC", "Utah", 750, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDA", "Colorado", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDB", "Utah", 500L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDC", "Utah", 750, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDD", "Idaho", 250L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle FDD", "Idaho", 250L, date));
             }
 
             /*
@@ -171,10 +169,10 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1506 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGA", "California", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDGA", "California", 250L, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGB", "Idaho", 500L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle FDGB", "Idaho", 500L, date));
             }
         }
 
@@ -190,11 +188,11 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1504 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle A", "Idaho", 250L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle B", "California", 500L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle A", "Idaho", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle B", "California", 500L, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle C", "Utah", 500L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle C", "Utah", 500L, date));
             }
 
             /*
@@ -202,12 +200,12 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1505 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDA", "Iowa", 250L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDB", "California", 500L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDC", "Idaho", 500, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDA", "Iowa", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDB", "California", 500L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDC", "Idaho", 500, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDD", "Colorado", 250L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle FDD", "Colorado", 250L, date));
             }
 
             /*
@@ -215,10 +213,10 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1506 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGA", "Illinois", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDGA", "Illinois", 250L, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGB", "Utah", 1000L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle FDGB", "Utah", 1000L, date));
             }
         }
 
@@ -234,11 +232,11 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1504 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle A", "Georgia", 750L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle B", "South Carolina", 1000L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle A", "Georgia", 750L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle B", "South Carolina", 1000L, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET", "Vehicle C", "Colorado", 750L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle C", "Colorado", 750L, date));
             }
 
             /*
@@ -246,12 +244,12 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1505 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDA", "Nevada", 250L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDB", "Nevada", 250L, date));
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDC", "Idaho", 500L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDA", "Nevada", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDB", "Nevada", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDC", "Idaho", 500L, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION", "Vehicle FDD", "Pennsylvanya", 250L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle FDD", "Pennsylvanya", 250L, date));
             }
 
             /*
@@ -259,20 +257,20 @@ public class MockStateMileageDAO implements StateMileageDAO {
              */
             if (1506 == groupID) {
                 if (!dotIftaOnly) {
-                    list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGA", "Nevada", 250L, date));
+                    list.add(createStateMileageByGroupBean(groupID, "Vehicle FDGA", "Nevada", 250L, date));
                 }
 
-                list.add(createStateMileageByGroupBean(MOCK_PREFIX + "FLEET - DIVISION - GOOD", "Vehicle FDGB", "Idaho", 500L, date));
+                list.add(createStateMileageByGroupBean(groupID, "Vehicle FDGB", "Idaho", 500L, date));
             }
         }
 
         return list;
     }
 
-    private StateMileage createStateMileageByGroupBean(String fleetName, String vehicleName, String stateName, long miles, Date date) {
+    private StateMileage createStateMileageByGroupBean(Integer groupID, String vehicleName, String stateName, long miles, Date date) {
         StateMileage bean;
         bean = new StateMileage();
-        bean.setGroupID(MOCK_FLEET_GROUP_ID);
+        bean.setGroupID(groupID);
         bean.setVehicleName(vehicleName);
         bean.setStateName(stateName);
         bean.setMiles(miles);
@@ -292,7 +290,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
         date = calendar.getTime();
 
         if (interval.contains(date.getTime()) && 1504 == groupID) {
-            bean.setGroupID(MOCK_FLEET_GROUP_ID);
+            bean.setGroupID(groupID);
             bean.setVehicleName(MOCK_PREFIX + "10026217");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -306,7 +304,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && 1504 == groupID) {
             bean = new StateMileage();
-            bean.setGroupID(MOCK_FLEET_GROUP_ID);
+            bean.setGroupID(groupID);
             bean.setVehicleName(MOCK_PREFIX + "11077461");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -320,7 +318,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && 1504 == groupID) {
             bean = new StateMileage();
-            bean.setGroupID(MOCK_FLEET_GROUP_ID);
+            bean.setGroupID(groupID);
             bean.setVehicleName(MOCK_PREFIX + "11187740");
             bean.setStateName(MOCK_PREFIX + "Colorado");
             bean.setOnRoadFlag(true);
@@ -334,7 +332,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupID(MOCK_FLEET_GROUP_ID);
+            bean.setGroupID(groupID);
             bean.setVehicleName(MOCK_PREFIX + "10740909");
             bean.setStateName(MOCK_PREFIX + "New Mexico");
             bean.setOnRoadFlag(false);
@@ -348,7 +346,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupID(MOCK_FLEET_GROUP_ID);
+            bean.setGroupID(groupID);
             bean.setVehicleName(MOCK_PREFIX + "12345678");
             bean.setStateName(MOCK_PREFIX + "South Dakota");
             bean.setOnRoadFlag(false);
@@ -362,7 +360,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && !isDotIfta && 1505 == groupID) {
             bean = new StateMileage();
-            bean.setGroupID(MOCK_FLEET_GROUP_ID);
+            bean.setGroupID(groupID);
             bean.setVehicleName(MOCK_PREFIX + "87654321");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(false);
@@ -376,7 +374,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
         if (interval.contains(date.getTime()) && !isDotIfta && 1506 == groupID) {
             bean = new StateMileage();
-            bean.setGroupID(MOCK_FLEET_GROUP_ID);
+            bean.setGroupID(groupID);
             bean.setVehicleName(MOCK_PREFIX + "87654320");
             bean.setStateName(MOCK_PREFIX + "UTAH");
             bean.setOnRoadFlag(true);
@@ -389,9 +387,9 @@ public class MockStateMileageDAO implements StateMileageDAO {
     }
 
     /* creates a new instance of StateMileage */
-    private StateMileage newInstance(String groupName, String state, String vehicle, Long miles) {
+    private StateMileage newInstance(Integer groupID, String state, String vehicle, Long miles) {
         StateMileage bean = new StateMileage();
-        bean.setGroupID(MOCK_FLEET_GROUP_ID);
+        bean.setGroupID(groupID);
         bean.setStateName(state);
         bean.setVehicleName(vehicle);
         bean.setMiles(miles);
@@ -446,7 +444,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
     private StateMileage getFuelBean(String stateName, Long miles, String month) {
         StateMileage bean = new StateMileage();
-        bean.setGroupID(MOCK_FLEET_GROUP_ID);
+        bean.setGroupID(1505);
         bean.setVehicleName("10001794");
         bean.setMonth(month);
         bean.setStateName(stateName);
