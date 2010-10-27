@@ -98,8 +98,4 @@ public class UnknownSettingManager extends VehicleSettingManager {
         //Can't edit unknown settings
     }
     
-    public UnknownSettingManager getThis(){
-        
-        return this;
-    }
 }

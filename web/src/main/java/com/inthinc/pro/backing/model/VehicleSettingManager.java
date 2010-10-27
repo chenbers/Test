@@ -102,7 +102,6 @@ public abstract class VehicleSettingManager {
         return adjustedSettingCounts;
    }
 
-    public abstract VehicleSettingManager getThis();
     public abstract class DesiredSettings{
 
         protected Map<Integer, String> desiredSettings;
@@ -159,10 +158,9 @@ public abstract class VehicleSettingManager {
          private boolean isRequested(SettingType setting){
             
             if (!batchEdit) return true;
-            if (updateField.get("editableVehicleSettings."+setting.getPropertyName())){
-                return true;
-            }
-            return false;
+            
+            return updateField.get("editableVehicleSettings."+setting.getPropertyName());
+
          }
        }
       public class NewSettings extends DesiredSettings{

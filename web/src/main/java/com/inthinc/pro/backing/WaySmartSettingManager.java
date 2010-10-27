@@ -23,10 +23,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     public void init() {
  
     }
-    
-    public WaySmartSettingManager getThis(){
-        return this;
-    }
+
     protected EditableVehicleSettings createDefaultValues(Integer vehicleID){
         
         Integer speedLimit = 5;

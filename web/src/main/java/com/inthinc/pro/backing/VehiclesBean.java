@@ -49,7 +49,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private static final Map<String, String>      YEARS;
     private static final Map<String, State>       STATES;
-    private Map<Integer, Device>                  devices;
+//    private Map<Integer, Device>                  devices;
 
     static
     {
@@ -199,14 +199,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
         
         // Get all the devices
-        final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
-       
-        // Map all devices by deviceID
-        devices = new HashMap<Integer, Device>();
-        for (final Device device : plainDevices)
-        {
-            devices.put(device.getDeviceID(), device);
-        }
+//        final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
+//       
+//        // Map all devices by deviceID
+//        devices = new HashMap<Integer, Device>();
+//        for (final Device device : plainDevices)
+//        {
+//            devices.put(device.getDeviceID(), device);
+//        }
        // Get all the settings 
         
         vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID());
@@ -215,25 +215,27 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
         for (final Vehicle vehicle : plainVehicles)
         {
-            VehicleView view = createVehicleView(vehicle);
+            VehicleView vehicleView = createVehicleView(vehicle);
             checkForSettings(vehicle.getVehicleID());
-            view.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+            vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
 
-            view.setDevice(devices.get(vehicle.getDeviceID()));
-            items.add(view);   
+//            vehicleView.setDevice(devices.get(vehicle.getDeviceID()));
+            items.add(vehicleView);   
         }
 
         return items;
     }
     private void checkForSettings(Integer vehicleID){
         
-        if(vehicleSettingManagers.get(vehicleID) == null && !isBatchEdit()){
+        if(vehicleSettingManagers.get(vehicleID) == null){
+            if (!isBatchEdit()){
             
-            vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getUnknownSettingManager(vehicleID));
-        }
-        else if(vehicleSettingManagers.get(vehicleID) == null && isBatchEdit()){
-            
-            vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchProductChoice,vehicleID));
+                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getUnknownSettingManager(vehicleID));
+            }
+            else {
+                
+                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchProductChoice,vehicleID));
+            }
         }
     }
     
@@ -344,9 +346,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setStatus(Status.ACTIVE);
-//        vehicle.setVehicleID(-1);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
+        //TODO vehicleID is null - has to be for createVehicle
         checkForSettings(vehicle.getVehicleID());
         vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
         return vehicleView;
@@ -356,14 +358,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public String batchEdit()
     {
         final String redirect = super.batchEdit();
-        if (getItem().getDevice() == null)
-            for (final VehicleView vehicle : getSelectedItems())
-                if (vehicle.getDevice() != null)
-                {
-                    final Device device = new Device();
-                    getItem().device = device;
-                    break;
-                }
+//        if (getItem().getDevice() == null)
+//            for (final VehicleView vehicle : getSelectedItems())
+//                if (vehicle.getDevice() != null)
+//                {
+//                    final Device device = new Device();
+//                    getItem().device = device;
+//                    break;
+//                }
         return redirect;
     }
 

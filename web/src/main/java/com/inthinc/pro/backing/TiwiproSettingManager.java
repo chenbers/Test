@@ -199,8 +199,4 @@ public class TiwiproSettingManager extends VehicleSettingManager{
       configuratorDAO.updateVehicleSettings(vehicleID, setMap, userID, reason);
   }
   
-  public TiwiproSettingManager getThis(){
-      
-      return this;
-  }
-}
+ }
