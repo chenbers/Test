@@ -197,6 +197,17 @@
 										</td>
 									</tr>
 							</h:outputText>
+							<h:outputText id="iftaInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
+								<tr>
+									<td>
+										<h:outputText value="#{messages.reports_ifta_only}"/>						
+									</td>
+									<td>
+										<h:outputText value="#{messages[reportScheduleBean.item.iftaOnly]}" />
+									</td>
+								</tr>
+							</h:outputText>
+							
 							<ui:fragment rendered="#{reportScheduleBean.admin}">
 							<tr>
 								<td width="100" valign="top" align="left">

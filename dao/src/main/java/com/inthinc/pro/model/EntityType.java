@@ -10,21 +10,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public enum EntityType implements BaseEnum
 {
 
-    ENTITY_GROUP(1, "ENTITY_GROUP"),
-    ENTITY_DRIVER(2, "ENTITY_DRIVER"),
-    ENTITY_VEHICLE(3, "ENTITY_VEHICLE"),
-    ENTITY_GROUP_LIST(4, "ENTITY_GROUP_LIST"),
-    ENTITY_GROUP_LIST_OR_DRIVER(5, "ENTITY_GROUP_LIST_OR_DRIVER"),
-    ENTITY_GROUP_OR_DRIVER(6, "ENTITY_GROUP_OR_DRIVER"), 
-    ENTITY_GROUP_LIST_AND_IFTA(7, "ENTITY_GROUP_LIST_AND_IFTA");
+    ENTITY_GROUP(1, "ENTITY_GROUP", true),
+    ENTITY_DRIVER(2, "ENTITY_DRIVER", false),
+    ENTITY_VEHICLE(3, "ENTITY_VEHICLE", false),
+    ENTITY_GROUP_LIST(4, "ENTITY_GROUP_LIST", true),
+    ENTITY_GROUP_LIST_OR_DRIVER(5, "ENTITY_GROUP_LIST_OR_DRIVER", true),
+    ENTITY_GROUP_OR_DRIVER(6, "ENTITY_GROUP_OR_DRIVER", true), 
+    ENTITY_GROUP_LIST_AND_IFTA(7, "ENTITY_GROUP_LIST_AND_IFTA", true);
 
     private String description;
     private int code;
+    private boolean groupType;
 
-    private EntityType(int code, String description)
+    private EntityType(int code, String description, boolean groupType)
     {
         this.code = code;
         this.description = description;
+        this.groupType = groupType;
     }
 
     private static final Map<Integer, EntityType> lookup = new HashMap<Integer, EntityType>();
@@ -45,6 +47,14 @@ public enum EntityType implements BaseEnum
     {
         return lookup.get(code);
     }
+    public boolean isGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(boolean groupType) {
+        this.groupType = groupType;
+    }
+
 
     @Override
     public String toString()

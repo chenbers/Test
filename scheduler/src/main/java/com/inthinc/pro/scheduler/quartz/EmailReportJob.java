@@ -30,6 +30,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
+import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
@@ -146,7 +147,6 @@ public class EmailReportJob extends QuartzJobBean {
                 logger.error("no group id specified so skipping report id: " + reportSchedule.getReportScheduleID());
                 continue;
             }
-            List<Integer> groupIDList = new ArrayList<Integer>();
             switch (reportGroup.getReports()[i]) {
                 case OVERALL_SCORE:
                     reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
@@ -179,41 +179,48 @@ public class EmailReportJob extends QuartzJobBean {
                             DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
                     break;     
                 case HOS_DAILY_DRIVER_LOG_REPORT:
-                    reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), 
+                    if (reportSchedule.getParamType() == ReportParamType.DRIVER )
+                        reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), 
                             timeFrame.getInterval(), user.getPerson().getLocale(), user.getPerson().getMeasurementType() == MeasurementType.METRIC));
+                    else 
+                        reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),  
+                                reportSchedule.getGroupIDList(),timeFrame.getInterval(),  user.getPerson().getLocale(), user.getPerson().getMeasurementType() == MeasurementType.METRIC));
                     break;
-                    
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
-                    groupIDList.add(reportSchedule.getGroupID());
-                    reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(), 
+                    reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(), 
                             user.getPerson().getLocale()));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), timeFrame.getInterval(), 
+                    if (reportSchedule.getParamType() == ReportParamType.DRIVER )
+                        reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), timeFrame.getInterval(), 
                             user.getPerson().getLocale()));
+                    else
+                        reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getGroupIDList(), timeFrame.getInterval(), 
+                                user.getPerson().getLocale()));
                     break;
                 case HOS_DRIVER_DOT_LOG_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(reportSchedule.getDriverID(), timeFrame.getInterval(), 
                             user.getPerson().getLocale()));
                     break;
                 case DOT_HOURS_REMAINING:
-                    groupIDList.add(reportSchedule.getGroupID());
-                    reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList,  
+                    reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupIDList(),  
                             user.getPerson().getLocale()));
                     break;
                 case HOS_ZERO_MILES:
-                    groupIDList.add(reportSchedule.getGroupID());
-                    reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
+                    reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 case HOS_EDITS:
-                    groupIDList.add(reportSchedule.getGroupID());
-                    reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
+                    reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 case PAYROLL_DETAIL:
-                    groupIDList.add(reportSchedule.getGroupID());
-                    reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
+                    reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 case PAYROLL_SIGNOFF:
@@ -221,8 +228,8 @@ public class EmailReportJob extends QuartzJobBean {
                             user.getPerson().getLocale()));
                     break;
                 case PAYROLL_SUMMARY:
-                    groupIDList.add(reportSchedule.getGroupID());
-                    reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), groupIDList, timeFrame.getInterval(),  
+                    reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
                 default:

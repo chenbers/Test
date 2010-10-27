@@ -48,7 +48,8 @@ public enum ReportGroup
  */
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report",7,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{}, ReportCategory.HOS,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
+            ReportCategory.HOS,
             ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
      HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report",8,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 

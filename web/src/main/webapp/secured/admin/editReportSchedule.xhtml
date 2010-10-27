@@ -14,6 +14,9 @@
    
     <ui:define name="scripts">
       <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+	  <a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
+  	  <a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.1-min.js"/>
+      <a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
     </ui:define>
     
 	<ui:define name="content">
@@ -29,7 +32,7 @@
 					</ui:include>
 				</td>
 				<td valign="top">
-				<a4j:form id="edit-form">
+				<a4j:form id="edit_form">
 				<div class="">
 					<div class="panel_nw">
 					<div class="panel_title"><span class="email"><h:outputText
@@ -120,7 +123,7 @@
                                       	<ui:param name="value" value="#{reportScheduleBean.item.timeOfDay}" />
                                       	<ui:param name="onchange" value="checkMultiple('timeOfDay')" />
          								<ui:param name="context" value="editReportScheduletimeOfDay" />
-          								<ui:param name="formName" value="edit-form"/>
+          								<ui:param name="formName" value="edit_form"/>
                                     </ui:include>
 								</td>
 							</tr>
@@ -170,7 +173,7 @@
       			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
       			                                <ui:param name="onchange" value="checkMultiple('occurrence')" />
         										<ui:param name="context" value="editReportSchedule" />
-        										<ui:param name="formName" value="edit-form"/>
+        										<ui:param name="formName" value="edit_form"/>
       	                              		</ui:include>	
 	                              		</h:outputText>
 									</td>
@@ -249,7 +252,24 @@
 									</tr>
 								</h:outputText>
 							</ui:repeat>
-							<h:outputText id="groupInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST'}">
+							<h:outputText id="reportOnInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' }">
+								<tr>
+									<td width="100" valign="top">
+										<h:outputText value="#{messages.reportSchedule_reportOn}"/>
+										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									</td>
+									<td>
+										<a4j:outputPanel id="reportOnSelect">
+										<h:selectOneMenu id="editReportSchedule-reportOn" value="#{reportScheduleBean.item.paramType}" style="width:200px;">
+											<f:selectItems value="#{reportScheduleBean.reportParamTypes}"/> 
+											<a4j:support action="#{reportScheduleBean.reportGroupChangeAction}"  event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
+										</h:selectOneMenu>
+										</a4j:outputPanel>
+										
+									</td>
+								</tr>
+							</h:outputText>
+							<h:outputText id="groupInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' and reportScheduleBean.item.paramType eq 'GROUPS')}">
 								<tr>
 									<td width="100" valign="top">
 										<h:outputText value="#{messages.reportSchedule_group}"/>
@@ -263,14 +283,33 @@
 											<f:selectItems value="#{reportScheduleBean.groups}"/> 
 										</h:selectOneMenu>
 										<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-     					 					<ui:param name="selectBoxID" value="edit-form:editReportSchedule-group" />
+     					 					<ui:param name="selectBoxID" value="edit_form:editReportSchedule-group" />
 										</ui:include>
 										</a4j:outputPanel>
 										
 									</td>
 								</tr>
 							</h:outputText>
-							<h:outputText id="driverInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER'}">
+							<h:outputText id="groupListInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_AND_IFTA' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' and reportScheduleBean.item.paramType eq 'GROUPS')}">
+								<tr>
+									<td width="100" valign="top">
+										<h:outputText value="#{messages.reportSchedule_groups}"/>
+										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									</td>
+									<td>
+									<a4j:outputPanel id="groupListSelect">
+									<h:selectManyMenu id="editRSGroups" value="#{reportScheduleBean.item.groupIDSelectList}" style="width:200px;size:auto"
+											required="true" requiredMessage="#{messages.required}">
+										<f:selectItems value="#{reportScheduleBean.groups}"/>
+									</h:selectManyMenu>
+									<rich:jQuery selector="#editRSGroups" timing="onload"
+										query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+														width: 200,maxDropHeight: 150})"/>
+									</a4j:outputPanel>
+									</td>
+								</tr>
+							</h:outputText>
+							<h:outputText id="driverInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' and reportScheduleBean.item.paramType eq 'DRIVER') or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' and reportScheduleBean.item.paramType eq 'DRIVER')}">
 									<tr>
 										<td width="100" valign="top">
 											<h:outputText value="#{messages.reportSchedule_driver}"/>
@@ -286,6 +325,16 @@
 										</td>
 									</tr>
 							</h:outputText>
+							<h:outputText id="iftaInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
+								<tr>
+									<td>
+										<h:outputText value="#{messages.reports_ifta_only}"/>						
+									</td>
+									<td>
+										<h:selectBooleanCheckbox id="ifta" value="#{reportScheduleBean.item.iftaOnly}" />
+									</td>
+									</tr>
+							</h:outputText>
 							<ui:fragment rendered="#{reportScheduleBean.admin}">
 								<tr>
 									<td width="100" valign="top">
@@ -295,7 +344,7 @@
 			                            <h:selectOneMenu id="userID" value="#{reportScheduleBean.item.userID}" style="width: 200px">
 			                            	<f:selectItems value="#{reportScheduleBean.allGroupUsers}" />
 				                            <a4j:support action="#{reportScheduleBean.ownerChangedAction}" event="onchange" 
-			                            		reRender="edit-form:groupSelect,edit-form:driverSelect" ajaxSingle="true"/>
+			                            		reRender="edit_form:groupSelect,edit_form:groupListSelect,edit_form:driverSelect" ajaxSingle="true"/>
 			                        	</h:selectOneMenu>
 	                        		</td>
 	                        	</tr>
@@ -347,7 +396,7 @@
 				 function bodyLoad()
 				  {
 		
-				    var elements = document.getElementById("edit-form").elements;
+				    var elements = document.getElementById("edit_form").elements;
 				    for (var i = 0; i &lt; elements.length; i++)
 				      for (var j = 0; j &lt; formElements.length; j++)
 				        if (elements[i].getAttribute("type") == formElements[j])

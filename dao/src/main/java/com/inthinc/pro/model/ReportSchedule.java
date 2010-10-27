@@ -43,6 +43,10 @@ public class ReportSchedule
     private String 				fullName;
     
 	private Occurrence occurrence;
+	private List<Integer> groupIDList;
+	private ReportParamType paramType;
+	private Boolean iftaOnly;
+	
     
     public ReportSchedule()
     {
@@ -295,4 +299,31 @@ public class ReportSchedule
 		this.fullName = fullName;
 	}
 
+    public List<Integer> getGroupIDList() {
+        return groupIDList;
+    }
+
+    public void setGroupIDList(List<Integer> groupIDList) {
+        this.groupIDList = groupIDList;
+    }
+
+    public ReportParamType getParamType() {
+        if (paramType == null)
+            paramType = ReportParamType.NONE;
+        return paramType;
+    }
+
+    public void setParamType(ReportParamType paramType) {
+        this.paramType = paramType;
+    }
+
+    public Boolean getIftaOnly() {
+        return iftaOnly;
+    }
+
+    public void setIftaOnly(Boolean iftaOnly) {
+        this.iftaOnly = iftaOnly;
+    }
+
+	
 }
