@@ -371,7 +371,6 @@ logger.info("in loadItems()");
             this.driverName = driverName;
         }
 
-
         @Override
         public String getName() {
             // TODO Auto-generated method stub
@@ -508,6 +507,7 @@ logger.info("in loadItems()");
 
     public String save()
     {
+        boolean driverChange = false;
         List<HosLogView> selected = getSelectedItems();
         if ((selected.size() == 0) && isAdd())
             selected.add(item);
@@ -519,17 +519,29 @@ logger.info("in loadItems()");
             for (final String key : updateField.keySet())
                 if (!updateField.get(key))
                     ignoreFields.add(key);
-            
-            
+                
+            if (updateField.get("vehicleID"))
+                ignoreFields.remove("vehicleName");
+
+            if (updateField.get("driverID"))
+                driverChange = true;
+
             //we need to validate the item before we copy the properties. 
             if(!validateSaveItem(item))
             {
                 return null;
             }
-
+            
+            updateVehicleName();
             // copy properties
             for (HosLogView t : selected)
                 BeanUtil.deepCopy(item, t, ignoreFields);
+        }
+        else {
+            updateVehicleName();
+            if (!item.getDriverID().equals(getDriverID())) {
+                driverChange = true;
+            }
         }
 
         // validate
@@ -549,22 +561,31 @@ logger.info("in loadItems()");
             logger.debug("Hessian error while saving", e);
             return null;
         }
-
-        if (add)
-        {
-        //    items = null;
-            items.add(item);
-        }
         
-//        if (items == null)
-//            getItems();
-
-        // deselect all edited items
-        for (HosLogView  item : getSelectedItems())
-            item.setSelected(false);
+        if (driverChange) {
+            items = null;
+        }
+        else {
+            if (add)
+            {
+                items.add(item);
+            }
+            
+            // deselect all edited items
+            for (HosLogView  item : getSelectedItems())
+                item.setSelected(false);
+            }
 
         return VIEW_REDIRECT;
     }
+    private void updateVehicleName() {
+        if (item != null && item.getVehicleID() != null) {
+            Vehicle vehicle = vehicleDAO.findByID(item.getVehicleID());
+            item.setVehicleName(vehicle.getName());
+        }
+        
+    }
+
     protected boolean validate(List<HosLogView> saveItems)
     {
         boolean valid = true;
