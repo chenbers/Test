@@ -21,7 +21,7 @@ public class StateMileageFuelByVehicle {
 	        return groupName;
 	}
 	
-	 * 
+	/* 
 	 * @param groupName the groupName to set.
 	 */
 	public void setGroupName(String groupName) {
