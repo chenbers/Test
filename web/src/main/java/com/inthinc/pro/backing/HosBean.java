@@ -312,7 +312,7 @@ logger.info("in loadItems()");
             return items;
         
         Interval interval = dateRange.getInterval();
-        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), interval, true);
+        List<HOSRecord> plainRecords = hosDAO.getHOSRecords(getDriverID(), interval, false);
         if (plainRecords == null)
             return items;
         for (final HOSRecord rec : plainRecords) {
