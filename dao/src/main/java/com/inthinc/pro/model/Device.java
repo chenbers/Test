@@ -71,7 +71,7 @@ public class Device extends BaseEntity
     private Integer	firmwareVersion;
     @Column(name="witnessVer", updateable = false)
     private Integer	witnessVersion;
-//    private String emuMd5;
+    private String emuMd5;
     private Integer productVer;
     
 
@@ -345,12 +345,12 @@ public class Device extends BaseEntity
 	public void setWitnessVersion(Integer witnessVersion) {
 		this.witnessVersion = witnessVersion;
 	}
-//	public String getEmuMd5() {
-//		return emuMd5;
-//	}
-//	public void setEmuMd5(String emuMd5) {
-//		this.emuMd5 = emuMd5;
-//	}
+	public String getEmuMd5() {
+		return emuMd5;
+	}
+	public void setEmuMd5(String emuMd5) {
+		this.emuMd5 = emuMd5;
+	}
 
     /**
      * Is this device capable of receiving a text message?
