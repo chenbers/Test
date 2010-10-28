@@ -6,10 +6,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import jxl.write.DateTime;
 
 import mockit.Expectations;
 import mockit.Mocked;
@@ -26,23 +29,27 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.dao.mock.MockStateMileageDAO;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 
 public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitTest {
     
     // Constant values
-    private final Integer GROUP_ID = new Integer(2);
-    private final Integer GROUP_ID2 = new Integer(3);
+    private final Integer GROUP_ID = new Integer(1504);
+    private final Integer GROUP_ID2 = new Integer(1506);
     private final List<Integer> GROUP_IDS = new ArrayList<Integer>();
     private final String VEHICLE = "123456";
     private final String GROUP_FULL_NAME = "Group Full Name";
+    private final String GROUP_FULL_NAME_1 = "FLEET";
+    private final String GROUP_FULL_NAME_2 = "FLEET - DIVISION - GOOD";
     private static final String STATE = "Ohio";
     private static final Long MILES = 5000L;
     
     private final Locale LOCALE = Locale.US;
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     private Group[] groupList = {
-            new Group(GROUP_ID, 1, GROUP_FULL_NAME, 0)
+            new Group(GROUP_ID, 1, GROUP_FULL_NAME_1, 0),
+            new Group(GROUP_ID2, 1, GROUP_FULL_NAME_2, 0),
     };
     private GroupHierarchy groupHierarchy = new GroupHierarchy(Arrays.asList(groupList));
 
@@ -53,7 +60,7 @@ public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitT
 
     
     /**
-     * Tests the init method of the MileageByVehicleReportCriteria class.
+     * Tests the init method of the StateMileageByVehicleRoadStatusReportCriteria class.
      */
     @Test
     @SuppressWarnings({ "unchecked", "static-access" })
@@ -111,10 +118,76 @@ public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitT
        assertNotNull(dataSet);
        assertTrue(dataSet.size() == 1);
        StateMileageByVehicleRoadStatus bean = dataSet.get(0);
-       assertEquals(bean.getGroupName(), GROUP_FULL_NAME);
+       assertEquals(bean.getGroupName(), GROUP_FULL_NAME_1);
        assertEquals(bean.getState(), STATE);
        assertEquals(bean.getVehicle(), VEHICLE);
        assertTrue(bean.getTotal().doubleValue() == MILES.doubleValue());
+
+    }    
+    
+    /**
+     * Tests the init method of the StateMileageByVehicleRoadStatusReportCriteria class.
+     */
+    @Test
+    @SuppressWarnings({ "unchecked", "static-access" })
+    public void testInitWithNonJMockData(){
+
+        // General initializations
+        MockStateMileageDAO stateMileageDAOMock = new MockStateMileageDAO();
+        
+        
+        Date startDate = new Date();
+        Date endDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2010, 9, 1);
+        startDate = calendar.getTime();
+        calendar.set(2011, 9, 1);
+        endDate = calendar.getTime();
+                
+        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+
+        reportCriteriaSUT.setStateMileageDAO(stateMileageDAOMock);
+
+        GROUP_IDS.add(GROUP_ID);
+        GROUP_IDS.add(GROUP_ID2);
+
+        //------------------------------------------------------------------
+        // 2. Second, we run the actual method to be tested
+        reportCriteriaSUT.init(groupHierarchy, GROUP_IDS, interval, false);
+        
+        //------------------------------------------------------------------
+        // 3. Third we verify the results
+
+       List<StateMileageByVehicleRoadStatus> dataSet = reportCriteriaSUT.getMainDataset();
+       assertNotNull(dataSet);
+       assertTrue(dataSet.size() == 4);
+       StateMileageByVehicleRoadStatus bean = dataSet.get(0);
+       assertEquals(bean.getGroupName(), GROUP_FULL_NAME_1 );
+       assertEquals(bean.getState(), "STUB Colorado");
+       assertEquals(bean.getVehicle(), "STUB 10026217");
+       assertTrue(bean.getTotal().doubleValue() == 3108d);
+       assertEquals(bean.getRoadStatus(),"On-Road");
+       
+       bean = dataSet.get(1);
+       assertEquals(bean.getGroupName(), GROUP_FULL_NAME_1);
+       assertEquals(bean.getState(), "STUB Colorado");
+       assertEquals(bean.getVehicle(), "STUB 11077461");
+       assertTrue(bean.getTotal().doubleValue() == 4484d);
+       assertEquals(bean.getRoadStatus(),"On-Road");
+       
+       bean = dataSet.get(2);
+       assertEquals(bean.getGroupName(), GROUP_FULL_NAME_1);
+       assertEquals(bean.getState(), "STUB Colorado");
+       assertEquals(bean.getVehicle(), "STUB 11187740");
+       assertTrue(bean.getTotal().doubleValue() == 1817d);
+       assertEquals(bean.getRoadStatus(),"On-Road");
+       
+       bean = dataSet.get(3);
+       assertEquals(bean.getGroupName(), GROUP_FULL_NAME_2 );
+       assertEquals(bean.getState(), "STUB UTAH");
+       assertEquals(bean.getVehicle(), "STUB 87654320");
+       assertTrue(bean.getTotal().doubleValue() == 1027d);
+       assertEquals(bean.getRoadStatus(),"On-Road");
 
     }    
     
@@ -137,7 +210,7 @@ public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitT
         assertTrue(EqualsBuilder.reflectionEquals(beans[0], dataList.get(2))); 
     }
     
-    /* Helper to create a MileageByVehicle bean */
+    /* Helper to create a StateMileageByVehicleRoadStatus bean */
     private StateMileageByVehicleRoadStatus createBean(String groupName, String vehicle, Double distance){
         StateMileageByVehicleRoadStatus bean = new StateMileageByVehicleRoadStatus();
         bean.setGroupName(groupName);
