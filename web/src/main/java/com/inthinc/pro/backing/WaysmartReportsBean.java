@@ -144,7 +144,6 @@ public class WaysmartReportsBean extends ReportsBean {
             reportCriteria.setUseMetric((getUser().getPerson().getMeasurementType() != null && getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
             reportCriteria.setMeasurementType(getUser().getPerson().getMeasurementType());
             reportCriteria.setFuelEfficiencyType(getUser().getPerson().getFuelEfficiencyType());
-
         }
         
         setReportCriteriaList(reportCriteriaList);

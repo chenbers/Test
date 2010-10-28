@@ -26,17 +26,19 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
 
 /**
  * Unit Test for the StateMileageFuelByVehicle class.
  */
-public class StateMileageFuelByVehicleTest extends BaseUnitTest {
+public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 
     private static final String GROUP_NAME_1 = "GN1";
 	private static final String GROUP_NAME_2 = "GN2";
@@ -173,6 +175,20 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 		// In other cases we return totalMiles / totalTruckGas rounded to 2 decimals
 		Double mileage = reportCriteriaSUT.getMileage(totalMiles, totalTruckGas);
 		assertEquals(mileage, new Double(Math.round((totalMiles / totalTruckGas) * 100.0) / 100.0));
+	}
+	
+	/**
+	 * Test the setter for the fuel efficiency type
+	 */
+	@Test
+	public void testFuelEfficiencySetter(){
+		reportCriteriaSUT.setFuelEfficiencyType(FuelEfficiencyType.LP100KM);
+		
+		assertEquals(FuelEfficiencyType.LP100KM, reportCriteriaSUT.getFuelEfficiencyType());
+		String resourceKey = FuelEfficiencyType.LP100KM.toString();
+		resourceKey = Character.toLowerCase(resourceKey.charAt(0)) + resourceKey.substring(1);
+			
+		assertEquals(resourceKey,reportCriteriaSUT.getParameter(ReportCriteria.FUEL_EFFICIENCY_TYPE));
 	}
 	
 	

@@ -9,9 +9,11 @@ import java.util.Locale;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
 
@@ -48,7 +50,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
         initDataSet(dataList);
     }
 
-    /**
+	/**
      * Populate the data set with data.
      * Copy the fields from the record returned from the Back End to the fields in the beans to be used by Jasper.
      * 
@@ -75,7 +77,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
             rec.setTotalTruckGas(totalTruckGas);
             rec.setTotalTrailerGas(totalTrailerGas);
             rec.setMileage(getMileage(rec.getTotalMiles(), totalTruckGas));
-
+            
             dataList.add(rec);
         }
         Collections.sort(dataList, new StateMileageFuelByVehicleComparator());         
@@ -121,4 +123,29 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
 
         }
     }
+
+    /**
+     * Use the FuelEfficiencyType to produce a FuelEfficiency string to be used as a key in the resource file
+     * 
+     * @return The FuelEfficiency Resource Key.
+     */
+    private String getFuelEfficiencyResourceKey() {
+    	String type = getFuelEfficiencyType().toString();
+    	
+    	// Switch first letter to lowercase
+		return Character.toLowerCase(type.charAt(0)) + type.substring(1);
+	}
+
+    /**
+     * FUEL_EFFICIENCY_TYPE is passed to the report as a String instead of the FuelEfficiencyType enum.
+     * This way we can control from here how the resource keys are generated.
+     */
+	@Override
+	public void setFuelEfficiencyType(FuelEfficiencyType fuelEfficiencyType) {
+		super.setFuelEfficiencyType(fuelEfficiencyType);
+        addParameter(ReportCriteria.FUEL_EFFICIENCY_TYPE, getFuelEfficiencyResourceKey());
+	}
+    
+
+    
 }

@@ -40,6 +40,7 @@ public class ReportCriteria
     public static final String RECORD_COUNT = "RECORD_COUNT";
     public static final String REPORT_START_DATE = "REPORT_START_DATE";
     public static final String REPORT_END_DATE = "REPORT_END_DATE";
+    public static final String FUEL_EFFICIENCY_TYPE = "FUEL_EFFICIENCY_TYPE";
     
     public static final String GROUP_SEPARATOR="->";
 
@@ -99,6 +100,12 @@ public class ReportCriteria
         paramMap.put(name, value);
         return this;
     }
+
+    public Object getParameter(String key)
+    {
+        return paramMap.get(key);
+    }
+    
     
     public void addPramMap(Map<String, Object> paramMap)
     {
@@ -216,7 +223,7 @@ public class ReportCriteria
     }
 
     public void setFuelEfficiencyType(FuelEfficiencyType fuelEfficiencyType) {
-        paramMap.put("FUEL_EFFICIENCY_TYPE", fuelEfficiencyType);
+        paramMap.put(FUEL_EFFICIENCY_TYPE, fuelEfficiencyType);
         this.fuelEfficiencyType = fuelEfficiencyType;
     }
 
