@@ -5,10 +5,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
@@ -16,6 +13,10 @@ import javax.faces.model.SelectItemGroup;
 import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.backing.ui.ReportParams;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.ReportCategory;
@@ -199,6 +200,58 @@ public class WaysmartReportsBean extends ReportsBean {
         SelectItem[] items = new SelectItem[1]; 
         items[0] = new SelectItem(null, "");
         return new SelectItemGroup("","",false,items);		
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Filter the Groups for WaySmart device. 
+	 * @see com.inthinc.pro.backing.BaseBean#getGroupHierarchy()
+	 */
+	@Override
+    public GroupHierarchy getGroupHierarchy() {
+        GroupHierarchy full = super.getGroupHierarchy();
+	    List<Group> filtered = checkGroupForWaysmart(full, full.getTopGroup());
+        return new GroupHierarchy(filtered);
+    }
+	
+    /*
+     * Returns a list of the group and its subgroups if have WaySmart device.
+     * @param hierarchy The GroupHierarchy to use to get children
+     * @param group The current group to check
+     * @return THe list with all the children and the parent having WaySmart device
+     */
+    private List<Group> checkGroupForWaysmart(GroupHierarchy hierarchy, Group group) {
+        List<Group> checkedList = new ArrayList<Group>();
+        List<Group> children = hierarchy.getChildren(group);
+
+        if (children == null) { // we are on a leaf
+            if (hasWaysmartDevice(group)) {
+                checkedList.add(group);
+            }
+        } else { // we are on a non-leaf node
+            for (Group child : children) {
+                checkedList.addAll(checkGroupForWaysmart(hierarchy, child));
+            }
+            if (!checkedList.isEmpty() || (checkedList.isEmpty() && hasWaysmartDevice(group))) {
+                checkedList.add(group);
+            }
+        }
+        return checkedList;
+
+    }	
+	
+	private boolean hasWaysmartDevice(Group group) {
+        List<Driver> drivers = getDriverDAO().getDrivers(group.getGroupID());
+        for (Driver driver : drivers) {
+            Integer accountID = driver.getPerson().getAcctID();
+            List<Device> devices = getDeviceDAO().getDevicesByAcctID(accountID);
+            for (Device device : devices) {
+                if (device.isWaySmart()) {
+                    return true;
+                }
+            }
+        }
+        return false;
 	}
 
 }

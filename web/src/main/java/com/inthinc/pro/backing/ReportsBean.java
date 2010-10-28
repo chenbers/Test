@@ -14,6 +14,7 @@ import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.ui.ReportParams;
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.reports.FormatType;
@@ -37,6 +38,7 @@ public abstract class ReportsBean extends BaseBean {
 
     private DriverDAO driverDAO;
     private AccountDAO accountDAO;
+    private DeviceDAO deviceDAO;
     private ReportCriteriaService reportCriteriaService;
     private ReportRenderer reportRenderer;
     private String html;
@@ -271,6 +273,22 @@ public abstract class ReportsBean extends BaseBean {
         this.accountDAO = accountDAO;
     }
 
+    /**
+     * The deviceDAO setter.
+     * @param deviceDAO the deviceDAO to set
+     */
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
+    }
+
+    /**
+     * The deviceDAO getter.
+     * @return the deviceDAO
+     */
+    public DeviceDAO getDeviceDAO() {
+        return this.deviceDAO;
+    }
+
     @SuppressWarnings("unchecked")
     public List<String> getColumnHeaders() {
         return (List<String>) (columnHeaders == null ? (Collections.emptyList()) : columnHeaders);
@@ -320,6 +338,4 @@ public abstract class ReportsBean extends BaseBean {
     public void setSortOrder(Map<String, Object> sortOrder) {
         this.sortOrder = sortOrder;
     }
-
-    
 }

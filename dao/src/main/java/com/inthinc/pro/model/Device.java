@@ -378,4 +378,8 @@ public class Device extends BaseEntity
     public Integer getProductVer() {
         return productVer;
     }
+    
+    public boolean isWaySmart() {
+        return true;// ProductType.WS820.getCode().equals(this.productVer);
+    }
 }
