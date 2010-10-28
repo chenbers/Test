@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import mockit.Expectations;
 
@@ -57,6 +59,15 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	    GROUP_ID_LIST.add(GROUP_ID);
 	    GROUP_ID_LIST.add(GROUP_ID2);
 	}
+	
+	private Map<Integer, String> expectedGroupNames = new HashMap<Integer, String>() {
+        private static final long serialVersionUID = 1L;
+
+        {
+            put(GROUP_ID, groupList[0].getName());
+            put(GROUP_ID2, groupList[0].getName() + "->" + groupList[1].getName());
+        }
+    };
 	
 	/**
 	 * Test the init method.
@@ -192,8 +203,7 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	 * @return true if previous must in fact be before curr
 	 */
 	private boolean before(StateMileageFuelByVehicle prev, StateMileageFuelByVehicle curr) {
-//TODO: fix the groupName check	    
-		boolean groupNameOK = Integer.valueOf(prev.getGroupID()) <= Integer.valueOf(curr.getGroupID());
+		boolean groupNameOK = prev.getGroupName().compareTo(curr.getGroupName()) <= 0;
 		boolean vehicleOK = Integer.valueOf(prev.getVehicle()) <= Integer.valueOf(curr.getVehicle());
 		boolean monthOK = Integer.valueOf(prev.getMonth()) <= Integer.valueOf(curr.getMonth());
 		boolean stateOK = Integer.valueOf(prev.getState()) <= Integer.valueOf(curr.getState());
@@ -212,7 +222,7 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 		// Generates the 16 combinations of the 4 attributes
 		for (int i = 0; i <= 15; i++){
 			StateMileageFuelByVehicle bean = new StateMileageFuelByVehicle();
-			bean.setGroupID(i / 8);
+			bean.setGroupName(Integer.toString(i / 8));
 			bean.setVehicle(String.valueOf(i / 4));
 			bean.setMonth(String.valueOf(i / 2));
 			bean.setState(String.valueOf(i / 1));
@@ -267,7 +277,7 @@ public class StateMileageFuelByVehicleTest extends BaseUnitTest {
 	 */
 	private boolean recordCorrectlyCopiedIntoBean(StateMileageFuelByVehicle bean, StateMileage record) {
 		return new EqualsBuilder()
-	        .append(bean.getGroupID(), record.getGroupID())
+	        .append(bean.getGroupName(), expectedGroupNames.get(record.getGroupID()))
 	        .append(bean.getVehicle(), record.getVehicleName())
 	        .append(bean.getMonth(), record.getMonth())
 	        .append(bean.getState(), record.getStateName())

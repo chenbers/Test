@@ -5,7 +5,7 @@ package com.inthinc.pro.reports.ifta.model;
  */
 public class StateMileageFuelByVehicle {
 
-	private Integer groupID;
+	private String groupName;
     private String vehicle;
 	private String month;
 	private String state;
@@ -14,11 +14,18 @@ public class StateMileageFuelByVehicle {
 	private Double totalTrailerGas;
 	private Double mileage;
 
-	public Integer getGroupID() {
-	        return groupID;
+	/**
+	 * @return the groupName
+	 */
+	public String getGroupName() {
+	        return groupName;
 	}
-	public void setGroupID(Integer groupID) {
-	        this.groupID = groupID;
+	
+	 * 
+	 * @param groupName the groupName to set.
+	 */
+	public void setGroupName(String groupName) {
+	        this.groupName = groupName;
 	}
 
 	/**
