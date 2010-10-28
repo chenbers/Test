@@ -405,7 +405,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
         calendar.set(2010, 8, 19);
         date = calendar.getTime();
 
-        if (interval.contains(date.getTime())) {
+        if (interval.contains(date.getTime()) && groupID.equals(1504)) {
             list.addAll(getFuelList(MOCK_MONTH_AUG));
             list.addAll(getFuelList(MOCK_MONTH_SEP));
         }
@@ -444,7 +444,7 @@ public class MockStateMileageDAO implements StateMileageDAO {
 
     private StateMileage getFuelBean(String stateName, Long miles, String month) {
         StateMileage bean = new StateMileage();
-        bean.setGroupID(1505);
+        bean.setGroupID(1504);
         bean.setVehicleName("10001794");
         bean.setMonth(month);
         bean.setStateName(stateName);
