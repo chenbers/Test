@@ -201,7 +201,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     @Override
     public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
 
-
+        Date currentTime = new Date();
+        
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
@@ -226,10 +227,10 @@ System.out.println("statment: " + statement.toString());
                 occupantLog.setDriverID(resultSet.getInt(1));
                 occupantLog.setDriverName(resultSet.getString(2));
                 occupantLog.setVehicleID(resultSet.getInt(3));
-                long ms = resultSet.getLong(4);
+                Long ms = resultSet.getLong(4);
                 occupantLog.setLogTime(new Date(ms));
                 ms = resultSet.getLong(5);                
-                occupantLog.setEndTime(new Date(ms));
+                occupantLog.setEndTime((ms == null || ms == 0) ? currentTime : new Date(ms));
                 occupantLog.setServiceID(resultSet.getString(6));
                 occupantLog.setTrailerID(resultSet.getString(7));
                 
