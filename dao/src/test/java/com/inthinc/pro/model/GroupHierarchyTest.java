@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -46,9 +47,11 @@ public class GroupHierarchyTest{
     			    subGroup.setType(GroupType.DIVISION);
     			}
     			subGroup.setParentID(group.getGroupID());
+    			subGroup.setName("Group_"+groupID);
     			
     			list.add(subGroup);
-    	    	System.out.println("GroupId is: "+subGroup.getGroupID()+", parentId is: "+subGroup.getParentID()+", level is: "+level);
+    	    	System.out.println("GroupId is: "+subGroup.getGroupID()+", parentId is: "+subGroup.getParentID()+", level is: "+level
+    	    	                   +", GroupName is: "+subGroup.getName());
     			addGroups(subGroup, level);
     		}
     	}
@@ -62,8 +65,10 @@ public class GroupHierarchyTest{
 		topGroup.setParentID(0);
 		topGroup.setGroupID(groupID);
 		topGroup.setType(GroupType.FLEET);
+		topGroup.setName("Group_1");
 		list.add(topGroup);
-    	System.out.println("GroupId is: "+topGroup.getGroupID()+", parentId is: "+topGroup.getParentID()+", level is: "+0);
+    	System.out.println("GroupId is: "+topGroup.getGroupID()+", parentId is: "+topGroup.getParentID()+", level is: "+0
+    	                   +", GroupName is: "+topGroup.getName());
 		addGroups(topGroup, 0);
 		
 		groupHierarchy = new GroupHierarchy();
@@ -110,4 +115,23 @@ public class GroupHierarchyTest{
 		
 		
 	}
+	
+	@Test
+    public void testShortGroupName(){      
+	    //test 1: with continuation prefix
+        String shortGroupName =  groupHierarchy.getShortGroupName(10, groupHierarchy.GROUP_SEPERATOR);
+        assertEquals(groupHierarchy.CONTINUATION_PREFIX+groupHierarchy.GROUP_SEPERATOR+"Group_4"+groupHierarchy.GROUP_SEPERATOR+"Group_8"+groupHierarchy.GROUP_SEPERATOR+"Group_10",shortGroupName);
+        
+        //test 2: without continuation prefix and only one node
+        shortGroupName =  groupHierarchy.getShortGroupName(1, groupHierarchy.GROUP_SEPERATOR);
+        assertEquals("Group_1",shortGroupName);
+        
+        //test 3: without continuation prefix and many nodes
+        shortGroupName =  groupHierarchy.getShortGroupName(2, groupHierarchy.GROUP_SEPERATOR);
+        assertEquals("Group_1"+groupHierarchy.GROUP_SEPERATOR+"Group_2",shortGroupName);
+   
+      //test 4: missing group
+        shortGroupName =  groupHierarchy.getShortGroupName(0, groupHierarchy.GROUP_SEPERATOR);
+        assertTrue(shortGroupName.isEmpty());
+    }
  }

@@ -20,6 +20,9 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
  */
 public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCriteria {
 
+    private static final String ON_ROAD_STATUS = "On-Road";
+    private static final String OFF_ROAD_STATUS = "Off-Road";
+
     /**
      * Default constructor.
      * @param locale
@@ -58,32 +61,31 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCrit
      * @param interval
      * @param recordMap
      */
-    void initDataSet(Interval interval, List<StateMileage> records)
+    void initDataSet(Interval interval, List<StateMileage> backendBeanList)
     {   
         List<StateMileageByVehicleRoadStatus> dataList = new ArrayList<StateMileageByVehicleRoadStatus>();
         String roadStatus = "";
-        for (StateMileage item : records) {
-            StateMileageByVehicleRoadStatus rec = new StateMileageByVehicleRoadStatus();
-            rec.setVehicle(item.getVehicleName());
-            if(item.isOnRoadFlag())
-                 roadStatus = "On-Road";
+        for (StateMileage backendBean : backendBeanList) {
+            StateMileageByVehicleRoadStatus reportBean = new StateMileageByVehicleRoadStatus();
+            reportBean.setVehicle(backendBean.getVehicleName());
+            if(backendBean.isOnRoadFlag())
+                roadStatus = ON_ROAD_STATUS;
             else
-                roadStatus = "Off-Road";  
+                roadStatus = OFF_ROAD_STATUS;  
             
-            rec.setRoadStatus(roadStatus);
-            rec.setState(item.getStateName());
-            
-            rec.setGroupName(getFullGroupName(item.getGroupID()));
-            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
-                    item.getMiles(), getMeasurementType()).doubleValue());
-            dataList.add(rec);
+            reportBean.setRoadStatus(roadStatus);
+            reportBean.setState(backendBean.getStateName());
+            reportBean.setGroupName(getShortGroupName(backendBean.getGroupID()));
+            reportBean.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
+                    backendBean.getMiles(), getMeasurementType()).doubleValue());
+            dataList.add(reportBean);
         }
         
         Collections.sort(dataList, new StateMileageByVehicleRoadStatusComparator());        
         setMainDataset(dataList);
     }
 
-    // Sorting done based on Group name and Vehicle ID
+ //    Sorting done based on Group name and Vehicle ID
     class StateMileageByVehicleRoadStatusComparator implements Comparator<StateMileageByVehicleRoadStatus> {
 
         @Override
@@ -92,7 +94,7 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCrit
            
            if( comparaison == 0)        
                comparaison = o1.getVehicle().compareTo(o2.getVehicle());
-           
+          
            return comparaison;
        }
    }

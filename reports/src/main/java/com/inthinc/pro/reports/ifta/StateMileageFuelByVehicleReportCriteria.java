@@ -61,7 +61,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
         List<StateMileageFuelByVehicle> dataList = new ArrayList<StateMileageFuelByVehicle>();
         for (StateMileage item : records) {
         	StateMileageFuelByVehicle rec = new StateMileageFuelByVehicle();
-            rec.setGroupName(getFullGroupName(item.getGroupID()));
+        	rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setVehicle(item.getVehicleName());
             rec.setMonth(item.getMonth());
             rec.setState(item.getStateName());

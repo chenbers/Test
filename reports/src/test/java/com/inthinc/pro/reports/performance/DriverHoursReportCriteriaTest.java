@@ -98,7 +98,7 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
 
               new GroupHierarchy(groupList); // We expect this constructor to be called,
               driverMock.getGroupID(); returns(GROUP_ID); 
-              groupHierarchyMock.getFullGroupName(GROUP_ID, ReportCriteria.GROUP_SEPARATOR); returns(GROUP_FULL_NAME); // and then this method.
+              groupHierarchyMock.getShortGroupName(GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR); returns(GROUP_FULL_NAME); // and then this method.
            }
            
            // Helper method

@@ -67,7 +67,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 
         {
             put(GROUP_ID, groupList[0].getName());
-            put(GROUP_ID2, groupList[0].getName() + "->" + groupList[1].getName());
+            put(GROUP_ID2, groupList[0].getName() + StateMileageFuelByVehicleReportCriteria.SLASH_GROUP_SEPERATOR  + groupList[1].getName());
         }
     };
 	

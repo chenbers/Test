@@ -65,7 +65,7 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
             MileageByVehicle rec = new MileageByVehicle();
             rec.setMonth(item.getMonth());
             rec.setState(item.getStateName());
-            rec.setGroupName(getFullGroupName(item.getGroupID()));
+            rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
                         item.getMiles(), getMeasurementType()).doubleValue());
             dataList.add(rec);

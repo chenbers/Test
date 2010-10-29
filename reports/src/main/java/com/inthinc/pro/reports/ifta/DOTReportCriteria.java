@@ -95,5 +95,14 @@ public abstract class DOTReportCriteria extends ReportCriteria {
         return fullName;
 
     }
+    
+    public String getShortGroupName(Integer groupID) {
+        String res = "";
+        if (accountGroupHierarchy != null){
+            res = accountGroupHierarchy.getShortGroupName(groupID, SLASH_GROUP_SEPERATOR);
+        }
+        return res;
+
+    }
 
 }

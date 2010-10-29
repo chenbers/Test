@@ -15,6 +15,8 @@ public class GroupHierarchy implements Serializable
 	private static final long serialVersionUID = 2855781183498326570L;
 
 	public static final String GROUP_SEPERATOR = " - ";
+	public static final String CONTINUATION_PREFIX = "..";
+	public static final int MAX_LEVEL = 2;
 	Map<Integer, Group> groupMap;
 
     public GroupHierarchy()
@@ -101,6 +103,52 @@ public class GroupHierarchy implements Serializable
     	}
     	builder.append(group.getName());
     	builder.append(separator);
+        return builder.toString();
+    }
+    
+    /**
+     * Get the truncated group path hierarchy
+     * If the truncated group path ends by the separator, then this last separator is removed from the path
+     * 
+     * @param groupID    The group id from which we want the truncated hierarchy
+     * @param separator  The separator used between child and parent groups
+     */
+    
+    public String getShortGroupName(Integer groupID, String separator) {
+        String result =  getShortGroupName(groupID, separator, 0);
+        if (result.endsWith(separator)) {
+            result = result.substring(0, result.length() - separator.length());
+        }
+        return result;
+    }
+    
+    /**
+     * Get the truncated group path hierarchy recursively
+     * If we reached the max level group, we stop going up the hierarchy and place the continuation prefix
+     * Otherwise we apply this method to the parent group
+     * 
+     * @param groupID    The group id from which we want the truncated hierarchy
+     * @param separator  The separator used between child and parent groups
+     * @param level      Level of the current group (from the leaf)
+     */
+    
+    private String getShortGroupName(Integer groupID, String separator,int level)
+    {
+        StringBuilder builder = new StringBuilder();
+        Group group = groupMap.get(groupID);
+        if (group == null) 
+            return "";
+        
+        if(level > MAX_LEVEL){
+            builder.append(CONTINUATION_PREFIX + separator);
+        }
+        else 
+        {   
+            if (group.getParentID() != null && group.getParentID().intValue() != 0)
+                builder.append(getShortGroupName(group.getParentID(), separator, level + 1));
+            builder.append(group.getName() + separator);
+        }    
+        
         return builder.toString();
     }
     public List<Group> getChildren(Group parent){

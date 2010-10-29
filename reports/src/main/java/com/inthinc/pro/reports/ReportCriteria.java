@@ -43,8 +43,10 @@ public class ReportCriteria
     public static final String FUEL_EFFICIENCY_TYPE = "FUEL_EFFICIENCY_TYPE";
     
     public static final String GROUP_SEPARATOR="->";
+    public static final String SLASH_GROUP_SEPERATOR = "/";
 
     private int subsetIndex = 1;
+    
     
     
     //Initialization Block

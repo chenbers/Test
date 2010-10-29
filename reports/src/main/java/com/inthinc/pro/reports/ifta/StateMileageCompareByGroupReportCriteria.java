@@ -62,7 +62,7 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
         List<StateMileageCompareByGroup> dataList = new ArrayList<StateMileageCompareByGroup>();
         for (StateMileage item : records) {
             StateMileageCompareByGroup rec = new StateMileageCompareByGroup();
-            rec.setGroupName(getFullGroupName(item.getGroupID()));
+            rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setState(item.getStateName());
             rec.setMonth(item.getMonth());
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(item.getMiles(), getMeasurementType()).doubleValue());

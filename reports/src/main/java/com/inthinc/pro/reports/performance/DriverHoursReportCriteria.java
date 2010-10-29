@@ -66,12 +66,8 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 
 		for (Entry<Driver, List<DriverHoursRecord>> entry : recordMap.entrySet()) {
 			Driver driver = entry.getKey();
-			String driverGroupName = groupHierarchy.getFullGroupName(driver
-					.getGroupID(), GROUP_SEPARATOR);
-	        if (driverGroupName.endsWith(GROUP_SEPARATOR)) {
-	            driverGroupName = driverGroupName.substring(0, driverGroupName.length() - GROUP_SEPARATOR.length());
-	        }
-			
+			String driverGroupName = groupHierarchy.getShortGroupName(driver.getGroupID(), SLASH_GROUP_SEPERATOR);
+	      	
 			for (DriverHoursRecord rec : entry.getValue()) {
 				DriverHours bean = new DriverHours();
 				bean.setGroupName(driverGroupName);
