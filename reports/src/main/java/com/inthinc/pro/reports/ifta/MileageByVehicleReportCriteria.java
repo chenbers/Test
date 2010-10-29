@@ -57,7 +57,7 @@ public class MileageByVehicleReportCriteria extends DOTReportCriteria {
         List<MileageByVehicle> dataList = new ArrayList<MileageByVehicle>();
         for (StateMileage item : records) {
             MileageByVehicle rec = new MileageByVehicle();
-            rec.setVehicle(item.getVehicleName());
+            rec.setVehicleName(item.getVehicleName());
             rec.setState(item.getStateName());
             rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
@@ -72,7 +72,11 @@ public class MileageByVehicleReportCriteria extends DOTReportCriteria {
 
         @Override
         public int compare(MileageByVehicle o1, MileageByVehicle o2) {
-                return o1.getVehicle().compareTo(o2.getVehicle());
+            int order = o1.getGroupName().compareTo(o2.getGroupName());
+            if (order == 0) {
+                return o1.getVehicleName().compareTo(o2.getVehicleName());
+            }
+            return order;
         }
     }
 }

@@ -220,7 +220,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 	 */
 	private boolean before(StateMileageFuelByVehicle prev, StateMileageFuelByVehicle curr) {
 		boolean groupNameOK = prev.getGroupName().compareTo(curr.getGroupName()) <= 0;
-		boolean vehicleOK = Integer.valueOf(prev.getVehicle()) <= Integer.valueOf(curr.getVehicle());
+		boolean vehicleOK = Integer.valueOf(prev.getVehicleName()) <= Integer.valueOf(curr.getVehicleName());
 		boolean monthOK = Integer.valueOf(prev.getMonth()) <= Integer.valueOf(curr.getMonth());
 		boolean stateOK = Integer.valueOf(prev.getState()) <= Integer.valueOf(curr.getState());
 		
@@ -294,7 +294,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 	private boolean recordCorrectlyCopiedIntoBean(StateMileageFuelByVehicle bean, StateMileage record) {
 		return new EqualsBuilder()
 	        .append(bean.getGroupName(), expectedGroupNames.get(record.getGroupID()))
-	        .append(bean.getVehicle(), record.getVehicleName())
+	        .append(bean.getVehicleName(), record.getVehicleName())
 	        .append(bean.getMonth(), record.getMonth())
 	        .append(bean.getState(), record.getStateName())
 	        .append(bean.getTotalMiles().doubleValue(), record.getMiles().doubleValue())

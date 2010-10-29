@@ -13,7 +13,6 @@ import java.util.Locale;
 
 import mockit.Expectations;
 import mockit.Mocked;
-import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.Interval;
@@ -110,7 +109,7 @@ public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
        MileageByVehicle bean = dataSet.get(0);
        assertEquals(bean.getGroupName(), GROUP_FULL_NAME);
        assertEquals(bean.getState(), STATE);
-       assertEquals(bean.getVehicle(), VEHICLE);
+       assertEquals(bean.getVehicleName(), VEHICLE);
        assertTrue(bean.getTotal().doubleValue() == MILES.doubleValue());
 
     }    
@@ -130,15 +129,15 @@ public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
 
         // verify the correct order
         assertTrue(EqualsBuilder.reflectionEquals(beans[2], dataList.get(0))); //AY
-        assertTrue(EqualsBuilder.reflectionEquals(beans[0], dataList.get(1))); //AZ
-        assertTrue(EqualsBuilder.reflectionEquals(beans[1], dataList.get(2))); //BX
+        assertTrue(EqualsBuilder.reflectionEquals(beans[1], dataList.get(1))); //AZ
+        assertTrue(EqualsBuilder.reflectionEquals(beans[0], dataList.get(2))); //BX
     }
     
     /* Helper to create a MileageByVehicle bean */
     private MileageByVehicle createBean(String groupName, String vehicle, Double distance){
         MileageByVehicle bean = new MileageByVehicle();
         bean.setGroupName(groupName);
-        bean.setVehicle(vehicle);
+        bean.setVehicleName(vehicle);
         bean.setTotal(distance);
         bean.setState(STATE);
         return bean;

@@ -116,7 +116,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
             
             // If they are equal, keep comparing other attribs
             if ((comparison = o1.getGroupName().compareTo(o2.getGroupName())) == 0)
-                if ((comparison = o1.getVehicle().compareTo(o2.getVehicle())) == 0)
+                if ((comparison = o1.getVehicleName().compareTo(o2.getVehicleName())) == 0)
                     if ((comparison = o1.getMonth().compareTo(o2.getMonth())) == 0)
 	                    comparison = o1.getState().compareTo(o2.getState());
             return comparison;

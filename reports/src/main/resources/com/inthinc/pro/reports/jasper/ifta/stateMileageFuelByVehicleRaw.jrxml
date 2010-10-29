@@ -4,7 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="groupName" class="java.lang.String"/>
-	<field name="vehicle" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
 	<field name="month" class="java.lang.String"/>
 	<field name="state" class="java.lang.String"/>
 	<field name="totalMiles" class="java.lang.Double"/>
@@ -65,7 +65,7 @@
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="81" y="0" width="84" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="83" height="20"/>

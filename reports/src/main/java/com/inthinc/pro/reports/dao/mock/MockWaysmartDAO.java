@@ -160,6 +160,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
         TenHoursViolationRecord rec = new TenHoursViolationRecord();
         rec.setDate(this.createDate(2010, 8, id+1, 0, 0));
         rec.setVehicleID(11+id*3);
+        rec.setVehicleName("Stub Vehicle");
         rec.setHoursThisDay((10+id));
         rec.setDriverID(driverId);
         

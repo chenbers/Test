@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="52"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -30,7 +30,7 @@
 		<defaultValueExpression><![CDATA["n/a"]]></defaultValueExpression>
 	</parameter>
 	<field name="groupName" class="java.lang.String"/>
-	<field name="vehicle" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
 	<field name="month" class="java.lang.String"/>
 	<field name="state" class="java.lang.String"/>
 	<field name="totalMiles" class="java.lang.Double"/>
@@ -71,7 +71,7 @@
 					</rowGroup>
 					<rowGroup name="vehicle" width="68" totalPosition="End">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicle}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></bucketExpression>
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents mode="Transparent">
@@ -231,7 +231,7 @@
 					</rowGroup>
 					<rowGroup name="vehicle" width="0" totalPosition="End">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicle}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></bucketExpression>
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents/>
@@ -424,7 +424,7 @@
 					</rowGroup>
 					<rowGroup name="vehicle" width="0" totalPosition="End">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicle}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></bucketExpression>
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents/>
@@ -596,7 +596,7 @@
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[ $R{fuelEfficiencyType.label} + " " + str($P{FUEL_EFFICIENCY_TYPE}) ]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{fuelEfficiencyType.label} + " " + str($P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

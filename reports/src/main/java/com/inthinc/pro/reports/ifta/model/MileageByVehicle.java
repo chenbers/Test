@@ -5,7 +5,7 @@ package com.inthinc.pro.reports.ifta.model;
  */
 public class MileageByVehicle {
 
-    private String vehicle;
+    private String vehicleName;
     private String state;
     private Double total;
     private String month;
@@ -17,11 +17,11 @@ public class MileageByVehicle {
     }
 
     /**
-     * The vehicle getter.
+     * The vehicleName getter.
      * @return the vehicle
      */
-    public String getVehicle() {
-        return this.vehicle;
+    public String getVehicleName() {
+        return this.vehicleName;
     }
     /**
      * The distance getter.
@@ -69,11 +69,11 @@ public class MileageByVehicle {
         this.state = state;
     }
     /**
-     * The vehicle setter.
+     * The vehicle name setter.
      * @param vehicle the vehicle to set
      */
-    public void setVehicle(String vehicleId) {
-        this.vehicle = vehicleId;
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
     /**
      * The distance setter.

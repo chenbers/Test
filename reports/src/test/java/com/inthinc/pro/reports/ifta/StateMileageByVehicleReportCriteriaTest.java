@@ -107,7 +107,7 @@ public class StateMileageByVehicleReportCriteriaTest extends BaseUnitTest {
        MileageByVehicle bean = dataSet.get(0);
        assertEquals(bean.getGroupName(), GROUP_FULL_NAME);
        assertEquals(bean.getState(), STATE);
-       assertEquals(bean.getVehicle(), VEHICLE);
+       assertEquals(bean.getVehicleName(), VEHICLE);
        assertTrue(bean.getTotal().doubleValue() == MILES.doubleValue());
 
     }    
@@ -135,7 +135,7 @@ public class StateMileageByVehicleReportCriteriaTest extends BaseUnitTest {
     private MileageByVehicle createBean(String groupName, String vehicle, Double distance){
         MileageByVehicle bean = new MileageByVehicle();
         bean.setGroupName(groupName);
-        bean.setVehicle(vehicle);
+        bean.setVehicleName(vehicle);
         bean.setTotal(distance);
         bean.setState(STATE);
         return bean;

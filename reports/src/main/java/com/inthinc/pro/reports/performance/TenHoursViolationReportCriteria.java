@@ -75,7 +75,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
                 bean.setDate(rec.getDate());
                 bean.setDriverName(driver.getPerson().getFullName());
                 bean.setEmployeeID(driver.getPerson().getEmpid());
-                bean.setVehicleID(rec.getVehicleID() == null ? "" : rec.getVehicleID().toString());
+                bean.setVehicleName(rec.getVehicleName());
                 bean.setHoursThisDay(rec.getHoursThisDay().doubleValue());
                 
                 violationList.add(bean);

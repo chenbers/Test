@@ -30,7 +30,7 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="groupName" class="java.lang.String"/>
-	<field name="vehicle" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
 	<field name="state" class="java.lang.String"/>
 	<field name="total" class="java.lang.Double"/>
 	<sortField name="groupName"/>
@@ -135,7 +135,7 @@
 					</rowGroup>
 					<rowGroup name="vehicle" width="100" totalPosition="End">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicle}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></bucketExpression>
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents mode="Transparent">

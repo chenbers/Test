@@ -6,17 +6,17 @@ public class TenHoursViolation {
     private String groupName;
     private Date date;
     private String driverName;
-    private String vehicleID;
+    private String vehicleName;
     private String employeeID;
     private Double hoursThisDay;
 
     public TenHoursViolation(){}
     
-    public TenHoursViolation(String groupName, Date date, String driverName, String vehicleId, String employeeId, Double hours) {
+    public TenHoursViolation(String groupName, Date date, String driverName, String vehicleName, String employeeId, Double hours) {
         this.groupName = groupName;
         this.date = date;
         this.driverName = driverName;
-        this.vehicleID = vehicleId;
+        this.vehicleName = vehicleName;
         this.employeeID = employeeId;
         this.hoursThisDay = hours;
     }
@@ -45,12 +45,12 @@ public class TenHoursViolation {
         this.driverName = driverName;
     }
 
-    public String getVehicleID() {
-        return vehicleID;
+    public String getVehicleName() {
+        return vehicleName;
     }
 
-    public void setVehicleID(String vehicleID) {
-        this.vehicleID = vehicleID;
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 
     public String getEmployeeID() {
@@ -74,7 +74,7 @@ public class TenHoursViolation {
                 "\""+ groupName + "\"," +
                 "new Date("+ date.getTime() + ")," +
                 "\""+ driverName + "\"," +
-                "\""+ vehicleID + "\"," +
+                "\""+ vehicleName + "\"," +
                 "\""+ employeeID + "\"," +
                 hoursThisDay + ")," );
     }

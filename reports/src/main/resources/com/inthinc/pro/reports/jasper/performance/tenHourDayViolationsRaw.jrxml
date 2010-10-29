@@ -13,7 +13,7 @@
 	</queryString>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
-	<field name="vehicleID" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
 	<field name="employeeID" class="java.lang.String"/>
 	<field name="date" class="java.util.Date"/>
 	<field name="hoursThisDay" class="java.lang.Double"/>
@@ -81,7 +81,7 @@
 				<textElement textAlignment="Center">
 					<font size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField" x="250" y="2" width="97" height="17" forecolor="#000000"/>

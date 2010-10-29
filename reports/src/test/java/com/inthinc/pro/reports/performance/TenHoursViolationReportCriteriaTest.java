@@ -38,7 +38,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
     // Constant values
     private final Integer ACCOUNT_ID = new Integer(1);
     private final Integer GROUP_ID = new Integer(2);
-    private final Integer VEHICLE_ID = new Integer(3);
+    private final String VEHICLE_NAME = "Stub Vehicle Name";
     private final Double HOURS_THIS_DAY = new Double(15);
     private final String GROUP_FULL_NAME = "Group Full Name";
     private final Locale LOCALE = Locale.US;
@@ -106,7 +106,8 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
            private List<TenHoursViolationRecord> getViolationList(){
                List<TenHoursViolationRecord> violationList = new ArrayList<TenHoursViolationRecord>();
                TenHoursViolationRecord violation = new TenHoursViolationRecord(); 
-               violation.setVehicleID(VEHICLE_ID); violation.setHoursThisDay(HOURS_THIS_DAY); 
+               violation.setVehicleName(VEHICLE_NAME); 
+               violation.setHoursThisDay(HOURS_THIS_DAY); 
                violationList.add(violation);
                
                return violationList;
@@ -135,7 +136,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 	   assertTrue(tenHourViolations.size() == 1);
 	   TenHoursViolation violation = tenHourViolations.get(0);
 	   assertEquals(violation.getGroupName(), GROUP_FULL_NAME);
-	   assertEquals(violation.getVehicleID(), VEHICLE_ID.toString());
+	   assertEquals(violation.getVehicleName(), VEHICLE_NAME);
 	   assertEquals(violation.getHoursThisDay(), HOURS_THIS_DAY);
 
     }    

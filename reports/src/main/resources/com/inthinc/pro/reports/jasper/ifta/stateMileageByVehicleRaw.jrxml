@@ -12,7 +12,7 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="groupName" class="java.lang.String"/>
-	<field name="vehicle" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
 	<field name="total" class="java.lang.Double"/>
 	<field name="state" class="java.lang.String"/>
 	<sortField name="groupName"/>
@@ -105,7 +105,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicle}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="128" y="0" width="64" height="17" backcolor="#FFFFFF"/>
