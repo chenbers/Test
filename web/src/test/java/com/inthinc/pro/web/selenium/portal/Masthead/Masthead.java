@@ -5,14 +5,15 @@ package com.inthinc.pro.web.selenium.portal.Masthead;
 
 import org.testng.annotations.*;
 import org.openqa.selenium.server.SeleniumServer;
+
+import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
 import static org.testng.AssertJUnit.*;
-import Portal.Singleton;
 
 @SuppressWarnings("unused")
 public class Masthead
 {	//define local vars
-	Portal.Singleton tvar = Portal.Singleton.getSingleton() ; 
+	Singleton tvar = Singleton.getSingleton() ; 
 	Selenium selenium = tvar.getSelenium();
 	
 	
