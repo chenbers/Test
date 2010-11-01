@@ -56,6 +56,12 @@
    <to-view-id>/secured/configuratorAuditTrail.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_accountOptions</from-outcome>
+   <to-view-id>/secured/accountOptions.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  
  
 

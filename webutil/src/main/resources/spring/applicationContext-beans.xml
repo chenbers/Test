@@ -25,6 +25,7 @@
 	<bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init" />
 	
 	<!-- Backing Beans -->
+	<bean id="accountOptionsBean" class="com.inthinc.pro.backing.AccountOptionsBean" init-method="init" scope="session"/>
 	<bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init" scope="session"/>
 	<bean id="dateFormatBean" class="com.inthinc.pro.backing.dao.DateFormatBean" scope="session" />
 	<bean id="baseBean" class="com.inthinc.pro.backing.BaseBean" scope="session"/>

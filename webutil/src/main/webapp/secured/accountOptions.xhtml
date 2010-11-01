@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/template/template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+
+    <ui:param name="panelTitle" value="Account Options" />
+    <ui:param name="groupSelected" value="MAIN" />
+    <ui:define name="util_content">
+    <div style="margin: 10px auto 20px auto;background: #fff;">
+    <div style="width:400px">
+		<a4j:form id="account-select-form">
+			<table>
+			<tr><td>
+			<h:panelGrid columns="2" cellspacing="0" columnClasses="labelColMiddle,valueCol">
+				<h:outputText value="Account:" style="font-size:12px;font-weight:bold;padding:10px;"/>
+				<h:selectOneMenu id="account-select-menu" value="#{accountOptionsBean.selectedAccountID}">
+						<f:selectItems value="#{accountOptionsBean.accountSelectList}" />
+                        <a4j:support event="onchange" action="submit()" reRender="optionsForm" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			</td>
+			<td>
+		    	<a4j:status for="optionsRegion">
+					<f:facet name="start">
+        		   		<h:outputText>
+            	    		<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+						</h:outputText>
+            		</f:facet>
+    			</a4j:status>
+			</td>
+			</tr>
+			</table>	
+		</a4j:form>
+		<a4j:region id="optionsRegion">
+            <a4j:form id="optionsForm">
+            <rich:panel rendered="#{accountOptionsBean.account != null}">
+	            <f:facet name="header">
+					<h:outputText value="Options:" />
+        	    </f:facet>
+                <table>
+					<tr>
+                    	<td width="50" style="vertical-align: middle;"><h:outputText value="HOS: " /></td>
+                        <td>
+							<h:selectOneMenu id="editAccount-hos" value="#{accountOptionsBean.account.hos}">
+								<f:selectItems value="#{accountOptionsBean.HOSTypes}"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+						<td colspan="2">
+			                <a4j:commandButton id="save" value="Save" action="#{accountOptionsBean.saveAction}" rendered="#{accountOptionsBean.account != null}" reRender="optionsForm"/>
+						</td>
+					</tr>
+        			<tr>
+						<td colspan="2">
+							<h:outputText value="#{accountOptionsBean.saveActionMsg}" rendered="#{accountOptionsBean.saveActionMsg != null}" style="color:green;"/>
+						</td>
+					</tr>
+                </table>
+			</rich:panel>
+			<h:outputText value="Select an account." rendered="#{accountOptionsBean.account == null}"/>
+            </a4j:form>
+		</a4j:region>
+		</div>
+		</div>
+    </ui:define>
+</ui:composition>

@@ -71,6 +71,10 @@ form td {
 .labelCol {
 	width: 20%;
 }
+.labelColMiddle {
+	width: 25%;
+	vertical-align: middle;
+}
 .valueCol {
 	width: 80%;
 }
