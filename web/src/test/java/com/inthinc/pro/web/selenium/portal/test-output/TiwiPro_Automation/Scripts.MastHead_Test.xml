@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Scripts.MastHead_Test" failures="0" tests="1" time="76.828" errors="0">
+  <properties/>
+  <testcase name="main on instance null(Scripts.MastHead_Test)" time="76.828" classname="Scripts.MastHead_Test"/>
+</testsuite>

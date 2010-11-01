@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Scripts.Login_Screen_Test" failures="0" tests="1" time="29.047" errors="0">
+  <properties/>
+  <testcase name="main on instance null(Scripts.Login_Screen_Test)" time="29.047" classname="Scripts.Login_Screen_Test"/>
+</testsuite>

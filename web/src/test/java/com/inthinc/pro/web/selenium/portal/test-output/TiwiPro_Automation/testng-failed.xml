@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="5" configfailurepolicy="skip" verbose="1" name="Failed suite [TiwiPro_Automation]" skipfailedinvocationcounts="false" parallel="false" annotations="JDK" data-provider-thread-count="10">
+  <test verbose="1" name="Scripts.TC_LoginScreen_HP(failed)" junit="false" parallel="false" annotations="JDK">
+    <classes>
+      <class name="Scripts.TC_LoginScreen_HP">
+        <methods>
+          <include name="main"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>

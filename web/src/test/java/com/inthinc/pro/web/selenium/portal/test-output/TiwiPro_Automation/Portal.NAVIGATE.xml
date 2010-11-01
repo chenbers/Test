@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Portal.NAVIGATE" failures="0" tests="3" time="0.031" errors="0">
+  <properties/>
+  <testcase name="@BeforeClass setUp" time="0.0" classname="Portal.NAVIGATE">
+    <failure type="org.testng.TestNGException" message="
+Method setUp requires 2 parameters but 0 were supplied in the @Configuration annotation.">
+      <![CDATA[org.testng.TestNGException: 
+Method setUp requires 2 parameters but 0 were supplied in the @Configuration annotation.
+	at org.testng.internal.Parameters.checkParameterTypes(Parameters.java:183)
+	at org.testng.internal.Parameters.createParameters(Parameters.java:121)
+	at org.testng.internal.Parameters.createParameters(Parameters.java:351)
+	at org.testng.internal.Parameters.createConfigurationParameters(Parameters.java:76)
+	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:181)
+	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:123)
+	at org.testng.internal.TestMethodWorker.invokeBeforeClassMethods(TestMethodWorker.java:183)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:115)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:1098)
+	at org.testng.TestRunner.privateRun(TestRunner.java:727)
+	at org.testng.TestRunner.run(TestRunner.java:581)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:315)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:310)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:272)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:221)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:40)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:83)
+	at org.testng.internal.thread.ThreadUtil$CountDownLatchedRunnable.run(ThreadUtil.java:151)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+]]>
+    </failure>
+  </testcase>
+  <testcase name="@AfterClass tearDown" time="0.0" classname="Portal.NAVIGATE">
+    <skipped/>
+  </testcase>
+  <testcase name="ValidateScreen" time="0.0" classname="Portal.NAVIGATE">
+    <skipped/>
+  </testcase>
+  <testcase name="helplink" time="0.0" classname="Portal.NAVIGATE">
+    <skipped/>
+  </testcase>
+  <testcase name="helplink_overview" time="0.0" classname="Portal.NAVIGATE">
+    <skipped/>
+  </testcase>
+</testsuite>
