@@ -1,9 +1,13 @@
 package com.inthinc.pro.web.selenium.portal.Login;
 
+import static org.junit.Assert.*;
+
 import org.openqa.selenium.server.SeleniumServer;
+import org.junit.Test;
 
 import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
+
 
 @SuppressWarnings("unused")
 public class loginScreen {
@@ -28,6 +32,7 @@ public class loginScreen {
 		selenium.waitForPageToLoad("10000");	
 	}
 	
+	@Test
 	public void ForgotPassword(){
 		
 		//verify all screen elements and text
