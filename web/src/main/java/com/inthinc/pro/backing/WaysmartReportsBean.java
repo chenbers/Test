@@ -133,6 +133,11 @@ public class WaysmartReportsBean extends ReportsBean {
                         getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), params.getLocale(), 
                         getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
+            
+//            case WARRANTY_LIST:
+//                reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), 
+//                        params.getLocale(), getUser().getPerson().getMeasurementType() , params.getIsExpired() ));
+//                break;
 
             default:
                 break;
@@ -170,6 +175,9 @@ public class WaysmartReportsBean extends ReportsBean {
         itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
         		ReportCategory.Performance.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
 
+        itemGroups.add(new SelectItemGroup(ReportCategory.Asset.getLabel(), 
+                ReportCategory.Asset.getDescription(), false, getItemsByCategory(ReportCategory.Asset)));
+        
         return itemGroups;
     }
     

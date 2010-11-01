@@ -216,6 +216,36 @@
 					</table>
 				</li>
 				</h:outputText>
+				
+				<h:outputText id="groupAndExpiredInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_AND_EXPIRED'}">
+				<li  class="l">
+		   			<table border="0" cellspacing="0" cellpadding="4">
+					<tr>
+						<td>
+							<h:outputText value="#{messages.reports_groups}"/>
+						</td>
+						<td>
+							<a4j:outputPanel id="groupAndExpiredSelect">
+							  <h:selectOneMenu id="#{context}-groupAndExpiredParam" value="#{params.groupID}" style="width:200px;size:auto;">
+								<f:selectItem itemLabel="" itemValue="#{null}"/>
+								<f:selectItems value="#{params.groups}"/>
+								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+							  </h:selectOneMenu>
+							</a4j:outputPanel>
+							<rich:jQuery selector="##{context}_form\\:#{context}groupAndExpiredParam" timing="onload" 
+							query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+														width: 200,maxDropHeight: 150})"/>
+						</td>
+						<td>
+							<h:outputText value="#{messages.reports_expired_only}"/>						
+						</td>
+						<td>
+							<h:selectBooleanCheckbox id="expired" value="#{params.isExpired}" />
+						</td>
+					</tr>
+					</table>
+				</li>
+				</h:outputText>
 					
            </ul>
           </a4j:region>

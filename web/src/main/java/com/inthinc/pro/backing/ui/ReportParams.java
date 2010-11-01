@@ -31,6 +31,7 @@ public class ReportParams implements Cloneable {
     private ReportGroup reportGroup;
     private ReportParamType paramType;
     private Boolean isIfta;
+    private Boolean isExpired;
     
     
     List<Driver> driverList;
@@ -109,10 +110,17 @@ public class ReportParams implements Cloneable {
         if (reportGroup.getEntityType() == EntityType.ENTITY_DRIVER && getDriverID() == null) 
             return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale());
         
-        if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP && getGroupID() == null) 
+        if ( ( reportGroup.getEntityType() == EntityType.ENTITY_GROUP 
+               || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_AND_EXPIRED 
+              )
+              && getGroupID() == null) 
             return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         
-        if ( (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_AND_IFTA  ) && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0)) 
+        if ( (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST 
+              || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_AND_IFTA
+              ) 
+              && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0)
+           ) 
             return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
         
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
@@ -267,6 +275,14 @@ public class ReportParams implements Cloneable {
             return null;
         }
         
+    }
+
+    public Boolean getIsExpired() {
+        return isExpired;
+    }
+
+    public void setIsExpired(Boolean isExpired) {
+        this.isExpired = isExpired;
     }
 
 

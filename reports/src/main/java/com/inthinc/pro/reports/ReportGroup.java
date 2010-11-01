@@ -135,7 +135,14 @@ public enum ReportGroup
     VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
-            ReportType.VEHICLE_USAGE);
+            ReportType.VEHICLE_USAGE),
+            
+            
+      // Asset
+     WARRANTY_LIST("Warranty List", 26, EntityType.ENTITY_GROUP_AND_EXPIRED,   
+            new CriteriaType[]{}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Asset,
+            ReportType.WARRANTY_LIST);
 
     
     private ReportType[] reports;
@@ -281,6 +288,10 @@ public enum ReportGroup
     
     public boolean isHOS() {
         return isCategory(ReportCategory.HOS);
+    }
+    
+    public boolean isAsset() {
+        return isCategory(ReportCategory.Asset);
     }
     
     public boolean isCategory(ReportCategory category){

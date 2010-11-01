@@ -234,6 +234,9 @@ public abstract class ReportsBean extends BaseBean {
                 catch (MissingResourceException e){
                     res = null;
                 }
+                catch (Exception e) {
+                    res = null;
+                }
             }
         }
         return res;
