@@ -2,8 +2,9 @@
 
 package com.inthinc.pro.web.selenium.portal;
 
-import org.testng.annotations.*;
 import org.openqa.selenium.server.SeleniumServer;
+import org.testng.annotations.*;
+
 import com.thoughtworks.selenium.*;
 import static org.testng.AssertJUnit.*;
 
