@@ -297,11 +297,7 @@ jQuery(function(){
                     <pretty:link id="#{context}-navigationLiveFleet" mappingId="liveFleet" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_liveFleet}</span></pretty:link>
     			</li>
 			</security:authorize>
-			<security:authorize ifAnyGranted="ROLE_ADMIN">
-				<li class="nav_button #{adminSelected}">
-                    <pretty:link id="#{context}-navigationAdmin" mappingId="admin" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_admin}</span></pretty:link>
-				</li>
-			</security:authorize>
+
 			<security:authorize ifAnyGranted="ROLE_ADMIN_SUBSET">
 <!--			<ui:param name="firstAccessPoint" value="#{myAccountBean.user.accessPoints[0].siteAccessPoint}"/>
 			<ui:param name="defaultPage" value="#{myAccountBean.user.accessPoints[0].siteAccessPoint.messageKey}"/>
@@ -320,6 +316,11 @@ jQuery(function(){
 	                </h:panelGroup>
 				</li>
 			</security:authorize>
+			<security:authorize ifAnyGranted="ROLE_ADMIN">
+				<li class="nav_button #{adminSelected}">
+                    <pretty:link id="#{context}-navigationAdmin" mappingId="admin" styleClass="nav_button_left"><span class="nav_button_right">#{messages.navigation_admin}</span></pretty:link>
+				</li>
+			</security:authorize>			
 			<li class="nav_button" style="float:right">
 				<table width="250" border="0" cellspacing="0" cellpadding="0" id="menu_search_box">
 				  <tr>
