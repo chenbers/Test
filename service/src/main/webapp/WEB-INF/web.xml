@@ -60,6 +60,20 @@
 		<param-value>.xhtml</param-value>
 	</context-param>
 
+	<!-- Faces Servlet -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+	</servlet>
+	<!-- extension mapping -->
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.faces</url-pattern>
+	</servlet-mapping>
+	<!-- Welcome files -->
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
 
   <!-- Welcome files -->
   <welcome-file-list>
