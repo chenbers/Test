@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+ <!-- Components -->
+ <component>
+  <component-type>conditionalCSS</component-type>
+  <component-class>com.inthinc.pro.backing.ui.UIConditionalCSS</component-class>
+ </component>
+ <component>
+  <description>Renders an HTML "button" element.
+			&amp;lt;br /&amp;gt;
+			During Decoding: Obtains the Map from the
+			"requestParameterMap" property of the ExternalContext. If
+			the value in the Map for the value of the "clientId"
+			property of the component is not null, create a
+			javax.faces.event.ActionEvent around the component, and pass
+			it to the queueEvent() method of the component. If the
+			request is Ajax-performed, add its target IDs of the
+			reRender property to the rendered areas list of the nesting
+			AjaxContainer.
+			&amp;lt;br /&amp;gt;
+			During Encoding: Builds an AJAX.Submit JavaScript call for
+			the "onclick" event. Renders the clientId of the component
+			as the value of the "name" attribute. Renders the current
+			value of the component as the value of the "value"
+			attribute. If the "styleClass" attribute is specified,
+			render its value as the value of the "class" attribute.
+			Renders child components inside the HTML "button" element.</description>
+  <display-name>Ajax commandButton</display-name>
+  <component-type>org.ajax4jsf.CommandButton</component-type>
+  <component-class>com.inthinc.pro.backing.ui.AjaxCommandButton</component-class>
+  <component-extension>
+   <component-family>javax.faces.Command</component-family>
+   <renderer-type>com.inthinc.pro.backing.ui.AjaxCommandButtonRenderer</renderer-type>
+  </component-extension>
+ </component>
+ <component>
+  <component-type>javax.faces.HtmlCommandButton</component-type>
+  <component-class>com.inthinc.pro.backing.ui.CommandButton</component-class>
+ </component>
+ <component>
+  <component-type>org.richfaces.Column</component-type>
+  <component-class>com.inthinc.pro.table.UIFilterColumn</component-class>
+ </component>
+ <!-- components -->
+ <component>
+  <component-type>com.inthinc.pro.security.jsftaglib.Authorize</component-type>
+  <component-class>com.inthinc.pro.security.jsftaglib.Authorize</component-class>
+ </component>
+ <component>
+  <component-type>com.inthinc.pro.security.jsftaglib.Authentication</component-type>
+  <component-class>com.inthinc.pro.security.jsftaglib.Authentication</component-class>
+ </component>
+ <!-- converters -->
+ <converter>
+  <converter-id>DateTimeConverter</converter-id>
+  <converter-class>com.inthinc.pro.convert.DateTimeConverter</converter-class>
+  <property>
+   <property-name>timeZone</property-name>
+   <property-class>java.lang.Object</property-class>
+  </property>
+  <property>
+   <property-name>pattern</property-name>
+   <property-class>java.lang.String</property-class>
+  </property>
+ </converter>
+ <!-- managed beans 
+ navigation -->
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_vxml</from-outcome>
+   <to-view-id>/vxml/vxml.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+
+ <!-- validators -->
+ <!-- Facelets support -->
+ <application>
+  <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+  <locale-config>
+   <default-locale>en_US</default-locale>
+   <supported-locale>en_US</supported-locale>
+   <supported-locale>ro</supported-locale>
+   <supported-locale>es</supported-locale>
+   <supported-locale>ja</supported-locale>
+   <supported-locale>fr</supported-locale>
+   <supported-locale>de</supported-locale>
+  </locale-config>
+  <resource-bundle>
+   <base-name>com.inthinc.pro.resources.Messages</base-name>
+   <var>messages</var>
+  </resource-bundle>
+  <message-bundle>com.inthinc.pro.resources.Messages</message-bundle>
+  <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+ </application>
+ <lifecycle>
+  <phase-listener>com.inthinc.pro.util.DebugPhaseTracker</phase-listener>
+ </lifecycle>
+</faces-config>

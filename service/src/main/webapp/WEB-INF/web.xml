@@ -54,6 +54,11 @@
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
 
+	<!-- JSF -->
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
 
 
   <!-- Welcome files -->
