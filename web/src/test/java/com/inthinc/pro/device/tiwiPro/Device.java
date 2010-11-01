@@ -1,5 +1,6 @@
 package com.inthinc.pro.device.tiwiPro;
 
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.device.*;
 
 
@@ -214,15 +216,21 @@ public class Device {
         sats = satelites;
     }
 
-  //TODO    public void set_server(){
-//            
-//            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-//            mcmProxy = (MCMProxy)factory.create(MCMProxy.class, 
-//                    Settings[Constants.PROPERTY_SERVER_URL.getCode()], 
-//                    Settings[Constants.PROPERTY_SERVER_PORT.getCode()])
-//            
-//        }
-    
+    public void set_server(){
+            
+        HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
+        try {
+			mcmProxy = (MCMProxy)factory.create( MCMProxy.class, 
+			        Settings.get(Constants.PROPERTY_SERVER_URL.getCode()), 
+			        Integer.parseInt(Settings.get(Constants.PROPERTY_SERVER_PORT.getCode())));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+        
+    }
+
     public void set_speed_limit( Integer limit ){
         
         speed_limit = limit;
