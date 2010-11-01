@@ -1,11 +1,9 @@
 package com.inthinc.pro.web.selenium.portal.Login;
 
-import org.testng.annotations.*;
 import org.openqa.selenium.server.SeleniumServer;
 
 import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
-import static org.testng.AssertJUnit.*;
 
 @SuppressWarnings("unused")
 public class loginScreen {
@@ -81,7 +79,7 @@ public class loginScreen {
 		assertTrue(selenium.isTextPresent("exact:Password:"));
 		assertTrue(selenium.isElementPresent("j_username"));
 		assertTrue(selenium.isElementPresent("j_password"));
-		assertTrue(selenium.isTextPresent("©2009 inthinc"));
+		assertTrue(selenium.isTextPresent("2009 inthinc"));
 	}
 	
 	

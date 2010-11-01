@@ -108,7 +108,7 @@ public void mainMenuItem(String screen){
 		assertTrue(selenium.isElementPresent("headerForm:headerMyAccount"));
 		assertTrue(selenium.isTextPresent("Log Out"));
 		assertTrue(selenium.isElementPresent("link=Log Out"));
-		assertTrue(selenium.isTextPresent("©2009 inthinc"));
+		assertTrue(selenium.isTextPresent("2009 inthinc"));
 		assertTrue(selenium.isTextPresent("Privacy Policy"));
 		assertTrue(selenium.isElementPresent("footerForm:privacy"));
 		assertTrue(selenium.isTextPresent("Legal Notice"));
