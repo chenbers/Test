@@ -1,14 +1,14 @@
-package Test_Cases;
+package com.inthinc.pro.web.selenium.Test_Cases;
 
+import com.inthinc.pro.web.selenium.portal.NAVIGATE;
+import com.inthinc.pro.web.selenium.portal.Singleton;
+import com.inthinc.pro.web.selenium.portal.Login.loginScreen;
+import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
 import com.thoughtworks.selenium.*;
 
 import org.testng.annotations.*;
-import Portal.NAVIGATE;
-import Portal.Masthead.*;
 import static org.testng.AssertJUnit.*;
 import org.testng.*;
-import Portal.Singleton;
-import Portal.Login.*;
 
 
 
@@ -19,12 +19,12 @@ public class MastHead_HP extends SeleneseTestCase {
 	
 	public static void main() throws Exception {
 	//create instance of library objects
-		Portal.Singleton tvar = Portal.Singleton.getSingleton() ; 
+		Singleton tvar = Singleton.getSingleton() ; 
 		Selenium selenium = tvar.getSelenium();
 	
-	Portal.NAVIGATE navto;
+	NAVIGATE navto;
 	navto = new NAVIGATE();
-	Portal.Login.loginScreen ls;
+	loginScreen ls;
 	ls = new loginScreen();
 
 	navto.setUp("firefox","https://qa.tiwipro.com:8423/tiwipro/");

@@ -1,4 +1,4 @@
-package Portal;
+package com.inthinc.pro.web.selenium.portal;
 
 import com.thoughtworks.selenium.*;
 

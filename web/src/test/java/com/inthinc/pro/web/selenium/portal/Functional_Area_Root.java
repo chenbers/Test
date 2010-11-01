@@ -1,6 +1,6 @@
 //Maintained as .JAVA
 
-package Portal;
+package com.inthinc.pro.web.selenium.portal;
 
 /* This is our portal into the Functional Areas and must be maintained.
  * As new functional areas are created this root class must  be updated to reflect them.

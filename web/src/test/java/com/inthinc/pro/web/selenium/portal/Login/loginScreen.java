@@ -1,16 +1,17 @@
-package Portal.Login;
+package com.inthinc.pro.web.selenium.portal.Login;
 
 import org.testng.annotations.*;
 import org.openqa.selenium.server.SeleniumServer;
+
+import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
 import static org.testng.AssertJUnit.*;
-import Portal.Singleton;
 
 @SuppressWarnings("unused")
 public class loginScreen {
 
 	//define local vars
-	Portal.Singleton tvar = Portal.Singleton.getSingleton() ; 
+	Singleton tvar = Singleton.getSingleton() ; 
 	Selenium selenium = tvar.getSelenium();
 	
 	

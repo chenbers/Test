@@ -1,4 +1,4 @@
-package Debug;
+package com.inthinc.pro.web.selenium.Debug;
 
 import TEK_CORE.TEK_PRIMARY_DRIVER;
 

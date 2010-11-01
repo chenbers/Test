@@ -1,7 +1,7 @@
 //Master Heading Window 
 //Maintained as .JAVA
 
-package Portal.Masthead;
+package com.inthinc.pro.web.selenium.portal.Masthead;
 
 import org.testng.annotations.*;
 import org.openqa.selenium.server.SeleniumServer;

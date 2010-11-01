@@ -1,12 +1,11 @@
 //Maintained as .JAVA
 
-package Portal;
+package com.inthinc.pro.web.selenium.portal;
 
 import org.testng.annotations.*;
 import org.openqa.selenium.server.SeleniumServer;
 import com.thoughtworks.selenium.*;
 import static org.testng.AssertJUnit.*;
-import Portal.Singleton;
 
 
 
@@ -19,7 +18,7 @@ public class VEHICLE
 	
 	
 	//define local vars
-	Portal.Singleton tvar = Portal.Singleton.getSingleton() ; 
+	Singleton tvar = Singleton.getSingleton() ; 
 	Selenium selenium = tvar.getSelenium();
 		
 	
