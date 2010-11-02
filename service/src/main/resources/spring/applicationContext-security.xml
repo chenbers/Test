@@ -7,7 +7,6 @@
 
   <http auto-config="true" create-session="never" session-fixation-protection="newSession">
     <intercept-url pattern="/api/**" access="ROLE_ADMIN" />
-    <intercept-url pattern="/vxml/**" access="ROLE_ADMIN" />
     <http-basic />
   </http>
   <authentication-provider user-service-ref="userDetailsService">
