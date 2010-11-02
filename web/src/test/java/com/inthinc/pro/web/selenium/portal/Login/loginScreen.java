@@ -300,5 +300,10 @@ public class loginScreen {
 //			nav.tearDown();
 //		}
 	}
+
+    public void ck_Homepage() {
+        // TODO Auto-generated method stub
+        
+    }
 }
 

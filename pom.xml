@@ -58,8 +58,8 @@
 		<module>service</module>
 		<module>reports</module>
 		<module>webfulfillment</module>
-	    <module>hoskiosk</module> 
-   </modules>
+		<module>hoskiosk</module>
+	</modules>
 	<properties>
 		<compileSource>1.6</compileSource>
 		<skipUT>false</skipUT>
@@ -228,12 +228,12 @@ WWUUnm]]>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-			   <!-- JMockit MUST appear before JUnit -->
-			   <groupId>mockit</groupId>
-			   <artifactId>jmockit</artifactId>
-			   <version>0.999.3</version>
-			   <scope>test</scope>
-			</dependency>  
+				<!-- JMockit MUST appear before JUnit -->
+				<groupId>mockit</groupId>
+				<artifactId>jmockit</artifactId>
+				<version>0.999.3</version>
+				<scope>test</scope>
+			</dependency>
 			<dependency>
 				<groupId>com.inthinc.pro.dao</groupId>
 				<artifactId>dao</artifactId>
@@ -497,16 +497,10 @@ WWUUnm]]>
 			<dependency>
 				<groupId>org.seleniumhq.selenium.server</groupId>
 				<artifactId>selenium-server</artifactId>
-				<version>1.0.1</version>
+				<version>1.0.3</version>
 				<type>jar</type>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium.client-drivers</groupId>
-				<artifactId>selenium-java-testng-helper</artifactId>
-				<version>1.0.1</version>
-				<type>jar</type>
-				<scope>test</scope>
+				<classifier>standalone</classifier>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.seleniumhq.selenium.client-drivers</groupId>
@@ -516,15 +510,8 @@ WWUUnm]]>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>5.14.2</version>
-				<type>jar</type>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium.server</groupId>
-				<artifactId>selenium-server-coreless</artifactId>
+				<groupId>org.seleniumhq.selenium.client-drivers</groupId>
+				<artifactId>selenium-java-testng-helper</artifactId>
 				<version>1.0.1</version>
 				<type>jar</type>
 				<scope>test</scope>
@@ -536,11 +523,11 @@ WWUUnm]]>
 	<!-- Dependencies -->
 	<!--              -->
 	<dependencies>
-	    <dependency>
-		   <!-- JMockit MUST appear before JUnit -->
-		   <groupId>mockit</groupId>
-		   <artifactId>jmockit</artifactId>
-		</dependency>  	
+		<dependency>
+			<!-- JMockit MUST appear before JUnit -->
+			<groupId>mockit</groupId>
+			<artifactId>jmockit</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
