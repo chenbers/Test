@@ -21,7 +21,7 @@ public class MessageDigestUtil {
                 hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
             }
 
-            System.out.println("sessionid "+stringToDigest+" md5 version is "+hexString.toString());
+//            System.out.println("sessionid "+stringToDigest+" md5 version is "+hexString.toString());
             stringToDigest=hexString+"";
             
             return hexString.toString();

@@ -2,10 +2,12 @@ package com.inthinc.pro.backing.configurator;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 import org.ajax4jsf.model.KeepAlive;
@@ -16,6 +18,7 @@ import com.inthinc.pro.configurator.model.ComparedConfigurations;
 import com.inthinc.pro.configurator.model.Configuration;
 import com.inthinc.pro.configurator.model.ConfigurationExtractor;
 import com.inthinc.pro.configurator.model.ConfigurationSet;
+import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.ui.ConfigurationApplyBean;
 import com.inthinc.pro.configurator.ui.ConfigurationSelectionBean;
 import com.inthinc.pro.dao.ConfiguratorDAO;
@@ -33,7 +36,8 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	private ConfigurationSet configurationSet;
 	
 	private ComparedConfigurations comparedConfigurations;
-    
+    private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
+
     //configuration-centric
     private ConfigurationSelectionBean configurationSelectionBean;
 	private Configuration selectedConfiguration;
@@ -44,13 +48,17 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	
 	private ConfigurationApplyBean configurationApplyBean;
 	
+	private boolean editing;
+	
 	public ConfiguratorBean() {
 
+        comparedConfigurations = new ComparedConfigurations();
+        editing = false;
 	}
 	public void init() {
 
         if((configurationSelectionBean.getSelectedGroupId() == null) ) return;
-        	
+        configurationExtractor.refreshConfigurations();
         configurationSet = configurationExtractor.getConfigurations();
         
     }
@@ -62,15 +70,15 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	private void reinitializeConfigurations(){
 		
        	configurationSelectionBean.groupChanged();
-       	configurationSelectionBean.fetchConfigurations();
+       	configurationSelectionBean.fetchVehicleSettings();
        	init();
 	}
-	private void makeMessage(String messageText){
+	private void makeMessage(String clientId, String messageText, Severity severity){
 		
 		FacesMessage message = new FacesMessage();
-		message.setSeverity(FacesMessage.SEVERITY_INFO);
+		message.setSeverity(severity);
 		message.setSummary(messageText);
-		FacesContext.getCurrentInstance().addMessage("", message);
+		FacesContext.getCurrentInstance().addMessage(clientId, message);
 		
 	}
 	public Object fetchConfigurations(){
@@ -78,6 +86,11 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	    init();
 	    return "go_configuratorConfigurations";
 	}
+    public Object editConfigurationSettings(){
+        
+        editing = true;
+        return null;
+    }
     public Object updateConfiguration(){
     	
     	logger.debug("configurator - updateConfiguration");
@@ -110,7 +123,7 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     	
     	configurationApplyBean.applySettingsToTargetVehicles(configurationSet.getConfiguration(selectedConfigurationID), reason);
     	
-    	makeMessage("Vehicle settings updated successfully");
+    	makeMessage("","Vehicle settings updated successfully", FacesMessage.SEVERITY_INFO);
     	
        	reinitializeConfigurations();
 
@@ -119,13 +132,22 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     
     public Object updateVehicle(){
         
-        Map<Integer, String> actualDesiredDifferences = getVehicleDifferences();
+        Integer vehicleID = configurationApplyBean.getSelectedVehicleID();
 
+        Map<Integer, String> actualDesiredDifferences = getVehicleDifferences(vehicleID);
+
+        if (actualDesiredDifferences == null) {
+            
+            makeMessage("selectedVehicleID","Vehicle ID"+vehicleID+" does not exist", FacesMessage.SEVERITY_ERROR);
+            return null;
+        }
         configurationApplyBean.updateVehicle(actualDesiredDifferences, reason);
  
-    	makeMessage("Vehicle settings updated successfully");
+    	makeMessage("","Vehicle settings updated successfully", FacesMessage.SEVERITY_INFO);
 		
-       	reinitializeConfigurations();
+    	if(!editing){
+    	    reinitializeConfigurations();
+    	}
 
        	return null;
     }
@@ -137,23 +159,31 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 			
 			for (Integer vID : applyToConfiguration.getVehicleIDs()){
 				
-		        Map<Integer, String> actualDesiredDifferences = getVehicleDifferences();
+		        Map<Integer, String> actualDesiredDifferences = getVehicleDifferences(vID);
 		    	configurationApplyBean.updateVehicle(vID,actualDesiredDifferences,reason);
 			}
 		}
-    	makeMessage("Vehicle settings updated successfully");
+    	makeMessage("","Vehicle settings updated successfully", FacesMessage.SEVERITY_INFO);
 	
-       	reinitializeConfigurations();
+        if(!editing){
+            reinitializeConfigurations();
+        }
 
        	return null;
 	}
-	
-    private Map<Integer,String> getVehicleDifferences(){
+	public Object doneEditing(){
+	    
+	    editing= false;
+	    reinitializeConfigurations();
+	    return null;
+	}
+    private Map<Integer,String> getVehicleDifferences(Integer vehicleID){
         
-        Integer vehicleID = configurationApplyBean.getSelectedVehicleID();
         Configuration selectedConfiguration = configurationSet.getConfiguration(selectedConfigurationID);
         Map<Integer, String> differenceMap = new HashMap<Integer, String>();
-        VehicleSetting vehicleSetting = configurationSelectionBean.getVehicleSettings().getVehicleSettings().get(vehicleID);
+        VehicleSetting vehicleSetting = configurationSelectionBean.getVehicleSettings().getVehicleSettingsMap().get(vehicleID);
+        
+        if(vehicleSetting == null) return null;
         
         Map<Integer, String> combinedVehicleSettings = vehicleSetting.getCombinedSettings();
         Map<Integer, String> configurationSettings  = selectedConfiguration.getLatestDesiredValues();
@@ -177,7 +207,9 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     }
     public Object compareSelected(){
     	
-    	comparedConfigurations.init(configurationSet.getSelectedConfigurations());
+    	comparedConfigurations.getDifferences(configurationSet.getSelectedConfigurations(), 
+    	        deviceSettingDefinitionsByProductType, 
+    	        configurationSelectionBean.getProductType());
 
     	return null;
     }
@@ -205,6 +237,7 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
     }
 	public void setSelectedConfigurationID(Integer selectedConfigurationID) {
         this.selectedConfigurationID = selectedConfigurationID;
+        selectedConfiguration = configurationSet.getConfiguration(selectedConfigurationID);
     }
     
     public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
@@ -243,6 +276,16 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
+    public void setDeviceSettingDefinitionsByProductType(DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType) {
+        this.deviceSettingDefinitionsByProductType = deviceSettingDefinitionsByProductType;
+    }
+    public boolean isEditing(){
+         return editing;
+    }
+    public List<Configuration> getConfigurationData(){
+        
+        return configurationSet.getConfigurations();
+    }
 
 //    private void makeupSettings( List<DeviceSettingDefinitionBean> settings, List<VehicleSetting> vehicleSettings){
 //        

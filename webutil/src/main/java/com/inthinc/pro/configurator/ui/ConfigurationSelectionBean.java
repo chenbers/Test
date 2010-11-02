@@ -37,7 +37,7 @@ public class ConfigurationSelectionBean extends VehicleFilterBean{
 		
 		return null;
 	}
-	public Object fetchConfigurations(){
+	public Object fetchVehicleSettings(){
 		
 		filteredVehicleSettings = filterMakeModelYear();
 		

@@ -1,13 +1,12 @@
 package com.inthinc.pro.configurator.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class Configuration{
+public class Configuration implements Comparable<Configuration>{
     
     private boolean select;
 	private String messageDigest5;
@@ -73,6 +72,7 @@ public class Configuration{
     public Integer getConfigurationID() {
 		return configurationID;
 	}
+    
     public void setEditedDesiredValues(EditableMap<Integer, String> editedDesiredValues){
     	
     	this.editedDesiredValues = editedDesiredValues;
@@ -122,5 +122,10 @@ public class Configuration{
         
         vehicleIDsStringBuilder.setLength(vehicleIDsStringBuilder.length()-1);
         return vehicleIDsStringBuilder.toString();
+    }
+
+    @Override
+    public int compareTo(Configuration o) {
+        return configurationID.compareTo(((Configuration)o).getConfigurationID());
     }
 }

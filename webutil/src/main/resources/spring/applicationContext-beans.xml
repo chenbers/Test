@@ -33,11 +33,10 @@
 	<bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session"/>
 	<bean id="fwdcmdresBean" class="com.inthinc.pro.backing.FwdCmdResBean" init-method="init" parent="baseBean" scope="session"/>
 	<bean id="extractDataBean" class="com.inthinc.pro.backing.ExtractDataBean" scope="session"/>
-	<bean id="configuratorBean" class ="com.inthinc.pro.backing.configurator.ConfiguratorBean" scope="request" init-method="init"/>
 	<bean id="vehicleSettingsBean" class ="com.inthinc.pro.backing.configurator.VehicleSettingsBean" scope="request"/>
 	<bean id="deviceSettingDefinitionsByProductType" class="com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType" scope="session" init-method="init"/>
- 	<bean id="comparedConfigurations" class="com.inthinc.pro.configurator.model.ComparedConfigurations" scope="session" />
  	<bean id="configurationExtractor" class="com.inthinc.pro.configurator.model.ConfigurationExtractor" scope="session"/>
+	<bean id="configuratorBean" class ="com.inthinc.pro.backing.configurator.ConfiguratorBean" scope="request" />
 	<bean id="vehicleSettingsHistoryBean" class ="com.inthinc.pro.backing.configurator.VehicleSettingsHistoryBean" scope="request"/>
 	
 	<!--  UI beans -->

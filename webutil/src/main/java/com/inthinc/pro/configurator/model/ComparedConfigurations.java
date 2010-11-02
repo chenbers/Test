@@ -3,12 +3,11 @@ package com.inthinc.pro.configurator.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.configurator.ui.ConfigurationSelectionBean;
+import com.inthinc.pro.model.configurator.ProductType;
+
 
 public class ComparedConfigurations {
 
-    private DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType;
-    private ConfigurationSelectionBean configurationSelectionBean;
     private List<DeviceSettingDefinitionBean> differentDeviceSettings;
     private ConfigurationSet compareConfigurationSet;
 
@@ -18,11 +17,13 @@ public class ComparedConfigurations {
         differentDeviceSettings = new ArrayList<DeviceSettingDefinitionBean>();
     }
 
-    public void init(ConfigurationSet compareConfigurationSet) {
+    public void getDifferences(ConfigurationSet compareConfigurationSet, 
+                     DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType,
+                     ProductType productType) {
 
         this.compareConfigurationSet = compareConfigurationSet;
         differentDeviceSettings = deviceSettingDefinitionsByProductType.deriveReducedSettings(compareConfigurationSet.getSettingIDsWithMoreThanOneValue(),
-                configurationSelectionBean.getProductType());
+                productType);
     }
     
     public List<DeviceSettingDefinitionBean> getDifferentDeviceSettings() {
@@ -32,15 +33,6 @@ public class ComparedConfigurations {
     public ConfigurationSet getCompareConfigurationSet() {
         return compareConfigurationSet;
     }
-
-    public void setDeviceSettingDefinitionsByProductType(DeviceSettingDefinitionsByProductType deviceSettingDefinitionsByProductType) {
-        this.deviceSettingDefinitionsByProductType = deviceSettingDefinitionsByProductType;
-    }
-
-    public void setConfigurationSelectionBean(ConfigurationSelectionBean configurationSelectionBean) {
-        this.configurationSelectionBean = configurationSelectionBean;
-    }
-
     
     public Boolean getPopulated(){
         return compareConfigurationSet != null && compareConfigurationSet.getHasConfigurations();
@@ -49,5 +41,6 @@ public class ComparedConfigurations {
         
         compareConfigurationSet = null;
         differentDeviceSettings = null;
+        differentDeviceSettings = new ArrayList<DeviceSettingDefinitionBean>();
     }
 }
