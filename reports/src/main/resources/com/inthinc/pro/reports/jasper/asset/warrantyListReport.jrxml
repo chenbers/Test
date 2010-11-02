@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="152"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -94,13 +94,6 @@
 				</box>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-18" x="605" y="45" width="177" height="25"/>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="12" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{customerName}]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
 	<pageHeader>
