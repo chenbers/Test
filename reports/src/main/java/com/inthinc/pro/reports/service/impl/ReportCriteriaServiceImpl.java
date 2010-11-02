@@ -47,6 +47,7 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.asset.WarrantyListReportCriteria;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.hos.DotHoursRemainingReportCriteria;
 import com.inthinc.pro.reports.hos.HosDailyDriverLogReportCriteria;
@@ -837,7 +838,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     @Override
     public ReportCriteria getStateMileageByMonthReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType type, boolean iftaOnly) 
     {
-        // TODO Implement it
         StateMileageByMonthReportCriteria criteria = new StateMileageByMonthReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setStateMileageDAO(stateMileageDAO);
@@ -846,7 +846,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
     }
 
-
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.service.ReportCriteriaService#getWarrantyListReportCriteria(java.lang.Integer, java.util.Locale, boolean)
+     */
+    @Override
+    public ReportCriteria getWarrantyListReportCriteria(Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly) {
+        WarrantyListReportCriteria criteria = new WarrantyListReportCriteria(locale);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setWaysmartDAO(waysmartDAO);
+        criteria.init(groupID, accountID, accountName, expiredOnly);
+        return criteria;
+    }
     
     public void setGroupDAO(GroupDAO groupDAO)
     {
@@ -1023,4 +1034,5 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return locale;
     }
+
 }

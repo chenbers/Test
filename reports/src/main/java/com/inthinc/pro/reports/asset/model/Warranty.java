@@ -9,8 +9,8 @@ public class Warranty {
 
     private String vehicleName;
     private String imei;
-    private Date warrantyStartDate;
-    private Date warrantyEndDate;
+    private String warrantyStartDate;
+    private String warrantyEndDate;
     private Boolean expired;
     private String groupName;
     private String customerName;
@@ -54,7 +54,7 @@ public class Warranty {
     /**
      * @return the warrantyStartDate
      */
-    public Date getWarrantyStartDate() {
+    public String getWarrantyStartDate() {
         return warrantyStartDate;
     }
 
@@ -62,14 +62,14 @@ public class Warranty {
      * @param warrantyStartDate
      *            the warrantyStartDate to set
      */
-    public void setWarrantyStartDate(Date warrantyStartDate) {
+    public void setWarrantyStartDate(String warrantyStartDate) {
         this.warrantyStartDate = warrantyStartDate;
     }
 
     /**
      * @return the warrantyEndDate
      */
-    public Date getWarrantyEndDate() {
+    public String getWarrantyEndDate() {
         return warrantyEndDate;
     }
 
@@ -77,7 +77,7 @@ public class Warranty {
      * @param warrantyEndDate
      *            the warrantyEndDate to set
      */
-    public void setWarrantyEndDate(Date warrantyEndDate) {
+    public void setWarrantyEndDate(String warrantyEndDate) {
         this.warrantyEndDate = warrantyEndDate;
     }
 

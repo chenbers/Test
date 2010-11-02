@@ -57,7 +57,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     public TenHoursViolationReportCriteria(Locale locale) 
     {
         super(ReportType.TEN_HOUR_DAY_VIOLATIONS, "", locale);
-        dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
+        dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
     }
 
     void initDataSet(GroupHierarchy groupHierarchy, Interval interval, 

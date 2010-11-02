@@ -10,7 +10,7 @@ import java.util.Map;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.StateMileage;
+import com.inthinc.pro.model.assets.AssetWarrantyRecord;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.model.performance.VehicleUsageRecord;
@@ -21,7 +21,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
     private Map<Integer, List<TenHoursViolationRecord>> tenHoursViolationMap; 
     private Map<Integer, List<DriverHoursRecord>> driverHoursMap;
     private Map<Integer, List<VehicleUsageRecord>> vehicleUsageMap;
-    private List<StateMileage> mileageByVehicleMap;
+    private Map<Integer, List<AssetWarrantyRecord>> warrantyMap;
     
     /** 
      * {@inheritDoc}
@@ -107,36 +107,27 @@ public class MockWaysmartDAO implements WaysmartDAO {
     }
 
     /**
-     * @{inherit-doc}
-     * @see com.inthinc.pro.dao.report.WaysmartDAO#getMileageByVehicle(java.lang.Integer, org.joda.time.Interval)
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.dao.WaysmartDAO#getWarrantyList(java.lang.Integer, boolean)
      */
-//    @Override
-//    public VehicleMileageRecord getMileageByVehicle(Integer vehicleID, Interval interval) {
-//        Calendar startDate = Calendar.getInstance();
-//        startDate.set(interval.getStart().getYearOfEra(), interval.getStart().getMonthOfYear()-1, 
-//                interval.getStart().getDayOfMonth()+1,0,0,0);
-//        
-//        Calendar endDate = Calendar.getInstance();
-//        endDate.set(interval.getEnd().getYearOfEra(), interval.getEnd().getMonthOfYear()-1, 
-//                interval.getEnd().getDayOfMonth(),0,0,0);
-//
-//        StateMileage record = this.getVehicleMileageData(vehicleID);
-//        return record;
-//    }
-    
-    /**
-     * @param vehicleID
-     * @return
-     */
-//    private StateMileage getVehicleMileageData(Integer vehicleID) {
-//        if (this.vehicleMileageMap == null) {
-//            vehicleMileageMap = new HashMap<Integer, StateMileage>();
-//            vehicleMileageMap.put(1, new StateMileage("257547", 1684));
-//            vehicleMileageMap.put(2, new StateMileage("1", 1685));
-//            vehicleMileageMap.put(3, new StateMileage("2", 1686));
-//        }
-//        return this.vehicleMileageMap.get(vehicleID);
-//    }
+    @Override
+    public List<AssetWarrantyRecord> getWarrantyList(Integer groupID, boolean expiredOnly) {
+        if (this.warrantyMap == null) {
+            this.warrantyMap = new HashMap<Integer, List<AssetWarrantyRecord>>();
+            List<AssetWarrantyRecord> list = new ArrayList<AssetWarrantyRecord>();
+            
+            list.add(this.createWarranty("1505","11538072", "300034013838130", createDate(2010,9,2,0,0), createDate(2012,9,2,0,0), false));
+            list.add(this.createWarranty("1505","10867408", "300034012081910", createDate(2009,10,1,0,0), createDate(2011,10,1,0,0), false));
+            list.add(this.createWarranty("1505","10996110", "300034012408260", createDate(2008,9,17,0,0), createDate(2010,9,17,0,0), true));
+            this.warrantyMap.put(1505, list);
+            
+            list = new ArrayList<AssetWarrantyRecord>();
+            list.add(this.createWarranty("1506","11495882", null, createDate(2010,7,23,0,0), createDate(2012,7,23,0,0), false));
+            list.add(this.createWarranty("1506","11074882", "300034012673250", createDate(2008,2,12,0,0), createDate(2010,2,12,0,0), true));
+            this.warrantyMap.put(1506, list);
+        }
+        return this.warrantyMap.get(groupID);
+    }
 
     /* returns the mocked data set for TenHoursViolation report */
     private List<TenHoursViolationRecord> getTenHoursViolationData(Integer driverID) {
@@ -221,5 +212,17 @@ public class MockWaysmartDAO implements WaysmartDAO {
         Calendar c = Calendar.getInstance();
         c.set(year, month-1, day, hour, min, 0);
         return c.getTime();
+    }
+    
+    /* Creates a AssetWarrantyRecord bean */
+    private AssetWarrantyRecord createWarranty(String group, String vehicle, String imei, Date started, Date ended, boolean expired) {
+        AssetWarrantyRecord rec = new AssetWarrantyRecord();
+        rec.setGroupId(group);
+        rec.setVehicleName(vehicle);
+        rec.setImei(imei);
+        rec.setStartDate(started);
+        rec.setEndDate(ended);
+        rec.setExpired(expired);
+        return rec;
     }
 }

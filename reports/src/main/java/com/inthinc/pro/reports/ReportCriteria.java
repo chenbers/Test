@@ -44,6 +44,7 @@ public class ReportCriteria
     
     public static final String GROUP_SEPARATOR="->";
     public static final String SLASH_GROUP_SEPERATOR = "/";
+    public static final String DATE_FORMAT = "MM/dd/yyyy";
 
     private int subsetIndex = 1;
     

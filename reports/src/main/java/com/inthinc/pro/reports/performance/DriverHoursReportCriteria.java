@@ -25,7 +25,6 @@ import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.performance.model.DriverHours;
 
 public class DriverHoursReportCriteria extends ReportCriteria {
-    private static final String DATE_FORMAT = "MM/dd/yyyy";
     private static final String DAY_FORMAT = "MM/dd/yy";
 	private static final String START_DATE_PARAM = "startDate";
 	private static final String END_DATE_PARAM = "endDate";
@@ -42,7 +41,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	 */
 	public DriverHoursReportCriteria(Locale locale) {
 		super(ReportType.DRIVER_HOURS, "", locale);
-		dateTimeFormatter = DateTimeFormat.forPattern(DriverHoursReportCriteria.DATE_FORMAT).withLocale(locale);
+		dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
         dayFormatter = DateTimeFormat.forPattern(DriverHoursReportCriteria.DAY_FORMAT).withLocale(locale);
 	}
 

@@ -13,6 +13,7 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.assets.AssetWarrantyRecord;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
@@ -143,6 +144,16 @@ public class WaysmartDAOImpl implements WaysmartDAO {
 
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.dao.WaysmartDAO#getWarrantyList(java.lang.Integer, boolean)
+     */
+    @Override
+    public List<AssetWarrantyRecord> getWarrantyList(Integer groupID, boolean expiredOnly) {
+        // TODO Add method body
+        return null;
     }
 
 

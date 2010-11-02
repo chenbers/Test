@@ -134,10 +134,10 @@ public class WaysmartReportsBean extends ReportsBean {
                         getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
             
-//            case WARRANTY_LIST:
-//                reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), 
-//                        params.getLocale(), getUser().getPerson().getMeasurementType() , params.getIsExpired() ));
-//                break;
+            case WARRANTY_LIST:
+                reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(params.getGroupID(), getAccountID(),
+                        getAccountName(), params.getLocale(), params.getIsExpired()));
+                break;
 
             default:
                 break;

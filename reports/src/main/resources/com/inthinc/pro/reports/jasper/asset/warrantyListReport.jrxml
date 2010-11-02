@@ -8,8 +8,8 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" fontName="Arial" fontSize="12" isBold="true"/>
-	<style name="PageHeader" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageFooter" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageHeader" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false">
 		<parameterDescription><![CDATA[Company logo gif file path.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
@@ -27,7 +27,7 @@
 	<field name="imei" class="java.lang.String"/>
 	<field name="warrantyStartDate" class="java.lang.String"/>
 	<field name="warrantyEndDate" class="java.lang.String"/>
-	<field name="expired" class="java.lang.String"/>
+	<field name="expired" class="java.lang.Boolean"/>
 	<sortField name="groupName"/>
 	<group name="groupName">
 		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
@@ -192,7 +192,7 @@
 	</columnHeader>
 	<detail>
 		<band height="17" splitType="Stretch">
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField" x="0" y="0" width="95" height="17" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -205,7 +205,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField" x="109" y="0" width="116" height="17" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -218,7 +218,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{imei}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField" x="238" y="0" width="116" height="17" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -231,7 +231,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{warrantyStartDate}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField" x="354" y="0" width="150" height="17" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -244,7 +244,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{warrantyEndDate}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField" x="504" y="0" width="82" height="17" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -255,7 +255,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{expired}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[( $F{expired} ? $R{warrantyReport.expired.yes} : $R{warrantyReport.expired.no} )]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
