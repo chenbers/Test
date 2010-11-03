@@ -43,10 +43,10 @@ public class LoginScreen_HP extends SeleneseTestCase {
 	loginScreen login;
 	login = new loginScreen();
 
-	navto.setUp("firefox","https://qa.tiwipro.com:8423/tiwipro/");
+	navto.setUp();
 	login.login_screen();
 
-	login.ck_Homepage();
+	login.ck_login_page();
 	login.ForgotPassword();
 	
 	
