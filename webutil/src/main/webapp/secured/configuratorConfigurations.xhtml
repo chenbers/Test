@@ -174,7 +174,7 @@ function buildPage(configurationData){
                     <f:facet name="header">
                     	<h:outputText styleClass="headerText" value="Actions" />
                     </f:facet>
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="1" width="80px">
 					<a4j:commandLink value="Edit" action="#{configuratorBean.editConfigurationSettings}" reRender="configuratorSettings,editSettings">
              			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
 					</a4j:commandLink>
@@ -195,7 +195,7 @@ function buildPage(configurationData){
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
-				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}">
+				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name}">
 				 	<h:outputText value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}"/>
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
 					</h:panelGrid>					
