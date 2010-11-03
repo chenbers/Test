@@ -34,15 +34,22 @@ public class WarrantyListReportCriteria extends ReportCriteria {
     
     /**
      * Default constructor.
-     * @param report
-     * @param entityName
-     * @param locale
+     * 
+     * @param locale The user locale.
      */
     public WarrantyListReportCriteria(Locale locale) {
         super(ReportType.WARRANTY_LIST, "", locale);
         dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
     }
 
+    /**
+     * Retrieves the Warranty List records from the back end and copies them into Jasper beans.
+     * 
+     * @param groupID The group ID.
+     * @param accountID The customer ID.
+     * @param accountName The customer account name.
+     * @param expiredOnly True to show expired warranties only.
+     */
     public void init(Integer groupID, Integer accountID, String accountName, boolean expiredOnly) {
         Group topGroup = groupDAO.findByID(groupID);
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup
@@ -61,7 +68,13 @@ public class WarrantyListReportCriteria extends ReportCriteria {
         initDataSet(new GroupHierarchy(groupList), recordMap);
     }
     
-    void initDataSet(GroupHierarchy groupHierarchy, Map<Integer, List<AssetWarrantyRecord>> recordMap) {
+    /**
+     * Copies the records retrieved from the back end into the beans to be used by Jasper.
+     * 
+     * @param groupHierarchy The group hierarchy.
+     * @param recordMap A map with the records retrieved from the back end.
+     */
+    private void initDataSet(GroupHierarchy groupHierarchy, Map<Integer, List<AssetWarrantyRecord>> recordMap) {
         List<Warranty> beanList = new ArrayList<Warranty>();
 
         for (Entry<Integer, List<AssetWarrantyRecord>> entry : recordMap.entrySet()) {
