@@ -9,7 +9,7 @@ import com.thoughtworks.selenium.SeleniumException;
 public class Error_Catcher {
 	
 	
-	private static HashMap<String, HashMap<String, Object>> errors = new HashMap<String, HashMap<String, Object>>();
+	private HashMap<String, HashMap<String, Object>> errors = new HashMap<String, HashMap<String, Object>>();
 	private HashMap<String, Object> errorList = new HashMap<String, Object>();
 	
 	public void Error(String name, AssertionError error){
@@ -66,6 +66,6 @@ public class Error_Catcher {
 	
 	public HashMap<String, HashMap<String, Object>> get_errors(){
 		
-		return Error_Catcher.errors;
+		return errors;
 	}
 }
