@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<vxml version = "2.1">  
+<var name="voxeoAudio" expr="'%s'"/> 
+<var name="thankYouAudio" expr="voxeoAudio + 'inthinc-thankyou.wav'"/> 
+<form>
+	<block>	
+		<audio expr="thankYouAudio"  fetchhint="prefetch"/>
+	</block>
+</form>
+</vxml>
