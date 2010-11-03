@@ -25,6 +25,9 @@ import com.inthinc.pro.reports.dao.WaysmartDAO;
  */
 public class WarrantyListReportCriteria extends ReportCriteria {
 
+	protected String CUSTOMER_NAME_KEY = "customerName";
+	protected String CUSTOMER_ID_KEY = "customerId";
+	
     protected DateTimeFormatter dateTimeFormatter;
     protected GroupDAO groupDAO;
     protected WaysmartDAO waysmartDAO;
@@ -53,8 +56,8 @@ public class WarrantyListReportCriteria extends ReportCriteria {
             }
         }
         // Add all parameters
-        addParameter("customerName", accountName);
-        addParameter("customerId", accountID.toString());
+        addParameter(CUSTOMER_NAME_KEY, accountName);
+        addParameter(CUSTOMER_ID_KEY, accountID.toString());
         initDataSet(new GroupHierarchy(groupList), recordMap);
     }
     
