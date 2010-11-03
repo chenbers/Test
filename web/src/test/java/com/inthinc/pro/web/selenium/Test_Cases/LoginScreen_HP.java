@@ -30,28 +30,28 @@ public class LoginScreen_HP extends SeleneseTestCase {
 		Singleton tvar = Singleton.getSingleton() ; 
 		Selenium selenium = tvar.getSelenium();
 	
+//	
+//	NAVIGATE navto;
+//	navto = new NAVIGATE();
+//	
+//	Masthead mast;
+//	mast = new Masthead();
+//	
+//	Notifications N;
+//	N = new Notifications();
+//
+//	loginScreen login;
+//	login = new loginScreen();
+//
+//	navto.setUp();
+//	login.login_screen();
+//
+//	login.ck_login_page();
+//	login.ForgotPassword();
+//	
+//	
 	
-	NAVIGATE navto;
-	navto = new NAVIGATE();
-	
-	Masthead mast;
-	mast = new Masthead();
-	
-	Notifications N;
-	N = new Notifications();
-
-	loginScreen login;
-	login = new loginScreen();
-
-	navto.setUp();
-	login.login_screen();
-
-	login.ck_login_page();
-	login.ForgotPassword();
-	
-	
-	
-	navto.tearDown();	//perform tear down tasks
+//	navto.tearDown();	//perform tear down tasks
 	
 	}
 }
