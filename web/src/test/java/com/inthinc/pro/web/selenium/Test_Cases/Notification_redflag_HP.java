@@ -30,37 +30,37 @@ public class Notification_redflag_HP extends SeleneseTestCase {
 		Singleton tvar = Singleton.getSingleton() ; 
 		Selenium selenium = tvar.getSelenium();
 	
-	
-	NAVIGATE navto;
-	navto = new NAVIGATE();
-	
-	Masthead mast;
-	mast = new Masthead();
-	
-	Notifications N;
-	N = new Notifications();
-
-	navto.setUp("firefox","https://qa.tiwipro.com:8423/tiwipro/");
-	navto.login("larrington", "tekpass");
-
-	
-	
-	
-	mast.mainMenuItem("Notifications");
-	
-	N.menuItem("Red Flags");
-	N.ckRedflagScr();
-	
-	N.selectTimeFrame("redFlags", "Today");
-	
-	N.enterInfo("redFlags", "vehicle", "Mustang");
-	N.enterInfo("redFlags", "group", "Groupone");
-	N.enterInfo("redFlags", "driver", "Lee");
-	
-	N.click_refresh("redFlags");
-	
-	navto.logout();
-	navto.tearDown();	//perform tear down tasks
+//	
+//	NAVIGATE navto;
+//	navto = new NAVIGATE();
+//	
+//	Masthead mast;
+//	mast = new Masthead();
+//	
+//	Notifications N;
+//	N = new Notifications();
+//
+//	navto.setUp();
+//	navto.login("larrington", "tekpass");
+//
+//	
+//	
+//	
+//	mast.mainMenuItem("Notifications");
+//	
+//	N.menuItem("Red Flags");
+//	N.ckRedflagScr();
+//	
+//	N.selectTimeFrame("redFlags", "Today");
+//	
+//	N.enterInfo("redFlags", "vehicle", "Mustang");
+//	N.enterInfo("redFlags", "group", "Groupone");
+//	N.enterInfo("redFlags", "driver", "Lee");
+//	
+//	N.click_refresh("redFlags");
+//	
+//	navto.logout();
+//	navto.tearDown();	//perform tear down tasks
 	
 	}
 }
