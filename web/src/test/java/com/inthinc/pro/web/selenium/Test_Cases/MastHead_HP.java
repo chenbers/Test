@@ -6,14 +6,7 @@ import com.inthinc.pro.web.selenium.portal.Login.loginScreen;
 import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
 import com.thoughtworks.selenium.*;
 
-import org.testng.annotations.*;
-import static org.testng.AssertJUnit.*;
-import org.testng.*;
 
-
-
-@SuppressWarnings("unused")
-@Test 
 public class MastHead_HP extends SeleneseTestCase {
 	//define local vars
 	

@@ -31,7 +31,8 @@ public class Singleton {
                     try {
                     	singleton = new Singleton();
 						//singleton.selenium = (Selenium) new SeleniumServer();
-						singleton.selenium = new DefaultSelenium("localhost", 4444, "firefox", "https://qa.tiwipro.com:8423/tiwipro/");
+						singleton.selenium = new DefaultSelenium("localhost", 4444, "*iexplore", "https://qa.tiwipro.com:8423/tiwipro/");
+						singleton.selenium.start();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

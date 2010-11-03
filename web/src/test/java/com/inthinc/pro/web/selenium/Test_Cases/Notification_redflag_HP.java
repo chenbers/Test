@@ -6,15 +6,9 @@ import com.inthinc.pro.web.selenium.portal.Masthead.Masthead;
 import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
 import com.thoughtworks.selenium.*;
 
-import org.testng.annotations.*;
-import static org.testng.AssertJUnit.*;
-
-import org.testng.*;
 
 
 
-@SuppressWarnings("unused")
-@Test 
 public class Notification_redflag_HP extends SeleneseTestCase {
 	//define local vars
 	

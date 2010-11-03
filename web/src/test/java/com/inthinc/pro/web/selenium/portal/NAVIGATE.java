@@ -8,61 +8,62 @@ import org.testng.annotations.*;
 import com.thoughtworks.selenium.*;
 import static org.testng.AssertJUnit.*;
 
-@SuppressWarnings("unused")
 public class NAVIGATE
 {
-	//define local vars
-	Singleton tvar = Singleton.getSingleton() ; 
-	Selenium selenium = tvar.getSelenium();
+	
+	Selenium selenium;
+	SeleniumServer seleniumserver;
+	
 	
 	@BeforeClass
-	public void setUp(String browser,String url) throws Exception {
-		SeleniumServer seleniumserver=new SeleniumServer();
+	public void setUp() throws Exception {
+		seleniumserver=new SeleniumServer();
 		//Set up tasks for all Tiwipro navigation functions
 	    seleniumserver.boot();
         seleniumserver.start();
-        selenium.start();
 	}//end setup
 	
 	
 	
+	public void set_selenium(Selenium sel ){
+		selenium = sel;		
+	}
 	
 	
+	public void fforward(int times){
+		selenium.open("/tiwipro/app/admin/vehicles");
+		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
+		int i = 0;
+		while (times>i){
+			selenium.open("/tiwipro/app/admin/vehicles");
+			selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'fastforward'});\"]");
+		i = i + 1;
+		}
+	}
 	
-		public void fforward(int times){
-			selenium.open("/tiwipro/app/admin/vehicles");
-			selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-			int i = 0;
-			while (times>i){
-				selenium.open("/tiwipro/app/admin/vehicles");
-				selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'fastforward'});\"]");
-			i = i + 1;
-			};
-		};
-		
-		public void frewind(int times){
-			selenium.open("/tiwipro/app/admin/vehicles");
-			selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-			int i = 0;
-			while (times>i){
-			selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'fastrewind'});\"]");
-			i = i + 1;
-			};	
-		};
-		
-		public void lastpage(){
-			selenium.open("/tiwipro/app/admin/vehicles");
-			selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-			selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'last'});\"]");
-			//selenium.waitForPageToLoad("10000");
-		};
-		
-		public void firstpage(){
-			selenium.open("/tiwipro/app/admin/vehicles");
-			selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-			selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'first'});\"]");
-			//selenium.waitForPageToLoad("10000");
-		};
+	public void frewind(int times){
+		selenium.open("/tiwipro/app/admin/vehicles");
+		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
+		int i = 0;
+		while (times>i){
+		selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'fastrewind'});\"]");
+		i = i + 1;
+		}	
+	}
+	
+	public void lastpage(){
+		selenium.open("/tiwipro/app/admin/vehicles");
+		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
+		selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'last'});\"]");
+		//selenium.waitForPageToLoad("10000");
+	}
+	
+	public void firstpage(){
+		selenium.open("/tiwipro/app/admin/vehicles");
+		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
+		selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'first'});\"]");
+		//selenium.waitForPageToLoad("10000");
+	}
 		
 			
 	public void login(String user,String pass) {
@@ -100,7 +101,7 @@ public class NAVIGATE
 	 @AfterClass
 		//@AfterClass //Close and destroy all objects and files created
 		public void tearDown(){
-		 selenium.stop();
+		 seleniumserver.stop();
 		}//tear down
 
 }

@@ -2,16 +2,15 @@
 
 package com.inthinc.pro.web.selenium.portal.Notifications;
 
-import org.testng.annotations.*;
-import org.openqa.selenium.server.SeleniumServer;
+
+import static org.junit.Assert.*;
 
 import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
-import static org.testng.AssertJUnit.*;
 
 
 
-@SuppressWarnings("unused")
+
 public class Notifications
 {
 	/* THIS CLASS IS A FUNCTIONAL AREA OF THE AUT
@@ -67,7 +66,6 @@ public class Notifications
 			selenium.click(nSection + "_search:" + nSection + "_refresh");
 			
 		}
-		
 		
 		public void ckRedflagScr(){
 			selenium.open("/tiwipro/app/notifications/");

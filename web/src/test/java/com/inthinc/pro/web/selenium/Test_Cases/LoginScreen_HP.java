@@ -6,15 +6,8 @@ import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
 import com.inthinc.pro.web.selenium.portal.Login.*;
 import com.thoughtworks.selenium.*;
 
-import org.testng.annotations.*;
-import static org.testng.AssertJUnit.*;
-
-import org.testng.*;
 
 
-
-@SuppressWarnings("unused")
-@Test 
 public class LoginScreen_HP extends SeleneseTestCase {
 	//define local vars
 	

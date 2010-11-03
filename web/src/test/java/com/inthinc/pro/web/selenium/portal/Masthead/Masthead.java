@@ -3,12 +3,13 @@
 
 package com.inthinc.pro.web.selenium.portal.Masthead;
 
-import org.testng.annotations.*;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 import org.openqa.selenium.server.SeleniumServer;
 
 import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
-import static org.testng.AssertJUnit.*;
 
 @SuppressWarnings("unused")
 public class Masthead
@@ -25,7 +26,7 @@ public class Masthead
 		return KeywordCount;
 	}
 	
-	
+@Test
 public void mainMenuItem(String screen){
 		
 		if (screen.contentEquals("Reports)")){
@@ -56,7 +57,7 @@ public void mainMenuItem(String screen){
 		
 	}
 	
-	@Test(description="Select Link")
+	@Test
 	public void Select_Link(String linkname, String checktext, String PopuporTab)
 	{
 		selenium.open("/tiwipro/app/dashboard/");
@@ -94,7 +95,7 @@ public void mainMenuItem(String screen){
 		assertEquals(selenium.getText("//b"), texttocheck);
 	}
 	
-	@Test(description="Verify Links and Text on home screen" )
+	@Test
 	public void ValidateScreen(){
 		//Validate Home Screen
 		selenium.open("/tiwipro/app/dashboard/");
