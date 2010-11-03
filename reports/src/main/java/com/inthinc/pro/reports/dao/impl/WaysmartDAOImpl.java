@@ -19,6 +19,7 @@ import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.model.performance.VehicleUsageRecord;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
+import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class WaysmartDAOImpl implements WaysmartDAO {
@@ -151,9 +152,8 @@ public class WaysmartDAOImpl implements WaysmartDAO {
      * @see com.inthinc.pro.reports.dao.WaysmartDAO#getWarrantyList(java.lang.Integer, boolean)
      */
     @Override
-    public List<AssetWarrantyRecord> getWarrantyList(Integer groupID, boolean expiredOnly) {
-        // TODO Add method body
-        return null;
+    public List<AssetWarrantyRecord> getWarrantyList(Integer groupID, boolean expiredOnly) {   
+        return new MockWaysmartDAO().getWarrantyList(groupID, expiredOnly);
     }
 
 

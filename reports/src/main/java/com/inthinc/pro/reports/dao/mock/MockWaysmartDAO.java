@@ -112,21 +112,24 @@ public class MockWaysmartDAO implements WaysmartDAO {
      */
     @Override
     public List<AssetWarrantyRecord> getWarrantyList(Integer groupID, boolean expiredOnly) {
-        if (this.warrantyMap == null) {
-            this.warrantyMap = new HashMap<Integer, List<AssetWarrantyRecord>>();
-            List<AssetWarrantyRecord> list = new ArrayList<AssetWarrantyRecord>();
-            
-            list.add(this.createWarranty("1505","11538072", "300034013838130", createDate(2010,9,2,0,0), createDate(2012,9,2,0,0), false));
-            list.add(this.createWarranty("1505","10867408", "300034012081910", createDate(2009,10,1,0,0), createDate(2011,10,1,0,0), false));
+ 
+        List<AssetWarrantyRecord> list = new ArrayList<AssetWarrantyRecord>();
+        
+        if( 1505 == groupID){
+            if(!expiredOnly){
+                list.add(this.createWarranty("1505","11538072", "300034013838130", createDate(2010,9,2,0,0), createDate(2012,9,2,0,0), false));
+                list.add(this.createWarranty("1505","10867408", "300034012081910", createDate(2009,10,1,0,0), createDate(2011,10,1,0,0), false));
+            }
             list.add(this.createWarranty("1505","10996110", "300034012408260", createDate(2008,9,17,0,0), createDate(2010,9,17,0,0), true));
-            this.warrantyMap.put(1505, list);
-            
-            list = new ArrayList<AssetWarrantyRecord>();
-            list.add(this.createWarranty("1506","11495882", null, createDate(2010,7,23,0,0), createDate(2012,7,23,0,0), false));
-            list.add(this.createWarranty("1506","11074882", "300034012673250", createDate(2008,2,12,0,0), createDate(2010,2,12,0,0), true));
-            this.warrantyMap.put(1506, list);
         }
-        return this.warrantyMap.get(groupID);
+        
+        if( 1506 == groupID){
+            if(!expiredOnly)
+                list.add(this.createWarranty("1506","11495882", null, createDate(2010,7,23,0,0), createDate(2012,7,23,0,0), false));
+            list.add(this.createWarranty("1506","11074882", "300034012673250", createDate(2008,2,12,0,0), createDate(2010,2,12,0,0), true));
+        }
+        
+        return list;
     }
 
     /* returns the mocked data set for TenHoursViolation report */

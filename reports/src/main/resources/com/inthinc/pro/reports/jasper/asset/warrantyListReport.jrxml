@@ -3,13 +3,13 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="152"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" fontName="Arial" fontSize="12" isBold="true"/>
-	<style name="PageHeader" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageFooter" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageHeader" isDefault="false" fontName="Arial" fontSize="12" isBold="true"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false">
 		<parameterDescription><![CDATA[Company logo gif file path.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
@@ -39,7 +39,7 @@
 						<pen lineWidth="0.0" lineStyle="Solid"/>
 					</graphicElement>
 				</rectangle>
-				<textField pattern="" isBlankWhenNull="false">
+				<textField pattern="" isBlankWhenNull="true">
 					<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="2" width="782" height="23" forecolor="#FFFFFF" backcolor="#000000"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
