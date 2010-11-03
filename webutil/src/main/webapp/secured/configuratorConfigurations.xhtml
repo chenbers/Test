@@ -195,7 +195,7 @@ function buildPage(configurationData){
 					<f:facet name="header">
 				 		<h:outputText  value="#{setting.settingID}-#{setting.name}"></h:outputText>
 				 	</f:facet>
-				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices}">
+				 	<h:panelGrid columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}">
 				 	<h:outputText value="#{configuration.editedDesiredValues.editableValues[setting.settingID].value}"/>
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
 					</h:panelGrid>					
