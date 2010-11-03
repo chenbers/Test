@@ -88,7 +88,7 @@ public class loginScreen {
 		selenium.open("/tiwipro/login");
 		
 		try{
-			selenium.click("j_id28:loginForgotPassword");
+			selenium.click(this.forgot_link);
 		}catch( SeleniumException e){ errors.Error("Forgot Password Link", e);
 		}
 		
@@ -150,9 +150,9 @@ public class loginScreen {
 		
 		//request password email
 		try{
-			selenium.click("j_id28:loginForgotPassword");
+			selenium.click(this.forgot_link);
 		}catch(SeleniumException e){
-			errors.Error("",e);
+			errors.Error(this.forgot_text + " element",e);
 		}
 		
 		// email needs to be verbalized
@@ -200,14 +200,19 @@ public class loginScreen {
 		try{
 			assertTrue(selenium.getText(this.forgot_link)==this.forgot_text);
 		}catch(AssertionError e){
-			errors.Error(forgot_text + " text",selenium.getText(this.forgot_link));
+			errors.Error(this.forgot_text + " text",selenium.getText(this.forgot_link));
+			errors.Expected(this.forgot_text + "text", this.forgot_text);
+		}catch(SeleniumException e){
+			errors.Error(this.forgot_text + " element", e);
+		}catch(Exception e){
+			errors.Error(this.forgot_text + " element", e);
 		}
 		
 		try{
-			assertTrue(selenium.isElementPresent(forgot_link));
+			assertTrue(selenium.isElementPresent(this.forgot_link));
 		}
 		catch(AssertionError e){
-			errors.Error( forgot_text + " element", e);
+			errors.Error( this.forgot_text + " element", e);
 		}
 		
 		
@@ -291,6 +296,7 @@ public class loginScreen {
 //		try{
 			loginScreen login = new loginScreen();
 //			nav.set_selenium(loginScreen.selenium);
+			login.login_screen();
 			login.ForgotPassword("failure@fail.com");
 			loginScreen.selenium.close();
 			loginScreen.selenium.stop();
@@ -300,10 +306,5 @@ public class loginScreen {
 //			nav.tearDown();
 //		}
 	}
-
-    public void ck_Homepage() {
-        // TODO Auto-generated method stub
-        
-    }
 }
 
