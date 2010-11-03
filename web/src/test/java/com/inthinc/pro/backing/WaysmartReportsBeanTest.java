@@ -237,5 +237,36 @@ public class WaysmartReportsBeanTest{
        List missingKeys = this.checkResourceBundleKeys(keys, resourceBundleName, Locale.US);
        assertTrue(missingKeys.isEmpty());
    }
+   
+   /**
+    * Verify that all following keys are present within given resource bundle.
+    */ 
+   @Test
+   public void testCheckResourceBundlekeysForWarrantyList(){
+       String[] keys = {
+               "warrantyReport.title",
+               "column.vehicleName",
+               "column.imei",
+               "column.warrantyStartDate",
+               "column.warrantyEndDate",
+               "column.expired",
+               "footer.confidential",
+               "footer.page",
+               "warrantyReport.expired.yes",
+               "warrantyReport.expired.no",
+               "column.customerId.raw",
+               "column.customerName.raw",
+               "column.groupName.raw",
+               "column.vehicleName.raw",
+               "column.imei.raw",
+               "column.warrantyStartDate.raw",
+               "column.warrantyEndDate.raw",
+               "column.expired.raw",
+               "description.reporttype.warranty.list"
+       };
+       String resourceBundleName = "com.inthinc.pro.reports.jasper.asset.i18n.warrantyList";
+       List missingKeys = this.checkResourceBundleKeys(keys, resourceBundleName, Locale.US);
+       assertTrue(missingKeys.isEmpty());
+   }
     
 }
