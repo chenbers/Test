@@ -713,7 +713,31 @@ public class SiloServiceImpl implements SiloService {
     public Map<String, Object> unforgiveCrash(@DaoParam(name = "crashReportID") Integer crashReportID) throws ProDAOException {
         return null;
     }
-
+    
+//    @Override
+//    public List<Map<String, Object>> getCrashTraces(@DaoParam(name = "eventID") String eventID) throws ProDAOException {
+//        return null;
+//    }
+//    
+//    @Override
+//    public Map<String, Object> getCrashTraceCount(
+//            @DaoParam(name = "eventID")String groupID,
+//            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+//            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+//            List<Map<String, Object>> filterList) throws ProDAOException{
+//        return null;
+//    }
+//   
+//    @Override
+//    public List<Map<String, Object>> getCrashTracePage(
+//            @DaoParam(name = "eventID") String eventID, 
+//            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate, 
+//            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm") Long endDate, 
+//            List<Map<String, Object>> filterList, 
+//            @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) {
+//        return null;
+//    }
+    
 	@Override
     @MethodDescription(description = "Do not use. Method only to be used by test data generators on development server.", crudType=CrudType.NOT_AVAILABLE)
 	public Map<String, Object> setVehicleDriver(Integer vehicleID,
@@ -1021,7 +1045,6 @@ public class SiloServiceImpl implements SiloService {
     @Override
     @MethodDescription(description = "Get a subset of text message alerts for the specifed group and time frame.", 
     		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class
-			//,mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class
 			)
 	public List<Map<String, Object>> getTextMsgPage(
 			@DaoParam(name = "groupID", validator=ValidatorType.GROUP)Integer groupID,
@@ -1031,6 +1054,17 @@ public class SiloServiceImpl implements SiloService {
             @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) throws ProDAOException {
 		return null;
 	}
+    
+    @Override
+    @MethodDescription(description = "Get a subset of sent text message alerts for the specifed group and time frame.", 
+            crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class
+            )
+    public List<Map<String, Object>> getSentTextMsgsByGroupID(
+            @DaoParam(name = "groupID", validator=ValidatorType.GROUP)Integer groupID,
+            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate) throws ProDAOException {
+        return null;
+    }
 
 	@Override
     @MethodDescription(description = "Get a count of Text messages for the specifed group and time frame.", crudType=CrudType.READ) 
@@ -1048,5 +1082,5 @@ public class SiloServiceImpl implements SiloService {
 	public List<Map<String, Object>> getSensitivitySliderValues() {
 		return null;
 	}
-    
+	
 }
