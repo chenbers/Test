@@ -10,7 +10,7 @@ public class Error_Catcher {
 	
 	
 	private HashMap<String, HashMap<String, Object>> errors = new HashMap<String, HashMap<String, Object>>();
-	private HashMap<String, Object> errorList = new HashMap<String, Object>();
+	private HashMap<String, Object> errorList;
 	
 	public void Error(String name, AssertionError error){
 		
@@ -60,6 +60,7 @@ public class Error_Catcher {
 	}
 	
 	public void add_error(String name){
+		errorList  = new HashMap<String, Object>();
 		errors.put(name, errorList);
 		
 	}
@@ -68,4 +69,6 @@ public class Error_Catcher {
 		
 		return errors;
 	}
+	
+	
 }
