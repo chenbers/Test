@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.junit.*;
 
 import com.inthinc.pro.web.selenium.Selenium_Server;
+import com.inthinc.pro.web.selenium.Try;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
@@ -74,6 +75,7 @@ public class loginScreen extends Selenium_Server {
 	
 	private Error_Catcher errors;
 	protected static Selenium selenium;
+	protected static Try attempt;
 
 	
 	
@@ -82,30 +84,37 @@ public class loginScreen extends Selenium_Server {
 		this(Singleton.getSingleton());
 	}
 	
-	public loginScreen( Singleton tvar ){
+	public loginScreen( Singleton tvar ){	
+		selenium = tvar.getSelenium();
+		errors = new Error_Catcher();
+		loginScreen.attempt = new Try(selenium);
+	}
+	
+	public loginScreen( Singleton tvar, Try attempt ){
 		
 		selenium = tvar.getSelenium();
 		errors = new Error_Catcher();
+		loginScreen.attempt = attempt;
 	}
 	
-	public loginScreen( Selenium sel ){
+	public loginScreen( Selenium sel, Try attempt ){
 		selenium = sel;
 		errors = new Error_Catcher();
+		loginScreen.attempt = attempt;
 	}
 	
-	public loginScreen(Singleton tvar, Error_Catcher errors ){
-		
-		selenium = tvar.getSelenium();
-		this.errors = errors;
+	public loginScreen(Singleton tvar, Error_Catcher errors, Try attempt ){
+		this(tvar.getSelenium(), errors, attempt);
 	}
 	
-	public loginScreen( Error_Catcher errors, Selenium sel){
-		this( sel, errors );
+	public loginScreen( Error_Catcher errors, Selenium sel, Try attempt){
+		this( sel, errors, attempt );
 	}
 	
-	public loginScreen( Selenium sel, Error_Catcher errors){
+	public loginScreen( Selenium sel, Error_Catcher errors, Try attempt){
 		selenium = sel;
 		this.errors = errors;
+		loginScreen.attempt = attempt;
 	}
 	
 
@@ -275,26 +284,29 @@ public class loginScreen extends Selenium_Server {
 	
 	public void ck_forgot_password() {
 		
-		try{ //Pop up Title
-			assertTrue(selenium.isTextPresent("Forgot User Name or Password?"));
-		}catch(AssertionError e){
-			errors.Error("Forgot Pop Up Title text", e);
-		}catch(SeleniumException e){
-			errors.Error("Forgot Pop Up Title text", e);
-		}catch(Exception e){
-			errors.Error("Forgot Pop Up Title text", e);
-		}
+		attempt.assert_true("selenium.isTextPresent(\"Forgot User Name or Password?\")", "Forgot Pop Up Title text");
+		attempt.compare_strings("selenium.getText("+forgot_email_label_xpath+")", selenium, "E-mail Address label", "E-mail Address");
 		
-		try{ //Email Field Label
-			assertTrue(selenium.getText(forgot_email_label_xpath)=="E-mail Address");
-		}catch(AssertionError e){
-			errors.Error("E-mail Address label", selenium.getText(forgot_email_label_xpath));
-			errors.Error("E-mail Address label", "E-mail Address");
-		}catch(SeleniumException e){
-			errors.Error("E-mail Address label", e);
-		}catch(Exception e){
-			errors.Error("E-mail Address label", e);
-		}
+//		try{ //Pop up Title
+//			assertTrue(selenium.isTextPresent("Forgot User Name or Password?"));
+//		}catch(AssertionError e){
+//			errors.Error("Forgot Pop Up Title text", e);
+//		}catch(SeleniumException e){
+//			errors.Error("Forgot Pop Up Title text", e);
+//		}catch(Exception e){
+//			errors.Error("Forgot Pop Up Title text", e);
+//		}
+//		
+//		try{ //Email Field Label
+//			assertTrue(selenium.getText(forgot_email_label_xpath)=="E-mail Address");
+//		}catch(AssertionError e){
+//			errors.Error("E-mail Address label", selenium.getText(forgot_email_label_xpath));
+//			errors.Error("E-mail Address label", "E-mail Address");
+//		}catch(SeleniumException e){
+//			errors.Error("E-mail Address label", e);
+//		}catch(Exception e){
+//			errors.Error("E-mail Address label", e);
+//		}
 		
 		try{ //Email Text Field
 			assertTrue(selenium.isElementPresent(forgot_email_field_id));
