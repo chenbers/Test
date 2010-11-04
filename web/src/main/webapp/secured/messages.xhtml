@@ -82,18 +82,18 @@
 												inputSize="12" />
 										</a4j:outputPanel></li>
 										<li class="l vcentered"><a4j:commandButton id="refresh"
-											styleClass="left filter"
+											styleClass="left"
 											action="#{messagesBean.refreshInbox}"
 											reRender="display-form:#{context},display-form:#{context}-bottomScroller,display-form:messageCount">
-											<span class="refresh"> #{messages.txtMsg_applyFilter}
+											<span class="filter"> #{messages.txtMsg_applyFilter}
 											</span>
 										</a4j:commandButton> &#160;</li>
 										<li class="l vcentered"></li>
 										<li class="l vcentered"><a4j:commandButton id="remove"
-											styleClass="left remove"
-											action="#{messagesBean.removeSelected}"
-											reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-											<span class="refresh"> #{messages.txtMsg_remove} </span>
+											styleClass="left"
+											action="#{messagesBean.removeFilter}"
+											reRender="display-form:#{context},display-form:#{context}-bottomScroller,display-form:messageCount">
+											<span class="remove"> #{messages.txtMsg_remove} </span>
 										</a4j:commandButton> &#160;</li>
 										<li class="l vcentered"></li>
 									</ul>
@@ -122,7 +122,7 @@
 														value="#{messagesBean.messageList}" var="item"
 														styleClass="datagrid filterabledatagrid"
 														rowClasses="tableOdd,tableEven" cellspacing="1" rows="5"
-														width="530px">
+														width="680px">
 
 														<rich:column width="2%">
 															<f:facet name="header">
@@ -140,7 +140,7 @@
 															</h:selectBooleanCheckbox>
 														</rich:column>
 
-														<rich:column id="date" width="15%"
+														<rich:column id="date" width="25%"
 															sortBy="#{item.sendDate}" sortOrder="DESCENDING">
 															<f:facet name="header">
 																<h:outputText value="#{messages.txtMsg_sent}" />
@@ -160,7 +160,7 @@
 															<h:outputText value="#{item.from}" />
 														</rich:column>
 
-														<rich:column id="msg" width="68%">
+														<rich:column id="msg" width="58%">
 															<f:facet name="header">
 																<h:outputText value="#{messages.txtMsg_msg}" />
 															</f:facet>

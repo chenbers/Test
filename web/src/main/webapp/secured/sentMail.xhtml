@@ -81,20 +81,20 @@
 										</li>
 										<li class="l vcentered">
 											<a4j:commandButton id="refresh"
-												styleClass="left filter"
-												action="#{messagesBean.refreshInbox}"
-												reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-												<span class="refresh"> #{messages.txtMsg_applyFilter}
+												styleClass="left"
+												action="#{messagesBean.refreshSent}"
+												reRender="display-form:#{context},display-form:#{context}-bottomScroller,display-form:messageCount">
+												<span class="filter"> #{messages.txtMsg_applyFilter}
 												</span>
 											</a4j:commandButton> &#160;
 										</li>
 										<li class="l vcentered"></li>
 										<li class="l vcentered">
 											<a4j:commandButton id="remove"
-												styleClass="left remove"
-												action="#{messagesBean.removeSelected}"
-												reRender="display-form:#{context},display-form:#{context}-bottomScroller">
-												<span class="refresh"> #{messages.txtMsg_remove} </span>
+												styleClass="left"
+												action="#{messagesBean.removeFilter}"
+												reRender="display-form:#{context},display-form:#{context}-bottomScroller,display-form:messageCount">
+												<span class="remove"> #{messages.txtMsg_remove} </span>
 											</a4j:commandButton> &#160;
 										</li>
 										<li class="l vcentered"></li>
@@ -106,16 +106,13 @@
 									<table width="800" class="inbox" cellspacing="0">
 										<tr>
 											<td class="inbox"
-												style="border-right: 1px solid #E1E1E1; border-bottom: 1px solid #E1E1E1;">#{messages.txtMsg_inbox}</td>
-											<td class="inbox" style="border-bottom: 1px solid #E1E1E1;">#{messagesBean.messageListCount}
-											#{messages.txtMsg_messages}</td>
+												style="border-right: 1px solid #E1E1E1; border-bottom: 1px solid #E1E1E1;">#{messages.txtMsg_sentTitle}</td>
+											<td class="inbox" style="border-bottom: 1px solid #E1E1E1;">
+												<h:outputText id="messageCount" value="#{messagesBean.sentMessageListCount} #{messages.txtMsg_messages}" /></td>
 										</tr>
 										<tr>
 											<td class="inbox" style="border-right: 1px solid #E1E1E1; vertical-align: top;">
-												<pretty:link id="reply" mappingId="sendMail">
-													<img align="left" style="padding-right: 10px;" src="/web/images/ico_txt_msg_reply.png" /> 
-													#{messages.txtMsg_replyLink}
-	                     						</pretty:link>
+											<rich:spacer width="5px" height="5px" />
                      						</td>
 											<td class="inbox"><a4j:outputPanel id="tablePanel">
 												<a4j:region>
@@ -123,14 +120,14 @@
 														value="#{messagesBean.sentMessageList}" var="item"
 														styleClass="datagrid filterabledatagrid"
 														rowClasses="tableOdd,tableEven" cellspacing="1" rows="5"
-														width="530px">
+														width="680px">
 
-														<rich:column id="date" width="20%"
+														<rich:column id="date" width="25%"
 															sortBy="#{item.sendDate}" sortOrder="DESCENDING">
 															<f:facet name="header">
 																<h:outputText value="#{messages.txtMsg_sent}" />
 															</f:facet>
-															<h:outputText value="#{item.sendDate}">
+															<h:outputText value="#{item.fromPortalSent}">
 																<f:converter converterId="DateTimeTZConverter" />
 																<f:attribute name="timeZone" value="#{item.timeZone}" />
 																<f:attribute name="pattern"
@@ -138,18 +135,25 @@
 															</h:outputText>
 														</rich:column>
 
-														<rich:column id="to" width="20%">
+														<rich:column id="to" width="15%">
 															<f:facet name="header">
 																<h:outputText value="#{messages.txtMsg_addressedTo}" />
 															</f:facet>
-															<h:outputText value="#{item.to}" />
+															<h:outputText value="#{item.fromPortalTo}" />
 														</rich:column>
-
-														<rich:column id="msg" width="60%">
+														
+														<rich:column id="from" width="15%">
 															<f:facet name="header">
-																<h:outputText value="#{messages.txtMsg_addressedTo}" />
+																<h:outputText value="#{messages.txtMsg_from}" />
 															</f:facet>
-															<h:outputText value="#{item.message}" />
+															<h:outputText value="#{item.fromPortalFrom}" />
+														</rich:column>
+														
+														<rich:column id="msg" width="45%">
+															<f:facet name="header">
+																<h:outputText value="#{messages.txtMsg_msg}" />
+															</f:facet>
+															<h:outputText value="#{item.fromPortalMsg}" />
 														</rich:column>
 													</rich:dataTable>
 													<rich:datascroller for="#{context}"
