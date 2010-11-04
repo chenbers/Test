@@ -1425,4 +1425,28 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 
+//    @Override
+//    public List<Map<String, Object>> getCrashTraces(String eventID) throws ProDAOException {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+//
+//    @Override
+//    public Map<String, Object> getCrashTraceCount(String eventID, Long startDate, Long stopDate, List<Map<String, Object>> filterList) {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+//
+//    @Override
+//    public List<Map<String, Object>> getCrashTracePage(String eventID, Long startDate, Long stopDate, List<Map<String, Object>> filterList, Map<String, Object> pageParams) {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+
+    @Override
+    public List<Map<String, Object>> getSentTextMsgsByGroupID(Integer groupID, Long startDate, Long endDate) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
