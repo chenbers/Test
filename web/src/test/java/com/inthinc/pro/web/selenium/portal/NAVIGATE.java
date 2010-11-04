@@ -2,11 +2,12 @@
 
 package com.inthinc.pro.web.selenium.portal;
 
+
+import org.junit.BeforeClass;
 import org.openqa.selenium.server.SeleniumServer;
-import org.testng.annotations.*;
+
 
 import com.thoughtworks.selenium.*;
-import static org.testng.AssertJUnit.*;
 
 public class NAVIGATE
 {
@@ -72,7 +73,7 @@ public class NAVIGATE
 		selenium.waitForPageToLoad("10000");
 		selenium.type("j_username", user);
 		selenium.type("j_password", pass);
-		assertTrue(selenium.isElementPresent("loginLogin"));
+//		assertTrue(selenium.isElementPresent("loginLogin"));
 		selenium.click("loginLogin");
 		selenium.waitForPageToLoad("40000");
 	}//end login
@@ -84,8 +85,8 @@ public class NAVIGATE
 		//logout of Tiwipro Application
 		selenium.click("link=Log Out");
 		selenium.waitForPageToLoad("30000");	
-		assertEquals(selenium.getTitle(), "tiwiPRO");
-		assertTrue(selenium.isTextPresent("Log In"));
+//		assertEquals(selenium.getTitle(), "tiwiPRO");
+//		assertTrue(selenium.isTextPresent("Log In"));
 	}//end logout
 	
 	public void homescreen(){
@@ -94,11 +95,10 @@ public class NAVIGATE
 		selenium.open("/tiwipro/app/dashboard/");
 		selenium.click("//a[@id='headerForm:headerInitDashboard']/img");
 		selenium.waitForPageToLoad("35000");
-		assertTrue(selenium.isTextPresent("Overview"));
+//		assertTrue(selenium.isTextPresent("Overview"));
 	}
 	
 	
-	 @AfterClass
 		//@AfterClass //Close and destroy all objects and files created
 		public void tearDown(){
 		 seleniumserver.stop();
