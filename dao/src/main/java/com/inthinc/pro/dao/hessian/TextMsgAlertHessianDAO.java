@@ -28,7 +28,7 @@ public class TextMsgAlertHessianDAO extends GenericHessianDAO<MessageItem, Integ
     public List<MessageItem> getTextMsgPage(Integer groupID, Date startDate, Date endDate, List<TableFilterField> filterList, PageParams pageParams) {
         try {
             List<MessageItem> messageItemList = getMapper().convertToModelObject(
-                    getSiloService().getTextMsgPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), getMapper().convertList(filterList), getMapper().convertToMap(pageParams)),
+                    getSiloService().getTextMsgPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(DateUtil.getDaysBackDate(endDate, -1)), getMapper().convertList(filterList), getMapper().convertToMap(pageParams)),
                     MessageItem.class);
             return messageItemList;
         } catch (EmptyResultSetException e) {
@@ -41,10 +41,21 @@ public class TextMsgAlertHessianDAO extends GenericHessianDAO<MessageItem, Integ
         try {
             if (filterList == null)
                 filterList = new ArrayList<TableFilterField>();
-            return getChangedCount(getSiloService().getTextMsgCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), getMapper().convertList(filterList)));
+            return getChangedCount(getSiloService().getTextMsgCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(DateUtil.getDaysBackDate(endDate, -1)), getMapper().convertList(filterList)));
 
         } catch (EmptyResultSetException e) {
             return 0;
+        }
+    }
+
+    @Override
+    public List<MessageItem> getSentTextMsgsByGroupID(Integer groupID, Date startDate, Date stopDate) {
+        try {
+            List<MessageItem> messageItemList = getMapper().convertToModelObject(
+                    getSiloService().getSentTextMsgsByGroupID(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(DateUtil.getDaysBackDate(stopDate, -1))), MessageItem.class);
+            return messageItemList;
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
         }
     }
 
