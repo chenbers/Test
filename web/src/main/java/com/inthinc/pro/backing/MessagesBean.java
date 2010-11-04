@@ -1,13 +1,11 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -19,6 +17,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.TextMsgAlertDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.ForwardCommand;
@@ -81,11 +80,8 @@ public class MessagesBean extends BaseBean {
         groupSelectFromList = new ArrayList<SelectItem>();
         groupSelectedList = new ArrayList<Integer>();  
         
-        //default values for start/end dates
-        Calendar tempDate = Calendar.getInstance();
-        tempDate.roll(Calendar.DATE, -7);
         this.setEndDate(endDate != null? endDate: new Date());
-        this.setStartDate(startDate!=null? startDate: tempDate.getTime());
+        this.setStartDate(startDate!=null? startDate: DateUtil.getDaysBackDate(new Date(), 7));
     }
     
     public Integer getMessageListCount(){
@@ -310,31 +306,24 @@ public class MessagesBean extends BaseBean {
     public void refreshInbox() { 
         this.messageList.clear();
         List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-        //Integer txtMsgCount = textMsgAlertDAO.getTextMsgCount(selectedGroupID, startDate, endDate, filterList);
-        PageParams pageParams = new PageParams(); //TODO: jwimmer: question: is there another mechanism for grabbing PageParams for the page this bean is backing?
+        PageParams pageParams = new PageParams(); 
         if(selectedGroupID != null)
             this.messageList.addAll(textMsgAlertDAO.getTextMsgPage(selectedGroupID, startDate, endDate, filterList, pageParams));
         this.selectAll=Boolean.FALSE;
     }
     
     /**
-     * Performs a soft delete on the selected messages
+     * Removes the filter from the current view.
      */
-    public void removeSelected() {
-        //TODO: clarify: jwimmer: SHOULD we allow users to soft delete sent messages as well?  pro: easier for users to navigate/manage their sent box; con: was already sent... may mislead users into thinking they can UN-send a message?
-        //TODO: jwimmer: waiting on Grady to hear whether this was intended as removeSelectedMessages?  or just removeFilter from list view?
-        //TODO: jwimmer: implement
+    public void removeFilter() {
+        this.sentMessageList.clear();
+        this.messageList.clear();
+        this.selectAll=Boolean.FALSE;
     }
     
     public void refreshSent() {
-        this.sentMessageList.clear();
-        Integer proUserDriverID = driverDAO.findByPersonID(this.getProUser().getUser().getPersonID()).getDriverID();
-        PageParams pageParams = new PageParams();
-        List<TableFilterField> filterList = new ArrayList<TableFilterField>();
-        TableFilterField sentByUser = new TableFilterField("driverID",proUserDriverID);
-        filterList.add(sentByUser);
-        pageParams.setFilterList(filterList);
-        this.sentMessageList.addAll(textMsgAlertDAO.getTextMsgPage(selectedGroupID, startDate, endDate, filterList, pageParams));
+        this.sentMessageList.clear();        
+        this.sentMessageList.addAll(textMsgAlertDAO.getSentTextMsgsByGroupID(selectedGroupID, startDate, endDate));
         this.selectAll=Boolean.FALSE;
     }
        
@@ -436,9 +425,9 @@ public class MessagesBean extends BaseBean {
                 Vehicle v = vehicleDAO.findByID(dev.getVehicleID());
                 Driver d = driverDAO.findByID(v.getDriverID());
                 if (dev.isTextMsgReceiveCapable()) {
-                     //ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED);
-                    // deviceDAO.queueForwardCommand(devID, fwdCmd);
-
+                    ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED, getUser().getPersonID(), v.getDriverID(), v.getVehicleID());
+                    deviceDAO.queueForwardCommand(devID, fwdCmd);
+                    
                     this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgSuccess"), d.getPerson().getFullName(), v.getFullName(), dev.getName() ));
                 } else {
                     this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgNotCapable"), dev.getName() , d.getPerson().getFullName(), v.getFullName()));
@@ -448,7 +437,7 @@ public class MessagesBean extends BaseBean {
         }
 
         if (!success) {
-            this.sendMessageList.add(resourceMessages.getString("txtMsg_noDevice")); // TODO: jwimmer: question: do we want a message or an error log? here; 
+            this.sendMessageList.add(resourceMessages.getString("txtMsg_noDevice")); 
         }
     }
        
