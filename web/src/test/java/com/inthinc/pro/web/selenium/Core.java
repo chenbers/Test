@@ -11,7 +11,7 @@ public class Core extends DefaultSelenium {
 	//  // TODO Auto-generated constructor stub
 	}
 	
-	public void AssertTrue_TextPresent( String Text){
+	public void TextPresent( String Text){
 		try {
 			assertTrue(isTextPresent(Text));
 			}catch (AssertionError e){
@@ -19,7 +19,7 @@ public class Core extends DefaultSelenium {
 			}
 	}
 	
-	public void AssertTrue_ElementPresent( String Text){
+	public void ElementPresent( String Text){
 		try {
 			assertTrue(isElementPresent(Text));
 			}catch (AssertionError e){
@@ -27,7 +27,7 @@ public class Core extends DefaultSelenium {
 			}
 	}
 	
-	public void AssertEquals_getText( String Text){
+	public void GetText( String Text){
 	try {
 		assertEquals(getText("//b"), Text);
 		}catch (AssertionError e){
