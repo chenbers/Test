@@ -18,5 +18,8 @@ public interface VoiceService  {
     @GET
     @Path("/vxml")
 
-    public Response get(@Context() HttpServletRequest context, @QueryParam("msgID") Integer msgID, @QueryParam("msg") String msg) throws IOException;
+    public Response get(@Context() HttpServletRequest context
+            , @QueryParam("msgID") Integer msgID
+            , @QueryParam("msg") String msg
+            , @QueryParam("ack") Integer ack) throws IOException;
 }

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.service.VoiceAckService;
 import com.inthinc.pro.util.StringUtil;
 
@@ -14,7 +15,8 @@ public class VoiceAckServiceImpl implements VoiceAckService {
 
     private static final String XML_DATA_FILE = "vxml/acknowledgevxml.xml";
     private String voxeoAudioURL;
-    
+    private AlertMessageDAO alertMessageDAO;
+        
     @Override
     public Response get(Integer msgID) throws IOException {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
@@ -23,6 +25,7 @@ public class VoiceAckServiceImpl implements VoiceAckService {
         response=String.format(response, getVoxeoAudioURL());
         
         //TODO Ack msgID here
+        alertMessageDAO.acknowledgeMessage(msgID);
         System.out.println(msgID);
         
         if (true)
@@ -36,5 +39,12 @@ public class VoiceAckServiceImpl implements VoiceAckService {
 
     public void setVoxeoAudioURL(String voxeoAudioURL) {
         this.voxeoAudioURL = voxeoAudioURL;
+    }
+    public AlertMessageDAO getAlertMessageDAO() {
+        return alertMessageDAO;
+    }
+
+    public void setAlertMessageDAO(AlertMessageDAO dao) {
+        this.alertMessageDAO = dao;
     }
 }
