@@ -797,11 +797,11 @@ span.refresh {
 }
 
 span.filter {
-	background: url(../images/ico_apply_filter.png) left no-repeat;
+	background: url(../images/btn_apply_filter.png) left no-repeat;
 }
 
 span.remove {
-	background: url(../images/ico_remove_filter.png) left no-repeat;
+	background: url(../images/btn_remove_filter.png) left no-repeat;
 }
 
 span.back {
