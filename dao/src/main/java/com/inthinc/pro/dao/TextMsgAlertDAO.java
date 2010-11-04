@@ -27,5 +27,7 @@ public interface TextMsgAlertDAO extends GenericDAO<MessageItem, Integer>{
      * @return
      */
     List<MessageItem> getTextMsgPage(Integer groupID, Date startDate, Date endDate, List<TableFilterField> filterList, PageParams pageParams);
+    
+    List<MessageItem> getSentTextMsgsByGroupID(Integer groupID, Date startTime, Date stopTime); 
 
 }
