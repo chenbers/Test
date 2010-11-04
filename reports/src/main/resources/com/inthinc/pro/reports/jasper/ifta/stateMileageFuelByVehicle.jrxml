@@ -8,9 +8,9 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
-	<style name="CrosstabCell" isDefault="false" fontName="SansSerif"/>
-	<style name="CrosstabLabel" isDefault="false" fontName="SansSerif" isBold="true"/>
+	<style name="PageFooter" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="CrosstabCell" fontName="SansSerif"/>
+	<style name="CrosstabLabel" fontName="SansSerif" isBold="true"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false">
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
 	</parameter>
@@ -300,85 +300,163 @@
 					</measure>
 					<crosstabCell width="68" height="16">
 						<cellContents mode="Transparent">
-							<textField isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField" x="0" y="0" width="33" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
 							<textField pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-16" x="34" y="0" width="33" height="16"/>
+								<reportElement key="textField-16" x="34" y="0" width="33" height="16">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
+								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckGas_Sum}.doubleValue() == new java.lang.Double(0).doubleValue() ? new java.lang.Double(0) : new java.lang.Double(  ($V{totalMiles_Sum}.doubleValue()) /($V{totalTruckGas_Sum}.doubleValue()) )]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
+							</textField>
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-16" x="34" y="0" width="33" height="16">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
 					<crosstabCell width="74" height="16" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField" x="1" y="0" width="33" height="15"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
 							<textField pattern="###0.00" isBlankWhenNull="true">
-								<reportElement key="textField-16" x="38" y="1" width="36" height="15"/>
+								<reportElement key="textField-16" x="38" y="1" width="36" height="15">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
+								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[($V{totalTruckGas_Sum}.doubleValue() == 0F) ? null :new java.lang.Double($V{totalMiles_Sum}.doubleValue()/$V{totalTruckGas_Sum}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
+							</textField>
+							<textField pattern="###0.00" isBlankWhenNull="true">
+								<reportElement key="textField-16" x="38" y="1" width="36" height="15">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
 					<crosstabCell width="68" height="30" rowTotalGroup="month">
 						<cellContents mode="Transparent">
-							<textField isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField-13" x="0" y="7" width="33" height="16"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
 							<textField pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-16" x="34" y="7" width="33" height="16"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckGas_Sum}.doubleValue() == new java.lang.Double(0).doubleValue() ? new java.lang.Double(0) : new java.lang.Double(  ($V{totalMiles_Sum}.doubleValue()) /($V{totalTruckGas_Sum}.doubleValue()) )]]></textFieldExpression>
+								<reportElement key="textField-16" x="34" y="7" width="33" height="16">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
+							</textField>
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-16" x="34" y="7" width="33" height="16">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
 					<crosstabCell width="74" height="30" rowTotalGroup="month" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField" x="1" y="7" width="33" height="16"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
 							<textField pattern="###0.00" isBlankWhenNull="true">
-								<reportElement key="textField-16" x="37" y="7" width="37" height="15"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[($V{totalTruckGas_Sum}.doubleValue() == 0F) ? null :new java.lang.Double($V{totalMiles_Sum}.doubleValue()/$V{totalTruckGas_Sum}.doubleValue())]]></textFieldExpression>
+								<reportElement key="textField-16" x="37" y="7" width="37" height="15">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
+							</textField>
+							<textField pattern="###0.00" isBlankWhenNull="true">
+								<reportElement key="textField-16" x="37" y="7" width="37" height="15">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
 					<crosstabCell width="68" height="30" rowTotalGroup="vehicle">
 						<cellContents mode="Transparent">
-							<textField isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField" x="0" y="0" width="33" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
 							<textField pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-16" x="34" y="0" width="33" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckGas_Sum}.doubleValue() == new java.lang.Double(0).doubleValue() ? new java.lang.Double(0) : new java.lang.Double(  ($V{totalMiles_Sum}.doubleValue()) /($V{totalTruckGas_Sum}.doubleValue()) )]]></textFieldExpression>
+								<reportElement key="textField-16" x="34" y="0" width="33" height="30">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
+							</textField>
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-16" x="34" y="0" width="33" height="30">
+									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
 					<crosstabCell width="74" height="30" rowTotalGroup="vehicle" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField" x="1" y="0" width="32" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
 							<textField pattern="###0.00" isBlankWhenNull="true">
-								<reportElement key="textField-16" x="38" y="1" width="35" height="29"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<reportElement key="textField-16" x="38" y="1" width="35" height="29">
+									<printWhenExpression><![CDATA[$V{totalMileage_Sum} != null]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMileage_Sum}]]></textFieldExpression>
+							</textField>
+							<textField pattern="###0.00" isBlankWhenNull="true">
+								<reportElement key="textField-16" x="38" y="1" width="35" height="29">
+									<printWhenExpression><![CDATA[$V{totalMileage_Sum} == null]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
