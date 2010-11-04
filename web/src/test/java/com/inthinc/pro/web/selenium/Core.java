@@ -146,7 +146,7 @@ public class Core extends DefaultSelenium{
 	
 	public void AssertEquals( String local, String text){
 		try {
-			assertTrue(local==Text);
+			assertTrue(local==text);
 			}catch (AssertionError e){
 			}
 		}
