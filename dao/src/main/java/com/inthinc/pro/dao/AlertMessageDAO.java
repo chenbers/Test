@@ -18,4 +18,6 @@ public interface AlertMessageDAO extends GenericDAO<AlertMessage, Integer>
      * @return AlertMessageBuilder - class that creates friendly class to be used with a resource properties file
      */
     List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType);
+    
+    void acknowledgeMessage(Integer msgID);
 }

@@ -281,4 +281,10 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     public void setZoneDAO(ZoneDAO zoneDAO) {
         this.zoneDAO = zoneDAO;
     }
+
+    @Override
+    public void acknowledgeMessage(Integer msgID) {
+        // TODO Auto-generated method stub
+        
+    }
 }
