@@ -25,6 +25,17 @@ public class MessageItem {
     private String result;
     private String entity;
     
+    @Column(name = "data")
+    private String fromPortalMsg;
+    @Column(name = "senderName")
+    private String fromPortalFrom;
+    @Column(name = "created")
+    private Date fromPortalSent;
+    
+    public String getFromPortalTo() {
+        return from;
+    }
+    
     public Boolean isSelected() {
         return selected!=null?selected:false;
     }
@@ -87,6 +98,24 @@ public class MessageItem {
     }
     public Integer getFromVehicleID() {
         return fromVehicleID;
+    }
+    public String getFromPortalMsg() {
+        return fromPortalMsg;
+    }
+    public void setFromPortalMsg(String fromPortalMsg) {
+        this.fromPortalMsg = fromPortalMsg;
+    }
+    public String getFromPortalFrom() {
+        return fromPortalFrom;
+    }
+    public void setFromPortalFrom(String fromPortalFrom) {
+        this.fromPortalFrom = fromPortalFrom;
+    }
+    public Date getFromPortalSent() {
+        return fromPortalSent;
+    }
+    public void setFromPortalSent(Date fromPortalSent) {
+        this.fromPortalSent = fromPortalSent;
     }
 }
 
