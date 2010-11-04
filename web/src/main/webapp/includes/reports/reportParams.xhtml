@@ -25,237 +25,301 @@
   </ui:include>
   
 -->
-
 <ui:composition>
-	<a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
-	<a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.1-min.js"/>
-	<a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
-	<script type="text/javascript">
-	</script>
+    <a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
+    <a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.1-min.js"/>
+    <a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
+    <!-- Add the checkbox plugin to the JQuery tree. -->
+    <!-- <a4j:loadScript src="/js/jsTree/plugins/jquery.tree.checkbox.js"/> -->
+    <!-- CSS Fix for the hierarchy jQuery checkbox tree. Since the navigation frame overrides the CSS for the component
+     at a global level, it impacts all trees created with defaults. By specifying the CSS for the container of the tree
+     we can override the default configuration and fix some placement issues with the checkbox images.-->
+    <!-- <style type="text/css">
+		/*Navigation Tree*/
+		#groupTree ul ins {
+		    height: 16px;
+		    width: 16px;
+		}
+		
+		/* .tree_back and .recent_back have IE6 conditional overrides in layout.xhtml*/
+		#groupTree ul ins {
+		    height: 16px;
+		    width: 16px;
+		}
+	</style> -->
+	<!-- This is the minimum javascript configuration for the hierarchy tree. Note that the data is hardcoded with a
+	sample JSON object (data->opts->static). This JSON object should be replaced by a parameter passed to the method
+	just like it is done for the Home button in the navigation pane. -->
+    <!-- <script type="text/javascript">
+    
+        jQuery(function(){
+            
+            buildGroupTree();
+        });
+    
+        function buildGroupTree(){
+            jQuery("#groupTree").tree({
+                plugins : {
+                    //Enable the checkbox plugin.
+                    "checkbox" : {}
+                },
+                ui : {
+                    //Change theme to checkbox so the checkboxes are displayed.
+                    theme_name : "checkbox"
+                },
+                data : { 
+                    //Set the data type.
+                    type : "json",
+                    opts : {
+                        //The static property holds the data to be displayed.
+                        //This method can be parameterized to receive the actual JSON object to display.
+                        static : {
+                            attributes: { id : "1"}, 
+                            data: "Group 1", 
+                            state: "open",
+                            children: [
+                                {
+                                    attributes: { id : "2"}, 
+                                    data: "Sub group 1", 
+                                },
+                                {
+                                    attributes: { id : "3"}, 
+                                    data: "Sub group 2", 
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        );  
+        }
+    </script>-->
 
-	<a4j:outputPanel  id="#{context}_paramsPanel">
-		<a4j:region id="#{context}_paramsRegion">
-         	<ul id="grid_nav" style="margin: 0;">
-				<ui:repeat value="#{params.selectedCriteria}" var="criteria">
-				<h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
-					<li class="l">   
-					<ui:include src="/includes/component/dateRange.xhtml" >
-						<ui:param name="dateRange" value="#{params.dateRange}"/> 
-      					<ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
-  					</ui:include>
-		  		  </li>
-    			</h:outputText>
-         		</ui:repeat>
-				<h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.reports_group}"/>
-						</td>
-						<td>
-							<a4j:outputPanel id="groupSelect">
-							<h:selectOneMenu id="#{context}-groupParam" value="#{params.groupID}" style="width:200px;size:auto;">
-								<f:selectItem itemLabel="" itemValue="#{null}"/>
-								<f:selectItems value="#{params.groups}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectOneMenu>
-							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-  					 					<ui:param name="selectBoxID" value="#{context}_form:{context}-groupParam" />
-							</ui:include>
-							</a4j:outputPanel>
-							
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-				
-				<h:outputText id="driverInput" rendered="#{params.selectedEntityType eq 'ENTITY_DRIVER'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.reports_driver}"/>
-						</td>
-						<td>
-							<a4j:outputPanel id="driverSelect">
-							<h:selectOneMenu id="#{context}-driverParam" value="#{params.driverID}" style="width:200px;size:auto;">
-								<f:selectItems value="#{params.drivers}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectOneMenu>
-							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-								<ui:param name="selectBoxID" value="#{context}_form:{context}-driverParam" />
-							</ui:include>
-							</a4j:outputPanel>
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-				<h:outputText id="groupListInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.reports_groups}"/>
-						</td>
-						<td>
-							<a4j:outputPanel id="groupListSelect">
-							<h:selectManyMenu id="#{context}groupListParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto">
-								<f:selectItems value="#{params.groups}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectManyMenu>
-							</a4j:outputPanel>
-							<rich:jQuery selector="##{context}_form\\:#{context}groupListParam" timing="onload" 
-							query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-														width: 200,maxDropHeight: 150})"/>
-								</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-				<h:outputText id="groupListOrDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_OR_DRIVER'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.reports_groupsOrDriver}"/>
-						</td>
-						<td>
-							<h:selectOneMenu  id="grouporDriverSelection" value="#{params.paramType}" >  
-								<f:selectItems value="#{params.reportParamTypes}"/>
-								<a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel,#{context}_form:groupListSelectPanel,#{context}_paramsPanelError,#{reRenderList}"/>
-							</h:selectOneMenu>
-						</td>
-						<td>							
-							<a4j:outputPanel id="driverSelectPanel">
-							<h:selectOneMenu id="#{context}-groupDriverParam" value="#{params.driverID}" style="width:200px;size:auto;"  rendered="#{params.paramType eq 'DRIVER'}">
-								<f:selectItems value="#{params.drivers}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectOneMenu>
-<!-- 							
-							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-								<ui:param name="selectBoxID" value="#{context}_form:{context}-groupDriverParam" />
-							</ui:include>
- -->							
-							</a4j:outputPanel>							
-							<a4j:outputPanel id="groupListSelectPanel">
-							<h:selectManyMenu id="#{context}groupDriverListParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto" rendered="#{params.paramType eq 'GROUPS'}">
-								<f:selectItems value="#{params.groups}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectManyMenu>
-							<rich:jQuery selector="##{context}_form\\:#{context}groupDriverListParam" timing="onload" 
-									query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-														width: 200,maxDropHeight: 150})"/>
-							</a4j:outputPanel>							
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-				
-				<h:outputText id="groupOrDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_OR_DRIVER'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-  							<h:outputText value="#{messages.reports_groupOrDriver}"/>  
+    <a4j:outputPanel  id="#{context}_paramsPanel">
+        <a4j:region id="#{context}_paramsRegion">
+            <ul id="grid_nav" style="margin: 0;">
+                <ui:repeat value="#{params.selectedCriteria}" var="criteria">
+                <h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
+                    <li class="l">   
+                    <ui:include src="/includes/component/dateRange.xhtml" >
+                        <ui:param name="dateRange" value="#{params.dateRange}"/> 
+                        <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
+                    </ui:include>
+                  </li>
+                </h:outputText>
+                </ui:repeat>
+                <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
+                <li  class="l">
+                    <table border="0" cellspacing="0" cellpadding="4">
+                    <tr>
+                        <td>
+                            <h:outputText value="#{messages.reports_group}"/>
+                        </td>
+                        <td>
+                            <a4j:outputPanel id="groupSelect">
+                            <h:selectOneMenu id="#{context}-groupParam" value="#{params.groupID}" style="width:200px;size:auto;">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{params.groups}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectOneMenu>
+                            <ui:include src="/includes/dhtmlSelectBox.xhtml">   
+                                        <ui:param name="selectBoxID" value="#{context}_form:{context}-groupParam" />
+                            </ui:include>
+                            </a4j:outputPanel>
+                            
+                        </td>
+                    </tr>
+                    </table>
+                </li>
+                </h:outputText>
+                
+                <h:outputText id="driverInput" rendered="#{params.selectedEntityType eq 'ENTITY_DRIVER'}">
+                <li  class="l">
+                    <table border="0" cellspacing="0" cellpadding="4">
+                    <tr>
+                        <td>
+                            <h:outputText value="#{messages.reports_driver}"/>
+                        </td>
+                        <td>
+                            <a4j:outputPanel id="driverSelect">
+                            <h:selectOneMenu id="#{context}-driverParam" value="#{params.driverID}" style="width:200px;size:auto;">
+                                <f:selectItems value="#{params.drivers}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectOneMenu>
+                            <ui:include src="/includes/dhtmlSelectBox.xhtml">   
+                                <ui:param name="selectBoxID" value="#{context}_form:{context}-driverParam" />
+                            </ui:include>
+                            </a4j:outputPanel>
+                        </td>
+                    </tr>
+                    </table>
+                </li>
+                </h:outputText>
+                <h:outputText id="groupListInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST'}">
+                <li  class="l">
+                    <table border="0" cellspacing="0" cellpadding="4">
+                    <tr>
+                        <td>
+                            <h:outputText value="#{messages.reports_groups}"/>
+                        </td>
+                        <td>
+                            <a4j:outputPanel id="groupListSelect">
+                            <h:selectManyMenu id="#{context}groupListParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto">
+                                <f:selectItems value="#{params.groups}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectManyMenu>
+                            </a4j:outputPanel>
+                            <rich:jQuery selector="##{context}_form\\:#{context}groupListParam" timing="onload" 
+                            query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        width: 200,maxDropHeight: 150})"/>
+                                </td>
+                    </tr>
+                    </table>
+                </li>
+                </h:outputText>
+                <h:outputText id="groupListOrDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_OR_DRIVER'}">
+                <li  class="l">
+                    <table border="0" cellspacing="0" cellpadding="4">
+                    <tr>
+                        <td>
+                            <h:outputText value="#{messages.reports_groupsOrDriver}"/>
+                        </td>
+                        <td>
+                            <h:selectOneMenu  id="grouporDriverSelection" value="#{params.paramType}" >  
+                                <f:selectItems value="#{params.reportParamTypes}"/>
+                                <a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel,#{context}_form:groupListSelectPanel,#{context}_paramsPanelError,#{reRenderList}"/>
+                            </h:selectOneMenu>
+                        </td>
+                        <td>                            
+                            <a4j:outputPanel id="driverSelectPanel">
+                            <h:selectOneMenu id="#{context}-groupDriverParam" value="#{params.driverID}" style="width:200px;size:auto;"  rendered="#{params.paramType eq 'DRIVER'}">
+                                <f:selectItems value="#{params.drivers}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectOneMenu>
+<!--                            
+                            <ui:include src="/includes/dhtmlSelectBox.xhtml">   
+                                <ui:param name="selectBoxID" value="#{context}_form:{context}-groupDriverParam" />
+                            </ui:include>
+ -->                            
+                            </a4j:outputPanel>                          
+                            <a4j:outputPanel id="groupListSelectPanel">
+                            <h:selectManyMenu id="#{context}groupDriverListParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto" rendered="#{params.paramType eq 'GROUPS'}">
+                                <f:selectItems value="#{params.groups}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectManyMenu>
+                            <rich:jQuery selector="##{context}_form\\:#{context}groupDriverListParam" timing="onload" 
+                                    query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        width: 200,maxDropHeight: 150})"/>
+                            </a4j:outputPanel>                          
+                        </td>
+                    </tr>
+                    </table>
+                </li>
+                </h:outputText>
+                
+                <h:outputText id="groupOrDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_OR_DRIVER'}">
+                <li  class="l">
+                    <table border="0" cellspacing="0" cellpadding="4">
+                    <tr>
+                        <td>
+                            <h:outputText value="#{messages.reports_groupOrDriver}"/>  
 
-						</td>
-						<td>
-							<h:selectOneMenu  id="grouporDriverSelection2" value="#{params.paramType}" >  
-								<f:selectItems value="#{params.reportParamTypes}"/>
-								<a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel2,#{context}_form:groupListSelectPanel2,#{context}_paramsPanelError,#{reRenderList}"/>
-							</h:selectOneMenu>
-						</td>
-						<td>							
-							<a4j:outputPanel id="driverSelectPanel2">
-							<h:selectOneMenu id="#{context}-groupDriverParam2" value="#{params.driverID}" style="width:200px;size:auto;"  rendered="#{params.paramType eq 'DRIVER'}">
-								<f:selectItems value="#{params.drivers}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectOneMenu>					
-							</a4j:outputPanel>							
-							<a4j:outputPanel id="groupListSelectPanel2">
-							<h:selectOneMenu id="#{context}groupDriverListParam2" value="#{params.groupID}" style="width:200px;size:auto" rendered="#{params.paramType eq 'GROUPS'}">
-								<f:selectItems value="#{params.groups}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectOneMenu>
-							</a4j:outputPanel>							
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-				
-				<h:outputText id="groupListAndIftaInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.reports_groups}"/>
-						</td>
-						<td>
-							<a4j:outputPanel id="groupListAndIftaSelect">
-							<h:selectManyMenu id="#{context}groupListAndIftaParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto">
-								<f:selectItems value="#{params.groups}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							</h:selectManyMenu>
-							</a4j:outputPanel>
-							<rich:jQuery selector="##{context}_form\\:#{context}groupListAndIftaParam" timing="onload" 
-							query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-														width: 200,maxDropHeight: 150})"/>
-						</td>
-						<td>
-							<h:outputText value="#{messages.reports_ifta_only}"/>						
-						</td>
-						<td>
-							<h:selectBooleanCheckbox id="ifta" value="#{params.isIfta}" />
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-				
-				<h:outputText id="groupAndExpiredInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_AND_EXPIRED'}">
-				<li  class="l">
-		   			<table border="0" cellspacing="0" cellpadding="4">
-					<tr>
-						<td>
-							<h:outputText value="#{messages.reports_groups}"/>
-						</td>
-						<td>
-							<a4j:outputPanel id="groupAndExpiredSelect">
-							  <h:selectOneMenu id="#{context}-groupAndExpiredParam" value="#{params.groupID}" style="width:200px;size:auto;">
-								<f:selectItem itemLabel="" itemValue="#{null}"/>
-								<f:selectItems value="#{params.groups}"/>
-								<a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
-							  </h:selectOneMenu>
-							</a4j:outputPanel>
-							<rich:jQuery selector="##{context}_form\\:#{context}groupAndExpiredParam" timing="onload" 
-							query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-														width: 200,maxDropHeight: 150})"/>
-						</td>
-						<td>
-							<h:outputText value="#{messages.reports_expired_only}"/>						
-						</td>
-						<td>
-							<h:selectBooleanCheckbox id="expired" value="#{params.isExpired}" />
-						</td>
-					</tr>
-					</table>
-				</li>
-				</h:outputText>
-					
+                        </td>
+                        <td>
+                            <h:selectOneMenu  id="grouporDriverSelection2" value="#{params.paramType}" >  
+                                <f:selectItems value="#{params.reportParamTypes}"/>
+                                <a4j:support event="onchange" reRender="#{context}_form:driverSelectPanel2,#{context}_form:groupListSelectPanel2,#{context}_paramsPanelError,#{reRenderList}"/>
+                            </h:selectOneMenu>
+                        </td>
+                        <td>                            
+                            <a4j:outputPanel id="driverSelectPanel2">
+                            <h:selectOneMenu id="#{context}-groupDriverParam2" value="#{params.driverID}" style="width:200px;size:auto;"  rendered="#{params.paramType eq 'DRIVER'}">
+                                <f:selectItems value="#{params.drivers}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectOneMenu>                  
+                            </a4j:outputPanel>                          
+                            <a4j:outputPanel id="groupListSelectPanel2">
+                            <h:selectOneMenu id="#{context}groupDriverListParam2" value="#{params.groupID}" style="width:200px;size:auto" rendered="#{params.paramType eq 'GROUPS'}">
+                                <f:selectItems value="#{params.groups}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectOneMenu>
+                            </a4j:outputPanel>                          
+                        </td>
+                    </tr>
+                    </table>
+                </li>
+                </h:outputText>
+                
+                <h:outputText id="groupListAndIftaInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
+                <li  class="l">
+                    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+                    <tr>
+                        <td>
+                            <h:outputText value="#{messages.reports_groups}"/>
+                        </td>
+                        <td>
+                            <a4j:outputPanel id="groupListAndIftaSelect">
+                            <h:selectManyMenu id="#{context}groupListAndIftaParam" value="#{params.groupIDSelectList}" style="width:200px;size:auto">
+                                <f:selectItems value="#{params.groups}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                            </h:selectManyMenu>
+                            </a4j:outputPanel>
+                            <!-- This div is the placeholder for the Hierarchy Tree. It could be used in the future if
+                            it is decided to replace the drop down list for a better UI element.
+                            NOTE: This is yet a crude implementation. The CSS is not complete and enabling this div breakes
+                            the layout of the page. -->
+                            <!-- <div id="groupTree"></div> -->
+                            <rich:jQuery selector="##{context}_form\\:#{context}groupListAndIftaParam" timing="onload" 
+                            query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        width: 200,maxDropHeight: 150})"/>
+                        </td>
+                        <td>
+                            <h:outputText value="#{messages.reports_ifta_only}"/>                       
+                        </td>
+                        <td>
+                            <h:selectBooleanCheckbox id="ifta" value="#{params.isIfta}" />
+                        </td>
+                    </tr>
+                    </table>
+                </li>
+                </h:outputText>
+                <h:outputText id="groupAndExpiredInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_AND_EXPIRED'}">
+                <li  class="l">
+                    <table border="0" cellspacing="0" cellpadding="4">
+                    <tr>
+                        <td>
+                            <h:outputText value="#{messages.reports_groups}"/>
+                        </td>
+                        <td>
+                            <a4j:outputPanel id="groupAndExpiredSelect">
+                              <h:selectOneMenu id="#{context}-groupAndExpiredParam" value="#{params.groupID}" style="width:200px;size:auto;">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{params.groups}"/>
+                                <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
+                              </h:selectOneMenu>
+                            </a4j:outputPanel>
+                            <rich:jQuery selector="##{context}_form\\:#{context}groupAndExpiredParam" timing="onload" 
+                            query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        width: 200,maxDropHeight: 150})"/>
+                        </td>
+                        <td>
+                            <h:outputText value="#{messages.reports_expired_only}"/>                        
+                        </td>
+                        <td>
+                            <h:selectBooleanCheckbox id="expired" value="#{params.isExpired}" />
+                        </td>
+                    </tr>
+                    </table>
+                </li>
+                </h:outputText>
+                    
            </ul>
           </a4j:region>
          </a4j:outputPanel>
          <a4j:outputPanel  id="#{context}_paramsPanelError">
-		     <div class="spacer"></div>
-			 <h:outputText id="paramsError"  style="float:left;color:#c44d34" value="#{params.errorMsg}" rendered="#{params.errorMsg != null}"/>
-	         <div class="spacer"></div>
+             <div class="spacer"></div>
+             <h:outputText id="paramsError"  style="float:left;color:#c44d34" value="#{params.errorMsg}" rendered="#{params.errorMsg != null}"/>
+             <div class="spacer"></div>
          </a4j:outputPanel>
-
-
 </ui:composition>
 </html>
